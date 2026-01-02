@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SZKTP4496K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SZKTP4496K');
+</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468067620830797"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightRecruiter - نظام التوظيف الذكي</title>
+    <link rel="stylesheet" href="brightrecruiter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Add Google API script for sheets -->
+     <script src="https://apis.google.com/js/api.js"></script>
+
+</head>
+
+<body>
+        <nav>
+            <ul class="navbar">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+                <li><a href="smart-automation.html">أتمتة العمليات بالذكاء الاصطناعي</a></li>
+                <li><a href="data-analysis.html">تحليل البيانات باستخدام الذكاء الاصطناعي</a></li>
+                <li><a href="ai-agent.html">وكيل الذكاء الإصطناعي</a></li>
+                <li><a href="our-products.html">عرض للخدمات</a></li>
+                <li><a href="AAA.html">منتجاتنا و فائدتها</a></li>
+                <li><a href="blog.html">مكتبة رقمية للذكاء الاصطناعي</a></li>
+                <li><a href="tools.html">أدوات الذكاء الاصطناعي</a></li>
+                <li><a href="Company performance monitoring tool.html"> انظمة ذكية</a></li>
+            </ul>
+        </nav>
+
+    <div class="container">
+        <h1>BrightRecruiter - نظام التوظيف الذكي</h1>
+
+        <h2>إضافة وظيفة جديدة</h2>
+        <div class="form-container">
+            <input type="text" id="job-title" placeholder="مسمى الوظيفة">
+            <textarea id="job-description" placeholder="وصف الوظيفة"></textarea>
+            <button id="add-job-btn" class="button">
+                 <i class="fas fa-plus"></i>
+                 إضافة وظيفة
+            </button>
+        </div>
+
+        <h2>قائمة الوظائف</h2>
+          <div class="search-area">
+            <input type="text" id="search-job" placeholder="بحث عن وظيفة...">
+           <button id="search-job-btn" class="button">
+               <i class="fas fa-search"></i>
+               بحث
+            </button>
+        </div>
+        <div class="jobs-table">
+            <table id="jobs-list">
+                <thead>
+                    <tr>
+                        <th>مسمى الوظيفة</th>
+                        <th>وصف الوظيفة</th>
+                          <th>الاجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- يتم عرض الوظائف هنا -->
+                </tbody>
+            </table>
+              <div id="edit-job-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal">×</span>
+                    <h2>تعديل بيانات الوظيفة</h2>
+                   <input type="hidden" id="edit-job-index">
+                    <input type="text" id="edit-job-title" placeholder="مسمى الوظيفة">
+                     <textarea id="edit-job-description" placeholder="وصف الوظيفة"></textarea>
+                     <button id="save-edit-job-btn" class="button">
+                       <i class="fas fa-save"></i>
+                        حفظ التعديلات
+                  </button>
+                </div>
+            </div>
+        </div>
+        <h2>إضافة مرشح</h2>
+          <div class="form-container">
+              <select id="job-select">
+                    <option value="">اختر الوظيفة</option>
+                    <!-- خيارات الوظائف سيتم إضافتها هنا -->
+               </select>
+               <input type="text" id="candidate-name" placeholder="اسم المرشح">
+               <input type="email" id="candidate-email" placeholder="البريد الإلكتروني للمرشح">
+               <input type="text" id="candidate-skills" placeholder="مهارات المرشح (مفصولة بفاصلة)">
+               <button id="add-candidate-btn" class="button">
+                <i class="fas fa-user-plus"></i>
+                إضافة مرشح
+              </button>
+           </div>
+        <h2>قائمة المرشحين</h2>
+          <div class="search-area">
+            <input type="text" id="search-candidate" placeholder="بحث عن مرشح...">
+               <input type="text" id="filter-skills" placeholder="تصفية حسب المهارات (فاصلة)">
+            <button id="search-candidate-btn" class="button">
+               <i class="fas fa-search"></i>
+               بحث
+            </button>
+         </div>
+        <div class="candidates-table">
+            <table id="candidates-list">
+                <thead>
+                    <tr>
+                       <th>اسم المرشح</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الوظيفة</th>
+                         <th>المهارات</th>
+                         <th>الاجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- يتم عرض المرشحين هنا -->
+                </tbody>
+            </table>
+        </div>
+          <div id="edit-candidate-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal">×</span>
+                    <h2>تعديل بيانات المرشح</h2>
+                   <input type="hidden" id="edit-candidate-index">
+                    <select id="edit-job-select">
+                        <option value="">اختر الوظيفة</option>
+                        <!-- خيارات الوظائف سيتم إضافتها هنا -->
+                    </select>
+                     <input type="text" id="edit-candidate-name" placeholder="اسم المرشح">
+                     <input type="email" id="edit-candidate-email" placeholder="البريد الإلكتروني للمرشح">
+                   <input type="text" id="edit-candidate-skills" placeholder="مهارات المرشح (مفصولة بفاصلة)">
+                     <button id="save-edit-candidate-btn" class="button">
+                       <i class="fas fa-save"></i>
+                        حفظ التعديلات
+                  </button>
+                </div>
+            </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="social-media">
+                <h3>تواصل معنا عبر</h3>
+                <a href="#" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/iililil44/profilecard/?igsh=bm5pOXhycjZucTRh" title="انستجرام"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/BrightAIII" title="تويتر"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.youtube.com/@TeechLab" title="يوتيوب"><i class="fab fa-youtube"></i></a>
+            </div>
+             <div class="contact-info">
+                <h3>معلومات التواصل</h3>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:yazeedaiai0@gmail.com" style="color: #666;">البريد الإلكتروني: yazeedaiai0@gmail.com</a></p>
+                 <p><i class="fas fa-phone-alt"></i> <a href="tel:+966591120781" style="color: #666;">الهاتف: +966 591 120 781</a></p>
+            </div>
+        </div>
+    </footer>
+    <script src="brightrecruiter.js"></script>
+</body>
+
+</html>

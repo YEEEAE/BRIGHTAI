@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SZKTP4496K');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة مراقبة أداء الشركة</title>
+    <link rel="icon" type="image/png" href="Gemini.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Gemini.png">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+        main {
+            padding: 20px;
+            margin: auto;
+            width: 80%;
+            flex: 1;
+        }
+        #data-input, #analysis-results {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+             font-weight: bold;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+             border: 1px solid #ddd;
+             border-radius: 4px;
+           box-sizing: border-box;
+        }
+        .form-group button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+           cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+         .form-group button:hover {
+            background-color: #4cae4c;
+       }
+        #loading-indicator {
+             text-align: center;
+            padding: 10px;
+             margin-top: 10px;
+             font-style: italic;
+       }
+        #insights {
+            margin-top: 10px;
+             padding: 10px;
+           background-color: #f0f0f0;
+           border: 1px solid #ddd;
+             border-radius: 4px;
+            min-height: 50px;
+       }
+        #analysis-results textarea {
+           width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+          padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+             border-radius: 4px;
+        }
+         #gemini-response {
+            margin-bottom: 10px;
+             padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 50px;
+         }
+         #analysis-results button {
+            background-color: #5cb85c;
+            color: white;
+             padding: 10px 15px;
+           border: none;
+             border-radius: 4px;
+             cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+         }
+       #analysis-results button:hover {
+           background-color: #4cae4c;
+       }
+        .chart-container {
+            width: 100%;
+            max-width: 600px;
+             margin: 20px auto;
+         }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>أداة مراقبة أداء الشركة</h1>
+        <p>تحليل البيانات وتقديم رؤى ذكية باستخدام الذكاء الاصطناعي</p>
+        <li><a href="Company performance monitoring tool.html">نظام مراقبة أداء الشركة</a></li>
+        <li><a href="brightsales-pro.html">BrightSales</a></a></li>
+        <li><a href="brightrecruiter.html">brightrecruiter</a></a></li>
+        <li><a href="brightproject-pro.html">brightproject</a></a></li>
+    </header>
+    <main>
+        <section id="data-input">
+            <h2>إدخال البيانات</h2>
+             <div class="form-group">
+                <label for="data-source">مصدر البيانات:</label>
+                <select id="data-source">
+                    <option value="manual">إدخال يدوي</option>
+                    <option value="file">ملف CSV</option>
+                 </select>
+             </div>
+            <div class="form-group">
+                  <label for="time-range">النطاق الزمني:</label>
+                    <select id="time-range">
+                        <option value="all">الكل</option>
+                         <option value="last7days">آخر 7 أيام</option>
+                        <option value="last30days">آخر 30 يومًا</option>
+                       <option value="custom">مخصص</option>
+                   </select>
+              </div>
+              <div id="custom-range-inputs" style="display: none;" class="form-group">
+                  <label for="start-date">من:</label>
+                   <input type="date" id="start-date">
+                <label for="end-date">إلى:</label>
+                  <input type="date" id="end-date">
+               </div>
+            <div id="manual-input" style="display: block;" class="form-group">
+                 <label for="data-text">أدخل البيانات (JSON):</label>
+                <textarea id="data-text" rows="5" placeholder="أدخل بيانات الأداء بتنسيق JSON"></textarea>
+           </div>
+            <div id="file-upload" style="display: none;" class="form-group">
+                  <label for="data-file">رفع ملف CSV:</label>
+                <input type="file" id="data-file" accept=".csv">
+            </div>
+           <div class="form-group">
+                <label for="chart-type">نوع الرسم البياني:</label>
+                <select id="chart-type">
+                    <option value="line">خطي</option>
+                    <option value="bar">عمودي</option>
+                     <option value="pie">دائري</option>
+                </select>
+             </div>
+             <div class="form-group">
+                <label for="analysis-type">نوع التحليل:</label>
+                <select id="analysis-type">
+                    <option value="basic">أساسي</option>
+                   <option value="movingAverage">المتوسط المتحرك</option>
+                </select>
+            </div>
+            <div class="form-group">
+              <label for="columns-to-analyze">الأعمدة المراد تحليلها (افصل بينها بفواصل):</label>
+             <input type="text" id="columns-to-analyze" placeholder="مثال: value, anotherValue">
+            </div>
+            <div class="form-group">
+               <button id="analyze-btn">تحليل البيانات</button>
+           </div>
+           <div class="form-group">
+                 <button id="save-analysis-btn">حفظ هذا التحليل</button>
+            </div>
+        </section>
+
+        <section id="analysis-results" style="display: none;">
+             <h2>نتائج التحليل</h2>
+             <div id="loading-indicator" style="display: none;">جاري التحليل...</div>
+             <div class="chart-container">
+                 <canvas id="data-chart" width="400" height="200"></canvas>
+            </div>
+           <div id="insights"></div>
+             <button id="export-btn">تصدير البيانات إلى CSV</button>
+           <div id="gemini-response"></div>
+            <textarea id="gemini-query" placeholder="اسأل مساعد الذكاء الاصطناعي"></textarea>
+             <button onclick="sendToGemini()">إرسال</button>
+       </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataSourceSelect = document.getElementById('data-source');
+            const manualInputDiv = document.getElementById('manual-input');
+            const fileUploadDiv = document.getElementById('file-upload');
+            const dataTextarea = document.getElementById('data-text');
+            const dataFile = document.getElementById('data-file');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const analysisResultsDiv = document.getElementById('analysis-results');
+            const loadingIndicatorDiv = document.getElementById('loading-indicator');
+             const insightsDiv = document.getElementById('insights');
+           const exportBtn = document.getElementById('export-btn');
+            const timeRangeSelect = document.getElementById('time-range');
+             const customRangeDiv = document.getElementById('custom-range-inputs');
+             const startDateInput = document.getElementById('start-date');
+            const endDateInput = document.getElementById('end-date');
+             const chartTypeSelect = document.getElementById('chart-type');
+            const analysisTypeSelect = document.getElementById('analysis-type');
+            const columnsToAnalyzeInput = document.getElementById('columns-to-analyze');
+          const saveAnalysisBtn = document.getElementById('save-analysis-btn');
+           const chartCanvas = document.getElementById('data-chart');
+         let dataChart = null;
+
+            timeRangeSelect.addEventListener('change', function() {
+                 if (this.value === 'custom') {
+                      customRangeDiv.style.display = 'block';
+                   } else {
+                       customRangeDiv.style.display = 'none';
+                    }
+            });
+           dataSourceSelect.addEventListener('change', function() {
+                 if (this.value === 'manual') {
+                     manualInputDiv.style.display = 'block';
+                    fileUploadDiv.style.display = 'none';
+                 } else if (this.value === 'file') {
+                     manualInputDiv.style.display = 'none';
+                    fileUploadDiv.style.display = 'block';
+               }
+           });
+
+             analyzeBtn.addEventListener('click', async function() {
+                 let data = null;
+               const dataSource = dataSourceSelect.value;
+                const timeRange = timeRangeSelect.value;
+               const chartType = chartTypeSelect.value;
+                 const analysisType = analysisTypeSelect.value;
+                const columnsToAnalyze = columnsToAnalyzeInput.value.trim().split(',').map(column => column.trim()).filter(column => column);
+              let startDate = null;
+              let endDate = null;
+               if (timeRange === 'custom') {
+                  startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+                 endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+                     if(!startDate || !endDate) {
+                       alert('الرجاء اختيار تاريخ البداية والنهاية');
+                         return;
+                      }
+                }
+                if(dataSource === 'manual') {
+                    try {
+                          data = JSON.parse(dataTextarea.value);
+                        }
+                    catch(e) {
+                      alert('الرجاء إدخال بيانات صحيحة بتنسيق JSON.');
+                         return;
+                    }
+                } else if (dataSource === 'file') {
+                      const file = dataFile.files[0];
+                    if(!file) {
+                         alert('الرجاء رفع ملف CSV.');
+                         return;
+                    }
+                     try {
+                          data = await parseCSV(file)
+                       }
+                      catch (e) {
+                           alert('حدث خطأ أثناء قراءة الملف.');
+                           return;
+                      }
+               }
+               if (!data) {
+                   alert('لم يتم إدخال بيانات للتحليل.');
+                    return;
+               }
+                analysisResultsDiv.style.display = 'block'
+                loadingIndicatorDiv.style.display = 'block';
+               insightsDiv.textContent = '';
+
+              try {
+                   const analysis = await analyzeData(data, timeRange, startDate, endDate, chartType, analysisType, columnsToAnalyze);
+                  insightsDiv.textContent = 'التحليل الأساسي: \n' + analysis.summary + '\n\n الرؤى من الذكاء الاصطناعي: \n' + analysis.geminiInsights;
+                  createChart(analysis.chartData, chartType);
+               }
+              catch(error) {
+                    insightsDiv.textContent = `حدث خطأ في التحليل: ${error.message}`;
+                }
+                finally {
+                   loadingIndicatorDiv.style.display = 'none';
+                }
+            });
+            async function parseCSV(file) {
+                return new Promise((resolve, reject) => {
+                     const reader = new FileReader();
+                       reader.onload = function(e) {
+                          const csv = e.target.result;
+                            const rows = csv.split('\n').map(row => row.trim()).filter(row => row);
+                            const headers = rows[0].split(',').map(header => header.trim());
+                            const jsonData = rows.slice(1).map(row => {
+                                 const values = row.split(',').map(value => value.trim());
+                                return headers.reduce((obj, header, index) => {
+                                     obj[header] = values[index];
+                                    return obj;
+                                  },{})
+                            })
+                            resolve(jsonData);
+                    };
+                    reader.onerror = function(e) {
+                       reject(e)
+                    };
+                    reader.readAsText(file);
+               });
+          }
+        async function analyzeData(data, timeRange, startDate, endDate, chartType, analysisType, columnsToAnalyze) {
+            let filteredData = data;
+
+             if(timeRange !== 'all' && Array.isArray(data) && data.length > 0) {
+               let now = new Date();
+                  if (timeRange === 'last7days') {
+                       const sevenDaysAgo = new Date(now);
+                      sevenDaysAgo.setDate(now.getDate() - 7);
+                       filteredData = data.filter(item => new Date(item.date) >= sevenDaysAgo);
+                } else if (timeRange === 'last30days') {
+                       const thirtyDaysAgo = new Date(now);
+                       thirtyDaysAgo.setDate(now.getDate() - 30)
+                      filteredData = data.filter(item => new Date(item.date) >= thirtyDaysAgo);
+                 }
+                else if (timeRange === 'custom' && startDate && endDate) {
+                     filteredData = data.filter(item => {
+                         const itemDate = new Date(item.date)
+                       return itemDate >= startDate && itemDate <= endDate;
+                      });
+                }
+            }
+           let dataSummary = '';
+            let chartData = {};
+            if (Array.isArray(filteredData) && filteredData.length > 0 ) {
+                 dataSummary = 'البيانات المدخلة عبارة عن مصفوفة تحتوي على  ' + filteredData.length + ' عناصر. \n';
+                  let values = [];
+                if(columnsToAnalyze.length === 0) {
+                      values = filteredData.map(item => parseFloat(item.value)).filter(value => !isNaN(value));
+               }
+                 else {
+                     columnsToAnalyze.forEach(col => {
+                        filteredData.forEach(item => {
+                            if(item[col] && !isNaN(parseFloat(item[col]))) {
+                                values.push(parseFloat(item[col]));
+                            }
+                        })
+                    });
+                }
+               if(values.length > 0) {
+                      let analyzedValues = values;
+                    if (analysisType === 'movingAverage') {
+                       analyzedValues = movingAverage(values, 5);
+                 }
+                const average = (analyzedValues.reduce((a, b) => a + b, 0) / analyzedValues.length).toFixed(2);
+                    const min = Math.min(...analyzedValues);
+                   const max = Math.max(...analyzedValues);
+                   dataSummary += `المتوسط: ${average}، الحد الأدنى: ${min}، الحد الأقصى: ${max}.`;
+                      chartData = {
+                         labels: filteredData.map(item => item.date),
+                         datasets: [{
+                            label: 'قيم البيانات',
+                             data: analyzedValues,
+                              borderColor: '#1a73e8',
+                              fill: false
+                          }]
+                    };
+                 } else {
+                   dataSummary += 'لا توجد قيم رقمية لتحليلها'
+              }
+           } else {
+                 dataSummary = 'البيانات المدخلة عبارة عن كائن \n'
+                 dataSummary += JSON.stringify(filteredData, null, 2);
+           }
+             const apiResponse = await callGeminiAPI(`حلل هذه البيانات و اعطني رؤية واضحة بناء على هذه البيانات :  ${JSON.stringify(filteredData)}`);
+            return {
+                 summary: dataSummary,
+               geminiInsights: apiResponse,
+               chartData: chartData
+             }
+      }
+        function movingAverage(data, windowSize) {
+             const result = [];
+           for (let i = 0; i < data.length; i++) {
+               let windowSum = 0;
+               let count = 0;
+               for (let j = Math.max(0, i - windowSize + 1); j <= i; j++) {
+                    windowSum += data[j];
+                    count++;
+               }
+               result.push(windowSum / count);
+            }
+            return result;
+        }
+        function createChart(chartData, chartType) {
+           const chartCanvas = document.getElementById('data-chart');
+          if (dataChart) {
+              dataChart.destroy();
+         }
+          if(Object.keys(chartData).length > 0) {
+              dataChart = new Chart(chartCanvas, {
+                  type: chartType,
+                   data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                       scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                     }
+            });
+          }
+    }
+
+        exportBtn.addEventListener('click', function() {
+            const data = JSON.parse(dataTextarea.value);
+           if (!data || data.length === 0) {
+                alert('لا يوجد بيانات للتصدير');
+               return;
+          }
+           exportToCSV(data);
+        });
+        function exportToCSV(data) {
+            const headers = Object.keys(data[0]).join(',');
+            const rows = data.map(obj => Object.values(obj).join(',')).join('\n');
+             const csvContent = headers + '\n' + rows;
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+           const url = URL.createObjectURL(blob);
+             const link = document.createElement('a');
+            link.href = url;
+             link.setAttribute('download', 'data.csv');
+            link.click();
+        }
+
+       saveAnalysisBtn.addEventListener('click', function(){
+            let savedData = localStorage.getItem('savedAnalysis')
+           savedData = savedData ? JSON.parse(savedData) : [];
+             const data = dataTextarea.value
+             savedData.push(data);
+           localStorage.setItem('savedAnalysis', JSON.stringify(savedData));
+            alert("تم حفظ البيانات بنجاح")
+        })
+         // Gemini API Integration
+         async function sendToGemini() {
+             const query = document.getElementById('gemini-query').value;
+             const responseDiv = document.getElementById('gemini-response');
+            if (!query.trim()) {
+                 responseDiv.textContent = "الرجاء كتابة سؤالك.";
+                  return;
+             }
+              responseDiv.textContent = "جاري معالجة سؤالك...";
+              try {
+                  const apiResponse = await callGeminiAPI(query);
+                    responseDiv.textContent = apiResponse;
+               } catch (error) {
+                   responseDiv.textContent = `حدث خطأ: ${error.message}`;
+              }
+        }
+       async function callGeminiAPI(query) {
+           // Replace with your actual Gemini API call and API KEY
+            const API_KEY = "GEMINI_KEY_REDACTED"; // IMPORTANT! - Replace with your actual API key
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+             const body = {
+                 contents: [{
+                   parts: [{ text: query }]
+              }]
+            };
+          const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+               },
+                body: JSON.stringify(body)
+             });
+            if (!response.ok) {
+              const message = `حدث خطأ في استدعاء Gemini API: ${response.status} ${response.statusText}`;
+               console.error(message);
+              throw new Error(message);
+             }
+             const data = await response.json();
+           if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) {
+                return data.candidates[0].content.parts[0].text;
+           } else {
+                 throw new Error("لم يتم استلام رد صالح من Gemini API.")
+            }
+       }
+    });
+    </script>
+            <div class="social-media">
+             <h3>تابعنا على</h3>
+               <a href="https://x.com/BrightAIII" target="_blank" title="X"> <img src="x-logo.webp" alt="X" > </a>
+               <a href="https://www.youtube.com/@TeechLab" target="_blank" title="Youtube">  <img src="youtube-logo.webp" alt="Youtube"> </a>
+               <a href="https://instagram.com/" target="_blank" title="Instagram"> <img src="instagram-logo.webp" alt="Instagram"></a>
+        </div>
+</body>
+</html>

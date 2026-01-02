@@ -1,0 +1,149 @@
+{
+  "name": "شركة مُشرقة AI | الذكاء الاصطناعي السعودية - الرياض جدة الدمام",
+  "short_name": "مُشرقة AI",
+  "description": "مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي بالرياض. حلول التعلم العميق، أتمتة العمليات، روبوتات المحادثة العربية للشركات السعودية",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0A192F",
+  "theme_color": "#64FFDA",
+  "orientation": "portrait-primary",
+  "lang": "ar-SA",
+  "dir": "rtl",
+  "categories": ["business", "technology", "productivity", "artificial-intelligence", "saudi-arabia"],
+  "keywords": [
+    "شركة مُشرقة AI السعودية",
+    "الذكاء الاصطناعي الرياض",
+    "شركة ذكاء اصطناعي سعودية", 
+    "AI السعودية",
+    "رؤية 2030 الذكاء الاصطناعي",
+    "التحول الرقمي السعودي",
+    "حلول الذكاء الاصطناعي السعودية",
+    "شات بوت عربي سعودي",
+    "أتمتة العمليات السعودية"
+  ],
+  "icons": [
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "96x96", 
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "الصفحة الرئيسية لشركة مُشرقة AI السعودية"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "تطبيق مُشرقة AI للهواتف الذكية"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "خدماتنا",
+      "short_name": "الخدمات",
+      "description": "استعرض خدمات الذكاء الاصطناعي من مُشرقة AI",
+      "url": "/our-products.html",
+      "icons": [
+        {
+          "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "استشارة مجانية",
+      "short_name": "استشارة",
+      "description": "احصل على استشارة مجانية في الذكاء الاصطناعي",
+      "url": "/consultation.html",
+      "icons": [
+        {
+          "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "روبوتات AI",
+      "short_name": "الروبوتات",
+      "description": "جرب روبوتات الذكاء الاصطناعي العربية",
+      "url": "/ai-bots.html",
+      "icons": [
+        {
+          "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "تواصل معنا",
+      "short_name": "التواصل",
+      "description": "تواصل مع فريق مُشرقة AI",
+      "url": "/contact.html",
+      "icons": [
+        {
+          "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

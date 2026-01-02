@@ -1,0 +1,971 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    background-color: var(--background-light);
+    direction: rtl;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Prevents bottom space under images */
+}
+
+:root {
+    /* الألوان الأساسية */
+    --primary-color: #3b82f6;          /* أزرق فاتح وحيوي */
+    --primary-dark: #1d4ed8;           /* أزرق داكن */
+    --secondary-color: #0c5a40;        /* أخضر زمردي */
+    --secondary-dark: #059669;         /* أخضر داكن */
+    
+    /* ألوان التصميم */
+    --text-color: #4f5f7a;             /* رمادي داكن للنصوص */
+    --text-light: #9fa9b7;             /* رمادي فاتح للنصوص الثانوية */
+    --background-light: #f8fafc;       /* خلفية فاتحة */
+    --background-dark: #0f172a;        /* خلفية داكنة */
+    --card-bg: #ffffff;                /* خلفية البطاقات (updated from #cbc4df for consistency) */
+    --border-color: #e2e8f0;           /* لون الحدود */
+    
+    /* ألوان الحالة */
+    --success-color: #0d5b2a;          /* أخضر للنجاح */
+    --warning-color: #eab308;          /* أصفر للتحذير */
+    --error-color: #ef4444;            /* أحمر للخطأ */
+    
+    /* ألوان البوتات المتخصصة */
+    --math-color: #8b5cf6;             /* بنفسجي لبوت الرياضيات */
+    --tourism-color: #f59e0b;          /* برتقالي ذهبي للسياحة */
+    
+    /* الظلال */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
+    
+    /* الزوايا */
+    --border-radius: 12px;             /* زوايا أكثر نعومة */
+    --border-radius-lg: 16px;
+    --border-radius-full: 9999px;
+}
+
+/* Header Styles */
+.hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,213.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.main-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+/* Intro Section */
+.intro {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.intro h2 {
+    font-size: 2.5rem;
+    color: var(--primary-dark); /* Changed to primary-dark for better contrast */
+    margin-bottom: 1.5rem;
+}
+
+.intro p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 1rem; /* Added bottom margin */
+    color: var(--text-color); /* Darker text for better readability */
+}
+
+/* Bots List Section */
+.bots-list {
+    padding: 80px 0;
+    background-color: var(--background-light);
+}
+
+.bots-list h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary-dark); /* Changed to primary-dark */
+    margin-bottom: 3rem;
+}
+
+.bots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.bot-card {
+    background: linear-gradient(135deg, #ffffff, #f0f7ff);
+    border: 1px solid rgba(59, 130, 246, 0.1);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 30px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.bot-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, #f8faff, #e6f0ff);
+}
+
+.bot-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bot-card:hover::before {
+    opacity: 1;
+}
+
+.bot-card h3 {
+    color: var(--primary-dark);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center; /* Ensuring h3 is centered */
+}
+
+.bot-description {
+    color: var(--text-color); /* Darker text for readability */
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    text-align: center; /* Ensuring description is centered */
+}
+
+.features-list {
+    margin-bottom: 25px;
+    flex-grow: 1; /* Ensures button stays at bottom */
+}
+
+.features-list li {
+    color: var(--text-color);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: flex-start; /* Align items to top for multi-line text */
+}
+
+.features-list i {
+    color: var(--success-color); /* Changed from primary-color to success for checkmarks */
+    margin-left: 10px; /* For RTL, this should be margin-right if icon is before text */
+                        /* Or keep as margin-left if icon is physically to the left */
+    margin-right: 0;    /* Ensure no conflicting margin */
+    font-size: 1em;     /* Ensure icon size is relative to text */
+    margin-top: 3px;    /* Align icon with text */
+}
+
+
+/* تخصيص ألوان البوتات المختلفة */
+.bot-card:nth-child(5)::before { /* Corrected selector */
+    background: linear-gradient(to right, var(--math-color), #7c3aed);
+}
+
+.bot-card:nth-child(6)::before { /* Corrected selector */
+    background: linear-gradient(to right, var(--tourism-color), #d97706);
+}
+
+.bot-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.bot-card:nth-child(5) .bot-icon {
+    background: linear-gradient(135deg, var(--math-color), #7c3aed);
+}
+
+.bot-card:nth-child(6) .bot-icon {
+    background: linear-gradient(135deg, var(--tourism-color), #d97706);
+}
+
+.bot-icon i {
+    font-size: 2.5rem;
+}
+
+.cta-button {
+    display: inline-block;
+    background-color: #111; /* أسود */
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: var(--border-radius-full);
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    align-self: center;
+    width: 100%;
+    max-width: 200px;
+    margin-top: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    border: none;
+    letter-spacing: 0.5px;
+    font-size: 1.05rem;
+}
+
+/* إزالة تخصيص الألوان للبوتات المتخصصة */
+.bot-card:nth-child(5) .cta-button,
+.bot-card:nth-child(6) .cta-button {
+    background-color: #111;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+}
+
+/* تأثير التحويم موحد */
+.cta-button:hover,
+.cta-button:focus {
+    background-color: #222;
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    filter: none;
+}
+
+/* Advantages Section */
+.advantages {
+    padding: 80px 0;
+    background-color: white;
+}
+
+.advantages h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary-dark); /* Changed to primary-dark */
+    margin-bottom: 3rem;
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.advantage-card {
+    padding: 30px;
+    border-radius: var(--border-radius);
+    background-color: var(--background-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.advantage-icon {
+    width: 70px;
+    height: 70px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.advantage-icon i {
+    font-size: 2rem;
+}
+
+.advantage-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.advantage-card p {
+    color: var(--text-light);
+}
+
+/* Testimonials Section */
+.testimonials {
+    padding: 80px 0;
+    background-color: var(--background-light);
+}
+
+.testimonials h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--primary-dark); /* Changed to primary-dark */
+    margin-bottom: 3rem;
+}
+
+.testimonials-slider {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on larger screens if initSlider logic changes */
+    gap: 30px;
+    justify-content: center;
+}
+
+.testimonial {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: 30px;
+    max-width: 350px;
+    width: 100%; /* Ensure it takes full width on mobile when stacked */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.testimonial-content {
+    margin-bottom: 20px;
+}
+
+.testimonial-content p {
+    font-style: italic;
+    color: var(--text-color); /* Darker for readability */
+    position: relative;
+    padding: 0 15px; /* Space for quotes */
+}
+
+.testimonial-content p::before,
+.testimonial-content p::after {
+    content: '"';
+    font-size: 2.5rem; /* Slightly larger quotes */
+    color: var(--primary-color);
+    opacity: 0.3;
+    position: absolute;
+    line-height: 1;
+}
+
+.testimonial-content p::before {
+    top: -10px;
+    right: -5px; /* Adjusted for RTL */
+}
+
+.testimonial-content p::after {
+    bottom: -25px; /* Adjusted */
+    left: -5px;   /* Adjusted for RTL */
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-left: 15px; /* This is correct for RTL: image on right, text on left */
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+.author-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.author-info p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 100px 0;
+    text-align: center;
+    background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+    color: white;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    opacity: 0.9;
+}
+
+.main-cta-button {
+    display: inline-block;
+    background-color: #111;
+    color: #fff;
+    padding: 15px 40px;
+    border-radius: var(--border-radius-full);
+    font-size: 1.2rem;
+    font-weight: 700;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.main-cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    color: var(--secondary-dark);
+}
+
+/* Footer */
+footer {
+    background-color: var(--background-dark);
+    color: white;
+    padding: 70px 0 20px;
+}
+
+/* Apply flex properties to the container holding footer columns */
+footer .container { /* Target specific container in footer */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+/* Styles for individual footer sections */
+.footer-logo-container, .footer-links-container {
+    flex-basis: 100%; /* Default for mobile */
+    margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+    .footer-logo-container {
+        flex-basis: 40%; /* Adjust as needed */
+    }
+    .footer-links-container {
+        flex-basis: 25%; /* Adjust for 3 columns of links */
+    }
+    .footer-links-container:nth-child(2) { /* Quick Links */
+        flex-basis: 18%;
+    }
+    .footer-links-container:nth-child(3) { /* Our Services */
+        flex-basis: 18%;
+    }
+     .footer-links-container:nth-child(4) { /* Contact Us */
+        flex-basis: 24%;
+    }
+}
+
+
+.footer-logo-container .footer-logo img { /* Specific targeting for logo image */
+    height: 50px;
+    width: auto;
+    margin-bottom: 15px;
+}
+
+.footer-logo-container .footer-description { /* Style for p tag in logo container */
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.footer-links-container .footer-links-title, /* Shared title style */
+.footer-links-container h3 { /* For contact us title */
+    font-size: 1.3rem; /* Larger title */
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 10px;
+    color: white;
+}
+
+.footer-links-container .footer-links-title::after,
+.footer-links-container h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0; /* For RTL */
+    width: 50px;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+.footer-links-container .footer-links li, /* Shared list item style */
+.footer-links-container .contact-info li {
+    margin-bottom: 12px;
+}
+
+.footer-links-container .footer-links li a,
+.footer-links-container .contact-info li { /* Text color for contact info */
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease, padding-right 0.3s ease; /* Added padding transition */
+    display: flex; /* For icon alignment */
+    align-items: center;
+}
+
+.footer-links-container .footer-links li a:hover {
+    color: white;
+    padding-right: 5px; /* Indent on hover for RTL */
+}
+.footer-links-container .footer-links li a i,
+.footer-links-container .contact-info .contact-icon i {
+    margin-left: 10px; /* For RTL, icon is on the right of text, so margin-left is space AFTER icon */
+    color: var(--primary-color);
+    width: 20px; /* Ensure consistent icon spacing */
+}
+
+.footer-links-container .contact-info .contact-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+.footer-links-container .contact-info .contact-icon {
+    margin-left: 10px; /* Space after icon in RTL */
+    color: var(--primary-color);
+    padding-top: 3px; /* Align icon with first line of text */
+}
+
+
+.social-links { /* Renamed from social-icons for clarity */
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links .social-link:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.social-links .social-link i {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.newsletter-form {
+    display: flex;
+    margin-top: 10px;
+    border-radius: var(--border-radius-full);
+    overflow: hidden;
+    background-color: rgba(255,255,255,0.1);
+    max-width: 300px; /* Limit width */
+}
+.newsletter-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+}
+.newsletter-input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+.newsletter-button {
+    background-color: #111;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.newsletter-button:hover {
+    background-color: #222;
+}
+
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px; /* Increased padding */
+    margin-top: 30px;  /* Increased margin */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p.copyright {
+    color: rgba(255, 255, 255, 0.6); /* Slightly lighter */
+    font-size: 0.9rem;
+    margin-bottom: 10px; /* Space before links */
+}
+
+.footer-bottom-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-bottom-links .footer-bottom-link {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom-links .footer-bottom-link:hover {
+    color: white;
+}
+
+
+/* Back to top button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    left: 20px; /* Adjusted for RTL, could be right: 20px */
+    background-color: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+.back-to-top.visible { /* JS should add this class when scrolling down */
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    /* Footer columns stack earlier if needed, or adjust basis */
+    footer .container > div { /* Target direct children of footer's container */
+        flex-basis: 48% !important; /* Override more specific basis for stacking */
+        margin-bottom: 30px;
+    }
+    .footer-logo-container {
+        flex-basis: 100% !important; /* Logo full width */
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 0;
+    }
+    
+    .main-title {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .intro h2,
+    .bots-list h2,
+    .advantages h2,
+    .testimonials h2,
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+    
+    .testimonials-slider {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .testimonial {
+        max-width: 90%; /* Use percentage for better fit */
+    }
+    
+    footer .container > div {
+        flex-basis: 100% !important; /* All footer columns stack */
+    }
+
+    .bots-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .bot-card {
+        padding: 25px; /* Slightly more padding */
+        margin-bottom: 20px;
+    }
+
+    .bot-icon {
+        width: 70px; /* Slightly larger */
+        height: 70px;
+    }
+
+    .bot-icon i {
+        font-size: 2rem; /* Adjusted */
+    }
+
+    .bot-card h3 {
+        font-size: 1.4rem; /* Slightly larger */
+        margin-bottom: 12px;
+    }
+
+    .bot-description {
+        font-size: 1rem; /* Slightly larger */
+        margin-bottom: 18px;
+    }
+
+    .features-list li {
+        font-size: 0.95rem; /* Slightly larger */
+        margin-bottom: 10px;
+    }
+
+    .cta-button {
+        padding: 12px 22px; /* Adjusted padding */
+        font-size: 1rem;
+    }
+
+    .advantage-card:hover,
+    .testimonial:hover,
+    .bot-card:hover { /* Consistent hover for mobile */
+        transform: translateY(-3px);
+    }
+
+    .cta-button,
+    .main-cta-button {
+        min-height: 48px; /* Slightly taller */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bot-icon,
+    .advantage-icon {
+        margin-bottom: 18px; /* Increased margin */
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        font-size: 15px; /* Adjust base font size slightly */
+    }
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .main-title {
+        font-size: 1.8rem;
+    }
+    
+    .intro h2,
+    .bots-list h2,
+    .advantages h2,
+    .testimonials h2,
+    .cta-section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .intro,
+    .bots-list,
+    .advantages,
+    .testimonials {
+        padding: 60px 15px; /* Add side padding to sections */
+    }
+    
+    .bot-card,
+    .advantage-card {
+        padding: 20px;
+    }
+    .container {
+        padding: 0 15px; /* Consistent padding for container */
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 50px 10px; /* Add side padding */
+    }
+
+    .main-title {
+        font-size: 1.6rem; /* Adjusted */
+        padding: 0 10px;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        padding: 0 15px;
+    }
+
+    .intro {
+        padding: 40px 10px; /* Add side padding */
+    }
+
+    .intro h2 {
+        font-size: 1.5rem; /* Adjusted */
+    }
+
+    .intro p {
+        font-size: 0.95rem;
+        padding: 0 10px;
+    }
+
+    .bots-list {
+        padding: 40px 10px; /* Add side padding */
+    }
+
+    .bots-list h2 {
+        font-size: 1.5rem; /* Adjusted */
+        margin-bottom: 2rem;
+    }
+
+    .bot-card {
+        border-radius: var(--border-radius); /* Consistent rounding */
+        padding: 20px; /* Adjusted */
+    }
+
+    .features-list {
+        margin-bottom: 20px; /* Adjusted */
+    }
+
+    .advantages-grid {
+        grid-template-columns: 1fr;
+        gap: 20px; /* Adjusted */
+    }
+
+    .advantage-card {
+        padding: 20px; /* Adjusted */
+    }
+
+    .testimonials-slider {
+        padding: 0 10px; /* Add side padding */
+    }
+
+    .testimonial {
+        padding: 20px; /* Adjusted */
+        max-width: 100%;
+    }
+
+    .cta-section {
+        padding: 50px 15px;
+    }
+
+    .cta-section h2 {
+        font-size: 1.5rem; /* Adjusted */
+    }
+
+    .cta-section p {
+        font-size: 0.95rem;
+    }
+
+    .main-cta-button {
+        padding: 14px 28px; /* Adjusted */
+        font-size: 1rem;
+    }
+    .back-to-top {
+        width: 35px;
+        height: 35px;
+        bottom: 15px;
+        left: 15px; /* Or right for LTR */
+    }
+    .back-to-top i {
+        font-size: 0.9em;
+    }
+}

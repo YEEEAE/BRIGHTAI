@@ -1,0 +1,1316 @@
+/* Base Styles */
+:root {
+    --primary-color: #1E3A8A; /* أزرق داكن أكثر عمقاً */
+    --background-dark: #0B172A; /* خلفية أغمق قليلاً */
+    --accent-color: #38BDF8; /* أزرق فاتح أكثر حيوية */
+    --text-primary: #F3F4F6; /* أبيض أكثر نقاءً */
+    --text-secondary: #9CA3AF; /* رمادي فاتح أكثر تميزاً */
+    --accent-secondary: #EF4444; /* أحمر أكثر جاذبية */
+    --light-bg: #FAFAFA; /* خلفية فاتحة أكثر نقاءً */
+    --card-bg: rgba(17, 24, 39, 0.8); /* كروت أغمق قليلاً */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--background-dark));
+    color: var(--text-primary);
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    color: #F3F4F6;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+    color: #F3F4F6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cart-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #F3F4F6;
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.cart-icon:hover {
+    background-color: rgba(0,0,0,0.4);
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px; /* تعديل لظهور أفضل */
+    right: -5px; /* تعديل لظهور أفضل */
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+    font-size: 12px; /* تعديل حجم الخط */
+    padding: 3px 7px; /* تعديل الحشوة */
+    border-radius: 50%;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+/* Navigation Styles */
+nav {
+    background-color: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(5px); /* تأثير ضبابي للخلفية */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 15px 0;
+    margin-bottom: 30px;
+    position: sticky; /* تثبيت شريط التنقل */
+    top: 0;
+    z-index: 999; /* ضمان ظهوره فوق العناصر الأخرى */
+}
+
+.navbar {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px; /* تقليل الفجوة قليلاً */
+    padding: 0 20px;
+}
+
+.navbar a {
+    color: #F3F4F6;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 18px; /* زيادة الحشوة قليلاً */
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative; /* للخط السفلي عند التحويم */
+    overflow: hidden; /* لإخفاء الخط الزائد */
+}
+
+.navbar a::after { /* إضافة خط سفلي عند التحويم */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: all 0.3s ease;
+    transform: translateX(50%);
+}
+
+.navbar a:hover {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+.navbar a:hover::after {
+    width: 70%; /* عرض الخط عند التحويم */
+}
+
+
+/* Banner Styles */
+.banner {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto 50px;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    animation: bannerFadeIn 1.2s ease-out;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(30, 58, 138, 0.4) 0%,
+        rgba(56, 189, 248, 0.4) 50%,
+        rgba(30, 58, 138, 0.4) 100%
+    );
+    border-radius: 16px;
+    z-index: 1;
+    transition: opacity 0.5s ease;
+}
+
+.banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(11, 23, 42, 0.1) 0%, /* تخفيف التدرج العلوي */
+        rgba(11, 23, 42, 0.7) 100%
+    );
+    border-radius: 16px;
+    z-index: 2;
+}
+
+.banner img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 3px solid rgba(56, 189, 248, 0.4);
+    transition: all 0.5s ease;
+    filter: saturate(1.1);
+}
+
+.banner:hover img {
+    transform: scale(1.03);
+    filter: saturate(1.2) brightness(1.05);
+}
+
+.banner:hover::before {
+    opacity: 0.7;
+}
+
+.banner-overlay { /* محتوى إضافي فوق البانر */
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 3;
+    color: var(--text-primary);
+    text-align: right;
+    max-width: 60%;
+}
+
+.banner-overlay h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.banner-overlay p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.banner-tags span {
+    background-color: rgba(30, 58, 138, 0.7);
+    color: var(--accent-color);
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-size: 0.9em;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+
+@keyframes bannerFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    30% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .banner {
+        margin: 0 auto 30px;
+    }
+    
+    .banner img {
+        height: 250px; /* زيادة ارتفاع الصورة قليلاً في الجوال */
+    }
+    .banner-overlay {
+        max-width: 90%;
+        right: 10px;
+        bottom: 10px;
+    }
+    .banner-overlay h2 {
+        font-size: 1.5em;
+    }
+    .banner-overlay p {
+        font-size: 0.9em;
+    }
+}
+
+@media (min-width: 1400px) {
+    .banner img {
+        height: 420px; /* زيادة طفيفة للشاشات الكبيرة جداً */
+    }
+}
+
+/* Main Content */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Section Headers (Generic, can be used for h2 in main) */
+main h2, .section-header h2 {
+    text-align: center;
+    color: var(--accent-color); /* لون موحد للعناوين الرئيسية */
+    margin: 40px 0 30px; /* تعديل الهوامش */
+    font-size: 2.2em; /* تعديل حجم الخط */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color); /* خط سفلي مميز */
+    display: inline-block; /* لجعل الخط السفلي يلتف حول النص فقط */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Product Grid */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.product {
+    background-color: var(--card-bg); /* استخدام المتغير */
+    border-radius: 12px;
+    padding: 25px; /* زيادة الحشوة قليلاً */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* ظل أوضح */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--primary-color);
+    display: flex; /* لترتيب المحتوى الداخلي بشكل أفضل */
+    flex-direction: column;
+    justify-content: space-between; /* لتوزيع المساحة بين العناصر */
+}
+
+.product:hover {
+    transform: translateY(-8px) scale(1.02); /* تأثير رفع وتكبير طفيف */
+    box-shadow: 0 10px 20px rgba(var(--accent-color-rgb, 56, 189, 248), 0.25); /* ظل ملون عند التحويم */
+}
+
+.product h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    font-size: 1.4em; /* تكبير الخط قليلاً */
+    min-height: 50px; /* ضمان ارتفاع متناسق للعناوين */
+    line-height: 1.3;
+}
+
+.product p {
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+    font-size: 0.95em; /* تعديل حجم الخط */
+    flex-grow: 1; /* للسماح للوصف بأخذ المساحة المتبقية */
+}
+
+/* Product Actions */
+.product-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between; /* توزيع الأزرار بشكل أفضل */
+    margin-top: 20px; /* زيادة المسافة العلوية */
+    direction: rtl;
+}
+
+.buy-button, .details-button {
+    padding: 12px 20px; /* تعديل الحشوة */
+    border-radius: 8px;
+    font-size: 1em; /* استخدام em لمرونة أفضل */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-grow: 1; /* جعل الأزرار تأخذ نفس العرض */
+    text-align: center;
+}
+
+.buy-button i, .details-button i {
+    margin-left: 8px;
+    margin-right: 0; /* لـ RTL */
+}
+
+.buy-button {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); /* تدرج ألوان جذاب */
+    color: var(--text-primary);
+    border: none;
+}
+
+.buy-button:hover {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    transform: translateY(-3px) scale(1.03); /* تأثير أوضح عند التحويم */
+    box-shadow: 0 5px 10px rgba(var(--accent-color-rgb, 56, 189, 248), 0.4);
+}
+
+/* Enhanced Product Details Button */
+.details-button {
+    background-color: transparent; /* شفاف */
+    color: var(--accent-color); /* لون النص من المتغير */
+    border: 2px solid var(--accent-color); /* إطار أوضح */
+}
+
+.details-button:hover {
+    background-color: var(--accent-color);
+    color: var(--background-dark); /* لون النص يتغير لتباين أفضل */
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 5px 10px rgba(var(--accent-color-rgb, 56, 189, 248), 0.3);
+}
+
+
+/* Enhanced Product Details Modal */
+.product-details-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 23, 42, 0.95); /* أكثر تعتيمًا */
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+    direction: rtl; /* ضمان الاتجاه الصحيح للمحتوى */
+}
+
+.product-details-modal .modal-content {
+    background-color: var(--card-bg); /* استخدام المتغير */
+    padding: 35px; /* زيادة الحشوة */
+    border-radius: 15px;
+    max-width: 800px;
+    width: 90%;
+    margin: 5vh auto; /* توسيط أفضل عمودياً */
+    position: relative;
+    transform: scale(0.95) translateY(20px); /* تأثير بداية أصغر */
+    opacity: 0;
+    animation: modalFadeInScale 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة أفضل */
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 25px rgba(var(--accent-color-rgb, 56, 189, 248), 0.25);
+}
+
+@keyframes modalFadeInScale {
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.product-details-modal h3 {
+    color: var(--accent-color);
+    font-size: 2em; /* تكبير الخط */
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 15px;
+    text-align: center; /* توسيط العنوان */
+}
+
+.product-details-modal p {
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: var(--text-primary); /* لون النص الأساسي */
+    font-size: 1.05em; /* تكبير الخط قليلاً */
+}
+
+.product-details-modal ul {
+    margin: 25px 0;
+    padding-right: 20px; /* لـ RTL */
+    list-style: none; /* إزالة النقاط الافتراضية */
+}
+
+.product-details-modal li {
+    margin-bottom: 18px; /* زيادة المسافة */
+    position: relative;
+    padding-right: 30px; /* مسافة أكبر للأيقونة */
+    color: var(--text-secondary); /* لون النص الثانوي */
+    font-size: 1em;
+}
+
+.product-details-modal li:before {
+    content: "✓";
+    color: var(--accent-color);
+    position: absolute;
+    right: 0;
+    top: 2px; /* محاذاة أفضل */
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.product-details-modal .close-button {
+    position: absolute;
+    top: 15px; /* تعديل الموضع */
+    left: 15px; /* تعديل الموضع لـ RTL */
+    font-size: 32px; /* تكبير الأيقونة */
+    color: var(--text-secondary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: all 0.3s ease;
+    padding: 5px; /* مساحة للنقر */
+    line-height: 1;
+}
+
+.product-details-modal .close-button:hover {
+    color: var(--accent-secondary);
+    transform: scale(1.15) rotate(90deg); /* تأثير دوران عند التحويم */
+}
+
+/* Show modal when active */
+.product-details-modal.active {
+    display: block; /* أو flex إذا كنت تستخدم flexbox للتوسيط */
+}
+
+
+/* Product Price and Delivery */
+.price {
+    font-size: 1.5em; /* تكبير السعر */
+    font-weight: bold;
+    color: var(--accent-color);
+    margin: 20px 0 10px; /* تعديل الهوامش */
+    text-align: center;
+}
+
+.delivery-time {
+    color: var(--text-secondary);
+    font-size: 0.9em; /* تصغير خط وقت التسليم قليلاً */
+    margin-bottom: 15px;
+    text-align: center;
+    font-style: italic; /* تمييزه */
+}
+
+/* Product Images */
+.product-images {
+    position: relative;
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* ظل أوضح */
+    border: 1px solid var(--primary-color);
+    aspect-ratio: 16/9; /* الحفاظ على نسبة عرض إلى ارتفاع للصور */
+}
+
+.images-container {
+    display: flex;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none; /* Firefox */
+    height: 100%; /* لجعل الصور تملأ الحاوية */
+}
+
+.images-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.images-container img {
+    width: 100%;
+    height: 100%; /* الصور تملأ الارتفاع */
+    object-fit: cover; /* أو contain حسب الحاجة */
+    scroll-snap-align: start;
+    flex-shrink: 0; /* منع الصور من الانكماش */
+}
+
+.slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(var(--primary-color-rgb, 30, 58, 138), 0.7); /* استخدام متغير مع شفافية */
+    border: none;
+    border-radius: 50%;
+    width: 45px; /* تكبير الأزرار قليلاً */
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+    font-size: 1.2em; /* تكبير الأيقونة الداخلية */
+}
+
+.slider-button:hover {
+    background: rgba(var(--accent-color-rgb, 56, 189, 248), 0.9); /* لون أوضح عند التحويم */
+    transform: translateY(-50%) scale(1.1); /* تأثير تكبير طفيف */
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+/* Payment Modal & Cart Modal (Common styles first) */
+.cart-modal,
+.payment-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 23, 42, 0.95); /* خلفية أكثر تعتيمًا */
+    z-index: 1000;
+    overflow-y: auto; /* للسماح بالتمرير إذا كان المحتوى طويلاً */
+    padding: 20px;
+    direction: rtl;
+}
+
+.cart-modal.active,
+.payment-modal.active {
+    display: flex; /* استخدام flex لتوسيط المحتوى */
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-modal .modal-content,
+.payment-modal .modal-content {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px; /* زوايا أكثر دائرية */
+    width: 90%; /* لمرونة أفضل */
+    position: relative;
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 8px 25px rgba(var(--accent-color-rgb, 56, 189, 248), 0.2); /* ظل أوضح */
+    animation: modalFadeInScale 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-height: 90vh; /* تحديد أقصى ارتفاع */
+    overflow-y: auto; /* تمرير داخلي إذا لزم الأمر */
+}
+
+/* Specific to Payment Modal */
+.payment-modal .modal-content {
+    max-width: 600px;
+}
+
+.bank-details {
+    margin-top: 20px;
+}
+
+.detail-group {
+    background-color: rgba(var(--primary-color-rgb, 30, 58, 138), 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--primary-color); /* إضافة إطار */
+}
+
+.detail-group h3 {
+    color: var(--accent-color);
+    margin-bottom: 15px;
+}
+
+.iban-container {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: var(--background-dark); /* خلفية أغمق قليلاً من الكارت */
+    border-radius: 6px;
+    border: 1px solid var(--accent-color);
+}
+
+.copy-iban {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#ibanNumber {
+    font-family: 'Courier New', Courier, monospace; /* خط مناسب للأرقام */
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    color: var(--accent-color);
+    word-break: break-all; /* لكسر النص إذا كان طويلاً */
+}
+
+.copy-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px; /* زيادة مساحة النقر */
+    transition: color 0.3s ease, transform 0.2s ease;
+    font-size: 1.2em;
+}
+
+.copy-button:hover {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.copy-button:active {
+    transform: scale(0.95);
+}
+
+.total-amount {
+    text-align: center;
+    margin: 25px 0;
+    padding: 20px;
+    background-color: rgba(var(--primary-color-rgb, 30, 58, 138), 0.3);
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+}
+
+.total-amount h3 {
+    color: var(--text-primary); /* لون أفتح للعنوان */
+}
+
+.amount {
+    font-size: 1.8em; /* تكبير الخط */
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-top: 10px;
+}
+
+.payment-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.send-receipt-button {
+    background-color: #25D366; /* لون واتساب الرسمي */
+    color: #FFFFFF;
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1em; /* تكبير الخط */
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.send-receipt-button:hover {
+    background-color: #1DAE54; /* لون أغمق قليلاً عند التحويم */
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
+}
+
+.send-receipt-button i {
+    font-size: 1.3em; /* تكبير أيقونة واتساب */
+}
+
+/* Specific to Cart Modal */
+.cart-modal .modal-content {
+    max-width: 800px;
+}
+
+.cart-items {
+    margin: 20px 0;
+    max-height: 400px; /* تحديد أقصى ارتفاع لمنطقة المنتجات */
+    overflow-y: auto; /* تمرير إذا تجاوز المحتوى الارتفاع */
+    padding-right: 10px; /* مسافة لشريط التمرير إذا ظهر */
+}
+/* تخصيص شريط التمرير في سلة المشتريات (اختياري) */
+.cart-items::-webkit-scrollbar {
+    width: 8px;
+}
+.cart-items::-webkit-scrollbar-track {
+    background: rgba(var(--primary-color-rgb, 30, 58, 138), 0.2);
+    border-radius: 10px;
+}
+.cart-items::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    border: 2px solid rgba(var(--primary-color-rgb, 30, 58, 138), 0.2);
+}
+.cart-items::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-color);
+}
+
+
+.cart-summary {
+    border-top: 2px solid var(--primary-color);
+    padding-top: 20px;
+    text-align: left; /* لـ RTL ، قد يكون right أفضل إذا كان النص عربياً بالكامل */
+    color: var(--text-primary);
+    margin-top: 20px; /* مسافة إضافية */
+}
+
+.cart-summary p {
+    font-size: 1.2em; /* تكبير خط المجموع */
+    margin-bottom: 20px; /* مسافة قبل الأزرار */
+}
+
+.cart-total {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.checkout-button,
+.paypal-checkout-button {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-primary);
+    border: none;
+    padding: 14px 28px; /* زيادة الحشوة */
+    border-radius: 8px;
+    font-size: 1.1em; /* تكبير الخط */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    width: 100%;
+    display: flex; /* لتوسيط الأيقونة والنص */
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* مسافة بين الأيقونة والنص */
+}
+
+.checkout-button:hover,
+.paypal-checkout-button:hover {
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 5px 12px rgba(var(--accent-color-rgb, 56, 189, 248), 0.35);
+}
+
+.paypal-checkout-button { /* تمييز زر باي بال */
+    background: linear-gradient(135deg, #0070BA, #005EA6); /* ألوان باي بال التقليدية */
+}
+
+.paypal-checkout-button:hover {
+    background: linear-gradient(135deg, #005EA6, #0070BA);
+    box-shadow: 0 5px 12px rgba(0, 112, 186, 0.4);
+}
+
+
+/* Cart item styles */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: rgba(var(--primary-color-rgb, 30, 58, 138), 0.2); /* خلفية أخف */
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+    transition: background-color 0.3s ease;
+}
+
+.cart-item:hover {
+    background-color: rgba(var(--primary-color-rgb, 30, 58, 138), 0.3);
+}
+
+.cart-item-details h4 {
+    color: var(--accent-color);
+    margin-bottom: 8px; /* زيادة المسافة */
+    font-size: 1.1em;
+}
+
+.cart-item-details p {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* زيادة الفجوة */
+}
+
+.quantity-controls button {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    border: none;
+    width: 30px; /* تكبير الأزرار */
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em; /* تكبير الأيقونة الداخلية */
+}
+
+.quantity-controls button:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.quantity-controls span {
+    color: var(--text-primary);
+    font-weight: bold;
+    min-width: 20px; /* لضمان عرض الرقم بشكل جيد */
+    text-align: center;
+}
+
+.remove-item {
+    background: none;
+    border: none;
+    color: var(--accent-secondary); /* استخدام اللون الثانوي الجذاب */
+    font-size: 1.3em; /* تكبير أيقونة الحذف */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px; /* مساحة للنقر */
+}
+
+.remove-item:hover {
+    transform: scale(1.25) rotate(15deg); /* تأثير دوران وحجم عند التحويم */
+    color: #FF0000; /* أحمر أكثر وضوحًا عند التحويم الشديد */
+}
+
+
+/* Footer Styles */
+.footer { /* استخدام المحدد الموجود في HTML */
+    background-color: var(--background-dark); /* استخدام المتغير */
+    color: var(--text-primary);
+    padding: 3rem 1rem; /* تعديل الحشوة */
+    width: 100%;
+    border-top: 2px solid var(--primary-color); /* إطار علوي أوضح */
+    margin-top: 60px; /* مسافة من المحتوى الرئيسي */
+}
+
+.container { /* هذا الكلاس مستخدم داخل الفوتر */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem; /* ليتوافق مع حشوة الفوتر */
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* زيادة العرض الأدنى قليلاً */
+    gap: 2.5rem; /* زيادة الفجوة */
+    text-align: right; /* محاذاة لليمين لـ RTL */
+}
+
+.footer-section h3 {
+    font-size: 1.6em; /* تكبير الخط */
+    margin-bottom: 1.2rem; /* زيادة المسافة */
+    color: var(--accent-color);
+    padding-bottom: 0.5rem; /* خط سفلي */
+    border-bottom: 1px solid var(--primary-color);
+    display: inline-block; /* لجعل الخط يلتف حول النص */
+}
+
+.footer-section p {
+    color: var(--text-secondary);
+    line-height: 1.7; /* زيادة ارتفاع السطر */
+    font-size: 0.95em;
+}
+
+.quick-links ul {
+    list-style: none;
+    padding-right: 0; /* إزالة الحشوة لـ RTL */
+}
+
+.quick-links ul li {
+    margin-bottom: 0.8rem; /* زيادة المسافة */
+}
+
+.quick-links ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease, padding-right 0.3s ease; /* إضافة انتقال للحشوة */
+    position: relative;
+    display: inline-block; /* للسماح بالتحريك */
+}
+
+.quick-links ul li a:hover {
+    color: var(--accent-color);
+    padding-right: 8px; /* تحريك النص قليلاً لليمين عند التحويم */
+}
+.quick-links ul li a:hover::before { /* إضافة سهم صغير عند التحويم */
+    content: "←";
+    position: absolute;
+    right: -5px;
+    top: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease, right 0.3s ease;
+}
+.quick-links ul li a:hover::before {
+    opacity: 1;
+    right: -15px;
+}
+
+
+.social-links {
+    display: flex;
+    gap: 1.2rem; /* زيادة الفجوة */
+    justify-content: flex-end; /* محاذاة لليمين لـ RTL */
+}
+
+.social-icon {
+    width: 45px; /* تكبير الأيقونات */
+    height: 45px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.social-icon:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-3px) scale(1.1); /* تأثير رفع وتكبير */
+    box-shadow: 0 4px 8px rgba(var(--accent-color-rgb, 56, 189, 248), 0.3);
+}
+
+.social-icon svg, /* استهداف SVG مباشرة */
+.social-icon img {
+    width: 22px; /* تعديل حجم الأيقونة الداخلية */
+    height: 22px;
+    filter: invert(1) brightness(1.5); /* جعل الأيقونات أكثر وضوحًا */
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 2.5rem; /* زيادة المسافة */
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--primary-color);
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center; /* توسيط المحتوى في الجوال */
+    }
+    .footer-section h3 {
+        display: block; /* جعل الخط السفلي يمتد */
+    }
+    .social-links {
+        justify-content: center; /* توسيط أيقونات التواصل */
+    }
+    .quick-links ul li a:hover {
+        padding-right: 0; /* إزالة التحريك في الجوال إذا كان مزعجًا */
+    }
+     .quick-links ul li a:hover::before {
+        display: none; /* إخفاء السهم في الجوال */
+    }
+}
+
+
+/* تحسين أقسام المنتجات (عناوين الأقسام) */
+.section-container { /* هذا هو الحاوي الرئيسي لكل قسم منتجات */
+    background: rgba(var(--card-bg-rgb, 17, 24, 39), 0.7); /* استخدام متغير مع شفافية */
+    backdrop-filter: blur(3px); /* تأثير ضبابي طفيف للخلفية */
+    border-radius: 16px; /* زوايا أكثر دائرية */
+    padding: 30px;
+    margin: 50px 0; /* زيادة الهامش */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* ظل أوضح */
+    border: 1px solid var(--primary-color);
+}
+
+.section-header { /* هذا خاص بالعنوان داخل القسم إذا استخدم */
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--text-primary) !important; /* ضمان لون النص */
+    padding: 25px 20px; /* زيادة الحشوة */
+    margin: -30px -30px 30px -30px; /* ليمتد خارج حشوة section-container */
+    border-top-left-radius: 16px; /* ليتناسب مع حاوية القسم */
+    border-top-right-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.section-header h2 { /* استهداف H2 داخل .section-header */
+    margin: 0;
+    font-size: 2.2em; /* تكبير الخط */
+    color: var(--text-primary) !important; /* ضمان لون النص */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    border-bottom: none; /* إزالة الخط السفلي المزدوج إذا كان موجودًا من القاعدة العامة */
+    display: block; /* لإزالة تأثير inline-block من القاعدة العامة */
+    transform: none; /* لإزالة تأثير transform من القاعدة العامة */
+    left: auto;
+}
+
+/* تحسين أزرار التحويل (داخل السلة) */
+.checkout-options { /* هذا الكلاس غير مستخدم حاليًا في HTML، لكن يمكن إضافته إذا لزم الأمر */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* زيادة الفجوة */
+    margin-top: 25px; /* زيادة المسافة العلوية */
+}
+
+.checkout-button i, .paypal-checkout-button i { /* استهداف الأيقونات داخل أزرار الدفع */
+    font-size: 1.2em;
+    /* margin-left: 10px; تم التعامل معه بـ gap */
+}
+
+
+/* تنسيقات قسم تحليل البيانات (مقدمة القسم) */
+.section-intro {
+    text-align: center;
+    padding: 10px 20px 30px; /* تعديل الحشوة */
+    margin-bottom: 30px;
+    color: var(--text-secondary);
+    font-size: 1.15em; /* تكبير الخط قليلاً */
+    line-height: 1.7; /* زيادة ارتفاع السطر */
+    border-bottom: 1px dashed var(--primary-color); /* فاصل خفيف */
+}
+
+.product-description { /* وصف المنتج داخل بطاقة المنتج */
+    margin: 15px 0;
+    padding: 15px;
+    background-color: rgba(var(--primary-color-rgb, 30, 58, 138), 0.2); /* خلفية أفتح */
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 0.9em; /* تصغير الخط قليلاً ليتناسب */
+}
+
+.feature-list { /* قائمة الميزات داخل بطاقة المنتج */
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.feature-list li {
+    padding: 8px 25px 8px 0; /* لـ RTL */
+    position: relative;
+    color: var(--accent-color);
+    font-size: 0.9em;
+}
+
+.feature-list li:before {
+    content: "✓"; /* استخدام أيقونة Font Awesome ممكن أيضًا */
+    color: var(--accent-color);
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+}
+
+/* تحسين تنسيق العناصر الموجودة داخل .section-container */
+.section-container .product { /* تم التعامل مع هذه الأنماط في .product أعلاه */
+    /* display: flex; flex-direction: column; justify-content: space-between; height: 100%; */
+    /* background-color: var(--card-bg); */
+    /* border: 1px solid var(--primary-color); */
+}
+
+.section-container .product:hover { /* تم التعامل مع هذه الأنماط في .product:hover أعلاه */
+    /* transform: translateY(-5px); */
+    /* box-shadow: 0 8px 15px rgba(var(--accent-color-rgb, 56, 189, 248), 0.2); */
+}
+
+
+/* General Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2em;
+    }
+    header p {
+        font-size: 1em;
+    }
+
+    nav {
+        position: static; /* إزالة التثبيت في الجوال إذا كان يسبب مشاكل */
+    }
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; /* تقليل الفجوة في الجوال */
+    }
+    .navbar a {
+        padding: 10px 15px; /* تعديل الحشوة في الجوال */
+        width: 100%; /* جعل الروابط تملأ العرض */
+        text-align: center;
+    }
+     .navbar a:hover::after {
+        width: 50%; /* تعديل عرض الخط في الجوال */
+    }
+
+    .product-list {
+        grid-template-columns: 1fr; /* عمود واحد في الجوال */
+    }
+
+    .product-actions {
+        flex-direction: column; /* الأزرار تحت بعضها */
+        gap: 15px; /* زيادة الفجوة بين الأزرار العمودية */
+    }
+
+    .buy-button, .details-button {
+        width: 100%; /* الأزرار تملأ العرض */
+    }
+
+    .modal-content, 
+    .cart-modal .modal-content, 
+    .payment-modal .modal-content { /* استهداف جميع المودالات */
+        width: 95%;
+        margin: 20px auto; /* تعديل الهامش في الجوال */
+        padding: 20px; /* تقليل الحشوة في الجوال */
+    }
+    .product-details-modal h3 {
+        font-size: 1.6em; /* تصغير عنوان المودال */
+    }
+    .product-details-modal p, .product-details-modal li {
+        font-size: 0.95em; /* تصغير خطوط المودال */
+    }
+
+    .section-header {
+        margin-left: -20px; /* تعديل الهوامش السلبية للمطابقة مع حشوة main */
+        margin-right: -20px;
+        border-radius: 0; /* إزالة الحواف الدائرية إذا امتد للعرض الكامل */
+        border-top-left-radius: 12px; /* الحفاظ على الحواف العلوية إذا كان القسم نفسه دائريًا */
+        border-top-right-radius: 12px;
+    }
+    .section-header h2 {
+        font-size: 1.8em; /* تصغير عنوان القسم */
+    }
+}
+
+@media (max-width: 480px) { /* تعديلات إضافية للشاشات الصغيرة جدًا */
+    header h1 {
+        font-size: 1.8em;
+    }
+    header p {
+        font-size: 0.9em;
+    }
+    .price {
+        font-size: 1.3em;
+    }
+    .buy-button, .details-button, 
+    .checkout-button, .paypal-checkout-button, 
+    .send-receipt-button {
+        font-size: 0.9em; /* تصغير خطوط الأزرار */
+        padding: 10px 15px;
+    }
+    .cart-icon {
+        font-size: 20px;
+        padding: 8px;
+    }
+    .cart-count {
+        font-size: 10px;
+        padding: 2px 5px;
+    }
+}
+
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background-color: #FFFFFF;
+        color: #000000;
+    }
+    :root { /* إعادة تعريف المتغيرات للطباعة */
+        --primary-color: #000000;
+        --background-dark: #FFFFFF;
+        --accent-color: #333333;
+        --text-primary: #000000;
+        --text-secondary: #555555;
+    }
+    header, .banner, .product-actions, .cart-icon, .navbar, footer, .slider-button, .payment-modal, .cart-modal, .section-header, .social-links, .send-receipt-button, .copy-button, .quantity-controls, .remove-item, .checkout-button, .paypal-checkout-button, .details-button[data-target^="details-"] /* إخفاء أزرار التفاصيل */ {
+        display: none !important;
+    }
+    .product, .product-details-modal .modal-content {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        page-break-inside: avoid; /* محاولة تجنب كسر المنتج عبر الصفحات */
+    }
+    .product-details-modal { /* إظهار محتوى المودال المفتوح فقط (يتطلب JS) */
+        position: static;
+        background-color: transparent;
+        padding: 0;
+        overflow: visible;
+    }
+    .product-details-modal .modal-content {
+        max-width: 100%;
+        margin: 0 0 20px 0;
+        border: 1px solid #ccc;
+    }
+    .product-list {
+        grid-template-columns: 1fr; /* عمود واحد للطباعة */
+    }
+    main h2, .section-header h2 {
+        border-bottom: 1px solid #000;
+        color: #000;
+        text-shadow: none;
+    }
+}
+
+/* Button click effect & Notification styles (from JS, placed here for organization) */
+.button-click {
+    transform: scale(0.95);
+}
+/* Notification styles were also in JS - good to keep them centralized if possible or ensure consistency */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* Will be left for LTR, but HTML is RTL */
+    background-color: rgba(30, 58, 138, 0.95); /* slightly more opaque */
+    color: #F3F4F6;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 5px solid #38BDF8; /* LTR border, for RTL would be border-right */
+    transform: translateX(120%); /* Start further off-screen */
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+    font-size: 1em;
+}
+html[dir="rtl"] .notification {
+    right: auto;
+    left: 20px;
+    border-left: none;
+    border-right: 5px solid #38BDF8;
+    transform: translateX(-120%);
+}
+
+html[dir="rtl"] .notification.show { /* Assuming 'show' class is added by JS */
+    transform: translateX(0);
+    opacity: 1;
+}
+.notification.show { /* For LTR default */
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification i {
+    color: #38BDF8;
+    font-size: 1.4em; /* Larger icon */
+}

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاكاة الواقع المعزز/الافتراضي الصناعية المتقدمة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* أنماط CSS محسنة ومشتركة */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --text-light: #fff;
+            --text-dark: #212529;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #container {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        #scene-container {
+            flex: 2;
+            position: relative;
+            background-color: #1a1a1a; /* خلفية داكنة للمشهد الصناعي */
+        }
+
+        #controls {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--text-light);
+            box-shadow: -2px 0 15px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* أنماط خاصة بهذه الصفحة */
+        .module-buttons {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .module-button {
+            padding: 15px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--box-shadow);
+            text-align: right;
+        }
+
+        .module-button i {
+            margin-left: 10px;
+        }
+
+        .button-manufacturing {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .button-training {
+            background-color: var(--success-color);
+            color: var(--text-light);
+        }
+
+        .button-ecommerce {
+            background-color: var(--info-color);
+            color: var(--text-light);
+        }
+
+        .module-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .module-button.active {
+            border: 3px solid var(--warning-color);
+        }
+
+        .module-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--light-bg);
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .module-content.active {
+            display: block;
+        }
+
+        .settings-panel, .data-analysis-panel, .consulting-panel {
+            background-color: var(--light-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .settings-group {
+            margin-bottom: 15px;
+        }
+
+        .settings-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .settings-group input[type="range"] {
+            width: 100%;
+        }
+
+        .data-analysis-charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 300px;
+        }
+
+        .consulting-services {
+            margin-top: 20px;
+        }
+
+        .consulting-services button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        .consulting-services button:hover {
+            background-color: darken(var(--secondary-color), 10%);
+        }
+
+        /* التجاوب مع الشاشات المختلفة */
+        @media (max-width: 768px) {
+            #container {
+                flex-direction: column;
+            }
+            #scene-container {
+                height: 50vh;
+            }
+            #controls {
+                height: auto;
+                overflow-y: scroll;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- أضف شعار Gemini هنا إن رغبت -->
+    <!-- <img src="Gemini.png" alt="Gemini" style="width: 60px; height: 60px; border-radius: 50%; object-fit: contain; margin-bottom: 10px;"> -->
+
+    <div id="container">
+        <div id="scene-container"></div>
+        <div id="controls">
+            <div class="module-buttons">
+                <button class="module-button button-manufacturing active" onclick="switchModule('manufacturing')">
+                    <i class="fas fa-industry"></i> الأتمتة الصناعية
+                </button>
+                <button class="module-button button-training" onclick="switchModule('training')">
+                    <i class="fas fa-graduation-cap"></i> التدريب والتأهيل
+                </button>
+                <button class="module-button button-ecommerce" onclick="switchModule('ecommerce')">
+                    <i class="fas fa-shopping-cart"></i> تجربة التسوق الافتراضية
+                </button>
+            </div>
+
+            <!-- محتوى وحدة الأتمتة الصناعية -->
+            <div id="manufacturing-content" class="module-content active">
+                <h3><i class="fas fa-cogs"></i> محاكاة عمليات التصنيع</h3>
+                <p>استكشف بيئة تصنيع افتراضية حيث يمكنك التفاعل مع خطوط الإنتاج الآلية والروبوتات الصناعية.</p>
+                <button onclick="startManufacturingSimulation()">بدء المحاكاة</button>
+
+                <div class="data-analysis-panel">
+                    <h4><i class="fas fa-chart-line"></i> تحليل بيانات الإنتاج</h4>
+                    <div class="data-analysis-charts">
+                        <div class="chart-container"><canvas id="production-throughput-chart"></canvas></div>
+                        <div class="chart-container"><canvas id="error-rate-chart"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="settings-panel">
+                    <h4><i class="fas fa-sliders-h"></i> إعدادات المحاكاة</h4>
+                    <div class="settings-group">
+                        <label for="simulation-speed">سرعة المحاكاة:</label>
+                        <input type="range" id="simulation-speed" min="0.5" max="2" step="0.1" value="1">
+                        <span id="simulation-speed-value">عادية</span>
+                    </div>
+                    <div class="settings-group">
+                        <label for="error-frequency">معدل حدوث الأخطاء:</label>
+                        <input type="range" id="error-frequency" min="1" max="10" value="5">
+                        <span id="error-frequency-value">متوسط</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- محتوى وحدة التدريب والتأهيل -->
+            <div id="training-content" class="module-content">
+                <h3><i class="fas fa-chalkboard-teacher"></i> بيئة التدريب التفاعلية</h3>
+                <p>انخرط في وحدات تدريبية غامرة مصممة لتعليم مهارات تشغيل وصيانة المعدات الصناعية.</p>
+                <button onclick="startTrainingModule('assembly')">وحدة تجميع المنتجات</button>
+                <button onclick="startTrainingModule('maintenance')">وحدة صيانة الآلات</button>
+            </div>
+
+            <!-- محتوى وحدة تجربة التسوق الافتراضية -->
+            <div id="ecommerce-content" class="module-content">
+                <h3><i class="fas fa-store"></i> تجربة تسوق افتراضية للمنتجات الصناعية</h3>
+                <p>استعرض وشاهد المنتجات الصناعية في بيئة افتراضية ثلاثية الأبعاد، واحصل على توصيات مخصصة.</p>
+                <button onclick="openVirtualShowroom()">زيارة المعرض الافتراضي</button>
+                <div id="product-recommendations">
+                    <h4>توصيات المنتجات</h4>
+                    <ul id="recommendation-list">
+                        </ul>
+                </div>
+            </div>
+
+            <div class="consulting-panel">
+                <h3><i class="fas fa-handshake"></i> خدمات استشارية</h3>
+                <p>احصل على استشارات من خبراء الصناعة حول تحسين العمليات، تبني التقنيات الجديدة، وتطوير استراتيجيات التدريب.</p>
+                <div class="consulting-services">
+                    <button onclick="requestConsultation('process_optimization')">تحسين العمليات</button>
+                    <button onclick="requestConsultation('tech_adoption')">تبني التقنيات</button>
+                    <button onclick="requestConsultation('training_strategies')">استراتيجيات التدريب</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://threejs.org/examples/jsm/controls/OrbitControls.js"></script>
+    <script src="https://threejs.org/examples/jsm/loaders/GLTFLoader.js"></script>
+    <!-- يمكنك تضمين GSAP هنا إذا كنت ستستخدمه للتأثيرات -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script> -->
+    <script>
+        // === تطوير المحتوى ثلاثي الأبعاد ===
+        let scene, camera, renderer, controls;
+        let manufacturingScene, trainingScene, ecommerceScene;
+        let currentInteractiveObject = null;
+        let conveyorBelt; // مرجع لسير الناقل
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            const container = document.getElementById('scene-container');
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearColor(0x1a1a1a);
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            camera.position.set(5, 5, 5);
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            // تهيئة المشاهد المختلفة
+            createManufacturingScene();
+            createTrainingScene();
+            createEcommerceScene();
+
+            // إضافة مستمع حدث للنقر على المشهد
+            container.addEventListener('click', onSceneClick);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+
+            // تحديث الرسوم المتحركة إذا كانت المحاكاة نشطة
+            if (currentModule === 'manufacturing' && isManufacturingActive && conveyorBelt) {
+                conveyorBelt.position.x -= 0.01;
+                if (conveyorBelt.position.x < -5) {
+                    conveyorBelt.position.x = 5;
+                }
+            }
+        }
+
+        function switchModule(module) {
+            document.querySelectorAll('.module-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.module-content').forEach(content => content.classList.remove('active'));
+
+            currentModule = module;
+            document.querySelector(`.button-${module}`).classList.add('active');
+            document.getElementById(`${module}-content`).classList.add('active');
+
+            updateActiveScene(module);
+        }
+
+        function updateActiveScene(module) {
+            scene.clear();
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+
+            switch (module) {
+                case 'manufacturing':
+                    if (manufacturingScene) scene.add(manufacturingScene);
+                    break;
+                case 'training':
+                    if (trainingScene) scene.add(trainingScene);
+                    break;
+                case 'ecommerce':
+                    if (ecommerceScene) scene.add(ecommerceScene);
+                    break;
+            }
+        }
+
+        function createManufacturingScene() {
+            manufacturingScene = new THREE.Scene();
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            manufacturingScene.add(ambientLight);
+
+            const conveyorGeometry = new THREE.BoxGeometry(10, 0.2, 1);
+            const conveyorMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+            conveyorBelt = new THREE.Mesh(conveyorGeometry, conveyorMaterial);
+            manufacturingScene.add(conveyorBelt);
+        }
+
+        function createTrainingScene() {
+            trainingScene = new THREE.Scene();
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            trainingScene.add(ambientLight);
+
+            // تحميل نموذج وحدة تجميع المنتجات
+            loadModel('path/to/assembly_unit.glb', (model) => {
+                trainingScene.add(model);
+            });
+        }
+
+        function createEcommerceScene() {
+            ecommerceScene = new THREE.Scene();
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            ecommerceScene.add(ambientLight);
+
+            // تحميل نموذج المعرض الافتراضي
+            loadModel('path/to/virtual_showroom.glb', (model) => {
+                ecommerceScene.add(model);
+            });
+        }
+
+        function loadModel(url, onLoad) {
+            const loader = new THREE.GLTFLoader();
+            loader.load(url, (gltf) => {
+                onLoad(gltf.scene);
+            }, undefined, function (error) {
+                console.error('An error happened while loading the model', error);
+            });
+        }
+
+        // === ربط الوظائف بالخلفية ===
+        let isManufacturingActive = false;
+
+        function startManufacturingSimulation() {
+            console.log('بدء محاكاة عمليات التصنيع.');
+            isManufacturingActive = true;
+            // يمكنك إضافة المزيد من منطق بدء المحاكاة هنا
+        }
+
+        function startTrainingModule(moduleName) {
+            console.log(`بدء وحدة التدريب: ${moduleName}`);
+            if (moduleName === 'assembly') {
+                switchModule('training');
+                // يمكنك هنا تحميل محتوى تفاعلي خاص بوحدة التجميع
+            } else if (moduleName === 'maintenance') {
+                switchModule('training');
+                // يمكنك هنا تحميل محتوى تفاعلي خاص بوحدة الصيانة
+            }
+        }
+
+        function openVirtualShowroom() {
+            console.log('فتح المعرض الافتراضي.');
+            switchModule('ecommerce');
+            getProductRecommendations();
+        }
+
+        // === تكامل الذكاء الاصطناعي ===
+        async function getProductRecommendations() {
+            // مثال لتوصيات وهمية
+            const recommendations = [
+                { name: "منتج أ", description: "وصف المنتج أ" },
+                { name: "منتج ب", description: "وصف المنتج ب" },
+                { name: "منتج ج", description: "وصف المنتج ج" }
+            ];
+
+            const recommendationList = document.getElementById('recommendation-list');
+            recommendationList.innerHTML = ''; // مسح التوصيات السابقة
+
+            recommendations.forEach(product => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${product.name}: ${product.description}`;
+                recommendationList.appendChild(listItem);
+            });
+        }
+
+        // === تكامل البيانات الحقيقي ===
+        let productionThroughputChart, errorRateChart;
+
+        function setupCharts() {
+            const createChart = (id, label, initialData) => {
+                const ctx = document.getElementById(id).getContext('2d');
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: initialData.labels,
+                        datasets: [{
+                            label: label,
+                            data: initialData.data,
+                            borderColor: 'blue',
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            };
+
+            const initialProductionData = { labels: ['الآن'], data: [0] };
+            const initialErrorData = { labels: ['الآن'], data: [0] };
+
+            productionThroughputChart = createChart('production-throughput-chart', 'إنتاجية خط الإنتاج', initialProductionData);
+            errorRateChart = createChart('error-rate-chart', 'معدل الأخطاء', initialErrorData);
+
+            // مثال لتحديث البيانات بشكل دوري (بيانات وهمية)
+            setInterval(() => {
+                if (productionThroughputChart) {
+                    productionThroughputChart.data.labels.push(new Date().toLocaleTimeString());
+                    productionThroughputChart.data.datasets[0].data.push(Math.random() * 100);
+                    productionThroughputChart.update();
+                }
+                if (errorRateChart) {
+                    errorRateChart.data.labels.push(new Date().toLocaleTimeString());
+                    errorRateChart.data.datasets[0].data.push(Math.random() * 10);
+                    errorRateChart.update();
+                }
+            }, 5000);
+        }
+
+        // === تأثيرات بصرية وحركية ===
+        function addVisualEffects() {
+            // مثال: تغيير لون عنصر عند النقر
+            const conveyor = manufacturingScene.getObjectByProperty('type', 'Mesh'); // مثال لاستهداف سير الناقل
+            if (conveyor) {
+                conveyor.userData.isInteractive = true; // وضع علامة على العنصر بأنه تفاعلي
+            }
+        }
+
+        function onSceneClick(event) {
+            const mouse = new THREE.Vector2();
+            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObjects(scene.children, true);
+
+            if (intersects.length > 0) {
+                const intersectedObject = intersects[0].object;
+                if (intersectedObject.userData.isInteractive) {
+                    // مثال: تغيير لون العنصر المتفاعل
+                    intersectedObject.material.color.set(Math.random() * 0xffffff);
+                }
+            }
+        }
+
+        function requestConsultation(service) {
+            alert(`تم طلب استشارة حول: ${service}`);
+        }
+
+        function updateSimulationSpeedDisplay() {
+            const speed = document.getElementById('simulation-speed').value;
+            document.getElementById('simulation-speed-value').textContent = `${speed}x`;
+        }
+
+        function updateErrorFrequencyDisplay() {
+            const frequency = document.getElementById('error-frequency').value;
+            let frequencyText = 'منخفض';
+            if (frequency > 3 && frequency <= 7) {
+                frequencyText = 'متوسط';
+            } else if (frequency > 7) {
+                frequencyText = 'عالي';
+            }
+            document.getElementById('error-frequency-value').textContent = frequencyText;
+        }
+
+        window.onload = () => {
+            init();
+            setupCharts();
+            addVisualEffects();
+            // يمكنك استدعاء وظائف أخرى عند تحميل الصفحة
+            document.getElementById('simulation-speed').addEventListener('input', updateSimulationSpeedDisplay);
+            document.getElementById('error-frequency').addEventListener('input', updateErrorFrequencyDisplay);
+        };
+
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('scene-container');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    </script>
+</body>
+</html>

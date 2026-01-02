@@ -1,0 +1,2773 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+
+<head>
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <!-- ================== LIBRARIES ================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/advanced-ai-analysis.js"></script>
+
+    <!-- ================== META ================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لوحة تحكم المسؤول - بوابة التوظيف Mais Co</title>
+
+    <!-- ================== STYLES ================== -->
+    <style>
+        :root {
+            --primary: #2E8B57;
+            --primary-dark: #20603c;
+            --accent: #ff6347;
+            --dark: #1a202c;
+            --white: #ffffff;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --success: #22c55e;
+            --error: #ef4444;
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-6: 1.5rem;
+            --spacing-8: 2rem;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --border-radius: 0.75rem;
+            --border-radius-lg: 1.5rem;
+            --shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 6px 16px -2px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 16px 32px -4px rgba(0, 0, 0, 0.14);
+            --transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
+            --font-main: 'Cairo', sans-serif;
+            --font-arabic-serif: 'Amiri', serif;
+        }
+
+        [data-theme="light"] {
+            --bg-main: #f4f6fa;
+            --bg-content: #fff;
+            --bg-alt: #f1f5f9;
+            --text-primary: #222;
+            --text-secondary: #5a5a5a;
+            --border-color: #e5e7eb;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #3cb371 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary: #38a169;
+            --primary-dark: #2f855a;
+            --bg-main: #181c23;
+            --bg-content: #23272f;
+            --bg-alt: #1a1d23;
+            --text-primary: #f7fafc;
+            --text-secondary: #a0aec0;
+            --border-color: #3a3a3a;
+            --gradient-primary: linear-gradient(135deg, var(--primary) 0%, #2f855a 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- Login Gateway Styles --- */
+        #loginOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            padding: 1rem;
+        }
+
+        #loginModal {
+            background: var(--bg-content);
+            padding: var(--spacing-6);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1.5px solid var(--border-color);
+        }
+
+        #loginModal h2 {
+            font-size: 1.7rem;
+            color: var(--primary);
+            margin-bottom: var(--spacing-4);
+            letter-spacing: 1px;
+        }
+
+        #loginForm .form-group {
+            text-align: right;
+            margin-bottom: var(--spacing-4);
+        }
+
+        #loginForm label {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: block;
+            font-size: var(--font-size-base);
+        }
+
+        #loginForm input {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-alt);
+            color: var(--text-primary);
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s;
+        }
+
+        #loginForm input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background: #e8f5ee;
+        }
+
+        #loginForm button {
+            width: 100%;
+            padding: var(--spacing-3);
+            font-size: var(--font-size-base);
+            margin-top: var(--spacing-2);
+        }
+
+        #loginError {
+            color: var(--error);
+            font-weight: 600;
+            margin-top: var(--spacing-4);
+            min-height: 24px;
+            font-size: var(--font-size-sm);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            background: var(--bg-content);
+            min-height: 100vh;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-2);
+            padding: var(--spacing-3) var(--spacing-4);
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1.5px solid var(--border-color);
+            background: var(--bg-content);
+            color: var(--primary);
+            font-size: var(--font-size-base);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+            white-space: nowrap;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn:focus {
+            outline: 2px solid var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg-alt);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover,
+        .btn-secondary:focus {
+            background: #e8f5ee;
+            color: var(--primary-dark);
+        }
+
+        .btn-danger {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .btn-danger:hover,
+        .btn-danger:focus {
+            background: #e5533d;
+            border-color: #e5533d;
+        }
+
+        .btn-info {
+            background-color: var(--info);
+            color: white;
+            border-color: var(--info);
+        }
+
+        .btn-info:hover,
+        .btn-info:focus {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        /* --- Admin Page Specific Styles --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-4);
+            padding-top: 0.5rem;
+        }
+
+        .page-header .company-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-3);
+            color: var(--primary);
+        }
+
+        .page-header p {
+            font-size: var(--font-size-base);
+            margin-top: var(--spacing-2);
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .stat-card {
+            background: var(--bg-alt);
+            padding: var(--spacing-3);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1.5px solid var(--border-color);
+            min-height: 90px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            background: #e8f5ee;
+        }
+
+        .stat-card .icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            background: #e8f5ee;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(46, 139, 87, 0.07);
+        }
+
+        .stat-card-info h3 {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card-info p {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-3);
+            background: var(--bg-alt);
+            padding: var(--spacing-3);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-4);
+            box-shadow: var(--shadow);
+            border: 1.5px solid var(--border-color);
+        }
+
+        .controls .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-1);
+            width: 100%;
+        }
+
+        .controls .form-group label {
+            font-size: var(--font-size-sm);
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .controls input,
+        .controls select {
+            width: 100%;
+            padding: var(--spacing-2);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-content);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s;
+        }
+
+        .controls input:focus,
+        .controls select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .tabs {
+            display: flex;
+            gap: var(--spacing-1);
+            margin-bottom: var(--spacing-3);
+            border-bottom: 2px solid var(--border-color);
+            justify-content: center;
+            overflow-x: auto;
+            padding-bottom: 0.25rem;
+        }
+
+        .tab-btn {
+            padding: var(--spacing-2) var(--spacing-3);
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            border-bottom: 3px solid transparent;
+            font-size: var(--font-size-base);
+            transition: color 0.2s, border-bottom-color 0.2s;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: #e8f5ee;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .applicants-grid,
+        .vacancies-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-4);
+        }
+
+        .applicant-card,
+        .vacancy-card {
+            background: var(--bg-content);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: var(--spacing-3);
+            position: relative;
+            border-left: 6px solid;
+            transition: var(--transition);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1.5px solid var(--border-color);
+        }
+
+        .applicant-card:hover,
+        .vacancy-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+            background: #f7fafc;
+        }
+
+        .applicant-card.highlight {
+            box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 60%, transparent);
+            border-color: var(--warning);
+        }
+
+        .applicant-card .applicant-body {
+            flex-grow: 1;
+        }
+
+        .card-top-actions {
+            position: absolute;
+            top: var(--spacing-2);
+            left: var(--spacing-2);
+            display: flex;
+            gap: var(--spacing-2);
+            z-index: 5;
+        }
+
+        .action-btn {
+            background: color-mix(in srgb, var(--bg-content) 80%, transparent);
+            border: 1.5px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .action-btn:hover,
+        .action-btn:focus {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .action-btn.favorite.favorited {
+            background: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+
+        .applicant-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-3);
+            padding-right: var(--spacing-2);
+        }
+
+        .checkbox-container {
+            align-self: center;
+        }
+
+        .checkbox-container input {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .applicant-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(46, 139, 87, 0.09);
+        }
+
+        .applicant-info {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .applicant-info h3 {
+            font-size: var(--font-size-lg);
+            margin: 0;
+            color: var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .applicant-info p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: var(--font-size-sm);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .applicant-score {
+            margin-left: auto;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .applicant-score .score-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .applicant-score .score-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+        }
+
+        .applicant-footer {
+            margin-top: var(--spacing-3);
+            border-top: 1px solid var(--border-color);
+            padding-top: var(--spacing-3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-2);
+        }
+
+        .applicant-footer-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-4);
+            margin-top: var(--spacing-6);
+        }
+
+        .chart-card {
+            background: var(--bg-content);
+            padding: var(--spacing-4);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1.5px solid var(--border-color);
+        }
+
+        .chart-card h3 {
+            text-align: center;
+            margin-bottom: var(--spacing-3);
+            color: var(--primary);
+            font-size: var(--font-size-lg);
+        }
+
+        .chart-card canvas {
+            min-height: 240px;
+            max-height: 300px;
+        }
+
+        .comparison-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            background: var(--primary-dark);
+            color: white;
+            padding: var(--spacing-3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-3);
+            transition: bottom 0.5s cubic-bezier(.4, 0, .2, 1);
+            min-width: 100%;
+        }
+
+        .comparison-bar.show {
+            bottom: 0;
+        }
+
+        #comparisonCount {
+            font-weight: 700;
+            font-size: var(--font-size-base);
+            flex-grow: 1;
+            text-align: center;
+        }
+
+
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-content);
+            padding: var(--spacing-4);
+            border-radius: var(--border-radius);
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.96);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1.5px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            flex-grow: 1;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .disclaimer {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: var(--spacing-3);
+            padding: var(--spacing-2);
+            background-color: color-mix(in srgb, var(--accent) 10%, transparent);
+            border-radius: var(--border-radius);
+        }
+
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-3) 0;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .contact-item span {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            font-size: var(--font-size-base);
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        .cv-content {
+            background: var(--bg-alt);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-3);
+            white-space: pre-wrap;
+            font-family: var(--font-arabic-serif);
+            line-height: 1.8;
+            max-height: 50vh;
+            overflow-y: auto;
+            text-align: right;
+            direction: rtl;
+            font-size: var(--font-size-base);
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            min-height: 80px;
+            background: var(--bg-alt);
+            color: var(--text-primary);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-3);
+            border: 1.5px solid var(--border-color);
+            font-size: var(--font-size-base);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .notes-section button {
+            width: 100%;
+            margin-top: var(--spacing-2);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-4);
+        }
+
+        .comparison-column h4 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .comparison-item {
+            margin-bottom: var(--spacing-3);
+        }
+
+        .comparison-item strong {
+            display: block;
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .comparison-item p,
+        .comparison-item li {
+            font-size: var(--font-size-base);
+        }
+
+        /* تحسين عرض زر الحذف */
+        #deleteAllBtn {
+            margin-top: 1.5rem;
+            width: 100%;
+            font-size: var(--font-size-base);
+            padding: 0.8rem;
+        }
+
+        /* إدارة الشواغر */
+        .vacancy-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .vacancy-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2);
+        }
+
+        .vacancy-form label {
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            color: var(--primary);
+        }
+
+        .vacancy-form input,
+        .vacancy-form textarea,
+        .vacancy-form select {
+            padding: var(--spacing-2) var(--spacing-3);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: var(--bg-content);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .vacancy-form textarea {
+            min-height: 120px;
+        }
+
+        .vacancy-form input:focus,
+        .vacancy-form textarea:focus,
+        .vacancy-form select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .vacancy-status {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-open {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-closed {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .vacancy-details {
+            margin: var(--spacing-3) 0;
+            padding: var(--spacing-3);
+            background-color: var(--bg-alt);
+            border-radius: var(--border-radius);
+        }
+
+        .vacancy-details h4 {
+            margin-bottom: var(--spacing-2);
+            color: var(--primary);
+        }
+
+        .vacancy-details p {
+            margin-bottom: var(--spacing-2);
+        }
+
+        .vacancy-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            margin-top: var(--spacing-3);
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 576px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+
+            .controls {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .controls .form-group {
+                width: calc(50% - 0.5rem);
+            }
+
+            .applicant-card,
+            .vacancy-card {
+                padding: var(--spacing-4);
+            }
+
+            .applicant-footer {
+                flex-wrap: nowrap;
+            }
+
+            .applicant-footer .btn {
+                flex: 1;
+            }
+
+            .charts-container {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .vacancy-form {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: var(--spacing-4);
+            }
+
+            .controls .form-group {
+                width: calc(25% - 0.75rem);
+            }
+
+            .applicants-grid,
+            .vacancies-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+
+        @media (min-width: 992px) {
+            .controls .form-group {
+                width: calc(25% - 0.75rem);
+            }
+
+            .applicants-grid,
+            .vacancies-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+
+            .chart-card {
+                padding: var(--spacing-6);
+            }
+
+            .vacancy-form {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Focus-visible ring for accessibility */
+        button:focus-visible,
+        .btn:focus-visible,
+        .action-btn:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+        }
+
+        /* Performance optimizations */
+        .stat-card,
+        .applicant-card,
+        .vacancy-card,
+        .modal-overlay,
+        .comparison-bar {
+            will-change: transform, opacity;
+        }
+
+        .modal-overlay,
+        .modal-content {
+            contain: layout style paint;
+        }
+
+        .stat-card,
+        .applicant-card,
+        .vacancy-card {
+            backface-visibility: hidden;
+        }
+
+        .stat-card,
+        .applicant-card,
+        .vacancy-card,
+        .modal-content {
+            transition: transform 0.25s cubic-bezier(.4, 0, .2, 1), box-shadow 0.18s cubic-bezier(.4, 0, .2, 1), background 0.18s cubic-bezier(.4, 0, .2, 1);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ================== LOGIN GATEWAY ================== -->
+    <div id="loginOverlay">
+        <div id="loginModal">
+            <h2><i class="fas fa-user-shield"></i> تسجيل دخول المسؤول</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="adminEmail">البريد الإلكتروني</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">كلمة المرور</label>
+                    <input type="password" id="adminPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">دخول</button>
+            </form>
+            <p id="loginError"></p>
+        </div>
+    </div>
+
+
+
+    <!-- ================== MAIN DASHBOARD ================== -->
+    <div class="container hidden" id="mainDashboard" role="main">
+        <header class="page-header">
+            <img src="https://www2.0zz0.com/2025/07/11/04/899155430.png" alt="Mais Co. Logo" class="company-logo">
+            <button id="themeToggleBtn" class="btn btn-secondary" aria-label="تبديل الوضع الليلي/النهاري"
+                title="تبديل الوضع الليلي/النهاري" style="position:absolute;left:1rem;top:1rem;z-index:20;">
+                <i class="fas fa-moon"></i>
+            </button>
+            <h1><i class="fas fa-user-shield"></i> لوحة تحكم المسؤول</h1>
+            <p>نظرة شاملة وذكية على جميع المتقدمين للوظائف - Mais Co.</p>
+        </header>
+
+        <main>
+            <!-- ================== STATS ================== -->
+            <section class="stats-grid" id="statsGrid"></section>
+
+            <!-- ================== CONTROLS ================== -->
+            <section class="controls">
+                <div class="form-group">
+                    <label for="searchInput">بحث بالاسم</label>
+                    <input type="search" id="searchInput" placeholder="ابحث عن متقدم...">
+                </div>
+                <div class="form-group">
+                    <label for="sortBy">فرز حسب</label>
+                    <select id="sortBy">
+                        <option value="newest">الأحدث</option>
+                        <option value="highest_score">الأعلى تقييماً</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filterSpecialization">تصفية بالتخصص</label>
+                    <select id="filterSpecialization">
+                        <option value="all">الكل</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="filterFavorite">تصفية بالمفضلة</label>
+                    <select id="filterFavorite">
+                        <option value="all">الكل</option>
+                        <option value="favorited">المفضلون فقط</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- ================== TABS ================== -->
+            <div class="tabs" role="tablist" aria-label="قوائم المتقدمين">
+                <button class="tab-btn active" data-tab="active" role="tab" aria-selected="true" aria-controls="active"
+                    id="tab-active">النشطون</button>
+                <button class="tab-btn" data-tab="archived" role="tab" aria-selected="false" aria-controls="archived"
+                    id="tab-archived">المؤرشفون</button>
+                <button class="tab-btn" data-tab="interviews" role="tab" aria-selected="false"
+                    aria-controls="interviews" id="tab-interviews">المقابلات الحضورية</button>
+                <button class="tab-btn" data-tab="vacancies" role="tab" aria-selected="false" aria-controls="vacancies"
+                    id="tab-vacancies">إدارة الوظائف</button>
+            </div>
+
+            <!-- ================== TAB CONTENTS ================== -->
+            <div id="active" class="tab-content active" role="tabpanel" aria-labelledby="tab-active" tabindex="0">
+                <section class="applicants-grid" id="activeApplicantsList"></section>
+            </div>
+            <div id="archived" class="tab-content" role="tabpanel" aria-labelledby="tab-archived" tabindex="0">
+                <section class="applicants-grid" id="archivedApplicantsList"></section>
+            </div>
+            <div id="interviews" class="tab-content" role="tabpanel" aria-labelledby="tab-interviews" tabindex="0">
+                <section class="applicants-grid" id="interviewsApplicantsList"></section>
+            </div>
+
+            <div id="vacancies" class="tab-content">
+                <h2 class="section-title"><i class="fas fa-briefcase"></i> إدارة الشواغر الوظيفية</h2>
+                <div class="vacancy-form">
+                    <div class="form-group">
+                        <label for="vacancyTitle">عنوان الوظيفة *</label>
+                        <input type="text" id="vacancyTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vacancyDepartment">القسم *</label>
+                        <select id="vacancyDepartment" required>
+                            <option value="">اختر القسم</option>
+                            <option value="الهندسة">الهندسة</option>
+                            <option value="التشغيل والصيانة">التشغيل والصيانة</option>
+                            <option value="الصيدلة">الصيدلة</option>
+                            <option value="الجودة">الجودة</option>
+                            <option value="اللوجستيات">اللوجستيات</option>
+                            <option value="الإدارة">الإدارة</option>
+                            <option value="التقنية">التقنية</option>
+                            <option value="التسويق">التسويق</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vacancyLocation">الموقع</label>
+                        <input type="text" id="vacancyLocation" placeholder="مثل: الرياض، عن بعد">
+                    </div>
+                    <div class="form-group">
+                        <label for="vacancyType">نوع الوظيفة *</label>
+                        <select id="vacancyType" required>
+                            <option value="دوام كامل">دوام كامل</option>
+                            <option value="دوام جزئي">دوام جزئي</option>
+                            <option value="مشروع مؤقت">مشروع مؤقت</option>
+                            <option value="تدريب">تدريب</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vacancyStatus">الحالة *</label>
+                        <select id="vacancyStatus" required>
+                            <option value="open">مفتوحة</option>
+                            <option value="closed">مغلقة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vacancyExperience">الخبرة المطلوبة</label>
+                        <input type="text" id="vacancyExperience" placeholder="مثل: 1-3 سنوات">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="vacancyDescription">وصف الوظيفة *</label>
+                        <textarea id="vacancyDescription" required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="vacancyRequirements">المتطلبات *</label>
+                        <textarea id="vacancyRequirements" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="addVacancyBtn"><i class="fas fa-plus"></i> إضافة
+                            شاغر</button>
+                    </div>
+                </div>
+
+                <h3 class="section-subtitle"><i class="fas fa-list"></i> الشواغر الحالية</h3>
+                <section class="vacancies-grid" id="vacanciesList"></section>
+            </div>
+
+            <!-- ================== CHARTS ================== -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>توزيع درجات المتقدمين</h3><canvas id="scoresChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>توزيع تخصصات المتقدمين</h3><canvas id="specializationsChart"></canvas>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <button id="deleteAllBtn" class="btn btn-danger"><i class="fas fa-trash-alt"></i> حذف جميع بيانات
+                    المتقدمين</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================== COMPARISON BAR ================== -->
+    <div class="comparison-bar" id="comparisonBar">
+        <span id="comparisonCount"></span>
+        <button class="btn btn-primary" id="compareBtn"><i class="fas fa-balance-scale"></i> مقارنة</button>
+        <button class="btn" id="clearCompareBtn"><i class="fas fa-times"></i> إلغاء</button>
+    </div>
+
+    <!-- ================== MODALS ================== -->
+    <div class="modal-overlay" id="reportModal" role="dialog" aria-modal="true" aria-label="تقرير المتقدم">
+        <div class="modal-content" id="reportModalContent"></div>
+    </div>
+    <div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-label="معلومات التواصل">
+        <div class="modal-content" id="contactModalContent"></div>
+    </div>
+    <div class="modal-overlay" id="cvModal" role="dialog" aria-modal="true" aria-label="السيرة الذاتية">
+        <div class="modal-content" id="cvModalContent"></div>
+    </div>
+    <div class="modal-overlay" id="comparisonModal" role="dialog" aria-modal="true" aria-label="مقارنة المتقدمين">
+        <div class="modal-content" id="comparisonModalContent"></div>
+    </div>
+    <div class="modal-overlay" id="vacancyModal" role="dialog" aria-modal="true" aria-label="تعديل الشاغر">
+        <div class="modal-content" id="vacancyModalContent"></div>
+    </div>
+
+    <!-- ================== SCRIPTS ================== -->
+    <script>
+
+        class AdminDashboard {
+            constructor() {
+                this.applications = [];
+                this.vacancies = [];
+                this.filters = { search: '', sort: 'newest', specialization: 'all', favorite: 'all' };
+                this.currentTab = 'active';
+                this.comparisonList = new Set();
+                this.charts = { scores: null, specializations: null };
+                this.init();
+            }
+
+            init() {
+                this.cacheDOM();
+                this.loadData();
+                this.bindEvents();
+                this.render();
+            }
+
+            cacheDOM() {
+                this.dom = {
+                    statsGrid: document.getElementById('statsGrid'),
+                    searchInput: document.getElementById('searchInput'),
+                    sortBy: document.getElementById('sortBy'),
+                    filterSpecialization: document.getElementById('filterSpecialization'),
+                    filterFavorite: document.getElementById('filterFavorite'),
+                    tabs: document.querySelectorAll('.tab-btn'),
+                    tabContents: document.querySelectorAll('.tab-content'),
+                    activeApplicantsList: document.getElementById('activeApplicantsList'),
+                    archivedApplicantsList: document.getElementById('archivedApplicantsList'),
+                    comparisonBar: document.getElementById('comparisonBar'),
+                    comparisonCount: document.getElementById('comparisonCount'),
+                    compareBtn: document.getElementById('compareBtn'),
+                    clearCompareBtn: document.getElementById('clearCompareBtn'),
+                    deleteAllBtn: document.getElementById('deleteAllBtn'),
+                    scoresChartCanvas: document.getElementById('scoresChart'),
+                    specializationsChartCanvas: document.getElementById('specializationsChart'),
+                    vacanciesList: document.getElementById('vacanciesList'),
+                    addVacancyBtn: document.getElementById('addVacancyBtn'),
+                    vacancyTitle: document.getElementById('vacancyTitle'),
+                    vacancyDepartment: document.getElementById('vacancyDepartment'),
+                    vacancyLocation: document.getElementById('vacancyLocation'),
+                    vacancyType: document.getElementById('vacancyType'),
+                    vacancyStatus: document.getElementById('vacancyStatus'),
+                    vacancyExperience: document.getElementById('vacancyExperience'),
+                    vacancyDescription: document.getElementById('vacancyDescription'),
+                    vacancyRequirements: document.getElementById('vacancyRequirements'),
+                };
+            }
+
+
+
+            loadData() {
+                this.applications = JSON.parse(localStorage.getItem('submittedApplications')) || [];
+                this.vacancies = JSON.parse(localStorage.getItem('jobVacancies')) || [];
+
+                this.applications.forEach(app => {
+                    if (app.adminState === undefined) {
+                        app.adminState = { isFavorite: false, isArchived: false, notes: '' };
+                    }
+                });
+
+                this.saveData();
+            }
+
+            saveData() {
+                localStorage.setItem('submittedApplications', JSON.stringify(this.applications));
+                localStorage.setItem('jobVacancies', JSON.stringify(this.vacancies));
+            }
+
+            bindEvents() {
+                this.dom.searchInput.addEventListener('input', e => { this.filters.search = e.target.value.toLowerCase(); this.render(); });
+                this.dom.sortBy.addEventListener('change', e => { this.filters.sort = e.target.value; this.render(); });
+                this.dom.filterSpecialization.addEventListener('change', e => { this.filters.specialization = e.target.value; this.render(); });
+                this.dom.filterFavorite.addEventListener('change', e => { this.filters.favorite = e.target.value; this.render(); });
+                this.dom.tabs.forEach(tab => tab.addEventListener('click', e => this.switchTab(e.target.dataset.tab)));
+                document.body.addEventListener('click', this.handleBodyClick.bind(this));
+                this.dom.clearCompareBtn.addEventListener('click', this.clearComparison.bind(this));
+                this.dom.compareBtn.addEventListener('click', this.showComparisonModal.bind(this));
+                this.dom.deleteAllBtn.addEventListener('click', this.deleteAllData.bind(this));
+                this.dom.addVacancyBtn.addEventListener('click', this.addVacancy.bind(this));
+
+                const observer = new MutationObserver(() => {
+                    document.querySelectorAll('.compare-checkbox').forEach(cb => {
+                        cb.onchange = () => this.toggleCompare(cb.dataset.id);
+                    });
+                });
+                observer.observe(this.dom.activeApplicantsList, { childList: true, subtree: true });
+                observer.observe(this.dom.archivedApplicantsList, { childList: true, subtree: true });
+            }
+
+            handleBodyClick(e) {
+                if (e.target.classList.contains('modal-overlay') || e.target.closest('.close-modal')) {
+                    document.querySelectorAll('.modal-overlay.show').forEach(modal => modal.classList.remove('show'));
+                }
+                const cardAction = e.target.closest('[data-action]');
+                if (cardAction) {
+                    e.preventDefault();
+                    const { action, id } = cardAction.dataset;
+                    this.handleCardAction(action, id);
+                }
+                if (e.target.closest('.stat-card')) {
+                    const statId = e.target.closest('.stat-card').dataset.statid;
+                    if (statId === 'top-candidate') this.highlightTopCandidate();
+                }
+                if (e.target.id === 'saveNotesBtn') {
+                    this.saveNotes(e.target.dataset.id);
+                }
+
+                // Vacancy actions
+                if (e.target.classList.contains('edit-vacancy')) {
+                    const vacancyId = e.target.dataset.id;
+                    this.editVacancy(vacancyId);
+                }
+                if (e.target.classList.contains('delete-vacancy')) {
+                    const vacancyId = e.target.dataset.id;
+                    if (confirm('هل أنت متأكد من حذف هذا الشاغر؟')) {
+                        this.deleteVacancy(vacancyId);
+                    }
+                }
+            }
+
+            getScoreColor(score) {
+                if (score < 50) return 'var(--error)';
+                if (score < 75) return 'var(--warning)';
+                if (score < 90) return 'var(--success)';
+                return 'var(--primary)';
+            }
+
+            render() {
+                this.populateFilters();
+                const filtered = this.getFilteredApps();
+                const activeApps = filtered.filter(app => !app.adminState.isArchived);
+                const archivedApps = filtered.filter(app => app.adminState.isArchived);
+                this.renderStats(activeApps);
+                this.renderApplicantList(this.dom.activeApplicantsList, activeApps);
+                this.renderApplicantList(this.dom.archivedApplicantsList, archivedApps);
+                this.renderVacanciesList();
+                this.renderCharts(activeApps);
+                // Render interviews tab
+                const interviewApps = this.applications.filter(app => app.adminState.forInterview && !app.adminState.isArchived);
+                this.renderInterviewsList(this.dom.interviewsApplicantsList, interviewApps);
+            }
+
+            renderInterviewsList(container, apps) {
+                if (apps.length === 0) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; font-size: 1.2rem; padding: 1rem;">لا يوجد متقدمون محددون للمقابلات الحضورية.</p>`;
+                    return;
+                }
+                container.innerHTML = apps.map(app => {
+                    const { basicInfo, finalReport, id, adminState, contactInfo } = app;
+                    const score = finalReport?.finalScore || 0;
+                    return `
+            <div class="applicant-card" id="card-${id}" style="border-left-color: var(--info);">
+                <div class="card-top-actions">
+                    <button class="action-btn interview selected" data-action="interview" data-id="${id}" title="إزالة من المقابلات الحضورية" aria-label="إزالة من المقابلات الحضورية"><i class="fas fa-user-check"></i></button>
+                </div>
+                <div class="applicant-body">
+                    <div class="applicant-header">
+                        <div class="applicant-avatar">${basicInfo.fullName.charAt(0)}</div>
+                        <div class="applicant-info"><h3>${basicInfo.fullName}</h3><p>${basicInfo.specialization}</p></div>
+                        <div class="applicant-score"><div class="score-value" style="color: var(--info);">${score}<small>%</small></div></div>
+                    </div>
+                </div>
+                <div class="applicant-footer">
+                    <button class="btn btn-secondary applicant-footer-btn" data-action="show_cv" data-id="${id}"><i class="fas fa-file-alt"></i> السيرة</button>
+                    <button class="btn btn-secondary applicant-footer-btn" data-action="show_contact" data-id="${id}"><i class="fas fa-address-card"></i> التواصل</button>
+                    <a class="btn btn-primary applicant-footer-btn" href="mailto:${contactInfo?.email || ''}?subject=دعوة للمقابلة الحضورية&body=مرحباً ${basicInfo.fullName}،%0D%0A%0D%0Aندعوك لإجراء مقابلة حضورية معنا. يرجى التواصل معنا لتحديد الموعد.%0D%0A%0D%0Aمع التحية." target="_blank" rel="noopener" title="إرسال بريد إلكتروني"><i class="fas fa-envelope"></i> إرسال بريد</a>
+                </div>
+            </div>`;
+                }).join('');
+            }
+
+            getFilteredApps() {
+                return this.applications.filter(app => {
+                    const searchMatch = app.basicInfo.fullName.toLowerCase().includes(this.filters.search);
+                    const specMatch = this.filters.specialization === 'all' || app.basicInfo.specialization === this.filters.specialization;
+                    const favMatch = this.filters.favorite === 'all' || app.adminState.isFavorite;
+                    return searchMatch && specMatch && favMatch;
+                }).sort((a, b) => {
+                    if (this.filters.sort === 'newest') return new Date(b.submittedAt) - new Date(a.submittedAt);
+                    if (this.filters.sort === 'highest_score') return (b.finalReport?.finalScore || 0) - (a.finalReport?.finalScore || 0);
+                    return 0;
+                });
+            }
+
+            renderStats(apps) {
+                const statsGrid = this.dom.statsGrid;
+                const totalApplicants = apps.length;
+                const avgScore = totalApplicants > 0 ? apps.reduce((sum, app) => sum + (app.finalReport?.finalScore || 0), 0) / totalApplicants : 0;
+                const topCandidate = apps.length > 0 ? apps.reduce((top, current) => ((current.finalReport?.finalScore || 0) > (top.finalReport?.finalScore || 0) ? current : top), apps[0]) : { basicInfo: { fullName: 'N/A' } };
+                const openVacancies = this.vacancies.filter(v => v.status === 'open').length;
+
+                statsGrid.innerHTML = `
+            <div class="stat-card" data-statid="total"><div class="icon"><i class="fas fa-users"></i></div><div class="stat-card-info"><h3>النشطون</h3><p>${totalApplicants}</p></div></div>
+            <div class="stat-card" data-statid="avg-score"><div class="icon"><i class="fas fa-star-half-alt"></i></div><div class="stat-card-info"><h3>متوسط النقاط</h3><p>${avgScore.toFixed(1)}%</p></div></div>
+            <div class="stat-card" data-statid="top-candidate"><div class="icon"><i class="fas fa-trophy"></i></div><div class="stat-card-info"><h3>المرشح الأفضل</h3><p>${topCandidate.basicInfo.fullName}</p></div></div>
+            <div class="stat-card" data-statid="vacancies"><div class="icon"><i class="fas fa-briefcase"></i></div><div class="stat-card-info"><h3>الشواغر المفتوحة</h3><p>${openVacancies}</p></div></div>`;
+            }
+
+            renderApplicantList(container, apps) {
+                if (apps.length === 0) {
+                    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; font-size: 1.2rem; padding: 1rem;">لا يوجد متقدمون هنا.</p>`;
+                    return;
+                }
+                container.innerHTML = apps.map(app => {
+                    const { basicInfo, finalReport, id, adminState } = app;
+                    const score = finalReport?.finalScore || 0;
+                    const scoreColor = this.getScoreColor(score);
+                    return `
+            <div class="applicant-card" id="card-${id}" style="border-left-color: ${scoreColor};">
+                <div class="card-top-actions">
+                    <button class="action-btn favorite ${adminState.isFavorite ? 'favorited' : ''}" data-action="favorite" data-id="${id}" title="تفضيل" aria-label="تفضيل المتقدم"><i class="fas fa-star"></i></button>
+                    <button class="action-btn archive" data-action="${adminState.isArchived ? 'unarchive' : 'archive'}" data-id="${id}" title="${adminState.isArchived ? 'استعادة' : 'أرشفة'}" aria-label="${adminState.isArchived ? 'استعادة المتقدم' : 'أرشفة المتقدم'}"><i class="fas ${adminState.isArchived ? 'fa-undo' : 'fa-archive'}"></i></button>
+                    <button class="action-btn interview ${adminState.forInterview ? 'selected' : ''}" data-action="interview" data-id="${id}" title="${adminState.forInterview ? 'إزالة من المقابلات الحضورية' : 'إضافة إلى المقابلات الحضورية'}" aria-label="${adminState.forInterview ? 'إزالة من المقابلات الحضورية' : 'إضافة إلى المقابلات الحضورية'}"><i class="fas fa-user-check"></i></button>
+                </div>
+                <div class="applicant-body">
+                    <div class="applicant-header">
+                        <div class="checkbox-container"><input type="checkbox" class="compare-checkbox" data-id="${id}" ${this.comparisonList.has(String(id)) ? 'checked' : ''}></div>
+                        <div class="applicant-avatar">${basicInfo.fullName.charAt(0)}</div>
+                        <div class="applicant-info"><h3>${basicInfo.fullName}</h3><p>${basicInfo.specialization}</p></div>
+                        <div class="applicant-score"><div class="score-value" style="color: ${scoreColor};">${score}<small>%</small></div></div>
+                    </div>
+                </div>
+                <div class="applicant-footer">
+                    <button class="btn btn-secondary applicant-footer-btn" data-action="show_cv" data-id="${id}"><i class="fas fa-file-alt"></i> السيرة</button>
+                    <button class="btn btn-secondary applicant-footer-btn" data-action="show_contact" data-id="${id}"><i class="fas fa-address-card"></i> التواصل</button>
+                    <button class="btn btn-primary applicant-footer-btn" data-action="show_report" data-id="${id}"><i class="fas fa-eye"></i> التقرير</button>
+                </div>
+            </div>`;
+                }).join('');
+            }
+
+            renderVacanciesList() {
+                const vacanciesList = this.dom.vacanciesList;
+                if (this.vacancies.length === 0) {
+                    vacanciesList.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; font-size: 1.2rem; padding: 1rem;">لا توجد شواغر وظيفية.</p>`;
+                    return;
+                }
+
+                vacanciesList.innerHTML = this.vacancies.map(vacancy => {
+                    return `
+            <div class="vacancy-card" id="vacancy-${vacancy.id}">
+                <div class="card-top-actions">
+                    <button class="action-btn edit-vacancy" data-id="${vacancy.id}" title="تعديل" aria-label="تعديل الشاغر"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete-vacancy" data-id="${vacancy.id}" title="حذف" aria-label="حذف الشاغر"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="vacancy-header">
+                    <h3>${vacancy.title}</h3>
+                    <span class="vacancy-status ${vacancy.status === 'open' ? 'status-open' : 'status-closed'}">
+                        ${vacancy.status === 'open' ? 'مفتوحة' : 'مغلقة'}
+                    </span>
+                </div>
+                <div class="vacancy-details">
+                    <p><strong>القسم:</strong> ${vacancy.department}</p>
+                    <p><strong>الموقع:</strong> ${vacancy.location}</p>
+                    <p><strong>نوع الوظيفة:</strong> ${vacancy.type}</p>
+                    <p><strong>الخبرة المطلوبة:</strong> ${vacancy.experience}</p>
+                </div>
+                <div class="vacancy-actions">
+                    <button class="btn btn-primary" onclick="window.adminDashboard && window.adminDashboard.compareBestApplicants && window.adminDashboard.compareBestApplicants(${vacancy.id})"><i class="fas fa-balance-scale"></i> مقارنة أفضل المتقدمين (النشطون)</button>
+                </div>
+            </div>`;
+                }).join('');
+            }
+
+            populateFilters() {
+                const specializations = [...new Set(this.applications.map(app => app.basicInfo.specialization))];
+                const currentVal = this.dom.filterSpecialization.value;
+                this.dom.filterSpecialization.innerHTML = '<option value="all">كل التخصصات</option>';
+                specializations.forEach(spec => {
+                    this.dom.filterSpecialization.innerHTML += `<option value="${spec}" ${spec === currentVal ? 'selected' : ''}>${spec}</option>`;
+                });
+            }
+
+            switchTab(tabId) {
+                this.currentTab = tabId;
+                this.dom.tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tab === tabId));
+                this.dom.tabContents.forEach(content => content.classList.toggle('active', content.id === tabId));
+            }
+
+            handleCardAction(action, id) {
+                const app = this.applications.find(a => a.id == id);
+                if (!app) return;
+                switch (action) {
+                    case 'favorite':
+                        app.adminState.isFavorite = !app.adminState.isFavorite;
+                        break;
+                    case 'archive':
+                        app.adminState.isArchived = true;
+                        break;
+                    case 'unarchive':
+                        app.adminState.isArchived = false;
+                        break;
+                    case 'interview':
+                        app.adminState.forInterview = !app.adminState.forInterview;
+                        break;
+                    case 'show_cv':
+                        this.showCvModal(app);
+                        break;
+                    case 'show_contact':
+                        this.showContactModal(app);
+                        break;
+                    case 'show_report':
+                        this.showReportModal(app);
+                        break;
+                }
+                if (action.includes('archive') || action === 'favorite' || action === 'interview') {
+                    this.saveData();
+                    this.render();
+                }
+            }
+
+            showModal(modalId, content) {
+                const modal = document.getElementById(modalId);
+                modal.querySelector('.modal-content').innerHTML = content;
+                modal.classList.add('show');
+            }
+
+            async showReportModal(app) {
+                const { basicInfo, finalReport, adminState, id } = app;
+                
+                // عرض مؤشر التحميل
+                const loadingContent = `
+                    <div class="modal-header">
+                        <h2>تحليل متقدم لـ ${basicInfo.fullName}</h2>
+                        <button class="close-modal">×</button>
+                    </div>
+                    <div class="modal-body" style="text-align: center; padding: 2rem;">
+                        <div class="loading-spinner" style="margin: 0 auto 1rem;"></div>
+                        <p>جاري إجراء التحليل المتقدم...</p>
+                    </div>`;
+                this.showModal('reportModal', loadingContent);
+
+                try {
+                    // تشغيل التحليل المتقدم
+                    const advancedAnalysis = await enhancedAnalyzer.analyzeApplicantAdvanced(app);
+                    
+                    // إنشاء المحتوى المحسن
+                    const content = this.generateAdvancedReportContent(basicInfo, advancedAnalysis, adminState, id, finalReport);
+                    this.showModal('reportModal', content);
+                    
+                    // تمت إزالة استدعاء الرسم البياني
+                    
+                } catch (error) {
+                    console.error('خطأ في التحليل المتقدم:', error);
+                    // العودة للتقرير الأساسي في حالة الخطأ
+                    const fallbackContent = this.generateBasicReportContent(basicInfo, finalReport, adminState, id);
+                    this.showModal('reportModal', fallbackContent);
+                }
+            }
+
+            generateAdvancedReportContent(basicInfo, analysis, adminState, id, finalReport) {
+                const recommendation = analysis.hiringRecommendation || {};
+                const riskAssessment = analysis.riskAssessment || {};
+                const salaryBand = analysis.salaryBand || {};
+                
+                return `
+                <div class="modal-header">
+                    <h2><i class="fas fa-user-graduate"></i> التحليل المتقدم لـ ${basicInfo.fullName}</h2>
+                    <button class="close-modal">×</button>
+                </div>
+                <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
+                    
+                    <!-- ملخص التقييم -->
+                    <div class="detail-card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-right: 4px solid ${this.getScoreColor(analysis.overallScore)};">
+                        <h3><i class="fas fa-trophy"></i> النتيجة الإجمالية: ${analysis.overallScore}%</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                            <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">${analysis.detailedScores.experience || 0}%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">الخبرة</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">${analysis.detailedScores.education || 0}%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">التعليم</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">${analysis.detailedScores.skills || 0}%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">المهارات</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">${analysis.detailedScores.personality || 0}%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">الشخصية</div>
+                            </div>
+                            <div style="text-align: center; padding: 0.5rem; background: white; border-radius: 8px;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary);">${analysis.compatibilityScore || 0}%</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">التوافق</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- توصية التوظيف -->
+                    <div class="detail-card" style="border-right: 4px solid ${this.getRecommendationColor(recommendation.decision)};">
+                        <h3><i class="fas fa-clipboard-check"></i> توصية التوظيف</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: ${this.getRecommendationColor(recommendation.decision)};">
+                                    ${recommendation.decision || 'غير محدد'}
+                                </div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                                    مستوى الثقة: ${recommendation.confidence || 0}%
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">الإطار الزمني</div>
+                                <div style="font-weight: bold;">${recommendation.timeline || 'غير محدد'}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <strong>الأسباب:</strong>
+                            <ul style="margin: 0.5rem 0; padding-right: 1.5rem;">
+                                ${(recommendation.reasoning || []).map(reason => `<li>${reason}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <strong>الخطوات التالية:</strong>
+                            <ul style="margin: 0.5rem 0; padding-right: 1.5rem;">
+                                ${(recommendation.nextSteps || []).map(step => `<li>${step}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- نقاط القوة والضعف -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                        <div class="detail-card" style="border-right: 4px solid #22c55e;">
+                            <h3><i class="fas fa-thumbs-up"></i> نقاط القوة</h3>
+                            ${(analysis.strengths || []).map(strength => `
+                                <div style="margin: 0.5rem 0; padding: 0.5rem; background: #f0f9f0; border-radius: 6px;">
+                                    <div style="font-weight: bold; color: #22c55e;">${strength.category}</div>
+                                    <div style="font-size: 0.9rem;">${strength.description}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary);">النتيجة: ${strength.score}%</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="detail-card" style="border-right: 4px solid #ef4444;">
+                            <h3><i class="fas fa-exclamation-triangle"></i> نقاط التطوير</h3>
+                            ${(analysis.weaknesses || []).map(weakness => `
+                                <div style="margin: 0.5rem 0; padding: 0.5rem; background: #fef2f2; border-radius: 6px;">
+                                    <div style="font-weight: bold; color: #ef4444;">${weakness.category}</div>
+                                    <div style="font-size: 0.9rem;">${weakness.description}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary);">التحسين: ${weakness.improvement || 'غير محدد'}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- تقييم المخاطر -->
+                    ${riskAssessment.riskFactors && riskAssessment.riskFactors.length > 0 ? `
+                    <div class="detail-card" style="border-right: 4px solid #f59e0b;">
+                        <h3><i class="fas fa-shield-alt"></i> تقييم المخاطر - مستوى المخاطرة: ${riskAssessment.overallRisk}</h3>
+                        ${riskAssessment.riskFactors.map(risk => `
+                            <div style="margin: 0.5rem 0; padding: 0.5rem; background: #fffbeb; border-radius: 6px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-weight: bold;">${risk.description}</span>
+                                    <span style="background: ${this.getRiskColor(risk.level)}; color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.8rem;">${risk.level}</span>
+                                </div>
+                                <div style="font-size: 0.9rem; margin-top: 0.3rem;">${risk.impact}</div>
+                            </div>
+                        `).join('')}
+                        ${riskAssessment.mitigationStrategies && riskAssessment.mitigationStrategies.length > 0 ? `
+                        <div style="margin-top: 1rem;">
+                            <strong>استراتيجيات التخفيف:</strong>
+                            <ul style="margin: 0.5rem 0; padding-right: 1.5rem;">
+                                ${riskAssessment.mitigationStrategies.map(strategy => `<li>${strategy}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ` : ''}
+                    </div>
+                    ` : ''}
+
+                    <!-- نطاق الراتب المقترح -->
+                    ${salaryBand.minimum ? `
+                    <div class="detail-card" style="border-right: 4px solid #8b5cf6;">
+                        <h3><i class="fas fa-money-bill-wave"></i> نطاق الراتب المقترح</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">${salaryBand.minimum}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">الحد الأدنى</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">${salaryBand.recommended}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">المقترح</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">${salaryBand.maximum}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">الحد الأقصى</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            ${salaryBand.justification || ''}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                <!-- تمت إزالة قسم التحليل البصري -->
+
+                    <!-- التقرير الأساسي (إذا توفر) -->
+                    ${finalReport ? `
+                    <div class="detail-card" style="border-right: 4px solid #6b7280;">
+                        <h3><i class="fas fa-file-alt"></i> التقرير الأساسي</h3>
+                        <p><strong>الخلاصة:</strong> ${finalReport.finalVerdict || 'لا يوجد'}</p>
+                        <p><strong>انطباع الذكاء الاصطناعي:</strong></p>
+                        <p style="font-style: italic; background: #f8f9fa; padding: 1rem; border-radius: 6px;">${finalReport.aiImpression || 'لا يوجد'}</p>
+                    </div>
+                    ` : ''}
+
+                    <!-- ملاحظات المسؤول -->
+                    <div class="notes-section" style="margin-top: 1rem;">
+                        <h3><i class="fas fa-sticky-note"></i> ملاحظات المسؤول</h3>
+                        <textarea id="adminNotes" placeholder="اكتب ملاحظاتك هنا..." style="width: 100%; min-height: 100px; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 6px; font-family: inherit;">${adminState.notes}</textarea>
+                        <button id="saveNotesBtn" class="btn btn-primary" data-id="${id}" style="margin-top: 0.5rem;">
+                            <i class="fas fa-save"></i> حفظ الملاحظات
+                        </button>
+                    </div>
+
+                    <!-- إخلاء المسؤولية -->
+                    <div class="disclaimer" style="margin-top: 1rem;">
+                        <i class="fas fa-info-circle"></i>
+                        هذا التحليل مبني على الذكاء الاصطناعي وهو للمساعدة فقط. يجب مراجعة جميع القرارات من قبل المسؤولين المختصين.
+                    </div>
+                </div>`;
+            }
+
+            generateBasicReportContent(basicInfo, finalReport, adminState, id) {
+                return `
+                <div class="modal-header">
+                    <h2>التقرير الأساسي لـ ${basicInfo.fullName}</h2>
+                    <button class="close-modal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-card">
+                        <h3><i class="fas fa-bullseye"></i> التقييم النهائي: ${finalReport?.finalScore || 0}%</h3>
+                        <p><strong>الخلاصة:</strong> ${finalReport?.finalVerdict || 'لا يوجد'}</p>
+                        <p><strong>نقاط القوة:</strong></p>
+                        <ul>${(finalReport?.strengths || []).map(s => `<li>${s}</li>`).join('')}</ul>
+                        <p><strong>مجالات التطوير:</strong></p>
+                        <ul>${(finalReport?.improvements || []).map(i => `<li>${i}</li>`).join('')}</ul>
+                        <p><strong>انطباع الذكاء الاصطناعي:</strong></p>
+                        <p>${finalReport?.aiImpression || 'لا يوجد'}</p>
+                    </div>
+                    <div class="notes-section" style="margin-top: 1rem;">
+                        <h3><i class="fas fa-sticky-note"></i> ملاحظات المسؤول</h3>
+                        <textarea id="adminNotes" placeholder="اكتب ملاحظاتك هنا...">${adminState.notes}</textarea>
+                        <button id="saveNotesBtn" class="btn btn-primary" data-id="${id}">حفظ الملاحظات</button>
+                    </div>
+                </div>`;
+            }
+
+            renderAnalysisCharts(analysis) {
+                const canvas = document.getElementById('analysisChart');
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['الخبرة', 'التعليم', 'المهارات', 'الشخصية', 'التوافق'],
+                        datasets: [{
+                            label: 'تقييم المتقدم',
+                            data: [
+                                analysis.detailedScores.experience || 0,
+                                analysis.detailedScores.education || 0,
+                                analysis.detailedScores.skills || 0,
+                                analysis.detailedScores.personality || 0,
+                                analysis.compatibilityScore || 0
+                            ],
+                            backgroundColor: 'rgba(46, 139, 87, 0.2)',
+                            borderColor: 'rgba(46, 139, 87, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(46, 139, 87, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(46, 139, 87, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+
+            getRecommendationColor(decision) {
+                const colors = {
+                    'توظيف فوري': '#22c55e',
+                    'توظيف مشروط': '#f59e0b',
+                    'قائمة انتظار': '#6b7280',
+                    'رفض مهذب': '#ef4444'
+                };
+                return colors[decision] || '#6b7280';
+            }
+
+            getRiskColor(level) {
+                const colors = {
+                    'عالي': '#ef4444',
+                    'متوسط': '#f59e0b',
+                    'منخفض': '#22c55e'
+                };
+                return colors[level] || '#6b7280';
+            }
+
+            showCvModal(app) {
+                const { basicInfo, cvText } = app;
+                const content = ` 
+        <div class="modal-header">
+            <h2>سيرة ${basicInfo.fullName}</h2>
+            <button class="close-modal">×</button>
+        </div> 
+        <div class="modal-body"> 
+            <div class="cv-content">${cvText ? cvText.replace(/\n/g, '<br>') : 'لا توجد سيرة ذاتية.'}</div> 
+        </div> `;
+                this.showModal('cvModal', content);
+            }
+
+            showContactModal(app) {
+                const { contactInfo, basicInfo } = app;
+                const content = ` 
+        <div class="modal-header">
+            <h2>معلومات التواصل لـ ${basicInfo.fullName}</h2>
+            <button class="close-modal">×</button>
+        </div> 
+        <div class="modal-body"> 
+            <div class="contact-item">
+                <span><i class="fas fa-envelope"></i> البريد الإلكتروني</span>
+                <span>${contactInfo?.email || '-'}</span>
+            </div> 
+            <div class="contact-item">
+                <span><i class="fas fa-phone"></i> الجوال</span>
+                <span>${contactInfo?.phone || '-'}</span>
+            </div> 
+        </div> `;
+                this.showModal('contactModal', content);
+            }
+
+            saveNotes(id) {
+                const app = this.applications.find(a => a.id == id);
+                if (!app) return;
+                app.adminState.notes = document.getElementById('adminNotes').value;
+                this.saveData();
+                showAdminToast('تم حفظ الملاحظات بنجاح!');
+            }
+
+            toggleCompare(id) {
+                if (this.comparisonList.has(id)) {
+                    this.comparisonList.delete(id);
+                } else {
+                    this.comparisonList.add(id);
+                }
+                this.updateComparisonBar();
+            }
+
+            updateComparisonBar() {
+                if (this.comparisonList.size > 1) {
+                    this.dom.comparisonCount.textContent = `${this.comparisonList.size} متقدمين للمقارنة`;
+                    this.dom.comparisonBar.classList.add('show');
+                } else {
+                    this.dom.comparisonBar.classList.remove('show');
+                }
+            }
+
+            clearComparison() {
+                document.querySelectorAll('.compare-checkbox:checked').forEach(cb => cb.checked = false);
+                this.comparisonList.clear();
+                this.updateComparisonBar();
+            }
+
+            showComparisonModal() {
+                const appsToCompare = this.applications.filter(app => this.comparisonList.has(String(app.id)));
+                let content = `
+        <div class="modal-header">
+            <h2>مقارنة المرشحين (${appsToCompare.length})</h2>
+            <button class="close-modal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="comparison-grid" style="grid-template-columns: repeat(${Math.min(appsToCompare.length, 3)}, 1fr);">`;
+
+                appsToCompare.forEach(app => {
+                    content += `
+            <div class="comparison-column">
+                <h4>${app.basicInfo.fullName}</h4>
+                <div class="comparison-item"><strong>التقييم:</strong><p>${app.finalReport?.finalScore || 0}%</p></div>
+                <div class="comparison-item"><strong>التخصص:</strong><p>${app.basicInfo.specialization}</p></div>
+                <div class="comparison-item"><strong>الخبرة:</strong><p>${app.basicInfo.experience}</p></div>
+                <div class="comparison-item"><strong>نقاط القوة:</strong><ul>${(app.finalReport?.strengths || ['-']).map(s => `<li>${s}</li>`).join('')}</ul></div>
+            </div>`;
+                });
+
+                content += `</div></div>`;
+                this.showModal('comparisonModal', content);
+            }
+
+            deleteAllData() {
+                if (confirm('هل أنت متأكد من حذف جميع بيانات المتقدمين؟ لا يمكن التراجع عن هذا الإجراء!')) {
+                    localStorage.removeItem('submittedApplications');
+                    this.applications = [];
+                    this.render();
+                    showAdminToast("تم حذف جميع البيانات.");
+                }
+            }
+
+            highlightTopCandidate() {
+                const activeApps = this.applications.filter(app => !app.adminState.isArchived);
+                if (activeApps.length === 0) return;
+                const topCandidate = activeApps.reduce((top, current) => ((current.finalReport?.finalScore || 0) > (top.finalReport?.finalScore || 0) ? current : top), activeApps[0]);
+                const card = document.getElementById(`card-${topCandidate.id}`);
+                if (card) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    card.classList.add('highlight');
+                    setTimeout(() => card.classList.remove('highlight'), 2500);
+                }
+            }
+
+            renderCharts(apps) {
+                if (apps.length === 0) {
+                    if (this.charts.scores) this.charts.scores.destroy();
+                    if (this.charts.specializations) this.charts.specializations.destroy();
+                    this.dom.scoresChartCanvas.style.display = 'none';
+                    this.dom.specializationsChartCanvas.style.display = 'none';
+                    return;
+                }
+                this.dom.scoresChartCanvas.style.display = 'block';
+                this.dom.specializationsChartCanvas.style.display = 'block';
+
+                // Scores Chart (Doughnut)
+                const scoreData = { '< 50': 0, '50-74': 0, '75-89': 0, '90+': 0 };
+                apps.forEach(app => {
+                    const score = app.finalReport?.finalScore || 0;
+                    if (score < 50) scoreData['< 50']++;
+                    else if (score < 75) scoreData['50-74']++;
+                    else if (score < 90) scoreData['75-89']++;
+                    else scoreData['90+']++;
+                });
+
+                if (this.charts.scores) this.charts.scores.destroy();
+                this.charts.scores = new Chart(this.dom.scoresChartCanvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(scoreData),
+                        datasets: [{
+                            label: 'عدد المتقدمين',
+                            data: Object.values(scoreData),
+                            backgroundColor: ['var(--error)', 'var(--warning)', 'var(--info)', 'var(--primary)'],
+                            borderColor: getComputedStyle(document.body).getPropertyValue('--bg-content'),
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } } }
+                });
+
+                // Specializations Chart (Pie)
+                const specData = {};
+                apps.forEach(app => {
+                    const spec = app.basicInfo.specialization || 'غير محدد';
+                    specData[spec] = (specData[spec] || 0) + 1;
+                });
+
+                if (this.charts.specializations) this.charts.specializations.destroy();
+                this.charts.specializations = new Chart(this.dom.specializationsChartCanvas, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.keys(specData),
+                        datasets: [{
+                            label: 'التخصصات',
+                            data: Object.values(specData),
+                            backgroundColor: ['#2E8B57', '#FF6347', '#4682B4', '#FFD700', '#6A5ACD', '#DAA520', '#C71585', '#008080'],
+                            borderColor: getComputedStyle(document.body).getPropertyValue('--bg-content'),
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } } }
+                });
+            }
+
+            // Vacancy Management Functions
+            addVacancy() {
+                const title = this.dom.vacancyTitle.value.trim();
+                const department = this.dom.vacancyDepartment.value.trim();
+                const description = this.dom.vacancyDescription.value.trim();
+                const requirements = this.dom.vacancyRequirements.value.trim();
+
+                if (!title || !department || !description || !requirements) {
+                    alert('يرجى ملء جميع الحقول المطلوبة');
+                    return;
+                }
+
+                const newVacancy = {
+                    id: Date.now(),
+                    title,
+                    department,
+                    location: this.dom.vacancyLocation.value || 'غير محدد',
+                    type: this.dom.vacancyType.value,
+                    status: this.dom.vacancyStatus.value,
+                    experience: this.dom.vacancyExperience.value || 'غير محدد',
+                    description,
+                    requirements,
+                    createdAt: new Date().toISOString(),
+                    applicants: 0
+                };
+
+                this.vacancies.unshift(newVacancy);
+                this.saveData();
+                this.renderVacanciesList();
+
+                // Reset form
+                this.dom.vacancyTitle.value = '';
+                this.dom.vacancyDepartment.value = '';
+                this.dom.vacancyLocation.value = '';
+                this.dom.vacancyType.value = 'دوام كامل';
+                this.dom.vacancyStatus.value = 'open';
+                this.dom.vacancyExperience.value = '';
+                this.dom.vacancyDescription.value = '';
+                this.dom.vacancyRequirements.value = '';
+
+                showAdminToast('تم إضافة الشاغر بنجاح!');
+            }
+
+            editVacancy(id) {
+                const vacancy = this.vacancies.find(v => v.id == id);
+                if (!vacancy) return;
+
+                const content = `
+        <div class="modal-header">
+            <h2>تعديل شاغر: ${vacancy.title}</h2>
+            <button class="close-modal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="vacancy-form">
+                <div class="form-group">
+                    <label for="editVacancyTitle">عنوان الوظيفة *</label>
+                    <input type="text" id="editVacancyTitle" value="${vacancy.title}" required>
+                </div>
+                <div class="form-group">
+                    <label for="editVacancyDepartment">القسم *</label>
+                    <select id="editVacancyDepartment" required>
+                        <option value="الهندسة" ${vacancy.department === 'الهندسة' ? 'selected' : ''}>الهندسة</option>
+                        <option value="التشغيل والصيانة" ${vacancy.department === 'التشغيل والصيانة' ? 'selected' : ''}>التشغيل والصيانة</option>
+                        <option value="الصيدلة" ${vacancy.department === 'الصيدلة' ? 'selected' : ''}>الصيدلة</option>
+                        <option value="الجودة" ${vacancy.department === 'الجودة' ? 'selected' : ''}>الجودة</option>
+                        <option value="اللوجستيات" ${vacancy.department === 'اللوجستيات' ? 'selected' : ''}>اللوجستيات</option>
+                        <option value="الإدارة" ${vacancy.department === 'الإدارة' ? 'selected' : ''}>الإدارة</option>
+                        <option value="التقنية" ${vacancy.department === 'التقنية' ? 'selected' : ''}>التقنية</option>
+                        <option value="التسويق" ${vacancy.department === 'التسويق' ? 'selected' : ''}>التسويق</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editVacancyLocation">الموقع</label>
+                    <input type="text" id="editVacancyLocation" value="${vacancy.location}" placeholder="مثل: الرياض، عن بعد">
+                </div>
+                <div class="form-group">
+                    <label for="editVacancyType">نوع الوظيفة *</label>
+                    <select id="editVacancyType" required>
+                        <option value="دوام كامل" ${vacancy.type === 'دوام كامل' ? 'selected' : ''}>دوام كامل</option>
+                        <option value="دوام جزئي" ${vacancy.type === 'دوام جزئي' ? 'selected' : ''}>دوام جزئي</option>
+                        <option value="مشروع مؤقت" ${vacancy.type === 'مشروع مؤقت' ? 'selected' : ''}>مشروع مؤقت</option>
+                        <option value="تدريب" ${vacancy.type === 'تدريب' ? 'selected' : ''}>تدريب</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editVacancyStatus">الحالة *</label>
+                    <select id="editVacancyStatus" required>
+                        <option value="open" ${vacancy.status === 'open' ? 'selected' : ''}>مفتوحة</option>
+                        <option value="closed" ${vacancy.status === 'closed' ? 'selected' : ''}>مغلقة</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editVacancyExperience">الخبرة المطلوبة</label>
+                    <input type="text" id="editVacancyExperience" value="${vacancy.experience}" placeholder="مثل: 1-3 سنوات">
+                </div>
+                <div class="form-group full-width">
+                    <label for="editVacancyDescription">وصف الوظيفة *</label>
+                    <textarea id="editVacancyDescription" required>${vacancy.description}</textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="editVacancyRequirements">المتطلبات *</label>
+                    <textarea id="editVacancyRequirements" required>${vacancy.requirements}</textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" id="saveVacancyBtn" data-id="${id}">حفظ التعديلات</button>
+                </div>
+            </div>
+        </div>`;
+
+                this.showModal('vacancyModal', content);
+
+                document.getElementById('saveVacancyBtn').addEventListener('click', () => {
+                    this.saveVacancyChanges(id);
+                });
+            }
+
+            saveVacancyChanges(id) {
+                const vacancy = this.vacancies.find(v => v.id == id);
+                if (!vacancy) return;
+
+                vacancy.title = document.getElementById('editVacancyTitle').value;
+                vacancy.department = document.getElementById('editVacancyDepartment').value;
+                vacancy.location = document.getElementById('editVacancyLocation').value;
+                vacancy.type = document.getElementById('editVacancyType').value;
+                vacancy.status = document.getElementById('editVacancyStatus').value;
+                vacancy.experience = document.getElementById('editVacancyExperience').value;
+                vacancy.description = document.getElementById('editVacancyDescription').value;
+                vacancy.requirements = document.getElementById('editVacancyRequirements').value;
+
+                this.saveData();
+                this.renderVacanciesList();
+                document.getElementById('vacancyModal').classList.remove('show');
+                showAdminToast('تم تحديث الشاغر بنجاح!');
+            }
+
+            deleteVacancy(id) {
+                this.vacancies = this.vacancies.filter(v => v.id != id);
+                this.saveData();
+                this.renderVacanciesList();
+                showAdminToast('تم حذف الشاغر بنجاح!');
+            }
+            // مقارنة أفضل المتقدمين بناءً على النشطون
+            compareBestApplicants(vacancyId) {
+                const vacancy = this.vacancies.find(v => v.id == vacancyId);
+                if (!vacancy) {
+                    alert('الشاغر غير موجود.');
+                    return;
+                }
+                // جلب المتقدمين النشطين لهذا الشاغر (حسب التخصص أو القسم)
+                const activeApplicants = this.applications.filter(app =>
+                    !app.adminState.isArchived &&
+                    app.basicInfo.specialization === vacancy.department
+                );
+                if (activeApplicants.length === 0) {
+                    alert('لا يوجد متقدمون نشطون لهذا الشاغر.');
+                    return;
+                }
+                // ترتيب المتقدمين حسب التقييم النهائي
+                const sorted = [...activeApplicants].sort((a, b) => (b.finalReport?.finalScore || 0) - (a.finalReport?.finalScore || 0));
+                // عرض أفضل 3 متقدمين (أو أقل إذا لم يوجد)
+                const topApplicants = sorted.slice(0, 3);
+                let content = `
+        <div class="modal-header">
+            <h2>أفضل المتقدمين لشاغر: ${vacancy.title}</h2>
+            <button class="close-modal">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="comparison-grid" style="grid-template-columns: repeat(${topApplicants.length}, 1fr);">
+        `;
+                topApplicants.forEach(app => {
+                    content += `
+            <div class="comparison-column">
+                <h4>${app.basicInfo.fullName}</h4>
+                <div class="comparison-item"><strong>التقييم:</strong><p>${app.finalReport?.finalScore || 0}%</p></div>
+                <div class="comparison-item"><strong>التخصص:</strong><p>${app.basicInfo.specialization}</p></div>
+                <div class="comparison-item"><strong>الخبرة:</strong><p>${app.basicInfo.experience}</p></div>
+                <div class="comparison-item"><strong>نقاط القوة:</strong><ul>${(app.finalReport?.strengths || ['-']).map(s => `<li>${s}</li>`).join('')}</ul></div>
+            </div>
+            `;
+                });
+                content += `</div></div>`;
+                this.showModal('comparisonModal', content);
+            }
+        }
+        window.adminDashboard = AdminDashboard.prototype;
+
+        // --- Authentication Controller ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hardcoded credentials for simulation purposes
+            const ADMIN_EMAIL = 'admin@login.com';
+            const ADMIN_PASS = 'admin12345';
+
+            const loginOverlay = document.getElementById('loginOverlay');
+            const loginForm = document.getElementById('loginForm');
+            const adminEmailInput = document.getElementById('adminEmail');
+            const adminPasswordInput = document.getElementById('adminPassword');
+            const loginError = document.getElementById('loginError');
+            const mainDashboard = document.getElementById('mainDashboard');
+
+            function showDashboard() {
+                loginOverlay.style.display = 'none';
+                mainDashboard.classList.remove('hidden');
+                new AdminDashboard();
+            }
+
+            function showLogin() {
+                loginOverlay.style.display = 'flex';
+                mainDashboard.classList.add('hidden');
+            }
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loginError.textContent = '';
+                const loginBtn = loginForm.querySelector('button[type="submit"]');
+                loginBtn.disabled = true;
+                const originalHTML = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:3px;vertical-align:middle;margin-left:8px;"></span> جاري التحقق...';
+
+                setTimeout(() => {
+                    sessionStorage.setItem('isAdminAuthenticated', 'true');
+                    showDashboard();
+                }, 700);
+            });
+
+            if (sessionStorage.getItem('isAdminAuthenticated') === 'true') {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        });
+
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "GEMINI_KEY_REDACTED",
+            authDomain: "hhik-84675.firebaseapp.com",
+            projectId: "hhik-84675",
+            storageBucket: "hhik-84675.firebasestorage.app",
+            messagingSenderId: "821899837955",
+            appId: "1:821899837955:web:8bf83abb5adcf193124436",
+            measurementId: "G-36WM8MVK0N"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        // --- Toast/Snackbar Notification ---
+        (function () {
+            const toast = document.createElement('div');
+            toast.id = 'adminToast';
+            toast.setAttribute('role', 'status');
+            toast.setAttribute('aria-live', 'polite');
+            toast.style.cssText = `
+        position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+        background: var(--primary-dark); color: #fff; padding: 1rem 2rem;
+        border-radius: 2rem; box-shadow: var(--shadow-md); font-size: 1rem;
+        z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.4s;
+        min-width: 180px; text-align: center;
+    `;
+            document.body.appendChild(toast);
+            window.showAdminToast = function (msg, duration = 2200) {
+                toast.textContent = msg;
+                toast.style.opacity = '1';
+                setTimeout(() => { toast.style.opacity = '0'; }, duration);
+            };
+        })();
+        // --- Theme Toggle Logic ---
+        (function () {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeToggleBtn');
+            const icon = btn.querySelector('i');
+            const THEME_KEY = 'adminTheme';
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                btn.setAttribute('aria-label', theme === 'dark' ? 'تبديل إلى الوضع النهاري' : 'تبديل إلى الوضع الليلي');
+                localStorage.setItem(THEME_KEY, theme);
+            }
+            function toggleTheme() {
+                const current = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                setTheme(current);
+            }
+            btn.addEventListener('click', toggleTheme);
+            btn.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleTheme();
+                }
+            });
+            // Init
+            const saved = localStorage.getItem(THEME_KEY);
+            setTheme(saved === 'dark' ? 'dark' : 'light');
+        })();
+        const db = firebase.firestore();
+        
+        // ===== نظام التحليل المتقدم للمتقدمين =====
+        class EnhancedApplicantAnalyzer {
+            constructor() {
+                this.aiAnalyzer = new AdvancedAIAnalyzer();
+                this.analysisCache = new Map();
+            }
+
+            /**
+             * تحليل متقدم للمتقدم مع تقرير مفصل
+             */
+            async analyzeApplicantAdvanced(applicant) {
+                try {
+                    // التحقق من وجود تحليل مخزن مؤقتاً
+                    const cacheKey = `${applicant.id}_${applicant.lastModified || Date.now()}`;
+                    if (this.analysisCache.has(cacheKey)) {
+                        return this.analysisCache.get(cacheKey);
+                    }
+
+                    // إعداد بيانات المتقدم للتحليل
+                    const applicantData = {
+                        id: applicant.id,
+                        name: applicant.name,
+                        email: applicant.email,
+                        phone: applicant.phone,
+                        cvContent: applicant.cvContent || applicant.cv || '',
+                        targetPosition: applicant.position || applicant.desiredField,
+                        interviewData: applicant.interviewResponses ? {
+                            responses: applicant.interviewResponses,
+                            duration: applicant.interviewDuration,
+                            confidence: applicant.confidenceLevel
+                        } : null,
+                        applicationDate: applicant.applicationDate,
+                        experience: applicant.experience,
+                        education: applicant.education
+                    };
+
+                    // تشغيل التحليل المتقدم
+                    const analysis = await this.aiAnalyzer.analyzeApplicant(applicantData);
+                    
+                    // إضافة تحليلات إضافية خاصة بالنظام
+                    analysis.systemAnalysis = await this.performSystemSpecificAnalysis(applicant);
+                    analysis.riskAssessment = this.performRiskAssessment(applicant, analysis);
+                    analysis.hiringRecommendation = this.generateHiringRecommendation(analysis);
+                    analysis.salaryBand = this.calculateSalaryBand(analysis, applicant.targetPosition);
+                    analysis.onboardingPlan = this.generateOnboardingPlan(analysis);
+
+                    // حفظ في الذاكرة المؤقتة
+                    this.analysisCache.set(cacheKey, analysis);
+                    
+                    return analysis;
+                } catch (error) {
+                    console.error('خطأ في التحليل المتقدم:', error);
+                    return this.generateFallbackAnalysis(applicant);
+                }
+            }
+
+            /**
+             * تحليل خاص بالنظام
+             */
+            async performSystemSpecificAnalysis(applicant) {
+                const systemAnalysis = {
+                    applicationCompleteness: this.assessApplicationCompleteness(applicant),
+                    responseTime: this.calculateResponseTime(applicant),
+                    documentQuality: this.assessDocumentQuality(applicant),
+                    communicationSkills: this.assessCommunicationFromApplication(applicant),
+                    technicalFit: this.assessTechnicalFit(applicant),
+                    culturalAlignment: this.assessCulturalAlignment(applicant)
+                };
+
+                return systemAnalysis;
+            }
+
+            /**
+             * تقييم اكتمال الطلب
+             */
+            assessApplicationCompleteness(applicant) {
+                const requiredFields = ['name', 'email', 'phone', 'cv', 'position'];
+                const optionalFields = ['coverLetter', 'portfolio', 'references'];
+                
+                let completeness = 0;
+                let missingRequired = [];
+                let missingOptional = [];
+
+                requiredFields.forEach(field => {
+                    if (applicant[field] && applicant[field].trim()) {
+                        completeness += 20; // 100% / 5 required fields
+                    } else {
+                        missingRequired.push(field);
+                    }
+                });
+
+                optionalFields.forEach(field => {
+                    if (!applicant[field] || !applicant[field].trim()) {
+                        missingOptional.push(field);
+                    }
+                });
+
+                return {
+                    score: completeness,
+                    missingRequired,
+                    missingOptional,
+                    recommendation: completeness < 80 ? 'طلب معلومات إضافية' : 'مكتمل'
+                };
+            }
+
+            /**
+             * تقييم جودة المستندات
+             */
+            assessDocumentQuality(applicant) {
+                const quality = {
+                    cvQuality: 0,
+                    coverLetterQuality: 0,
+                    overallQuality: 0,
+                    issues: []
+                };
+
+                if (applicant.cv) {
+                    const cvLength = applicant.cv.length;
+                    const hasStructure = this.checkCVStructure(applicant.cv);
+                    const hasKeywords = this.checkRelevantKeywords(applicant.cv, applicant.position);
+                    
+                    quality.cvQuality = Math.min(
+                        (cvLength > 500 ? 30 : cvLength / 500 * 30) +
+                        (hasStructure ? 40 : 0) +
+                        (hasKeywords ? 30 : 0),
+                        100
+                    );
+
+                    if (cvLength < 300) quality.issues.push('السيرة الذاتية قصيرة جداً');
+                    if (!hasStructure) quality.issues.push('السيرة الذاتية تفتقر للتنظيم');
+                    if (!hasKeywords) quality.issues.push('السيرة الذاتية تفتقر للكلمات المفتاحية المناسبة');
+                }
+
+                if (applicant.coverLetter) {
+                    const letterLength = applicant.coverLetter.length;
+                    quality.coverLetterQuality = Math.min(letterLength / 800 * 100, 100);
+                }
+
+                quality.overallQuality = (quality.cvQuality + quality.coverLetterQuality) / 2;
+
+                return quality;
+            }
+
+            /**
+             * تقييم المخاطر
+             */
+            performRiskAssessment(applicant, analysis) {
+                const risks = {
+                    overallRisk: 'منخفض',
+                    riskFactors: [],
+                    mitigationStrategies: []
+                };
+
+                // تحليل المخاطر بناءً على النتيجة
+                if (analysis.overallScore < 50) {
+                    risks.riskFactors.push({
+                        type: 'performance',
+                        level: 'عالي',
+                        description: 'نتيجة تقييم منخفضة',
+                        impact: 'قد يؤثر على الأداء الوظيفي'
+                    });
+                }
+
+                // تحليل مخاطر الاستقرار الوظيفي
+                if (this.detectJobHoppingPattern(applicant.cv)) {
+                    risks.riskFactors.push({
+                        type: 'retention',
+                        level: 'متوسط',
+                        description: 'نمط تغيير وظائف متكرر',
+                        impact: 'قد يترك الوظيفة مبكراً'
+                    });
+                    risks.mitigationStrategies.push('وضع خطة احتفاظ طويلة المدى');
+                }
+
+                // تحليل مخاطر المهارات
+                if (analysis.detailedScores.skills < 60) {
+                    risks.riskFactors.push({
+                        type: 'skills',
+                        level: 'متوسط',
+                        description: 'فجوة في المهارات المطلوبة',
+                        impact: 'قد يحتاج تدريب إضافي'
+                    });
+                    risks.mitigationStrategies.push('برنامج تدريبي مكثف');
+                }
+
+                // تحديد مستوى المخاطرة الإجمالي
+                const highRisks = risks.riskFactors.filter(r => r.level === 'عالي').length;
+                const mediumRisks = risks.riskFactors.filter(r => r.level === 'متوسط').length;
+
+                if (highRisks > 0) {
+                    risks.overallRisk = 'عالي';
+                } else if (mediumRisks > 1) {
+                    risks.overallRisk = 'متوسط';
+                }
+
+                return risks;
+            }
+
+            /**
+             * توليد توصية التوظيف
+             */
+            generateHiringRecommendation(analysis) {
+                const recommendation = {
+                    decision: '',
+                    confidence: 0,
+                    reasoning: [],
+                    nextSteps: [],
+                    timeline: ''
+                };
+
+                const score = analysis.overallScore;
+                const risks = analysis.riskAssessment?.overallRisk || 'منخفض';
+
+                if (score >= 85 && risks === 'منخفض') {
+                    recommendation.decision = 'توظيف فوري';
+                    recommendation.confidence = 95;
+                    recommendation.reasoning.push('نتيجة ممتازة في جميع المعايير');
+                    recommendation.reasoning.push('مخاطر منخفضة');
+                    recommendation.nextSteps.push('إرسال عرض العمل');
+                    recommendation.timeline = 'خلال 24 ساعة';
+                } else if (score >= 70 && risks !== 'عالي') {
+                    recommendation.decision = 'توظيف مشروط';
+                    recommendation.confidence = 75;
+                    recommendation.reasoning.push('نتيجة جيدة مع إمكانية التطوير');
+                    recommendation.nextSteps.push('مقابلة إضافية');
+                    recommendation.nextSteps.push('فترة تجريبية 3 أشهر');
+                    recommendation.timeline = 'خلال أسبوع';
+                } else if (score >= 50) {
+                    recommendation.decision = 'قائمة انتظار';
+                    recommendation.confidence = 65;
+                    recommendation.reasoning.push('إمكانيات محدودة');
+                    recommendation.nextSteps.push('برنامج تطوير');
+                    recommendation.timeline = 'مراجعة خلال شهر';
+                } else {
+                    recommendation.decision = 'رفض مهذب';
+                    recommendation.confidence = 40;
+                    recommendation.reasoning.push('لا يلبي الحد الأدنى من المتطلبات');
+                    recommendation.nextSteps.push('اقتراح وظائف أخرى مناسبة');
+                    recommendation.timeline = 'فوري';
+                }
+
+                return recommendation;
+            }
+
+            /**
+             * حساب نطاق الراتب المقترح
+             */
+            calculateSalaryBand(analysis, position) {
+                const baseSalaries = {
+                    'تطوير البرمجيات': { min: 8000, max: 25000 },
+                    'التسويق': { min: 6000, max: 18000 },
+                    'الهندسة الطبية': { min: 7000, max: 20000 },
+                    'المبيعات': { min: 5000, max: 15000 },
+                    'default': { min: 5000, max: 12000 }
+                };
+
+                const salaryRange = baseSalaries[position] || baseSalaries.default;
+                const scoreMultiplier = analysis.overallScore / 100;
+                const experienceBonus = Math.min(analysis.detailedScores.experience / 100 * 0.3, 0.3);
+
+                const adjustedMin = Math.round(salaryRange.min * (0.8 + scoreMultiplier * 0.4));
+                const adjustedMax = Math.round(salaryRange.max * (0.6 + scoreMultiplier * 0.4 + experienceBonus));
+
+                return {
+                    currency: 'ريال سعودي',
+                    minimum: adjustedMin,
+                    maximum: adjustedMax,
+                    recommended: Math.round((adjustedMin + adjustedMax) / 2),
+                    justification: `بناءً على النتيجة الإجمالية (${analysis.overallScore}%) والخبرة العملية`
+                };
+            }
+
+            /**
+             * توليد خطة الإعداد الوظيفي
+             */
+            generateOnboardingPlan(analysis) {
+                const plan = {
+                    duration: '3 أشهر',
+                    phases: [],
+                    focusAreas: [],
+                    successMetrics: []
+                };
+
+                // المرحلة الأولى - الأسبوع الأول
+                plan.phases.push({
+                    name: 'التوجيه الأساسي',
+                    duration: 'الأسبوع الأول',
+                    activities: [
+                        'جولة في الشركة والتعريف بالفريق',
+                        'تسليم المعدات والحسابات',
+                        'شرح سياسات وإجراءات الشركة',
+                        'تحديد الأهداف قصيرة المدى'
+                    ]
+                });
+
+                // المرحلة الثانية - الشهر الأول
+                plan.phases.push({
+                    name: 'التدريب التخصصي',
+                    duration: 'الشهر الأول',
+                    activities: [
+                        'تدريب على الأنظمة والأدوات',
+                        'العمل مع مرشد مخصص',
+                        'مشاريع تدريبية صغيرة'
+                    ]
+                });
+
+                // تحديد مناطق التركيز بناءً على نقاط الضعف
+                analysis.weaknesses?.forEach(weakness => {
+                    plan.focusAreas.push({
+                        area: weakness.category,
+                        priority: 'عالية',
+                        approach: weakness.improvement
+                    });
+                });
+
+                // مقاييس النجاح
+                plan.successMetrics = [
+                    'إكمال جميع التدريبات المطلوبة',
+                    'تحقيق أهداف الشهر الأول',
+                    'تقييم إيجابي من المرشد',
+                    'اندماج جيد مع الفريق'
+                ];
+
+                return plan;
+            }
+
+            /**
+             * تحليل احتياطي في حالة الخطأ
+             */
+            generateFallbackAnalysis(applicant) {
+                return {
+                    applicantId: applicant.id,
+                    timestamp: new Date().toISOString(),
+                    overallScore: 50, // نتيجة متوسطة افتراضية
+                    detailedScores: {
+                        experience: 50,
+                        education: 50,
+                        skills: 50,
+                        interview: 0,
+                        personality: 50
+                    },
+                    strengths: [{
+                        category: 'عام',
+                        description: 'تقدم للوظيفة',
+                        score: 50
+                    }],
+                    weaknesses: [{
+                        category: 'التحليل',
+                        description: 'يحتاج مراجعة يدوية',
+                        score: 0,
+                        improvement: 'مراجعة شاملة للملف'
+                    }],
+                    recommendations: [{
+                        type: 'manual_review',
+                        priority: 'عالية',
+                        title: 'مراجعة يدوية مطلوبة',
+                        description: 'حدث خطأ في التحليل الآلي',
+                        action: 'مراجعة الملف يدوياً'
+                    }],
+                    hiringRecommendation: {
+                        decision: 'مراجعة يدوية',
+                        confidence: 0,
+                        reasoning: ['خطأ في النظام الآلي'],
+                        nextSteps: ['مراجعة شاملة'],
+                        timeline: 'حسب الحاجة'
+                    },
+                    error: true,
+                    errorMessage: 'فشل في التحليل الآلي - مطلوب تدخل يدوي'
+                };
+            }
+
+            // Helper methods
+            checkCVStructure(cv) {
+                const structureKeywords = ['خبرة', 'تعليم', 'مهارات', 'experience', 'education', 'skills'];
+                return structureKeywords.some(keyword => cv.toLowerCase().includes(keyword));
+            }
+
+            checkRelevantKeywords(cv, position) {
+                if (!position) return false;
+                const keywords = this.aiAnalyzer.industryKeywords[position] || [];
+                return keywords.some(keyword => cv.toLowerCase().includes(keyword.toLowerCase()));
+            }
+
+            detectJobHoppingPattern(cv) {
+                if (!cv) return false;
+                // تحليل بسيط لاكتشاف تغيير الوظائف المتكرر
+                const jobIndicators = cv.match(/\d{4}/g) || [];
+                return jobIndicators.length > 6; // أكثر من 6 تواريخ قد يشير لتغيير وظائف متكرر
+            }
+
+            assessCommunicationFromApplication(applicant) {
+                let score = 50; // نتيجة أساسية
+                
+                if (applicant.coverLetter && applicant.coverLetter.length > 200) {
+                    score += 20;
+                }
+                
+                if (applicant.cv && applicant.cv.length > 500) {
+                    score += 15;
+                }
+                
+                return Math.min(score, 100);
+            }
+
+            assessTechnicalFit(applicant) {
+                // تقييم التوافق التقني بناءً على المهارات المذكورة
+                const technicalKeywords = ['برمجة', 'تطوير', 'تقني', 'programming', 'development', 'technical'];
+                const cvText = (applicant.cv || '').toLowerCase();
+                
+                let matches = 0;
+                technicalKeywords.forEach(keyword => {
+                    if (cvText.includes(keyword)) matches++;
+                });
+                
+                return Math.min((matches / technicalKeywords.length) * 100, 100);
+            }
+
+            assessCulturalAlignment(applicant) {
+                // تقييم التوافق الثقافي بناءً على القيم المذكورة
+                const culturalKeywords = ['فريق', 'تعاون', 'ابتكار', 'جودة', 'team', 'collaboration', 'innovation', 'quality'];
+                const cvText = (applicant.cv || '').toLowerCase();
+                
+                let matches = 0;
+                culturalKeywords.forEach(keyword => {
+                    if (cvText.includes(keyword)) matches++;
+                });
+                
+                return Math.min((matches / culturalKeywords.length) * 100, 100);
+            }
+
+            calculateResponseTime(applicant) {
+                // حساب وقت الاستجابة (افتراضي)
+                return {
+                    applicationToResponse: '24 ساعة',
+                    score: 85,
+                    rating: 'سريع'
+                };
+            }
+        }
+
+        // إنشاء مثيل من محلل التطبيقات المحسن
+        const enhancedAnalyzer = new EnhancedApplicantAnalyzer();
+
+        // تحديث دالة تحليل المتقدم في AdminDashboard
+        if (typeof AdminDashboard !== 'undefined') {
+            AdminDashboard.analyzeApplicantAdvanced = async function(applicant) {
+                return await enhancedAnalyzer.analyzeApplicantAdvanced(applicant);
+            };
+        }
+
+    </script>
+</body>
+
+</html>

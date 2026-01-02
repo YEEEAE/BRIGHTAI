@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SZKTP4496K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SZKTP4496K');
+</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468067620830797"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightSales Pro - نظام إدارة المبيعات</title>
+    <link rel="stylesheet" href="brightsales-pro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+
+</head>
+
+<body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="index.html">الرئيسية</a></li>
+              <li><a href="tools.html" >الأدوات</a></li>
+              <li><a href="data-analysis.html" >تحليل البيانات</a></li>
+              <li><a href="consultation.html">استشارات</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>BrightSales Pro - نظام إدارة المبيعات</h1>
+
+        <h2>إضافة عميل جديد</h2>
+        <div class="form-container">
+            <input type="text" id="client-name" placeholder="اسم العميل">
+            <input type="text" id="client-address" placeholder="عنوان العميل">
+             <button id="geocode-btn" class="button">
+                    <i class="fas fa-map-marker-alt"></i>
+                     تحويل العنوان لموقع
+                </button>
+                 <div id="map-container" style="height: 300px; display: none"></div>
+            <input type="text" id="client-phone" placeholder="رقم هاتف العميل">
+             <button id="add-client-btn" class="button">
+                     <i class="fas fa-user-plus"></i>
+                      إضافة عميل
+                </button>
+        </div>
+
+        <h2>قائمة العملاء</h2>
+         <div class="search-area">
+            <input type="text" id="search-client" placeholder="بحث عن عميل...">
+           <button id="search-btn" class="button">
+               <i class="fas fa-search"></i>
+               بحث
+            </button>
+         </div>
+        <div class="clients-table">
+            <table id="clients-list">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>العنوان</th>
+                         <th>رقم الهاتف</th>
+                         <th>الاجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- العملاء سيتم عرضهم هنا -->
+                </tbody>
+            </table>
+              <div id="edit-client-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal">×</span>
+                    <h2>تعديل بيانات العميل</h2>
+                   <input type="hidden" id="edit-client-index">
+                    <input type="text" id="edit-client-name" placeholder="اسم العميل">
+                      <input type="text" id="edit-client-address" placeholder="عنوان العميل">
+                    <input type="text" id="edit-client-phone" placeholder="رقم هاتف العميل">
+                     <button id="save-edit-client-btn" class="button">
+                       <i class="fas fa-save"></i>
+                        حفظ التعديلات
+                  </button>
+                </div>
+            </div>
+        </div>
+         <h2>إضافة طلبية جديدة</h2>
+         <div class="form-container">
+                <select id="client-select">
+                    <option value="">اختر العميل</option>
+                    <!-- خيارات العملاء سيتم إضافتها هنا -->
+                </select>
+                 <input type="text" id="order-product" placeholder="اسم المنتج">
+                 <input type="number" id="order-quantity" placeholder="الكمية">
+                  <button id="add-order-btn" class="button">
+                   <i class="fas fa-cart-plus"></i>
+                    إضافة طلبية
+                </button>
+          </div>
+        <h2>قائمة الطلبيات</h2>
+          <div class="orders-table">
+               <table id="orders-list">
+                <thead>
+                    <tr>
+                         <th>العميل</th>
+                         <th>المنتج</th>
+                         <th>الكمية</th>
+                         <th>الاجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- الطلبيات سيتم عرضها هنا -->
+                </tbody>
+            </table>
+          </div>
+
+    </div>
+      <footer>
+        <div class="container">
+            <div class="social-media">
+                <h3>تواصل معنا عبر</h3>
+                <a href="#" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" title="انستجرام"><i class="fab fa-instagram"></i></a>
+                <a href="#" title="تويتر"><i class="fab fa-twitter"></i></a>
+                <a href="#" title="يوتيوب"><i class="fab fa-youtube"></i></a>
+            </div>
+             <div class="contact-info">
+                <h3>معلومات التواصل</h3>
+                 <p><i class="fas fa-envelope"></i> <a href="mailto:yazeedaiai0@gmail.com" style="color: #666;">البريد الإلكتروني: yazeedaiai0@gmail.com</a></p>
+                  <p><i class="fas fa-phone-alt"></i> <a href="tel:+966591120781" style="color: #666;">الهاتف: +966 591 120 781</a></p>
+            </div>
+        </div>
+    </footer>
+    <script src="brightsales-pro.js"></script>
+</body>
+
+</html>

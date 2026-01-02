@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نماذج أعمال سابقة - شركة Bright AI</title>
+    <link rel="icon" type="image/png" href="projects/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="projects/logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            /* overflow: hidden; */ /* تم التعليق للسماح بالتمرير على الهواتف */
+            perspective: 1000px; /* Add perspective for 3D effect */
+        }
+
+        .presentation-container {
+            /* height: 100vh; */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px; /* Add some padding around the container */
+        }
+
+        .slide {
+            width: 95vw;
+            min-height: 90vh;
+            max-height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+            padding: 40px 60px;
+            display: none;
+            animation: slideIn 0.6s ease-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow-y: auto;
+            transform-style: preserve-3d; /* Preserve 3D space for children */
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) translateZ(-100px); /* Add Z translation */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateZ(0);
+            }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.3rem;
+            color: #7f8c8d;
+            font-weight: 300;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4); /* Enhanced shadow */
+            transform-style: preserve-3d;
+        }
+
+        .company-info {
+            text-align: center;
+            line-height: 2;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            height: 100%;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add shadow to transition */
+            transform-style: preserve-3d;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) translateZ(10px); /* Add slight Z translation */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* More prominent shadow on hover */
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .project-details {
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .challenge {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .solution {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .result {
+            color: #667eea;
+            font-weight: 600;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .single-project {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 40px;
+            border-right: 6px solid #667eea;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+            margin-bottom: 20px;
+            transform-style: preserve-3d;
+        }
+
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3); /* Add shadow */
+            transform-style: preserve-3d;
+        }
+
+        .stats-section {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            text-align: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 20px; /* Add gap */
+        }
+
+        .stat-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 150px;
+            flex: 1; /* Allow items to grow */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Add shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .stat-item:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .closing-section {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+            transform-style: preserve-3d;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+
+        .tech-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tech-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+             .slide {
+                padding: 30px 40px;
+             }
+             .slide-title {
+                font-size: 2.2rem;
+             }
+             .slide-subtitle {
+                font-size: 1.1rem;
+             }
+             .project-grid {
+                gap: 20px;
+             }
+             .project-card {
+                padding: 20px;
+             }
+             .single-project {
+                padding: 30px;
+             }
+             .stats-section {
+                gap: 15px;
+             }
+             .stat-item {
+                min-width: 120px;
+             }
+             .stat-number {
+                font-size: 2rem;
+             }
+             .stat-label {
+                font-size: 0.95rem;
+             }
+        }
+
+
+        @media (max-width: 768px) {
+            .slide {
+                width: 100vw;
+                min-height: 100vh;
+                max-height: none;
+                padding: 20px; /* Adjust padding */
+                border-radius: 0;
+            }
+            .presentation-container {
+                align-items: flex-start;
+                padding: 0; /* Remove container padding */
+            }
+            .slide-title {
+                font-size: 1.8rem; /* Adjust font size */
+            }
+             .slide-subtitle {
+                font-size: 1rem; /* Adjust font size */
+            }
+            .slide-header {
+                margin-bottom: 20px;
+            }
+            .project-grid {
+                grid-template-columns: 1fr; /* Stack cards on mobile */
+                gap: 15px; /* Adjust gap */
+            }
+            .project-card {
+                padding: 15px; /* Adjust padding */
+            }
+            .single-project {
+                padding: 20px; /* Adjust padding */
+            }
+            .stats-section {
+                flex-direction: column;
+                gap: 15px; /* Adjust gap */
+            }
+            .stat-item {
+                min-width: unset;
+                width: 100%; /* Full width */
+                padding: 15px;
+            }
+            .closing-section {
+                padding: 20px;
+            }
+            .slide-counter {
+                top: 10px;
+                right: 10px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            .navigation {
+                bottom: 20px; /* Adjust position */
+                gap: 10px;
+            }
+            .nav-btn {
+                padding: 10px 18px;
+                font-size: 0.95rem;
+            }
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+            .project-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+            .company-info {
+                font-size: 1.1rem;
+            }
+             .project-title {
+                font-size: 1.3rem;
+            }
+             .stat-number {
+                font-size: 2.2rem;
+            }
+             .stat-label {
+                font-size: 0.9rem;
+            }
+             .feature-list li {
+                font-size: 1rem;
+             }
+        }
+        @media (max-width: 480px) {
+            .slide {
+                padding: 15px; /* Adjust padding */
+            }
+            .slide-header {
+                margin-bottom: 15px;
+            }
+            .slide-title {
+                font-size: 1.5rem; /* Adjust font size */
+            }
+            .slide-subtitle {
+                font-size: 0.9rem; /* Adjust font size */
+            }
+            .stats-section {
+                gap: 10px;
+            }
+            .stat-item {
+                padding: 10px;
+            }
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            .stat-label {
+                font-size: 0.85rem;
+            }
+            .single-project {
+                padding: 15px;
+            }
+            .project-card {
+                padding: 10px;
+            }
+            .closing-section {
+                padding: 15px;
+                font-size: 1rem;
+            }
+            .slide-counter {
+                top: 5px;
+                right: 5px;
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+            .navigation {
+                bottom: 10px;
+                gap: 8px;
+            }
+            .nav-btn {
+                padding: 8px 14px;
+                font-size: 0.9rem;
+            }
+            .logo {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+            .project-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            .company-info, .project-details, .feature-list li {
+                font-size: 0.9rem;
+            }
+             .project-title {
+                font-size: 1.1rem;
+            }
+             .closing-section h2 {
+                font-size: 1.3rem;
+             }
+             .closing-section h4 {
+                font-size: 1rem;
+             }
+             .closing-section p {
+                font-size: 0.9rem;
+             }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">7</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-header">
+                <div class="logo">AI</div>
+                <h1 class="slide-title">نماذج أعمال سابقة</h1>
+                <h2 class="slide-subtitle">شركة Bright AI</h2>
+            </div>
+            <div class="content">
+                <div class="company-info">
+                    <p>منصة سعودية رائدة في حلول الذكاء الاصطناعي</p>
+                    <p>ندعم التحول الرقمي في المؤسسات السعودية</p>
+                </div>
+                <div class="stats-section">
+                    <div class="stat-item">
+                        <div class="stat-number">5+</div>
+                        <div class="stat-label">مشاريع منجزة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">67%</div>
+                        <div class="stat-label">توفير في الوقت</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">82%</div>
+                        <div class="stat-label">تحسن في الكفاءة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Company Introduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">من نحن</h1>
+                <h2 class="slide-subtitle">Bright AI - شريككم في التحول الرقمي</h2>
+            </div>
+            <div class="content">
+                <div class="single-project">
+                    <div class="project-icon">🌟</div>
+                    <div class="project-details" style="line-height: 2; font-size: 1.1rem;">
+                        <p><strong>Bright AI</strong> هي منصة سعودية رائدة متخصصة في تقديم حلول الذكاء الاصطناعي المبتكرة لدعم التحول الرقمي في المؤسسات. نهدف إلى تمكين الشركات والمؤسسات في المملكة العربية السعودية من تبني أحدث تقنيات الذكاء الاصطناعي لتحسين الكفاءة، وزيادة الإنتاجية، وتعزيز القدرة التنافسية.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3 style="color: #667eea; font-size: 1.5rem; margin-bottom: 20px; text-align: center;">خدماتنا المتخصصة</h3>
+                    <div class="project-grid">
+                        <div class="project-card" style="padding: 20px;">
+                            <h4 style="color: #667eea; margin-bottom: 10px;">🤖 أتمتة العمليات</h4>
+                            <p>أتمتة العمليات الروتينية لتقليل الأخطاء وتوفير الوقت والموارد</p>
+                        </div>
+                        <div class="project-card" style="padding: 20px;">
+                            <h4 style="color: #667eea; margin-bottom: 10px;">📊 تحليل البيانات</h4>
+                            <p>تحليل البيانات المتقدم لاستخراج رؤى قيمة واتخاذ قرارات مستنيرة</p>
+                        </div>
+                        <div class="project-card" style="padding: 20px;">
+                            <h4 style="color: #667eea; margin-bottom: 10px;">💡 الاستشارات</h4>
+                            <p>استشارات متخصصة لتحديد احتياجاتك وتصميم حلول ذكية مخصصة</p>
+                        </div>
+                        <div class="project-card" style="padding: 20px;">
+                            <h4 style="color: #667eea; margin-bottom: 10px;">🎯 الوكلاء الذكيين</h4>
+                            <p><strong>إنشاء وكلاء ذكاء اصطناعي مخصصين لتلبية احتياجاتك الفريدة</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Project 1 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">نظام تحليل ملفات PDF الحكومية</h1>
+                <h2 class="slide-subtitle">مؤسسة شبهة حكومية</h2>
+            </div>
+            <div class="content">
+                <div class="single-project">
+                    <div class="project-icon">📄</div>
+                    <div class="project-details">
+                        <p><span class="challenge">التحدي:</span> حجم هائل من الملفات النصية اليومية (PDF) تتطلب مراجعة يدوية مكثفة</p>
+                        <br>
+                        <p><span class="solution">الحل:</span> تطوير أداة تحليل ذكية تستخرج المعلومات الأساسية وتصنّف الملفات تلقائيًا</p>
+                        <br>
+                        <div class="result">النتيجة: وفر 67% من وقت الموظف الإداري أسبوعيًا</div>
+                        <div class="tech-badges">
+                            <span class="tech-badge">OCR</span>
+                            <span class="tech-badge">NLP</span>
+                            <span class="tech-badge">AI Classification</span>
+                        </div>
+                        <ul class="feature-list">
+                            <li>واجهة مستخدم بسيطة - إدخال الملف وتحليل مباشر</li>
+                            <li>استخراج تلقائي للمعلومات الهامة</li>
+                            <li>تصنيف ذكي للمستندات حسب النوع والأولوية</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Project 2 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">مساعد ذكي للموظفين</h1>
+                <h2 class="slide-subtitle">جهة تعليمية خاصة</h2>
+            </div>
+            <div class="content">
+                <div class="single-project">
+                    <div class="project-icon">🤖</div>
+                    <div class="project-details">
+                        <p><span class="challenge">التحدي:</span> كثرة استفسارات الموظفين عن اللوائح والإجراءات الداخلية</p>
+                        <br>
+                        <p><span class="solution">الحل:</span> مساعد ذكي مدمج داخل بوابة الموظف يستخدم الذكاء الاصطناعي للإجابة الفورية</p>
+                        <br>
+                        <div class="result">النتيجة: تقليل الضغط على إدارة الموارد البشرية بنسبة 82%</div>
+                        <div class="tech-badges">
+                            <span class="tech-badge">نموذج لغة محلي</span>
+                            <span class="tech-badge">ChatBot</span>
+                            <span class="tech-badge">Knowledge Base</span>
+                        </div>
+                        <ul class="feature-list">
+                            <li>مدرب على الأدلة التنظيمية الداخلية</li>
+                            <li>إجابات فورية على مدار الساعة</li>
+                            <li>تحديث مستمر لقاعدة المعرفة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Projects 3 & 4 -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">نماذج إضافية</h1>
+            </div>
+            <div class="content">
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-icon">📊</div>
+                        <h3 class="project-title">نظام تقييم ذاتي للمستفيدين</h3>
+                        <div class="project-details">
+                            <p><strong>الجهة:</strong> هيئة غير ربحية</p>
+                            <p><strong>الوصف:</strong> نموذج تقييم ذكي يساعد على تقييم المستفيدين تلقائيًا</p>
+                            <p><strong>المخرجات:</strong></p>
+                            <ul style="margin-right: 20px;">
+                                <li>تحديد الأهلية للدعم</li>
+                                <li>توصيات المسارات التدريبية</li>
+                            </ul>
+                            <div class="result" style="margin-top: 15px;">وفر وقت المقابلات ودعم قرارات أكثر دقة</div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-icon">📈</div>
+                        <h3 class="project-title">لوحة متابعة مشاريع ذكية</h3>
+                        <div class="project-details">
+                            <p><strong>الجهة:</strong> جهة حكومية</p>
+                            <p><strong>الوصف:</strong> لوحة بيانات تفاعلية تدمج بيانات الأداء من عدة مصادر</p>
+                            <p><strong>المميزات:</strong></p>
+                            <ul style="margin-right: 20px;">
+                                <li>تنبيهات ذكية</li>
+                                <li>توصيات تلقائية</li>
+                                <li>تقييمات آلية</li>
+                            </ul>
+                            <div class="result" style="margin-top: 15px;">حسّنت دقة تقارير الأداء الربعي بنسبة 40%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Technical Capabilities -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">قدراتنا التقنية</h1>
+            </div>
+            <div class="content">
+                <div class="project-grid">
+                    <div class="project-card">
+                        <div class="project-icon">🔧</div>
+                        <h3 class="project-title">التقنيات المستخدمة</h3>
+                        <div class="tech-badges" style="flex-direction: column; gap: 8px;">
+                            <span class="tech-badge">معالجة اللغات الطبيعية (NLP)</span>
+                            <span class="tech-badge">التعلم الآلي (Machine Learning)</span>
+                            <span class="tech-badge">التعرف الضوئي على النصوص (OCR)</span>
+                            <span class="tech-badge">تحليل البيانات الضخمة</span>
+                            <span class="tech-badge">نماذج ذكاء اصطناعي مُدربة من قبلنا على مدار 16 شهر</span>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-icon">🛡️</div>
+                        <h3 class="project-title">الأمان والخصوصية</h3>
+                        <ul class="feature-list">
+                            <li>حماية كاملة لبيانات العملاء</li>
+                            <li>امتثال للمعايير الحكومية</li>
+                            <li>تشفير متقدم للبيانات</li>
+                            <li>النسخ الاحتياطي الآمن</li>
+                            <li>مراقبة الأمان على مدار الساعة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Methodology -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">منهجية العمل</h1>
+            </div>
+            <div class="content">
+                <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 20px; height: 100%;">
+                    <div style="flex: 1; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.5rem;">🎯 التخصيص</h3>
+                        <p>حلول مخصصة حسب احتياج كل جهة</p>
+                        <p>تكامل مع الأنظمة الموجودة</p>
+                    </div>
+                    <div style="flex: 1; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.5rem;">⚡ التطوير السريع</h3>
+                        <p>منهجية Agile لتسريع التسليم</p>
+                        <p>نتائج واضحة منذ اليوم الأول</p>
+                    </div>
+                    <div style="flex: 1; background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.5rem;">🔗 التكامل</h3>
+                        <p>دعم كامل لواجهات </p>
+                        <p>ربط سهل مع قواعد البيانات</p>
+                    </div>
+                </div>
+                <div class="closing-section" style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 15px;">ضمان الجودة والدعم المستمر</h3>
+                    <p>فريق متخصص متاح للدعم التقني والتطوير المستمر</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Closing -->
+        <div class="slide">
+            <div class="slide-header">
+                <div class="logo">AI</div>
+                <h1 class="slide-title">شكراً لاهتمامكم</h1>
+            </div>
+            <div class="content">
+                <div class="closing-section">
+                    <h2 style="margin-bottom: 30px;">Bright AI - شريككم في التحول الرقمي</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0;">
+                        <div>
+                            <h4 style="margin-bottom: 15px;">📧 للتواصل</h4>
+                            <p>info@brightaii.sa</p>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 15px;">📱 الهاتف</h4>
+                            <p>+966538229013</p>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 15px;">🌐 الموقع</h4>
+                            <p>brightaii.com</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 1.3rem; margin-top: 30px;">جاهزون لتحويل تحدياتكم إلى فرص نجاح</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← السابق</button>
+        <button class="nav-btn" onclick="nextSlide()">التالي →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            document.getElementById('current-slide').textContent = n + 1;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Auto-advance slides (optional)
+        // setInterval(nextSlide, 15000); // uncomment for auto-advance every 15 seconds
+    </script>
+</body>
+</html>

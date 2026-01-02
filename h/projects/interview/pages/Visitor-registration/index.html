@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة تسجيل الزوار - MAIS مع الذكاء الاصطناعي</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="container">
+        <header class="header">
+            <div class="ai-badge" id="aiBadge">مدعوم بالذكاء الاصطناعي</div>
+            <button class="language-toggle" onclick="toggleLanguage()">
+                <span id="langText">English</span>
+            </button>
+            <h1 id="headerTitle">نظام إدارة تسجيل الزوار مع الذكاء الاصطناعي</h1>
+            <p id="headerSubtitle">شركة MAIS للمنتجات الطبية</p>
+        </header>
+
+        <main class="main-content">
+            <!-- قسم مميزات الذكاء الاصطناعي -->
+            <div class="ai-powered-section">
+                <h2 id="aiSectionTitle">مميزات الذكاء الاصطناعي المدمجة</h2>
+                <div class="ai-features-grid">
+                    <div class="ai-feature-card">
+                        <h4 id="aiFeature1Title">تحليل ملف الزائر</h4>
+                        <p id="aiFeature1Desc">تحليل تلقائي لمعلومات الزائر والشركة لتقديم رؤى قيمة</p>
+                    </div>
+                    <div class="ai-feature-card">
+                        <h4 id="aiFeature2Title">البحث بالذكاء الاصطناعي</h4>
+                        <p id="aiFeature2Desc">البحث باللغة الطبيعية للوصول السريع للمعلومات</p>
+                    </div>
+                    <div class="ai-feature-card">
+                        <h4 id="aiFeature3Title">تقارير ذكية</h4>
+                        <p id="aiFeature3Desc">إنشاء تقارير مفصلة ورؤى تحليلية بالذكاء الاصطناعي</p>
+                    </div>
+                    <div class="ai-feature-card">
+                        <h4 id="aiFeature4Title">تصنيف الزيارات</h4>
+                        <p id="aiFeature4Desc">تصنيف تلقائي لأسباب الزيارات وإنشاء إحصائيات دقيقة</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="nav-tabs">
+                <button class="tab-btn active" onclick="showTab('register')" id="registerTab">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    تسجيل زائر جديد
+                </button>
+                <button class="tab-btn" onclick="showTab('visitors')" id="visitorsTab">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                    </svg>
+                    سجل الزوار والإحصائيات
+                </button>
+                <button class="tab-btn" onclick="showTab('aiInsights')" id="aiInsightsTab">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    رؤى الذكاء الاصطناعي
+                </button>
+            </nav>
+
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <!-- تسجيل زائر جديد -->
+            <div id="register" class="tab-content active">
+                <form id="visitorForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName" id="fullNameLabel">الاسم الكامل</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="ادخل الاسم الكامل">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" id="phoneLabel">رقم الهاتف</label>
+                            <input type="tel" id="phone" name="phone" placeholder="ادخل رقم الهاتف">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="idType" id="idTypeLabel">نوع الهوية</label>
+                            <select id="idType" name="idType">
+                                <option value="">اختر نوع الهوية</option>
+                                <option value="national">هوية وطنية</option>
+                                <option value="passport">جواز سفر</option>
+                                <option value="residence">إقامة</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="idNumber" id="idNumberLabel">رقم الهوية</label>
+                            <input type="text" id="idNumber" name="idNumber" placeholder="ادخل رقم الهوية">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company" id="companyLabel">الشركة/المؤسسة</label>
+                            <input type="text" id="company" name="company" placeholder="ادخل اسم الشركة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="position" id="positionLabel">المنصب</label>
+                            <input type="text" id="position" name="position" placeholder="ادخل المنصب">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="visitReason" id="visitReasonLabel">سبب الزيارة</label>
+                            <select id="visitReason" name="visitReason">
+                                <option value="">اختر سبب الزيارة</option>
+                                <option value="business">اجتماع عمل</option>
+                                <option value="consultation">استشارة طبية</option>
+                                <option value="meeting">اجتماع</option>
+                                <option value="delivery">تسليم</option>
+                                <option value="maintenance">صيانة</option>
+                                <option value="training">تدريب</option>
+                                <option value="interview">مقابلة</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="employeeOffice" id="employeeOfficeLabel">الموظف/المكتب المُراد زيارته</label>
+                            <input type="text" id="employeeOffice" name="employeeOffice" placeholder="ادخل اسم الموظف أو المكتب">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" id="emailLabel">البريد الإلكتروني</label>
+                            <input type="email" id="email" name="email" placeholder="ادخل البريد الإلكتروني">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nationality" id="nationalityLabel">الجنسية</label>
+                            <input type="text" id="nationality" name="nationality" placeholder="ادخل الجنسية">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes" id="notesLabel">ملاحظات إضافية</label>
+                        <textarea id="notes" name="notes" placeholder="أضف أي ملاحظات إضافية هنا..."></textarea>
+                    </div>
+
+                    <!-- قسم تحليل الذكاء الاصطناعي -->
+                    <div id="aiAnalysisSection" class="ai-analysis-section">
+                        <h3 id="aiAnalysisTitle">تحليل الذكاء الاصطناعي للزائر</h3>
+                        <div id="aiAnalysisContent" class="ai-analysis-content">
+                            <div class="loading-ai" id="aiAnalysisLoading">
+                                <span id="aiAnalysisLoadingText">جاري تحليل معلومات الزائر...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                            تسجيل الزائر
+                        </button>
+                        <button type="button" class="btn btn-ai" onclick="analyzeVisitor()" id="analyzeBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            تحليل بالذكاء الاصطناعي
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()" id="clearBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                            مسح البيانات
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- سجل الزوار والإحصائيات -->
+            <div id="visitors" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalVisitors">0</h3>
+                        <p id="totalLabel">إجمالي الزوار</p>
+                    </div>
+                    <div class="stat-card active-visitors">
+                        <h3 id="activeVisitors">0</h3>
+                        <p id="activeLabel">زوار نشطون</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="todayVisitors">0</h3>
+                        <p id="todayLabel">زوار اليوم</p>
+                    </div>
+                    <div class="stat-card checked-out">
+                        <h3 id="checkedOutVisitors">0</h3>
+                        <p id="checkedOutLabel">تمت زيارتهم</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="weekVisitors">0</h3>
+                        <p id="weekLabel">زوار هذا الأسبوع</p>
+                    </div>
+                    <div class="stat-card ai-insights">
+                        <h3 id="aiInsightsCount">--</h3>
+                        <p id="aiInsightsLabel">رؤى الذكاء الاصطناعي</p>
+                    </div>
+                </div>
+
+                <!-- البحث بالذكاء الاصطناعي -->
+                <div class="natural-search">
+                    <h3 id="naturalSearchTitle">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        البحث بالذكاء الاصطناعي
+                    </h3>
+                    <input type="text" id="naturalSearchInput" placeholder="اسأل عن الزوار، مثال: أظهر لي زوار شركة X الأسبوع الماضي">
+                    <div class="search-suggestions">
+                        <button class="suggestion-btn" onclick="setNaturalSearch('زوار اليوم')">زوار اليوم</button>
+                        <button class="suggestion-btn" onclick="setNaturalSearch('الزوار النشطون')">الزوار النشطون</button>
+                        <button class="suggestion-btn" onclick="setNaturalSearch('زوار الأسبوع الماضي')">زوار الأسبوع الماضي</button>
+                        <button class="suggestion-btn" onclick="setNaturalSearch('زيارات الصيانة')">زيارات الصيانة</button>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-ai" onclick="performNaturalSearch()" id="naturalSearchBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                            بحث ذكي
+                        </button>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="btn btn-info" onclick="showActiveVisitors()" id="showActiveBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        عرض الزوار النشطون
+                    </button>
+                    <button class="btn btn-warning" onclick="showTodayVisitors()" id="showTodayBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M9 11H7v6h2v-6zm4 0h-2v6h2v-6zm4 0h-2v6h2v-6zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                        </svg>
+                        زوار اليوم
+                    </button>
+                    <button class="btn btn-secondary" onclick="showAllVisitors()" id="showAllBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                        </svg>
+                        جميع الزوار
+                    </button>
+                </div>
+
+                <div class="filter-section">
+                    <h3 id="filterTitle">تصفية النتائج</h3>
+                    <div class="date-filter">
+                        <div class="form-group">
+                            <label for="dateFrom" id="dateFromLabel">من تاريخ</label>
+                            <input type="date" id="dateFrom">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateTo" id="dateToLabel">إلى تاريخ</label>
+                            <input type="date" id="dateTo">
+                        </div>
+                        <div class="form-group">
+                            <label for="statusFilter" id="statusFilterLabel">حالة الزيارة</label>
+                            <select id="statusFilter">
+                                <option value="">جميع الحالات</option>
+                                <option value="active">نشط</option>
+                                <option value="checked-out">تمت الزيارة</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <h3 id="searchTitle">البحث المتقدم</h3>
+                    <div class="search-grid">
+                        <div class="form-group">
+                            <label for="searchName" id="searchNameLabel">البحث بالاسم</label>
+                            <input type="text" id="searchName" placeholder="ادخل الاسم...">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchPhone" id="searchPhoneLabel">البحث برقم الهاتف</label>
+                            <input type="text" id="searchPhone" placeholder="ادخل رقم الهاتف...">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchCompany" id="searchCompanyLabel">البحث بالشركة</label>
+                            <input type="text" id="searchCompany" placeholder="ادخل اسم الشركة...">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchEmployee" id="searchEmployeeLabel">البحث بالموظف/المكتب</label>
+                            <input type="text" id="searchEmployee" placeholder="ادخل اسم الموظف...">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchReason" id="searchReasonLabel">البحث بسبب الزيارة</label>
+                            <select id="searchReason">
+                                <option value="">جميع الأسباب</option>
+                                <option value="business">اجتماع عمل</option>
+                                <option value="consultation">استشارة طبية</option>
+                                <option value="meeting">اجتماع</option>
+                                <option value="delivery">تسليم</option>
+                                <option value="maintenance">صيانة</option>
+                                <option value="training">تدريب</option>
+                                <option value="interview">مقابلة</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="searchVisitors()" id="searchBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                            بحث
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearSearch()" id="clearSearchBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                            مسح البحث
+                        </button>
+                    </div>
+                </div>
+
+                <div class="export-options">
+                    <button class="btn btn-info" onclick="exportToPDF()" id="exportBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                        تصدير PDF
+                    </button>
+                    <button class="btn btn-ai" onclick="generateAIReport()" id="aiReportBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        تقرير ذكي
+                    </button>
+                    <button class="btn btn-info" onclick="exportToCSV()" id="exportCSVBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                        تصدير CSV
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmClearAll()" id="clearAllBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"/>
+                        </svg>
+                        مسح جميع البيانات
+                    </button>
+                </div>
+
+                <div class="visitors-table">
+                    <div id="loadingIndicator" class="loading" style="display: none;">
+                        <span id="loadingText">جاري تحميل البيانات...</span>
+                    </div>
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <h3 id="emptyTitle">لا توجد سجلات</h3>
+                        <p id="emptyMessage">لم يتم العثور على أي زوار مسجلين</p>
+                    </div>
+                    <div id="visitorsDisplay"></div>
+                </div>
+            </div>
+
+            <!-- رؤى الذكاء الاصطناعي -->
+            <div id="aiInsights" class="tab-content">
+                <div class="ai-powered-section">
+                    <h2 id="aiInsightsPageTitle">رؤى وتحليلات الذكاء الاصطناعي</h2>
+                    <p id="aiInsightsPageDesc">استكشف الرؤى المدعومة بالذكاء الاصطناعي حول بيانات الزوار</p>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn btn-ai" onclick="generateAIInsights()" id="generateInsightsBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        إنشاء رؤى ذكية
+                    </button>
+                    <button class="btn btn-ai" onclick="generateWeeklyReport()" id="weeklyReportBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                        تقرير أسبوعي ذكي
+                    </button>
+                    <button class="btn btn-ai" onclick="generateTrendAnalysis()" id="trendAnalysisBtn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                        </svg>
+                        تحليل الاتجاهات
+                    </button>
+                </div>
+
+                <div id="aiInsightsContent" class="visitors-table">
+                    <div class="empty-state">
+                        <h3 id="aiEmptyTitle">لا توجد رؤى حالياً</h3>
+                        <p id="aiEmptyMessage">انقر على أحد الأزرار أعلاه لإنشاء رؤى ذكية</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal للتأكيد -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">تأكيد الحذف</h2>
+            <p id="modalMessage">هل أنت متأكد من أنك تريد حذف هذا السجل؟</p>
+            <div class="modal-actions">
+                <button class="btn btn-danger" onclick="executeDelete()" id="confirmDeleteBtn">نعم، احذف</button>
+                <button class="btn btn-secondary" onclick="closeModal()" id="cancelBtn">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal للتقرير الذكي -->
+    <div id="aiReportModal" class="modal">
+        <div class="modal-content">
+            <h2 id="aiReportModalTitle">التقرير الذكي</h2>
+            <div id="aiReportContent" class="ai-report-content">
+                <div class="loading-ai">
+                    <span>جاري إنشاء التقرير الذكي...</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-info" onclick="downloadAIReport()" id="downloadReportBtn" style="display: none;">تحميل التقرير</button>
+                <button class="btn btn-secondary" onclick="closeAIReportModal()" id="closeReportBtn">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

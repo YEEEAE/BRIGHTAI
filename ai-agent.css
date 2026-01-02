@@ -1,0 +1,1009 @@
+:root {
+    --primary-color: #1E3A8A; /* أزرق داكن أكثر عمقاً */
+    --background-dark: #0B172A; /* خلفية أغمق قليلاً */
+    --accent-color: #38BDF8; /* أزرق فاتح أكثر حيوية */
+    --text-primary: #F3F4F6; /* أبيض أكثر نقاءً */
+    --text-secondary: #9CA3AF; /* رمادي فاتح أكثر تميزاً */
+    --accent-secondary: #EF4444; /* أحمر أكثر جاذبية */
+    --light-bg: #FAFAFA; /* خلفية فاتحة أكثر نقاءً */
+    --card-bg: rgba(17, 24, 39, 0.8); /* كروت أغمق قليلاً */
+}
+
+/* عامة */
+body {
+    margin: 0;
+    font-family: 'Tajawal', Arial, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--background-dark);
+    overflow-x: hidden;
+    text-align: right;
+    line-height: 1.6;
+}
+
+/* شريط التنقل */
+nav {
+    background-color: var(--background-dark);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 15px 0;
+    list-style: none;
+    margin: 0;
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+}
+
+.navbar a:hover, .navbar a.active {
+    color: var(--accent-color);
+}
+
+.navbar a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    right: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.navbar a:hover::after, .navbar a.active::after {
+    width: 100%;
+}
+
+
+/* البانر الرئيسي (Hero Section) */
+#hero {
+    position: relative;
+    height: 100vh;
+    background: linear-gradient(rgba(11, 23, 42, 0.8), rgba(11, 23, 42, 0.9)), url('https://www2.0zz0.com/2025/01/03/04/897159034.jpeg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+.hero-content {
+    text-align: center;
+    color: var(--text-primary);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    transform: translateZ(50px);
+    color: var(--text-primary);
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    transform: translateZ(50px);
+    color: var(--text-secondary);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: var(--accent-color);
+    color: var(--background-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    transform: translateZ(50px);
+    border: none;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    transform: scale(1.05) translateZ(50px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* عناوين الأقسام الرئيسية */
+.section-title {
+    text-align: center;
+    font-size: 2.5em;
+    color: var(--accent-color);
+    margin-bottom: 50px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+
+/* قسم أنواع وكلاء الذكاء الاصطناعي */
+.ai-agents-types {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, var(--background-dark) 0%, var(--primary-color) 100%);
+    text-align: right;
+}
+
+.types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.type-card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.type-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-color: var(--accent-color);
+}
+
+.type-card i {
+    font-size: 2.5em;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    display: block;
+    text-align: center; /* Center icon */
+}
+
+.type-card h3 {
+    color: var(--text-primary);
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    position: relative;
+    text-align: center; /* Center heading */
+}
+
+.type-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1em;
+    flex-grow: 1;
+    text-align: right; /* Ensure text aligns right */
+}
+
+/* قسم عرض وكلاء الذكاء الاصطناعي (AI Agents Showcase) */
+#ai-agents-showcase-section { /* Wrapper section */
+    padding: 80px 20px;
+    background-color: var(--background-dark);
+}
+
+#ai-agents { /* The grid itself */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    /* padding: 80px 20px; Removed padding from grid, applied to wrapper */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.agent-card {
+    position: relative;
+    height: 400px; /* Fixed height, consider min-height for varying content */
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+}
+
+.agent-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 12px 24px rgba(56, 189, 248, 0.2);
+    border-color: var(--accent-color);
+}
+
+.agent-card h2 { /* This should be h3 semantically if section has H2 */
+    font-size: 1.5em;
+    margin: 15px 0;
+    color: var(--text-primary);
+}
+
+.agent-card p {
+    font-size: 1em;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    flex-grow: 1;
+}
+
+.agent-icon {
+    font-size: 2.5em;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.agent-card:hover .agent-icon {
+    transform: scale(1.1) rotate(5deg);
+    color: var(--accent-secondary);
+}
+
+.agent-features {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    text-align: right;
+    width: 100%;
+}
+
+.agent-features li {
+    padding: 8px 15px;
+    margin: 5px 0;
+    background: rgba(56, 189, 248, 0.1);
+    border-radius: 5px;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    text-align: right;
+}
+
+.agent-features li:before {
+    content: "•";
+    color: var(--accent-color);
+    margin-left: 8px; /* For RTL, this should be margin-right if bullet is on right */
+    font-size: 1.2em;
+    padding-right: 5px; /* Space after bullet */
+}
+
+
+.more-details {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: var(--background-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: auto; /* Pushes button to bottom */
+}
+
+.more-details:hover {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+/* قسم وكلاء الأعمال (Business Agents Section) */
+#business-agents {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--background-dark) 100%);
+    text-align: center;
+}
+
+/* #business-agents h2 already styled by .section-title */
+
+#business-agents > p { /* Direct child p for the intro paragraph */
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin: 0 auto 40px;
+    font-size: 1.1em;
+}
+
+.business-agents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.business-agent {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: right;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.business-agent img {
+    width: 100%;
+    height: 200px; /* Added fixed height for consistency */
+    object-fit: cover; /* Ensures image covers the area nicely */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.business-agent h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.business-agent p {
+    font-size: 1em;
+    color: var(--text-secondary);
+    margin: 0;
+    flex-grow: 1;
+}
+
+.business-agent:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+.business-agent:hover img {
+    transform: scale(1.05);
+}
+
+/* قسم التكنولوجيا التي نعتمد عليها (Technologies We Rely On Section) */
+#technologies {
+    padding: 80px 20px;
+    background-color: var(--background-dark);
+    text-align: center;
+}
+
+/* #technologies h2 already styled by .section-title */
+
+.technologies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.technology {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.technology img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain; /* Ensure logo is not distorted */
+    margin-bottom: 20px;
+    transition: all 0.5s ease;
+}
+
+.technology:hover img {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.technology h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.technology p {
+    font-size: 1em;
+    color: var(--text-secondary);
+    flex-grow: 1;
+}
+
+.technology:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+/* قسم المزايا (Features Section) */
+#main-features { /* Wrapper section for title + grid */
+    padding: 80px 20px;
+    background: linear-gradient(135deg, var(--background-dark) 0%, var(--primary-color) 100%);
+}
+
+#features { /* The grid itself */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: right;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    height: 100%;
+    display: flex; /* For icon and text alignment */
+    flex-direction: column; /* Stack icon above text */
+    align-items: center; /* Center items horizontally */
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+.feature i { /* Styling for icons in feature cards */
+    font-size: 2.5em;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.feature h3 { /* Changed from h2 for semantic correctness */
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: var(--accent-color); /* Or --text-primary for consistency */
+    text-align: center;
+}
+
+.feature p {
+    font-size: 1em;
+    color: var(--text-secondary);
+    text-align: center; /* Center paragraph text */
+    flex-grow: 1;
+}
+
+/* قسم الآراء (Testimonials Section) */
+#testimonials-section { /* Wrapper section */
+    padding: 80px 20px;
+    background-color: var(--background-dark);
+}
+#testimonials { /* The grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonial {
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: right;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+.testimonial p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    position: relative;
+    flex-grow: 1;
+}
+
+.testimonial p::before {
+    content: '"';
+    font-size: 3em;
+    color: var(--accent-color);
+    opacity: 0.3;
+    position: absolute;
+    top: -20px;
+    right: -10px; /* Adjust if quote mark looks off with RTL */
+}
+
+.testimonial cite {
+    font-size: 1em;
+    font-style: italic;
+    color: var(--text-secondary);
+    display: block;
+    text-align: left; /* Cite usually LTR even in RTL context for names */
+    margin-top: auto;
+}
+
+/* قسم CTA النهائي (Final CTA Section) */
+#final-cta {
+    position: relative;
+    padding: 100px 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--background-dark));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center; /* Center content */
+}
+
+.final-cta-content {
+    text-align: center;
+    max-width: 800px;
+    z-index: 1;
+}
+
+.final-cta-content h2 { /* Already styled by .section-title if applied */
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+}
+
+.final-cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.final-cta-button:hover {
+    background-color: var(--accent-color);
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* قسم الأسئلة المتكررة (FAQ) */
+#faq-section { /* Wrapper section */
+    padding: 80px 20px;
+    background-color: var(--background-dark);
+}
+
+#faq { /* The grid */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    text-align: right;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    height: 100%;
+    display: flex; /* For icon and text alignment */
+    flex-direction: column;
+    align-items: flex-start; /* Align icon and title to start (right in RTL) */
+}
+
+.faq-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+.faq-item i { /* Icon for FAQ item */
+    font-size: 2em;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+    align-self: center; /* Center icon */
+}
+
+.faq-item h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: var(--accent-color);
+    width: 100%; /* Ensure h3 takes full width for text-align */
+}
+
+.faq-item p {
+    font-size: 1em;
+    color: var(--text-secondary);
+    flex-grow: 1;
+}
+
+/* إضافة أنماط المودال */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    overflow-y: auto;
+    /* Added for flex centering */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--card-bg);
+    margin: 50px auto; /* Will be overridden by flex centering if modal.show has display:flex */
+    padding: 30px;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+    animation: fadeIn 0.5s ease-in-out;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px; /* Stays on right for RTL */
+    top: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-modal:hover {
+    color: var(--accent-secondary);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.modal-body {
+    padding: 20px 0;
+    color: var(--text-primary);
+    text-align: right;
+}
+
+.modal-body h2 { /* Title inside modal */
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+.modal-body h3 { /* Sub-titles like "كيف نعمل معك" */
+    color: var(--accent-color);
+    margin: 25px 0 15px 0;
+    font-size: 1.3em;
+}
+
+.modal-body ul, .modal-body ol {
+    padding-right: 20px; /* Indentation for RTL lists */
+    margin: 15px 0;
+}
+
+.modal-body li {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.modal-body a.cta-button { /* Button inside modal */
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: var(--accent-color);
+    color: var(--background-dark);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.modal-body a.cta-button:hover {
+    background-color: var(--accent-secondary);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+.modal.show {
+    display: flex; /* Enables centering of modal-content */
+}
+
+/* تأثيرات التمرير (Scroll Animations) */
+section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Footer Styles */
+.footer {
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    padding: 4rem 0 2rem;
+    width: 100%;
+    border-top: 1px solid rgba(56, 189, 248, 0.1);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.footer-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 0; /* For RTL */
+    width: 50px;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+.footer-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.quick-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.quick-links ul li {
+    margin-bottom: 0.8rem;
+}
+
+.quick-links ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.quick-links ul li a:hover {
+    color: var(--accent-color);
+    transform: translateX(-5px); /* For RTL, this moves it left. Consider translateX(5px) if you want it to move right */
+}
+
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: flex-start; /* For RTL */
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(56, 189, 248, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.social-icon:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-5px);
+}
+
+.social-icon svg, .social-icon i { /* Added i for FontAwesome */
+    transition: all 0.3s ease;
+    color: var(--text-primary); /* Default icon color */
+}
+
+.social-icon:hover svg, .social-icon:hover i {
+    fill: var(--background-dark); /* For SVG */
+    color: var(--background-dark); /* For FontAwesome */
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(56, 189, 248, 0.1);
+    color: var(--text-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container, #ai-agents, #features, #testimonials, #faq, .technologies-grid, .business-agents-grid, .types-grid {
+        /* Padding is on wrapper sections now, so this might not be needed as much */
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-content h1 {
+        font-size: 2.5em;
+    }
+    .section-title {
+        font-size: 2.2em;
+    }
+    .navbar {
+        padding: 10px 0;
+    }
+    
+    .navbar li {
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        text-align: right; /* Ensure body text alignment for smaller screens */
+    }
+    .hero-content h1 {
+        font-size: 2em;
+    }
+    
+    .hero-content p {
+        font-size: 1em;
+    }
+    .section-title {
+        font-size: 2em;
+        margin-bottom: 30px;
+    }
+    
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .navbar li {
+        margin: 5px 0;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center; /* Center footer content */
+    }
+    
+    .footer-section h3::after {
+        right: 50%;
+        transform: translateX(50%);
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .quick-links ul li a:hover {
+        transform: translateX(0); /* Adjust hover effect for centered links */
+    }
+
+    .agent-card {
+        height: auto; /* Allow height to adjust based on content */
+        min-height: 400px; /* Maintain a minimum height */
+    }
+}
+
+@media (max-width: 576px) {
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .cta-button, .final-cta-button, .more-details {
+        padding: 12px 20px;
+        font-size: 0.9em;
+    }
+    
+    section, #ai-agents-showcase-section, #main-features, #testimonials-section, #faq-section, #business-agents, #technologies, .ai-agents-types, #final-cta {
+        padding: 60px 15px; /* Adjusted padding for sections */
+    }
+    .hero-content h1 {
+        font-size: 1.8em;
+    }
+    .section-title {
+        font-size: 1.8em;
+    }
+}
+
+/* Font Loading */
+@font-face {
+    font-family: 'Tajawal';
+    /* src: url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap'); This is a CSS import, not a src for @font-face */
+    /* Correct way is usually to link in HTML or use @import in CSS */
+    font-display: swap;
+}
+
+/* Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px); /* Reduced float intensity */
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Ensure Font Awesome is loaded if not using SVG icons consistently */
+/* .fas, .fab, .far are Font Awesome classes */

@@ -1,0 +1,18 @@
+# Simplified robots.txt for brightai.site
+User-agent: *
+Allow: /
+Disallow: /admin/ 
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /private/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /temp/
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: /backup/
+Disallow: /logs/
+Disallow: /cgi-bin/
+
+# Sitemap location
+Sitemap: https://brightai.site/sitemap.xml

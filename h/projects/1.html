@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WW6PN3C2M0');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الذكاء الاصطناعي لاستقطاب المواهب - مشرقة AI</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.6);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+
+        .upload-area.dragover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .output-box {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .candidate-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .compatibility-score {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .score-high { background: #27ae60; }
+        .score-medium { background: #f39c12; }
+        .score-low { background: #e74c3c; }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .candidates-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .candidates-table th,
+        .candidates-table td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .candidates-table th {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .candidates-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .skill-test {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-right: 4px solid #667eea;
+        }
+
+        .question-options {
+            margin-top: 10px;
+        }
+
+        .question-options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .question-options label:hover {
+            background: #f0f0f0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .output-card {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(102,126,234,0.07);
+            font-size: 1.05rem;
+            direction: rtl;
+        }
+
+        /* Add styles for Markdown elements */
+        .output-card h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+
+        .output-card ul,
+        .output-card ol {
+            margin: 10px 0;
+            padding-right: 25px; /* Adjust for RTL */
+        }
+
+        .output-card li {
+            margin-bottom: 8px;
+            line-height: 1.8;
+        }
+
+        .output-card p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .output-card strong {
+            color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <a href="/Users/yzydalshmry/Desktop/BrightAI" target="_blank">
+                <img src="logo.png" alt="Bright AI Logo" style="height: 50px; margin-bottom: 10px;">
+            </a>
+            <a href="/Users/yzydalshmry/Desktop/BrightAI" target="_blank"><h1>نظام الذكاء الاصطناعي لاستقطاب المواهب</h1></a>
+            <p class="subtitle">مقدم من شركة مشرقة AI</p>
+
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('dashboard')">لوحة التحكم</button>
+                <button class="nav-tab" onclick="showTab('resume-analysis')">تحليل السير الذاتية</button>
+                <button class="nav-tab" onclick="showTab('candidates')">إدارة المرشحين</button>
+                <button class="nav-tab" onclick="showTab('interviews')">المقابلات</button>
+                <button class="nav-tab" onclick="showTab('skills-test')">اختبارات المهارات</button>
+                <button class="nav-tab" onclick="showTab('reports')">التقارير</button>
+                <button class="nav-tab" onclick="showTab('settings')">الإعدادات</button>
+            </div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCandidates">0</div>
+                    <div class="stat-label">إجمالي المرشحين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="qualifiedCandidates">0</div>
+                    <div class="stat-label">المرشحين المؤهلين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="interviewsCompleted">0</div>
+                    <div class="stat-label">المقابلات المكتملة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgScore">0%</div>
+                    <div class="stat-label">متوسط النقاط</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📊 إحصائيات المرشحين</h2>
+                <div class="chart-container">
+                    <canvas id="candidatesChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📈 تحليل الأداء الشهري</h2>
+                <div class="chart-container">
+                    <canvas id="performanceChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resume Analysis Tab -->
+        <div id="resume-analysis" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">📄 تحليل السير الذاتية</h2>
+                <div class="upload-area" id="uploadArea">
+                    <p>اسحب وأفلت السيرة الذاتية هنا أو انقر للاختيار</p>
+                    <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="display: none;">
+                    <button class="btn" onclick="document.getElementById('resumeFile').click()">اختيار ملف</button>
+                </div>
+                <button class="btn" id="analyzeResumeBtn" onclick="analyzeResume()" disabled>تحليل السيرة الذاتية</button>
+                <div class="loading" id="resumeLoading">
+                    <div class="spinner"></div>
+                    جاري تحليل السيرة الذاتية...
+                </div>
+                <div class="output-box" id="resumeOutput"></div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">⭐ تقييم المرشح</h2>
+                <div class="candidate-card" id="candidateCard" style="display: none;">
+                    <h3 id="candidateName">اسم المرشح</h3>
+                    <p><strong>العمر:</strong> <span id="candidateAge">-</span></p>
+                    <p><strong>المؤهل:</strong> <span id="candidateQualification">-</span></p>
+                    <p><strong>الخبرة:</strong> <span id="candidateExperience">-</span></p>
+                    <button class="btn" onclick="evaluateCandidate()">تحليل الذكاء الاصطناعي</button>
+                    <button class="btn btn-success" onclick="saveCandidate()">حفظ المرشح</button>
+                    <div class="loading" id="evaluationLoading">
+                        <div class="spinner"></div>
+                        جاري تقييم المرشح...
+                    </div>
+                    <div id="evaluationResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Candidates Management Tab -->
+        <div id="candidates" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">👥 إدارة المرشحين</h2>
+
+                <div class="search-filter">
+                    <input type="text" class="input-field" id="searchCandidates" placeholder="البحث عن مرشح..." style="flex: 1; margin-bottom: 0;">
+                    <select class="filter-select" id="filterByScore">
+                        <option value="">جميع النقاط</option>
+                        <option value="high">نقاط عالية (85%+)</option>
+                        <option value="medium">نقاط متوسطة (70-84%)</option>
+                        <option value="low">نقاط منخفضة (أقل من 70%)</option>
+                    </select>
+                    <select class="filter-select" id="filterByStatus">
+                        <option value="">جميع الحالات</option>
+                        <option value="pending">في الانتظار</option>
+                        <option value="interviewed">تم إجراء مقابلة</option>
+                        <option value="qualified">مؤهل</option>
+                        <option value="rejected">مرفوض</option>
+                    </select>
+                    <button class="btn" onclick="exportCandidates()">تصدير البيانات</button>
+                </div>
+
+                <table class="candidates-table" id="candidatesTable">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>المؤهل</th>
+                            <th>الخبرة</th>
+                            <th>النقاط</th>
+                            <th>الحالة</th>
+                            <th>تاريخ التقديم</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="candidatesTableBody">
+                        <!-- سيتم ملؤها ديناميكياً -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Interviews Tab -->
+        <div id="interviews" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">❓ توليد أسئلة المقابلات</h2>
+                <textarea class="input-field" id="jobDescription" placeholder="أدخل وصف الوظيفة أو المتطلبات..." rows="4"></textarea>
+                <button class="btn" onclick="generateQuestions()">توليد الأسئلة</button>
+                <div class="loading" id="questionsLoading">
+                    <div class="spinner"></div>
+                    جاري توليد الأسئلة...
+                </div>
+                <div class="output-box" id="questionsList"></div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🎤 المقابلات الصوتية</h2>
+                <p style="margin-bottom: 15px;">يمكن للمتقدم إجراء مقابلة مبدئية بالصوت باللغة العربية</p>
+
+                <div style="display: flex; gap: 10px; align-items: center; margin: 15px 0;">
+                    <button class="btn" id="startInterviewBtn" onclick="startVoiceInterview()">بدء المقابلة الصوتية</button>
+                    <button class="btn btn-danger" id="stopInterviewBtn" onclick="stopVoiceInterview()" disabled>إيقاف المقابلة</button>
+                    <div id="voiceStatus" style="padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; background: #ffeaa7; color: #d63031;">غير نشط</div>
+                </div>
+
+                <div style="height: 300px; overflow-y: auto; background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 15px;" id="voiceChat">
+                    <div style="margin-bottom: 15px; padding: 10px 15px; border-radius: 10px; max-width: 80%; background: white; border: 1px solid #e0e0e0; margin-left: auto;">
+                        مرحباً بك في المقابلة المبدئية. سأطرح عليك بعض الأسئلة العامة. تحدث بوضوح وسأقوم بالاستماع إليك.
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🤖 المساعد الذكي التفاعلي</h2>
+                <div style="height: 300px; overflow-y: auto; background: #f8f9fa; border-radius: 8px; padding: 15px; margin-bottom: 15px;" id="chatContainer">
+                    <div style="margin-bottom: 15px; padding: 10px 15px; border-radius: 10px; max-width: 80%; background: white; border: 1px solid #e0e0e0; margin-left: auto;">
+                        مرحباً! أنا المساعد الذكي لنظام استقطاب المواهب. كيف يمكنني مساعدتك؟
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="input-field" id="chatInput" placeholder="اكتب استفسارك هنا..." style="flex: 1; margin-bottom: 0;">
+                    <button class="btn" onclick="sendChatMessage()">إرسال</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Test Tab -->
+        <div id="skills-test" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">🧠 اختبارات المهارات</h2>
+
+                <div style="margin-bottom: 20px;">
+                    <label>اختر نوع الاختبار:</label>
+                    <select class="filter-select" id="testType" onchange="generateSkillsTest()">
+                        <option value="">اختر نوع الاختبار</option>
+                        <option value="technical">تقني</option>
+                        <option value="management">إداري</option>
+                        <option value="communication">تواصل</option>
+                        <option value="analytical">تحليلي</option>
+                    </select>
+                </div>
+
+                <div id="skillsTestContainer"></div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="submitTestBtn" onclick="submitSkillsTest()" style="display: none;">إرسال الاختبار</button>
+                </div>
+
+                <div id="testResults" style="display: none;"></div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">🧘 التقييم النفسي</h2>
+                <p style="margin-bottom: 15px;">تقييم الشخصية والاستعداد النفسي للعمل</p>
+
+                <button class="btn" onclick="startPsychologicalTest()">بدء التقييم النفسي</button>
+
+                <div id="psychTestContainer" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="psychProgress" style="width: 0%;"></div>
+                    </div>
+                    <div id="psychQuestions"></div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-secondary" onclick="prevPsychQuestion()" id="prevPsychBtn" disabled>السابق</button>
+                        <button class="btn" onclick="nextPsychQuestion()" id="nextPsychBtn">التالي</button>
+                    </div>
+                </div>
+
+                <div id="psychResults" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">📊 التقارير والإحصائيات</h2>
+
+                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <button class="btn" onclick="generateMonthlyReport()">تقرير شهري</button>
+                    <button class="btn" onclick="generateDepartmentReport()">تقرير حسب القسم</button>
+                    <button class="btn" onclick="generateSkillsReport()">تقرير المهارات</button>
+                    <button class="btn btn-success" onclick="exportAllReports()">تصدير جميع التقارير</button>
+                </div>
+
+                <div class="chart-container">
+                    <h3>توزيع المرشحين حسب المؤهلات</h3>
+                    <canvas id="qualificationsChart" width="400" height="200"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3>معدل النجاح في المقابلات</h3>
+                    <canvas id="successRateChart" width="400" height="200"></canvas>
+                </div>
+
+                <div id="reportOutput" class="output-box" style="display: none;"></div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📋 تلخيص المرشح والتوصية النهائية</h2>
+                <select class="filter-select" id="candidateSelect" style="width: 100%; margin-bottom: 15px;">
+                    <option value="">اختر مرشحاً</option>
+                </select>
+                <button class="btn" onclick="generateRecommendation()">توليد التوصية</button>
+                <div class="loading" id="recommendationLoading">
+                    <div class="spinner"></div>
+                    جاري توليد التوصية...
+                </div>
+                <div class="output-box" id="recommendationOutput"></div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="section">
+                <h2 class="section-title">⚙️ إعدادات النظام</h2>
+
+                <div style="margin-bottom: 20px;">
+                    <label><strong>عدد الأسئلة في الاختبارات:</strong></label>
+                    <input type="number" class="input-field" id="questionsCount" value="10" min="5" max="20">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label><strong>الحد الأدنى للنقاط المؤهلة:</strong></label>
+                    <input type="number" class="input-field" id="minScore" value="70" min="50" max="90">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label><strong>لغة النظام:</strong></label>
+                    <select class="filter-select" id="systemLanguage">
+                        <option value="ar">العربية</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-danger" onclick="clearAllData()">مسح جميع البيانات</button>
+                    <button class="btn btn-secondary" onclick="exportSettings()">تصدير الإعدادات</button>
+                    <button class="btn" onclick="importSettings()">استيراد الإعدادات</button>
+                </div>
+
+                <div class="section" style="background: #f8f9fa;">
+                    <h3>💎 القيمة المضافة للنظام</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: #fff; padding: 20px; border-radius: 10px; border-right: 4px solid #667eea; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                            <h4>⚡ تسريع عملية التوظيف</h4>
+                            <p>تقليل وقت المراجعة من أسابيع إلى ساعات</p>
+                        </div>
+                        <div style="background: #fff; padding: 20px; border-radius: 10px; border-right: 4px solid #667eea; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                            <h4>💰 تقليل التكاليف</h4>
+                            <p>توفير في تكاليف الموارد البشرية والوقت</p>
+                        </div>
+                        <div style="background: #fff; padding: 20px; border-radius: 10px; border-right: 4px solid #667eea; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                            <h4>🎯 توصيات محايدة</h4>
+                            <p>قرارات موضوعية بناءً على البيانات</p>
+                        </div>
+                        <div style="background: #fff; padding: 20px; border-radius: 10px; border-right: 4px solid #667eea; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                            <h4>📊 تقارير ذكية</h4>
+                            <p>تقارير جاهزة لصاحب القرار</p>
+                        </div>
+                        <div style="background: #fff; padding: 20px; border-radius: 10px; border-right: 4px solid #667eea; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                            <h4>😊 تحسين التجربة</h4>
+                            <p>تجربة أفضل للمتقدمين والموظفين</p>
+                        </div>
+                        <div style="background: #fff; padding: 20px; border-radius: 10px; border-right: 4px solid #667eea; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);">
+                            <h4>🎤 مقابلات صوتية</h4>
+                            <p>تقييم مبدئي بالذكاء الاصطناعي</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        const GEMINI_API_KEY = 'GEMINI_KEY_REDACTED';
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+        let currentCandidate = null;
+        let candidates = JSON.parse(localStorage.getItem('candidates') || '[]');
+        let recognition = null;
+        let isInterviewActive = false;
+        let currentQuestionIndex = 0;
+        let currentPsychQuestion = 0;
+        let psychAnswers = [];
+        let skillsTestAnswers = [];
+
+        // Interview Questions
+        const interviewQuestions = [
+            "حدثني عن نفسك وخبراتك المهنية",
+            "ما هي نقاط قوتك الرئيسية؟",
+            "لماذا تريد العمل في القطاع الحكومي؟",
+            "كيف تتعامل مع ضغط العمل؟",
+            "ما هي أهدافك المهنية؟"
+        ];
+
+        // Psychological Test Questions
+        const psychQuestions = [
+            {
+                question: "أفضل العمل في فريق على العمل بمفردي",
+                type: "scale"
+            },
+            {
+                question: "أتعامل بهدوء مع المواقف الصعبة",
+                type: "scale"
+            },
+            {
+                question: "أحب تحمل المسؤوليات الإضافية",
+                type: "scale"
+            },
+            {
+                question: "أتكيف بسرعة مع التغييرات",
+                type: "scale"
+            },
+            {
+                question: "أفضل اتباع القواعد المحددة",
+                type: "scale"
+            }
+        ];
+
+        // Skills Test Questions
+        const skillsTests = {
+            technical: [
+                {
+                    question: "ما هو الغرض من استخدام قواعد البيانات؟",
+                    options: ["تخزين البيانات", "معالجة البيانات", "عرض البيانات", "جميع ما سبق"],
+                    correct: 3
+                },
+                {
+                    question: "أي من التالي يعتبر لغة برمجة؟",
+                    options: ["HTML", "CSS", "JavaScript", "جميع ما سبق"],
+                    correct: 2
+                }
+            ],
+            management: [
+                {
+                    question: "ما هي أهم صفة في القائد الناجح؟",
+                    options: ["الحزم", "التواصل", "المرونة", "جميع ما سبق"],
+                    correct: 3
+                },
+                {
+                    question: "كيف تتعامل مع الصراعات في الفريق؟",
+                    options: ["التجاهل", "الحسم السريع", "الحوار والتفاهم", "إشراك الإدارة العليا"],
+                    correct: 2
+                }
+            ]
+        };
+
+        // System Prompts - Updated to request Markdown
+        const SYSTEM_PROMPTS = {
+            resumeAnalysis: `أنت محلل سير ذاتية محترف متخصص في القطاع الحكومي. قم بتحليل السيرة الذاتية وتقديم تقرير مفصل بالتنسيق التالي:
+
+## المعلومات الأساسية
+- **الاسم الكامل**: [الاسم]
+- **العمر**: [العمر] سنة
+- **المؤهل العلمي الأعلى**: [المؤهل]
+- **التخصص**: [التخصص]
+- **سنوات الخبرة**: [عدد السنوات]
+
+## المؤهلات الأكاديمية
+[قائمة المؤهلات من الأحدث للأقدم]
+
+## الخبرات العملية
+- **المناصب السابقة**: [قائمة المناصب]
+- **القطاعات**: [القطاعات التي عمل بها]
+- **الإنجازات الرئيسية**: [أهم الإنجازات]
+
+## المهارات والكفاءات
+- **المهارات التقنية**: [قائمة المهارات]
+- **المهارات الإدارية**: [قائمة المهارات]
+- **المهارات الشخصية**: [قائمة المهارات]
+
+## التقييم العام
+- **نقاط القوة**: [قائمة نقاط القوة]
+- **مجالات التطوير**: [مجالات تحتاج تحسين]
+- **مدى الملاءمة للقطاع الحكومي**: [تقييم مختصر]
+
+اكتب التقرير باللغة العربية الفصحى وبأسلوب مهني.`,
+
+            candidateEvaluation: `أنت خبير تقييم وتوظيف في القطاع الحكومي. قم بإجراء تقييم شامل للمرشح وفق المعايير التالية:
+
+## ملخص التقييم
+- **درجة التوافق الإجمالية**: [النسبة]%
+- **التقييم العام**: [ممتاز/جيد جداً/جيد/مقبول/غير مناسب]
+
+## تحليل الكفاءات
+1. **الكفاءات المهنية** (40%)
+   - المؤهلات الأكاديمية: [التقييم/10]
+   - الخبرة العملية: [التقييم/10]
+   - المهارات التقنية: [التقييم/10]
+   - المعرفة بالقطاع: [التقييم/10]
+
+2. **الكفاءات الشخصية** (30%)
+   - القيادة والتأثير: [التقييم/10]
+   - العمل الجماعي: [التقييم/10]
+   - حل المشكلات: [التقييم/10]
+
+3. **الملاءمة المؤسسية** (30%)
+   - التوافق مع القيم: [التقييم/10]
+   - الالتزام المهني: [التقييم/10]
+   - القابلية للتطور: [التقييم/10]
+
+## التوصيات
+- **نقاط القوة الرئيسية**: [قائمة النقاط]
+- **مجالات التطوير**: [قائمة المجالات]
+- **الخطوات المقترحة**: [التوصيات]
+
+تقييم مفصل مع التركيز على متطلبات القطاع الحكومي.`,
+
+            questionGeneration: `أنت خبير في إعداد أسئلة المقابلات للقطاع الحكومي. قم بتوليد مجموعة شاملة من الأسئلة تغطي المجالات التالية:
+
+## الأسئلة المهنية (4-5 أسئلة)
+[أسئلة تتعلق بالخبرة والمهارات التقنية]
+
+## الأسئلة السلوكية (3-4 أسئلة)
+[أسئلة عن المواقف والتحديات السابقة]
+
+## أسئلة القيم المؤسسية (2-3 أسئلة)
+[أسئلة تتعلق بالقيم والثقافة المؤسسية]
+
+## الأسئلة التحليلية (2-3 أسئلة)
+[أسئلة لقياس مهارات التفكير والتحليل]
+
+لكل سؤال:
+1. السؤال الرئيسي
+2. الأسئلة المتابعة المقترحة
+3. نقاط التقييم الرئيسية
+4. الإجابات المثالية المتوقعة
+
+اكتب الأسئلة بأسلوب مهني يناسب القطاع الحكومي.`,
+
+            finalRecommendation: `أنت مستشار توظيف رئيسي في القطاع الحكومي. قم بإعداد تقرير توصية نهائي شامل يتضمن:
+
+## الملخص التنفيذي
+[ملخص موجز عن المرشح والتوصية النهائية]
+
+## تحليل الملف الشخصي
+- **المؤهلات والخبرات**: [تحليل]
+- **التقييمات والاختبارات**: [نتائج]
+- **المقابلات الشخصية**: [ملاحظات]
+
+## التقييم الشامل
+1. **الكفاءة المهنية**
+   - نقاط القوة: [قائمة]
+   - مجالات التطوير: [قائمة]
+
+2. **الملاءمة المؤسسية**
+   - التوافق مع الثقافة: [تحليل]
+   - القدرة على التكيف: [تحليل]
+
+3. **إمكانات النمو**
+   - المسار الوظيفي المقترح: [توصيات]
+   - فرص التطوير: [مجالات]
+
+## التوصية النهائية
+- **القرار**: [توظيف/عدم توظيف/إعادة تقييم]
+- **المبررات**: [قائمة الأسباب]
+- **الخطوات التالية**: [إجراءات مقترحة]
+
+اكتب التقرير بأسلوب مهني ومفصل مع التركيز على متطلبات القطاع الحكومي.`
+        };
+
+        // Initialize Application
+        window.addEventListener('load', function() {
+            initializeApp();
+            updateDashboard();
+            loadCandidatesTable();
+            initSpeechRecognition();
+            setupEventListeners();
+            initCharts();
+            updateCandidateSelect(); // Ensure candidate select is populated on load
+        });
+
+        function initializeApp() {
+            // Load settings
+            const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+            if (settings.questionsCount) {
+                document.getElementById('questionsCount').value = settings.questionsCount;
+            }
+            if (settings.minScore) {
+                document.getElementById('minScore').value = settings.minScore;
+            }
+        }
+
+        function setupEventListeners() {
+            // File upload
+            document.getElementById('resumeFile').addEventListener('change', handleFileSelect);
+
+            // Drag and drop
+            const uploadArea = document.getElementById('uploadArea');
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+
+            // Search and filter
+            document.getElementById('searchCandidates').addEventListener('input', filterCandidates);
+            document.getElementById('filterByScore').addEventListener('change', filterCandidates);
+            document.getElementById('filterByStatus').addEventListener('change', filterCandidates);
+
+            // Chat enter key
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendChatMessage();
+                }
+            });
+        }
+
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked nav tab
+            // Use event.currentTarget to get the button that was clicked
+            const clickedButton = event.currentTarget;
+            if (clickedButton) {
+                 clickedButton.classList.add('active');
+            }
+
+
+            // Update dashboard if dashboard tab is selected
+            if (tabName === 'dashboard') {
+                updateDashboard();
+                // Re-initialize charts if needed, or ensure they update with data
+                // This is a basic update, more complex charts might need full redraw or dataset updates
+                // Let's assume updateDashboard is enough for now, or charts are static examples.
+            }
+             // Update candidate select list when going to reports tab
+            if (tabName === 'reports') {
+                updateCandidateSelect();
+            }
+        }
+
+        // Dashboard Functions
+        function updateDashboard() {
+            const totalCandidates = candidates.length;
+            const qualifiedCandidates = candidates.filter(c => (c.score || 0) >= (parseInt(document.getElementById('minScore').value) || 70)).length; // Use minScore setting
+            const interviewsCompleted = candidates.filter(c => c.interviewed).length;
+            const avgScore = totalCandidates > 0 ?
+                Math.round(candidates.reduce((sum, c) => sum + (c.score || 0), 0) / totalCandidates) : 0;
+
+            document.getElementById('totalCandidates').textContent = totalCandidates;
+            document.getElementById('qualifiedCandidates').textContent = qualifiedCandidates;
+            document.getElementById('interviewsCompleted').textContent = interviewsCompleted;
+            document.getElementById('avgScore').textContent = avgScore + '%';
+
+            // Update charts data (assuming charts are initialized)
+            // This is a basic update, more complex charts might need full redraw or dataset updates
+            if (window.candidatesChartInstance) {
+                 window.candidatesChartInstance.data.datasets[0].data = [
+                    candidates.filter(c => (c.score || 0) >= 85).length,
+                    candidates.filter(c => (c.score || 0) >= (parseInt(document.getElementById('minScore').value) || 70) && (c.score || 0) < 85).length,
+                    candidates.filter(c => (c.score || 0) < (parseInt(document.getElementById('minScore').value) || 70)).length
+                 ];
+                 window.candidatesChartInstance.update();
+            }
+             // Performance chart is static example, no update needed based on candidate data
+        }
+
+        function initCharts() {
+            // Candidates Chart
+            const ctx1 = document.getElementById('candidatesChart').getContext('2d');
+            if (window.candidatesChartInstance) {
+                window.candidatesChartInstance.destroy(); // Destroy existing instance if any
+            }
+            window.candidatesChartInstance = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['مؤهل', 'بحاجة مراجعة', 'غير مناسب'],
+                    datasets: [{
+                        data: [
+                            candidates.filter(c => (c.score || 0) >= 85).length,
+                            candidates.filter(c => (c.score || 0) >= (parseInt(document.getElementById('minScore').value) || 70) && (c.score || 0) < 85).length,
+                            candidates.filter(c => (c.score || 0) < (parseInt(document.getElementById('minScore').value) || 70)).length
+                        ],
+                        backgroundColor: ['#27ae60', '#f39c12', '#e74c3c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Performance Chart (Static Example)
+            const ctx2 = document.getElementById('performanceChart').getContext('2d');
+             if (window.performanceChartInstance) {
+                window.performanceChartInstance.destroy(); // Destroy existing instance if any
+            }
+            window.performanceChartInstance = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                    datasets: [{
+                        label: 'عدد المرشحين',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+             // Qualifications Chart (Reports Tab)
+            const ctx3 = document.getElementById('qualificationsChart').getContext('2d');
+             if (window.qualificationsChartInstance) {
+                window.qualificationsChartInstance.destroy(); // Destroy existing instance if any
+            }
+            // Example data - replace with actual data processing if needed
+            window.qualificationsChartInstance = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['هندسة', 'إدارة', 'حاسوب', 'أخرى'],
+                    datasets: [{
+                        label: 'عدد المرشحين',
+                        data: [15, 10, 20, 5], // Example data
+                        backgroundColor: ['#667eea', '#764ba2', '#27ae60', '#f39c12']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+             // Success Rate Chart (Reports Tab)
+            const ctx4 = document.getElementById('successRateChart').getContext('2d');
+             if (window.successRateChartInstance) {
+                window.successRateChartInstance.destroy(); // Destroy existing instance if any
+            }
+             // Example data - replace with actual data processing if needed
+            window.successRateChartInstance = new Chart(ctx4, {
+                type: 'pie',
+                data: {
+                    labels: ['نجاح', 'رسوب', 'لم يكمل'],
+                    datasets: [{
+                        data: [70, 20, 10], // Example data
+                        backgroundColor: ['#27ae60', '#e74c3c', '#95a5a6']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // File Handling
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('analyzeResumeBtn').disabled = false;
+                document.querySelector('#uploadArea p').textContent = `تم اختيار: ${file.name}`; // Use #uploadArea for specificity
+            }
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('resumeFile').files = files;
+                document.getElementById('analyzeResumeBtn').disabled = false;
+                document.querySelector('#uploadArea p').textContent = `تم اختيار: ${files[0].name}`; // Use #uploadArea for specificity
+            }
+        }
+
+        // API Functions
+        async function callGeminiAPI(prompt, systemPrompt) {
+            try {
+                const apiKey = localStorage.getItem('geminiApiKey') || GEMINI_API_KEY;
+                 if (!apiKey || apiKey === 'YOUR_GEMINI_API_KEY') {
+                     showNotification('يرجى تعيين مفتاح API الخاص بـ Gemini في الإعدادات.', 'error');
+                     throw new Error('API Key not set');
+                 }
+
+                const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `${systemPrompt}\n\nالمدخل: ${prompt}`
+                            }]
+                        }],
+                         generationConfig: {
+                            temperature: 0.7, // Adjust temperature for creativity/determinism
+                            maxOutputTokens: 800, // Limit output length
+                        },
+                    })
+                });
+
+                 if (!response.ok) {
+                     const errorData = await response.json();
+                     console.error('API Error:', response.status, errorData);
+                     showNotification(`خطأ في API: ${response.status} - ${errorData.error?.message || response.statusText}`, 'error');
+                     throw new Error(`API Error: ${response.status}`);
+                 }
+
+
+                const data = await response.json();
+                 // Check if data structure is as expected
+                 if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+                    return data.candidates[0].content.parts[0].text;
+                 } else {
+                     console.error('Unexpected API response structure:', data);
+                     showNotification('عذراً، استجابة غير متوقعة من الخدمة.', 'error');
+                     return 'عذراً، استجابة غير متوقعة من الخدمة.';
+                 }
+
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                // Notification is already shown by the specific error handlers above
+                // showNotification('عذراً، حدث خطأ في الاتصال بالخدمة. يرجى المحاولة مرة أخرى.', 'error');
+                return 'عذراً، حدث خطأ في الاتصال بالخدمة. يرجى المحاولة مرة أخرى.';
+            }
+        }
+
+        // Resume Analysis
+        async function analyzeResume() {
+            const fileInput = document.getElementById('resumeFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showNotification('يرجى اختيار ملف السيرة الذاتية أولاً', 'error');
+                return;
+            }
+
+            document.getElementById('resumeLoading').classList.add('show');
+            document.getElementById('resumeOutput').innerHTML = ''; // Use innerHTML
+
+            try {
+                let resumeText = '';
+
+                if (file.type === 'application/pdf') {
+                    resumeText = await extractTextFromPDF(file);
+                } else if (file.type.includes('word')) {
+                    resumeText = await extractTextFromWord(file);
+                } else {
+                    // Attempt to read as text for other types
+                    resumeText = await file.text();
+                }
+
+                 if (!resumeText.trim()) {
+                     showNotification('لم يتم استخلاص نص من الملف.', 'error');
+                     document.getElementById('resumeLoading').classList.remove('show');
+                     document.getElementById('resumeOutput').textContent = 'لم يتم استخلاص نص من الملف.';
+                     return;
+                 }
+
+
+                const analysis = await callGeminiAPI(resumeText, SYSTEM_PROMPTS.resumeAnalysis);
+
+                document.getElementById('resumeLoading').classList.remove('show');
+                document.getElementById('resumeOutput').innerHTML = `
+                    <div class="output-card">
+                        <h3 style="color:#667eea; margin-bottom:10px;">نتيجة تحليل السيرة الذاتية</h3>
+                        ${formatApiOutput(analysis)}
+                    </div>
+                `;
+
+                // Extract candidate data (basic extraction from formatted text)
+                currentCandidate = {
+                    id: Date.now(),
+                    name: extractValueFromFormattedAnalysis(analysis, 'الاسم الكامل'),
+                    age: extractValueFromFormattedAnalysis(analysis, 'العمر'),
+                    qualification: extractListFromFormattedAnalysis(analysis, 'المؤهلات التعليمية').join(', ') || 'غير محدد',
+                    experience: extractValueFromFormattedAnalysis(analysis, 'سنوات الخبرة'),
+                    fullAnalysis: analysis, // Store the raw formatted analysis
+                    dateAdded: new Date().toLocaleDateString('ar-SA'),
+                    status: 'pending',
+                    interviewed: false,
+                    score: null, // Initialize score
+                    evaluation: null // Initialize evaluation
+                };
+
+                showCandidateCard();
+                showNotification('تم تحليل السيرة الذاتية بنجاح');
+
+            } catch (error) {
+                document.getElementById('resumeLoading').classList.remove('show');
+                // Notification is handled by callGeminiAPI or specific error checks
+                // document.getElementById('resumeOutput').textContent = 'حدث خطأ في تحليل السيرة الذاتية';
+                // showNotification('حدث خطأ في تحليل السيرة الذاتية', 'error');
+            }
+        }
+
+        // Helper to extract value from formatted Markdown output
+        function extractValueFromFormattedAnalysis(analysis, key) {
+            const regex = new RegExp(`\\*\\*${key}\\*\\*:\\s*(.*?)(?=\\n|$)`, 'i');
+            const match = analysis.match(regex);
+            return match ? match[1].trim() : 'غير محدد';
+        }
+
+         // Helper to extract list items from formatted Markdown output
+        function extractListFromFormattedAnalysis(analysis, key) {
+            const regex = new RegExp(`\\*\\*${key}\\*\\*:\\s*\\n((- .*\\n)*- .*|)`, 'i');
+            const match = analysis.match(regex);
+            if (match && match[1]) {
+                return match[1].split('\n').map(item => item.substring(2).trim()).filter(item => item);
+            }
+            return [];
+        }
+
+
+        async function extractTextFromPDF(file) {
+            const arrayBuffer = await file.arrayBuffer();
+            // Ensure pdfjsLib is loaded
+            if (typeof pdfjsLib === 'undefined') {
+                 console.error("pdfjsLib is not loaded.");
+                 showNotification("خطأ: مكتبة PDF.js غير محملة بشكل صحيح.", "error");
+                 return "";
+            }
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            let text = '';
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                text += textContent.items.map(item => item.str).join(' ') + '\n';
+            }
+
+            return text;
+        }
+
+        async function extractTextFromWord(file) {
+            const arrayBuffer = await file.arrayBuffer();
+             // Ensure mammoth is loaded
+             if (typeof mammoth === 'undefined') {
+                 console.error("mammoth is not loaded.");
+                 showNotification("خطأ: مكتبة Mammoth.js غير محملة بشكل صحيح.", "error");
+                 return "";
+             }
+            const result = await mammoth.extractRawText({arrayBuffer});
+            return result.value;
+        }
+
+
+        function showCandidateCard() {
+            if (currentCandidate) {
+                document.getElementById('candidateName').textContent = currentCandidate.name;
+                document.getElementById('candidateAge').textContent = currentCandidate.age;
+                document.getElementById('candidateQualification').textContent = currentCandidate.qualification;
+                document.getElementById('candidateExperience').textContent = currentCandidate.experience;
+                document.getElementById('candidateCard').style.display = 'block';
+                 document.getElementById('evaluationResult').innerHTML = ''; // Clear previous evaluation
+            }
+        }
+
+        // Candidate Evaluation
+        async function evaluateCandidate() {
+            if (!currentCandidate) {
+                showNotification('يرجى تحليل السيرة الذاتية أولاً', 'error');
+                return;
+            }
+
+            document.getElementById('evaluationLoading').classList.add('show');
+            document.getElementById('evaluationResult').innerHTML = ''; // Use innerHTML
+
+            try {
+                // Pass relevant candidate data to the API
+                const candidateDataForAPI = {
+                    name: currentCandidate.name,
+                    age: currentCandidate.age,
+                    qualification: currentCandidate.qualification,
+                    experience: currentCandidate.experience,
+                    fullAnalysis: currentCandidate.fullAnalysis // Include full analysis for context
+                };
+
+                const evaluation = await callGeminiAPI(
+                    `بيانات المرشح: ${JSON.stringify(candidateDataForAPI)}`,
+                    SYSTEM_PROMPTS.candidateEvaluation
+                );
+
+                document.getElementById('evaluationLoading').classList.remove('show');
+
+                // Attempt to extract score from evaluation text, or use a fallback
+                let scoreMatch = evaluation.match(/نسبة التوافق:\s*(\d+)/);
+                let score = scoreMatch ? parseInt(scoreMatch[1]) : Math.floor(Math.random() * 30) + 70; // Fallback to random if not found
+
+                const scoreClass = score >= 85 ? 'score-high' : score >= (parseInt(document.getElementById('minScore').value) || 70) ? 'score-medium' : 'score-low'; // Use minScore setting
+
+                currentCandidate.score = score;
+                currentCandidate.evaluation = evaluation;
+
+                document.getElementById('evaluationResult').innerHTML = `
+                    <div class="compatibility-score ${scoreClass}">نسبة التوافق: ${score}%</div>
+                    <div class="output-card" style="margin-top:15px;">
+                        <h4 style="color:#764ba2; margin-bottom:8px;">تقييم الذكاء الاصطناعي</h4>
+                        ${formatApiOutput(evaluation)}
+                    </div>
+                `;
+
+                showNotification('تم تقييم المرشح بنجاح');
+
+            } catch (error) {
+                document.getElementById('evaluationLoading').classList.remove('show');
+                // Notification is handled by callGeminiAPI
+                // document.getElementById('evaluationResult').textContent = 'حدث خطأ في تقييم المرشح';
+                // showNotification('حدث خطأ في تقييم المرشح', 'error');
+            }
+        }
+
+        function saveCandidate() {
+            if (!currentCandidate) {
+                showNotification('لا يوجد مرشح للحفظ', 'error');
+                return;
+            }
+
+             // Check if candidate already exists (basic check by ID or name)
+             const existingIndex = candidates.findIndex(c => c.id === currentCandidate.id);
+             if (existingIndex > -1) {
+                 // Update existing candidate
+                 candidates[existingIndex] = currentCandidate;
+                 showNotification('تم تحديث بيانات المرشح بنجاح');
+             } else {
+                 // Add new candidate
+                 candidates.push(currentCandidate);
+                 showNotification('تم حفظ المرشح بنجاح');
+             }
+
+
+            localStorage.setItem('candidates', JSON.stringify(candidates));
+
+            updateDashboard();
+            loadCandidatesTable();
+            updateCandidateSelect();
+
+        }
+
+        // Candidates Management
+        function loadCandidatesTable() {
+            const tbody = document.getElementById('candidatesTableBody');
+            tbody.innerHTML = '';
+
+            const filtered = filterCandidates(true); // Get filtered candidates without updating the table yet
+
+            filtered.forEach(candidate => { // Use filtered list
+                const row = document.createElement('tr');
+                const scoreClass = (candidate.score || 0) >= 85 ? 'score-high' :
+                                 (candidate.score || 0) >= (parseInt(document.getElementById('minScore').value) || 70) ? 'score-medium' : 'score-low'; // Use minScore setting
+
+                row.innerHTML = `
+                    <td>${candidate.name}</td>
+                    <td>${candidate.qualification}</td>
+                    <td>${candidate.experience}</td>
+                    <td>${candidate.score !== null ? `<span class="compatibility-score ${scoreClass}">${candidate.score}%</span>` : 'لم يتم التقييم'}</td>
+                    <td>${getStatusText(candidate.status)}</td>
+                    <td>${candidate.dateAdded}</td>
+                    <td>
+                        <button class="btn" style="padding: 5px 10px; margin: 2px;" onclick="viewCandidate(${candidate.id})">عرض</button>
+                        <button class="btn btn-danger" style="padding: 5px 10px; margin: 2px;" onclick="deleteCandidate(${candidate.id})">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': 'في الانتظار',
+                'interviewed': 'تم إجراء مقابلة',
+                'qualified': 'مؤهل',
+                'rejected': 'مرفوض'
+            };
+            return statusMap[status] || status;
+        }
+
+        function filterCandidates(returnArray = false) { // Added parameter to optionally return array
+            const searchTerm = document.getElementById('searchCandidates').value.toLowerCase();
+            const scoreFilter = document.getElementById('filterByScore').value;
+            const statusFilter = document.getElementById('filterByStatus').value;
+            const minScoreSetting = parseInt(document.getElementById('minScore').value) || 70;
+
+            let filteredCandidates = candidates;
+
+            if (searchTerm) {
+                filteredCandidates = filteredCandidates.filter(c =>
+                    (c.name || '').toLowerCase().includes(searchTerm) ||
+                    (c.qualification || '').toLowerCase().includes(searchTerm) ||
+                    (c.experience || '').toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (scoreFilter) {
+                filteredCandidates = filteredCandidates.filter(c => {
+                    const score = c.score || 0;
+                    if (scoreFilter === 'high') return score >= 85;
+                    if (scoreFilter === 'medium') return score >= minScoreSetting && score < 85;
+                    if (scoreFilter === 'low') return score < minScoreSetting;
+                    return true;
+                });
+            }
+
+            if (statusFilter) {
+                filteredCandidates = filteredCandidates.filter(c => c.status === statusFilter);
+            }
+
+            if (returnArray) {
+                return filteredCandidates;
+            } else {
+                // Update table with filtered results
+                const tbody = document.getElementById('candidatesTableBody');
+                tbody.innerHTML = ''; // Clear table before adding filtered results
+
+                filteredCandidates.forEach(candidate => {
+                    const row = document.createElement('tr');
+                    const scoreClass = (candidate.score || 0) >= 85 ? 'score-high' :
+                                     (candidate.score || 0) >= minScoreSetting ? 'score-medium' : 'score-low';
+
+                    row.innerHTML = `
+                        <td>${candidate.name}</td>
+                        <td>${candidate.qualification}</td>
+                        <td>${candidate.experience}</td>
+                        <td>${candidate.score !== null ? `<span class="compatibility-score ${scoreClass}">${candidate.score}%</span>` : 'لم يتم التقييم'}</td>
+                        <td>${getStatusText(candidate.status)}</td>
+                        <td>${candidate.dateAdded}</td>
+                        <td>
+                            <button class="btn" style="padding: 5px 10px; margin: 2px;" onclick="viewCandidate(${candidate.id})">عرض</button>
+                            <button class="btn btn-danger" style="padding: 5px 10px; margin: 2px;" onclick="deleteCandidate(${candidate.id})">حذف</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        }
+
+
+        function viewCandidate(id) {
+            const candidate = candidates.find(c => c.id === id);
+            if (candidate) {
+                document.getElementById('modalContent').innerHTML = `
+                    <h2>${candidate.name}</h2>
+                    <p><strong>العمر:</strong> ${candidate.age}</p>
+                    <p><strong>المؤهل:</strong> ${candidate.qualification}</p>
+                    <p><strong>الخبرة:</strong> ${candidate.experience}</p>
+                    <p><strong>النقاط:</strong> ${candidate.score !== null ? candidate.score + '%' : 'لم يتم التقييم'}</p>
+                    <p><strong>الحالة:</strong> ${getStatusText(candidate.status)}</p>
+                    ${candidate.fullAnalysis ? `<h3>التحليل الكامل:</h3><div class="output-card">${formatApiOutput(candidate.fullAnalysis)}</div>` : ''}
+                    ${candidate.evaluation ? `<h3>التقييم:</h3><div class="output-card">${formatApiOutput(candidate.evaluation)}</div>` : ''}
+                `; // Use output-card and formatApiOutput for modal content
+                document.getElementById('modal').style.display = 'block';
+            }
+        }
+
+        function deleteCandidate(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المرشح؟')) {
+                candidates = candidates.filter(c => c.id !== id);
+                localStorage.setItem('candidates', JSON.stringify(candidates));
+                loadCandidatesTable();
+                updateDashboard();
+                updateCandidateSelect();
+                showNotification('تم حذف المرشح بنجاح');
+            }
+        }
+
+        function exportCandidates() {
+            const dataStr = JSON.stringify(candidates, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'candidates_data.json';
+            link.click();
+            showNotification('تم تصدير بيانات المرشحين بنجاح');
+        }
+
+        // Interview Questions Generation
+        async function generateQuestions() {
+            const jobDescription = document.getElementById('jobDescription').value;
+
+            if (!jobDescription.trim()) {
+                showNotification('يرجى إدخال وصف الوظيفة أولاً', 'error');
+                return;
+            }
+
+            document.getElementById('questionsLoading').classList.add('show');
+            document.getElementById('questionsList').innerHTML = ''; // Use innerHTML
+
+            try {
+                const questions = await callGeminiAPI(jobDescription, SYSTEM_PROMPTS.questionGeneration);
+
+                document.getElementById('questionsLoading').classList.remove('show');
+                document.getElementById('questionsList').innerHTML = `
+                    <div class="output-card">
+                        <h4 style="color:#667eea; margin-bottom:8px;">أسئلة المقابلة المقترحة</h4>
+                        ${formatApiOutput(questions)}
+                    </div>
+                `; // Use formatApiOutput
+                showNotification('تم توليد الأسئلة بنجاح');
+
+            } catch (error) {
+                document.getElementById('questionsLoading').classList.remove('show');
+                // Notification handled by callGeminiAPI
+                // document.getElementById('questionsList').textContent = 'حدث خطأ في توليد الأسئلة';
+                // showNotification('حدث خطأ في توليد الأسئلة', 'error');
+            }
+        }
+
+        // Voice Interview Functions
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'ar-SA';
+                recognition.continuous = true;
+                recognition.interimResults = true;
+
+                recognition.onstart = function() {
+                    document.getElementById('voiceStatus').textContent = 'جاري الاستماع...';
+                    document.getElementById('voiceStatus').style.background = '#e8f5e8';
+                    document.getElementById('voiceStatus').style.color = '#27ae60';
+                };
+
+                recognition.onresult = function(event) {
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        }
+                    }
+
+                    if (finalTranscript) {
+                        handleVoiceInput(finalTranscript);
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    showNotification('خطأ في التعرف على الصوت', 'error');
+                     document.getElementById('voiceStatus').textContent = 'خطأ';
+                     document.getElementById('voiceStatus').style.background = '#fdecea';
+                     document.getElementById('voiceStatus').style.color = '#e74c3c';
+                     isInterviewActive = false; // Stop interview on error
+                     document.getElementById('startInterviewBtn').disabled = false;
+                     document.getElementById('stopInterviewBtn').disabled = true;
+                };
+
+                recognition.onend = function() {
+                    document.getElementById('voiceStatus').textContent = 'متوقف';
+                    document.getElementById('voiceStatus').style.background = '#ffeaa7';
+                    document.getElementById('voiceStatus').style.color = '#d63031';
+
+                    if (isInterviewActive) {
+                        // Attempt to restart recognition if it stopped unexpectedly
+                        setTimeout(() => {
+                             try {
+                                recognition.start();
+                             } catch (e) {
+                                 console.error("Error restarting recognition:", e);
+                                 showNotification('تعذر إعادة تشغيل التعرف على الصوت', 'error');
+                                 stopVoiceInterview(); // Stop if restart fails
+                             }
+                        }, 1000);
+                    }
+                };
+            } else {
+                 document.getElementById('voiceStatus').textContent = 'غير مدعوم';
+                 document.getElementById('voiceStatus').style.background = '#fdecea';
+                 document.getElementById('voiceStatus').style.color = '#e74c3c';
+                 document.getElementById('startInterviewBtn').disabled = true;
+                 showNotification('المتصفح لا يدعم التعرف على الصوت', 'error');
+            }
+        }
+
+        function startVoiceInterview() {
+            if (!recognition) {
+                showNotification('المتصفح لا يدعم التعرف على الصوت', 'error');
+                return;
+            }
+
+            isInterviewActive = true;
+            currentQuestionIndex = 0;
+
+            document.getElementById('startInterviewBtn').disabled = true;
+            document.getElementById('stopInterviewBtn').disabled = false;
+             document.getElementById('voiceChat').innerHTML = ''; // Clear previous chat
+
+            addVoiceMessage('مرحباً بك في المقابلة المبدئية. سأطرح عليك بعض الأسئلة العامة. تحدث بوضوح وسأقوم بالاستماع إليك.', 'ai');
+
+            // Wait a moment before asking the first question
+            setTimeout(() => {
+                 askNextQuestion();
+                 try {
+                    recognition.start();
+                 } catch (e) {
+                     console.error("Error starting recognition:", e);
+                     showNotification('تعذر بدء التعرف على الصوت', 'error');
+                     stopVoiceInterview();
+                 }
+            }, 1500);
+
+            showNotification('تم بدء المقابلة الصوتية');
+        }
+
+        function stopVoiceInterview() {
+            isInterviewActive = false;
+
+            if (recognition) {
+                 try {
+                    recognition.stop();
+                 } catch (e) {
+                     console.error("Error stopping recognition:", e);
+                 }
+            }
+
+            document.getElementById('startInterviewBtn').disabled = false;
+            document.getElementById('stopInterviewBtn').disabled = true;
+
+            addVoiceMessage('شكراً لك على إجراء المقابلة. سيتم مراجعة إجاباتك وسنتواصل معك قريباً.', 'ai');
+            showNotification('تم إنهاء المقابلة الصوتية');
+        }
+
+        function askNextQuestion() {
+            if (currentQuestionIndex < interviewQuestions.length) {
+                const question = interviewQuestions[currentQuestionIndex];
+                addVoiceMessage(question, 'ai');
+                currentQuestionIndex++;
+            } else {
+                stopVoiceInterview();
+            }
+        }
+
+        async function handleVoiceInput(transcript) {
+            addVoiceMessage(transcript, 'user');
+
+            // Simulate AI processing time
+            setTimeout(async () => {
+                try {
+                    // Send the user's transcript to the chat assistant API
+                    const response = await callGeminiAPI(
+                        `إجابة المتقدم: "${transcript}". قم بتقييم الإجابة وتقديم تعليق مختصر.`,
+                        SYSTEM_PROMPTS.chatAssistant // Use chat assistant prompt for evaluation feedback
+                    );
+
+                    addVoiceMessage(response, 'ai');
+
+                    // Wait a moment before asking the next question
+                    setTimeout(() => {
+                        if (isInterviewActive) {
+                            askNextQuestion();
+                        }
+                    }, 2000); // Wait 2 seconds before next question
+
+                } catch (error) {
+                    console.error("Error processing voice input with API:", error);
+                    // If API fails, just move to the next question
+                    addVoiceMessage('شكراً لإجابتك. دعنا ننتقل للسؤال التالي.', 'ai');
+                    setTimeout(() => {
+                        if (isInterviewActive) {
+                            askNextQuestion();
+                        }
+                    }, 2000);
+                }
+            }, 1000); // Simulate 1 second processing delay
+        }
+
+        function addVoiceMessage(message, sender) {
+            const chatContainer = document.getElementById('voiceChat');
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '15px';
+            messageDiv.style.padding = '10px 15px';
+            messageDiv.style.borderRadius = '10px';
+            messageDiv.style.maxWidth = '80%';
+
+            if (sender === 'user') {
+                messageDiv.style.background = '#667eea';
+                messageDiv.style.color = 'white';
+                messageDiv.style.marginRight = 'auto';
+                messageDiv.textContent = message; // User message is plain text
+            } else {
+                // AI message uses output-card styling
+                messageDiv.className = 'output-card'; // Apply the class
+                messageDiv.style.marginLeft = 'auto'; // Keep alignment
+                // Remove conflicting inline styles if output-card provides them
+                messageDiv.style.background = '';
+                messageDiv.style.border = '';
+                messageDiv.style.padding = '';
+                messageDiv.style.margin = '';
+
+                messageDiv.innerHTML = formatApiOutput(message); // Use innerHTML for formatted output
+            }
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Chat Assistant
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            addChatMessage(message, 'user');
+            input.value = '';
+
+            try {
+                const response = await callGeminiAPI(message, SYSTEM_PROMPTS.chatAssistant);
+                addChatMessage(response, 'ai'); // formatApiOutput is called inside addChatMessage
+            } catch (error) {
+                 console.error("Error sending chat message:", error);
+                addChatMessage('عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.', 'ai');
+            }
+        }
+
+        function addChatMessage(message, sender) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.style.marginBottom = '15px'; // Keep margin-bottom for spacing between messages
+            messageDiv.style.maxWidth = '80%'; // Keep max-width
+
+            if (sender === 'user') {
+                messageDiv.style.padding = '10px 15px';
+                messageDiv.style.borderRadius = '10px';
+                messageDiv.style.background = '#667eea';
+                messageDiv.style.color = 'white';
+                messageDiv.style.marginRight = 'auto';
+                messageDiv.textContent = message;
+            } else {
+                messageDiv.className = 'output-card'; // Use the class for styling
+                messageDiv.style.marginLeft = 'auto'; // Keep margin-left for alignment
+                 // Remove conflicting inline styles if output-card provides them
+                messageDiv.style.background = '';
+                messageDiv.style.border = '';
+                messageDiv.style.padding = '';
+                messageDiv.style.margin = '';
+
+                messageDiv.innerHTML = formatApiOutput(message); // Use innerHTML for formatted output
+            }
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Skills Test Functions
+        function generateSkillsTest() {
+            const testType = document.getElementById('testType').value;
+            if (!testType) {
+                 document.getElementById('skillsTestContainer').innerHTML = '';
+                 document.getElementById('submitTestBtn').style.display = 'none';
+                 document.getElementById('testResults').style.display = 'none';
+                 return;
+            }
+
+            const questions = skillsTests[testType] || [];
+            const container = document.getElementById('skillsTestContainer');
+
+            container.innerHTML = '';
+            skillsTestAnswers = []; // Reset answers
+
+            if (questions.length === 0) {
+                 container.innerHTML = '<p>لا توجد أسئلة متاحة لهذا النوع من الاختبار حالياً.</p>';
+                 document.getElementById('submitTestBtn').style.display = 'none';
+                 document.getElementById('testResults').style.display = 'none';
+                 return;
+            }
+
+
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <h4>السؤال ${index + 1}: ${q.question}</h4>
+                    <div class="question-options">
+                        ${q.options.map((option, optIndex) => `
+                            <label>
+                                <input type="radio" name="question${index}" value="${optIndex}">
+                                ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+
+            document.getElementById('submitTestBtn').style.display = 'block';
+             document.getElementById('testResults').style.display = 'none'; // Hide previous results
+        }
+
+        function submitSkillsTest() {
+            const testType = document.getElementById('testType').value;
+            const questions = skillsTests[testType] || [];
+            let score = 0;
+            let answers = [];
+            let allAnswered = true;
+
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption) {
+                    const answer = parseInt(selectedOption.value);
+                    answers.push(answer);
+                    if (answer === q.correct) {
+                        score++;
+                    }
+                } else {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                 showNotification('يرجى الإجابة على جميع الأسئلة قبل الإرسال.', 'error');
+                 return;
+            }
+
+            skillsTestAnswers = answers; // Store answers
+
+            const percentage = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0;
+            const resultDiv = document.getElementById('testResults');
+
+            resultDiv.innerHTML = `
+                <h3>نتائج الاختبار</h3>
+                <p><strong>النقاط:</strong> ${score} من ${questions.length}</p>
+                <p><strong>النسبة المئوية:</strong> ${percentage}%</p>
+                <p><strong>التقييم:</strong> ${percentage >= 80 ? 'ممتاز' : percentage >= 60 ? 'جيد' : 'يحتاج تحسين'}</p>
+            `;
+
+            resultDiv.style.display = 'block';
+            showNotification('تم إرسال الاختبار بنجاح');
+        }
+
+        // Psychological Test Functions
+        function startPsychologicalTest() {
+            currentPsychQuestion = 0;
+            psychAnswers = [];
+             document.getElementById('psychResults').style.display = 'none'; // Hide previous results
+
+            document.getElementById('psychTestContainer').style.display = 'block';
+            showPsychQuestion();
+        }
+
+        function showPsychQuestion() {
+            if (currentPsychQuestion >= psychQuestions.length) {
+                showPsychResults();
+                return;
+            }
+
+            const question = psychQuestions[currentPsychQuestion];
+            const container = document.getElementById('psychQuestions');
+
+            container.innerHTML = `
+                <div class="question">
+                    <h4>السؤال ${currentPsychQuestion + 1} من ${psychQuestions.length}</h4>
+                    <p>${question.question}</p>
+                    <div style="margin: 20px 0;">
+                        <label style="display: block; margin: 10px 0;">
+                            <input type="radio" name="psychAnswer" value="1"> لا أوافق بشدة
+                        </label>
+                        <label style="display: block; margin: 10px 0;">
+                            <input type="radio" name="psychAnswer" value="2"> لا أوافق
+                        </label>
+                        <label style="display: block; margin: 10px 0;">
+                            <input type="radio" name="psychAnswer" value="3"> محايد
+                        </label>
+                        <label style="display: block; margin: 10px 0;">
+                            <input type="radio" name="psychAnswer" value="4"> أوافق
+                        </label>
+                        <label style="display: block; margin: 10px 0;">
+                            <input type="radio" name="psychAnswer" value="5"> أوافق بشدة
+                        </label>
+                    </div>
+                </div>
+            `;
+
+             // Pre-select answer if already exists
+             if (psychAnswers[currentPsychQuestion] !== undefined) {
+                 const valueToSelect = psychAnswers[currentPsychQuestion];
+                 const radio = document.querySelector(`input[name="psychAnswer"][value="${valueToSelect}"]`);
+                 if (radio) {
+                     radio.checked = true;
+                 }
+             }
+
+
+            updatePsychProgress();
+            updatePsychButtons();
+        }
+
+        function updatePsychProgress() {
+            const progress = ((currentPsychQuestion) / psychQuestions.length) * 100; // Progress based on completed questions
+            document.getElementById('psychProgress').style.width = progress + '%';
+        }
+
+        function updatePsychButtons() {
+            document.getElementById('prevPsychBtn').disabled = currentPsychQuestion === 0;
+            document.getElementById('nextPsychBtn').textContent =
+                currentPsychQuestion === psychQuestions.length - 1 ? 'إنهاء' : 'التالي';
+        }
+
+        function nextPsychQuestion() {
+            const selectedAnswer = document.querySelector('input[name="psychAnswer"]:checked');
+            if (!selectedAnswer) {
+                showNotification('يرجى اختيار إجابة', 'error');
+                return;
+            }
+
+            psychAnswers[currentPsychQuestion] = parseInt(selectedAnswer.value);
+            currentPsychQuestion++;
+
+            if (currentPsychQuestion >= psychQuestions.length) {
+                showPsychResults();
+            } else {
+                showPsychQuestion();
+            }
+        }
+
+        function prevPsychQuestion() {
+            if (currentPsychQuestion > 0) {
+                 const selectedAnswer = document.querySelector('input[name="psychAnswer"]:checked');
+                 if (selectedAnswer) {
+                     psychAnswers[currentPsychQuestion] = parseInt(selectedAnswer.value); // Save current answer before moving back
+                 }
+                currentPsychQuestion--;
+                showPsychQuestion();
+            }
+        }
+
+        function showPsychResults() {
+             if (psychAnswers.length === 0) {
+                 document.getElementById('psychTestContainer').style.display = 'none';
+                 document.getElementById('psychResults').innerHTML = '<p>لم يتم إكمال التقييم النفسي.</p>';
+                 document.getElementById('psychResults').style.display = 'block';
+                 return;
+             }
+            const avgScore = psychAnswers.reduce((sum, score) => sum + score, 0) / psychAnswers.length;
+            const personality = avgScore >= 4.5 ? 'شخصية قيادية ومبادرة' :
+                              avgScore >= 4 ? 'شخصية قيادية' :
+                              avgScore >= 3.5 ? 'شخصية متوازنة ومستقرة' :
+                              avgScore >= 3 ? 'شخصية متوازنة' : 'شخصية تحتاج تطوير في بعض الجوانب';
+
+            document.getElementById('psychTestContainer').style.display = 'none';
+            document.getElementById('psychResults').innerHTML = `
+                <h3>نتائج التقييم النفسي</h3>
+                <p><strong>المتوسط العام:</strong> ${avgScore.toFixed(1)} من 5</p>
+                <p><strong>نوع الشخصية:</strong> ${personality}</p>
+                <p><strong>التوصية:</strong> ${avgScore >= 3.5 ? 'مناسب للعمل الحكومي ويتكيف مع البيئة التنظيمية' : 'يحتاج تدريب إضافي على التكيف والتعامل مع الضغوط'}</p>
+            `;
+            document.getElementById('psychResults').style.display = 'block';
+            showNotification('تم إكمال التقييم النفسي');
+        }
+
+        // Reports Functions
+        function generateMonthlyReport() {
+            const totalCandidates = candidates.length;
+            const qualifiedCandidates = candidates.filter(c => (c.score || 0) >= (parseInt(document.getElementById('minScore').value) || 70)).length;
+            const interviewsCompleted = candidates.filter(c => c.interviewed).length;
+            const avgScore = totalCandidates > 0 ?
+                Math.round(candidates.reduce((sum, c) => sum + (c.score || 0), 0) / totalCandidates) : 0;
+
+            const topCandidates = candidates.filter(c => c.score !== null).sort((a, b) => b.score - a.score).slice(0, 5);
+
+            const report = `
+## تقرير شهري - ${new Date().toLocaleDateString('ar-SA')}
+
+- **إجمالي المرشحين**: ${totalCandidates}
+- **المرشحين المؤهلين**: ${qualifiedCandidates}
+- **المقابلات المكتملة**: ${interviewsCompleted}
+- **متوسط النقاط**: ${avgScore}%
+
+## أفضل المرشحين (أعلى 5 نقاط)
+${topCandidates.length > 0 ? topCandidates.map(c => `- ${c.name}: ${c.score}%`).join('\n') : '- لا يوجد مرشحون مقيمون بعد.'}
+            `; // Use Markdown formatting
+
+            document.getElementById('reportOutput').innerHTML = formatApiOutput(report); // Use innerHTML and formatApiOutput
+            document.getElementById('reportOutput').style.display = 'block';
+            showNotification('تم توليد التقرير الشهري');
+        }
+
+        function generateDepartmentReport() {
+            const departments = {};
+            candidates.forEach(c => {
+                const dept = c.qualification || 'غير محدد';
+                if (!departments[dept]) {
+                    departments[dept] = { count: 0, totalScore: 0 };
+                }
+                departments[dept].count++;
+                departments[dept].totalScore += c.score || 0;
+            });
+
+            let report = '## تقرير حسب القسم\n\n'; // Use Markdown heading
+            Object.keys(departments).forEach(dept => {
+                const data = departments[dept];
+                const avgScore = data.count > 0 ? Math.round(data.totalScore / data.count) : 0;
+                report += `- **${dept}**: ${data.count} مرشح، متوسط النقاط: ${avgScore}%\n`; // Use Markdown list and bold
+            });
+
+            document.getElementById('reportOutput').innerHTML = formatApiOutput(report); // Use innerHTML and formatApiOutput
+            document.getElementById('reportOutput').style.display = 'block';
+            showNotification('تم توليد تقرير الأقسام');
+        }
+
+        function generateSkillsReport() {
+             // This report is based on static/example data in the original code.
+             // To make it dynamic, you would need to extract skills from candidate analysis.
+             // For now, keeping it based on the original structure but using Markdown.
+            const report = `
+## تقرير المهارات
+
+- **المهارات الأكثر طلباً (مثال)**:
+    - البرمجة: 45%
+    - الإدارة: 30%
+    - التواصل: 25%
+
+- **توزيع المرشحين حسب المهارات (مثال بناءً على المؤهل)**:
+    - تقني: ${candidates.filter(c => (c.qualification || '').includes('هندسة') || (c.qualification || '').includes('حاسوب')).length}
+    - إداري: ${candidates.filter(c => (c.qualification || '').includes('إدارة') || (c.qualification || '').includes('أعمال')).length}
+    - أخرى: ${candidates.filter(c => !(c.qualification || '').includes('هندسة') && !(c.qualification || '').includes('حاسوب') && !(c.qualification || '').includes('إدارة') && !(c.qualification || '').includes('أعمال')).length}
+            `; // Use Markdown formatting
+
+            document.getElementById('reportOutput').innerHTML = formatApiOutput(report); // Use innerHTML and formatApiOutput
+            document.getElementById('reportOutput').style.display = 'block';
+            showNotification('تم توليد تقرير المهارات');
+        }
+
+        function exportAllReports() {
+             // Generate reports as text/markdown first
+             const monthlyReportText = document.getElementById('reportOutput').textContent; // Get current report text
+             // You might want to generate all reports here if they aren't already displayed
+             // For simplicity, let's just export the current candidates data as JSON as before.
+             // A more robust solution would generate all reports into a single document or multiple files.
+
+            const dataStr = JSON.stringify(candidates, null, 2); // Export candidates data
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'all_data_and_reports.json'; // Changed filename
+            link.click();
+            showNotification('تم تصدير بيانات المرشحين (كمثال للتقارير)'); // Updated notification
+        }
+
+        // Final Recommendation
+        function updateCandidateSelect() {
+            const select = document.getElementById('candidateSelect');
+            select.innerHTML = '<option value="">اختر مرشحاً</option>';
+
+            candidates.forEach(candidate => {
+                const option = document.createElement('option');
+                option.value = candidate.id;
+                option.textContent = candidate.name + (candidate.score !== null ? ` (${candidate.score}%)` : ''); // Add score to option text
+                select.appendChild(option);
+            });
+        }
+
+        async function generateRecommendation() {
+            const candidateId = document.getElementById('candidateSelect').value;
+            if (!candidateId) {
+                showNotification('يرجى اختيار مرشح أولاً', 'error');
+                return;
+            }
+
+            const candidate = candidates.find(c => c.id == candidateId);
+            if (!candidate) {
+                showNotification('المرشح غير موجود', 'error');
+                return;
+            }
+
+            document.getElementById('recommendationLoading').classList.add('show');
+            document.getElementById('recommendationOutput').innerHTML = ''; // Use innerHTML
+
+            try {
+                // Pass comprehensive data to the API
+                const candidateDataForAPI = {
+                    name: candidate.name,
+                    qualification: candidate.qualification,
+                    experience: candidate.experience,
+                    score: candidate.score,
+                    status: candidate.status,
+                    fullAnalysis: candidate.fullAnalysis,
+                    evaluation: candidate.evaluation,
+                    // Add other relevant data like test scores, interview notes if available
+                };
+
+                const recommendation = await callGeminiAPI(
+                    `بيانات المرشح الكاملة: ${JSON.stringify(candidateDataForAPI)}`,
+                    SYSTEM_PROMPTS.finalRecommendation
+                );
+
+                document.getElementById('recommendationLoading').classList.remove('show');
+                document.getElementById('recommendationOutput').innerHTML = `
+                    <div class="output-card">
+                        <h4 style="color:#27ae60; margin-bottom:8px;">التوصية النهائية للمرشح</h4>
+                        ${formatApiOutput(recommendation)}
+                    </div>
+                `; // Use formatApiOutput
+                showNotification('تم توليد التوصية النهائية');
+
+            } catch (error) {
+                document.getElementById('recommendationLoading').classList.remove('show');
+                 // Notification handled by callGeminiAPI
+                // document.getElementById('recommendationOutput').textContent = 'حدث خطأ في توليد التوصية';
+                // showNotification('حدث خطأ في توليد التوصية', 'error');
+            }
+        }
+
+        // دالة تنسيق مخرجات الـ API (Markdown to HTML)
+        function formatApiOutput(text) {
+            if (!text) return '';
+
+            let html = text;
+
+            // Convert Markdown bold **text** to <strong>text</strong>
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Convert Markdown headings ## Heading to <h2>Heading</h2>
+            html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+
+            // Handle lists and paragraphs by splitting into blocks
+            const blocks = html.split('\n\n'); // Split by double newline for paragraphs/blocks
+            let formattedBlocks = blocks.map(block => {
+                if (block.trim() === '') return ''; // Handle empty blocks
+
+                // Check for lists
+                if (block.startsWith('- ')) {
+                    const items = block.split('\n').map(item => `<li>${item.substring(2).trim()}</li>`).join('');
+                    return `<ul style="padding-right: 20px; margin: 10px 0;">${items}</ul>`;
+                } else if (block.match(/^\d+\. /)) {
+                    const items = block.split('\n').map(item => `<li>${item.substring(item.indexOf('.') + 1).trim()}</li>`).join('');
+                    return `<ol style="padding-right: 20px; margin: 10px 0;">${items}</ol>`;
+                } else if (block.startsWith('<h2>')) {
+                     // Headings are already converted by the global replace, just return the block
+                     return block;
+                }
+                else {
+                    // Treat as a paragraph, replace single newlines within the block with <br>
+                    return `<p>${block.replace(/\n/g, '<br>')}</p>`;
+                }
+            });
+
+            // Join blocks back together
+            html = formattedBlocks.join('\n');
+
+            return html;
+        }
+
+
+        // Notification Functions
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification show'; // Reset classes and add show
+            if (type === 'error') {
+                notification.classList.add('error');
+            }
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Modal Functions
+        function openModal(contentHtml) {
+             document.getElementById('modalContent').innerHTML = contentHtml;
+             document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+             document.getElementById('modalContent').innerHTML = ''; // Clear content on close
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+         // Settings Functions
+         function saveSettings() {
+             const settings = {
+                 questionsCount: parseInt(document.getElementById('questionsCount').value) || 10,
+                 minScore: parseInt(document.getElementById('minScore').value) || 70,
+                 // systemLanguage: document.getElementById('systemLanguage').value // Language not fully implemented
+             };
+             localStorage.setItem('settings', JSON.stringify(settings));
+             showNotification('تم حفظ الإعدادات بنجاح');
+             updateDashboard(); // Update dashboard based on new min score
+         }
+
+         function exportSettings() {
+             const settings = localStorage.getItem('settings') || '{}';
+             const dataBlob = new Blob([settings], {type: 'application/json'});
+             const url = URL.createObjectURL(dataBlob);
+             const link = document.createElement('a');
+             link.href = url;
+             link.download = 'ai_recruitment_settings.json';
+             link.click();
+             showNotification('تم تصدير الإعدادات');
+         }
+
+         function importSettings() {
+             const fileInput = document.createElement('input');
+             fileInput.type = 'file';
+             fileInput.accept = '.json';
+             fileInput.onchange = async (e) => {
+                 const file = e.target.files[0];
+                 if (file) {
+                     try {
+                         const reader = new FileReader();
+                         reader.onload = (event) => {
+                             try {
+                                 const importedSettings = JSON.parse(event.target.result);
+                                 localStorage.setItem('settings', JSON.stringify(importedSettings));
+                                 initializeApp(); // Re-initialize app with new settings
+                                 showNotification('تم استيراد الإعدادات بنجاح');
+                             } catch (parseError) {
+                                 showNotification('خطأ في قراءة ملف الإعدادات.', 'error');
+                             }
+                         };
+                         reader.readAsText(file);
+                     } catch (readError) {
+                         showNotification('خطأ في قراءة الملف.', 'error');
+                     }
+                 }
+             };
+             fileInput.click();
+         }
+
+         function clearAllData() {
+             if (confirm('هل أنت متأكد من مسح جميع بيانات المرشحين والإعدادات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                 localStorage.removeItem('candidates');
+                 localStorage.removeItem('settings');
+                 candidates = []; // Clear in-memory array
+                 updateDashboard();
+                 loadCandidatesTable();
+                 updateCandidateSelect();
+                 initializeApp(); // Reset settings inputs
+                 showNotification('تم مسح جميع البيانات بنجاح');
+             }
+         }
+    </script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+:root {
+    --primary-color: #0A192F;
+    --secondary-color: #64FFDA;
+    --text-color: #FFFFFF;
+    --subtext-color: #8892B0;
+    --background-color: #1D2B3A;
+    --card-background: #1D2B3A;
+}
+
+/* إعدادات أساسية */
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h2, h3 {
+    color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+/* ترويسة الصفحة */
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.8em;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* شريط التنقل */
+.navbar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background-color: var(--background-color);
+}
+
+.navbar li {
+    margin: 0 15px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    display: block;
+    padding: 15px 0;
+}
+
+.navbar a.active {
+    border-bottom: 3px solid var(--secondary-color);
+}
+
+/* قسم الهيرو */
+.hero {
+    background-color: var(--primary-color);
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.1em;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.hero .button {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.hero .button:hover {
+    background-color: #004a94;
+}
+
+/* الأقسام */
+section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+section > h2 {
+    font-size: 2em;
+    margin-bottom: 40px;
+}
+
+/* قسم الخدمات */
+.service-cards, .importance-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: var(--card-background);
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    padding: 30px;
+    width: 320px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    color: #ffffff;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+.card i {
+    font-size: 2.5em;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+/* قسم الفوائد */
+.benefits {
+    background-color: var(--primary-color);
+}
+
+.benefit-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.item {
+    padding: 25px;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.item i {
+    font-size: 2em;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.item h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+/* قسم التطبيقات */
+.application-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.application-examples .example {
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    text-align: right;
+}
+
+.application-examples h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+/* قسم التقنيات */
+.technologies {
+    background-color: var(--primary-color);
+}
+
+.tech-logos {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.tech-logos img {
+    height: 80px;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.tech-logos img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* قسم دراسات الحالة */
+.case-studies {
+    background-color: var(--primary-color);
+}
+
+.case-study-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* قسم ابدأ */
+.getting-started {
+    background-color: var(--primary-color);
+}
+
+.getting-started p {
+    font-size: 1.1em;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.getting-started .button {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.getting-started .button:hover {
+    background-color: #004a94;
+}
+
+/* قسم الأهمية */
+.importance {
+    background-color: var(--primary-color);
+}
+
+.importance-cards {
+    margin-top: 40px;
+}
+
+/* قسم التواصل */
+.contact {
+    background: var(--background-color);
+    color: white;
+    padding: 40px 20px;
+    border-radius: 10px;
+    margin: 40px 20px;
+}
+
+.contact h2 {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+}
+
+.contact p {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.contact a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact i {
+    margin-left: 10px;
+}
+
+/* تذييل */
+footer {
+    background: var(--background-color);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9em;
+}
+
+footer .social {
+    margin-bottom: 15px;
+}
+
+footer .social a {
+    margin: 0 15px;
+    color: white;
+    font-size: 1.5em;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer .social a:hover {
+    color: var(--secondary-color);
+}
+
+/* استجابة الشاشات */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2em;
+    }
+    .navbar {
+        position: static; /* إزالة التثبيت */
+        flex-direction: column;
+        align-items: center;
+    }
+    .navbar li {
+        margin: 0;
+    }
+    .navbar a {
+        padding: 10px 0;
+    }
+    .service-cards, .importance-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    .card {
+        width: 90%;
+    }
+    .benefit-items {
+        grid-template-columns: 1fr;
+    }
+    .application-examples {
+        grid-template-columns: 1fr;
+    }
+    .tech-logos {
+        gap: 20px;
+    }
+    .tech-logos img {
+        height: 60px;
+    }
+    .case-study-cards {
+        grid-template-columns: 1fr;
+    }
+}
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .footer {
+            background-color: var(--background-color);
+            color: white;
+            padding: 3rem 0;
+            width: 100%; /* إضافة هذه السطر */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p {
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .quick-links ul {
+            list-style: none;
+        }
+
+        .quick-links ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-links ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .quick-links ul li a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #005BB5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #004a94;
+        }
+
+        .social-icon img {
+            width: 20px;
+            height: 20px;
+            filter: invert(1);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }

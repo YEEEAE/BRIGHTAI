@@ -1,0 +1,245 @@
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Organization",
+            "@id": "https://brightai.site/#organization",
+            "name": "مُشرقة AI",
+            "alternateName": [
+                "Bright AI",
+                "شركة مُشرقة للذكاء الاصطناعي",
+                "مُشرقة الذكاء الاصطناعي",
+                "شركة مُشرقة AI السعودية"
+            ],
+            "url": "https://brightai.site/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+                "width": 200,
+                "height": 55,
+                "caption": "شعار شركة مُشرقة AI السعودية الرائدة في الذكاء الاصطناعي"
+            },
+            "description": "مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي بالرياض. نقدم حلول التعلم العميق، أتمتة العمليات، روبوتات المحادثة العربية، وتحليل البيانات للشركات السعودية.",
+            "foundingDate": "2023",
+            "foundingLocation": {
+                "@type": "Place",
+                "name": "الرياض، المملكة العربية السعودية"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "مقر شركة مُشرقة AI الرئيسي",
+                "addressLocality": "الرياض",
+                "addressRegion": "منطقة الرياض",
+                "postalCode": "11564",
+                "addressCountry": "SA"
+            },
+            "areaServed": [
+                {
+                    "@type": "Country",
+                    "name": "المملكة العربية السعودية"
+                },
+                {
+                    "@type": "City",
+                    "name": "الرياض"
+                },
+                {
+                    "@type": "City",
+                    "name": "جدة"
+                },
+                {
+                    "@type": "City",
+                    "name": "الدمام"
+                },
+                {
+                    "@type": "City",
+                    "name": "الخبر"
+                },
+                {
+                    "@type": "City",
+                    "name": "مكة المكرمة"
+                },
+                {
+                    "@type": "City",
+                    "name": "المدينة المنورة"
+                }
+            ],
+            "contactPoint": [
+                {
+                    "@type": "ContactPoint",
+                    "telephone": "+966-53-822-9013",
+                    "contactType": "customer support",
+                    "areaServed": "SA",
+                    "availableLanguage": [
+                        "Arabic",
+                        "English"
+                    ],
+                    "contactOption": "TollFree"
+                },
+                {
+                    "@type": "ContactPoint",
+                    "email": "info@brightaii.com",
+                    "contactType": "technical support",
+                    "areaServed": "SA",
+                    "availableLanguage": [
+                        "Arabic",
+                        "English"
+                    ]
+                }
+            ],
+            "sameAs": [
+                "https://wa.me/966538229013",
+                "https://www.tiktok.com/@bright1ai",
+                "https://www.instagram.com/iililil44",
+                "https://www.youtube.com/@TeechLab"
+            ],
+            "knowsAbout": [
+                "الذكاء الاصطناعي",
+                "التعلم الآلي",
+                "التعلم العميق",
+                "معالجة اللغة الطبيعية",
+                "الرؤية الحاسوبية",
+                "أتمتة العمليات",
+                "تحليل البيانات",
+                "روبوتات المحادثة",
+                "الذكاء الاصطناعي التوليدي",
+                "التحول الرقمي"
+            ],
+            "makesOffer": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "حلول الذكاء الاصطناعي للشركات السعودية",
+                        "description": "تطوير وتنفيذ حلول الذكاء الاصطناعي المخصصة للشركات في السعودية"
+                    },
+                    "areaServed": "SA"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "تطوير روبوتات المحادثة العربية",
+                        "description": "تصميم وتطوير شات بوت عربي ذكي للشركات السعودية"
+                    },
+                    "areaServed": "SA"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "أتمتة العمليات التجارية",
+                        "description": "حلول RPA وأتمتة العمليات للمؤسسات السعودية"
+                    },
+                    "areaServed": "SA"
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "تحليل البيانات الضخمة",
+                        "description": "خدمات تحليل البيانات وذكاء الأعمال للشركات السعودية"
+                    },
+                    "areaServed": "SA"
+                }
+            ]
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://brightai.site/#website",
+            "url": "https://brightai.site/",
+            "name": "مُشرقة AI - حلول الذكاء الاصطناعي المتكاملة لدعم رؤية السعودية 2030",
+            "description": "مُشرقة AI تقدم حلولاً رائدة في الذكاء الاصطناعي، التعلم العميق، تطوير تطبيقات الذكاء الاصطناعي المخصصة، وخدمات الأتمتة لدعم مسيرة التحول الرقمي للشركات والمؤسسات في جميع أنحاء المملكة العربية السعودية.",
+            "publisher": {
+                "@id": "https://brightai.site/#organization"
+            },
+            "inLanguage": "ar-SA",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://brightai.site/search?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        },
+        {
+            "@type": "LocalBusiness",
+            "@id": "https://brightai.site/#localbusiness",
+            "name": "مُشرقة AI",
+            "image": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "مقر شركة مُشرقة AI الرئيسي",
+                "addressLocality": "الرياض",
+                "addressRegion": "منطقة الرياض",
+                "postalCode": "11564",
+                "addressCountry": "SA"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 24.7136,
+                "longitude": 46.6753
+            },
+            "telephone": "+966-53-822-9013",
+            "email": "info@brightaii.com",
+            "url": "https://brightai.site/",
+            "openingHours": "Mo-Th 08:00-17:00, Su 08:00-17:00",
+            "priceRange": "$$",
+            "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+            "currenciesAccepted": "SAR",
+            "serviceArea": {
+                "@type": "Country",
+                "name": "المملكة العربية السعودية"
+            }
+        },
+        {
+            "@type": "TechArticle",
+            "@id": "https://brightai.site/#article",
+            "headline": "شركة مُشرقة AI | أول مؤسسة سعودية متخصصة في الذكاء الاصطناعي والروبوتات",
+            "description": "مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي بالرياض. نقدم حلول التعلم العميق، أتمتة العمليات، روبوتات المحادثة العربية، وتحليل البيانات للشركات السعودية.",
+            "author": {
+                "@id": "https://brightai.site/#organization"
+            },
+            "publisher": {
+                "@id": "https://brightai.site/#organization"
+            },
+            "datePublished": "2023-01-01",
+            "dateModified": "2025-01-16",
+            "mainEntityOfPage": {
+                "@id": "https://brightai.site/"
+            },
+            "image": {
+                "@type": "ImageObject",
+                "url": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+                "width": 200,
+                "height": 55
+            },
+            "keywords": [
+                "شركة مُشرقة AI السعودية",
+                "الذكاء الاصطناعي الرياض",
+                "شركة ذكاء اصطناعي سعودية",
+                "AI السعودية",
+                "رؤية 2030 الذكاء الاصطناعي",
+                "التحول الرقمي السعودي",
+                "حلول الذكاء الاصطناعي السعودية",
+                "شات بوت عربي سعودي",
+                "أتمتة العمليات السعودية",
+                "تحليل البيانات السعودية"
+            ],
+            "about": [
+                {
+                    "@type": "Thing",
+                    "name": "الذكاء الاصطناعي في السعودية"
+                },
+                {
+                    "@type": "Thing",
+                    "name": "التحول الرقمي السعودي"
+                },
+                {
+                    "@type": "Thing",
+                    "name": "رؤية المملكة 2030"
+                }
+            ]
+        }
+    ]
+}

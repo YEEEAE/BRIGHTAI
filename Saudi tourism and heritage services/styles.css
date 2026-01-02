@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #1a1a1a;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #006C35; /* اللون الأخضر السعودي */
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.chat-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 2px solid #006C35;
+}
+
+.chat-messages {
+    height: 500px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.user-message {
+    background-color: #e3f2fd;
+    margin-left: 20%;
+}
+
+.bot-message {
+    background-color: #e8f5e9;
+    margin-right: 20%;
+    border-right: 3px solid #006C35;
+}
+
+.input-container {
+    display: flex;
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+textarea {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+    height: 50px;
+    margin-left: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #006C35;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005128;
+}
