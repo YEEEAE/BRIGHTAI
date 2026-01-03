@@ -6,6 +6,7 @@
 
 const { config, isApiKeyConfigured } = require('../config');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
+const { retryWithBackoff, createErrorResponse, getArabicErrorMessage } = require('../utils/errorHandler');
 
 // Arabic error messages
 const ERROR_MESSAGES = {
@@ -61,53 +62,70 @@ function buildGeminiUrl() {
 }
 
 /**
- * Call Gemini API for search
+ * Call Gemini API for search with retry logic
  * @param {string} query - Search query
  * @returns {Promise<Array>} - Search results
  */
 async function callGeminiSearch(query) {
-  const url = buildGeminiUrl();
-  
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: SEARCH_PROMPT }]
+  // Wrap the API call with retry logic
+  return retryWithBackoff(
+    async () => {
+      const url = buildGeminiUrl();
+      
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        {
-          role: 'model',
-          parts: [{ text: 'فهمت. سأقدم نتائج البحث بتنسيق JSON فقط.' }]
-        },
-        {
-          role: 'user',
-          parts: [{ text: `ابحث عن: ${query}` }]
-        }
-      ],
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 512
+        body: JSON.stringify({
+          contents: [
+            {
+              role: 'user',
+              parts: [{ text: SEARCH_PROMPT }]
+            },
+            {
+              role: 'model',
+              parts: [{ text: 'فهمت. سأقدم نتائج البحث بتنسيق JSON فقط.' }]
+            },
+            {
+              role: 'user',
+              parts: [{ text: `ابحث عن: ${query}` }]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 512
+          }
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Gemini Search API error:', response.status, errorData);
+        
+        // Create error with status code for retry logic
+        const error = new Error(`API error: ${response.status}`);
+        error.statusCode = response.status;
+        throw error;
       }
-    })
-  });
-  
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    console.error('Gemini Search API error:', response.status, errorData);
-    throw new Error(`API error: ${response.status}`);
-  }
-  
-  const data = await response.json();
-  
-  if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-    throw new Error('Invalid API response format');
-  }
-  
-  return data.candidates[0].content.parts[0].text;
+      
+      const data = await response.json();
+      
+      if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+        throw new Error('Invalid API response format');
+      }
+      
+      return data.candidates[0].content.parts[0].text;
+    },
+    {
+      maxRetries: 3,
+      baseDelay: 1000,
+      maxDelay: 10000,
+      onRetry: (attempt, delay, error) => {
+        console.log(`Retrying Gemini Search API call (attempt ${attempt}) after ${delay}ms due to: ${error.message}`);
+      }
+    }
+  );
 }
 
 /**
@@ -216,9 +234,15 @@ async function searchHandler(req, res) {
   } catch (error) {
     console.error('Search endpoint error:', error);
     
-    return res.status(500).json({
-      error: ERROR_MESSAGES.API_ERROR,
-      errorCode: 'API_ERROR',
+    // Determine appropriate status code
+    const statusCode = error.statusCode || 500;
+    
+    // Get Arabic error message
+    const arabicMessage = getArabicErrorMessage(error, statusCode);
+    
+    return res.status(statusCode).json({
+      error: arabicMessage,
+      errorCode: error.code || 'API_ERROR',
       results: []
     });
   }

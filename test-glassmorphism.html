@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Test - BrightAI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Test page specific styles */
+        .test-container {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .test-section {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <button class="glass-button theme-toggle-btn" onclick="toggleTheme()">
+            تبديل الوضع
+        </button>
+        
+        <div class="test-section">
+            <h1 style="color: white; text-align: center;">اختبار تأثيرات Glassmorphism</h1>
+            
+            <div class="test-grid">
+                <!-- Basic Glass -->
+                <div class="glass">
+                    <h3 style="color: white;">Glass Basic</h3>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        هذا مثال على التأثير الزجاجي الأساسي مع خلفية شفافة وتمويه.
+                    </p>
+                </div>
+                
+                <!-- Glass Card -->
+                <div class="glass-card">
+                    <h3 style="color: white;">Glass Card</h3>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        بطاقة زجاجية محسّنة مع تأثيرات hover وتحويلات سلسة.
+                    </p>
+                </div>
+                
+                <!-- Glass Panel -->
+                <div class="glass-panel">
+                    <h3 style="color: white;">Glass Panel</h3>
+                    <p style="color: rgba(255,255,255,0.8);">
+                        لوحة زجاجية كبيرة مع تمويه قوي للمحتوى الكبير.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="test-grid" style="margin-top: 3rem;">
+                <!-- Glass Button -->
+                <div style="text-align: center;">
+                    <button class="glass-button">زر زجاجي</button>
+                </div>
+                
+                <!-- Glass Input -->
+                <div>
+                    <input type="text" class="glass-input" placeholder="حقل إدخال زجاجي" style="width: 100%;">
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: white; text-align: center; margin-top: 3rem;">اختبار الوضع الفاتح والداكن</h2>
+            <div class="glass-card" style="text-align: center;">
+                <p style="color: rgba(255,255,255,0.9);">
+                    انقر على زر "تبديل الوضع" في الأعلى لاختبار تبديل السمات
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            console.log('Theme switched to:', newTheme);
+        }
+        
+        // Set default theme to dark
+        document.documentElement.setAttribute('data-theme', 'dark');
+    </script>
+</body>
+</html>
