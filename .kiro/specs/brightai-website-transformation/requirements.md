@@ -282,3 +282,60 @@ This document defines the requirements for transforming the BrightAI website int
 3. THE secondary CTAs SHALL use outline/ghost styling
 4. THE urgency CTAs SHALL include countdown or limited availability text
 5. THE trust CTAs SHALL include security icons (lock, shield)
+
+### Requirement 23: Server-Side AI Gateway Security
+
+**User Story:** As a security-conscious developer, I want AI API calls to go through a secure server endpoint, so that API keys are never exposed to the client.
+
+#### Acceptance Criteria
+
+1. THE BrightAI_Website SHALL NOT include any API keys in client-side JavaScript files
+2. THE AI_Gateway SHALL provide POST /api/ai/chat endpoint for chatbot requests
+3. THE AI_Gateway SHALL provide POST /api/ai/search endpoint for smart search requests
+4. THE AI_Gateway SHALL read GEMINI_API_KEY from environment variables only
+5. THE AI_Gateway SHALL implement rate limiting (30 requests/minute/IP)
+6. THE AI_Gateway SHALL sanitize user input to prevent HTML/script injection
+7. THE AI_Gateway SHALL filter AI responses to prevent executable code in DOM
+8. IF an API error occurs THEN THE AI_Gateway SHALL return user-friendly Arabic error messages
+9. THE BrightAI_Website SHALL include .env.example file with placeholder configuration
+10. THE .gitignore SHALL exclude .env files from version control
+
+### Requirement 24: Technical SEO for Saudi Arabia (KSA)
+
+**User Story:** As a business owner targeting Saudi customers, I want comprehensive technical SEO optimized for Riyadh and KSA, so that the website ranks well in Saudi search results.
+
+#### Acceptance Criteria
+
+1. THE BrightAI_Website SHALL include valid sitemap.xml with all pages and lastmod dates
+2. THE BrightAI_Website SHALL include robots.txt allowing crawling and referencing sitemap
+3. THE BrightAI_Website SHALL include canonical tags on every page
+4. THE BrightAI_Website SHALL include JSON-LD Organization schema with Riyadh NAP data
+5. THE BrightAI_Website SHALL include JSON-LD LocalBusiness schema with +966 phone format
+6. THE BrightAI_Website SHALL include JSON-LD WebSite schema with SearchAction
+7. THE BrightAI_Website SHALL include JSON-LD BreadcrumbList schema on all pages
+8. THE BrightAI_Website SHALL include JSON-LD Service schema on service pages
+9. THE BrightAI_Website SHALL include JSON-LD FAQPage schema where FAQ sections exist
+10. THE BrightAI_Website SHALL include Open Graph tags (og:title, og:description, og:image, og:url)
+11. THE BrightAI_Website SHALL include Twitter Card tags (twitter:card, twitter:title, twitter:description)
+12. THE BrightAI_Website SHALL have exactly one H1 per page
+13. THE BrightAI_Website SHALL use semantic heading hierarchy (H1 → H2 → H3)
+14. THE BrightAI_Website SHALL include breadcrumb navigation UI on all pages except homepage
+15. THE BrightAI_Website SHALL include strong internal linking between service pages
+
+### Requirement 25: Core Web Vitals and Performance
+
+**User Story:** As a user, I want the website to load quickly and respond smoothly, so that I have a great browsing experience.
+
+#### Acceptance Criteria
+
+1. THE BrightAI_Website SHALL achieve Lighthouse Performance score ≥ 90 on mobile
+2. THE BrightAI_Website SHALL achieve Lighthouse SEO score ≥ 95
+3. THE BrightAI_Website SHALL achieve Lighthouse Accessibility score ≥ 95
+4. THE BrightAI_Website SHALL use WebP/AVIF images with width/height attributes
+5. THE BrightAI_Website SHALL use loading="lazy" for images below the fold
+6. THE BrightAI_Website SHALL use font-display: swap for web fonts
+7. THE BrightAI_Website SHALL preconnect to font and API domains
+8. THE BrightAI_Website SHALL use defer attribute on non-critical scripts
+9. THE BrightAI_Website SHALL use content-visibility: auto for heavy sections
+10. THE BrightAI_Website SHALL reserve space for dynamic content to prevent CLS
+11. THE BrightAI_Website SHALL lazy-load chatbot and background animations

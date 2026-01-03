@@ -1,3 +1,4 @@
 {
-    "github.copilot.chat.copilotDebugCommand.enabled": true
+    "github.copilot.chat.copilotDebugCommand.enabled": true,
+    "html.autoClosingTags": false
 }

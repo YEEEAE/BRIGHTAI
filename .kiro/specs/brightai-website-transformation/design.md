@@ -725,6 +725,193 @@ interface FormTrackingModel {
 
 **Validates: Requirements 22.1**
 
+### Property 37: No API Keys in Client Code
+
+*For any* JavaScript file served to the client, the file content SHALL NOT contain the string "GEMINI_API_KEY" or any API key pattern matching "AIza[0-9A-Za-z-_]{35}".
+
+**Validates: Requirements 23.1**
+
+### Property 38: Server Gateway Endpoint Availability
+
+*For any* AI feature (chatbot or search), the client code SHALL call server endpoints (/api/ai/chat or /api/ai/search) and SHALL NOT call external AI APIs directly.
+
+**Validates: Requirements 23.2, 23.3**
+
+### Property 39: Rate Limiting Enforcement
+
+*For any* IP address making more than 30 requests per minute to AI endpoints, the server SHALL return HTTP 429 status with an Arabic error message.
+
+**Validates: Requirements 23.5**
+
+### Property 40: Input Sanitization
+
+*For any* user input containing HTML tags or script elements, the sanitizer SHALL escape or remove potentially dangerous content before processing.
+
+**Validates: Requirements 23.6**
+
+### Property 41: Canonical Tag Presence
+
+*For any* HTML page in the website, there SHALL exist exactly one `<link rel="canonical">` tag with a valid URL.
+
+**Validates: Requirements 24.3**
+
+### Property 42: JSON-LD Schema Validity
+
+*For any* JSON-LD script tag in the website, the content SHALL be valid parseable JSON with a "@context" property set to "https://schema.org".
+
+**Validates: Requirements 24.4, 24.5, 24.6, 24.7, 24.8, 24.9**
+
+### Property 43: Single H1 Per Page
+
+*For any* HTML page in the website, there SHALL exist exactly one `<h1>` element.
+
+**Validates: Requirements 24.12**
+
+### Property 44: Open Graph Tags Presence
+
+*For any* HTML page, the `<head>` section SHALL contain og:title, og:description, og:image, and og:url meta tags.
+
+**Validates: Requirements 24.10**
+
+### Property 45: Reduced Motion Animation Disabled
+
+*For any* user with `prefers-reduced-motion: reduce` preference, all CSS animations and JavaScript animation loops SHALL be disabled or reduced.
+
+**Validates: Requirements 3.5**
+
+### 15. Server-Side AI Gateway Interface
+
+```typescript
+interface AIGatewayConfig {
+  geminiApiKey: string;      // From process.env.GEMINI_API_KEY
+  geminiModel: string;       // "gemini-2.5-flash"
+  rateLimitPerMinute: number; // 30
+  maxInputLength: number;    // 1000 characters
+}
+
+interface ChatRequest {
+  message: string;
+  sessionId?: string;
+}
+
+interface ChatResponse {
+  reply: string;
+  sessionId: string;
+  error?: string;
+}
+
+interface SearchRequest {
+  query: string;
+}
+
+interface SearchResponse {
+  results: SearchResult[];
+  error?: string;
+}
+
+interface RateLimiter {
+  checkLimit(ip: string): boolean;
+  recordRequest(ip: string): void;
+  resetAfterMinute(): void;
+}
+
+interface InputSanitizer {
+  sanitizeUserInput(input: string): string;
+  filterAIResponse(response: string): string;
+  escapeHTML(text: string): string;
+}
+
+// Server endpoints
+// POST /api/ai/chat - Chatbot conversations
+// POST /api/ai/search - Smart search suggestions
+```
+
+### 16. SEO Schema Interfaces
+
+```typescript
+interface OrganizationSchema {
+  "@context": "https://schema.org";
+  "@type": "Organization";
+  name: string;
+  url: string;
+  logo: string;
+  contactPoint: ContactPoint;
+  address: PostalAddress;
+  sameAs: string[];
+}
+
+interface LocalBusinessSchema {
+  "@context": "https://schema.org";
+  "@type": "LocalBusiness";
+  name: string;
+  image: string;
+  telephone: string;  // +966 format
+  address: {
+    "@type": "PostalAddress";
+    streetAddress: string;
+    addressLocality: "الرياض";
+    addressRegion: "منطقة الرياض";
+    postalCode: string;
+    addressCountry: "SA";
+  };
+  geo: {
+    "@type": "GeoCoordinates";
+    latitude: number;
+    longitude: number;
+  };
+  openingHours: string;
+  priceRange: string;
+}
+
+interface WebSiteSchema {
+  "@context": "https://schema.org";
+  "@type": "WebSite";
+  name: string;
+  url: string;
+  potentialAction: {
+    "@type": "SearchAction";
+    target: string;
+    "query-input": string;
+  };
+}
+
+interface BreadcrumbSchema {
+  "@context": "https://schema.org";
+  "@type": "BreadcrumbList";
+  itemListElement: Array<{
+    "@type": "ListItem";
+    position: number;
+    name: string;
+    item: string;
+  }>;
+}
+
+interface ServiceSchema {
+  "@context": "https://schema.org";
+  "@type": "Service";
+  name: string;
+  description: string;
+  provider: OrganizationSchema;
+  areaServed: {
+    "@type": "Country";
+    name: "المملكة العربية السعودية";
+  };
+}
+
+interface FAQSchema {
+  "@context": "https://schema.org";
+  "@type": "FAQPage";
+  mainEntity: Array<{
+    "@type": "Question";
+    name: string;
+    acceptedAnswer: {
+      "@type": "Answer";
+      text: string;
+    };
+  }>;
+}
+```
+
 ## Error Handling
 
 ### API Error Handling

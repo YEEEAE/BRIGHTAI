@@ -2078,3 +2078,95 @@ textarea.form-control {
     
     li { page-break-inside: avoid; }
 }
+
+
+/* ==========================================================================
+   Breadcrumb Navigation Styles
+   ========================================================================== */
+.breadcrumb-nav {
+    background: rgba(17, 34, 64, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem 1.5rem;
+    margin-top: 70px; /* Account for fixed navbar */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.breadcrumb-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.breadcrumb-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.breadcrumb-item a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+}
+
+.breadcrumb-item a:hover,
+.breadcrumb-item a:focus {
+    color: var(--primary-color);
+    background: rgba(100, 255, 218, 0.1);
+}
+
+.breadcrumb-item a:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.breadcrumb-separator {
+    color: var(--text-color);
+    opacity: 0.5;
+    margin: 0 0.25rem;
+    font-size: 0.75rem;
+}
+
+.breadcrumb-item.current {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.breadcrumb-item.current span {
+    padding: 0.25rem 0.5rem;
+}
+
+/* RTL Support for Breadcrumbs */
+[dir="rtl"] .breadcrumb-separator {
+    transform: rotate(180deg);
+}
+
+/* Mobile Responsive Breadcrumbs */
+@media (max-width: 768px) {
+    .breadcrumb-nav {
+        padding: 0.5rem 1rem;
+        margin-top: 60px;
+    }
+    
+    .breadcrumb-item {
+        font-size: 0.8rem;
+    }
+    
+    .breadcrumb-list {
+        gap: 0.25rem;
+    }
+}

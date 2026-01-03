@@ -1,7 +1,13 @@
-# Simplified robots.txt for brightai.site
+# robots.txt for brightai.site
+# BrightAI - شركة سعودية للذكاء الاصطناعي
+# Last updated: 2025-01-03
+
+# Allow all search engine crawlers
 User-agent: *
 Allow: /
-Disallow: /admin/ 
+
+# Block sensitive and system directories
+Disallow: /admin/
 Disallow: /wp-admin/
 Disallow: /wp-includes/
 Disallow: /private/
@@ -11,8 +17,42 @@ Disallow: /temp/
 Disallow: /tmp/
 Disallow: /cache/
 Disallow: /backup/
+Disallow: /backups/
 Disallow: /logs/
 Disallow: /cgi-bin/
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /.kiro/
+Disallow: /.env
+Disallow: /tests/
+Disallow: /node_modules/
+
+# Block non-essential files
+Disallow: /*.json$
+Disallow: /*.py$
+Disallow: /*.md$
+
+# Allow important JSON files for SEO
+Allow: /manifest.json
+Allow: /schema-saudi-seo.json
+
+# Googlebot specific rules
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bingbot specific rules
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Yandex specific rules
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
 
 # Sitemap location
 Sitemap: https://brightai.site/sitemap.xml
+
+# Host directive for search engines
+Host: https://brightai.site
