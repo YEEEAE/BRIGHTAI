@@ -1,0 +1,424 @@
+# Implementation Plan: BrightAI Website Transformation
+
+## Overview
+
+This implementation plan transforms the BrightAI website into a world-class, AI-powered platform with glassmorphism design, particle animations, Gemini AI chatbot, smart search, and PWA capabilities. The implementation builds on the existing codebase while preserving RTL Arabic support and existing SEO metadata.
+
+## Tasks
+
+- [ ] 1. Set up project structure and CSS design system
+  - [ ] 1.1 Create glassmorphism CSS variables and design tokens
+    - Add CSS custom properties for glass effects, gradients, and animations
+    - Extend existing :root variables in style.css
+    - _Requirements: 2.1, 2.2, 2.3, 2.6_
+  - [ ] 1.2 Implement glassmorphism component classes
+    - Create .glass, .glass-card, .glass-header, .glass-footer classes
+    - Add hover transforms and shadow effects
+    - _Requirements: 2.4_
+  - [ ] 1.3 Add dark mode CSS variables and theme support
+    - Create [data-theme="dark"] CSS rules
+    - Define dark mode color palette
+    - _Requirements: 2.5, 7.2_
+  - [ ]* 1.4 Write property test for glassmorphism style consistency
+    - **Property 4: Glassmorphism Style Consistency**
+    - **Validates: Requirements 2.1, 2.2, 2.3**
+
+- [ ] 2. Implement animated background system
+  - [ ] 2.1 Create particle system class
+    - Implement Particle class with position, velocity, size, color
+    - Add update() and draw() methods
+    - Use AI brand color palette
+    - _Requirements: 3.1, 3.3_
+  - [ ] 2.2 Implement particle connection logic
+    - Draw lines between particles within 120px distance
+    - Calculate opacity based on distance
+    - _Requirements: 3.2_
+  - [ ] 2.3 Add canvas resize handling
+    - Listen for window resize events
+    - Update canvas dimensions to match container
+    - Reinitialize particles on resize
+    - _Requirements: 3.7_
+  - [ ] 2.4 Implement mobile optimization for particles
+    - Detect viewport width < 768px
+    - Limit particle count to 30 on mobile
+    - _Requirements: 3.4_
+  - [ ] 2.5 Add reduced motion preference support
+    - Check prefers-reduced-motion media query
+    - Skip animation loop if reduce motion is preferred
+    - _Requirements: 3.5_
+  - [ ]* 2.6 Write property tests for particle system
+    - **Property 5: Particle Connection Distance Threshold**
+    - **Property 6: Particle Color Palette Compliance**
+    - **Property 7: Mobile Particle Count Optimization**
+    - **Property 8: Reduced Motion Preference Compliance**
+    - **Property 9: Canvas Resize Handling**
+    - **Validates: Requirements 3.2, 3.3, 3.4, 3.5, 3.7**
+
+- [ ] 3. Checkpoint - Ensure CSS and particle system work
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 4. Implement AI chatbot widget
+  - [ ] 4.1 Create chatbot widget HTML structure
+    - Add floating widget container with glass styling
+    - Include header, messages area, input field, send button
+    - Add minimize/expand toggle button
+    - _Requirements: 4.2, 4.7_
+  - [ ] 4.2 Implement Gemini API integration
+    - Configure API endpoint and key
+    - Create sendMessage() function with Arabic system prompt
+    - Handle API responses and errors
+    - _Requirements: 4.1, 4.3, 4.5_
+  - [ ] 4.3 Implement conversation history management
+    - Store messages in array with sender and timestamp
+    - Display messages in chronological order
+    - Auto-scroll to latest message
+    - _Requirements: 4.6_
+  - [ ] 4.4 Add keyboard support for chatbot
+    - Send message on Enter key press
+    - _Requirements: 4.8_
+  - [ ]* 4.5 Write property test for conversation history
+    - **Property 10: Chatbot Conversation History Preservation**
+    - **Validates: Requirements 4.6**
+
+- [ ] 5. Implement smart search feature
+  - [ ] 5.1 Create search input with debounce
+    - Add 300ms debounce to input handler
+    - Clear previous timer on new input
+    - _Requirements: 5.1_
+  - [ ] 5.2 Implement minimum query length check
+    - Skip API call if query < 3 characters
+    - _Requirements: 5.2_
+  - [ ] 5.3 Integrate Gemini API for search suggestions
+    - Send search query to Gemini with context prompt
+    - Parse JSON response for suggestions
+    - _Requirements: 5.3_
+  - [ ] 5.4 Display search results in glass cards
+    - Render title, URL, description for each result
+    - Apply glass-card styling
+    - _Requirements: 5.4, 5.5_
+  - [ ]* 5.5 Write property tests for smart search
+    - **Property 11: Smart Search Debounce Behavior**
+    - **Property 12: Smart Search Minimum Query Length**
+    - **Property 13: Search Result Display Completeness**
+    - **Validates: Requirements 5.1, 5.2, 5.4**
+
+- [ ] 6. Checkpoint - Ensure AI features work
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 7. Implement theme controller
+  - [ ] 7.1 Create ThemeController class
+    - Load saved theme from localStorage on init
+    - Apply theme via data-theme attribute
+    - _Requirements: 7.1, 7.4_
+  - [ ] 7.2 Implement theme toggle functionality
+    - Switch between light and dark on toggle click
+    - Save preference to localStorage
+    - _Requirements: 7.2, 7.3_
+  - [ ] 7.3 Add theme toggle button to header
+    - Create accessible toggle button with icon
+    - Position in navbar
+    - _Requirements: 7.3_
+  - [ ]* 7.4 Write property tests for theme controller
+    - **Property 15: Theme Persistence Round-Trip**
+    - **Property 16: Theme Toggle Behavior**
+    - **Validates: Requirements 7.1, 7.2, 7.3, 7.4**
+
+- [ ] 8. Implement scroll animations
+  - [ ] 8.1 Create IntersectionObserver for animations
+    - Configure with 0.1 threshold
+    - Observe elements with .animate-trigger class
+    - _Requirements: 6.1, 6.4_
+  - [ ] 8.2 Implement fadeInUp animation
+    - Add animation class when element enters viewport
+    - Unobserve element after animation triggers
+    - _Requirements: 6.2, 6.3_
+  - [ ] 8.3 Add animated counter for statistics
+    - Animate numbers from 0 to target on viewport entry
+    - Use data-count attribute for target value
+    - _Requirements: 13.1, 13.2_
+  - [ ]* 8.4 Write property tests for scroll animations
+    - **Property 14: Scroll Animation Lifecycle**
+    - **Property 24: Counter Animation on Viewport Entry**
+    - **Validates: Requirements 6.2, 6.3, 13.2**
+
+- [ ] 9. Implement PWA and service worker
+  - [ ] 9.1 Update service worker with cache strategy
+    - Define cache name and version
+    - Cache critical resources on install
+    - Serve cached content when offline
+    - _Requirements: 8.1, 8.2, 8.3_
+  - [ ] 9.2 Update manifest.json with Arabic metadata
+    - Set dir: rtl and lang: ar
+    - Add proper icons and theme colors
+    - _Requirements: 8.4, 8.5_
+  - [ ]* 9.3 Write property test for cache consistency
+    - **Property 17: Service Worker Cache Consistency**
+    - **Validates: Requirements 8.2, 8.3**
+
+- [ ] 10. Checkpoint - Ensure core features complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 11. Implement performance optimizations
+  - [ ] 11.1 Add lazy loading to images
+    - Add loading="lazy" to images below fold
+    - _Requirements: 9.2_
+  - [ ] 11.2 Inline critical CSS
+    - Extract above-the-fold styles
+    - Add to <style> tag in <head>
+    - _Requirements: 9.3_
+  - [ ] 11.3 Add resource preloading
+    - Preload fonts and hero images
+    - Add preconnect hints
+    - _Requirements: 9.5_
+  - [ ]* 11.4 Write property test for lazy loading
+    - **Property 18: Lazy Loading Images**
+    - **Validates: Requirements 9.2**
+
+- [ ] 12. Implement accessibility features
+  - [ ] 12.1 Ensure keyboard navigation
+    - Verify all interactive elements are focusable
+    - Add tabindex where needed
+    - _Requirements: 10.2_
+  - [ ] 12.2 Add focus indicators
+    - Style :focus-visible with visible outline
+    - Ensure minimum 3px outline width
+    - _Requirements: 10.3_
+  - [ ] 12.3 Ensure touch target sizes
+    - Verify buttons/links are minimum 44x44px on mobile
+    - Add padding where needed
+    - _Requirements: 10.4_
+  - [ ]* 12.4 Write property tests for accessibility
+    - **Property 19: Keyboard Navigation Support**
+    - **Property 20: Focus Indicator Visibility**
+    - **Property 21: Touch Target Size**
+    - **Validates: Requirements 10.2, 10.3, 10.4**
+
+- [ ] 13. Implement responsive design enhancements
+  - [ ] 13.1 Add single-column layout for mobile
+    - Update grid to single column at < 768px
+    - _Requirements: 11.3_
+  - [ ] 13.2 Implement conditional cursor effects
+    - Enable magnetic cursor only on desktop (> 768px)
+    - Disable on mobile devices
+    - _Requirements: 11.4, 14.4_
+  - [ ]* 13.3 Write property tests for responsive behavior
+    - **Property 22: Responsive Single Column Layout**
+    - **Property 23: Mobile Cursor Disabled**
+    - **Property 25: Desktop Cursor Enabled**
+    - **Validates: Requirements 11.3, 11.4, 14.4**
+
+- [ ] 14. Implement micro-interactions
+  - [ ] 14.1 Add button ripple effects
+    - Create ripple animation on hover
+    - Apply to primary buttons
+    - _Requirements: 14.1_
+  - [ ] 14.2 Add pulse glow animations
+    - Create pulse keyframes
+    - Apply to interactive elements
+    - _Requirements: 14.2_
+  - [ ] 14.3 Implement parallax scrolling for hero
+    - Add data-parallax attribute
+    - Calculate transform based on scroll position
+    - _Requirements: 13.3_
+
+- [ ] 15. Preserve HTML structure and SEO
+  - [ ] 15.1 Verify RTL and language attributes
+    - Ensure html element has dir="rtl" lang="ar"
+    - _Requirements: 1.1_
+  - [ ] 15.2 Verify meta tags are preserved
+    - Check title and description unchanged
+    - _Requirements: 1.3_
+  - [ ] 15.3 Add Arabic alt text to new images
+    - Ensure all images have Arabic alt text
+    - _Requirements: 1.8_
+  - [ ]* 15.4 Write property tests for HTML structure
+    - **Property 1: RTL Direction Preservation**
+    - **Property 2: Meta Tag Preservation**
+    - **Property 3: Image Alt Text in Arabic**
+    - **Validates: Requirements 1.1, 1.3, 1.8**
+
+- [ ] 16. Implement analytics tracking
+  - [ ] 16.1 Add scroll depth tracking
+    - Track at 25%, 50%, 75%, 100%
+    - Push events to dataLayer
+    - _Requirements: 12.1_
+  - [ ] 16.2 Add time on page tracking
+    - Calculate time spent before unload
+    - Send to analytics
+    - _Requirements: 12.2_
+  - [ ] 16.3 Add CTA click tracking
+    - Add data-track attributes to CTAs
+    - Push click events to dataLayer
+    - _Requirements: 12.3_
+
+- [ ] 17. Final integration and wiring
+  - [ ] 17.1 Create main BrightAI application class
+    - Initialize all components in correct order
+    - Wire up event listeners
+    - Handle component dependencies
+  - [ ] 17.2 Update HTML pages with new components
+    - Add bg-canvas-container to body
+    - Add chatbot widget container
+    - Add theme toggle to header
+  - [ ] 17.3 Ensure all components work together
+    - Test full page load sequence
+    - Verify no conflicts between features
+
+- [ ] 18. Final checkpoint - Complete testing
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 19. Implement trust signals and certifications
+  - [ ] 19.1 Create trust bar component
+    - Add glassmorphism-styled trust bar
+    - Include "شركة سعودية 100%" badge prominently
+    - Add ISO certification badges (ISO 27001, ISO 9001)
+    - Position above the fold on homepage
+    - _Requirements: 15.1, 15.2, 15.3, 15.5_
+  - [ ] 19.2 Add Vision 2030 alignment references
+    - Include Vision 2030 logo/reference where appropriate
+    - _Requirements: 15.4_
+  - [ ]* 19.3 Write property test for trust badge visibility
+    - **Property 26: Trust Badge Visibility**
+    - **Validates: Requirements 15.1, 15.5**
+
+- [ ] 20. Implement client logos section
+  - [ ] 20.1 Create client logos grid component
+    - Add responsive grid with glassmorphism cards
+    - Include heading "عملاؤنا الموثوقون"
+    - Add hover effects showing company names
+    - _Requirements: 16.1, 16.2, 16.3, 16.4_
+  - [ ]* 20.2 Write property test for client logos responsiveness
+    - **Property 27: Client Logos Grid Responsiveness**
+    - **Validates: Requirements 16.1, 16.3**
+
+- [ ] 21. Implement testimonials section
+  - [ ] 21.1 Create testimonials carousel component
+    - Add glassmorphism card styling
+    - Display Arabic quotes with client info
+    - Include 5-star ratings
+    - Implement carousel/slider functionality
+    - _Requirements: 17.1, 17.2, 17.3, 17.4, 17.5_
+  - [ ]* 21.2 Write property test for testimonial completeness
+    - **Property 28: Testimonial Content Completeness**
+    - **Validates: Requirements 17.1, 17.2, 17.4**
+
+- [ ] 22. Implement Saudi contact options
+  - [ ] 22.1 Create contact section with multiple options
+    - Add WhatsApp as primary contact method
+    - Include phone (+966 format), email, Riyadh address
+    - Use Arabic numerals where appropriate
+    - _Requirements: 18.1, 18.3, 18.4, 18.5_
+  - [ ] 22.2 Create floating WhatsApp button
+    - Position in bottom corner (RTL-aware)
+    - Add pulse animation for attention
+    - Link to WhatsApp with pre-filled message
+    - _Requirements: 18.2_
+  - [ ]* 22.3 Write property test for WhatsApp button visibility
+    - **Property 29: WhatsApp Button Visibility**
+    - **Validates: Requirements 18.1, 18.2**
+
+- [ ] 23. Implement pricing transparency section
+  - [ ] 23.1 Create three-tier pricing cards
+    - Basic tier: ٥٠,٠٠٠ ريال
+    - Professional tier: ١٥٠,٠٠٠ ريال with "الأكثر طلباً" badge
+    - Custom tier: "تواصل معنا"
+    - Use glassmorphism styling with hover effects
+    - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.6_
+  - [ ] 23.2 Add VAT note below pricing
+    - Display "جميع الأسعار شاملة ضريبة القيمة المضافة"
+    - _Requirements: 19.5_
+  - [ ]* 23.3 Write property tests for pricing section
+    - **Property 30: Pricing Tier Display**
+    - **Property 31: VAT Note Presence**
+    - **Validates: Requirements 19.1, 19.3, 19.5**
+
+- [ ] 24. Implement urgency and scarcity elements
+  - [ ] 24.1 Create countdown timer component
+    - Display days, hours, minutes, seconds
+    - Update in real-time every second
+    - Use attention-grabbing gold/amber colors
+    - _Requirements: 20.1, 20.4, 20.5_
+  - [ ] 24.2 Create scarcity indicator
+    - Display "متبقي X مقاعد فقط" message
+    - Update dynamically
+    - _Requirements: 20.2_
+  - [ ] 24.3 Create live notification system
+    - Display popup notifications for recent actions
+    - Rotate through messages automatically
+    - Animate in/out smoothly
+    - _Requirements: 20.3_
+  - [ ]* 24.4 Write property tests for urgency elements
+    - **Property 32: Countdown Timer Real-Time Update**
+    - **Property 33: Live Notification Display**
+    - **Validates: Requirements 20.1, 20.3, 20.5**
+
+- [ ] 25. Implement advanced analytics
+  - [ ] 25.1 Integrate heatmap tracking
+    - Add Hotjar or Microsoft Clarity script
+    - Configure for Arabic RTL pages
+    - _Requirements: 21.1_
+  - [ ] 25.2 Implement form interaction tracking
+    - Track focus, blur, change, submit events
+    - Track form abandonment
+    - Push events to dataLayer
+    - _Requirements: 21.2, 21.5_
+  - [ ] 25.3 Implement video engagement tracking
+    - Track play, pause, ended events
+    - Track progress at 25%, 50%, 75%, 100%
+    - Push events to dataLayer
+    - _Requirements: 21.3, 21.5_
+  - [ ] 25.4 Enhance scroll depth tracking
+    - Track at 25% intervals
+    - Push to dataLayer for GTM
+    - _Requirements: 21.4, 21.5_
+  - [ ]* 25.5 Write property tests for analytics
+    - **Property 34: Form Tracking Events**
+    - **Property 35: Video Engagement Tracking**
+    - **Validates: Requirements 21.2, 21.3, 21.5**
+
+- [ ] 26. Implement Saudi-optimized CTA buttons
+  - [ ] 26.1 Create primary CTA button styles
+    - Arabic text: "ابدأ الآن", "احصل على استشارة مجانية"
+    - Gradient backgrounds with hover effects
+    - _Requirements: 22.1, 22.2_
+  - [ ] 26.2 Create secondary and urgency CTA styles
+    - Outline/ghost styling for secondary
+    - Countdown/limited availability for urgency CTAs
+    - Security icons for trust CTAs
+    - _Requirements: 22.3, 22.4, 22.5_
+  - [ ]* 26.3 Write property test for CTA buttons
+    - **Property 36: CTA Button Arabic Text**
+    - **Validates: Requirements 22.1**
+
+- [ ] 27. Checkpoint - CRO features complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [ ] 28. Final integration of CRO elements
+  - [ ] 28.1 Wire up all CRO components to main app
+    - Initialize trust bar, testimonials, pricing on page load
+    - Start countdown timer and live notifications
+    - Ensure WhatsApp button is always visible
+  - [ ] 28.2 Test complete user journey
+    - Verify trust signals visible on landing
+    - Test pricing section interactions
+    - Verify all analytics events fire correctly
+    - Test WhatsApp and contact options
+
+- [ ] 29. Final checkpoint - All features complete
+  - Ensure all tests pass, ask the user if questions arise.
+
+## Notes
+
+- Tasks marked with `*` are optional and can be skipped for faster MVP
+- Each task references specific requirements for traceability
+- Checkpoints ensure incremental validation
+- Property tests validate universal correctness properties
+- Unit tests validate specific examples and edge cases
+- CRITICAL: Never modify existing <title> or <meta name="description"> tags
+- CRITICAL: Always maintain RTL direction and Arabic language support
+- CRITICAL: Use Gemini API Key: `GEMINI_KEY_REDACTED` with model `gemini-2.0-flash-exp`
+- WhatsApp is the most preferred contact method in Saudi Arabia
+- All prices should include VAT note: "جميع الأسعار شاملة ضريبة القيمة المضافة"
+- Use Arabic numerals for pricing (٥٠,٠٠٠ ريال)
+- Reference Vision 2030 where appropriate
+- Emphasize "شركة سعودية 100%" as a primary trust signal
