@@ -16,7 +16,7 @@ This implementation plan transforms the BrightAI website into a world-class, AI-
 
 ## Tasks
 
-- [-] 0. SEO Foundations & Technical SEO (KSA)
+- [x] 0. SEO Foundations & Technical SEO (KSA)
   - [x] 0.1 Create/update sitemap.xml
     - Include all HTML pages with lastmod dates
     - Validate XML structure
@@ -52,22 +52,22 @@ This implementation plan transforms the BrightAI website into a world-class, AI-
     - Link service pages to each other
     - Link to contact/consultation from all pages
     - _Requirements: 24.15_
-  - [ ]* 0.9 Write property tests for SEO
+  - [x]* 0.9 Write property tests for SEO
     - Test canonical tags presence
     - Test JSON-LD validity (parsable JSON)
     - Test H1 count per page
     - Test title/description unchanged
     - **Validates: Requirements 24.1-24.15**
 
-- [-] 1. Server-Side AI Gateway Setup
+- [ ] 1. Server-Side AI Gateway Setup
   - [x] 1.1 Create .env.example file
     - GEMINI_API_KEY=YOUR_KEY_HERE
     - GEMINI_MODEL=gemini-2.5-flash
     - _Requirements: 23.4, 23.9_
-  - [-] 1.2 Update .gitignore
+  - [x] 1.2 Update .gitignore
     - Ensure .env is excluded
     - _Requirements: 23.10_
-  - [ ] 1.3 Create server API endpoint structure
+  - [-] 1.3 Create server API endpoint structure
     - POST /api/ai/chat endpoint
     - POST /api/ai/search endpoint
     - Read API key from environment only
