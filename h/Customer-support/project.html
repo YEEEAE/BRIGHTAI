@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WW6PN3C2M0');
+  gtag('config', 'G-8LLESL207Q');
 </script>
+
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام خدمة العملاء الذكي</title>
@@ -215,7 +216,6 @@
         }
         html[dir="rtl"] .back-btn { margin-left: 0; margin-right: 1.5rem; }
 
-
         .back-btn:hover {
             background: #cbd5e0;
             transform: scale(1.05);
@@ -286,14 +286,12 @@
         }
         html[dir="rtl"] .message.user .message-bubble { border-bottom-right-radius: var(--border-radius-lg); border-bottom-left-radius: var(--border-radius-sm); }
 
-
         .message.bot .message-bubble {
             background: var(--medium-gray-color);
             color: var(--text-color);
             border-bottom-left-radius: var(--border-radius-sm);
         }
         html[dir="rtl"] .message.bot .message-bubble { border-bottom-left-radius: var(--border-radius-lg); border-bottom-right-radius: var(--border-radius-sm); }
-
 
         .input-container {
             display: flex;
@@ -596,7 +594,6 @@
         }
         .tool-row { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
 
-
         /* Notification */
         .notification {
             position: fixed;
@@ -663,7 +660,6 @@
             .service-header h3 { font-size: 1.5rem; }
             .back-btn { padding: 0.5rem 1rem; margin-left: 0; margin-bottom: 0.5rem; width: 100%;} /* Full width for back button */
             html[dir="rtl"] .back-btn { margin-right: 0; }
-
 
             .chat-container { height: 350px; padding: 1rem; }
             .message-input { padding: 0.8rem 1rem; font-size: 0.9rem; }
@@ -1056,7 +1052,6 @@
         const botRequirementsInput = document.getElementById('botRequirements');
         const alertPhoneInput = document.getElementById('alertPhone');
 
-
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
             initializeSpeechRecognition();
@@ -1128,7 +1123,6 @@
                  chatInterfaceView.classList.add('animated-interface');
                  voiceInterfaceView.classList.add('animated-interface');
             }
-
 
             // Clear chat content
             if (chatContainer) chatContainer.innerHTML = '';
@@ -1267,7 +1261,6 @@
             // speakText(welcomeText); // Auto-speak welcome
         }
 
-
         function toggleVoiceRecording() {
             if (!recognition) {
                 showNotification('المتصفح لا يدعم التعرف على الصوت.', 'warning');
@@ -1298,7 +1291,6 @@
                  // updateVoiceStatusUI('اضغط على المايكروفون وابدأ التحدث', false);
             }
         }
-
 
         function updateVoiceStatusUI(message, showAnimation) {
             voiceStatusP.textContent = message;
@@ -1576,7 +1568,6 @@
             // const clickedItem = Array.from(document.querySelectorAll('#conversationsList .conversation-item')).find(item => item.textContent.includes(conversationId));
             // if(clickedItem) clickedItem.classList.add('selected');
 
-
             const detailsContainer = document.getElementById('conversationDetails');
             const representativeTurn = conversationTurns[0]; // Use first turn for general info
 
@@ -1647,7 +1638,6 @@
                 showNotification(`تم إضافة ملاحظة: "${note}"`, 'success');
             }
         }
-
 
         function updateDashboardStats() {
             const allConversations = JSON.parse(localStorage.getItem('allConversations') || '[]');

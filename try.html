@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WW6PN3C2M0');
+  gtag('config', 'G-8LLESL207Q');
 </script>
+
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bright AI - منصة التحليل الذكي</title>
@@ -439,7 +440,6 @@
             pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_SRC;
         }
 
-
         const GEMINI_API_KEY = 'GEMINI_KEY_REDACTED'; // استبدل بمفتاحك الحقيقي
         const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
         
@@ -449,7 +449,6 @@
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const loadingMessageElement = document.getElementById('loadingMessage');
-
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             uploadArea.addEventListener(eventName, preventDefaults, false);
@@ -532,7 +531,6 @@
             const welcomeMessage = document.getElementById('welcomeMessage');
             loadingMessageElement.textContent = 'جارٍ تحضير العرض التوضيحي...';
 
-
             loading.style.display = 'block';
             results.style.display = 'none';
             welcomeMessage.style.display = 'none';
@@ -583,7 +581,6 @@
             if (currentFile.type === 'application/pdf') {
                 loadingMessageElement.textContent = 'جارٍ قراءة ملف PDF...';
             }
-
 
             loading.style.display = 'block';
             results.style.display = 'none';
@@ -658,7 +655,6 @@
             });
         }
 
-
         async function sendToGemini(fileContent, fileType, fileName) {
             const maxContentLength = 30000; // زيادة الحد الأقصى للمحتوى لملفات PDF
             let truncatedContent = fileContent;
@@ -666,7 +662,6 @@
                 truncatedContent = fileContent.substring(0, maxContentLength) + `... (تم اقتطاع المحتوى، الحجم الأصلي: ${fileContent.length} حرف)`;
                 console.warn(`تم اقتطاع محتوى الملف ${fileName} لأنه تجاوز الحد الأقصى ${maxContentLength}`);
             }
-
 
             const prompt = `
             قم بتحليل البيانات التالية بشكل شامل ومفصل قدر الإمكان. إذا كان الملف PDF، حاول استخلاص معلومات هيكلية إذا أمكن.
@@ -823,7 +818,6 @@
                                 <div id="recommendationsContainer"></div>
                                 <div id="rawAnalysisContainer" style="display:none;"></div>`;
 
-
             if (analysis.summaryPoints && analysis.summaryPoints.length > 0) {
                 displaySummary(analysis.summaryPoints);
             }
@@ -859,7 +853,6 @@
             `;
             container.style.display = 'block';
         }
-
 
         function displayRawAnalysis(rawText) {
             const container = document.getElementById('rawAnalysisContainer');
@@ -904,7 +897,6 @@
             if (!container) return;
 
             const safeChartData = chartData || getDefaultChartData();
-
 
             container.innerHTML = `
                 <div class="chart-container">
@@ -1067,7 +1059,6 @@ fileSelectBtn.addEventListener('click', () => {
     fileInput.value = "";
     fileInput.click();
 });
-
 
     </script>
 </body>

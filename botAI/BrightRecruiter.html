@@ -2,14 +2,15 @@
 <html lang="ar" dir="rtl">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WW6PN3C2M0');
+  gtag('config', 'G-8LLESL207Q');
 </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="Gemini.png">
@@ -268,7 +269,6 @@
                 });
             }
 
-
             initialize() {
                 const welcomeMessage = `مرحباً بك في BrightRecruiter! 👋 كيف يمكنني مساعدتك في عملية التوظيف اليوم؟
                 يمكنني مساعدتك في:
@@ -299,7 +299,6 @@
                     });
                 }, 500);
             }
-
 
             async processOptionSelection(option, buttonText) {
                 this.addMessage(buttonText, 'user'); // Show user selection
@@ -337,7 +336,6 @@
                 const message = this.userInput.value.trim();
                 if (!message && !this.uploadedFile) return;
 
-
                 this.addMessage(message, 'user');
                 this.userInput.value = '';
                 this.userInput.style.height = '45px';
@@ -371,7 +369,6 @@
                 }
             }
 
-
             addTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.classList.add('message', 'bot-message');
@@ -393,7 +390,6 @@
 
                 return typingDiv;
             }
-
 
             async getGeminiResponse(message) {
                 const context = `أنت BrightRecruiter، روبوت توظيف ذكي متخصص في مساعدة مسؤولي التوظيف.
@@ -426,7 +422,6 @@
                 return data.candidates[0].content.parts[0].text;
             }
 
-
             addMessage(text, sender) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message', `${sender}-message`);
@@ -442,7 +437,6 @@
                 this.chatMessages.appendChild(messageDiv);
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
             }
-
 
             formatText(text) {
                 // Basic formatting (make bold and keep newlines)

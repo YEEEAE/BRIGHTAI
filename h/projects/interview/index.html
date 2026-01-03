@@ -2,15 +2,16 @@
 <html lang="ar" dir="rtl" data-theme="light">
 
 <head>
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WW6PN3C2M0');
+  gtag('config', 'G-8LLESL207Q');
 </script>
+        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> mais co . </title>
@@ -123,7 +124,6 @@
             --primary: #f97316;
             --accent: #22c55e;
         }
-
 
         * {
             margin: 0;
@@ -374,7 +374,6 @@
             }
         }
 
-
         /* --- Step Content --- */
         .content-container {
             background: var(--bg-content);
@@ -615,7 +614,6 @@
         .detail-card li:last-child {
             border-bottom: none;
         }
-
 
         /* --- Challenge Step --- */
         .challenge-container {
@@ -1083,8 +1081,6 @@
         /* Removed empty ruleset */
         /* Removed empty ruleset */
 
-
-
         .vacancy-requirements li {
             padding: var(--spacing-1) 0;
             position: relative;
@@ -1164,7 +1160,6 @@
         .btn-info:hover:not(:disabled) {
             background: #2563eb;
         }
-
 
 .vacancy-requirements li {
     padding: var(--spacing-1) 0;
@@ -1399,7 +1394,87 @@
             background: #2563eb;
         }
 
+        .vacancy-requirements li {
+            padding: var(--spacing-1) 0;
+            position: relative;
+            padding-right: var(--spacing-4);
+        }
 
+        .vacancy-requirements li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .vacancy-actions {
+            display: flex;
+            gap: var(--spacing-2);
+            margin-top: var(--spacing-4);
+            flex-wrap: wrap;
+        }
+
+        .apply-btn {
+            background: var(--primary);
+            color: var(--white);
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .apply-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .apply-btn:disabled {
+            background: var(--border-color);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        .match-analysis {
+            background: color-mix(in srgb, var(--accent) 10%, transparent);
+            padding: var(--spacing-3);
+            border-radius: var(--border-radius);
+            margin: var(--spacing-3) 0;
+            border-left: 4px solid var(--accent);
+        }
+
+        .match-analysis h4 {
+            color: var(--accent);
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-base);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .match-reasons li {
+            padding: var(--spacing-1) 0;
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+
+        .no-vacancies {
+            text-align: center;
+            padding: var(--spacing-8);
+            color: var(--text-secondary);
+        }
+
+        .no-vacancies i {
+            font-size: 3rem;
+            color: var(--border-color);
+            margin-bottom: var(--spacing-3);
+        }
+
+        .btn-info {
+            background: #3b82f6;
+            color: var(--white);
+        }
+
+        .btn-info:hover:not(:disabled) {
+            background: #2563eb;
+        }
 
         .vacancy-requirements li {
             padding: var(--spacing-1) 0;
@@ -1483,7 +1558,6 @@
             background: #2563eb;
         }
 
-
         .vacancy-requirements li {
             padding: var(--spacing-1) 0;
             position: relative;
@@ -1539,7 +1613,6 @@
             gap: var(--spacing-2);
         }
 
-
         .match-reasons li {
             padding: var(--spacing-1) 0;
             font-size: var(--font-size-sm);
@@ -1566,93 +1639,6 @@
         .btn-info:hover:not(:disabled) {
             background: #2563eb;
         }
-
-
-
-        .vacancy-requirements li {
-            padding: var(--spacing-1) 0;
-            position: relative;
-            padding-right: var(--spacing-4);
-        }
-
-        .vacancy-requirements li::before {
-            content: '✓';
-            position: absolute;
-            right: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .vacancy-actions {
-            display: flex;
-            gap: var(--spacing-2);
-            margin-top: var(--spacing-4);
-            flex-wrap: wrap;
-        }
-
-        .apply-btn {
-            background: var(--primary);
-            color: var(--white);
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .apply-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .apply-btn:disabled {
-            background: var(--border-color);
-            color: var(--text-secondary);
-            cursor: not-allowed;
-        }
-
-        .match-analysis {
-            background: color-mix(in srgb, var(--accent) 10%, transparent);
-            padding: var(--spacing-3);
-            border-radius: var(--border-radius);
-            margin: var(--spacing-3) 0;
-            border-left: 4px solid var(--accent);
-        }
-
-        .match-analysis h4 {
-            color: var(--accent);
-            margin-bottom: var(--spacing-2);
-            font-size: var(--font-size-base);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-2);
-        }
-
-
-        .match-reasons li {
-            padding: var(--spacing-1) 0;
-            font-size: var(--font-size-sm);
-            color: var(--text-secondary);
-        }
-
-        .no-vacancies {
-            text-align: center;
-            padding: var(--spacing-8);
-            color: var(--text-secondary);
-        }
-
-        .no-vacancies i {
-            font-size: 3rem;
-            color: var(--border-color);
-            margin-bottom: var(--spacing-3);
-        }
-
-        .btn-info {
-            background: #3b82f6;
-            color: var(--white);
-        }
-
-        .btn-info:hover:not(:disabled) {
-            background: #2563eb;
-        }
-
-
 
         .vacancy-requirements li {
             padding: var(--spacing-1) 0;
@@ -2518,8 +2504,6 @@
         .btn-info:hover:not(:disabled) {
             background: #2563eb;
         }
-
-
 
         .vacancy-requirements li {
             padding: var(--spacing-1) 0;
@@ -3107,7 +3091,6 @@
             align-items: center;
             gap: var(--spacing-2);
         }
-
 
         .match-reasons li {
             padding: var(--spacing-1) 0;

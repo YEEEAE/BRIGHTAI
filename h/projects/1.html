@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WW6PN3C2M0');
+  gtag('config', 'G-8LLESL207Q');
 </script>
+
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام الذكاء الاصطناعي لاستقطاب المواهب - مشرقة AI</title>
@@ -1091,7 +1092,6 @@
                  clickedButton.classList.add('active');
             }
 
-
             // Update dashboard if dashboard tab is selected
             if (tabName === 'dashboard') {
                 updateDashboard();
@@ -1239,7 +1239,6 @@
             });
         }
 
-
         // File Handling
         function handleFileSelect(e) {
             const file = e.target.files[0];
@@ -1304,7 +1303,6 @@
                      throw new Error(`API Error: ${response.status}`);
                  }
 
-
                 const data = await response.json();
                  // Check if data structure is as expected
                  if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
@@ -1354,7 +1352,6 @@
                      document.getElementById('resumeOutput').textContent = 'لم يتم استخلاص نص من الملف.';
                      return;
                  }
-
 
                 const analysis = await callGeminiAPI(resumeText, SYSTEM_PROMPTS.resumeAnalysis);
 
@@ -1409,7 +1406,6 @@
             return [];
         }
 
-
         async function extractTextFromPDF(file) {
             const arrayBuffer = await file.arrayBuffer();
             // Ensure pdfjsLib is loaded
@@ -1443,7 +1439,6 @@
             const result = await mammoth.extractRawText({arrayBuffer});
             return result.value;
         }
-
 
         function showCandidateCard() {
             if (currentCandidate) {
@@ -1527,7 +1522,6 @@
                  candidates.push(currentCandidate);
                  showNotification('تم حفظ المرشح بنجاح');
              }
-
 
             localStorage.setItem('candidates', JSON.stringify(candidates));
 
@@ -1633,7 +1627,6 @@
                 });
             }
         }
-
 
         function viewCandidate(id) {
             const candidate = candidates.find(c => c.id === id);
@@ -1965,7 +1958,6 @@
                  return;
             }
 
-
             questions.forEach((q, index) => {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'question';
@@ -2079,7 +2071,6 @@
                      radio.checked = true;
                  }
              }
-
 
             updatePsychProgress();
             updatePsychButtons();
@@ -2341,7 +2332,6 @@ ${topCandidates.length > 0 ? topCandidates.map(c => `- ${c.name}: ${c.score}%`).
 
             return html;
         }
-
 
         // Notification Functions
         function showNotification(message, type = 'success') {

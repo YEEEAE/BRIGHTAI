@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-        <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WW6PN3C2M0"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WW6PN3C2M0');
+  gtag('config', 'G-8LLESL207Q');
 </script>
+        
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم المسؤول - نظام التوظيف الذكي</title>
@@ -358,7 +359,6 @@
         </div>
     </div>
 
-
     <!-- Communication Modal -->
     <div id="communicationModal" class="communication-modal">
         <div class="modal-content" style="max-width: 800px;">
@@ -375,14 +375,12 @@
         </div>
     </div>
 
-
     <script>
         let allApplicantsData = []; 
         let jobPostings = [];
         let currentViewedApplicantId = null; 
         const GEMINI_API_KEY = 'GEMINI_KEY_REDACTED'; 
         const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-
 
         document.addEventListener('DOMContentLoaded', () => {
             loadApplicantsData();
@@ -440,7 +438,6 @@
             localStorage.setItem('jobPostings', JSON.stringify(jobPostings));
         }
 
-
         function renderApplicantsTable(applicantsToRender) {
             const tableBody = document.getElementById('applicantsTableBody');
             if (!tableBody) return;
@@ -475,7 +472,6 @@
                 matchButton.style.marginLeft = '5px';
                 actionsCell.appendChild(matchButton);
 
-
                 const deleteButton = document.createElement('button');
                 deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف';
                 deleteButton.style.color = 'var(--danger-gradient)';
@@ -490,7 +486,6 @@
             const highlyRatedApplicantsEl = document.getElementById('highlyRatedApplicants');
             const commonSpecializationEl = document.getElementById('commonSpecialization');
             const totalJobPostingsEl = document.getElementById('totalJobPostings');
-
 
             if(totalApplicantsEl) totalApplicantsEl.textContent = allApplicantsData.length;
             if(totalJobPostingsEl) totalJobPostingsEl.textContent = jobPostings.length;
@@ -585,7 +580,6 @@
                 chartData.push(otherCount);
             }
 
-
             if (window.dashboardSpecializationChart) window.dashboardSpecializationChart.destroy();
             window.dashboardSpecializationChart = new Chart(ctx, {
                 type: 'pie',
@@ -642,7 +636,6 @@
                 }
             });
         }
-
 
         function filterApplicants() {
             const nameQuery = document.getElementById('searchName').value.toLowerCase();
@@ -884,7 +877,6 @@
             return 'var(--danger-gradient)';
         }
 
-
         async function viewJobMatches(jobId) {
             const job = jobPostings.find(j => j.id === jobId);
             if (!job) {
@@ -952,7 +944,6 @@
                 resultsBody.innerHTML = matchedApplicantsHTML;
             }
         }
-
 
         async function generateExecutiveSummary(applicantId) {
             const applicant = allApplicantsData.find(app => app.id === applicantId);
@@ -1071,7 +1062,6 @@
         function copyCommunicationMessage() {
             copyToClipboard('communicationMessage');
         }
-
 
         function cleanGeminiResponse(responseText) {
             if (typeof responseText !== 'string') return '{}'; 
