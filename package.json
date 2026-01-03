@@ -11,6 +11,8 @@
   },
   "scripts": {
     "test": "vitest --run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "server": "node server/index.js",
+    "server:dev": "node --watch server/index.js"
   }
 }

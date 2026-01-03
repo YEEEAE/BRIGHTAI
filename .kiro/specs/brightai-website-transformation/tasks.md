@@ -59,7 +59,7 @@ This implementation plan transforms the BrightAI website into a world-class, AI-
     - Test title/description unchanged
     - **Validates: Requirements 24.1-24.15**
 
-- [ ] 1. Server-Side AI Gateway Setup
+- [-] 1. Server-Side AI Gateway Setup
   - [x] 1.1 Create .env.example file
     - GEMINI_API_KEY=YOUR_KEY_HERE
     - GEMINI_MODEL=gemini-2.5-flash
@@ -67,12 +67,12 @@ This implementation plan transforms the BrightAI website into a world-class, AI-
   - [x] 1.2 Update .gitignore
     - Ensure .env is excluded
     - _Requirements: 23.10_
-  - [-] 1.3 Create server API endpoint structure
+  - [x] 1.3 Create server API endpoint structure
     - POST /api/ai/chat endpoint
     - POST /api/ai/search endpoint
     - Read API key from environment only
     - _Requirements: 23.1, 23.2, 23.3, 23.4_
-  - [ ] 1.4 Implement rate limiting
+  - [-] 1.4 Implement rate limiting
     - 30 requests/minute/IP limit
     - Return 429 with Arabic message when exceeded
     - _Requirements: 23.5_
