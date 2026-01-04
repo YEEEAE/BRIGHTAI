@@ -39,11 +39,40 @@
     --glass-blur: blur(12px) saturate(180%);
     --glass-blur-strong: blur(16px) saturate(200%);
 
-    /* ========== AI Brand Gradients ========== */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* ========== New Primary Gradient Theme ========== */
+    --gradient-primary: linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1);
+    --gradient-primary-hover: linear-gradient(135deg, #DB2777, #7C3AED, #4F46E5);
+    
+    /* Complementary Colors (Pink, Purple, Indigo) */
+    --color-pink-500: #EC4899;
+    --color-purple-500: #8B5CF6;
+    --color-indigo-500: #6366F1;
+    --color-pink-600: #DB2777;
+    --color-purple-600: #7C3AED;
+    --color-indigo-600: #4F46E5;
+    
+    /* Text Colors for Gradient Backgrounds (High Contrast) */
+    --text-on-gradient: #FFFFFF;
+    --text-primary-light: #F8FAFC;
+    --text-secondary-light: #CBD5E1;
+    --text-muted-light: #94A3B8;
+    
+    /* Background Colors for New Theme */
+    --bg-dark: #0F172A;
+    --bg-card: #1E293B;
+    --bg-elevated: #334155;
+    
+    /* Accent Colors */
+    --accent-success: #10B981;
+    --accent-warning: #F59E0B;
+    --accent-error: #EF4444;
+    --accent-info: #3B82F6;
+
+    /* ========== AI Brand Gradients (Legacy + Updated) ========== */
+    --primary-gradient: linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1);
     --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --hero-gradient: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    --hero-gradient: linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1);
 
     /* ========== Urgency Colors (CRO) ========== */
     --urgency-gold: #FFD700;
@@ -54,12 +83,12 @@
     --urgency-glass-bg: rgba(255, 215, 0, 0.08);
     --urgency-glass-border: rgba(255, 215, 0, 0.25);
 
-    /* ========== CTA Button Colors ========== */
-    --cta-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --cta-primary-gradient-hover: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    --cta-secondary-border: var(--primary-color);
-    --cta-secondary-text: var(--primary-color);
-    --cta-secondary-hover-bg: rgba(100, 255, 218, 0.1);
+    /* ========== CTA Button Colors (Updated with New Gradient) ========== */
+    --cta-primary-gradient: linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1);
+    --cta-primary-gradient-hover: linear-gradient(135deg, #DB2777, #7C3AED, #4F46E5);
+    --cta-secondary-border: var(--color-purple-500);
+    --cta-secondary-text: var(--color-purple-500);
+    --cta-secondary-hover-bg: rgba(139, 92, 246, 0.1);
     --cta-urgency-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
     --cta-trust-gradient: linear-gradient(135deg, #38A169 0%, #2F855A 100%);
 
