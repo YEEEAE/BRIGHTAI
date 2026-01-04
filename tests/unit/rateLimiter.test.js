@@ -14,7 +14,9 @@ import {
 } from '../../server/middleware/rateLimiter.js';
 
 describe('Rate Limiter', () => {
-  const mockIP = '192.168.1.1';
+  // Use unique IPs for each test to avoid state pollution
+  let testCounter = 0;
+  const getUniqueIP = () => `192.168.${Math.floor(testCounter / 256)}.${testCounter++ % 256}`;
   
   beforeEach(() => {
     // Clear any existing rate limit data
@@ -28,39 +30,43 @@ describe('Rate Limiter', () => {
     });
     
     it('should return false when under limit', () => {
+      const testIP = getUniqueIP();
       // Record 5 requests
       for (let i = 0; i < 5; i++) {
-        recordRequest(mockIP);
+        recordRequest(testIP);
       }
       
-      const result = checkLimit(mockIP);
+      const result = checkLimit(testIP);
       expect(result).toBe(false);
     });
     
     it('should return true when limit exceeded', () => {
+      const testIP = getUniqueIP();
       // Record 31 requests (over the 30 limit)
       for (let i = 0; i < 31; i++) {
-        recordRequest(mockIP);
+        recordRequest(testIP);
       }
       
-      const result = checkLimit(mockIP);
+      const result = checkLimit(testIP);
       expect(result).toBe(true);
     });
   });
   
   describe('recordRequest', () => {
     it('should record first request for IP', () => {
-      recordRequest(mockIP);
-      const remaining = getRemainingRequests(mockIP);
+      const testIP = getUniqueIP();
+      recordRequest(testIP);
+      const remaining = getRemainingRequests(testIP);
       expect(remaining).toBe(29); // 30 - 1
     });
     
     it('should increment count for subsequent requests', () => {
-      recordRequest(mockIP);
-      recordRequest(mockIP);
-      recordRequest(mockIP);
+      const testIP = getUniqueIP();
+      recordRequest(testIP);
+      recordRequest(testIP);
+      recordRequest(testIP);
       
-      const remaining = getRemainingRequests(mockIP);
+      const remaining = getRemainingRequests(testIP);
       expect(remaining).toBe(27); // 30 - 3
     });
   });
@@ -72,31 +78,34 @@ describe('Rate Limiter', () => {
     });
     
     it('should return correct remaining count', () => {
+      const testIP = getUniqueIP();
       for (let i = 0; i < 10; i++) {
-        recordRequest(mockIP);
+        recordRequest(testIP);
       }
       
-      const remaining = getRemainingRequests(mockIP);
+      const remaining = getRemainingRequests(testIP);
       expect(remaining).toBe(20); // 30 - 10
     });
     
     it('should not return negative values', () => {
+      const testIP = getUniqueIP();
       // Record more than limit
       for (let i = 0; i < 35; i++) {
-        recordRequest(mockIP);
+        recordRequest(testIP);
       }
       
-      const remaining = getRemainingRequests(mockIP);
+      const remaining = getRemainingRequests(testIP);
       expect(remaining).toBe(0);
     });
   });
   
   describe('rateLimiterMiddleware', () => {
     it('should call next() when under limit', () => {
+      const testIP = getUniqueIP();
       const req = {
         headers: {},
-        connection: { remoteAddress: mockIP },
-        ip: mockIP
+        connection: { remoteAddress: testIP },
+        ip: testIP
       };
       
       const res = {
@@ -123,10 +132,11 @@ describe('Rate Limiter', () => {
     });
     
     it('should return 429 with Arabic message when limit exceeded', () => {
+      const testIP = getUniqueIP();
       const req = {
         headers: {},
-        connection: { remoteAddress: mockIP },
-        ip: mockIP
+        connection: { remoteAddress: testIP },
+        ip: testIP
       };
       
       const res = {
@@ -150,7 +160,7 @@ describe('Rate Limiter', () => {
       
       // Exceed the limit
       for (let i = 0; i < 31; i++) {
-        recordRequest(mockIP);
+        recordRequest(testIP);
       }
       
       rateLimiterMiddleware(req, res, next);
@@ -163,7 +173,7 @@ describe('Rate Limiter', () => {
     });
     
     it('should handle x-forwarded-for header', () => {
-      const forwardedIP = '10.0.0.1';
+      const forwardedIP = getUniqueIP();
       const req = {
         headers: {
           'x-forwarded-for': `${forwardedIP}, 192.168.1.1`

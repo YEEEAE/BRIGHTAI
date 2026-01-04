@@ -1,0 +1,511 @@
+/**
+ * BrightAI Urgency and Scarcity Elements Styles
+ * Gold/amber attention-grabbing colors with glassmorphism
+ * 
+ * Version: 1.0.0
+ * Requirements: 20.1, 20.2, 20.3, 20.4, 20.5
+ */
+
+/* ==========================================================================
+   CSS Variables for Urgency Elements
+   ========================================================================== */
+
+:root {
+    /* Urgency Color Palette - Gold/Amber (Requirements 20.4) */
+    --urgency-gold: #FFD700;
+    --urgency-amber: #FFA500;
+    --urgency-gold-light: #FFE55C;
+    --urgency-gold-dark: #CC9900;
+    --urgency-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+    --urgency-gradient-subtle: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 165, 0, 0.15) 100%);
+    
+    /* Urgency Glass Effect */
+    --urgency-glass-bg: rgba(255, 215, 0, 0.08);
+    --urgency-glass-border: rgba(255, 215, 0, 0.25);
+    --urgency-glass-shadow: 0 8px 32px rgba(255, 165, 0, 0.15);
+    
+    /* Animation Timings */
+    --urgency-pulse-duration: 2s;
+    --urgency-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Countdown Timer Component (Requirements 20.1, 20.4, 20.5)
+   ========================================================================== */
+
+.urgency-countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem auto;
+    max-width: 500px;
+    background: var(--urgency-glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--urgency-glass-border);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--urgency-glass-shadow);
+    animation: urgencyGlow var(--urgency-pulse-duration) ease-in-out infinite alternate;
+}
+
+/* Countdown Header */
+.countdown-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--urgency-gold);
+}
+
+.countdown-icon {
+    font-size: 1.5rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.countdown-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Countdown Timer Display */
+.countdown-timer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    direction: ltr; /* Numbers should be LTR */
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius-md, 8px);
+    border: 1px solid var(--urgency-glass-border);
+}
+
+.countdown-value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--urgency-gold);
+    font-family: 'Tajawal', monospace;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.countdown-label {
+    font-size: 0.75rem;
+    color: var(--text-color, #8892B0);
+    margin-top: 0.25rem;
+    text-transform: uppercase;
+}
+
+.countdown-separator {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--urgency-gold);
+    opacity: 0.7;
+    animation: blink 1s ease-in-out infinite;
+}
+
+/* Urgent State (less than 1 day) */
+.urgency-countdown.countdown-urgent {
+    border-color: var(--urgency-amber);
+    animation: urgencyPulse 0.5s ease-in-out infinite alternate;
+}
+
+.countdown-urgent .countdown-value {
+    color: var(--urgency-amber);
+    animation: urgentFlash 0.5s ease-in-out infinite alternate;
+}
+
+/* Expired State */
+.countdown-expired {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-color, #8892B0);
+    font-size: 1.1rem;
+}
+
+.countdown-expired i {
+    color: var(--urgency-amber);
+    font-size: 1.5rem;
+}
+
+.urgency-countdown.countdown-expired-state {
+    animation: none;
+    opacity: 0.8;
+}
+
+/* ==========================================================================
+   Scarcity Indicator Component (Requirements 20.2)
+   ========================================================================== */
+
+.scarcity-indicator {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    margin: 1rem auto;
+    max-width: 400px;
+    background: var(--urgency-glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--urgency-glass-border);
+    border-radius: var(--border-radius-md, 8px);
+    box-shadow: var(--urgency-glass-shadow);
+}
+
+.scarcity-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.scarcity-icon {
+    font-size: 1.5rem;
+    color: var(--urgency-amber);
+}
+
+.scarcity-message {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--urgency-gold);
+    text-align: center;
+}
+
+/* Progress Bar */
+.scarcity-progress {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.scarcity-progress-bar {
+    height: 100%;
+    background: var(--urgency-gradient);
+    border-radius: 4px;
+    transition: width var(--urgency-transition);
+}
+
+/* Low Spots State */
+.scarcity-content.scarcity-low .scarcity-message {
+    color: var(--urgency-amber);
+    animation: urgentFlash 0.8s ease-in-out infinite alternate;
+}
+
+.scarcity-indicator.scarcity-urgent {
+    border-color: var(--urgency-amber);
+    animation: urgencyPulse 1s ease-in-out infinite alternate;
+}
+
+/* ==========================================================================
+   Live Notification System (Requirements 20.3)
+   ========================================================================== */
+
+.live-notification {
+    position: fixed;
+    z-index: 9999;
+    max-width: 350px;
+    padding: 1rem 1.25rem;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.08));
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.18));
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--glass-shadow-hover, 0 12px 48px rgba(0, 0, 0, 0.2));
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear 0.4s;
+}
+
+/* Position variants */
+.live-notification.bottom-left {
+    bottom: 100px; /* Above WhatsApp button */
+    left: 20px;
+    right: auto;
+}
+
+.live-notification.bottom-right {
+    bottom: 100px;
+    right: 20px;
+    left: auto;
+}
+
+.live-notification.top-left {
+    top: 100px;
+    left: 20px;
+    right: auto;
+}
+
+.live-notification.top-right {
+    top: 100px;
+    right: 20px;
+    left: auto;
+}
+
+/* Visible State */
+.live-notification.notification-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s linear;
+}
+
+/* Notification Content */
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.notification-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--urgency-gradient-subtle);
+    border-radius: 50%;
+    color: var(--urgency-gold);
+    font-size: 1rem;
+}
+
+.notification-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.notification-message {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--heading-color, #CCD6F6);
+    line-height: 1.4;
+}
+
+.notification-time {
+    font-size: 0.8rem;
+    color: var(--text-color, #8892B0);
+    opacity: 0.8;
+}
+
+.notification-close {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: var(--text-color, #8892B0);
+    cursor: pointer;
+    transition: background var(--urgency-transition), color var(--urgency-transition);
+    padding: 0;
+}
+
+.notification-close:hover,
+.notification-close:focus-visible {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white, #FFFFFF);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes urgencyGlow {
+    0% {
+        box-shadow: var(--urgency-glass-shadow);
+    }
+    100% {
+        box-shadow: 0 8px 40px rgba(255, 215, 0, 0.25);
+    }
+}
+
+@keyframes urgencyPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: var(--urgency-glass-shadow);
+    }
+    100% {
+        transform: scale(1.02);
+        box-shadow: 0 8px 40px rgba(255, 165, 0, 0.3);
+    }
+}
+
+@keyframes urgentFlash {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Pulse glow for icons */
+.pulse-glow {
+    animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px var(--urgency-gold));
+    }
+    50% {
+        filter: drop-shadow(0 0 8px var(--urgency-gold));
+    }
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .urgency-countdown {
+        padding: 1rem 1.25rem;
+        margin: 1rem auto;
+        max-width: 100%;
+    }
+    
+    .countdown-unit {
+        min-width: 50px;
+        padding: 0.5rem;
+    }
+    
+    .countdown-value {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.65rem;
+    }
+    
+    .countdown-separator {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-title {
+        font-size: 1rem;
+    }
+    
+    .scarcity-indicator {
+        padding: 0.75rem 1rem;
+        max-width: 100%;
+    }
+    
+    .scarcity-message {
+        font-size: 1rem;
+    }
+    
+    .live-notification {
+        max-width: calc(100% - 40px);
+        left: 20px !important;
+        right: 20px !important;
+        bottom: 90px !important;
+    }
+    
+    .notification-message {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-timer {
+        gap: 0.25rem;
+    }
+    
+    .countdown-unit {
+        min-width: 45px;
+        padding: 0.4rem;
+    }
+    
+    .countdown-value {
+        font-size: 1.25rem;
+    }
+    
+    .countdown-separator {
+        font-size: 1.25rem;
+    }
+}
+
+/* ==========================================================================
+   Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .urgency-countdown,
+    .scarcity-indicator,
+    .live-notification,
+    .countdown-icon,
+    .countdown-separator,
+    .countdown-value,
+    .scarcity-message,
+    .pulse-glow {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .live-notification.notification-visible {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   Light Mode Adjustments
+   ========================================================================== */
+
+[data-theme="light"] {
+    --urgency-glass-bg: rgba(255, 165, 0, 0.1);
+    --urgency-glass-border: rgba(255, 140, 0, 0.3);
+    --urgency-glass-shadow: 0 8px 32px rgba(255, 140, 0, 0.15);
+}
+
+[data-theme="light"] .countdown-unit {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .countdown-value {
+    color: var(--urgency-gold-dark);
+    text-shadow: none;
+}
+
+[data-theme="light"] .scarcity-progress {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .notification-message {
+    color: var(--heading-color, #1A202C);
+}

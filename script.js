@@ -656,6 +656,297 @@ function initGenericClickTracker() {
 
 /**
  * =================================================================================
+ * SECTION 3.5: TESTIMONIALS CAROUSEL (Requirements 17.1, 17.2, 17.3, 17.4, 17.5)
+ * =================================================================================
+ */
+
+/**
+ * Initializes the testimonials carousel with navigation and auto-play functionality.
+ * Features:
+ * - Glassmorphism card styling
+ * - Arabic quotes with client info
+ * - 5-star ratings
+ * - Carousel/slider functionality with navigation buttons and dots
+ * - Auto-play with pause on hover
+ * - Keyboard navigation support
+ * - Touch/swipe support for mobile
+ */
+function initTestimonialsCarousel() {
+    const carousel = document.querySelector('.testimonials-carousel');
+    const track = document.getElementById('testimonials-track');
+    const cards = document.querySelectorAll('.testimonial-card');
+    const prevBtn = document.querySelector('.testimonials-prev');
+    const nextBtn = document.querySelector('.testimonials-next');
+    const dots = document.querySelectorAll('.testimonials-dot');
+    
+    if (!carousel || !track || cards.length === 0) {
+        console.log('[Testimonials] Carousel elements not found, skipping initialization.');
+        return;
+    }
+    
+    let currentIndex = 0;
+    let autoPlayInterval = null;
+    const autoPlayDelay = 5000; // 5 seconds
+    let isAutoPlaying = true;
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    /**
+     * Gets the number of visible cards based on viewport width
+     * @returns {number} Number of visible cards
+     */
+    function getVisibleCards() {
+        const viewportWidth = window.innerWidth;
+        if (viewportWidth >= 1200) return 3;
+        if (viewportWidth >= 768) return 2;
+        return 1;
+    }
+    
+    /**
+     * Gets the maximum index based on visible cards
+     * @returns {number} Maximum index
+     */
+    function getMaxIndex() {
+        const visibleCards = getVisibleCards();
+        return Math.max(0, cards.length - visibleCards);
+    }
+    
+    /**
+     * Updates the carousel position
+     * @param {boolean} animate - Whether to animate the transition
+     */
+    function updateCarousel(animate = true) {
+        const cardWidth = cards[0].offsetWidth;
+        const gap = 32; // 2rem gap
+        const offset = currentIndex * (cardWidth + gap);
+        
+        track.style.transition = animate ? 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+        track.style.transform = `translateX(${offset}px)`; // RTL: positive offset moves right
+        
+        // Update dots
+        dots.forEach((dot, index) => {
+            const isActive = index === currentIndex;
+            dot.classList.toggle('active', isActive);
+            dot.setAttribute('aria-selected', String(isActive));
+        });
+        
+        // Update navigation buttons state
+        const maxIndex = getMaxIndex();
+        if (prevBtn) {
+            prevBtn.disabled = currentIndex === 0;
+        }
+        if (nextBtn) {
+            nextBtn.disabled = currentIndex >= maxIndex;
+        }
+        
+        // Update ARIA labels for cards
+        cards.forEach((card, index) => {
+            const isVisible = index >= currentIndex && index < currentIndex + getVisibleCards();
+            card.setAttribute('aria-hidden', String(!isVisible));
+        });
+    }
+    
+    /**
+     * Navigates to a specific slide
+     * @param {number} index - Target slide index
+     */
+    function goToSlide(index) {
+        const maxIndex = getMaxIndex();
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        updateCarousel();
+    }
+    
+    /**
+     * Navigates to the next slide
+     */
+    function nextSlide() {
+        const maxIndex = getMaxIndex();
+        if (currentIndex < maxIndex) {
+            currentIndex++;
+        } else {
+            currentIndex = 0; // Loop back to start
+        }
+        updateCarousel();
+    }
+    
+    /**
+     * Navigates to the previous slide
+     */
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+        } else {
+            currentIndex = getMaxIndex(); // Loop to end
+        }
+        updateCarousel();
+    }
+    
+    /**
+     * Starts auto-play
+     */
+    function startAutoPlay() {
+        if (autoPlayInterval) clearInterval(autoPlayInterval);
+        if (isAutoPlaying) {
+            autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+        }
+    }
+    
+    /**
+     * Stops auto-play
+     */
+    function stopAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+    }
+    
+    /**
+     * Handles touch start event
+     * @param {TouchEvent} e - Touch event
+     */
+    function handleTouchStart(e) {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoPlay();
+    }
+    
+    /**
+     * Handles touch end event
+     * @param {TouchEvent} e - Touch event
+     */
+    function handleTouchEnd(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        startAutoPlay();
+    }
+    
+    /**
+     * Handles swipe gesture
+     */
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        // RTL: swipe left (negative diff) goes to previous, swipe right (positive diff) goes to next
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff < 0) {
+                prevSlide();
+            } else {
+                nextSlide();
+            }
+        }
+    }
+    
+    // Event Listeners
+    
+    // Navigation buttons
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            stopAutoPlay();
+            startAutoPlay();
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            stopAutoPlay();
+            startAutoPlay();
+        });
+    }
+    
+    // Dots navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+            stopAutoPlay();
+            startAutoPlay();
+        });
+    });
+    
+    // Keyboard navigation
+    carousel.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case 'ArrowLeft':
+                // RTL: ArrowLeft goes to next
+                nextSlide();
+                stopAutoPlay();
+                startAutoPlay();
+                e.preventDefault();
+                break;
+            case 'ArrowRight':
+                // RTL: ArrowRight goes to previous
+                prevSlide();
+                stopAutoPlay();
+                startAutoPlay();
+                e.preventDefault();
+                break;
+        }
+    });
+    
+    // Touch events for mobile swipe
+    track.addEventListener('touchstart', handleTouchStart, { passive: true });
+    track.addEventListener('touchend', handleTouchEnd, { passive: true });
+    
+    // Pause auto-play on hover
+    carousel.addEventListener('mouseenter', stopAutoPlay);
+    carousel.addEventListener('mouseleave', startAutoPlay);
+    
+    // Pause auto-play on focus within
+    carousel.addEventListener('focusin', stopAutoPlay);
+    carousel.addEventListener('focusout', startAutoPlay);
+    
+    // Handle window resize
+    window.addEventListener('resize', debounce(() => {
+        // Ensure current index is valid after resize
+        const maxIndex = getMaxIndex();
+        if (currentIndex > maxIndex) {
+            currentIndex = maxIndex;
+        }
+        updateCarousel(false);
+    }, 200));
+    
+    // Respect reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReducedMotion.matches) {
+        isAutoPlaying = false;
+    }
+    
+    prefersReducedMotion.addEventListener('change', (e) => {
+        isAutoPlaying = !e.matches;
+        if (isAutoPlaying) {
+            startAutoPlay();
+        } else {
+            stopAutoPlay();
+        }
+    });
+    
+    // Initialize
+    updateCarousel(false);
+    startAutoPlay();
+    
+    // GTM event for testimonials view
+    const testimonialsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.dataset.analyticsFired) {
+                entry.target.dataset.analyticsFired = 'true';
+                window.dataLayer.push({
+                    event: 'testimonials_view',
+                    testimonials_count: cards.length
+                });
+                console.log('[Analytics] Pushed "testimonials_view" event.');
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    testimonialsObserver.observe(carousel);
+    
+    console.log('[Testimonials] Carousel initialized with', cards.length, 'testimonials.');
+}
+
+/**
+ * =================================================================================
  * SECTION 4: MAIN EXECUTION BLOCK (DOM Ready)
  * =================================================================================
  */
@@ -670,6 +961,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initBackToTop();
         initSmoothScroll();
         initGenericClickTracker();
+        initTestimonialsCarousel();
 
         // IMPORTANT: This is a simulation for demonstration.
         // In a real-world scenario, this should be triggered by your

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
@@ -48,7 +48,10 @@
       "email": "info@brightaii.com",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "طريق الملك فهد",
         "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "postalCode": "11564",
         "addressCountry": "SA"
       }
     }
@@ -75,51 +78,25 @@
   }
   </script>
   
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      direction: rtl;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    .contact-container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .contact-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .social-links a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      margin: 10px 0;
-      color: #333;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      transition: background 0.3s ease;
-    }
-    .social-links a:hover {
-      background: #f0f0f0;
-    }
-    .social-links img {
-      width: 32px;
-      height: 32px;
-      margin-left: 10px;
-    }
-  </style>
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
+  <!-- Skip to main content link for keyboard navigation -->
+  <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+  
   <!-- Breadcrumb Navigation -->
   <nav class="breadcrumb-nav" aria-label="مسار التنقل" style="background: rgba(17, 34, 64, 0.9); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; border-bottom: 1px solid rgba(100, 255, 218, 0.1);">
-      <div class="breadcrumb-container" style="max-width: 600px; margin: 0 auto; display: flex; align-items: center; gap: 0.5rem;">
+      <div class="breadcrumb-container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 0.5rem;">
           <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList" style="display: flex; align-items: center; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; gap: 0.5rem;">
               <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display: flex; align-items: center; font-size: 0.875rem;">
                   <a href="/" itemprop="item" style="color: #8892B0; text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 4px; transition: color 0.2s ease;"><span itemprop="name">الرئيسية</span></a>
@@ -134,27 +111,223 @@
       </div>
   </nav>
   
-  <div class="contact-container">
-    <h1 style="text-align: center; margin-bottom: 10px; font-size: 2rem;">اتصل بنا - Bright AI</h1>
-    <h2>طرق التواصل</h2>
-    <div class="social-links">
-      <a href="https://wa.me/966538229013" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="واتس اب">
-        واتس
+  <main id="main-content" role="main">
+
+    <!-- Saudi Contact Section (Requirements 18.1, 18.3, 18.4, 18.5) -->
+    <section class="saudi-contact-section" aria-labelledby="contact-section-title">
+        <div class="saudi-contact-container">
+            <!-- Section Header -->
+            <header class="saudi-contact-header">
+                <span class="section-mini-title">تواصل معنا</span>
+                <h1 id="contact-section-title" class="section-title">اتصل بنا - شركة مُشرقة AI</h1>
+                <p class="section-description">
+                    نحن هنا لمساعدتك في رحلة التحول الرقمي. تواصل معنا عبر الطريقة المفضلة لديك وسنرد عليك في أقرب وقت ممكن.
+                </p>
+            </header>
+            
+            <!-- Contact Grid -->
+            <div class="saudi-contact-grid">
+                <!-- Contact Options Card -->
+                <div class="contact-options-card">
+                    <h2 style="color: var(--heading-color); font-size: 1.3rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-headset" style="color: var(--primary-color); margin-left: 0.5rem;" aria-hidden="true"></i>
+                        طرق التواصل
+                    </h2>
+                    
+                    <!-- WhatsApp - Primary Contact Method -->
+                    <a href="https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" 
+                       class="contact-option contact-option-primary" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="تواصل معنا عبر واتساب - الطريقة الأسرع للتواصل"
+                       data-track="WhatsApp Contact" data-track-category="Contact" data-track-location="contact-page">
+                        <div class="contact-option-icon">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        </div>
+                        <div class="contact-option-content">
+                            <span class="contact-option-label">واتساب - الطريقة الأسرع</span>
+                            <span class="contact-option-value">+٩٦٦ ٥٣ ٨٢٢ ٩٠١٣</span>
+                            <span class="contact-option-hint">متاح للرد الفوري</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Phone -->
+                    <a href="tel:+966538229013" 
+                       class="contact-option"
+                       aria-label="اتصل بنا هاتفياً"
+                       data-track="Phone Contact" data-track-category="Contact" data-track-location="contact-page">
+                        <div class="contact-option-icon">
+                            <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                        </div>
+                        <div class="contact-option-content">
+                            <span class="contact-option-label">الهاتف</span>
+                            <span class="contact-option-value">+966 53 822 9013</span>
+                            <span class="contact-option-hint">الأحد - الخميس، ٩ص - ٦م</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Email -->
+                    <a href="mailto:info@brightaii.com" 
+                       class="contact-option"
+                       aria-label="راسلنا عبر البريد الإلكتروني"
+                       data-track="Email Contact" data-track-category="Contact" data-track-location="contact-page">
+                        <div class="contact-option-icon">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="contact-option-content">
+                            <span class="contact-option-label">البريد الإلكتروني</span>
+                            <span class="contact-option-value">info@brightaii.com</span>
+                            <span class="contact-option-hint">نرد خلال ٢٤ ساعة</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Address -->
+                    <div class="contact-option">
+                        <div class="contact-option-icon">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                        </div>
+                        <div class="contact-option-content">
+                            <span class="contact-option-label">العنوان</span>
+                            <span class="contact-option-value contact-option-value-rtl">طريق الملك فهد، الرياض</span>
+                            <span class="contact-option-hint">المملكة العربية السعودية</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Working Hours Badge -->
+                    <div class="working-hours-badge">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        <span>أوقات العمل: الأحد - الخميس، ٩:٠٠ ص - ٦:٠٠ م (توقيت السعودية)</span>
+                    </div>
+                    
+                    <!-- Social Media Links -->
+                    <div style="margin-top: 1rem;">
+                        <h3 style="color: var(--heading-color); font-size: 1rem; margin-bottom: 1rem;">تابعنا على وسائل التواصل</h3>
+                        <div class="social-links" style="justify-content: flex-start;">
+                            <a href="https://www.instagram.com/iililil44" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="انستقرام">
+                                <i class="fab fa-instagram" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/@bright1ai" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="تيك توك">
+                                <i class="fab fa-tiktok" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://x.com/yeaeeae" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="تويتر">
+                                <i class="fab fa-twitter" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://www.youtube.com/@TeechLab" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="يوتيوب">
+                                <i class="fab fa-youtube" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map Card -->
+                <div class="contact-map-card">
+                    <h2 class="contact-map-title">
+                        <i class="fas fa-location-dot" aria-hidden="true"></i>
+                        موقعنا في الرياض
+                    </h2>
+                    
+                    <!-- Address Details -->
+                    <div class="contact-address-details">
+                        <div class="contact-address-line">
+                            <i class="fas fa-building" aria-hidden="true"></i>
+                            <span>شركة مُشرقة AI</span>
+                        </div>
+                        <div class="contact-address-line">
+                            <i class="fas fa-road" aria-hidden="true"></i>
+                            <span>طريق الملك فهد</span>
+                        </div>
+                        <div class="contact-address-line">
+                            <i class="fas fa-city" aria-hidden="true"></i>
+                            <span>الرياض، منطقة الرياض</span>
+                        </div>
+                        <div class="contact-address-line">
+                            <i class="fas fa-flag" aria-hidden="true"></i>
+                            <span>المملكة العربية السعودية</span>
+                        </div>
+                        <div class="contact-address-line">
+                            <i class="fas fa-mailbox" aria-hidden="true"></i>
+                            <span>الرمز البريدي: ١١٥٦٤</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Map Embed (Lightweight) -->
+                    <div class="contact-map-wrapper" id="map-container">
+                        <!-- Lazy load placeholder -->
+                        <div class="contact-map-placeholder" id="map-placeholder" onclick="loadMap()" role="button" tabindex="0" aria-label="انقر لتحميل الخريطة">
+                            <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+                            <span>انقر لعرض الخريطة</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Get Directions Link -->
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=24.7136,46.6753&destination_place_id=ChIJN1t_tDeuEmsRUsoyG83frY4" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="cta-button"
+                       style="text-align: center; margin-top: 1rem;"
+                       aria-label="احصل على الاتجاهات إلى مقرنا في الرياض">
+                        <i class="fas fa-directions" aria-hidden="true" style="margin-left: 0.5rem;"></i>
+                        احصل على الاتجاهات
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+  </main>
+  
+  <!-- Floating WhatsApp Button (Requirements 18.1, 18.2) -->
+  <div class="floating-whatsapp" id="floating-whatsapp">
+      <a href="https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" 
+         class="floating-whatsapp-btn"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="تواصل معنا عبر واتساب"
+         data-track="Floating WhatsApp" data-track-category="Contact" data-track-location="floating-button">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i>
+          <span class="floating-whatsapp-tooltip">تواصل معنا عبر واتساب</span>
       </a>
-      <a href="https://www.instagram.com/iililil44" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="انستقرام">
-        انستقرام
-      </a>
-      <a href="https://www.tiktok.com/@yeeeeae" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046127.png" alt="تيك توك">
-        تيك توك
-      </a>
-      <a href="https://x.com/yeaeeae" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="تويتر">
-        تويتر
-      </a>
-    </div>
+      <span class="floating-whatsapp-label">واتساب</span>
   </div>
+  
+  <!-- Map Loading Script -->
+  <script>
+    // Lazy load Google Map for performance
+    function loadMap() {
+        const mapContainer = document.getElementById('map-container');
+        const placeholder = document.getElementById('map-placeholder');
+        
+        if (placeholder) {
+            // Create iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.674896!2d46.6753!3d24.7136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDQyJzQ5LjAiTiA0NsKwNDAnMzEuMSJF!5e0!3m2!1sar!2ssa!4v1234567890';
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.style.border = '0';
+            iframe.allowFullscreen = true;
+            iframe.loading = 'lazy';
+            iframe.referrerPolicy = 'no-referrer-when-downgrade';
+            iframe.title = 'موقع شركة مُشرقة AI على خرائط جوجل';
+            
+            // Remove placeholder and add iframe
+            placeholder.remove();
+            mapContainer.appendChild(iframe);
+        }
+    }
+    
+    // Allow keyboard activation of map placeholder
+    document.getElementById('map-placeholder')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            loadMap();
+        }
+    });
+  </script>
+  
+  <!-- Scripts -->
+  <script src="script.js" defer></script>
+  <script src="theme-controller.js" defer></script>
+  <script src="analytics-tracker.js" defer></script>
+  <!-- Advanced Analytics - Heatmaps, form tracking, video engagement (Requirements 21.1-21.5) -->
+  <script src="advanced-analytics.js" defer></script>
 </body>
 </html>

@@ -180,13 +180,20 @@ describe('Error Handler', () => {
       error.statusCode = 503;
       const fn = vi.fn().mockRejectedValue(error);
       
-      const promise = retryWithBackoff(fn, { maxRetries: 2, baseDelay: 100 });
+      // Create the promise and immediately attach a catch handler to prevent unhandled rejection
+      let caughtError = null;
+      const promise = retryWithBackoff(fn, { maxRetries: 2, baseDelay: 100 })
+        .catch(e => { caughtError = e; });
       
       // Wait for all timers to complete
       await vi.runAllTimersAsync();
       
-      // Now check that it rejects
-      await expect(promise).rejects.toThrow('persistent error');
+      // Wait for the promise to settle
+      await promise;
+      
+      // Verify the error was thrown
+      expect(caughtError).not.toBeNull();
+      expect(caughtError.message).toBe('persistent error');
       expect(fn).toHaveBeenCalledTimes(3); // Initial + 2 retries
     });
 

@@ -822,7 +822,7 @@
         <div class="hero-content">
             <h1>استشارات الذكاء الاصطناعي المتقدمة</h1>
             <p>نحول رؤيتك إلى واقع رقمي من خلال حلول الذكاء الاصطناعي المبتكرة والمخصصة لاحتياجات عملك الفريدة</p>
-            <a href="#" class="cta-button" id="openConsultationForm">احجز استشارة مجانية</a>
+            <a href="#" class="cta-button" id="openConsultationForm" data-track="احجز استشارة مجانية" data-track-category="Consultation CTA" data-track-location="hero">احجز استشارة مجانية</a>
         </div>
     </section>
 
@@ -1568,5 +1568,10 @@
             }
         });
     </script>
+    
+    <!-- Analytics Tracker - Scroll depth, time on page, CTA clicks (Requirements 12.1, 12.2, 12.3) -->
+    <script src="analytics-tracker.js" defer></script>
+    <!-- Advanced Analytics - Heatmaps, form tracking, video engagement (Requirements 21.1-21.5) -->
+    <script src="advanced-analytics.js" defer></script>
 </body>
 </html>

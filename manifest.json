@@ -25,6 +25,18 @@
   "icons": [
     {
       "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
@@ -50,6 +62,12 @@
     {
       "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
       "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+      "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
     },

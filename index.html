@@ -20,7 +20,12 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" as="style" crossorigin>
 <link rel="preload" href="style.css" as="style">
 <link rel="preload" href="script.js" as="script">
+<!-- Preload hero logo image -->
+<link rel="preload" href="https://www2.0zz0.com/2025/06/23/22/317775783.png" as="image" type="image/png">
+<!-- DNS prefetch and preconnect for external resources -->
 <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://www2.0zz0.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
     <!-- GTM/Analytics Expert Fix: Data Layer initialization with Consent Mode defaults -->
     <script>
@@ -114,7 +119,7 @@
 
     <!-- Critical CSS Inlined -->
     <style>
-        :root{--primary-color:#64FFDA;--secondary-color:#0A192F;--text-color:#8892B0;--white:#FFFFFF;--background-color:#0A192F;--accent-color-lighter:#24364A;--border-radius:8px;}
+        :root{--primary-color:#64FFDA;--secondary-color:#0A192F;--text-color:#8892B0;--white:#FFFFFF;--background-color:#0A192F;--accent-color-lighter:#24364A;--border-radius:8px;--glass-bg:rgba(255,255,255,0.08);--glass-border:rgba(255,255,255,0.18);--glass-blur:blur(12px) saturate(180%);--transition-base:300ms cubic-bezier(0.4,0,0.2,1)}
         body{margin:0;font-family:'Tajawal',system-ui,-apple-system,sans-serif;background-color:var(--background-color);color:var(--text-color);direction:rtl;line-height:1.6;overflow-x:hidden;overflow-y:scroll;scroll-behavior:smooth;min-height:100vh}
         .navbar{position:fixed;top:0;left:0;width:100%;background-color:rgba(10,25,47,0.95);padding:0.8rem 0;z-index:1000;backdrop-filter:blur(10px);box-shadow:0 2px 10px rgba(0,0,0,0.1);transition:padding 0.3s ease,background-color 0.3s ease, transform 0.3s ease;will-change:padding,background-color,transform}
         .navbar-container{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:0 2rem}
@@ -123,9 +128,15 @@
         .hero-container{position:relative;z-index:2;text-align:center;width:90%;max-width:1200px;margin:0 auto;padding:2rem 1rem}
         .hero-mini-title{color:var(--primary-color);font-size:1.1rem;margin-bottom:1rem;display:block;font-weight:500}
         .hero h1{color:var(--white);font-size:2.8rem;margin-bottom:1.5rem;line-height:1.2}
+        .hero-description{color:var(--white);opacity:0.9;font-size:1.1rem;line-height:1.8;margin-bottom:2rem}
         .cta-button{display:inline-block;padding:0.8rem 1.5rem;border:2px solid var(--primary-color);color:var(--primary-color);text-decoration:none;border-radius:var(--border-radius);transition:all 0.3s ease;margin:0.5rem;font-weight:500;cursor:pointer;text-align:center}
         .cta-button-accent{background-color:var(--primary-color);color:var(--secondary-color)}
-        @media(max-width:768px){.hero h1{font-size:2.2rem}.nav-links{display:none}.hamburger{display:block}}
+        .stats-section{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:3rem}
+        .stat-item{text-align:center;padding:1rem}
+        .stat-counter{font-size:2.5rem;font-weight:700;color:var(--primary-color);display:block}
+        .stat-label{color:var(--text-color);font-size:0.9rem}
+        .hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+        @media(max-width:768px){.hero h1{font-size:2.2rem}.nav-links{display:none}.hamburger{display:block}.stats-section{gap:1rem}.stat-counter{font-size:2rem}}
         .hamburger{display:none;background:0 0;border:none;color:var(--primary-color);font-size:1.5rem;cursor:pointer;padding:.5rem;z-index:1001}
         .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     </style>
@@ -328,11 +339,14 @@
     <!-- End GTM/Analytics Expert Fix -->
 
     <!-- Three.js مكتبة -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <!-- CSS -->
     <link rel="stylesheet" href="background.css">
 </head>
 <body>
+    <!-- Skip to main content link for keyboard navigation (Requirements 10.2) -->
+    <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+    
     <!-- القائمة العلوية -->
     <header>
         <nav class="navbar" aria-label="القائمة الرئيسية لموقع مُشرقة AI لخدمات الذكاء الاصطناعي والروبوتات في السعودية">
@@ -340,10 +354,16 @@
                 <a href="#home" class="logo" aria-label="الصفحة الرئيسية لشركة مُشرقة AI - رائدة الذكاء الاصطناعي في السعودية">
                     <img src="https://www2.0zz0.com/2025/06/23/22/317775783.png" alt="شعار شركة مُشرقة AI السعودية الرائدة في حلول الذكاء الاصطناعي" width="200" height="55" style="height: 55px; width: auto;" loading="eager">
                 </a>
-                <button class="hamburger" aria-label="فتح قائمة التنقل" aria-expanded="false" aria-controls="nav-links-list" type="button">
-                    <i class="fas fa-bars" aria-hidden="true"></i>
-                    <span class="sr-only">فتح القائمة</span>
-                </button>
+                <div class="navbar-actions">
+                    <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="تبديل إلى الوضع الليلي" type="button" title="تبديل المظهر">
+                        <i class="fas fa-moon" aria-hidden="true"></i>
+                        <span class="sr-only">تبديل المظهر</span>
+                    </button>
+                    <button class="hamburger" aria-label="فتح قائمة التنقل" aria-expanded="false" aria-controls="nav-links-list" type="button">
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                        <span class="sr-only">فتح القائمة</span>
+                    </button>
+                </div>
                 <ul class="nav-links" id="nav-links-list" role="menubar" aria-label="روابط التنقل الرئيسية">
                     <li role="none"><a role="menuitem" href="#home">الرئيسية</a></li>
                     <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
@@ -365,6 +385,8 @@
         <!-- القسم الرئيسي -->
         <section id="home" class="hero" aria-labelledby="hero-main-title">
             <div id="chart-container"></div>
+            <!-- Particle System Canvas for AI-inspired animated background -->
+            <canvas id="particle-canvas" class="hero-canvas" aria-hidden="true"></canvas>
             <div class="hero-container">
                 <div class="hero-content">
                     <span class="hero-mini-title">
@@ -374,13 +396,82 @@
                     <p class="hero-description">
                         نحن في مُشرقة AI، شركة سعودية متخصصة ورائدة في مجال الذكاء الاصطناعي (AI) وتطبيقاته المبتكرة في المملكة العربية السعودية، نقدم حلول التعلم العميق المتقدمة، ونطور <a href="https://brightai.site/ai-bots.html">روبوتات المحادثة العربية الذكية (شات بوت عربي ذكي)</a> المصممة خصيصاً للسوق السعودي وتحدياته، بالإضافة إلى <a href="https://brightai.site/smart-automation.html">خدمات الأتمتة الذكية</a> ودعم <a href="https://brightai.site/smart-automation.html">أتمتة الأعمال الرياض</a>. نوفر خدمات الذكاء الاصطناعي المتكاملة في جميع أنحاء المملكة، بما في ذلك الرياض، جدة، والدمام (وحلول الذكاء الاصطناعي المنطقة الشرقية). تشمل خبراتنا العميقة: <a href="https://brightai.site/data-analysis.html">تحليل البيانات الضخمة السعودية</a>، <a href="https://brightai.site/smart-automation.html">أتمتة العمليات السعودية RPA</a>، <a href="https://brightai.site/nlp.html">معالجة اللغة العربية الطبيعية NLP</a> واللهجات المحلية، و<a href="https://brightai.site/blogger/Generative-artificial-intelligence.html">الذكاء الاصطناعي التوليدي السعودية</a>. اكتشف كيف يمكن لشركتك السعودية الاستفادة من قوة <a href="https://brightai.site/machine.html">التعلم الآلي Machine Learning السعودية</a>، الذكاء الاصطناعي، وحلولنا المبتكرة لتحسين الكفاءة التشغيلية، تعزيز مسيرة التحول الرقمي السعودية AI، وتحقيق أهداف رؤية المملكة 2030 بفعالية وتميز.
                     </p>
-                    <div>
+                    <div class="cta-group">
                         <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
-                        <a href="https://wa.me/966538229013" class="cta-button cta-button-accent" aria-label="اطلب الآن استشارة مجانية في الذكاء الاصطناعي لشركتك في السعودية من خبراء مُشرقة AI"
-                           data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Request Free AI Consultation - WhatsApp" data-gtm-item-id="CTA_WHATSAPP_HERO">اطلب استشارة AI مجانية في السعودية من خبراء مُشرقة AI</a>
-                        <a href="our-products.html" class="cta-button" aria-label="اكتشف حلول مُشرقة AI المبتكرة المصممة للشركات والمؤسسات السعودية الطموحة"
-                           data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Discover AI Solutions" data-gtm-item-id="CTA_SOLUTIONS_HERO">اكتشف حلول الذكاء الاصطناعي للشركات السعودية</a>
+                        <!-- Primary CTA: احصل على استشارة مجانية (Requirements 22.1, 22.2) -->
+                        <a href="https://wa.me/966538229013" class="cta-primary cta-lg" aria-label="اطلب الآن استشارة مجانية في الذكاء الاصطناعي لشركتك في السعودية من خبراء مُشرقة AI"
+                           data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Request Free AI Consultation - WhatsApp" data-gtm-item-id="CTA_WHATSAPP_HERO"
+                           data-track="استشارة AI مجانية" data-track-category="Hero CTA" data-track-location="hero">
+                            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                            <span>احصل على استشارة مجانية</span>
+                        </a>
+                        <!-- Secondary CTA (Requirements 22.3) -->
+                        <a href="our-products.html" class="cta-secondary cta-lg" aria-label="اكتشف حلول مُشرقة AI المبتكرة المصممة للشركات والمؤسسات السعودية الطموحة"
+                           data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Discover AI Solutions" data-gtm-item-id="CTA_SOLUTIONS_HERO"
+                           data-track="اكتشف حلول AI" data-track-category="Hero CTA" data-track-location="hero">
+                            <span>اكتشف حلول الذكاء الاصطناعي</span>
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        </a>
                         <!-- End GTM/Analytics Expert Fix -->
+                    </div>
+                    
+                    <!-- Trust Bar Component (Requirements 15.1, 15.2, 15.3, 15.5) -->
+                    <div class="trust-bar" role="region" aria-label="شهادات الثقة والاعتمادات">
+                        <!-- Primary Saudi Badge - Most Prominent -->
+                        <div class="trust-badge trust-badge-primary">
+                            <i class="fas fa-flag trust-badge-icon" aria-hidden="true"></i>
+                            <div class="trust-badge-text">
+                                <span class="trust-badge-title">شركة سعودية 100%</span>
+                                <span class="trust-badge-subtitle">مقرها الرياض</span>
+                            </div>
+                        </div>
+                        
+                        <!-- ISO 27001 Certification -->
+                        <div class="trust-badge trust-badge-iso">
+                            <i class="fas fa-shield-alt trust-badge-icon" aria-hidden="true"></i>
+                            <div class="trust-badge-text">
+                                <span class="trust-badge-title">ISO 27001</span>
+                                <span class="trust-badge-subtitle">أمن المعلومات</span>
+                            </div>
+                        </div>
+                        
+                        <!-- ISO 9001 Certification -->
+                        <div class="trust-badge trust-badge-iso">
+                            <i class="fas fa-certificate trust-badge-icon" aria-hidden="true"></i>
+                            <div class="trust-badge-text">
+                                <span class="trust-badge-title">ISO 9001</span>
+                                <span class="trust-badge-subtitle">إدارة الجودة</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Vision 2030 Alignment -->
+                        <div class="trust-badge trust-badge-vision">
+                            <i class="fas fa-star trust-badge-icon" aria-hidden="true"></i>
+                            <div class="trust-badge-text">
+                                <span class="trust-badge-title">داعم لرؤية 2030</span>
+                                <span class="trust-badge-subtitle">التحول الرقمي</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hero Stats Section with Animated Counters (Requirements 13.1, 13.2) -->
+                    <div class="stats-section hero-stats" aria-label="إحصائيات مُشرقة AI">
+                        <div class="stat-item animate-trigger">
+                            <span class="stat-counter" data-count="150" aria-label="أكثر من 150 مشروع ناجح">0</span>
+                            <span class="stat-label">مشروع ناجح</span>
+                        </div>
+                        <div class="stat-item animate-trigger">
+                            <span class="stat-counter" data-count="50" aria-label="أكثر من 50 عميل سعودي">0</span>
+                            <span class="stat-label">عميل سعودي</span>
+                        </div>
+                        <div class="stat-item animate-trigger">
+                            <span class="stat-counter" data-count="25" aria-label="25 خبير ذكاء اصطناعي">0</span>
+                            <span class="stat-label">خبير AI</span>
+                        </div>
+                        <div class="stat-item animate-trigger">
+                            <span class="stat-counter" data-count="98" aria-label="98% نسبة رضا العملاء">0</span>
+                            <span class="stat-label">% رضا العملاء</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -402,29 +493,29 @@
 
         <div class="health-features-grid">
             
-            <div class="health-feature">
+            <div class="health-feature animate-trigger">
                 <h3>تحليل الصور الطبية (الرؤية الحاسوبية)</h3>
                 <p>جرّب رفع أشعة وشاهد دقة التحليل الفوري.</p>
             </div>
             
-            <div class="health-feature">
+            <div class="health-feature animate-trigger">
                 <h3>المراقبة الصحية عن بعد</h3>
                 <p>اكتشف كيف نتنبأ بالمخاطر قبل وقوعها (التنبؤ بالبيانات Predictive Analytics).</p>
             </div>
 
-            <div class="health-feature">
+            <div class="health-feature animate-trigger">
                 <h3>إدارة المستشفيات الذكية</h3>
                 <p>شاهد كيف نزيد الكفاءة ونقلل الانتظار (أتمتة العمليات السعودية RPA).</p>
             </div>
 
-             <div class="health-feature">
+             <div class="health-feature animate-trigger">
                 <h3>تطبيقات Med-Gemini</h3>
                 <p>احصل على إجابات طبية دقيقة ومبسطة (الذكاء الاصطناعي التوليدي السعودية).</p>
             </div>
 
         </div>
 
-        <a href="health-bright.html" class="health-cta">
+        <a href="health-bright.html" class="health-cta" data-track="المنصة التفاعلية الصحية" data-track-category="Health Section CTA" data-track-location="health-section">
             اذهب إلى المنصة التفاعلية
         </a>
 
@@ -454,7 +545,7 @@
           السعودية على بناء استراتيجيات <strong>التحول الرقمي</strong> وتحقيق 
           التنافسية في السوق المحلي والإقليمي.
         </p>
-        <a href="consultation.html" class="ai-btn">اطلب استشارة</a>
+        <a href="consultation.html" class="ai-btn" data-track="اطلب استشارة" data-track-category="AI Consulting CTA" data-track-location="ai-consulting">اطلب استشارة</a>
       </div>
 
       <!-- بطاقة 2 -->
@@ -465,7 +556,7 @@
           والتعريفات المرتبطة بعالم الأعمال مثل 
           <em>التعلم الآلي Machine Learning السعودية، الرؤية الحاسوبية Computer Vision، معالجة اللغة الطبيعية NLP</em>.
         </p>
-        <a href="blogger/description.html" class="ai-btn">تعرّف أكثر</a>
+        <a href="blogger/description.html" class="ai-btn" data-track="تعرّف أكثر - مصطلحات AI" data-track-category="AI Consulting CTA" data-track-location="ai-consulting">تعرّف أكثر</a>
       </div>
 
       <!-- بطاقة 3 -->
@@ -476,7 +567,7 @@
           لدعم الشركات في مجالات التسويق، إنشاء المحتوى، تطوير المنتجات، 
           وخدمة العملاء بطرق مبتكرة ومتوافقة مع متطلبات <strong>رؤية 2030</strong>. (شراء حلول الذكاء الاصطناعي)
         </p>
-        <a href="blogger/Generative-artificial-intelligence.html" class="ai-btn">شاهد التطبيقات</a>
+        <a href="blogger/Generative-artificial-intelligence.html" class="ai-btn" data-track="شاهد التطبيقات - AI التوليدي" data-track-category="AI Consulting CTA" data-track-location="ai-consulting">شاهد التطبيقات</a>
       </div>
 
       <!-- بطاقة 4 -->
@@ -487,7 +578,7 @@
           تحسين تجربة العملاء، دعم اتخاذ القرار، وتطوير حلول مخصصة للقطاعات 
           الحيوية مثل <strong>الصحة، المالية، والطاقة</strong>.
         </p>
-        <a href="blogger/compypterrrr.html" class="ai-btn">تعرّف على الحلول</a>
+        <a href="blogger/compypterrrr.html" class="ai-btn" data-track="تعرّف على الحلول - ML" data-track-category="AI Consulting CTA" data-track-location="ai-consulting">تعرّف على الحلول</a>
       </div>
     </div>
 
@@ -537,9 +628,11 @@
 
                 <div class="demo-cta-container">
                     <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
-                    <a href="h/index.html" class="cta-button cta-button-accent demo-cta" target="_blank" rel="noopener noreferrer" aria-label="استكشف النماذج الأولية لأنظمة الموارد البشرية وخدمة العملاء بالذكاء الاصطناعي من شركة مُشرقة AI الرائدة في السعودية"
+                    <!-- Primary CTA with urgency styling (Requirements 22.1, 22.4) -->
+                    <a href="h/index.html" class="cta-primary cta-lg" target="_blank" rel="noopener noreferrer" aria-label="استكشف النماذج الأولية لأنظمة الموارد البشرية وخدمة العملاء بالذكاء الاصطناعي من شركة مُشرقة AI الرائدة في السعودية"
                        data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Explore AI Demos" data-gtm-item-id="CTA_DEMOS">
-                        <i class="fas fa-flask" aria-hidden="true"></i> استكشف النماذج الأولية لأنظمة AI السعودية الآن
+                        <i class="fas fa-flask" aria-hidden="true"></i>
+                        <span>استكشف النماذج الأولية الآن</span>
                     </a>
                     <!-- End GTM/Analytics Expert Fix -->
                 </div>
@@ -613,10 +706,11 @@
             </div>
             <div class="tourism-cta">
                 <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
-                <a href="ai-bots.html" class="cta-button cta-button-accent" aria-label="استكشف مجموعة روبوتات الذكاء الاصطناعي السعودية وحلول الشات بوت المتطورة التي تقدمها شركة مُشرقة AI"
+                <!-- Primary CTA (Requirements 22.1, 22.2) -->
+                <a href="ai-bots.html" class="cta-primary cta-lg" aria-label="استكشف مجموعة روبوتات الذكاء الاصطناعي السعودية وحلول الشات بوت المتطورة التي تقدمها شركة مُشرقة AI"
                    data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Explore AI Bots & Chatbots" data-gtm-item-id="CTA_EXPLORE_BOTS">
                     <i class="fas fa-robot" aria-hidden="true"></i>
-                    استكشف روبوتات AI والشات بوت السعودي من مُشرقة AI
+                    <span>استكشف روبوتات AI والشات بوت</span>
                 </a>
                 <!-- End GTM/Analytics Expert Fix -->
             </div>
@@ -702,7 +796,8 @@
                     </ul>
                     <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="data-analysis.html" class="service-link" aria-label="اكتشف المزيد عن خدمات تحليل البيانات الضخمة وحلول الذكاء الاصطناعي في السعودية التي تقدمها شركة مُشرقة AI"
-                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Data Analysis" data-gtm-item-id="service_data_analysis">اكتشف المزيد عن تحليل البيانات الضخمة في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Data Analysis" data-gtm-item-id="service_data_analysis"
+                       data-track="تحليل البيانات الضخمة" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن تحليل البيانات الضخمة في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                     <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -729,7 +824,8 @@
                     </ul>
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="smart-automation.html" class="service-link" aria-label="اكتشف المزيد عن حلول أتمتة العمليات الذكية و RPA المتطورة في السعودية من شركة مُشرقة AI"
-                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Smart Automation" data-gtm-item-id="service_smart_automation">اكتشف المزيد عن أتمتة العمليات الذكية في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Smart Automation" data-gtm-item-id="service_smart_automation"
+                       data-track="أتمتة العمليات الذكية" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن أتمتة العمليات الذكية في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -756,7 +852,8 @@
                     </ul>
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="consultation.html" class="service-link" aria-label="اكتشف المزيد عن خدمات استشارات الذكاء الاصطناعي والتحول الرقمي في السعودية من شركة مُشرقة AI الخبيرة"
-                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Consultation" data-gtm-item-id="service_consultation">اكتشف المزيد عن استشارات الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Consultation" data-gtm-item-id="service_consultation"
+                       data-track="استشارات الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن استشارات الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -783,7 +880,8 @@
                     </ul>
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="ai-agent.html" class="service-link" aria-label="اكتشف المزيد عن حلول وكلاء الذكاء الاصطناعي وتطوير الشات البوت للشركات السعودية من شركة مُشرقة AI"
-                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Agents" data-gtm-item-id="service_ai_agents">اكتشف المزيد عن وكلاء الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Agents" data-gtm-item-id="service_ai_agents"
+                       data-track="وكلاء الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن وكلاء الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -810,7 +908,8 @@
                     </ul>
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="tools.html" class="service-link" aria-label="اكتشف المزيد عن أدوات وتطبيقات الذكاء الاصطناعي المبتكرة للشركات السعودية من شركة مُشرقة AI الرائدة"
-                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Tools" data-gtm-item-id="service_ai_tools">اكتشف المزيد عن أدوات الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Tools" data-gtm-item-id="service_ai_tools"
+                       data-track="أدوات الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن أدوات الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -837,7 +936,8 @@
                     </ul>
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="blog" class="service-link" aria-label="اكتشف المزيد في المكتبة الرقمية للذكاء الاصطناعي والدورات التدريبية المتخصصة في السعودية من شركة مُشرقة AI"
-                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Digital Library" data-gtm-item-id="service_blog">اكتشف المزيد في مكتبتنا الرقمية للذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Digital Library" data-gtm-item-id="service_blog"
+                       data-track="المكتبة الرقمية" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد في مكتبتنا الرقمية للذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
             </div>
@@ -914,10 +1014,21 @@
                 </div>
             </div>
 
-            <div class="cta-container">
-                <a href="about-us.html" class="cta-button" aria-label="تعرف على المزيد عن شركة مُشرقة AI السعودية الرائدة في مجال الذكاء الاصطناعي وتطبيقاته">تعرف على شركة مُشرقة AI السعودية أكثر</a>
-                <a href="https://brightai.site/contact.html" class="cta-button cta-contact" aria-label="تواصل الآن مع فريق مُشرقة AI المتخصص في تقديم حلول الذكاء الاصطناعي المبتكرة في السعودية">تواصل مع فريق مُشرقة AI في السعودية</a>
-                <a href="https://brightai.site/Docfile/About.Bright.AI.html" class="cta-button cta-docs" aria-label="اكتشف المزيد عن خدمات الذكاء الاصطناعي وحلول الأتمتة المتقدمة التي تقدمها مُشرقة AI للشركات السعودية الطموحة">اعرف المزيد عن خدماتنا للشركات السعودية</a>
+            <div class="cta-container cta-group">
+                <!-- Secondary CTA (Requirements 22.3) -->
+                <a href="about-us.html" class="cta-secondary" aria-label="تعرف على المزيد عن شركة مُشرقة AI السعودية الرائدة في مجال الذكاء الاصطناعي وتطبيقاته">
+                    <span>تعرف علينا أكثر</span>
+                </a>
+                <!-- Primary CTA (Requirements 22.1, 22.2) -->
+                <a href="https://brightai.site/contact.html" class="cta-primary" aria-label="تواصل الآن مع فريق مُشرقة AI المتخصص في تقديم حلول الذكاء الاصطناعي المبتكرة في السعودية">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <span>تواصل معنا</span>
+                </a>
+                <!-- Trust CTA with security icon (Requirements 22.5) -->
+                <a href="https://brightai.site/Docfile/About.Bright.AI.html" class="cta-trust" aria-label="اكتشف المزيد عن خدمات الذكاء الاصطناعي وحلول الأتمتة المتقدمة التي تقدمها مُشرقة AI للشركات السعودية الطموحة">
+                    <i class="fas fa-shield-alt cta-icon-shield" aria-hidden="true"></i>
+                    <span>خدماتنا الموثوقة</span>
+                </a>
             </div>
         </section>
 
@@ -1516,8 +1627,12 @@
             </div>
             <div style="text-align: center; margin-top: 2rem;">
                 <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
-                <a href="#contact" class="cta-button cta-button-accent" aria-label="ابدأ رحلة التحول الرقمي الآن في السعودية مع شركة مُشرقة AI واستفد من حلول الذكاء الاصطناعي المتطورة والمخصصة"
-                   data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Start Digital Transformation" data-gtm-item-id="CTA_TRANSFORMATION_CONTACT">الحق بركب التحول الرقمي في السعودية الآن وابدأ مع مُشرقة AI!</a>
+                <!-- Urgency CTA for transformation (Requirements 22.1, 22.4) -->
+                <a href="#contact" class="cta-urgency cta-lg" aria-label="ابدأ رحلة التحول الرقمي الآن في السعودية مع شركة مُشرقة AI واستفد من حلول الذكاء الاصطناعي المتطورة والمخصصة"
+                   data-gtm-event="select_content" data-gtm-content-type="CTA" data-gtm-content-name="Start Digital Transformation" data-gtm-item-id="CTA_TRANSFORMATION_CONTACT">
+                    <i class="fas fa-rocket" aria-hidden="true"></i>
+                    <span>ابدأ الآن</span>
+                </a>
                 <!-- End GTM/Analytics Expert Fix -->
             </div>
         </section>
@@ -1914,6 +2029,436 @@
             </div>
         </section>
 
+        <!-- قسم عملاؤنا الموثوقون - Client Logos Section (Requirements 16.1, 16.2, 16.3, 16.4) -->
+        <section id="client-logos" class="client-logos-section" aria-labelledby="client-logos-title">
+            <div class="client-logos-container">
+                <div class="client-logos-header">
+                    <span class="section-mini-title">شركاء النجاح في رحلة التحول الرقمي</span>
+                    <h2 class="section-title" id="client-logos-title">عملاؤنا الموثوقون</h2>
+                    <p class="section-description">
+                        نفخر بثقة العديد من الشركات والمؤسسات السعودية الرائدة في حلول الذكاء الاصطناعي المبتكرة من مُشرقة AI
+                    </p>
+                </div>
+                
+                <div class="client-logos-grid" role="list" aria-label="قائمة عملاء شركة مُشرقة AI">
+                    <!-- Client Logo 1 - Healthcare Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ص</div>
+                        </div>
+                        <span class="client-logo-name">مجموعة صحية سعودية</span>
+                        <span class="client-logo-industry">القطاع الصحي</span>
+                    </article>
+                    
+                    <!-- Client Logo 2 - Banking Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ب</div>
+                        </div>
+                        <span class="client-logo-name">بنك سعودي رائد</span>
+                        <span class="client-logo-industry">القطاع المالي</span>
+                    </article>
+                    
+                    <!-- Client Logo 3 - Telecom Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ت</div>
+                        </div>
+                        <span class="client-logo-name">شركة اتصالات كبرى</span>
+                        <span class="client-logo-industry">قطاع الاتصالات</span>
+                    </article>
+                    
+                    <!-- Client Logo 4 - Retail Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ت</div>
+                        </div>
+                        <span class="client-logo-name">سلسلة تجزئة سعودية</span>
+                        <span class="client-logo-industry">قطاع التجزئة</span>
+                    </article>
+                    
+                    <!-- Client Logo 5 - Government Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ح</div>
+                        </div>
+                        <span class="client-logo-name">جهة حكومية سعودية</span>
+                        <span class="client-logo-industry">القطاع الحكومي</span>
+                    </article>
+                    
+                    <!-- Client Logo 6 - Education Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ج</div>
+                        </div>
+                        <span class="client-logo-name">جامعة سعودية مرموقة</span>
+                        <span class="client-logo-industry">قطاع التعليم</span>
+                    </article>
+                    
+                    <!-- Client Logo 7 - Energy Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ط</div>
+                        </div>
+                        <span class="client-logo-name">شركة طاقة سعودية</span>
+                        <span class="client-logo-industry">قطاع الطاقة</span>
+                    </article>
+                    
+                    <!-- Client Logo 8 - Manufacturing Sector -->
+                    <article class="client-logo-card animate-trigger" role="listitem">
+                        <span class="client-logo-example-badge">مثال</span>
+                        <div class="client-logo-image">
+                            <div class="client-logo-placeholder" aria-hidden="true">ص</div>
+                        </div>
+                        <span class="client-logo-name">مصنع سعودي متقدم</span>
+                        <span class="client-logo-industry">القطاع الصناعي</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم آراء العملاء - Testimonials Section (Requirements 17.1, 17.2, 17.3, 17.4, 17.5) -->
+        <section id="testimonials" class="testimonials-section" aria-labelledby="testimonials-title">
+            <div class="testimonials-container">
+                <div class="testimonials-header">
+                    <span class="section-mini-title">آراء عملائنا الكرام</span>
+                    <h2 class="section-title" id="testimonials-title">ماذا يقول عملاؤنا عن خدماتنا</h2>
+                    <p class="section-description">
+                        نفخر بثقة عملائنا في حلول الذكاء الاصطناعي المبتكرة من مُشرقة AI
+                    </p>
+                </div>
+                
+                <!-- Testimonials Carousel -->
+                <div class="testimonials-carousel" role="region" aria-label="آراء العملاء" aria-roledescription="carousel">
+                    <div class="testimonials-track" id="testimonials-track">
+                        <!-- Testimonial 1 -->
+                        <article class="testimonial-card glass-card animate-trigger" role="group" aria-roledescription="slide" aria-label="رأي العميل 1 من 5">
+                            <span class="testimonial-example-badge">مثال</span>
+                            <div class="testimonial-quote-icon" aria-hidden="true">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <blockquote class="testimonial-quote">
+                                <p>لقد كانت تجربتنا مع مُشرقة AI استثنائية. ساعدتنا حلول الذكاء الاصطناعي في تحسين كفاءة العمليات بنسبة 40% وتقليل التكاليف التشغيلية بشكل ملحوظ.</p>
+                            </blockquote>
+                            <div class="testimonial-rating" aria-label="تقييم 5 من 5 نجوم">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <footer class="testimonial-author">
+                                <div class="testimonial-avatar" aria-hidden="true">م</div>
+                                <div class="testimonial-info">
+                                    <cite class="testimonial-name">محمد بن عبدالله</cite>
+                                    <span class="testimonial-position">مدير تقنية المعلومات</span>
+                                    <span class="testimonial-company">شركة تقنية سعودية - الرياض</span>
+                                </div>
+                            </footer>
+                        </article>
+                        
+                        <!-- Testimonial 2 -->
+                        <article class="testimonial-card glass-card animate-trigger" role="group" aria-roledescription="slide" aria-label="رأي العميل 2 من 5">
+                            <span class="testimonial-example-badge">مثال</span>
+                            <div class="testimonial-quote-icon" aria-hidden="true">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <blockquote class="testimonial-quote">
+                                <p>روبوت المحادثة الذكي من مُشرقة AI غيّر طريقة تعاملنا مع العملاء. أصبحنا نستجيب للاستفسارات على مدار الساعة مع تحسن ملحوظ في رضا العملاء.</p>
+                            </blockquote>
+                            <div class="testimonial-rating" aria-label="تقييم 5 من 5 نجوم">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <footer class="testimonial-author">
+                                <div class="testimonial-avatar" aria-hidden="true">س</div>
+                                <div class="testimonial-info">
+                                    <cite class="testimonial-name">سارة الأحمد</cite>
+                                    <span class="testimonial-position">مديرة خدمة العملاء</span>
+                                    <span class="testimonial-company">متجر إلكتروني رائد - جدة</span>
+                                </div>
+                            </footer>
+                        </article>
+                        
+                        <!-- Testimonial 3 -->
+                        <article class="testimonial-card glass-card animate-trigger" role="group" aria-roledescription="slide" aria-label="رأي العميل 3 من 5">
+                            <span class="testimonial-example-badge">مثال</span>
+                            <div class="testimonial-quote-icon" aria-hidden="true">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <blockquote class="testimonial-quote">
+                                <p>تحليل البيانات الذكي من مُشرقة AI ساعدنا في اتخاذ قرارات استراتيجية مبنية على بيانات دقيقة. زادت مبيعاتنا بنسبة 35% خلال ستة أشهر فقط.</p>
+                            </blockquote>
+                            <div class="testimonial-rating" aria-label="تقييم 5 من 5 نجوم">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <footer class="testimonial-author">
+                                <div class="testimonial-avatar" aria-hidden="true">ع</div>
+                                <div class="testimonial-info">
+                                    <cite class="testimonial-name">عبدالرحمن المالكي</cite>
+                                    <span class="testimonial-position">المدير التنفيذي</span>
+                                    <span class="testimonial-company">مجموعة تجارية - الدمام</span>
+                                </div>
+                            </footer>
+                        </article>
+                        
+                        <!-- Testimonial 4 -->
+                        <article class="testimonial-card glass-card animate-trigger" role="group" aria-roledescription="slide" aria-label="رأي العميل 4 من 5">
+                            <span class="testimonial-example-badge">مثال</span>
+                            <div class="testimonial-quote-icon" aria-hidden="true">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <blockquote class="testimonial-quote">
+                                <p>أتمتة العمليات باستخدام حلول مُشرقة AI وفرت علينا ساعات عمل طويلة. فريقنا الآن يركز على المهام الإبداعية بدلاً من المهام الروتينية المتكررة.</p>
+                            </blockquote>
+                            <div class="testimonial-rating" aria-label="تقييم 5 من 5 نجوم">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <footer class="testimonial-author">
+                                <div class="testimonial-avatar" aria-hidden="true">ن</div>
+                                <div class="testimonial-info">
+                                    <cite class="testimonial-name">نورة القحطاني</cite>
+                                    <span class="testimonial-position">مديرة العمليات</span>
+                                    <span class="testimonial-company">شركة خدمات مالية - الرياض</span>
+                                </div>
+                            </footer>
+                        </article>
+                        
+                        <!-- Testimonial 5 -->
+                        <article class="testimonial-card glass-card animate-trigger" role="group" aria-roledescription="slide" aria-label="رأي العميل 5 من 5">
+                            <span class="testimonial-example-badge">مثال</span>
+                            <div class="testimonial-quote-icon" aria-hidden="true">
+                                <i class="fas fa-quote-right"></i>
+                            </div>
+                            <blockquote class="testimonial-quote">
+                                <p>الدعم الفني من فريق مُشرقة AI متميز جداً. يستجيبون بسرعة ويقدمون حلولاً مبتكرة لكل تحدٍ نواجهه. شراكة حقيقية في رحلة التحول الرقمي.</p>
+                            </blockquote>
+                            <div class="testimonial-rating" aria-label="تقييم 5 من 5 نجوم">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                            </div>
+                            <footer class="testimonial-author">
+                                <div class="testimonial-avatar" aria-hidden="true">خ</div>
+                                <div class="testimonial-info">
+                                    <cite class="testimonial-name">خالد العتيبي</cite>
+                                    <span class="testimonial-position">مدير المشاريع</span>
+                                    <span class="testimonial-company">مؤسسة حكومية - الرياض</span>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    
+                    <!-- Carousel Navigation -->
+                    <div class="testimonials-nav" aria-label="التنقل بين آراء العملاء">
+                        <button class="testimonials-nav-btn testimonials-prev" aria-label="الرأي السابق" type="button">
+                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                        </button>
+                        <div class="testimonials-dots" role="tablist" aria-label="اختيار رأي العميل">
+                            <button class="testimonials-dot active" role="tab" aria-selected="true" aria-label="رأي العميل 1" data-index="0" type="button"></button>
+                            <button class="testimonials-dot" role="tab" aria-selected="false" aria-label="رأي العميل 2" data-index="1" type="button"></button>
+                            <button class="testimonials-dot" role="tab" aria-selected="false" aria-label="رأي العميل 3" data-index="2" type="button"></button>
+                            <button class="testimonials-dot" role="tab" aria-selected="false" aria-label="رأي العميل 4" data-index="3" type="button"></button>
+                            <button class="testimonials-dot" role="tab" aria-selected="false" aria-label="رأي العميل 5" data-index="4" type="button"></button>
+                        </div>
+                        <button class="testimonials-nav-btn testimonials-next" aria-label="الرأي التالي" type="button">
+                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الأسعار - Pricing Section (Requirements 19.1, 19.2, 19.3, 19.4, 19.5, 19.6) -->
+        <section id="pricing" class="pricing-section" aria-labelledby="pricing-title">
+            <div class="pricing-container">
+                <div class="pricing-header">
+                    <span class="section-mini-title">باقات الأسعار</span>
+                    <h2 class="section-title" id="pricing-title">اختر الباقة المناسبة لاحتياجات شركتك</h2>
+                    <p class="section-description">
+                        نقدم باقات متنوعة تناسب جميع أحجام الشركات والمؤسسات في المملكة العربية السعودية
+                    </p>
+                </div>
+                
+                <!-- Pricing Grid -->
+                <div class="pricing-grid">
+                    <!-- Basic Tier -->
+                    <article class="pricing-card glass-card animate-trigger" aria-labelledby="pricing-basic-title">
+                        <h3 class="pricing-tier-name" id="pricing-basic-title">الباقة الأساسية</h3>
+                        <p class="pricing-tier-description">مثالية للشركات الناشئة والصغيرة التي تبدأ رحلة التحول الرقمي</p>
+                        
+                        <div class="pricing-amount">
+                            <span class="pricing-price">٥٠,٠٠٠</span>
+                            <span class="pricing-currency">ريال سعودي</span>
+                            <span class="pricing-period">سنوياً</span>
+                        </div>
+                        
+                        <ul class="pricing-features">
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>روبوت محادثة ذكي واحد</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تحليل بيانات أساسي</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>دعم فني عبر البريد الإلكتروني</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تقارير شهرية</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تدريب أساسي للفريق</span>
+                            </li>
+                            <li class="not-included">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                                <span>أتمتة العمليات المتقدمة</span>
+                            </li>
+                            <li class="not-included">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                                <span>تكامل مع أنظمة ERP</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="consultation.html" class="cta-primary cta-full" data-track="اختيار الباقة الأساسية" data-track-category="Pricing CTA" data-track-location="pricing">
+                            <span>ابدأ الآن</span>
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        </a>
+                    </article>
+                    
+                    <!-- Professional Tier (Popular) -->
+                    <article class="pricing-card glass-card popular animate-trigger" aria-labelledby="pricing-professional-title">
+                        <span class="pricing-badge">الأكثر طلباً</span>
+                        <h3 class="pricing-tier-name" id="pricing-professional-title">الباقة الاحترافية</h3>
+                        <p class="pricing-tier-description">الخيار الأمثل للشركات المتوسطة والكبيرة التي تسعى للتميز</p>
+                        
+                        <div class="pricing-amount">
+                            <span class="pricing-price">١٥٠,٠٠٠</span>
+                            <span class="pricing-currency">ريال سعودي</span>
+                            <span class="pricing-period">سنوياً</span>
+                        </div>
+                        
+                        <ul class="pricing-features">
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>حتى 5 روبوتات محادثة ذكية</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تحليل بيانات متقدم مع AI</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>دعم فني على مدار الساعة</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تقارير أسبوعية مفصلة</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تدريب شامل للفريق</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>أتمتة العمليات المتقدمة</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تكامل مع أنظمة ERP</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="consultation.html" class="cta-urgency cta-full" data-track="اختيار الباقة الاحترافية" data-track-category="Pricing CTA" data-track-location="pricing">
+                            <span>ابدأ الآن</span>
+                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        </a>
+                    </article>
+                    
+                    <!-- Custom Tier -->
+                    <article class="pricing-card glass-card animate-trigger" aria-labelledby="pricing-custom-title">
+                        <h3 class="pricing-tier-name" id="pricing-custom-title">باقة مخصصة</h3>
+                        <p class="pricing-tier-description">حلول مصممة خصيصاً لتلبية احتياجات المؤسسات الكبرى والجهات الحكومية</p>
+                        
+                        <div class="pricing-amount">
+                            <span class="pricing-custom-text">تواصل معنا</span>
+                            <span class="pricing-currency">للحصول على عرض سعر مخصص</span>
+                        </div>
+                        
+                        <ul class="pricing-features">
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>عدد غير محدود من روبوتات المحادثة</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>حلول ذكاء اصطناعي مخصصة</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>مدير حساب مخصص</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تقارير مخصصة حسب الطلب</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تدريب متقدم وورش عمل</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>تكامل كامل مع جميع الأنظمة</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <span>اتفاقية مستوى خدمة SLA مخصصة</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="https://wa.me/966538229013" class="cta-trust cta-full" data-track="طلب باقة مخصصة" data-track-category="Pricing CTA" data-track-location="pricing">
+                            <i class="fas fa-shield-alt cta-icon-shield" aria-hidden="true"></i>
+                            <span>تواصل معنا</span>
+                        </a>
+                    </article>
+                </div>
+                
+                <!-- VAT Note -->
+                <div class="pricing-footer">
+                    <div class="pricing-vat-note">
+                        <p>
+                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            <span>جميع الأسعار شاملة ضريبة القيمة المضافة</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- قسم التقنيات المستخدمة -->
         <section id="technologies" class="technologies section-container" aria-labelledby="nextgen-tech-saudi-title">
             <div class="section-header">
@@ -1950,7 +2495,7 @@
         <div class="footer-container">
             <div class="footer-logo-container">
                 <a href="#home" class="footer-logo" aria-label="الصفحة الرئيسية لشركة مُشرقة AI السعودية - رائدة الذكاء الاصطناعي وحلول الأتمتة المبتكرة في المملكة العربية السعودية">
-                    <img src="https://www2.0zz0.com/2025/06/23/22/317775783.png" alt="شعار شركة مُشرقة AI السعودية - رائدة حلول الذكاء الاصطناعي المتقدمة في المملكة" width="200" height="55" style="height: 50px; width: auto;">
+                    <img src="https://www2.0zz0.com/2025/06/23/22/317775783.png" alt="شعار شركة مُشرقة AI السعودية - رائدة حلول الذكاء الاصطناعي المتقدمة في المملكة" width="200" height="55" style="height: 50px; width: auto;" loading="lazy">
                 </a>
                 <p class="footer-description">
                     مُشرقة AI (Bright AI): <a href="https://brightai.site/Docfile/About.Bright.AI.html">شركة سعودية رائدة ومبتكرة</a>، مقرها الرئيسي في مدينة الرياض (<a href="https://brightai.site/Docfile/About.Bright.AI.html">AI company Riyadh</a>)، متخصصة في مجال الذكاء الاصطناعي، حلول التعلم العميق، تطوير تطبيقات الذكاء الاصطناعي المخصصة، و<a href="https://brightai.site/smart-automation.html">الأتمتة الذكية في المملكة العربية السعودية</a>. نقدم <a href="https://brightai.site/our-products.html">خدمات الذكاء الاصطناعي المتكاملة</a> و<a href="https://brightai.site/consultation.html">الاستشارات التقنية</a> لدعم مسيرة <a href="https://brightai.site/consultation.html">التحول الرقمي الشامل</a> للمؤسسات والشركات في مختلف القطاعات بالرياض، جدة (<a href="https://brightai.site/our-products.html">خدمات الذكاء الاصطناعي جدة</a>)، الدمام (حلول الذكاء الاصطناعي المنطقة الشرقية)، وكافة مدن المملكة، مساهمين بفعالية في تحقيق أهداف رؤية 2030 وتطوير مستقبل الذكاء الاصطناعي الواعد في السعودية.
@@ -2042,7 +2587,56 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
     <script src="script.js" defer></script>
-    <script src="background.js"></script>
+    <script src="theme-controller.js" defer></script>
+    <script src="background.js" defer></script>
+    <!-- Particle System for AI-inspired animated background -->
+    <script src="particle-system.js" defer></script>
+    <!-- Scroll Animations - fadeInUp and counter animations (Requirements 6.1-6.4, 13.1-13.2) -->
+    <script src="scroll-animations.js" defer></script>
+    
+    <!-- AI Chatbot Widget - Lazy loaded for performance (Requirement 25.11) -->
+    <link rel="stylesheet" href="chatbot.css">
+    <script src="chatbot.js" defer></script>
+    
+    <!-- Smart Search - AI-powered search (Requirements 5.1-5.5) -->
+    <link rel="stylesheet" href="smart-search.css">
+    <script src="smart-search.js" defer></script>
+    
+    <!-- Magnetic Cursor Effect - Desktop only (Requirements 11.4, 14.4) -->
+    <script src="magnetic-cursor.js" defer></script>
+    
+    <!-- Micro-Interactions - Ripple effects, pulse glow, parallax (Requirements 13.3, 14.1, 14.2) -->
+    <script src="micro-interactions.js" defer></script>
+    
+    <!-- Analytics Tracker - Scroll depth, time on page, CTA clicks (Requirements 12.1, 12.2, 12.3) -->
+    <script src="analytics-tracker.js" defer></script>
+    
+    <!-- Advanced Analytics - Heatmaps, form tracking, video engagement (Requirements 21.1-21.5) -->
+    <script src="advanced-analytics.js" defer></script>
+    
+    <!-- Urgency and Scarcity Elements - Countdown, scarcity, notifications (Requirements 20.1-20.5) -->
+    <link rel="stylesheet" href="urgency-elements.css">
+    <script src="urgency-elements.js" defer></script>
+    
+    <!-- Saudi-Optimized CTA Buttons - Arabic CTAs with gradients (Requirements 22.1-22.5) -->
+    <link rel="stylesheet" href="cta-buttons.css">
+    
+    <!-- BrightAI Main Application - Integrates all components (Task 18.1) -->
+    <script src="brightai-app.js" defer></script>
+
+    <!-- Floating WhatsApp Button (Requirements 18.1, 18.2) -->
+    <div class="floating-whatsapp" id="floating-whatsapp">
+        <a href="https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" 
+           class="floating-whatsapp-btn"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="تواصل معنا عبر واتساب"
+           data-track="Floating WhatsApp" data-track-category="Contact" data-track-location="floating-button">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i>
+            <span class="floating-whatsapp-tooltip">تواصل معنا عبر واتساب</span>
+        </a>
+        <span class="floating-whatsapp-label">واتساب</span>
+    </div>
 
     <!-- دعم فني عائم -->
     <div class="support-fab" title="الدعم الفني لخدمات الذكاء الاصطناعي في السعودية" aria-label="فتح نافذة الدعم الفني" onclick="openSupportPopup()" role="button" tabindex="0">

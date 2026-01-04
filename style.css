@@ -83,8 +83,12 @@
 
     /* Accessibility */
     --focus-outline-color: var(--primary-color);
+    --focus-outline-width: 3px;
     --focus-outline-offset: 2px;
     --focus-box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
+    
+    /* Touch Target Sizes (WCAG 2.1 AA) */
+    --touch-target-min: 44px;
 }
 
 /* ==========================================================================
@@ -242,15 +246,214 @@ img, svg, video, canvas {
    3. Accessibility & Utility Classes
    ========================================================================== */
 
+/* ==========================================================================
+   3.1 Focus Indicators (Requirements 10.2, 10.3)
+   - Visible 3px outline for keyboard navigation
+   - High contrast focus states
+   ========================================================================== */
+
 *:focus-visible {
-    outline: var(--focus-outline-offset) solid var(--focus-outline-color);
-    outline-offset: var(--focus-outline-offset);
+    outline: var(--focus-outline-width, 3px) solid var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset, 2px);
     box-shadow: var(--focus-box-shadow);
     border-radius: var(--border-radius-sm);
 }
 
 *:focus:not(:focus-visible) {
     outline: none;
+}
+
+/* Enhanced focus for interactive elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[tabindex]:focus-visible {
+    outline: var(--focus-outline-width, 3px) solid var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset, 2px);
+    box-shadow: var(--focus-box-shadow);
+    z-index: 1;
+    position: relative;
+}
+
+/* High contrast focus for dark backgrounds */
+.hero a:focus-visible,
+.hero button:focus-visible,
+.navbar a:focus-visible,
+.navbar button:focus-visible,
+.footer a:focus-visible,
+.footer button:focus-visible {
+    outline-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(100, 255, 218, 0.4);
+}
+
+/* Light mode focus adjustments */
+[data-theme="light"] *:focus-visible {
+    --focus-outline-color: #0097A7;
+    --focus-box-shadow: 0 0 0 3px rgba(0, 151, 167, 0.3);
+}
+
+/* ==========================================================================
+   3.2 Keyboard Navigation Support (Requirements 10.2)
+   - Ensure all interactive elements are focusable
+   - Skip links for keyboard users
+   ========================================================================== */
+
+/* Skip to main content link */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius-md);
+    font-weight: 700;
+    z-index: 10000;
+    text-decoration: none;
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+/* Ensure clickable elements have proper cursor */
+[role="button"],
+[role="link"],
+[role="menuitem"],
+[tabindex="0"] {
+    cursor: pointer;
+}
+
+/* Focus trap indicator for modals/dialogs */
+[aria-modal="true"]:focus-visible {
+    outline: none;
+}
+
+[aria-modal="true"] *:focus-visible {
+    outline: var(--focus-outline-width, 3px) solid var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset, 2px);
+}
+
+/* ==========================================================================
+   3.3 Touch Target Sizes (Requirements 10.4)
+   - Minimum 44x44px touch targets on mobile
+   - Adequate spacing between interactive elements
+   ========================================================================== */
+
+/* Base touch target styles for mobile */
+@media (max-width: 768px) {
+    /* Buttons and links minimum touch target */
+    button,
+    .cta-button,
+    .btn,
+    [role="button"],
+    a.nav-link,
+    .nav-links a,
+    .feature-link,
+    .service-link,
+    .social-link,
+    .footer-link {
+        min-height: var(--touch-target-min, 44px);
+        min-width: var(--touch-target-min, 44px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Form inputs touch targets */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="search"],
+    input[type="url"],
+    input[type="number"],
+    select,
+    textarea {
+        min-height: var(--touch-target-min, 44px);
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Checkbox and radio touch targets */
+    input[type="checkbox"],
+    input[type="radio"] {
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    /* Checkbox/radio labels need adequate touch area */
+    input[type="checkbox"] + label,
+    input[type="radio"] + label,
+    label:has(input[type="checkbox"]),
+    label:has(input[type="radio"]) {
+        min-height: var(--touch-target-min, 44px);
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem;
+    }
+    
+    /* Icon buttons */
+    .hamburger,
+    .theme-toggle-btn,
+    .close-btn,
+    .modal-close,
+    [aria-label]:not(nav):not(section):not(main):not(header):not(footer) {
+        min-width: var(--touch-target-min, 44px);
+        min-height: var(--touch-target-min, 44px);
+    }
+    
+    /* Navigation links spacing */
+    .nav-links li {
+        margin-block: 0.25rem;
+    }
+    
+    .nav-links a {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Card action links */
+    .glass-card a,
+    .service-card a,
+    .case-card a {
+        min-height: var(--touch-target-min, 44px);
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Social media icons */
+    .social-icons a,
+    .social-link {
+        min-width: var(--touch-target-min, 44px);
+        min-height: var(--touch-target-min, 44px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Ensure adequate spacing between touch targets */
+@media (max-width: 768px) {
+    .cta-button + .cta-button,
+    .btn + .btn,
+    button + button {
+        margin-inline-start: 0.5rem;
+    }
+    
+    /* Stack buttons vertically on very small screens */
+    @media (max-width: 480px) {
+        .hero .cta-button,
+        .cta-container .cta-button {
+            display: block;
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+    }
 }
 
 .sr-only {
@@ -2376,5 +2579,2883 @@ textarea.form-control {
     
     .breadcrumb-list {
         gap: 0.25rem;
+    }
+}
+
+/* ==========================================================================
+   Theme Toggle Button
+   ========================================================================== */
+
+.theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--glass-border);
+    border-radius: 50%;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    margin-inline-start: 1rem;
+    flex-shrink: 0;
+    z-index: 1001;
+}
+
+.theme-toggle-btn:hover,
+.theme-toggle-btn:focus-visible {
+    background: var(--glass-bg-hover);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+}
+
+.theme-toggle-btn:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.theme-toggle-btn i {
+    transition: transform var(--transition-base);
+}
+
+.theme-toggle-btn:hover i {
+    transform: rotate(15deg);
+}
+
+/* Light mode specific styling */
+[data-theme="light"] .theme-toggle-btn {
+    background: rgba(0, 151, 167, 0.1);
+    border-color: rgba(0, 151, 167, 0.3);
+    color: var(--primary-color);
+}
+
+[data-theme="light"] .theme-toggle-btn:hover,
+[data-theme="light"] .theme-toggle-btn:focus-visible {
+    background: rgba(0, 151, 167, 0.2);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 151, 167, 0.3);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .theme-toggle-btn {
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        z-index: 1000;
+        box-shadow: var(--glass-shadow);
+    }
+    
+    [dir="rtl"] .theme-toggle-btn {
+        left: auto;
+        right: 20px;
+    }
+}
+
+/* Desktop positioning in navbar */
+@media (min-width: 769px) {
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Scroll Animations - fadeInUp and animate-trigger
+   Requirements: 6.1, 6.2, 6.3, 6.4, 13.1, 13.2
+   ========================================================================== */
+
+/* Base state for animated elements */
+.animate-trigger {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.645, 0.045, 0.355, 1),
+                transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+    will-change: opacity, transform;
+}
+
+/* Animated state - applied when element enters viewport */
+.animate-trigger.animate-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* fadeInUp keyframe animation for CSS-only fallback */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Alternative class for direct animation application */
+.fadeInUp {
+    animation: fadeInUp 0.6s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+}
+
+/* Staggered animation delays for child elements */
+.animate-trigger:nth-child(1) { transition-delay: 0ms; }
+.animate-trigger:nth-child(2) { transition-delay: 100ms; }
+.animate-trigger:nth-child(3) { transition-delay: 200ms; }
+.animate-trigger:nth-child(4) { transition-delay: 300ms; }
+.animate-trigger:nth-child(5) { transition-delay: 400ms; }
+.animate-trigger:nth-child(6) { transition-delay: 500ms; }
+
+/* Counter animation styles */
+[data-count] {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+}
+
+/* Stat counter specific styling */
+.stat-counter {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-top: 0.5rem;
+}
+
+/* Stats section container */
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 3rem 0;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--glass-shadow-hover);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .animate-trigger {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    
+    .animate-trigger.animate-visible {
+        animation: none;
+    }
+    
+    .fadeInUp {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    
+    [data-count] {
+        transition: none;
+    }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .stat-counter {
+        font-size: 2rem;
+    }
+    
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .stat-item {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Hero Stats Section - specific styling */
+.hero-stats {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-xl);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-stats .stat-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-stats .stat-counter {
+    font-size: 2.8rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@media (max-width: 768px) {
+    .hero-stats {
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .hero-stats .stat-counter {
+        font-size: 2rem;
+    }
+}
+
+/* ==========================================================================
+   Performance Optimization: Content Visibility
+   ========================================================================== */
+
+/*
+ * content-visibility: auto allows the browser to skip rendering of off-screen
+ * content, significantly improving initial page load performance.
+ * contain-intrinsic-size provides a placeholder size to prevent CLS.
+ */
+
+/* Heavy sections that benefit from content-visibility optimization */
+.services-grid,
+.case-studies-grid,
+.ai-grid,
+.about-content,
+.tech-grid,
+.demo-features-grid,
+.tourism-features-grid {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+}
+
+/* Section containers for below-fold content */
+.ai-section,
+.case-studies,
+.about-section,
+#ai-consulting,
+#case-studies-detailed {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+}
+
+/* Footer optimization */
+.footer,
+footer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+}
+
+/* Health section */
+.health-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+}
+
+
+/* ==========================================================================
+   Responsive Design Enhancements (Requirements 11.3, 11.4, 14.4)
+   ========================================================================== */
+
+/*
+ * Task 14.1: Single-column layout for mobile (< 768px)
+ * Ensures all grid containers switch to single column on mobile devices
+ * for optimal readability and touch interaction.
+ */
+
+@media (max-width: 768px) {
+    /* Universal single-column grid for all card containers */
+    .services-grid,
+    .tourism-features-grid,
+    .tech-grid,
+    .tech-details-grid,
+    .demo-features-grid,
+    .case-studies-grid,
+    .ai-grid,
+    .health-features-grid,
+    .about-features,
+    .features-grid,
+    .products-grid,
+    .pricing-grid,
+    .testimonials-grid,
+    .client-logos-grid,
+    .blog-grid,
+    .team-grid,
+    .partners-grid,
+    .benefits-grid,
+    .solutions-grid,
+    .tools-grid,
+    .resources-grid {
+        display: grid;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+    
+    /* About section content layout */
+    .about-content,
+    .vision-mission {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+    
+    /* Footer grid single column */
+    .footer-container,
+    .footer-content,
+    .footer-grid {
+        grid-template-columns: 1fr !important;
+        text-align: center;
+    }
+    
+    /* Form layouts */
+    .form-grid,
+    .contact-grid,
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Two-column layouts that should stack */
+    .two-column,
+    .split-layout,
+    .content-with-sidebar {
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
+    }
+    
+    /* Flex containers that should stack vertically */
+    .flex-row,
+    .horizontal-layout,
+    .inline-items {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    
+    /* Stats and metrics - single column */
+    .stats-container,
+    .metrics-container,
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Hero section adjustments */
+    .hero-content {
+        padding: 1rem;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Card adjustments for mobile */
+    .glass-card,
+    .service-card,
+    .feature-card,
+    .case-card,
+    .tech-card,
+    .demo-feature {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Section padding adjustments */
+    .section-container {
+        padding-block: 3rem;
+        padding-inline: 1rem;
+    }
+    
+    /* Container width adjustments */
+    .container {
+        width: 95%;
+        padding-inline: 0.75rem;
+    }
+}
+
+/* Extra small screens (< 480px) */
+@media (max-width: 480px) {
+    /* Even tighter spacing for very small screens */
+    .section-container {
+        padding-block: 2rem;
+        padding-inline: 0.75rem;
+    }
+    
+    .glass-card,
+    .service-card,
+    .feature-card {
+        padding: 1rem;
+    }
+    
+    /* Typography adjustments */
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-description {
+        font-size: 0.95rem;
+    }
+}
+
+/* ==========================================================================
+   Task 14.2: Conditional Cursor Effects (Requirements 11.4, 14.4)
+   - Magnetic cursor effect only on desktop (> 768px)
+   - Disabled on mobile/touch devices
+   ========================================================================== */
+
+/* Custom cursor container - hidden by default */
+.custom-cursor,
+.cursor-dot,
+.cursor-outline,
+.magnetic-cursor {
+    display: none;
+    pointer-events: none;
+}
+
+/* Enable custom cursor only on desktop with hover capability */
+@media (min-width: 769px) and (hover: hover) and (pointer: fine) {
+    /* Custom cursor elements */
+    .custom-cursor {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+        pointer-events: none;
+        mix-blend-mode: difference;
+    }
+    
+    .cursor-dot {
+        display: block;
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        background-color: var(--primary-color);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10001;
+        pointer-events: none;
+        transition: transform 0.1s ease-out, 
+                    width 0.2s ease-out, 
+                    height 0.2s ease-out,
+                    background-color 0.2s ease-out;
+    }
+    
+    .cursor-outline {
+        display: block;
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--primary-color);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10000;
+        pointer-events: none;
+        transition: transform 0.15s ease-out, 
+                    width 0.2s ease-out, 
+                    height 0.2s ease-out,
+                    border-color 0.2s ease-out,
+                    opacity 0.2s ease-out;
+        opacity: 0.5;
+    }
+    
+    /* Cursor hover states for interactive elements */
+    .cursor-hover .cursor-dot {
+        width: 12px;
+        height: 12px;
+        background-color: var(--white);
+    }
+    
+    .cursor-hover .cursor-outline {
+        width: 60px;
+        height: 60px;
+        border-color: var(--white);
+        opacity: 0.3;
+    }
+    
+    /* Magnetic effect on buttons and links */
+    .magnetic-target {
+        position: relative;
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    .magnetic-target:hover {
+        transform: translate(var(--magnetic-x, 0), var(--magnetic-y, 0));
+    }
+    
+    /* Hide default cursor when custom cursor is active */
+    body.custom-cursor-active {
+        cursor: none;
+    }
+    
+    body.custom-cursor-active a,
+    body.custom-cursor-active button,
+    body.custom-cursor-active [role="button"],
+    body.custom-cursor-active input,
+    body.custom-cursor-active select,
+    body.custom-cursor-active textarea,
+    body.custom-cursor-active .cta-button,
+    body.custom-cursor-active .glass-button,
+    body.custom-cursor-active .magnetic-target {
+        cursor: none;
+    }
+}
+
+/* Ensure cursor effects are completely disabled on mobile/touch devices */
+@media (max-width: 768px), (hover: none), (pointer: coarse) {
+    .custom-cursor,
+    .cursor-dot,
+    .cursor-outline,
+    .magnetic-cursor {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+    
+    /* Restore default cursor on mobile */
+    body,
+    body.custom-cursor-active,
+    body.custom-cursor-active * {
+        cursor: auto !important;
+    }
+    
+    a, button, [role="button"], .cta-button, .glass-button {
+        cursor: pointer !important;
+    }
+}
+
+/* Reduced motion preference - disable cursor animations */
+@media (prefers-reduced-motion: reduce) {
+    .cursor-dot,
+    .cursor-outline {
+        transition: none !important;
+    }
+    
+    .magnetic-target {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* ==========================================================================
+   Micro-Interactions: Ripple Effects, Pulse Glow, and Parallax
+   Requirements: 13.3, 14.1, 14.2
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Ripple Effect Styles (Requirements: 14.1)
+   - Creates Material Design-inspired ripple on button click/hover
+   -------------------------------------------------------------------------- */
+
+/* Ripple container setup */
+.ripple-container {
+    position: relative;
+    overflow: hidden;
+    /* Ensure ripple stays within button bounds */
+    isolation: isolate;
+}
+
+/* Base ripple element */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+    transform: scale(0);
+    animation: ripple-expand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Ripple expand animation */
+@keyframes ripple-expand {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* Hover ripple - more subtle effect */
+.ripple-hover {
+    background: radial-gradient(circle, rgba(100, 255, 218, 0.15) 0%, rgba(100, 255, 218, 0.05) 70%, transparent 100%);
+    animation: ripple-hover-expand 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes ripple-hover-expand {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Ripple fade out on mouse leave */
+.ripple-fade {
+    animation: ripple-fade-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes ripple-fade-out {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Primary button ripple - uses primary color */
+.cta-button-accent .ripple {
+    background: radial-gradient(circle, rgba(10, 25, 47, 0.3) 0%, rgba(10, 25, 47, 0.1) 70%, transparent 100%);
+}
+
+/* Glass button ripple - uses white with more transparency */
+.glass-button .ripple {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+}
+
+/* Light mode ripple adjustments */
+[data-theme="light"] .ripple {
+    background: radial-gradient(circle, rgba(0, 151, 167, 0.3) 0%, rgba(0, 151, 167, 0.1) 70%, transparent 100%);
+}
+
+[data-theme="light"] .cta-button-accent .ripple {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Pulse Glow Animation Styles (Requirements: 14.2)
+   - Creates subtle pulsing glow effect on interactive elements
+   -------------------------------------------------------------------------- */
+
+/* Base pulse glow effect */
+.pulse-glow {
+    position: relative;
+}
+
+.pulse-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: var(--primary-gradient);
+    opacity: 0;
+    z-index: -1;
+    filter: blur(8px);
+    transition: opacity var(--transition-base);
+}
+
+.pulse-glow:hover::before,
+.pulse-glow:focus-visible::before {
+    opacity: 0.3;
+    animation: pulse-glow-animation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Pulse glow keyframes */
+@keyframes pulse-glow-animation {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.02);
+    }
+}
+
+/* Strong pulse glow for floating buttons */
+.pulse-glow-strong {
+    position: relative;
+}
+
+.pulse-glow-strong::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    background: var(--primary-color);
+    opacity: 0;
+    z-index: -1;
+    filter: blur(12px);
+    animation: pulse-glow-strong-animation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-glow-strong-animation {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* Stat counter pulse effect */
+.stat-counter.pulse-glow::before {
+    inset: -4px -8px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(100, 255, 218, 0.5) 100%);
+}
+
+/* Service icon pulse effect */
+.service-icon.pulse-glow::before,
+.feature-icon.pulse-glow::before {
+    inset: -8px;
+    border-radius: 50%;
+}
+
+/* Glass card pulse effect */
+.glass-card.pulse-glow::before {
+    border-radius: var(--border-radius-lg);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+}
+
+/* Light mode pulse glow adjustments */
+[data-theme="light"] .pulse-glow::before {
+    background: var(--primary-gradient);
+}
+
+[data-theme="light"] .pulse-glow-strong::before {
+    background: var(--primary-color);
+}
+
+/* --------------------------------------------------------------------------
+   Parallax Scrolling Styles (Requirements: 13.3)
+   - Enables smooth parallax effect on hero section
+   -------------------------------------------------------------------------- */
+
+/* Hero section parallax setup */
+.hero {
+    /* Enable 3D transforms for parallax */
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+/* Hero content parallax layer */
+.hero-content[data-parallax="content"] {
+    will-change: transform, opacity;
+    transition: transform 0.1s linear, opacity 0.1s linear;
+    /* Ensure content stays above background */
+    z-index: 2;
+}
+
+/* Hero canvas/background parallax layer */
+.hero-canvas[data-parallax="background"],
+#particle-canvas[data-parallax="background"] {
+    will-change: transform;
+    transition: transform 0.1s linear;
+    /* Background layer */
+    z-index: 1;
+}
+
+/* Parallax elements with data attribute */
+[data-parallax] {
+    will-change: transform;
+}
+
+/* Smooth parallax transition */
+[data-parallax="slow"] {
+    transition: transform 0.15s ease-out;
+}
+
+[data-parallax="fast"] {
+    transition: transform 0.05s linear;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion Preferences
+   - Disable all micro-interactions for users who prefer reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    /* Disable ripple animations */
+    .ripple,
+    .ripple-hover {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+    
+    /* Disable pulse glow animations */
+    .pulse-glow::before,
+    .pulse-glow-strong::before {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+    
+    /* Disable parallax transforms */
+    .hero-content[data-parallax],
+    .hero-canvas[data-parallax],
+    #particle-canvas[data-parallax],
+    [data-parallax] {
+        transform: none !important;
+        transition: none !important;
+        will-change: auto !important;
+    }
+    
+    /* Ensure opacity stays at 1 */
+    .hero-content {
+        opacity: 1 !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Optimizations for Micro-Interactions
+   - Simplified effects for better mobile performance
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    /* Simpler ripple on mobile */
+    .ripple {
+        animation-duration: 0.4s;
+    }
+    
+    /* Disable hover ripple on touch devices */
+    .ripple-hover {
+        display: none;
+    }
+    
+    /* Reduce pulse glow intensity on mobile */
+    .pulse-glow::before {
+        filter: blur(4px);
+    }
+    
+    .pulse-glow-strong::before {
+        filter: blur(6px);
+    }
+    
+    /* Disable parallax on mobile for performance */
+    .hero-content[data-parallax],
+    .hero-canvas[data-parallax],
+    #particle-canvas[data-parallax] {
+        transform: none !important;
+        will-change: auto;
+    }
+    
+    .hero-content {
+        opacity: 1 !important;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none), (pointer: coarse) {
+    /* Disable hover-based effects on touch devices */
+    .ripple-hover {
+        display: none !important;
+    }
+    
+    .pulse-glow:hover::before {
+        animation: none;
+        opacity: 0;
+    }
+}
+
+
+/* ==========================================================================
+   Trust Bar Component (Requirements 15.1, 15.2, 15.3, 15.5)
+   - Glassmorphism-styled trust bar with certifications
+   - "شركة سعودية 100%" badge prominently displayed
+   - ISO certification badges (ISO 27001, ISO 9001)
+   - Positioned above the fold on homepage
+   ========================================================================== */
+
+.trust-bar {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 3;
+    animation: trustBarFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes trustBarFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trust-bar:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
+}
+
+/* Trust Badge Item */
+.trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-base);
+    white-space: nowrap;
+}
+
+.trust-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.trust-badge-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.trust-badge-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.trust-badge-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    line-height: 1.2;
+}
+
+.trust-badge-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-color);
+    line-height: 1.2;
+}
+
+/* Primary Saudi Badge - Prominent Styling */
+.trust-badge-primary {
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.15) 0%, rgba(100, 255, 218, 0.05) 100%);
+    border: 2px solid var(--primary-color);
+    padding: 0.75rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.trust-badge-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.trust-badge-primary .trust-badge-icon {
+    font-size: 1.75rem;
+    color: var(--primary-color);
+}
+
+.trust-badge-primary .trust-badge-title {
+    font-size: 1rem;
+    color: var(--primary-color);
+}
+
+.trust-badge-primary:hover {
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.25) 0%, rgba(100, 255, 218, 0.1) 100%);
+    box-shadow: 0 4px 20px rgba(100, 255, 218, 0.2);
+}
+
+/* ISO Certification Badge Styling */
+.trust-badge-iso {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.trust-badge-iso .trust-badge-icon {
+    color: #4facfe;
+}
+
+.trust-badge-iso:hover {
+    border-color: #4facfe;
+}
+
+/* Vision 2030 Badge Styling */
+.trust-badge-vision {
+    background: linear-gradient(135deg, rgba(0, 128, 0, 0.1) 0%, rgba(0, 128, 0, 0.02) 100%);
+    border-color: rgba(0, 128, 0, 0.3);
+}
+
+.trust-badge-vision .trust-badge-icon {
+    color: #00a651;
+}
+
+.trust-badge-vision:hover {
+    border-color: #00a651;
+    background: linear-gradient(135deg, rgba(0, 128, 0, 0.15) 0%, rgba(0, 128, 0, 0.05) 100%);
+}
+
+/* Light Mode Trust Bar Adjustments */
+[data-theme="light"] .trust-bar {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.2);
+}
+
+[data-theme="light"] .trust-badge {
+    background: rgba(0, 151, 167, 0.05);
+    border-color: rgba(0, 151, 167, 0.15);
+}
+
+[data-theme="light"] .trust-badge:hover {
+    background: rgba(0, 151, 167, 0.1);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .trust-badge-primary {
+    background: linear-gradient(135deg, rgba(0, 151, 167, 0.15) 0%, rgba(0, 151, 167, 0.05) 100%);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .trust-badge-primary .trust-badge-icon,
+[data-theme="light"] .trust-badge-primary .trust-badge-title {
+    color: var(--primary-color);
+}
+
+[data-theme="light"] .trust-badge-primary:hover {
+    background: linear-gradient(135deg, rgba(0, 151, 167, 0.25) 0%, rgba(0, 151, 167, 0.1) 100%);
+    box-shadow: 0 4px 20px rgba(0, 151, 167, 0.2);
+}
+
+/* Responsive Trust Bar */
+@media (max-width: 768px) {
+    .trust-bar {
+        padding: 1rem;
+        gap: 0.75rem;
+        flex-direction: column;
+    }
+    
+    .trust-badge {
+        width: 100%;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+    }
+    
+    .trust-badge-primary {
+        order: -1; /* Show Saudi badge first on mobile */
+    }
+    
+    .trust-badge-icon {
+        font-size: 1.25rem;
+    }
+    
+    .trust-badge-title {
+        font-size: 0.85rem;
+    }
+    
+    .trust-badge-subtitle {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .trust-bar {
+        padding: 0.75rem;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .trust-badge {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .trust-badge-text {
+        text-align: center;
+    }
+}
+
+/* Reduced Motion Preferences for Trust Bar */
+@media (prefers-reduced-motion: reduce) {
+    .trust-bar {
+        animation: none;
+    }
+    
+    .trust-badge:hover {
+        transform: none;
+    }
+}
+
+
+/* ==========================================================================
+   Client Logos Section (Requirements 16.1, 16.2, 16.3, 16.4)
+   - Responsive grid with glassmorphism cards
+   - Heading "عملاؤنا الموثوقون"
+   - Hover effects showing company names
+   ========================================================================== */
+
+.client-logos-section {
+    background: var(--hero-gradient);
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.client-logos-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(100, 255, 218, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.client-logos-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.client-logos-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.client-logos-header .section-mini-title {
+    color: var(--primary-color);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-weight: 500;
+}
+
+.client-logos-header .section-title {
+    color: var(--heading-color);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    margin-bottom: 1rem;
+}
+
+.client-logos-header .section-description {
+    color: var(--text-color);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Client Logos Grid */
+.client-logos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Client Logo Card - Glassmorphism Style */
+.client-logo-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.client-logo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.05) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    pointer-events: none;
+}
+
+.client-logo-card:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
+    transform: translateY(-5px) scale(1.02);
+}
+
+.client-logo-card:hover::before {
+    opacity: 1;
+}
+
+/* Logo Image/Icon */
+.client-logo-image {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    transition: transform var(--transition-base);
+}
+
+.client-logo-card:hover .client-logo-image {
+    transform: scale(1.1);
+}
+
+.client-logo-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(30%);
+    transition: filter var(--transition-base);
+}
+
+.client-logo-card:hover .client-logo-image img {
+    filter: grayscale(0%);
+}
+
+/* Placeholder Logo Icon */
+.client-logo-placeholder {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(100, 255, 218, 0.5) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    font-weight: 700;
+    transition: all var(--transition-base);
+}
+
+.client-logo-card:hover .client-logo-placeholder {
+    transform: scale(1.1);
+    box-shadow: 0 4px 20px rgba(100, 255, 218, 0.3);
+}
+
+/* Company Name - Hidden by default, shown on hover */
+.client-logo-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--heading-color);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-base);
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0;
+    right: 0;
+    padding: 0 0.5rem;
+}
+
+.client-logo-card:hover .client-logo-name {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Industry Tag */
+.client-logo-industry {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    background: rgba(100, 255, 218, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+    margin-top: 0.5rem;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all var(--transition-base);
+    transition-delay: 0.05s;
+}
+
+.client-logo-card:hover .client-logo-industry {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Example Badge for Placeholder Logos */
+.client-logo-example-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.65rem;
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--border-radius-sm);
+    opacity: 0.7;
+}
+
+/* Light Mode Adjustments */
+[data-theme="light"] .client-logos-section {
+    background: linear-gradient(135deg, rgba(0, 151, 167, 0.03) 0%, rgba(0, 188, 212, 0.03) 100%);
+}
+
+[data-theme="light"] .client-logo-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.15);
+}
+
+[data-theme="light"] .client-logo-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .client-logo-placeholder {
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(0, 151, 167, 0.5) 100%);
+    color: var(--white);
+}
+
+[data-theme="light"] .client-logo-industry {
+    background: rgba(0, 151, 167, 0.1);
+    color: var(--primary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .client-logos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .client-logo-card {
+        min-height: 120px;
+        padding: 1rem;
+    }
+    
+    .client-logo-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .client-logo-placeholder {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .client-logos-section {
+        padding: 3rem 0;
+    }
+    
+    .client-logos-container {
+        padding: 0 1rem;
+    }
+    
+    .client-logos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .client-logo-card {
+        min-height: 110px;
+        padding: 0.75rem;
+    }
+    
+    /* Show name by default on mobile since hover doesn't work well */
+    .client-logo-name {
+        opacity: 1;
+        transform: translateY(0);
+        position: relative;
+        bottom: auto;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .client-logo-industry {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .client-logos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .client-logo-card {
+        min-height: 100px;
+    }
+    
+    .client-logo-placeholder {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .client-logo-name {
+        font-size: 0.75rem;
+    }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    .client-logo-card {
+        transition: none;
+    }
+    
+    .client-logo-card:hover {
+        transform: none;
+    }
+    
+    .client-logo-name,
+    .client-logo-industry {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+
+/* ==========================================================================
+   Testimonials Section (Requirements 17.1, 17.2, 17.3, 17.4, 17.5)
+   - Arabic testimonials with quotes
+   - Client name, position, and company
+   - Glassmorphism card styling
+   - 5-star ratings
+   - Carousel/slider functionality
+   ========================================================================== */
+
+.testimonials-section {
+    background: var(--hero-gradient);
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(100, 255, 218, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.testimonials-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonials-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.testimonials-header .section-mini-title {
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.testimonials-header .section-title {
+    color: var(--heading-color);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    margin-bottom: 1rem;
+}
+
+.testimonials-header .section-description {
+    color: var(--text-color);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Testimonials Carousel */
+.testimonials-carousel {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 0;
+}
+
+.testimonials-track {
+    display: flex;
+    gap: 2rem;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* Testimonial Card */
+.testimonial-card {
+    flex: 0 0 calc(33.333% - 1.33rem);
+    min-width: 300px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-base), 
+                box-shadow var(--transition-base),
+                border-color var(--transition-base);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--glass-shadow-hover);
+    border-color: var(--glass-border-hover);
+}
+
+/* Example Badge */
+.testimonial-example-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.65rem;
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--border-radius-sm);
+    opacity: 0.7;
+}
+
+/* Quote Icon */
+.testimonial-quote-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: var(--primary-color);
+    opacity: 0.3;
+}
+
+/* Quote Text */
+.testimonial-quote {
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+}
+
+.testimonial-quote p {
+    color: var(--text-color);
+    font-size: 1rem;
+    line-height: 1.8;
+    font-style: italic;
+    margin: 0;
+    position: relative;
+    padding-top: 1rem;
+}
+
+/* Star Rating */
+.testimonial-rating {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-rating i {
+    color: #FFD700;
+    font-size: 1rem;
+}
+
+/* Author Section */
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.testimonial-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.25rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.testimonial-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.testimonial-name {
+    color: var(--heading-color);
+    font-size: 1rem;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.testimonial-position {
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.testimonial-company {
+    color: var(--text-color);
+    font-size: 0.8rem;
+}
+
+/* Carousel Navigation */
+.testimonials-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.testimonials-nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    color: var(--primary-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
+.testimonials-nav-btn:hover,
+.testimonials-nav-btn:focus-visible {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.testimonials-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.testimonials-nav-btn:disabled:hover {
+    transform: none;
+    background: var(--glass-bg);
+    color: var(--primary-color);
+}
+
+/* Dots Navigation */
+.testimonials-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.testimonials-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    padding: 0;
+}
+
+.testimonials-dot:hover,
+.testimonials-dot:focus-visible {
+    border-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+.testimonials-dot.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+/* Light Mode Adjustments */
+[data-theme="light"] .testimonials-section {
+    background: linear-gradient(135deg, rgba(0, 151, 167, 0.03) 0%, rgba(0, 188, 212, 0.03) 100%);
+}
+
+[data-theme="light"] .testimonial-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.15);
+}
+
+[data-theme="light"] .testimonial-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .testimonials-nav-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.2);
+}
+
+[data-theme="light"] .testimonials-dot {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.3);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .testimonial-card {
+        flex: 0 0 calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonials-section {
+        padding: 3rem 0;
+    }
+    
+    .testimonials-container {
+        padding: 0 1rem;
+    }
+    
+    .testimonial-card {
+        flex: 0 0 100%;
+        min-width: 280px;
+        padding: 1.5rem;
+    }
+    
+    .testimonials-track {
+        gap: 1rem;
+    }
+    
+    .testimonial-quote p {
+        font-size: 0.95rem;
+    }
+    
+    .testimonial-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    
+    .testimonials-nav {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonial-card {
+        min-width: 260px;
+        padding: 1.25rem;
+    }
+    
+    .testimonial-quote-icon {
+        font-size: 1.5rem;
+        top: 1rem;
+        right: 1rem;
+    }
+    
+    .testimonial-name {
+        font-size: 0.95rem;
+    }
+    
+    .testimonial-position,
+    .testimonial-company {
+        font-size: 0.75rem;
+    }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    .testimonials-track {
+        transition: none;
+    }
+    
+    .testimonial-card {
+        transition: none;
+    }
+    
+    .testimonial-card:hover {
+        transform: none;
+    }
+    
+    .testimonials-nav-btn,
+    .testimonials-dot {
+        transition: none;
+    }
+}
+
+
+/* ==========================================================================
+   Saudi Contact Options Section (Requirements 18.1, 18.2, 18.3, 18.4, 18.5)
+   - WhatsApp as primary contact method
+   - Phone (+966 format), email, Riyadh address
+   - Google Map embed (lightweight)
+   - Arabic numerals where appropriate
+   - Floating WhatsApp button with pulse animation
+   ========================================================================== */
+
+/* Contact Section Container */
+.saudi-contact-section {
+    background: var(--hero-gradient);
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.saudi-contact-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(100, 255, 218, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.saudi-contact-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.saudi-contact-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.saudi-contact-header .section-mini-title {
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.saudi-contact-header .section-title {
+    color: var(--heading-color);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    margin-bottom: 1rem;
+}
+
+.saudi-contact-header .section-description {
+    color: var(--text-color);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Contact Grid Layout */
+.saudi-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Contact Options Card */
+.contact-options-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-options-card:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
+}
+
+/* Contact Option Item */
+.contact-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-base);
+    text-decoration: none;
+    color: inherit;
+}
+
+.contact-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary-color);
+    transform: translateX(-5px);
+    text-decoration: none;
+}
+
+/* Primary Contact Option (WhatsApp) */
+.contact-option-primary {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.15) 0%, rgba(37, 211, 102, 0.05) 100%);
+    border: 2px solid #25D366;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-option-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.contact-option-primary:hover {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.25) 0%, rgba(37, 211, 102, 0.1) 100%);
+    border-color: #25D366;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+}
+
+.contact-option-primary .contact-option-icon {
+    color: #25D366;
+    font-size: 2rem;
+}
+
+.contact-option-primary .contact-option-label {
+    color: #25D366;
+    font-weight: 700;
+}
+
+/* Contact Option Icon */
+.contact-option-icon {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    border-radius: 50%;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    transition: all var(--transition-base);
+}
+
+.contact-option:hover .contact-option-icon {
+    transform: scale(1.1);
+}
+
+/* Contact Option Content */
+.contact-option-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.contact-option-label {
+    font-size: 0.85rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.contact-option-value {
+    font-size: 1.1rem;
+    color: var(--heading-color);
+    font-weight: 600;
+    direction: ltr;
+    text-align: right;
+}
+
+.contact-option-value-rtl {
+    direction: rtl;
+}
+
+.contact-option-hint {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Arabic Numerals Display */
+.arabic-numerals {
+    font-family: 'Tajawal', system-ui, sans-serif;
+    font-feature-settings: "tnum";
+}
+
+/* Map Container */
+.contact-map-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-map-card:hover {
+    background: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--glass-shadow-hover);
+}
+
+.contact-map-title {
+    color: var(--heading-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-map-title i {
+    color: var(--primary-color);
+}
+
+.contact-map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 75%;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    background: var(--card-bg);
+}
+
+.contact-map-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: grayscale(20%) contrast(1.1);
+    transition: filter var(--transition-base);
+}
+
+.contact-map-wrapper:hover iframe {
+    filter: grayscale(0%) contrast(1);
+}
+
+/* Map Placeholder for lazy loading */
+.contact-map-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.contact-map-placeholder:hover {
+    background: var(--accent-color-lighter);
+}
+
+.contact-map-placeholder i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.contact-map-placeholder span {
+    font-size: 1rem;
+}
+
+/* Address Details */
+.contact-address-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: var(--border-radius-md);
+}
+
+.contact-address-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.contact-address-line i {
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+}
+
+/* Working Hours Badge */
+.working-hours-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(100, 255, 218, 0.1) 0%, rgba(100, 255, 218, 0.05) 100%);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius-md);
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.working-hours-badge i {
+    font-size: 1rem;
+}
+
+/* Light Mode Adjustments */
+[data-theme="light"] .saudi-contact-section {
+    background: linear-gradient(135deg, rgba(0, 151, 167, 0.03) 0%, rgba(0, 188, 212, 0.03) 100%);
+}
+
+[data-theme="light"] .contact-options-card,
+[data-theme="light"] .contact-map-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.15);
+}
+
+[data-theme="light"] .contact-options-card:hover,
+[data-theme="light"] .contact-map-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .contact-option {
+    background: rgba(0, 151, 167, 0.03);
+    border-color: rgba(0, 151, 167, 0.1);
+}
+
+[data-theme="light"] .contact-option:hover {
+    background: rgba(0, 151, 167, 0.08);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .saudi-contact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-map-wrapper {
+        padding-bottom: 60%;
+    }
+}
+
+@media (max-width: 768px) {
+    .saudi-contact-section {
+        padding: 3rem 0;
+    }
+    
+    .saudi-contact-container {
+        padding: 0 1rem;
+    }
+    
+    .contact-options-card,
+    .contact-map-card {
+        padding: 1.5rem;
+    }
+    
+    .contact-option {
+        padding: 0.75rem;
+    }
+    
+    .contact-option-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        font-size: 1.25rem;
+    }
+    
+    .contact-option-value {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-option {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .contact-option-content {
+        align-items: center;
+    }
+    
+    .contact-option-value {
+        text-align: center;
+    }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    .contact-option:hover {
+        transform: none;
+    }
+    
+    .contact-option:hover .contact-option-icon {
+        transform: none;
+    }
+}
+
+
+/* ==========================================================================
+   Floating WhatsApp Button (Requirements 18.1, 18.2)
+   - Position in bottom corner (RTL-aware: bottom-left)
+   - Pulse animation for attention
+   - Link to WhatsApp with pre-filled Arabic message
+   ========================================================================== */
+
+.floating-whatsapp {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.floating-whatsapp-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    transition: all var(--transition-base);
+    position: relative;
+    animation: whatsappPulse 2s infinite;
+}
+
+.floating-whatsapp-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.floating-whatsapp-btn:focus-visible {
+    outline: 3px solid #25D366;
+    outline-offset: 3px;
+}
+
+/* Pulse Animation */
+@keyframes whatsappPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+/* WhatsApp Tooltip */
+.floating-whatsapp-tooltip {
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-md);
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    color: var(--heading-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    pointer-events: none;
+    box-shadow: var(--glass-shadow);
+}
+
+.floating-whatsapp-tooltip::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-left-color: var(--glass-border);
+}
+
+.floating-whatsapp:hover .floating-whatsapp-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* WhatsApp Label */
+.floating-whatsapp-label {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-sm);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    color: var(--heading-color);
+    font-weight: 500;
+    text-align: center;
+    box-shadow: var(--glass-shadow);
+}
+
+/* Light Mode Adjustments */
+[data-theme="light"] .floating-whatsapp-tooltip,
+[data-theme="light"] .floating-whatsapp-label {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 151, 167, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .floating-whatsapp {
+        bottom: 70px;
+        left: 15px;
+    }
+    
+    .floating-whatsapp-btn {
+        width: 55px;
+        height: 55px;
+        font-size: 1.5rem;
+    }
+    
+    .floating-whatsapp-tooltip {
+        display: none;
+    }
+    
+    .floating-whatsapp-label {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-whatsapp {
+        bottom: 65px;
+        left: 10px;
+    }
+    
+    .floating-whatsapp-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.35rem;
+    }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    .floating-whatsapp-btn {
+        animation: none;
+    }
+    
+    .floating-whatsapp-btn:hover {
+        transform: none;
+    }
+}
+
+/* Hide WhatsApp button when chatbot is open to avoid overlap */
+.chatbot-open .floating-whatsapp {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Pricing Section (Requirements 19.1, 19.2, 19.3, 19.4, 19.5, 19.6)
+   - Three pricing tiers (Basic, Professional, Custom)
+   - Arabic numerals for pricing
+   - "الأكثر طلباً" badge for Professional tier
+   - VAT note below pricing
+   - Glassmorphism styling with hover effects
+   ========================================================================== */
+
+.pricing-section {
+    background: var(--hero-gradient);
+    padding: 5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(100, 255, 218, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.pricing-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.pricing-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.pricing-header .section-mini-title {
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.pricing-header .section-title {
+    color: var(--heading-color);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    margin-bottom: 1rem;
+}
+
+.pricing-header .section-description {
+    color: var(--text-color);
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Pricing Grid */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    align-items: stretch;
+}
+
+/* Pricing Card */
+.pricing-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--glass-shadow);
+    padding: 2.5rem 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-base), 
+                box-shadow var(--transition-base),
+                border-color var(--transition-base);
+    text-align: center;
+}
+
+.pricing-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--glass-shadow-hover);
+    border-color: var(--glass-border-hover);
+}
+
+/* Popular Badge */
+.pricing-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-gradient);
+    color: var(--white);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Popular Card Highlight */
+.pricing-card.popular {
+    border-color: var(--primary-color);
+    border-width: 2px;
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.pricing-card.popular:hover {
+    transform: scale(1.08) translateY(-5px);
+}
+
+/* Pricing Tier Name */
+.pricing-tier-name {
+    color: var(--heading-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Pricing Tier Description */
+.pricing-tier-description {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+/* Pricing Amount */
+.pricing-amount {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.pricing-price {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    display: block;
+}
+
+.pricing-currency {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.pricing-period {
+    color: var(--text-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Custom Pricing Text */
+.pricing-custom-text {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: block;
+}
+
+/* Pricing Features List */
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    text-align: right;
+    flex-grow: 1;
+}
+
+.pricing-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-features li i {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.pricing-features li.not-included {
+    opacity: 0.5;
+}
+
+.pricing-features li.not-included i {
+    color: var(--text-color);
+}
+
+/* Pricing CTA Button */
+.pricing-cta {
+    display: inline-block;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: transparent;
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    margin-top: auto;
+}
+
+.pricing-cta:hover,
+.pricing-cta:focus-visible {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+}
+
+/* Popular Card CTA */
+.pricing-card.popular .pricing-cta {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.pricing-card.popular .pricing-cta:hover,
+.pricing-card.popular .pricing-cta:focus-visible {
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+/* VAT Note */
+.pricing-vat-note {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-md);
+    display: inline-block;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pricing-vat-note p {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.pricing-vat-note i {
+    color: var(--primary-color);
+}
+
+/* Pricing Footer */
+.pricing-footer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Light Mode Adjustments */
+[data-theme="light"] .pricing-section {
+    background: linear-gradient(135deg, rgba(0, 151, 167, 0.03) 0%, rgba(0, 188, 212, 0.03) 100%);
+}
+
+[data-theme="light"] .pricing-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.15);
+}
+
+[data-theme="light"] .pricing-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .pricing-card.popular {
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .pricing-vat-note {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 151, 167, 0.2);
+}
+
+[data-theme="light"] .pricing-features li {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .pricing-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    .pricing-card.popular {
+        transform: scale(1.02);
+    }
+    
+    .pricing-card.popular:hover {
+        transform: scale(1.05) translateY(-5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .pricing-section {
+        padding: 3rem 0;
+    }
+    
+    .pricing-container {
+        padding: 0 1rem;
+    }
+    
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .pricing-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .pricing-card.popular {
+        transform: none;
+        order: -1; /* Show popular card first on mobile */
+    }
+    
+    .pricing-card.popular:hover {
+        transform: translateY(-5px);
+    }
+    
+    .pricing-price {
+        font-size: 2rem;
+    }
+    
+    .pricing-badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 1.2rem;
+    }
+    
+    .pricing-vat-note {
+        padding: 0.75rem 1rem;
+    }
+    
+    .pricing-vat-note p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .pricing-tier-name {
+        font-size: 1.3rem;
+    }
+    
+    .pricing-price {
+        font-size: 1.75rem;
+    }
+    
+    .pricing-features li {
+        font-size: 0.9rem;
+        padding: 0.6rem 0;
+    }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    .pricing-card:hover {
+        transform: none;
+    }
+    
+    .pricing-card.popular:hover {
+        transform: none;
+    }
+    
+    .pricing-cta:hover {
+        transform: none;
     }
 }

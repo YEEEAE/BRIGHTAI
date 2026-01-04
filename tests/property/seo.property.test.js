@@ -25,7 +25,11 @@ function getAllHtmlFiles() {
       'backups/**',
       '.git/**',
       '.kiro/**',
-      'tests/**'
+      'tests/**',
+      // Exclude Google verification files
+      'google*.html',
+      // Exclude special/utility files
+      '**/test*.html'
     ]
   });
   return htmlFiles;
