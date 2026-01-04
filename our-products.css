@@ -1,13 +1,16 @@
-/* Base Styles */
+/*
+ * BrightAI Products - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
+
+/* Products-specific variable mappings */
 :root {
-    --primary-color: #1E3A8A; /* أزرق داكن أكثر عمقاً */
-    --background-dark: #0B172A; /* خلفية أغمق قليلاً */
-    --accent-color: #38BDF8; /* أزرق فاتح أكثر حيوية */
-    --text-primary: #F3F4F6; /* أبيض أكثر نقاءً */
-    --text-secondary: #9CA3AF; /* رمادي فاتح أكثر تميزاً */
-    --accent-secondary: #EF4444; /* أحمر أكثر جاذبية */
-    --light-bg: #FAFAFA; /* خلفية فاتحة أكثر نقاءً */
-    --card-bg: rgba(17, 24, 39, 0.8); /* كروت أغمق قليلاً */
+    --background-dark: var(--background-color);
+    --text-primary: var(--heading-color);
+    --text-secondary: var(--text-color);
+    --accent-secondary: var(--error-color);
+    --light-bg: #FAFAFA;
 }
 
 * {
@@ -1227,16 +1230,15 @@ main h2, .section-header h2 {
     }
 }
 
-/* Print Styles */
+/* Print Styles - Uses design-tokens.css print overrides */
 @media print {
     body {
         background-color: #FFFFFF;
         color: #000000;
     }
-    :root { /* إعادة تعريف المتغيرات للطباعة */
-        --primary-color: #000000;
+    /* Print-specific variable extensions */
+    :root {
         --background-dark: #FFFFFF;
-        --accent-color: #333333;
         --text-primary: #000000;
         --text-secondary: #555555;
     }

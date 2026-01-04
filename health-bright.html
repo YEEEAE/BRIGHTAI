@@ -966,8 +966,8 @@
 
   <script>
     // ============ Configuration ============
-    const GEMINI_API_KEY = "GEMINI_KEY_REDACTED";
-    const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+    // API calls now go through secure server gateway - no client-side API keys
+    const AI_GATEWAY_URL = "/api/ai/medical";
 
     // ============ Utility Functions ============
     const sleep = ms => new Promise(r=>setTimeout(r, ms));
@@ -995,19 +995,12 @@
       try { return JSON.stringify(obj, null, 2) } catch { return String(obj) }
     }
 
-    // ============ Gemini API Integration ============
+    // ============ AI Gateway Integration (Secure Server-Side) ============
     async function callGemini({textParts=[], inlineDataParts=[]}){
-      const contents = [{
-        role: "user",
-        parts: [
-          ...textParts.map(t=>({text: t})),
-          ...inlineDataParts.map(d=>({inlineData: d}))
-        ]
-      }];
-
       const body = { 
-        contents, 
-        generationConfig: { 
+        textParts,
+        inlineDataParts,
+        config: { 
           temperature: 0.2, 
           top_p: 0.9, 
           top_k: 40, 
@@ -1015,7 +1008,7 @@
         } 
       };
 
-      const res = await fetch(`${GEMINI_URL}?key=${encodeURIComponent(GEMINI_API_KEY)}`, {
+      const res = await fetch(AI_GATEWAY_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
@@ -1023,12 +1016,11 @@
 
       if (!res.ok){
         const errText = await res.text().catch(()=>res.statusText);
-        throw new Error(`Gemini API Error: ${res.status} - ${errText}`);
+        throw new Error(`AI Gateway Error: ${res.status} - ${errText}`);
       }
 
       const data = await res.json();
-      const text = data?.candidates?.[0]?.content?.parts?.map(p=>p.text).join("\n") || "";
-      return text.trim();
+      return data?.text?.trim() || "";
     }
 
     // ============ Drag & Drop Handler ============

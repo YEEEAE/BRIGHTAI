@@ -1,35 +1,25 @@
+/*
+ * BrightAI Tools - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
+
+/* Tools-specific variable mappings */
 :root {
-  /* نظام الألوان الرئيسي */
-  --primary-color: #1a365d;
   --primary-light: #2d4a7e;
-  --secondary-color: #38bdf8;
-  --accent-color: #0ea5e9;
-  --accent-secondary: #ef4444;
-  
-  /* ألوان النصوص */
-  --text-primary: #f8fafc;
-  --text-secondary: #e2e8f0;
+  --accent-secondary: var(--error-color);
+  --text-primary: var(--heading-color);
+  --text-secondary: var(--text-color);
   --text-dark: #334155;
-  
-  /* ألوان الخلفية */
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
+  --bg-primary: var(--background-color);
+  --bg-secondary: var(--card-bg);
   --bg-light: #f1f5f9;
-  
-  /* المساحات والهوامش */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2.5rem;
-  
-  /* حجم الخطوط */
-  --font-xs: 0.75rem;
-  --font-sm: 0.875rem;
-  --font-md: 1rem;
-  --font-lg: 1.25rem;
-  --font-xl: 1.5rem;
-  --font-2xl: 2rem;
+  --font-xs: var(--font-size-xs);
+  --font-sm: var(--font-size-sm);
+  --font-md: var(--font-size-base);
+  --font-lg: var(--font-size-lg);
+  --font-xl: var(--font-size-xl);
+  --font-2xl: var(--font-size-2xl);
 }
 
 /* إعادة ضبط عامة */

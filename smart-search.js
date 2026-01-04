@@ -449,6 +449,11 @@ class BrightAISmartSearch {
    * @returns {string}
    */
   escapeHtml(text) {
+    // Use centralized utility if available
+    if (window.BrightAIUtils?.escapeHtml) {
+      return window.BrightAIUtils.escapeHtml(text);
+    }
+    // Fallback implementation
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;

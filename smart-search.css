@@ -4,6 +4,9 @@
  * Requirements: 5.4, 5.5
  */
 
+/* Import centralized design tokens */
+@import url('css/design-tokens.css');
+
 /* ==========================================================================
    Smart Search Container
    ========================================================================== */

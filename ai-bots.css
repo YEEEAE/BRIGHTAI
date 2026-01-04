@@ -1,3 +1,14 @@
+/*
+ * BrightAI Bots - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
+
+/* AI Bots-specific variable mappings */
+:root {
+    --background-light: var(--background-color);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -53,39 +64,17 @@ img {
     display: block; /* Prevents bottom space under images */
 }
 
+/* AI Bots-specific extended variables (using design system as base) */
 :root {
-    /* الألوان الأساسية */
-    --primary-color: #3b82f6;          /* أزرق فاتح وحيوي */
-    --primary-dark: #1d4ed8;           /* أزرق داكن */
-    --secondary-color: #0c5a40;        /* أخضر زمردي */
-    --secondary-dark: #059669;         /* أخضر داكن */
+    /* Extended colors for bots */
+    --primary-dark: #1d4ed8;
+    --secondary-dark: #059669;
+    --text-light: #9fa9b7;
+    --border-color-light: #e2e8f0;
     
-    /* ألوان التصميم */
-    --text-color: #4f5f7a;             /* رمادي داكن للنصوص */
-    --text-light: #9fa9b7;             /* رمادي فاتح للنصوص الثانوية */
-    --background-light: #f8fafc;       /* خلفية فاتحة */
-    --background-dark: #0f172a;        /* خلفية داكنة */
-    --card-bg: #ffffff;                /* خلفية البطاقات (updated from #cbc4df for consistency) */
-    --border-color: #e2e8f0;           /* لون الحدود */
-    
-    /* ألوان الحالة */
-    --success-color: #0d5b2a;          /* أخضر للنجاح */
-    --warning-color: #eab308;          /* أصفر للتحذير */
-    --error-color: #ef4444;            /* أحمر للخطأ */
-    
-    /* ألوان البوتات المتخصصة */
-    --math-color: #8b5cf6;             /* بنفسجي لبوت الرياضيات */
-    --tourism-color: #f59e0b;          /* برتقالي ذهبي للسياحة */
-    
-    /* الظلال */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
-    
-    /* الزوايا */
-    --border-radius: 12px;             /* زوايا أكثر نعومة */
-    --border-radius-lg: 16px;
-    --border-radius-full: 9999px;
+    /* Bot-specific colors */
+    --math-color: #8b5cf6;
+    --tourism-color: #f59e0b;
 }
 
 /* Header Styles */

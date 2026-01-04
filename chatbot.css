@@ -4,6 +4,9 @@
  * Requirements: 4.2, 4.7
  */
 
+/* Import centralized design tokens */
+@import url('css/design-tokens.css');
+
 /* ==========================================================================
    Chatbot Widget Container
    ========================================================================== */

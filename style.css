@@ -1,157 +1,27 @@
 /*
- * BrightAI - Enhanced Stylesheet for Performance, SEO & User Experience in Saudi Arabia
- * Version: 2.1.0 (Mobile Menu & Hero Text Update)
- * Last updated: September 2025
- * Description: This stylesheet has been optimized for faster rendering, better accessibility (WCAG-AA),
- * and a superior user experience, with specific considerations for the Saudi market.
+ * BrightAI - Main Stylesheet
+ * Version: 3.0.0 (Unified Design System)
+ * Last updated: January 2026
+ * 
+ * IMPORTANT: All design tokens are defined in css/design-tokens.css
+ * This file imports tokens and defines component styles only.
  */
 
 /* ==========================================================================
-   1. CSS Variables (:root) & Global Reset
+   1. Design System Import & Global Reset
    ========================================================================== */
-/*
- * BrightAI - Enhanced Stylesheet for Performance, SEO & User Experience in Saudi Arabia
- * Version: 2.1.0 (Mobile Menu & Hero Text Update)
- * Last updated: September 2025
- * Description: This stylesheet has been optimized for faster rendering, better accessibility (WCAG-AA),
- * and a superior user experience, with specific considerations for the Saudi market.
- */
 
-/* ==== CLS FIX: Font Matching Fallback - أضف هذا الجزء ==== */
+@import url('css/design-tokens.css');
+@import url('css/components.css');
+
+/* ==== CLS FIX: Font Matching Fallback ==== */
 @font-face {
   font-family: 'Tajawal Fallback';
-  src: local('Arial'); /* استخدام خط نظام شائع كقاعدة */
+  src: local('Arial');
   ascent-override: 95%;
   descent-override: 25%;
   line-gap-override: 10%;
   size-adjust: 102%;
-}
-
-:root {
-    /* Color Palette */
-    --primary-color: #64FFDA;
-    --secondary-color: #0A192F;
-    --background-color: #0A192F;
-    --text-color: #8892B0;
-    --heading-color: #CCD6F6;
-    --white: #FFFFFF;
-    --card-bg: #112240;
-    --accent-color: #1D2B3A;
-    --accent-color-lighter: #24364A;
-    --border-color: rgba(100, 255, 218, 0.1);
-    --error-color: #f44336;
-    --success-color: #4CAF50;
-
-    /* Glassmorphism Design Tokens */
-    --glass-bg: rgba(255, 255, 255, 0.08);
-    --glass-bg-hover: rgba(255, 255, 255, 0.12);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-border-hover: rgba(255, 255, 255, 0.3);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    --glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.2);
-    --glass-blur: blur(12px) saturate(180%);
-    --glass-blur-strong: blur(16px) saturate(200%);
-
-    /* AI Brand Gradients */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --hero-gradient: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-
-    /* Animation Timings */
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
-    /* Legacy Transitions (for backward compatibility) */
-    --transition-short: all 0.25s ease-in-out;
-    --transition-medium: all 0.3s ease-in-out;
-    --transition-long: all 0.5s ease-in-out;
-
-    /* Shadows */
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
-
-    /* Layout & Sizing */
-    --container-width: 1200px;
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
-    --border-radius-xl: 16px;
-
-    /* Accessibility */
-    --focus-outline-color: var(--primary-color);
-    --focus-outline-width: 3px;
-    --focus-outline-offset: 2px;
-    --focus-box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.3);
-    
-    /* Touch Target Sizes (WCAG 2.1 AA) */
-    --touch-target-min: 44px;
-}
-
-/* ==========================================================================
-   Dark Mode Theme Support
-   ========================================================================== */
-
-[data-theme="dark"] {
-    /* Dark Mode Color Palette */
-    --primary-color: #64FFDA;
-    --secondary-color: #0A192F;
-    --background-color: #0A192F;
-    --text-color: #8892B0;
-    --heading-color: #CCD6F6;
-    --white: #FFFFFF;
-    --card-bg: #112240;
-    --accent-color: #1D2B3A;
-    --accent-color-lighter: #24364A;
-    --border-color: rgba(100, 255, 218, 0.1);
-
-    /* Dark Mode Glassmorphism */
-    --glass-bg: rgba(17, 34, 64, 0.6);
-    --glass-bg-hover: rgba(17, 34, 64, 0.8);
-    --glass-border: rgba(100, 255, 218, 0.15);
-    --glass-border-hover: rgba(100, 255, 218, 0.3);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    --glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
-}
-
-[data-theme="light"] {
-    /* Light Mode Color Palette */
-    --primary-color: #0097A7;
-    --secondary-color: #FFFFFF;
-    --background-color: #F5F7FA;
-    --text-color: #4A5568;
-    --heading-color: #1A202C;
-    --white: #FFFFFF;
-    --card-bg: #FFFFFF;
-    --accent-color: #E2E8F0;
-    --accent-color-lighter: #EDF2F7;
-    --border-color: rgba(0, 151, 167, 0.1);
-    --error-color: #E53E3E;
-    --success-color: #38A169;
-
-    /* Light Mode Glassmorphism */
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-bg-hover: rgba(255, 255, 255, 0.85);
-    --glass-border: rgba(0, 151, 167, 0.15);
-    --glass-border-hover: rgba(0, 151, 167, 0.3);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    --glass-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.12);
-    --glass-blur: blur(12px) saturate(180%);
-    --glass-blur-strong: blur(16px) saturate(200%);
-
-    /* Light Mode Gradients */
-    --primary-gradient: linear-gradient(135deg, #0097A7 0%, #00BCD4 100%);
-    --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --hero-gradient: linear-gradient(135deg, rgba(0, 151, 167, 0.05) 0%, rgba(0, 188, 212, 0.05) 100%);
-
-    /* Light Mode Shadows */
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 /* Smooth theme transition */
@@ -2434,15 +2304,7 @@ textarea.form-control {
         direction: rtl !important;
     }
     
-    :root {
-        --primary-color: #000000;
-        --secondary-color: #ffffff;
-        --text-color: #000000;
-        --background-color: #ffffff;
-        --heading-color: #000000;
-        --card-bg: #ffffff;
-        --border-color: #cccccc;
-    }
+    /* Print variables are defined in css/design-tokens.css @media print */
 
     .container, .section-container {
         padding: 1cm 0;

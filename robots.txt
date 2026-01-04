@@ -1,6 +1,6 @@
 # robots.txt for brightai.site
 # BrightAI - شركة سعودية للذكاء الاصطناعي
-# Last updated: 2025-01-03
+# Last updated: 2025-01-04
 
 # Allow all search engine crawlers
 User-agent: *
@@ -26,6 +26,25 @@ Disallow: /.kiro/
 Disallow: /.env
 Disallow: /tests/
 Disallow: /node_modules/
+
+# Block demo/development directories (security)
+Disallow: /h/
+Disallow: /Customer/
+Disallow: /try.html
+
+# Block test/dead files
+Disallow: /test-glassmorphism.html
+Disallow: /mm.html
+Disallow: /nn.html
+Disallow: /width.html
+Disallow: /fake.py
+
+# Block directories with non-standard naming
+Disallow: /Saudi%20tourism%20and%20heritage%20services/
+Disallow: /fix%20my%20website/
+Disallow: /Docfile/
+Disallow: /backups/
+Disallow: /blogger/
 
 # Block non-essential files
 Disallow: /*.json$

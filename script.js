@@ -1,7 +1,10 @@
 // BrightAI - Enhanced JavaScript for Performance, Analytics & User Experience
-// Version: 3.1.0 - GTM & SEO Expert Edition
-// Last updated: September 2025
+// Version: 3.2.0 - Unified Design System Edition
+// Last updated: January 2026
 'use strict';
+
+// Import utilities from centralized module (loaded via js/utils.js)
+// Utilities available via window.BrightAIUtils after utils.js loads
 
 /**
  * =================================================================================
@@ -47,7 +50,7 @@ const optimizeCLS = () => {
         const elements = document.querySelectorAll(selector);
         elements.forEach(el => {
             const width = el.offsetWidth;
-            el.style.height = `${width * (ratio/100)}px`;
+            el.style.height = `${width * (ratio / 100)}px`;
         });
     };
     reserveSpace('.service-card-image');
@@ -94,30 +97,13 @@ function initializeGtm() {
 
 /**
  * =================================================================================
- * SECTION 2: UTILITY FUNCTIONS (PERFORMANCE HELPERS)
+ * SECTION 2: UTILITY FUNCTIONS (Using centralized utils when available)
  * =================================================================================
  */
 
-const debounce = (func, wait) => {
-    let timeoutId;
-    return function(...args) {
-        const context = this;
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(context, args), wait);
-    };
-};
-
-const throttle = (func, limit) => {
-    let inThrottle = false;
-    return function(...args) {
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-};
+// Use centralized utilities
+const debounce = window.BrightAIUtils.debounce;
+const throttle = window.BrightAIUtils.throttle;
 
 
 /**
@@ -200,7 +186,7 @@ function initNavbar() {
         overlay.classList.toggle('active', shouldOpen);
         document.body.style.overflow = shouldOpen ? 'hidden' : '';
         hamburger.setAttribute('aria-expanded', String(shouldOpen));
-        
+
         if (shouldOpen) {
             navLinks.querySelector('a[role="menuitem"]')?.focus();
         } else {
@@ -328,7 +314,7 @@ function initHeroCanvas() {
             }
         }
     }
-    
+
     const setup = () => {
         cancelAnimationFrame(animationFrameId);
         setCanvasSize();
@@ -343,7 +329,7 @@ function initHeroCanvas() {
             cancelAnimationFrame(animationFrameId);
         }
     }, { threshold: 0.01 });
-    
+
     observer.observe(canvas);
     window.addEventListener('resize', debounce(setup, 200));
 }
@@ -374,7 +360,7 @@ function initFAQ() {
             // Toggle the clicked item
             item.classList.toggle('active', !isExpanded);
             question.setAttribute('aria-expanded', !isExpanded);
-            
+
             // GTM event for analytics
             if (!isExpanded) {
                 window.dataLayer.push({
@@ -395,7 +381,7 @@ function initForms() {
     if (consultationForm) {
         initConsultationForm(consultationForm);
     }
-    
+
     // Newsletter Forms
     document.querySelectorAll('.newsletter-form, .newsletter-form-large').forEach(form => {
         initNewsletterForm(form);
@@ -439,7 +425,7 @@ function initConsultationForm(form) {
         }
         return isValid;
     };
-    
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
         let isFormValid = true;
@@ -448,7 +434,7 @@ function initConsultationForm(form) {
                 isFormValid = false;
             }
         });
-        
+
         if (isFormValid) {
             const submitButton = form.querySelector('button[type="submit"]');
             const originalButtonText = submitButton.textContent;
@@ -456,11 +442,11 @@ function initConsultationForm(form) {
             submitButton.textContent = 'جاري الإرسال...';
             statusEl.textContent = '';
             statusEl.className = 'form-status-message';
-            
+
             try {
                 // Simulate API call. Replace with fetch() to your endpoint.
-                await new Promise(resolve => setTimeout(resolve, 1500)); 
-                
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
                 // GTM event for conversion tracking
                 window.dataLayer.push({
                     event: 'generate_lead',
@@ -468,7 +454,7 @@ function initConsultationForm(form) {
                     form_location: 'Contact Section',
                     lead_type: 'Free AI Consultation'
                 });
-                
+
                 statusEl.textContent = 'شكراً لك! تم إرسال طلب الاستشارة بنجاح.';
                 statusEl.classList.add('active', 'success');
                 form.reset();
@@ -495,13 +481,13 @@ function initNewsletterForm(form) {
         event.preventDefault();
         const emailInput = form.querySelector('input[type="email"]');
         if (emailInput && emailInput.value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
-            
+
             // GTM event for analytics
             window.dataLayer.push({
                 event: 'newsletter_signup',
                 form_location: form.classList.contains('newsletter-form-large') ? 'Main Newsletter Section' : 'Footer'
             });
-            
+
             // Replace alert with a less intrusive notification if desired
             alert('شكراً لاشتراكك في النشرة البريدية!');
             form.reset();
@@ -545,17 +531,17 @@ function initScrollAndAnalytics() {
                         });
                         console.log('[Analytics] Pushed "view_item_list" for Services Section.');
                     }
-                    
+
                     obs.unobserve(entry.target);
                 }
             });
         }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-        
+
         animatedElements.forEach(el => {
             el.classList.add('fade-in');
             observer.observe(el);
         });
-        if(servicesSection) observer.observe(servicesSection);
+        if (servicesSection) observer.observe(servicesSection);
 
     } else {
         // Fallback for older browsers
@@ -586,29 +572,29 @@ function initBackToTop() {
 }
 // قسم استشارات الذكاء الاصطناعي - أنيميشن الظهور
 document.addEventListener("DOMContentLoaded", () => {
-  const aiCards = document.querySelectorAll(".ai-card");
+    const aiCards = document.querySelectorAll(".ai-card");
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-        }
-      });
-    },
-    { threshold: 0.2 }
-  );
+    const observer = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                }
+            });
+        },
+        { threshold: 0.2 }
+    );
 
-  aiCards.forEach(card => {
-    observer.observe(card);
-  });
+    aiCards.forEach(card => {
+        observer.observe(card);
+    });
 });
 /**
  * Initializes smooth scrolling for all on-page anchor links.
  */
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(event) {
+        anchor.addEventListener('click', function (event) {
             const href = this.getAttribute('href');
             if (href && href.length > 1) {
                 const targetElement = document.querySelector(href);
@@ -643,7 +629,7 @@ function initGenericClickTracker() {
                     content_name: gtmContentName,
                     item_id: gtmItemId,
                     // Placeholder for dynamic Saudi-specific data if available
-                    saudi_user_city: 'Riyadh', 
+                    saudi_user_city: 'Riyadh',
                     saudi_service_interest: gtmContentName || 'Not Specified'
                 };
                 window.dataLayer.push(eventData);
@@ -678,19 +664,19 @@ function initTestimonialsCarousel() {
     const prevBtn = document.querySelector('.testimonials-prev');
     const nextBtn = document.querySelector('.testimonials-next');
     const dots = document.querySelectorAll('.testimonials-dot');
-    
+
     if (!carousel || !track || cards.length === 0) {
         console.log('[Testimonials] Carousel elements not found, skipping initialization.');
         return;
     }
-    
+
     let currentIndex = 0;
     let autoPlayInterval = null;
     const autoPlayDelay = 5000; // 5 seconds
     let isAutoPlaying = true;
     let touchStartX = 0;
     let touchEndX = 0;
-    
+
     /**
      * Gets the number of visible cards based on viewport width
      * @returns {number} Number of visible cards
@@ -701,7 +687,7 @@ function initTestimonialsCarousel() {
         if (viewportWidth >= 768) return 2;
         return 1;
     }
-    
+
     /**
      * Gets the maximum index based on visible cards
      * @returns {number} Maximum index
@@ -710,7 +696,7 @@ function initTestimonialsCarousel() {
         const visibleCards = getVisibleCards();
         return Math.max(0, cards.length - visibleCards);
     }
-    
+
     /**
      * Updates the carousel position
      * @param {boolean} animate - Whether to animate the transition
@@ -719,17 +705,17 @@ function initTestimonialsCarousel() {
         const cardWidth = cards[0].offsetWidth;
         const gap = 32; // 2rem gap
         const offset = currentIndex * (cardWidth + gap);
-        
+
         track.style.transition = animate ? 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
         track.style.transform = `translateX(${offset}px)`; // RTL: positive offset moves right
-        
+
         // Update dots
         dots.forEach((dot, index) => {
             const isActive = index === currentIndex;
             dot.classList.toggle('active', isActive);
             dot.setAttribute('aria-selected', String(isActive));
         });
-        
+
         // Update navigation buttons state
         const maxIndex = getMaxIndex();
         if (prevBtn) {
@@ -738,14 +724,14 @@ function initTestimonialsCarousel() {
         if (nextBtn) {
             nextBtn.disabled = currentIndex >= maxIndex;
         }
-        
+
         // Update ARIA labels for cards
         cards.forEach((card, index) => {
             const isVisible = index >= currentIndex && index < currentIndex + getVisibleCards();
             card.setAttribute('aria-hidden', String(!isVisible));
         });
     }
-    
+
     /**
      * Navigates to a specific slide
      * @param {number} index - Target slide index
@@ -755,7 +741,7 @@ function initTestimonialsCarousel() {
         currentIndex = Math.max(0, Math.min(index, maxIndex));
         updateCarousel();
     }
-    
+
     /**
      * Navigates to the next slide
      */
@@ -768,7 +754,7 @@ function initTestimonialsCarousel() {
         }
         updateCarousel();
     }
-    
+
     /**
      * Navigates to the previous slide
      */
@@ -780,7 +766,7 @@ function initTestimonialsCarousel() {
         }
         updateCarousel();
     }
-    
+
     /**
      * Starts auto-play
      */
@@ -790,7 +776,7 @@ function initTestimonialsCarousel() {
             autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
         }
     }
-    
+
     /**
      * Stops auto-play
      */
@@ -800,7 +786,7 @@ function initTestimonialsCarousel() {
             autoPlayInterval = null;
         }
     }
-    
+
     /**
      * Handles touch start event
      * @param {TouchEvent} e - Touch event
@@ -809,7 +795,7 @@ function initTestimonialsCarousel() {
         touchStartX = e.changedTouches[0].screenX;
         stopAutoPlay();
     }
-    
+
     /**
      * Handles touch end event
      * @param {TouchEvent} e - Touch event
@@ -819,14 +805,14 @@ function initTestimonialsCarousel() {
         handleSwipe();
         startAutoPlay();
     }
-    
+
     /**
      * Handles swipe gesture
      */
     function handleSwipe() {
         const swipeThreshold = 50;
         const diff = touchStartX - touchEndX;
-        
+
         // RTL: swipe left (negative diff) goes to previous, swipe right (positive diff) goes to next
         if (Math.abs(diff) > swipeThreshold) {
             if (diff < 0) {
@@ -836,9 +822,9 @@ function initTestimonialsCarousel() {
             }
         }
     }
-    
+
     // Event Listeners
-    
+
     // Navigation buttons
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
@@ -847,7 +833,7 @@ function initTestimonialsCarousel() {
             startAutoPlay();
         });
     }
-    
+
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             nextSlide();
@@ -855,7 +841,7 @@ function initTestimonialsCarousel() {
             startAutoPlay();
         });
     }
-    
+
     // Dots navigation
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
@@ -864,7 +850,7 @@ function initTestimonialsCarousel() {
             startAutoPlay();
         });
     });
-    
+
     // Keyboard navigation
     carousel.addEventListener('keydown', (e) => {
         switch (e.key) {
@@ -884,19 +870,19 @@ function initTestimonialsCarousel() {
                 break;
         }
     });
-    
+
     // Touch events for mobile swipe
     track.addEventListener('touchstart', handleTouchStart, { passive: true });
     track.addEventListener('touchend', handleTouchEnd, { passive: true });
-    
+
     // Pause auto-play on hover
     carousel.addEventListener('mouseenter', stopAutoPlay);
     carousel.addEventListener('mouseleave', startAutoPlay);
-    
+
     // Pause auto-play on focus within
     carousel.addEventListener('focusin', stopAutoPlay);
     carousel.addEventListener('focusout', startAutoPlay);
-    
+
     // Handle window resize
     window.addEventListener('resize', debounce(() => {
         // Ensure current index is valid after resize
@@ -906,13 +892,13 @@ function initTestimonialsCarousel() {
         }
         updateCarousel(false);
     }, 200));
-    
+
     // Respect reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (prefersReducedMotion.matches) {
         isAutoPlaying = false;
     }
-    
+
     prefersReducedMotion.addEventListener('change', (e) => {
         isAutoPlaying = !e.matches;
         if (isAutoPlaying) {
@@ -921,11 +907,11 @@ function initTestimonialsCarousel() {
             stopAutoPlay();
         }
     });
-    
+
     // Initialize
     updateCarousel(false);
     startAutoPlay();
-    
+
     // GTM event for testimonials view
     const testimonialsObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -939,9 +925,9 @@ function initTestimonialsCarousel() {
             }
         });
     }, { threshold: 0.3 });
-    
+
     testimonialsObserver.observe(carousel);
-    
+
     console.log('[Testimonials] Carousel initialized with', cards.length, 'testimonials.');
 }
 
@@ -1005,7 +991,7 @@ window.addEventListener('load', () => {
  * =================================================================================
  */
 // UX Enhancement: Store the element that triggered the popup to return focus later.
-let triggerElement = null; 
+let triggerElement = null;
 
 function openSupportPopup() {
     const overlay = document.getElementById('supportPopupOverlay');
@@ -1035,7 +1021,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (supportPopupOverlay && supportPopupModal) {
         // Close on clicking the overlay itself
-        supportPopupOverlay.addEventListener('click', function(e) {
+        supportPopupOverlay.addEventListener('click', function (e) {
             if (e.target === this) closeSupportPopup();
         });
 
@@ -1046,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let lastFocusableElement;
 
         // Keydown event listener for Escape key and focus trapping
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (supportPopupOverlay.classList.contains('active')) {
                 if (e.key === 'Escape') {
                     closeSupportPopup();

@@ -1,14 +1,16 @@
+/*
+ * BrightAI Blog - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
+/* Blog-specific variable mappings */
 :root {
-    --primary-color: #1E3A8A;
-    --background-color: #0B172A;
-    --accent-color: #38BDF8;
-    --text-color: #F3F4F6;
-    --subtext-color: #9CA3AF;
-    --secondary-color: #EF4444;
+    --subtext-color: var(--text-color);
+    --secondary-color: var(--error-color);
     --light-bg: #FAFAFA;
-    --card-bg: rgba(17, 24, 39, 0.8);
+    --hover-color: rgba(100, 255, 218, 0.1);
 }
 
 /* General Styles */

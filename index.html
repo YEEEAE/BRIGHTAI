@@ -19,6 +19,7 @@
 <link rel="preload" href="https://fonts.gstatic.com/s/tajawal/v9/Iurf6YBj_oCad4k1l5qjLrY.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" as="style" crossorigin>
 <link rel="preload" href="style.css" as="style">
+<link rel="preload" href="css/design-tokens.css" as="style">
 <link rel="preload" href="script.js" as="script">
 <!-- Preload hero logo image -->
 <link rel="preload" href="https://www2.0zz0.com/2025/06/23/22/317775783.png" as="image" type="image/png">
@@ -2586,6 +2587,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
+    <!-- Centralized Utilities Module - Must load first -->
+    <script src="js/utils.js" defer></script>
+    
     <script src="script.js" defer></script>
     <script src="theme-controller.js" defer></script>
     <script src="background.js" defer></script>
@@ -2593,6 +2597,9 @@
     <script src="particle-system.js" defer></script>
     <!-- Scroll Animations - fadeInUp and counter animations (Requirements 6.1-6.4, 13.1-13.2) -->
     <script src="scroll-animations.js" defer></script>
+
+    <!-- AI Page Summary - (Requirement 25.12) -->
+    <script src="js/ai-summary.js" defer></script>
     
     <!-- AI Chatbot Widget - Lazy loaded for performance (Requirement 25.11) -->
     <link rel="stylesheet" href="chatbot.css">

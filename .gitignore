@@ -30,3 +30,23 @@ build/
 # Cache
 .cache/
 .parcel-cache/
+
+# Demo/Development directories (contain exposed API keys)
+h/
+Customer/
+try.html
+
+# Test/Dead files
+test-glassmorphism.html
+mm.html
+nn.html
+width.html
+fake.py
+ز.html
+يي
+
+# Directories with spaces (non-standard naming)
+Saudi tourism and heritage services/
+fix my website/
+Docfile/
+backups/

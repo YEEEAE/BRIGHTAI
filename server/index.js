@@ -9,6 +9,8 @@ const { config, validateConfig } = require('./config');
 const { rateLimiterMiddleware } = require('./middleware/rateLimiter');
 const { chatHandler } = require('./endpoints/chat');
 const { searchHandler } = require('./endpoints/search');
+const { medicalHandler } = require('./endpoints/medical');
+const { summaryHandler } = require('./endpoints/summary');
 
 // CORS headers for API responses
 const CORS_HEADERS = {
@@ -52,22 +54,22 @@ function createContext(req, res) {
   const enhancedRes = {
     statusCode: 200,
     headers: { ...CORS_HEADERS },
-    
+
     status(code) {
       this.statusCode = code;
       return this;
     },
-    
+
     setHeader(name, value) {
       this.headers[name] = value;
     },
-    
+
     json(data) {
       res.writeHead(this.statusCode, this.headers);
       res.end(JSON.stringify(data));
     }
   };
-  
+
   // Enhanced request object
   const enhancedReq = {
     ...req,
@@ -75,7 +77,7 @@ function createContext(req, res) {
     ip: req.socket?.remoteAddress,
     connection: req.socket
   };
-  
+
   return { req: enhancedReq, res: enhancedRes };
 }
 
@@ -84,23 +86,23 @@ function createContext(req, res) {
  */
 async function handleRequest(req, res) {
   const { method, url } = req;
-  
+
   // Handle CORS preflight
   if (method === 'OPTIONS') {
     res.writeHead(204, CORS_HEADERS);
     res.end();
     return;
   }
-  
+
   // Create context
   const ctx = createContext(req, res);
-  
+
   try {
     // Parse body for POST requests
     if (method === 'POST') {
       ctx.req.body = await parseBody(req);
     }
-    
+
     // Apply rate limiting - use a promise to handle async middleware
     const rateLimitPassed = await new Promise((resolve) => {
       rateLimiterMiddleware(ctx.req, ctx.res, () => {
@@ -111,29 +113,33 @@ async function handleRequest(req, res) {
         resolve(false);
       }
     });
-    
+
     // If rate limited, response already sent
     if (!rateLimitPassed) {
       return;
     }
-    
+
     // Route requests
     if (method === 'POST' && url === '/api/ai/chat') {
       await chatHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/search') {
       await searchHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/ai/medical') {
+      await medicalHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/ai/summary') {
+      await summaryHandler(ctx.req, ctx.res);
     } else if (url === '/api/health') {
       ctx.res.status(200).json({ status: 'ok', timestamp: Date.now() });
     } else {
-      ctx.res.status(404).json({ 
+      ctx.res.status(404).json({
         error: 'الصفحة غير موجودة',
         errorCode: 'NOT_FOUND'
       });
     }
-    
+
   } catch (error) {
     console.error('Server error:', error);
-    
+
     if (error.message === 'Invalid JSON') {
       ctx.res.status(400).json({
         error: 'طلب غير صالح',
@@ -162,18 +168,19 @@ function startServer() {
     console.warn('Warning: Server starting with incomplete configuration');
     console.warn('AI features will return 503 until GEMINI_API_KEY is configured');
   }
-  
+
   const server = http.createServer(handleRequest);
-  
+
   server.listen(config.server.port, () => {
     console.log(`BrightAI Server running on port ${config.server.port}`);
     console.log(`Environment: ${config.server.nodeEnv}`);
     console.log('Endpoints:');
-    console.log('  POST /api/ai/chat   - Chatbot conversations');
-    console.log('  POST /api/ai/search - Smart search');
-    console.log('  GET  /api/health    - Health check');
+    console.log('  POST /api/ai/chat    - Chatbot conversations');
+    console.log('  POST /api/ai/search  - Smart search');
+    console.log('  POST /api/ai/medical - Medical image analysis');
+    console.log('  GET  /api/health     - Health check');
   });
-  
+
   return server;
 }
 

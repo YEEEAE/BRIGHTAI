@@ -6,27 +6,19 @@
  * Requirements: 22.1, 22.2, 22.3, 22.4, 22.5
  */
 
+/* Import centralized design tokens */
+@import url('css/design-tokens.css');
+
 /* ==========================================================================
-   CSS Variables for CTA Buttons
+   CTA Button-specific Variables (extending design tokens)
    ========================================================================== */
 
 :root {
-    /* Primary CTA Gradient (Requirements 22.2) */
-    --cta-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --cta-primary-gradient-hover: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    
-    /* Secondary CTA Colors */
-    --cta-secondary-border: var(--primary-color, #64FFDA);
-    --cta-secondary-text: var(--primary-color, #64FFDA);
-    --cta-secondary-hover-bg: rgba(100, 255, 218, 0.1);
-    
     /* Urgency CTA Colors (Requirements 22.4) */
-    --cta-urgency-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
     --cta-urgency-gradient-hover: linear-gradient(135deg, #FF8C00 0%, #FFA500 50%, #FFD700 100%);
-    --cta-urgency-text: #0A192F;
+    --cta-urgency-text: var(--secondary-color);
     
     /* Trust CTA Colors (Requirements 22.5) */
-    --cta-trust-gradient: linear-gradient(135deg, #38A169 0%, #2F855A 100%);
     --cta-trust-gradient-hover: linear-gradient(135deg, #2F855A 0%, #38A169 100%);
     
     /* CTA Sizing */

@@ -1,12 +1,16 @@
+/*
+ * BrightAI AI Agent - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
+
+/* AI Agent-specific variable mappings */
 :root {
-    --primary-color: #1E3A8A; /* أزرق داكن أكثر عمقاً */
-    --background-dark: #0B172A; /* خلفية أغمق قليلاً */
-    --accent-color: #38BDF8; /* أزرق فاتح أكثر حيوية */
-    --text-primary: #F3F4F6; /* أبيض أكثر نقاءً */
-    --text-secondary: #9CA3AF; /* رمادي فاتح أكثر تميزاً */
-    --accent-secondary: #EF4444; /* أحمر أكثر جاذبية */
-    --light-bg: #FAFAFA; /* خلفية فاتحة أكثر نقاءً */
-    --card-bg: rgba(17, 24, 39, 0.8); /* كروت أغمق قليلاً */
+    --background-dark: var(--background-color);
+    --text-primary: var(--heading-color);
+    --text-secondary: var(--text-color);
+    --accent-secondary: var(--error-color);
+    --light-bg: #FAFAFA;
 }
 
 /* عامة */

@@ -1,3 +1,9 @@
+/*
+ * BrightAI Background - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
+
 #chart-container {
     position: absolute;
     top: 0;

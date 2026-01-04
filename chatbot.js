@@ -481,15 +481,21 @@ class BrightAIChatbot {
    * @returns {string}
    */
   generateId() {
-    return `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `msg_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   }
 
   /**
    * Escape HTML to prevent XSS
+   * Uses centralized utility if available
    * @param {string} text
    * @returns {string}
    */
   escapeHtml(text) {
+    // Use centralized utility if available
+    if (window.BrightAIUtils?.escapeHtml) {
+      return window.BrightAIUtils.escapeHtml(text);
+    }
+    // Fallback implementation
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;

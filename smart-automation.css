@@ -1,10 +1,13 @@
+/*
+ * BrightAI Smart Automation - Stylesheet
+ * Imports centralized design tokens
+ */
+@import url('css/design-tokens.css');
+
+/* Smart Automation-specific variable mappings */
 :root {
-    --primary-color: #0A192F;
-    --secondary-color: #64FFDA;
-    --text-color: #FFFFFF;
-    --subtext-color: #8892B0;
-    --background-color: #1D2B3A;
-    --card-background: #1D2B3A;
+    --subtext-color: var(--text-color);
+    --card-background: var(--card-bg);
 }
 
 /* إعدادات أساسية */
