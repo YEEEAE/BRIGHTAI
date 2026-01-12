@@ -3,11 +3,7 @@
  * Generates a summary of the provided text using Gemini API
  */
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const { config } = require('../config');
-
-// Initialize Gemini API
-const genAI = new GoogleGenerativeAI(config.ai.geminiApiKey);
+const { config, isApiKeyConfigured } = require('../config');
 
 /**
  * Handle summary requests
@@ -16,14 +12,22 @@ const genAI = new GoogleGenerativeAI(config.ai.geminiApiKey);
  */
 async function summaryHandler(req, res) {
     try {
+        // Check if API key is configured
+        if (!isApiKeyConfigured()) {
+            return res.status(503).json({ 
+                error: 'خدمة الذكاء الاصطناعي غير متاحة حالياً',
+                errorCode: 'API_NOT_CONFIGURED'
+            });
+        }
+
         const { text, url } = req.body;
 
         if (!text && !url) {
             return res.status(400).json({ error: 'Text or URL is required' });
         }
 
-        // Initialize model
-        const model = genAI.getGenerativeModel({ model: config.ai.model || 'gemini-pro' });
+        // Use fetch-based API call like chat.js
+        const apiUrl = `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`;
 
         // Construct prompt
         const prompt = `
@@ -35,10 +39,35 @@ async function summaryHandler(req, res) {
       ${text ? text.substring(0, 5000) : 'No text provided'}
     `;
 
-        // Generate content
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const summary = response.text();
+        // Generate content using fetch
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    role: 'user',
+                    parts: [{ text: prompt }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 1024
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
+            throw new Error('Invalid API response format');
+        }
+
+        const summary = data.candidates[0].content.parts[0].text;
 
         return res.status(200).json({
             summary,
@@ -48,7 +77,7 @@ async function summaryHandler(req, res) {
     } catch (error) {
         console.error('[AI Summary] Error:', error);
         return res.status(500).json({
-            error: 'Failed to generate summary',
+            error: 'فشل في إنشاء الملخص',
             details: error.message
         });
     }

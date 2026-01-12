@@ -91,9 +91,13 @@ function getRemainingRequests(ip) {
  * @param {Function} next - Next middleware
  */
 function rateLimiterMiddleware(req, res, next) {
-  // Get client IP (handle proxies)
-  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || 
+  // Get client IP (handle proxies and different request formats)
+  const headers = req.headers || {};
+  const forwardedFor = headers['x-forwarded-for'];
+  
+  const ip = (forwardedFor ? forwardedFor.split(',')[0].trim() : null) || 
              req.connection?.remoteAddress || 
+             req.socket?.remoteAddress ||
              req.ip || 
              'unknown';
   
