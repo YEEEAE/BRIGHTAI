@@ -92,7 +92,7 @@
 .nav-links a {
     display: block;
     padding: 0.5rem 1rem;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 500;
@@ -102,7 +102,7 @@
 
 .nav-links a:hover,
 .nav-links a:focus {
-    color: var(--primary-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     background-color: rgba(100, 255, 218, 0.1);
 }
 
@@ -213,14 +213,14 @@
 }
 
 .footer-section h3 {
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     margin: 0 0 var(--space-sm);
 }
 
 .footer-section p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     margin: 0;
@@ -236,7 +236,7 @@
 }
 
 .footer-links a {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     text-decoration: none;
     font-size: var(--font-size-sm);
     transition: var(--transition-fast);
@@ -263,7 +263,7 @@
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: var(--border-radius-full);
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: 1.1rem;
     transition: var(--transition-fast);
 }
@@ -283,7 +283,7 @@
 }
 
 .footer-bottom p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-sm);
     margin: 0;
 }
@@ -337,13 +337,13 @@
 }
 
 .service-card h3 {
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: var(--font-size-xl);
     margin: 0 0 var(--space-sm);
 }
 
 .service-card p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     margin: 0;
@@ -374,7 +374,7 @@
 }
 
 .stat-card .stat-label {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-sm);
 }
 
@@ -406,7 +406,7 @@
 }
 
 .testimonial-card .testimonial-text {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-base);
     line-height: var(--line-height-relaxed);
     margin-bottom: var(--space-lg);
@@ -420,12 +420,12 @@
 }
 
 .testimonial-card .author-name {
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-weight: var(--font-weight-semibold);
 }
 
 .testimonial-card .author-title {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-sm);
 }
 
@@ -459,13 +459,13 @@
 }
 
 .feature-card h3 {
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: var(--font-size-lg);
     margin: 0 0 var(--space-sm);
 }
 
 .feature-card p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-sm);
     line-height: var(--line-height-relaxed);
     margin: 0;
@@ -482,7 +482,7 @@
 
 .form-group label {
     display: block;
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     margin-bottom: var(--space-sm);
@@ -513,7 +513,7 @@
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     opacity: 0.7;
 }
 
@@ -623,7 +623,7 @@
 }
 
 .modal-header h2 {
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: var(--font-size-xl);
     margin: 0;
 }
@@ -631,7 +631,7 @@
 .modal-close {
     background: transparent;
     border: none;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: 1.5rem;
     cursor: pointer;
     padding: var(--space-sm);
@@ -648,7 +648,7 @@
 }
 
 .modal-body {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     line-height: var(--line-height-relaxed);
 }
 
@@ -725,13 +725,13 @@
 }
 
 .section-header h2 {
-    color: var(--heading-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: var(--font-size-3xl);
     margin: 0 0 var(--space-md);
 }
 
 .section-header p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-size: var(--font-size-lg);
     max-width: 600px;
     margin: 0 auto;

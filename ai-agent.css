@@ -1,14 +1,16 @@
 /*
  * BrightAI AI Agent - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* AI Agent-specific variable mappings */
 :root {
     --background-dark: var(--background-color);
-    --text-primary: var(--heading-color);
-    --text-secondary: var(--text-color);
+    --text-primary: var(--text-on-gradient-primary, #FFFFFF);
+    --text-secondary: var(--text-on-gradient-secondary, #F3F4F6);
     --accent-secondary: var(--error-color);
     --light-bg: #FAFAFA;
 }
@@ -18,7 +20,11 @@ body {
     margin: 0;
     font-family: 'Tajawal', Arial, sans-serif;
     color: var(--text-primary);
-    background-color: var(--background-dark);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
     overflow-x: hidden;
     text-align: right;
     line-height: 1.6;
@@ -111,24 +117,35 @@ nav {
 }
 
 .cta-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 15px 30px;
-    background-color: var(--accent-color);
-    color: var(--background-dark);
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 12px;
     font-weight: bold;
     transition: all 0.3s ease;
     transform: translateZ(50px);
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .cta-button:hover {
-    background-color: var(--primary-color);
-    color: var(--text-primary);
-    transform: scale(1.05) translateZ(50px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px) translateZ(50px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.cta-button:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0) translateZ(50px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* عناوين الأقسام الرئيسية */
@@ -156,23 +173,28 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism Type Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .type-card {
-    background: var(--card-bg);
-    border-radius: 15px;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(56, 189, 248, 0.1);
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .type-card:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-10px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    border-color: var(--accent-color);
 }
 
 .type-card i {
@@ -214,12 +236,16 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism Agent Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .agent-card {
     position: relative;
     height: 400px; /* Fixed height, consider min-height for varying content */
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     transition: all 0.3s ease;
     overflow: hidden;
     display: flex;
@@ -228,13 +254,13 @@ nav {
     align-items: center;
     text-align: center;
     padding: 30px;
-    border: 1px solid rgba(56, 189, 248, 0.1);
 }
 
 .agent-card:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-15px);
-    box-shadow: 0 12px 24px rgba(56, 189, 248, 0.2);
-    border-color: var(--accent-color);
 }
 
 .agent-card h2 { /* This should be h3 semantically if section has H2 */
@@ -291,21 +317,33 @@ nav {
 
 
 .more-details {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px 20px;
-    background-color: var(--accent-color);
-    color: var(--background-dark);
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 12px;
     font-weight: bold;
     transition: all 0.3s ease;
     margin-top: auto; /* Pushes button to bottom */
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .more-details:hover {
-    background-color: var(--primary-color);
-    color: var(--text-primary);
-    transform: scale(1.05);
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.more-details:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* قسم وكلاء الأعمال (Business Agents Section) */
@@ -332,14 +370,17 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism Business Agent Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .business-agent {
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     text-align: right;
     transition: all 0.3s ease;
-    border: 1px solid rgba(56, 189, 248, 0.1);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -368,9 +409,10 @@ nav {
 }
 
 .business-agent:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent-color);
 }
 
 .business-agent:hover img {
@@ -394,14 +436,17 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism Technology Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .technology {
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     text-align: center;
     transition: all 0.3s ease;
-    border: 1px solid rgba(56, 189, 248, 0.1);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -433,9 +478,10 @@ nav {
 }
 
 .technology:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent-color);
 }
 
 /* قسم المزايا (Features Section) */
@@ -452,14 +498,17 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism Feature Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .feature {
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     text-align: right;
     transition: all 0.3s ease;
-    border: 1px solid rgba(56, 189, 248, 0.1);
     height: 100%;
     display: flex; /* For icon and text alignment */
     flex-direction: column; /* Stack icon above text */
@@ -467,9 +516,10 @@ nav {
 }
 
 .feature:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent-color);
 }
 
 .feature i { /* Styling for icons in feature cards */
@@ -505,24 +555,28 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism Testimonial Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .testimonial {
     position: relative;
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     text-align: right;
     transition: all 0.3s ease;
-    border: 1px solid rgba(56, 189, 248, 0.1);
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .testimonial:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent-color);
 }
 
 .testimonial p {
@@ -577,22 +631,34 @@ nav {
 }
 
 .final-cta-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 15px 30px;
-    background-color: var(--accent-secondary);
-    color: var(--text-primary);
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 12px;
     font-weight: bold;
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .final-cta-button:hover {
-    background-color: var(--accent-color);
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.final-cta-button:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* قسم الأسئلة المتكررة (FAQ) */
@@ -609,14 +675,17 @@ nav {
     margin: 0 auto;
 }
 
+/* Glassmorphism FAQ Item Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .faq-item {
-    background-color: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     text-align: right;
     transition: all 0.3s ease;
-    border: 1px solid rgba(56, 189, 248, 0.1);
     height: 100%;
     display: flex; /* For icon and text alignment */
     flex-direction: column;
@@ -624,9 +693,10 @@ nav {
 }
 
 .faq-item:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-10px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-    border-color: var(--accent-color);
 }
 
 .faq-item i { /* Icon for FAQ item */
@@ -665,17 +735,20 @@ nav {
     justify-content: center;
 }
 
+/* Glassmorphism Modal Content Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .modal-content {
     position: relative;
-    background-color: var(--card-bg);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     margin: 50px auto; /* Will be overridden by flex centering if modal.show has display:flex */
     padding: 30px;
     width: 80%;
     max-width: 800px;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
     animation: fadeIn 0.5s ease-in-out;
-    border: 1px solid rgba(56, 189, 248, 0.2);
 }
 
 @keyframes fadeIn {
@@ -739,21 +812,33 @@ nav {
 }
 
 .modal-body a.cta-button { /* Button inside modal */
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 12px 25px;
-    background-color: var(--accent-color);
-    color: var(--background-dark);
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 12px;
     font-weight: bold;
     transition: all 0.3s ease;
     margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .modal-body a.cta-button:hover {
-    background-color: var(--accent-secondary);
-    color: var(--text-primary);
-    transform: scale(1.05);
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.modal-body a.cta-button:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .modal.show {

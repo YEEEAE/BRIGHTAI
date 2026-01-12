@@ -77,6 +77,9 @@
     </script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Unified Gradient CSS -->
+    <link rel="stylesheet" href="css/unified-nav.css">
+    <link rel="stylesheet" href="css/unified-gradient.css">
     <style>
           /* General Styles */
         body {
@@ -84,8 +87,11 @@
             margin: 0;
            padding: 0;
              line-height: 1.8;
-            background-color: #f4f4f4;
-            color: #333;
+            /* Unified Gradient Background */
+            background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+            background-attachment: fixed;
+            background-size: cover;
+            color: var(--text-on-gradient-primary, #FFFFFF);
            display: flex;
             flex-direction: column;
             align-items: center;
@@ -95,10 +101,14 @@
         .container {
             max-width: 1000px;
            margin: 20px;
-           background-color: #fff;
+           /* Glassmorphism Effect */
+           background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+           backdrop-filter: blur(var(--glass-blur-unified, 10px));
+           -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+           border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
             padding: 30px;
-           border-radius: 15px;
-           box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+           border-radius: var(--glass-radius-unified, 16px);
+           box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
              transform-style: preserve-3d;
               transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -107,22 +117,22 @@
              box-shadow: 0 10px 25px rgba(0,0,0,0.25);
           }
         h1 {
-            color: #2c3e50;
+            color: var(--text-on-gradient-primary, #FFFFFF);
             text-align: center;
              margin-bottom: 30px;
             font-size: 2.8em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
            h2 {
-             color: #2c3e50;
-            border-bottom: 2px solid #ddd;
+             color: var(--text-on-gradient-primary, #FFFFFF);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
              padding-bottom: 10px;
            margin-bottom: 25px;
             font-size: 2.2em;
             text-align: right;
         }
          h3 {
-          color: #2c3e50;
+          color: var(--text-on-gradient-primary, #FFFFFF);
            text-align: right;
              margin-bottom: 15px;
              font-size: 1.8em;
@@ -133,15 +143,16 @@
         .article-content p {
              text-align: right;
            margin-bottom: 20px;
-             color: #555;
+             color: var(--text-on-gradient-secondary, #F3F4F6);
             line-height: 1.9;
         }
        .date {
-           color: #777;
+           color: var(--text-on-gradient-secondary, #F3F4F6);
              font-size: 0.9em;
             margin-bottom: 10px;
               text-align: right;
              padding-right: 10px;
+             opacity: 0.8;
         }
          /* Navigation Bar */
          nav {
@@ -267,20 +278,93 @@
     </style>
 </head>
 <body>
-    <!-- أضف شعار Gemini هنا إن رغبت -->
-    <!-- <img src="Gemini.png" alt="Gemini" style="width: 60px; height: 60px; border-radius: 50%; object-fit: contain; margin-bottom: 10px;"> -->
-    <nav>
-        <ul class="navbar">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="consultation.html">استشارات</a></li>
-            <li><a href="smart-automation.html">الأتمتة الذكية</a></li>
-            <li><a href="data-analysis.html">تحليل البيانات</a></li>
-            <li><a href="blog.html">مدونة</a></li>
-            <li><a href="our-products.html">منتجاتنا</a></li>
-            <li><a href="tools.html">الادوات</a></li>
-            <li><a href="Company performance monitoring tool.html">نظام مراقبة أداء الشركة و بقية الانظمة</a></li>
-        </ul>
+    <!-- Unified Navigation JS -->
+    <script src="js/unified-nav.js" defer></script>
+    
+    <!-- التنقل الموحد الجديد -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
+            </a>
+            
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
+                
+                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أنظمة ذكية مؤسسية متكاملة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي متكامل</a></li>
+                        <li role="none"><a role="menuitem" href="health-bright.html">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: خدمات ذكية -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        خدمات ذكية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: بوابة المعرفة -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
+                        <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: أدوات ذكية مجانية -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أدوات ذكية مجانية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="tools.html">أدوات ذكية مجانية</a></li>
+                        <li role="none"><a role="menuitem" href="h/index.html">نماذج AI تجريبية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </nav>
+    <div class="nav-overlay" aria-hidden="true"></div>
     
     <!-- Breadcrumb Navigation -->
     <nav class="breadcrumb-nav" aria-label="مسار التنقل" style="background: rgba(52, 73, 94, 0.9); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.1);">

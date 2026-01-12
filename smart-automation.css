@@ -1,12 +1,14 @@
 /*
  * BrightAI Smart Automation - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* Smart Automation-specific variable mappings */
 :root {
-    --subtext-color: var(--text-color);
+    --subtext-color: var(--text-on-gradient-secondary, #F3F4F6);
     --card-background: var(--card-bg);
 }
 
@@ -15,18 +17,22 @@ body {
     margin: 0;
     font-family: 'Cairo', sans-serif;
     direction: rtl;
-    background-color: var(--primary-color);
-    color: var(--text-color);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--text-on-gradient-primary, #FFFFFF);
     line-height: 1.6;
 }
 
 h2, h3 {
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
 }
 
 a {
     text-decoration: none;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     transition: color 0.3s ease;
 }
 
@@ -98,17 +104,31 @@ a:hover {
 }
 
 .hero .button {
-    display: inline-block;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     padding: 15px 30px;
-    border-radius: 5px;
+    border-radius: 12px;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .hero .button:hover {
-    background-color: #004a94;
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.hero .button:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* الأقسام */
@@ -130,29 +150,39 @@ section > h2 {
     flex-wrap: wrap;
 }
 
+/* Glassmorphism Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .card {
-    background: var(--card-background);
-    border: 1px solid var(--secondary-color);
-    border-radius: 10px;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     width: 320px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.3s ease;
 }
 
 .card:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-5px);
 }
 
 .card h3 {
-    color: #ffffff;
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 15px;
     font-size: 1.4em;
 }
 
+.card p {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+}
+
 .card i {
     font-size: 2.5em;
-    color: var(--secondary-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 20px;
 }
 
@@ -168,11 +198,23 @@ section > h2 {
     margin-top: 40px;
 }
 
+/* Glassmorphism Item Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .item {
     padding: 25px;
-    background-color: var(--card-background);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
+    transform: translateY(-3px);
 }
 
 .item i {
@@ -194,12 +236,24 @@ section > h2 {
     margin-top: 30px;
 }
 
+/* Glassmorphism Example Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .application-examples .example {
-    background-color: var(--card-background);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #eee;
     text-align: right;
+    transition: all 0.3s ease;
+}
+
+.application-examples .example:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
+    transform: translateY(-3px);
 }
 
 .application-examples h3 {
@@ -256,17 +310,31 @@ section > h2 {
 }
 
 .getting-started .button {
-    display: inline-block;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     padding: 15px 30px;
-    border-radius: 5px;
+    border-radius: 12px;
     font-weight: bold;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .getting-started .button:hover {
-    background-color: #004a94;
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.getting-started .button:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* قسم الأهمية */

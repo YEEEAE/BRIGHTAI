@@ -1,0 +1,781 @@
+/**
+ * BrightAI Unified Background Gradient System
+ * Version: 1.0.0
+ * 
+ * This file provides:
+ * - Unified gradient background for all pages
+ * - Primary and secondary button styles
+ * - Glassmorphism box/card styles
+ * - Text colors optimized for gradient backgrounds
+ * 
+ * Requirements: 1.1, 1.2, 1.3, 1.4, 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 7.3, 7.4, 7.6
+ * 
+ * Usage: @import url('css/unified-gradient.css');
+ */
+
+/* ==========================================================================
+   1. CSS Variables for Unified Gradient Theme
+   ========================================================================== */
+
+:root {
+    /* Gradient Colors */
+    --gradient-start: #EC4899;
+    --gradient-middle: #8B5CF6;
+    --gradient-end: #6366F1;
+    --main-gradient: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+    
+    /* Fallback color for older browsers */
+    --gradient-fallback: #8B5CF6;
+    
+    /* Text Colors for Gradient Backgrounds */
+    --text-on-gradient-primary: #FFFFFF;
+    --text-on-gradient-secondary: #F3F4F6;
+    
+    /* Button Colors */
+    --btn-primary-bg: #FFFFFF;
+    --btn-primary-text: #8B5CF6;
+    --btn-primary-hover-shadow: rgba(139, 92, 246, 0.3);
+    --btn-secondary-bg: transparent;
+    --btn-secondary-border: #FFFFFF;
+    --btn-secondary-text: #FFFFFF;
+    --btn-secondary-hover-bg: rgba(255, 255, 255, 0.1);
+    
+    /* Glassmorphism Effect */
+    --glass-bg-unified: rgba(255, 255, 255, 0.15);
+    --glass-bg-unified-hover: rgba(255, 255, 255, 0.2);
+    --glass-border-unified: rgba(255, 255, 255, 0.2);
+    --glass-border-unified-hover: rgba(255, 255, 255, 0.3);
+    --glass-blur-unified: 10px;
+    --glass-radius-unified: 16px;
+    --glass-shadow-unified: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --glass-shadow-unified-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+    
+    /* Button Styling */
+    --btn-radius: 12px;
+    --btn-padding: 12px 24px;
+    --btn-font-weight: 600;
+    --btn-transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   2. Body Gradient Background
+   Requirements: 1.1, 1.2, 1.3, 1.4
+   ========================================================================== */
+
+body.gradient-bg {
+    /* Fallback for older browsers */
+    background-color: var(--gradient-fallback);
+    
+    /* Main gradient */
+    background: var(--main-gradient);
+    background-attachment: fixed;
+    background-size: cover;
+    min-height: 100vh;
+    
+    /* Text color for readability */
+    color: var(--text-on-gradient-primary);
+}
+
+/* Alternative class for applying gradient to any element */
+.unified-gradient-bg {
+    background-color: var(--gradient-fallback);
+    background: var(--main-gradient);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* ==========================================================================
+   3. Primary Button Styles
+   Requirements: 6.1, 6.2, 6.4, 6.5
+   ========================================================================== */
+
+/* Base button reset and common styles */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-gradient-primary,
+.btn-gradient-secondary,
+.unified-btn-primary,
+.unified-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: 'Tajawal', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: var(--btn-font-weight, 600);
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--btn-radius, 12px);
+    cursor: pointer;
+    transition: var(--btn-transition, all 0.3s ease);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    /* Touch target minimum for accessibility */
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Primary Button - White background with purple text */
+.btn-primary,
+.btn-gradient-primary,
+.unified-btn-primary {
+    background: var(--btn-primary-bg, #FFFFFF);
+    color: var(--btn-primary-text, #8B5CF6);
+    border: none;
+    padding: var(--btn-padding, 12px 24px);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+/* Primary Button Hover Effect - Requirements 6.2 */
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-gradient-primary:hover,
+.btn-gradient-primary:focus,
+.unified-btn-primary:hover,
+.unified-btn-primary:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--btn-primary-hover-shadow, rgba(139, 92, 246, 0.3));
+    color: var(--btn-primary-text, #8B5CF6);
+    text-decoration: none;
+    background: var(--btn-primary-bg, #FFFFFF);
+}
+
+/* Primary Button Active Effect - Requirements 6.5 */
+.btn-primary:active,
+.btn-gradient-primary:active,
+.unified-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px var(--btn-primary-hover-shadow, rgba(139, 92, 246, 0.3));
+}
+
+/* Focus visible for accessibility */
+.btn-primary:focus-visible,
+.btn-gradient-primary:focus-visible,
+.unified-btn-primary:focus-visible {
+    outline: 3px solid var(--btn-primary-text, #8B5CF6);
+    outline-offset: 2px;
+}
+
+/* Ripple effect for primary button */
+.btn-primary::after,
+.btn-gradient-primary::after,
+.unified-btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-primary:active::after,
+.btn-gradient-primary:active::after,
+.unified-btn-primary:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* ==========================================================================
+   4. Secondary Button Styles
+   Requirements: 6.3, 6.4, 6.5
+   ========================================================================== */
+
+/* Secondary Button - Transparent with white border */
+.btn-secondary,
+.btn-gradient-secondary,
+.unified-btn-secondary {
+    background: var(--btn-secondary-bg, transparent);
+    color: var(--btn-secondary-text, #FFFFFF);
+    border: 2px solid var(--btn-secondary-border, #FFFFFF);
+    padding: calc(var(--btn-padding, 12px 24px) - 2px) calc(24px - 2px);
+    padding: 10px 22px;
+}
+
+/* Secondary Button Hover Effect - Requirements 6.2 */
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-gradient-secondary:hover,
+.btn-gradient-secondary:focus,
+.unified-btn-secondary:hover,
+.unified-btn-secondary:focus {
+    background: var(--btn-secondary-hover-bg, rgba(255, 255, 255, 0.1));
+    color: var(--btn-secondary-text, #FFFFFF);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Secondary Button Active Effect - Requirements 6.5 */
+.btn-secondary:active,
+.btn-gradient-secondary:active,
+.unified-btn-secondary:active {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(0);
+}
+
+/* Focus visible for accessibility */
+.btn-secondary:focus-visible,
+.btn-gradient-secondary:focus-visible,
+.unified-btn-secondary:focus-visible {
+    outline: 3px solid var(--btn-secondary-text, #FFFFFF);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   4.1 Button Size Variants
+   ========================================================================== */
+
+/* Small button */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    min-height: 36px;
+}
+
+/* Large button */
+.btn-lg {
+    padding: 16px 32px;
+    font-size: 1.125rem;
+}
+
+/* Extra large button */
+.btn-xl {
+    padding: 20px 40px;
+    font-size: 1.25rem;
+}
+
+/* Full width button */
+.btn-full,
+.btn-block {
+    width: 100%;
+}
+
+/* ==========================================================================
+   4.2 Button with Icons
+   ========================================================================== */
+
+.btn i,
+.btn svg,
+.btn-primary i,
+.btn-primary svg,
+.btn-secondary i,
+.btn-secondary svg {
+    transition: transform 0.3s ease;
+}
+
+.btn:hover i,
+.btn:hover svg,
+.btn-primary:hover i,
+.btn-primary:hover svg,
+.btn-secondary:hover i,
+.btn-secondary:hover svg {
+    transform: translateX(-3px);
+}
+
+/* RTL support for icon animation */
+[dir="rtl"] .btn:hover i,
+[dir="rtl"] .btn:hover svg,
+[dir="rtl"] .btn-primary:hover i,
+[dir="rtl"] .btn-primary:hover svg,
+[dir="rtl"] .btn-secondary:hover i,
+[dir="rtl"] .btn-secondary:hover svg {
+    transform: translateX(3px);
+}
+
+/* ==========================================================================
+   4.3 Button Group
+   ========================================================================== */
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-group-center {
+    justify-content: center;
+}
+
+.btn-group-start {
+    justify-content: flex-start;
+}
+
+.btn-group-end {
+    justify-content: flex-end;
+}
+
+/* ==========================================================================
+   4.4 Disabled Button State
+   ========================================================================== */
+
+.btn:disabled,
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-gradient-primary:disabled,
+.btn-gradient-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn:disabled:hover,
+.btn-primary:disabled:hover,
+.btn-secondary:disabled:hover {
+    transform: none !important;
+}
+
+/* ==========================================================================
+   5. Glassmorphism Box/Card Styles
+   Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6
+   ========================================================================== */
+
+.glass-box,
+.unified-glass-card {
+    background: var(--glass-bg-unified);
+    backdrop-filter: blur(var(--glass-blur-unified));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified));
+    border: 1px solid var(--glass-border-unified);
+    border-radius: var(--glass-radius-unified);
+    box-shadow: var(--glass-shadow-unified);
+    padding: 24px;
+    transition: var(--btn-transition);
+}
+
+.glass-box:hover,
+.unified-glass-card:hover {
+    background: var(--glass-bg-unified-hover);
+    border-color: var(--glass-border-unified-hover);
+    box-shadow: var(--glass-shadow-unified-hover);
+    transform: translateY(-2px);
+}
+
+/* Glass box without hover effects */
+.glass-box-static,
+.unified-glass-card-static {
+    background: var(--glass-bg-unified);
+    backdrop-filter: blur(var(--glass-blur-unified));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified));
+    border: 1px solid var(--glass-border-unified);
+    border-radius: var(--glass-radius-unified);
+    box-shadow: var(--glass-shadow-unified);
+    padding: 24px;
+}
+
+/* ==========================================================================
+   6. Text Styles for Gradient Backgrounds
+   Requirements: 2.1, 2.2, 2.3, 2.4
+   ========================================================================== */
+
+/* 
+ * Global text color overrides for gradient backgrounds
+ * Ensures all text is white (#FFFFFF) or light gray (#F3F4F6) for readability
+ */
+
+/* Headings - Primary white color for maximum contrast */
+.gradient-bg h1,
+.gradient-bg h2,
+.gradient-bg h3,
+.gradient-bg h4,
+.gradient-bg h5,
+.gradient-bg h6,
+.unified-gradient-bg h1,
+.unified-gradient-bg h2,
+.unified-gradient-bg h3,
+.unified-gradient-bg h4,
+.unified-gradient-bg h5,
+.unified-gradient-bg h6,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+    color: var(--text-on-gradient-primary, #FFFFFF);
+}
+
+/* Body text - Light gray for comfortable reading */
+.gradient-bg p,
+.gradient-bg span,
+.gradient-bg li,
+.gradient-bg label,
+.gradient-bg figcaption,
+.unified-gradient-bg p,
+.unified-gradient-bg span,
+.unified-gradient-bg li,
+.unified-gradient-bg label,
+.unified-gradient-bg figcaption,
+body p,
+body span:not(.stat-value):not(.stat-number):not(.stat-counter),
+body li,
+body label,
+body figcaption {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+}
+
+/* Ensure links are visible on gradient */
+.gradient-bg a,
+.unified-gradient-bg a,
+body a:not(.cta-button):not(.btn):not(.btn-gradient-primary):not(.btn-gradient-secondary) {
+    color: var(--text-on-gradient-primary, #FFFFFF);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.3s ease;
+}
+
+.gradient-bg a:hover,
+.unified-gradient-bg a:hover,
+body a:not(.cta-button):not(.btn):not(.btn-gradient-primary):not(.btn-gradient-secondary):hover {
+    text-decoration-color: var(--text-on-gradient-primary, #FFFFFF);
+    color: var(--text-on-gradient-primary, #FFFFFF);
+}
+
+/* Section titles and descriptions */
+.section-title,
+.section-header h2,
+.section-header h3 {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.section-description,
+.section-header p {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Mini titles and subtitles */
+.section-mini-title,
+.hero-mini-title {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+    opacity: 0.9;
+}
+
+/* Hero section text */
+.hero h1,
+.hero h2,
+.hero-title {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.hero p,
+.hero-description {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+    opacity: 0.95;
+}
+
+/* Card content - text inside glass cards should also be readable */
+.glass-box h1,
+.glass-box h2,
+.glass-box h3,
+.glass-box h4,
+.glass-box h5,
+.glass-box h6,
+.unified-glass-card h1,
+.unified-glass-card h2,
+.unified-glass-card h3,
+.unified-glass-card h4,
+.unified-glass-card h5,
+.unified-glass-card h6,
+.glass-card h1,
+.glass-card h2,
+.glass-card h3,
+.glass-card h4,
+.glass-card h5,
+.glass-card h6 {
+    color: var(--text-on-gradient-primary, #FFFFFF);
+}
+
+.glass-box p,
+.glass-box span,
+.glass-box li,
+.unified-glass-card p,
+.unified-glass-card span,
+.unified-glass-card li,
+.glass-card p,
+.glass-card span,
+.glass-card li {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+}
+
+/* Service cards and feature cards text */
+.service-card h3,
+.service-title,
+.feature-item h3,
+.feature-card h3,
+.tech-card h3,
+.demo-feature h3 {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.service-card p,
+.service-description,
+.feature-item p,
+.feature-card p,
+.tech-card p,
+.demo-feature p {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Case study cards */
+.case-title,
+.case-card h3 {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.case-description,
+.case-card p {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Stat labels */
+.stat-label {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Team member captions */
+.team-member figcaption {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Footer text */
+.footer h3,
+.footer-section h3 {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.footer p,
+.footer-section p,
+.footer-links a,
+.footer-bottom p {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Navigation links */
+.nav-links a {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+}
+
+.nav-links a:hover,
+.nav-links a:focus,
+.nav-links a.active {
+    color: var(--text-on-gradient-primary, #FFFFFF);
+}
+
+/* Form labels and text */
+.form-group label {
+    color: var(--text-on-gradient-primary, #FFFFFF);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+    opacity: 0.7;
+}
+
+/* Modal text */
+.modal-header h2 {
+    color: var(--text-on-gradient-primary, #FFFFFF);
+}
+
+.modal-body,
+.modal-body p {
+    color: var(--text-on-gradient-secondary, #F3F4F6);
+}
+
+/* Testimonial text */
+.testimonial-card .testimonial-text {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+.testimonial-card .author-name {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.testimonial-card .author-title {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Implementation details */
+.implementation-details h4 {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.implementation-details ul li {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* Metric labels */
+.metric .label {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* About section */
+.main-description {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+.main-description strong {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.vision h3,
+.mission h3 {
+    color: var(--text-on-gradient-primary, #FFFFFF) !important;
+}
+
+.vision p,
+.mission p {
+    color: var(--text-on-gradient-secondary, #F3F4F6) !important;
+}
+
+/* ==========================================================================
+   7. Utility Classes
+   ========================================================================== */
+
+/* Apply gradient as text color */
+.text-gradient {
+    background: var(--main-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* White text utility */
+.text-white {
+    color: var(--text-on-gradient-primary) !important;
+}
+
+/* Light gray text utility */
+.text-light {
+    color: var(--text-on-gradient-secondary) !important;
+}
+
+/* ==========================================================================
+   8. Reduced Motion Support
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-gradient-primary,
+    .btn-gradient-secondary,
+    .unified-btn-primary,
+    .unified-btn-secondary,
+    .glass-box,
+    .unified-glass-card {
+        transition: none;
+    }
+    
+    .btn:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-gradient-primary:hover,
+    .btn-gradient-secondary:hover,
+    .unified-btn-primary:hover,
+    .unified-btn-secondary:hover,
+    .glass-box:hover,
+    .unified-glass-card:hover {
+        transform: none;
+    }
+    
+    .btn::after,
+    .btn-primary::after,
+    .btn-gradient-primary::after,
+    .unified-btn-primary::after {
+        display: none;
+    }
+}
+
+/* ==========================================================================
+   9. Fallback for browsers without backdrop-filter support
+   ========================================================================== */
+
+@supports not (backdrop-filter: blur(10px)) {
+    .glass-box,
+    .unified-glass-card,
+    .glass-box-static,
+    .unified-glass-card-static {
+        background: rgba(255, 255, 255, 0.25);
+    }
+}
+
+/* ==========================================================================
+   10. Responsive Button Styles
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-gradient-primary,
+    .btn-gradient-secondary,
+    .unified-btn-primary,
+    .unified-btn-secondary {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+        /* Ensure touch target on mobile */
+        min-height: 48px;
+    }
+    
+    .btn-lg {
+        padding: 14px 28px;
+        font-size: 1rem;
+    }
+    
+    .btn-xl {
+        padding: 16px 32px;
+        font-size: 1.1rem;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-group .btn,
+    .btn-group .btn-primary,
+    .btn-group .btn-secondary {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-gradient-primary,
+    .btn-gradient-secondary,
+    .unified-btn-primary,
+    .unified-btn-secondary {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ==========================================================================
+   11. Print Styles for Buttons
+   ========================================================================== */
+
+@media print {
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-gradient-primary,
+    .btn-gradient-secondary,
+    .unified-btn-primary,
+    .unified-btn-secondary {
+        background: none !important;
+        color: #000 !important;
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+    }
+}

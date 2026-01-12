@@ -1,14 +1,16 @@
 /*
  * BrightAI Docs - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* Docs-specific variable mappings (using design system tokens) */
 :root {
     --background-dark: var(--background-color);
-    --text-primary: var(--heading-color);
-    --text-secondary: var(--text-color);
+    --text-primary: var(--text-on-gradient-primary, #FFFFFF);
+    --text-secondary: var(--text-on-gradient-secondary, #F3F4F6);
     --accent-secondary: var(--error-color);
     --light-bg: #FAFAFA;
 }
@@ -21,7 +23,11 @@
 }
 
 body {
-    background-color: var(--background-dark);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
     color: var(--text-primary);
     line-height: 1.6;
     direction: rtl;

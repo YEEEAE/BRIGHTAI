@@ -17,14 +17,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
     <meta name="keywords" content="ذكاء اصطناعي, تقنية, مدونة, Bright AI">
-    <link rel="icon" href="https://d.top4top.io/p_33354e90u1.png" type="image/png">
+    <link rel="icon" type="image/png" href="Gemini.png">
+    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
     <link rel="stylesheet" href="blog.css">
+    <link rel="stylesheet" href="css/unified-nav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة</title>
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
     <link rel="canonical" href="https://brightai.site/blog.html">
     <meta property="og:title" content="مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
     <meta property="og:description" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
@@ -98,25 +98,98 @@
         <div class="spinner"></div>
     </div>
 
+    <!-- Unified Navigation JS -->
+    <script src="js/unified-nav.js" defer></script>
+    
+    <!-- التنقل الموحد الجديد -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
+            </a>
+            
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
+                
+                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أنظمة ذكية مؤسسية متكاملة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي متكامل</a></li>
+                        <li role="none"><a role="menuitem" href="health-bright.html">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: خدمات ذكية -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        خدمات ذكية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: بوابة المعرفة -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
+                        <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: أدوات ذكية مجانية -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أدوات ذكية مجانية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="tools.html">أدوات ذكية مجانية</a></li>
+                        <li role="none"><a role="menuitem" href="h/index.html">نماذج AI تجريبية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="nav-overlay" aria-hidden="true"></div>
+
     <!-- Header -->
-    <header class="header">
+    <header class="header" style="margin-top: 72px;">
         <h1><i class="fas fa-lightbulb"></i> مدونة Bright AI</h1>
     </header>
-
-    <!-- Navigation Bar -->
-    <nav>
-        <ul class="navbar">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
-            <li><a href="smart-automation.html">أتمتة العمليات بالذكاء الاصطناعي</a></li>
-            <li><a href="data-analysis.html">تحليل البيانات باستخدام الذكاء الاصطناعي</a></li>
-            <li><a href="ai-agent.html">وكيل الذكاء الإصطناعي</a></li>
-            <li><a href="our-products.html">عرض للخدمات</a></li>
-            <li><a href="blog.html" class="active">مكتبة رقمية للذكاء الاصطناعي</a></li>
-            <li><a href="tools.html">أدوات الذكاء الاصطناعي</a></li>
-            <li><a href="Docs.html">Docs</a></li>
-        </ul>
-    </nav>
 
     <!-- Breadcrumb Navigation -->
     <nav class="breadcrumb-nav" aria-label="مسار التنقل" style="background: rgba(17, 34, 64, 0.8); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; border-bottom: 1px solid rgba(100, 255, 218, 0.1);">

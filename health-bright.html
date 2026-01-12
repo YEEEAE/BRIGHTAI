@@ -23,6 +23,10 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <link rel="canonical" href="https://brightai.site/health-bright.html" />
   
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="Gemini.png">
+  <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
+  
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Bright AI - حلول الذكاء الاصطناعي الطبية المتقدمة في السعودية" />
@@ -317,34 +321,58 @@
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ar_SA">
     <meta property="og:site_name" content="مُشرقة AI">
+    <link rel="stylesheet" href="css/unified-nav.css">
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <h1>Bright AI</h1>
+  <!-- Unified Navigation JS -->
+  <script src="js/unified-nav.js" defer></script>
+  
+  <!-- التنقل الموحد -->
+  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+      <div class="nav-container">
+          <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+              <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
+          </a>
+          <button class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+          </button>
+          <ul class="nav-links" id="nav-links-list" role="menubar">
+              <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
+              <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
+              <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+              <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+              <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+              <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
+              <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
+              <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+              <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
+              <li class="nav-dropdown" role="none">
+                  <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                      أنظمة ذكية بالكامل لأقسام شركتك
+                      <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                      <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي متكامل</a></li>
+                      <li role="none"><a role="menuitem" href="health-bright.html" class="active">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
+                  </ul>
+              </li>
+              <li class="nav-dropdown" role="none">
+                  <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                      أدوات ذكية مجانية
+                      <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                      <li role="none"><a role="menuitem" href="tools.html">أدوات ذكية مجانية</a></li>
+                      <li role="none"><a role="menuitem" href="h/index.html">نماذج AI تجريبية</a></li>
+                      <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
+                  </ul>
+              </li>
+          </ul>
       </div>
-        <nav class="navbar" aria-label="القائمة الرئيسية لموقع مُشرقة AI لخدمات الذكاء الاصطناعي والروبوتات في السعودية">
-            <div class="navbar-container">
-                <button class="hamburger" aria-label="فتح قائمة التنقل" aria-expanded="false" aria-controls="nav-links-list" type="button">
-                    <span>☰</span>
-                    <span class="sr-only">فتح القائمة</span>
-                </button>
-                <ul class="nav-links" id="nav-links-list" role="menubar" aria-label="روابط التنقل الرئيسية">
-                    <li role="none"><a role="menuitem" href="#home">الرئيسية</a></li>
-                    <li role="none"><a role="menuitem" href="#services">خدمات الذكاء الاصطناعي</a></li>
-                    <li role="none"><a role="menuitem" href="#stats">الإحصائيات</a></li>
-                    <li role="none"><a role="menuitem" href="#try">تجربة الأنظمة</a></li>
-                    <li role="none"><a role="menuitem" href="#testimonials">آراء العملاء</a></li>
-                    <li role="none"><a role="menuitem" href="#why">لماذا نحن</a></li>
-                    <li role="none"><a role="menuitem" href="#faq">الأسئلة الشائعة</a></li>
-                    <li role="none"><a role="menuitem" href="#contact">تواصل معنا</a></li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-  </header>
+  </nav>
+  <div class="nav-overlay" aria-hidden="true"></div>
 
   <!-- Breadcrumb Navigation -->
   <nav class="breadcrumb-nav" aria-label="مسار التنقل" style="background: rgba(17, 34, 64, 0.8); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; margin-top: 68px; border-bottom: 1px solid var(--border);">

@@ -1,12 +1,14 @@
 /*
  * BrightAI Data Analysis - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* Data Analysis-specific variable mappings */
 :root {
-    --subtext-color: var(--text-color);
+    --subtext-color: var(--text-on-gradient-secondary, #F3F4F6);
     --card-background: var(--card-bg);
     --saudi-green: #006C35;
     --saudi-accent: #149B0F;
@@ -17,13 +19,17 @@ body {
     font-family: 'Cairo', 'Tajawal', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--text-on-gradient-primary, #FFFFFF);
     line-height: 1.8;
 }
 
 h1, h2, h3 {
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
 }
 
 a {
@@ -38,7 +44,7 @@ a:hover {
 /* الهيدر */
 header {
     background: linear-gradient(to right, var(--saudi-green), var(--primary-color));
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     text-align: center;
     padding: 50px 20px;
 }
@@ -84,7 +90,7 @@ section h2::after {
 section p {
     margin-bottom: 20px;
     font-size: 1.1em;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
 }
 
 /* قائمة الخدمات */
@@ -103,7 +109,7 @@ section p {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     border-bottom: 3px solid transparent;
 }
 
@@ -158,7 +164,7 @@ section p {
     width: calc(30% - 20px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     border-right: 4px solid var(--saudi-green);
 }
 
@@ -176,7 +182,7 @@ section p {
 /* القسم الختامي */
 footer {
     background: var(--card-background);
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     text-align: center;
     padding: 20px;
 }
@@ -193,16 +199,7 @@ footer a:hover {
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
 
-/* General Styles with Saudi market focus */
-body {
-    font-family: 'Cairo', 'Tajawal', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.6;
-    direction: rtl;
-}
+/* General Styles with Saudi market focus - inherits unified gradient from body above */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -275,7 +272,7 @@ nav {
 
 .header h1 {
     font-size: 2.5em;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 20px;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
@@ -308,7 +305,7 @@ nav {
     color: var(--secondary-color);
 }
 .service-card p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     line-height: 1.6;
 }
 
@@ -338,7 +335,7 @@ nav {
 .stat-item h4 {
     font-size: 1.2em;
     margin-bottom: 10px;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
 }
 .stat-item p {
     font-size: 1.5em;
@@ -393,7 +390,7 @@ nav {
 
 #ai-automation-importance .importance-card h3 {
     font-size: 1.3em;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 10px;
 }
 
@@ -470,40 +467,61 @@ nav {
     gap: 20px;
     justify-content: center;
 }
+/* Glassmorphism Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .section-3d .card {
-    background: #1D2B3A;
-    border-radius: 8px;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 20px;
     width: calc(30% - 20px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: all 0.3s ease;
+}
+.section-3d .card:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
+    transform: translateY(-5px);
 }
 .section-3d .card h3 {
     font-size: 1.3em;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 10px;
 }
 .section-3d .card p {
     color: var(--subtext-color);
     line-height: 1.6;
 }
+/* Glassmorphism Chart Container Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .section-3d .chart-container {
     width: calc(50% - 20px);
-    background: #1D2B3A;
-    border-radius: 8px;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: all 0.3s ease;
+}
+.section-3d .chart-container:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
 }
 .section-3d .chart-container h3 {
     font-size: 1.3em;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 10px;
 }
 /* Footer */
 footer {
     background: var(--card-background);
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     padding: 30px 20px;
     display: flex;
     justify-content: space-between;
@@ -684,7 +702,7 @@ footer .contact-info a i{
 }
 
 .step p, .type p, .tool p {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     line-height: 1.6;
 }
 

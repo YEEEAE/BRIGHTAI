@@ -1,8 +1,10 @@
 /*
  * BrightAI Sales Pro - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* General Styles */
 body {
@@ -10,8 +12,12 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--text-on-gradient-primary, #FFFFFF);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -177,21 +183,34 @@ th {
     background-color: #f0f0f0;
     font-weight: bold;
 }
+/* Button - Updated to unified gradient theme - Requirements 6.1, 6.4 */
 .button {
-     display: inline-flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 0.8rem 1.5rem;
     text-decoration: none;
-    color: white;
-    background-color: #3498db;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    color: #8B5CF6;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
+/* Button Hover - Requirements 6.2 */
 .button:hover {
-    background-color: #2980b9;
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+/* Button Active - Requirements 6.5 */
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 .button i {

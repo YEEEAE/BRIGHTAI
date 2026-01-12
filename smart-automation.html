@@ -108,6 +108,7 @@ crossorigin="anonymous"></script>
     <link rel="canonical" href="https://brightai.site/smart-automation.html">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="smart-automation.css">
+    <link rel="stylesheet" href="css/unified-nav.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
@@ -120,23 +121,63 @@ crossorigin="anonymous"></script>
   <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
   </head>
 <body>
-    <header class="header">
-        <h1>الأتمتة الذكية بالذكاء الاصطناعي</h1>
-        <p>حلول متكاملة لتحسين كفاءة عملك وتحقيق التميز في الإنتاجية</p>
-        <nav>
-            <ul class="navbar">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li><a href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
-            <li><a href="smart-automation.html">أتمتة العمليات بالذكاء الاصطناعي</a></li>
-            <li><a href="data-analysis.html">تحليل البيانات باستخدام الذكاء الاصطناعي</a></li>
-            <li><a href="ai-agent.html">وكيل الذكاء الإصطناعي</a></li>
-            <li><a href="our-products.html">عرض للخدمات</a></li>
-            <li><a href="blog.html">مكتبة رقمية للذكاء الاصطناعي</a></li>
-            <li><a href="tools.html">أدوات الذكاء الاصطناعي</a></li>
-            <li><a href="Docs.html"> Docs</a></li>
+    <!-- Unified Navigation JS -->
+    <script src="js/unified-nav.js" defer></script>
+    
+    <!-- التنقل الموحد الجديد -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
+            </a>
+            
+            <button class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
+                <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
+                <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+                <li role="none"><a role="menuitem" href="smart-automation.html" class="active">الأتمتة الذكية</a></li>
+                <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
+                <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
+                <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
+                
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أنظمة ذكية بالكامل لأقسام شركتك
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي متكامل</a></li>
+                        <li role="none"><a role="menuitem" href="health-bright.html">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أدوات ذكية مجانية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="tools.html">أدوات ذكية مجانية</a></li>
+                        <li role="none"><a role="menuitem" href="h/index.html">نماذج AI تجريبية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
+                    </ul>
+                </li>
             </ul>
-        </nav>
-    </header>
+        </div>
+    </nav>
+    <div class="nav-overlay" aria-hidden="true"></div>
 
     <!-- Breadcrumb Navigation -->
     <nav class="breadcrumb-nav" aria-label="مسار التنقل">
@@ -324,26 +365,26 @@ crossorigin="anonymous"></script>
     </main>
 
     <!-- قسم الخدمات ذات الصلة -->
-    <section class="related-services" style="background: linear-gradient(135deg, #0A192F 0%, #112240 100%); padding: 4rem 2rem;">
+    <section class="related-services" style="background: linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1); padding: 4rem 2rem;">
         <div class="container" style="max-width: 1200px; margin: 0 auto;">
-            <h2 style="color: #64FFDA; text-align: center; margin-bottom: 1rem; font-size: 1.8rem;">خدمات ذات صلة</h2>
-            <p style="color: #8892B0; text-align: center; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">اكتشف المزيد من حلول الذكاء الاصطناعي المتكاملة لتعزيز أعمالك في المملكة العربية السعودية</p>
+            <h2 style="color: #FFFFFF; text-align: center; margin-bottom: 1rem; font-size: 1.8rem;">خدمات ذات صلة</h2>
+            <p style="color: rgba(255, 255, 255, 0.9); text-align: center; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">اكتشف المزيد من حلول الذكاء الاصطناعي المتكاملة لتعزيز أعمالك في المملكة العربية السعودية</p>
             <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                <a href="data-analysis.html" class="service-link-card" style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">📊 تحليل البيانات</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">تحويل البيانات إلى رؤى قابلة للتنفيذ باستخدام الذكاء الاصطناعي</p>
+                <a href="data-analysis.html" class="service-link-card" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block; backdrop-filter: blur(10px);">
+                    <h3 style="color: #FFFFFF; margin-bottom: 0.5rem; font-size: 1.1rem;">📊 تحليل البيانات</h3>
+                    <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.9rem; margin: 0;">تحويل البيانات إلى رؤى قابلة للتنفيذ باستخدام الذكاء الاصطناعي</p>
                 </a>
-                <a href="ai-agent.html" class="service-link-card" style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">🧠 وكلاء الذكاء الاصطناعي</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">وكلاء ذكاء اصطناعي مخصصون لتلبية احتياجات أعمالك</p>
+                <a href="ai-agent.html" class="service-link-card" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block; backdrop-filter: blur(10px);">
+                    <h3 style="color: #FFFFFF; margin-bottom: 0.5rem; font-size: 1.1rem;">🧠 وكلاء الذكاء الاصطناعي</h3>
+                    <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.9rem; margin: 0;">وكلاء ذكاء اصطناعي مخصصون لتلبية احتياجات أعمالك</p>
                 </a>
-                <a href="ai-bots.html" class="service-link-card" style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">💬 روبوتات المحادثة</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">شات بوت عربي ذكي لخدمة العملاء والمبيعات</p>
+                <a href="ai-bots.html" class="service-link-card" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block; backdrop-filter: blur(10px);">
+                    <h3 style="color: #FFFFFF; margin-bottom: 0.5rem; font-size: 1.1rem;">💬 روبوتات المحادثة</h3>
+                    <p style="color: rgba(255, 255, 255, 0.85); font-size: 0.9rem; margin: 0;">شات بوت عربي ذكي لخدمة العملاء والمبيعات</p>
                 </a>
             </div>
             <div style="text-align: center; margin-top: 2rem;">
-                <a href="consultation.html" style="display: inline-block; background: linear-gradient(135deg, #64FFDA 0%, #4facfe 100%); color: #0A192F; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">احصل على استشارة مجانية</a>
+                <a href="consultation.html" style="display: inline-block; background: #FFFFFF; color: #8B5CF6; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">احصل على استشارة مجانية</a>
             </div>
         </div>
     </section>

@@ -1,14 +1,16 @@
 /*
  * BrightAI Products - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* Products-specific variable mappings */
 :root {
     --background-dark: var(--background-color);
-    --text-primary: var(--heading-color);
-    --text-secondary: var(--text-color);
+    --text-primary: var(--text-on-gradient-primary, #FFFFFF);
+    --text-secondary: var(--text-on-gradient-secondary, #F3F4F6);
     --accent-secondary: var(--error-color);
     --light-bg: #FAFAFA;
 }
@@ -21,7 +23,11 @@
 }
 
 body {
-    background-color: var(--background-dark);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
     color: var(--text-primary);
     line-height: 1.6;
 }
@@ -308,21 +314,26 @@ main h2, .section-header h2 {
     margin-bottom: 40px;
 }
 
+/* Glassmorphism Product Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .product {
-    background-color: var(--card-bg); /* استخدام المتغير */
-    border-radius: 12px;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 25px; /* زيادة الحشوة قليلاً */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* ظل أوضح */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid var(--primary-color);
+    transition: all 0.3s ease;
     display: flex; /* لترتيب المحتوى الداخلي بشكل أفضل */
     flex-direction: column;
     justify-content: space-between; /* لتوزيع المساحة بين العناصر */
 }
 
 .product:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-8px) scale(1.02); /* تأثير رفع وتكبير طفيف */
-    box-shadow: 0 10px 20px rgba(var(--accent-color-rgb, 56, 189, 248), 0.25); /* ظل ملون عند التحويم */
 }
 
 .product h3 {
@@ -351,7 +362,7 @@ main h2, .section-header h2 {
 
 .buy-button, .details-button {
     padding: 12px 20px; /* تعديل الحشوة */
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1em; /* استخدام em لمرونة أفضل */
     font-weight: 600;
     cursor: pointer;
@@ -369,30 +380,47 @@ main h2, .section-header h2 {
     margin-right: 0; /* لـ RTL */
 }
 
+/* Primary Buy Button - Updated to unified gradient theme - Requirements 6.1, 6.4 */
 .buy-button {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); /* تدرج ألوان جذاب */
-    color: var(--text-primary);
+    background: #FFFFFF;
+    color: #8B5CF6;
     border: none;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
+/* Buy Button Hover - Requirements 6.2 */
 .buy-button:hover {
-    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
-    transform: translateY(-3px) scale(1.03); /* تأثير أوضح عند التحويم */
-    box-shadow: 0 5px 10px rgba(var(--accent-color-rgb, 56, 189, 248), 0.4);
+    background: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
 }
 
-/* Enhanced Product Details Button */
+/* Buy Button Active - Requirements 6.5 */
+.buy-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+/* Secondary Details Button - Updated to unified gradient theme - Requirements 6.3, 6.4 */
 .details-button {
-    background-color: transparent; /* شفاف */
-    color: var(--accent-color); /* لون النص من المتغير */
-    border: 2px solid var(--accent-color); /* إطار أوضح */
+    background-color: transparent;
+    color: #FFFFFF;
+    border: 2px solid #FFFFFF;
 }
 
+/* Details Button Hover - Requirements 6.2 */
 .details-button:hover {
-    background-color: var(--accent-color);
-    color: var(--background-dark); /* لون النص يتغير لتباين أفضل */
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 5px 10px rgba(var(--accent-color-rgb, 56, 189, 248), 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Details Button Active - Requirements 6.5 */
+.details-button:active {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(0);
 }
 
 
@@ -411,10 +439,15 @@ main h2, .section-header h2 {
     direction: rtl; /* ضمان الاتجاه الصحيح للمحتوى */
 }
 
+/* Glassmorphism Modal Content Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .product-details-modal .modal-content {
-    background-color: var(--card-bg); /* استخدام المتغير */
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     padding: 35px; /* زيادة الحشوة */
-    border-radius: 15px;
     max-width: 800px;
     width: 90%;
     margin: 5vh auto; /* توسيط أفضل عمودياً */
@@ -422,8 +455,6 @@ main h2, .section-header h2 {
     transform: scale(0.95) translateY(20px); /* تأثير بداية أصغر */
     opacity: 0;
     animation: modalFadeInScale 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة أفضل */
-    border: 1px solid var(--primary-color);
-    box-shadow: 0 0 25px rgba(var(--accent-color-rgb, 56, 189, 248), 0.25);
 }
 
 @keyframes modalFadeInScale {
@@ -605,13 +636,15 @@ main h2, .section-header h2 {
 
 .cart-modal .modal-content,
 .payment-modal .modal-content {
-    background-color: var(--card-bg);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     padding: 30px;
-    border-radius: 15px; /* زوايا أكثر دائرية */
     width: 90%; /* لمرونة أفضل */
     position: relative;
-    border: 1px solid var(--primary-color);
-    box-shadow: 0 8px 25px rgba(var(--accent-color-rgb, 56, 189, 248), 0.2); /* ظل أوضح */
     animation: modalFadeInScale 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
     max-height: 90vh; /* تحديد أقصى ارتفاع */
     overflow-y: auto; /* تمرير داخلي إذا لزم الأمر */
@@ -780,13 +813,14 @@ main h2, .section-header h2 {
     color: var(--accent-color);
 }
 
+/* Checkout Button - Updated to unified gradient theme - Requirements 6.1, 6.4 */
 .checkout-button,
 .paypal-checkout-button {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: var(--text-primary);
+    background: #FFFFFF;
+    color: #8B5CF6;
     border: none;
     padding: 14px 28px; /* زيادة الحشوة */
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1.1em; /* تكبير الخط */
     font-weight: 600;
     cursor: pointer;
@@ -797,17 +831,28 @@ main h2, .section-header h2 {
     align-items: center;
     justify-content: center;
     gap: 10px; /* مسافة بين الأيقونة والنص */
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
+/* Checkout Button Hover - Requirements 6.2 */
 .checkout-button:hover,
 .paypal-checkout-button:hover {
-    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 5px 12px rgba(var(--accent-color-rgb, 56, 189, 248), 0.35);
+    background: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
 }
 
-.paypal-checkout-button { /* تمييز زر باي بال */
+/* Checkout Button Active - Requirements 6.5 */
+.checkout-button:active,
+.paypal-checkout-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.paypal-checkout-button { /* تمييز زر باي بال - Keep PayPal branding */
     background: linear-gradient(135deg, #0070BA, #005EA6); /* ألوان باي بال التقليدية */
+    color: #FFFFFF;
 }
 
 .paypal-checkout-button:hover {
@@ -1027,15 +1072,16 @@ main h2, .section-header h2 {
 }
 
 
-/* تحسين أقسام المنتجات (عناوين الأقسام) */
+/* Glassmorphism Section Container Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .section-container { /* هذا هو الحاوي الرئيسي لكل قسم منتجات */
-    background: rgba(var(--card-bg-rgb, 17, 24, 39), 0.7); /* استخدام متغير مع شفافية */
-    backdrop-filter: blur(3px); /* تأثير ضبابي طفيف للخلفية */
-    border-radius: 16px; /* زوايا أكثر دائرية */
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     margin: 50px 0; /* زيادة الهامش */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* ظل أوضح */
-    border: 1px solid var(--primary-color);
 }
 
 .section-header { /* هذا خاص بالعنوان داخل القسم إذا استخدم */

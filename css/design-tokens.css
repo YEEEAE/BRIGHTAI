@@ -17,8 +17,9 @@
     --primary-color: #64FFDA;
     --secondary-color: #0A192F;
     --background-color: #0A192F;
-    --text-color: #8892B0;
-    --heading-color: #CCD6F6;
+    /* Text colors updated for gradient background readability - Requirements 2.1, 2.2, 2.3, 2.4 */
+    --text-color: #F3F4F6;
+    --heading-color: #FFFFFF;
     --white: #FFFFFF;
     --card-bg: #112240;
     --accent-color: #1D2B3A;
@@ -174,8 +175,9 @@
     --primary-color: #64FFDA;
     --secondary-color: #0A192F;
     --background-color: #0A192F;
-    --text-color: #8892B0;
-    --heading-color: #CCD6F6;
+    /* Text colors for dark theme with gradient - Requirements 2.1, 2.2, 2.3, 2.4 */
+    --text-color: #F3F4F6;
+    --heading-color: #FFFFFF;
     --card-bg: #112240;
     --glass-bg: rgba(17, 34, 64, 0.6);
     --glass-bg-hover: rgba(17, 34, 64, 0.8);

@@ -19,7 +19,13 @@
   <link rel="canonical" href="https://brightai.site/brightrecruiter.html">
     <title>BrightRecruiter - نظام التوظيف الذكي</title>
   <meta name="description" content="BrightRecruiter - نظام التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Gemini.png">
+    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
+    
     <link rel="stylesheet" href="brightrecruiter.css">
+    <link rel="stylesheet" href="css/unified-nav.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <!-- Add Google API script for sheets -->
      <script src="https://apis.google.com/js/api.js"></script>
@@ -42,22 +48,95 @@
   </head>
 
 <body>
-        <nav>
-            <ul class="navbar">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li><a href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
-                <li><a href="smart-automation.html">أتمتة العمليات بالذكاء الاصطناعي</a></li>
-                <li><a href="data-analysis.html">تحليل البيانات باستخدام الذكاء الاصطناعي</a></li>
-                <li><a href="ai-agent.html">وكيل الذكاء الإصطناعي</a></li>
-                <li><a href="our-products.html">عرض للخدمات</a></li>
-                <li><a href="AAA.html">منتجاتنا و فائدتها</a></li>
-                <li><a href="blog.html">مكتبة رقمية للذكاء الاصطناعي</a></li>
-                <li><a href="tools.html">أدوات الذكاء الاصطناعي</a></li>
-                <li><a href="Company performance monitoring tool.html"> انظمة ذكية</a></li>
+    <!-- Unified Navigation JS -->
+    <script src="js/unified-nav.js" defer></script>
+    
+    <!-- التنقل الموحد الجديد -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
+            </a>
+            
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Navigation Links -->
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
+                
+                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أنظمة ذكية مؤسسية متكاملة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي متكامل</a></li>
+                        <li role="none"><a role="menuitem" href="health-bright.html">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: خدمات ذكية -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        خدمات ذكية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: بوابة المعرفة -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
+                        <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
+                    </ul>
+                </li>
+                
+                <!-- Dropdown: أدوات ذكية مجانية -->
+                <li class="nav-dropdown" role="none">
+                    <button class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        أدوات ذكية مجانية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="tools.html">أدوات ذكية مجانية</a></li>
+                        <li role="none"><a role="menuitem" href="h/index.html">نماذج AI تجريبية</a></li>
+                        <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
+                    </ul>
+                </li>
             </ul>
-        </nav>
+        </div>
+    </nav>
+    <div class="nav-overlay" aria-hidden="true"></div>
 
-    <div class="container">
+    <div class="container" style="margin-top: 90px;">
         <h1>BrightRecruiter - نظام التوظيف الذكي</h1>
 
         <h2>إضافة وظيفة جديدة</h2>

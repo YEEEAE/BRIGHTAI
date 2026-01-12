@@ -1,8 +1,10 @@
 /*
  * BrightAI Bots - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 
 /* AI Bots-specific variable mappings */
 :root {
@@ -21,9 +23,13 @@ html {
 
 body {
     font-family: 'Tajawal', sans-serif;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     line-height: 1.6;
-    background-color: var(--background-light);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
     direction: rtl;
 }
 
@@ -127,7 +133,7 @@ img {
 
 .intro h2 {
     font-size: 2.5rem;
-    color: var(--primary-dark); /* Changed to primary-dark for better contrast */
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 1.5rem;
 }
 
@@ -135,7 +141,7 @@ img {
     font-size: 1.2rem;
     max-width: 800px;
     margin: 0 auto 1rem; /* Added bottom margin */
-    color: var(--text-color); /* Darker text for better readability */
+    color: var(--text-on-gradient-secondary, #F3F4F6);
 }
 
 /* Bots List Section */
@@ -147,7 +153,7 @@ img {
 .bots-list h2 {
     text-align: center;
     font-size: 2.5rem;
-    color: var(--primary-dark); /* Changed to primary-dark */
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 3rem;
 }
 
@@ -157,11 +163,14 @@ img {
     gap: 30px;
 }
 
+/* Glassmorphism Bot Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .bot-card {
-    background: linear-gradient(135deg, #ffffff, #f0f7ff);
-    border: 1px solid rgba(59, 130, 246, 0.1);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-sm);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     transition: all 0.3s ease;
     display: flex;
@@ -172,10 +181,10 @@ img {
 }
 
 .bot-card:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.1);
-    border-color: var(--primary-color);
-    background: linear-gradient(135deg, #f8faff, #e6f0ff);
 }
 
 .bot-card::before {
@@ -202,7 +211,7 @@ img {
 }
 
 .bot-description {
-    color: var(--text-color); /* Darker text for readability */
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     margin-bottom: 1.5rem;
     line-height: 1.6;
     text-align: center; /* Ensuring description is centered */
@@ -214,7 +223,7 @@ img {
 }
 
 .features-list li {
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     margin-bottom: 0.8rem;
     display: flex;
     align-items: flex-start; /* Align items to top for multi-line text */
@@ -264,19 +273,22 @@ img {
 }
 
 .cta-button {
-    display: inline-block;
-    background-color: #111; /* أسود */
-    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     padding: 12px 25px;
-    border-radius: var(--border-radius-full);
+    border-radius: 12px;
     font-weight: 600;
     text-align: center;
-    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    transition: all 0.3s ease;
     align-self: center;
     width: 100%;
     max-width: 200px;
     margin-top: auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
     border: none;
     letter-spacing: 0.5px;
     font-size: 1.05rem;
@@ -285,19 +297,25 @@ img {
 /* إزالة تخصيص الألوان للبوتات المتخصصة */
 .bot-card:nth-child(5) .cta-button,
 .bot-card:nth-child(6) .cta-button {
-    background-color: #111;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
-/* تأثير التحويم موحد */
+/* تأثير التحويم موحد - Requirements 6.2 */
 .cta-button:hover,
 .cta-button:focus {
-    background-color: #222;
-    color: #fff;
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    background-color: #FFFFFF;
+    color: #8B5CF6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
     filter: none;
+}
+
+/* Active state - Requirements 6.5 */
+.cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* Advantages Section */
@@ -309,7 +327,7 @@ img {
 .advantages h2 {
     text-align: center;
     font-size: 2.5rem;
-    color: var(--primary-dark); /* Changed to primary-dark */
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 3rem;
 }
 
@@ -319,18 +337,24 @@ img {
     gap: 30px;
 }
 
+/* Glassmorphism Advantage Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .advantage-card {
     padding: 30px;
-    border-radius: var(--border-radius);
-    background-color: var(--background-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
+    transition: all 0.3s ease;
     text-align: center;
-    box-shadow: var(--shadow-sm);
 }
 
 .advantage-card:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
 }
 
 .advantage-icon {
@@ -352,7 +376,7 @@ img {
 .advantage-card h3 {
     font-size: 1.3rem;
     margin-bottom: 15px;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
 }
 
 .advantage-card p {
@@ -368,7 +392,7 @@ img {
 .testimonials h2 {
     text-align: center;
     font-size: 2.5rem;
-    color: var(--primary-dark); /* Changed to primary-dark */
+    color: var(--text-on-gradient-primary, #FFFFFF);
     margin-bottom: 3rem;
 }
 
@@ -379,19 +403,25 @@ img {
     justify-content: center;
 }
 
+/* Glassmorphism Testimonial Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .testimonial {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     max-width: 350px;
     width: 100%; /* Ensure it takes full width on mobile when stacked */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .testimonial:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
 }
 
 .testimonial-content {
@@ -400,7 +430,7 @@ img {
 
 .testimonial-content p {
     font-style: italic;
-    color: var(--text-color); /* Darker for readability */
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     position: relative;
     padding: 0 15px; /* Space for quotes */
 }
@@ -442,7 +472,7 @@ img {
 .author-info h4 {
     font-size: 1.1rem;
     margin-bottom: 5px;
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
 }
 
 .author-info p {
@@ -472,21 +502,32 @@ img {
 }
 
 .main-cta-button {
-    display: inline-block;
-    background-color: #111;
-    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     padding: 15px 40px;
-    border-radius: var(--border-radius-full);
+    border-radius: 12px;
     font-size: 1.2rem;
     font-weight: 700;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 .main-cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-    color: var(--secondary-dark);
+    /* Updated hover effect - Requirements 6.2 */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    color: #8B5CF6;
+    background-color: #FFFFFF;
+}
+
+.main-cta-button:active {
+    /* Active state - Requirements 6.5 */
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
 /* Footer */
@@ -644,15 +685,19 @@ footer .container { /* Target specific container in footer */
     color: rgba(255,255,255,0.5);
 }
 .newsletter-button {
-    background-color: #111;
-    color: white;
+    /* Updated to unified gradient theme - Requirements 6.1, 6.4 */
+    background-color: #FFFFFF;
+    color: #8B5CF6;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border-radius: 0 8px 8px 0;
 }
 .newsletter-button:hover {
-    background-color: #222;
+    /* Updated hover effect - Requirements 6.2 */
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
 }
 
 

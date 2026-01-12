@@ -1,13 +1,15 @@
 /*
  * BrightAI Blog - Stylesheet
- * Imports centralized design tokens
+ * Imports centralized design tokens and unified gradient
+ * Requirements: 3.2, 3.4, 2.1, 2.2
  */
 @import url('css/design-tokens.css');
+@import url('css/unified-gradient.css');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
 /* Blog-specific variable mappings */
 :root {
-    --subtext-color: var(--text-color);
+    --subtext-color: var(--text-on-gradient-secondary, #F3F4F6);
     --secondary-color: var(--error-color);
     --light-bg: #FAFAFA;
     --hover-color: rgba(100, 255, 218, 0.1);
@@ -18,8 +20,12 @@ body {
     font-family: 'Cairo', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    /* Unified Gradient Background */
+    background-color: var(--gradient-fallback, #8B5CF6);
+    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-attachment: fixed;
+    background-size: cover;
+    color: var(--text-on-gradient-primary, #FFFFFF);
     line-height: 1.6;
     direction: rtl;
 }
@@ -61,7 +67,7 @@ body {
 /* Header */
 .header {
     background: var(--primary-color);
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     text-align: center;
     padding: 30px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -115,7 +121,7 @@ nav {
 
 .navbar a {
     text-decoration: none;
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     font-weight: bold;
     transition: all 0.3s ease;
     padding: 10px 20px;
@@ -174,7 +180,7 @@ nav {
     border: 2px solid var(--accent-color);
     border-radius: 8px;
     background: var(--card-bg);
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: 1.1rem;
     margin-bottom: 1rem;
 }
@@ -191,7 +197,7 @@ nav {
     border: none;
     border-radius: 25px;
     background: var(--card-bg);
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -207,21 +213,24 @@ nav {
     gap: 2rem;
 }
 
-/* Article Card Styles */
+/* Glassmorphism Article Card Styles - Requirements 7.1, 7.2, 7.3, 7.4, 7.5, 7.6 */
 .article {
-    background: var(--card-bg);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 15px;
+    background: var(--glass-bg-unified, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    -webkit-backdrop-filter: blur(var(--glass-blur-unified, 10px));
+    border: 1px solid var(--glass-border-unified, rgba(255, 255, 255, 0.2));
+    border-radius: var(--glass-radius-unified, 16px);
+    box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .article:hover {
+    background: var(--glass-bg-unified-hover, rgba(255, 255, 255, 0.2));
+    border-color: var(--glass-border-unified-hover, rgba(255, 255, 255, 0.3));
+    box-shadow: var(--glass-shadow-unified-hover, 0 12px 40px rgba(0, 0, 0, 0.15));
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.15);
 }
 
 .article::before {
@@ -265,7 +274,7 @@ nav {
 }
 
 .article h2 {
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     font-size: 1.8em;
     margin: 15px 0;
     line-height: 1.4;
@@ -294,7 +303,7 @@ nav {
 
 .read-more {
     background: var(--accent-color);
-    color: var(--text-color);
+    color: var(--text-on-gradient-primary, #FFFFFF);
     padding: 12px 30px;
     border-radius: 30px;
     box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
@@ -318,7 +327,7 @@ nav {
 .footer {
     background-color: var(--primary-color);
     border-top: 1px solid rgba(56, 189, 248, 0.1);
-    color: var(--text-color);
+    color: var(--text-on-gradient-secondary, #F3F4F6);
     padding: 3rem 0;
     width: 100%;
     margin-top: 50px;
