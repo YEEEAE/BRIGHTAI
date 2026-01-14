@@ -136,7 +136,8 @@
         .stat-item{text-align:center;padding:1rem}
         .stat-counter{font-size:2.5rem;font-weight:700;color:var(--primary-color);display:block}
         .stat-label{color:var(--text-color);font-size:0.9rem}
-        .hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+        .hero-video-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+        .hero-video-overlay{position:absolute;inset:0;background:rgba(10,25,47,0.7);z-index:2}
         @media(max-width:768px){.hero h1{font-size:2.2rem}.nav-links{display:none}.hamburger{display:block}.stats-section{gap:1rem}.stat-counter{font-size:2rem}}
         .hamburger{display:none;background:0 0;border:none;color:var(--primary-color);font-size:1.5rem;cursor:pointer;padding:.5rem;z-index:1001}
         .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -440,9 +441,11 @@
     <main id="main-content" role="main">
         <!-- القسم الرئيسي -->
         <section id="home" class="hero" aria-labelledby="hero-main-title">
-            <div id="chart-container"></div>
-            <!-- Particle System Canvas for AI-inspired animated background -->
-            <canvas id="particle-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+            <!-- Video Background -->
+            <video autoplay muted loop playsinline class="hero-video-bg" aria-hidden="true">
+                <source src="Whisk_yzmivtnldjywityl1sy0qtotyznjrtl4utoi1sz.mp4" type="video/mp4">
+            </video>
+            <div class="hero-video-overlay"></div>
             <div class="hero-container">
                 <div class="hero-content">
                     <span class="hero-mini-title">
@@ -853,7 +856,7 @@
                     <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="data-analysis.html" class="service-link" aria-label="اكتشف المزيد عن خدمات تحليل البيانات الضخمة وحلول الذكاء الاصطناعي في السعودية التي تقدمها شركة مُشرقة AI"
                        data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Data Analysis" data-gtm-item-id="service_data_analysis"
-                       data-track="تحليل البيانات الضخمة" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن تحليل البيانات الضخمة في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-track="تحليل البيانات الضخمة" data-track-category="Service CTA" data-track-location="services">خدمات تحليل البيانات الضخمة والذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                     <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -881,7 +884,7 @@
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="smart-automation.html" class="service-link" aria-label="اكتشف المزيد عن حلول أتمتة العمليات الذكية و RPA المتطورة في السعودية من شركة مُشرقة AI"
                        data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Smart Automation" data-gtm-item-id="service_smart_automation"
-                       data-track="أتمتة العمليات الذكية" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن أتمتة العمليات الذكية في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-track="أتمتة العمليات الذكية" data-track-category="Service CTA" data-track-location="services">حلول أتمتة العمليات الذكية و RPA في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -909,7 +912,7 @@
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="consultation.html" class="service-link" aria-label="اكتشف المزيد عن خدمات استشارات الذكاء الاصطناعي والتحول الرقمي في السعودية من شركة مُشرقة AI الخبيرة"
                        data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Consultation" data-gtm-item-id="service_consultation"
-                       data-track="استشارات الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن استشارات الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-track="استشارات الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">خدمات استشارات الذكاء الاصطناعي والتحول الرقمي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -937,7 +940,7 @@
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="ai-agent.html" class="service-link" aria-label="اكتشف المزيد عن حلول وكلاء الذكاء الاصطناعي وتطوير الشات البوت للشركات السعودية من شركة مُشرقة AI"
                        data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Agents" data-gtm-item-id="service_ai_agents"
-                       data-track="وكلاء الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن وكلاء الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-track="وكلاء الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">حلول وكلاء الذكاء الاصطناعي والشات البوت للشركات السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -965,7 +968,7 @@
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="tools.html" class="service-link" aria-label="اكتشف المزيد عن أدوات وتطبيقات الذكاء الاصطناعي المبتكرة للشركات السعودية من شركة مُشرقة AI الرائدة"
                        data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="AI Tools" data-gtm-item-id="service_ai_tools"
-                       data-track="أدوات الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد عن أدوات الذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-track="أدوات الذكاء الاصطناعي" data-track-category="Service CTA" data-track-location="services">أدوات وتطبيقات الذكاء الاصطناعي المبتكرة للشركات السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
 
@@ -993,7 +996,7 @@
                      <!-- GTM/Analytics Expert Fix: Added data attributes for event tracking -->
                     <a href="blog" class="service-link" aria-label="اكتشف المزيد في المكتبة الرقمية للذكاء الاصطناعي والدورات التدريبية المتخصصة في السعودية من شركة مُشرقة AI"
                        data-gtm-event="select_content" data-gtm-content-type="Service Link" data-gtm-content-name="Digital Library" data-gtm-item-id="service_blog"
-                       data-track="المكتبة الرقمية" data-track-category="Service CTA" data-track-location="services">اكتشف المزيد في مكتبتنا الرقمية للذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                       data-track="المكتبة الرقمية" data-track-category="Service CTA" data-track-location="services">المكتبة الرقمية للذكاء الاصطناعي والدورات التدريبية في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                      <!-- End GTM/Analytics Expert Fix -->
                 </article>
             </div>
@@ -1083,7 +1086,7 @@
                 <!-- Trust CTA with security icon (Requirements 22.5) -->
                 <a href="https://brightai.site/Docfile/About.Bright.AI.html" class="cta-trust" aria-label="اكتشف المزيد عن خدمات الذكاء الاصطناعي وحلول الأتمتة المتقدمة التي تقدمها مُشرقة AI للشركات السعودية الطموحة">
                     <i class="fas fa-shield-alt cta-icon-shield" aria-hidden="true"></i>
-                    <span>خدماتنا الموثوقة</span>
+                    <span>خدمات الذكاء الاصطناعي وحلول الأتمتة المتقدمة</span>
                 </a>
             </div>
         </section>
@@ -1121,7 +1124,7 @@
                                 <span class="stat-label">خفض كبير في تكاليف عمليات التحليل المالي اليدوي للمؤسسات في المملكة بفضل الأتمتة الذكية</span>
                             </div>
                         </div>
-                        <a href="blogger/future-of-intelligent-data-analysis-finance-sector.html" class="service-link" aria-label="اقرأ المزيد عن دراسة الحالة التفصيلية حول مستقبل التحليل الذكي للبيانات المالية في السعودية باستخدام الذكاء الاصطناعي" itemprop="url">اقرأ المزيد عن مستقبل التحليل الذكي المالي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                        <a href="blogger/future-of-intelligent-data-analysis-finance-sector.html" class="service-link" aria-label="اقرأ المزيد عن دراسة الحالة التفصيلية حول مستقبل التحليل الذكي للبيانات المالية في السعودية باستخدام الذكاء الاصطناعي" itemprop="url">دراسة حالة: مستقبل التحليل الذكي للبيانات المالية في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
@@ -1149,7 +1152,7 @@
                                 <span class="stat-label">خدمة عملاء آلية متواصلة وفعالة ومتاحة على مدار الساعة في جميع أنحاء المملكة العربية السعودية</span>
                             </div>
                         </div>
-                        <a href="blogger/case-study-saudi-companies-ai-agents-customer-service.html" class="service-link" aria-label="اقرأ المزيد عن دراسة الحالة المفصلة حول نجاح وكلاء الذكاء الاصطناعي والشات البوت العربي في خدمة العملاء السعوديين" itemprop="url">اقرأ المزيد عن نجاح وكلاء AI في خدمة العملاء السعوديين <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                        <a href="blogger/case-study-saudi-companies-ai-agents-customer-service.html" class="service-link" aria-label="اقرأ المزيد عن دراسة الحالة المفصلة حول نجاح وكلاء الذكاء الاصطناعي والشات البوت العربي في خدمة العملاء السعوديين" itemprop="url">دراسة حالة: نجاح وكلاء الذكاء الاصطناعي في خدمة العملاء السعوديين <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                 </article>
 
@@ -1177,7 +1180,7 @@
                                 <span class="stat-label">تحسين كبير في جودة وتنوع المحتوى المنتج بواسطة تقنيات Generative AI المتقدمة في السعودية</span>
                             </div>
                         </div>
-                        <a href="blogger/ai-generative-content-industry-saudi-arabia.html" class="service-link" aria-label="اقرأ المزيد عن دراسة الحالة الشاملة حول مستقبل المحتوى التوليدي بالذكاء الاصطناعي في السعودية وتطبيقات Generative AI المبتكرة" itemprop="url">اقرأ المزيد عن مستقبل المحتوى التوليدي بالـ AI في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+                        <a href="blogger/ai-generative-content-industry-saudi-arabia.html" class="service-link" aria-label="اقرأ المزيد عن دراسة الحالة الشاملة حول مستقبل المحتوى التوليدي بالذكاء الاصطناعي في السعودية وتطبيقات Generative AI المبتكرة" itemprop="url">دراسة حالة: مستقبل المحتوى التوليدي بالذكاء الاصطناعي في السعودية <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                 </article>
             </div>
@@ -2701,9 +2704,9 @@
     </div>
 
     <!-- دعم فني عائم -->
-    <div class="support-fab" title="الدعم الفني لخدمات الذكاء الاصطناعي في السعودية" aria-label="فتح نافذة الدعم الفني" onclick="openSupportPopup()" role="button" tabindex="0">
+    <button type="button" class="support-fab" title="الدعم الفني لخدمات الذكاء الاصطناعي في السعودية" aria-label="فتح نافذة الدعم الفني" onclick="openSupportPopup()">
       <i class="fas fa-headset" aria-hidden="true"></i>
-    </div>
+    </button>
     <div class="support-popup-overlay" id="supportPopupOverlay" tabindex="-1" aria-modal="true" role="dialog" aria-labelledby="supportPopupTitle">
       <div class="support-popup-modal">
         <button class="support-popup-close" onclick="closeSupportPopup()" aria-label="إغلاق نافذة الدعم الفني">

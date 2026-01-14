@@ -725,6 +725,24 @@ textarea:focus-visible,
     background-color: var(--secondary-color);
 }
 
+/* Hero Video Background */
+.hero-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(10, 25, 47, 0.85) 0%, rgba(10, 25, 47, 0.7) 50%, rgba(10, 25, 47, 0.85) 100%);
+    z-index: 2;
+}
+
+/* Keep old canvas styles for backwards compatibility */
 .hero-canvas {
     position: absolute;
     inset: 0;
@@ -735,7 +753,7 @@ textarea:focus-visible,
 
 .hero-container {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     text-align: center;
     padding: 2rem 1rem;
 }
@@ -2117,6 +2135,11 @@ textarea.form-control {
     box-shadow: 0 8px 32px rgba(0,0,0,0.22);
     transform: scale(1.05);
 }
+.support-fab:focus-visible {
+    outline: 3px solid var(--focus-outline-color, #64FFDA);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(100, 255, 218, 0.3);
+}
 .support-popup-overlay {
     display: none;
     position: fixed;
@@ -2158,6 +2181,11 @@ textarea.form-control {
     z-index: 2;
 }
 .support-popup-close:hover { background: #e3e9f7; transform: rotate(90deg); }
+.support-popup-close:focus-visible {
+    outline: 3px solid var(--focus-outline-color, #64FFDA);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(100, 255, 218, 0.3);
+}
 .support-popup-iframe {
     border: none;
     width: 100%;
@@ -2294,7 +2322,7 @@ textarea.form-control {
    ========================================================================== */
 
 @media print {
-    .navbar, .footer, .back-to-top, .hero-canvas, .hamburger, .overlay,
+    .navbar, .footer, .back-to-top, .hero-canvas, .hero-video-bg, .hero-video-overlay, .hamburger, .overlay,
     .newsletter, .cta-button, .support-fab, .support-popup-overlay,
     .demo-icon, .service-icon, .feature-icon,
     .case-image, .feature-image, .member-image {
@@ -5325,5 +5353,29 @@ footer {
     
     .pricing-cta:hover {
         transform: none;
+    }
+}
+
+/* Video Background Mobile Optimization */
+@media (max-width: 768px) {
+    .hero-video-bg {
+        object-position: center;
+        /* Optionally pause video on mobile to save battery */
+    }
+    
+    .hero-video-overlay {
+        background: linear-gradient(135deg, rgba(10, 25, 47, 0.9) 0%, rgba(10, 25, 47, 0.8) 100%);
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .hero-video-bg {
+        animation: none;
+        display: none;
+    }
+    
+    .hero {
+        background: var(--secondary-color);
     }
 }

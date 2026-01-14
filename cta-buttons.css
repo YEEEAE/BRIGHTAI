@@ -328,7 +328,7 @@
 .cta-sm {
     padding: var(--cta-padding-sm);
     font-size: 0.875rem;
-    min-height: 36px;
+    min-height: 44px; /* Meets minimum touch target requirement */
 }
 
 .cta-lg {
