@@ -353,6 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (modal) {
                 console.log(`Modal found:`, modal); // Debug log
                 modal.classList.add('active');
+                // Update aria-expanded for accessibility
+                this.setAttribute('aria-expanded', 'true');
                 manageBodyScroll(true);
             } else {
                 console.error(`Modal with ID '${modalId}' not found.`);
@@ -361,12 +363,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Helper function to reset aria-expanded on the trigger button when modal closes
+    function resetAriaExpandedForModal(modal) {
+        const modalId = modal.id;
+        const triggerButton = document.querySelector(`.details-button[data-target="${modalId}"]`);
+        if (triggerButton) {
+            triggerButton.setAttribute('aria-expanded', 'false');
+        }
+    }
+
     const productDetailModals = document.querySelectorAll('.product-details-modal');
     productDetailModals.forEach(modal => {
         const closeButton = modal.querySelector('.close-button'); // Simpler selector if only one close button
         if (closeButton) {
             closeButton.addEventListener('click', function() {
                 modal.classList.remove('active');
+                resetAriaExpandedForModal(modal);
                 manageBodyScroll(false);
             });
         }
@@ -374,6 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
                 modal.classList.remove('active');
+                resetAriaExpandedForModal(modal);
                 manageBodyScroll(false);
             }
         });
@@ -385,6 +398,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const activeModals = document.querySelectorAll('.cart-modal.active, .payment-modal.active, .product-details-modal.active');
             activeModals.forEach(modal => {
                 modal.classList.remove('active');
+                // Reset aria-expanded for product detail modals
+                if (modal.classList.contains('product-details-modal')) {
+                    const modalId = modal.id;
+                    const triggerButton = document.querySelector(`.details-button[data-target="${modalId}"]`);
+                    if (triggerButton) {
+                        triggerButton.setAttribute('aria-expanded', 'false');
+                    }
+                }
                 closedAModal = true;
             });
             if (closedAModal) {

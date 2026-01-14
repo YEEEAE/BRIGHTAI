@@ -27,8 +27,8 @@
     - Fix buttons without `data-href` or `onclick` handlers
     - _Requirements: 1.1, 1.2, 1.3, 6.1_
 
-- [ ] 3. Fix Navigation Buttons in our-products.html
-  - [ ] 3.1 Verify CTA buttons use correct semantic elements
+- [x] 3. Fix Navigation Buttons in our-products.html
+  - [x] 3.1 Verify CTA buttons use correct semantic elements
     - Check "احصل على استشارة مجانية" link uses `<a>` with href
     - Verify all internal navigation links use `<a>` tags
     - _Requirements: 1.1, 1.4, 6.1_
@@ -37,7 +37,7 @@
     - **Property 1: Navigation Uses Semantic Anchors**
     - **Validates: Requirements 1.1, 1.2, 1.3, 6.1**
 
-  - [ ] 3.3 Add type="button" to all product action buttons
+  - [x] 3.3 Add type="button" to all product action buttons
     - Update buy-button elements with type="button"
     - Update details-button elements with type="button"
     - _Requirements: 2.1, 2.2_
@@ -46,8 +46,8 @@
     - **Property 2: Action Buttons Use Button Elements**
     - **Validates: Requirements 2.1, 2.2**
 
-- [ ] 4. Fix Accessibility Attributes
-  - [ ] 4.1 Add aria-labels to buttons missing accessible names
+- [x] 4. Fix Accessibility Attributes
+  - [x] 4.1 Add aria-labels to buttons missing accessible names
     - Audit buttons without text content
     - Add descriptive aria-label in Arabic
     - _Requirements: 2.4, 2.5, 5.1_
@@ -56,7 +56,7 @@
     - **Property 3: Buttons Have Accessible Text**
     - **Validates: Requirements 2.4, 2.5**
 
-  - [ ] 4.3 Add aria-hidden="true" to all button icons
+  - [x] 4.3 Add aria-hidden="true" to all button icons
     - Update `<i>` elements inside buttons
     - Verify icons don't interfere with screen readers
     - _Requirements: 5.2_
@@ -65,7 +65,7 @@
     - **Property 4: Icons Are Hidden from Screen Readers**
     - **Validates: Requirements 5.2**
 
-  - [ ] 4.5 Add ARIA attributes to modal trigger buttons
+  - [x] 4.5 Add ARIA attributes to modal trigger buttons
     - Add aria-haspopup="dialog" to details buttons
     - Add aria-expanded="false" (update dynamically in JS)
     - Add aria-controls with modal ID
