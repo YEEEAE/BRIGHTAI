@@ -1,4 +1,5 @@
 {
     "github.copilot.chat.copilotDebugCommand.enabled": true,
-    "html.autoClosingTags": false
+    "html.autoClosingTags": false,
+    "kiroAgent.enableTabAutocomplete": true
 }
