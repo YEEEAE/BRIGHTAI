@@ -324,3 +324,380 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 </section>
 ```
+
+---
+
+## 4. قسم الثقة المؤسسية (Trust Layer)
+
+```html
+<!-- TRUST & COMPLIANCE SECTION -->
+<section class="py-24 px-6 bg-navy-950 border-y border-slate-800">
+    <div class="max-w-6xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full 
+                        bg-green-500/10 border border-green-500/20 mb-6">
+                <iconify-icon icon="lucide:shield-check" width="18" class="text-green-500"></iconify-icon>
+                <span class="text-green-400 text-sm font-medium">الامتثال والحوكمة</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                حلول ذكاء اصطناعي مؤسسية
+            </h2>
+            <p class="text-xl text-gold-500 font-medium">
+                بيانات تُدار وتُستضاف داخل المملكة
+            </p>
+        </div>
+        
+        <!-- Compliance Grid -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            
+            <!-- NCA -->
+            <div class="p-6 rounded-xl bg-navy-900/50 border border-slate-800 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 
+                            flex items-center justify-center">
+                    <iconify-icon icon="lucide:shield" width="32" class="text-slate-400"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">NCA</h3>
+                <p class="text-slate-500 text-sm">
+                    متوافق مع معايير الهيئة الوطنية للأمن السيبراني
+                </p>
+            </div>
+            
+            <!-- NDMO -->
+            <div class="p-6 rounded-xl bg-navy-900/50 border border-slate-800 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 
+                            flex items-center justify-center">
+                    <iconify-icon icon="lucide:database" width="32" class="text-slate-400"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">NDMO</h3>
+                <p class="text-slate-500 text-sm">
+                    ملتزمون بسياسات مكتب إدارة البيانات الوطنية
+                </p>
+            </div>
+            
+            <!-- Local Hosting -->
+            <div class="p-6 rounded-xl bg-navy-900/50 border border-slate-800 text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 
+                            flex items-center justify-center">
+                    <iconify-icon icon="lucide:server" width="32" class="text-slate-400"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-semibold text-white mb-2">استضافة محلية</h3>
+                <p class="text-slate-500 text-sm">
+                    بياناتك تبقى داخل حدود المملكة العربية السعودية
+                </p>
+            </div>
+        </div>
+        
+        <!-- Key Message -->
+        <div class="text-center p-8 rounded-xl bg-gradient-to-r from-navy-800/50 to-navy-900/50 
+                    border border-slate-700/50">
+            <p class="text-slate-300 text-lg leading-relaxed max-w-3xl mx-auto">
+                نحن جاهزون للتعامل مع <span class="text-white font-semibold">العقود الكبيرة</span> 
+                و<span class="text-white font-semibold">البيئات الحساسة</span>. 
+                خبرتنا في القطاعات الحكومية والمؤسسية تضمن لك شريكاً يفهم متطلباتك الأمنية والتنظيمية.
+            </p>
+        </div>
+    </div>
+</section>
+```
+
+---
+
+## 5. قسم القطاعات (Industries)
+
+```html
+<!-- INDUSTRIES SECTION -->
+<section class="py-24 px-6 bg-navy-900">
+    <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                تطبيقات قطاعية متخصصة
+            </h2>
+            <p class="text-slate-400 text-lg">
+                حلول مصممة لتحديات كل قطاع
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Retail -->
+            <div class="group p-6 rounded-xl bg-navy-800/30 border border-slate-800
+                        hover:border-slate-700 transition-all duration-300">
+                <iconify-icon icon="lucide:shopping-bag" width="32" 
+                              class="text-slate-500 group-hover:text-gold-500 transition-colors mb-4"></iconify-icon>
+                <h3 class="text-lg font-semibold text-white mb-2">التجزئة</h3>
+                <p class="text-slate-500 text-sm">تحليل سلوك العملاء وتحسين المخزون</p>
+            </div>
+            
+            <!-- Manufacturing -->
+            <div class="group p-6 rounded-xl bg-navy-800/30 border border-slate-800
+                        hover:border-slate-700 transition-all duration-300">
+                <iconify-icon icon="lucide:factory" width="32" 
+                              class="text-slate-500 group-hover:text-gold-500 transition-colors mb-4"></iconify-icon>
+                <h3 class="text-lg font-semibold text-white mb-2">الصناعة</h3>
+                <p class="text-slate-500 text-sm">الصيانة التنبؤية ومراقبة الجودة</p>
+            </div>
+            
+            <!-- Healthcare -->
+            <div class="group p-6 rounded-xl bg-navy-800/30 border border-slate-800
+                        hover:border-slate-700 transition-all duration-300">
+                <iconify-icon icon="lucide:heart-pulse" width="32" 
+                              class="text-slate-500 group-hover:text-gold-500 transition-colors mb-4"></iconify-icon>
+                <h3 class="text-lg font-semibold text-white mb-2">الرعاية الصحية</h3>
+                <p class="text-slate-500 text-sm">التشخيص الذكي وإدارة الموارد</p>
+            </div>
+            
+            <!-- Government -->
+            <div class="group p-6 rounded-xl bg-navy-800/30 border border-slate-800
+                        hover:border-slate-700 transition-all duration-300">
+                <iconify-icon icon="lucide:landmark" width="32" 
+                              class="text-slate-500 group-hover:text-gold-500 transition-colors mb-4"></iconify-icon>
+                <h3 class="text-lg font-semibold text-white mb-2">الجهات الحكومية</h3>
+                <p class="text-slate-500 text-sm">أتمتة الخدمات وتحليل البيانات</p>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+---
+
+## 6. قسم منهجية العمل (Methodology)
+
+```html
+<!-- METHODOLOGY SECTION -->
+<section class="py-24 px-6 bg-navy-950">
+    <div class="max-w-6xl mx-auto">
+        
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                منهجية العمل
+            </h2>
+            <p class="text-slate-400 text-lg">
+                من التقييم إلى التشغيل والتحسين المستمر
+            </p>
+        </div>
+        
+        <!-- Timeline -->
+        <div class="relative">
+            <!-- Line -->
+            <div class="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-800 -translate-y-1/2"></div>
+            
+            <div class="grid md:grid-cols-4 gap-8">
+                
+                <!-- Step 1 -->
+                <div class="relative text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gold-500 text-navy-950 
+                                flex items-center justify-center font-bold text-lg relative z-10">1</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">التقييم</h3>
+                    <p class="text-slate-500 text-sm">تحليل الوضع الراهن وتحديد الفرص</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="relative text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-slate-700 text-white 
+                                flex items-center justify-center font-bold text-lg relative z-10">2</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">التصميم</h3>
+                    <p class="text-slate-500 text-sm">بناء الحل المناسب لاحتياجاتك</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="relative text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-slate-700 text-white 
+                                flex items-center justify-center font-bold text-lg relative z-10">3</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">التنفيذ</h3>
+                    <p class="text-slate-500 text-sm">تطوير ونشر الحل بمعايير عالية</p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="relative text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-slate-700 text-white 
+                                flex items-center justify-center font-bold text-lg relative z-10">4</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">التحسين</h3>
+                    <p class="text-slate-500 text-sm">مراقبة وتحسين مستمر للأداء</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+---
+
+## 7. الشات بوت المؤسسي
+
+### 7.1 System Prompt
+
+```javascript
+// js/gemini-chat-enterprise.js
+const ENTERPRISE_SYSTEM_PROMPT = `
+أنت "مستشار Bright AI" - مساعد ذكي مؤسسي لشركة Bright AI السعودية.
+
+## هويتك:
+- الاسم: مستشار Bright AI
+- الدور: مساعد دعم فني ومبيعات مؤسسية
+- اللغة: العربية الفصحى الرسمية مع لمسة سعودية احترافية
+
+## معلومات الشركة:
+- Bright AI (مُشرقة AI) - شركة سعودية متخصصة في حلول الذكاء الاصطناعي المؤسسية
+- المقر: الرياض، المملكة العربية السعودية
+- الفئة المستهدفة: الشركات الكبرى والجهات الحكومية
+- الامتثال: NCA، NDMO، معايير الأمن السيبراني
+
+## الخدمات الرئيسية:
+1. الابتكار الكامل - بناء أنظمة ذكية من الصفر
+2. التطوير المخصص - تطوير الأنظمة الحالية بالذكاء الاصطناعي
+3. AIaaS للمنشآت - خدمات مُدارة للمنشآت الفيزيائية
+4. استشارات التحول الرقمي - خارطة طريق استراتيجية
+5. تحليل البيانات المتقدم - رؤى قابلة للتنفيذ
+
+## قواعد الرد:
+1. كن مختصراً ومهنياً (3-4 جمل كحد أقصى)
+2. استخدم لغة رسمية تناسب صناع القرار
+3. لا تشارك أي معلومات حساسة أو أسعار محددة
+4. وجّه دائماً لحجز استشارة تنفيذية للتفاصيل
+5. أكد على السيادة الرقمية والاستضافة المحلية عند الحاجة
+6. لا تخترع معلومات غير موجودة
+
+## رابط الاستشارة:
+wa.me/966538229013
+
+## أمثلة للردود:
+- للأسعار: "تختلف التكلفة حسب نطاق المشروع ومتطلباته. أنصحكم بحجز استشارة تنفيذية لتقييم احتياجاتكم وتقديم عرض مخصص."
+- للتفاصيل التقنية: "نقدم حلولاً مؤسسية متكاملة مع ضمان استضافة البيانات داخل المملكة. للتفاصيل التقنية الدقيقة، يسعدنا ترتيب جلسة مع فريقنا التقني."
+`;
+```
+
+### 7.2 Backend Endpoint
+
+```javascript
+// server/endpoints/chat.js
+const express = require('express');
+const router = express.Router();
+const rateLimit = require('express-rate-limit');
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+// Rate limiting
+const chatLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 10, // 10 requests per minute
+    message: { error: 'عذراً، يرجى الانتظار قليلاً قبل إرسال رسالة جديدة.' }
+});
+
+router.post('/chat', chatLimiter, async (req, res) => {
+    try {
+        const { message } = req.body;
+        
+        if (!message || message.trim().length === 0) {
+            return res.status(400).json({ error: 'الرسالة مطلوبة' });
+        }
+        
+        if (message.length > 500) {
+            return res.status(400).json({ error: 'الرسالة طويلة جداً' });
+        }
+        
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [
+                        { text: ENTERPRISE_SYSTEM_PROMPT },
+                        { text: `رسالة العميل: ${message}` }
+                    ]
+                }],
+                generationConfig: {
+                    maxOutputTokens: 200,
+                    temperature: 0.7
+                }
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Gemini API error');
+        }
+        
+        const data = await response.json();
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                      'عذراً، حدث خطأ. يرجى المحاولة لاحقاً أو التواصل معنا مباشرة.';
+        
+        res.json({ reply });
+        
+    } catch (error) {
+        console.error('Chat error:', error);
+        res.status(500).json({ 
+            error: 'عذراً، حدث خطأ في الخدمة. يمكنكم التواصل معنا عبر واتساب.' 
+        });
+    }
+});
+
+module.exports = router;
+```
+
+---
+
+## 8. Structured Data (SEO)
+
+```html
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Bright AI - مُشرقة AI",
+    "alternateName": "مُشرقة للذكاء الاصطناعي",
+    "url": "https://brightai.site",
+    "logo": "https://brightai.site/Gemini.png",
+    "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "addressCountry": "SA"
+    },
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+966538229013",
+        "contactType": "sales",
+        "availableLanguage": ["Arabic", "English"]
+    },
+    "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+    },
+    "knowsAbout": [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Enterprise Solutions",
+        "Digital Transformation",
+        "Data Analytics"
+    ]
+}
+</script>
+```
+
+---
+
+## 9. هيكل الملفات النهائي
+
+```
+/
+├── index.html                    # الصفحة الرئيسية المؤسسية
+├── physical-ai.html              # صفحة AIaaS
+├── css/
+│   ├── design-tokens-enterprise.css  # متغيرات التصميم
+│   ├── homepage-enterprise.css       # أنماط الصفحة الرئيسية
+│   └── unified-nav.css               # التنقل (موجود)
+├── js/
+│   ├── hero-canvas.js                # خلفية Hero المتحركة
+│   ├── homepage-enterprise.js        # تفاعلات الصفحة
+│   ├── gemini-chat-enterprise.js     # الشات بوت
+│   └── scroll-animations.js          # أنيميشن التمرير
+├── server/
+│   └── endpoints/
+│       └── chat.js                   # Backend للشات بوت
+└── Gemini.png                        # الشعار
+```
