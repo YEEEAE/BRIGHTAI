@@ -436,6 +436,67 @@
           .particle { display: none; }
           #ai-engines-section h2 { font-size: 2rem; }
       }
+
+      /* ========== Methodology Timeline Styles ========== */
+      #methodology {
+          position: relative;
+          overflow: hidden;
+      }
+
+      /* Timeline step entrance animation */
+      #methodology .group {
+          animation: methodology-entrance 0.6s ease-out forwards;
+          opacity: 0;
+          transform: translateY(20px);
+      }
+
+      #methodology .group:nth-child(1) { animation-delay: 0.1s; }
+      #methodology .group:nth-child(2) { animation-delay: 0.2s; }
+      #methodology .group:nth-child(3) { animation-delay: 0.3s; }
+      #methodology .group:nth-child(4) { animation-delay: 0.4s; }
+
+      @keyframes methodology-entrance {
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+      }
+
+      /* Timeline connector dots between steps (desktop) */
+      @media (min-width: 768px) {
+          #methodology .grid > div:not(:last-child)::after {
+              content: '';
+              position: absolute;
+              top: 1.5rem;
+              left: -1rem;
+              width: calc(100% + 2rem);
+              height: 2px;
+              background: linear-gradient(to left, #334155, transparent);
+              z-index: 0;
+          }
+      }
+
+      /* Pulse animation for active step */
+      @keyframes step-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+          50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+      }
+
+      #methodology .group:first-child > div:first-child {
+          animation: step-pulse 2s ease-in-out infinite;
+      }
+
+      /* Reduced motion support */
+      @media (prefers-reduced-motion: reduce) {
+          #methodology .group {
+              animation: none;
+              opacity: 1;
+              transform: none;
+          }
+          #methodology .group:first-child > div:first-child {
+              animation: none;
+          }
+      }
     </style>
     <meta
       name="keywords"
@@ -793,6 +854,562 @@
         </div>
       </div>
     </header>
+
+    <!-- VALUE PROPOSITION SECTION - قسم القيمة المقترحة -->
+    <section id="value-proposition" class="py-24 px-6 relative" style="background-color: #0f172a;">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+            من الابتكار الكامل إلى التطوير المخصص
+            <span class="block text-gold-500 mt-2">ذكاء اصطناعي يخدم أهدافك</span>
+          </h2>
+          <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
+            اصنع تحولاً جذرياً في مسار أعمالك معنا. نحن لا نبني أنظمة مبتكرة تضاعف النمو فحسب، 
+            بل نقدم خدمات تطوير متقدمة لنظامك الخاص ليعمل بذكاء وكفاءة لم تعهدها من قبل.
+            مهما كان احتياجك، بين الابتكار الجديد أو التطوير المخصص، نحن نفصّل التقنية على مقاس طموح منشأتك.
+          </p>
+        </div>
+        
+        <!-- Two Cards Grid -->
+        <div class="grid md:grid-cols-2 gap-8 stagger-container">
+          
+          <!-- Innovation Card - بطاقة الابتكار الكامل -->
+          <div class="group p-8 rounded-xl border transition-all duration-300 hover:-translate-y-1 stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border-color: rgba(71, 85, 105, 0.5);"
+               onmouseover="this.style.borderColor='rgba(212, 175, 55, 0.3)'; this.style.boxShadow='0 10px 40px rgba(212, 175, 55, 0.05)';"
+               onmouseout="this.style.borderColor='rgba(71, 85, 105, 0.5)'; this.style.boxShadow='none';">
+            <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6 transition-colors"
+                 style="background: rgba(212, 175, 55, 0.1);">
+              <iconify-icon icon="lucide:lightbulb" width="28" class="text-gold-500"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">الابتكار الكامل</h3>
+            <p class="text-slate-400 leading-relaxed">
+              نبني لك نظاماً ذكياً من الصفر، مصمماً خصيصاً لتحدياتك وأهدافك الفريدة.
+              من التصور إلى التشغيل الكامل.
+            </p>
+          </div>
+          
+          <!-- Development Card - بطاقة التطوير المخصص -->
+          <div class="group p-8 rounded-xl border transition-all duration-300 hover:-translate-y-1 stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border-color: rgba(71, 85, 105, 0.5);"
+               onmouseover="this.style.borderColor='rgba(212, 175, 55, 0.3)'; this.style.boxShadow='0 10px 40px rgba(212, 175, 55, 0.05)';"
+               onmouseout="this.style.borderColor='rgba(71, 85, 105, 0.5)'; this.style.boxShadow='none';">
+            <div class="w-14 h-14 rounded-lg flex items-center justify-center mb-6 transition-colors"
+                 style="background: rgba(212, 175, 55, 0.1);">
+              <iconify-icon icon="lucide:settings" width="28" class="text-gold-500"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-semibold text-white mb-3">التطوير المخصص</h3>
+            <p class="text-slate-400 leading-relaxed">
+              نطور نظامك الحالي ونضيف إليه قدرات الذكاء الاصطناعي 
+              ليعمل بكفاءة غير مسبوقة دون إعادة البناء من الصفر.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST & COMPLIANCE SECTION - قسم الثقة المؤسسية -->
+    <section id="trust-compliance" class="py-24 px-6 border-y" style="background-color: #020617; border-color: rgba(30, 41, 59, 0.5);">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+          <!-- Compliance Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+               style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);">
+            <iconify-icon icon="lucide:shield-check" width="18" style="color: #10B981;"></iconify-icon>
+            <span class="text-sm font-medium" style="color: #34D399;">الامتثال والحوكمة</span>
+          </div>
+          
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            حلول ذكاء اصطناعي مؤسسية
+          </h2>
+          <p class="text-xl font-medium text-gold-500">
+            بيانات تُدار وتُستضاف داخل المملكة
+          </p>
+        </div>
+        
+        <!-- Compliance Cards Grid -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12 stagger-container">
+          
+          <!-- NCA Card -->
+          <div class="p-6 rounded-xl text-center stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(30, 41, 59, 0.8);">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+                 style="background: rgba(71, 85, 105, 0.5);">
+              <iconify-icon icon="lucide:shield" width="32" class="text-slate-400"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">NCA</h3>
+            <p class="text-sm" style="color: #64748B;">
+              متوافق مع معايير الهيئة الوطنية للأمن السيبراني
+            </p>
+          </div>
+          
+          <!-- NDMO Card -->
+          <div class="p-6 rounded-xl text-center stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(30, 41, 59, 0.8);">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+                 style="background: rgba(71, 85, 105, 0.5);">
+              <iconify-icon icon="lucide:database" width="32" class="text-slate-400"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">NDMO</h3>
+            <p class="text-sm" style="color: #64748B;">
+              ملتزمون بسياسات مكتب إدارة البيانات الوطنية
+            </p>
+          </div>
+          
+          <!-- Local Hosting Card -->
+          <div class="p-6 rounded-xl text-center stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(30, 41, 59, 0.8);">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+                 style="background: rgba(71, 85, 105, 0.5);">
+              <iconify-icon icon="lucide:server" width="32" class="text-slate-400"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">استضافة محلية</h3>
+            <p class="text-sm" style="color: #64748B;">
+              بياناتك تبقى داخل حدود المملكة العربية السعودية
+            </p>
+          </div>
+        </div>
+        
+        <!-- Key Message Box -->
+        <div class="text-center p-8 rounded-xl animate-on-scroll"
+             style="background: linear-gradient(to right, rgba(15, 23, 42, 0.5), rgba(10, 15, 28, 0.5)); border: 1px solid rgba(71, 85, 105, 0.5);">
+          <p class="text-lg leading-relaxed max-w-3xl mx-auto" style="color: #CBD5E1;">
+            نحن جاهزون للتعامل مع <span class="text-white font-semibold">العقود الكبيرة</span> 
+            و<span class="text-white font-semibold">البيئات الحساسة</span>. 
+            خبرتنا في القطاعات الحكومية والمؤسسية تضمن لك شريكاً يفهم متطلباتك الأمنية والتنظيمية.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INDUSTRIES SECTION - قسم القطاعات -->
+    <section id="industries" class="py-24 px-6 relative" style="background-color: #0f172a;">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            تطبيقات قطاعية متخصصة
+          </h2>
+          <p class="text-slate-400 text-lg">
+            حلول مصممة لتحديات كل قطاع
+          </p>
+        </div>
+        
+        <!-- Industries Grid - 4 Cards -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-container">
+          
+          <!-- Retail Card - التجزئة -->
+          <div class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item
+                      bg-navy-800/30 border border-slate-700/50
+                      hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+            <div class="mb-4 transition-all duration-300">
+              <iconify-icon icon="lucide:shopping-bag" width="32" 
+                            class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">التجزئة</h3>
+            <p class="text-slate-500 text-sm">تحليل سلوك العملاء وتحسين المخزون</p>
+          </div>
+          
+          <!-- Manufacturing Card - الصناعة -->
+          <div class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item
+                      bg-navy-800/30 border border-slate-700/50
+                      hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+            <div class="mb-4 transition-all duration-300">
+              <iconify-icon icon="lucide:factory" width="32" 
+                            class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">الصناعة</h3>
+            <p class="text-slate-500 text-sm">الصيانة التنبؤية ومراقبة الجودة</p>
+          </div>
+          
+          <!-- Healthcare Card - الرعاية الصحية -->
+          <div class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item
+                      bg-navy-800/30 border border-slate-700/50
+                      hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+            <div class="mb-4 transition-all duration-300">
+              <iconify-icon icon="lucide:heart-pulse" width="32" 
+                            class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">الرعاية الصحية</h3>
+            <p class="text-slate-500 text-sm">التشخيص الذكي وإدارة الموارد</p>
+          </div>
+          
+          <!-- Government Card - الجهات الحكومية -->
+          <div class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item
+                      bg-navy-800/30 border border-slate-700/50
+                      hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+            <div class="mb-4 transition-all duration-300">
+              <iconify-icon icon="lucide:landmark" width="32" 
+                            class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">الجهات الحكومية</h3>
+            <p class="text-slate-500 text-sm">أتمتة الخدمات وتحليل البيانات</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHODOLOGY SECTION - قسم منهجية العمل -->
+    <section id="methodology" class="py-24 px-6 relative" style="background-color: #020617;">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            منهجية العمل
+          </h2>
+          <p class="text-slate-400 text-lg">
+            من التقييم إلى التشغيل والتحسين المستمر
+          </p>
+        </div>
+        
+        <!-- Timeline Container -->
+        <div class="relative">
+          <!-- Horizontal Line (Desktop) -->
+          <div class="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-slate-800" style="z-index: 0;"></div>
+          
+          <!-- Timeline Steps Grid -->
+          <div class="grid md:grid-cols-4 gap-8 stagger-container">
+            
+            <!-- Step 1: التقييم -->
+            <div class="relative text-center group stagger-item">
+              <!-- Step Number Circle -->
+              <div class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-gold-500 text-navy-900 shadow-lg shadow-gold-500/30 group-hover:scale-110">
+                1
+              </div>
+              <!-- Step Content -->
+              <h3 class="text-lg font-semibold text-white mb-2">التقييم</h3>
+              <p class="text-slate-500 text-sm leading-relaxed">تحليل الوضع الراهن وتحديد الفرص</p>
+              <!-- Icon -->
+              <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <iconify-icon icon="lucide:search" width="24" class="text-gold-500"></iconify-icon>
+              </div>
+            </div>
+            
+            <!-- Step 2: التصميم -->
+            <div class="relative text-center group stagger-item">
+              <!-- Step Number Circle -->
+              <div class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-slate-700 text-white group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:shadow-lg group-hover:shadow-gold-500/30 group-hover:scale-110">
+                2
+              </div>
+              <!-- Step Content -->
+              <h3 class="text-lg font-semibold text-white mb-2">التصميم</h3>
+              <p class="text-slate-500 text-sm leading-relaxed">بناء الحل المناسب لاحتياجاتك</p>
+              <!-- Icon -->
+              <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <iconify-icon icon="lucide:pencil-ruler" width="24" class="text-gold-500"></iconify-icon>
+              </div>
+            </div>
+            
+            <!-- Step 3: التنفيذ -->
+            <div class="relative text-center group stagger-item">
+              <!-- Step Number Circle -->
+              <div class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-slate-700 text-white group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:shadow-lg group-hover:shadow-gold-500/30 group-hover:scale-110">
+                3
+              </div>
+              <!-- Step Content -->
+              <h3 class="text-lg font-semibold text-white mb-2">التنفيذ</h3>
+              <p class="text-slate-500 text-sm leading-relaxed">تطوير ونشر الحل بمعايير عالية</p>
+              <!-- Icon -->
+              <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <iconify-icon icon="lucide:rocket" width="24" class="text-gold-500"></iconify-icon>
+              </div>
+            </div>
+            
+            <!-- Step 4: التحسين -->
+            <div class="relative text-center group stagger-item">
+              <!-- Step Number Circle -->
+              <div class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-slate-700 text-white group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:shadow-lg group-hover:shadow-gold-500/30 group-hover:scale-110">
+                4
+              </div>
+              <!-- Step Content -->
+              <h3 class="text-lg font-semibold text-white mb-2">التحسين</h3>
+              <p class="text-slate-500 text-sm leading-relaxed">مراقبة وتحسين مستمر للأداء</p>
+              <!-- Icon -->
+              <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <iconify-icon icon="lucide:trending-up" width="24" class="text-gold-500"></iconify-icon>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Mobile Vertical Line (shown on mobile only) -->
+          <style>
+            @media (max-width: 767px) {
+              #methodology .grid {
+                position: relative;
+              }
+              #methodology .grid::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                width: 2px;
+                background: linear-gradient(to bottom, #1e293b, #334155, #1e293b);
+                transform: translateX(-50%);
+                z-index: 0;
+              }
+            }
+          </style>
+        </div>
+        
+        <!-- Bottom CTA -->
+        <div class="text-center mt-16">
+          <p class="text-slate-400 mb-6">هل أنت مستعد لبدء رحلة التحول؟</p>
+          <a href="https://wa.me/966538229013" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-3 px-8 py-4 bg-gold-500 hover:bg-gold-400 text-navy-900 font-semibold text-lg rounded-lg shadow-lg shadow-gold-500/20 hover:shadow-gold-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+            <span>ابدأ الآن</span>
+            <iconify-icon icon="lucide:arrow-left" width="20"></iconify-icon>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI GOVERNANCE & ETHICS SECTION - قسم حوكمة وأخلاقيات الذكاء الاصطناعي -->
+    <section id="ai-governance" class="py-24 px-6 relative" style="background-color: #0f172a;">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+               style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2);">
+            <iconify-icon icon="lucide:scale" width="18" style="color: #818CF8;"></iconify-icon>
+            <span class="text-sm font-medium" style="color: #A5B4FC;">المسؤولية والشفافية</span>
+          </div>
+          
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            حوكمة وأخلاقيات الذكاء الاصطناعي
+          </h2>
+          <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
+            نلتزم بأعلى معايير الحوكمة والأخلاقيات في تطوير ونشر حلول الذكاء الاصطناعي،
+            لضمان الشفافية والعدالة والمسؤولية في كل ما نقدمه.
+          </p>
+        </div>
+        
+        <!-- Governance Principles Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 stagger-container">
+          
+          <!-- Transparency Card -->
+          <div class="group p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);"
+               onmouseover="this.style.borderColor='rgba(99, 102, 241, 0.3)'; this.style.boxShadow='0 10px 40px rgba(99, 102, 241, 0.05)';"
+               onmouseout="this.style.borderColor='rgba(71, 85, 105, 0.5)'; this.style.boxShadow='none';">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors"
+                 style="background: rgba(99, 102, 241, 0.1);">
+              <iconify-icon icon="lucide:eye" width="24" style="color: #818CF8;"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">الشفافية</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              نوضح كيف تعمل أنظمتنا وكيف تتخذ قراراتها بشكل مفهوم للجميع
+            </p>
+          </div>
+          
+          <!-- Fairness Card -->
+          <div class="group p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);"
+               onmouseover="this.style.borderColor='rgba(16, 185, 129, 0.3)'; this.style.boxShadow='0 10px 40px rgba(16, 185, 129, 0.05)';"
+               onmouseout="this.style.borderColor='rgba(71, 85, 105, 0.5)'; this.style.boxShadow='none';">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors"
+                 style="background: rgba(16, 185, 129, 0.1);">
+              <iconify-icon icon="lucide:scale" width="24" style="color: #34D399;"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">العدالة</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              نضمن عدم التحيز في خوارزمياتنا وتحقيق المساواة في النتائج
+            </p>
+          </div>
+          
+          <!-- Accountability Card -->
+          <div class="group p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);"
+               onmouseover="this.style.borderColor='rgba(245, 158, 11, 0.3)'; this.style.boxShadow='0 10px 40px rgba(245, 158, 11, 0.05)';"
+               onmouseout="this.style.borderColor='rgba(71, 85, 105, 0.5)'; this.style.boxShadow='none';">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors"
+                 style="background: rgba(245, 158, 11, 0.1);">
+              <iconify-icon icon="lucide:user-check" width="24" class="text-gold-500"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">المساءلة</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              نتحمل المسؤولية الكاملة عن أداء أنظمتنا ونتائجها
+            </p>
+          </div>
+          
+          <!-- Privacy Card -->
+          <div class="group p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);"
+               onmouseover="this.style.borderColor='rgba(239, 68, 68, 0.3)'; this.style.boxShadow='0 10px 40px rgba(239, 68, 68, 0.05)';"
+               onmouseout="this.style.borderColor='rgba(71, 85, 105, 0.5)'; this.style.boxShadow='none';">
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-colors"
+                 style="background: rgba(239, 68, 68, 0.1);">
+              <iconify-icon icon="lucide:lock" width="24" style="color: #F87171;"></iconify-icon>
+            </div>
+            <h3 class="text-lg font-semibold text-white mb-2">الخصوصية</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              نحمي بيانات عملائنا ونلتزم بأعلى معايير الخصوصية
+            </p>
+          </div>
+        </div>
+        
+        <!-- Commitment Statement -->
+        <div class="p-8 rounded-xl text-center animate-on-scroll"
+             style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(15, 23, 42, 0.5)); border: 1px solid rgba(99, 102, 241, 0.2);">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <iconify-icon icon="lucide:badge-check" width="28" style="color: #818CF8;"></iconify-icon>
+            <h3 class="text-xl font-semibold text-white">التزامنا الأخلاقي</h3>
+          </div>
+          <p class="text-slate-300 text-lg leading-relaxed max-w-3xl mx-auto">
+            نؤمن بأن الذكاء الاصطناعي يجب أن يخدم الإنسان ويعزز قدراته، لا أن يحل محله.
+            نلتزم بتطوير حلول تحترم الكرامة الإنسانية وتدعم التنمية المستدامة وفق رؤية المملكة 2030.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENTERPRISE AI ARCHITECTURE SECTION - قسم البنية المؤسسية للذكاء الاصطناعي -->
+    <section id="enterprise-architecture" class="py-24 px-6 relative border-y" style="background-color: #020617; border-color: rgba(30, 41, 59, 0.5);">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center mb-16 animate-on-scroll">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+               style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <iconify-icon icon="lucide:layers" width="18" class="text-gold-500"></iconify-icon>
+            <span class="text-sm font-medium text-gold-400">البنية التحتية المتقدمة</span>
+          </div>
+          
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            البنية المؤسسية للذكاء الاصطناعي
+          </h2>
+          <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
+            بنية تقنية متكاملة ومرنة تدعم نمو أعمالك وتتكيف مع متطلباتك المتغيرة،
+            مصممة وفق أفضل الممارسات العالمية ومعايير الأمان السعودية.
+          </p>
+        </div>
+        
+        <!-- Architecture Layers -->
+        <div class="space-y-6 mb-12 stagger-container">
+          
+          <!-- Layer 1: Data Layer -->
+          <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+               style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(99, 102, 241, 0.1)); border: 1px solid rgba(99, 102, 241, 0.2);">
+            <div class="flex flex-col md:flex-row md:items-center gap-6">
+              <div class="flex items-center gap-4 md:w-1/3">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                     style="background: rgba(99, 102, 241, 0.2);">
+                  <iconify-icon icon="lucide:database" width="28" style="color: #818CF8;"></iconify-icon>
+                </div>
+                <div>
+                  <span class="text-xs font-medium px-2 py-1 rounded-full" style="background: rgba(99, 102, 241, 0.2); color: #A5B4FC;">الطبقة 1</span>
+                  <h3 class="text-lg font-semibold text-white mt-1">طبقة البيانات</h3>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+                تجميع وتنظيم البيانات من مصادر متعددة (ERPs, CRMs, IoT) مع ضمان جودة البيانات وأمانها.
+                تخزين آمن داخل المملكة مع تشفير متقدم وإدارة دورة حياة البيانات.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Layer 2: Processing Layer -->
+          <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+               style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(168, 85, 247, 0.2);">
+            <div class="flex flex-col md:flex-row md:items-center gap-6">
+              <div class="flex items-center gap-4 md:w-1/3">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                     style="background: rgba(168, 85, 247, 0.2);">
+                  <iconify-icon icon="lucide:cpu" width="28" style="color: #C084FC;"></iconify-icon>
+                </div>
+                <div>
+                  <span class="text-xs font-medium px-2 py-1 rounded-full" style="background: rgba(168, 85, 247, 0.2); color: #D8B4FE;">الطبقة 2</span>
+                  <h3 class="text-lg font-semibold text-white mt-1">طبقة المعالجة</h3>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+                محركات ذكاء اصطناعي متقدمة للتعلم الآلي والتعلم العميق ومعالجة اللغة الطبيعية العربية.
+                قدرات حوسبة مرنة تتكيف مع حجم العمل وتضمن الأداء الأمثل.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Layer 3: Intelligence Layer -->
+          <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+               style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(212, 175, 55, 0.1)); border: 1px solid rgba(212, 175, 55, 0.2);">
+            <div class="flex flex-col md:flex-row md:items-center gap-6">
+              <div class="flex items-center gap-4 md:w-1/3">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                     style="background: rgba(212, 175, 55, 0.2);">
+                  <iconify-icon icon="lucide:brain" width="28" class="text-gold-500"></iconify-icon>
+                </div>
+                <div>
+                  <span class="text-xs font-medium px-2 py-1 rounded-full" style="background: rgba(212, 175, 55, 0.2); color: #FCD34D;">الطبقة 3</span>
+                  <h3 class="text-lg font-semibold text-white mt-1">طبقة الذكاء</h3>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+                نماذج ذكاء اصطناعي مخصصة لاحتياجات عملك، مع قدرات التنبؤ والتحليل واتخاذ القرار الآلي.
+                تكامل سلس مع أنظمتك الحالية عبر واجهات برمجة تطبيقات آمنة.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Layer 4: Application Layer -->
+          <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+               style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(16, 185, 129, 0.2);">
+            <div class="flex flex-col md:flex-row md:items-center gap-6">
+              <div class="flex items-center gap-4 md:w-1/3">
+                <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                     style="background: rgba(16, 185, 129, 0.2);">
+                  <iconify-icon icon="lucide:layout-dashboard" width="28" style="color: #34D399;"></iconify-icon>
+                </div>
+                <div>
+                  <span class="text-xs font-medium px-2 py-1 rounded-full" style="background: rgba(16, 185, 129, 0.2); color: #6EE7B7;">الطبقة 4</span>
+                  <h3 class="text-lg font-semibold text-white mt-1">طبقة التطبيقات</h3>
+                </div>
+              </div>
+              <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+                واجهات مستخدم ذكية ولوحات تحكم تفاعلية تقدم الرؤى والتوصيات بشكل مفهوم.
+                تطبيقات متخصصة لكل قطاع مع إمكانية التخصيص حسب احتياجاتك.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Key Features Grid -->
+        <div class="grid md:grid-cols-3 gap-6 stagger-container">
+          
+          <!-- Scalability -->
+          <div class="p-6 rounded-xl text-center stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <iconify-icon icon="lucide:trending-up" width="32" class="text-gold-500 mb-4"></iconify-icon>
+            <h3 class="text-lg font-semibold text-white mb-2">قابلية التوسع</h3>
+            <p class="text-slate-500 text-sm">بنية مرنة تنمو مع نمو أعمالك دون الحاجة لإعادة البناء</p>
+          </div>
+          
+          <!-- Security -->
+          <div class="p-6 rounded-xl text-center stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <iconify-icon icon="lucide:shield" width="32" class="text-gold-500 mb-4"></iconify-icon>
+            <h3 class="text-lg font-semibold text-white mb-2">الأمان المتقدم</h3>
+            <p class="text-slate-500 text-sm">حماية متعددة الطبقات تتوافق مع معايير NCA و NDMO</p>
+          </div>
+          
+          <!-- Integration -->
+          <div class="p-6 rounded-xl text-center stagger-item"
+               style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <iconify-icon icon="lucide:plug" width="32" class="text-gold-500 mb-4"></iconify-icon>
+            <h3 class="text-lg font-semibold text-white mb-2">التكامل السلس</h3>
+            <p class="text-slate-500 text-sm">ربط سهل مع أنظمتك الحالية عبر APIs موحدة وآمنة</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- 5. INDUSTRIES (SCROLLING TICKER) - Moved up for flow -->
     <section class="py-8 border-y border-white/5 bg-black/20 backdrop-blur-sm">
@@ -1368,15 +1985,15 @@
                   <!-- Stats Row -->
                   <div class="grid grid-cols-3 gap-2 mb-4">
                     <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                      <div class="text-lg font-bold text-blue-400 data-counter" data-target="2.5">0</div>
+                      <div class="text-lg font-bold text-blue-400" data-count="2.5">0</div>
                       <div class="text-[9px] text-slate-500">M ريال</div>
                     </div>
                     <div class="p-2 rounded-lg bg-green-500/10 border border-green-500/20">
-                      <div class="text-lg font-bold text-green-400">+15%</div>
+                      <div class="text-lg font-bold text-green-400" data-count="15%">0</div>
                       <div class="text-[9px] text-slate-500">نمو</div>
                     </div>
                     <div class="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                      <div class="text-lg font-bold text-purple-400">98%</div>
+                      <div class="text-lg font-bold text-purple-400" data-count="98%">0</div>
                       <div class="text-[9px] text-slate-500">دقة</div>
                     </div>
                   </div>
@@ -2271,5 +2888,8 @@
           }
       }
     </script>
+    
+    <!-- Enterprise Scroll Animations -->
+    <script src="js/scroll-animations.js" defer></script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 /**
  * Rate Limiter Middleware
  * Implements IP-based rate limiting for AI endpoints
- * Requirements: 23.5
+ * Requirements: 23.5, REQ-8.1
  */
 
 const { config } = require('../config/index');
@@ -9,17 +9,40 @@ const { config } = require('../config/index');
 // Store request counts per IP
 const requestCounts = new Map();
 
+// Endpoint-specific rate limits (REQ-8.1)
+const ENDPOINT_LIMITS = {
+  '/api/ai/chat': {
+    requestsPerMinute: 10,  // Stricter limit for chat endpoint
+    windowMs: 60 * 1000
+  },
+  'default': {
+    requestsPerMinute: config.rateLimit.requestsPerMinute,
+    windowMs: config.rateLimit.windowMs
+  }
+};
+
 // Arabic error messages
 const RATE_LIMIT_ERROR_AR = 'عذراً، لقد تجاوزت الحد المسموح من الطلبات. يرجى المحاولة بعد دقيقة.';
+
+/**
+ * Get rate limit config for an endpoint
+ * @param {string} endpoint - The endpoint path
+ * @returns {Object} - Rate limit configuration
+ */
+function getRateLimitConfig(endpoint) {
+  return ENDPOINT_LIMITS[endpoint] || ENDPOINT_LIMITS['default'];
+}
 
 /**
  * Clean up old entries from the rate limit store
  */
 function cleanupOldEntries() {
   const now = Date.now();
-  for (const [ip, data] of requestCounts.entries()) {
-    if (now - data.windowStart > config.rateLimit.windowMs) {
-      requestCounts.delete(ip);
+  for (const [key, data] of requestCounts.entries()) {
+    const [, endpoint] = key.split('::');
+    const limitConfig = getRateLimitConfig(endpoint);
+    if (now - data.windowStart > limitConfig.windowMs) {
+      requestCounts.delete(key);
     }
   }
 }
@@ -28,37 +51,43 @@ function cleanupOldEntries() {
 setInterval(cleanupOldEntries, 60 * 1000);
 
 /**
- * Check if an IP has exceeded the rate limit
+ * Check if an IP has exceeded the rate limit for an endpoint
  * @param {string} ip - Client IP address
+ * @param {string} endpoint - The endpoint being accessed
  * @returns {boolean} - True if limit exceeded
  */
-function checkLimit(ip) {
+function checkLimit(ip, endpoint = 'default') {
   const now = Date.now();
-  const data = requestCounts.get(ip);
+  const key = `${ip}::${endpoint}`;
+  const data = requestCounts.get(key);
+  const limitConfig = getRateLimitConfig(endpoint);
   
   if (!data) {
     return false;
   }
   
   // Reset if window has passed
-  if (now - data.windowStart > config.rateLimit.windowMs) {
+  if (now - data.windowStart > limitConfig.windowMs) {
     return false;
   }
   
-  return data.count >= config.rateLimit.requestsPerMinute;
+  return data.count >= limitConfig.requestsPerMinute;
 }
 
 /**
- * Record a request from an IP
+ * Record a request from an IP for an endpoint
  * @param {string} ip - Client IP address
+ * @param {string} endpoint - The endpoint being accessed
  */
-function recordRequest(ip) {
+function recordRequest(ip, endpoint = 'default') {
   const now = Date.now();
-  const data = requestCounts.get(ip);
+  const key = `${ip}::${endpoint}`;
+  const data = requestCounts.get(key);
+  const limitConfig = getRateLimitConfig(endpoint);
   
-  if (!data || now - data.windowStart > config.rateLimit.windowMs) {
+  if (!data || now - data.windowStart > limitConfig.windowMs) {
     // Start new window
-    requestCounts.set(ip, {
+    requestCounts.set(key, {
       count: 1,
       windowStart: now
     });
@@ -69,19 +98,22 @@ function recordRequest(ip) {
 }
 
 /**
- * Get remaining requests for an IP
+ * Get remaining requests for an IP on an endpoint
  * @param {string} ip - Client IP address
+ * @param {string} endpoint - The endpoint being accessed
  * @returns {number} - Remaining requests in current window
  */
-function getRemainingRequests(ip) {
+function getRemainingRequests(ip, endpoint = 'default') {
   const now = Date.now();
-  const data = requestCounts.get(ip);
+  const key = `${ip}::${endpoint}`;
+  const data = requestCounts.get(key);
+  const limitConfig = getRateLimitConfig(endpoint);
   
-  if (!data || now - data.windowStart > config.rateLimit.windowMs) {
-    return config.rateLimit.requestsPerMinute;
+  if (!data || now - data.windowStart > limitConfig.windowMs) {
+    return limitConfig.requestsPerMinute;
   }
   
-  return Math.max(0, config.rateLimit.requestsPerMinute - data.count);
+  return Math.max(0, limitConfig.requestsPerMinute - data.count);
 }
 
 /**
@@ -101,7 +133,11 @@ function rateLimiterMiddleware(req, res, next) {
              req.ip || 
              'unknown';
   
-  if (checkLimit(ip)) {
+  // Get the endpoint path
+  const endpoint = req.url || 'default';
+  const limitConfig = getRateLimitConfig(endpoint);
+  
+  if (checkLimit(ip, endpoint)) {
     return res.status(429).json({
       error: RATE_LIMIT_ERROR_AR,
       errorCode: 'RATE_LIMIT_EXCEEDED',
@@ -109,11 +145,11 @@ function rateLimiterMiddleware(req, res, next) {
     });
   }
   
-  recordRequest(ip);
+  recordRequest(ip, endpoint);
   
   // Add rate limit headers
-  res.setHeader('X-RateLimit-Limit', config.rateLimit.requestsPerMinute);
-  res.setHeader('X-RateLimit-Remaining', getRemainingRequests(ip));
+  res.setHeader('X-RateLimit-Limit', limitConfig.requestsPerMinute);
+  res.setHeader('X-RateLimit-Remaining', getRemainingRequests(ip, endpoint));
   
   next();
 }
@@ -123,5 +159,7 @@ module.exports = {
   checkLimit,
   recordRequest,
   getRemainingRequests,
-  RATE_LIMIT_ERROR_AR
+  getRateLimitConfig,
+  RATE_LIMIT_ERROR_AR,
+  ENDPOINT_LIMITS
 };
