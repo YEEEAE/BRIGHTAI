@@ -101,27 +101,31 @@ function initializeGtm() {
  * =================================================================================
  */
 
-// Use centralized utilities with fallback
-const debounce = (window.BrightAIUtils && window.BrightAIUtils.debounce) || function(func, wait) {
-    let timeoutId;
-    return function(...args) {
-        const context = this;
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => func.apply(context, args), wait);
+// Use centralized utilities with fallback - check if already defined to avoid conflicts
+if (typeof debounce === 'undefined') {
+    var debounce = (window.BrightAIUtils && window.BrightAIUtils.debounce) || function(func, wait) {
+        let timeoutId;
+        return function(...args) {
+            const context = this;
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => func.apply(context, args), wait);
+        };
     };
-};
+}
 
-const throttle = (window.BrightAIUtils && window.BrightAIUtils.throttle) || function(func, limit) {
-    let inThrottle = false;
-    return function(...args) {
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
+if (typeof throttle === 'undefined') {
+    var throttle = (window.BrightAIUtils && window.BrightAIUtils.throttle) || function(func, limit) {
+        let inThrottle = false;
+        return function(...args) {
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
     };
-};
+}
 
 
 /**

@@ -30,15 +30,16 @@ class CustomerServiceChat {
     }
 
     setupEventListeners() {
-        this.chatWidget.addEventListener('click', () => this.toggleChat());
-        this.closeBtn.addEventListener('click', () => this.closeChat());
-        this.textModeBtn.addEventListener('click', () => this.switchToTextMode());
-        this.voiceModeBtn.addEventListener('click', () => this.switchToVoiceMode());
-        this.sendBtn.addEventListener('click', () => this.sendMessage());
-        this.messageInput.addEventListener('keypress', (e) => {
+        // Add null checks to prevent errors when elements don't exist
+        this.chatWidget?.addEventListener('click', () => this.toggleChat());
+        this.closeBtn?.addEventListener('click', () => this.closeChat());
+        this.textModeBtn?.addEventListener('click', () => this.switchToTextMode());
+        this.voiceModeBtn?.addEventListener('click', () => this.switchToVoiceMode());
+        this.sendBtn?.addEventListener('click', () => this.sendMessage());
+        this.messageInput?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.sendMessage();
         });
-        this.recordBtn.addEventListener('click', () => this.toggleRecording());
+        this.recordBtn?.addEventListener('click', () => this.toggleRecording());
     }
 
     initializeSpeechRecognition() {
@@ -266,7 +267,10 @@ class CustomerServiceChat {
     }
 }
 
-// تشغيل التطبيق
+// تشغيل التطبيق - only if required elements exist
 document.addEventListener('DOMContentLoaded', () => {
-    new CustomerServiceChat();
+    // Only initialize if the chat widget exists on this page
+    if (document.getElementById('chatWidget')) {
+        new CustomerServiceChat();
+    }
 });
