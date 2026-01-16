@@ -3,7 +3,49 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bright AI | نُضيء طريق التحول الرقمي</title>
+    <title>Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية</title>
+    
+    <!-- Enterprise SEO Meta Tags -->
+    <meta name="description" content="Bright AI - شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. نقدم حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية مع استضافة محلية وامتثال كامل لمعايير NCA و NDMO." />
+    <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <link rel="canonical" href="https://brightai.site/" />
+    
+    <!-- Enterprise Keywords -->
+    <meta name="keywords" content="حلول ذكاء اصطناعي مؤسسية السعودية, شريك التحول الرقمي, AI Enterprise Solutions KSA, استشارات الذكاء الاصطناعي للشركات, ذكاء اصطناعي سيادي, حلول AI للجهات الحكومية, تحليل البيانات المؤسسي, أتمتة العمليات الذكية, Machine Learning السعودية, استضافة بيانات محلية, NCA compliance, NDMO, رؤية 2030, التحول الرقمي السعودي" />
+    
+    <!-- Geo Tags for Saudi Arabia -->
+    <meta name="geo.region" content="SA" />
+    <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
+    <meta name="geo.position" content="24.7136;46.6753" />
+    <meta name="ICBM" content="24.7136, 46.6753" />
+    
+    <!-- Language and Locale -->
+    <meta name="language" content="Arabic" />
+    <meta http-equiv="content-language" content="ar-SA" />
+    
+    <!-- Open Graph Meta Tags (Facebook, LinkedIn, WhatsApp) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+    <meta property="og:title" content="Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية" />
+    <meta property="og:description" content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل لمعايير NCA و NDMO." />
+    <meta property="og:url" content="https://brightai.site/" />
+    <meta property="og:image" content="https://brightai.site/Gemini.png" />
+    <meta property="og:image:alt" content="Bright AI - شعار الشركة" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ar_SA" />
+    <meta property="og:locale:alternate" content="en_US" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@BrightAI_SA" />
+    <meta name="twitter:creator" content="@BrightAI_SA" />
+    <meta name="twitter:title" content="Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية" />
+    <meta name="twitter:description" content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل." />
+    <meta name="twitter:image" content="https://brightai.site/Gemini.png" />
+    <meta name="twitter:image:alt" content="Bright AI - شعار الشركة" />
 
     <!-- Fonts: IBM Plex Sans Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -79,23 +121,29 @@
           background: #475569;
       }
 
-      /* Navigation Styles matching the provided HTML classes */
+      /* Navigation Styles - Enterprise Identity */
       .unified-nav {
           position: fixed;
           top: 0;
           left: 0;
           right: 0;
-          z-index: 50;
-          background: rgba(2, 6, 23, 0.6);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-          padding: 1rem 0;
-          transition: all 0.3s ease;
+          z-index: 9999;
+          height: 72px;
+          background: rgba(10, 15, 28, 0.85);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .unified-nav.scrolled {
+          background: rgba(10, 15, 28, 0.95);
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
       }
 
       .nav-container {
-          max-width: 80rem;
+          max-width: 1400px;
+          height: 100%;
           margin: 0 auto;
           padding: 0 1.5rem;
           display: flex;
@@ -103,11 +151,42 @@
           justify-content: space-between;
       }
 
-      .nav-links {
-          display: none; /* Hidden on mobile by default */
-          list-style: none;
-          gap: 2rem;
+      .nav-logo {
+          display: flex;
           align-items: center;
+          gap: 12px;
+          text-decoration: none;
+          color: #FFFFFF;
+          font-weight: 600;
+          font-size: 1.35rem;
+          transition: all 0.3s ease;
+          flex-shrink: 0;
+      }
+
+      .nav-logo:hover { opacity: 0.9; transform: scale(1.02); }
+      .nav-logo img { 
+          width: 42px; 
+          height: 42px; 
+          border-radius: 10px; 
+          object-fit: cover;
+          border: 1px solid rgba(212, 175, 55, 0.2);
+          box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+      }
+      .nav-logo span {
+          background: linear-gradient(135deg, #FFFFFF 0%, #D4AF37 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-family: 'Inter', 'IBM Plex Sans Arabic', sans-serif;
+          letter-spacing: -0.02em;
+      }
+
+      .nav-links {
+          display: none;
+          list-style: none;
+          gap: 4px;
+          align-items: center;
+          height: 100%;
       }
 
       @media (min-width: 1024px) {
@@ -116,102 +195,170 @@
           }
       }
 
-      .nav-links a, .dropdown-toggle {
-          color: #cbd5e1;
-          font-size: 0.9rem;
-          font-weight: 400; /* One level thinner than medium */
-          text-decoration: none;
-          transition: color 0.2s;
+      .nav-links > li {
+          height: 100%;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+      }
+
+      .nav-links > li > a, .dropdown-toggle {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          height: 40px;
+          padding: 0 16px;
+          color: rgba(203, 213, 225, 0.9);
+          font-size: 0.9rem;
+          font-weight: 500;
+          text-decoration: none;
+          border-radius: 10px;
+          transition: all 0.3s ease;
           background: none;
           border: none;
           cursor: pointer;
+          white-space: nowrap;
       }
 
-      .nav-links a:hover, .dropdown-toggle:hover {
-          color: #fbbf24;
+      .nav-links > li > a:hover, .dropdown-toggle:hover {
+          color: #FFFFFF;
+          background: rgba(212, 175, 55, 0.08);
       }
 
       .nav-dropdown {
           position: relative;
       }
 
+      .dropdown-arrow {
+          width: 16px;
+          height: 16px;
+          transition: transform 0.3s ease;
+          opacity: 0.7;
+      }
+
+      .nav-dropdown:hover .dropdown-arrow {
+          transform: rotate(180deg);
+          opacity: 1;
+      }
+
       .dropdown-menu {
           position: absolute;
-          top: 100%;
+          top: calc(100% + 8px);
           right: 0;
-          width: 260px;
-          background: rgba(15, 23, 42, 0.95);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 0.75rem;
-          padding: 0.5rem;
+          min-width: 280px;
+          background: rgba(15, 23, 42, 0.98);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(212, 175, 55, 0.1);
+          border-radius: 16px;
+          padding: 8px;
+          list-style: none;
+          margin: 0;
           opacity: 0;
           visibility: hidden;
-          transform: translateY(10px);
-          transition: all 0.2s ease;
-          box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+          transform: translateY(-12px) scale(0.96);
+          transition: all 0.3s ease;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
           z-index: 60;
-          backdrop-filter: blur(12px);
+          pointer-events: none;
       }
 
       .nav-dropdown:hover .dropdown-menu {
           opacity: 1;
           visibility: visible;
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
+          pointer-events: auto;
       }
 
       .dropdown-menu li a {
-          padding: 0.75rem 1rem;
-          border-radius: 0.5rem;
-          display: block;
-          color: #cbd5e1;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 14px 16px;
+          border-radius: 10px;
+          color: rgba(203, 213, 225, 0.9);
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: all 0.3s ease;
       }
 
       .dropdown-menu li a:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: #fbbf24;
+          background: rgba(212, 175, 55, 0.08);
+          color: #FFFFFF;
       }
 
       /* Hamburger */
       .hamburger-btn {
-          display: flex;
+          display: none;
           flex-direction: column;
-          gap: 6px;
-          background: none;
-          border: none;
+          justify-content: center;
+          align-items: center;
+          width: 48px;
+          height: 48px;
+          background: rgba(212, 175, 55, 0.1);
+          border: 1px solid rgba(212, 175, 55, 0.2);
+          border-radius: 12px;
           cursor: pointer;
-          padding: 0.5rem;
+          z-index: 10001;
+          transition: all 0.3s ease;
       }
 
-      @media (min-width: 1024px) {
-          .hamburger-btn { display: none; }
+      .hamburger-btn:hover {
+          background: rgba(212, 175, 55, 0.15);
+      }
+
+      @media (max-width: 1024px) {
+          .hamburger-btn { display: flex; }
       }
 
       .hamburger-line {
-          width: 24px;
+          width: 20px;
           height: 2px;
-          background-color: #e2e8f0;
+          background-color: #D4AF37;
+          border-radius: 2px;
           transition: all 0.3s ease;
+          margin: 2px 0;
       }
+
+      .hamburger-btn.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+      .hamburger-btn.active .hamburger-line:nth-child(2) { opacity: 0; }
+      .hamburger-btn.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
 
       /* Mobile Menu State */
       .nav-links.active {
           display: flex;
           flex-direction: column;
-          position: absolute;
-          top: 100%;
-          left: 0;
+          position: fixed;
+          top: 0;
           right: 0;
-          background: #020617;
-          padding: 2rem;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-          align-items: flex-start;
+          width: 320px;
+          max-width: 85vw;
+          height: 100vh;
+          background: linear-gradient(180deg, #0A0F1C 0%, #0F172A 50%, #1E293B 100%);
+          padding: 100px 20px 40px;
+          gap: 4px;
+          overflow-y: auto;
+          z-index: 10000;
+          box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5);
+          border-left: 1px solid rgba(212, 175, 55, 0.1);
       }
 
-      .nav-links.active .nav-dropdown {
-          width: 100%;
+      [dir="rtl"] .nav-links.active {
+          right: auto;
+          left: 0;
+          border-left: none;
+          border-right: 1px solid rgba(212, 175, 55, 0.1);
+          box-shadow: 10px 0 50px rgba(0, 0, 0, 0.5);
+      }
+
+      .nav-links.active > li {
+          height: auto;
+      }
+
+      .nav-links.active > li > a, .nav-links.active .dropdown-toggle {
+          height: auto;
+          padding: 16px 20px;
+          font-size: 1rem;
+          border-radius: 14px;
+          justify-content: space-between;
       }
 
       .nav-links.active .dropdown-menu {
@@ -219,12 +366,100 @@
           opacity: 1;
           visibility: visible;
           transform: none;
-          width: 100%;
-          background: transparent;
-          border: none;
+          background: rgba(212, 175, 55, 0.05);
           box-shadow: none;
-          padding-right: 1rem;
-          display: none; /* JS toggle needed for sub-menus on mobile ideally, simpler here to just show on hover or default */
+          border: none;
+          border-radius: 14px;
+          margin: 8px 0 0 0;
+          padding: 0;
+          max-height: 0;
+          overflow: hidden;
+          pointer-events: auto;
+      }
+
+      .nav-links.active .nav-dropdown.active .dropdown-menu {
+          max-height: 500px;
+          padding: 8px;
+      }
+
+      /* Nav Overlay */
+      .nav-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(4px);
+          z-index: 9998;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+          pointer-events: none;
+      }
+
+      .nav-overlay.active {
+          opacity: 1;
+          visibility: visible;
+          pointer-events: auto;
+      }
+
+      @media (max-width: 1024px) {
+          .nav-overlay { display: block; }
+          .unified-nav { height: 64px; }
+      }
+
+      /* Responsive Navigation - Tablets (768px - 1024px) */
+      @media (min-width: 768px) and (max-width: 1024px) {
+          .nav-links.active { width: 380px; }
+          .nav-container { padding: 0 32px; }
+      }
+
+      /* Responsive Navigation - Large Phones (480px - 768px) */
+      @media (min-width: 480px) and (max-width: 768px) {
+          .nav-container { padding: 0 20px; }
+          .nav-logo { font-size: 1.2rem; gap: 10px; }
+          .nav-logo img { width: 38px; height: 38px; }
+          .nav-links.active { width: 300px; padding: 95px 18px 36px; }
+          .nav-links.active > li > a, .nav-links.active .dropdown-toggle { padding: 15px 18px; font-size: 0.98rem; }
+      }
+
+      /* Responsive Navigation - Small Phones (360px - 480px) */
+      @media (min-width: 360px) and (max-width: 480px) {
+          .unified-nav { height: 60px; }
+          .nav-container { padding: 0 14px; }
+          .nav-logo { font-size: 1.1rem; gap: 8px; }
+          .nav-logo img { width: 34px; height: 34px; border-radius: 8px; }
+          .nav-links.active { width: 100%; max-width: 100%; padding: 85px 14px 30px; }
+          .nav-links.active > li > a, .nav-links.active .dropdown-toggle { padding: 13px 14px; font-size: 0.92rem; border-radius: 12px; }
+          .dropdown-menu li a { padding: 12px 14px; font-size: 0.88rem; }
+          .hamburger-btn { width: 42px; height: 42px; }
+          .hamburger-line { width: 18px; }
+      }
+
+      /* Responsive Navigation - Extra Small Phones (< 360px) */
+      @media (max-width: 360px) {
+          .unified-nav { height: 56px; }
+          .nav-container { padding: 0 12px; }
+          .nav-logo { font-size: 1rem; gap: 6px; }
+          .nav-logo img { width: 30px; height: 30px; }
+          .nav-links.active { padding: 75px 12px 24px; }
+          .nav-links.active > li > a, .nav-links.active .dropdown-toggle { padding: 12px; font-size: 0.88rem; }
+          .dropdown-menu li a { padding: 10px 12px; font-size: 0.85rem; }
+          .hamburger-btn { width: 40px; height: 40px; }
+          .hamburger-line { width: 16px; height: 1.5px; }
+      }
+
+      /* Responsive Navigation - Landscape Phones */
+      @media (max-width: 768px) and (orientation: landscape) {
+          .unified-nav { height: 52px; }
+          .nav-links.active { padding-top: 65px; padding-bottom: 20px; }
+          .nav-links.active > li > a, .nav-links.active .dropdown-toggle { padding: 10px 14px; font-size: 0.9rem; }
+      }
+
+      /* Responsive Navigation - Foldable Devices (280px - 320px) */
+      @media (min-width: 280px) and (max-width: 320px) {
+          .nav-logo span { display: none; }
+          .nav-links.active { width: 100%; padding: 70px 10px 20px; }
+          .nav-links.active > li > a, .nav-links.active .dropdown-toggle { padding: 10px; font-size: 0.85rem; }
       }
 
       /* Utility specific classes */
@@ -498,10 +733,282 @@
           }
       }
     </style>
-    <meta
-      name="keywords"
-      content="الذكاء الاصطناعي, سير عمل الذكاء الاصطناعي, AIaaS, أتمتة العمليات RPA, الرؤية الحاسوبية, Machine Learning, تحليل البيانات, استشارات الذكاء الاصطناعي, الموارد البشرية, التوظيف الذكي, رؤية المملكة 2030"
-    />
+    
+    <!-- Structured Data: Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Bright AI",
+      "alternateName": ["مُشرقة AI", "مُشرقة للذكاء الاصطناعي", "Bright AI Saudi Arabia"],
+      "url": "https://brightai.site",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://brightai.site/Gemini.png",
+        "width": 512,
+        "height": 512
+      },
+      "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية",
+      "foundingDate": "2023",
+      "founders": [
+        {
+          "@type": "Person",
+          "name": "Bright AI Team"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "الرياض",
+        "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "postalCode": "12345",
+        "addressCountry": "SA"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+966538229013",
+          "contactType": "sales",
+          "areaServed": "SA",
+          "availableLanguage": ["Arabic", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+966538229013",
+          "contactType": "customer service",
+          "areaServed": "SA",
+          "availableLanguage": ["Arabic", "English"]
+        }
+      ],
+      "sameAs": [
+        "https://wa.me/966538229013"
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      },
+      "knowsAbout": [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Enterprise Solutions",
+        "Digital Transformation",
+        "Data Analytics",
+        "Process Automation",
+        "Computer Vision",
+        "Natural Language Processing"
+      ]
+    }
+    </script>
+    
+    <!-- Structured Data: LocalBusiness Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://brightai.site/#localbusiness",
+      "name": "Bright AI - مُشرقة للذكاء الاصطناعي",
+      "image": "https://brightai.site/Gemini.png",
+      "url": "https://brightai.site",
+      "telephone": "+966538229013",
+      "priceRange": "$$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "الرياض",
+        "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "postalCode": "12345",
+        "addressCountry": "SA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 24.7136,
+        "longitude": 46.6753
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "50"
+      }
+    }
+    </script>
+    
+    <!-- Structured Data: Service Schema - AI Solutions -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://brightai.site/#ai-solutions",
+      "name": "حلول الذكاء الاصطناعي المؤسسية",
+      "alternateName": "Enterprise AI Solutions",
+      "description": "حلول ذكاء اصطناعي مؤسسية مصممة للشركات الكبرى والجهات الحكومية السعودية مع استضافة محلية وامتثال كامل",
+      "provider": {
+        "@type": "Organization",
+        "name": "Bright AI",
+        "url": "https://brightai.site"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      },
+      "serviceType": "Enterprise AI Solutions",
+      "category": "Technology Services"
+    }
+    </script>
+    
+    <!-- Structured Data: Service Schema - Digital Transformation Consulting -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://brightai.site/#consulting",
+      "name": "استشارات التحول الرقمي",
+      "alternateName": "Digital Transformation Consulting",
+      "description": "استشارات استراتيجية للتحول الرقمي وتطبيق حلول الذكاء الاصطناعي في المؤسسات السعودية",
+      "provider": {
+        "@type": "Organization",
+        "name": "Bright AI",
+        "url": "https://brightai.site"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      },
+      "serviceType": "Consulting",
+      "category": "Business Consulting"
+    }
+    </script>
+    
+    <!-- Structured Data: Service Schema - Data Analytics -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://brightai.site/#data-analytics",
+      "name": "تحليل البيانات المتقدم",
+      "alternateName": "Advanced Data Analytics",
+      "description": "خدمات تحليل البيانات المتقدمة باستخدام الذكاء الاصطناعي لاستخراج رؤى قابلة للتنفيذ",
+      "provider": {
+        "@type": "Organization",
+        "name": "Bright AI",
+        "url": "https://brightai.site"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      },
+      "serviceType": "Data Analytics",
+      "category": "Technology Services"
+    }
+    </script>
+    
+    <!-- Structured Data: Service Schema - Process Automation -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": "https://brightai.site/#automation",
+      "name": "الأتمتة الذكية",
+      "alternateName": "Intelligent Process Automation",
+      "description": "أتمتة العمليات المؤسسية باستخدام الذكاء الاصطناعي لتحسين الكفاءة وتقليل التكاليف",
+      "provider": {
+        "@type": "Organization",
+        "name": "Bright AI",
+        "url": "https://brightai.site"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      },
+      "serviceType": "Process Automation",
+      "category": "Technology Services"
+    }
+    </script>
+    
+    <!-- Structured Data: WebSite Schema with SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Bright AI",
+      "alternateName": "مُشرقة للذكاء الاصطناعي",
+      "url": "https://brightai.site",
+      "inLanguage": ["ar", "en"],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Bright AI",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.site/Gemini.png"
+        }
+      }
+    }
+    </script>
+    
+    <!-- Structured Data: FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ما هي خدمات Bright AI للذكاء الاصطناعي المؤسسي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نقدم في Bright AI حلول ذكاء اصطناعي مؤسسية شاملة تشمل: الابتكار الكامل (بناء أنظمة ذكية من الصفر)، التطوير المخصص (تطوير الأنظمة الحالية بالذكاء الاصطناعي)، AIaaS للمنشآت (خدمات مُدارة)، استشارات التحول الرقمي، وتحليل البيانات المتقدم."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل بيانات العملاء تُستضاف داخل المملكة العربية السعودية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، نلتزم بالسيادة الرقمية حيث تُدار وتُستضاف جميع بيانات العملاء داخل حدود المملكة العربية السعودية، مع الامتثال الكامل لمعايير الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية (NDMO)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما هي القطاعات التي تخدمها Bright AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نخدم مجموعة واسعة من القطاعات تشمل: قطاع التجزئة (تحليل سلوك العملاء وتحسين المخزون)، القطاع الصناعي (الصيانة التنبؤية ومراقبة الجودة)، قطاع الرعاية الصحية (التشخيص الذكي وإدارة الموارد)، والجهات الحكومية (أتمتة الخدمات وتحليل البيانات)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف يمكنني طلب استشارة تنفيذية من Bright AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكنك طلب استشارة تنفيذية مجانية من خلال التواصل معنا عبر واتساب على الرقم +966538229013، أو من خلال زر 'طلب استشارة تنفيذية' الموجود في الموقع. سيقوم فريقنا بالتواصل معك لفهم احتياجاتك وتقديم الحلول المناسبة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما هي منهجية العمل في Bright AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نتبع منهجية عمل مؤسسية من أربع مراحل: 1) التقييم - تحليل الوضع الراهن وتحديد الفرص، 2) التصميم - بناء الحل المناسب لاحتياجاتك، 3) التنفيذ - تطوير ونشر الحل بمعايير عالية، 4) التحسين - مراقبة وتحسين مستمر للأداء."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل Bright AI متوافقة مع معايير الأمن السيبراني السعودية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، نحن ملتزمون بالامتثال الكامل لمعايير الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية (NDMO)، مما يجعلنا الشريك المثالي للجهات الحكومية والشركات الكبرى التي تتطلب أعلى معايير الأمان والحوكمة."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400">
     <!-- Background Aurora Effects -->
@@ -521,22 +1028,9 @@
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
       <div class="nav-container">
         <!-- Logo -->
-        <a
-          href="index.html"
-          class="nav-logo flex items-center gap-2"
-          aria-label="الصفحة الرئيسية - Bright AI"
-        >
-          <!-- Fallback to text if image fails, styled to look like letters only logo -->
-          <div
-            class="relative w-10 h-10 flex items-center justify-center bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg border border-white/10 overflow-hidden"
-          >
-            <span class="text-xl font-bold text-white tracking-tighter">B</span>
-          </div>
-          <span
-            class="font-semibold text-lg tracking-tight text-white hidden md:block"
-          >
-            Bright AI
-          </span>
+        <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+          <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
+          <span>Bright AI</span>
         </a>
         <!-- Hamburger Menu Button (Mobile) -->
         <button
@@ -578,12 +1072,12 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               <li role="none">
-                <a role="menuitem" href="ai-workflows.html">
+                <a role="menuitem" href="smart-automation.html">
                   AI Workflows سير عمل الذكاء الاصطناعي
                 </a>
               </li>
               <li role="none">
-                <a role="menuitem" href="physical-ai.html">
+                <a role="menuitem" href="ai-agent.html">
                   الذكاء الاصطناعي (AIaaS) للمنشآت
                 </a>
               </li>
@@ -724,6 +1218,9 @@
         </ul>
       </div>
     </nav>
+    
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
 
     <!-- 1. HERO SECTION -->
     <header class="relative pt-32 pb-16 lg:pt-48 lg:pb-32 px-6 overflow-hidden">
@@ -765,13 +1262,15 @@
 
           <div class="flex flex-wrap gap-4">
             <a
-              href="#"
+              href="https://wa.me/966538229013"
+              target="_blank"
+              rel="noopener noreferrer"
               class="px-8 py-3 bg-white text-navy-900 rounded-lg font-medium hover:bg-slate-200 transition shadow-[0_0_20px_rgba(255,255,255,0.3)]"
             >
               ابدأ رحلتك الرقمية بإستشارة مجانية 
             </a>
             <a
-              href="#"
+              href="our-products.html"
               class="px-8 py-3 glass-card text-white rounded-lg font-medium hover:bg-white/10 transition"
             >
               تعرّف على حلولنا
@@ -1647,7 +2146,9 @@
                 </li>
               </ul>
               <a
-                href="#"
+                href="https://wa.me/966538229013"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 font-medium"
               >
                 اطلب استشارة ميدانية
@@ -2504,14 +3005,14 @@
               للنمو.
             </p>
             <div class="flex gap-4">
-              <a href="#" class="text-slate-400 hover:text-white transition">
+              <a href="https://twitter.com/BrightAI_SA" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="تويتر">
                 <iconify-icon icon="lucide:twitter" width="20"></iconify-icon>
               </a>
-              <a href="#" class="text-slate-400 hover:text-white transition">
+              <a href="https://linkedin.com/company/brightai-sa" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="لينكد إن">
                 <iconify-icon icon="lucide:linkedin" width="20"></iconify-icon>
               </a>
-              <a href="#" class="text-slate-400 hover:text-white transition">
-                <iconify-icon icon="lucide:github" width="20"></iconify-icon>
+              <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition" aria-label="واتساب">
+                <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
               </a>
             </div>
           </div>
@@ -2520,15 +3021,15 @@
             <h4 class="text-white font-medium mb-6">الشركة</h4>
             <ul class="space-y-3 text-sm text-slate-400">
               <li>
-                <a href="#" class="hover:text-gold-400 transition">
+                <a href="Docfile/About.Bright.AI.html" class="hover:text-gold-400 transition">
                   عن Bright AI
                 </a>
               </li>
               <li>
-                <a href="#" class="hover:text-gold-400 transition">الوظائف</a>
+                <a href="contact.html" class="hover:text-gold-400 transition">الوظائف</a>
               </li>
               <li>
-                <a href="#" class="hover:text-gold-400 transition">الشركاء</a>
+                <a href="consultation.html" class="hover:text-gold-400 transition">الشركاء</a>
               </li>
             </ul>
           </div>
@@ -2537,15 +3038,15 @@
             <h4 class="text-white font-medium mb-6">الموارد</h4>
             <ul class="space-y-3 text-sm text-slate-400">
               <li>
-                <a href="#" class="hover:text-gold-400 transition">المدونة</a>
+                <a href="blog.html" class="hover:text-gold-400 transition">المدونة</a>
               </li>
               <li>
-                <a href="#" class="hover:text-gold-400 transition">
+                <a href="blog.html" class="hover:text-gold-400 transition">
                   دراسات حالة
                 </a>
               </li>
               <li>
-                <a href="#" class="hover:text-gold-400 transition">
+                <a href="Docs.html" class="hover:text-gold-400 transition">
                   الوثائق (Docs)
                 </a>
               </li>
@@ -2557,11 +3058,15 @@
             <ul class="space-y-3 text-sm text-slate-400">
               <li class="flex items-center gap-2">
                 <iconify-icon icon="lucide:mail" width="16"></iconify-icon>
-                contact@brightai.site
+                <a href="mailto:contact@brightai.site" class="hover:text-gold-400 transition">contact@brightai.site</a>
               </li>
               <li class="flex items-center gap-2">
                 <iconify-icon icon="lucide:map-pin" width="16"></iconify-icon>
                 الرياض، المملكة العربية السعودية
+              </li>
+              <li class="flex items-center gap-2">
+                <iconify-icon icon="lucide:phone" width="16"></iconify-icon>
+                <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 transition">+966 53 822 9013</a>
               </li>
             </ul>
           </div>
@@ -2572,11 +3077,12 @@
         >
           <p>© 2024 Bright AI. جميع الحقوق محفوظة.</p>
           <div class="flex gap-6">
-            <a href="#" class="hover:text-slate-400">سياسة الخصوصية</a>
-            <a href="#" class="hover:text-slate-400">الشروط والأحكام</a>
+            <a href="privacy-cookies.html" class="hover:text-slate-400">سياسة الخصوصية</a>
+            <a href="terms-and-conditions.html" class="hover:text-slate-400">الشروط والأحكام</a>
           </div>
         </div>
       </div>
+
     </footer>
 
     <!-- INSTRUCTION 3: GEMINI CHATBOT WIDGET -->
@@ -2658,11 +3164,49 @@
       // 1. Mobile Menu Logic
       const hamburgerBtn = document.querySelector('.hamburger-btn');
       const navLinks = document.querySelector('.nav-links');
+      const navOverlay = document.querySelector('.nav-overlay');
 
-      hamburgerBtn.addEventListener('click', () => {
+      function toggleMobileMenu() {
           const isExpanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
           hamburgerBtn.setAttribute('aria-expanded', !isExpanded);
+          hamburgerBtn.classList.toggle('active');
           navLinks.classList.toggle('active');
+          if (navOverlay) navOverlay.classList.toggle('active');
+          
+          // Prevent body scroll when menu is open
+          document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+      }
+
+      hamburgerBtn.addEventListener('click', toggleMobileMenu);
+      
+      // Close menu when clicking overlay
+      if (navOverlay) {
+          navOverlay.addEventListener('click', toggleMobileMenu);
+      }
+
+      // Handle dropdown toggles on mobile
+      document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+          const toggle = dropdown.querySelector('.dropdown-toggle');
+          if (toggle) {
+              toggle.addEventListener('click', (e) => {
+                  if (window.innerWidth <= 1024) {
+                      e.preventDefault();
+                      dropdown.classList.toggle('active');
+                  }
+              });
+          }
+      });
+
+      // Add scroll effect to navigation
+      window.addEventListener('scroll', () => {
+          const nav = document.querySelector('.unified-nav');
+          if (nav) {
+              if (window.scrollY > 50) {
+                  nav.classList.add('scrolled');
+              } else {
+                  nav.classList.remove('scrolled');
+              }
+          }
       });
 
       // 2. Interactive Feature Logic
@@ -2848,25 +3392,30 @@
               </div>`;
           msgsDiv.scrollTop = msgsDiv.scrollHeight;
 
-          // API Logic
-          const GEMINI_API_KEY = 'YOUR_API_KEY_HERE'; // Placeholder as requested
-
+          // API Logic - Call backend server which handles Gemini API
           try {
-              // Simulating request since no real Key is provided in prompt
-              // In production, replace URL and body with actual fetch to Gemini
-              /*
-              const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+              const response = await fetch('/api/ai/chat', {
                   method: 'POST',
-                  headers: {'Content-Type': 'application/json'},
-                  body: JSON.stringify({ contents: [{ parts: [{ text: message }] }] })
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ 
+                      message: message,
+                      history: [],
+                      sessionId: window.chatSessionId || null
+                  })
               });
+              
               const data = await response.json();
-              const reply = data.candidates[0].content.parts[0].text;
-              */
-
-              // Simulation for Demo purposes
-              await new Promise(r => setTimeout(r, 1500));
-              const reply = "شكراً لرسالتك. هذه نسخة تجريبية لواجهة الموقع. لربط النموذج الفعلي، يرجى إضافة مفتاح API في الكود.";
+              
+              if (!response.ok) {
+                  throw new Error(data.error || 'حدث خطأ في الاتصال');
+              }
+              
+              // Store session ID for conversation continuity
+              if (data.sessionId) {
+                  window.chatSessionId = data.sessionId;
+              }
+              
+              const reply = data.reply;
 
               // Remove loading
               document.getElementById(loadingId).remove();

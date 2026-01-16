@@ -1,17 +1,21 @@
 /**
  * BrightAI Unified Navigation System
- * Professional Design - All Screen Sizes Support
- * Version: 2.1.0
+ * Enterprise Design - Professional Navy & Gold Theme
+ * Version: 3.0.0 - Enterprise Edition
  */
 
+/* Import Enterprise Design Tokens */
+@import url('./design-tokens-enterprise.css');
+
 :root {
-    --nav-bg: rgba(139, 92, 246, 0.85);
-    --nav-bg-scrolled: rgba(139, 92, 246, 0.95);
-    --nav-text: rgba(255, 255, 255, 0.9);
+    /* Enterprise Navigation Colors */
+    --nav-bg: rgba(10, 15, 28, 0.85);
+    --nav-bg-scrolled: rgba(10, 15, 28, 0.95);
+    --nav-text: rgba(203, 213, 225, 0.9);
     --nav-text-hover: #FFFFFF;
-    --nav-accent: #EC4899;
-    --dropdown-bg: rgba(139, 92, 246, 0.98);
-    --dropdown-item-hover: rgba(255, 255, 255, 0.12);
+    --nav-accent: #D4AF37;
+    --dropdown-bg: rgba(15, 23, 42, 0.98);
+    --dropdown-item-hover: rgba(212, 175, 55, 0.08);
     --nav-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --nav-height: 72px;
     --nav-height-mobile: 64px;
@@ -52,19 +56,28 @@
     gap: 12px;
     text-decoration: none;
     color: #FFFFFF;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.35rem;
     transition: var(--nav-transition);
     flex-shrink: 0;
 }
 
 .nav-logo:hover { opacity: 0.9; transform: scale(1.02); }
-.nav-logo img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
+.nav-logo img { 
+    width: 42px; 
+    height: 42px; 
+    border-radius: 10px; 
+    object-fit: cover;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
 .nav-logo span {
-    background: linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.8) 100%);
+    background: linear-gradient(135deg, #FFFFFF 0%, #D4AF37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-family: 'Inter', 'IBM Plex Sans Arabic', sans-serif;
+    letter-spacing: -0.02em;
 }
 
 .nav-links {
@@ -101,7 +114,7 @@
 
 .nav-links > li > a:hover, .dropdown-toggle:hover {
     color: var(--nav-text-hover);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(212, 175, 55, 0.08);
 }
 
 .nav-dropdown { position: relative; }
@@ -216,7 +229,7 @@
         max-width: 85vw;
         height: 100vh;
         height: 100dvh;
-        background: linear-gradient(180deg, #8B5CF6 0%, #6366F1 50%, #EC4899 100%);
+        background: linear-gradient(180deg, #0A0F1C 0%, #0F172A 50%, #1E293B 100%);
         flex-direction: column;
         align-items: stretch;
         padding: 100px 20px 40px;
@@ -224,7 +237,8 @@
         overflow-y: auto;
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10000;
-        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.3);
+        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5);
+        border-left: 1px solid rgba(212, 175, 55, 0.1);
     }
     
     [dir="rtl"] .nav-links { right: auto; left: -100%; box-shadow: 10px 0 50px rgba(0, 0, 0, 0.3); }
