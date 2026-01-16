@@ -101,9 +101,27 @@ function initializeGtm() {
  * =================================================================================
  */
 
-// Use centralized utilities
-const debounce = window.BrightAIUtils.debounce;
-const throttle = window.BrightAIUtils.throttle;
+// Use centralized utilities with fallback
+const debounce = (window.BrightAIUtils && window.BrightAIUtils.debounce) || function(func, wait) {
+    let timeoutId;
+    return function(...args) {
+        const context = this;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(context, args), wait);
+    };
+};
+
+const throttle = (window.BrightAIUtils && window.BrightAIUtils.throttle) || function(func, limit) {
+    let inThrottle = false;
+    return function(...args) {
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+};
 
 
 /**
@@ -591,25 +609,35 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 /**
  * Initializes smooth scrolling for all on-page anchor links.
+ * Fixed: Only handles internal anchor links, not external page links
  */
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (event) {
             const href = this.getAttribute('href');
-            if (href && href.length > 1) {
-                const targetElement = document.querySelector(href);
-                if (targetElement) {
-                    event.preventDefault();
-                    const navbarHeight = document.querySelector('.navbar')?.offsetHeight || 70;
-                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                    const offsetPosition = elementPosition - navbarHeight - 20;
+            // Only handle internal anchor links (e.g., #section-id)
+            // Skip if href is just "#" or empty
+            if (href && href.length > 1 && href.startsWith('#')) {
+                try {
+                    const targetElement = document.querySelector(href);
+                    if (targetElement) {
+                        event.preventDefault();
+                        const navbarHeight = document.querySelector('.navbar, .unified-nav')?.offsetHeight || 70;
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                        const offsetPosition = elementPosition - navbarHeight - 20;
 
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                    // If targetElement not found, let the browser handle it normally
+                } catch (e) {
+                    // Invalid selector, let browser handle normally
+                    console.warn('[SmoothScroll] Invalid selector:', href);
                 }
             }
+            // For href="#" or invalid selectors, don't prevent default - let browser handle
         });
     });
 }

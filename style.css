@@ -701,12 +701,14 @@ textarea:focus-visible,
     visibility: hidden;
     transition: opacity 0.25s ease, visibility 0s linear 0.25s;
     will-change: opacity;
+    pointer-events: none; /* إصلاح: منع الـ overlay من اعتراض النقرات عندما يكون مخفياً */
 }
 
 .overlay.active {
     opacity: 1;
     visibility: visible;
     transition: opacity 0.25s ease, visibility 0s linear;
+    pointer-events: auto; /* السماح بالنقر فقط عندما يكون نشطاً */
 }
 
 
@@ -1377,6 +1379,7 @@ textarea:focus-visible,
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
     transition: left 0.5s;
+    pointer-events: none; /* إصلاح: السماح بالنقر على الرابط */
 }
 
 .cta-button:hover::before,

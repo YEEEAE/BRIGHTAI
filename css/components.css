@@ -138,11 +138,13 @@
     visibility: hidden;
     transition: var(--transition-base);
     z-index: calc(var(--z-fixed) - 1);
+    pointer-events: none; /* إصلاح: منع الـ overlay من اعتراض النقرات عندما يكون مخفياً */
 }
 
 .overlay.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto; /* السماح بالنقر فقط عندما يكون نشطاً */
 }
 
 /* Mobile navigation */

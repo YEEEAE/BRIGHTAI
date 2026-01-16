@@ -1,18 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for anchor links (only for internal page anchors)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
             const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
             
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 100, // Adjusted for potential fixed header
-                    behavior: 'smooth'
-                });
+            // Skip if href is just "#" or empty
+            if (!targetId || targetId === '#') return;
+            
+            try {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100, // Adjusted for potential fixed header
+                        behavior: 'smooth'
+                    });
+                }
+                // If targetElement not found, let browser handle normally
+            } catch (err) {
+                // Invalid selector, let browser handle normally
+                console.warn('[ai-bots.js] Invalid selector:', targetId);
             }
         });
     });

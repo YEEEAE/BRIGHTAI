@@ -189,9 +189,14 @@
     opacity: 0;
     visibility: hidden;
     transition: var(--nav-transition);
+    pointer-events: none; /* إصلاح: منع الـ overlay من اعتراض النقرات عندما يكون مخفياً */
 }
 
-.nav-overlay.active { opacity: 1; visibility: visible; }
+.nav-overlay.active { 
+    opacity: 1; 
+    visibility: visible; 
+    pointer-events: auto; /* السماح بالنقر فقط عندما يكون نشطاً */
+}
 
 
 /* ==========================================================================
