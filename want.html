@@ -245,12 +245,14 @@
       .text-gradient {
           background: linear-gradient(135deg, #fff 0%, #cbd5e1 50%, #94a3b8 100%);
           -webkit-background-clip: text;
+          background-clip: text;
           -webkit-text-fill-color: transparent;
       }
 
       .text-gradient-gold {
           background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
           -webkit-background-clip: text;
+          background-clip: text;
           -webkit-text-fill-color: transparent;
       }
 
@@ -310,6 +312,129 @@
       .ticker {
           display: flex;
           width: max-content;
+      }
+
+      /* ========== Premium 3D Card Animations ========== */
+      .perspective-1000 {
+          perspective: 1000px;
+      }
+
+      /* Gradient Animation */
+      @keyframes gradient-x {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+      }
+      .animate-gradient-x {
+          background-size: 200% 200%;
+          animation: gradient-x 3s ease infinite;
+      }
+
+      /* Floating Particles */
+      .particle {
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          background: rgba(99, 102, 241, 0.4);
+          border-radius: 50%;
+          animation: float-particle 8s ease-in-out infinite;
+      }
+      .particle-1 {
+          top: 20%;
+          left: 10%;
+          animation-delay: 0s;
+      }
+      .particle-2 {
+          top: 60%;
+          right: 15%;
+          animation-delay: 2s;
+          width: 8px;
+          height: 8px;
+      }
+      .particle-3 {
+          bottom: 30%;
+          left: 20%;
+          animation-delay: 4s;
+          width: 4px;
+          height: 4px;
+      }
+      @keyframes float-particle {
+          0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.4; }
+          25% { transform: translateY(-20px) translateX(10px) scale(1.2); opacity: 0.8; }
+          50% { transform: translateY(-10px) translateX(-15px) scale(0.8); opacity: 0.6; }
+          75% { transform: translateY(-30px) translateX(5px) scale(1.1); opacity: 0.9; }
+      }
+
+      /* Chart Bar Animation */
+      .chart-bar {
+          animation: grow-bar 1.5s ease-out forwards;
+          transform-origin: bottom;
+          transform: scaleY(0);
+      }
+      @keyframes grow-bar {
+          to { transform: scaleY(1); }
+      }
+
+      /* Candidate Card Animation */
+      .candidate-card {
+          animation: slide-in 0.6s ease-out forwards;
+          opacity: 0;
+          transform: translateX(20px);
+      }
+      @keyframes slide-in {
+          to { opacity: 1; transform: translateX(0); }
+      }
+
+      /* Data Counter Animation */
+      .data-counter {
+          animation: count-up 2s ease-out forwards;
+      }
+
+      /* Hover 3D Tilt Effect */
+      .group:hover .perspective-card {
+          transform: rotateY(-5deg) rotateX(5deg);
+      }
+
+      /* Glow Effect on Hover */
+      .group:hover .glow-effect {
+          box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+      }
+
+      /* Pulse Ring Animation */
+      @keyframes pulse-ring {
+          0% { transform: scale(0.8); opacity: 1; }
+          100% { transform: scale(2); opacity: 0; }
+      }
+      .pulse-ring {
+          animation: pulse-ring 2s ease-out infinite;
+      }
+
+      /* Shimmer Effect */
+      @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+      }
+      .shimmer {
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+          background-size: 200% 100%;
+          animation: shimmer 2s infinite;
+      }
+
+      /* Card Entrance Animation */
+      @keyframes card-entrance {
+          0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      #ai-engines-section .group {
+          animation: card-entrance 0.8s ease-out forwards;
+      }
+      #ai-engines-section .group:nth-child(2) {
+          animation-delay: 0.2s;
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+          .particle { display: none; }
+          #ai-engines-section h2 { font-size: 2rem; }
       }
     </style>
     <meta
@@ -1130,128 +1255,282 @@
         </div>
       </div>
     </section>
-    <!-- AUTONOMOUS SYSTEMS & ROBOTS -->
-    <section class="py-24 px-6 relative z-10">
-      <div class="max-w-7xl mx-auto">
-        <!-- Section Header -->
-        <div class="text-center mb-16">
-          <h2 class="text-3xl lg:text-5xl font-semibold text-white mb-4">
-            الأنظمة والزملاء الرقميين
+    <!-- AUTONOMOUS SYSTEMS & ROBOTS - Premium 3D Design -->
+    <section class="py-24 px-6 relative z-10 overflow-hidden" id="ai-engines-section">
+      <!-- Animated Background Elements -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-600/10 rounded-full blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[150px]"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto relative">
+        <!-- Section Header with 3D Effect -->
+        <div class="text-center mb-20">
+          <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 mb-6">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+            </span>
+            <span class="text-indigo-300 text-sm font-medium tracking-wide">أنظمة مؤسسية متكاملة</span>
+          </div>
+          <h2 class="text-4xl lg:text-6xl font-bold mb-6">
+            <span class="text-white">الأنظمة و</span>
+            <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">الزملاء الرقميين</span>
           </h2>
-          <p class="text-slate-400 text-lg">
+          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
             بين الأنظمة المؤسسية الضخمة والروبوتات المتخصصة السريعة
           </p>
         </div>
 
-        <!-- 1. Autonomous Systems -->
-        <div class="mb-24">
-          <div class="flex items-center gap-4 mb-8">
-            <div
-              class="h-px flex-1 bg-gradient-to-r from-transparent to-indigo-500/50"
-            ></div>
-            <span class="text-indigo-400 font-medium tracking-wider">
-              محركات الذكاء الاصطناعي المركزية
-            </span>
-            <div
-              class="h-px flex-1 bg-gradient-to-l from-transparent to-indigo-500/50"
-            ></div>
+        <!-- AI Engines Section Title -->
+        <div class="flex items-center gap-4 mb-12">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+          <div class="flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border border-indigo-500/30 backdrop-blur-sm">
+            <iconify-icon icon="lucide:cpu" width="20" class="text-indigo-400"></iconify-icon>
+            <span class="text-indigo-300 font-semibold tracking-wider text-sm">محركات الذكاء الاصطناعي المركزية</span>
           </div>
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+        </div>
 
-          <div class="grid md:grid-cols-2 gap-8">
-            <!-- System 1: Data -->
-            <div class="glass-card p-0 overflow-hidden group">
-              <div class="p-8">
-                <div
-                  class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400"
-                >
-                  <iconify-icon
-                    icon="lucide:database"
-                    width="24"
-                  ></iconify-icon>
+        <!-- Premium 3D Cards Grid -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-24">
+          
+          <!-- System 1: Bright Data Intelligence - Premium 3D Card -->
+          <div class="group relative perspective-1000">
+            <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 rounded-3xl blur-lg opacity-30 group-hover:opacity-60 transition duration-500 animate-gradient-x"></div>
+            <div class="relative h-full bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 rounded-3xl border border-white/10 overflow-hidden transform-gpu transition-all duration-500 group-hover:scale-[1.02] group-hover:border-blue-500/30" style="transform-style: preserve-3d;">
+              
+              <!-- Floating Particles -->
+              <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="particle particle-1"></div>
+                <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div>
+              </div>
+
+              <!-- Card Header with 3D Icon -->
+              <div class="p-8 pb-0">
+                <div class="flex items-start justify-between mb-6">
+                  <div class="relative">
+                    <div class="absolute -inset-4 bg-blue-500/20 rounded-full blur-xl group-hover:bg-blue-500/30 transition"></div>
+                    <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/30 transform group-hover:rotate-6 transition-transform duration-300">
+                      <iconify-icon icon="lucide:database" width="32" class="text-white"></iconify-icon>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                    <span class="text-blue-300 text-xs font-medium">نشط</span>
+                  </div>
                 </div>
-                <h3 class="text-2xl font-bold text-white mb-3">
-                  نظام Bright Data Intelligence
+
+                <h3 class="text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-blue-100 transition">
+                  Bright Data Intelligence
                 </h3>
-                <p class="text-slate-400 text-sm mb-6">
-                  الدورة الكاملة: استلام الملفات الخام -&gt; التحليل -&gt;
-                  استخراج الرؤى -&gt; بناء لوحات المعلومات -&gt; تقديم التوصيات
-                  الاستراتيجية.
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                  منصة تحليل البيانات الذكية المتكاملة - من استلام الملفات الخام إلى التوصيات الاستراتيجية
                 </p>
-                <a
-                  href="try.html"
-                  class="inline-flex items-center justify-center w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white transition"
-                >
-                  تجربة النظام
-                  <iconify-icon
-                    icon="lucide:arrow-left"
-                    class="mr-2"
-                  ></iconify-icon>
+
+                <!-- Feature Pipeline -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-medium flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:upload" width="12"></iconify-icon>
+                    رفع الملفات
+                  </span>
+                  <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                  <span class="px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:brain" width="12"></iconify-icon>
+                    تحليل AI
+                  </span>
+                  <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                  <span class="px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:lightbulb" width="12"></iconify-icon>
+                    رؤى ذكية
+                  </span>
+                </div>
+              </div>
+
+              <!-- Interactive Dashboard Preview -->
+              <div class="relative h-56 mx-6 mb-6 rounded-2xl overflow-hidden border border-white/5 bg-slate-900/80">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                
+                <!-- Mini Dashboard UI -->
+                <div class="p-4 h-full">
+                  <!-- Top Bar -->
+                  <div class="flex items-center justify-between mb-4">
+                    <div class="flex gap-1.5">
+                      <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                      <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                      <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                    </div>
+                    <div class="text-[10px] text-slate-500 font-mono">Bright AI Dashboard</div>
+                  </div>
+                  
+                  <!-- Stats Row -->
+                  <div class="grid grid-cols-3 gap-2 mb-4">
+                    <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      <div class="text-lg font-bold text-blue-400 data-counter" data-target="2.5">0</div>
+                      <div class="text-[9px] text-slate-500">M ريال</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-green-500/10 border border-green-500/20">
+                      <div class="text-lg font-bold text-green-400">+15%</div>
+                      <div class="text-[9px] text-slate-500">نمو</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                      <div class="text-lg font-bold text-purple-400">98%</div>
+                      <div class="text-[9px] text-slate-500">دقة</div>
+                    </div>
+                  </div>
+                  
+                  <!-- Animated Chart Bars -->
+                  <div class="flex items-end gap-1 h-16">
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 40%; animation-delay: 0s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 65%; animation-delay: 0.1s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 45%; animation-delay: 0.2s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 80%; animation-delay: 0.3s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 55%; animation-delay: 0.4s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 90%; animation-delay: 0.5s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 70%; animation-delay: 0.6s;"></div>
+                    <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar" style="height: 100%; animation-delay: 0.7s;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CTA Button -->
+              <div class="px-6 pb-6">
+                <a href="try.html" class="group/btn relative flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30">
+                  <span class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover/btn:opacity-100 transition-opacity"></span>
+                  <span class="relative flex items-center gap-2">
+                    <iconify-icon icon="lucide:play-circle" width="20"></iconify-icon>
+                    تجربة النظام الآن
+                    <iconify-icon icon="lucide:arrow-left" width="18" class="transform group-hover/btn:-translate-x-1 transition-transform"></iconify-icon>
+                  </span>
                 </a>
               </div>
-              <div class="h-48 bg-slate-900 border-t border-white/5 relative">
-                <img
-                  src="https://www2.0zz0.com/2025/06/23/22/317775783.png"
-                  alt="Data Dashboard"
-                  class="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition"
-                />
-              </div>
             </div>
+          </div>
 
-            <!-- System 2: Recruitment -->
-            <div class="glass-card p-0 overflow-hidden group">
-              <div class="p-8">
-                <div
-                  class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-6 text-purple-400"
-                >
-                  <iconify-icon
-                    icon="lucide:user-check"
-                    width="24"
-                  ></iconify-icon>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-3">
-                  نظام Bright Full-Cycle Recruiting
-                </h3>
-                <p class="text-slate-400 text-sm mb-6">
-                  نظام توظيف ذاتي بالكامل: المسح الآلي للسير الذاتية، التقييم،
-                  إجراء مقابلات فيديو عبر AI Avatar، وإصدار قرار التوظيف
-                  النهائي.
-                </p>
-                <button
-                  class="inline-flex items-center justify-center w-full py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white transition"
-                >
-                  طلب ديمو
-                  <iconify-icon
-                    icon="lucide:arrow-left"
-                    class="mr-2"
-                  ></iconify-icon>
-                </button>
+          <!-- System 2: Bright Full-Cycle Recruiting - Premium 3D Card -->
+          <div class="group relative perspective-1000">
+            <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 rounded-3xl blur-lg opacity-30 group-hover:opacity-60 transition duration-500 animate-gradient-x"></div>
+            <div class="relative h-full bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 rounded-3xl border border-white/10 overflow-hidden transform-gpu transition-all duration-500 group-hover:scale-[1.02] group-hover:border-purple-500/30" style="transform-style: preserve-3d;">
+              
+              <!-- Floating Particles -->
+              <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                <div class="particle particle-1" style="background: rgba(168, 85, 247, 0.4);"></div>
+                <div class="particle particle-2" style="background: rgba(236, 72, 153, 0.4);"></div>
+                <div class="particle particle-3" style="background: rgba(168, 85, 247, 0.4);"></div>
               </div>
-              <div
-                class="h-48 bg-slate-900 border-t border-white/5 relative flex items-center justify-center overflow-hidden"
-              >
-                <!-- Abstract Visualization of CV Scanning -->
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-purple-900/50 to-transparent"
-                ></div>
-                <div
-                  class="flex flex-col gap-2 w-3/4 opacity-60 group-hover:opacity-100 transition"
-                >
-                  <div class="h-2 bg-white/20 rounded w-full"></div>
-                  <div class="h-2 bg-white/20 rounded w-5/6"></div>
-                  <div class="h-2 bg-white/20 rounded w-4/6"></div>
-                  <div class="flex gap-2 mt-2">
-                    <div
-                      class="w-8 h-8 rounded-full bg-green-500/50 flex items-center justify-center text-xs text-white"
-                    >
-                      98%
+
+              <!-- Card Header with 3D Icon -->
+              <div class="p-8 pb-0">
+                <div class="flex items-start justify-between mb-6">
+                  <div class="relative">
+                    <div class="absolute -inset-4 bg-purple-500/20 rounded-full blur-xl group-hover:bg-purple-500/30 transition"></div>
+                    <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30 transform group-hover:rotate-6 transition-transform duration-300">
+                      <iconify-icon icon="lucide:user-check" width="32" class="text-white"></iconify-icon>
                     </div>
-                    <div
-                      class="w-8 h-8 rounded-full bg-red-500/50 flex items-center justify-center text-xs text-white"
-                    >
-                      12%
+                  </div>
+                  <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20">
+                    <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                    <span class="text-purple-300 text-xs font-medium">AI Avatar</span>
+                  </div>
+                </div>
+
+                <h3 class="text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-purple-100 transition">
+                  Bright Full-Cycle Recruiting
+                </h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                  نظام توظيف ذاتي بالكامل - من فرز السير الذاتية إلى قرار التوظيف النهائي
+                </p>
+
+                <!-- Feature Pipeline -->
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:file-scan" width="12"></iconify-icon>
+                    مسح CV
+                  </span>
+                  <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                  <span class="px-3 py-1.5 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-medium flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:video" width="12"></iconify-icon>
+                    مقابلة AI
+                  </span>
+                  <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                  <span class="px-3 py-1.5 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-300 text-xs font-medium flex items-center gap-1.5">
+                    <iconify-icon icon="lucide:check-circle" width="12"></iconify-icon>
+                    قرار التوظيف
+                  </span>
+                </div>
+              </div>
+
+              <!-- Interactive Recruitment Preview -->
+              <div class="relative h-56 mx-6 mb-6 rounded-2xl overflow-hidden border border-white/5 bg-slate-900/80">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                
+                <!-- Recruitment UI Simulation -->
+                <div class="p-4 h-full flex flex-col">
+                  <!-- Candidate Cards -->
+                  <div class="space-y-2 flex-1">
+                    <!-- Candidate 1 - Accepted -->
+                    <div class="flex items-center gap-3 p-2 rounded-lg bg-green-500/10 border border-green-500/20 candidate-card" style="animation-delay: 0s;">
+                      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white text-xs font-bold">أ</div>
+                      <div class="flex-1">
+                        <div class="h-2 w-24 bg-white/20 rounded mb-1"></div>
+                        <div class="h-1.5 w-16 bg-white/10 rounded"></div>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-green-400 text-sm font-bold">98%</span>
+                        <iconify-icon icon="lucide:check-circle" width="16" class="text-green-400"></iconify-icon>
+                      </div>
+                    </div>
+                    
+                    <!-- Candidate 2 - Processing -->
+                    <div class="flex items-center gap-3 p-2 rounded-lg bg-purple-500/10 border border-purple-500/20 candidate-card" style="animation-delay: 0.2s;">
+                      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">ب</div>
+                      <div class="flex-1">
+                        <div class="h-2 w-20 bg-white/20 rounded mb-1"></div>
+                        <div class="h-1.5 w-14 bg-white/10 rounded"></div>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-purple-400 text-sm font-bold">85%</span>
+                        <div class="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    </div>
+                    
+                    <!-- Candidate 3 - Rejected -->
+                    <div class="flex items-center gap-3 p-2 rounded-lg bg-red-500/10 border border-red-500/20 candidate-card" style="animation-delay: 0.4s;">
+                      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-400 to-rose-500 flex items-center justify-center text-white text-xs font-bold">ج</div>
+                      <div class="flex-1">
+                        <div class="h-2 w-28 bg-white/20 rounded mb-1"></div>
+                        <div class="h-1.5 w-12 bg-white/10 rounded"></div>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-red-400 text-sm font-bold">32%</span>
+                        <iconify-icon icon="lucide:x-circle" width="16" class="text-red-400"></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Bottom Stats -->
+                  <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                    <div class="text-[10px] text-slate-500">تم فحص 247 سيرة ذاتية</div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded bg-green-500/20 text-green-400 text-[10px]">23 مقبول</span>
+                      <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px]">89 مرفوض</span>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <!-- CTA Button -->
+              <div class="px-6 pb-6">
+                <a href="h/projects/interview/index.html" class="group/btn relative flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30">
+                  <span class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover/btn:opacity-100 transition-opacity"></span>
+                  <span class="relative flex items-center gap-2">
+                    <iconify-icon icon="lucide:sparkles" width="20"></iconify-icon>
+                    تجربة نظام التوظيف
+                    <iconify-icon icon="lucide:arrow-left" width="18" class="transform group-hover/btn:-translate-x-1 transition-transform"></iconify-icon>
+                  </span>
+                </a>
               </div>
             </div>
           </div>
@@ -1835,6 +2114,88 @@
       function toggleChat() {
           document.getElementById('chat-window').classList.toggle('open');
       }
+
+      // 4. Premium Card Animations - Intersection Observer
+      const observerOptions = {
+          threshold: 0.2,
+          rootMargin: '0px 0px -50px 0px'
+      };
+
+      const animateOnScroll = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  entry.target.classList.add('animate-visible');
+                  
+                  // Animate chart bars
+                  const chartBars = entry.target.querySelectorAll('.chart-bar');
+                  chartBars.forEach((bar, index) => {
+                      setTimeout(() => {
+                          bar.style.animationPlayState = 'running';
+                      }, index * 100);
+                  });
+
+                  // Animate candidate cards
+                  const candidateCards = entry.target.querySelectorAll('.candidate-card');
+                  candidateCards.forEach((card, index) => {
+                      setTimeout(() => {
+                          card.style.animationPlayState = 'running';
+                      }, index * 200);
+                  });
+
+                  // Animate counters
+                  const counters = entry.target.querySelectorAll('.data-counter');
+                  counters.forEach(counter => {
+                      const target = parseFloat(counter.dataset.target) || 0;
+                      animateCounter(counter, target);
+                  });
+              }
+          });
+      }, observerOptions);
+
+      // Observe AI Engines Section
+      document.querySelectorAll('#ai-engines-section .group').forEach(card => {
+          observerOptions && animateOnScroll.observe(card);
+      });
+
+      // Counter Animation Function
+      function animateCounter(element, target) {
+          let current = 0;
+          const increment = target / 50;
+          const timer = setInterval(() => {
+              current += increment;
+              if (current >= target) {
+                  element.textContent = target;
+                  clearInterval(timer);
+              } else {
+                  element.textContent = current.toFixed(1);
+              }
+          }, 40);
+      }
+
+      // 5. 3D Tilt Effect on Mouse Move
+      document.querySelectorAll('#ai-engines-section .group').forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+              const rect = card.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              const centerX = rect.width / 2;
+              const centerY = rect.height / 2;
+              const rotateX = (y - centerY) / 20;
+              const rotateY = (centerX - x) / 20;
+              
+              const innerCard = card.querySelector('.relative');
+              if (innerCard) {
+                  innerCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+              }
+          });
+
+          card.addEventListener('mouseleave', () => {
+              const innerCard = card.querySelector('.relative');
+              if (innerCard) {
+                  innerCard.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+              }
+          });
+      });
 
       async function handleChatSubmit(e) {
           e.preventDefault();
