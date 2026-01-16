@@ -177,19 +177,20 @@ crossorigin="anonymous"></script>
             }
         }
 
-        /* JavaScript for the FAQ and Navbar */
-        <script>
-            function toggleAnswer(element) {
-                var answer = element.nextElementSibling;
-                answer.style.display = (answer.style.display === "none" ? "block" : "none");
-            }
-
-            function toggleNavbar() {
-                var navbar = document.querySelector(".navbar");
-                navbar.style.display = (navbar.style.display === "none" || navbar.style.display === "" ? "block" : "none");
-            }
-        </script>
     </style>
+
+    <!-- JavaScript for the FAQ and Navbar -->
+    <script>
+        function toggleAnswer(element) {
+            var answer = element.nextElementSibling;
+            answer.style.display = (answer.style.display === "none" ? "block" : "none");
+        }
+
+        function toggleNavbar() {
+            var navbar = document.querySelector(".navbar");
+            navbar.style.display = (navbar.style.display === "none" || navbar.style.display === "" ? "block" : "none");
+        }
+    </script>
 
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Bright AI - حلول الذكاء الاصطناعي الشاملة لتحويل أعمالك">
