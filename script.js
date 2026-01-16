@@ -97,35 +97,33 @@ function initializeGtm() {
 
 /**
  * =================================================================================
- * SECTION 2: UTILITY FUNCTIONS (Using centralized utils when available)
+ * SECTION 2: UTILITY FUNCTIONS (Using centralized utils)
  * =================================================================================
  */
 
-// Use centralized utilities with fallback - check if already defined to avoid conflicts
-if (typeof debounce === 'undefined') {
-    var debounce = (window.BrightAIUtils && window.BrightAIUtils.debounce) || function(func, wait) {
-        let timeoutId;
-        return function(...args) {
-            const context = this;
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func.apply(context, args), wait);
-        };
+// Use centralized utilities from js/utils.js (must be loaded before this script)
+// Access via window.BrightAIUtils.debounce and window.BrightAIUtils.throttle
+// Local references for convenience - these reference the centralized functions
+const debounce = window.BrightAIUtils?.debounce || ((func, wait) => {
+    let timeoutId;
+    return function(...args) {
+        const context = this;
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(context, args), wait);
     };
-}
+});
 
-if (typeof throttle === 'undefined') {
-    var throttle = (window.BrightAIUtils && window.BrightAIUtils.throttle) || function(func, limit) {
-        let inThrottle = false;
-        return function(...args) {
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
+const throttle = window.BrightAIUtils?.throttle || ((func, limit) => {
+    let inThrottle = false;
+    return function(...args) {
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
     };
-}
+});
 
 
 /**
@@ -980,6 +978,11 @@ document.addEventListener('DOMContentLoaded', () => {
         initSmoothScroll();
         initGenericClickTracker();
         initTestimonialsCarousel();
+        
+        // Initialize image error handlers for external images
+        if (window.BrightAIUtils && window.BrightAIUtils.initImageErrorHandlers) {
+            window.BrightAIUtils.initImageErrorHandlers();
+        }
 
         // IMPORTANT: This is a simulation for demonstration.
         // In a real-world scenario, this should be triggered by your

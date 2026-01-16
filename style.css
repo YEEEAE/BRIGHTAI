@@ -51,7 +51,7 @@ html {
 }
 
 body {
-    font-family: 'Tajawal', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans Arabic', sans-serif;
     /* Unified Gradient Background - Requirements: 1.1, 3.1, 3.3 */
     background-color: var(--gradient-fallback, #8B5CF6);
     background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
@@ -4543,7 +4543,7 @@ footer {
 
 /* Arabic Numerals Display */
 .arabic-numerals {
-    font-family: 'Tajawal', system-ui, sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
     font-feature-settings: "tnum";
 }
 

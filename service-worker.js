@@ -79,7 +79,8 @@ self.addEventListener('install', event => {
                     EXTERNAL_RESOURCES.map(url =>
                         fetch(url, { mode: 'cors' })
                             .then(response => {
-                                if (response.ok) {
+                                // Only cache complete responses (not partial 206)
+                                if (response.ok && response.status !== 206) {
                                     return cache.put(url, response);
                                 }
                             })
@@ -154,10 +155,14 @@ self.addEventListener('fetch', event => {
             if (isNavigationRequest) {
                 try {
                     const networkResp = await fetch(req);
-                    if (networkResp && networkResp.ok) {
+                    // Only cache complete responses (not partial 206)
+                    if (networkResp && networkResp.ok && networkResp.status !== 206) {
                         // Cache the response for offline use
                         const clone = networkResp.clone();
                         caches.open(DYNAMIC_CACHE).then(c => c.put(req, clone));
+                        return addSEOHeaders(networkResp, req);
+                    } else if (networkResp && networkResp.ok) {
+                        // Return response without caching if it's partial
                         return addSEOHeaders(networkResp, req);
                     }
                 } catch (networkError) {
@@ -179,10 +184,14 @@ self.addEventListener('fetch', event => {
 
             // Try network
             const networkResp = await fetch(req);
-            if (networkResp && networkResp.ok) {
+            // Only cache complete responses (not partial 206)
+            if (networkResp && networkResp.ok && networkResp.status !== 206) {
                 const clone = networkResp.clone();
                 const cacheName = isStaticAsset ? STATIC_CACHE : DYNAMIC_CACHE;
                 caches.open(cacheName).then(c => c.put(req, clone));
+                return networkResp;
+            } else if (networkResp && networkResp.ok) {
+                // Return response without caching if it's partial
                 return networkResp;
             }
 
@@ -207,12 +216,14 @@ self.addEventListener('fetch', event => {
 });
 
 // Add SEO headers to HTML responses
+// Note: Headers must use ASCII-only characters (ISO-8859-1 compatible)
 function addSEOHeaders(response, req) {
     if (req.url.includes('.html') || req.mode === 'navigate') {
         const headers = new Headers(response.headers);
         headers.set('X-Saudi-SEO', 'Optimized');
-        headers.set('X-Content-Region', 'Saudi Arabia');
-        headers.set('X-Service-Cities', SAUDI_KEYWORDS.slice(0, 6).join(', '));
+        headers.set('X-Content-Region', 'Saudi-Arabia');
+        // Use English city names to avoid non-ASCII character errors
+        headers.set('X-Service-Cities', 'Riyadh, Jeddah, Dammam, Khobar, Makkah, Madinah');
         return new Response(response.body, {
             status: response.status,
             statusText: response.statusText,
@@ -261,7 +272,8 @@ async function getOfflineFallback() {
 // Update cache in background (stale-while-revalidate)
 function updateCacheInBackground(req) {
     fetch(req).then(response => {
-        if (response && response.ok) {
+        // Check that response is complete (not partial 206) and successful
+        if (response && response.ok && response.status !== 206) {
             const cacheName = isStaticResource(req.url) ? STATIC_CACHE : DYNAMIC_CACHE;
             caches.open(cacheName).then(cache => cache.put(req, response));
         }

@@ -18,7 +18,7 @@
 /* عامة */
 body {
     margin: 0;
-    font-family: 'Tajawal', Arial, sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, 'Noto Sans Arabic', Arial, sans-serif;
     color: var(--text-primary);
     /* Unified Gradient Background */
     background-color: var(--gradient-fallback, #8B5CF6);

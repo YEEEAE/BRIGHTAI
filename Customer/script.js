@@ -61,7 +61,9 @@ class CustomerServiceChat {
             };
 
             this.recognition.onerror = () => {
-                this.voiceStatus.textContent = 'حدث خطأ، حاول مرة أخرى';
+                if (this.voiceStatus) {
+                    this.voiceStatus.textContent = 'حدث خطأ، حاول مرة أخرى';
+                }
                 this.resetRecording();
             };
 
@@ -73,10 +75,13 @@ class CustomerServiceChat {
 
     setWelcomeTime() {
         const now = new Date();
-        document.getElementById('welcomeTime').textContent = now.toLocaleTimeString('ar-SA', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        const welcomeTimeEl = document.getElementById('welcomeTime');
+        if (welcomeTimeEl) {
+            welcomeTimeEl.textContent = now.toLocaleTimeString('ar-SA', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
     }
 
     toggleChat() {
@@ -88,34 +93,48 @@ class CustomerServiceChat {
     }
 
     openChat() {
-        this.chatPopup.style.display = 'flex';
+        if (this.chatPopup) {
+            this.chatPopup.style.display = 'flex';
+        }
         this.isOpen = true;
-        this.chatWidget.innerHTML = '<i class="fas fa-times"></i>';
+        if (this.chatWidget) {
+            this.chatWidget.innerHTML = '<i class="fas fa-times"></i>';
+        }
         this.scrollToBottom();
     }
 
     closeChat() {
-        this.chatPopup.style.display = 'none';
+        if (this.chatPopup) {
+            this.chatPopup.style.display = 'none';
+        }
         this.isOpen = false;
-        this.chatWidget.innerHTML = '<i class="fas fa-comments"></i>';
+        if (this.chatWidget) {
+            this.chatWidget.innerHTML = '<i class="fas fa-comments"></i>';
+        }
     }
 
     switchToTextMode() {
         this.isTextMode = true;
-        this.textModeBtn.classList.add('active');
-        this.voiceModeBtn.classList.remove('active');
-        this.textInput.style.display = 'block';
-        this.voiceControls.classList.remove('active');
-        this.messageInput.focus();
+        this.textModeBtn?.classList.add('active');
+        this.voiceModeBtn?.classList.remove('active');
+        if (this.textInput) {
+            this.textInput.style.display = 'block';
+        }
+        this.voiceControls?.classList.remove('active');
+        this.messageInput?.focus();
     }
 
     switchToVoiceMode() {
         this.isTextMode = false;
-        this.voiceModeBtn.classList.add('active');
-        this.textModeBtn.classList.remove('active');
-        this.textInput.style.display = 'none';
-        this.voiceControls.classList.add('active');
-        this.voiceStatus.textContent = 'اضغط للتحدث';
+        this.voiceModeBtn?.classList.add('active');
+        this.textModeBtn?.classList.remove('active');
+        if (this.textInput) {
+            this.textInput.style.display = 'none';
+        }
+        this.voiceControls?.classList.add('active');
+        if (this.voiceStatus) {
+            this.voiceStatus.textContent = 'اضغط للتحدث';
+        }
     }
 
     async sendMessage() {
@@ -217,22 +236,24 @@ class CustomerServiceChat {
             </div>
         `;
 
-        this.chatMessages.appendChild(messageDiv);
+        this.chatMessages?.appendChild(messageDiv);
         this.scrollToBottom();
     }
 
     showTypingIndicator() {
-        this.typingIndicator.classList.add('show');
+        this.typingIndicator?.classList.add('show');
         this.scrollToBottom();
     }
 
     hideTypingIndicator() {
-        this.typingIndicator.classList.remove('show');
+        this.typingIndicator?.classList.remove('show');
     }
 
     toggleRecording() {
         if (!this.recognition) {
-            this.voiceStatus.textContent = 'المتصفح لا يدعم التعرف على الصوت';
+            if (this.voiceStatus) {
+                this.voiceStatus.textContent = 'المتصفح لا يدعم التعرف على الصوت';
+            }
             return;
         }
 
@@ -246,8 +267,10 @@ class CustomerServiceChat {
 
     resetRecording() {
         this.isRecording = false;
-        this.recordBtn.classList.remove('recording');
-        this.voiceStatus.textContent = 'اضغط للتحدث';
+        this.recordBtn?.classList.remove('recording');
+        if (this.voiceStatus) {
+            this.voiceStatus.textContent = 'اضغط للتحدث';
+        }
     }
 
     speakText(text) {
@@ -262,7 +285,9 @@ class CustomerServiceChat {
 
     scrollToBottom() {
         setTimeout(() => {
-            this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            if (this.chatMessages) {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
         }, 100);
     }
 }

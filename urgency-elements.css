@@ -76,7 +76,7 @@
     font-size: 2rem;
     font-weight: 900;
     color: var(--urgency-gold);
-    font-family: 'Tajawal', monospace;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', 'Noto Sans Arabic', monospace;
     line-height: 1;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }

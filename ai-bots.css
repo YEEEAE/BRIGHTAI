@@ -22,7 +22,7 @@ html {
 }
 
 body {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, 'Noto Sans Arabic', sans-serif;
     color: var(--text-on-gradient-primary, #FFFFFF);
     line-height: 1.6;
     /* Unified Gradient Background */
@@ -679,7 +679,7 @@ footer .container { /* Target specific container in footer */
     border: none;
     background-color: transparent;
     color: white;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
 }
 .newsletter-input::placeholder {
     color: rgba(255,255,255,0.5);

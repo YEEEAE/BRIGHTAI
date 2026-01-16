@@ -16,7 +16,7 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+  font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, 'Noto Sans Arabic', sans-serif;
   direction: rtl;
   z-index: 100;
 }

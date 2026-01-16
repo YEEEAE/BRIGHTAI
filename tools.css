@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Cairo', 'Tajawal', sans-serif;
+  font-family: 'Cairo', 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
   /* Unified Gradient Background */
   background-color: var(--gradient-fallback, #8B5CF6);
   background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));

@@ -16,7 +16,7 @@
   bottom: 20px;
   left: 20px; /* RTL: positioned on left side */
   z-index: 9999;
-  font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+  font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, 'Noto Sans Arabic', sans-serif;
   direction: rtl;
 }
 

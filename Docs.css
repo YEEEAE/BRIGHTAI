@@ -19,7 +19,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-family: 'Cairo', 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
 }
 
 body {

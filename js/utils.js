@@ -219,7 +219,103 @@ const formatTimeLocale = (date) => {
 
 /**
  * =================================================================================
- * SECTION 6: VALIDATION HELPERS
+ * SECTION 6: IMAGE HELPERS
+ * =================================================================================
+ */
+
+/**
+ * Default fallback image path (local Gemini logo)
+ */
+const DEFAULT_FALLBACK_IMAGE = 'Gemini.png';
+
+/**
+ * Handle image loading error by replacing with fallback
+ * @param {HTMLImageElement} img - Image element that failed to load
+ * @param {string} fallbackSrc - Fallback image source (defaults to Gemini.png)
+ */
+const handleImageError = (img, fallbackSrc = DEFAULT_FALLBACK_IMAGE) => {
+    if (!img || img.dataset.fallbackApplied) return;
+    
+    // Mark as fallback applied to prevent infinite loops
+    img.dataset.fallbackApplied = 'true';
+    
+    // Try to determine the correct path based on current page location
+    const currentPath = window.location.pathname;
+    let adjustedFallback = fallbackSrc;
+    
+    // If we're in a subdirectory, adjust the path
+    if (currentPath.includes('/blogger/') || 
+        currentPath.includes('/Customer/') || 
+        currentPath.includes('/Docfile/') ||
+        currentPath.includes('/botAI/')) {
+        adjustedFallback = '../' + fallbackSrc;
+    }
+    
+    img.src = adjustedFallback;
+    img.alt = img.alt || 'صورة بديلة';
+    
+    // Add a subtle visual indicator that this is a fallback
+    img.style.opacity = '0.9';
+};
+
+/**
+ * Initialize image error handlers for all external images on the page
+ * @param {string} selector - CSS selector for images to handle (default: all img tags)
+ * @param {string} fallbackSrc - Fallback image source
+ */
+const initImageErrorHandlers = (selector = 'img', fallbackSrc = DEFAULT_FALLBACK_IMAGE) => {
+    const images = document.querySelectorAll(selector);
+    
+    images.forEach(img => {
+        // Skip if already has onerror or is a local image
+        if (img.onerror || img.dataset.errorHandled) return;
+        
+        // Check if it's an external image
+        const src = img.src || img.getAttribute('src') || '';
+        const isExternal = src.startsWith('http://') || src.startsWith('https://');
+        
+        if (isExternal) {
+            img.dataset.errorHandled = 'true';
+            img.onerror = function() {
+                handleImageError(this, fallbackSrc);
+            };
+            
+            // If image already failed (complete but naturalWidth is 0)
+            if (img.complete && img.naturalWidth === 0) {
+                handleImageError(img, fallbackSrc);
+            }
+        }
+    });
+};
+
+/**
+ * Create an image element with built-in error handling
+ * @param {string} src - Image source URL
+ * @param {string} alt - Alt text
+ * @param {Object} options - Additional options (fallbackSrc, className, width, height)
+ * @returns {HTMLImageElement} Image element with error handling
+ */
+const createImageWithFallback = (src, alt, options = {}) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = alt;
+    
+    if (options.className) img.className = options.className;
+    if (options.width) img.width = options.width;
+    if (options.height) img.height = options.height;
+    if (options.loading) img.loading = options.loading;
+    
+    const fallbackSrc = options.fallbackSrc || DEFAULT_FALLBACK_IMAGE;
+    img.onerror = function() {
+        handleImageError(this, fallbackSrc);
+    };
+    
+    return img;
+};
+
+/**
+ * =================================================================================
+ * SECTION 7: VALIDATION HELPERS
  * =================================================================================
  */
 
@@ -271,6 +367,12 @@ window.BrightAIUtils = {
     formatDateArabic,
     formatTimeLocale,
     
+    // Image Helpers
+    handleImageError,
+    initImageErrorHandlers,
+    createImageWithFallback,
+    DEFAULT_FALLBACK_IMAGE,
+    
     // Validation
     isValidSaudiPhone,
     isValidEmail
@@ -291,6 +393,10 @@ if (typeof module !== 'undefined' && module.exports) {
         formatTimeArabic,
         formatDateArabic,
         formatTimeLocale,
+        handleImageError,
+        initImageErrorHandlers,
+        createImageWithFallback,
+        DEFAULT_FALLBACK_IMAGE,
         isValidSaudiPhone,
         isValidEmail
     };

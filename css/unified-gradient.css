@@ -101,7 +101,7 @@ body.gradient-bg {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-family: 'Tajawal', system-ui, sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
     font-size: 1rem;
     font-weight: var(--btn-font-weight, 600);
     line-height: 1.5;

@@ -16,7 +16,7 @@
 
 /* إعدادات عامة */
 body {
-    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-family: 'Cairo', 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
     margin: 0;
     padding: 0;
     /* Unified Gradient Background */
@@ -590,7 +590,7 @@ footer .contact-info a i{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Cairo', 'Tajawal', Arial, sans-serif;
+    font-family: 'Cairo', 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', Arial, sans-serif;
 }
 
 .footer {

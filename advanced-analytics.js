@@ -107,7 +107,11 @@ const BrightAIAdvancedAnalytics = (function() {
         const clarityId = siteId || config.heatmap.siteId;
         
         if (!clarityId) {
-            console.warn('[BrightAI Advanced Analytics] Clarity site ID not provided. Heatmap tracking skipped.');
+            // Silently skip heatmap tracking when no Clarity ID is configured
+            // This is expected behavior - Clarity is optional
+            if (config.debugMode) {
+                console.log('[BrightAI Advanced Analytics] Clarity site ID not provided. Heatmap tracking skipped.');
+            }
             return;
         }
 

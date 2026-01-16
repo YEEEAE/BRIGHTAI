@@ -48,7 +48,7 @@
     justify-content: center;
     gap: 0.5rem;
     padding: var(--cta-padding-md);
-    font-family: 'Tajawal', system-ui, sans-serif;
+    font-family: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, 'Noto Sans Arabic', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.2;

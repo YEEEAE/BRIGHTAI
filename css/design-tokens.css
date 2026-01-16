@@ -130,8 +130,10 @@
     --space-3xl: 4rem;
 
     /* ========== Typography ========== */
-    --font-family-primary: 'Tajawal', system-ui, -apple-system, sans-serif;
-    --font-family-mono: 'Courier New', monospace;
+    /* Comprehensive fallback font stack for Arabic/RTL support */
+    --font-family-primary: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans Arabic', sans-serif;
+    --font-family-arabic-fallback: 'Segoe UI', 'Tahoma', 'Arial', 'Noto Sans Arabic', sans-serif;
+    --font-family-mono: 'Courier New', 'Consolas', monospace;
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
     --font-size-base: 1rem;
