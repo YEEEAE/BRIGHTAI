@@ -2,19 +2,19 @@
 
 ## المهام
 
-- [-] 1. نظام التصميم المؤسسي (Design System)
-  - [-] 1.1 إنشاء ملف `css/design-tokens-enterprise.css` مع متغيرات الألوان والخطوط والمسافات
+- [ ] 1. نظام التصميم المؤسسي (Design System)
+  - [ ] 1.1 إنشاء ملف `css/design-tokens-enterprise.css` مع متغيرات الألوان والخطوط والمسافات
   - [ ] 1.2 إضافة خطوط IBM Plex Sans Arabic و Inter من Google Fonts
   - [ ] 1.3 إنشاء ملف `css/homepage-enterprise.css` للأنماط المؤسسية الأساسية
 
-- [~] 2. Hero Section المؤسسي
+- [ ] 2. Hero Section المؤسسي
   - [ ] 2.1 إنشاء هيكل HTML للـ Hero Section مع Badge والعنوان الرئيسي والفرعي
   - [ ] 2.2 إنشاء ملف `js/hero-canvas.js` لخلفية Neural Network المتحركة
   - [ ] 2.3 إضافة زر CTA "طلب استشارة تنفيذية" مع رابط WhatsApp
   - [ ] 2.4 إضافة Trust Indicators (NCA, استضافة محلية, جاهز للمؤسسات)
   - [ ] 2.5 دعم `prefers-reduced-motion` للخلفية المتحركة
 
-- [ ] 3. قسم القيمة المقترحة (Value Proposition)
+- [] 3. قسم القيمة المقترحة (Value Proposition)
   - [ ] 3.1 إنشاء هيكل HTML للقسم بعد Hero مباشرة
   - [ ] 3.2 إضافة العنوان: "من الابتكار الكامل إلى التطوير المخصص.. ذكاء اصطناعي يخدم أهدافك."
   - [ ] 3.3 إضافة النص الفرعي المحدد في المتطلبات
