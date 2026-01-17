@@ -1,6 +1,6 @@
 # robots.txt for brightai.site
 # BrightAI - شركة سعودية للذكاء الاصطناعي
-# Last updated: 2025-01-04
+# Last updated: 2026-01-17
 
 # Allow all search engine crawlers
 User-agent: *
@@ -30,30 +30,65 @@ Disallow: /node_modules/
 # Block demo/development directories (security)
 Disallow: /h/
 Disallow: /Customer/
+Disallow: /old/
 Disallow: /try.html
+Disallow: /want.html
+Disallow: /hero-section.html
+Disallow: /enterprise-hero-demo.html
+Disallow: /test-glassmorphism.html
+Disallow: /checkout.html
 
 # Block test/dead files
-Disallow: /test-glassmorphism.html
 Disallow: /mm.html
 Disallow: /nn.html
 Disallow: /width.html
 Disallow: /fake.py
+Disallow: /AAA.html
+Disallow: /admin.html
+Disallow: /article_2.html
+Disallow: /article_3.html
+Disallow: /article_2034.html
+Disallow: /favicon-snippet.html
+Disallow: /index-enterprise.html
 
 # Block directories with non-standard naming
 Disallow: /Saudi%20tourism%20and%20heritage%20services/
 Disallow: /fix%20my%20website/
 Disallow: /Docfile/
 Disallow: /backups/
+Disallow: /components/
+Disallow: /assets/
+
+# Allow important blog articles
+Allow: /blogger/ai-transformation.html
+Allow: /blogger/intelligent-data-analysis.html
+Allow: /blogger/process-automation.html
+Allow: /blogger/smart-automation-benefits.html
+Allow: /blogger/big-data-analysis.html
+Allow: /blogger/ai-generative-content-industry-saudi-arabia.html
+Allow: /blogger/case-study-saudi-companies-ai-agents-customer-service.html
+Allow: /blogger/future-of-intelligent-data-analysis-finance-sector.html
+
+# Block other blogger files
 Disallow: /blogger/
 
 # Block non-essential files
 Disallow: /*.json$
 Disallow: /*.py$
 Disallow: /*.md$
+Disallow: /*.js$
+Disallow: /*.css$
 
 # Allow important JSON files for SEO
 Allow: /manifest.json
 Allow: /schema-saudi-seo.json
+Allow: /lottie-logo.json
+
+# Allow essential CSS and JS files
+Allow: /css/
+Allow: /js/
+Allow: /blog.css
+Allow: /blog.js
 
 # Googlebot specific rules
 User-agent: Googlebot
