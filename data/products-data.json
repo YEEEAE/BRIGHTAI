@@ -1,0 +1,278 @@
+{
+  "categories": [
+    {
+      "id": "data-analysis",
+      "name": "تحليل البيانات",
+      "icon": "lucide:bar-chart-3",
+      "color": "#3b82f6",
+      "description": "حلول متقدمة لتحليل البيانات وتحويلها إلى رؤى قابلة للتنفيذ"
+    },
+    {
+      "id": "automation",
+      "name": "الأتمتة الذكية",
+      "icon": "lucide:zap",
+      "color": "#8b5cf6",
+      "description": "أتمتة العمليات الروتينية باستخدام الذكاء الاصطناعي"
+    },
+    {
+      "id": "ai-agents",
+      "name": "وكلاء AI",
+      "icon": "lucide:bot",
+      "color": "#f59e0b",
+      "description": "وكلاء ذكاء اصطناعي مخصصون لأعمالك"
+    },
+    {
+      "id": "robots",
+      "name": "الروبوتات",
+      "icon": "lucide:cpu",
+      "color": "#10b981",
+      "description": "روبوتات ذكية للصناعة والخدمات"
+    }
+  ],
+  "products": [
+    {
+      "id": "data-1",
+      "category": "data-analysis",
+      "name": "تحليل بيانات المبيعات الشهرية",
+      "shortDescription": "تحليل شامل لأداء المبيعات في السوق السعودي",
+      "fullDescription": "تحليل شامل ومفصل لأداء المبيعات في السوق السعودي، يساعد على تحسين الكفاءة التشغيلية وزيادة الإيرادات لشركتك في المملكة.",
+      "features": [
+        "تحليل اتجاهات المبيعات في السعودية",
+        "تقارير أداء المنتجات والخدمات",
+        "تحليل سلوك العملاء السعوديين",
+        "توقعات المبيعات المستقبلية",
+        "مقارنة الأداء الشهري"
+      ],
+      "pricing": {
+        "current": 267,
+        "original": 356,
+        "currency": "SAR",
+        "discount": 25
+      },
+      "deliveryTime": "5-7 أيام عمل",
+      "rating": 4.9,
+      "reviews": 127,
+      "badge": "الأكثر مبيعاً",
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "DATA-SALES-001"
+    },
+    {
+      "id": "data-2",
+      "category": "data-analysis",
+      "name": "تحليل وتقسيم العملاء",
+      "shortDescription": "تقسيم العملاء إلى شرائح لتحسين التسويق",
+      "fullDescription": "تقسيم العملاء في السعودية إلى شرائح وتحليل سلوكهم لتحسين استراتيجيات التسويق الموجهة للسوق السعودي وزيادة الولاء.",
+      "features": [
+        "تحليل سلوك الشراء للعميل السعودي",
+        "تقسيم العملاء بناءً على بيانات السوق",
+        "توصيات تسويقية مخصصة",
+        "تحليل القيمة الدائمة للعميل",
+        "تحديد العملاء الأكثر ربحية"
+      ],
+      "pricing": {
+        "current": 301,
+        "original": 1069,
+        "currency": "SAR",
+        "discount": 72
+      },
+      "deliveryTime": "7-10 أيام عمل",
+      "rating": 4.8,
+      "reviews": 98,
+      "badge": "خصم 72%",
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "DATA-CUSTOMER-002"
+    },
+    {
+      "id": "data-3",
+      "category": "data-analysis",
+      "name": "لوحة معلومات تفاعلية للمبيعات",
+      "shortDescription": "أداة تفاعلية لتحليل المبيعات بصرياً",
+      "fullDescription": "أداة تفاعلية سهلة الاستخدام تقدم تقاريرًا ورسومًا بيانية ديناميكية لتحليل المبيعات في السوق السعودي.",
+      "features": [
+        "رسوم بيانية تفاعلية",
+        "تقارير قابلة للتخصيص",
+        "تتبع المؤشرات الرئيسية (KPIs)",
+        "تحديثات فورية للبيانات",
+        "تصدير التقارير بصيغ متعددة"
+      ],
+      "pricing": {
+        "current": 1603,
+        "original": 2138,
+        "currency": "SAR",
+        "discount": 25
+      },
+      "deliveryTime": "10-14 يوم عمل",
+      "rating": 4.9,
+      "reviews": 156,
+      "badge": "الأعلى تقييماً",
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "DATA-DASHBOARD-003"
+    },
+    {
+      "id": "automation-1",
+      "category": "automation",
+      "name": "أتمتة خدمة العملاء",
+      "shortDescription": "شات بوت ذكي لخدمة العملاء 24/7",
+      "fullDescription": "استخدام تقنيات الذكاء الاصطناعي لتحسين خدمة العملاء في السعودية من خلال الدردشة الآلية والردود الذكية.",
+      "features": [
+        "دعم اللغة العربية واللهجات السعودية",
+        "ردود فورية على مدار الساعة",
+        "تكامل مع أنظمة CRM",
+        "تحليل مشاعر العملاء",
+        "تصعيد تلقائي للحالات المعقدة"
+      ],
+      "pricing": {
+        "current": 300,
+        "original": null,
+        "currency": "SAR",
+        "discount": null
+      },
+      "deliveryTime": "5-13 يوم عمل",
+      "rating": 4.7,
+      "reviews": 89,
+      "badge": null,
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "AUTO-SUPPORT-001"
+    },
+    {
+      "id": "automation-2",
+      "category": "automation",
+      "name": "أتمتة إدارة البيانات والوثائق",
+      "shortDescription": "تحويل العمليات اليدوية إلى آلية",
+      "fullDescription": "تحويل العمليات اليدوية لإدارة البيانات والوثائق إلى آلية باستخدام الذكاء الاصطناعي.",
+      "features": [
+        "تصنيف تلقائي للمستندات",
+        "استخراج البيانات من الوثائق",
+        "أرشفة ذكية",
+        "بحث متقدم في المستندات",
+        "تكامل مع أنظمة إدارة المحتوى"
+      ],
+      "pricing": {
+        "current": 400,
+        "original": null,
+        "currency": "SAR",
+        "discount": null
+      },
+      "deliveryTime": "7-14 يوم عمل",
+      "rating": 4.6,
+      "reviews": 67,
+      "badge": null,
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "AUTO-DOCS-002"
+    },
+    {
+      "id": "agent-1",
+      "category": "ai-agents",
+      "name": "وكيل ذكاء اصطناعي مخصص",
+      "shortDescription": "وكيل مصمم خصيصاً لاحتياجاتك",
+      "fullDescription": "نصمم وكيلاً ذكياً مخصصاً وفقاً لاحتياجاتك ومتطلبات عملك في السوق السعودي.",
+      "features": [
+        "تصميم مخصص 100%",
+        "تدريب على بيانات عملك",
+        "تكامل مع أنظمتك الحالية",
+        "دعم فني مستمر",
+        "تحديثات دورية"
+      ],
+      "pricing": {
+        "current": 700,
+        "original": null,
+        "currency": "SAR",
+        "discount": null
+      },
+      "deliveryTime": "14-21 يوم عمل",
+      "rating": 5.0,
+      "reviews": 45,
+      "badge": "مميز",
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "AGENT-CUSTOM-001"
+    },
+    {
+      "id": "agent-2",
+      "category": "ai-agents",
+      "name": "وكيل محلل بيانات",
+      "shortDescription": "تحليل البيانات واستخراج الرؤى",
+      "fullDescription": "يقوم بتحليل بيانات السوق السعودي واستخراج النماذج والاتجاهات الهامة لدعم قراراتك.",
+      "features": [
+        "تحليل تلقائي للبيانات",
+        "استخراج الأنماط والاتجاهات",
+        "تقارير مفصلة",
+        "توصيات قابلة للتنفيذ",
+        "تكامل مع مصادر البيانات"
+      ],
+      "pricing": {
+        "current": 499,
+        "original": null,
+        "currency": "SAR",
+        "discount": null
+      },
+      "deliveryTime": "7-10 أيام عمل",
+      "rating": 4.8,
+      "reviews": 72,
+      "badge": null,
+      "image": "https://www2.0zz0.com/2025/02/28/14/337390622.jpeg",
+      "sku": "AGENT-ANALYST-002"
+    },
+    {
+      "id": "robot-1",
+      "category": "robots",
+      "name": "روبوت يد آلية صناعية",
+      "shortDescription": "يد آلية للاستخدام الصناعي",
+      "fullDescription": "روبوت يد آلية بشرية مصممة للاستخدام الصناعي في السعودية مع دقة وكفاءة عالية.",
+      "features": [
+        "دقة عالية في التجميع",
+        "قدرة على اللحام",
+        "برمجة مرنة",
+        "صيانة سهلة",
+        "ضمان شامل"
+      ],
+      "pricing": {
+        "current": 76686.42,
+        "original": null,
+        "currency": "SAR",
+        "discount": null
+      },
+      "deliveryTime": "30-45 يوم عمل",
+      "rating": 4.9,
+      "reviews": 23,
+      "badge": "منتج صناعي",
+      "image": "https://www2.0zz0.com/2025/01/01/22/810067321.png",
+      "images": [
+        "https://www2.0zz0.com/2025/01/01/22/810067321.png",
+        "https://www2.0zz0.com/2025/01/01/22/462905110.png",
+        "https://www2.0zz0.com/2025/01/01/22/449306842.png"
+      ],
+      "sku": "ROBOT-ARM-001"
+    },
+    {
+      "id": "robot-2",
+      "category": "robots",
+      "name": "كونسيرج ذكي للفنادق",
+      "shortDescription": "روبوت استقبال ذكي للفنادق",
+      "fullDescription": "روبوت استقبال ذكي ونظام استعلام معلومات متطور للفنادق والمطاعم في المملكة.",
+      "features": [
+        "تفاعل صوتي بالعربية",
+        "شاشة تفاعلية",
+        "نظام ملاحة ذاتية",
+        "تكامل مع أنظمة الفندق",
+        "تحديثات برمجية مستمرة"
+      ],
+      "pricing": {
+        "current": 6242.43,
+        "original": null,
+        "currency": "SAR",
+        "discount": null
+      },
+      "deliveryTime": "20-30 يوم عمل",
+      "rating": 4.7,
+      "reviews": 34,
+      "badge": null,
+      "image": "https://www2.0zz0.com/2025/01/01/22/603556805.png",
+      "images": [
+        "https://www2.0zz0.com/2025/01/01/22/603556805.png",
+        "https://www2.0zz0.com/2025/01/01/22/341827203.png",
+        "https://www2.0zz0.com/2025/01/01/22/793042462.png"
+      ],
+      "sku": "ROBOT-CONCIERGE-001"
+    }
+  ]
+}
