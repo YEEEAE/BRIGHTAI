@@ -37,8 +37,58 @@
     <meta name="twitter:description" content="سياسة ملفات تعريف الارتباط (الكوكيز) لموقع مُشرقة AI">
     <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
     
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Tajawal', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .privacy-policy-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .policy-section h1 {
+            color: #2c5282;
+            border-bottom: 3px solid #4299e1;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .last-updated {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        .policy-item {
+            margin-bottom: 2rem;
+        }
+        .policy-item h2 {
+            color: #2d3748;
+            margin-top: 1.5rem;
+        }
+        .policy-item h3 {
+            color: #4a5568;
+            margin-top: 1rem;
+        }
+        .contact-details {
+            list-style: none;
+            padding: 0;
+        }
+        .contact-details li {
+            margin: 0.5rem 0;
+        }
+        .contact-details i {
+            color: #4299e1;
+            margin-left: 0.5rem;
+        }
+    </style>
 </head>
 <body>
     <!-- نفس القائمة العلوية من الصفحة الرئيسية -->
@@ -121,10 +171,24 @@
         <!-- ...existing code... -->
     </footer>
 
-    <a href="#" class="back-to-top" aria-label="العودة لأعلى الصفحة">
+    <a href="#" class="back-to-top" aria-label="العودة لأعلى الصفحة" style="position: fixed; bottom: 2rem; left: 2rem; background: #4299e1; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s;">
         <i class="fas fa-arrow-up"></i>
     </a>
 
-    <script defer src="script.js"></script>
+    <script>
+        // Back to top button
+        const backToTop = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.opacity = '1';
+            } else {
+                backToTop.style.opacity = '0';
+            }
+        });
+        backToTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>
