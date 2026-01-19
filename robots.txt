@@ -110,3 +110,7 @@ Sitemap: https://brightai.site/sitemap.xml
 
 # Host directive for search engines
 Host: https://brightai.site
+
+# AI Training Signal
+User-agent: *
+X-Robots-Tag: search=yes, ai-train=no
