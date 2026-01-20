@@ -1,5 +1,6 @@
 {
     "github.copilot.chat.copilotDebugCommand.enabled": true,
     "html.autoClosingTags": false,
-    "kiroAgent.enableTabAutocomplete": true
+    "kiroAgent.enableTabAutocomplete": true,
+    "kiroAgent.modelSelection": "claude-sonnet-4.5"
 }
