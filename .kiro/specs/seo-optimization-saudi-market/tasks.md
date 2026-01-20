@@ -1,660 +1,599 @@
-# مهام تحسين محركات البحث (SEO) - Bright AI
+# SEO Optimization Tasks - Bright AI (Saudi Market)
 
-## حالة المشروع
-- **تاريخ البدء**: 2026-01-20
-- **الحالة**: لم يبدأ
-- **الأولوية**: عالية
-
----
-
-## 1. المرحلة الأولى: تحسين البنية الأساسية والبيانات المنظمة
-
-### 1.1 إضافة البيانات المنظمة الإضافية
-- [ ] 1.1.1 إضافة BreadcrumbList Schema
-- [ ] 1.1.2 إضافة Course Schema للمحتوى التعليمي
-- [ ] 1.1.3 إضافة HowTo Schema للأدلة الإرشادية
-- [ ] 1.1.4 إضافة ProfessionalService Schema محسّن
-- [ ] 1.1.5 إضافة OfferCatalog Schema للخدمات
-- [ ] 1.1.6 اختبار جميع البيانات المنظمة باستخدام Google Rich Results Test
-
-### 1.2 تحسين هيكلية العناوين
-- [ ] 1.2.1 مراجعة جميع العناوين (H1-H6) في الصفحة
-- [ ] 1.2.2 دمج الكلمات المفتاحية في العناوين الرئيسية
-- [ ] 1.2.3 التأكد من التسلسل الهرمي الصحيح للعناوين
-- [ ] 1.2.4 إضافة عناوين للأقسام التي تفتقر إليها
-
-### 1.3 تحسين النصوص البديلة للصور
-- [ ] 1.3.1 تحديث alt text للشعار (Logo)
-- [ ] 1.3.2 تحديث alt text لصور Hero Section
-- [ ] 1.3.3 تحديث alt text لأيقونات الخدمات
-- [ ] 1.3.4 إضافة alt text لجميع الصور الزخرفية
-- [ ] 1.3.5 التأكد من دمج الكلمات المفتاحية في النصوص البديلة
+## Project Status
+- **Start Date**: 2026-01-20
+- **Status**: In Progress
+- **Priority**: High
 
 ---
 
-## 2. المرحلة الثانية: إضافة أقسام المحتوى الجديدة
+## 1. Phase One: Basic Structure and Structured Data Optimization
 
-### 2.1 قسم "ذكاء الأعمال وتحليل البيانات"
-- [ ] 2.1.1 إنشاء بنية HTML للقسم
-- [ ] 2.1.2 كتابة محتوى "ما هو ذكاء الأعمال"
-- [ ] 2.1.3 إضافة بطاقات "أدوات ذكاء الأعمال"
-- [ ] 2.1.4 إضافة محتوى "تطبيقات ذكاء الأعمال في القطاعات"
-- [ ] 2.1.5 إضافة محتوى "الفرق بين ذكاء الأعمال والذكاء الاصطناعي"
-- [ ] 2.1.6 دمج الكلمات المفتاحية (كثافة 3-4%)
-- [ ] 2.1.7 إضافة Schema Markup للقسم
-- [ ] 2.1.8 تطبيق التنسيق والأنماط
+### 1.1 Add Additional Structured Data
+- [x] 1.1.1 Add BreadcrumbList Schema
+- [x] 1.1.2 Add Course Schema for educational content
+- [x] 1.1.3 Add HowTo Schema for guides
+- [x] 1.1.4 Add enhanced ProfessionalService Schema
+- [x] 1.1.5 Add OfferCatalog Schema for services
+- [ ] 1.1.6 Test all structured data using Google Rich Results Test
 
-### 2.2 توسيع قسم "القطاعات المستهدفة"
-- [ ] 2.2.1 توسيع محتوى "القطاع الحكومي"
-  - [ ] 2.2.1.1 إضافة محرك القيمة
-  - [ ] 2.2.1.2 إضافة الكلمات المفتاحية
-  - [ ] 2.2.1.3 إضافة أمثلة التطبيق
-- [ ] 2.2.2 توسيع محتوى "الطاقة والبيئة"
-- [ ] 2.2.3 توسيع محتوى "الصحة"
-- [ ] 2.2.4 توسيع محتوى "التعليم"
-- [ ] 2.2.5 إضافة قطاع "النقل واللوجستيات"
-- [ ] 2.2.6 دمج الكلمات المفتاحية لكل قطاع
-- [ ] 2.2.7 إضافة Schema Markup لكل قطاع
+### 1.2 Improve Heading Structure
+- [x] 1.2.1 Review all headings (H1-H6) on the page
+- [x] 1.2.2 Integrate keywords into main headings
+- [x] 1.2.3 Ensure correct hierarchical sequence of headings
+- [x] 1.2.4 Add headings to sections that lack them
 
-### 2.3 قسم "الذكاء الاصطناعي كخدمة (AIaaS) - تفصيلي"
-- [ ] 2.3.1 إنشاء بنية HTML للقسم
-- [ ] 2.3.2 إضافة محتوى "أنواع خدمات AIaaS"
-  - [ ] 2.3.2.1 واجهات برمجة التطبيقات (APIs)
-  - [ ] 2.3.2.2 التعلم الآلي كخدمة (MLaaS)
-  - [ ] 2.3.2.3 تسمية البيانات (Data Labeling)
-  - [ ] 2.3.2.4 الأتمتة السحابية
-- [ ] 2.3.3 إضافة محتوى "مستويات الأتمتة"
-  - [ ] 2.3.3.1 الأتمتة التقليدية (RPA)
-  - [ ] 2.3.3.2 الأتمتة الذكية (IA)
-  - [ ] 2.3.3.3 الوكلاء المستقلون (Agentic AI)
-- [ ] 2.3.4 دمج الكلمات المفتاحية
-- [ ] 2.3.5 إضافة Schema Markup
-- [ ] 2.3.6 تطبيق التنسيق
-
-### 2.4 قسم "تقنيات التحليل المتقدم"
-- [ ] 2.4.1 إنشاء بنية HTML للقسم
-- [ ] 2.4.2 إضافة بطاقة "التعلم العميق"
-- [ ] 2.4.3 إضافة بطاقة "التحليلات التنبؤية"
-- [ ] 2.4.4 إضافة بطاقة "تحليل المشاعر"
-- [ ] 2.4.5 إضافة بطاقة "الرسوم البيانية المعرفية"
-- [ ] 2.4.6 دمج الكلمات المفتاحية
-- [ ] 2.4.7 إضافة Schema Markup
-- [ ] 2.4.8 تطبيق التنسيق
-
-### 2.5 قسم "تطبيقات الروبوتات"
-- [ ] 2.5.1 إنشاء بنية HTML للقسم
-- [ ] 2.5.2 إضافة محتوى "الدرونز (UAVs)"
-- [ ] 2.5.3 إضافة محتوى "الروبوتات اللوجستية"
-- [ ] 2.5.4 إضافة محتوى "التوائم الرقمية"
-- [ ] 2.5.5 إضافة محتوى "روبوتات الخدمة"
-- [ ] 2.5.6 دمج الكلمات المفتاحية
-- [ ] 2.5.7 إضافة Schema Markup
-- [ ] 2.5.8 تطبيق التنسيق
-
-### 2.6 قسم "المكتبة الذكية"
-- [ ] 2.6.1 إنشاء بنية HTML للقسم
-- [ ] 2.6.2 إضافة محتوى "الفهرسة الآلية"
-- [ ] 2.6.3 إضافة محتوى "الرقمنة المتقدمة"
-- [ ] 2.6.4 إضافة محتوى "مباني المكتبة الذكية"
-- [ ] 2.6.5 إضافة محتوى "تحليل تجربة المستخدم"
-- [ ] 2.6.6 دمج الكلمات المفتاحية
-- [ ] 2.6.7 إضافة Schema Markup
-- [ ] 2.6.8 تطبيق التنسيق
+### 1.3 Improve Image Alt Text
+- [x] 1.3.1 Update alt text for logo
+- [ ] 1.3.2 Update alt text for Hero Section images (no images currently in hero)
+- [ ] 1.3.3 Update alt text for service icons (using iconify icons)
+- [ ] 1.3.4 Add alt text for all decorative images
+- [x] 1.3.5 Ensure keywords are integrated in alt text
 
 ---
 
-## 3. المرحلة الثالثة: توسيع قسم الأسئلة الشائعة
+## 2. Phase Two: Add New Content Sections
 
-### 3.1 إضافة بنية FAQ الجديدة
-- [ ] 3.1.1 إنشاء نظام التبويبات (Tabs) للفئات
-- [ ] 3.1.2 إضافة JavaScript للتبديل بين الفئات
-- [ ] 3.1.3 تطبيق التنسيق للبنية الجديدة
+### 2.1 Business Intelligence and Data Analysis Section
+- [ ] 2.1.1 Create HTML structure for section (expand existing BI content)
+- [ ] 2.1.2 Write "What is Business Intelligence" content
+- [ ] 2.1.3 Add "Business Intelligence Tools" cards
+- [ ] 2.1.4 Add "BI Applications in Sectors" content
+- [ ] 2.1.5 Add "Difference between BI and AI" content
+- [ ] 2.1.6 Integrate keywords (3-4% density)
+- [ ] 2.1.7 Add Schema Markup for section
+- [ ] 2.1.8 Apply formatting and styles
 
-### 3.2 فئة "ذكاء الأعمال" (10 أسئلة)
-- [ ] 3.2.1 إضافة سؤال: أفضل أدوات ذكاء الأعمال في السعودية
-- [ ] 3.2.2 إضافة سؤال: اختيار برنامج ذكاء الأعمال المناسب
-- [ ] 3.2.3 إضافة سؤال: دورات تدريبية في ذكاء الأعمال
-- [ ] 3.2.4 إضافة سؤال: شركات خدمات ذكاء الأعمال
-- [ ] 3.2.5 إضافة سؤال: استخدام ذكاء الأعمال لتحسين الأداء المالي
-- [ ] 3.2.6 إضافة سؤال: تجربة برامج ذكاء الأعمال مجاناً
-- [ ] 3.2.7 إضافة سؤال: مميزات الحلول السحابية vs المحلية
-- [ ] 3.2.8 إضافة سؤال: دمج ذكاء الأعمال مع ERP
-- [ ] 3.2.9 إضافة سؤال: تكلفة الاشتراك للشركات الناشئة
-- [ ] 3.2.10 إضافة سؤال: أفضل استشاريي ذكاء الأعمال في الرياض
+### 2.2 Expand Target Sectors Section
+- [ ] 2.2.1 Expand Government Sector content
+  - [ ] 2.2.1.1 Add value drivers
+  - [ ] 2.2.1.2 Add keywords (التحول الرقمي الحكومي، سدايا، مؤشر نضج البيانات)
+  - [ ] 2.2.1.3 Add application examples
+- [ ] 2.2.2 Expand Energy and Environment content
+- [ ] 2.2.3 Expand Healthcare content
+- [ ] 2.2.4 Expand Education content
+- [ ] 2.2.5 Add Transportation and Logistics sector
+- [ ] 2.2.6 Integrate keywords for each sector
+- [ ] 2.2.7 Add Schema Markup for each sector
 
-### 3.3 فئة "الذكاء الاصطناعي" (10 أسئلة)
-- [ ] 3.3.1 إضافة سؤال: أفضل منصات الذكاء الاصطناعي في السعودية
-- [ ] 3.3.2 إضافة سؤال: استخدام تطبيقات الذكاء الاصطناعي للأعمال
-- [ ] 3.3.3 إضافة سؤال: دورات تدريبية عن الذكاء الاصطناعي بالعربية
-- [ ] 3.3.4 إضافة سؤال: خدمات الذكاء الاصطناعي المحلية
-- [ ] 3.3.5 إضافة سؤال: دمج حلول الذكاء الاصطناعي في المشاريع الناشئة
-- [ ] 3.3.6 إضافة سؤال: أدوات الذكاء الاصطناعي لتحليل البيانات
-- [ ] 3.3.7 إضافة سؤال: برامج ذكاء اصطناعي لإدارة الوقت والمشاريع
-- [ ] 3.3.8 إضافة سؤال: اختيار برنامج ذكاء اصطناعي لتحرير الصور
-- [ ] 3.3.9 إضافة سؤال: شراء أجهزة ذكية في السعودية
-- [ ] 3.3.10 إضافة سؤال: منصات توليد النصوص بالعربية
+### 2.3 AIaaS (AI as a Service) Detailed Section
+- [ ] 2.3.1 Create HTML structure for section (expand existing AIaaS content)
+- [ ] 2.3.2 Add "Types of AIaaS Services" content
+  - [ ] 2.3.2.1 APIs (Application Programming Interfaces)
+  - [ ] 2.3.2.2 MLaaS (Machine Learning as a Service)
+  - [ ] 2.3.2.3 Data Labeling
+  - [ ] 2.3.2.4 Cloud Automation
+- [ ] 2.3.3 Add "Automation Levels" content
+  - [ ] 2.3.3.1 Traditional Automation (RPA)
+  - [ ] 2.3.3.2 Intelligent Automation (IA)
+  - [ ] 2.3.3.3 Agentic AI (Autonomous Agents)
+- [ ] 2.3.4 Integrate keywords
+- [ ] 2.3.5 Add Schema Markup
+- [ ] 2.3.6 Apply formatting
 
-### 3.4 فئة "الأدوات والتطبيقات" (10 أسئلة)
-- [ ] 3.4.1 إضافة سؤال: أدوات ذكية لإدارة الأعمال الصغيرة
-- [ ] 3.4.2 إضافة سؤال: استخدام الذكاء الاصطناعي لخدمة العملاء
-- [ ] 3.4.3 إضافة سؤال: منصات تحليل بيانات السوق
-- [ ] 3.4.4 إضافة سؤال: تطبيقات أتمتة المحاسبة والمراجعة
-- [ ] 3.4.5 إضافة سؤال: الخدمات السحابية لتقنيات الذكاء الاصطناعي
-- [ ] 3.4.6 إضافة سؤال: دمج الذكاء الاصطناعي مع التجارة الإلكترونية
-- [ ] 3.4.7 إضافة سؤال: شركات استشارات تطبيقات الذكاء الاصطناعي
-- [ ] 3.4.8 إضافة سؤال: أدوات ذكية لتسويق المحتوى
-- [ ] 3.4.9 إضافة سؤال: تحسين إدارة الموارد البشرية بالذكاء الاصطناعي
-- [ ] 3.4.10 إضافة سؤال: دورات تدريبية حول الذكاء الاصطناعي في الأعمال
+### 2.4 Advanced Analysis Technologies Section
+- [ ] 2.4.1 Create HTML structure for section
+- [ ] 2.4.2 Add "Deep Learning" card
+- [ ] 2.4.3 Add "Predictive Analytics" card
+- [ ] 2.4.4 Add "Sentiment Analysis" card
+- [ ] 2.4.5 Add "Knowledge Graphs" card
+- [ ] 2.4.6 Integrate keywords
+- [ ] 2.4.7 Add Schema Markup
+- [ ] 2.4.8 Apply formatting
 
-### 3.5 تحديث Schema Markup للأسئلة الشائعة
-- [ ] 3.5.1 إضافة جميع الأسئلة الجديدة إلى FAQPage Schema
-- [ ] 3.5.2 التحقق من صحة Schema باستخدام Google Rich Results Test
-- [ ] 3.5.3 إضافة روابط داخلية من الأسئلة إلى الصفحات ذات الصلة
+### 2.5 Robotics Applications Section
+- [ ] 2.5.1 Create HTML structure for section
+- [ ] 2.5.2 Add "Drones (UAVs)" content
+- [ ] 2.5.3 Add "Logistics Robots" content
+- [ ] 2.5.4 Add "Digital Twins" content
+- [ ] 2.5.5 Add "Service Robots" content
+- [ ] 2.5.6 Integrate keywords
+- [ ] 2.5.7 Add Schema Markup
+- [ ] 2.5.8 Apply formatting
 
----
-
-## 4. المرحلة الرابعة: تحسين المحتوى الحالي
-
-### 4.1 دمج الكلمات المفتاحية في الأقسام الموجودة
-- [ ] 4.1.1 تحسين Hero Section
-  - [ ] 4.1.1.1 دمج "الذكاء الاصطناعي في السعودية"
-  - [ ] 4.1.1.2 دمج "حلول ذكاء اصطناعي للشركات"
-- [ ] 4.1.2 تحسين قسم الخدمات
-  - [ ] 4.1.2.1 دمج "خدمات الذكاء الاصطناعي"
-  - [ ] 4.1.2.2 دمج "AIaaS للمنشآت"
-  - [ ] 4.1.2.3 دمج "أتمتة ذكية"
-- [ ] 4.1.3 تحسين قسم المحرك العصبي
-  - [ ] 4.1.3.1 دمج "واجهات برمجة التطبيقات"
-  - [ ] 4.1.3.2 دمج "التكامل السحابي"
-- [ ] 4.1.4 تحسين قسم AI Workflows
-  - [ ] 4.1.4.1 دمج "سير عمل الذكاء الاصطناعي"
-  - [ ] 4.1.4.2 دمج "أتمتة العمليات"
-
-### 4.2 إضافة محتوى مخفي لمحركات البحث
-- [ ] 4.2.1 إضافة نصوص مخفية بصرياً (sr-only) في Hero Section
-- [ ] 4.2.2 إضافة نصوص مخفية في قسم الخدمات
-- [ ] 4.2.3 إضافة نصوص مخفية في قسم القطاعات
-- [ ] 4.2.4 التأكد من إمكانية الوصول للنصوص المخفية
-
-### 4.3 تحسين الروابط الداخلية
-- [ ] 4.3.1 تحديث نصوص الروابط (Anchor Text) لتشمل كلمات مفتاحية
-- [ ] 4.3.2 إضافة روابط داخلية بين الأقسام ذات الصلة
-- [ ] 4.3.3 إنشاء خريطة روابط داخلية منطقية
-- [ ] 4.3.4 التأكد من عدم وجود روابط معطلة
+### 2.6 Smart Library Section
+- [ ] 2.6.1 Create HTML structure for section
+- [ ] 2.6.2 Add "Automated Indexing" content
+- [ ] 2.6.3 Add "Advanced Digitization" content
+- [ ] 2.6.4 Add "Smart Library Buildings" content
+- [ ] 2.6.5 Add "User Experience Analysis" content
+- [ ] 2.6.6 Integrate keywords
+- [ ] 2.6.7 Add Schema Markup
+- [ ] 2.6.8 Apply formatting
 
 ---
 
-## 5. المرحلة الخامسة: التحسينات التقنية
+## 3. Phase Three: Expand FAQ Section
 
-### 5.1 تطبيق Lazy Loading
-- [ ] 5.1.1 إضافة loading="lazy" للأقسام الجديدة
-- [ ] 5.1.2 إضافة loading="lazy" للصور
-- [ ] 5.1.3 تطبيق Intersection Observer للمحتوى الديناميكي
-- [ ] 5.1.4 اختبار التحميل الكسول على أجهزة مختلفة
+### 3.1 Add New FAQ Structure
+- [ ] 3.1.1 Create tabs system for categories (expand existing FAQ)
+- [ ] 3.1.2 Add JavaScript for category switching
+- [ ] 3.1.3 Apply formatting for new structure
 
-### 5.2 تحسين الأداء
-- [ ] 5.2.1 قياس سرعة تحميل الصفحة قبل التحسينات (Baseline)
-- [ ] 5.2.2 تقليل حجم HTML الإضافي
-- [ ] 5.2.3 تحسين CSS للأقسام الجديدة
-- [ ] 5.2.4 تحسين JavaScript للتفاعلات
-- [ ] 5.2.5 قياس سرعة تحميل الصفحة بعد التحسينات
-- [ ] 5.2.6 التأكد من عدم التأثير على Core Web Vitals
+### 3.2 Business Intelligence Category (10 Questions)
+- [ ] 3.2.1 Add question: Best BI tools in Saudi Arabia
+- [ ] 3.2.2 Add question: Choosing the right BI software
+- [ ] 3.2.3 Add question: BI training courses
+- [ ] 3.2.4 Add question: BI service companies
+- [ ] 3.2.5 Add question: Using BI to improve financial performance
+- [ ] 3.2.6 Add question: Try BI software for free
+- [ ] 3.2.7 Add question: Cloud vs on-premise solutions
+- [ ] 3.2.8 Add question: Integrating BI with ERP
+- [ ] 3.2.9 Add question: Subscription costs for startups
+- [ ] 3.2.10 Add question: Best BI consultants in Riyadh
 
-### 5.3 تحسين إمكانية الوصول
-- [ ] 5.3.1 إضافة ARIA labels للعناصر الجديدة
-- [ ] 5.3.2 التأكد من التباين اللوني المناسب
-- [ ] 5.3.3 اختبار التنقل بلوحة المفاتيح
-- [ ] 5.3.4 اختبار باستخدام قارئات الشاشة
-- [ ] 5.3.5 تشغيل WAVE أو axe DevTools للتحقق
+### 3.3 Artificial Intelligence Category (10 Questions)
+- [ ] 3.3.1 Add question: Best AI platforms in Saudi Arabia
+- [ ] 3.3.2 Add question: Using AI applications for business
+- [ ] 3.3.3 Add question: AI training courses in Arabic
+- [ ] 3.3.4 Add question: Local AI services
+- [ ] 3.3.5 Add question: Integrating AI in startups
+- [ ] 3.3.6 Add question: AI tools for data analysis
+- [ ] 3.3.7 Add question: AI software for time and project management
+- [ ] 3.3.8 Add question: Choosing AI software for image editing
+- [ ] 3.3.9 Add question: Buying smart devices in Saudi Arabia
+- [ ] 3.3.10 Add question: Arabic text generation platforms
 
----
+### 3.4 Tools and Applications Category (10 Questions)
+- [ ] 3.4.1 Add question: Smart tools for small business management
+- [ ] 3.4.2 Add question: Using AI for customer service
+- [ ] 3.4.3 Add question: Market data analysis platforms
+- [ ] 3.4.4 Add question: Accounting and auditing automation apps
+- [ ] 3.4.5 Add question: Cloud services for AI technologies
+- [ ] 3.4.6 Add question: Integrating AI with e-commerce
+- [ ] 3.4.7 Add question: AI application consulting companies
+- [ ] 3.4.8 Add question: Smart tools for content marketing
+- [ ] 3.4.9 Add question: Improving HR management with AI
+- [ ] 3.4.10 Add question: Training courses on AI in business
 
-## 6. المرحلة السادسة: الاختبار والتحقق
-
-### 6.1 اختبار البيانات المنظمة
-- [ ] 6.1.1 اختبار جميع Schema Markup باستخدام Google Rich Results Test
-- [ ] 6.1.2 اختبار باستخدام Schema.org Validator
-- [ ] 6.1.3 إصلاح أي أخطاء أو تحذيرات
-- [ ] 6.1.4 التحقق من ظهور Rich Snippets في نتائج البحث
-
-### 6.2 اختبار كثافة الكلمات المفتاحية
-- [ ] 6.2.1 حساب كثافة الكلمات المفتاحية الرئيسية
-- [ ] 6.2.2 التأكد من أن الكثافة بين 2-4%
-- [ ] 6.2.3 التحقق من التوزيع الطبيعي للكلمات المفتاحية
-- [ ] 6.2.4 تعديل المحتوى إذا لزم الأمر
-
-### 6.3 اختبار الأداء
-- [ ] 6.3.1 اختبار باستخدام Google PageSpeed Insights
-- [ ] 6.3.2 اختبار باستخدام Lighthouse
-- [ ] 6.3.3 اختبار باستخدام GTmetrix
-- [ ] 6.3.4 التأكد من سرعة تحميل < 3 ثواني
-- [ ] 6.3.5 التأكد من عدم التأثير السلبي على Core Web Vitals
-
-### 6.4 اختبار إمكانية الوصول
-- [ ] 6.4.1 اختبار باستخدام WAVE
-- [ ] 6.4.2 اختبار باستخدام axe DevTools
-- [ ] 6.4.3 اختبار يدوي بقارئ الشاشة
-- [ ] 6.4.4 اختبار التنقل بلوحة المفاتيح
-- [ ] 6.4.5 إصلاح أي مشاكل في إمكانية الوصول
-
-### 6.5 اختبار التوافق
-- [ ] 6.5.1 اختبار على Chrome
-- [ ] 6.5.2 اختبار على Firefox
-- [ ] 6.5.3 اختبار على Safari
-- [ ] 6.5.4 اختبار على Edge
-- [ ] 6.5.5 اختبار على الأجهزة المحمولة (iOS/Android)
-
-### 6.6 مراجعة المحتوى
-- [ ] 6.6.1 مراجعة لغوية للمحتوى الجديد
-- [ ] 6.6.2 التحقق من دقة المعلومات
-- [ ] 6.6.3 التأكد من التناسق في الأسلوب
-- [ ] 6.6.4 مراجعة الروابط الداخلية والخارجية
+### 3.5 Update FAQ Schema Markup
+- [ ] 3.5.1 Add all new questions to FAQPage Schema
+- [ ] 3.5.2 Verify Schema using Google Rich Results Test
+- [ ] 3.5.3 Add internal links from questions to related pages
 
 ---
 
-## 7. المرحلة السابعة: النشر والمتابعة
+## 4. Phase Four: Improve Existing Content
 
-### 7.1 التحضير للنشر
-- [ ] 7.1.1 إنشاء نسخة احتياطية من الملف الحالي
-- [ ] 7.1.2 مراجعة نهائية لجميع التغييرات
-- [ ] 7.1.3 الحصول على الموافقة النهائية
-- [ ] 7.1.4 تحديث ملف sitemap.xml
+### 4.1 Integrate Keywords in Existing Sections
+- [x] 4.1.1 Improve Hero Section
+  - [x] 4.1.1.1 Integrate "AI in Saudi Arabia"
+  - [x] 4.1.1.2 Integrate "AI solutions for companies"
+- [x] 4.1.2 Improve Services Section
+  - [x] 4.1.2.1 Integrate "AI services"
+  - [x] 4.1.2.2 Integrate "AIaaS for enterprises"
+  - [x] 4.1.2.3 Integrate "Smart automation"
+- [x] 4.1.3 Improve Neural Engine Section
+  - [x] 4.1.3.1 Integrate "APIs"
+  - [x] 4.1.3.2 Integrate "Cloud integration"
+- [x] 4.1.4 Improve AI Workflows Section
+  - [x] 4.1.4.1 Integrate "AI workflows"
+  - [x] 4.1.4.2 Integrate "Process automation"
 
-### 7.2 النشر
-- [ ] 7.2.1 رفع الملف المحدّث إلى الخادم
-- [ ] 7.2.2 التحقق من عمل الموقع بشكل صحيح
-- [ ] 7.2.3 إرسال sitemap.xml المحدّث إلى Google Search Console
-- [ ] 7.2.4 طلب إعادة فهرسة الصفحة في Google Search Console
+### 4.2 Add Hidden Content for Search Engines
+- [x] 4.2.1 Add visually hidden text (sr-only) in Hero Section
+- [ ] 4.2.2 Add hidden text in Services Section
+- [ ] 4.2.3 Add hidden text in Sectors Section
+- [ ] 4.2.4 Ensure accessibility of hidden text
 
-### 7.3 المتابعة والمراقبة
-- [ ] 7.3.1 مراقبة ترتيب الكلمات المفتاحية (أسبوعياً)
-- [ ] 7.3.2 مراقبة معدل النقر (CTR) من نتائج البحث
-- [ ] 7.3.3 مراقبة معدل الارتداد (Bounce Rate)
-- [ ] 7.3.4 مراقبة مدة الجلسة (Session Duration)
-- [ ] 7.3.5 جمع ملاحظات المستخدمين
-
-### 7.4 التحسين المستمر
-- [ ] 7.4.1 تحليل البيانات من Google Analytics
-- [ ] 7.4.2 تحليل البيانات من Google Search Console
-- [ ] 7.4.3 تحديد فرص التحسين
-- [ ] 7.4.4 تنفيذ التحسينات بناءً على البيانات
-
----
-
-## 8. المرحلة الثامنة: تحسين التصميم المتجاوب (Responsive Design)
-
-### 8.1 تحسينات Hero Section للهواتف
-- [ ] 8.1.1 تقليل حجم النصوص للشاشات الصغيرة
-- [ ] 8.1.2 تحويل الأزرار إلى تخطيط عمودي
-- [ ] 8.1.3 تقليل ارتفاع الرسوم المتحركة
-- [ ] 8.1.4 إيقاف الحركات المعقدة على الهواتف
-- [ ] 8.1.5 تحسين المسافات (padding/margin)
-
-### 8.2 تحسينات Navigation للهواتف
-- [ ] 8.2.1 تحويل القائمة إلى Slide-in Menu
-- [ ] 8.2.2 تحسين حجم الأزرار للمس (44x44px)
-- [ ] 8.2.3 إضافة حركة للقا��مة المنسدلة
-- [ ] 8.2.4 تحسين Hamburger Menu
-  - [ ] 8.2.4.1 إضافة حركة تحول الأيقونة
-  - [ ] 8.2.4.2 إضافة Overlay للخلفية
-- [ ] 8.2.5 تحسين القوائم الفرعية للهواتف
-- [ ] 8.2.6 إضافة إمكانية الإغلاق بالنقر خارج القائمة
-
-### 8.3 تحسينات Services Section للهواتف
-- [ ] 8.3.1 تحويل Grid إلى عمود واحد
-- [ ] 8.3.2 إلغاء span للبطاقات الكبيرة
-- [ ] 8.3.3 تحسين حجم النصوص
-- [ ] 8.3.4 تحسين المسافات بين البطاقات
-- [ ] 8.3.5 تحسين ارتفاع البطاقات
-
-### 8.4 تحسينات Business Intelligence Section للهواتف
-- [ ] 8.4.1 تحويل Grid إلى تخطيط عمودي
-- [ ] 8.4.2 تحسين حجم الأيقونات
-- [ ] 8.4.3 تحسين حجم النصوص
-- [ ] 8.4.4 إخفاء العناصر الزخرفية غير الضرورية
-
-### 8.5 تحسينات FAQ Section للهواتف
-- [ ] 8.5.1 تحسين حجم الأزرار
-- [ ] 8.5.2 تحسين المسافات الداخلية
-- [ ] 8.5.3 تحويل التبويبات إلى تخطيط عمودي
-- [ ] 8.5.4 تحسين حجم الأيقونات
-- [ ] 8.5.5 تحسين حجم النصوص
-
-### 8.6 تحسينات Chatbot للهواتف
-- [ ] 8.6.1 تحويل نافذة الدردشة إلى ملء الشاشة
-- [ ] 8.6.2 تحسين حجم زر الإغلاق
-- [ ] 8.6.3 تحسين حجم حقل الإدخال (منع التكبير التلقائي)
-- [ ] 8.6.4 تحسين المسافات الداخلية
-- [ ] 8.6.5 إضافة حركة انتقال سلسة
-
-### 8.7 تحسينات Typography للهواتف
-- [ ] 8.7.1 تقليل حجم جميع العناوين (H1-H6)
-- [ ] 8.7.2 تحسين حجم الفقرات
-- [ ] 8.7.3 تحسين line-height للقراءة
-- [ ] 8.7.4 التأكد من حجم الأزرار المناسب للمس
-
-### 8.8 تحسينات Spacing للهواتف
-- [ ] 8.8.1 تقليل padding للأقسام
-- [ ] 8.8.2 تقليل المسافات بين العناصر
-- [ ] 8.8.3 تحسين المسافات في Container
-- [ ] 8.8.4 تحسين Gap في Grid
-
-### 8.9 تحسينات Tables للهواتف
-- [ ] 8.9.1 إضافة تمرير أفقي للجداول
-- [ ] 8.9.2 أو تحويل الجداول إلى بطاقات
-- [ ] 8.9.3 إخفاء الأعمدة غير الضرورية
-- [ ] 8.9.4 تحسين حجم النصوص في الجداول
-
-### 8.10 تحسينات Images للهواتف
-- [ ] 8.10.1 التأكد من responsive images
-- [ ] 8.10.2 تحسين Grid للصور
-- [ ] 8.10.3 تحسين الصور الخلفية
-- [ ] 8.10.4 إخفاء الصور الزخرفية على الهواتف
-
-### 8.11 تحسينات Performance للهواتف
-- [ ] 8.11.1 إضافة Lazy Loading للصور
-- [ ] 8.11.2 تحسين معالجة التمرير
-- [ ] 8.11.3 إضافة كشف الجهاز المحمول
-- [ ] 8.11.4 تحسين الحركات والانتقالات
-- [ ] 8.11.5 تقليل حجم الموارد المحملة على الهواتف
-
-### 8.12 اختبار التصميم المتجاوب
-- [ ] 8.12.1 اختبار على iPhone SE (375x667)
-- [ ] 8.12.2 اختبار على iPhone 12/13/14 (390x844)
-- [ ] 8.12.3 اختبار على iPhone 14 Pro Max (430x932)
-- [ ] 8.12.4 اختبار على Samsung Galaxy S21 (360x800)
-- [ ] 8.12.5 اختبار على iPad (768x1024)
-- [ ] 8.12.6 اختبار على iPad Pro (1024x1366)
-- [ ] 8.12.7 التحقق من عدم وجود تمرير أفقي
-- [ ] 8.12.8 التحقق من حجم الأزرار (44x44px)
-- [ ] 8.12.9 اختبار التفاعلات اللمسية
-- [ ] 8.12.10 قياس الأداء على الأجهزة المحمولة
+### 4.3 Improve Internal Links
+- [ ] 4.3.1 Update anchor text to include keywords
+- [ ] 4.3.2 Add internal links between related sections
+- [ ] 4.3.3 Create logical internal link map
+- [ ] 4.3.4 Ensure no broken links
 
 ---
 
-## 9. المرحلة التاسعة: استبدال Gemini API بـ Groq API
+## 5. Phase Five: Technical Improvements
 
-### 9.1 تحديث كود مساعد Bright AI
-- [ ] 9.1.1 قراءة GROQ_API_KEY من ملف .env
-- [ ] 9.1.2 تحديث دالة handleChatSubmit()
-  - [ ] 9.1.2.1 تغيير endpoint إلى Groq API
-  - [ ] 9.1.2.2 تحديث Headers (Authorization)
-  - [ ] 9.1.2.3 تحديث بنية الطلب (Request Body)
-  - [ ] 9.1.2.4 اختيار النموذج المناسب (mixtral-8x7b-32768)
-- [ ] 9.1.3 تحديث معالجة الاستجابة
-  - [ ] 9.1.3.1 استخراج الرد من data.choices[0].message.content
-  - [ ] 9.1.3.2 معالجة الأخطاء المحتملة
+### 5.1 Implement Lazy Loading
+- [ ] 5.1.1 Add loading="lazy" to new sections
+- [ ] 5.1.2 Add loading="lazy" to images
+- [ ] 5.1.3 Implement Intersection Observer for dynamic content
+- [ ] 5.1.4 Test lazy loading on different devices
 
-### 9.2 إضافة مؤشر الكتابة (Typing Indicator)
-- [ ] 9.2.1 إنشاء دالة addTypingIndicator()
-- [ ] 9.2.2 إنشاء دالة removeTypingIndicator()
-- [ ] 9.2.3 إضافة CSS للمؤشر
-- [ ] 9.2.4 دمج المؤشر في handleChatSubmit()
+### 5.2 Performance Optimization
+- [ ] 5.2.1 Measure page load speed before improvements (Baseline)
+- [ ] 5.2.2 Reduce additional HTML size
+- [ ] 5.2.3 Optimize CSS for new sections
+- [ ] 5.2.4 Optimize JavaScript for interactions
+- [ ] 5.2.5 Measure page load speed after improvements
+- [ ] 5.2.6 Ensure no impact on Core Web Vitals
 
-### 9.3 تحسين معالجة الأخطاء
-- [ ] 9.3.1 إنشاء دالة handleGroqError()
-- [ ] 9.3.2 معالجة خطأ 401 (Authentication)
-- [ ] 9.3.3 معالجة خطأ 429 (Rate Limit)
-- [ ] 9.3.4 معالجة خطأ 500 (Server Error)
-- [ ] 9.3.5 معالجة أخطاء الشبكة
-- [ ] 9.3.6 عرض رسائل خطأ واضحة للمستخدم
-
-### 9.4 إضافة Rate Limiting من جانب العميل
-- [ ] 9.4.1 إضافة متغير lastRequestTime
-- [ ] 9.4.2 إضافة MIN_REQUEST_INTERVAL (2 ثانية)
-- [ ] 9.4.3 التحقق من الفاصل الزمني قبل الإرسال
-- [ ] 9.4.4 عرض رسالة تنبيه عند الإرسال السريع
-
-### 9.5 إضافة تاريخ المحادثة
-- [ ] 9.5.1 إنشاء متغير conversationHistory
-- [ ] 9.5.2 إنشاء دالة addToHistory()
-- [ ] 9.5.3 الاحتفاظ بآخر 10 رسائل
-- [ ] 9.5.4 إرسال التاريخ مع كل طلب
-- [ ] 9.5.5 إضافة System Message مخصص
-
-### 9.6 تحسين تجربة المستخدم
-- [ ] 9.6.1 إضافة رسالة ترحيب محسّنة
-- [ ] 9.6.2 إضافة أمثلة للأسئلة الشائعة
-- [ ] 9.6.3 تحسين تنسيق الرسائل
-- [ ] 9.6.4 إضافة أزرار إجراءات سريعة (اختياري)
-- [ ] 9.6.5 تحسين التمرير التلقائي
-
-### 9.7 اختبار Groq API Integration
-- [ ] 9.7.1 اختبار رسالة بسيطة: "مرحباً"
-- [ ] 9.7.2 اختبار سؤال عن الخدمات
-- [ ] 9.7.3 اختبار سؤال تقني
-- [ ] 9.7.4 اختبار رسالة طويلة
-- [ ] 9.7.5 اختبار رسائل متتالية (التاريخ)
-- [ ] 9.7.6 اختبار معالجة الأخطاء
-  - [ ] 9.7.6.1 اختبار مع API Key خاطئ
-  - [ ] 9.7.6.2 اختبار مع طلبات كثيرة (Rate Limit)
-  - [ ] 9.7.6.3 اختبار مع انقطاع الإنترنت
-- [ ] 9.7.7 اختبار Rate Limiting من جانب العميل
-- [ ] 9.7.8 قياس زمن الاستجابة (< 3 ثواني)
-
-### 9.8 التحقق من الجودة
-- [ ] 9.8.1 التأكد من الاستجابات باللغة العربية
-- [ ] 9.8.2 التأكد من الاستجابات ذات صلة بالسياق
-- [ ] 9.8.3 التأكد من عمل مؤشر الكتابة
-- [ ] 9.8.4 التأكد من عمل معالجة الأخطاء
-- [ ] 9.8.5 التأكد من عمل التاريخ
-- [ ] 9.8.6 التأكد من الأداء الجيد
-
-### 9.9 التوثيق
-- [ ] 9.9.1 توثيق التغييرات في الكود
-- [ ] 9.9.2 إضافة تعليقات للدوال الجديدة
-- [ ] 9.9.3 تحديث README (إن وجد)
-- [ ] 9.9.4 توثيق استخدام Groq API
+### 5.3 Accessibility Improvements
+- [ ] 5.3.1 Add ARIA labels to new elements
+- [ ] 5.3.2 Ensure proper color contrast
+- [ ] 5.3.3 Test keyboard navigation
+- [ ] 5.3.4 Test with screen readers
+- [ ] 5.3.5 Run WAVE or axe DevTools for verification
 
 ---
 
-## 10. المرحلة العاشرة: الاختبار الشامل والنشر
+## 6. Phase Six: Testing and Verification
 
-### 10.1 اختبار التكامل
-- [ ] 10.1.1 اختبار SEO + Responsive Design
-- [ ] 10.1.2 اختبار SEO + Groq API
-- [ ] 10.1.3 اختبار Responsive + Groq API
-- [ ] 10.1.4 اختبار جميع الميزات معاً
+### 6.1 Test Structured Data
+- [ ] 6.1.1 Test all Schema Markup using Google Rich Results Test
+- [ ] 6.1.2 Test using Schema.org Validator
+- [ ] 6.1.3 Fix any errors or warnings
+- [ ] 6.1.4 Verify Rich Snippets appear in search results
 
-### 10.2 اختبار الأداء الشامل
-- [ ] 10.2.1 قياس سرعة التحميل على Desktop
-- [ ] 10.2.2 قياس سرعة التحميل على Mobile
-- [ ] 10.2.3 قياس Core Web Vitals
-- [ ] 10.2.4 قياس زمن استجابة Groq API
-- [ ] 10.2.5 التأكد من عدم تدهور الأداء
+### 6.2 Test Keyword Density
+- [ ] 6.2.1 Calculate main keyword density
+- [ ] 6.2.2 Ensure density is between 2-4%
+- [ ] 6.2.3 Verify natural keyword distribution
+- [ ] 6.2.4 Adjust content if necessary
 
-### 10.3 اختبار التوافق الشامل
-- [ ] 10.3.1 اختبار على Chrome (Desktop + Mobile)
-- [ ] 10.3.2 اختبار على Firefox (Desktop + Mobile)
-- [ ] 10.3.3 اختبار على Safari (Desktop + Mobile)
-- [ ] 10.3.4 اختبار على Edge
-- [ ] 10.3.5 اختبار على أجهزة iOS حقيقية
-- [ ] 10.3.6 اختبار على أجهزة Android حقيقية
+### 6.3 Performance Testing
+- [ ] 6.3.1 Test using Google PageSpeed Insights
+- [ ] 6.3.2 Test using Lighthouse
+- [ ] 6.3.3 Test using GTmetrix
+- [ ] 6.3.4 Ensure load speed < 3 seconds
+- [ ] 6.3.5 Ensure no negative impact on Core Web Vitals
 
-### 10.4 المراجعة النهائية
-- [ ] 10.4.1 مراجعة جميع التغييرات
-- [ ] 10.4.2 التأكد من تحقيق جميع المتطلبات
-- [ ] 10.4.3 مراجعة الكود للتأكد من الجودة
-- [ ] 10.4.4 التأكد من عدم وجود أخطاء في Console
-- [ ] 10.4.5 التأكد من عدم وجود روابط معطلة
+### 6.4 Accessibility Testing
+- [ ] 6.4.1 Test using WAVE
+- [ ] 6.4.2 Test using axe DevTools
+- [ ] 6.4.3 Manual test with screen reader
+- [ ] 6.4.4 Test keyboard navigation
+- [ ] 6.4.5 Fix any accessibility issues
 
-### 10.5 التحضير للنشر
-- [ ] 10.5.1 إنشاء نسخة احتياطية كاملة
-- [ ] 10.5.2 تحديث ملف .env للإنتاج
-- [ ] 10.5.3 تحديث sitemap.xml
-- [ ] 10.5.4 الحصول على الموافقة النهائية
+### 6.5 Compatibility Testing
+- [ ] 6.5.1 Test on Chrome
+- [ ] 6.5.2 Test on Firefox
+- [ ] 6.5.3 Test on Safari
+- [ ] 6.5.4 Test on Edge
+- [ ] 6.5.5 Test on mobile devices (iOS/Android)
 
-### 10.6 النشر
-- [ ] 10.6.1 رفع الملفات المحدّثة
-- [ ] 10.6.2 التحقق من عمل الموقع
-- [ ] 10.6.3 إرسال sitemap إلى Google Search Console
-- [ ] 10.6.4 طلب إعادة فهرسة الصفحة
-
-### 10.7 المتابعة بعد النشر
-- [ ] 10.7.1 مراقبة الأخطاء في أول 24 ساعة
-- [ ] 10.7.2 مراقبة أداء Groq API
-- [ ] 10.7.3 جمع ملاحظات المستخدمين
-- [ ] 10.7.4 مراقبة ترتيب الكلمات المفتاحية
+### 6.6 Content Review
+- [ ] 6.6.1 Linguistic review of new content
+- [ ] 6.6.2 Verify information accuracy
+- [ ] 6.6.3 Ensure style consistency
+- [ ] 6.6.4 Review internal and external links
 
 ---
 
-## 11. التسليمات النهائية المحدثة
+## 7. Phase Seven: Deployment and Monitoring
+
+### 7.1 Deployment Preparation
+- [ ] 7.1.1 Create backup of current file
+- [ ] 7.1.2 Final review of all changes
+- [ ] 7.1.3 Get final approval
+- [ ] 7.1.4 Update sitemap.xml file
+
+### 7.2 Deployment
+- [ ] 7.2.1 Upload updated file to server
+- [ ] 7.2.2 Verify site works correctly
+- [ ] 7.2.3 Submit updated sitemap.xml to Google Search Console
+- [ ] 7.2.4 Request page re-indexing in Google Search Console
+
+### 7.3 Monitoring and Tracking
+- [ ] 7.3.1 Monitor keyword rankings (weekly)
+- [ ] 7.3.2 Monitor CTR from search results
+- [ ] 7.3.3 Monitor bounce rate
+- [ ] 7.3.4 Monitor session duration
+- [ ] 7.3.5 Collect user feedback
+
+### 7.4 Continuous Improvement
+- [ ] 7.4.1 Analyze data from Google Analytics
+- [ ] 7.4.2 Analyze data from Google Search Console
+- [ ] 7.4.3 Identify improvement opportunities
+- [ ] 7.4.4 Implement improvements based on data
 
 ---
 
-## 11. التسليمات النهائية المحدثة
+## 8. Phase Eight: Responsive Design Improvements
 
-### 11.1 الملفات
-- [ ] 11.1.1 ملف index.html المحدّث (SEO + Responsive + Groq)
-- [ ] 11.1.2 ملف sitemap.xml المحدّث
-- [ ] 11.1.3 ملفات CSS الإضافية للتصميم المتجاوب
-- [ ] 11.1.4 ملفات JavaScript المحدّثة (Groq API)
-- [ ] 11.1.5 ملف .env المحدّث
+### 8.1 Hero Section Mobile Improvements
+- [ ] 8.1.1 Reduce text size for small screens
+- [ ] 8.1.2 Convert buttons to vertical layout
+- [ ] 8.1.3 Reduce animation height
+- [ ] 8.1.4 Disable complex animations on mobile
+- [ ] 8.1.5 Improve spacing (padding/margin)
 
-### 11.2 التقارير
-- [ ] 11.2.1 تقرير تحليل الكلمات المفتاحية
-- [ ] 11.2.2 تقرير اختبار البيانات المنظمة
-- [ ] 11.2.3 تقرير اختبار الأداء (Desktop + Mobile)
-- [ ] 11.2.4 تقرير اختبار إمكانية الوصول
-- [ ] 11.2.5 تقرير اختبار التصميم المتجاوب
-- [ ] 11.2.6 تقرير اختبار Groq API
-- [ ] 11.2.7 تقرير المقارنة (قبل/بعد)
+### 8.2 Navigation Mobile Improvements
+- [ ] 8.2.1 Convert menu to slide-in menu
+- [ ] 8.2.2 Improve button size for touch (44x44px)
+- [ ] 8.2.3 Add animation for dropdown menu
+- [ ] 8.2.4 Improve hamburger menu
+  - [ ] 8.2.4.1 Add icon transformation animation
+  - [ ] 8.2.4.2 Add background overlay
+- [ ] 8.2.5 Improve submenus for mobile
+- [ ] 8.2.6 Add ability to close by clicking outside menu
 
-### 11.3 الوثائق
-- [ ] 11.3.1 دليل الصيانة
-- [ ] 11.3.2 دليل التحديثات المستقبلية
-- [ ] 11.3.3 قائمة الكلمات المفتاحية المستهدفة
-- [ ] 11.3.4 خريطة المحتوى والروابط الداخلية
-- [ ] 11.3.5 دليل استخدام Groq API
-- [ ] 11.3.6 دليل التصميم المتجاوب
+### 8.3 Services Section Mobile Improvements
+- [ ] 8.3.1 Convert grid to single column
+- [ ] 8.3.2 Remove span for large cards
+- [ ] 8.3.3 Improve text size
+- [ ] 8.3.4 Improve spacing between cards
+- [ ] 8.3.5 Improve card height
 
-### 11.4 لقطات الشاشة
-- [ ] 11.4.1 لقطات من أجهزة مختلفة (قبل/بعد)
-- [ ] 11.4.2 لقطات من مساعد Bright AI (Groq)
-- [ ] 11.4.3 لقطات من Rich Results في Google
+### 8.4 Business Intelligence Section Mobile Improvements
+- [ ] 8.4.1 Convert grid to vertical layout
+- [ ] 8.4.2 Improve icon size
+- [ ] 8.4.3 Improve text size
+- [ ] 8.4.4 Hide unnecessary decorative elements
 
----
+### 8.5 FAQ Section Mobile Improvements
+- [ ] 8.5.1 Improve button size
+- [ ] 8.5.2 Improve internal spacing
+- [ ] 8.5.3 Convert tabs to vertical layout
+- [ ] 8.5.4 Improve icon size
+- [ ] 8.5.5 Improve text size
 
-## 12. ملاحظات محدثة
+### 8.6 Chatbot Mobile Improvements
+- [ ] 8.6.1 Convert chat window to fullscreen
+- [ ] 8.6.2 Improve close button size
+- [ ] 8.6.3 Improve input field size (prevent auto-zoom)
+- [ ] 8.6.4 Improve internal spacing
+- [ ] 8.6.5 Add smooth transition animation
 
-### الأولويات
-- **عالية جداً**: المراحل 1، 2، 3 (SEO الأساسي)
-- **عالية**: المراحل 8، 9 (Responsive + Groq API)
-- **متوسطة**: المراحل 4، 5 (التحسينات الإضافية)
-- **عادية**: المراحل 6، 7، 10 (الاختبار والنشر)
+### 8.7 Typography Mobile Improvements
+- [ ] 8.7.1 Reduce size of all headings (H1-H6)
+- [ ] 8.7.2 Improve paragraph size
+- [ ] 8.7.3 Improve line-height for readability
+- [ ] 8.7.4 Ensure proper button size for touch
 
-### التبعيات المحدثة
-- يجب إكمال المرحلة 1 قبل البدء في المرحلة 2
-- يمكن العمل على المرحلة 8 (Responsive) بالتوازي مع المراحل 2-5
-- يمكن العمل على المرحلة 9 (Groq API) بشكل مستقل
-- يجب إكمال جميع المراحل قبل المرحلة 10 (الاختبار الشامل)
+### 8.8 Spacing Mobile Improvements
+- [ ] 8.8.1 Reduce section padding
+- [ ] 8.8.2 Reduce spacing between elements
+- [ ] 8.8.3 Improve container spacing
+- [ ] 8.8.4 Improve grid gap
 
-### المخاطر المحدثة
-- **الإفراط في التحسين**: مراقبة كثافة الكلمات المفتاحية
-- **التأثير على الأداء**: اختبار الأداء بعد كل مرحلة
-- **مشاكل التوافق**: اختبار على متصفحات وأجهزة متعددة
-- **مشاكل Groq API**: اختبار معالجة الأخطاء والحدود
-- **مشاكل التصميم المتجاوب**: اختبار على أجهزة حقيقية
+### 8.9 Tables Mobile Improvements
+- [ ] 8.9.1 Add horizontal scroll for tables
+- [ ] 8.9.2 Or convert tables to cards
+- [ ] 8.9.3 Hide unnecessary columns
+- [ ] 8.9.4 Improve text size in tables
 
-### نصائح التنفيذ
-1. **ابدأ بـ SEO الأساسي** (المراحل 1-3) لأنه الأساس
-2. **اعمل على Responsive بالتوازي** مع إضافة المحتوى
-3. **اختبر Groq API مبكراً** للتأكد من عمله
-4. **اختبر على أجهزة حقيقية** وليس فقط المحاكيات
-5. **راقب الأداء باستمرار** بعد كل تغيير
-6. **احتفظ بنسخ احتياطية** قبل كل تحديث كبير
+### 8.10 Images Mobile Improvements
+- [ ] 8.10.1 Ensure responsive images
+- [ ] 8.10.2 Improve image grid
+- [ ] 8.10.3 Improve background images
+- [ ] 8.10.4 Hide decorative images on mobile
 
----
+### 8.11 Performance Mobile Improvements
+- [ ] 8.11.1 Add lazy loading for images
+- [ ] 8.11.2 Improve scroll handling
+- [ ] 8.11.3 Add mobile device detection
+- [ ] 8.11.4 Improve animations and transitions
+- [ ] 8.11.5 Reduce resources loaded on mobile
 
-## 13. الجدول الزمني المحدث
-
-- **المرحلة 1**: 2-3 أيام (البنية الأساسية)
-- **المرحلة 2**: 5-7 أيام (المحتوى الجديد)
-- **المرحلة 3**: 2-3 أيام (FAQ)
-- **المرحلة 4**: 2-3 أيام (تحسين المحتوى الحالي)
-- **المرحلة 5**: 1-2 أيام (التحسينات التقنية)
-- **المرحلة 6**: 2-3 أيام (الاختبار الأولي)
-- **المرحلة 7**: 1-2 أيام (النشر الأولي)
-- **المرحلة 8**: 3-5 أيام (Responsive Design) - يمكن بالتوازي
-- **المرحلة 9**: 2-3 أيام (Groq API) - يمكن بالتوازي
-- **المرحلة 10**: 2-3 أيام (الاختبار الشامل والنشر النهائي)
-
-**الإجمالي**: 22-34 يوم عمل (4-7 أسابيع)
-
-**مع التوازي**: 18-28 يوم عمل (3.5-5.5 أسابيع)
-
----
-
-## 14. قائمة التحقق النهائية
-
-### SEO
-- [ ] جميع الكلمات المفتاحية مدمجة بشكل طبيعي
-- [ ] كثافة الكلمات المفتاحية 2-4%
-- [ ] جميع البيانات المنظمة صحيحة
-- [ ] جميع الصور لها نصوص بديلة
-- [ ] جميع الروابط الداخلية تعمل
-- [ ] sitemap.xml محدّث
-
-### Responsive Design
-- [ ] الموقع يعمل على جميع أحجام الشاشات
-- [ ] لا يوجد تمرير أفقي غير مرغوب
-- [ ] جميع الأزرار بحجم مناسب للمس (44x44px)
-- [ ] القوائم المنسدلة تعمل على الهواتف
-- [ ] الأداء جيد على الأجهزة المحمولة
-- [ ] اختبار على أجهزة iOS و Android حقيقية
-
-### Groq API
-- [ ] مساعد Bright AI يعمل بشكل صحيح
-- [ ] الاستجابات باللغة العربية
-- [ ] معالجة الأخطاء تعمل
-- [ ] Rate Limiting يعمل
-- [ ] مؤشر الكتابة يعمل
-- [ ] التاريخ يُحفظ بشكل صحيح
-- [ ] زمن الاستجابة < 3 ثواني
-
-### الأداء
-- [ ] سرعة التحميل < 3 ثواني (Desktop)
-- [ ] سرعة التحميل < 4 ثواني (Mobile)
-- [ ] Core Web Vitals جيدة
-- [ ] لا توجد أخطاء في Console
-- [ ] Lazy Loading يعمل بشكل صحيح
-
-### إمكانية الوصول
-- [ ] جميع العناصر لها ARIA labels
-- [ ] التباين اللوني مناسب
-- [ ] التنقل بلوحة المفاتيح يعمل
-- [ ] قارئات الشاشة تعمل بشكل صحيح
-- [ ] اختبار WAVE أو axe DevTools نظيف
-
-### التوافق
-- [ ] يعمل على Chrome
-- [ ] يعمل على Firefox
-- [ ] يعمل على Safari
-- [ ] يعمل على Edge
-- [ ] يعمل على iOS
-- [ ] يعمل على Android
+### 8.12 Responsive Design Testing
+- [ ] 8.12.1 Test on iPhone SE (375x667)
+- [ ] 8.12.2 Test on iPhone 12/13/14 (390x844)
+- [ ] 8.12.3 Test on iPhone 14 Pro Max (430x932)
+- [ ] 8.12.4 Test on Samsung Galaxy S21 (360x800)
+- [ ] 8.12.5 Test on iPad (768x1024)
+- [ ] 8.12.6 Test on iPad Pro (1024x1366)
+- [ ] 8.12.7 Verify no unwanted horizontal scroll
+- [ ] 8.12.8 Verify button size (44x44px)
+- [ ] 8.12.9 Test touch interactions
+- [ ] 8.12.10 Measure performance on mobile devices
 
 ---
 
-## 15. الدعم والصيانة
+## 9. Phase Nine: Replace Gemini API with Groq API
 
-### المراقبة المستمرة
-- **يومياً** (أول أسبوع): مراقبة الأخطاء والأداء
-- **أسبوعياً**: مراقبة ترتيب الكلمات المفتاحية
-- **شهرياً**: مراجعة شاملة للمحتوى والأداء
-- **ربع سنوياً**: تحديث الكلمات المفتاحية والمحتوى
+### 9.1 Implement Missing Chatbot Functionality
+- [ ] 9.1.1 Add missing chatbot JavaScript functions to index.html
+  - [ ] 9.1.1.1 Add toggleChat() function
+  - [ ] 9.1.1.2 Add handleChatSubmit() function
+  - [ ] 9.1.1.3 Add addMessage() function
+  - [ ] 9.1.1.4 Add message handling functions
+- [ ] 9.1.2 Configure Groq API integration
+  - [ ] 9.1.2.1 Use EXPO_PUBLIC_GROQ_API_KEY from .env file
+  - [ ] 9.1.2.2 Set Groq API endpoint (https://api.groq.com/openai/v1/chat/completions)
+  - [ ] 9.1.2.3 Configure mixtral-8x7b-32768 model
+  - [ ] 9.1.2.4 Set proper headers (Authorization: Bearer)
+- [ ] 9.1.3 Update response handling
+  - [ ] 9.1.3.1 Extract response from data.choices[0].message.content
+  - [ ] 9.1.3.2 Handle potential errors
 
-### التحديثات المخططة
-- تحديث المحتوى بناءً على البيانات
-- إضافة أسئلة شائعة جديدة
-- تحسين الأداء المستمر
-- تحديث Groq API إذا لزم الأمر
+### 9.2 Add Typing Indicator
+- [ ] 9.2.1 Create addTypingIndicator() function
+- [ ] 9.2.2 Create removeTypingIndicator() function
+- [ ] 9.2.3 Add CSS for indicator
+- [ ] 9.2.4 Integrate indicator in handleChatSubmit()
+
+### 9.3 Improve Error Handling
+- [ ] 9.3.1 Create handleGroqError() function
+- [ ] 9.3.2 Handle 401 error (Authentication)
+- [ ] 9.3.3 Handle 429 error (Rate Limit)
+- [ ] 9.3.4 Handle 500 error (Server Error)
+- [ ] 9.3.5 Handle network errors
+- [ ] 9.3.6 Display clear error messages to user
+
+### 9.4 Add Client-Side Rate Limiting
+- [ ] 9.4.1 Add lastRequestTime variable
+- [ ] 9.4.2 Add MIN_REQUEST_INTERVAL (2 seconds)
+- [ ] 9.4.3 Check time interval before sending
+- [ ] 9.4.4 Display warning message for rapid sending
+
+### 9.5 Add Conversation History
+- [ ] 9.5.1 Create conversationHistory variable
+- [ ] 9.5.2 Create addToHistory() function
+- [ ] 9.5.3 Keep last 10 messages
+- [ ] 9.5.4 Send history with each request
+- [ ] 9.5.5 Add custom system message
+
+### 9.6 Improve User Experience
+- [ ] 9.6.1 Add improved welcome message
+- [ ] 9.6.2 Add examples of common questions
+- [ ] 9.6.3 Improve message formatting
+- [ ] 9.6.4 Add quick action buttons (optional)
+- [ ] 9.6.5 Improve auto-scroll
+
+### 9.7 Test Groq API Integration
+- [ ] 9.7.1 Test simple message: "Hello"
+- [ ] 9.7.2 Test question about services
+- [ ] 9.7.3 Test technical question
+- [ ] 9.7.4 Test long message
+- [ ] 9.7.5 Test consecutive messages (history)
+- [ ] 9.7.6 Test error handling
+  - [ ] 9.7.6.1 Test with wrong API key
+  - [ ] 9.7.6.2 Test with many requests (rate limit)
+  - [ ] 9.7.6.3 Test with internet disconnection
+- [ ] 9.7.7 Test client-side rate limiting
+- [ ] 9.7.8 Measure response time (< 3 seconds)
+
+### 9.8 Quality Verification
+- [ ] 9.8.1 Ensure responses in Arabic
+- [ ] 9.8.2 Ensure responses relevant to context
+- [ ] 9.8.3 Ensure typing indicator works
+- [ ] 9.8.4 Ensure error handling works
+- [ ] 9.8.5 Ensure history works
+- [ ] 9.8.6 Ensure good performance
+
+### 9.9 Documentation
+- [ ] 9.9.1 Document code changes
+- [ ] 9.9.2 Add comments to new functions
+- [ ] 9.9.3 Update README (if exists)
+- [ ] 9.9.4 Document Groq API usage
 
 ---
 
-**ملاحظة**: هذا الـ spec الآن يشمل:
-1. ✅ تحسين محركات البحث (SEO) الشامل
-2. ✅ تحسين التصميم المتجاوب للهواتف
-3. ✅ استبدال Gemini API بـ Groq API
+## 10. Phase Ten: Comprehensive Testing and Deployment
 
-**جاهز للتنفيذ!** 🚀
+### 10.1 Integration Testing
+- [ ] 10.1.1 Test SEO + Responsive Design
+- [ ] 10.1.2 Test SEO + Groq API
+- [ ] 10.1.3 Test Responsive + Groq API
+- [ ] 10.1.4 Test all features together
+
+### 10.2 Comprehensive Performance Testing
+- [ ] 10.2.1 Measure load speed on Desktop
+- [ ] 10.2.2 Measure load speed on Mobile
+- [ ] 10.2.3 Measure Core Web Vitals
+- [ ] 10.2.4 Measure Groq API response time
+- [ ] 10.2.5 Ensure no performance degradation
+
+### 10.3 Comprehensive Compatibility Testing
+- [ ] 10.3.1 Test on Chrome (Desktop + Mobile)
+- [ ] 10.3.2 Test on Firefox (Desktop + Mobile)
+- [ ] 10.3.3 Test on Safari (Desktop + Mobile)
+- [ ] 10.3.4 Test on Edge
+- [ ] 10.3.5 Test on real iOS devices
+- [ ] 10.3.6 Test on real Android devices
+
+### 10.4 Final Review
+- [ ] 10.4.1 Review all changes
+- [ ] 10.4.2 Ensure all requirements met
+- [ ] 10.4.3 Review code for quality
+- [ ] 10.4.4 Ensure no console errors
+- [ ] 10.4.5 Ensure no broken links
+
+### 10.5 Deployment Preparation
+- [ ] 10.5.1 Create complete backup
+- [ ] 10.5.2 Update .env file for production
+- [ ] 10.5.3 Update sitemap.xml
+- [ ] 10.5.4 Get final approval
+
+### 10.6 Deployment
+- [ ] 10.6.1 Upload updated files
+- [ ] 10.6.2 Verify site works
+- [ ] 10.6.3 Submit sitemap to Google Search Console
+- [ ] 10.6.4 Request page re-indexing
+
+### 10.7 Post-Deployment Monitoring
+- [ ] 10.7.1 Monitor errors in first 24 hours
+- [ ] 10.7.2 Monitor Groq API performance
+- [ ] 10.7.3 Collect user feedback
+- [ ] 10.7.4 Monitor keyword rankings
+
+---
+
+## 11. Final Deliverables
+
+### 11.1 Files
+- [ ] 11.1.1 Updated index.html file (SEO + Responsive + Groq)
+- [ ] 11.1.2 Updated sitemap.xml file
+- [ ] 11.1.3 Additional CSS files for responsive design
+- [ ] 11.1.4 Updated JavaScript files (Groq API)
+- [ ] 11.1.5 Updated .env file
+
+### 11.2 Reports
+- [ ] 11.2.1 Keyword analysis report
+- [ ] 11.2.2 Structured data testing report
+- [ ] 11.2.3 Performance testing report (Desktop + Mobile)
+- [ ] 11.2.4 Accessibility testing report
+- [ ] 11.2.5 Responsive design testing report
+- [ ] 11.2.6 Groq API testing report
+- [ ] 11.2.7 Before/after comparison report
+
+### 11.3 Documentation
+- [ ] 11.3.1 Maintenance guide
+- [ ] 11.3.2 Future updates guide
+- [ ] 11.3.3 Target keywords list
+- [ ] 11.3.4 Content and internal links map
+- [ ] 11.3.5 Groq API usage guide
+- [ ] 11.3.6 Responsive design guide
+
+### 11.4 Screenshots
+- [ ] 11.4.1 Screenshots from different devices (before/after)
+- [ ] 11.4.2 Screenshots from Bright AI assistant (Groq)
+- [ ] 11.4.3 Screenshots from Rich Results in Google
+
+---
+
+## Notes
+
+### Priorities
+- **Very High**: Phases 1, 2, 3 (Basic SEO) - Phase 1 mostly complete
+- **High**: Phases 8, 9 (Responsive + Groq API)
+- **Medium**: Phases 4, 5 (Additional improvements)
+- **Normal**: Phases 6, 7, 10 (Testing and deployment)
+
+### Dependencies
+- Must complete Phase 1 before starting Phase 2 (Phase 1 mostly done)
+- Can work on Phase 8 (Responsive) in parallel with Phases 2-5
+- Phase 9 (Groq API) requires implementing missing chatbot functions first
+- Must complete all phases before Phase 10 (Comprehensive testing)
+
+### Risks
+- **Over-optimization**: Monitor keyword density
+- **Performance impact**: Test performance after each phase
+- **Compatibility issues**: Test on multiple browsers and devices
+- **Groq API issues**: Test error handling and limits
+- **Responsive design issues**: Test on real devices
+- **Missing chatbot functionality**: Need to implement basic chatbot before Groq integration
+
+### Implementation Tips
+1. **Continue with content addition** (Phases 2-3) building on existing SEO foundation
+2. **Work on Responsive in parallel** with content addition
+3. **Implement basic chatbot functions first** before Groq API integration
+4. **Test on real devices** not just simulators
+5. **Monitor performance continuously** after each change
+6. **Keep backups** before each major update
+
+### Current Status Summary
+- **Phase 1**: ~80% complete (most structured data and SEO basics done)
+- **Phase 2-3**: Ready to start (content expansion)
+- **Phase 4**: ~60% complete (keyword integration mostly done)
+- **Phase 8**: Ready to start (responsive design)
+- **Phase 9**: Needs basic chatbot implementation first
+- **Phases 5-7, 10**: Pending completion of above phases
+
+---
+
+## Timeline
+
+- **Phase 1**: 1-2 days (Complete remaining basic structure tasks)
+- **Phase 2**: 5-7 days (New content sections)
+- **Phase 3**: 2-3 days (FAQ expansion)
+- **Phase 4**: 1-2 days (Complete remaining content improvements)
+- **Phase 5**: 1-2 days (Technical improvements)
+- **Phase 6**: 2-3 days (Initial testing)
+- **Phase 7**: 1-2 days (Initial deployment)
+- **Phase 8**: 3-5 days (Responsive Design) - can be parallel
+- **Phase 9**: 3-4 days (Implement chatbot + Groq API) - can be parallel
+- **Phase 10**: 2-3 days (Comprehensive testing and final deployment)
+
+**Total**: 18-30 working days (3.5-6 weeks)
+
+**With parallelization**: 14-24 working days (2.5-5 weeks)
+
+**Current Progress**: ~25% complete (Phase 1 mostly done, Phase 4 partially done)
+
+---
+
+**Ready for execution!** 🚀

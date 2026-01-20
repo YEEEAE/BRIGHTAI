@@ -17,7 +17,7 @@ This task list implements the complete transformation of https://brightai.site/ 
 **Requirements**: 1.1, 1.2, 2.1, 2.2, 2.3
 **Description**: Establish the core design system with typography, colors, spacing, and CSS variables.
 
-- [ ] 1.1 Create CSS custom properties for design tokens
+- [ ] 1.1 Create CSS custom properties for design tokens 
   - Define typography scale with fluid sizing (clamp)
   - Define color system (primary, accent, neutrals, gradients)
   - Define spacing scale (8px base system)

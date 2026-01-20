@@ -2,5 +2,14 @@
     "github.copilot.chat.copilotDebugCommand.enabled": true,
     "html.autoClosingTags": false,
     "kiroAgent.enableTabAutocomplete": true,
-    "kiroAgent.modelSelection": "claude-sonnet-4.5"
+    "kiroAgent.modelSelection": "claude-sonnet-4",
+    "debug.console.acceptSuggestionOnEnter": "on",
+    "kiroAgent.trustedCommands": [
+        "Accept all"
+    ],
+    "chat.editing.autoAcceptDelay": 1,
+    "editor.suggest.showStatusBar": true,
+    "telemetry.editStats.showStatusBar": true,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+    "task.quickOpen.showAll": true
 }
