@@ -76,26 +76,31 @@
   function animateCanvas() {
     ctx.clearRect(0, 0, width, height);
 
+    // Update and draw particles first
     particles.forEach(p => {
       p.update();
       p.draw();
-
-      // Draw connections
-      particles.forEach(p2 => {
-        let dx = p.x - p2.x;
-        let dy = p.y - p2.y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-
-        if (dist < connectionDistance) {
-          ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - dist/connectionDistance)})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-        }
-      });
     });
+
+    // Draw connections - Optimized loop O(N^2)/2
+    for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            let dx = p1.x - p2.x;
+            let dy = p1.y - p2.y;
+            let dist = Math.sqrt(dx*dx + dy*dy);
+
+            if (dist < connectionDistance) {
+                ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - dist/connectionDistance)})`;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+        }
+    }
 
     requestAnimationFrame(animateCanvas);
   }

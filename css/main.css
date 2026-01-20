@@ -711,6 +711,29 @@ body {
   pointer-events: all;
 }
 
+@media (max-width: 480px) {
+  .chat-window {
+    position: fixed;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    transform: translateY(20px); /* Simple slide up effect foundation */
+    z-index: 10002; /* Above everything */
+  }
+  
+  .chat-window.open {
+    transform: translateY(0);
+  }
+  
+  .chat-widget {
+    z-index: 10002; /* Ensure widget container is on top if needed */
+  }
+}
+
 /* ========== Responsive Navigation ========== */
 @media (min-width: 768px) and (max-width: 1024px) {
   .nav-links.active {

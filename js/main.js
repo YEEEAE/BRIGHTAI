@@ -4,7 +4,7 @@
  */
 
 // ========== Mobile Menu Logic ==========
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const hamburgerBtn = document.querySelector('.hamburger-btn');
   const navLinks = document.querySelector('.nav-links');
   const navOverlay = document.querySelector('.nav-overlay');
@@ -12,17 +12,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Toggle mobile menu
   if (hamburgerBtn) {
-    hamburgerBtn.addEventListener('click', function() {
-      this.classList.toggle('active');
+    hamburgerBtn.addEventListener('click', function () {
+      const isActive = this.classList.toggle('active');
       navLinks.classList.toggle('active');
       navOverlay.classList.toggle('active');
-      document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+      this.setAttribute('aria-expanded', isActive);
+      document.body.style.overflow = isActive ? 'hidden' : '';
     });
   }
 
   // Close menu when clicking overlay
   if (navOverlay) {
-    navOverlay.addEventListener('click', function() {
+    navOverlay.addEventListener('click', function () {
       hamburgerBtn.classList.remove('active');
       navLinks.classList.remove('active');
       this.classList.remove('active');
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Handle dropdown toggles in mobile
   dropdownToggles.forEach(toggle => {
-    toggle.addEventListener('click', function(e) {
+    toggle.addEventListener('click', function (e) {
       if (window.innerWidth <= 1024) {
         e.preventDefault();
         const parent = this.closest('.nav-dropdown');
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Close mobile menu on window resize
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', function () {
     if (window.innerWidth > 1024) {
       hamburgerBtn.classList.remove('active');
       navLinks.classList.remove('active');
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Add scrolled class to nav on scroll
-  window.addEventListener('scroll', function() {
+  window.addEventListener('scroll', function () {
     const nav = document.querySelector('.unified-nav');
     if (nav) {
       if (window.scrollY > 50) {
@@ -110,7 +111,7 @@ if (codeElement) {
 
   function typeWriter() {
     if (lineIndex < codeLines.length) {
-      currentHTML += (lineIndex > 0 ? '<br>' : '') + codeLines[lineIndex];
+      currentHTML += (lineIndex > 0 ? '<br>' : '') + codeLines[ lineIndex ];
       codeElement.innerHTML = currentHTML + '<span class="cursor-blink">|</span>';
       lineIndex++;
       setTimeout(typeWriter, 400);
@@ -124,7 +125,7 @@ if (codeElement) {
   // Start typewriter when terminal is visible
   const termObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if(entry.isIntersecting) {
+      if (entry.isIntersecting) {
         typeWriter();
         termObserver.disconnect();
       }
@@ -132,27 +133,27 @@ if (codeElement) {
   });
 
   const terminalWindow = document.querySelector('.terminal-window');
-  if(terminalWindow) {
+  if (terminalWindow) {
     termObserver.observe(terminalWindow);
   }
 }
 
 // ========== Interactive Feature Tabs ==========
-window.updateFeature = function(feature, button) {
+window.updateFeature = function (feature, button) {
   // Remove active class from all buttons
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.remove('active');
   });
-  
+
   // Add active class to clicked button
   button.classList.add('active');
-  
+
   const contentDiv = document.getElementById('feature-content');
   if (!contentDiv) return;
-  
+
   let content = '';
-  
-  switch(feature) {
+
+  switch (feature) {
     case 'vision':
       content = `
         <iconify-icon icon="lucide:scan-face" width="64" class="text-indigo-400"></iconify-icon>
@@ -172,7 +173,7 @@ window.updateFeature = function(feature, button) {
         </div>
       `;
       break;
-      
+
     case 'predict':
       content = `
         <iconify-icon icon="lucide:bar-chart-3" width="64" class="text-purple-400"></iconify-icon>
@@ -193,7 +194,7 @@ window.updateFeature = function(feature, button) {
         </div>
       `;
       break;
-      
+
     case 'hospital':
       content = `
         <iconify-icon icon="lucide:activity-square" width="64" class="text-green-400"></iconify-icon>
@@ -218,7 +219,7 @@ window.updateFeature = function(feature, button) {
         </div>
       `;
       break;
-      
+
     case 'gemini':
       content = `
         <iconify-icon icon="lucide:bot" width="64" class="text-gold-400"></iconify-icon>
@@ -238,7 +239,7 @@ window.updateFeature = function(feature, button) {
       `;
       break;
   }
-  
+
   contentDiv.innerHTML = content;
   contentDiv.classList.add('animate-blob');
   setTimeout(() => {
