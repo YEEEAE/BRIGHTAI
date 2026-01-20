@@ -851,6 +851,967 @@
     </div>
   </section>
 
+  <!-- SMART MEDICAL ARCHIVE SECTION - الأرشيف الطبي الذكي -->
+<section id="smart-medical-archive" class="py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #020617 0%, #0a0f1a 50%, #020617 100%); min-height: 100vh;">
+  
+  <!-- Animated 3D Background Canvas -->
+  <canvas id="medical-archive-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+  
+  <!-- Floating DNA Helix Animation -->
+  <div class="absolute inset-0 pointer-events-none z-[1]">
+    <div class="dna-strand dna-strand-1"></div>
+    <div class="dna-strand dna-strand-2"></div>
+    <div class="dna-strand dna-strand-3"></div>
+  </div>
+  
+  <!-- Animated Medical Particles -->
+  <div class="medical-particles">
+    <div class="particle-medical p-1"></div>
+    <div class="particle-medical p-2"></div>
+    <div class="particle-medical p-3"></div>
+    <div class="particle-medical p-4"></div>
+    <div class="particle-medical p-5"></div>
+    <div class="particle-medical p-6"></div>
+    <div class="particle-medical p-7"></div>
+    <div class="particle-medical p-8"></div>
+  </div>
+
+  <!-- Glowing Orbs Background -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-20 left-[10%] w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    <div class="absolute bottom-20 right-[10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px] animate-pulse-slow" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/5 rounded-full blur-[180px]"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    
+    <!-- Section Header with 3D Effect -->
+    <div class="text-center mb-20 perspective-1000">
+      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 border border-cyan-500/20 mb-8 animate-float">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+        </span>
+        <span class="text-cyan-300 text-sm font-medium tracking-wider">
+          <iconify-icon icon="lucide:file-heart" class="inline ml-2"></iconify-icon>
+          الجيل القادم من الرعاية الصحية الرقمية
+        </span>
+      </div>
+      
+      <h2 class="text-4xl lg:text-6xl font-bold mb-6 transform-3d-header">
+        <span class="text-white"> لأرشيف الطبي الذكي: ثورة في إدارة المعرفة الصحية</span>
+        <span class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent block mt-2">
+          المُشرق
+        </span>
+      </h2>
+      
+      <p class="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
+        نحول كل تقرير طبي من مجرد مستند مخزن إلى <span class="text-emerald-400 font-medium">كائن حي</span> يفهم، يحلل، ويتحدث مع الأطباء والمسؤولين
+      </p>
+    </div>
+
+    <!-- Main 3D Interactive Area -->
+    <div class="grid lg:grid-cols-12 gap-8 mb-20">
+      
+      <!-- 3D Holographic Display - Left Side -->
+      <div class="lg:col-span-5 relative perspective-1000">
+        <div class="holographic-container relative h-[500px] rounded-3xl overflow-hidden group">
+          <!-- Holographic Frame -->
+          <div class="absolute inset-0 rounded-3xl border-2 border-cyan-500/30 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90 backdrop-blur-xl">
+            <!-- Scan Lines Effect -->
+            <div class="scan-lines"></div>
+            
+            <!-- Holographic Content -->
+            <div class="relative h-full flex flex-col items-center justify-center p-8">
+              
+              <!-- 3D Medical Document Icon -->
+              <div class="medical-document-3d mb-8">
+                <div class="document-layer layer-1">
+                  <iconify-icon icon="lucide:file-text" width="40" class="text-cyan-400"></iconify-icon>
+                </div>
+                <div class="document-layer layer-2">
+                  <iconify-icon icon="lucide:brain" width="32" class="text-emerald-400"></iconify-icon>
+                </div>
+                <div class="document-layer layer-3">
+                  <iconify-icon icon="lucide:sparkles" width="24" class="text-gold-400"></iconify-icon>
+                </div>
+              </div>
+              
+              <!-- Animated Stats Ring -->
+              <div class="stats-ring-container">
+                <svg class="stats-ring" width="200" height="200" viewBox="0 0 200 200">
+                  <defs>
+                    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="ring-bg" cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                  <circle class="ring-progress" cx="100" cy="100" r="80" fill="none" stroke="url(#ringGradient)" stroke-width="8" stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="502"/>
+                </svg>
+                <div class="stats-ring-content">
+                  <span class="text-4xl font-bold text-white counter" data-target="98.5">0</span>
+                  <span class="text-cyan-400 text-lg">%</span>
+                  <p class="text-slate-400 text-sm mt-1">دقة الاستخراج</p>
+                </div>
+              </div>
+              
+              <!-- Processing Animation -->
+              <div class="processing-wave mt-8">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <p class="text-cyan-300 text-sm mt-4 font-mono">جاري تحليل البيانات...</p>
+            </div>
+          </div>
+          
+          <!-- Corner Decorations -->
+          <div class="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/50 rounded-tl-3xl"></div>
+          <div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/50 rounded-tr-3xl"></div>
+          <div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/50 rounded-bl-3xl"></div>
+          <div class="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/50 rounded-br-3xl"></div>
+        </div>
+      </div>
+      
+      <!-- Features Cards - Right Side -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Feature 1: NLP Analysis -->
+        <div class="feature-card-3d group" data-feature="nlp">
+          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]">
+            <div class="flex items-start gap-5">
+              <div class="relative">
+                <div class="absolute -inset-2 bg-cyan-500/20 rounded-xl blur-lg group-hover:bg-cyan-500/30 transition"></div>
+                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                  <iconify-icon icon="lucide:scan-text" width="28" class="text-white"></iconify-icon>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold text-white group-hover:text-cyan-100 transition">تحليل النصوص الطبية (NLP)</h3>
+                  <span class="px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs">متقدم</span>
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                  نظام يقرأ ويهضم محتوى كل وثيقة طبية، ويحول النصوص غير المهيكلة إلى بيانات منظمة وقابلة للبحث والتحليل.
+                </p>
+                
+                <!-- NER Extraction Demo -->
+                <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+                  <p class="text-xs text-slate-500 mb-3 font-mono">مثال على الاستخراج التلقائي:</p>
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                      <span class="text-emerald-400">التشخيص:</span>
+                      <span class="text-white">ارتفاع ضغط الدم</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.2s;"></span>
+                      <span class="text-blue-400">الدواء:</span>
+                      <span class="text-white">Metformin 500mg</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style="animation-delay: 0.4s;"></span>
+                      <span class="text-purple-400">الجرعة:</span>
+                      <span class="text-white">مرتين يومياً</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Feature 2: Natural Language Search -->
+        <div class="feature-card-3d group" data-feature="search">
+          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-emerald-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(16,185,129,0.15)]">
+            <div class="flex items-start gap-5">
+              <div class="relative">
+                <div class="absolute -inset-2 bg-emerald-500/20 rounded-xl blur-lg group-hover:bg-emerald-500/30 transition"></div>
+                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                  <iconify-icon icon="lucide:message-square-text" width="28" class="text-white"></iconify-icon>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold text-white group-hover:text-emerald-100 transition">البحث باللغة الطبيعية</h3>
+                  <span class="px-2 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs">ذكي</span>
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                  تحدث مع الأرشيف كما تتحدث مع زميل خبير. اطرح أسئلة معقدة واحصل على إجابات فورية.
+                </p>
+                
+                <!-- Search Demo -->
+                <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+                  <div class="flex items-center gap-3 mb-3">
+                    <iconify-icon icon="lucide:search" class="text-emerald-400" width="18"></iconify-icon>
+                    <span class="text-sm text-slate-300">"أظهر لي حالات سرطان الثدي لدى النساء تحت 40..."</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-xs text-emerald-400">
+                    <iconify-icon icon="lucide:check-circle" width="14"></iconify-icon>
+                    <span>تم العثور على 247 حالة مطابقة</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Feature 3: Auto Extraction -->
+        <div class="feature-card-3d group" data-feature="extract">
+          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-gold-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(212,175,55,0.15)]">
+            <div class="flex items-start gap-5">
+              <div class="relative">
+                <div class="absolute -inset-2 bg-gold-500/20 rounded-xl blur-lg group-hover:bg-gold-500/30 transition"></div>
+                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-amber-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                  <iconify-icon icon="lucide:cpu" width="28" class="text-white"></iconify-icon>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold text-white group-hover:text-gold-100 transition">الاستخراج التلقائي</h3>
+                  <span class="px-2 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs">آلي</span>
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                  مساعد إداري افتراضي يقرأ كل تقرير ويملأ السجلات تلقائياً، موفراً ساعات لا تحصى من العمل اليدوي.
+                </p>
+                
+                <!-- Extraction Pipeline -->
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="px-3 py-1.5 rounded-lg bg-gold-500/10 border border-gold-500/20 text-gold-300 text-xs flex items-center gap-1">
+                    <iconify-icon icon="lucide:file-input" width="12"></iconify-icon>
+                    تقرير دم
+                  </span>
+                  <iconify-icon icon="lucide:arrow-left" width="16" class="text-slate-600"></iconify-icon>
+                  <span class="px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-center gap-1">
+                    <iconify-icon icon="lucide:brain" width="12"></iconify-icon>
+                    تحليل AI
+                  </span>
+                  <iconify-icon icon="lucide:arrow-left" width="16" class="text-slate-600"></iconify-icon>
+                  <span class="px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs flex items-center gap-1">
+                    <iconify-icon icon="lucide:database" width="12"></iconify-icon>
+                    تحديث EHR
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Interactive 3D Benefits Showcase -->
+    <div class="mb-20">
+      <h3 class="text-2xl font-bold text-white text-center mb-12">
+        <iconify-icon icon="lucide:award" class="text-gold-500 ml-2"></iconify-icon>
+        الفوائد في البيئة الصحية السعودية
+      </h3>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Benefit 1 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:merge" width="24" class="text-cyan-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">توحيد السجلات</h4>
+              <p class="text-slate-400 text-sm">تحويل آلاف السجلات غير الموحدة إلى قاعدة بيانات موحدة على مستوى المملكة</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benefit 2 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-emerald-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:microscope" width="24" class="text-emerald-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">تسريع البحث العلمي</h4>
+              <p class="text-slate-400 text-sm">تمكين الباحثين من إجراء دراسات وبائية واسعة النطاق بسهولة</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benefit 3 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-gold-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-[60px] group-hover:bg-gold-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:target" width="24" class="text-gold-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">دعم رؤية 2030</h4>
+              <p class="text-slate-400 text-sm">توفير البيانات الدقيقة لاتخاذ قرارات صحية استراتيجية وطنية</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benefit 4 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-purple-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:shield-check" width="24" class="text-purple-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">دقة لا مثيل لها</h4>
+              <p class="text-slate-400 text-sm">القضاء على الأخطاء اليدوية ومنع الأخطاء الطبية الخطيرة</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Chat Agent Preview -->
+    <div class="relative perspective-1000">
+      <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-emerald-500 to-teal-500 rounded-3xl blur-lg opacity-30 animate-gradient-x"></div>
+      
+      <div class="relative bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 rounded-3xl border border-white/10 overflow-hidden p-8 lg:p-12">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          
+          <!-- Left: Info -->
+          <div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
+              <iconify-icon icon="lucide:bot" class="text-emerald-400"></iconify-icon>
+              <span class="text-emerald-400 text-sm font-medium">وكيل ذكي مدعوم بـ Gemini AI</span>
+            </div>
+            
+            <h3 class="text-3xl lg:text-4xl font-bold text-white mb-6">
+              تحدث مع أرشيفك الطبي
+            </h3>
+            
+            <p class="text-slate-400 text-lg leading-relaxed mb-8">
+              وكيل ذكي يعمل على مدار الساعة، يجيب على استفساراتك، يستخرج الإحصائيات، ويساعدك في اتخاذ القرارات السريرية بناءً على ملايين السجلات.
+            </p>
+            
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center gap-3 text-slate-300">
+                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                  <iconify-icon icon="lucide:check" width="14" class="text-cyan-400"></iconify-icon>
+                </div>
+                <span>دعم كامل للغة العربية واللهجات المحلية</span>
+              </li>
+              <li class="flex items-center gap-3 text-slate-300">
+                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                  <iconify-icon icon="lucide:check" width="14" class="text-cyan-400"></iconify-icon>
+                </div>
+                <span>استجابة فورية على مدار الساعة</span>
+              </li>
+              <li class="flex items-center gap-3 text-slate-300">
+                <div class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                  <iconify-icon icon="lucide:check" width="14" class="text-cyan-400"></iconify-icon>
+                </div>
+                <span>تحليلات تنبؤية وتوصيات ذكية</span>
+              </li>
+            </ul>
+            
+            <a href="#contact" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-emerald-600 text-white rounded-xl font-semibold shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 transition-all duration-300 transform hover:-translate-y-1">
+              <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+              <span>جرب المحادثة الآن</span>
+              <iconify-icon icon="lucide:arrow-left" width="20"></iconify-icon>
+            </a>
+          </div>
+          
+          <!-- Right: Chat Demo -->
+          <div class="relative">
+            <div class="chat-demo-container bg-slate-900/80 rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+              <!-- Chat Header -->
+              <div class="p-4 border-b border-white/10 bg-gradient-to-r from-cyan-900/30 to-emerald-900/30 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center">
+                  <iconify-icon icon="lucide:bot" width="20" class="text-white"></iconify-icon>
+                </div>
+                <div>
+                  <h4 class="text-white font-medium text-sm">مساعد الأرشيف الذكي</h4>
+                  <div class="flex items-center gap-1 text-xs text-emerald-400">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    متصل الآن
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Chat Messages -->
+              <div class="p-4 space-y-4 h-[300px] overflow-y-auto">
+                <!-- User Message -->
+                <div class="flex justify-start">
+                  <div class="bg-slate-800 rounded-2xl rounded-tr-none px-4 py-3 max-w-[80%]">
+                    <p class="text-white text-sm">كم عدد حالات السكري في منطقة الرياض خلال 2024؟</p>
+                  </div>
+                </div>
+                
+                <!-- Bot Response -->
+                <div class="flex justify-end">
+                  <div class="bg-gradient-to-r from-cyan-600/20 to-emerald-600/20 border border-cyan-500/30 rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%]">
+                    <p class="text-slate-200 text-sm mb-2">بناءً على تحليل السجلات الطبية:</p>
+                    <ul class="text-sm text-slate-300 space-y-1">
+                      <li class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:users" width="14" class="text-cyan-400"></iconify-icon>
+                        إجمالي الحالات: <span class="text-white font-bold">45,230</span>
+                      </li>
+                      <li class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:trending-up" width="14" class="text-emerald-400"></iconify-icon>
+                        نسبة الزيادة: <span class="text-emerald-400 font-bold">+12%</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <!-- Typing Indicator -->
+                <div class="flex justify-end">
+                  <div class="bg-slate-800/50 rounded-2xl px-4 py-3">
+                    <div class="typing-indicator">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Chat Input -->
+              <div class="p-4 border-t border-white/10 bg-slate-900/50">
+                <div class="flex gap-2">
+                  <input type="text" placeholder="اكتب سؤالك..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition" disabled>
+                  <button class="p-3 bg-gradient-to-r from-cyan-600 to-emerald-600 rounded-xl text-white">
+                    <iconify-icon icon="lucide:send" width="18"></iconify-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Floating Elements -->
+            <div class="absolute -top-4 -right-4 w-20 h-20 bg-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
+            <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-emerald-500/20 rounded-full blur-xl animate-pulse" style="animation-delay: 0.5s;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Vision -->
+    <div class="mt-20 text-center">
+      <h3 class="text-2xl font-bold text-white mb-8">
+        <iconify-icon icon="lucide:rocket" class="text-gold-500 ml-2"></iconify-icon>
+        الرؤية المستقبلية
+      </h3>
+      
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Vision 1 -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 hover:border-indigo-500/40 transition">
+          <iconify-icon icon="lucide:line-chart" width="32" class="text-indigo-400 mb-4"></iconify-icon>
+          <h4 class="text-lg font-semibold text-white mb-2">التحليلات التنبؤية</h4>
+          <p class="text-slate-400 text-sm">التنبؤ بالأوبئة وتحديد المجموعات الأكثر عرضة للأمراض</p>
+        </div>
+        
+        <!-- Vision 2 -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-teal-900/20 border border-cyan-500/20 hover:border-cyan-500/40 transition">
+          <iconify-icon icon="lucide:stethoscope" width="32" class="text-cyan-400 mb-4"></iconify-icon>
+          <h4 class="text-lg font-semibold text-white mb-2">مساعد القرار السريري</h4>
+          <p class="text-slate-400 text-sm">عرض حالات مشابهة ونتائج علاجها لدعم الطبيب</p>
+        </div>
+        
+        <!-- Vision 3 -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-emerald-900/20 to-green-900/20 border border-emerald-500/20 hover:border-emerald-500/40 transition">
+          <iconify-icon icon="lucide:user-circle" width="32" class="text-emerald-400 mb-4"></iconify-icon>
+          <h4 class="text-lg font-semibold text-white mb-2">تمكين المريض</h4>
+          <p class="text-slate-400 text-sm">بوابة آمنة للمرضى لمتابعة تاريخهم الصحي</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ========================================
+   SMART MEDICAL ARCHIVE - 3D STYLES
+   ======================================== */
+
+/* Perspective Container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* 3D Header Transform */
+.transform-3d-header {
+  transform-style: preserve-3d;
+  animation: float3D 6s ease-in-out infinite;
+}
+
+@keyframes float3D {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-10px) rotateX(2deg); }
+}
+
+/* DNA Strand Animation */
+.dna-strand {
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(6, 182, 212, 0.3) 25%, 
+    rgba(16, 185, 129, 0.3) 50%, 
+    rgba(6, 182, 212, 0.3) 75%, 
+    transparent 100%
+  );
+  animation: dnaFloat 20s linear infinite;
+}
+
+.dna-strand-1 { left: 10%; animation-delay: 0s; }
+.dna-strand-2 { left: 50%; animation-delay: -7s; }
+.dna-strand-3 { left: 90%; animation-delay: -14s; }
+
+@keyframes dnaFloat {
+  0% { transform: translateY(-100%) rotate(0deg); }
+  100% { transform: translateY(100%) rotate(360deg); }
+}
+
+/* Medical Particles */
+.medical-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle-medical {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.8), transparent);
+  border-radius: 50%;
+  animation: particleFloat 15s infinite ease-in-out;
+}
+
+.particle-medical.p-1 { top: 10%; left: 20%; animation-delay: 0s; }
+.particle-medical.p-2 { top: 30%; left: 80%; animation-delay: -2s; }
+.particle-medical.p-3 { top: 50%; left: 10%; animation-delay: -4s; }
+.particle-medical.p-4 { top: 70%; left: 60%; animation-delay: -6s; }
+.particle-medical.p-5 { top: 20%; left: 40%; animation-delay: -8s; background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent); }
+.particle-medical.p-6 { top: 80%; left: 30%; animation-delay: -10s; background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent); }
+.particle-medical.p-7 { top: 40%; left: 70%; animation-delay: -12s; }
+.particle-medical.p-8 { top: 60%; left: 50%; animation-delay: -14s; background: radial-gradient(circle, rgba(212, 175, 55, 0.8), transparent); }
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(50px, -30px) scale(1.5);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-30px, 50px) scale(1);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translate(30px, 30px) scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+/* Holographic Container */
+.holographic-container {
+  transform-style: preserve-3d;
+  animation: holographicFloat 8s ease-in-out infinite;
+}
+
+@keyframes holographicFloat {
+  0%, 100% { transform: rotateY(-5deg) rotateX(5deg); }
+  50% { transform: rotateY(5deg) rotateX(-5deg); }
+}
+
+/* Scan Lines */
+.scan-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(6, 182, 212, 0.03) 2px,
+    rgba(6, 182, 212, 0.03) 4px
+  );
+  pointer-events: none;
+  animation: scanMove 10s linear infinite;
+}
+
+@keyframes scanMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* 3D Medical Document */
+.medical-document-3d {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  transform-style: preserve-3d;
+  animation: documentRotate 10s ease-in-out infinite;
+}
+
+.document-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.document-layer.layer-1 {
+  background: rgba(6, 182, 212, 0.2);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  transform: translate(-50%, -50%) translateZ(0px);
+}
+
+.document-layer.layer-2 {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  transform: translate(-50%, -50%) translateZ(20px);
+  animation: layerFloat 3s ease-in-out infinite;
+}
+
+.document-layer.layer-3 {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  transform: translate(-50%, -50%) translateZ(40px);
+  animation: layerFloat 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes documentRotate {
+  0%, 100% { transform: rotateY(0deg); }
+  50% { transform: rotateY(180deg); }
+}
+
+@keyframes layerFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateZ(20px) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateZ(30px) translateY(-10px); }
+}
+
+/* Stats Ring */
+.stats-ring-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.stats-ring {
+  transform: rotate(-90deg);
+}
+
+.ring-progress {
+  animation: ringFill 2s ease-out forwards;
+}
+
+@keyframes ringFill {
+  to { stroke-dashoffset: 75; }
+}
+
+.stats-ring-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Processing Wave */
+.processing-wave {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.processing-wave span {
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(to top, #06b6d4, #10b981);
+  border-radius: 2px;
+  animation: waveAnim 1s ease-in-out infinite;
+}
+
+.processing-wave span:nth-child(2) { animation-delay: 0.1s; }
+.processing-wave span:nth-child(3) { animation-delay: 0.2s; }
+.processing-wave span:nth-child(4) { animation-delay: 0.3s; }
+.processing-wave span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveAnim {
+  0%, 100% { height: 20px; }
+  50% { height: 40px; }
+}
+
+/* Feature Card 3D */
+.feature-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.feature-card-3d:hover {
+  transform: translateZ(20px);
+}
+
+/* Benefit Card 3D */
+.benefit-card-3d {
+  transition: all 0.5s;
+}
+
+.benefit-card-3d:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+}
+
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  background: #06b6d4;
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+/* Float Animation */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Pulse Slow */
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Gradient Animation */
+.animate-gradient-x {
+  animation: gradientX 6s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradientX {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Counter Animation */
+.counter {
+  transition: all 0.5s ease-out;
+}
+</style>
+
+<script>
+// ========================================
+// SMART MEDICAL ARCHIVE - 3D ANIMATIONS
+// ========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Initialize 3D Canvas Background
+  initMedicalArchiveCanvas();
+  
+  // Initialize Counters
+  initCounters();
+  
+  // Initialize Intersection Observer for animations
+  initScrollAnimations();
+  
+});
+
+// 3D Canvas Background
+function initMedicalArchiveCanvas() {
+  const canvas = document.getElementById('medical-archive-canvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  
+  resize();
+  window.addEventListener('resize', resize);
+  
+  // Particles
+  const particles = [];
+  const particleCount = 50;
+  
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      z: Math.random() * 1000,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      vz: (Math.random() - 0.5) * 2,
+      radius: Math.random() * 2 + 1,
+      color: Math.random() > 0.5 ? '#06b6d4' : '#10b981'
+    });
+  }
+  
+  // Connection lines
+  const connections = [];
+  
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update and draw particles
+    particles.forEach((p, i) => {
+      // Update position
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+      
+      // Boundary check
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      if (p.z < 0 || p.z > 1000) p.vz *= -1;
+      
+      // Calculate size based on z
+      const scale = (1000 - p.z) / 1000;
+      const size = p.radius * scale;
+      const alpha = scale * 0.5;
+      
+      // Draw particle
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+      ctx.fill();
+      
+      // Draw connections
+      particles.forEach((p2, j) => {
+        if (i >= j) return;
+        
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 150) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(6, 182, 212, ${(1 - dist / 150) * 0.2})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      });
+    });
+    
+    // Draw grid
+    ctx.strokeStyle = 'rgba(6, 182, 212, 0.05)';
+    ctx.lineWidth = 1;
+    
+    const gridSize = 50;
+    for (let x = 0; x < canvas.width; x += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
+      ctx.stroke();
+    }
+    
+    for (let y = 0; y < canvas.height; y += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
+      ctx.stroke();
+    }
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+}
+
+// Counter Animation
+function initCounters() {
+  const counters = document.querySelectorAll('.counter');
+  
+  counters.forEach(counter => {
+    const target = parseFloat(counter.getAttribute('data-target'));
+    const duration = 2000;
+    const start = 0;
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const current = start + (target - start) * easeOutQuart;
+      
+      counter.textContent = current.toFixed(1);
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      }
+    }
+    
+    // Start when visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(updateCounter);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    observer.observe(counter);
+  });
+}
+
+// Scroll Animations
+function initScrollAnimations() {
+  const elements = document.querySelectorAll('.feature-card-3d, .benefit-card-3d');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        entry.target.style.transitionDelay = `${index * 0.1}s`;
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  elements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.6s ease-out';
+    observer.observe(el);
+  });
+}
+</script>
+
+
   <!-- 3. SERVICES (BENTO GRID) -->
   <section class="py-16 md:py-24 px-6 bg-slate-900/50">
     <div class="max-w-7xl mx-auto">
