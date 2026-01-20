@@ -1,0 +1,589 @@
+<!-- START OF FILE patient-records.html -->
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright AI | سجل المريض الإلكتروني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Background Effects */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a0b2e 25%, #16003b 50%, #0a0015 75%, #000000 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            z-index: 0;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPulse 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Utility Classes */
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .neon-border {
+            position: relative;
+            border: 1px solid transparent;
+        }
+        
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: gradientRotate 4s linear infinite;
+        }
+
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Timeline Styles */
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 23px;
+            width: 2px;
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.5), rgba(59, 130, 246, 0.1));
+        }
+
+        .timeline-node {
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-node::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: inherit;
+            opacity: 0.4;
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Chart Animations */
+        .chart-bar {
+            animation: growBar 1.5s ease-out forwards;
+        }
+        
+        @keyframes growBar {
+            from { height: 0; }
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="antialiased h-screen overflow-hidden flex">
+    <div class="animated-bg"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Sidebar (Consistent) -->
+    <aside class="w-72 glass-strong border-l border-white/10 flex flex-col justify-between hidden md:flex z-20">
+        <div>
+            <div class="h-20 flex items-center px-6 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center relative overflow-hidden"
+                         style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                        <span class="font-bold text-white text-lg relative z-10">AI</span>
+                    </div>
+                    <div>
+                        <span class="font-bold text-white tracking-tight text-xl gradient-text">Bright AI</span>
+                        <div class="text-[10px] text-white/40">Medical Archive</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="p-4 space-y-2 mt-4">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                    <iconify-icon icon="solar:widget-linear" width="22"></iconify-icon>
+                    <span>لوحة التحكم</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                    <iconify-icon icon="solar:magnifer-linear" width="22"></iconify-icon>
+                    <span>البحث المتقدم (NLP)</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                    <iconify-icon icon="solar:document-add-linear" width="22"></iconify-icon>
+                    <span>الإدخال والمعالجة</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white rounded-xl glass-hover glow" style="background: rgba(139, 92, 246, 0.1);">
+                    <iconify-icon icon="solar:user-id-linear" width="22" class="text-purple-400"></iconify-icon>
+                    <span>سجلات المرضى (EHR)</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                    <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon>
+                    <span>التحليلات والرؤى</span>
+                </a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-white/10">
+            <div class="glass rounded-xl p-4 neon-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold"
+                         style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
+                        د.م
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-medium text-white">د. محمد القحطاني</span>
+                        <span class="text-xs text-white/40">Admin Access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full relative z-10 overflow-hidden">
+        <!-- Header -->
+        <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-8 shrink-0">
+            <div class="flex items-center gap-4">
+                <span class="text-white/30">/</span>
+                <h1 class="text-base font-medium text-white">سجل المريض الإلكتروني</h1>
+                <span class="text-white/30">/</span>
+                <span class="text-sm text-purple-400 font-mono">MRN-2024-8892</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button class="px-4 py-2 rounded-lg glass border border-white/10 text-xs font-medium text-white/70 hover:text-white flex items-center gap-2">
+                    <iconify-icon icon="solar:printer-linear"></iconify-icon>
+                    طباعة التقرير
+                </button>
+                <button class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-xs font-medium text-white flex items-center gap-2 shadow-lg shadow-purple-900/50">
+                    <iconify-icon icon="solar:pen-new-square-linear"></iconify-icon>
+                    تحديث السجل
+                </button>
+            </div>
+        </header>
+
+        <!-- Scrollable Area -->
+        <div class="flex-1 overflow-y-auto p-6 scroll-smooth">
+            
+            <!-- Patient Card -->
+            <section class="glass rounded-3xl p-6 mb-6 border border-white/10 relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-transparent"></div>
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
+
+                <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                    <!-- Avatar & Basic Info -->
+                    <div class="flex items-start gap-6">
+                        <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-bold text-white shadow-2xl relative"
+                             style="background: linear-gradient(135deg, #475569, #1e293b);">
+                            <img src="https://api.dicebear.com/7.x/micah/svg?seed=Sara" alt="Patient" class="w-full h-full rounded-2xl opacity-90">
+                            <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-emerald-500 rounded-full border-4 border-[#0a0a0a] flex items-center justify-center">
+                                <iconify-icon icon="solar:check-read-linear" class="text-white text-sm"></iconify-icon>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white mb-1">سارة عبد العزيز الأحمد</h2>
+                            <div class="flex items-center gap-4 text-sm text-white/50 mb-3">
+                                <span class="flex items-center gap-1"><iconify-icon icon="solar:calendar-linear"></iconify-icon> 42 سنة</span>
+                                <span class="flex items-center gap-1"><iconify-icon icon="solar:user-id-linear"></iconify-icon> أنثى</span>
+                                <span class="flex items-center gap-1"><iconify-icon icon="solar:dropper-linear"></iconify-icon> O+</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-medium flex items-center gap-1">
+                                    <iconify-icon icon="solar:danger-triangle-linear"></iconify-icon>
+                                    حساسية: البنسلين
+                                </span>
+                                <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-medium">
+                                    سكري (النوع 2)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vitals Grid -->
+                    <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4 border-r border-white/10 pr-0 md:pr-8 mr-0 md:mr-8">
+                        <div class="glass-strong rounded-xl p-3">
+                            <div class="text-xs text-white/40 mb-1">ضغط الدم</div>
+                            <div class="text-xl font-bold text-white flex items-end gap-1">
+                                120/80
+                                <span class="text-[10px] text-emerald-400 mb-1">mmHg</span>
+                            </div>
+                            <div class="w-full h-1 bg-white/10 rounded-full mt-2 overflow-hidden">
+                                <div class="h-full bg-emerald-500 w-3/4"></div>
+                            </div>
+                        </div>
+                        <div class="glass-strong rounded-xl p-3">
+                            <div class="text-xs text-white/40 mb-1">نبض القلب</div>
+                            <div class="text-xl font-bold text-white flex items-end gap-1">
+                                78
+                                <span class="text-[10px] text-white/40 mb-1">bpm</span>
+                            </div>
+                            <!-- Mock Sparkline -->
+                            <div class="flex items-end gap-0.5 h-3 mt-2 opacity-50">
+                                <div class="w-1 bg-purple-500 h-full"></div>
+                                <div class="w-1 bg-purple-500 h-2/3"></div>
+                                <div class="w-1 bg-purple-500 h-full"></div>
+                                <div class="w-1 bg-purple-500 h-1/2"></div>
+                                <div class="w-1 bg-purple-500 h-3/4"></div>
+                            </div>
+                        </div>
+                        <div class="glass-strong rounded-xl p-3">
+                            <div class="text-xs text-white/40 mb-1">سكر الدم (HBA1C)</div>
+                            <div class="text-xl font-bold text-white flex items-end gap-1">
+                                6.8
+                                <span class="text-[10px] text-yellow-400 mb-1">%</span>
+                            </div>
+                            <div class="text-[10px] text-yellow-400 mt-1"> مرتفع قليلاً</div>
+                        </div>
+                        <div class="glass-strong rounded-xl p-3">
+                            <div class="text-xs text-white/40 mb-1">الوزن</div>
+                            <div class="text-xl font-bold text-white flex items-end gap-1">
+                                72
+                                <span class="text-[10px] text-white/40 mb-1">kg</span>
+                            </div>
+                            <div class="text-[10px] text-emerald-400 mt-1"> -1.2kg (شهر)</div>
+                        </div>
+                    </div>
+
+                    <!-- AI Risk Score -->
+                    <div class="w-full md:w-48 flex flex-col justify-center items-center relative">
+                        <svg class="w-24 h-24 transform -rotate-90">
+                            <circle cx="48" cy="48" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"></circle>
+                            <circle cx="48" cy="48" r="40" stroke="#8b5cf6" stroke-width="8" fill="none" stroke-dasharray="251.2" stroke-dashoffset="60" stroke-linecap="round"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-2xl font-bold text-white">76</span>
+                            <span class="text-[10px] text-purple-400">Health Score</span>
+                        </div>
+                        <button class="mt-2 text-xs text-white/60 hover:text-white flex items-center gap-1">
+                            تفاصيل AI
+                            <iconify-icon icon="solar:alt-arrow-down-linear"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insight Banner -->
+            <div class="mb-6 glass-strong rounded-xl p-4 border border-purple-500/30 flex items-start gap-4 neon-border relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-purple-600/20 blur-2xl rounded-full"></div>
+                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center flex-shrink-0 text-purple-400">
+                    <iconify-icon icon="solar:magic-stick-3-bold-duotone" width="24"></iconify-icon>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white mb-1">تحليل الذكاء الاصطناعي (Bright AI Insights)</h3>
+                    <p class="text-xs text-white/70 leading-relaxed">
+                        بناءً على نتائج المختبر الأخيرة وتاريخ الزيارات، لوحظ انتظام في مستويات الضغط، لكن هناك ارتفاع طفيف في سكر الدم التراكمي. يُوصى بمراجعة جرعة <span class="text-white font-medium">Metformin</span> وإجراء فحص قاع العين الدوري خلال الشهر القادم.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Main Layout Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- RIGHT COLUMN: Medical Timeline (1/3) -->
+                <div class="lg:col-span-4 space-y-4 order-last lg:order-first">
+                    <div class="glass rounded-2xl p-6 h-full min-h-[600px] border border-white/10 relative">
+                        <h3 class="text-base font-semibold text-white mb-6 flex items-center gap-2">
+                            <iconify-icon icon="solar:history-linear" class="text-blue-400"></iconify-icon>
+                            المخطط الزمني الطبي
+                        </h3>
+                        
+                        <div class="relative pr-6">
+                            <!-- Vertical Line -->
+                            <div class="timeline-line"></div>
+
+                            <!-- Event 1 -->
+                            <div class="relative mb-8 group cursor-pointer">
+                                <div class="timeline-node w-4 h-4 rounded-full bg-blue-500 absolute top-1 right-[-29px] border-2 border-[#0a0a0a]"></div>
+                                <div class="glass-hover p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+                                    <div class="text-xs text-blue-400 font-mono mb-1">12 يناير 2024</div>
+                                    <h4 class="text-sm font-bold text-white mb-1">زيارة عيادة الباطنة</h4>
+                                    <p class="text-xs text-white/50">د. خالد العتيبي - متابعة دورية</p>
+                                    <div class="mt-2 flex gap-2">
+                                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-white/60">وصفة طبية</span>
+                                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-white/60">قياس ضغط</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Event 2 (Important) -->
+                            <div class="relative mb-8 group cursor-pointer">
+                                <div class="timeline-node w-4 h-4 rounded-full bg-purple-500 absolute top-1 right-[-29px] border-2 border-[#0a0a0a]"></div>
+                                <div class="glass-hover p-4 rounded-xl border border-purple-500/30 bg-purple-500/5 neon-border">
+                                    <div class="text-xs text-purple-400 font-mono mb-1">05 نوفمبر 2023</div>
+                                    <h4 class="text-sm font-bold text-white mb-1">نتائج مختبر شاملة</h4>
+                                    <p class="text-xs text-white/50">مختبرات البرج</p>
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <iconify-icon icon="solar:document-text-linear" class="text-white/40"></iconify-icon>
+                                        <span class="text-xs text-white/70">تقرير PDF متوفر</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Event 3 (Alert) -->
+                            <div class="relative mb-8 group cursor-pointer">
+                                <div class="timeline-node w-4 h-4 rounded-full bg-red-500 absolute top-1 right-[-29px] border-2 border-[#0a0a0a]"></div>
+                                <div class="glass-hover p-4 rounded-xl border border-red-500/20 bg-red-500/5">
+                                    <div class="text-xs text-red-400 font-mono mb-1">18 أغسطس 2023</div>
+                                    <h4 class="text-sm font-bold text-white mb-1">طوارئ - ضيق تنفس</h4>
+                                    <p class="text-xs text-white/50">مستشفى الملك فيصل التخصصي</p>
+                                    <div class="mt-2">
+                                        <span class="text-[10px] px-2 py-1 rounded bg-red-500/20 text-red-400">حالة حرجة</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Event 4 -->
+                            <div class="relative mb-8 group cursor-pointer opacity-60">
+                                <div class="timeline-node w-4 h-4 rounded-full bg-gray-500 absolute top-1 right-[-29px] border-2 border-[#0a0a0a]"></div>
+                                <div class="glass-hover p-4 rounded-xl border border-white/5 bg-white/[0.02]">
+                                    <div class="text-xs text-white/40 font-mono mb-1">02 فبراير 2023</div>
+                                    <h4 class="text-sm font-medium text-white mb-1">أشعة سينية (صدر)</h4>
+                                    <p class="text-xs text-white/50">قسم الأشعة</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEFT COLUMN: Clinical Details (2/3) -->
+                <div class="lg:col-span-8 space-y-6">
+                    
+                    <!-- Prescriptions Section -->
+                    <div class="glass rounded-2xl p-6 border border-white/10">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                <iconify-icon icon="solar:pill-linear" class="text-emerald-400"></iconify-icon>
+                                الأدوية النشطة
+                            </h3>
+                            <button class="text-xs text-purple-400 hover:text-white transition-colors">عرض السجل الكامل</button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Med Card 1 -->
+                            <div class="glass-strong rounded-xl p-4 border border-l-4 border-l-emerald-500 border-white/5 flex justify-between items-center group hover:bg-white/5 transition-all">
+                                <div>
+                                    <div class="font-bold text-white mb-1">Metformin</div>
+                                    <div class="text-xs text-white/50 mb-2">500mg • قرص واحد • مرتين يومياً</div>
+                                    <div class="text-[10px] text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded inline-block">نشط</div>
+                                </div>
+                                <iconify-icon icon="solar:medical-kit-linear" class="text-white/20 text-3xl group-hover:text-emerald-400 transition-colors"></iconify-icon>
+                            </div>
+
+                            <!-- Med Card 2 -->
+                            <div class="glass-strong rounded-xl p-4 border border-l-4 border-l-emerald-500 border-white/5 flex justify-between items-center group hover:bg-white/5 transition-all">
+                                <div>
+                                    <div class="font-bold text-white mb-1">Lisinopril</div>
+                                    <div class="text-xs text-white/50 mb-2">10mg • قرص واحد • مرة يومياً</div>
+                                    <div class="text-[10px] text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded inline-block">نشط</div>
+                                </div>
+                                <iconify-icon icon="solar:heart-pulse-linear" class="text-white/20 text-3xl group-hover:text-emerald-400 transition-colors"></iconify-icon>
+                            </div>
+                            
+                            <!-- Med Card 3 -->
+                            <div class="glass-strong rounded-xl p-4 border border-l-4 border-l-gray-500 border-white/5 flex justify-between items-center opacity-60">
+                                <div>
+                                    <div class="font-bold text-white mb-1">Augmentin</div>
+                                    <div class="text-xs text-white/50 mb-2">625mg • مضاد حيوي • مكتمل</div>
+                                    <div class="text-[10px] text-gray-400 bg-gray-400/10 px-2 py-0.5 rounded inline-block">منتهي</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Labs & Radiology -->
+                    <div class="glass rounded-2xl p-6 border border-white/10">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                <iconify-icon icon="solar:test-tube-linear" class="text-purple-400"></iconify-icon>
+                                آخر النتائج المخبرية والأشعة
+                            </h3>
+                            <div class="flex gap-2">
+                                <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white"><iconify-icon icon="solar:list-linear"></iconify-icon></button>
+                                <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/40"><iconify-icon icon="solar:graph-linear"></iconify-icon></button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right">
+                                <thead class="text-white/40 text-xs uppercase bg-white/5">
+                                    <tr>
+                                        <th class="px-4 py-3 rounded-r-lg">الفحص</th>
+                                        <th class="px-4 py-3">النتيجة</th>
+                                        <th class="px-4 py-3">النطاق الطبيعي</th>
+                                        <th class="px-4 py-3">التاريخ</th>
+                                        <th class="px-4 py-3 rounded-l-lg">الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm divide-y divide-white/5">
+                                    <tr class="hover:bg-white/5 transition-colors">
+                                        <td class="px-4 py-4 font-medium text-white">Hemoglobin (Hb)</td>
+                                        <td class="px-4 py-4 text-white">13.2 g/dL</td>
+                                        <td class="px-4 py-4 text-white/50">12.0 - 15.5</td>
+                                        <td class="px-4 py-4 text-white/50 font-mono">12/01/24</td>
+                                        <td class="px-4 py-4"><span class="w-2 h-2 rounded-full bg-emerald-500 block"></span></td>
+                                    </tr>
+                                    <tr class="hover:bg-white/5 transition-colors bg-red-500/5">
+                                        <td class="px-4 py-4 font-medium text-white">Glucose (Fasting)</td>
+                                        <td class="px-4 py-4 text-red-400 font-bold">145 mg/dL</td>
+                                        <td class="px-4 py-4 text-white/50">70 - 99</td>
+                                        <td class="px-4 py-4 text-white/50 font-mono">12/01/24</td>
+                                        <td class="px-4 py-4 flex items-center gap-2">
+                                            <div class="pulse-dot"></div>
+                                            <span class="text-xs text-red-400">مرتفع</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-white/5 transition-colors">
+                                        <td class="px-4 py-4 font-medium text-white">Cholesterol (Total)</td>
+                                        <td class="px-4 py-4 text-white">180 mg/dL</td>
+                                        <td class="px-4 py-4 text-white/50">< 200</td>
+                                        <td class="px-4 py-4 text-white/50 font-mono">05/11/23</td>
+                                        <td class="px-4 py-4"><span class="w-2 h-2 rounded-full bg-emerald-500 block"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Radiology Preview -->
+                        <div class="mt-6 pt-6 border-t border-white/10">
+                            <h4 class="text-sm font-medium text-white mb-3">الأشعة والتصوير</h4>
+                            <div class="flex gap-4 overflow-x-auto pb-2">
+                                <div class="w-40 h-32 rounded-xl bg-black border border-white/20 relative group overflow-hidden cursor-pointer flex-shrink-0">
+                                    <img src="https://prod-images-static.radiopaedia.org/images/1569619/0b6e9f6517228811d7023363065670_jumbo.jpeg" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity">
+                                    <div class="absolute bottom-0 w-full p-2 bg-gradient-to-t from-black to-transparent">
+                                        <div class="text-[10px] text-white font-mono">CXR - PA View</div>
+                                    </div>
+                                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <iconify-icon icon="solar:eye-linear" class="text-white text-3xl drop-shadow-lg"></iconify-icon>
+                                    </div>
+                                </div>
+                                <div class="w-40 h-32 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                                    <div class="text-center">
+                                        <iconify-icon icon="solar:bone-linear" class="text-white/30 text-2xl mb-1"></iconify-icon>
+                                        <div class="text-[10px] text-white/40">لا توجد صور أخرى</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

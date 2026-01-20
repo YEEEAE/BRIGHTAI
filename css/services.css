@@ -1,0 +1,303 @@
+/* Bright AI Services Expansion - Design System */
+
+:root {
+    /* Primary Colors */
+    --color-indigo-400: #818CF8;
+    --color-indigo-500: #6366F1;
+    --color-indigo-600: #4F46E5;
+
+    /* Secondary Colors */
+    --color-purple-400: #C084FC;
+    --color-purple-500: #A855F7;
+    --color-purple-600: #9333EA;
+
+    /* Accent Colors */
+    --color-gold-400: #FCD34D;
+    --color-gold-500: #D4AF37;
+    --color-gold-600: #B8941E;
+
+    /* Healthcare Colors */
+    --color-teal-400: #2DD4BF;
+    --color-teal-500: #14B8A6;
+    --color-blue-500: #3B82F6;
+    --color-green-500: #22C55E;
+
+    /* Background Colors */
+    --color-navy-900: #020617;
+    --color-navy-800: #0F172A;
+    --color-slate-800: #1E293B;
+    --color-slate-700: #334155;
+
+    /* Text Colors */
+    --color-white: #FFFFFF;
+    --color-slate-300: #CBD5E1;
+    --color-slate-400: #94A3B8;
+    --color-slate-500: #64748B;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-indigo-500), var(--color-purple-500));
+    --gradient-gold: linear-gradient(135deg, var(--color-gold-500), var(--color-gold-400));
+    --gradient-healthcare: linear-gradient(135deg, var(--color-teal-500), var(--color-blue-500));
+
+    /* Typography */
+    --font-arabic: 'IBM Plex Sans Arabic', sans-serif;
+    --font-code: 'Fira Code', monospace;
+
+    /* Spacing */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-12: 3rem;
+    --spacing-16: 4rem;
+    --spacing-24: 6rem;
+
+    --container-max: 1280px;
+    --container-padding: 1.5rem;
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 300ms ease;
+    --transition-slow: 500ms ease;
+
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Core Components */
+
+/* Glass Card */
+.glass-card {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    transition: all var(--transition-base);
+}
+
+.glass-card:hover {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Gradient Text */
+.text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+.text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Buttons */
+.btn-primary {
+    padding: 0.75rem 2rem;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+}
+
+/* Base Layout */
+body {
+    font-family: var(--font-arabic);
+    background-color: var(--color-navy-900);
+    color: var(--color-white);
+    direction: rtl;
+}
+
+/* Services Specific Styles */
+
+/* Recruitment Hero */
+.text-stroke {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+    color: transparent;
+}
+
+/* Comparison Slider */
+.comparison-slider {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: var(--color-slate-800);
+}
+
+.before-side,
+.after-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.before-side {
+    background: var(--color-slate-800);
+    color: var(--color-slate-400);
+}
+
+.after-side {
+    background: var(--gradient-primary);
+    clip-path: inset(0 50% 0 0);
+    z-index: 2;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background: var(--color-white);
+    cursor: ew-resize;
+    z-index: 10;
+    transform: translateX(-50%);
+}
+
+.slider-handle::after {
+    content: '< >';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-white);
+    color: var(--color-indigo-600);
+    padding: 0.5rem;
+    border-radius: 50%;
+    font-weight: bold;
+    white-space: nowrap;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Bento Grid */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    grid-auto-rows: 250px;
+}
+
+.bento-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.bento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.bento-card.large {
+    grid-row: span 2;
+}
+
+.bento-card.wide {
+    grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+
+    .bento-card.large,
+    .bento-card.wide {
+        grid-row: span 1;
+        grid-column: span 1;
+    }
+}
+
+/* Timeline/Flowchart */
+.flow-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+    transform: translateY(-50%);
+}
+
+.flow-step {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.flow-step:hover,
+.flow-step.active {
+    transform: scale(1.1);
+}
+
+/* Feature Icons */
+.feature-icon-wrapper {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    display: inline-flex;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Pricing */
+.pricing-card {
+    transition: all 0.3s ease;
+}
+
+.pricing-card.popular {
+    border-color: var(--color-indigo-500);
+    background: rgba(15, 23, 42, 0.8);
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .pricing-card.popular {
+        transform: scale(1);
+    }
+}

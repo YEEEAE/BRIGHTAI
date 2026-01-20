@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright AI | الإدخال والمعالجة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a0b2e 25%, #16003b 50%, #0a0015 75%, #000000 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            z-index: 0;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 25s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.6), transparent);
+            top: -200px;
+            right: -200px;
+        }
+        
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.5), transparent);
+            bottom: -300px;
+            left: -300px;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-50px, 50px) scale(0.9); }
+            75% { transform: translate(80px, 80px) scale(1.05); }
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPulse 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        
+        .glass-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .glow {
+            position: relative;
+        }
+        
+        .glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            opacity: 0;
+            filter: blur(20px);
+            transition: opacity 0.5s;
+            z-index: -1;
+            animation: gradientRotate 3s linear infinite;
+        }
+        
+        .glow:hover::before {
+            opacity: 0.8;
+        }
+        
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
+        }
+        
+        .neon-border {
+            position: relative;
+            border: 1px solid transparent;
+        }
+        
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: gradientRotate 4s linear infinite;
+        }
+        
+        /* Drag & Drop Zone */
+        .drop-zone {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .drop-zone.drag-over {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+            transform: scale(1.02);
+        }
+        
+        .drop-zone:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Upload Animation */
+        .upload-icon {
+            animation: uploadBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes uploadBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            transition: width 0.5s ease;
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        /* Processing Stages */
+        .stage {
+            transition: all 0.4s ease;
+        }
+        
+        .stage.active {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .stage.complete {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+        
+        .stage-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stage.active .stage-dot {
+            background: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .stage.complete .stage-dot {
+            background: #22c55e;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* OCR Preview */
+        .ocr-text {
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+        
+        .ocr-highlight {
+            background: rgba(139, 92, 246, 0.2);
+            border-bottom: 2px solid #8b5cf6;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* File Card */
+        .file-card {
+            transition: all 0.3s ease;
+        }
+        
+        .file-card:hover {
+            transform: translateX(-4px);
+        }
+        
+        /* Spinner */
+        .spinner {
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Scan Animation */
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(400px); }
+        }
+        
+        /* Success Checkmark */
+        .checkmark {
+            animation: checkmarkPop 0.5s ease;
+        }
+        
+        @keyframes checkmarkPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="animated-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="flex h-screen overflow-hidden relative z-10">
+        <!-- Sidebar -->
+        <aside class="w-72 glass-strong border-l border-white/10 flex flex-col justify-between hidden md:flex">
+            <div>
+                <div class="h-20 flex items-center px-6 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl glow flex items-center justify-center"
+                             style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                            <span class="font-bold text-white text-lg">AI</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-white tracking-tight text-xl gradient-text">Bright AI</span>
+                            <div class="text-[10px] text-white/40">Medical Archive</div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="p-4 space-y-2 mt-4">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:widget-linear" width="22"></iconify-icon>
+                        <span>لوحة التحكم</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:magnifer-linear" width="22"></iconify-icon>
+                        <span>البحث المتقدم (NLP)</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white rounded-xl glass-hover glow">
+                        <iconify-icon icon="solar:document-add-linear" width="22"></iconify-icon>
+                        <span>الإدخال والمعالجة</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:user-id-linear" width="22"></iconify-icon>
+                        <span>سجلات المرضى (EHR)</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon>
+                        <span>التحليلات والرؤى</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="p-4 border-t border-white/10">
+                <div class="glass rounded-xl p-4 neon-border">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shimmer"
+                             style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
+                            د.م
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium text-white">د. محمد القحطاني</span>
+                            <span class="text-xs text-white/40">Admin Access</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-hidden">
+            <!-- Header -->
+            <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-8">
+                <div class="flex items-center gap-4">
+                    <span class="text-white/30">/</span>
+                    <h1 class="text-base font-medium text-white">الإدخال والمعالجة الذكية</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-4 py-2 glass rounded-full border border-emerald-500/30">
+                        <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span class="text-xs font-medium text-emerald-400">OCR Engine Ready</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Upload Section -->
+                    <section class="mb-8">
+                        <div class="drop-zone glass-strong rounded-3xl p-12 border-2 border-dashed border-white/20 text-center neon-border" id="dropZone">
+                            <div class="upload-icon w-24 h-24 mx-auto mb-6 rounded-2xl flex items-center justify-center shimmer"
+                                 style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));">
+                                <iconify-icon icon="solar:cloud-upload-linear" width="48" class="text-purple-400"></iconify-icon>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3 gradient-text">اسحب الملفات هنا</h3>
+                            <p class="text-white/50 text-sm mb-6 max-w-md mx-auto">
+                                يدعم PDF, DICOM, JPG, PNG, DOCX | الحد الأقصى: 50MB لكل ملف
+                            </p>
+                            <div class="flex items-center justify-center gap-4">
+                                <button class="px-8 py-4 rounded-xl font-medium glow shimmer" 
+                                        style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);"
+                                        onclick="document.getElementById('fileInput').click()">
+                                    <iconify-icon icon="solar:folder-linear" class="inline-block ml-2"></iconify-icon>
+                                    استعراض الملفات
+                                </button>
+                                <button class="px-8 py-4 rounded-xl font-medium glass-hover border border-white/10">
+                                    <iconify-icon icon="solar:camera-linear" class="inline-block ml-2"></iconify-icon>
+                                    مسح ضوئي
+                                </button>
+                            </div>
+                            <input type="file" id="fileInput" class="hidden" multiple accept=".pdf,.jpg,.png,.dcm,.docx">
+                        </div>
+
+                        <!-- Supported Formats -->
+                        <div class="mt-6 flex items-center justify-center gap-4 flex-wrap">
+                            <div class="flex items-center gap-2 glass rounded-lg px-4 py-2 border border-white/10">
+                                <iconify-icon icon="solar:document-linear" class="text-red-400"></iconify-icon>
+                                <span class="text-xs text-white/60">PDF Documents</span>
+                            </div>
+                            <div class="flex items-center gap-2 glass rounded-lg px-4 py-2 border border-white/10">
+                                <iconify-icon icon="solar:gallery-linear" class="text-blue-400"></iconify-icon>
+                                <span class="text-xs text-white/60">Medical Images</span>
+                            </div>
+                            <div class="flex items-center gap-2 glass rounded-lg px-4 py-2 border border-white/10">
+                                <iconify-icon icon="solar:soundwave-linear" class="text-purple-400"></iconify-icon>
+                                <span class="text-xs text-white/60">DICOM Files</span>
+                            </div>
+                            <div class="flex items-center gap-2 glass rounded-lg px-4 py-2 border border-white/10">
+                                <iconify-icon icon="solar:pen-new-square-linear" class="text-emerald-400"></iconify-icon>
+                                <span class="text-xs text-white/60">Handwritten Notes</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Processing Queue -->
+                    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Left: Files Queue -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                                    <iconify-icon icon="solar:layers-linear" class="text-purple-400"></iconify-icon>
+                                    قائمة المعالجة النشطة
+                                </h2>
+                                <span class="text-xs text-white/40">3 ملفات قيد المعالجة</span>
+                            </div>
+
+                            <!-- File Card 1 - Processing -->
+                            <div class="file-card glass rounded-2xl p-6 border border-white/10 neon-border">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-start gap-4 flex-1">
+                                        <div class="w-14 h-14 rounded-xl flex items-center justify-center shimmer"
+                                             style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));">
+                                            <iconify-icon icon="solar:file-text-linear" width="28" class="text-red-400"></iconify-icon>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-white mb-1">تقرير_أشعة_صدر_2024.pdf</h4>
+                                            <div class="flex items-center gap-3 text-xs text-white/40">
+                                                <span>2.4 MB</span>
+                                                <span>•</span>
+                                                <span>مستشفى الملك فيصل</span>
+                                                <span>•</span>
+                                                <span class="font-mono">DOC-8924</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2"
+                                              style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6;">
+                                            <div class="spinner w-3 h-3"></div>
+                                            قيد المعالجة
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar -->
+                                <div class="mb-4">
+                                    <div class="flex items-center justify-between text-xs mb-2">
+                                        <span class="text-white/60">التقدم الكلي</span>
+                                        <span class="text-purple-400 font-mono">67%</span>
+                                    </div>
+                                    <div class="h-2 bg-white/5 rounded-full overflow-hidden progress-bar">
+                                        <div class="progress-fill h-full" style="width: 67%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Processing Stages -->
+                                <div class="space-y-3">
+                                    <div class="stage complete flex items-center gap-3 p-3 rounded-lg border border-white/10">
+                                        <div class="stage-dot flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-white mb-0.5">OCR Scanning</div>
+                                            <div class="text-xs text-white/40">استخراج النص من الصورة</div>
+                                        </div>
+                                        <iconify-icon icon="solar:check-circle-bold" class="text-emerald-500 checkmark" width="20"></iconify-icon>
+                                    </div>
+
+                                    <div class="stage active flex items-center gap-3 p-3 rounded-lg border border-white/10">
+                                        <div class="stage-dot flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-white mb-0.5">NLP Extraction</div>
+                                            <div class="text-xs text-white/40">استخراج الكيانات الطبية والبيانات</div>
+                                        </div>
+                                        <div class="spinner w-4 h-4"></div>
+                                    </div>
+
+                                    <div class="stage flex items-center gap-3 p-3 rounded-lg border border-white/10 opacity-50">
+                                        <div class="stage-dot flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-white mb-0.5">Data Validation</div>
+                                            <div class="text-xs text-white/40">التحقق من دقة البيانات</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="stage flex items-center gap-3 p-3 rounded-lg border border-white/10 opacity-50">
+                                        <div class="stage-dot flex-shrink-0"></div>
+                                        <div class="flex-1">
+                                            <div class="text-sm font-medium text-white mb-0.5">EHR Update</div>
+                                            <div class="text-xs text-white/40">تحديث السجل الطبي الإلكتروني</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- File Card 2 - Completed -->
+                            <div class="file-card glass rounded-2xl p-6 border border-emerald-500/30">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-start gap-4 flex-1">
+                                        <div class="w-14 h-14 rounded-xl flex items-center justify-center shimmer"
+                                             style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));">
+                                            <iconify-icon icon="solar:test-tube-linear" width="28" class="text-blue-400"></iconify-icon>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-white mb-1">نتائج_تحليل_دم_شامل.pdf</h4>
+                                            <div class="flex items-center gap-3 text-xs text-white/40">
+                                                <span>1.8 MB</span>
+                                                <span>•</span>
+                                                <span>مختبر الفارابي</span>
+                                                <span>•</span>
+                                                <span class="font-mono">DOC-8923</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-2"
+                                              style="background: rgba(34, 197, 94, 0.2); color: #22c55e;">
+                                            <iconify-icon icon="solar:check-circle-linear"></iconify-icon>
+                                            مكتمل
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3 text-sm">
+                                    <button class="flex-1 py-2.5 rounded-lg glass-hover border border-white/10 font-medium text-white/80 hover:text-white">
+                                        <iconify-icon icon="solar:eye-linear" class="inline-block ml-1"></iconify-icon>
+                                        معاينة OCR
+                                    </button>
+                                    <button class="flex-1 py-2.5 rounded-lg glass-hover border border-white/10 font-medium text-white/80 hover:text-white">
+                                        <iconify-icon icon="solar:download-linear" class="inline-block ml-1"></iconify-icon>
+                                        تحميل JSON
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- File Card 3 - Queued -->
+                            <div class="file-card glass rounded-2xl p-6 border border-white/10 opacity-60">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-start gap-4 flex-1">
+                                        <div class="w-14 h-14 rounded-xl flex items-center justify-center"
+                                             style="background: rgba(255, 255, 255, 0.05);">
+                                            <iconify-icon icon="solar:pen-new-square-linear" width="28" class="text-white/40"></iconify-icon>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-white mb-1">ملاحظات_طبية_بخط_اليد.jpg</h4>
+                                            <div class="flex items-center gap-3 text-xs text-white/40">
+                                                <span>3.2 MB</span>
+                                                <span>•</span>
+                                                <span>عيادة النور</span>
+                                                <span>•</span>
+                                                <span class="font-mono">DOC-8922</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-3 py-1.5 rounded-lg text-xs font-medium"
+                                              style="background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.4);">
+                                            في الانتظار
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel - Stats & Info -->
+                        <div class="space-y-6">
+                            <!-- Processing Stats -->
+                            <div class="glass rounded-2xl p-6 neon-border">
+                                <h3 class="text-sm font-semibold text-white mb-6 flex items-center gap-2">
+                                    <iconify-icon icon="solar:chart-2-linear" class="text-purple-400"></iconify-icon>
+                                    إحصائيات المعالجة
+                                </h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex items-center justify-between text-xs mb-2">
+                                            <span class="text-white/60">معدل النجاح</span>
+                                            <span class="text-emerald-400 font-mono font-bold">98.2%</span>
+                                        </div>
+                                        <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400" style="width: 98.2%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between text-xs mb-2">
+                                            <span class="text-white/60">دقة OCR</span>
+                                            <span class="text-blue-400 font-mono font-bold">96.7%</span>
+                                        </div>
+                                        <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-blue-500 to-blue-400" style="width: 96.7%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center justify-between text-xs mb-2">
+                                            <span class="text-white/60">دقة NLP</span>
+                                            <span class="text-purple-400 font-mono font-bold">93.4%</span>
+                                        </div>
+                                        <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-purple-500 to-purple-400" style="width: 93.4%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 pt-6 border-t border-white/10 space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-white/50">اليوم</span>
+                                        <span class="text-sm font-bold text-white">142 ملف</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-white/50">هذا الأسبوع</span>
+                                        <span class="text-sm font-bold text-white">1,284 ملف</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-white/50">هذا الشهر</span>
+                                        <span class="text-sm font-bold text-white">5,847 ملف</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- OCR Engine Status -->
+                            <div class="glass rounded-2xl p-6 neon-border">
+                                <h3 class="text-sm font-semibold text-white mb-6 flex items-center gap-2">
+                                    <iconify-icon icon="solar:eye-scan-linear" class="text-emerald-400"></iconify-icon>
+                                    حالة محرك OCR
+                                </h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                                            <span class="text-sm text-white/80">Tesseract 5.3</span>
+                                        </div>
+                                        <span class="text-xs text-emerald-400 font-medium">نشط</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                                            <span class="text-sm text-white/80">Vision Transformer</span>
+                                        </div>
+                                        <span class="text-xs text-emerald-400 font-medium">نشط</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                                            <span class="text-sm text-white/80">Arabic Model</span>
+                                        </div>
+                                        <span class="text-xs text-emerald-400 font-medium">نشط</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 pt-6 border-t border-white/10">
+                                    <div class="text-xs text-white/40 mb-2">متوسط وقت المعالجة</div>
+                                    <div class="text-2xl font-bold gradient-text">1.8 ثانية</div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="glass rounded-2xl p-6 neon-border">
+                                <h3 class="text-sm font-semibold text-white mb-4">إجراءات سريعة</h3>
+                                <div class="space-y-2">
+                                    <button class="w-full text-right px-4 py-3 rounded-xl glass-hover border border-white/10 text-sm text-white/80 hover:text-white flex items-center gap-3">
+                                        <iconify-icon icon="solar:history-linear" width="20" class="text-purple-400"></iconify-icon>
+                                        <span>عرض السجل الكامل</span>
+                                    </button>
+                                    <button class="w-full text-right px-4 py-3 rounded-xl glass-hover border border-white/10 text-sm text-white/80 hover:text-white flex items-center gap-3">
+                                        <iconify-icon icon="solar:download-linear" width="20" class="text-blue-400"></iconify-icon>
+                                        <span>تصدير التقارير</span>
+                                    </button>
+                                    <button class="w-full text-right px-4 py-3 rounded-xl glass-hover border border-white/10 text-sm text-white/80 hover:text-white flex items-center gap-3">
+                                        <iconify-icon icon="solar:settings-linear" width="20" class="text-orange-400"></iconify-icon>
+                                        <span>إعدادات المعالجة</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Drag and Drop functionality
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            console.log('Files selected:', files.length);
+            // Here you would implement the actual file upload logic
+            Array.from(files).forEach(file => {
+                console.log(`File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,568 @@
+NLP Search<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright AI | البحث المتقدم NLP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a0b2e 25%, #16003b 50%, #0a0015 75%, #000000 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            z-index: 0;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 25s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.6), transparent);
+            top: -200px;
+            right: -200px;
+        }
+        
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.5), transparent);
+            bottom: -300px;
+            left: -300px;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-50px, 50px) scale(0.9); }
+            75% { transform: translate(80px, 80px) scale(1.05); }
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPulse 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        
+        .glass-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .glow {
+            position: relative;
+        }
+        
+        .glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            opacity: 0;
+            filter: blur(20px);
+            transition: opacity 0.5s;
+            z-index: -1;
+            animation: gradientRotate 3s linear infinite;
+        }
+        
+        .glow:hover::before {
+            opacity: 0.8;
+        }
+        
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
+        }
+        
+        .neon-border {
+            position: relative;
+            border: 1px solid transparent;
+        }
+        
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: gradientRotate 4s linear infinite;
+        }
+        
+        .search-focus {
+            transition: all 0.4s ease;
+        }
+        
+        .search-focus:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3),
+                        0 0 40px rgba(139, 92, 246, 0.5);
+            transform: scale(1.01);
+        }
+        
+        .result-card {
+            transition: all 0.3s ease;
+        }
+        
+        .result-card:hover {
+            transform: translateX(-4px);
+        }
+        
+        .chat-bubble {
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(139, 92, 246, 0.6);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        .filter-tag {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-tag.active {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-color: transparent;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .spinner {
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="animated-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="flex h-screen overflow-hidden relative z-10">
+        <!-- Sidebar -->
+        <aside class="w-72 glass-strong border-l border-white/10 flex flex-col justify-between hidden md:flex">
+            <div>
+                <div class="h-20 flex items-center px-6 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl glow flex items-center justify-center"
+                             style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                            <span class="font-bold text-white text-lg">AI</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-white tracking-tight text-xl gradient-text">Bright AI</span>
+                            <div class="text-[10px] text-white/40">Medical Archive</div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="p-4 space-y-2 mt-4">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:widget-linear" width="22"></iconify-icon>
+                        <span>لوحة التحكم</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white rounded-xl glass-hover glow">
+                        <iconify-icon icon="solar:magnifer-linear" width="22"></iconify-icon>
+                        <span>البحث المتقدم (NLP)</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:document-add-linear" width="22"></iconify-icon>
+                        <span>الإدخال والمعالجة</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:user-id-linear" width="22"></iconify-icon>
+                        <span>سجلات المرضى (EHR)</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                        <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon>
+                        <span>التحليلات والرؤى</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="p-4 border-t border-white/10">
+                <div class="glass rounded-xl p-4 neon-border">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shimmer"
+                             style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
+                            د.م
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium text-white">د. محمد القحطاني</span>
+                            <span class="text-xs text-white/40">Admin Access</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-hidden">
+            <!-- Header -->
+            <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-8">
+                <div class="flex items-center gap-4">
+                    <span class="text-white/30">/</span>
+                    <h1 class="text-base font-medium text-white">البحث المتقدم بالذكاء الاصطناعي</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-4 py-2 glass rounded-full border border-purple-500/30">
+                        <iconify-icon icon="solar:magic-stick-3-linear" class="text-purple-400" width="18"></iconify-icon>
+                        <span class="text-xs font-medium text-purple-400">NLP Engine Active</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-hidden flex">
+                <!-- Left Panel - Filters -->
+                <div class="w-80 glass border-l border-white/10 overflow-y-auto p-6 space-y-6">
+                    <div>
+                        <h3 class="text-sm font-semibold text-white mb-4 flex items-center gap-2">
+                            <iconify-icon icon="solar:filter-linear" class="text-purple-400"></iconify-icon>
+                            فلاتر البحث المتقدم
+                        </h3>
+                        
+                        <!-- Date Range -->
+                        <div class="mb-6">
+                            <label class="text-xs text-white/50 mb-2 block">النطاق الزمني</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover active">
+                                    آخر 7 أيام
+                                </button>
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover">
+                                    آخر شهر
+                                </button>
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover">
+                                    آخر 6 أشهر
+                                </button>
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover">
+                                    آخر سنة
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Document Type -->
+                        <div class="mb-6">
+                            <label class="text-xs text-white/50 mb-2 block">نوع الوثيقة</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 glass-hover rounded-lg p-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-white/5 checked:bg-purple-500">
+                                    <iconify-icon icon="solar:test-tube-linear" class="text-white/40"></iconify-icon>
+                                    <span class="text-sm text-white/80">تحاليل مختبر</span>
+                                    <span class="mr-auto text-xs text-white/40">2,847</span>
+                                </label>
+                                <label class="flex items-center gap-2 glass-hover rounded-lg p-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-white/5 checked:bg-purple-500">
+                                    <iconify-icon icon="solar:file-text-linear" class="text-white/40"></iconify-icon>
+                                    <span class="text-sm text-white/80">تقارير أشعة</span>
+                                    <span class="mr-auto text-xs text-white/40">1,293</span>
+                                </label>
+                                <label class="flex items-center gap-2 glass-hover rounded-lg p-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-white/5 checked:bg-purple-500">
+                                    <iconify-icon icon="solar:pen-new-square-linear" class="text-white/40"></iconify-icon>
+                                    <span class="text-sm text-white/80">وصفات طبية</span>
+                                    <span class="mr-auto text-xs text-white/40">5,102</span>
+                                </label>
+                                <label class="flex items-center gap-2 glass-hover rounded-lg p-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-white/20 bg-white/5 checked:bg-purple-500">
+                                    <iconify-icon icon="solar:clipboard-text-linear" class="text-white/40"></iconify-icon>
+                                    <span class="text-sm text-white/80">ملاحظات طبية</span>
+                                    <span class="mr-auto text-xs text-white/40">3,445</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Medical Department -->
+                        <div class="mb-6">
+                            <label class="text-xs text-white/50 mb-2 block">القسم الطبي</label>
+                            <select class="w-full glass-strong rounded-lg px-3 py-2.5 text-sm text-white border border-white/10 outline-none search-focus">
+                                <option>جميع الأقسام</option>
+                                <option>القلب والأوعية</option>
+                                <option>الأورام</option>
+                                <option>الباطنة</option>
+                                <option>الأطفال</option>
+                                <option>الطوارئ</option>
+                            </select>
+                        </div>
+
+                        <!-- Age Range -->
+                        <div class="mb-6">
+                            <label class="text-xs text-white/50 mb-2 block">الفئة العمرية</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover">
+                                    0-18
+                                </button>
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover">
+                                    19-50
+                                </button>
+                                <button class="filter-tag px-3 py-2 rounded-lg text-xs border border-white/10 text-white/60 hover:text-white glass-hover">
+                                    50+
+                                </button>
+                            </div>
+                        </div>
+
+                        <button class="w-full py-2.5 rounded-lg text-sm font-medium text-white/50 hover:text-white glass-hover border border-white/10">
+                            <iconify-icon icon="solar:refresh-linear" class="inline-block ml-1"></iconify-icon>
+                            إعادة تعيين
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Center Panel - Chat Interface -->
+                <div class="flex-1 flex flex-col">
+                    <!-- Chat Messages -->
+                    <div class="flex-1 overflow-y-auto p-8 space-y-6">
+                        <!-- Welcome Message -->
+                        <div class="max-w-3xl mx-auto text-center mb-12">
+                            <div class="w-20 h-20 rounded-2xl mx-auto mb-6 glow flex items-center justify-center shimmer"
+                                 style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                                <iconify-icon icon="solar:magic-stick-3-linear" width="40" class="text-white"></iconify-icon>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-3 gradient-text">محرك البحث بالذكاء الاصطناعي</h2>
+                            <p class="text-white/50 text-sm max-w-xl mx-auto">
+                                اكتب سؤالك بلغة طبيعية، سنقوم بتحليله والبحث في السجلات الطبية وتقديم النتائج الأكثر دقة
+                            </p>
+                        </div>
+
+                        <!-- Example Queries -->
+                        <div class="max-w-3xl mx-auto">
+                            <div class="text-xs text-white/40 mb-3">أمثلة على الاستعلامات:</div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <button class="text-right glass-hover rounded-xl p-4 border border-white/10 group">
+                                    <div class="flex items-start gap-3">
+                                        <iconify-icon icon="solar:document-linear" class="text-purple-400 mt-0.5 group-hover:text-purple-300" width="20"></iconify-icon>
+                                        <div>
+                                            <div class="text-sm text-white/80 group-hover:text-white mb-1">مرضى السكري النوع الثاني</div>
+                                            <div class="text-xs text-white/40">فوق 50 سنة + معدل سكر أعلى من 200</div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <button class="text-right glass-hover rounded-xl p-4 border border-white/10 group">
+                                    <div class="flex items-start gap-3">
+                                        <iconify-icon icon="solar:test-tube-linear" class="text-blue-400 mt-0.5 group-hover:text-blue-300" width="20"></iconify-icon>
+                                        <div>
+                                            <div class="text-sm text-white/80 group-hover:text-white mb-1">تحاليل الكوليسترول الشاذة</div>
+                                            <div class="text-xs text-white/40">خلال آخر 3 أشهر + LDL فوق 130</div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Sample Conversation -->
+                        <div class="max-w-3xl mx-auto space-y-4" id="chatMessages">
+                            <!-- User Message Example -->
+                            <div class="flex justify-end chat-bubble">
+                                <div class="glass-strong rounded-2xl rounded-tl-lg px-5 py-4 max-w-xl border border-white/10">
+                                    <p class="text-sm text-white">أعطني جميع حالات الربو النشطة للمرضى دون سن 18 سنة خلال آخر شهرين</p>
+                                </div>
+                            </div>
+
+                            <!-- AI Response Example -->
+                            <div class="flex justify-start chat-bubble">
+                                <div class="flex items-start gap-3 max-w-2xl">
+                                    <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center shimmer"
+                                         style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                                        <iconify-icon icon="solar:atom-linear" width="20" class="text-white"></iconify-icon>
+                                    </div>
+                                    <div class="glass rounded-2xl rounded-tr-lg px-5 py-4 border border-white/10">
+                                        <div class="text-xs text-purple-400 mb-2 flex items-center gap-2">
+                                            <iconify-icon icon="solar:database-linear" width="14"></iconify-icon>
+                                            تم العثور على 23 نتيجة
+                                        </div>
+                                        <p class="text-sm text-white/90 mb-3 leading-relaxed">
+                                            وجدت <span class="highlight">23 حالة ربو نشطة</span> لمرضى أقل من 18 سنة خلال الفترة من 18 نوفمبر 2023 إلى اليوم. معظم الحالات تتركز في الفئة العمرية <span class="highlight">8-14 سنة</span>.
+                                        </p>
+                                        <div class="flex items-center gap-2">
+                                            <button class="text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1">
+                                                <iconify-icon icon="solar:eye-linear"></iconify-icon>
+                                                عرض التفاصيل
+                                            </button>
+                                            <span class="text-white/20">•</span>
+                                            <button class="text-xs text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1">
+                                                <iconify-icon icon="solar:download-linear"></iconify-icon>
+                                                تصدير
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="border-t border-white/10 p-6">
+                        <div class="max-w-3xl mx-auto">
+                            <div class="relative glass-strong rounded-2xl p-2 border border-white/10">
+                                <div class="flex items-end gap-3">
+                                    <textarea 
+                                        class="flex-1 bg-transparent border-none text-white text-sm outline-none resize-none placeholder:text-white/30 px-4 py-3 max-h-32"
+                                        rows="1"
+                                        placeholder="اكتب استعلامك الطبي هنا... مثال: أعطني مرضى الضغط اللي يتناولون اللوسارتان"
+                                        id="searchInput"></textarea>
+                                    <div class="flex items-center gap-2">
+                                        <button class="w-10 h-10 rounded-xl glass-hover flex items-center justify-center text-white/60 hover:text-white">
+                                            <iconify-icon icon="solar:paperclip-linear" width="20"></iconify-icon>
+                                        </button>
+                                        <button class="px-6 py-3 rounded-xl font-medium glow shimmer" 
+                                                style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);"
+                                                id="sendBtn">
+                                            <iconify-icon icon="solar:arrow-left-linear" width="20" class="text-white"></iconify-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between mt-3 px-2">
+                                <div class="flex items-center gap

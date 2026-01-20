@@ -2,7 +2,7 @@
     "github.copilot.chat.copilotDebugCommand.enabled": true,
     "html.autoClosingTags": false,
     "kiroAgent.enableTabAutocomplete": true,
-    "kiroAgent.modelSelection": "claude-sonnet-4",
+    "kiroAgent.modelSelection": "claude-sonnet-4.5",
     "debug.console.acceptSuggestionOnEnter": "on",
     "kiroAgent.trustedCommands": [
         "Accept all"

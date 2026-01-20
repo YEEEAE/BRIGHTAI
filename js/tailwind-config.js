@@ -1,42 +1,42 @@
-/**
- * Bright AI - Tailwind CSS Configuration
- * ========================================
- */
+// Tailwind Configuration for CDN usage
+// Include this script AFTER the Tailwind CDN script
 
-tailwind.config = {
-  darkMode: 'class',
+window.tailwindConfig = {
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['"IBM Plex Sans Arabic"', 'sans-serif'],
-      },
       colors: {
-        navy: {
-          900: '#020617',
-          800: '#0f172a',
+        indigo: {
+          400: '#818CF8',
+          500: '#6366F1',
+          600: '#4F46E5',
+        },
+        purple: {
+          400: '#C084FC',
+          500: '#A855F7',
+          600: '#9333EA',
         },
         gold: {
-          400: '#fbbf24',
-          500: '#f59e0b',
-        }
-      },
-      animation: {
-        'blob': 'blob 7s infinite',
-        'scroll': 'scroll 40s linear infinite',
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-      },
-      keyframes: {
-        blob: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+          400: '#FCD34D',
+          500: '#D4AF37',
+          600: '#B8941E',
         },
-        scroll: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(100%)' },
+        teal: {
+          400: '#2DD4BF',
+          500: '#14B8A6',
+        },
+        navy: {
+          900: '#020617',
+          800: '#0F172A',
         }
+      },
+      fontFamily: {
+        arabic: [ 'IBM Plex Sans Arabic', 'sans-serif' ],
+        code: [ 'Fira Code', 'monospace' ],
       }
     }
   }
 };
+
+if (window.tailwind) {
+  window.tailwind.config = window.tailwindConfig;
+}
