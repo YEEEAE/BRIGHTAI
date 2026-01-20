@@ -215,26 +215,21 @@
                 </div>
             </div>
 
-            <nav class="p-4 space-y-2 mt-4">
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
-                    <iconify-icon icon="solar:widget-linear" width="22"></iconify-icon>
-                    <span>لوحة التحكم</span>
+            <nav class="p-3 space-y-1 mt-4">
+                <a href="index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:widget-linear" width="20"></iconify-icon> <span>لوحة التحكم</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
-                    <iconify-icon icon="solar:magnifer-linear" width="22"></iconify-icon>
-                    <span>البحث المتقدم (NLP)</span>
+                <a href="NLP-search.html" class="nav-item active flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon> <span>البحث المتقدم (NLP)</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
-                    <iconify-icon icon="solar:document-add-linear" width="22"></iconify-icon>
-                    <span>الإدخال والمعالجة</span>
+                <a href="ehr-viewer.html" class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:document-add-linear" width="20"></iconify-icon> <span>الإدخال والمعالجة</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white rounded-xl glass-hover glow" style="background: rgba(139, 92, 246, 0.1);">
-                    <iconify-icon icon="solar:user-id-linear" width="22" class="text-purple-400"></iconify-icon>
-                    <span>سجلات المرضى (EHR)</span>
+                <a href="ingestion.html" class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:user-id-linear" width="20"></iconify-icon> <span>سجلات المرضى</span>
                 </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
-                    <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon>
-                    <span>التحليلات والرؤى</span>
+                <a href="analytics&insights.html" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                    <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon> <span>التحليلات والرؤى</span>
                 </a>
             </nav>
         </div>
