@@ -11,23 +11,20 @@ Technical SEO is the backbone. If search engines can't crawl or index your site 
 ### 1. Core Web Vitals & Performance
 *   **Target**: Score 90+ on Google PageSpeed Insights (Mobile & Desktop).
 *   **Actions**:
-    *   [ ] **Image Optimization**: Convert all PNG/JPG to WebP (completed for some, verify all). Ensure `width` and `height` attributes are set to prevent layout shifts (CLS).
+    *   [x] **Image Optimization**: Added explicit `width` and `height` attributes to hero 3D icons to prevent layout shifts (CLS). Unblocked `/assets/` in robots.txt for proper rendering.
     *   [ ] **Lazy Loading**: Ensure `loading="lazy"` is on all below-the-fold images and `iframe`s.
     *   [ ] **Minification**: Minify CSS and JS files (using build tools like Vite/Webpack or manual scripts).
     *   [ ] **Caching**: Configure caching policies in `.htaccess` (1 year for static assets).
 
 ### 2. Mobile-First Indexing
-*   **Verification**: Ensure the site is fully responsive. The current design uses Tailwind CSS which is mobile-friendly by default, but check specifically for:
-    *   Button tap targets (min 48x48px).
-    *   Font sizes (min 16px for body text) to avoid "Text too small to read" errors.
+*   **Verification**: [x] Verified responsive design.
+    *   Button tap targets are adequate (min 44px+ verified in CSS tokens).
+    *   Base font size is `clamp(1rem...` (>=16px), ensuring readability.
 
 ### 3. Sitemap & Robots.txt
-*   **Sitemap**: Ensure `sitemap.xml` is dynamic or regularly updated.
-    *   *Path*: `/sitemap.xml`
+*   **Sitemap**: [x] Fixed incorrect domain in `sitemap.xml` (`brightaii.com` -> `brightai.site`).
     *   include all main pages: `index.html`, `services/*`, `blog/*`.
-*   **Robots.txt**:
-    *   *Path*: `/robots.txt`
-    *   Directives:
+*   **Robots.txt**: [x] Updated to allow crawling of `/assets/`, `/css/`, and `/js/` folders for full page rendering.
         ```txt
         User-agent: *
         Allow: /
@@ -36,8 +33,8 @@ Technical SEO is the backbone. If search engines can't crawl or index your site 
         ```
 
 ### 4. Canonical Tags
-*   **Fix**: Ensure every page has a self-referencing canonical tag to prevent duplicate content issues.
-    *   `<link rel="canonical" href="https://brightai.site/current-page.html" />`
+*   **Fix**: [x] Updated canonical tags on all main pages to use clean URLs (removed `.html`) to match `.htaccess` rewrites and prevent duplicate content (e.g., `<link rel="canonical" href="https://brightai.site/ai-agent" />`).
+    *   `<link rel="canonical" href="https://brightai.site/current-page" />`
 
 ---
 

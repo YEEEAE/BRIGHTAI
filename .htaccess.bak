@@ -1,0 +1,318 @@
+# BrightAI .htaccess - Optimized for Google Indexing
+# Last updated: 2025-10-01
+# Fixed: Redirect issues causing indexing problems
+
+# ============================================
+# CORE SETTINGS
+# ============================================
+
+# Enable rewrite engine
+RewriteEngine On
+RewriteBase /
+
+# Set default character set for Arabic content
+AddDefaultCharset UTF-8
+
+# Prevent directory browsing
+Options -Indexes -MultiViews
+
+# ============================================
+# HTTPS & DOMAIN CANONICALIZATION
+# ============================================
+
+# Force HTTPS (permanent redirect)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Canonicalize domain: www to non-www (permanent redirect)
+RewriteCond %{HTTP_HOST} ^www\.brightai\.site [NC]
+RewriteRule ^(.*)$ https://brightai.site/$1 [L,R=301]
+
+# Handle alternative domain spellings
+RewriteCond %{HTTP_HOST} ^(www\.)?brightaii\.com [NC]
+RewriteRule ^(.*)$ https://brightai.site/$1 [L,R=301]
+
+# ============================================
+# URL STRUCTURE - PREVENT DUPLICATE CONTENT
+# ============================================
+
+# Redirect .html URLs to clean URLs (prevents duplicate content)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
+RewriteCond %{REQUEST_URI} !^/404\.html$
+RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+
+# Internally serve .html files for clean URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Remove trailing slash from URLs (except directories)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/$
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# ============================================
+# COMPRESSION - IMPROVE LOADING SPEED
+# ============================================
+
+<IfModule mod_deflate.c>
+  # Compress HTML, CSS, JavaScript, Text, XML
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE text/javascript
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/x-javascript
+  AddOutputFilterByType DEFLATE application/xml
+  AddOutputFilterByType DEFLATE application/xhtml+xml
+  AddOutputFilterByType DEFLATE application/rss+xml
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/ttf
+  AddOutputFilterByType DEFLATE font/otf
+  AddOutputFilterByType DEFLATE font/woff
+  AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+# Brotli Compression (if module available)
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css
+    AddOutputFilterByType BROTLI_COMPRESS text/javascript application/javascript
+    AddOutputFilterByType BROTLI_COMPRESS application/json application/xml
+</IfModule>
+
+# ============================================
+# BROWSER CACHING - IMPROVE PERFORMANCE
+# ============================================
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # Default expiration: 1 hour
+  ExpiresDefault "access plus 1 hour"
+  
+  # HTML: 1 hour (allows quick updates)
+  ExpiresByType text/html "access plus 1 hour"
+  
+  # Images: 1 year
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  
+  # Video: 1 year
+  ExpiresByType video/mp4 "access plus 1 year"
+  ExpiresByType video/webm "access plus 1 year"
+  
+  # CSS and JavaScript: 1 month (balance between caching and updates)
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/x-javascript "access plus 1 month"
+  
+  # Fonts: 1 year
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/ttf "access plus 1 year"
+  ExpiresByType font/otf "access plus 1 year"
+  ExpiresByType application/font-woff "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  ExpiresByType application/x-font-woff "access plus 1 year"
+  ExpiresByType application/x-font-ttf "access plus 1 year"
+  ExpiresByType application/x-font-opentype "access plus 1 year"
+  
+  # Other files
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType application/json "access plus 1 day"
+  ExpiresByType application/xml "access plus 1 day"
+</IfModule>
+
+# ============================================
+# CACHE-CONTROL HEADERS
+# ============================================
+
+<IfModule mod_headers.c>
+    # Static assets: long cache
+    <FilesMatch "\.(jpg|jpeg|png|gif|ico|svg|webp|avif)$">
+        Header set Cache-Control "max-age=31536000, public, immutable"
+    </FilesMatch>
+    
+    # Fonts: long cache
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "max-age=31536000, public, immutable"
+    </FilesMatch>
+    
+    # CSS & JavaScript: medium cache
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+    
+    # HTML: short cache with revalidation
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "max-age=3600, public, must-revalidate"
+    </FilesMatch>
+    
+    # Remove ETag (better cache performance)
+    Header unset ETag
+    FileETag None
+    
+    # Vary header for proper caching
+    Header append Vary "Accept-Encoding"
+</IfModule>
+
+# ============================================
+# KEEPALIVE - FASTER CONNECTIONS
+# ============================================
+
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+KeepAlive On
+KeepAliveTimeout 5
+MaxKeepAliveRequests 100
+
+# ============================================
+# SECURITY HEADERS
+# ============================================
+
+<IfModule mod_headers.c>
+  # Prevent XSS attacks
+  Header always set X-XSS-Protection "1; mode=block"
+  
+  # Prevent MIME type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+  
+  # Referrer policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  
+  # Content Security Policy (adjusted for common needs)
+  Header always set Content-Security-Policy "default-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com;"
+  
+  # Permissions Policy
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+  
+  # CORS - Allow fonts from Google
+  <FilesMatch "\.(ttf|otf|eot|woff|woff2)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+
+# ============================================
+# ERROR PAGES
+# ============================================
+
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# ============================================
+# SECURITY - PREVENT ACCESS TO SENSITIVE FILES
+# ============================================
+
+# Prevent access to hidden files and directories
+<FilesMatch "^\.">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Prevent access to specific file types
+<FilesMatch "\.(sql|log|ini|conf|bak|backup|swp|tmp)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Protect .htaccess and .htpasswd
+<Files ~ "^\.ht">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</Files>
+
+# ============================================
+# SPECIFIC REDIRECTS - ONLY NECESSARY ONES
+# ============================================
+
+# Fix common URL variations
+Redirect 301 /terms.html /terms-and-conditions.html
+
+# Fix URL encoding issues (if needed)
+# Redirect 301 /Company performance monitoring tool.html /Company%20performance%20monitoring%20tool.html
+
+# ============================================
+# HANDLE SERVICE WORKER (if you use PWA)
+# ============================================
+
+<Files "sw.js">
+  Header set Service-Worker-Allowed "/"
+  Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+</Files>
+
+# ============================================
+# PRE-COMPRESSED FILES (OPTIONAL)
+# ============================================
+
+# Serve pre-compressed .gz files if available
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP:Accept-Encoding} gzip
+    RewriteCond %{REQUEST_FILENAME}\.gz -f
+    RewriteRule ^(.+)$ $1.gz [L]
+</IfModule>
+
+<FilesMatch "\.(css|js|html|htm|xml|txt|svg)\.gz$">
+    <IfModule mod_headers.c>
+        Header set Content-Encoding gzip
+        Header append Vary Accept-Encoding
+    </IfModule>
+</FilesMatch>
+
+# Serve pre-compressed .br (brotli) files if available
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP:Accept-Encoding} br
+    RewriteCond %{REQUEST_FILENAME}\.br -f
+    RewriteRule ^(.+)$ $1.br [L]
+</IfModule>
+
+<FilesMatch "\.(css|js|html|htm|xml|txt|svg)\.br$">
+    <IfModule mod_headers.c>
+        Header set Content-Encoding br
+        Header append Vary Accept-Encoding
+    </IfModule>
+</FilesMatch>
+
+# ============================================
+# NOTES & REMOVED SECTIONS
+# ============================================
+
+# REMOVED: Language Negotiation (was causing 36+ redirects)
+# This was redirecting all Arabic-language browsers to /ar/
+# which doesn't exist, causing massive indexing problems
+
+# REMOVED: Excessive custom headers (X-Saudi-SEO, etc.)
+# These are non-standard and don't affect SEO
+
+# REMOVED: Overly complex redirect chains
+# Simplified to prevent redirect loops
+
+# ============================================
+# END OF FILE
+# ============================================

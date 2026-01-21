@@ -57,7 +57,11 @@ Disallow: /fix%20my%20website/
 Disallow: /Docfile/
 Disallow: /backups/
 Disallow: /components/
-Disallow: /assets/
+
+# Allow assets providing visual content (Important for SEO and Rendering)
+Allow: /assets/
+Allow: /css/
+Allow: /js/
 
 # Allow important blog articles
 Allow: /blogger/ai-transformation.html
