@@ -74,6 +74,29 @@ You have already implemented `Organization` and `Service` schema. Expand this wi
 
 ---
 
+## ⚡ Phase 2.5: Performance Optimization
+
+### 1. Image Optimization
+*   **Lazy Loading**: [x] Added `loading="lazy"` to all below-the-fold images.
+*   **Priority Hints**: [x] Added `fetchpriority="high"` to logo for faster LCP.
+*   **Dimensions**: [x] All images have explicit `width` and `height` to prevent CLS.
+
+### 2. Resource Hints
+*   **Preconnect**: [x] Added preconnect hints for CDNs:
+    *   `cdn.jsdelivr.net`, `unpkg.com`, `cdnjs.cloudflare.com`, `code.iconify.design`
+*   **DNS Prefetch**: [x] Already configured for fonts and Tailwind CDN.
+
+### 3. CSS & JS Optimization
+*   **Minification**: [x] Created minified versions of:
+    *   `premium-effects.css` (20KB → 14KB, -30%)
+    *   `premium-animations.js` (20KB → 9KB, -55%)
+*   **Updated References**: [x] `index.html` now uses `.min.css` and `.min.js` files.
+
+### 4. Caching (via .htaccess)
+*   **Already Configured**: Browser caching for images (1 year), CSS/JS (1 month), HTML (1 hour).
+
+---
+
 ## 🔗 Phase 3: Off-Page SEO & Authority Building
 
 ### 1. Local SEO (Google My Business)

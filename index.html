@@ -90,6 +90,10 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://code.iconify.design" crossorigin>
 
   <!-- Design System & Architecture -->
   <link rel="stylesheet" href="css/design-tokens.css" />
@@ -100,7 +104,7 @@
   <link rel="stylesheet" href="css/main.min.css" />
 
   <!-- Premium Effects CSS -->
-  <link rel="stylesheet" href="css/premium-effects.css" />
+  <link rel="stylesheet" href="css/premium-effects.min.css" />
 
   <!-- AOS Animation Library -->
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -637,7 +641,8 @@
     <div class="nav-container">
       <!-- Logo -->
       <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-        <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42" height="42" />
+        <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42" height="42"
+          fetchpriority="high" decoding="async" />
         <span>Bright AI</span>
       </a>
       <!-- Hamburger Menu Button (Mobile) -->
@@ -1014,7 +1019,7 @@
             <div
               class="w-20 h-20 rounded-2xl glass-premium flex items-center justify-center border border-indigo-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
               <img src="assets/3d-icons/icon_1_3d_robot_artificial_intelligence_icon.jpg"
-                alt="روبوت ذكاء اصطناعي - أتمتة العمليات الذكية" width="80" height="80"
+                alt="روبوت ذكاء اصطناعي - أتمتة العمليات الذكية" width="80" height="80" loading="lazy"
                 class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
             </div>
           </div>
@@ -1022,7 +1027,7 @@
             <div
               class="w-16 h-16 rounded-2xl glass-premium flex items-center justify-center border border-purple-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
               <img src="assets/3d-icons/icon_2_3d_robot_artificial_intelligence_icon.jpg"
-                alt="ذراع روبوتية - حلول التصنيع الذكي" width="64" height="64"
+                alt="ذراع روبوتية - حلول التصنيع الذكي" width="64" height="64" loading="lazy"
                 class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
             </div>
           </div>
@@ -1030,7 +1035,7 @@
             <div
               class="w-14 h-14 rounded-xl glass-premium flex items-center justify-center border border-cyan-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
               <img src="assets/3d-icons/icon_3_3d_robot_artificial_intelligence_icon.jpg"
-                alt="شريحة معالجة بيانات - تحليل البيانات الضخمة" width="56" height="56"
+                alt="شريحة معالجة بيانات - تحليل البيانات الضخمة" width="56" height="56" loading="lazy"
                 class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
             </div>
           </div>
@@ -1038,7 +1043,7 @@
             <div
               class="w-16 h-16 rounded-2xl glass-premium flex items-center justify-center border border-gold-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
               <img src="assets/3d-icons/icon_1_3d_rocket_startup_icon.jpg"
-                alt="صاروخ انطلاق - نمو الشركات الناشئة بالذكاء الاصطناعي" width="64" height="64"
+                alt="صاروخ انطلاق - نمو الشركات الناشئة بالذكاء الاصطناعي" width="64" height="64" loading="lazy"
                 class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
             </div>
           </div>
@@ -5400,7 +5405,7 @@
 
   <!-- JavaScript Files -->
   <script src="js/main.min.js" defer></script>
-  <script src="js/premium-animations.js" defer></script>
+  <script src="js/premium-animations.min.js" defer></script>
   <script src="js/neural-canvas.min.js" defer></script>
   <script src="js/scroll-animations.min.js" defer></script>
   <script src="js/chat-groq.min.js" defer></script>
