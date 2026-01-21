@@ -30,6 +30,14 @@
     --warning-color: #FFA500;
     --info-color: #17a2b8;
 
+    /* ========== Breakpoints ========== */
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+
     /* ========== Glassmorphism Design Tokens ========== */
     --glass-bg: rgba(255, 255, 255, 0.08);
     --glass-bg-hover: rgba(255, 255, 255, 0.12);
@@ -120,28 +128,35 @@
     --border-radius-xl: 16px;
     --border-radius-full: 9999px;
 
-    /* ========== Spacing Scale ========== */
-    --space-xs: 0.25rem;
-    --space-sm: 0.5rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-2xl: 3rem;
-    --space-3xl: 4rem;
+    /* ========== Spacing Scale (8px base) ========== */
+    --space-2xs: 0.25rem; /* 4px */
+    --space-xs: 0.5rem;   /* 8px */
+    --space-sm: 0.75rem;  /* 12px */
+    --space-md: 1rem;     /* 16px */
+    --space-lg: 1.5rem;   /* 24px */
+    --space-xl: 2rem;     /* 32px */
+    --space-2xl: 3rem;    /* 48px */
+    --space-3xl: 4rem;    /* 64px */
+    --space-4xl: 6rem;    /* 96px */
+    --space-5xl: 8rem;    /* 128px */
 
     /* ========== Typography ========== */
     /* Comprehensive fallback font stack for Arabic/RTL support */
     --font-family-primary: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans Arabic', sans-serif;
     --font-family-arabic-fallback: 'Segoe UI', 'Tahoma', 'Arial', 'Noto Sans Arabic', sans-serif;
     --font-family-mono: 'Courier New', 'Consolas', monospace;
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 2rem;
-    --font-size-4xl: 2.5rem;
+    
+    /* Fluid Typography (clamp) */
+    /* Mobile (320px) to Desktop (1200px) */
+    --font-size-xs: clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
+    --font-size-sm: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
+    --font-size-base: clamp(1rem, 0.96rem + 0.22vw, 1.125rem);
+    --font-size-lg: clamp(1.125rem, 1.08rem + 0.22vw, 1.25rem);
+    --font-size-xl: clamp(1.25rem, 1.16rem + 0.45vw, 1.5rem);
+    --font-size-2xl: clamp(1.5rem, 1.32rem + 0.9vw, 2rem);
+    --font-size-3xl: clamp(2rem, 1.64rem + 1.79vw, 3rem);
+    --font-size-4xl: clamp(2.5rem, 1.96rem + 2.68vw, 4rem);
+    --font-size-5xl: clamp(3rem, 2.29rem + 3.57vw, 5rem);
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;

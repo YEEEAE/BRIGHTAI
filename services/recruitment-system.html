@@ -10,11 +10,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
         rel="stylesheet">
+
+    <!-- Design System -->
+    <link rel="stylesheet" href="../css/design-tokens.css">
+    <link rel="stylesheet" href="../css/typography.css">
+    <link rel="stylesheet" href="../css/components.css">
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="../css/services.min.css">
+    <link rel="stylesheet" href="../css/hero.css">
 
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -24,7 +30,7 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.min.js"></script>
 </head>
 
-<body class="bg-navy-900 text-white font-arabic">
+<body class="bg-navy-900 text-white font-primary">
 
     <!-- Navigation -->
     <nav
@@ -50,11 +56,13 @@
         <!-- 2.1 Hero Section -->
         <section class="relative min-h-[85vh] grid md:grid-cols-2 gap-12 items-center mb-24">
             <!-- Background Elements -->
-            <div class="absolute inset-0 -z-10 overflow-hidden">
-                <div
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/20 rounded-full blur-[100px]">
-                </div>
-                <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[80px]"></div>
+            <div class="hero-gradient-mesh">
+                <div class="gradient-orb-accent"></div>
+            </div>
+            <div class="floating-shapes-container">
+                <div class="geo-shape cube"></div>
+                <div class="geo-shape circle"></div>
+                <div class="geo-shape pill"></div>
             </div>
 
             <!-- Text Content -->
@@ -65,9 +73,11 @@
                     نظام التوظيف بالذكاء الاصطناعي 2.0
                 </div>
 
-                <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+                <h1 class="text-5xl md:text-7xl font-bold leading-tight hero-headline-wrapper">
                     وظّف أفضل الكفاءات <br>
-                    <span class="text-stroke text-transparent">في دقائق</span> وليس أسابيع
+                    <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 hero-glow-text">في
+                        دقائق</span> وليس أسابيع
                 </h1>
 
                 <p class="text-xl text-slate-300 max-w-xl leading-relaxed">
@@ -203,7 +213,8 @@
                             سياق الخبرات والمهارات الحقيقية للمرشح مثلما يفعل الخبير البشري، لكن بسرعة فائقة.</p>
                     </div>
                     <div class="mt-8">
-                        <img src="https://placehold.co/400x200/1e1b4b/6366f1?text=AI+Analysis+Graph" alt="Analysis" loading="lazy"
+                        <img src="https://placehold.co/400x200/1e1b4b/6366f1?text=AI+Analysis+Graph" alt="Analysis"
+                            loading="lazy"
                             class="rounded-lg w-full object-cover h-48 opacity-80 hover:opacity-100 transition-opacity">
                     </div>
                 </div>
@@ -351,13 +362,15 @@
                         <li class="flex items-center gap-3">
                             <div
                                 class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                                <iconify-icon icon="lucide:message-square"></iconify-icon></div>
+                                <iconify-icon icon="lucide:message-square"></iconify-icon>
+                            </div>
                             <span>محادثة طبيعية باللغة العربية</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <div
                                 class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                                <iconify-icon icon="lucide:search"></iconify-icon></div>
+                                <iconify-icon icon="lucide:search"></iconify-icon>
+                            </div>
                             <span>بحث دلالي متقدم في قاعدة بياناتك</span>
                         </li>
                     </ul>
@@ -630,9 +643,10 @@
     <!-- Custom Scripts -->
     <script src="../js/animations.min.js"></script>
     <script src="../js/three-effects.min.js"></script>
+    <script src="../js/design-system.js"></script>
 
     <!-- Page Specific Script -->
-    <script type="module" src="../js/pages/recruitment.min.js"></script>
+    <script type="module" src="../js/pages/recruitment.js"></script>
 
     <!-- Initialize Components -->
     <script type="module">

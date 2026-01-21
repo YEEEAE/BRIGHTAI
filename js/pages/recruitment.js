@@ -1,74 +1,16 @@
 import { BrightAnimations } from '../animations.js';
+import { AIParticleSystem } from '../particle-system.js';
 
 class RecruitmentHero {
     constructor() {
-        this.canvas = document.getElementById('workflow-canvas');
-        if (!this.canvas) return;
-        this.ctx = this.canvas.getContext('2d');
-        this.particles = [];
-        this.resize();
-        this.init();
-
-        window.addEventListener('resize', () => this.resize());
-    }
-
-    resize() {
-        this.canvas.width = this.canvas.parentElement.offsetWidth;
-        this.canvas.height = this.canvas.parentElement.offsetHeight;
-    }
-
-    init() {
-        this.createParticles();
-        this.animate();
-    }
-
-    createParticles() {
-        // Simple particle system for the workflow animation
-        for (let i = 0; i < 20; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                radius: Math.random() * 2 + 1,
-                speedX: Math.random() * 1 + 0.5,
-                speedY: (Math.random() - 0.5) * 0.5,
-                color: `rgba(99, 102, 241, ${Math.random() * 0.5 + 0.1})` // Indigo
-            });
-        }
-    }
-
-    animate() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.particles.forEach(p => {
-            p.x += p.speedX;
-            p.y += p.speedY;
-
-            if (p.x > this.canvas.width) p.x = 0;
-            if (p.y > this.canvas.height) p.y = 0;
-            if (p.y < 0) p.y = this.canvas.height;
-
-            this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = p.color;
-            this.ctx.fill();
-
-            // Draw connections if close
-            this.particles.forEach(p2 => {
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < 100) {
-                    this.ctx.beginPath();
-                    this.ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - dist / 100)})`;
-                    this.ctx.moveTo(p.x, p.y);
-                    this.ctx.lineTo(p2.x, p2.y);
-                    this.ctx.stroke();
-                }
-            });
+        // Initialize the new particle system on the workflow canvas
+        this.particleSystem = new AIParticleSystem('workflow-canvas', {
+            particleCount: 80,
+            connectionDistance: 120,
+            particleColor: 'rgba(99, 102, 241, 0.5)', // Indigo-500
+            lineColor: 'rgba(99, 102, 241, 0.15)',
+            interactive: true
         });
-
-        requestAnimationFrame(() => this.animate());
     }
 }
 

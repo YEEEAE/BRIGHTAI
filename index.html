@@ -76,6 +76,11 @@
   <!-- Tailwind Configuration -->
   <script src="js/tailwind-config.min.js" defer></script>
 
+  <!-- Fonts: IBM Plex Sans Arabic (Legacy) & Tajawal (New Primary) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap"
+    rel="stylesheet" />
+
   <!-- Fonts: Fira Code -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
 
@@ -85,7 +90,12 @@
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-  
+
+  <!-- Design System & Architecture -->
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/glass-morphism.css" />
+
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/main.min.css" />
 
@@ -740,7 +750,7 @@
             حلول ذكاء اصطناعي للشركات السعودية
           </span>
         </h1>
-        
+
         <!-- SEO: Move original tagline to h2 for better structure -->
         <h2 class="text-xl md:text-2xl font-light text-slate-300 mt-4">
           نُضيء الذكاء اصطناعي.. بمعايير سعودية وآفاق عالمية
@@ -808,777 +818,972 @@
     </div>
   </header>
 
-    <!-- SMART MEDICAL ARCHIVE SECTION - الأرشيف الطبي الذكي -->
-<section id="smart-medical-archive" class="py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #020617 0%, #0a0f1a 50%, #020617 100%); min-height: 100vh;">
-  
-  <!-- Animated 3D Background Canvas -->
-  <canvas id="medical-archive-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
-  
-  <!-- Floating DNA Helix Animation -->
-  <div class="absolute inset-0 pointer-events-none z-[1]">
-    <div class="dna-strand dna-strand-1"></div>
-    <div class="dna-strand dna-strand-2"></div>
-  </div>
-  
-  <!-- Animated Medical Particles -->
-  <div class="medical-particles">
-    <div class="particle-medical p-1"></div>
-    <div class="particle-medical p-2"></div>
-    <div class="particle-medical p-3"></div>
-    <div class="particle-medical p-4"></div>
-  </div>
+  <!-- SMART MEDICAL ARCHIVE SECTION - الأرشيف الطبي الذكي -->
+  <section id="smart-medical-archive" class="py-24 px-6 relative overflow-hidden"
+    style="background: linear-gradient(135deg, #020617 0%, #0a0f1a 50%, #020617 100%); min-height: 100vh;">
 
-  <!-- Glowing Orbs Background -->
-  <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute top-20 left-[10%] w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-    <div class="absolute bottom-20 right-[10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px] animate-pulse-slow" style="animation-delay: 1s;"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/5 rounded-full blur-[180px]"></div>
-  </div>
+    <!-- Animated 3D Background Canvas -->
+    <canvas id="medical-archive-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
 
-  <div class="max-w-7xl mx-auto relative z-10">
-    
-    <!-- Section Header with 3D Effect -->
-    <div class="text-center mb-20 perspective-1000">
-      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 border border-cyan-500/20 mb-8 animate-float">
-        <span class="relative flex h-3 w-3">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-        </span>
-        <span class="text-cyan-300 text-sm font-medium tracking-wider">
-          <iconify-icon icon="lucide:file-heart" class="inline ml-2"></iconify-icon>
-          الجيل القادم من الرعاية الصحية الرقمية
-        </span>
-      </div>
-      
-      <h2 class="text-4xl lg:text-6xl font-bold mb-6 transform-3d-header">
-        <span class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent block mb-2">
-          الأرشيف الطبي الذكي المُشرق
-        </span>
-        <span class="text-white text-3xl lg:text-4xl">نظام أرشفة طبي ذكي يحوّل السجلات إلى مصدر معرفة حيّ</span>
-      </h2>
-      
-      <p class="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
-        <span class="text-emerald-400 font-medium">  </span>
-      </p>
+    <!-- Floating DNA Helix Animation -->
+    <div class="absolute inset-0 pointer-events-none z-[1]">
+      <div class="dna-strand dna-strand-1"></div>
+      <div class="dna-strand dna-strand-2"></div>
     </div>
 
-    <!-- Main 3D Interactive Area -->
-    <div class="grid lg:grid-cols-12 gap-8 mb-20">
-      
-      <!-- 3D Holographic Display - Left Side -->
-      <div class="lg:col-span-5 relative perspective-1000">
-        <div class="holographic-container relative h-[500px] rounded-3xl overflow-hidden group">
-          <!-- Holographic Frame -->
-          <div class="absolute inset-0 rounded-3xl border-2 border-cyan-500/30 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90 backdrop-blur-xl">
-            <!-- Scan Lines Effect -->
-            <div class="scan-lines"></div>
-            
-            <!-- Holographic Content -->
-            <div class="relative h-full flex flex-col items-center justify-center p-8">
-              
-              <!-- 3D Medical Document Icon -->
-              <div class="medical-document-3d mb-8">
-                <div class="document-layer layer-1">
-                  <iconify-icon icon="lucide:file-text" width="40" class="text-cyan-400"></iconify-icon>
+    <!-- Animated Medical Particles -->
+    <div class="medical-particles">
+      <div class="particle-medical p-1"></div>
+      <div class="particle-medical p-2"></div>
+      <div class="particle-medical p-3"></div>
+      <div class="particle-medical p-4"></div>
+    </div>
+
+    <!-- Glowing Orbs Background -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-20 left-[10%] w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow">
+      </div>
+      <div
+        class="absolute bottom-20 right-[10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px] animate-pulse-slow"
+        style="animation-delay: 1s;"></div>
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/5 rounded-full blur-[180px]">
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+
+      <!-- Section Header with 3D Effect -->
+      <div class="text-center mb-20 perspective-1000">
+        <div
+          class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 border border-cyan-500/20 mb-8 animate-float">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <span class="text-cyan-300 text-sm font-medium tracking-wider">
+            <iconify-icon icon="lucide:file-heart" class="inline ml-2"></iconify-icon>
+            الجيل القادم من الرعاية الصحية الرقمية
+          </span>
+        </div>
+
+        <h2 class="text-4xl lg:text-6xl font-bold mb-6 transform-3d-header">
+          <span
+            class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent block mb-2">
+            الأرشيف الطبي الذكي المُشرق
+          </span>
+          <span class="text-white text-3xl lg:text-4xl">نظام أرشفة طبي ذكي يحوّل السجلات إلى مصدر معرفة حيّ</span>
+        </h2>
+
+        <p class="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
+          <span class="text-emerald-400 font-medium"> </span>
+        </p>
+      </div>
+
+      <!-- Main 3D Interactive Area -->
+      <div class="grid lg:grid-cols-12 gap-8 mb-20">
+
+        <!-- 3D Holographic Display - Left Side -->
+        <div class="lg:col-span-5 relative perspective-1000">
+          <div class="holographic-container relative h-[500px] rounded-3xl overflow-hidden group">
+            <!-- Holographic Frame -->
+            <div
+              class="absolute inset-0 rounded-3xl border-2 border-cyan-500/30 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90 backdrop-blur-xl">
+              <!-- Scan Lines Effect -->
+              <div class="scan-lines"></div>
+
+              <!-- Holographic Content -->
+              <div class="relative h-full flex flex-col items-center justify-center p-8">
+
+                <!-- 3D Medical Document Icon -->
+                <div class="medical-document-3d mb-8">
+                  <div class="document-layer layer-1">
+                    <iconify-icon icon="lucide:file-text" width="40" class="text-cyan-400"></iconify-icon>
+                  </div>
+                  <div class="document-layer layer-2">
+                    <iconify-icon icon="lucide:brain" width="32" class="text-emerald-400"></iconify-icon>
+                  </div>
+                  <div class="document-layer layer-3">
+                    <iconify-icon icon="lucide:sparkles" width="24" class="text-gold-400"></iconify-icon>
+                  </div>
                 </div>
-                <div class="document-layer layer-2">
-                  <iconify-icon icon="lucide:brain" width="32" class="text-emerald-400"></iconify-icon>
+
+                <!-- Animated Stats Ring -->
+                <div class="stats-ring-container">
+                  <svg class="stats-ring" width="200" height="200" viewBox="0 0 200 200">
+                    <defs>
+                      <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                      </linearGradient>
+                    </defs>
+                    <circle class="ring-bg" cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)"
+                      stroke-width="8" />
+                    <circle class="ring-progress" cx="100" cy="100" r="80" fill="none" stroke="url(#ringGradient)"
+                      stroke-width="8" stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="502" />
+                  </svg>
+                  <div class="stats-ring-content">
+                    <span class="text-4xl font-bold text-white counter" data-target="98.5">0</span>
+                    <span class="text-cyan-400 text-lg">%</span>
+                    <p class="text-slate-400 text-sm mt-1">دقة الاستخراج</p>
+                  </div>
                 </div>
-                <div class="document-layer layer-3">
-                  <iconify-icon icon="lucide:sparkles" width="24" class="text-gold-400"></iconify-icon>
+
+                <!-- Processing Animation -->
+                <div class="processing-wave mt-8">
+                  <span></span><span></span><span></span><span></span><span></span>
                 </div>
+                <p class="text-cyan-300 text-sm mt-4 font-mono">جاري تحليل البيانات...</p>
               </div>
-              
-              <!-- Animated Stats Ring -->
-              <div class="stats-ring-container">
-                <svg class="stats-ring" width="200" height="200" viewBox="0 0 200 200">
-                  <defs>
-                    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
-                      <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
-                      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
-                    </linearGradient>
-                  </defs>
-                  <circle class="ring-bg" cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
-                  <circle class="ring-progress" cx="100" cy="100" r="80" fill="none" stroke="url(#ringGradient)" stroke-width="8" stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="502"/>
-                </svg>
-                <div class="stats-ring-content">
-                  <span class="text-4xl font-bold text-white counter" data-target="98.5">0</span>
-                  <span class="text-cyan-400 text-lg">%</span>
-                  <p class="text-slate-400 text-sm mt-1">دقة الاستخراج</p>
-                </div>
-              </div>
-              
-              <!-- Processing Animation -->
-              <div class="processing-wave mt-8">
-                <span></span><span></span><span></span><span></span><span></span>
-              </div>
-              <p class="text-cyan-300 text-sm mt-4 font-mono">جاري تحليل البيانات...</p>
+            </div>
+
+            <!-- Corner Decorations -->
+            <div class="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/50 rounded-tl-3xl"></div>
+            <div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/50 rounded-tr-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/50 rounded-bl-3xl">
+            </div>
+            <div class="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/50 rounded-br-3xl">
             </div>
           </div>
-          
-          <!-- Corner Decorations -->
-          <div class="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/50 rounded-tl-3xl"></div>
-          <div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/50 rounded-tr-3xl"></div>
-          <div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/50 rounded-bl-3xl"></div>
-          <div class="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/50 rounded-br-3xl"></div>
         </div>
-      </div>
-      
-      <!-- Features Cards - Right Side -->
-      <div class="lg:col-span-7 space-y-6">
-        
-        <!-- Feature 1: Digital Archive + NLP -->
-        <div class="feature-card-3d group" data-feature="nlp">
-          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]">
-            <div class="flex items-start gap-5">
-              <div class="relative">
-                <div class="absolute -inset-2 bg-cyan-500/20 rounded-xl blur-lg group-hover:bg-cyan-500/30 transition"></div>
-                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
-                  <iconify-icon icon="lucide:file-scan" width="28" class="text-white"></iconify-icon>
+
+        <!-- Features Cards - Right Side -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- Feature 1: Digital Archive + NLP -->
+          <div class="feature-card-3d group" data-feature="nlp">
+            <div
+              class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]">
+              <div class="flex items-start gap-5">
+                <div class="relative">
+                  <div
+                    class="absolute -inset-2 bg-cyan-500/20 rounded-xl blur-lg group-hover:bg-cyan-500/30 transition">
+                  </div>
+                  <div
+                    class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                    <iconify-icon icon="lucide:file-scan" width="28" class="text-white"></iconify-icon>
+                  </div>
                 </div>
-              </div>
-              <div class="flex-1">
-                <div class="flex items-center gap-3 mb-2">
-                  <h3 class="text-xl font-bold text-white group-hover:text-cyan-100 transition">نظام أرشفة رقمي متكامل + NLP</h3>
-                  <span class="px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs">ذكي</span>
-                </div>
-                
-                <!-- Features List -->
-                <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
-                  <div class="space-y-2">
-                    <div class="flex items-center gap-2 text-sm">
-                      <span class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
-                      <span class="text-slate-300">المسح الضوئي الذكي + OCR حتى من الخط اليدوي</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                      <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" style="animation-delay: 0.2s;"></span>
-                      <span class="text-slate-300">دعم صيغ طبية (PDF, DICOM, صوت، صور)</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                      <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.4s;"></span>
-                      <span class="text-slate-300">معالجة بالعربية والإنجليزية مع NER</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                      <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style="animation-delay: 0.6s;"></span>
-                      <span class="text-slate-300">تطبيع المصطلحات الطبية لقاعدة موحّدة</span>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <h3 class="text-xl font-bold text-white group-hover:text-cyan-100 transition">نظام أرشفة رقمي متكامل
+                      + NLP</h3>
+                    <span
+                      class="px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs">ذكي</span>
+                  </div>
+
+                  <!-- Features List -->
+                  <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+                    <div class="space-y-2">
+                      <div class="flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
+                        <span class="text-slate-300">المسح الضوئي الذكي + OCR حتى من الخط اليدوي</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"
+                          style="animation-delay: 0.2s;"></span>
+                        <span class="text-slate-300">دعم صيغ طبية (PDF, DICOM, صوت، صور)</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"
+                          style="animation-delay: 0.4s;"></span>
+                        <span class="text-slate-300">معالجة بالعربية والإنجليزية مع NER</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"
+                          style="animation-delay: 0.6s;"></span>
+                        <span class="text-slate-300">تطبيع المصطلحات الطبية لقاعدة موحّدة</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        
 
-        <!-- Feature 3: Auto Extraction & EHR Update -->
-        <div class="feature-card-3d group" data-feature="extract">
-          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-gold-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(212,175,55,0.15)]">
-            <div class="flex items-start gap-5">
-              <div class="relative">
-                <div class="absolute -inset-2 bg-gold-500/20 rounded-xl blur-lg group-hover:bg-gold-500/30 transition"></div>
-                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-amber-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
-                  <iconify-icon icon="lucide:database-zap" width="28" class="text-white"></iconify-icon>
+
+          <!-- Feature 3: Auto Extraction & EHR Update -->
+          <div class="feature-card-3d group" data-feature="extract">
+            <div
+              class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-gold-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(212,175,55,0.15)]">
+              <div class="flex items-start gap-5">
+                <div class="relative">
+                  <div
+                    class="absolute -inset-2 bg-gold-500/20 rounded-xl blur-lg group-hover:bg-gold-500/30 transition">
+                  </div>
+                  <div
+                    class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-amber-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                    <iconify-icon icon="lucide:database-zap" width="28" class="text-white"></iconify-icon>
+                  </div>
                 </div>
-              </div>
-              <div class="flex-1">
-                <div class="flex items-center gap-3 mb-2">
-                  <h3 class="text-xl font-bold text-white group-hover:text-gold-100 transition">استخراج تلقائي وتحديث السجل الصحي (EHR)</h3>
-                  <span class="px-2 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs">آلي</span>
-                </div>
-                
-                <!-- Auto Features -->
-                <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
-                  <div class="space-y-2">
-                    <div class="flex items-center gap-2 text-sm">
-                      <iconify-icon icon="lucide:activity" width="14" class="text-gold-400"></iconify-icon>
-                      <span class="text-slate-300">تحديث نتائج مختبرية ومنحنى المريض تلقائياً</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                      <iconify-icon icon="lucide:bell" width="14" class="text-amber-400"></iconify-icon>
-                      <span class="text-slate-300">إشعارات للنتائج الشاذة وربطها بالتقارير الأصلية</span>
-                    </div>
-                    <div class="flex items-center gap-2 text-sm">
-                      <iconify-icon icon="lucide:shield-check" width="14" class="text-emerald-400"></iconify-icon>
-                      <span class="text-slate-300">تقليل الأخطاء الطبية الناتجة عن الإدخال اليدوي</span>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <h3 class="text-xl font-bold text-white group-hover:text-gold-100 transition">استخراج تلقائي وتحديث
+                      السجل الصحي (EHR)</h3>
+                    <span
+                      class="px-2 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs">آلي</span>
+                  </div>
+
+                  <!-- Auto Features -->
+                  <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+                    <div class="space-y-2">
+                      <div class="flex items-center gap-2 text-sm">
+                        <iconify-icon icon="lucide:activity" width="14" class="text-gold-400"></iconify-icon>
+                        <span class="text-slate-300">تحديث نتائج مختبرية ومنحنى المريض تلقائياً</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-sm">
+                        <iconify-icon icon="lucide:bell" width="14" class="text-amber-400"></iconify-icon>
+                        <span class="text-slate-300">إشعارات للنتائج الشاذة وربطها بالتقارير الأصلية</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-sm">
+                        <iconify-icon icon="lucide:shield-check" width="14" class="text-emerald-400"></iconify-icon>
+                        <span class="text-slate-300">تقليل الأخطاء الطبية الناتجة عن الإدخال اليدوي</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        
-      </div>
-    </div>
 
-    <!-- Interactive 3D Benefits Showcase -->
-    <div class="mb-20">
-      <h3 class="text-2xl font-bold text-white text-center mb-12">
-        <iconify-icon icon="lucide:award" class="text-gold-500 ml-2"></iconify-icon>
-        إيجابيات النظام في البيئة الصحية السعودية
-      </h3>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Benefit 1 -->
-        <div class="benefit-card-3d group">
-          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition"></div>
-            <div class="relative z-10">
-              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <iconify-icon icon="lucide:merge" width="24" class="text-cyan-400"></iconify-icon>
-              </div>
-              <h4 class="text-lg font-semibold text-white mb-2">توحيد السجلات</h4>
-              <p class="text-slate-400 text-sm">تحويل آلاف السجلات غير الموحدة إلى قاعدة بيانات موحدة على مستوى المملكة</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Benefit 2 -->
-        <div class="benefit-card-3d group">
-          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-emerald-500/30 transition-all duration-500 overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition"></div>
-            <div class="relative z-10">
-              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <iconify-icon icon="lucide:microscope" width="24" class="text-emerald-400"></iconify-icon>
-              </div>
-              <h4 class="text-lg font-semibold text-white mb-2">تسريع البحث العلمي</h4>
-              <p class="text-slate-400 text-sm">تمكين الباحثين من إجراء دراسات وبائية واسعة النطاق بسهولة</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Benefit 3 -->
-        <div class="benefit-card-3d group">
-          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-gold-500/30 transition-all duration-500 overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-[60px] group-hover:bg-gold-500/20 transition"></div>
-            <div class="relative z-10">
-              <div class="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <iconify-icon icon="lucide:calendar-check" width="24" class="text-gold-400"></iconify-icon>
-              </div>
-              <h4 class="text-lg font-semibold text-white mb-2">تجهيز موسمي</h4>
-              <p class="text-slate-400 text-sm">تجهيز المستشفيات لمواسم الحج والعمرة بتحليل البيانات التاريخية</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Benefit 4 -->
-        <div class="benefit-card-3d group">
-          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-purple-500/30 transition-all duration-500 overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition"></div>
-            <div class="relative z-10">
-              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <iconify-icon icon="lucide:shield-check" width="24" class="text-purple-400"></iconify-icon>
-              </div>
-              <h4 class="text-lg font-semibold text-white mb-2">دقة لا مثيل لها</h4>
-              <p class="text-slate-400 text-sm">القضاء على الأخطاء اليدوية ومنع الأخطاء الطبية الخطيرة</p>
-            </div>
-          </div>
         </div>
       </div>
-    </div>
 
+      <!-- Interactive 3D Benefits Showcase -->
+      <div class="mb-20">
+        <h3 class="text-2xl font-bold text-white text-center mb-12">
+          <iconify-icon icon="lucide:award" class="text-gold-500 ml-2"></iconify-icon>
+          إيجابيات النظام في البيئة الصحية السعودية
+        </h3>
 
-    <!-- Future Vision -->
-    <div class="mt-20 text-center">
-      <h3 class="text-2xl font-bold text-white mb-8">
-        <iconify-icon icon="lucide:rocket" class="text-gold-500 ml-2"></iconify-icon>
-        الرؤية المستقبلية
-      </h3>
-      
-      <div class="grid md:grid-cols-3 gap-6">
-        <!-- Vision 1 -->
-        <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 hover:border-indigo-500/40 transition">
-          <iconify-icon icon="lucide:line-chart" width="32" class="text-indigo-400 mb-4"></iconify-icon>
-          <h4 class="text-lg font-semibold text-white mb-2">التحليلات التنبؤية</h4>
-          <p class="text-slate-400 text-sm">التنبؤ بالأوبئة وتحديد المجموعات الأكثر عرضة للأمراض</p>
-        </div>
-        
-        <!-- Vision 2 -->
-        <div class="p-6 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-teal-900/20 border border-cyan-500/20 hover:border-cyan-500/40 transition">
-          <iconify-icon icon="lucide:stethoscope" width="32" class="text-cyan-400 mb-4"></iconify-icon>
-          <h4 class="text-lg font-semibold text-white mb-2">مساعد القرار السريري</h4>
-          <p class="text-slate-400 text-sm">عرض حالات مشابهة ونتائج علاجها لدعم الطبيب</p>
-        </div>
-        
-        <!-- Vision 3 -->
-        <div class="p-6 rounded-2xl bg-gradient-to-br from-emerald-900/20 to-green-900/20 border border-emerald-500/20 hover:border-emerald-500/40 transition">
-          <iconify-icon icon="lucide:user-circle" width="32" class="text-emerald-400 mb-4"></iconify-icon>
-          <h4 class="text-lg font-semibold text-white mb-2">تمكين المريض</h4>
-          <p class="text-slate-400 text-sm">بوابة آمنة للمرضى لمتابعة تاريخهم الصحي</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Benefit 1 -->
+          <div class="benefit-card-3d group">
+            <div
+              class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition">
+              </div>
+              <div class="relative z-10">
+                <div
+                  class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <iconify-icon icon="lucide:merge" width="24" class="text-cyan-400"></iconify-icon>
+                </div>
+                <h4 class="text-lg font-semibold text-white mb-2">توحيد السجلات</h4>
+                <p class="text-slate-400 text-sm">تحويل آلاف السجلات غير الموحدة إلى قاعدة بيانات موحدة على مستوى
+                  المملكة</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefit 2 -->
+          <div class="benefit-card-3d group">
+            <div
+              class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-emerald-500/30 transition-all duration-500 overflow-hidden">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition">
+              </div>
+              <div class="relative z-10">
+                <div
+                  class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <iconify-icon icon="lucide:microscope" width="24" class="text-emerald-400"></iconify-icon>
+                </div>
+                <h4 class="text-lg font-semibold text-white mb-2">تسريع البحث العلمي</h4>
+                <p class="text-slate-400 text-sm">تمكين الباحثين من إجراء دراسات وبائية واسعة النطاق بسهولة</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefit 3 -->
+          <div class="benefit-card-3d group">
+            <div
+              class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-gold-500/30 transition-all duration-500 overflow-hidden">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-[60px] group-hover:bg-gold-500/20 transition">
+              </div>
+              <div class="relative z-10">
+                <div
+                  class="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <iconify-icon icon="lucide:calendar-check" width="24" class="text-gold-400"></iconify-icon>
+                </div>
+                <h4 class="text-lg font-semibold text-white mb-2">تجهيز موسمي</h4>
+                <p class="text-slate-400 text-sm">تجهيز المستشفيات لمواسم الحج والعمرة بتحليل البيانات التاريخية</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Benefit 4 -->
+          <div class="benefit-card-3d group">
+            <div
+              class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-purple-500/30 transition-all duration-500 overflow-hidden">
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition">
+              </div>
+              <div class="relative z-10">
+                <div
+                  class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <iconify-icon icon="lucide:shield-check" width="24" class="text-purple-400"></iconify-icon>
+                </div>
+                <h4 class="text-lg font-semibold text-white mb-2">دقة لا مثيل لها</h4>
+                <p class="text-slate-400 text-sm">القضاء على الأخطاء اليدوية ومنع الأخطاء الطبية الخطيرة</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+
+      <!-- Future Vision -->
+      <div class="mt-20 text-center">
+        <h3 class="text-2xl font-bold text-white mb-8">
+          <iconify-icon icon="lucide:rocket" class="text-gold-500 ml-2"></iconify-icon>
+          الرؤية المستقبلية
+        </h3>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- Vision 1 -->
+          <div
+            class="p-6 rounded-2xl bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 hover:border-indigo-500/40 transition">
+            <iconify-icon icon="lucide:line-chart" width="32" class="text-indigo-400 mb-4"></iconify-icon>
+            <h4 class="text-lg font-semibold text-white mb-2">التحليلات التنبؤية</h4>
+            <p class="text-slate-400 text-sm">التنبؤ بالأوبئة وتحديد المجموعات الأكثر عرضة للأمراض</p>
+          </div>
+
+          <!-- Vision 2 -->
+          <div
+            class="p-6 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-teal-900/20 border border-cyan-500/20 hover:border-cyan-500/40 transition">
+            <iconify-icon icon="lucide:stethoscope" width="32" class="text-cyan-400 mb-4"></iconify-icon>
+            <h4 class="text-lg font-semibold text-white mb-2">مساعد القرار السريري</h4>
+            <p class="text-slate-400 text-sm">عرض حالات مشابهة ونتائج علاجها لدعم الطبيب</p>
+          </div>
+
+          <!-- Vision 3 -->
+          <div
+            class="p-6 rounded-2xl bg-gradient-to-br from-emerald-900/20 to-green-900/20 border border-emerald-500/20 hover:border-emerald-500/40 transition">
+            <iconify-icon icon="lucide:user-circle" width="32" class="text-emerald-400 mb-4"></iconify-icon>
+            <h4 class="text-lg font-semibold text-white mb-2">تمكين المريض</h4>
+            <p class="text-slate-400 text-sm">بوابة آمنة للمرضى لمتابعة تاريخهم الصحي</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-  </div>
-</section>
-
-<style>
-/* ========================================
+  <style>
+    /* ========================================
    SMART MEDICAL ARCHIVE - 3D STYLES
    ======================================== */
 
-/* Perspective Container */
-.perspective-1000 {
-  perspective: 1000px;
-}
+    /* Perspective Container */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
 
-/* 3D Header Transform */
-.transform-3d-header {
-  transform-style: preserve-3d;
-  animation: float3D 6s ease-in-out infinite;
-}
+    /* 3D Header Transform */
+    .transform-3d-header {
+      transform-style: preserve-3d;
+      animation: float3D 6s ease-in-out infinite;
+    }
 
-@keyframes float3D {
-  0%, 100% { transform: translateY(0) rotateX(0deg); }
-  50% { transform: translateY(-10px) rotateX(2deg); }
-}
+    @keyframes float3D {
 
-/* DNA Strand Animation */
-.dna-strand {
-  position: absolute;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, 
-    transparent 0%, 
-    rgba(6, 182, 212, 0.3) 25%, 
-    rgba(16, 185, 129, 0.3) 50%, 
-    rgba(6, 182, 212, 0.3) 75%, 
-    transparent 100%
-  );
-  animation: dnaFloat 20s linear infinite;
-}
+      0%,
+      100% {
+        transform: translateY(0) rotateX(0deg);
+      }
 
-.dna-strand-1 { left: 10%; animation-delay: 0s; }
-.dna-strand-2 { left: 50%; animation-delay: -7s; }
-.dna-strand-3 { left: 90%; animation-delay: -14s; }
-
-@keyframes dnaFloat {
-  0% { transform: translateY(-100%) rotate(0deg); }
-  100% { transform: translateY(100%) rotate(360deg); }
-}
-
-/* Medical Particles */
-.medical-particles {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.particle-medical {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.8), transparent);
-  border-radius: 50%;
-  animation: particleFloat 15s infinite ease-in-out;
-}
-
-.particle-medical.p-1 { top: 10%; left: 20%; animation-delay: 0s; }
-.particle-medical.p-2 { top: 30%; left: 80%; animation-delay: -2s; }
-.particle-medical.p-3 { top: 50%; left: 10%; animation-delay: -4s; }
-.particle-medical.p-4 { top: 70%; left: 60%; animation-delay: -6s; }
-.particle-medical.p-5 { top: 20%; left: 40%; animation-delay: -8s; background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent); }
-.particle-medical.p-6 { top: 80%; left: 30%; animation-delay: -10s; background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent); }
-.particle-medical.p-7 { top: 40%; left: 70%; animation-delay: -12s; }
-.particle-medical.p-8 { top: 60%; left: 50%; animation-delay: -14s; background: radial-gradient(circle, rgba(212, 175, 55, 0.8), transparent); }
-
-@keyframes particleFloat {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 0.3;
-  }
-  25% {
-    transform: translate(50px, -30px) scale(1.5);
-    opacity: 0.8;
-  }
-  50% {
-    transform: translate(-30px, 50px) scale(1);
-    opacity: 0.5;
-  }
-  75% {
-    transform: translate(30px, 30px) scale(1.3);
-    opacity: 0.7;
-  }
-}
-
-/* Holographic Container */
-.holographic-container {
-  transform-style: preserve-3d;
-  animation: holographicFloat 8s ease-in-out infinite;
-}
-
-@keyframes holographicFloat {
-  0%, 100% { transform: rotateY(-5deg) rotateX(5deg); }
-  50% { transform: rotateY(5deg) rotateX(-5deg); }
-}
-
-/* Scan Lines */
-.scan-lines {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(6, 182, 212, 0.03) 2px,
-    rgba(6, 182, 212, 0.03) 4px
-  );
-  pointer-events: none;
-  animation: scanMove 10s linear infinite;
-}
-
-@keyframes scanMove {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(100%); }
-}
-
-/* 3D Medical Document */
-.medical-document-3d {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  transform-style: preserve-3d;
-  animation: documentRotate 10s ease-in-out infinite;
-}
-
-.document-layer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-}
-
-.document-layer.layer-1 {
-  background: rgba(6, 182, 212, 0.2);
-  border: 1px solid rgba(6, 182, 212, 0.3);
-  transform: translate(-50%, -50%) translateZ(0px);
-}
-
-.document-layer.layer-2 {
-  background: rgba(16, 185, 129, 0.2);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  transform: translate(-50%, -50%) translateZ(20px);
-  animation: layerFloat 3s ease-in-out infinite;
-}
-
-.document-layer.layer-3 {
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  transform: translate(-50%, -50%) translateZ(40px);
-  animation: layerFloat 3s ease-in-out infinite 0.5s;
-}
-
-@keyframes documentRotate {
-  0%, 100% { transform: rotateY(0deg); }
-  50% { transform: rotateY(180deg); }
-}
-
-@keyframes layerFloat {
-  0%, 100% { transform: translate(-50%, -50%) translateZ(20px) translateY(0); }
-  50% { transform: translate(-50%, -50%) translateZ(30px) translateY(-10px); }
-}
-
-/* Stats Ring */
-.stats-ring-container {
-  position: relative;
-  width: 200px;
-  height: 200px;
-}
-
-.stats-ring {
-  transform: rotate(-90deg);
-}
-
-.ring-progress {
-  animation: ringFill 2s ease-out forwards;
-}
-
-@keyframes ringFill {
-  to { stroke-dashoffset: 75; }
-}
-
-.stats-ring-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-/* Processing Wave */
-.processing-wave {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.processing-wave span {
-  width: 4px;
-  height: 20px;
-  background: linear-gradient(to top, #06b6d4, #10b981);
-  border-radius: 2px;
-  animation: waveAnim 1s ease-in-out infinite;
-}
-
-.processing-wave span:nth-child(2) { animation-delay: 0.1s; }
-.processing-wave span:nth-child(3) { animation-delay: 0.2s; }
-.processing-wave span:nth-child(4) { animation-delay: 0.3s; }
-.processing-wave span:nth-child(5) { animation-delay: 0.4s; }
-
-@keyframes waveAnim {
-  0%, 100% { height: 20px; }
-  50% { height: 40px; }
-}
-
-/* Feature Card 3D */
-.feature-card-3d {
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-}
-
-.feature-card-3d:hover {
-  transform: translateZ(20px);
-}
-
-/* Benefit Card 3D */
-.benefit-card-3d {
-  transition: all 0.5s;
-}
-
-.benefit-card-3d:hover {
-  transform: translateY(-10px) scale(1.02);
-}
-
-/* Typing Indicator */
-.typing-indicator {
-  display: flex;
-  gap: 4px;
-}
-
-.typing-indicator span {
-  width: 8px;
-  height: 8px;
-  background: #06b6d4;
-  border-radius: 50%;
-  animation: typingBounce 1.4s infinite ease-in-out both;
-}
-
-.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes typingBounce {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1); }
-}
-
-/* Float Animation */
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* Pulse Slow */
-.animate-pulse-slow {
-  animation: pulseSlow 4s ease-in-out infinite;
-}
-
-@keyframes pulseSlow {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.6; }
-}
-
-/* Gradient Animation */
-.animate-gradient-x {
-  animation: gradientX 6s ease infinite;
-  background-size: 200% 200%;
-}
-
-@keyframes gradientX {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* Counter Animation */
-.counter {
-  transition: all 0.5s ease-out;
-}
-</style>
-
-<script>
-// ========================================
-// SMART MEDICAL ARCHIVE - 3D ANIMATIONS
-// ========================================
-
-document.addEventListener('DOMContentLoaded', function() {
-  
-  // Initialize 3D Canvas Background
-  initMedicalArchiveCanvas();
-  
-  // Initialize Counters
-  initCounters();
-  
-  // Initialize Intersection Observer for animations
-  initScrollAnimations();
-  
-});
-
-// 3D Canvas Background
-function initMedicalArchiveCanvas() {
-  const canvas = document.getElementById('medical-archive-canvas');
-  if (!canvas) return;
-  
-  const ctx = canvas.getContext('2d');
-  
-  function resize() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }
-  
-  resize();
-  window.addEventListener('resize', resize);
-  
-  // Particles - تقليل العدد لتحسين الأداء
-  const particles = [];
-  const particleCount = 30; // كان 50
-  
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      z: Math.random() * 1000,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      vz: (Math.random() - 0.5) * 2,
-      radius: Math.random() * 2 + 1,
-      color: Math.random() > 0.5 ? '#06b6d4' : '#10b981'
-    });
-  }
-  
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Update and draw particles
-    particles.forEach((p, i) => {
-      // Update position
-      p.x += p.vx;
-      p.y += p.vy;
-      p.z += p.vz;
-      
-      // Boundary check
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-      if (p.z < 0 || p.z > 1000) p.vz *= -1;
-      
-      // Calculate size based on z
-      const scale = (1000 - p.z) / 1000;
-      const size = p.radius * scale;
-      const alpha = scale * 0.5;
-      
-      // Draw particle
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
-      ctx.fill();
-      
-      // Draw connections - تقليل المسافة لتقليل عدد الخطوط
-      particles.forEach((p2, j) => {
-        if (i >= j) return;
-        
-        const dx = p.x - p2.x;
-        const dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist < 100) { // كان 150
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(6, 182, 212, ${(1 - dist / 100) * 0.15})`; // تقليل الشفافية
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      });
-    });
-    
-    requestAnimationFrame(animate);
-  }
-  
-  animate();
-}
-
-// Counter Animation
-function initCounters() {
-  const counters = document.querySelectorAll('.counter');
-  
-  counters.forEach(counter => {
-    const target = parseFloat(counter.getAttribute('data-target'));
-    const duration = 2000;
-    const start = 0;
-    const startTime = performance.now();
-    
-    function updateCounter(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      
-      // Easing function
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      const current = start + (target - start) * easeOutQuart;
-      
-      counter.textContent = current.toFixed(1);
-      
-      if (progress < 1) {
-        requestAnimationFrame(updateCounter);
+      50% {
+        transform: translateY(-10px) rotateX(2deg);
       }
     }
-    
-    // Start when visible
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(updateCounter);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    
-    observer.observe(counter);
-  });
-}
 
-// Scroll Animations
-function initScrollAnimations() {
-  const elements = document.querySelectorAll('.feature-card-3d, .benefit-card-3d');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-        entry.target.style.transitionDelay = `${index * 0.1}s`;
+    /* DNA Strand Animation */
+    .dna-strand {
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg,
+          transparent 0%,
+          rgba(6, 182, 212, 0.3) 25%,
+          rgba(16, 185, 129, 0.3) 50%,
+          rgba(6, 182, 212, 0.3) 75%,
+          transparent 100%);
+      animation: dnaFloat 20s linear infinite;
+    }
+
+    .dna-strand-1 {
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .dna-strand-2 {
+      left: 50%;
+      animation-delay: -7s;
+    }
+
+    .dna-strand-3 {
+      left: 90%;
+      animation-delay: -14s;
+    }
+
+    @keyframes dnaFloat {
+      0% {
+        transform: translateY(-100%) rotate(0deg);
       }
+
+      100% {
+        transform: translateY(100%) rotate(360deg);
+      }
+    }
+
+    /* Medical Particles */
+    .medical-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle-medical {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.8), transparent);
+      border-radius: 50%;
+      animation: particleFloat 15s infinite ease-in-out;
+    }
+
+    .particle-medical.p-1 {
+      top: 10%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .particle-medical.p-2 {
+      top: 30%;
+      left: 80%;
+      animation-delay: -2s;
+    }
+
+    .particle-medical.p-3 {
+      top: 50%;
+      left: 10%;
+      animation-delay: -4s;
+    }
+
+    .particle-medical.p-4 {
+      top: 70%;
+      left: 60%;
+      animation-delay: -6s;
+    }
+
+    .particle-medical.p-5 {
+      top: 20%;
+      left: 40%;
+      animation-delay: -8s;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent);
+    }
+
+    .particle-medical.p-6 {
+      top: 80%;
+      left: 30%;
+      animation-delay: -10s;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent);
+    }
+
+    .particle-medical.p-7 {
+      top: 40%;
+      left: 70%;
+      animation-delay: -12s;
+    }
+
+    .particle-medical.p-8 {
+      top: 60%;
+      left: 50%;
+      animation-delay: -14s;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.8), transparent);
+    }
+
+    @keyframes particleFloat {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+      }
+
+      25% {
+        transform: translate(50px, -30px) scale(1.5);
+        opacity: 0.8;
+      }
+
+      50% {
+        transform: translate(-30px, 50px) scale(1);
+        opacity: 0.5;
+      }
+
+      75% {
+        transform: translate(30px, 30px) scale(1.3);
+        opacity: 0.7;
+      }
+    }
+
+    /* Holographic Container */
+    .holographic-container {
+      transform-style: preserve-3d;
+      animation: holographicFloat 8s ease-in-out infinite;
+    }
+
+    @keyframes holographicFloat {
+
+      0%,
+      100% {
+        transform: rotateY(-5deg) rotateX(5deg);
+      }
+
+      50% {
+        transform: rotateY(5deg) rotateX(-5deg);
+      }
+    }
+
+    /* Scan Lines */
+    .scan-lines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(6, 182, 212, 0.03) 2px,
+          rgba(6, 182, 212, 0.03) 4px);
+      pointer-events: none;
+      animation: scanMove 10s linear infinite;
+    }
+
+    @keyframes scanMove {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(100%);
+      }
+    }
+
+    /* 3D Medical Document */
+    .medical-document-3d {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      transform-style: preserve-3d;
+      animation: documentRotate 10s ease-in-out infinite;
+    }
+
+    .document-layer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .document-layer.layer-1 {
+      background: rgba(6, 182, 212, 0.2);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      transform: translate(-50%, -50%) translateZ(0px);
+    }
+
+    .document-layer.layer-2 {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      transform: translate(-50%, -50%) translateZ(20px);
+      animation: layerFloat 3s ease-in-out infinite;
+    }
+
+    .document-layer.layer-3 {
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      transform: translate(-50%, -50%) translateZ(40px);
+      animation: layerFloat 3s ease-in-out infinite 0.5s;
+    }
+
+    @keyframes documentRotate {
+
+      0%,
+      100% {
+        transform: rotateY(0deg);
+      }
+
+      50% {
+        transform: rotateY(180deg);
+      }
+    }
+
+    @keyframes layerFloat {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) translateZ(20px) translateY(0);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) translateZ(30px) translateY(-10px);
+      }
+    }
+
+    /* Stats Ring */
+    .stats-ring-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .stats-ring {
+      transform: rotate(-90deg);
+    }
+
+    .ring-progress {
+      animation: ringFill 2s ease-out forwards;
+    }
+
+    @keyframes ringFill {
+      to {
+        stroke-dashoffset: 75;
+      }
+    }
+
+    .stats-ring-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    /* Processing Wave */
+    .processing-wave {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .processing-wave span {
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(to top, #06b6d4, #10b981);
+      border-radius: 2px;
+      animation: waveAnim 1s ease-in-out infinite;
+    }
+
+    .processing-wave span:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .processing-wave span:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    .processing-wave span:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+
+    .processing-wave span:nth-child(5) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes waveAnim {
+
+      0%,
+      100% {
+        height: 20px;
+      }
+
+      50% {
+        height: 40px;
+      }
+    }
+
+    /* Feature Card 3D */
+    .feature-card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+    }
+
+    .feature-card-3d:hover {
+      transform: translateZ(20px);
+    }
+
+    /* Benefit Card 3D */
+    .benefit-card-3d {
+      transition: all 0.5s;
+    }
+
+    .benefit-card-3d:hover {
+      transform: translateY(-10px) scale(1.02);
+    }
+
+    /* Typing Indicator */
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+    }
+
+    .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      background: #06b6d4;
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite ease-in-out both;
+    }
+
+    .typing-indicator span:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+
+    @keyframes typingBounce {
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0);
+      }
+
+      40% {
+        transform: scale(1);
+      }
+    }
+
+    /* Float Animation */
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Pulse Slow */
+    .animate-pulse-slow {
+      animation: pulseSlow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulseSlow {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    /* Gradient Animation */
+    .animate-gradient-x {
+      animation: gradientX 6s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    @keyframes gradientX {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    /* Counter Animation */
+    .counter {
+      transition: all 0.5s ease-out;
+    }
+  </style>
+
+  <script>
+    // ========================================
+    // SMART MEDICAL ARCHIVE - 3D ANIMATIONS
+    // ========================================
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // Initialize 3D Canvas Background
+      initMedicalArchiveCanvas();
+
+      // Initialize Counters
+      initCounters();
+
+      // Initialize Intersection Observer for animations
+      initScrollAnimations();
+
     });
-  }, { threshold: 0.1 });
-  
-  elements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease-out';
-    observer.observe(el);
-  });
-}
-</script>
+
+    // 3D Canvas Background
+    function initMedicalArchiveCanvas() {
+      const canvas = document.getElementById('medical-archive-canvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Particles - تقليل العدد لتحسين الأداء
+      const particles = [];
+      const particleCount = 30; // كان 50
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random() * 1000,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          vz: (Math.random() - 0.5) * 2,
+          radius: Math.random() * 2 + 1,
+          color: Math.random() > 0.5 ? '#06b6d4' : '#10b981'
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Update and draw particles
+        particles.forEach((p, i) => {
+          // Update position
+          p.x += p.vx;
+          p.y += p.vy;
+          p.z += p.vz;
+
+          // Boundary check
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+          if (p.z < 0 || p.z > 1000) p.vz *= -1;
+
+          // Calculate size based on z
+          const scale = (1000 - p.z) / 1000;
+          const size = p.radius * scale;
+          const alpha = scale * 0.5;
+
+          // Draw particle
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+          ctx.fill();
+
+          // Draw connections - تقليل المسافة لتقليل عدد الخطوط
+          particles.forEach((p2, j) => {
+            if (i >= j) return;
+
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 100) { // كان 150
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(6, 182, 212, ${(1 - dist / 100) * 0.15})`; // تقليل الشفافية
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          });
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    // Counter Animation
+    function initCounters() {
+      const counters = document.querySelectorAll('.counter');
+
+      counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const start = 0;
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          // Easing function
+          const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+          const current = start + (target - start) * easeOutQuart;
+
+          counter.textContent = current.toFixed(1);
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          }
+        }
+
+        // Start when visible
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              requestAnimationFrame(updateCounter);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.5 });
+
+        observer.observe(counter);
+      });
+    }
+
+    // Scroll Animations
+    function initScrollAnimations() {
+      const elements = document.querySelectorAll('.feature-card-3d, .benefit-card-3d');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transitionDelay = `${index * 0.1}s`;
+          }
+        });
+      }, { threshold: 0.1 });
+
+      elements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease-out';
+        observer.observe(el);
+      });
+    }
+  </script>
   <section class="py-16 md:py-24 px-6 relative z-10 bg-slate-900/50 border-y border-white/5">
     <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
       <div>

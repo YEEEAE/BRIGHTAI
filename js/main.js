@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ========== Glass Card Mouse Effect ==========
-document.querySelectorAll('.glass-card').forEach(card => {
+// ========== Glass Card Mouse Effect ==========
+document.querySelectorAll('.glass-card, .service-card, .feature-card, .stat-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const rect = card.getBoundingClientRect();
     card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
