@@ -58,11 +58,12 @@ Target high-intent keywords relevant to Vision 2030 and Enterprise AI.
 *   **Meta Descriptions**: Compelling summary with CTA. Max 160 chars.
     *   *Example*: "شريكك الاستراتيجي للتحول الرقمي في المملكة. نقدم حلول أتمتة وتحليل بيانات متوافقة مع معايير الأمن السيبراني. احجز استشارتك المجانية اليوم."
 
-### 3. Heading Structure (H1-H6)
-*   Ensure **only one H1** per page.
-*   Include keywords in H2 and H3 tags naturally.
-    *   *Bad*: `<h2>Services</h2>`
-    *   *Good*: `<h2>خدمات الذكاء الاصطناعي المتكاملة</h2>`
+### 3. Header & Content Optimization
+*   **Headings (H1-H6)**: [x] Optimized H1/H2 in `index.html` to include "Riyadh" and "Saudi" where natural.
+*   **Body Content**: [x] Added "Best AI Company in Riyadh" and "Saudi Sovereign Hosting" keywords to "Why Choose Us" section.
+*   **Internal Linking**: [x] Fixed broken site-wide links (`Docfile` paths) to point to clean URLs (`about-us`, `Docs`).
+*   **Image Alt Text**: [x] Updated 3D icon alt text in Hero section with targeted Arabic keywords.
+    *   [x] Standardized Logo Alt Text site-wide to "Bright AI - Saudi AI Company".
 
 ### 4. Schema Markup (Structured Data)
 You have already implemented `Organization` and `Service` schema. Expand this with:
