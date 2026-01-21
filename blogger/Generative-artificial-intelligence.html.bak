@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-8LLESL207Q');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://brightai.site/blogger/Generative-artificial-intelligence.html">
+    <title>الذكاء الاصطناعي التوليدي (Generative AI) وتطبيقاته في السعودية - مُشرقة AI</title>
+    <meta name="description"
+        content="دليل شامل ومبسط للذكاء الاصطناعي التوليدي وتطبيقاته المبتكرة في المملكة العربية السعودية من شركة مُشرقة AI الرائدة">
+    <meta name="keywords"
+        content="الذكاء الاصطناعي التوليدي, Generative AI, تطبيقات AI في السعودية, مُشرقة AI, الذكاء الاصطناعي السعودي">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../Gemini.png">
+    <link rel="apple-touch-icon" sizes="240x240" href="../Gemini.png">
+
+    <!-- GTM/Analytics Expert Fix: Scripts loading -->
+    <script async src="https://analytics.ahrefs.com/analytics.js" data-key="Cq+jwsfq74a4uXGJ0gEW5A"></script>
+
+    <!-- End GTM/Analytics Expert Fix -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Add dark palette and helpers */
+        :root {
+            /* Color Palette */
+            --primary-color: #64FFDA;
+            --secondary-color: #0A192F;
+            --background-color: #0A192F;
+            --text-color: #8892B0;
+            --heading-color: #CCD6F6;
+            --white: #FFFFFF;
+            --card-bg: #112240;
+            --accent-color: #1D2B3A;
+            --accent-color-lighter: #24364A;
+            --border-color: rgba(100, 255, 218, 0.08);
+
+            /* Transitions */
+            --transition-short: all 0.25s ease-in-out;
+            --transition-medium: all 0.3s ease-in-out;
+            --transition-long: all 0.5s ease-in-out;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 6px rgba(2, 6, 23, 0.6);
+            --shadow-md: 0 8px 30px rgba(2, 6, 23, 0.6);
+            --shadow-lg: 0 20px 60px rgba(2, 6, 23, 0.7);
+
+            /* Layout & Sizing */
+            --container-width: 1200px;
+            --border-radius-sm: 8px;
+            --border-radius-md: 15px;
+
+            /* Accessibility */
+            --focus-outline-color: var(--primary-color);
+            --muted: rgba(204, 214, 246, 0.06);
+        }
+
+        /* Replace body/background/text colors */
+        body {
+            font-family: 'Tajawal', Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: radial-gradient(circle at 10% 10%, rgba(100, 255, 218, 0.03), transparent 20%), var(--background-color);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 25, 47, 0.6);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo img {
+            height: 55px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--heading-color);
+            font-weight: 500;
+            font-size: 16px;
+            transition: var(--transition-medium);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background: rgba(100, 255, 218, 0.04);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.07) 0%, rgba(17, 34, 64, 0.2) 100%), linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color-lighter) 100%);
+            color: var(--heading-color);
+            padding: 100px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: var(--heading-color);
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 40px;
+            color: var(--text-color);
+            opacity: 0.95;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            margin-bottom: 40px;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-medium);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-bottom: 30px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .section-content {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.3);
+        }
+
+        .highlight-box h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .application-card {
+            background: linear-gradient(135deg, rgba(100, 255, 218, 0.08), rgba(29, 43, 58, 0.32));
+            color: var(--heading-color);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-md);
+        }
+
+        .application-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .application-card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .application-card h3 {
+            color: var(--heading-color);
+        }
+
+        .vision-2030-section {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 80px 60px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 60px 0;
+            box-shadow: 0 20px 60px rgba(17, 153, 142, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            color: #333;
+            padding: 80px 60px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, #071026 0%, var(--secondary-color) 100%);
+            color: var(--text-color);
+            padding: 80px 0 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+        }
+
+        .footer-logo-container {
+            max-width: 400px;
+        }
+
+        .footer-logo img {
+            height: 50px;
+            width: auto;
+            margin-bottom: 20px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-description,
+        .footer-link a,
+        .contact-item,
+        .copyright {
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+
+        .social-link {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--heading-color);
+        }
+
+        .social-link:hover {
+            background: rgba(100, 255, 218, 0.08);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-links-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ecf0f1;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            margin-bottom: 12px;
+        }
+
+        .footer-link a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-link a:hover {
+            color: #667eea;
+            transform: translateX(-5px);
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .contact-icon {
+            color: #667eea;
+            font-size: 1.1rem;
+            margin-top: 3px;
+            min-width: 20px;
+        }
+
+        .contact-link-footer {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link-footer:hover {
+            color: #667eea;
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .newsletter-button {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color-lighter));
+            color: var(--secondary-color);
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: var(--transition-short);
+        }
+
+        .newsletter-button:hover {
+            filter: brightness(1.05);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 50px;
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-link:hover {
+            color: #667eea;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                gap: 15px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 15px;
+                text-align: center;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                width: 100%;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section {
+                padding: 40px 30px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .applications-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .cta-section,
+            .vision-2030-section {
+                padding: 50px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 80px 20px 60px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .application-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="الذكاء الاصطناعي التوليدي (Generative AI) وتطبيقاته في السعودية - مُشرقة AI">
+    <meta property="og:description"
+        content="الذكاء الاصطناعي التوليدي (Generative AI) وتطبيقاته في السعودية - مُشرقة AI - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+    <meta property="og:url" content="https://brightai.site/blogger/Generative-artificial-intelligence.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
+    <meta property="og:site_name" content="مُشرقة AI">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="الذكاء الاصطناعي التوليدي (Generative AI) وتطبيقاته في السعودية - مُشرقة AI">
+    <meta name="twitter:description"
+        content="الذكاء الاصطناعي التوليدي (Generative AI) وتطبيقاته في السعودية - مُشرقة AI - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+    <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-container">
+            <a href="#home" class="logo"
+                aria-label="الصفحة الرئيسية لشركة مُشرقة AI - رائدة الذكاء الاصطناعي في السعودية">
+                <img src="https://www2.0zz0.com/2025/06/23/22/317775783.png"
+                    alt="شعار شركة مُشرقة AI السعودية الرائدة في حلول الذكاء الاصطناعي" width="200" height="55"
+                    style="height: 55px; width: auto;">
+            </a>
+            <button class="hamburger" aria-label="فتح قائمة التنقل" aria-expanded="false" aria-controls="nav-links-list"
+                type="button">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+                <span class="sr-only">فتح القائمة</span>
+            </button>
+            <ul class="nav-links" id="nav-links-list" role="menubar" aria-label="روابط التنقل الرئيسية">
+                <li role="none"><a role="menuitem" href="#home">الرئيسية</a></li>
+                <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
+                <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات الضخمة</a></li>
+                <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
+                <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نماذج AI تجريبية للسوق السعودي</a></li>
+                <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
+                <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
+                <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <h1 class="hero-title">الذكاء الاصطناعي التوليدي</h1>
+                <p class="hero-subtitle">دليلك الشامل لفهم Generative AI وتطبيقاته الثورية في المملكة العربية السعودية
+                </p>
+            </div>
+        </section>
+
+        <div class="content-container">
+            <!-- Introduction Section -->
+            <section class="section">
+                <h2 class="section-title">ما هو الذكاء الاصطناعي التوليدي؟</h2>
+                <div class="section-content">
+                    <p><a href="../blogger/description.html" style="color: inherit; text-decoration: underline;">الذكاء
+                            الاصطناعي التوليدي (Generative AI)</a> هو فرع متقدم من فروع الذكاء الاصطناعي يركز على إنشاء
+                        محتوى جديد ومبتكر بدلاً من مجرد <a href="../data-analysis.html"
+                            style="color: inherit; text-decoration: underline;">تحليل البيانات</a> الموجودة. يستخدم هذا
+                        النوع من التقنيات خوارزميات التعلم العميق والشبكات العصبية المتقدمة لتوليد نصوص وصور وأصوات
+                        وفيديوهات وحتى أكواد برمجية جديدة تماماً.</p>
+
+                    <p>تعتمد تقنيات الذكاء الاصطناعي التوليدي على نماذج رياضية معقدة تُدرب على مجموعات ضخمة من البيانات
+                        لتتعلم الأنماط والعلاقات الخفية. بعد التدريب، تصبح هذه النماذج قادرة على إنتاج محتوى أصلي يحاكي
+                        الأساليب والأنماط التي تعلمتها، مما يفتح آفاقاً لا محدودة للإبداع والابتكار في مختلف المجالات.
+                    </p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>لماذا يُعتبر الذكاء الاصطناعي التوليدي ثورة حقيقية؟</h3>
+                    <p>لأنه يمثل نقلة نوعية من الذكاء الاصطناعي "التحليلي" إلى الذكاء الاصطناعي "الإبداعي"، حيث يمكن
+                        للآلة الآن أن تبدع وتنشئ محتوى جديداً بدلاً من مجرد تحليل المحتوى الموجود</p>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="section">
+                <h2 class="section-title">كيف يعمل الذكاء الاصطناعي التوليدي؟</h2>
+                <div class="section-content">
+                    <p>يعتمد الذكاء الاصطناعي التوليدي على عدة تقنيات متطورة تعمل معاً لإنتاج محتوى جديد ومبتكر:</p>
+
+                    <p><strong>الشبكات التوليدية التنافسية (GANs):</strong> تتكون من شبكتين عصبيتين تتنافسان مع بعضهما
+                        البعض - الأولى تُنتج المحتوى والثانية تحاول اكتشاف ما إذا كان المحتوى حقيقياً أم مُولد
+                        اصطناعياً. هذا التنافس المستمر يؤدي إلى تحسن مستمر في جودة المحتوى المُولد.</p>
+
+                    <p><strong>نماذج المحولات (Transformers):</strong> وهي البنية الأساسية لنماذج اللغة الكبيرة مثل GPT
+                        وBERT، تعتمد على آلية "الانتباه" لفهم السياق والعلاقات بين الكلمات والمفاهيم في النصوص الطويلة.
+                    </p>
+
+                    <p><strong>نماذج الانتشار (Diffusion Models):</strong> تستخدم في توليد الصور عالية الجودة، حيث تبدأ
+                        بضوضاء عشوائية وتزيلها تدريجياً لإنتاج صور واضحة ومفصلة حسب الوصف المطلوب.</p>
+
+                    <p><strong>التعلم العميق والشبكات العصبية المتقدمة:</strong> تمكن هذه التقنيات النماذج من فهم
+                        الأنماط المعقدة في البيانات واستخدامها لإنتاج محتوى جديد يحافظ على نفس الخصائص والأسلوب.</p>
+                </div>
+            </section>
+
+            <!-- Applications Grid -->
+            <section class="section">
+                <h2 class="section-title">تطبيقات الذكاء الاصطناعي التوليدي في السعودية</h2>
+                <div class="applications-grid">
+                    <div class="application-card">
+                        <i class="fas fa-pen-nib"></i>
+                        <h3>إنتاج المحتوى النصي</h3>
+                        <p>كتابة المقالات، التقارير، والمحتوى التسويقي باللغة العربية بجودة عالية ومتوافق مع الثقافة
+                            السعودية المحلية</p>
+                    </div>
+                    <div class="application-card">
+                        <i class="fas fa-image"></i>
+                        <h3>توليد الصور والتصاميم</h3>
+                        <p>إنشاء صور فنية، تصاميم جرافيكية، وشعارات مبتكرة للشركات والمؤسسات السعودية</p>
+                    </div>
+                    <div class="application-card">
+                        <i class="fas fa-code"></i>
+                        <h3>البرمجة والتطوير</h3>
+                        <p>كتابة الأكواد البرمجية، تطوير التطبيقات، وأتمتة المهام التقنية للشركات التقنية في المملكة</p>
+                    </div>
+                    <div class="application-card">
+                        <i class="fas fa-music"></i>
+                        <h3>الإنتاج الصوتي والموسيقي</h3>
+                        <p>إنتاج الموسيقى، المؤثرات الصوتية، والتعليق الصوتي للمحتوى الإعلامي والتعليمي السعودي</p>
+                    </div>
+                    <div class="application-card">
+                        <i class="fas fa-video"></i>
+                        <h3>إنتاج الفيديو والرسوم المتحركة</h3>
+                        <p>إنشاء مقاطع فيديو تعليمية وترويجية ورسوم متحركة للقطاعات المختلفة في المملكة</p>
+                    </div>
+                    <div class="application-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>التجارة الإلكترونية</h3>
+                        <p>إنتاج أوصاف المنتجات، صور المنتجات، والمحتوى التسويقي للمتاجر الإلكترونية السعودية</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vision 2030 Section -->
+            <div class="vision-2030-section">
+                <h2 class="section-title" style="color: white; text-align: center;">الذكاء الاصطناعي التوليدي ورؤية
+                    السعودية 2030</h2>
+                <p style="font-size: 1.3rem; margin-bottom: 30px;">تلعب تقنيات الذكاء الاصطناعي التوليدي دوراً محورياً
+                    في تحقيق أهداف رؤية المملكة 2030، خاصة في مجالات التحول الرقمي، الاقتصاد المعرفي، والابتكار التقني.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">75%</span>
+                        <span class="stat-label">من الشركات السعودية تخطط لتبني AI</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">20B$</span>
+                        <span class="stat-label">استثمارات الذكاء الاصطناعي في المملكة</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">125k</span>
+                        <span class="stat-label">وظيفة جديدة في قطاع التقنية</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">40%</span>
+                        <span class="stat-label">نمو متوقع في القطاع الرقمي</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Industries Section -->
+            <section class="section">
+                <h2 class="section-title">القطاعات المستفيدة في السعودية</h2>
+                <div class="section-content">
+                    <p><strong>القطاع المصرفي والمالي:</strong> تستخدم البنوك السعودية الذكاء الاصطناعي التوليدي لإنشاء
+                        تقارير مالية مخصصة، تطوير منتجات مصرفية جديدة، وتحسين تجربة العملاء من خلال المساعدين
+                        الافتراضيين الذكيين. بنوك مثل البنك الأهلي السعودي ومصرف الراجحي تستثمر بكثافة في هذه التقنيات.
+                    </p>
+
+                    <p><strong>القطاع الصحي:</strong> في مستشفيات المملكة ومراكز الرعاية الصحية، يُستخدم الذكاء
+                        الاصطناعي التوليدي لإنشاء تقارير طبية مفصلة، تطوير خطط علاجية مخصصة، وإنتاج محتوى تثقيفي صحي
+                        باللغة العربية يتناسب مع الثقافة المحلية.</p>
+
+                    <p><strong>قطاع التعليم:</strong> الجامعات السعودية ووزارة التعليم تستفيد من هذه التقنيات في إنشاء
+                        مناهج تعليمية تفاعلية، تطوير برامج تعليمية مخصصة للطلاب، وإنتاج محتوى تعليمي رقمي متقدم يدعم
+                        التعلم عن بُعد والتعليم المدمج.</p>
+
+                    <p><strong>قطاع الإعلام والترفيه:</strong> شركات الإنتاج السعودية تستخدم الذكاء الاصطناعي التوليدي
+                        لإنتاج المحتوى الإعلامي، كتابة السيناريوهات، إنشاء المؤثرات البصرية، وتطوير الألعاب الإلكترونية
+                        التي تعكس الثقافة والتراث السعودي.</p>
+
+                    <p><strong>القطاع الحكومي:</strong> الجهات الحكومية تستفيد من هذه التقنيات في تطوير الخدمات الرقمية،
+                        إنشاء المحتوى التوعوي، وتحسين التواصل مع المواطنين من خلال منصات ذكية تتفاعل باللغة العربية
+                        بطلاقة.</p>
+
+                    <p><strong>قطاع الطاقة والبتروكيماويات:</strong> شركات مثل أرامكو وسابك تستخدم الذكاء الاصطناعي
+                        التوليدي في تحليل البيانات الجيولوجية، تطوير حلول الطاقة المتجددة، وإنشاء تقارير تقنية متخصصة
+                        تساعد في اتخاذ القرارات الاستراتيجية.</p>
+                </div>
+            </section>
+
+            <!-- Benefits Section -->
+            <section class="section">
+                <h2 class="section-title">فوائد الذكاء الاصطناعي التوليدي للأعمال السعودية</h2>
+                <div class="section-content">
+                    <p><strong>تسريع الإنتاجية:</strong> يمكن للشركات السعودية زيادة إنتاجيتها بنسبة تصل إلى 300% من
+                        خلال <a href="../smart-automation.html"
+                            style="color: inherit; text-decoration: underline;">أتمتة المهام</a> الإبداعية والإنتاجية.
+                        على سبيل المثال، يمكن لفريق التسويق في شركة سعودية إنتاج محتوى تسويقي لشهر كامل في يوم واحد فقط.
+                    </p>
+
+                    <p><strong>خفض التكاليف:</strong> تقليل تكاليف التوظيف والإنتاج بشكل كبير، حيث يمكن لنموذج ذكاء
+                        اصطناعي واحد أن يقوم بمهام تتطلب عادة فريق عمل كامل. هذا يوفر للشركات السعودية ملايين الريالات
+                        سنوياً في تكاليف التشغيل.</p>
+
+                    <p><strong>التخصيص والتفرد:</strong> إنتاج محتوى مخصص لكل عميل أو مستخدم، مما يحسن تجربة العملاء
+                        ويزيد من معدلات الرضا والولاء. الشركات السعودية يمكنها الآن تقديم خدمات مخصصة لكل عميل بناء على
+                        تفضيلاته الشخصية وتاريخه مع الشركة.</p>
+
+                    <p><strong>الابتكار المستمر:</strong> القدرة على توليد أفكار وحلول جديدة بشكل مستمر، مما يحافظ على
+                        التنافسية في السوق السعودي المتنامي. هذا يساعد الشركات على البقاء في المقدمة وتقديم منتجات
+                        وخدمات مبتكرة باستمرار.</p>
+
+                    <p><strong>التوطين اللغوي والثقافي:</strong> إنتاج محتوى باللغة العربية يتناسب مع الثقافة السعودية
+                        المحلية، مما يزيد من فعالية التواصل مع العملاء المحليين ويعزز الهوية الوطنية في المحتوى الرقمي.
+                    </p>
+
+                    <p><strong>سرعة الاستجابة للسوق:</strong> القدرة على الاستجابة السريعة لتغيرات السوق وتفضيلات
+                        العملاء من خلال إنتاج محتوى ومنتجات جديدة في وقت قياسي، مما يمنح الشركات السعودية ميزة تنافسية
+                        قوية.</p>
+                </div>
+            </section>
+
+            <!-- Challenges Section -->
+            <section class="section">
+                <h2 class="section-title">التحديات والحلول</h2>
+                <div class="section-content">
+                    <p><strong>التحدي الأول - نقص المواهب المتخصصة:</strong> يواجه السوق السعودي نقصاً في الخبراء
+                        المتخصصين في الذكاء الاصطناعي التوليدي. الحل يكمن في الاستثمار في البرامج التدريبية المتخصصة،
+                        الشراكة مع الجامعات السعودية لتطوير مناهج متقدمة، واستقطاب المواهب العالمية من خلال برامج
+                        الإقامة المميزة.</p>
+
+                    <p><strong>التحدي الثاني - الأمان والخصوصية:</strong> حماية البيانات الحساسة والمحتوى المُولد من سوء
+                        الاستخدام. تعمل الشركات السعودية على تطوير بروتوكولات أمان متقدمة، استخدام تقنيات التشفير
+                        المتطورة، والامتثال للوائح الأمان السيبراني السعودية.</p>
+
+                    <p><strong>التحدي الثالث - ضمان الجودة والدقة:</strong> التأكد من أن المحتوى المُولد دقيق وموثوق
+                        وخالي من التحيز. يتم حل هذا من خلال تطوير نماذج مراجعة ذكية، تطبيق معايير جودة صارمة، والمراجعة
+                        البشرية للمحتوى الحساس.</p>
+
+                    <p><strong>التحدي الرابع - التكامل مع الأنظمة الموجودة:</strong> دمج تقنيات الذكاء الاصطناعي
+                        التوليدي مع البنية التحتية التقنية الحالية للشركات. يتطلب هذا تطوير واجهات برمجية متقدمة، برامج
+                        تدريب للموظفين، وخطط تحول رقمي مدروسة.</p>
+
+                    <p><strong>التحدي الخامس - التكلفة والعائد على الاستثمار:</strong> تبرير التكاليف الأولية المرتفعة
+                        لتطبيق هذه التقنيات. يتم التعامل مع هذا من خلال وضع خطط تطبيق مرحلية، قياس العائد على الاستثمار
+                        بدقة، والبدء بمشاريع تجريبية صغيرة قبل التوسع.</p>
+                </div>
+            </section>
+
+            <!-- Future Section -->
+            <section class="section">
+                <h2 class="section-title">مستقبل الذكاء الاصطناعي التوليدي في السعودية</h2>
+                <div class="section-content">
+                    <p><strong>الاستثمارات الحكومية الضخمة:</strong> تخطط المملكة لاستثمار أكثر من 20 مليار دولار في
+                        قطاع الذكاء الاصطناعي بحلول عام 2030، مما سيجعل السعودية مركزاً عالمياً لتقنيات الذكاء الاصطناعي
+                        في المنطقة. هذه الاستثمارات تشمل بناء مراكز بحثية متقدمة، تطوير البنية التحتية التقنية، وإنشاء
+                        صناديق استثمارية متخصصة.</p>
+
+                    <p><strong>مدينة نيوم والمدن الذكية:</strong> ستكون مدينة نيوم والمدن الذكية الأخرى في المملكة
+                        بمثابة معامل حية لتطبيق أحدث تقنيات الذكاء الاصطناعي التوليدي. من المتوقع أن تشهد هذه المدن
+                        تطبيقات مبتكرة في مجالات النقل الذكي، إدارة الطاقة، والخدمات المدنية الذكية.</p>
+
+                    <p><strong>التطوير المحلي للتقنيات:</strong> تعمل الشركات السعودية على تطوير نماذج ذكاء اصطناعي
+                        محلية تفهم اللغة العربية والثقافة السعودية بشكل أفضل من النماذج العالمية. هذا سيمنح المملكة ميزة
+                        تنافسية في السوق العربي والإسلامي.</p>
+
+                    <p><strong>الشراكات الدولية:</strong> تبني المملكة شراكات استراتيجية مع عمالقة التقنية العالمية مثل
+                        Google وMicrosoft وOpenAI لنقل المعرفة وتطوير الخبرات المحلية. هذه الشراكات تشمل إنشاء مراكز
+                        تطوير محلية، برامج تدريب متخصصة، ومشاريع بحثية مشتركة.</p>
+
+                    <p><strong>التعليم والتدريب المتخصص:</strong> تطوير برامج تعليمية متقدمة في الجامعات السعودية، إنشاء
+                        معاهد تدريب متخصصة، وإطلاق منح دراسية للطلاب المتميزين في مجال الذكاء الاصطناعي. الهدف هو إعداد
+                        جيل من الخبراء السعوديين القادرين على قيادة هذا القطاع مستقبلاً.</p>
+
+                    <p><strong>التطبيقات الناشئة:</strong> نتوقع ظهور تطبيقات جديدة ومبتكرة في مجالات الزراعة الذكية،
+                        السياحة الافتراضية، الطب التخصصي، والتراث الرقمي. هذه التطبيقات ستساهم في تنويع الاقتصاد السعودي
+                        وخلق قطاعات جديدة مزدهرة.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>رؤية مُشرقة AI للمستقبل</h3>
+                    <p>نحن في مُشرقة AI نؤمن بأن الذكاء الاصطناعي التوليدي سيكون العامل الأساسي في تحويل المملكة العربية
+                        السعودية إلى مركز عالمي للابتكار والتقنية، وسنكون جزءاً من هذا التحول التاريخي</p>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <h2 class="section-title" style="color: #333; text-align: center;">ابدأ رحلتك مع الذكاء الاصطناعي
+                    التوليدي اليوم</h2>
+                <p style="font-size: 1.3rem; margin-bottom: 40px; text-align: center;">انضم إلى مئات الشركات السعودية
+                    التي تثق في خبرتنا وحلولنا المتقدمة في مجال الذكاء الاصطناعي</p>
+                <div style="text-align: center;">
+                    <a href="consultation.html" class="cta-button">احصل على استشارة مجانية</a>
+                    <a href="our-products.html" class="cta-button">اكتشف خدماتنا</a>
+                    <a href="tel:+966538229013" class="cta-button">اتصل بنا الآن</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo" aria-labelledby="footer-heading">
+        <h2 id="footer-heading" class="sr-only">معلومات إضافية وروابط التواصل مع شركة مُشرقة AI السعودية، الشركة الرائدة
+            في حلول الذكاء الاصطناعي وتطبيقاته في المملكة</h2>
+        <div class="footer-container">
+            <div class="footer-logo-container">
+                <a href="#home" class="footer-logo"
+                    aria-label="الصفحة الرئيسية لشركة مُشرقة AI السعودية - رائدة الذكاء الاصطناعي وحلول الأتمتة المبتكرة في المملكة العربية السعودية">
+                    <img src="https://www2.0zz0.com/2025/06/23/22/317775783.png"
+                        alt="شعار شركة مُشرقة AI السعودية - رائدة حلول الذكاء الاصطناعي المتقدمة في المملكة" width="200"
+                        height="55" style="height: 50px; width: auto;">
+                </a>
+                <p class="footer-description">
+                    مُشرقة AI (Bright AI): شركة سعودية رائدة ومبتكرة، مقرها الرئيسي في مدينة الرياض، متخصصة في مجال
+                    الذكاء الاصطناعي، حلول التعلم العميق، تطوير تطبيقات الذكاء الاصطناعي المخصصة، والأتمتة الذكية في
+                    المملكة العربية السعودية. نقدم خدمات الذكاء الاصطناعي المتكاملة والاستشارات التقنية لدعم مسيرة
+                    التحول الرقمي الشامل للمؤسسات والشركات في مختلف القطاعات بالرياض، جدة، الدمام، وكافة مدن المملكة،
+                    مساهمين بفعالية في تحقيق أهداف رؤية 2030 وتطوير مستقبل الذكاء الاصطناعي الواعد في السعودية.
+                </p>
+                <div class="social-links"
+                    aria-label="روابط التواصل الاجتماعي لشركة مُشرقة AI السعودية على مختلف منصات التواصل الاجتماعي للمزيد من المعلومات والتحديثات">
+                    <a href="#" class="social-link"
+                        aria-label="حساب مُشرقة AI على تويتر (X) للاطلاع على آخر أخبار وتطورات الذكاء الاصطناعي في السعودية"
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sr-only">تويتر (X) لشركة مُشرقة AI</span></a>
+                    <a href="https://wa.me/966538229013" class="social-link"
+                        aria-label="تواصل مباشرة مع فريق مُشرقة AI السعودية عبر تطبيق واتساب للاستشارات الفورية في مجال الذكاء الاصطناعي"
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <span class="sr-only">واتساب شركة مُشرقة AI</span></a>
+                    <a href="https://www.tiktok.com/@bright1ai" class="social-link"
+                        aria-label="حساب مُشرقة AI السعودية على منصة تيك توك لمشاهدة تطبيقات الذكاء الاصطناعي المبتكرة والممتعة"
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok" aria-hidden="true"></i> <span
+                            class="sr-only">تيك توك شركة مُشرقة AI</span></a>
+                    <a href="https://www.instagram.com/iililil44" class="social-link"
+                        aria-label="حساب مُشرقة AI السعودية على انستغرام لاستعراض أحدث مشاريع وحلول الذكاء الاصطناعي في المملكة"
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span class="sr-only">انستغرام شركة مُشرقة AI</span></a>
+                    <a href="https://www.youtube.com/@TeechLab" class="social-link"
+                        aria-label="قناة مُشرقة AI السعودية على يوتيوب لتعلم المزيد عن الذكاء الاصطناعي وتطبيقاته العملية"
+                        target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube" aria-hidden="true"></i>
+                        <span class="sr-only">يوتيوب شركة مُشرقة AI</span></a>
+                </div>
+            </div>
+
+            <div class="footer-links-container">
+                <h3 class="footer-links-title">روابط سريعة لخدمات وحلول الذكاء الاصطناعي في السعودية من شركة مُشرقة AI
+                </h3>
+                <ul class="footer-links" role="list">
+                    <li class="footer-link" role="listitem"><a href="#home"
+                            aria-label="الانتقال إلى الصفحة الرئيسية لشركة مُشرقة AI للذكاء الاصطناعي في السعودية"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> الرئيسية لشركة مُشرقة AI للذكاء
+                            الاصطناعي</a></li>
+                    <li class="footer-link" role="listitem"><a href="our-products.html"
+                            aria-label="استعراض خدمات الذكاء الاصطناعي المتكاملة التي تقدمها مُشرقة AI في السعودية"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> خدمات الذكاء الاصطناعي المتكاملة في
+                            السعودية</a></li>
+                    <li class="footer-link" role="listitem"><a href="ai-agent.html"
+                            aria-label="معرفة المزيد عن وكيل الذكاء الاصطناعي العربي وحلول الشات البوت للسوق السعودي من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> وكيل الذكاء الاصطناعي العربي والشات
+                            البوت للسوق السعودي</a></li>
+                    <li class="footer-link" role="listitem"><a href="smart-automation.html"
+                            aria-label="اكتشاف حلول الأتمتة الذكية وتقنيات RPA للشركات السعودية من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> الأتمتة الذكية و RPA للشركات
+                            السعودية</a></li>
+                    <li class="footer-link" role="listitem"><a href="data-analysis.html"
+                            aria-label="التعرف على خدمات تحليل البيانات الضخمة وتطبيقات التعلم الآلي في المملكة من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> تحليل البيانات الضخمة والتعلم الآلي
+                            في المملكة</a></li>
+                    <li class="footer-link" role="listitem"><a href="Docfile/About.Bright.AI.html"
+                            aria-label="معرفة المزيد عن شركة مُشرقة AI السعودية الرائدة في مجال الذكاء الاصطناعي وتاريخها"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> من نحن؟ (شركة مُشرقة AI السعودية
+                            الرائدة)</a></li>
+                    <li class="footer-link" role="listitem"><a href="blog"
+                            aria-label="زيارة مدونة الذكاء الاصطناعي السعودية (المكتبة الذكية) للحصول على أحدث المقالات والدراسات من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> مدونة الذكاء الاصطناعي السعودية
+                            (المكتبة الذكية)</a></li>
+                    <li class="footer-link" role="listitem"><a href="contact.html"
+                            aria-label="الاتصال بشركة مُشرقة AI في السعودية للاستفسار عن خدمات وحلول الذكاء الاصطناعي"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> اتصل بنا في السعودية لخدمات AI</a>
+                    </li>
+                    <li class="footer-link" role="listitem"><a href="Docs"
+                            aria-label="الاطلاع على المستندات التقنية والوثائق الخاصة بحلول الذكاء الاصطناعي السعودية من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> المستندات التقنية لحلول AI السعودية
+                            من مُشرقة AI</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-container">
+                <h3 class="footer-links-title">أبرز خدماتنا وحلولنا في مجال الذكاء الاصطناعي وتطبيقاته المبتكرة للسوق
+                    السعودي</h3>
+                <ul class="footer-links" role="list">
+                    <li class="footer-link" role="listitem"><a href="data-analysis.html"
+                            aria-label="خدمات تحليل البيانات الضخمة في الرياض وجدة والدمام من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> تحليل البيانات الضخمة في الرياض وجدة
+                            والدمام</a></li>
+                    <li class="footer-link" role="listitem"><a href="smart-automation.html"
+                            aria-label="حلول أتمتة العمليات بالذكاء الاصطناعي (RPA) للشركات السعودية من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> أتمتة العمليات بالذكاء الاصطناعي
+                            (RPA) للشركات السعودية</a></li>
+                    <li class="footer-link" role="listitem"><a href="ai-agent.html"
+                            aria-label="تطوير وكلاء الذكاء الاصطناعي العرب وحلول الشات البوت للسوق السعودي من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> تطوير وكلاء الذكاء الاصطناعي العرب
+                            والشات البوت للسعودية</a></li>
+                    <li class="footer-link" role="listitem"><a href="blogger/description.html"
+                            aria-label="فهم مصطلحات وتعريفات الذكاء الاصطناعي الهامة للسوق السعودي من خلال مدونة مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> مصطلحات وتعريفات الذكاء الاصطناعي
+                            الهامة للسوق السعودي</a></li>
+                    <li class="footer-link" role="listitem"><a href="blogger/Generative artificial intelligence.html"
+                            aria-label="التعرف على الذكاء الاصطناعي التوليدي (Generative AI) وتطبيقاته في السعودية من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> الذكاء الاصطناعي التوليدي
+                            (Generative AI) وتطبيقاته في السعودية</a></li>
+                    <li class="footer-link" role="listitem"><a href="blogger/compypterrrr.html"
+                            aria-label="استكشاف حلول التعلم الآلي المتقدم للشركات في المملكة العربية السعودية من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> التعلم الآلي المتقدم وحلوله للشركات
+                            في المملكة</a></li>
+                    <li class="footer-link" role="listitem"><a href="consultation.html"
+                            aria-label="طلب استشارات الذكاء الاصطناعي للتحول الرقمي في السعودية ودعم رؤية 2030 من مُشرقة AI"><i
+                                class="fas fa-chevron-left" aria-hidden="true"></i> استشارات الذكاء الاصطناعي للتحول
+                            الرقمي في السعودية ودعم رؤية 2030</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-container">
+                <h3 class="footer-links-title">تواصل مع شركة مُشرقة AI في المملكة العربية السعودية للحصول على حلول
+                    الذكاء الاصطناعي المتطورة</h3>
+                <ul class="contact-info" role="list">
+                    <li class="contact-item" role="listitem">
+                        <i class="fas fa-map-marker-alt contact-icon" aria-hidden="true"></i>
+                        <div>الرياض، المملكة العربية السعودية (خدماتنا المتميزة في الذكاء الاصطناعي تغطي جميع أنحاء
+                            المملكة العربية السعودية بكفاءة عالية)</div>
+                    </li>
+                    <li class="contact-item" role="listitem">
+                        <i class="fas fa-phone-alt contact-icon" aria-hidden="true"></i>
+                        <div><a href="tel:+966538229013" class="contact-link-footer"
+                                aria-label="رقم هاتف شركة مُشرقة AI السعودية لطلب خدمات وحلول الذكاء الاصطناعي">+966538229013</a>
+                        </div>
+                    </li>
+                    <li class="contact-item" role="listitem">
+                        <i class="fas fa-envelope contact-icon" aria-hidden="true"></i>
+                        <div><a href="mailto:info@brightaii.com" class="contact-link-footer"
+                                aria-label="البريد الإلكتروني الرسمي لشركة مُشرقة AI السعودية للاستفسار عن حلول وخدمات الذكاء الاصطناعي">info@brightaii.com</a>
+                        </div>
+                    </li>
+                    <li class="contact-item" role="listitem">
+                        <i class="fas fa-clock contact-icon" aria-hidden="true"></i>
+                        <div>أوقات العمل: الأحد - الخميس، من الساعة 9:00 صباحاً حتى 6:00 مساءً (بتوقيت المملكة العربية
+                            السعودية GMT+3)</div>
+                    </li>
+                </ul>
+                <h3 class="footer-links-title" style="margin-top: 2rem;" id="footer-newsletter-title">النشرة الإخبارية
+                    لشركة مُشرقة AI السعودية: كن على اطلاع دائم بأحدث أخبار الذكاء الاصطناعي في المملكة</h3>
+                <p class="footer-description">اشترك الآن في نشرتنا البريدية للحصول على آخر أخبار وتطورات الذكاء
+                    الاصطناعي، تطبيقات AI المبتكرة، وتحديثات السوق السعودي الهامة من شركة مُشرقة AI الرائدة.</p>
+                <form class="newsletter-form" action="#" method="post" aria-labelledby="footer-newsletter-title">
+                    <label for="footer-newsletter-email" class="sr-only">أدخل بريدك الإلكتروني للاشتراك في النشرة
+                        الإخبارية لشركة مُشرقة AI</label>
+                    <input type="email" id="footer-newsletter-email" name="email" class="newsletter-input"
+                        placeholder="بريدك الإلكتروني للاشتراك في نشرة AI" required autocomplete="email"
+                        aria-required="true">
+                    <button type="submit" class="newsletter-button"
+                        aria-label="اشترك الآن في النشرة البريدية لشركة مُشرقة AI السعودية للحصول على التحديثات"><i
+                            class="fas fa-paper-plane" aria-hidden="true"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">© 2023 -
+                <script>document.write(new Date().getFullYear())</script> مُشرقة AI (Bright AI). جميع الحقوق محفوظة
+                لشركة الذكاء الاصطناعي السعودية الرائدة. شركة مسجلة رسمياً في المملكة العربية السعودية ومرخصة لتقديم
+                خدمات الذكاء الاصطناعي وتطوير تطبيقاته المبتكرة.
+            </p>
+            <div class="footer-bottom-links">
+                <a href="privacy-policy.md" class="footer-bottom-link"
+                    aria-label="الاطلاع على سياسة الخصوصية لشركة مُشرقة AI السعودية وكيفية حماية بيانات المستخدمين في المملكة">سياسة
+                    الخصوصية لشركة مُشرقة AI</a>
+                <a href="terms-and-conditions.md" class="footer-bottom-link"
+                    aria-label="قراءة الشروط والأحكام الخاصة بخدمات شركة مُشرقة AI السعودية في مجال الذكاء الاصطناعي وتطبيقاته">الشروط
+                    والأحكام لخدمات AI السعودية</a>
+                <a href="privacy-cookies.html" class="footer-bottom-link"
+                    aria-label="التعرف على سياسة ملفات تعريف الارتباط (الكوكيز) لموقع شركة مُشرقة AI السعودية">سياسة
+                    ملفات تعريف الارتباط لموقع مُشرقة AI</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const isExpanded = navLinks.classList.contains('active');
+            hamburger.setAttribute('aria-expanded', isExpanded);
+        });
+
+        // Close mobile menu when clicking on links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Newsletter form submission
+        document.querySelector('.newsletter-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            alert('شكراً لك على الاشتراك في نشرتنا البريدية! سنرسل لك آخر أخبار الذكاء الاصطناعي قريباً.');
+            this.reset();
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animations
+        document.querySelectorAll('.section, .application-card, .stat-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Analytics tracking (if needed)
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-SZKTP4496K');
+    </script>
+</body>
+
+</html>

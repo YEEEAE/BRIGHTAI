@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="حلول AI Workflows المتقدمة من Bright AI - أتمتة ذكية لسير العمل، تكامل سلس مع أنظمتك، وتحسين الكفاءة التشغيلية بنسبة تصل إلى 80%">
+    <meta name="keywords" content="AI Workflows, سير عمل ذكي, أتمتة العمليات, الذكاء الاصطناعي السعودية, تحسين الكفاءة">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://brightai.site/ai-workflows.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AI Workflows - سير عمل الذكاء الاصطناعي">
+    <meta property="og:description" content="حلول متقدمة لأتمتة سير العمل باستخدام الذكاء الاصطناعي">
+    <meta property="og:image" content="https://brightai.site/Gemini.png">
+    <meta property="og:url" content="https://brightai.site/ai-workflows.html">
+    
+    <!-- Fonts & Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="css/unified-nav.css">
+    <link rel="icon" href="Gemini.png">
+
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .workflow-step {
+            position: relative;
+            padding: 2rem;
+        }
+        
+        .workflow-step::after {
+            content: '';
+            position: absolute;
+            bottom: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 2rem;
+            background: linear-gradient(to bottom, #fbbf24, transparent);
+        }
+        
+        .workflow-step:last-child::after {
+            display: none;
+        }
+    </style>
+</head>
+<body>

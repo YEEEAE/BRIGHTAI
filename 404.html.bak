@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://brightai.site/404.html">
+    <title>الصفحة غير موجودة - 404</title>
+    <meta name="description" content="الصفحة التي تبحث عنها غير موجودة. قد تكون تم نقلها أو حذفها.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Gemini.png">
+    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #2c5282;
+            margin: 0;
+        }
+        .error-message {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #4a5568;
+        }
+        .error-description {
+            font-size: 18px;
+            color: #718096;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2c5282;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .home-link:hover {
+            background-color: #2b6cb0;
+        }
+        .search-form {
+            margin-top: 20px;
+        }
+        .search-input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .search-button {
+            padding: 10px 20px;
+            background-color: #38a169;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .search-button:hover {
+            background-color: #2f855a;
+        }
+    </style>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="الصفحة غير موجودة - 404">
+  <meta property="og:description" content="الصفحة غير موجودة - 404 - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  <meta property="og:url" content="https://brightai.site/404.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="مُشرقة AI">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="الصفحة غير موجودة - 404">
+  <meta name="twitter:description" content="الصفحة غير موجودة - 404 - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  </head> 
+<body>
+    <div class="error-container">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">الصفحة غير موجودة</h2>
+        <p class="error-description">عذراً، الصفحة التي تبحث عنها قد تكون تم نقلها أو حذفها.</p>
+        <a href="index.html" class="home-link">العودة إلى الصفحة الرئيسية</a>
+        
+        <div class="search-form">
+            <p>أو يمكنك البحث في الموقع:</p>
+            <form action="index.html" method="get">
+                <input type="text" name="search" class="search-input" placeholder="ابحث في الموقع...">
+                <button type="submit" class="search-button">بحث</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="Gemini.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Gemini.png">
+    <title>BrightRecruiter - روبوت التوظيف الذكي</title>
+    <meta name="description" content="BrightRecruiter - روبوت التوظيف الذكي من Bright AI لإدارة عمليات التوظيف">
+    <link rel="canonical" href="https://brightai.site/botAI/BrightRecruiter.html">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background-color: #2196F3; /* Blue color scheme for professional feel */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        #chatMessages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 12px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            line-height: 1.5;
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .user-message {
+            background-color: #BBDEFB; /* Light blue for user messages */
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: #f1f3f4;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            height: 45px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 10px;
+            margin-right: 10px;
+        }
+
+        #sendButton {
+            background-color: #2196F3; /* Blue color scheme */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        #sendButton:hover {
+            background-color: #1976D2;
+        }
+
+        #sendButton i {
+            font-size: 20px;
+        }
+                #fileButton {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        #fileButton:hover {
+            background-color: #1976D2;
+        }
+        
+        #sendButton i, #fileButton i {
+            font-size: 20px;
+        }
+                #fileInput {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 12px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="BrightRecruiter - روبوت التوظيف الذكي">
+  <meta property="og:description" content="BrightRecruiter - روبوت التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  <meta property="og:url" content="https://brightai.site/botAI/BrightRecruiter.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="مُشرقة AI">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BrightRecruiter - روبوت التوظيف الذكي">
+  <meta name="twitter:description" content="BrightRecruiter - روبوت التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  </head>
+<body>
+    <div class="header">
+        <h1>BrightRecruiter - روبوت التوظيف الذكي</h1>
+        <p>تبسيط عملية التوظيف الخاصة بك</p>
+    </div>
+
+    <div class="chat-container">
+        <div id="chatMessages"></div>
+
+        <div class="input-area">
+            <textarea id="userInput" placeholder="اكتب سؤالك هنا أو أرسل السيرة الذاتية..."></textarea>
+            <div class="input-actions">
+                                <button id="fileButton">
+                    <i class="material-icons">attach_file</i>
+                </button>
+                 <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt">
+
+                <button id="sendButton">
+                    <i class="material-icons">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'GEMINI_KEY_REDACTED'; // Replace with your Gemini API key
+
+        class RecruiterBot {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.userInput = document.getElementById('userInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.fileButton = document.getElementById('fileButton');
+                this.fileInput = document.getElementById('fileInput');
+                 this.uploadedFile = null;
+
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                this.userInput.addEventListener('input', () => {
+                    this.adjustTextareaHeight();
+                });
+                                this.fileButton.addEventListener('click', () => {
+                    this.fileInput.click();
+                });
+                
+                this.fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.handleFileUpload(e.target.files[0]);
+                    }
+                });
+
+                this.initialize();
+            }
+
+            adjustTextareaHeight() {
+                const textarea = this.userInput;
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+            }
+            handleFileUpload(file) {
+                this.uploadedFile = file;
+                
+                // إظهار معاينة الملف في المحادثة
+                const filePreviewHTML = `
+                    <div class="file-preview" id="filePreview">
+                        <i class="material-icons">description</i>
+                        <span class="file-name">${file.name}</span>
+                        <span class="remove-file" id="removeFile">
+                            <i class="material-icons">close</i>
+                        </span>
+                    </div>
+                `;
+                
+                this.addHTMLMessage(filePreviewHTML, 'user');
+                
+                // إضافة المستمع لإزالة الملف
+                document.getElementById('removeFile').addEventListener('click', () => {
+                    document.getElementById('filePreview').remove();
+                    this.uploadedFile = null;
+                    this.fileInput.value = '';
+                });
+            }
+
+            initialize() {
+                const welcomeMessage = `مرحباً بك في BrightRecruiter! 👋 كيف يمكنني مساعدتك في عملية التوظيف اليوم؟
+                يمكنني مساعدتك في:
+                * فرز السير الذاتية
+                * إجراء مقابلات أولية
+                * تقييم مهارات المرشحين
+                `;
+
+                this.addMessage(welcomeMessage, 'bot');
+
+                setTimeout(() => {
+                    const optionsHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="option-button" data-option="analyze_resume">تحليل سيرة ذاتية</button>
+                        <button class="option-button" data-option="initial_interview">طلب مقابلة أولية</button>
+                        <button class="option-button" data-option="skill_assessment">تقييم المهارات</button>
+                        <button class="option-button" data-option="other">استفسار آخر</button>
+                    </div>
+                    `;
+
+                    this.addHTMLMessage(optionsHTML, 'bot');
+
+                    document.querySelectorAll('.option-button').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const option = button.getAttribute('data-option');
+                            this.processOptionSelection(option, button.textContent);
+                        });
+                    });
+                }, 500);
+            }
+
+            async processOptionSelection(option, buttonText) {
+                this.addMessage(buttonText, 'user'); // Show user selection
+
+                let response = '';
+                const typingIndicator = this.addTypingIndicator();
+
+                try {
+                    switch (option) {
+                        case 'analyze_resume':
+                            response = "يرجى تحميل السيرة الذاتية لتحليلها.  وصف الوظيفة المطلوبة";
+                            break;
+                        case 'initial_interview':
+                            response = "أدخل اسم المرشح والوظيفة لترتيب مقابلة أولية.";
+                            break;
+                        case 'skill_assessment':
+                            response = "ما هي المهارات التي تريد تقييمها؟  اسم المرشح";
+                            break;
+                        case 'other':
+                            response = "من فضلك، وضح استفسارك وسأبذل قصارى جهدي لمساعدتك.";
+                            break;
+                    }
+
+                    this.chatMessages.removeChild(typingIndicator);
+                    this.addMessage(response, 'bot');
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    this.chatMessages.removeChild(typingIndicator);
+                    this.addMessage("عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.", 'bot');
+                }
+            }
+
+            async sendMessage() {
+                const message = this.userInput.value.trim();
+                if (!message && !this.uploadedFile) return;
+
+                this.addMessage(message, 'user');
+                this.userInput.value = '';
+                this.userInput.style.height = '45px';
+
+                 // عرض رسالة المستخدم
+                if (message) {
+                    this.addMessage(message, 'user');
+                }
+                this.userInput.value = '';
+                this.userInput.style.height = '45px';
+                
+                // إظهار مؤشر الكتابة
+                const typingIndicator = this.addTypingIndicator();
+
+                try {
+                    // إضافة معلومات عن الملف إذا تم رفع ملف
+                    let fileInfo = '';
+                    if (this.uploadedFile) {
+                        fileInfo = `\n\nملف مرفق: ${this.uploadedFile.name} (${this.uploadedFile.type})`;
+                        // بعد إرسال الرسالة، نقوم بإعادة تعيين الملف المرفق
+                        this.uploadedFile = null;
+                    }
+                                        const response = await this.getGeminiResponse(message + fileInfo);
+
+                    this.chatMessages.removeChild(typingIndicator);
+                    this.addMessage(response, 'bot');
+                } catch (error) {
+                    console.error('Error:', error);
+                    this.chatMessages.removeChild(typingIndicator);
+                    this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
+                }
+            }
+
+            addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.classList.add('message', 'bot-message');
+                typingDiv.innerHTML = '<div style="display: flex; gap: 4px;"><span class="typing-dot">.</span><span class="typing-dot">.</span><span class="typing-dot">.</span></div>';
+
+                const dots = typingDiv.querySelectorAll('.typing-dot');
+                let i = 0;
+                const animateDots = setInterval(() => {
+                    dots.forEach((dot, index) => {
+                        dot.style.opacity = index === i % 3 ? '1' : '0.5';
+                    });
+                    i++;
+                }, 300);
+
+                typingDiv.animationInterval = animateDots;
+
+                this.chatMessages.appendChild(typingDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+
+                return typingDiv;
+            }
+
+            async getGeminiResponse(message) {
+                const context = `أنت BrightRecruiter، روبوت توظيف ذكي متخصص في مساعدة مسؤولي التوظيف.
+                تساعد في فرز السير الذاتية، وإجراء مقابلات أولية، وتقييم مهارات المرشحين.
+                تحافظ على لهجة مهنية وودية.
+                تقوم بتحليل السير الذاتية بناءً على متطلبات الوظيفة.
+                إذا كان المستخدم يطلب إجراء مقابلة أولية، اطرح أسئلة ذات صلة بالوظيفة.
+                إذا كان المستخدم يطلب تقييم المهارات، قم بتقييم المهارات المطلوبة للوظيفة.`;
+
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"; // Replace with your Gemini model
+
+                const response = await fetch(`${url}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `${context}\n\nطلب المستخدم: ${message}`
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.candidates || !data.candidates[0]) {
+                    throw new Error('لم يتم العثور على استجابة من API');
+                }
+                return data.candidates[0].content.parts[0].text;
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${sender}-message`);
+                messageDiv.innerHTML = this.formatText(text);
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+             addHTMLMessage(html, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${sender}-message`);
+                messageDiv.innerHTML = html;
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            formatText(text) {
+                // Basic formatting (make bold and keep newlines)
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italics
+                text = text.replace(/\n/g, '<br>'); // Newlines
+                return text;
+            }
+
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add some CSS for option buttons (better styling)
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .option-button {
+                    background-color: #e2e2e2;
+                    border: none;
+                    color: black;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    transition: background-color 0.3s ease;
+                }
+                .option-button:hover {
+                    background-color: #d0d0d0;
+                }
+
+                .typing-dot {
+                    width: 6px;
+                    height: 6px;
+                    background-color: #999;
+                    border-radius: 50%;
+                    display: inline-block;
+                    animation: typing 1s infinite;
+                }
+
+                @keyframes typing {
+                    0% {
+                        opacity: 0.5;
+                    }
+                    50% {
+                        opacity: 1;
+                    }
+                    100% {
+                        opacity: 0.5;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            new RecruiterBot();
+        });
+    </script>
+</body>
+</html>

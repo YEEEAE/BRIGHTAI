@@ -1,0 +1,3922 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    Bright AI | نضيء مستقبل أعمالك مع الذكاء الاصطناعي
+  </title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+
+  <!-- Enterprise SEO Meta Tags -->
+  <meta name="description"
+    content="حلول ذكاء اصطناعي متقدمة للشركات السعودية. نساعدك على أتمتة عملياتك وتحسين الإنتاجية مع Bright AI. احجز استشارة مجانية الآن!" />
+  <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow" />
+  <link rel="canonical" href="https://brightai.site/" />
+
+  <!-- Enterprise Keywords -->
+  <meta name="keywords"
+    content="حلول ذكاء اصطناعي مؤسسية السعودية, شريك التحول الرقمي, AI Enterprise Solutions KSA, استشارات الذكاء الاصطناعي للشركات, ذكاء اصطناعي سيادي, حلول AI للجهات الحكومية, تحليل البيانات المؤسسي, أتمتة العمليات الذكية, Machine Learning السعودية, استضافة بيانات محلية, NCA compliance, NDMO, رؤية 2030, التحول الرقمي السعودي" />
+
+  <!-- Geo Tags for Saudi Arabia -->
+  <meta name="geo.region" content="SA" />
+  <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
+  <meta name="geo.position" content="24.7136;46.6753" />
+  <meta name="ICBM" content="24.7136, 46.6753" />
+
+  <!-- Language and Locale -->
+  <meta name="language" content="Arabic" />
+  <meta http-equiv="content-language" content="ar-SA" />
+
+  <!-- Open Graph Meta Tags (Facebook, LinkedIn, WhatsApp) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+  <meta property="og:title" content="Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية" />
+  <meta property="og:description"
+    content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل لمعايير NCA و NDMO." />
+  <meta property="og:url" content="https://brightai.site/" />
+  <meta property="og:image" content="https://brightai.site/Gemini.png" />
+  <meta property="og:image:alt" content="Bright AI - شعار الشركة" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ar_SA" />
+  <meta property="og:locale:alternate" content="en_US" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@BrightAI_SA" />
+  <meta name="twitter:creator" content="@BrightAI_SA" />
+  <meta name="twitter:title" content="Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية" />
+  <meta name="twitter:description"
+    content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل." />
+  <meta name="twitter:image" content="https://brightai.site/Gemini.png" />
+  <meta name="twitter:image:alt" content="Bright AI - شعار الشركة" />
+
+  <!-- Fonts: IBM Plex Sans Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+
+  <!-- Tailwind CSS (via CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Iconify Script -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+
+  <!-- Tailwind Configuration -->
+  <script src="js/tailwind-config.js" defer></script>
+
+  <!-- Fonts: Fira Code -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Performance Optimizations -->
+  <link rel="preload" href="css/main.css" as="style">
+  <link rel="preload" href="Gemini.png" as="image">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/main.css" />
+
+  <!-- Structured Data: Organization Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Bright AI",
+        "alternateName": ["مُشرقة AI", "مُشرقة للذكاء الاصطناعي", "Bright AI Saudi Arabia"],
+        "url": "https://brightai.site",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://brightai.site/Gemini.png",
+          "width": 512,
+          "height": 512
+        },
+        "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية",
+        "foundingDate": "2023",
+        "founders": [
+          {
+            "@type": "Person",
+            "name": "Bright AI Team"
+          }
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "الرياض",
+          "addressLocality": "الرياض",
+          "addressRegion": "منطقة الرياض",
+          "postalCode": "12345",
+          "addressCountry": "SA"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+966538229013",
+            "contactType": "sales",
+            "areaServed": "SA",
+            "availableLanguage": ["Arabic", "English"]
+          },
+          {
+            "@type": "ContactPoint",
+            "telephone": "+966538229013",
+            "contactType": "customer service",
+            "areaServed": "SA",
+            "availableLanguage": ["Arabic", "English"]
+          }
+        ],
+        "sameAs": [
+          "https://wa.me/966538229013"
+        ],
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "knowsAbout": [
+          "Artificial Intelligence",
+          "Machine Learning",
+          "Enterprise Solutions",
+          "Digital Transformation",
+          "Data Analytics",
+          "Process Automation",
+          "Computer Vision",
+          "Natural Language Processing"
+        ]
+      }
+    </script>
+
+  <!-- Structured Data: LocalBusiness Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://brightai.site/#localbusiness",
+        "name": "Bright AI - مُشرقة للذكاء الاصطناعي",
+        "image": "https://brightai.site/Gemini.png",
+        "url": "https://brightai.site",
+        "telephone": "+966538229013",
+        "priceRange": "$$$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "الرياض",
+          "addressLocality": "الرياض",
+          "addressRegion": "منطقة الرياض",
+          "postalCode": "12345",
+          "addressCountry": "SA"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 24.7136,
+          "longitude": 46.6753
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+            "opens": "09:00",
+            "closes": "18:00"
+          }
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "50"
+        }
+      }
+    </script>
+
+  <!-- Structured Data: Service Schema - AI Solutions -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://brightai.site/#ai-solutions",
+        "name": "حلول الذكاء الاصطناعي المؤسسية",
+        "alternateName": "Enterprise AI Solutions",
+        "description": "حلول ذكاء اصطناعي مؤسسية مصممة للشركات الكبرى والجهات الحكومية السعودية مع استضافة محلية وامتثال كامل",
+        "provider": {
+          "@type": "Organization",
+          "name": "Bright AI",
+          "url": "https://brightai.site"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "serviceType": "Enterprise AI Solutions",
+        "category": "Technology Services"
+      }
+    </script>
+
+  <!-- Structured Data: Service Schema - Digital Transformation Consulting -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://brightai.site/#consulting",
+        "name": "استشارات التحول الرقمي",
+        "alternateName": "Digital Transformation Consulting",
+        "description": "استشارات استراتيجية للتحول الرقمي وتطبيق حلول الذكاء الاصطناعي في المؤسسات السعودية",
+        "provider": {
+          "@type": "Organization",
+          "name": "Bright AI",
+          "url": "https://brightai.site"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "serviceType": "Consulting",
+        "category": "Business Consulting"
+      }
+    </script>
+
+  <!-- Structured Data: Service Schema - Data Analytics -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://brightai.site/#data-analytics",
+        "name": "تحليل البيانات المتقدم",
+        "alternateName": "Advanced Data Analytics",
+        "description": "خدمات تحليل البيانات المتقدمة باستخدام الذكاء الاصطناعي لاستخراج رؤى قابلة للتنفيذ",
+        "provider": {
+          "@type": "Organization",
+          "name": "Bright AI",
+          "url": "https://brightai.site"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "serviceType": "Data Analytics",
+        "category": "Technology Services"
+      }
+    </script>
+
+  <!-- Structured Data: Service Schema - Process Automation -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://brightai.site/#automation",
+        "name": "الأتمتة الذكية",
+        "alternateName": "Intelligent Process Automation",
+        "description": "أتمتة العمليات المؤسسية باستخدام الذكاء الاصطناعي لتحسين الكفاءة وتقليل التكاليف",
+        "provider": {
+          "@type": "Organization",
+          "name": "Bright AI",
+          "url": "https://brightai.site"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "serviceType": "Process Automation",
+        "category": "Technology Services"
+      }
+    </script>
+
+  <!-- Structured Data: WebSite Schema with SearchAction -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Bright AI",
+        "alternateName": "مُشرقة للذكاء الاصطناعي",
+        "url": "https://brightai.site",
+        "inLanguage": ["ar", "en"],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Bright AI",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://brightai.site/Gemini.png"
+          }
+        }
+      }
+    </script>
+
+  <!-- Structured Data: BreadcrumbList Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://brightai.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "خدمات الذكاء الاصطناعي",
+            "item": "https://brightai.site/#services"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "القطاعات المستهدفة",
+            "item": "https://brightai.site/#industries"
+          }
+        ]
+      }
+    </script>
+
+  <!-- Structured Data: Course Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "دليل الذكاء الاصطناعي للمؤسسات السعودية",
+        "description": "تعلم كيفية تطبيق حلول الذكاء الاصطناعي في مؤسستك مع Bright AI - من التقييم إلى التنفيذ",
+        "provider": {
+          "@type": "Organization",
+          "name": "Bright AI",
+          "sameAs": "https://brightai.site"
+        },
+        "educationalLevel": "مؤسسي",
+        "inLanguage": "ar",
+        "availableLanguage": ["ar", "en"],
+        "teaches": [
+          "تقييم احتياجات الذكاء الاصطناعي",
+          "تصميم حلول الذكاء الاصطناعي المؤسسية",
+          "تنفيذ ونشر الأنظمة الذكية",
+          "الامتثال لمعايير NCA و NDMO"
+        ]
+      }
+    </script>
+
+  <!-- Structured Data: HowTo Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "كيفية تطبيق الذكاء الاصطناعي في مؤسستك",
+        "description": "دليل شامل لتطبيق حلول الذكاء الاصطناعي في المؤسسات السعودية",
+        "image": "https://brightai.site/Gemini.png",
+        "totalTime": "PT3M",
+        "estimatedCost": {
+          "@type": "MonetaryAmount",
+          "currency": "SAR",
+          "value": "0"
+        },
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "التقييم",
+            "text": "تحليل الوضع الراهن وتحديد الفرص والتحديات في مؤسستك",
+            "url": "https://brightai.site/#assessment"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "التصميم",
+            "text": "بناء الحل المناسب لاحتياجاتك مع ضمان الامتثال للمعايير السعودية",
+            "url": "https://brightai.site/#design"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "التنفيذ",
+            "text": "تطوير ونشر الحل بمعايير عالية مع استضافة محلية",
+            "url": "https://brightai.site/#implementation"
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "التحسين",
+            "text": "مراقبة وتحسين مستمر للأداء مع دعم فني متواصل",
+            "url": "https://brightai.site/#optimization"
+          }
+        ]
+      }
+    </script>
+
+  <!-- Structured Data: ProfessionalService Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Bright AI - خدمات الذكاء الاصطناعي المؤسسية",
+        "alternateName": "مُشرقة للذكاء الاصطناعي",
+        "url": "https://brightai.site",
+        "logo": "https://brightai.site/Gemini.png",
+        "image": "https://brightai.site/Gemini.png",
+        "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية",
+        "priceRange": "$$$$",
+        "telephone": "+966538229013",
+        "email": "info@brightai.site",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "الرياض",
+          "addressLocality": "الرياض",
+          "addressRegion": "منطقة الرياض",
+          "postalCode": "12345",
+          "addressCountry": "SA"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 24.7136,
+          "longitude": 46.6753
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "serviceType": [
+          "ذكاء الأعمال",
+          "تحليل البيانات",
+          "الذكاء الاصطناعي كخدمة",
+          "أتمتة ذكية",
+          "استشارات الذكاء الاصطناعي",
+          "التحول الرقمي",
+          "معالجة اللغات الطبيعية",
+          "الرؤية الحاسوبية",
+          "التعلم الآلي"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "خدمات الذكاء الاصطناعي",
+          "itemListElement": [
+            {
+              "@type": "OfferCatalog",
+              "name": "حلول الذكاء الاصطناعي المؤسسية",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "الابتكار الكامل",
+                    "description": "بناء أنظمة ذكية من الصفر"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "التطوير المخصص",
+                    "description": "تطوير الأنظمة الحالية بالذكاء الاصطناعي"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "AIaaS للمنشآت",
+                    "description": "خدمات ذكاء اصطناعي مُدارة"
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "OfferCatalog",
+              "name": "استشارات التحول الرقمي",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "تقييم النضج الرقمي",
+                    "description": "تحليل الوضع الراهن وتحديد الفرص"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "استراتيجية التحول",
+                    "description": "بناء خارطة طريق التحول الرقمي"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "knowsAbout": [
+          "الذكاء الاصطناعي في السعودية",
+          "ذكاء الأعمال وتحليل البيانات",
+          "التحول الرقمي الحكومي",
+          "الأتمتة الذكية",
+          "معايير NCA",
+          "معايير NDMO",
+          "رؤية 2030"
+        ],
+        "slogan": "نضيء مستقبل أعمالك مع الذكاء الاصطناعي"
+      }
+    </script>
+
+  <!-- Structured Data: FAQ Schema -->
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "ما هي خدمات Bright AI للذكاء الاصطناعي المؤسسي؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نقدم في Bright AI حلول ذكاء اصطناعي مؤسسية شاملة تشمل: الابتكار الكامل (بناء أنظمة ذكية من الصفر)، التطوير المخصص (تطوير الأنظمة الحالية بالذكاء الاصطناعي)، AIaaS للمنشآت (خدمات مُدارة)، استشارات التحول الرقمي، وتحليل البيانات المتقدم."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "هل بيانات العملاء تُستضاف داخل المملكة العربية السعودية؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نعم، نلتزم بالسيادة الرقمية حيث تُدار وتُستضاف جميع بيانات العملاء داخل حدود المملكة العربية السعودية، مع الامتثال الكامل لمعايير الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية (NDMO)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "ما هي أفضل أدوات ذكاء الأعمال (BI) في السعودية؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نستخدم ونوصي بأدوات عالمية رائدة مثل Microsoft Power BI و Tableau و Looker، نظراً لدعمها الممتاز للغة العربية ومرونتها العالية في التكامل مع الأنظمة المحلية."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "كيف أختار برنامج ذكاء الأعمال المناسب لشركتي؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "يعتمد الاختيار على حجم البيانات، الميزانية، والأنظمة الحالية لديكم. نحن نقدم خدمة استشارية لتقييم بنيتكم التحتية وترشيح الأداة الأنسب التي تحقق أعلى عائد على الاستثمار."
+            }
+          },
+           {
+            "@type": "Question",
+            "name": "ما هي الأدوات الذكية المناسبة لإدارة الشركات الصغيرة؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ننصح بأدوات الأتمتة منخفضة الكود (Low-Code) التي تسمح بربط التطبيقات المختلفة وأتمتة المهام الروتينية (مثل الفوترة، وجدولة المواعيد) بتكلفة معقولة."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "ما هي القطاعات التي تخدمها Bright AI؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نخدم مجموعة واسعة من القطاعات تشمل: قطاع التجزئة (تحليل سلوك العملاء وتحسين المخزون)، القطاع الصناعي (الصيانة التنبؤية ومراقبة الجودة)، قطاع الرعاية الصحية (التشخيص الذكي وإدارة الموارد)، والجهات الحكومية (أتمتة الخدمات وتحليل البيانات)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "كيف يمكنني طلب استشارة تنفيذية من Bright AI؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "يمكنك طلب استشارة تنفيذية مجانية من خلال التواصل معنا عبر واتساب على الرقم +966538229013، أو من خلال زر 'طلب استشارة تنفيذية' الموجود في الموقع. سيقوم فريقنا بالتواصل معك لفهم احتياجاتك وتقديم الحلول المناسبة."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "هل Bright AI متوافقة مع معايير الأمن السيبراني السعودية؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نعم، نحن ملتزمون بالامتثال الكامل لمعايير الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية (NDMO)، مما يجعلنا الشريك المثالي للجهات الحكومية والشركات الكبرى التي تتطلب أعلى معايير الأمان والحوكمة."
+            }
+          }
+        ]
+      }
+    </script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet" />
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+  <!-- Background Aurora Effects -->
+  <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+  <!-- INSTRUCTION 1: THE HEADER (MANDATORY CODE) -->
+  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+    <div class="nav-container">
+      <!-- Logo -->
+      <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+        <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42" height="42" />
+        <span>Bright AI</span>
+      </a>
+      <!-- Hamburger Menu Button (Mobile) -->
+      <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false" id="mobile-menu-btn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="nav-links-list" role="menubar">
+        <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
+        <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+            أنظمة ذكية مؤسسية متكاملة
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="smart-automation.html">
+                AI Workflows سير عمل الذكاء الاصطناعي
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="ai-agent.html">
+                الذكاء الاصطناعي (AIaaS) للمنشآت
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Dropdown: خدمات ذكية -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+            خدمات ذكية
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="ai-agent.html">
+                الذكاء الاصطناعي (AIaaS) المدارة للمنشآت الفيزيائية
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="data-analysis.html">تحليل البيانات</a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="consultation.html">
+                استشارات الذكاء الاصطناعي
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="smart-automation.html">
+                الأتمتة الذكية
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="our-products.html">
+                خدمات الذكاء الاصطناعي
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Dropdown: بوابة المعرفة -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+            بوابة المعرفة
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="blog.html">المكتبة الذكية</a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="Docfile/About.Bright.AI.html">
+                عن شركة مُشرقة AI
+              </a>
+            </li>
+            <li role="none"><a role="menuitem" href="Docs.html">المستندات</a></li>
+          </ul>
+        </li>
+        <!-- Dropdown: أدوات ذكية مجانية -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+            أدوات ذكية مجانية
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="tools.html">أدوات ذكية مجانية</a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="h/projects/interview/index.html">نماذج AI تجريبية</a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="ai-bots.html">شات بوت</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- 1. HERO SECTION -->
+  <header class="relative pt-24 pb-12 lg:pt-48 lg:pb-32 px-6 overflow-hidden">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <!-- Text Content -->
+      <div class="space-y-8">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+          </span>
+          مستقبل الذكاء الاصطناعي في المملكة
+        </div>
+
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.15]">
+          <span class="text-gradient-gold block mb-2 shimmer-text">
+            Bright AI
+          </span>
+          <span class="text-gradient">
+            حلول ذكاء اصطناعي للشركات السعودية
+          </span>
+        </h1>
+        
+        <!-- SEO: Move original tagline to h2 for better structure -->
+        <h2 class="text-xl md:text-2xl font-light text-slate-300 mt-4">
+          نُضيء الذكاء اصطناعي.. بمعايير سعودية وآفاق عالمية
+        </h2>
+
+        <p class="text-slate-400 text-lg lg:text-xl font-light leading-relaxed max-w-xl">
+          المحرك الأقوى للتحول الرقمي في المملكة في مُشرقة AI ، نحول التحديات
+          إلى فرص نمو عبر حلول ذكية تعيد صياغة مفاهيم الكفاءة والابتكار. نحن
+          شريكك الاستراتيجي لصناعة مستقبل مستدام.
+        </p>
+
+        <!-- SEO Hidden Text -->
+        <span class="sr-only">
+          ذكاء الأعمال وتحليل البيانات في السعودية - خدمات الذكاء الاصطناعي للشركات -
+          استشارات الذكاء الاصطناعي للشركات السعودية - حلول ذكاء اصطناعي متقدمة -
+          الذكاء الاصطناعي كخدمة AIaaS - أتمتة ذكية للعمليات - سير عمل الذكاء الاصطناعي
+        </span>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+            class="w-full sm:w-auto text-center justify-center px-8 py-3 bg-white text-navy-900 rounded-lg font-medium hover:bg-slate-200 transition shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            ابدأ رحلتك الرقمية بإستشارة مجانية
+          </a>
+          <a href="our-products-new.html"
+            class="w-full sm:w-auto text-center justify-center px-8 py-3 glass-card text-white rounded-lg font-medium hover:bg-white/10 transition">
+            تعرّف على حلولنا
+          </a>
+        </div>
+      </div>
+
+      <!-- Visual: 3D Particles / Map Simulation -->
+      <div class="relative h-[350px] lg:h-[500px] flex items-center justify-center">
+        <!-- Abstract Map Nodes -->
+        <div class="absolute inset-0 flex items-center justify-center animate-pulse-slow">
+          <div
+            class="relative w-64 h-64 md:w-96 md:h-96 border border-indigo-500/30 rounded-full flex items-center justify-center">
+            <div class="absolute w-48 h-48 border border-purple-500/30 rounded-full animate-[spin_10s_linear_infinite]">
+            </div>
+            <div
+              class="absolute w-32 h-32 border border-gold-500/30 rounded-full animate-[spin_15s_linear_reverse_infinite]">
+            </div>
+
+            <!-- Floating Nodes -->
+            <div
+              class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 bg-indigo-500 h-3 w-3 rounded-full shadow-[0_0_15px_#6366f1]">
+            </div>
+            <div class="absolute bottom-10 right-10 bg-purple-500 h-2 w-2 rounded-full shadow-[0_0_15px_#a855f7]"></div>
+            <div class="absolute top-20 left-10 bg-gold-500 h-2 w-2 rounded-full shadow-[0_0_15px_#eab308]"></div>
+
+            <!-- Connecting Lines (SVG) -->
+            <svg class="absolute inset-0 w-full h-full text-white/10" viewBox="0 0 100 100">
+              <line x1="50" y1="50" x2="50" y2="0" stroke="currentColor" stroke-width="0.5"></line>
+              <line x1="50" y1="50" x2="80" y2="80" stroke="currentColor" stroke-width="0.5"></line>
+              <line x1="50" y1="50" x2="20" y2="30" stroke="currentColor" stroke-width="0.5"></line>
+            </svg>
+
+            <!-- Center Core -->
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg z-10">
+              <iconify-icon icon="lucide:brain-circuit" width="32" class="text-white"></iconify-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <!-- SMART MEDICAL ARCHIVE SECTION - الأرشيف الطبي الذكي -->
+<section id="smart-medical-archive" class="py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #020617 0%, #0a0f1a 50%, #020617 100%); min-height: 100vh;">
+  
+  <!-- Animated 3D Background Canvas -->
+  <canvas id="medical-archive-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+  
+  <!-- Floating DNA Helix Animation -->
+  <div class="absolute inset-0 pointer-events-none z-[1]">
+    <div class="dna-strand dna-strand-1"></div>
+    <div class="dna-strand dna-strand-2"></div>
+  </div>
+  
+  <!-- Animated Medical Particles -->
+  <div class="medical-particles">
+    <div class="particle-medical p-1"></div>
+    <div class="particle-medical p-2"></div>
+    <div class="particle-medical p-3"></div>
+    <div class="particle-medical p-4"></div>
+  </div>
+
+  <!-- Glowing Orbs Background -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-20 left-[10%] w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+    <div class="absolute bottom-20 right-[10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[150px] animate-pulse-slow" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-indigo-600/5 rounded-full blur-[180px]"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+    
+    <!-- Section Header with 3D Effect -->
+    <div class="text-center mb-20 perspective-1000">
+      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/10 via-emerald-500/10 to-cyan-500/10 border border-cyan-500/20 mb-8 animate-float">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+        </span>
+        <span class="text-cyan-300 text-sm font-medium tracking-wider">
+          <iconify-icon icon="lucide:file-heart" class="inline ml-2"></iconify-icon>
+          الجيل القادم من الرعاية الصحية الرقمية
+        </span>
+      </div>
+      
+      <h2 class="text-4xl lg:text-6xl font-bold mb-6 transform-3d-header">
+        <span class="bg-gradient-to-r from-cyan-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent block mb-2">
+          الأرشيف الطبي الذكي المُشرق
+        </span>
+        <span class="text-white text-3xl lg:text-4xl">نظام أرشفة طبي ذكي يحوّل السجلات إلى مصدر معرفة حيّ</span>
+      </h2>
+      
+      <p class="text-slate-400 text-lg lg:text-xl max-w-3xl mx-auto leading-relaxed">
+        <span class="text-emerald-400 font-medium">  </span>
+      </p>
+    </div>
+
+    <!-- Main 3D Interactive Area -->
+    <div class="grid lg:grid-cols-12 gap-8 mb-20">
+      
+      <!-- 3D Holographic Display - Left Side -->
+      <div class="lg:col-span-5 relative perspective-1000">
+        <div class="holographic-container relative h-[500px] rounded-3xl overflow-hidden group">
+          <!-- Holographic Frame -->
+          <div class="absolute inset-0 rounded-3xl border-2 border-cyan-500/30 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90 backdrop-blur-xl">
+            <!-- Scan Lines Effect -->
+            <div class="scan-lines"></div>
+            
+            <!-- Holographic Content -->
+            <div class="relative h-full flex flex-col items-center justify-center p-8">
+              
+              <!-- 3D Medical Document Icon -->
+              <div class="medical-document-3d mb-8">
+                <div class="document-layer layer-1">
+                  <iconify-icon icon="lucide:file-text" width="40" class="text-cyan-400"></iconify-icon>
+                </div>
+                <div class="document-layer layer-2">
+                  <iconify-icon icon="lucide:brain" width="32" class="text-emerald-400"></iconify-icon>
+                </div>
+                <div class="document-layer layer-3">
+                  <iconify-icon icon="lucide:sparkles" width="24" class="text-gold-400"></iconify-icon>
+                </div>
+              </div>
+              
+              <!-- Animated Stats Ring -->
+              <div class="stats-ring-container">
+                <svg class="stats-ring" width="200" height="200" viewBox="0 0 200 200">
+                  <defs>
+                    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="ring-bg" cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                  <circle class="ring-progress" cx="100" cy="100" r="80" fill="none" stroke="url(#ringGradient)" stroke-width="8" stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="502"/>
+                </svg>
+                <div class="stats-ring-content">
+                  <span class="text-4xl font-bold text-white counter" data-target="98.5">0</span>
+                  <span class="text-cyan-400 text-lg">%</span>
+                  <p class="text-slate-400 text-sm mt-1">دقة الاستخراج</p>
+                </div>
+              </div>
+              
+              <!-- Processing Animation -->
+              <div class="processing-wave mt-8">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <p class="text-cyan-300 text-sm mt-4 font-mono">جاري تحليل البيانات...</p>
+            </div>
+          </div>
+          
+          <!-- Corner Decorations -->
+          <div class="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/50 rounded-tl-3xl"></div>
+          <div class="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/50 rounded-tr-3xl"></div>
+          <div class="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/50 rounded-bl-3xl"></div>
+          <div class="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/50 rounded-br-3xl"></div>
+        </div>
+      </div>
+      
+      <!-- Features Cards - Right Side -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Feature 1: Digital Archive + NLP -->
+        <div class="feature-card-3d group" data-feature="nlp">
+          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)]">
+            <div class="flex items-start gap-5">
+              <div class="relative">
+                <div class="absolute -inset-2 bg-cyan-500/20 rounded-xl blur-lg group-hover:bg-cyan-500/30 transition"></div>
+                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                  <iconify-icon icon="lucide:file-scan" width="28" class="text-white"></iconify-icon>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold text-white group-hover:text-cyan-100 transition">نظام أرشفة رقمي متكامل + NLP</h3>
+                  <span class="px-2 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs">ذكي</span>
+                </div>
+                
+                <!-- Features List -->
+                <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
+                      <span class="text-slate-300">المسح الضوئي الذكي + OCR حتى من الخط اليدوي</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" style="animation-delay: 0.2s;"></span>
+                      <span class="text-slate-300">دعم صيغ طبية (PDF, DICOM, صوت، صور)</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.4s;"></span>
+                      <span class="text-slate-300">معالجة بالعربية والإنجليزية مع NER</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style="animation-delay: 0.6s;"></span>
+                      <span class="text-slate-300">تطبيع المصطلحات الطبية لقاعدة موحّدة</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        <!-- Feature 3: Auto Extraction & EHR Update -->
+        <div class="feature-card-3d group" data-feature="extract">
+          <div class="feature-card-inner glass-card p-6 rounded-2xl border border-white/10 hover:border-gold-500/30 transition-all duration-500 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(212,175,55,0.15)]">
+            <div class="flex items-start gap-5">
+              <div class="relative">
+                <div class="absolute -inset-2 bg-gold-500/20 rounded-xl blur-lg group-hover:bg-gold-500/30 transition"></div>
+                <div class="relative w-14 h-14 rounded-xl bg-gradient-to-br from-gold-500 to-amber-500 flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
+                  <iconify-icon icon="lucide:database-zap" width="28" class="text-white"></iconify-icon>
+                </div>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl font-bold text-white group-hover:text-gold-100 transition">استخراج تلقائي وتحديث السجل الصحي (EHR)</h3>
+                  <span class="px-2 py-1 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs">آلي</span>
+                </div>
+                
+                <!-- Auto Features -->
+                <div class="bg-slate-900/50 rounded-xl p-4 border border-white/5">
+                  <div class="space-y-2">
+                    <div class="flex items-center gap-2 text-sm">
+                      <iconify-icon icon="lucide:activity" width="14" class="text-gold-400"></iconify-icon>
+                      <span class="text-slate-300">تحديث نتائج مختبرية ومنحنى المريض تلقائياً</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <iconify-icon icon="lucide:bell" width="14" class="text-amber-400"></iconify-icon>
+                      <span class="text-slate-300">إشعارات للنتائج الشاذة وربطها بالتقارير الأصلية</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm">
+                      <iconify-icon icon="lucide:shield-check" width="14" class="text-emerald-400"></iconify-icon>
+                      <span class="text-slate-300">تقليل الأخطاء الطبية الناتجة عن الإدخال اليدوي</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Interactive 3D Benefits Showcase -->
+    <div class="mb-20">
+      <h3 class="text-2xl font-bold text-white text-center mb-12">
+        <iconify-icon icon="lucide:award" class="text-gold-500 ml-2"></iconify-icon>
+        إيجابيات النظام في البيئة الصحية السعودية
+      </h3>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Benefit 1 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-cyan-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[60px] group-hover:bg-cyan-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:merge" width="24" class="text-cyan-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">توحيد السجلات</h4>
+              <p class="text-slate-400 text-sm">تحويل آلاف السجلات غير الموحدة إلى قاعدة بيانات موحدة على مستوى المملكة</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benefit 2 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-emerald-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:microscope" width="24" class="text-emerald-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">تسريع البحث العلمي</h4>
+              <p class="text-slate-400 text-sm">تمكين الباحثين من إجراء دراسات وبائية واسعة النطاق بسهولة</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benefit 3 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-gold-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-[60px] group-hover:bg-gold-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-gold-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:calendar-check" width="24" class="text-gold-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">تجهيز موسمي</h4>
+              <p class="text-slate-400 text-sm">تجهيز المستشفيات لمواسم الحج والعمرة بتحليل البيانات التاريخية</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Benefit 4 -->
+        <div class="benefit-card-3d group">
+          <div class="relative h-full p-6 rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/50 border border-white/10 hover:border-purple-500/30 transition-all duration-500 overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-[60px] group-hover:bg-purple-500/20 transition"></div>
+            <div class="relative z-10">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <iconify-icon icon="lucide:shield-check" width="24" class="text-purple-400"></iconify-icon>
+              </div>
+              <h4 class="text-lg font-semibold text-white mb-2">دقة لا مثيل لها</h4>
+              <p class="text-slate-400 text-sm">القضاء على الأخطاء اليدوية ومنع الأخطاء الطبية الخطيرة</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Future Vision -->
+    <div class="mt-20 text-center">
+      <h3 class="text-2xl font-bold text-white mb-8">
+        <iconify-icon icon="lucide:rocket" class="text-gold-500 ml-2"></iconify-icon>
+        الرؤية المستقبلية
+      </h3>
+      
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Vision 1 -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 hover:border-indigo-500/40 transition">
+          <iconify-icon icon="lucide:line-chart" width="32" class="text-indigo-400 mb-4"></iconify-icon>
+          <h4 class="text-lg font-semibold text-white mb-2">التحليلات التنبؤية</h4>
+          <p class="text-slate-400 text-sm">التنبؤ بالأوبئة وتحديد المجموعات الأكثر عرضة للأمراض</p>
+        </div>
+        
+        <!-- Vision 2 -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-teal-900/20 border border-cyan-500/20 hover:border-cyan-500/40 transition">
+          <iconify-icon icon="lucide:stethoscope" width="32" class="text-cyan-400 mb-4"></iconify-icon>
+          <h4 class="text-lg font-semibold text-white mb-2">مساعد القرار السريري</h4>
+          <p class="text-slate-400 text-sm">عرض حالات مشابهة ونتائج علاجها لدعم الطبيب</p>
+        </div>
+        
+        <!-- Vision 3 -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-emerald-900/20 to-green-900/20 border border-emerald-500/20 hover:border-emerald-500/40 transition">
+          <iconify-icon icon="lucide:user-circle" width="32" class="text-emerald-400 mb-4"></iconify-icon>
+          <h4 class="text-lg font-semibold text-white mb-2">تمكين المريض</h4>
+          <p class="text-slate-400 text-sm">بوابة آمنة للمرضى لمتابعة تاريخهم الصحي</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ========================================
+   SMART MEDICAL ARCHIVE - 3D STYLES
+   ======================================== */
+
+/* Perspective Container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* 3D Header Transform */
+.transform-3d-header {
+  transform-style: preserve-3d;
+  animation: float3D 6s ease-in-out infinite;
+}
+
+@keyframes float3D {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-10px) rotateX(2deg); }
+}
+
+/* DNA Strand Animation */
+.dna-strand {
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(6, 182, 212, 0.3) 25%, 
+    rgba(16, 185, 129, 0.3) 50%, 
+    rgba(6, 182, 212, 0.3) 75%, 
+    transparent 100%
+  );
+  animation: dnaFloat 20s linear infinite;
+}
+
+.dna-strand-1 { left: 10%; animation-delay: 0s; }
+.dna-strand-2 { left: 50%; animation-delay: -7s; }
+.dna-strand-3 { left: 90%; animation-delay: -14s; }
+
+@keyframes dnaFloat {
+  0% { transform: translateY(-100%) rotate(0deg); }
+  100% { transform: translateY(100%) rotate(360deg); }
+}
+
+/* Medical Particles */
+.medical-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle-medical {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.8), transparent);
+  border-radius: 50%;
+  animation: particleFloat 15s infinite ease-in-out;
+}
+
+.particle-medical.p-1 { top: 10%; left: 20%; animation-delay: 0s; }
+.particle-medical.p-2 { top: 30%; left: 80%; animation-delay: -2s; }
+.particle-medical.p-3 { top: 50%; left: 10%; animation-delay: -4s; }
+.particle-medical.p-4 { top: 70%; left: 60%; animation-delay: -6s; }
+.particle-medical.p-5 { top: 20%; left: 40%; animation-delay: -8s; background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent); }
+.particle-medical.p-6 { top: 80%; left: 30%; animation-delay: -10s; background: radial-gradient(circle, rgba(16, 185, 129, 0.8), transparent); }
+.particle-medical.p-7 { top: 40%; left: 70%; animation-delay: -12s; }
+.particle-medical.p-8 { top: 60%; left: 50%; animation-delay: -14s; background: radial-gradient(circle, rgba(212, 175, 55, 0.8), transparent); }
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(50px, -30px) scale(1.5);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-30px, 50px) scale(1);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translate(30px, 30px) scale(1.3);
+    opacity: 0.7;
+  }
+}
+
+/* Holographic Container */
+.holographic-container {
+  transform-style: preserve-3d;
+  animation: holographicFloat 8s ease-in-out infinite;
+}
+
+@keyframes holographicFloat {
+  0%, 100% { transform: rotateY(-5deg) rotateX(5deg); }
+  50% { transform: rotateY(5deg) rotateX(-5deg); }
+}
+
+/* Scan Lines */
+.scan-lines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(6, 182, 212, 0.03) 2px,
+    rgba(6, 182, 212, 0.03) 4px
+  );
+  pointer-events: none;
+  animation: scanMove 10s linear infinite;
+}
+
+@keyframes scanMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* 3D Medical Document */
+.medical-document-3d {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  transform-style: preserve-3d;
+  animation: documentRotate 10s ease-in-out infinite;
+}
+
+.document-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.document-layer.layer-1 {
+  background: rgba(6, 182, 212, 0.2);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  transform: translate(-50%, -50%) translateZ(0px);
+}
+
+.document-layer.layer-2 {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  transform: translate(-50%, -50%) translateZ(20px);
+  animation: layerFloat 3s ease-in-out infinite;
+}
+
+.document-layer.layer-3 {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  transform: translate(-50%, -50%) translateZ(40px);
+  animation: layerFloat 3s ease-in-out infinite 0.5s;
+}
+
+@keyframes documentRotate {
+  0%, 100% { transform: rotateY(0deg); }
+  50% { transform: rotateY(180deg); }
+}
+
+@keyframes layerFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateZ(20px) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateZ(30px) translateY(-10px); }
+}
+
+/* Stats Ring */
+.stats-ring-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.stats-ring {
+  transform: rotate(-90deg);
+}
+
+.ring-progress {
+  animation: ringFill 2s ease-out forwards;
+}
+
+@keyframes ringFill {
+  to { stroke-dashoffset: 75; }
+}
+
+.stats-ring-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Processing Wave */
+.processing-wave {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.processing-wave span {
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(to top, #06b6d4, #10b981);
+  border-radius: 2px;
+  animation: waveAnim 1s ease-in-out infinite;
+}
+
+.processing-wave span:nth-child(2) { animation-delay: 0.1s; }
+.processing-wave span:nth-child(3) { animation-delay: 0.2s; }
+.processing-wave span:nth-child(4) { animation-delay: 0.3s; }
+.processing-wave span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveAnim {
+  0%, 100% { height: 20px; }
+  50% { height: 40px; }
+}
+
+/* Feature Card 3D */
+.feature-card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.feature-card-3d:hover {
+  transform: translateZ(20px);
+}
+
+/* Benefit Card 3D */
+.benefit-card-3d {
+  transition: all 0.5s;
+}
+
+.benefit-card-3d:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+}
+
+.typing-indicator span {
+  width: 8px;
+  height: 8px;
+  background: #06b6d4;
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+
+/* Float Animation */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Pulse Slow */
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Gradient Animation */
+.animate-gradient-x {
+  animation: gradientX 6s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradientX {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Counter Animation */
+.counter {
+  transition: all 0.5s ease-out;
+}
+</style>
+
+<script>
+// ========================================
+// SMART MEDICAL ARCHIVE - 3D ANIMATIONS
+// ========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Initialize 3D Canvas Background
+  initMedicalArchiveCanvas();
+  
+  // Initialize Counters
+  initCounters();
+  
+  // Initialize Intersection Observer for animations
+  initScrollAnimations();
+  
+});
+
+// 3D Canvas Background
+function initMedicalArchiveCanvas() {
+  const canvas = document.getElementById('medical-archive-canvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  
+  resize();
+  window.addEventListener('resize', resize);
+  
+  // Particles - تقليل العدد لتحسين الأداء
+  const particles = [];
+  const particleCount = 30; // كان 50
+  
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      z: Math.random() * 1000,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      vz: (Math.random() - 0.5) * 2,
+      radius: Math.random() * 2 + 1,
+      color: Math.random() > 0.5 ? '#06b6d4' : '#10b981'
+    });
+  }
+  
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update and draw particles
+    particles.forEach((p, i) => {
+      // Update position
+      p.x += p.vx;
+      p.y += p.vy;
+      p.z += p.vz;
+      
+      // Boundary check
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      if (p.z < 0 || p.z > 1000) p.vz *= -1;
+      
+      // Calculate size based on z
+      const scale = (1000 - p.z) / 1000;
+      const size = p.radius * scale;
+      const alpha = scale * 0.5;
+      
+      // Draw particle
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+      ctx.fill();
+      
+      // Draw connections - تقليل المسافة لتقليل عدد الخطوط
+      particles.forEach((p2, j) => {
+        if (i >= j) return;
+        
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist < 100) { // كان 150
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(6, 182, 212, ${(1 - dist / 100) * 0.15})`; // تقليل الشفافية
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      });
+    });
+    
+    requestAnimationFrame(animate);
+  }
+  
+  animate();
+}
+
+// Counter Animation
+function initCounters() {
+  const counters = document.querySelectorAll('.counter');
+  
+  counters.forEach(counter => {
+    const target = parseFloat(counter.getAttribute('data-target'));
+    const duration = 2000;
+    const start = 0;
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const current = start + (target - start) * easeOutQuart;
+      
+      counter.textContent = current.toFixed(1);
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      }
+    }
+    
+    // Start when visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          requestAnimationFrame(updateCounter);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    observer.observe(counter);
+  });
+}
+
+// Scroll Animations
+function initScrollAnimations() {
+  const elements = document.querySelectorAll('.feature-card-3d, .benefit-card-3d');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        entry.target.style.transitionDelay = `${index * 0.1}s`;
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  elements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'all 0.6s ease-out';
+    observer.observe(el);
+  });
+}
+</script>
+  <section class="py-16 md:py-24 px-6 relative z-10 bg-slate-900/50 border-y border-white/5">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-6">
+          <iconify-icon icon="lucide:terminal" width="14"></iconify-icon>
+          Developers First
+        </div>
+        <h2 class="text-3xl lg:text-5xl font-semibold text-white mb-6">
+          المحرك العصبي
+          <span class="text-indigo-400 block mt-2 text-2xl">
+            The Neural Engine
+          </span>
+        </h2>
+        <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+          بنية تحتية برمجية مصممة للمرونة. واجهات برمجة تطبيقات (APIs) موحدة
+          تمكنك من دمج قدرات الذكاء الاصطناعي في تطبيقاتك الحالية ببضعة أسطر
+          برمجية.
+        </p>
+        <ul class="space-y-4 mb-8">
+          <li class="flex items-center gap-3 text-slate-300">
+            <div class="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+            </div>
+            <span>RESTful &amp; GraphQL APIs</span>
+          </li>
+          <li class="flex items-center gap-3 text-slate-300">
+            <div class="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <iconify-icon icon="lucide:check" width="14"></iconify-icon>
+            </div>
+            <span>SDKs for Python, Node.js, Go</span>
+          </li>
+        </ul>
+        <a href="Docs.html"
+          class="inline-flex items-center gap-2 text-white border-b border-indigo-500 pb-1 hover:text-indigo-400 transition">
+          Explore Documentation
+          <iconify-icon icon="lucide:arrow-right" width="16"></iconify-icon>
+        </a>
+      </div>
+      <div class="relative group">
+        <div
+          class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000">
+        </div>
+        <div class="terminal-window relative bg-[#0f172a] p-6 rounded-lg overflow-hidden font-mono text-sm shadow-2xl">
+          <div class="flex items-center gap-2 mb-4 border-b border-white/10 pb-4">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="ml-2 text-xs text-slate-500">api_test.py</span>
+          </div>
+          <div class="text-slate-300 leading-relaxed font-mono" id="typewriter-code" style="min-height: 280px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- 3. SERVICES (BENTO GRID) -->
+  <section class="py-16 md:py-24 px-6 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-12">
+        <h2 class="text-3xl font-semibold text-white mb-2">
+          خدمات الذكاء الاصطناعي وذكاء الأعمال المتقدمة للشركات السعودية
+        </h2>
+        <p class="text-slate-400">حلول شاملة مصممة خصيصاً لاحتياجاتك</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
+        <!-- Item 1: Large Span -->
+        <div class="glass-card md:col-span-2 md:row-span-1 p-8 relative overflow-hidden group">
+          <div
+            class="absolute right-0 top-0 p-32 bg-indigo-600/10 blur-[60px] rounded-full group-hover:bg-indigo-600/20 transition">
+          </div>
+          <div class="relative z-10 h-full flex flex-col justify-between">
+            <iconify-icon icon="lucide:factory" width="48" class="text-indigo-400 mb-4"></iconify-icon>
+            <div>
+              <h3 class="text-2xl font-semibold text-white mb-2">
+                الذكاء الاصطناعي كخدمة (AIaaS) للمنشآت
+              </h3>
+              <p class="text-slate-400 text-sm">
+                خدمات مُدارة بالكامل لتحويل المنشآت الفيزيائية (مصانع، متاجر)
+                إلى كيانات ذكية عبر التوائم الرقمية وإنترنت الأشياء. حلول ذكاء اصطناعي متكاملة للشركات السعودية.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="glass-card p-8 flex flex-col justify-between group">
+          <div
+            class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4 text-purple-400 group-hover:text-purple-300 transition">
+            <iconify-icon icon="lucide:bot" width="24"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-white mb-2">
+              سير عمل الذكاء الاصطناعي (AI Workflows) للأتمتة الذكية
+            </h3>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              هو تنظيم ذكي للمهام يجعل الذكاء الاصطناعي يفهم الطلب، يتخذ
+              القرار، وينفّذ الإجراء تلقائيًا لتحقيق نتائج أسرع وتكلفة أقل.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="glass-card p-8 flex flex-col justify-between group">
+          <div
+            class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4 text-blue-400 group-hover:text-blue-300 transition">
+            <iconify-icon icon="lucide:database" width="24"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-white mb-2">
+              ذكاء الأعمال وتحليل البيانات المتقدم باستخدام الذكاء الاصطناعي
+            </h3>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              تحويل البيانات الخام إلى رؤى قابلة للتنفيذ باستخدام خوارزميات
+              التعلم العميق. حلول ذكاء الأعمال BI لدعم القرارات الإدارية.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="glass-card p-8 flex flex-col justify-between group">
+          <div
+            class="w-12 h-12 rounded-lg bg-gold-500/20 flex items-center justify-center mb-4 text-gold-400 group-hover:text-gold-300 transition">
+            <iconify-icon icon="lucide:lightbulb" width="24"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-white mb-2">
+              استشارات الذكاء الاصطناعي والتحول الرقمي
+            </h3>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              نساعدك في رسم خارطة طريق التحول الرقمي واختيار التقنيات
+              المناسبة. استشارات الذكاء الاصطناعي للشركات السعودية.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 5: Large Span -->
+        <div class="glass-card md:col-span-1 md:row-span-1 p-8 flex flex-col justify-between group">
+          <div
+            class="w-12 h-12 rounded-lg bg-teal-500/20 flex items-center justify-center mb-4 text-teal-400 group-hover:text-teal-300 transition">
+            <iconify-icon icon="lucide:workflow" width="24"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-medium text-white mb-2">
+              الأتمتة الذكية
+            </h3>
+            <p class="text-slate-400 text-xs leading-relaxed">
+              تقليل الجهد البشري وزيادة الكفاءة عبر أتمتة العمليات الروتينية. أتمتة ذكية للعمليات RPA وسير عمل الذكاء
+              الاصطناعي.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.1 BUSINESS INTELLIGENCE & DATA ANALYSIS SECTION -->
+  <section class="py-16 md:py-24 px-6 bg-slate-900/30 relative border-t border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16 text-center">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-medium mb-4">
+          <iconify-icon icon="lucide:bar-chart-2" width="14"></iconify-icon>
+          ذكاء الأعمال
+        </div>
+        <h2 class="text-3xl lg:text-4xl font-semibold text-white mb-4">
+          ذكاء الأعمال وتحليل البيانات
+        </h2>
+        <p class="text-slate-400 text-lg max-w-3xl mx-auto">
+          نحول البيانات الضخمة إلى قرارات استراتيجية دقيقة. نساعدك على فهم ما حدث، لماذا حدث، وماذا سيحدث مستقبلاً عبر
+          أدوات ذكاء الأعمال المتقدمة.
+        </p>
+      </div>
+
+      <!-- BI vs AI Comparison -->
+      <div class="grid lg:grid-cols-2 gap-12 mb-20 items-center">
+        <div class="glass-card p-8 group">
+          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+            <iconify-icon icon="lucide:pie-chart" class="text-blue-400" width="24"></iconify-icon>
+            ذكاء الأعمال (BI)
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3 text-slate-400">
+              <iconify-icon icon="lucide:check-circle" class="text-blue-400 mt-1" width="16"></iconify-icon>
+              <p>تحليل البيانات التاريخية والحالية لفهم الأداء السابق.</p>
+            </li>
+            <li class="flex items-start gap-3 text-slate-400">
+              <iconify-icon icon="lucide:check-circle" class="text-blue-400 mt-1" width="16"></iconify-icon>
+              <p>لوحات تحكم تفاعلية وتقارير مرئية لاتخاذ قرارات فورية.</p>
+            </li>
+            <li class="flex items-start gap-3 text-slate-400">
+              <iconify-icon icon="lucide:check-circle" class="text-blue-400 mt-1" width="16"></iconify-icon>
+              <p>الإجابة على سؤال: "ماذا حدث وكيف يمكن تحسينه؟"</p>
+            </li>
+          </ul>
+        </div>
+        <div class="glass-card p-8 group border-indigo-500/30">
+          <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
+            <iconify-icon icon="lucide:brain-circuit" class="text-indigo-400" width="24"></iconify-icon>
+            الذكاء الاصطناعي (AI)
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-start gap-3 text-slate-400">
+              <iconify-icon icon="lucide:check-circle" class="text-indigo-400 mt-1" width="16"></iconify-icon>
+              <p>التنبؤ بالمستقبل واقتراح إجراءات استباقية.</p>
+            </li>
+            <li class="flex items-start gap-3 text-slate-400">
+              <iconify-icon icon="lucide:check-circle" class="text-indigo-400 mt-1" width="16"></iconify-icon>
+              <p>التعلم من البيانات واكتشاف الأنماط غير الظاهرة تلقائياً.</p>
+            </li>
+            <li class="flex items-start gap-3 text-slate-400">
+              <iconify-icon icon="lucide:check-circle" class="text-indigo-400 mt-1" width="16"></iconify-icon>
+              <p>الإجابة على سؤال: "ماذا سيحدث وما هو الإجراء الأمثل؟"</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- BI Tools Cards -->
+      <h3 class="text-2xl font-bold text-white mb-8 text-center">أدوات وتقنيات نستخدمها</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div class="glass-card p-4 md:p-6 text-center hover:bg-white/5 transition">
+          <iconify-icon icon="simple-icons:powerbi" width="32"
+            class=" md:w-[40px] text-yellow-500 mb-3 md:mb-4"></iconify-icon>
+          <h4 class="text-base md:text-lg font-semibold text-white">Power BI</h4>
+          <p class="text-slate-400 text-xs md:text-sm mt-2">تحليل بيانات متقدم من Microsoft</p>
+        </div>
+        <div class="glass-card p-4 md:p-6 text-center hover:bg-white/5 transition">
+          <iconify-icon icon="simple-icons:tableau" width="32"
+            class=" md:w-[40px] text-blue-500 mb-3 md:mb-4"></iconify-icon>
+          <h4 class="text-base md:text-lg font-semibold text-white">Tableau</h4>
+          <p class="text-slate-400 text-xs md:text-sm mt-2">تصوير بيانات تفاعلي وسهل</p>
+        </div>
+        <div class="glass-card p-4 md:p-6 text-center hover:bg-white/5 transition">
+          <iconify-icon icon="simple-icons:looker" width="32"
+            class=" md:w-[40px] text-indigo-400 mb-3 md:mb-4"></iconify-icon>
+          <h4 class="text-base md:text-lg font-semibold text-white">Looker</h4>
+          <p class="text-slate-400 text-xs md:text-sm mt-2">منصة بيانات حديثة من Google</p>
+        </div>
+        <div class="glass-card p-4 md:p-6 text-center hover:bg-white/5 transition">
+          <iconify-icon icon="simple-icons:apachespark" width="32"
+            class=" md:w-[40px] text-orange-500 mb-3 md:mb-4"></iconify-icon>
+          <h4 class="text-base md:text-lg font-semibold text-white">Apache Spark</h4>
+          <p class="text-slate-400 text-xs md:text-sm mt-2">معالجة بيانات ضخمة فائقة السرعة</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTERPRISE AI ARCHITECTURE SECTION - قسم البنية المؤسسية للذكاء الاصطناعي -->
+  <section id="enterprise-architecture" class="py-24 px-6 relative border-y"
+    style="background-color: #020617; border-color: rgba(30, 41, 59, 0.5);">
+    <div class="max-w-6xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-on-scroll">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+          style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+          <iconify-icon icon="lucide:layers" width="18" class="text-gold-500"></iconify-icon>
+          <span class="text-sm font-medium text-gold-400">
+            البنية التحتية المتقدمة
+          </span>
+        </div>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          البنية المؤسسية لحلول الذكاء الاصطناعي وذكاء الأعمال في السعودية
+        </h2>
+        <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
+          بنية تقنية متكاملة ومرنة تدعم نمو أعمالك وتتكيف مع متطلباتك
+          المتغيرة، مصممة وفق أفضل الممارسات العالمية ومعايير الأمان السعودية.
+        </p>
+      </div>
+
+      <!-- Architecture Layers -->
+      <div class="space-y-6 mb-12 stagger-container">
+        <!-- Layer 1: Data Layer -->
+        <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+          style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(99, 102, 241, 0.1)); border: 1px solid rgba(99, 102, 241, 0.2);">
+          <div class="flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex items-center gap-4 md:w-1/3">
+              <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                style="background: rgba(99, 102, 241, 0.2);">
+                <iconify-icon icon="lucide:database" width="28" style="color: #818CF8;"></iconify-icon>
+              </div>
+              <div>
+                <span class="text-xs font-medium px-2 py-1 rounded-full"
+                  style="background: rgba(99, 102, 241, 0.2); color: #A5B4FC;">
+                  الطبقة 1
+                </span>
+                <h3 class="text-lg font-semibold text-white mt-1">
+                  طبقة البيانات
+                </h3>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+              تجميع وتنظيم البيانات من مصادر متعددة (ERPs, CRMs, IoT) مع ضمان
+              جودة البيانات وأمانها. تخزين آمن داخل المملكة مع تشفير متقدم
+              وإدارة دورة حياة البيانات.
+            </p>
+          </div>
+        </div>
+
+        <!-- Layer 2: Processing Layer -->
+        <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+          style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(168, 85, 247, 0.2);">
+          <div class="flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex items-center gap-4 md:w-1/3">
+              <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                style="background: rgba(168, 85, 247, 0.2);">
+                <iconify-icon icon="lucide:cpu" width="28" style="color: #C084FC;"></iconify-icon>
+              </div>
+              <div>
+                <span class="text-xs font-medium px-2 py-1 rounded-full"
+                  style="background: rgba(168, 85, 247, 0.2); color: #D8B4FE;">
+                  الطبقة 2
+                </span>
+                <h3 class="text-lg font-semibold text-white mt-1">
+                  طبقة المعالجة
+                </h3>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+              محركات ذكاء اصطناعي متقدمة للتعلم الآلي والتعلم العميق ومعالجة
+              اللغة الطبيعية العربية. قدرات حوسبة مرنة تتكيف مع حجم العمل
+              وتضمن الأداء الأمثل.
+            </p>
+          </div>
+        </div>
+
+        <!-- Layer 3: Intelligence Layer -->
+        <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+          style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(212, 175, 55, 0.1)); border: 1px solid rgba(212, 175, 55, 0.2);">
+          <div class="flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex items-center gap-4 md:w-1/3">
+              <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                style="background: rgba(212, 175, 55, 0.2);">
+                <iconify-icon icon="lucide:brain" width="28" class="text-gold-500"></iconify-icon>
+              </div>
+              <div>
+                <span class="text-xs font-medium px-2 py-1 rounded-full"
+                  style="background: rgba(212, 175, 55, 0.2); color: #FCD34D;">
+                  الطبقة 3
+                </span>
+                <h3 class="text-lg font-semibold text-white mt-1">
+                  طبقة الذكاء
+                </h3>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+              نماذج ذكاء اصطناعي مخصصة لاحتياجات عملك، مع قدرات التنبؤ
+              والتحليل واتخاذ القرار الآلي. تكامل سلس مع أنظمتك الحالية عبر
+              واجهات برمجة تطبيقات آمنة.
+            </p>
+          </div>
+        </div>
+
+        <!-- Layer 4: Application Layer -->
+        <div class="group p-6 rounded-xl transition-all duration-300 stagger-item"
+          style="background: linear-gradient(to left, rgba(15, 23, 42, 0.8), rgba(16, 185, 129, 0.1)); border: 1px solid rgba(16, 185, 129, 0.2);">
+          <div class="flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex items-center gap-4 md:w-1/3">
+              <div class="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                style="background: rgba(16, 185, 129, 0.2);">
+                <iconify-icon icon="lucide:layout-dashboard" width="28" style="color: #34D399;"></iconify-icon>
+              </div>
+              <div>
+                <span class="text-xs font-medium px-2 py-1 rounded-full"
+                  style="background: rgba(16, 185, 129, 0.2); color: #6EE7B7;">
+                  الطبقة 4
+                </span>
+                <h3 class="text-lg font-semibold text-white mt-1">
+                  طبقة التطبيقات
+                </h3>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed md:w-2/3">
+              واجهات مستخدم ذكية ولوحات تحكم تفاعلية تقدم الرؤى والتوصيات بشكل
+              مفهوم. تطبيقات متخصصة لكل قطاع مع إمكانية التخصيص حسب احتياجاتك.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Features Grid -->
+      <div class="grid md:grid-cols-3 gap-6 stagger-container">
+        <!-- Scalability -->
+        <div class="p-6 rounded-xl text-center stagger-item"
+          style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+          <iconify-icon icon="lucide:trending-up" width="32" class="text-gold-500 mb-4"></iconify-icon>
+          <h3 class="text-lg font-semibold text-white mb-2">قابلية التوسع</h3>
+          <p class="text-slate-500 text-sm">
+            بنية مرنة تنمو مع نمو أعمالك دون الحاجة لإعادة البناء
+          </p>
+        </div>
+
+        <!-- Security -->
+        <div class="p-6 rounded-xl text-center stagger-item"
+          style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+          <iconify-icon icon="lucide:shield" width="32" class="text-gold-500 mb-4"></iconify-icon>
+          <h3 class="text-lg font-semibold text-white mb-2">
+            الأمان المتقدم
+          </h3>
+          <p class="text-slate-500 text-sm">
+            حماية متعددة الطبقات تتوافق مع معايير NCA و NDMO
+          </p>
+        </div>
+
+        <!-- Integration -->
+        <div class="p-6 rounded-xl text-center stagger-item"
+          style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+          <iconify-icon icon="lucide:plug" width="32" class="text-gold-500 mb-4"></iconify-icon>
+          <h3 class="text-lg font-semibold text-white mb-2">التكامل السلس</h3>
+          <p class="text-slate-500 text-sm">
+            ربط سهل مع أنظمتك الحالية عبر APIs موحدة وآمنة
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.4 ADVANCED ANALYSIS TECHNOLOGIES -->
+  <section class="py-24 px-6 relative border-t border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <h2 class="text-3xl lg:text-4xl font-semibold text-white mb-6">تقنيات التحليل المتقدم</h2>
+        <p class="text-slate-400 text-lg">أدوات عميقة لكشف الحقائق المخفية في بياناتك</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Deep Learning -->
+        <div
+          class="flex gap-6 p-6 rounded-xl bg-slate-900/30 border border-white/5 hover:border-indigo-500/30 transition">
+          <div
+            class="shrink-0 w-16 h-16 bg-indigo-500/10 rounded-full flex items-center justify-center text-indigo-400">
+            <iconify-icon icon="lucide:network" width="32"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-2">التعلم العميق (Deep Learning)</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              محاكاة الشبكات العصبية البشرية لتحليل البيانات المعقدة جداً مثل الفيديو والصوت والنصوص غير المهيكلة بدقة
+              تتفوق على البشر.
+            </p>
+          </div>
+        </div>
+
+        <!-- Predictive Analytics -->
+        <div
+          class="flex gap-6 p-6 rounded-xl bg-slate-900/30 border border-white/5 hover:border-purple-500/30 transition">
+          <div
+            class="shrink-0 w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400">
+            <iconify-icon icon="lucide:line-chart" width="32"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-2">التحليلات التنبؤية (Predictive Analytics)</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              استخدام الإحصاء والنمذجة للتنبؤ بالأحداث المستقبلية، مثل سلوك العملاء، اتجاهات السوق، واحتمالية تعطل
+              المعدات.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sentiment Analysis -->
+        <div
+          class="flex gap-6 p-6 rounded-xl bg-slate-900/30 border border-white/5 hover:border-pink-500/30 transition">
+          <div class="shrink-0 w-16 h-16 bg-pink-500/10 rounded-full flex items-center justify-center text-pink-400">
+            <iconify-icon icon="lucide:smile" width="32"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-2">تحليل المشاعر (Sentiment Analysis)</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              فهم انطباعات العملاء واتجاهات الرأي العام من خلال تحليل النصوص في وسائل التواصل الاجتماعي والتعليقات بدقة
+              للدراية بصوت العميل.
+            </p>
+          </div>
+        </div>
+
+        <!-- Knowledge Graphs -->
+        <div
+          class="flex gap-6 p-6 rounded-xl bg-slate-900/30 border border-white/5 hover:border-gold-500/30 transition">
+          <div class="shrink-0 w-16 h-16 bg-gold-500/10 rounded-full flex items-center justify-center text-gold-400">
+            <iconify-icon icon="lucide:share-2" width="32"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-2">رسوم المعرفة (Knowledge Graphs)</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              ربط البيانات والمعلومات المتناثرة ببعضها البعض لاكتشاف علاقات معقدة وغير ظاهرة، مما يعزز قدرة الذكاء
+              الاصطناعي على الاستنتاج.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. INDUSTRIES (SCROLLING TICKER) - Moved up for flow -->
+  <section class="py-8 border-y border-white/5 bg-black/20 backdrop-blur-sm">
+    <div class="ticker-wrap">
+      <div class="ticker gap-16 text-slate-400 font-medium text-lg animate-scroll">
+        <span>ذكاء الأعمال</span>
+        <span class="text-gold-500">•</span>
+        <span>AI Workflows سير عمل الذكاء الاصطناعي</span>
+        <span class="text-gold-500">•</span>
+        <span>التقل واللوجستيات</span>
+        <span class="text-gold-500">•</span>
+        <span>
+          أتمتة العمليات الرقابية والتنبؤية ، سير العمل وإتخاذ القرارات،(RPA)
+        </span>
+        <span class="text-gold-500">•</span>
+        <span>الطاقة و الرعاية الطبية</span>
+        <span class="text-gold-500">•</span>
+        <span>البحث والتطوير ،التنمية المستدامةالذكية</span>
+        <span class="text-gold-500">•</span>
+        <!-- Duplicate for seamless loop -->
+        <span>ذكاء الأعمال</span>
+        <span class="text-gold-500">•</span>
+        <span>AI Workflows سير عمل الذكاء الاصطناعي</span>
+        <span class="text-gold-500">•</span>
+        <span>النقل واللوجستيات</span>
+        <span class="text-gold-500">•</span>
+        <span>
+          أتمتة العمليات الرقابية و التنبؤية ، سير العمل وإتخاذ القرارات،(RPA)
+        </span>
+        <span class="text-gold-500">•</span>
+        <span> الطاقة و الرعايةالطبية</span>
+        <span class="text-gold-500">•</span>
+        <span>البحث والتطوير ،التنمية المستدامة الذكية</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.2 DETAILED TARGET SECTORS SECTION -->
+  <section class="py-24 px-6 relative z-10" id="industries-detailed">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <h2 class="text-3xl lg:text-4xl font-semibold text-white mb-6">قطاعات نخدمها بتقنيات المستقبل</h2>
+        <p class="text-slate-400 text-lg">حلول مخصصة تلامس احتياجات كل قطاع حيوي في المملكة</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Government -->
+        <div class="glass-card p-8 group">
+          <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-6 text-green-400">
+            <iconify-icon icon="lucide:landmark" width="24"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">القطاع الحكومي</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            دعم التحول الرقمي الحكومي بما يتماشى مع رؤية 2030. رفع كفاءة الإنفاق، تحسين تجربة المواطن، واتخاذ قرارات
+            مبنية على البيانات من خلال مراكز ذكاء وطنية.
+          </p>
+          <ul class="text-xs text-slate-500 space-y-2">
+            <li class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>الامتثال لمعايير سدايا و NDMO
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>أتمتة الخدمات الحكومية
+            </li>
+          </ul>
+        </div>
+
+        <!-- Energy & Environment -->
+        <div class="glass-card p-8 group">
+          <div class="w-12 h-12 bg-amber-500/20 rounded-lg flex items-center justify-center mb-6 text-amber-400">
+            <iconify-icon icon="lucide:zap" width="24"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">الطاقة والبيئة</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            تحسين كفاءة استهلاك الطاقة، الصيانة التنبؤية للمحطات، ومراقبة الانبعاثات الكربونية باستخدام الذكاء الاصطناعي
+            لضمان الاستدامة.
+          </p>
+          <ul class="text-xs text-slate-500 space-y-2">
+            <li class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>إدارة الشبكات الذكية
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>التنبؤ بالأعطال
+            </li>
+          </ul>
+        </div>
+
+        <!-- Healthcare -->
+        <div class="glass-card p-8 group">
+          <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-6 text-red-400">
+            <iconify-icon icon="lucide:heart-pulse" width="24"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">الرعاية الصحية</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            تحليل الصور الطبية بدقة عالية، إدارة الملفات الطبية، وتحسين تجربة المريض وتقليل قوائم الانتظار عبر أنظمة
+            جدولة ذكية.
+          </p>
+          <ul class="text-xs text-slate-500 space-y-2">
+            <li class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 bg-red-500 rounded-full"></div>التشخيص المساعد بالذكاء الاصطناعي
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 bg-red-500 rounded-full"></div>تحليل البيانات الصحية السكانية
+            </li>
+          </ul>
+        </div>
+
+        <!-- Education -->
+        <div class="glass-card p-8 group">
+          <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-6 text-blue-400">
+            <iconify-icon icon="lucide:graduation-cap" width="24"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">التعليم</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            أنظمة تعلم تكيفية تخصص المحتوى لكل طالب، تحليل أداء الطلاب والتنبؤ بالتعثر الدراسي، وأتمتة المهام الإدارية
+            للمؤسسات التعليمية.
+          </p>
+        </div>
+
+        <!-- Transport & Logistics -->
+        <div class="glass-card p-8 group">
+          <div class="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center mb-6 text-cyan-400">
+            <iconify-icon icon="lucide:truck" width="24"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">النقل والخدمات اللوجستية</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            تحسين مسارات التوصيل، إدارة المخزون الذكي، وتتبع الأساطيل في الوقت الفعلي لتقليل التكاليف وزيادة سرعة
+            التوصيل.
+          </p>
+        </div>
+
+        <!-- Manufacturing -->
+        <div class="glass-card p-8 group">
+          <div class="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-6 text-purple-400">
+            <iconify-icon icon="lucide:factory" width="24"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">الصناعة 4.0</h3>
+          <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            مصانع ذكية تعتمد على إنترنت الأشياء، الروبوتات المؤتمتة، والتحكم الذكي في الجودة لزيادة الإنتاجية وتقليل
+            الهدر.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANAGED AIaaS SECTION -->
+  <section class="py-24 px-6 bg-slate-900/30 relative">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <h2 class="text-3xl lg:text-5xl font-semibold text-white mb-4">
+          حولنا العالم المادي..
+          <span class="text-gradient-gold">إلى ذكاء رقمي ملموس</span>
+        </h2>
+        <p class="text-slate-400 text-lg">
+          خدمة الذكاء الاصطناعي المدارة للمنشآت (AIaaS). نحول متجرك أو مصنعك
+          إلى منشأة ذكية متصلة دون الحاجة لفريق تقني.
+        </p>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[minmax(200px,auto)]">
+        <!-- Hero Card -->
+        <div
+          class="glass-card md:col-span-2 md:row-span-2 p-8 flex flex-col justify-center relative overflow-hidden group">
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/10 to-transparent"></div>
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+              <iconify-icon icon="lucide:cpu" width="32" class="text-gold-500"></iconify-icon>
+              <h3 class="text-2xl font-bold text-white">
+                شريكك التقني الخفي (Managed AIaaS)
+              </h3>
+            </div>
+            <p class="text-slate-300 mb-6 leading-relaxed">
+              هل ترغب في تبني تقنيات الذكاء الاصطناعي في منشأتك ولكن يوقفك
+              عائق الخبرة التقنية؟ نحن نوفر الأجهزة، السحابة الآمنة، ونظام
+              تعلم مستمر.
+            </p>
+            <ul class="space-y-3 text-sm text-slate-400 mb-8">
+              <li class="flex items-center gap-2">
+                <iconify-icon icon="lucide:rocket" class="text-indigo-400"></iconify-icon>
+                تشغيل فوري خلال أيام
+              </li>
+              <li class="flex items-center gap-2">
+                <iconify-icon icon="lucide:shield-check" class="text-indigo-400"></iconify-icon>
+                خصوصية قصوى (Edge Computing)
+              </li>
+              <li class="flex items-center gap-2">
+                <iconify-icon icon="lucide:brain" class="text-indigo-400"></iconify-icon>
+                تعلم ذاتي مستمر
+              </li>
+            </ul>
+            <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-gold-400 hover:text-gold-300 font-medium">
+              اطلب استشارة ميدانية
+              <iconify-icon icon="lucide:arrow-left"></iconify-icon>
+            </a>
+          </div>
+        </div>
+
+        <!-- Retail Card -->
+        <div class="glass-card md:col-span-2 p-8 group hover:bg-white/5 transition">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="text-xl font-bold text-white">
+              التجزئة الذكية
+              <span class="block text-xs font-normal text-slate-500 mt-1">
+                Smart Retail
+              </span>
+            </h3>
+            <iconify-icon icon="lucide:shopping-bag" width="28" class="text-pink-400"></iconify-icon>
+          </div>
+          <p class="text-slate-400 text-sm mb-4">
+            من مجرد متجر إلى خبير في سلوك العملاء.
+          </p>
+          <div class="flex gap-2 flex-wrap">
+            <span class="px-2 py-1 bg-white/5 rounded text-xs text-slate-300">
+              تحليل الإقبال
+            </span>
+            <span class="px-2 py-1 bg-white/5 rounded text-xs text-slate-300">
+              الخرائط الحرارية
+            </span>
+          </div>
+        </div>
+
+        <!-- Industry Card -->
+        <div class="glass-card md:col-span-1 p-6 group hover:bg-white/5 transition">
+          <iconify-icon icon="lucide:factory" width="28" class="text-cyan-400 mb-4"></iconify-icon>
+          <h3 class="text-lg font-bold text-white mb-2">الصناعة 4.0</h3>
+          <p class="text-slate-400 text-xs">
+            الصيانة التنبؤية ومراقبة الجودة الآلية.
+          </p>
+        </div>
+
+        <!-- Security Card -->
+        <div class="glass-card md:col-span-1 p-6 group hover:bg-white/5 transition">
+          <iconify-icon icon="lucide:eye" width="28" class="text-red-400 mb-4"></iconify-icon>
+          <h3 class="text-lg font-bold text-white mb-2">العيون الذكية</h3>
+          <p class="text-slate-400 text-xs">
+            كشف السلوكيات المشبوهة وتتبع الأصول.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2.3 AIaaS DETAILED INFO (Types of AIaaS) -->
+      <section class="py-16 px-6 bg-black/40">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center mb-12">
+            <h3 class="text-2xl font-bold text-white">نماذج خدمات الذكاء الاصطناعي (AIaaS Types)</h3>
+            <p class="text-slate-400 mt-2">مرونة كاملة تناسب حجم وطبيعة عملك</p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="p-6 rounded-xl border border-white/5 hover:border-indigo-500/50 transition bg-slate-900/50">
+              <iconify-icon icon="lucide:server" class="text-indigo-400 mb-4" width="32"></iconify-icon>
+              <h4 class="text-lg font-semibold text-white mb-2">APIs</h4>
+              <p class="text-slate-400 text-sm">واجهات برمجية جاهزة للدمج الفوري (رؤية، صوت، لغة).</p>
+            </div>
+            <div class="p-6 rounded-xl border border-white/5 hover:border-purple-500/50 transition bg-slate-900/50">
+              <iconify-icon icon="lucide:cloud-cog" class="text-purple-400 mb-4" width="32"></iconify-icon>
+              <h4 class="text-lg font-semibold text-white mb-2">MLaaS</h4>
+              <p class="text-slate-400 text-sm">منصات متكاملة لبناء وتدريب نماذج الآلة الخاصة بك.</p>
+            </div>
+            <div class="p-6 rounded-xl border border-white/5 hover:border-gold-500/50 transition bg-slate-900/50">
+              <iconify-icon icon="lucide:tag" class="text-gold-500 mb-4" width="32"></iconify-icon>
+              <h4 class="text-lg font-semibold text-white mb-2">Data Labeling</h4>
+              <p class="text-slate-400 text-sm">خدمات تنظيف وتصنيف البيانات لتجهيزها للذكاء الاصطناعي.</p>
+            </div>
+            <div class="p-6 rounded-xl border border-white/5 hover:border-emerald-500/50 transition bg-slate-900/50">
+              <iconify-icon icon="lucide:bot" class="text-emerald-400 mb-4" width="32"></iconify-icon>
+              <h4 class="text-lg font-semibold text-white mb-2">Agentic AI</h4>
+              <p class="text-slate-400 text-sm">وكلاء أذكياء ينفذون مهام معقدة بشكل مستقل تماماً.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="mt-12 text-center">
+        <a href="ai-agent.html"
+          class="px-8 py-4 bg-gradient-to-r from-gold-500 to-amber-600 text-white rounded-xl font-bold shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:scale-105 transition-transform inline-flex items-center gap-2">
+          <iconify-icon icon="lucide:calendar-check"></iconify-icon>
+          ابدأ تحول منشأتك اليوم
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.5 ROBOTICS APPLICATIONS -->
+  <section class="py-24 px-6 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <div class="max-w-2xl">
+          <h2 class="text-3xl lg:text-4xl font-semibold text-white mb-4">تطبيقات الروبوتات والأتمتة الفيزيائية</h2>
+          <p class="text-slate-400 text-lg">الذكاء يتحرك في العالم الواقعي</p>
+        </div>
+        <a href="#contact"
+          class="px-6 py-2 rounded-lg border border-white/10 hover:bg-white/5 text-white transition text-sm">تواصل لطلب
+          الحلول</a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="group relative overflow-hidden rounded-2xl h-64 glass-card">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent z-10"></div>
+          <!-- Placeholder for Image or Icon Art -->
+          <div
+            class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition duration-500">
+            <iconify-icon icon="lucide:plane" width="120" class="text-sky-500"></iconify-icon>
+          </div>
+          <div class="absolute bottom-0 p-6 z-20">
+            <h3 class="text-lg font-bold text-white mb-1">الدرونز (UAVs)</h3>
+            <p
+              class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+              فحص البنية التحتية، المسح الجغرافي، والتوصيل الجوي.
+            </p>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-2xl h-64 glass-card">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent z-10"></div>
+          <div
+            class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition duration-500">
+            <iconify-icon icon="lucide:package-check" width="120" class="text-amber-500"></iconify-icon>
+          </div>
+          <div class="absolute bottom-0 p-6 z-20">
+            <h3 class="text-lg font-bold text-white mb-1">روبوتات لوجستية</h3>
+            <p
+              class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+              أتمتة المخازن، النقل الذاتي، وترتيب البضائع بسرعة فائقة.
+            </p>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-2xl h-64 glass-card">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent z-10"></div>
+          <div
+            class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition duration-500">
+            <iconify-icon icon="lucide:copy" width="120" class="text-purple-500"></iconify-icon>
+          </div>
+          <div class="absolute bottom-0 p-6 z-20">
+            <h3 class="text-lg font-bold text-white mb-1">التوائم الرقمية</h3>
+            <p
+              class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+              نسخة افتراضية مطابقة للواقع للمحاكاة والتجربة قبل التنفيذ الفعلي.
+            </p>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-2xl h-64 glass-card">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent z-10"></div>
+          <div
+            class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition duration-500">
+            <iconify-icon icon="lucide:bot" width="120" class="text-emerald-500"></iconify-icon>
+          </div>
+          <div class="absolute bottom-0 p-6 z-20">
+            <h3 class="text-lg font-bold text-white mb-1">روبوتات الخدمة</h3>
+            <p
+              class="text-xs text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+              مساعدة العملاء، التنظيف الذكي، وتقديم الخدمات المباشرة.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2.6 SMART LIBRARY SECTION -->
+  <section class="py-24 px-6 border-b border-white/5 relative bg-slate-900/30">
+    <!-- Decorative Blob -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1">
+          <h2 class="text-3xl lg:text-4xl font-semibold text-white mb-6">
+            المكتبة الذكية: مستقبل المعرفة
+          </h2>
+          <p class="text-slate-400 text-lg leading-relaxed mb-8">
+            نحول المكتبات التقليدية إلى مراكز معرفة تفاعلية ذكية باستخدام أحدث تقنيات إنترنت الأشياء والذكاء الاصطناعي،
+            لتعزيز تجربة القارئ وسهولة الوصول للمعلومة.
+          </p>
+
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 shrink-0">
+                1
+              </div>
+              <div>
+                <h4 class="text-lg font-medium text-white">الفهرسة والأرشفة الآلية</h4>
+                <p class="text-sm text-slate-400 mt-1">تصنيف الكتب والمصادر آلياً باستخدام التعرف الضوئي وتحليل النصوص.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 shrink-0">
+                2
+              </div>
+              <div>
+                <h4 class="text-lg font-medium text-white">المباني الذكية</h4>
+                <p class="text-sm text-slate-400 mt-1">توفير الطاقة، الإضاءة الذكية، والتحكم في المناخ لحماية المخطوطات
+                  والكتب.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 shrink-0">
+                3
+              </div>
+              <div>
+                <h4 class="text-lg font-medium text-white">تحليل تجربة المستخدم</h4>
+                <p class="text-sm text-slate-400 mt-1">فهم اهتمامات القراء وتوصية الكتب المناسبة لهم تلقائياً.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2 relative">
+          <div
+            class="glass-card p-2 rounded-2xl border border-white/10 rotate-3 transform hover:rotate-0 transition duration-500">
+            <!-- Abstract Graphic for Smart Library -->
+            <div
+              class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl aspect-[4/3] flex items-center justify-center relative overflow-hidden">
+              <div
+                class="absolute inset-0 bg-[url('https://api.iconify.design/lucide:library.svg?color=%23334155&width=400')] bg-center bg-no-repeat opacity-10">
+              </div>
+              <iconify-icon icon="lucide:book-open-check" width="80" class="text-gold-500 relative z-10"></iconify-icon>
+
+              <!-- Floating elements -->
+              <div
+                class="absolute top-1/4 left-1/4 p-3 bg-slate-800/80 backdrop-blur rounded-lg border border-white/10 text-xs text-white shadow-lg animate-bounce duration-[3000ms]">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 bg-green-500 rounded-full"></div> كتاب متوفر
+                </div>
+              </div>
+              <div
+                class="absolute bottom-1/3 right-1/4 p-3 bg-slate-800/80 backdrop-blur rounded-lg border border-white/10 text-xs text-white shadow-lg animate-pulse">
+                <div class="flex items-center gap-2"><iconify-icon icon="lucide:search"></iconify-icon> بحث ذكي</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. INTERACTIVE 3D FEATURE -->
+  <section class="py-24 px-6 relative z-10">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-semibold mb-4 text-white">
+          لا تتخيل المستقبل، بل
+          <span class="text-indigo-400">تفاعل معه الآن!</span>
+        </h2>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-8 h-[600px] lg:h-[500px]">
+        <!-- Controls (Tabs) -->
+        <div class="lg:col-span-4 flex flex-col gap-4">
+          <button class="tab-btn active glass-card p-6 text-right group transition-all"
+            onclick="updateFeature('vision', this)">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium text-lg text-slate-200">
+                الرؤية الحاسوبية
+              </span>
+              <iconify-icon icon="lucide:scan-face"
+                class="text-indigo-400 group-hover:scale-110 transition"></iconify-icon>
+            </div>
+            <p class="text-sm text-slate-400">
+              تحليل الصور الطبية بدقة متناهية
+            </p>
+          </button>
+
+          <button class="tab-btn glass-card p-6 text-right group transition-all"
+            onclick="updateFeature('predict', this)">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium text-lg text-slate-200">
+                المراقبة والتنبؤ
+              </span>
+              <iconify-icon icon="lucide:bar-chart-3"
+                class="text-purple-400 group-hover:scale-110 transition"></iconify-icon>
+            </div>
+            <p class="text-sm text-slate-400">استشراف البيانات المستقبلية</p>
+          </button>
+
+          <button class="tab-btn glass-card p-6 text-right group transition-all"
+            onclick="updateFeature('hospital', this)">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium text-lg text-slate-200">
+                إدارة المستشفيات
+              </span>
+              <iconify-icon icon="lucide:activity-square"
+                class="text-green-400 group-hover:scale-110 transition"></iconify-icon>
+            </div>
+            <p class="text-sm text-slate-400">أتمتة تدفق المرضى والموارد</p>
+          </button>
+
+          <button class="tab-btn glass-card p-6 text-right group transition-all"
+            onclick="updateFeature('gemini', this)">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-medium text-lg text-slate-200">
+                تطبيقات Med-Gemini
+              </span>
+              <iconify-icon icon="lucide:bot" class="text-gold-400 group-hover:scale-110 transition"></iconify-icon>
+            </div>
+            <p class="text-sm text-slate-400">مساعد طبي ذكي متقدم</p>
+          </button>
+        </div>
+
+        <!-- Display Area (3D Dashboard Sim) -->
+        <div class="lg:col-span-8 relative group">
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-30 transition">
+          </div>
+          <div
+            class="relative h-full w-full dashboard-screen border border-white/10 rounded-2xl overflow-hidden p-8 flex flex-col"
+            id="dashboard-display">
+            <!-- Header of Dashboard -->
+            <div class="flex justify-between items-center mb-8 border-b border-white/5 pb-4">
+              <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <div class="text-xs font-mono text-slate-500">
+                SYSTEM_STATUS: ONLINE
+              </div>
+            </div>
+
+            <!-- Content injected via JS -->
+            <div id="feature-content" class="flex-1 flex flex-col justify-center items-center gap-6 animate-blob">
+              <!-- Default Content -->
+              <iconify-icon icon="lucide:scan-face" width="64" class="text-indigo-400"></iconify-icon>
+              <div class="w-3/4 space-y-3">
+                <div class="h-2 bg-indigo-500/20 rounded-full w-full overflow-hidden">
+                  <div class="h-full bg-indigo-500 w-[85%]"></div>
+                </div>
+                <div class="flex justify-between text-xs text-indigo-300">
+                  <span>دقة التشخيص</span>
+                  <span>98.5%</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-3 gap-4 w-full mt-4">
+                <div class="h-24 bg-white/5 rounded-lg border border-white/5 animate-pulse"></div>
+                <div class="h-24 bg-white/5 rounded-lg border border-white/5"></div>
+                <div class="h-24 bg-white/5 rounded-lg border border-white/5"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- AUTONOMOUS SYSTEMS & ROBOTS - Premium 3D Design -->
+  <!-- AUTONOMOUS SYSTEMS & ROBOTS - Premium 3D Design -->
+  <section class="py-24 px-6 relative z-10 overflow-hidden" id="ai-engines-section">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-20 left-10 w-72 h-72 bg-blue-600/10 rounded-full blur-[100px] animate-pulse"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] animate-pulse"
+        style="animation-delay: 1s;"></div>
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[150px]">
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative">
+      <!-- Section Header with 3D Effect -->
+      <div class="text-center mb-20">
+        <div
+          class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 mb-6">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+          </span>
+          <span class="text-indigo-300 text-sm font-medium tracking-wide">
+            أنظمة مؤسسية متكاملة
+          </span>
+        </div>
+        <h2 class="text-4xl lg:text-6xl font-bold mb-6">
+          <span class="text-white">الأنظمة و</span>
+          <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            الزملاء الرقميين
+          </span>
+        </h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+          بين الأنظمة المؤسسية الضخمة والروبوتات المتخصصة السريعة
+        </p>
+      </div>
+
+      <!-- AI Engines Section Title -->
+      <div class="flex items-center gap-4 mb-12">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+        <div
+          class="flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-900/50 to-purple-900/50 border border-indigo-500/30 backdrop-blur-sm">
+          <iconify-icon icon="lucide:cpu" width="20" class="text-indigo-400"></iconify-icon>
+          <span class="text-indigo-300 font-semibold tracking-wider text-sm">
+            محركات الذكاء الاصطناعي المركزية
+          </span>
+        </div>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+      </div>
+
+      <!-- Premium 3D Cards Grid -->
+      <div class="grid lg:grid-cols-2 gap-8 mb-24">
+        <!-- System 1: Bright Data Intelligence - Premium 3D Card -->
+        <div class="group relative perspective-1000">
+          <div
+            class="absolute -inset-1 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 rounded-3xl blur-lg opacity-30 group-hover:opacity-60 transition duration-500 animate-gradient-x">
+          </div>
+          <div
+            class="relative h-full bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 rounded-3xl border border-white/10 overflow-hidden transform-gpu transition-all duration-500 group-hover:scale-[1.02] group-hover:border-blue-500/30"
+            style="transform-style: preserve-3d;">
+            <!-- Floating Particles -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+              <div class="particle particle-1"></div>
+              <div class="particle particle-2"></div>
+              <div class="particle particle-3"></div>
+            </div>
+
+            <!-- Card Header with 3D Icon -->
+            <div class="p-8 pb-0">
+              <div class="flex items-start justify-between mb-6">
+                <div class="relative">
+                  <div
+                    class="absolute -inset-4 bg-blue-500/20 rounded-full blur-xl group-hover:bg-blue-500/30 transition">
+                  </div>
+                  <div
+                    class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/30 transform group-hover:rotate-6 transition-transform duration-300">
+                    <iconify-icon icon="lucide:database" width="32" class="text-white"></iconify-icon>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20">
+                  <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                  <span class="text-blue-300 text-xs font-medium">نشط</span>
+                </div>
+              </div>
+
+              <h3 class="text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-blue-100 transition">
+                Bright Data Intelligence
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                منصة تحليل البيانات الذكية المتكاملة - من استلام الملفات الخام
+                إلى التوصيات الاستراتيجية
+              </p>
+
+              <!-- Feature Pipeline -->
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span
+                  class="px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-medium flex items-center gap-1.5">
+                  <iconify-icon icon="lucide:upload" width="12"></iconify-icon>
+                  رفع الملفات
+                </span>
+                <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                <span
+                  class="px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-medium flex items-center gap-1.5">
+                  <iconify-icon icon="lucide:brain" width="12"></iconify-icon>
+                  تحليل AI
+                </span>
+                <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                <span
+                  class="px-3 py-1.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium flex items-center gap-1.5">
+                  <iconify-icon icon="lucide:lightbulb" width="12"></iconify-icon>
+                  رؤى ذكية
+                </span>
+              </div>
+            </div>
+
+            <!-- Interactive Dashboard Preview -->
+            <div class="relative h-56 mx-6 mb-6 rounded-2xl overflow-hidden border border-white/5 bg-slate-900/80">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+
+              <!-- Mini Dashboard UI -->
+              <div class="p-4 h-full">
+                <!-- Top Bar -->
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex gap-1.5">
+                    <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                  </div>
+                  <div class="text-[10px] text-slate-500 font-mono">
+                    Bright AI Dashboard
+                  </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                  <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                    <div class="text-lg font-bold text-blue-400" data-count="2.5">
+                      0
+                    </div>
+                    <div class="text-[9px] text-slate-500">M ريال</div>
+                  </div>
+                  <div class="p-2 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <div class="text-lg font-bold text-green-400" data-count="15%">
+                      0
+                    </div>
+                    <div class="text-[9px] text-slate-500">نمو</div>
+                  </div>
+                  <div class="p-2 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                    <div class="text-lg font-bold text-purple-400" data-count="98%">
+                      0
+                    </div>
+                    <div class="text-[9px] text-slate-500">دقة</div>
+                  </div>
+                </div>
+
+                <!-- Animated Chart Bars -->
+                <div class="flex items-end gap-1 h-16">
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 40%; animation-delay: 0s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 65%; animation-delay: 0.1s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 45%; animation-delay: 0.2s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 80%; animation-delay: 0.3s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 55%; animation-delay: 0.4s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 90%; animation-delay: 0.5s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 70%; animation-delay: 0.6s;"></div>
+                  <div class="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t chart-bar"
+                    style="height: 100%; animation-delay: 0.7s;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="px-6 pb-6">
+              <a href="try.html"
+                class="group/btn relative flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30">
+                <span
+                  class="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover/btn:opacity-100 transition-opacity"></span>
+                <span class="relative flex items-center gap-2">
+                  <iconify-icon icon="lucide:play-circle" width="20"></iconify-icon>
+                  تجربة النظام الآن
+                  <iconify-icon icon="lucide:arrow-left" width="18"
+                    class="transform group-hover/btn:-translate-x-1 transition-transform"></iconify-icon>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- System 2: Bright Full-Cycle Recruiting - Premium 3D Card -->
+        <div class="group relative perspective-1000">
+          <div
+            class="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 rounded-3xl blur-lg opacity-30 group-hover:opacity-60 transition duration-500 animate-gradient-x">
+          </div>
+          <div
+            class="relative h-full bg-gradient-to-br from-slate-900/95 via-slate-800/95 to-slate-900/95 rounded-3xl border border-white/10 overflow-hidden transform-gpu transition-all duration-500 group-hover:scale-[1.02] group-hover:border-purple-500/30"
+            style="transform-style: preserve-3d;">
+            <!-- Floating Particles -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none">
+              <div class="particle particle-1" style="background: rgba(168, 85, 247, 0.4);"></div>
+              <div class="particle particle-2" style="background: rgba(236, 72, 153, 0.4);"></div>
+              <div class="particle particle-3" style="background: rgba(168, 85, 247, 0.4);"></div>
+            </div>
+
+            <!-- Card Header with 3D Icon -->
+            <div class="p-8 pb-0">
+              <div class="flex items-start justify-between mb-6">
+                <div class="relative">
+                  <div
+                    class="absolute -inset-4 bg-purple-500/20 rounded-full blur-xl group-hover:bg-purple-500/30 transition">
+                  </div>
+                  <div
+                    class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30 transform group-hover:rotate-6 transition-transform duration-300">
+                    <iconify-icon icon="lucide:user-check" width="32" class="text-white"></iconify-icon>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20">
+                  <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                  <span class="text-purple-300 text-xs font-medium">
+                    AI Avatar
+                  </span>
+                </div>
+              </div>
+
+              <h3 class="text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-purple-100 transition">
+                Bright Full-Cycle Recruiting
+              </h3>
+              <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                نظام توظيف ذاتي بالكامل - من فرز السير الذاتية إلى قرار
+                التوظيف النهائي
+              </p>
+
+              <!-- Feature Pipeline -->
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span
+                  class="px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium flex items-center gap-1.5">
+                  <iconify-icon icon="lucide:file-scan" width="12"></iconify-icon>
+                  مسح CV
+                </span>
+                <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                <span
+                  class="px-3 py-1.5 rounded-lg bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-medium flex items-center gap-1.5">
+                  <iconify-icon icon="lucide:video" width="12"></iconify-icon>
+                  مقابلة AI
+                </span>
+                <iconify-icon icon="lucide:chevron-left" width="16" class="text-slate-600"></iconify-icon>
+                <span
+                  class="px-3 py-1.5 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/20 text-fuchsia-300 text-xs font-medium flex items-center gap-1.5">
+                  <iconify-icon icon="lucide:check-circle" width="12"></iconify-icon>
+                  قرار التوظيف
+                </span>
+              </div>
+            </div>
+
+            <!-- Interactive Recruitment Preview -->
+            <div class="relative h-56 mx-6 mb-6 rounded-2xl overflow-hidden border border-white/5 bg-slate-900/80">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+
+              <!-- Recruitment UI Simulation -->
+              <div class="p-4 h-full flex flex-col">
+                <!-- Candidate Cards -->
+                <div class="space-y-2 flex-1">
+                  <!-- Candidate 1 - Accepted -->
+                  <div
+                    class="flex items-center gap-3 p-2 rounded-lg bg-green-500/10 border border-green-500/20 candidate-card"
+                    style="animation-delay: 0s;">
+                    <div
+                      class="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white text-xs font-bold">
+                      أ
+                    </div>
+                    <div class="flex-1">
+                      <div class="h-2 w-24 bg-white/20 rounded mb-1"></div>
+                      <div class="h-1.5 w-16 bg-white/10 rounded"></div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="text-green-400 text-sm font-bold">
+                        98%
+                      </span>
+                      <iconify-icon icon="lucide:check-circle" width="16" class="text-green-400"></iconify-icon>
+                    </div>
+                  </div>
+
+                  <!-- Candidate 2 - Processing -->
+                  <div
+                    class="flex items-center gap-3 p-2 rounded-lg bg-purple-500/10 border border-purple-500/20 candidate-card"
+                    style="animation-delay: 0.2s;">
+                    <div
+                      class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                      ب
+                    </div>
+                    <div class="flex-1">
+                      <div class="h-2 w-20 bg-white/20 rounded mb-1"></div>
+                      <div class="h-1.5 w-14 bg-white/10 rounded"></div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="text-purple-400 text-sm font-bold">
+                        85%
+                      </span>
+                      <div class="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin">
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Candidate 3 - Rejected -->
+                  <div
+                    class="flex items-center gap-3 p-2 rounded-lg bg-red-500/10 border border-red-500/20 candidate-card"
+                    style="animation-delay: 0.4s;">
+                    <div
+                      class="w-8 h-8 rounded-full bg-gradient-to-br from-red-400 to-rose-500 flex items-center justify-center text-white text-xs font-bold">
+                      ج
+                    </div>
+                    <div class="flex-1">
+                      <div class="h-2 w-28 bg-white/20 rounded mb-1"></div>
+                      <div class="h-1.5 w-12 bg-white/10 rounded"></div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <span class="text-red-400 text-sm font-bold">32%</span>
+                      <iconify-icon icon="lucide:x-circle" width="16" class="text-red-400"></iconify-icon>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Stats -->
+                <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                  <div class="text-[10px] text-slate-500">
+                    تم فحص 247 سيرة ذاتية
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-green-500/20 text-green-400 text-[10px]">
+                      23 مقبول
+                    </span>
+                    <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px]">
+                      89 مرفوض
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="px-6 pb-6">
+              <a href="h/projects/interview/index.html"
+                class="group/btn relative flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30">
+                <span
+                  class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover/btn:opacity-100 transition-opacity"></span>
+                <span class="relative flex items-center gap-2">
+                  <iconify-icon icon="lucide:sparkles" width="20"></iconify-icon>
+                  تجربة نظام التوظيف
+                  <iconify-icon icon="lucide:arrow-left" width="18"
+                    class="transform group-hover/btn:-translate-x-1 transition-transform"></iconify-icon>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Separator -->
+      <div class="text-center py-12">
+        <span class="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-slate-300 text-sm">
+          هل تبحث عن حلول أسرع ومحددة؟
+        </span>
+        <div class="h-12 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent mx-auto mt-4"></div>
+      </div>
+
+      <!-- 2. Robots Exhibition -->
+      <div>
+        <div class="flex items-center gap-4 mb-8">
+          <div class="h-px flex-1 bg-gradient-to-r from-transparent to-gold-500/50"></div>
+          <h3 class="text-2xl font-bold text-white">
+            معرض الروبوتات المتخصصة
+          </h3>
+          <div class="h-px flex-1 bg-gradient-to-l from-transparent to-gold-500/50"></div>
+        </div>
+        <p class="text-center text-slate-400 mb-12 max-w-2xl mx-auto">
+          روبوتات ذكية صُممت لتنفيذ مهام محددة بدقة متناهية. ليست أنظمة معقدة،
+          بل زملاء عمل رقميين.
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <!-- Bot 1: BrightSupport -->
+          <a href="botAI/BrightSupport.html"
+            class="glass-card p-6 text-center hover:border-indigo-400/50 transition cursor-pointer group">
+            <div
+              class="w-12 h-12 mx-auto bg-indigo-500/20 rounded-full flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:headset" width="24"></iconify-icon>
+            </div>
+            <h4 class="font-bold text-white mb-1">BrightSupport</h4>
+            <p class="text-xs text-slate-400">خدمة العملاء 24/7</p>
+          </a>
+          <!-- Bot 2: BrightSales -->
+          <a href="botAI/BrightSales.html"
+            class="glass-card p-6 text-center hover:border-green-400/50 transition cursor-pointer group">
+            <div
+              class="w-12 h-12 mx-auto bg-green-500/20 rounded-full flex items-center justify-center text-green-400 mb-4 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:target" width="24"></iconify-icon>
+            </div>
+            <h4 class="font-bold text-white mb-1">BrightSales</h4>
+            <p class="text-xs text-slate-400">تأهيل العملاء</p>
+          </a>
+          <!-- Bot 3: BrightTourism -->
+          <a href="botAI/Saudi tourism and heritage services/index.html"
+            class="glass-card p-6 text-center hover:border-gold-400/50 transition cursor-pointer group">
+            <div
+              class="w-12 h-12 mx-auto bg-gold-500/20 rounded-full flex items-center justify-center text-gold-400 mb-4 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:map" width="24"></iconify-icon>
+            </div>
+            <h4 class="font-bold text-white mb-1">BrightTourism</h4>
+            <p class="text-xs text-slate-400">المرشد السياحي</p>
+          </a>
+          <!-- Bot 4: BrightMath -->
+          <a href="botAI/BrightMath.html"
+            class="glass-card p-6 text-center hover:border-pink-400/50 transition cursor-pointer group">
+            <div
+              class="w-12 h-12 mx-auto bg-pink-500/20 rounded-full flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:calculator" width="24"></iconify-icon>
+            </div>
+            <h4 class="font-bold text-white mb-1">BrightMath</h4>
+            <p class="text-xs text-slate-400">المعلم الخصوصي</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI WORKFLOWS SECTION -->
+  <section class="py-24 px-6 bg-[#020617] relative overflow-hidden">
+    <!-- Neural Network Background -->
+    <div class="absolute inset-0 opacity-10">
+      <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="neural-net" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+            <circle cx="10" cy="10" r="1" fill="#6366f1"></circle>
+            <circle cx="50" cy="50" r="1" fill="#6366f1"></circle>
+            <circle cx="90" cy="90" r="1" fill="#6366f1"></circle>
+            <line x1="10" y1="10" x2="50" y2="50" stroke="#6366f1" stroke-width="0.5" opacity="0.5"></line>
+            <line x1="50" y1="50" x2="90" y2="90" stroke="#6366f1" stroke-width="0.5" opacity="0.5"></line>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#neural-net)"></rect>
+      </svg>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-5xl font-semibold text-white mb-4">
+          هندسة تدفق الأعمال
+          <span class="text-gradient-gold">بذكاء المستقبل</span>
+        </h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+          من الفوضى إلى التناغم.. أتمتة ذكية تربط بياناتك، قراراتك، وفريق عملك
+          في نسيج رقمي واحد.
+        </p>
+      </div>
+
+      <!-- Infinite Pipeline Visualization -->
+      <div class="relative py-12 mb-16">
+        <div
+          class="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent -translate-y-1/2">
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Stage 1 -->
+          <div class="glass-card p-8 group hover:border-indigo-500/50 transition duration-500">
+            <div
+              class="w-16 h-16 rounded-full bg-indigo-900/50 border border-indigo-500/30 flex items-center justify-center mb-6 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:magnet" width="32" class="text-indigo-400"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-medium text-white mb-3">
+              1. الاستيعاب والربط
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              ربط سلس مع كافة مصادر البيانات (ERPs, CRMs, IoT) وسحب البيانات
+              غير المهيكلة وتحويلها إلى مدخلات ذكية.
+            </p>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="glass-card p-8 group hover:border-purple-500/50 transition duration-500 relative">
+            <div
+              class="absolute -top-3 right-1/2 translate-x-1/2 px-3 py-1 bg-purple-500/20 rounded-full border border-purple-500/30 text-xs text-purple-300">
+              Deep Learning
+            </div>
+            <div
+              class="w-16 h-16 rounded-full bg-purple-900/50 border border-purple-500/30 flex items-center justify-center mb-6 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:brain-circuit" width="32" class="text-purple-400"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-medium text-white mb-3">
+              2. المعالجة الإدراكية
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              محركات ذكاء اصطناعي تحلل السياق، تفهم اللغة العربية واللهجات
+              المحلية، وتستنبط الأنماط الخفية بدقة.
+            </p>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="glass-card p-8 group hover:border-gold-500/50 transition duration-500">
+            <div
+              class="w-16 h-16 rounded-full bg-yellow-900/50 border border-gold-500/30 flex items-center justify-center mb-6 group-hover:scale-110 transition">
+              <iconify-icon icon="lucide:settings-2" width="32" class="text-gold-400 animate-spin-slow"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-medium text-white mb-3">
+              3. اتخاذ القرار الآلي
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              أنظمة اتخاذ قرار لحظية توافق على المعاملات الروتينية وتحيل
+              المعقدة للمختصين مع توصيات مقترحة.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIES SECTION - قسم القطاعات -->
+  <section id="industries" class="py-24 px-6 relative" style="background-color: #0f172a;">
+    <div class="max-w-6xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-on-scroll">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          تطبيقات الذكاء الاصطناعي وذكاء الأعمال في القطاعات السعودية
+        </h2>
+        <p class="text-slate-400 text-lg">حلول مصممة لتحديات كل قطاع</p>
+      </div>
+
+      <!-- Industries Grid - 4 Cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-container">
+        <!-- Retail Card - التجزئة -->
+        <div
+          class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item bg-navy-800/30 border border-slate-700/50 hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+          <div class="mb-4 transition-all duration-300">
+            <iconify-icon icon="lucide:shopping-bag" width="32"
+              class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">التجزئة</h3>
+          <p class="text-slate-500 text-sm">
+            تحليل سلوك العملاء وتحسين المخزون
+          </p>
+        </div>
+
+        <!-- Manufacturing Card - الصناعة -->
+        <div
+          class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item bg-navy-800/30 border border-slate-700/50 hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+          <div class="mb-4 transition-all duration-300">
+            <iconify-icon icon="lucide:factory" width="32"
+              class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">الصناعة</h3>
+          <p class="text-slate-500 text-sm">
+            الصيانة التنبؤية ومراقبة الجودة
+          </p>
+        </div>
+
+        <!-- Healthcare Card - الرعاية الصحية -->
+        <div
+          class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item bg-navy-800/30 border border-slate-700/50 hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+          <div class="mb-4 transition-all duration-300">
+            <iconify-icon icon="lucide:heart-pulse" width="32"
+              class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">
+            الرعاية الصحية
+          </h3>
+          <p class="text-slate-500 text-sm">التشخيص الذكي وإدارة الموارد</p>
+        </div>
+
+        <!-- Government Card - الجهات الحكومية -->
+        <div
+          class="group p-6 rounded-xl transition-all duration-300 cursor-pointer stagger-item bg-navy-800/30 border border-slate-700/50 hover:border-gold-500/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-gold-500/5">
+          <div class="mb-4 transition-all duration-300">
+            <iconify-icon icon="lucide:landmark" width="32"
+              class="text-slate-500 group-hover:text-gold-500 transition-colors duration-300"></iconify-icon>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">
+            الجهات الحكومية
+          </h3>
+          <p class="text-slate-500 text-sm">أتمتة الخدمات وتحليل البيانات</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHODOLOGY SECTION - قسم منهجية العمل -->
+  <section id="methodology" class="py-24 px-6 relative" style="background-color: #020617;">
+    <div class="max-w-6xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-on-scroll">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          منهجية العمل
+        </h2>
+        <p class="text-slate-400 text-lg">
+          من التقييم إلى التشغيل والتحسين المستمر
+        </p>
+      </div>
+
+      <!-- Timeline Container -->
+      <div class="relative">
+        <!-- Horizontal Line (Desktop) -->
+        <div class="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-slate-800" style="z-index: 0;"></div>
+
+        <!-- Timeline Steps Grid -->
+        <div class="grid md:grid-cols-4 gap-8 stagger-container">
+          <!-- Step 1: التقييم -->
+          <div class="relative text-center group stagger-item">
+            <!-- Step Number Circle -->
+            <div
+              class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-gold-500 text-navy-900 shadow-lg shadow-gold-500/30 group-hover:scale-110">
+              1
+            </div>
+            <!-- Step Content -->
+            <h3 class="text-lg font-semibold text-white mb-2">التقييم</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              تحليل الوضع الراهن وتحديد الفرص
+            </p>
+            <!-- Icon -->
+            <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <iconify-icon icon="lucide:search" width="24" class="text-gold-500"></iconify-icon>
+            </div>
+          </div>
+
+          <!-- Step 2: التصميم -->
+          <div class="relative text-center group stagger-item">
+            <!-- Step Number Circle -->
+            <div
+              class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-slate-700 text-white group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:shadow-lg group-hover:shadow-gold-500/30 group-hover:scale-110">
+              2
+            </div>
+            <!-- Step Content -->
+            <h3 class="text-lg font-semibold text-white mb-2">التصميم</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              بناء الحل المناسب لاحتياجاتك
+            </p>
+            <!-- Icon -->
+            <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <iconify-icon icon="lucide:pencil-ruler" width="24" class="text-gold-500"></iconify-icon>
+            </div>
+          </div>
+
+          <!-- Step 3: التنفيذ -->
+          <div class="relative text-center group stagger-item">
+            <!-- Step Number Circle -->
+            <div
+              class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-slate-700 text-white group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:shadow-lg group-hover:shadow-gold-500/30 group-hover:scale-110">
+              3
+            </div>
+            <!-- Step Content -->
+            <h3 class="text-lg font-semibold text-white mb-2">التنفيذ</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              تطوير ونشر الحل بمعايير عالية
+            </p>
+            <!-- Icon -->
+            <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <iconify-icon icon="lucide:rocket" width="24" class="text-gold-500"></iconify-icon>
+            </div>
+          </div>
+
+          <!-- Step 4: التحسين -->
+          <div class="relative text-center group stagger-item">
+            <!-- Step Number Circle -->
+            <div
+              class="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center font-bold text-lg relative z-10 transition-all duration-300 bg-slate-700 text-white group-hover:bg-gold-500 group-hover:text-navy-900 group-hover:shadow-lg group-hover:shadow-gold-500/30 group-hover:scale-110">
+              4
+            </div>
+            <!-- Step Content -->
+            <h3 class="text-lg font-semibold text-white mb-2">التحسين</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              مراقبة وتحسين مستمر للأداء
+            </p>
+            <!-- Icon -->
+            <div class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <iconify-icon icon="lucide:trending-up" width="24" class="text-gold-500"></iconify-icon>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile Vertical Line (shown on mobile only) -->
+        <style>
+          @media (max-width: 767px) {
+            #methodology .grid {
+              position: relative;
+            }
+
+            #methodology .grid::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 50%;
+              width: 2px;
+              background: linear-gradient(to bottom, #1e293b, #334155, #1e293b);
+              transform: translateX(-50%);
+              z-index: 0;
+            }
+          }
+        </style>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="text-center mt-16">
+        <p class="text-slate-400 mb-6">هل أنت مستعد لبدء رحلة التحول؟</p>
+        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-gold-500 hover:bg-gold-400 text-navy-900 font-semibold text-lg rounded-lg shadow-lg shadow-gold-500/20 hover:shadow-gold-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+          <span>ابدأ الآن</span>
+          <iconify-icon icon="lucide:arrow-left" width="20"></iconify-icon>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIONARY ALIGNMENT SECTION -->
+  <section class="py-24 px-6 border-t border-white/5 bg-gradient-to-b from-[#020617] to-indigo-950/20">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <div
+          class="inline-block px-3 py-1 mb-4 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium">
+          متوافق مع رؤية المملكة 2030
+        </div>
+        <h2 class="text-3xl lg:text-5xl font-semibold text-white mb-6">
+          عقول عالمية..
+          <span class="text-gradient">بروح سعودية</span>
+        </h2>
+        <p class="text-slate-400 text-lg leading-relaxed mb-8">
+          نردم الفجوة بين طموح رؤية 2030 والواقع التقني. حلولنا مصممة خصيصاً
+          لتناسب الثقافة المحلية، الأنظمة الحكومية (NDMO, NCA)، وتحديات السوق
+          السعودي.
+        </p>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+              <iconify-icon icon="lucide:check" class="text-gold-500"></iconify-icon>
+            </div>
+            <div>
+              <h4 class="text-white font-medium">توطين التقنية</h4>
+              <p class="text-slate-500 text-xs">
+                حلول مبنية محلياً وليست مجرد قوالب جاهزة.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+              <iconify-icon icon="lucide:shield" class="text-gold-500"></iconify-icon>
+            </div>
+            <div>
+              <h4 class="text-white font-medium">الامتثال والسيادة</h4>
+              <p class="text-slate-500 text-xs">
+                بياناتك تبقى داخل المملكة بمعايير أمنية قصوى.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="relative h-[400px] rounded-2xl border border-white/10 bg-white/5 p-8 flex items-center justify-center overflow-hidden">
+        <!-- Sadu Pattern Abstract BG -->
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, #fff 10px, #fff 11px);">
+        </div>
+        <div class="relative z-10 text-center">
+          <div class="text-6xl font-bold text-white/20 mb-4">2030</div>
+          <div class="h-1 w-32 bg-gold-500 mx-auto mb-4"></div>
+          <div class="text-xl text-white">التحول الرقمي الحكومي والمؤسسي</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. VISION & MISSION -->
+  <section class="py-24 px-6 relative overflow-hidden">
+    <!-- Decoration -->
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gold-500/5 blur-[100px] rounded-full">
+    </div>
+
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 relative z-10">
+      <div class="glass-card p-10 border-r-4 border-r-indigo-500">
+        <div class="flex items-center gap-3 mb-6">
+          <iconify-icon icon="lucide:telescope" width="32" class="text-indigo-400"></iconify-icon>
+          <h3 class="text-2xl font-semibold text-white">رؤيتنا</h3>
+        </div>
+        <p class="text-slate-300 text-lg leading-relaxed">
+          أن نكون المحرك الرئيسي للتحول الرقمي في المملكة، وذلك من خلال تسخير
+          قوة الذكاء الاصطناعي لتعزيز الكفاءة، وتحسين تجارب المستخدمين، وفتح
+          آفاق جديدة للنمو والابتكار. نحن نؤمن بأن الذكاء الاصطناعي ليس مجرد
+          أداة تقنية متقدمة، بل هو قوة تحويلية قادرة على إعادة تشكيل الصناعات،
+          وتحسين جودة الحياة، ودفع عجلة التنمية المستدامة
+        </p>
+      </div>
+
+      <div class="glass-card p-10 border-r-4 border-r-gold-500">
+        <div class="flex items-center gap-3 mb-6">
+          <iconify-icon icon="lucide:target" width="32" class="text-gold-400"></iconify-icon>
+          <h3 class="text-2xl font-semibold text-white">رسالتنا</h3>
+        </div>
+        <p class="text-slate-300 text-lg leading-relaxed">
+          مساعدة المؤسسات على تسريع تحولها الرقمي من خلال حلول ذكاء اصطناعي
+          مبتكرة وموثوقة تُلبي احتياجاتها المتنوعة، مع التركيز على تقديم قيمة
+          مضافة حقيقية لعملائنا. نلتزم بتقديم أعلى معايير الجودة والاحترافية
+          في جميع خدماتنا، وبناء علاقات طويلة الأمد مع عملائنا تقوم على الثقة
+          والشفافية.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION - قسم الأسئلة الشائعة -->
+  <section id="faq" class="py-24 px-6 relative" style="background-color: #020617;">
+    <div class="max-w-4xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-16 animate-on-scroll">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+          style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
+          <iconify-icon icon="lucide:help-circle" width="18" class="text-gold-500"></iconify-icon>
+          <span class="text-sm font-medium text-gold-400">
+            إجابات لأسئلتك
+          </span>
+        </div>
+
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          الأسئلة الشائعة
+        </h2>
+        <p class="text-slate-400 text-lg">
+          إجابات شاملة حول خدماتنا وتقنياتنا
+        </p>
+      </div>
+
+      <!-- FAQ Tabs -->
+      <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
+        <button
+          class="faq-tab active px-4 py-2 md:px-6 md:py-2 text-sm md:text-base rounded-full border border-gold-500/20 bg-gold-500/10 text-gold-400 font-medium transition hover:bg-gold-500/20"
+          onclick="switchFaqTab('bi', this)">
+          ذكاء الأعمال
+        </button>
+        <button
+          class="faq-tab px-4 py-2 md:px-6 md:py-2 text-sm md:text-base rounded-full border border-white/5 bg-white/5 text-slate-400 font-medium transition hover:bg-white/10 hover:text-white"
+          onclick="switchFaqTab('ai', this)">
+          الذكاء الاصطناعي
+        </button>
+        <button
+          class="faq-tab px-4 py-2 md:px-6 md:py-2 text-sm md:text-base rounded-full border border-white/5 bg-white/5 text-slate-400 font-medium transition hover:bg-white/10 hover:text-white"
+          onclick="switchFaqTab('tools', this)">
+          الأدوات والتطبيقات
+        </button>
+      </div>
+
+      <!-- FAQ Content Containers -->
+      <div class="space-y-4 min-h-[400px]">
+
+        <!-- BI Category -->
+        <div id="faq-bi" class="faq-category block space-y-4">
+          <!-- Q1 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">ما هي أفضل أدوات ذكاء الأعمال (BI) في السعودية؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">نستخدم ونوصي بأدوات عالمية رائدة مثل Microsoft Power BI و
+                Tableau و Looker، نظراً لدعمها الممتاز للغة العربية ومرونتها العالية في التكامل مع الأنظمة المحلية.</p>
+            </div>
+          </div>
+          <!-- Q2 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">كيف أختار برنامج ذكاء الأعمال المناسب لشركتي؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">يعتمد الاختيار على حجم البيانات، الميزانية، والأنظمة الحالية
+                لديكم. نحن نقدم خدمة استشارية لتقييم بنيتكم التحتية وترشيح الأداة الأنسب التي تحقق أعلى عائد على
+                الاستثمار.</p>
+            </div>
+          </div>
+          <!-- Q3 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">هل يمكن دمج ذكاء الأعمال مع أنظمة ERP الحالية؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">نعم، نتخصص في ربط أدوات BI مع مختلف أنظمة ERP مثل SAP و Oracle و
+                Odoo، لضمان تدفق البيانات بشكل آلي ودقيق وبناء لوحات تحكم مركزية.</p>
+            </div>
+          </div>
+          <!-- Q4 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">ما الفرق بين الحلول السحابية والمحلية (On-Premise)؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">الحلول السحابية توفر مرونة وتكلفة أولية أقل، بينما الحلول
+                المحلية توفر سيطرة كاملة على البيانات. نحن نساعدك في اتخاذ القرار بناءً على متطلبات الامتثال والأمان
+                الخاصة بمؤسستك.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Category -->
+        <div id="faq-ai" class="faq-category hidden space-y-4">
+          <!-- Q1 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">ما هي منصات الذكاء الاصطناعي الأفضل للشركات السعودية؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">نعمل مع منصات رائدة عالمياً ومحلياً، وندعم نماذج مفتوحة المصدر
+                (Llama, Mistral) المستضافة محلياً لضمان سيادة البيانات، بالإضافة إلى خدمات Azure AI و Google Cloud AI
+                للمرونة.</p>
+            </div>
+          </div>
+          <!-- Q2 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">هل تدعم حلولكم اللغة العربية؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">بالتأكيد، جميع نماذجنا وحلولنا، بما في ذلك روبوتات المحادثة
+                وتحليل النصوص، مُدربة ومُحسنة للعمل بكفاءة عالية مع اللغة العربية واللهجات المحلية السعودية.</p>
+            </div>
+          </div>
+          <!-- Q3 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">كيف يمكن للذكاء الاصطناعي تحسين خدمة العملاء؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">من خلال روبوتات الدردشة الذكية التي تعمل 24/7، وتحليل مشاعر
+                العملاء من المكالمات والرسائل، مما يتيح استجابة أسرع وأكثر شخصية لاحتياجاتهم.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tools Category -->
+        <div id="faq-tools" class="faq-category hidden space-y-4">
+          <!-- Q1 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">ما هي الأدوات الذكية المناسبة لإدارة الشركات الصغيرة؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">ننصح بأدوات الأتمتة منخفضة الكود (Low-Code) التي تسمح بربط
+                التطبيقات المختلفة وأتمتة المهام الروتينية (مثل الفوترة، وجدولة المواعيد) بتكلفة معقولة.</p>
+            </div>
+          </div>
+          <!-- Q2 -->
+          <div class="faq-item rounded-xl overflow-hidden"
+            style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+            <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+              onclick="toggleFaq(this)">
+              <span class="text-lg font-medium text-white">هل توفرون تدريباً على استخدام الأدوات؟</span>
+              <iconify-icon icon="lucide:chevron-down" width="24"
+                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+            </button>
+            <div class="faq-content hidden px-6 pb-6">
+              <p class="text-slate-400 leading-relaxed">نعم، جزء أساسي من خدماتنا هو تمكين فريق عملكم. نقدم ورش عمل
+                ودورات تدريبية مخصصة لضمان الاستفادة القصوى من الأدوات والتقنيات التي ننفذها.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CTA After FAQ -->
+      <div class="text-center mt-16">
+        <p class="text-slate-400 mb-6">لم تجد إجابة لسؤالك؟</p>
+        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-gold-500 hover:bg-gold-400 text-navy-900 font-semibold text-lg rounded-lg shadow-lg shadow-gold-500/20 hover:shadow-gold-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+          <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+          <span>تواصل معنا مباشرة</span>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      function switchFaqTab(category, btn) {
+        // Hide all categories
+        document.querySelectorAll('.faq-category').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.faq-category').forEach(el => el.classList.remove('block'));
+
+        // Show selected category
+        const selected = document.getElementById('faq-' + category);
+        if (selected) {
+          selected.classList.remove('hidden');
+          selected.classList.add('block');
+        }
+
+        // Update tabs state
+        document.querySelectorAll('.faq-tab').forEach(el => {
+          el.classList.remove('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
+          el.classList.add('border-white/5', 'bg-white/5', 'text-slate-400');
+        });
+
+        // Active styled tab
+        btn.classList.remove('border-white/5', 'bg-white/5', 'text-slate-400');
+        btn.classList.add('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
+      }
+    </script>
+  </section>
+
+  <!-- FINAL CTA SECTION - دعوة تنفيذية نهائية -->
+  <section id="final-cta" class="py-24 px-6 relative overflow-hidden"
+    style="background: linear-gradient(135deg, #0A0F1C 0%, #1E293B 50%, #0A0F1C 100%);">
+    <!-- Background Decoration -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-0 left-1/4 w-96 h-96 bg-gold-500/20 rounded-full blur-[120px]"></div>
+      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-[120px]"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+        هل أنت مستعد للتحول الرقمي؟
+      </h2>
+      <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+        دعنا نساعدك في بناء مستقبل مؤسستك بالذكاء الاصطناعي. احجز استشارتك
+        التنفيذية المجانية الآن.
+      </p>
+
+      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+        class="inline-flex items-center gap-3 px-10 py-5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold text-xl rounded-xl shadow-2xl shadow-gold-500/30 hover:shadow-gold-500/40 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+        <iconify-icon icon="lucide:calendar-check" width="24"></iconify-icon>
+        <span>طلب استشارة تنفيذية</span>
+        <iconify-icon icon="lucide:arrow-left" width="24"></iconify-icon>
+      </a>
+
+      <p class="mt-8 text-slate-500 text-sm">
+        استشارة مجانية • بدون التزام • رد خلال 24 ساعة
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. FOOTER -->
+  <section class="py-12 border-t border-white/5 bg-black/40 relative overflow-hidden">
+    <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#020617] to-transparent z-10 pointer-events-none">
+    </div>
+    <div
+      class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#020617] to-transparent z-10 pointer-events-none">
+    </div>
+    <div class="max-w-7xl mx-auto px-6 text-center mb-8">
+      <span class="text-sm font-medium text-slate-500 uppercase tracking-widest">
+        Trusted Partners &amp; Integrations
+      </span>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition duration-500">
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:oracle"></iconify-icon>
+          Oracle
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:microsoftazure"></iconify-icon>
+          Azure
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:nvidia"></iconify-icon>
+          NVIDIA
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:googlecloud"></iconify-icon>
+          Google Cloud
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:sap"></iconify-icon>
+          SAP
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:salesforce"></iconify-icon>
+          Salesforce
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:ibm"></iconify-icon>
+          IBM Watson
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:amazonaws"></iconify-icon>
+          AWS
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:oracle"></iconify-icon>
+          Oracle
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:microsoftazure"></iconify-icon>
+          Azure
+        </span>
+        <span class="text-xl font-bold text-white flex items-center gap-2">
+          <iconify-icon icon="simple-icons:nvidia"></iconify-icon>
+          NVIDIA
+        </span>
+      </div>
+    </div>
+  </section>
+  <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1 md:col-span-1">
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+              <span class="text-lg font-bold text-white">B</span>
+            </div>
+            <span class="font-semibold text-white">Bright AI</span>
+          </div>
+          <p class="text-slate-500 text-sm leading-relaxed mb-6">
+            نبتكر المستقبل اليوم. حلول ذكاء اصطناعي آمنة، موثوقة، ومصممة
+            للنمو.
+          </p>
+          <div class="flex gap-4">
+            <a href="https://twitter.com/BrightAI_SA" target="_blank" rel="noopener noreferrer"
+              class="text-slate-400 hover:text-white transition" aria-label="تويتر">
+              <iconify-icon icon="lucide:twitter" width="20"></iconify-icon>
+            </a>
+            <a href="https://linkedin.com/company/brightai-sa" target="_blank" rel="noopener noreferrer"
+              class="text-slate-400 hover:text-white transition" aria-label="لينكد إن">
+              <iconify-icon icon="lucide:linkedin" width="20"></iconify-icon>
+            </a>
+            <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+              class="text-slate-400 hover:text-white transition" aria-label="واتساب">
+              <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-white font-medium mb-6">الشركة</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li>
+              <a href="Docfile/About.Bright.AI.html" class="hover:text-gold-400 transition">
+                عن Bright AI
+              </a>
+            </li>
+            <li>
+              <a href="contact.html" class="hover:text-gold-400 transition">
+                الوظائف
+              </a>
+            </li>
+            <li>
+              <a href="consultation.html" class="hover:text-gold-400 transition">
+                الشركاء
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-medium mb-6">الموارد</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li>
+              <a href="blog.html" class="hover:text-gold-400 transition">
+                المدونة
+              </a>
+            </li>
+            <li>
+              <a href="blog.html" class="hover:text-gold-400 transition">
+                دراسات حالة
+              </a>
+            </li>
+            <li>
+              <a href="Docs.html" class="hover:text-gold-400 transition">
+                الوثائق (Docs)
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-white font-medium mb-6">تواصل معنا</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li class="flex items-center gap-2">
+              <iconify-icon icon="lucide:mail" width="16"></iconify-icon>
+              <a href="mailto:contact@brightai.site" class="hover:text-gold-400 transition">
+                contact@brightai.site
+              </a>
+            </li>
+            <li class="flex items-center gap-2">
+              <iconify-icon icon="lucide:map-pin" width="16"></iconify-icon>
+              الرياض، المملكة العربية السعودية
+            </li>
+            <li class="flex items-center gap-2">
+              <iconify-icon icon="lucide:phone" width="16"></iconify-icon>
+              <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+                class="hover:text-gold-400 transition">
+                +966 53 822 9013
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
+        <p>
+          © 2024 Bright AI. جميع الحقوق محفوظة. صُنع بـ ❤️ في المملكة العربية
+          السعودية
+        </p>
+        <div class="flex gap-6">
+          <a href="privacy-cookies.html" class="hover:text-slate-400">
+            سياسة الخصوصية
+          </a>
+          <a href="terms-and-conditions.html" class="hover:text-slate-400">
+            الشروط والأحكام
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- INSTRUCTION 3: GEMINI CHATBOT WIDGET -->
+  <div class="chat-widget">
+    <!-- Chat Window -->
+    <div id="chat-window" class="chat-window shadow-2xl">
+      <!-- Header -->
+      <div class="p-4 border-b border-white/10 bg-indigo-900/30 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span class="font-medium text-white text-sm">مساعد Bright AI</span>
+        </div>
+        <button onclick="toggleChat()" class="text-slate-400 hover:text-white" aria-label="إغلاق المحادثة">
+          <iconify-icon icon="lucide:x" width="18"></iconify-icon>
+        </button>
+      </div>
+
+      <!-- Messages Area -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm">
+        <div class="flex items-start gap-3">
+          <div
+            class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-300 shrink-0 border border-indigo-500/30">
+            <iconify-icon icon="lucide:bot" width="16"></iconify-icon>
+          </div>
+          <div class="bg-white/5 p-3 rounded-2xl rounded-tr-none text-slate-200 border border-white/5">
+            مرحباً! كيف يمكنني مساعدتك في خدمات الذكاء الاصطناعي اليوم؟
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="p-4 border-t border-white/10 bg-black/20">
+        <form id="chat-form" class="flex gap-2" onsubmit="handleChatSubmit(event)">
+          <input type="text" id="chat-input" placeholder="اكتب رسالتك..."
+            class="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-600" />
+          <button type="submit" aria-label="إرسال الرسالة"
+            class="p-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition flex items-center justify-center">
+            <iconify-icon icon="lucide:send" width="16"></iconify-icon>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Floating Button -->
+    <button onclick="toggleChat()" aria-label="فتح المحادثة"
+      class="w-14 h-14 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-[0_0_20px_rgba(99,102,241,0.5)] flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 border border-white/20">
+      <iconify-icon icon="lucide:message-square-text" width="24"></iconify-icon>
+    </button>
+  </div>
+
+  <!-- JavaScript Files -->
+  <script src="js/main.js" defer></script>
+  <script src="js/neural-canvas.js" defer></script>
+  <script src="js/scroll-animations.js" defer></script>
+  <script src="js/chat-groq.js" defer></script>
+</body>
+
+</html>

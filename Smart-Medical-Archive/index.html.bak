@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright AI | Smart Medical Archive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Animated gradient background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a0b2e 25%, #16003b 50%, #0a0015 75%, #000000 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            z-index: 0;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Floating orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 25s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.6), transparent);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.5), transparent);
+            bottom: -300px;
+            left: -300px;
+            animation-delay: -10s;
+        }
+        
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.5), transparent);
+            top: 40%;
+            left: 50%;
+            animation-delay: -5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(100px, -100px) scale(1.1) rotate(90deg); }
+            50% { transform: translate(-50px, 50px) scale(0.9) rotate(180deg); }
+            75% { transform: translate(80px, 80px) scale(1.05) rotate(270deg); }
+        }
+        
+        /* Grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPulse 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #a78bfa, #60a5fa);
+        }
+        
+        /* Glass morphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        
+        .glass-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        /* 3D Card effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .card-3d:hover {
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+        }
+        
+        /* Glow effects */
+        .glow {
+            position: relative;
+        }
+        
+        .glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            opacity: 0;
+            filter: blur(20px);
+            transition: opacity 0.5s;
+            z-index: -1;
+            animation: gradientRotate 3s linear infinite;
+        }
+        
+        .glow:hover::before {
+            opacity: 0.8;
+        }
+        
+        @keyframes gradientRotate {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        /* Shimmer effect */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Pulse glow */
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+            }
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
+        }
+        
+        /* Neon border */
+        .neon-border {
+            position: relative;
+            border: 1px solid transparent;
+        }
+        
+        .neon-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
+            background-size: 300% 300%;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: gradientRotate 4s linear infinite;
+        }
+        
+        /* Floating animation */
+        .float {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Number counter animation */
+        .number-glow {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.8),
+                         0 0 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Badge animations */
+        .badge-pulse {
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
+        /* Sidebar hover effect */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
+            transition: height 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .nav-item:hover::before,
+        .nav-item.active::before {
+            height: 70%;
+        }
+        
+        /* Search bar focus effect */
+        .search-focus {
+            transition: all 0.4s ease;
+        }
+        
+        .search-focus:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3),
+                        0 0 40px rgba(139, 92, 246, 0.5);
+            transform: scale(1.02);
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-top-color: #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Scan line effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            animation: scan 3s linear infinite;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        /* Table row hover */
+        .table-row {
+            transition: all 0.3s ease;
+        }
+        
+        .table-row:hover {
+            background: rgba(139, 92, 246, 0.1) !important;
+            box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.2);
+        }
+        
+        /* Status indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { 
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            50% { 
+                opacity: 0.8;
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+            }
+        }
+        
+        /* Metric card special effects */
+        .metric-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .metric-card:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Background layers -->
+    <div class="animated-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+    <div class="scanline"></div>
+
+    <!-- App Layout -->
+    <div class="flex h-screen overflow-hidden relative z-10">
+        <!-- Sidebar Navigation -->
+        <aside class="w-72 glass-strong border-l border-white/10 flex flex-col justify-between hidden md:flex">
+            <div>
+                <!-- Logo Area -->
+                <div class="h-20 flex items-center px-6 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl glow flex items-center justify-center relative overflow-hidden"
+                             style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                            <span class="font-bold text-white text-lg relative z-10">AI</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-white tracking-tight text-xl gradient-text">
+                                Bright AI
+                            </span>
+                            <div class="text-[10px] text-white/40">Medical Archive</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+            <nav class="p-3 space-y-1 mt-4">
+                <a href="index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:widget-linear" width="20"></iconify-icon> <span>لوحة التحكم</span>
+                </a>
+                <a href="NLP-search.html" class="nav-item active flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon> <span>البحث المتقدم (NLP)</span>
+                </a>
+                <a href="ehr-viewer.html" class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:document-add-linear" width="20"></iconify-icon> <span>الإدخال والمعالجة</span>
+                </a>
+                <a href="ingestion.html" class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" onclick="setActive(this)">
+                    <iconify-icon icon="solar:user-id-linear" width="20"></iconify-icon> <span>سجلات المرضى</span>
+                </a>
+                <a href="analytics&insights.html" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover">
+                    <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon> <span>التحليلات والرؤى</span>
+                </a>
+            </nav>
+            </div>
+
+            <!-- Bottom Actions -->
+            <div class="p-4 border-t border-white/10">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover mb-4">
+                    <iconify-icon icon="solar:settings-linear" width="22"></iconify-icon>
+                    <span>إعدادات النظام</span>
+                </a>
+                <div class="glass rounded-xl p-4 neon-border">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shimmer"
+                             style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
+                            د.م
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium text-white">د. محمد القحطاني</span>
+                            <span class="text-xs text-white/40">Admin Access</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col h-screen overflow-hidden">
+            <!-- Top Header -->
+            <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-8">
+                <div class="flex items-center gap-4">
+                    <span class="text-white/30">/</span>
+                    <h1 class="text-base font-medium text-white">نظرة عامة على النظام</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 px-4 py-2 glass rounded-full border border-emerald-500/30 neon-border">
+                        <div class="status-dot bg-emerald-500"></div>
+                        <span class="text-xs font-medium text-emerald-400">System Operational</span>
+                    </div>
+                    <button class="w-10 h-10 glass-hover rounded-xl flex items-center justify-center text-white/60 hover:text-white glow">
+                        <iconify-icon icon="solar:bell-linear" width="22"></iconify-icon>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <!-- Natural Language Search Hero -->
+                <section class="mb-12 max-w-5xl mx-auto">
+                    <div class="text-center mb-8 float">
+                        <h2 class="text-3xl font-bold mb-3 gradient-text">البحث الدلالي الذكي</h2>
+                        <p class="text-white/50 text-sm">
+                            استخدم اللغة الطبيعية للبحث في السجلات الطبية، التحاليل، والملاحظات السريرية
+                        </p>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 rounded-2xl opacity-30 group-hover:opacity-50 blur transition duration-500"></div>
+                        <div class="relative glass-strong rounded-2xl p-2">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1 relative">
+                                    <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-purple-400">
+                                        <iconify-icon icon="solar:magic-stick-3-linear" width="24" class="pulse-glow"></iconify-icon>
+                                    </div>
+                                    <input type="text" 
+                                           class="w-full bg-black/30 border border-white/10 text-white text-base rounded-xl py-5 pr-14 pl-6 outline-none placeholder:text-white/30 search-focus"
+                                           placeholder="مثال: مرضى السكري فوق 50 سنة الذين تناولوا ميتفورمين خلال آخر 6 أشهر...">
+                                </div>
+                                <button class="px-8 py-5 rounded-xl font-medium glow shimmer"
+                                        style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                                    <iconify-icon icon="solar:arrow-left-linear" width="24" class="text-white"></iconify-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
+                        <span class="text-xs text-white/40">مقترحات:</span>
+                        <span class="glass-hover px-4 py-2 rounded-xl text-xs cursor-pointer border border-white/10 text-white/60 hover:text-white glow">
+                            حالات الربو النشطة
+                        </span>
+                        <span class="glass-hover px-4 py-2 rounded-xl text-xs cursor-pointer border border-white/10 text-white/60 hover:text-white glow">
+                            نتائج الدم الشاذة
+                        </span>
+                        <span class="glass-hover px-4 py-2 rounded-xl text-xs cursor-pointer border border-white/10 text-white/60 hover:text-white glow">
+                            تحليلات الأشعة المقطعية
+                        </span>
+                    </div>
+                </section>
+
+                <!-- Metrics Grid -->
+                <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                    <!-- Metric 1 -->
+                    <div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer"
+                                 style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));">
+                                <iconify-icon icon="solar:file-text-linear" width="24" class="text-purple-400"></iconify-icon>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full badge-pulse"
+                                  style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1)); color: #22c55e;">
+                                +12%
+                            </span>
+                        </div>
+                        <div class="text-4xl font-bold mb-2 number-glow gradient-text">84,392</div>
+                        <div class="text-sm text-white/50">وثيقة تمت أرشفتها</div>
+                    </div>
+
+                    <!-- Metric 2 -->
+                    <div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer"
+                                 style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));">
+                                <iconify-icon icon="solar:check-read-linear" width="24" class="text-blue-400"></iconify-icon>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full"
+                                  style="background: rgba(255, 255, 255, 0.1); color: #a1a1aa;">
+                                NLP Score
+                            </span>
+                        </div>
+                        <div class="text-4xl font-bold mb-2 number-glow gradient-text">98.2%</div>
+                        <div class="text-sm text-white/50">دقة استخراج البيانات</div>
+                    </div>
+
+                    <!-- Metric 3 -->
+                    <div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer"
+                                 style="background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 146, 60, 0.1));">
+                                <iconify-icon icon="solar:clock-circle-linear" width="24" class="text-orange-400"></iconify-icon>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full badge-pulse"
+                                  style="background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 146, 60, 0.1)); color: #fb923c;">
+                                يتطلب مراجعة
+                            </span>
+                        </div>
+                        <div class="text-4xl font-bold mb-2 number-glow gradient-text">14</div>
+                        <div class="text-sm text-white/50">سجل بانتظار التدقيق</div>
+                    </div>
+
+                    <!-- Metric 4 -->
+                    <div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer"
+                                 style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1));">
+                                <iconify-icon icon="solar:database-linear" width="24" class="text-pink-400"></iconify-icon>
+                            </div>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full"
+                                  style="background: rgba(255, 255, 255, 0.1); color: #a1a1aa;">
+                                Storage
+                            </span>
+                        </div>
+                        <div class="text-4xl font-bold mb-2 number-glow gradient-text">1.2 TB</div>
+                        <div class="text-sm text-white/50">بيانات مشفرة AES-256</div>
+                    </div>
+                </section>
+
+                <!-- Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Pipeline Status -->
+                    <section class="lg:col-span-2 glass rounded-2xl overflow-hidden neon-border">
+                        <div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
+                            <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                <iconify-icon icon="solar:refresh-circle-linear" width="24" class="text-purple-400"></iconify-icon>
+                                حالة خط المعالجة (Ingestion Pipeline)
+                            </h3>
+                            <button class="text-sm text-purple-400 hover:text-purple-300 font-medium">عرض الكل</button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right">
+                                <thead class="text-white/40 text-xs uppercase tracking-wider font-medium"
+                                       style="background: rgba(255, 255, 255, 0.02);">
+                                    <tr>
+                                        <th class="px-6 py-4 font-medium">معرف الملف</th>
+                                        <th class="px-6 py-4 font-medium">المصدر</th>
+                                        <th class="px-6 py-4 font-medium">نوع الوثيقة</th>
+                                        <th class="px-6 py-4 font-medium">المرحلة الحالية</th>
+                                        <th class="px-6 py-4 font-medium">التوقيت</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-white/5 text-sm">
+                                    <tr class="table-row">
+                                        <td class="px-6 py-4 font-mono text-xs text-purple-400">DOC-8821</td>
+                                        <td class="px-6 py-4 text-white/80">مستشفى الملك فيصل</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <iconify-icon icon="solar:file-text-linear" class="text-white/40"></iconify-icon>
+                                                <span class="text-white/70 text-xs">تقرير أشعة (PDF)</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+                                                  style="background: rgba(59, 130, 246, 0.2); color: #3b82f6;">
+                                                <div class="spinner w-3 h-3"></div>
+                                                OCR Processing
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-white/40 text-xs">منذ 12 ثانية</td>
+                                    </tr>
+
+                                    <tr class="table-row">
+                                        <td class="px-6 py-4 font-mono text-xs text-purple-400">DOC-8820</td>
+                                        <td class="px-6 py-4 text-white/80">مدينة الملك فهد</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <iconify-icon icon="solar:pen-new-square-linear" class="text-white/40"></iconify-icon>
+                                                <span class="text-white/70 text-xs">وصفة بخط اليد</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+                                                  style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6;">
+                                                <iconify-icon icon="solar:magic-stick-3-linear"></iconify-icon>
+                                                NLP Extraction
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-white/40 text-xs">منذ 45 ثانية</td>
+                                    </tr>
+
+                                    <tr class="table-row">
+                                        <td class="px-6 py-4 font-mono text-xs text-purple-400">DOC-8819</td>
+                                        <td class="px-6 py-4 text-white/80">مستشفى قوى الأمن</td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-2">
+                                                <iconify-icon icon="solar:test-tube-linear" class="text-white/40"></iconify-icon>
+                                                <span class="text-white/70 text-xs">تحاليل مختبر</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+                                                  style="background: rgba(34, 197, 94, 0.2); color: #22c55e;">
+                                                <iconify-icon icon="solar:check-circle-linear"></iconify-icon>
+                                                EHR Updated
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 text-white/40 text-xs">منذ دقيقتين</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- Right Column -->
+                    <div class="space-y-6">
+                        <!-- Compliance Status -->
+                        <section class="glass rounded-2xl p-6 neon-border glow">
+                            <h3 class="text-sm font-semibold text-white mb-6 flex items-center gap-2">
+                                <iconify-icon icon="solar:shield-check-linear" class="text-emerald-400"></iconify-icon>
+                                الامتثال والأمان
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="glass-strong rounded-xl p-4 border border-white/10">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-sm font-medium text-white">NCA - ECC</div>
+                                            <div class="text-xs text-white/40 mt-1">Essential Cybersecurity Controls</div>
+                                        </div>
+                                        <iconify-icon icon="solar:check-circle-bold" class="text-emerald-500" width="20"></iconify-icon>
+                                    </div>
+                                </div>
+                                <div class="glass-strong rounded-xl p-4 border border-white/10">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-sm font-medium text-white">HIPAA Compliant</div>
+                                            <div class="text-xs text-white/40 mt-1">Data Privacy Standard</div>
+                                        </div>
+                                        <iconify-icon icon="solar:check-circle-bold" class="text-emerald-500" width="20"></iconify-icon>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-5 pt-5 border-t border-white/10">
+                                <div class="flex items-center justify-between text-xs text-white/50">
+                                    <span>آخر تدقيق أمني:</span>
+                                    <span class="font-mono text-white/70">2023-10-24</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Quick Upload -->
+                        <section class="rounded-2xl p-8 relative overflow-hidden glow shimmer cursor-pointer group"
+                                 style="background: linear-gradient(135deg, #1e1b4b, #312e81);">
+                            <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <iconify-icon icon="solar:cloud-upload-linear" width="100"></iconify-icon>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="w-14 h-14 rounded-2xl glass flex items-center justify-center mb-4 float">
+                                    <iconify-icon icon="solar:add-circle-linear" width="28" class="text-white"></iconify-icon>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2 text-white">رفع ملف جديد</h3>
+                                <p class="text-sm text-white/60 mb-6">
+                                    يدعم PDF, DICOM, وصور الوصفات الطبية
+                                </p>
+                                <button class="w-full text-sm font-medium px-6 py-3 rounded-xl transition-all glow"
+                                        style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
+                                    استعراض الملفات
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="mt-12 pt-8 border-t border-white/10 text-center md:text-right">
+                    <p class="text-xs text-white/30">
+                        © 2024 Bright AI Medical Archive. Developed with strict adherence to NCA & Saudi Health Data Standards.
+                    </p>
+                </footer>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

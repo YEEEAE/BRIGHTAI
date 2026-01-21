@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع - مُشرقة AI</title>
+    <meta name="description" content="صفحة الدفع الآمن لخدمات مُشرقة AI - الشركة السعودية الرائدة في حلول الذكاء الاصطناعي">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://brightai.site/checkout.html">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="الدفع - مُشرقة AI">
+    <meta property="og:description" content="صفحة الدفع الآمن لخدمات مُشرقة AI - الشركة السعودية الرائدة في حلول الذكاء الاصطناعي">
+    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+    <meta property="og:url" content="https://brightai.site/checkout.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
+    <meta property="og:site_name" content="مُشرقة AI">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="الدفع - مُشرقة AI">
+    <meta name="twitter:description" content="صفحة الدفع الآمن لخدمات مُشرقة AI - الشركة السعودية الرائدة في حلول الذكاء الاصطناعي">
+    <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="Gemini.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+            background-color: #0A192F;
+            color: #8892B0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .checkout-container {
+            background: rgba(17, 34, 64, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #CCD6F6;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .payment-info {
+            color: #8892B0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        #paypal-container-HBJUZNJBBBVUA {
+            margin-top: 1rem;
+        }
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            color: #64FFDA;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <h1>إتمام عملية الدفع</h1>
+        <p class="payment-info">يرجى إكمال عملية الدفع بشكل آمن عبر PayPal</p>
+        
+        <script src="https://www.paypal.com/sdk/js?client-id=BAA77P9CT8j5Z9ynzeuP_YwfiMMWC1-DCz5or_LeWABe2dhfamCVWdjZg1-QXCMHTeyNXZAgkcYiAwsnLY&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+        <div id="paypal-container-HBJUZNJBBBVUA"></div>
+        <script>
+            paypal.HostedButtons({
+                hostedButtonId: "HBJUZNJBBBVUA",
+            }).render("#paypal-container-HBJUZNJBBBVUA")
+        </script>
+        
+        <div class="secure-badge">
+            <span>🔒</span>
+            <span>دفع آمن ومشفر</span>
+        </div>
+    </div>
+</body>
+</html>
