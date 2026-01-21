@@ -1,957 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://brightai.site/blogger/compypterrrr.html">
-    <title>التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي</title>
-  <meta name="description" content="التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-    <style>
-        :root {
-            --primary-color: #64FFDA;
-            --secondary-color: #0A192F;
-            --background-color: #0A192F;
-            --text-color: #8892B0;
-            --heading-color: #CCD6F6;
-            --white: #FFFFFF;
-            --card-bg: #112240;
-            --accent-color: #1D2B3A;
-            --accent-color-lighter: #24364A;
-            --border-color: rgba(100, 255, 218, 0.1);
-            --error-color: #f44336;
-            --success-color: #4CAF50;
-            --transition-short: all 0.25s ease-in-out;
-            --transition-medium: all 0.3s ease-in-out;
-            --transition-long: all 0.5s ease-in-out;
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.15);
-            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.2);
-            --container-width: 1200px;
-            --border-radius-sm: 4px;
-            --border-radius-md: 8px;
-            --border-radius-lg: 12px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.8;
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: rgba(10, 25, 47, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(100, 255, 218, 0.1);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .navbar ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            padding: 0 2rem;
-        }
-
-        .navbar a {
-            color: var(--text-color);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-sm);
-            transition: var(--transition-short);
-            position: relative;
-            font-weight: 500;
-        }
-
-        .navbar a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--primary-color);
-            transition: var(--transition-short);
-        }
-
-        .navbar a:hover {
-            color: var(--primary-color);
-        }
-
-        .navbar a:hover::before {
-            width: 80%;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
-            padding: 6rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(100, 255, 218, 0.1) 0%, transparent 50%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: var(--heading-color);
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Container */
-        .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* Section Styles */
-        .section {
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            color: var(--heading-color);
-            margin-bottom: 2rem;
-            position: relative;
-            padding-right: 1rem;
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 100%;
-            background: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        .intro-text {
-            font-size: 1.1rem;
-            line-height: 1.9;
-            margin-bottom: 2rem;
-            color: var(--text-color);
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius-lg);
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            transition: var(--transition-medium);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), transparent);
-            transform: scaleX(0);
-            transition: var(--transition-medium);
-            transform-origin: left;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
-            border-color: var(--primary-color);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-
-        .card h3 {
-            color: var(--heading-color);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .card p {
-            color: var(--text-color);
-            line-height: 1.7;
-        }
-
-        /* Feature List */
-        .feature-list {
-            display: grid;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .feature-item {
-            background: var(--accent-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius-md);
-            border-right: 3px solid var(--primary-color);
-            transition: var(--transition-short);
-        }
-
-        .feature-item:hover {
-            background: var(--accent-color-lighter);
-            transform: translateX(-5px);
-        }
-
-        .feature-item h4 {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .feature-item p {
-            color: var(--text-color);
-        }
-
-        /* Stats Section */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--card-bg) 0%, var(--accent-color) 100%);
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            text-align: center;
-            border: 1px solid var(--border-color);
-            transition: var(--transition-medium);
-        }
-
-        .stat-card:hover {
-            transform: scale(1.05);
-            border-color: var(--primary-color);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            color: var(--primary-color);
-            font-weight: 700;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--heading-color);
-            font-size: 1.1rem;
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            right: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border-color);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-right: 60px;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            right: 11px;
-            width: 20px;
-            height: 20px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px var(--card-bg), 0 0 0 8px var(--border-color);
-        }
-
-        .timeline-content {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: var(--border-radius-md);
-            border: 1px solid var(--border-color);
-        }
-
-        .timeline-content h3 {
-            color: var(--heading-color);
-            margin-bottom: 0.5rem;
-        }
-
-        /* FAQ Section */
-        .faq-item {
-            background: var(--card-bg);
-            margin-bottom: 1rem;
-            border-radius: var(--border-radius-md);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--heading-color);
-            font-weight: 600;
-            transition: var(--transition-short);
-        }
-
-        .faq-question:hover {
-            background: var(--accent-color);
-        }
-
-        .faq-icon {
-            color: var(--primary-color);
-            transition: var(--transition-short);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: var(--transition-medium);
-            padding: 0 1.5rem;
-        }
-
-        .faq-answer.active {
-            max-height: 500px;
-            padding: 0 1.5rem 1.5rem;
-        }
-
-        .faq-icon.active {
-            transform: rotate(180deg);
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, var(--accent-color) 0%, var(--card-bg) 100%);
-            padding: 4rem 2rem;
-            border-radius: var(--border-radius-lg);
-            text-align: center;
-            margin: 4rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .cta-section h2 {
-            color: var(--heading-color);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: var(--primary-color);
-            color: var(--secondary-color);
-            text-decoration: none;
-            border-radius: var(--border-radius-md);
-            font-weight: 600;
-            transition: var(--transition-short);
-            border: 2px solid var(--primary-color);
-        }
-
-        .cta-button:hover {
-            background: transparent;
-            color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.3);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar ul {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .hero {
-                padding: 4rem 1rem;
-            }
-
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            .timeline::before {
-                right: 10px;
-            }
-
-            .timeline-item {
-                padding-right: 40px;
-            }
-
-            .timeline-dot {
-                right: 6px;
-                width: 10px;
-                height: 10px;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            background: var(--primary-color);
-            z-index: 9999;
-            transition: width 0.1s;
-        }
-    </style>
-
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي">
-  <meta property="og:description" content="التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  <meta property="og:url" content="https://brightai.site/blogger/compypterrrr.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ar_SA">
-  <meta property="og:site_name" content="مُشرقة AI">
-  
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي">
-  <meta name="twitter:description" content="التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  </head>
-<body>
-    <div class="scroll-indicator" id="scrollIndicator"></div>
-
-    <nav class="navbar">
-        <ul>
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="#machine-learning">التعلم الآلي</a></li>
-            <li><a href="#computer-vision">الرؤية الحاسوبية</a></li>
-            <li><a href="#applications">التطبيقات</a></li>
-            <li><a href="#faq">الأسئلة الشائعة</a></li>
-        </ul>
-    </nav>
-
-    <div class="hero" id="home">
-        <h1>التعلم الآلي والرؤية الحاسوبية</h1>
-        <p class="hero-subtitle">مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور</p>
-    </div>
-
-    <div class="container">
-        <!-- Introduction -->
-        <section class="section fade-in">
-            <p class="intro-text">
-                يشهد العالم تحولاً جذرياً مدفوعاً بالذكاء الاصطناعي، الذي بات يتغلغل في مختلف جوانب حياتنا اليومية والمهنية. ومن بين التقنيات الفرعية للذكاء الاصطناعي، تبرز مجالات التعلم الآلي والرؤية الحاسوبية كقوى دافعة للابتكار والتقدم. تلعب هاتان التقنيتان دوراً محورياً في تطوير تطبيقات الذكاء الاصطناعي المتطورة، خاصة في مجالي معالجة اللغة الطبيعية والتعرف على الصور.
-            </p>
-        </section>
-
-        <!-- Machine Learning Section -->
-        <section class="section" id="machine-learning">
-            <h2 class="section-title">التعلم الآلي: قلب الذكاء الاصطناعي النابض</h2>
-            
-            <p class="intro-text">
-                التعلم الآلي هو جوهر الذكاء الاصطناعي، حيث يُمكِّن الحواسيب من التعلم من البيانات دون برمجة صريحة. يعتمد على الخوارزميات والنماذج الإحصائية التي تسمح للأنظمة بالتحسن تدريجياً مع زيادة البيانات التي تتعرض لها.
-            </p>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">97%</span>
-                    <span class="stat-label">دقة التعرف على الأنماط</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">80%</span>
-                    <span class="stat-label">توفير في التكاليف</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">3x</span>
-                    <span class="stat-label">سرعة المعالجة</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">24/7</span>
-                    <span class="stat-label">عمل متواصل</span>
-                </div>
-            </div>
-
-            <h3 style="color: var(--heading-color); margin: 3rem 0 1.5rem;">أنواع التعلم الآلي</h3>
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>التعلم الخاضع للإشراف</h3>
-                    <p>يتم تدريب النموذج باستخدام بيانات مصنفة مسبقاً. يستخدم في التنبؤات والتصنيف، مثل التعرف على الصور وتشخيص الأمراض.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔍</div>
-                    <h3>التعلم غير الخاضع للإشراف</h3>
-                    <p>يكتشف النموذج الأنماط المخفية في البيانات غير المصنفة. يستخدم في تجميع البيانات واكتشاف الشذوذات.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎮</div>
-                    <h3>التعلم المعزز</h3>
-                    <p>يتعلم النموذج من خلال التجارب والأخطاء بنظام المكافآت والعقاب. يستخدم في الألعاب والروبوتات والقيادة الذاتية.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Computer Vision Section -->
-        <section class="section" id="computer-vision">
-            <h2 class="section-title">الرؤية الحاسوبية: رؤية العالم بعيون الحاسوب</h2>
-            
-            <p class="intro-text">
-                الرؤية الحاسوبية هي مجال يهدف إلى تمكين الحواسيب من فهم وتفسير الصور والفيديوهات بنفس الطريقة التي يفعلها البشر. تعتمد على خوارزميات وتقنيات معقدة لتحليل الصور واستخراج المعلومات ذات الصلة منها.
-            </p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <h4>👤 التعرف على الوجوه</h4>
-                    <p>تحديد هوية الأفراد من خلال تحليل صور وجوههم. يستخدم في تطبيقات الأمن والمراقبة، وتأمين الوصول إلى الأجهزة والأنظمة، والدفع الإلكتروني.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🚗 التعرف على الكائنات</h4>
-                    <p>تحديد وتصنيف الكائنات الموجودة في الصور، مثل السيارات والأشخاص والأشجار. يستخدم في القيادة الذاتية، والتحليل الأمني، وإدارة المخزون.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🏥 التحليل الطبي</h4>
-                    <p>مساعدة الأطباء في تشخيص الأمراض من خلال تحليل صور الأشعة والتصوير بالرنين المغناطيسي. يساعد في الكشف المبكر عن الأمراض وتحسين دقة التشخيص.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>😊 التعرف على المشاعر</h4>
-                    <p>تحليل تعابير الوجه لتحديد المشاعر التي يعيشها الشخص. يستخدم في تطبيقات خدمة العملاء، والتسويق، والتفاعل الإنساني الآلي.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🌾 الزراعة الذكية</h4>
-                    <p>مراقبة صحة المحاصيل وتحديد الآفات والأمراض باستخدام الصور الجوية والأرضية. يحسن الإنتاجية ويقلل استخدام المبيدات.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🛍️ البحث المرئي</h4>
-                    <p>البحث عن المنتجات باستخدام الصور بدلاً من النصوص. يستخدم في التجارة الإلكترونية لتحسين تجربة التسوق.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Applications Timeline -->
-        <section class="section" id="applications">
-            <h2 class="section-title">تطبيقات عملية في مختلف الصناعات</h2>
-            
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>🏥 الرعاية الصحية</h3>
-                        <p>تشخيص الأمراض بدقة عالية، تطوير أدوية جديدة، تحليل الصور الطبية، والرعاية الشخصية للمرضى باستخدام الذكاء الاصطناعي.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>🏭 التصنيع</h3>
-                        <p>تحسين عمليات الإنتاج، تقليل النفايات، ضمان جودة المنتجات، والصيانة التنبؤية للآلات.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>💰 الخدمات المالية</h3>
-                        <p>كشف الاحتيال، تحسين إدارة المخاطر، تقديم توصيات استثمارية، وتحليل البيانات المالية الضخمة.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>🛒 التجزئة</h3>
-                        <p>توصيات شخصية للعملاء، تحسين تجربة التسوق، إدارة المخزون بكفاءة، وتحليل سلوك المستهلكين.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h3>🚗 النقل والمواصلات</h3>
-                        <p>القيادة الذاتية، تحسين حركة المرور، صيانة تنبؤية للمركبات، وتحسين أنظمة النقل العام.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- NLP Section -->
-        <section class="section">
-            <h2 class="section-title">معالجة اللغة الطبيعية: فهم لغة الإنسان</h2>
-            
-            <p class="intro-text">
-                معالجة اللغة الطبيعية هي مجال يركز على تمكين الحواسيب من فهم اللغة البشرية واستخدامها، سواء كانت مكتوبة أو منطوقة. تجمع هذه التقنية بين علوم الحاسوب واللغويات والذكاء الاصطناعي.
-            </p>
-
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">💬</div>
-                    <h3>روبوتات الدردشة</h3>
-                    <p>فهم استفسارات المستخدمين والرد عليها بشكل آلي، مما يوفر تجربة خدمة عملاء فعالة وسريعة على مدار الساعة.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🌍</div>
-                    <h3>الترجمة الآلية</h3>
-                    <p>ترجمة النصوص من لغة إلى أخرى بشكل فوري ودقيق، مما يسهل التواصل العالمي ويكسر حواجز اللغة.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📊</div>
-                    <h3>تحليل المشاعر</h3>
-                    <p>تحديد المشاعر والآراء في النصوص، مما يساعد الشركات على فهم آراء عملائها وتحسين خدماتها.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📝</div>
-                    <h3>تلخيص النصوص</h3>
-                    <p>تحويل المقالات والوثائق الطويلة إلى ملخصات موجزة، مما يوفر الوقت ويسهل الوصول للمعلومات.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎤</div>
-                    <h3>التعرف على الكلام</h3>
-                    <p>تحويل الكلام المنطوق إلى نص مكتوب، مما يتيح التفاعل الصوتي مع الأجهزة والتطبيقات.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔎</div>
-                    <h3>تحليل المحتوى</h3>
-                    <p>فهم الموضوعات والمفاهيم الرئيسية في النصوص، مما يساعد في تنظيم المعلومات واستخلاص المعرفة منها بكفاءة.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Saudi Vision Section -->
-        <section class="section">
-            <h2 class="section-title">الذكاء الاصطناعي في المملكة العربية السعودية</h2>
-            
-            <div class="cta-section">
-                <h2>🇸🇦 رؤية 2030 والذكاء الاصطناعي</h2>
-                <p>تولي المملكة العربية السعودية اهتماماً كبيراً بتطوير قطاع الذكاء الاصطناعي، وتستثمر في البنية التحتية اللازمة لتبني هذه التقنيات في مختلف القطاعات.</p>
-            </div>
-
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>الريادة الإقليمية</h3>
-                    <p>تهدف المملكة إلى أن تكون رائدة في مجال الذكاء الاصطناعي على مستوى المنطقة والعالم، من خلال دعم البحث والتطوير والابتكار.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎓</div>
-                    <h3>تأهيل الكوادر الوطنية</h3>
-                    <p>تدريب الكوادر السعودية على أحدث تقنيات الذكاء الاصطناعي والتعلم الآلي، وبناء جيل من الخبراء والمبتكرين.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🏗️</div>
-                    <h3>البنية التحتية الرقمية</h3>
-                    <p>الاستثمار في البنية التحتية الرقمية المتقدمة لدعم تطبيقات الذكاء الاصطناعي في مختلف القطاعات الحيوية.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">💡</div>
-                    <h3>تشجيع الابتكار</h3>
-                    <p>دعم الشركات الناشئة والمبتكرين في مجال الذكاء الاصطناعي، وتوفير بيئة محفزة للإبداع والتطوير.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Integration Section -->
-        <section class="section">
-            <h2 class="section-title">التكامل بين التعلم الآلي والرؤية الحاسوبية</h2>
-            
-            <p class="intro-text">
-                إن التكامل بين التعلم الآلي والرؤية الحاسوبية يفتح آفاقاً جديدة في مجالات مثل معالجة اللغة الطبيعية والتعرف على الصور. في مجال معالجة اللغة الطبيعية، تستخدم تقنيات التعلم الآلي لتحليل وفهم النصوص المكتوبة والمنطوقة، في حين أن الرؤية الحاسوبية يمكن أن تلعب دوراً في فهم السياق البصري المصاحب للنص.
-            </p>
-
-            <div class="feature-list">
-                <div class="feature-item">
-                    <h4>🔗 التحليل متعدد الوسائط</h4>
-                    <p>دمج تحليل النصوص والصور والفيديو معاً لفهم أعمق وأشمل للمحتوى، مما يتيح تطبيقات أكثر ذكاءً وفعالية.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🎨 توليد المحتوى</h4>
-                    <p>إنشاء صور من أوصاف نصية أو العكس، مما يفتح آفاقاً جديدة في مجالات التصميم والإبداع الرقمي.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🤖 الأنظمة الذكية</h4>
-                    <p>تطوير أنظمة قادرة على فهم العالم من خلال حواس متعددة، مما يحاكي الطريقة التي يفهم بها البشر محيطهم.</p>
-                </div>
-                <div class="feature-item">
-                    <h4>🎯 الدقة المحسّنة</h4>
-                    <p>تحسين دقة التعرف والتصنيف من خلال الجمع بين معلومات من مصادر متعددة، مما يقلل الأخطاء ويزيد الموثوقية.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Future Trends -->
-        <section class="section">
-            <h2 class="section-title">الاتجاهات المستقبلية</h2>
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🧠</div>
-                    <h3>الذكاء الاصطناعي العام</h3>
-                    <p>التطور نحو أنظمة ذكاء اصطناعي قادرة على أداء أي مهمة فكرية يمكن للإنسان القيام بها، مع فهم عميق للسياق.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">⚡</div>
-                    <h3>التعلم الفعال</h3>
-                    <p>تطوير نماذج تحتاج إلى بيانات أقل للتدريب، مما يجعل تقنيات الذكاء الاصطناعي أكثر سهولة وفعالية من حيث التكلفة.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔐</div>
-                    <h3>الذكاء الاصطناعي الأخلاقي</h3>
-                    <p>التركيز على تطوير أنظمة ذكاء اصطناعي شفافة وعادلة ومسؤولة، تحترم الخصوصية وحقوق الإنسان.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🌐</div>
-                    <h3>الحوسبة الطرفية</h3>
-                    <p>تشغيل نماذج الذكاء الاصطناعي على الأجهزة مباشرة بدلاً من السحابة، مما يحسن السرعة والخصوصية.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="section" id="faq">
-            <h2 class="section-title">الأسئلة الشائعة</h2>
-            
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>ما هو التعلم الآلي؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>التعلم الآلي هو فرع من الذكاء الاصطناعي يُمكِّن الحواسيب من التعلم من البيانات دون برمجة صريحة. يعتمد على الخوارزميات والنماذج الإحصائية التي تسمح للأنظمة بالتحسن تدريجياً مع الخبرة والتعرض للمزيد من البيانات.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>ما هي الرؤية الحاسوبية؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>الرؤية الحاسوبية هي مجال يهدف إلى تمكين الحواسيب من فهم وتفسير الصور والفيديوهات بنفس الطريقة التي يفعلها البشر. تستخدم تقنيات متقدمة مثل الشبكات العصبية العميقة لتحليل المحتوى البصري واستخراج المعلومات المفيدة.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>ما هي معالجة اللغة الطبيعية (NLP)؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>معالجة اللغة الطبيعية هي مجال يركز على تمكين الحواسيب من فهم اللغة البشرية واستخدامها، سواء كانت مكتوبة أو منطوقة. تجمع بين علوم الحاسوب واللغويات والذكاء الاصطناعي لتحليل النصوص وفهم المعنى والسياق.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>كيف يتكامل التعلم الآلي والرؤية الحاسوبية؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>يتكامل التعلم الآلي والرؤية الحاسوبية لتمكين تطبيقات متقدمة. التعلم الآلي يوفر الخوارزميات والنماذج لتدريب الأنظمة، بينما توفر الرؤية الحاسوبية الأدوات اللازمة لمعالجة البيانات البصرية. معاً، يمكنهما إنشاء أنظمة قادرة على الفهم العميق للعالم المرئي.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>ما هي تطبيقات الذكاء الاصطناعي في الصناعات المختلفة؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>تتضمن التطبيقات: تشخيص الأمراض في الرعاية الصحية، تحسين عمليات الإنتاج في التصنيع، كشف الاحتيال في الخدمات المالية، توفير توصيات شخصية في التجزئة، القيادة الذاتية في النقل، والزراعة الذكية في القطاع الزراعي.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>ما هو دور المملكة العربية السعودية في مجال الذكاء الاصطناعي؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>تولي المملكة اهتماماً كبيراً بتطوير قطاع الذكاء الاصطناعي كجزء من رؤية 2030. تستثمر في البنية التحتية الرقمية، وتدريب الكوادر الوطنية، ودعم البحث والابتكار، وتشجيع الشركات الناشئة لتكون رائدة إقليمياً وعالمياً في هذا المجال.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>ما الفرق بين التعلم العميق والتعلم الآلي؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>التعلم الآلي هو المجال الأوسع الذي يشمل جميع تقنيات التعلم من البيانات. التعلم العميق هو فرع متخصص من التعلم الآلي يستخدم الشبكات العصبية ذات الطبقات المتعددة. التعلم العميق أكثر قوة في التعامل مع البيانات المعقدة لكنه يحتاج إلى كمية أكبر من البيانات والموارد الحاسوبية.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>هل الذكاء الاصطناعي سيحل محل الوظائف البشرية؟</span>
-                    <span class="faq-icon">▼</span>
-                </div>
-                <div class="faq-answer">
-                    <p>الذكاء الاصطناعي سيغير طبيعة العديد من الوظائف بدلاً من استبدالها بالكامل. سيقوم بأتمتة المهام الروتينية والمتكررة، مما يتيح للبشر التركيز على المهام الإبداعية والاستراتيجية. في الوقت نفسه، سيخلق فرص عمل جديدة في مجالات التطوير والصيانة والإشراف على أنظمة الذكاء الاصطناعي.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <h2>ابدأ رحلتك في عالم الذكاء الاصطناعي</h2>
-            <p>استكشف المزيد من حلول الذكاء الاصطناعي وأحدث التقنيات التي تغير عالمنا</p>
-            <a href="https://brightai.site" class="cta-button">اكتشف المزيد</a>
-        </section>
-
-        <!-- Conclusion -->
-        <section class="section">
-            <h2 class="section-title">الخلاصة</h2>
-            <p class="intro-text">
-                في الختام، يمكن القول أن التعلم الآلي والرؤية الحاسوبية ليسا مجرد تقنيات، بل هما قوى دافعة للابتكار والتقدم في عصرنا الحالي. من خلال فهمنا لهذه التقنيات وتطبيقها بشكل فعال، يمكننا بناء مستقبل أفضل وأكثر ذكاءً لنا جميعاً.
-            </p>
-            <p class="intro-text">
-                تتجاوز فوائد الذكاء الاصطناعي مجرد أتمتة المهام؛ بل إنها تساهم في خلق فرص عمل جديدة، وتطوير مهارات العاملين، وتحسين جودة حياتنا اليومية. مع استمرار تطور هذه التقنيات، من المتوقع أن نشهد تحولات جذرية في طريقة عملنا وحياتنا، مما يفتح آفاقاً لا محدودة للابتكار والتطور.
-            </p>
-        </section>
-    </div>
-
-    <script>
-        // FAQ Toggle
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const icon = element.querySelector('.faq-icon');
-            
-            answer.classList.toggle('active');
-            icon.classList.toggle('active');
-        }
-
-        // Scroll Indicator
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('scrollIndicator').style.width = scrolled + '%';
-        });
-
-        // Smooth Scroll for Navigation Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Intersection Observer for Fade-in Animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.section, .card, .feature-item, .timeline-item').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
-</body>
-</html>

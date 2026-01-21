@@ -1,1138 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
-</script>
-    <!-- Google Analytics -->
-    
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وكلاء الذكاء الاصطناعي: حلول مبتكرة لتلبية احتياجاتك | Bright AI</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="وكلاء الذكاء الاصطناعي: حلول مبتكرة لتلبية احتياجات الأعمال والأفراد. تصميم ذكي يلبي احتياجات الأعمال والأفراد في المملكة العربية السعودية.">
-    <meta name="keywords" content="وكلاء الذكاء الاصطناعي السعودية, ذكاء اصطناعي, تحليل بيانات, أتمتة, تسويق ذكي, برمجة وكلاء ذكاء اصطناعي">
-    <link rel="canonical" href="https://brightai.site/ai-agent.html">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="وكلاء الذكاء الاصطناعي: حلول مبتكرة | Bright AI">
-    <meta property="og:description" content="تصميم ذكي يلبي احتياجات الأعمال والأفراد في المملكة العربية السعودية">
-    <meta property="og:type" content="website">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Unified Navigation CSS -->
-    <link rel="stylesheet" href="css/unified-nav.css">
-    
-    <style>
-        :root {
-            --primary: #1E40AF;
-            --primary-dark: #1E3A8A;
-            --secondary: #3B82F6;
-            --accent: #60A5FA;
-            --dark: #0F172A;
-            --dark-light: #1E293B;
-            --text: #F8FAFC;
-            --text-muted: #94A3B8;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--dark);
-            color: var(--text);
-            line-height: 1.8;
-            overflow-x: hidden;
-        }
-        
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .navbar .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .navbar .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: var(--gradient-3);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .nav-menu {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-        
-        .nav-menu a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-        }
-        
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-        
-        .nav-menu a:hover::after,
-        .nav-menu a.active::after {
-            width: 100%;
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 8rem 2rem 4rem;
-            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-light) 100%);
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://www2.0zz0.com/2025/01/03/04/897159034.jpeg') center/cover;
-            opacity: 0.1;
-            z-index: 0;
-        }
-        
-        .hero-content {
-            max-width: 1200px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: var(--gradient-3);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInUp 1s ease;
-        }
-        
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: var(--gradient-3);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s;
-            animation: fadeInUp 1s ease 0.4s both;
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.5);
-        }
-        
-        /* Section Styles */
-        .section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-        
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: var(--gradient-3);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        /* Grid Layouts */
-        .grid {
-            display: grid;
-            gap: 2rem;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        }
-        
-        /* Card Styles */
-        .card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(96, 165, 250, 0.1);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-3);
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .card-icon {
-            font-size: 3rem;
-            background: var(--gradient-3);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-        
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-        
-        .card p {
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-        
-        .card-features {
-            list-style: none;
-            margin: 1.5rem 0;
-        }
-        
-        .card-features li {
-            padding: 0.5rem 0;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .card-features li::before {
-            content: '✓';
-            color: var(--success);
-            font-weight: bold;
-        }
-        
-        /* Stats Section */
-        .stats {
-            background: var(--dark-light);
-            padding: 4rem 2rem;
-            margin: 4rem 0;
-            border-radius: 20px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-        
-        .stat-item h3 {
-            font-size: 3rem;
-            background: var(--gradient-3);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-item p {
-            color: var(--text-muted);
-        }
-        
-        /* Process Section */
-        .process-steps {
-            display: grid;
-            gap: 3rem;
-        }
-        
-        .process-step {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-        
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-        
-        .step-content h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-        }
-        
-        .step-content p {
-            color: var(--text-muted);
-        }
-        
-        /* Testimonials */
-        .testimonial-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 20px;
-            border: 1px solid rgba(96, 165, 250, 0.1);
-            position: relative;
-        }
-        
-        .testimonial-card::before {
-            content: '"';
-            position: absolute;
-            top: 1rem;
-            right: 2rem;
-            font-size: 5rem;
-            color: rgba(96, 165, 250, 0.1);
-            font-family: serif;
-        }
-        
-        .testimonial-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .author-name {
-            font-weight: 600;
-            color: var(--accent);
-        }
-        
-        .author-role {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            background: var(--gradient-3);
-            padding: 6rem 2rem;
-            text-align: center;
-            border-radius: 20px;
-            margin: 4rem 0;
-        }
-        
-        .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-        }
-        
-        .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .cta-section .btn {
-            background: white;
-            color: var(--primary);
-        }
-        
-        /* FAQ */
-        .faq-item {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(96, 165, 250, 0.1);
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .faq-item:hover {
-            border-color: var(--accent);
-        }
-        
-        .faq-question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s;
-            color: var(--text-muted);
-            margin-top: 1rem;
-        }
-        
-        .faq-item.active .faq-answer {
-            max-height: 500px;
-        }
-        
-        /* Footer */
-        .footer {
-            background: var(--dark-light);
-            padding: 4rem 2rem 2rem;
-            margin-top: 6rem;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            max-width: 1400px;
-            margin: 0 auto 3rem;
-        }
-        
-        .footer h3 {
-            margin-bottom: 1.5rem;
-            color: var(--accent);
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            display: block;
-            padding: 0.5rem 0;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(96, 165, 250, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .social-link:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(96, 165, 250, 0.1);
-            color: var(--text-muted);
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar .container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .nav-menu {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
-            }
-            
-            .hero {
-                padding: 6rem 1rem 3rem;
-            }
-            
-            .section {
-                padding: 4rem 1rem;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="وكلاء الذكاء الاصطناعي: حلول مبتكرة لتلبية احتياجاتك | Bright AI">
-  <meta name="twitter:description" content="وكلاء الذكاء الاصطناعي: حلول مبتكرة لتلبية احتياجاتك | Bright AI - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="وكلاء الذكاء الاصطناعي: حلول مبتكرة لتلبية احتياجاتك | Bright AI">
-    <meta property="og:description" content="وكلاء الذكاء الاصطناعي: حلول مبتكرة لتلبية احتياجات الأعمال والأفراد. تصميم ذكي يلبي احتياجات الأعمال والأفراد في المملكة العربية السعودية.">
-    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-    <meta property="og:url" content="https://brightai.site/ai-agent.html">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_SA">
-    <meta property="og:site_name" content="مُشرقة AI">
-</head>
-<body>
-    <!-- Unified Navigation JS -->
-    <script src="js/unified-nav.js" defer></script>
-    
-    <!-- التنقل الموحد الجديد -->
-    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-        <div class="nav-container">
-            <!-- Logo -->
-            <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="Gemini.png" alt="Bright AI Logo" width="42" height="42">
-            </a>
-            
-            <!-- Hamburger Menu Button (Mobile) -->
-            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-            
-            <!-- Navigation Links -->
-            <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
-                
-                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أنظمة ذكية مؤسسية متكاملة
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي متكامل</a></li>
-                        <li role="none"><a role="menuitem" href="health-bright.html">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
-                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
-                    </ul>
-                </li>
-                
-                <!-- Dropdown: خدمات ذكية -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        خدمات ذكية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="ai-agent.html">الوكلاء</a></li>
-                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
-                        <li role="none"><a role="menuitem" href="consultation.html">استشارات الذكاء الاصطناعي</a></li>
-                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="our-products.html">خدمات الذكاء الاصطناعي</a></li>
-                    </ul>
-                </li>
-                
-                <!-- Dropdown: بوابة المعرفة -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        بوابة المعرفة
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="Docfile/About.Bright.AI.html">عن شركة مُشرقة AI</a></li>
-                        <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
-                    </ul>
-                </li>
-                
-                <!-- Dropdown: أدوات ذكية مجانية -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أدوات ذكية مجانية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="tools.html">أدوات ذكية مجانية</a></li>
-                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نماذج AI تجريبية</a></li>
-                        <li role="none"><a role="menuitem" href="ai-bots.html">شات بوت</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="nav-overlay" aria-hidden="true"></div>
-
-    <!-- Breadcrumb Navigation -->
-    <nav class="breadcrumb-nav" aria-label="مسار التنقل" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; margin-top: 70px; border-bottom: 1px solid rgba(100, 255, 218, 0.1);">
-        <div class="breadcrumb-container" style="max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 0.5rem; padding: 0 2rem;">
-            <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList" style="display: flex; align-items: center; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; gap: 0.5rem;">
-                <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display: flex; align-items: center; font-size: 0.875rem;">
-                    <a href="/" itemprop="item" style="color: var(--text-muted); text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 4px; transition: color 0.2s ease;"><span itemprop="name">الرئيسية</span></a>
-                    <meta itemprop="position" content="1" />
-                </li>
-                <li class="breadcrumb-separator" aria-hidden="true" style="color: var(--text-muted); opacity: 0.5; margin: 0 0.25rem; font-size: 0.75rem; transform: rotate(180deg);">›</li>
-                <li class="breadcrumb-item current" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" style="display: flex; align-items: center; font-size: 0.875rem; color: var(--accent); font-weight: 500;">
-                    <span itemprop="name" style="padding: 0.25rem 0.5rem;">وكلاء الذكاء الاصطناعي</span>
-                    <meta itemprop="position" content="2" />
-                </li>
-            </ol>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero" style="margin-top: 0;">
-        <div class="hero-content">
-            <h1>وكلاء الذكاء الاصطناعي المتطورة</h1>
-            <p>أنظمة ذكية قادرة على التفاعل والتعلم المستمر لتحسين الأداء وتحقيق نتائج استثنائية لأعمالك في السعودية</p>
-            <a href="#agents" class="btn">اكتشف وكلاءنا</a>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="section">
-        <div class="stats">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>+500</h3>
-                    <p>مشروع ناجح</p>
-                </div>
-                <div class="stat-item">
-                    <h3>98%</h3>
-                    <p>رضا العملاء</p>
-                </div>
-                <div class="stat-item">
-                    <h3>+200</h3>
-                    <p>شركة سعودية</p>
-                </div>
-                <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p>دعم متواصل</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- AI Agents Section -->
-    <section id="agents" class="section">
-        <div class="section-header">
-            <h2 class="section-title">وكلاء الذكاء الاصطناعي المتخصصين</h2>
-            <p class="section-subtitle">حلول ذكية مصممة خصيصاً لتلبية احتياجات عملك في السوق السعودي</p>
-        </div>
-        
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-cogs card-icon"></i>
-                <h3>وكيل AI مخصص بالكامل</h3>
-                <p>نصمم وكيلاً ذكياً فريداً ومخصصاً بالكامل وفقاً لاحتياجاتك</p>
-                <ul class="card-features">
-                    <li>تصميم 100% حسب الطلب</li>
-                    <li>تكامل كامل مع أنظمتك</li>
-                    <li>دعم فني متواصل</li>
-                </ul>
-                <a href="#" class="btn">المزيد</a>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-chart-line card-icon"></i>
-                <h3>وكيل تحليل البيانات</h3>
-                <p>يقوم بتحليل بياناتك واستخراج النماذج والاتجاهات الهامة</p>
-                <ul class="card-features">
-                    <li>تحليل عميق للبيانات</li>
-                    <li>استخراج الرؤى القيمة</li>
-                    <li>تقارير تفصيلية</li>
-                </ul>
-                <a href="#" class="btn">المزيد</a>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-bullhorn card-icon"></i>
-                <h3>وكيل التسويق الرقمي</h3>
-                <p>يساعد في تنفيذ استراتيجيات تسويق رقمي فعالة</p>
-                <ul class="card-features">
-                    <li>حملات تسويقية ذكية</li>
-                    <li>استهداف دقيق</li>
-                    <li>تحليل الأداء</li>
-                </ul>
-                <a href="#" class="btn">المزيد</a>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-search card-icon"></i>
-                <h3>وكيل تحسين محركات البحث</h3>
-                <p>يعمل على تحسين ظهور موقعك في محركات البحث</p>
-                <ul class="card-features">
-                    <li>تحسين SEO متقدم</li>
-                    <li>بحث الكلمات المفتاحية</li>
-                    <li>تقارير شهرية</li>
-                </ul>
-                <a href="#" class="btn">المزيد</a>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-file-alt card-icon"></i>
-                <h3>وكيل إنشاء المحتوى</h3>
-                <p>ينشئ مقالات عربية عالية الجودة محسنة لمحركات البحث</p>
-                <ul class="card-features">
-                    <li>محتوى أصلي وجذاب</li>
-                    <li>محسن لـ SEO</li>
-                    <li>لغة عربية احترافية</li>
-                </ul>
-                <a href="#" class="btn">المزيد</a>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-users card-icon"></i>
-                <h3>وكيل اكتشاف العملاء</h3>
-                <p>يساعد في تحديد واكتشاف عملاء جدد محتملين</p>
-                <ul class="card-features">
-                    <li>تحديد العملاء المحتملين</li>
-                    <li>تحليل السوق</li>
-                    <li>استراتيجيات تواصل</li>
-                </ul>
-                <a href="#" class="btn">المزيد</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">كيف نعمل معك</h2>
-            <p class="section-subtitle">عملية واضحة ومنظمة لضمان نجاح مشروعك</p>
-        </div>
-
-        <div class="process-steps">
-            <div class="process-step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>تحليل الاحتياجات</h3>
-                    <p>نجتمع معك لفهم تحدياتك وأهدافك بالتفصيل</p>
-                </div>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>تصميم الحل</h3>
-                    <p>نقترح حلول AI مخصصة تناسب طبيعة عملك</p>
-                </div>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>التطوير والتنفيذ</h3>
-                    <p>نقوم بتطوير الوكيل الذكي وفقاً للمواصفات</p>
-                </div>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>الاختبار والتحقق</h3>
-                    <p>نختبر الوكيل بدقة لضمان كفاءته وأدائه</p>
-                </div>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                    <h3>التسليم والدعم</h3>
-                    <p>نوفر دعماً مستمراً لضمان نجاحك</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">آراء عملائنا</h2>
-            <p class="section-subtitle">ماذا يقول عملاؤنا عن خدماتنا</p>
-        </div>
-
-        <div class="grid">
-            <div class="testimonial-card">
-                <p class="testimonial-text">لقد كانت تجربتي مع وكلاء الذكاء الاصطناعي من Bright AI مذهلة وفعالة للغاية. ساعدني الوكيل المخصص في تحسين أداء شركتي بشكل ملحوظ.</p>
-                <div class="testimonial-author">
-                    <div>
-                        <div class="author-name">محمد بن علي</div>
-                        <div class="author-role">مدير شركة تقنية - الرياض</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <p class="testimonial-text">التفاصيل المخصصة لكل وكيل AI تساعدنا على تحقيق أهدافنا بشكل أفضل. استطعنا زيادة مبيعاتنا بنسبة 40% خلال ثلاثة أشهر فقط.</p>
-                <div class="testimonial-author">
-                    <div>
-                        <div class="author-name">عبد الرحمن المالكي</div>
-                        <div class="author-role">صاحب متجر إلكتروني - جدة</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <p class="testimonial-text">وكيل تحليل البيانات ساعدنا في فهم سلوك عملائنا بشكل أفضل، مما مكننا من تقديم خدمات أكثر تخصيصاً وزيادة رضا العملاء بشكل كبير.</p>
-                <div class="testimonial-author">
-                    <div>
-                        <div class="author-name">سارة الأحمد</div>
-                        <div class="author-role">مديرة تسويق - الدمام</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technologies Section -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">التقنيات المتقدمة</h2>
-            <p class="section-subtitle">نستخدم أحدث التقنيات العالمية في بناء وكلاء الذكاء الاصطناعي</p>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-brain card-icon"></i>
-                <h3>التعلم الآلي</h3>
-                <p>نستخدم أحدث تقنيات التعلم الآلي لتطوير حلول ذكية وفعالة قادرة على التعلم من البيانات</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-language card-icon"></i>
-                <h3>معالجة اللغات الطبيعية</h3>
-                <p>تقنيات متقدمة لفهم وتحليل النصوص واللغة العربية بدقة عالية</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-database card-icon"></i>
-                <h3>تحليل البيانات الضخمة</h3>
-                <p>أدوات تحليل قوية لاستخراج النماذج والاتجاهات من كميات كبيرة من البيانات</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="section">
-        <div class="section-header">
-            <h2 class="section-title">الأسئلة الشائعة</h2>
-            <p class="section-subtitle">إجابات على أكثر الأسئلة شيوعاً</p>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>ما هي خدمات وكلاء الذكاء الاصطناعي؟</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-                <p>تشمل خدماتنا تصميم وتطوير وكلاء ذكاء اصطناعي مخصصين لتحليل البيانات، أتمتة المهام، تحسين تجربة العملاء، التسويق الذكي، ودعم اتخاذ القرار للشركات في السعودية.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>كيف يمكن لشركتي البدء في استخدام وكلاء الذكاء الاصطناعي؟</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-                <p>يمكنك البدء عبر التواصل معنا لتحديد احتياجاتك وأهدافك. سيقوم فريقنا بتحليل متطلباتك وتصميم وكيل AI مخصص يناسب طبيعة عملك.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>هل يمكن تخصيص وكيل الذكاء الاصطناعي ليتناسب مع احتياجاتي؟</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-                <p>نعم، بكل تأكيد. نحن متخصصون في تقديم حلول وكلاء ذكاء اصطناعي مخصصة تماماً لتلبية احتياجاتك الفريدة.</p>
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>ما هي تكلفة الحصول على وكيل ذكاء اصطناعي؟</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-            <div class="faq-answer">
-                <p>تختلف التكلفة بناءً على مدى تعقيد الوكيل، الميزات المطلوبة، وحجم التكامل مع الأنظمة الحالية. نقدم خطط أسعار مرنة تناسب مختلف الميزانيات.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="section">
-        <div class="cta-section">
-            <h2>هل أنت مستعد لتصميم وكيلك الذكي؟</h2>
-            <p>تواصل معنا اليوم للحصول على استشارة مجانية وتصميم وكيل ذكاء اصطناعي يناسب احتياجات عملك</p>
-            <a href="https://wa.me/966501120781" class="btn">ابدأ الآن</a>
-        </div>
-    </section>
-
-    <!-- قسم الخدمات ذات الصلة -->
-    <section class="related-services" style="background: linear-gradient(135deg, #0A192F 0%, #112240 100%); padding: 4rem 2rem;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto;">
-            <h2 style="color: #64FFDA; text-align: center; margin-bottom: 1rem; font-size: 1.8rem;">خدمات ذات صلة</h2>
-            <p style="color: #8892B0; text-align: center; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">اكتشف المزيد من حلول الذكاء الاصطناعي المتكاملة لتعزيز أعمالك في المملكة العربية السعودية</p>
-            <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                <a href="data-analysis.html" class="service-link-card" style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">📊 تحليل البيانات</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">تحويل البيانات إلى رؤى قابلة للتنفيذ باستخدام الذكاء الاصطناعي</p>
-                </a>
-                <a href="smart-automation.html" class="service-link-card" style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">🤖 الأتمتة الذكية</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">أتمتة العمليات التجارية باستخدام الذكاء الاصطناعي لزيادة الكفاءة</p>
-                </a>
-                <a href="ai-bots.html" class="service-link-card" style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">💬 روبوتات المحادثة</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">شات بوت عربي ذكي لخدمة العملاء والمبيعات</p>
-                </a>
-            </div>
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="consultation.html" style="display: inline-block; background: linear-gradient(135deg, #64FFDA 0%, #4facfe 100%); color: #0A192F; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">احصل على استشارة مجانية</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div>
-                <h3>Bright AI</h3>
-                <p>تقديم حلول ذكاء اصطناعي متقدمة لتعزيز أعمال الشركات في المملكة العربية السعودية</p>
-                <div class="social-links">
-                    <a href="https://www.tiktok.com/@bright1ai" class="social-link" target="_blank">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-                    <a href="https://www.instagram.com/iililil44" class="social-link" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://wa.me/966538229013" class="social-link" target="_blank">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <h3>روابط سريعة</h3>
-                <ul class="footer-links">
-                    <li><a href="index.html">الرئيسية</a></li>
-                    <li><a href="our-products.html">خدماتنا</a></li>
-                    <li><a href="consultation.html">الاستشارات</a></li>
-                    <li><a href="contact.html">اتصل بنا</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h3>الخدمات</h3>
-                <ul class="footer-links">
-                    <li><a href="#">وكلاء الذكاء الاصطناعي</a></li>
-                    <li><a href="#">تحليل البيانات</a></li>
-                    <li><a href="#">أتمتة العمليات</a></li>
-                    <li><a href="#">التسويق الذكي</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h3>تواصل معنا</h3>
-                <p>الرياض، المملكة العربية السعودية</p>
-                <p>هاتف: 966501120781+</p>
-                <p>البريد: info@brightai.sa</p>
-            </div>
-        </div>
-
-        <div class="copyright">
-            <p>© 2025 Bright AI. جميع الحقوق محفوظة</p>
-        </div>
-    </footer>
-
-    <script>
-        // FAQ Toggle
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.addEventListener('click', () => {
-                item.classList.toggle('active');
-            });
-        });
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Scroll Animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.card, .process-step, .testimonial-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
-        });
-
-        // Active Nav Link
-        const currentPage = window.location.pathname.split('/').pop();
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            if (link.getAttribute('href') === currentPage) {
-                link.classList.add('active');
-            }
-        });
-
-        // WhatsApp CTA
-        document.querySelectorAll('.btn').forEach(btn => {
-            if (!btn.getAttribute('href') || btn.getAttribute('href') === '#') {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.open('https://wa.me/966501120781?text=مرحباً، أرغب في الاستفسار عن خدمات وكلاء الذكاء الاصطناعي', '_blank');
-                });
-            }
-        });
-    </script>
-</body>
-</html>
