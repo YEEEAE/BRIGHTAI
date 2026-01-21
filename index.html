@@ -71,14 +71,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Iconify Script -->
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
 
   <!-- Tailwind Configuration -->
-  <script src="js/tailwind-config.js"></script>
+  <script src="js/tailwind-config.js" defer></script>
 
   <!-- Fonts: Fira Code -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
 
+  <!-- Performance Optimizations -->
+  <link rel="preload" href="css/main.css" as="style">
+  <link rel="preload" href="Gemini.png" as="image">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/main.css" />
 
@@ -681,7 +688,7 @@
                 عن شركة مُشرقة AI
               </a>
             </li>
-            <li role="none"><a role="menuitem" href="Docs.html">DOCS</a></li>
+            <li role="none"><a role="menuitem" href="Docs.html">المستندات</a></li>
           </ul>
         </li>
         <!-- Dropdown: أدوات ذكية مجانية -->
@@ -697,7 +704,7 @@
               <a role="menuitem" href="tools.html">أدوات ذكية مجانية</a>
             </li>
             <li role="none">
-              <a role="menuitem" href="h/index.html">نماذج AI تجريبية</a>
+              <a role="menuitem" href="h/projects/interview/index.html">نماذج AI تجريبية</a>
             </li>
             <li role="none">
               <a role="menuitem" href="ai-bots.html">شات بوت</a>
@@ -730,9 +737,14 @@
             Bright AI
           </span>
           <span class="text-gradient">
-            نُضيء الذكاء اصطناعي.. بمعايير سعودية وآفاق عالمية.
+            حلول ذكاء اصطناعي للشركات السعودية
           </span>
         </h1>
+        
+        <!-- SEO: Move original tagline to h2 for better structure -->
+        <h2 class="text-xl md:text-2xl font-light text-slate-300 mt-4">
+          نُضيء الذكاء اصطناعي.. بمعايير سعودية وآفاق عالمية
+        </h2>
 
         <p class="text-slate-400 text-lg lg:text-xl font-light leading-relaxed max-w-xl">
           المحرك الأقوى للتحول الرقمي في المملكة في مُشرقة AI ، نحول التحديات
@@ -1600,7 +1612,7 @@ function initScrollAnimations() {
             <span>SDKs for Python, Node.js, Go</span>
           </li>
         </ul>
-        <a href="docs.html"
+        <a href="Docs.html"
           class="inline-flex items-center gap-2 text-white border-b border-indigo-500 pb-1 hover:text-indigo-400 transition">
           Explore Documentation
           <iconify-icon icon="lucide:arrow-right" width="16"></iconify-icon>

@@ -1,73 +1,106 @@
 #!/bin/bash
 
-# Script to minify CSS and JS files
-# This will help fix the unminified files issue
+# Asset Minification Script for brightai.site
+# Minifies CSS and JavaScript files
 
-echo "Installing minification tools..."
-npm install -g terser csso-cli 2>/dev/null || echo "Tools already installed or npm not available"
+echo "⚡ Starting Asset Minification..."
 
-echo "Minifying JavaScript files..."
+# Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
 
-# Main JS files
-if [ -f "js/scroll-animations.js" ]; then
-    terser js/scroll-animations.js -o js/scroll-animations.min.js -c -m
-    echo "✓ Minified scroll-animations.js"
+# Check if Node.js is installed
+if ! command -v node &> /dev/null; then
+    echo -e "${RED}Error: Node.js not found${NC}"
+    echo "Install with: brew install node (macOS) or sudo apt-get install nodejs (Ubuntu)"
+    exit 1
 fi
 
-if [ -f "js/unified-nav.js" ]; then
-    terser js/unified-nav.js -o js/unified-nav.min.js -c -m
-    echo "✓ Minified unified-nav.js"
+# Check if npm packages are installed
+echo -e "${YELLOW}Checking for required npm packages...${NC}"
+
+if ! command -v cleancss &> /dev/null; then
+    echo "Installing clean-css-cli..."
+    npm install -g clean-css-cli
 fi
 
-if [ -f "js/products-manager.js" ]; then
-    terser js/products-manager.js -o js/products-manager.min.js -c -m
-    echo "✓ Minified products-manager.js"
+if ! command -v terser &> /dev/null; then
+    echo "Installing terser..."
+    npm install -g terser
 fi
 
-# Page-specific JS files
-for file in blog.js ai-bots.js our-products.js smart-automation.js tools.js data-analysis.js Docs.js; do
-    if [ -f "$file" ]; then
-        terser "$file" -o "${file%.js}.min.js" -c -m
-        echo "✓ Minified $file"
+echo -e "${YELLOW}Step 1: Minifying CSS files${NC}"
+
+# Find and minify CSS files
+find css -type f -name "*.css" ! -name "*.min.css" 2>/dev/null | while read file; do
+    output="${file%.css}.min.css"
+    
+    # Get file size before
+    size_before=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+    
+    # Minify
+    cleancss -o "$output" "$file" 2>/dev/null
+    
+    if [ $? -eq 0 ]; then
+        size_after=$(stat -f%z "$output" 2>/dev/null || stat -c%s "$output" 2>/dev/null)
+        reduction=$(( (size_before - size_after) * 100 / size_before ))
+        echo "✓ Minified: $file → $output (${reduction}% smaller)"
+    else
+        echo "⚠ Failed to minify: $file"
     fi
 done
 
-echo ""
-echo "Minifying CSS files..."
+echo -e "${YELLOW}Step 2: Minifying JavaScript files${NC}"
 
-# Main CSS files
-if [ -f "css/unified-nav.css" ]; then
-    csso css/unified-nav.css -o css/unified-nav.min.css
-    echo "✓ Minified unified-nav.css"
-fi
-
-if [ -f "css/unified-gradient.css" ]; then
-    csso css/unified-gradient.css -o css/unified-gradient.min.css
-    echo "✓ Minified unified-gradient.css"
-fi
-
-if [ -f "css/products-enhanced.css" ]; then
-    csso css/products-enhanced.css -o css/products-enhanced.min.css
-    echo "✓ Minified products-enhanced.css"
-fi
-
-if [ -f "css/design-tokens.css" ]; then
-    csso css/design-tokens.css -o css/design-tokens.min.css
-    echo "✓ Minified design-tokens.css"
-fi
-
-# Page-specific CSS files
-for file in blog.css ai-bots.css our-products.css smart-automation.css tools.css data-analysis.css Docs.css; do
-    if [ -f "$file" ]; then
-        csso "$file" -o "${file%.css}.min.css"
-        echo "✓ Minified $file"
+# Find and minify JS files
+find js -type f -name "*.js" ! -name "*.min.js" 2>/dev/null | while read file; do
+    output="${file%.js}.min.js"
+    
+    # Get file size before
+    size_before=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
+    
+    # Minify
+    terser "$file" -o "$output" -c -m 2>/dev/null
+    
+    if [ $? -eq 0 ]; then
+        size_after=$(stat -f%z "$output" 2>/dev/null || stat -c%s "$output" 2>/dev/null)
+        reduction=$(( (size_before - size_after) * 100 / size_before ))
+        echo "✓ Minified: $file → $output (${reduction}% smaller)"
+    else
+        echo "⚠ Failed to minify: $file"
     fi
 done
 
+echo -e "${YELLOW}Step 3: Updating HTML references${NC}"
+
+# Update CSS references
+find . -name "*.html" -type f ! -path "*/node_modules/*" ! -path "*/.*/*" | while read file; do
+    # Backup
+    cp "$file" "${file}.bak"
+    
+    # Replace .css with .min.css (but not if already .min.css)
+    sed -i '' 's/\([^.]\)\.css"/\1.min.css"/g' "$file" 2>/dev/null || \
+    sed -i 's/\([^.]\)\.css"/\1.min.css"/g' "$file" 2>/dev/null
+    
+    # Replace .js with .min.js (but not if already .min.js)
+    sed -i '' 's/\([^.]\)\.js"/\1.min.js"/g' "$file" 2>/dev/null || \
+    sed -i 's/\([^.]\)\.js"/\1.min.js"/g' "$file" 2>/dev/null
+    
+    echo "✓ Updated references in: $file"
+done
+
+echo -e "${GREEN}✓ Asset minification complete!${NC}"
 echo ""
-echo "✅ Minification complete!"
+echo "Summary:"
+echo "- CSS files minified in css/ folder"
+echo "- JavaScript files minified in js/ folder"
+echo "- HTML files updated to use .min.css and .min.js"
+echo "- Backup files created (.bak)"
 echo ""
 echo "Next steps:"
-echo "1. Update HTML files to reference .min.js and .min.css files"
-echo "2. Test the website to ensure everything works"
-echo "3. Run the sitemap generator to update sitemap.xml"
+echo "1. Test your site to ensure everything works"
+echo "2. If issues occur, restore from .bak files"
+echo "3. Run PageSpeed Insights to see improvements"
+echo "4. Delete .bak files once verified"
