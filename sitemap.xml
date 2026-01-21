@@ -1,63 +1,63 @@
 <?xml version="1.0" ?>
 <urlset xmlns:html="http://www.w3.org/1999/xhtml" xmlns:ns1="http://www.google.com/schemas/sitemap-image/1.1" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://brightaii.com/</loc>
+    <loc>https://brightai.site/</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/"/>
     <ns1:image>
-      <ns1:loc>https://brightaii.com/assets/images/hero-banner.jpg</ns1:loc>
+      <ns1:loc>https://brightai.site/assets/images/hero-banner.jpg</ns1:loc>
       <ns1:title>BrightAI - AI Solutions</ns1:title>
     </ns1:image>
   </url>
   <url>
-    <loc>https://brightaii.com/ai-agent</loc>
+    <loc>https://brightai.site/ai-agent</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/ai-agent"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/ai-agent"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/ai-agent"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/ai-agent"/>
   </url>
   <url>
-    <loc>https://brightaii.com/tools</loc>
+    <loc>https://brightai.site/tools</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/tools"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/tools"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/tools"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/tools"/>
   </url>
   <url>
-    <loc>https://brightaii.com/data-analysis</loc>
+    <loc>https://brightai.site/data-analysis</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/data-analysis"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/data-analysis"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/data-analysis"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/data-analysis"/>
   </url>
   <url>
-    <loc>https://brightaii.com/smart-automation</loc>
+    <loc>https://brightai.site/smart-automation</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/smart-automation"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/smart-automation"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/smart-automation"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/smart-automation"/>
   </url>
   <url>
-    <loc>https://brightaii.com/consultation</loc>
+    <loc>https://brightai.site/consultation</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/consultation"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/consultation"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/consultation"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/consultation"/>
   </url>
   <url>
-    <loc>https://brightaii.com/blog</loc>
+    <loc>https://brightai.site/blog</loc>
     <lastmod>2026-01-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-    <html:link rel="alternate" hreflang="ar" href="https://brightaii.com/ar/blog"/>
-    <html:link rel="alternate" hreflang="en" href="https://brightaii.com/blog"/>
+    <html:link rel="alternate" hreflang="ar" href="https://brightai.site/ar/blog"/>
+    <html:link rel="alternate" hreflang="en" href="https://brightai.site/blog"/>
   </url>
 </urlset>
