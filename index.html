@@ -63,67 +63,118 @@
   <meta name="twitter:image" content="https://brightai.site/Gemini.png" />
   <meta name="twitter:image:alt" content="Bright AI - شعار الشركة" />
 
-  <!-- Fonts: IBM Plex Sans Arabic -->
+  <!-- ============================================
+       PERFORMANCE OPTIMIZED RESOURCE LOADING
+       ============================================ -->
+
+  <!-- DNS Prefetch & Preconnect (Highest Priority) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
-
-  <!-- Tailwind CSS (via CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Iconify Script -->
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
-
-  <!-- Tailwind Configuration -->
-  <script src="js/tailwind-config.min.js" defer></script>
-
-  <!-- Fonts: IBM Plex Sans Arabic (Legacy) & Tajawal (New Primary) -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap"
-    rel="stylesheet" />
-
-  <!-- Fonts: Fira Code -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
-
-  <!-- Performance Optimizations -->
-  <link rel="preload" href="css/main.min.css" as="style">
-  <link rel="preload" href="Gemini.png" as="image">
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://code.iconify.design" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://code.iconify.design">
 
-  <!-- Design System & Architecture -->
-  <link rel="stylesheet" href="css/design-tokens.css" />
-  <link rel="stylesheet" href="css/typography.css" />
-  <link rel="stylesheet" href="css/glass-morphism.css" />
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="Gemini.webp" as="image" type="image/webp">
+  <link rel="preload" href="css/critical.css" as="style">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style"
+    crossorigin>
 
-  <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="css/main.min.css" />
+  <!-- Critical CSS (Inline for fastest FCP) -->
+  <link rel="stylesheet" href="css/critical.css" />
 
-  <!-- Premium Effects CSS -->
-  <link rel="stylesheet" href="css/premium-effects.min.css" />
+  <!-- Performance Loader Script (Load all resources intelligently) -->
+  <script>
+    // Inline minimal loader for fastest execution
+    (function () {
+      'use strict';
 
-  <!-- AOS Animation Library -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+      // Load CSS file dynamically
+      function loadCSS(href) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        document.head.appendChild(link);
+      }
 
-  <!-- Swiper.js for Carousels -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+      // Load Script file dynamically  
+      function loadScript(src, callback) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        if (callback) script.onload = callback;
+        document.body.appendChild(script);
+      }
 
-  <!-- GSAP Animation Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+      // Load non-critical resources after initial paint
+      function loadDeferredResources() {
+        // Tailwind CSS (non-blocking)
+        loadScript('https://cdn.tailwindcss.com', function () {
+          loadScript('js/tailwind-config.min.js');
+        });
 
-  <!-- Typed.js for Typewriter Effect -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.16/dist/typed.umd.js" defer></script>
+        // Fonts
+        loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+        loadCSS('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
 
-  <!-- Swiper.js -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+        // Design System CSS
+        loadCSS('css/design-tokens.css');
+        loadCSS('css/typography.css');
+        loadCSS('css/glass-morphism.css');
+        loadCSS('css/main.min.css');
+        loadCSS('css/premium-effects.min.css');
 
-  <!-- AOS Animation Library -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+        // External CSS
+        loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+        loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+
+        // Iconify
+        loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+      }
+
+      // Load animation libraries after interaction or timeout
+      function loadAnimations() {
+        // GSAP
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
+          loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
+        });
+
+        // AOS
+        loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+          if (typeof AOS !== 'undefined') {
+            AOS.init({ duration: 800, once: true, offset: 100 });
+          }
+        });
+
+        // Typed.js
+        loadScript('https://cdn.jsdelivr.net/npm/typed.js@2.0.16/dist/typed.umd.js');
+
+        // Swiper
+        loadScript('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js');
+      }
+
+      // Execute after DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          // Load deferred resources immediately
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadDeferredResources, { timeout: 1500 });
+          } else {
+            setTimeout(loadDeferredResources, 50);
+          }
+
+          // Load animations after a small delay
+          setTimeout(loadAnimations, 300);
+        });
+      } else {
+        // DOM already loaded
+        loadDeferredResources();
+        setTimeout(loadAnimations, 300);
+      }
+    })();
+  </script>
 
 
   <!-- Structured Data: Organization Schema -->
