@@ -24,8 +24,7 @@ Thumbs.db
 # Build outputs
 dist/
 build/
-*.min.js
-*.min.css
+# Note: .min.js and .min.css files are now included in git (needed for production)
 
 # Cache
 .cache/
