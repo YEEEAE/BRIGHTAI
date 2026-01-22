@@ -5,7 +5,7 @@
 ## IMMEDIATE DELETION (Security Risk)
 checkout.html
 new_content.html
-try.html
+# try.html (PROTECTED)
 admin.html
 
 
