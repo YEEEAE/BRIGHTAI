@@ -1,17 +1,94 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>المستندات - Bright AI</title>
-  <meta http-equiv="refresh" content="0; url=Docs.html">
-  <link rel="canonical" href="https://brightai.site/Docs">
-  <script>
-    // Immediate redirect
-    window.location.replace("Docs.html");
-  </script>
+  <title>المستندات والموارد - Bright AI</title>
+  <meta name="description" content="مكتبة مستندات Bright AI">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="Docs.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
+
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
+
 <body>
-  <p>جاري التحويل إلى <a href="Docs">صفحة المستندات</a>...</p>
+
+  <header class="main-header">
+    <a href="/" class="logo-link">
+      <img src="Gemini.webp" alt="Bright AI Logo" class="logo">
+    </a>
+    <div class="header-titles">
+      <h1>مكتبة المستندات</h1>
+      <div class="breadcrumbs">
+        <a href="/">الرئيسية</a> / <span>المستندات</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="search-section">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="ابحث عن مستند...">
+      <button id="searchBtn">
+        <iconify-icon icon="lucide:search"></iconify-icon> بحث
+      </button>
+    </div>
+  </section>
+
+  <div class="content-wrapper">
+    <aside class="sidebar">
+      <h2>التصنيفات</h2>
+      <ul class="categories">
+        <li class="active">جميع المستندات</li>
+        <li>نبذة عن الشركة</li>
+        <li>الخدمات</li>
+        <li>أتمتة العمليات</li>
+        <li>تحليل البيانات</li>
+        <li>الاستشارات الذكية</li>
+        <li>مساعد "وكيل" الذكاء الاصطناعي</li>
+        <li>مكتبة الموارد</li>
+      </ul>
+    </aside>
+
+    <main class="documents-grid" id="documentsGrid">
+      <!-- Content via JS -->
+    </main>
+  </div>
+
+  <section id="docPreview" class="document-preview">
+    <div class="preview-header">
+      <h2 id="docTitle"></h2>
+      <div class="doc-actions">
+        <button class="download-btn">فتح المستند</button>
+        <button class="share-btn">مشاركة</button>
+      </div>
+    </div>
+    <div class="doc-meta">
+      <span id="docCategory"></span>
+      <span id="docDate"></span>
+    </div>
+    <div class="preview-content">
+      <p id="docDescription"></p>
+    </div>
+  </section>
+
+  <section class="recommendations">
+    <h2>مستندات موصى بها</h2>
+    <div class="rec-grid" id="recGrid">
+      <!-- Content via JS -->
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="copyright">&copy; 2025 Bright AI. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <script src="Docs.js"></script>
 </body>
+
 </html>
