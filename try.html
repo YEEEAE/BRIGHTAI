@@ -1,476 +1,500 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bright AI | منصة التحليل الذكي</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8LLESL207Q');
+    </script>
 
-  gtag('config', 'G-8LLESL207Q');
-</script>
-
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://brightai.site/try">
-    <title>Bright AI - منصة التحليل الذكي</title>
-  <meta name="description" content="Bright AI - منصة التحليل الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-    
-    <!-- Favicon -->
+    <meta name="description"
+        content="منصة التحليل الذكي من Bright AI. حول بياناتك إلى رؤى باستخدام الذكاء الاصطناعي التوليدي." />
+    <meta name="author" content="Bright AI" />
+    <link rel="canonical" href="https://brightai.site/try" />
     <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.min.css">
+
+    <link rel="stylesheet" href="css/critical.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.min.js"></script>
-    <!-- تضمين مكتبة PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.min.mjs" type="module"></script>
 
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('css/design-tokens.css');
+                loadCSS('css/typography.css');
+                loadCSS('css/glass-morphism.css');
+                loadCSS('css/main.min.css');
+                loadCSS('css/premium-effects.min.css');
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                });
+            } else {
+                loadDeferredResources();
+            }
+        })();
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Tool Specific Styles Overrides for Dark Mode/Glass */
+        .upload-section,
+        .analysis-section,
+        .feature-card,
+        .metric-card,
+        .chart-container,
+        .insight-item,
+        .file-info {
+            background: rgba(30, 41, 59, 0.4) !important;
+            backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #e2e8f0 !important;
         }
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .upload-section {
-            background: white;
+        .upload-section,
+        .analysis-section {
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            height: fit-content;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .upload-area {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
+            border: 2px dashed rgba(255, 255, 255, 0.2) !important;
+            background: rgba(255, 255, 255, 0.02) !important;
+            border-radius: 16px;
             padding: 40px;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
-            margin-bottom: 20px;
         }
 
-        .upload-area:hover {
-            border-color: #764ba2;
-            background: rgba(102, 126, 234, 0.05);
-        }
-
+        .upload-area:hover,
         .upload-area.dragover {
-            border-color: #764ba2;
-            background: rgba(102, 126, 234, 0.1);
-            transform: scale(1.02);
+            border-color: #64FFDA !important;
+            background: rgba(100, 255, 218, 0.05) !important;
         }
 
         .upload-icon {
-            font-size: 4rem;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .file-input {
-            display: none;
+            color: #64FFDA !important;
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
 
         .upload-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+            color: white !important;
             border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.1rem;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px;
+            transition: transform 0.2s;
         }
 
         .upload-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .analysis-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            min-height: 600px;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 50px;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .results {
-            display: none;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
         }
 
         .metric-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 15px 0;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .metric-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1)) !important;
+            border-left: 4px solid #60A5FA !important;
         }
 
         .metric-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            color: #fff;
         }
 
-        .metric-change {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .chart-container {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .insights-section {
-            background: #f8f9ff;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            border-right: 5px solid #667eea;
+        .metric-title {
+            color: #94a3b8;
         }
 
         .insight-item {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            border-right: 4px solid #667eea;
+            border-right: 4px solid #34d399 !important;
+            background: rgba(255, 255, 255, 0.03) !important;
         }
 
-        .insight-icon {
-            color: #667eea;
-            margin-left: 10px;
-            font-size: 1.2rem;
-        }
-
-        .recommendations {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-
-        .recommendation-item {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            backdrop-filter: blur(10px);
-        }
-
-        .features-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .footer {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            color: white;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .features-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .file-info {
-            background: #f8f9ff;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: right;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .error-details {
-            background: #ffebee;
-            border: 1px solid #ffcdd2;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            color: #c62828;
-            font-size: 0.9rem;
-        }
-
-        .debug-info {
-            background: #f5f5f5;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 0.8rem;
-            max-height: 200px;
-            overflow-y: auto;
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: white !important;
         }
     </style>
+</head>
 
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Bright AI - منصة التحليل الذكي">
-  <meta property="og:description" content="Bright AI - منصة التحليل الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  <meta property="og:url" content="https://brightai.site/try">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ar_SA">
-  <meta property="og:site_name" content="مُشرقة AI">
-  
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Bright AI - منصة التحليل الذكي">
-  <meta name="twitter:description" content="Bright AI - منصة التحليل الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1><i class="fas fa-brain"></i> Bright AI</h1>
-            <p>منصة التحليل الذكي المدعومة بالذكاء الاصطناعي</p>
-        </header>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
-        <div class="main-content">
-            <div class="upload-section">
-                <h2><i class="fas fa-upload"></i> رفع الملفات للتحليل</h2>
-                
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
+    <!-- UNIFIED HEADER -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42"
+                    height="42" fetchpriority="high" decoding="async" />
+                <span>Bright AI</span>
+            </a>
+            <!-- Hamburger Menu Button (Mobile) -->
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <!-- Navigation Links -->
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none">
+                    <a role="menuitem" href="/" class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:home" width="16"
+                            class="text-slate-400 group-hover:text-white"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:cpu" width="16" class="text-indigo-400"></iconify-icon>
+                        أنظمة ذكية مؤسسية متكاملة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none">
+                            <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:users" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                رحلة التوظيف الذكية بالكامل
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="Smart-Medical-Archive/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-heart" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الارشيف الطبي الذكي
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="try.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:database" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                ذكاء البيانات المُشرق
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Dropdown: خدمات ذكية -->
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:sparkles" width="16" class="text-purple-400"></iconify-icon>
+                        خدمات ذكية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none">
+                            <a role="menuitem" href="smart-automation.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:zap" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الأتمتة الذكية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="ai-agent.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:cloud" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الذكاء الاصطناعي كخدمة (AIaaS)
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="data-analysis.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:bar-chart" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                تحليل البيانات
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="consultation.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:message-square" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                استشارات الذكاء الاصطناعي
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="our-products.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:layers" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                جميع الخدمات
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Dropdown: بوابة المعرفة -->
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:book-open" width="16" class="text-cyan-400"></iconify-icon>
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none">
+                            <a role="menuitem" href="blog.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:library" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                المكتبة الذكية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="about-us.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:info" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                عن شركة مُشرقة AI
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="Docs.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-text" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                المستندات
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Dropdown: أدوات ذكية مجانية -->
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:wrench" width="16" class="text-gold-400"></iconify-icon>
+                        أدوات ذكية مجانية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none">
+                            <a role="menuitem" href="tools.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:gift" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                أدوات ذكية مجانية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:play" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                نماذج AI تجريبية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="ai-bots.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:message-circle" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                شات بوت
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <!-- MAIN TOOL SECTION -->
+    <main class="relative z-10 pt-32 pb-24 px-6 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16">
+                <div
+                    class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-purple-500/30 mb-8">
+                    <span class="text-purple-300 text-sm font-medium tracking-wide">AI Powered Analytics</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6">منصة التحليل الذكي</h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto">حول بياناتك الخام إلى قرارات استراتيجية باستخدام قوة
+                    الذكاء الاصطناعي التوليدي.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                <!-- Upload Section -->
+                <div class="upload-section lg:col-span-1 h-fit">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-3"><i
+                            class="fas fa-file-upload text-indigo-400"></i> رفع الملفات</h2>
+
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3 class="text-white font-medium mb-2">اسحب الملف هنا</h3>
+                        <p class="text-slate-500 text-sm mb-6">PDF, CSV, Excel, JSON, TXT</p>
+                        <input type="file" id="fileInput" class="hidden" accept=".csv,.xlsx,.xls,.json,.pdf,.txt">
+                        <button class="upload-btn w-full" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-search me-2"></i> اختر ملف
+                        </button>
                     </div>
-                    <h3>اسحب الملف هنا أو انقر للتحديد</h3>
-                    <p>يدعم: PDF, CSV, Excel, JSON, TXT</p>
-                    <!-- تعديل accept للسماح بملفات PDF -->
-                    <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls,.json,.pdf,.txt">
-<button class="upload-btn">
-    <i class="fas fa-file-upload"></i> اختر ملف
-</button>
+
+                    <div class="file-info hidden" id="fileInfo">
+                        <div class="text-sm text-slate-300" id="fileName"></div>
+                        <div class="text-xs text-slate-500" id="fileSize"></div>
+                        <div class="w-full h-1 bg-slate-700 rounded-full mt-3 overflow-hidden">
+                            <div class="h-full bg-indigo-500 w-0 transition-all duration-300" id="progressFill"></div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="upload-btn w-full mt-4 hidden bg-gradient-to-r from-emerald-500 to-teal-500 !important"
+                        id="analyzeBtn" onclick="analyzeFile()">
+                        <i class="fas fa-robot me-2"></i> بدء التحليل الذكي
+                    </button>
+
+                    <button
+                        class="upload-btn w-full mt-4 bg-transparent border border-white/20 hover:bg-white/5 !important box-border"
+                        onclick="runDemo()">
+                        <i class="fas fa-play me-2"></i> تجربة توضيحية
+                    </button>
                 </div>
 
-                <div class="file-info" id="fileInfo" style="display: none;">
-                    <h4>معلومات الملف:</h4>
-                    <div id="fileName"></div>
-                    <div id="fileSize"></div>
-                    <div id="fileType"></div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+                <!-- Results Section -->
+                <div class="analysis-section lg:col-span-2 min-h-[600px] flex flex-col relative">
+                    <!-- Loading State -->
+                    <div class="loading hidden absolute inset-0 flex flex-col items-center justify-center z-20 bg-slate-900/80 backdrop-blur-sm rounded-2xl"
+                        id="loading">
+                        <div
+                            class="w-16 h-16 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin mb-6">
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2" id="loadingMessage">جارٍ تحليل البيانات...</h3>
+                        <p class="text-slate-400">يقوم الذكاء الاصطناعي بمعالجة البيانات واستخلاص الرؤى</p>
+                    </div>
+
+                    <!-- Welcome State -->
+                    <div id="welcomeMessage" class="flex-1 flex flex-col items-center justify-center text-center p-12">
+                        <div class="w-24 h-24 bg-indigo-500/10 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-brain text-4xl text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">مرحباً بك في منصة التحليل</h3>
+                        <p class="text-slate-400 max-w-md">قم برفع ملف بيانات (مبيعات، تقارير، الخ) وسنقوم بتحليله
+                            وتوليد رسوم بيانية وتوصيات فورية.</p>
+                    </div>
+
+                    <!-- Results State -->
+                    <div class="results hidden w-full" id="results">
+                        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
+                            <i class="fas fa-chart-pie text-purple-400"></i> نتائج التحليل
+                        </h2>
+
+                        <div id="metricsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8"></div>
+                        <div id="chartsContainer" class="mb-8 p-4 bg-slate-800/50 rounded-xl"></div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="font-bold text-lg mb-4 text-emerald-400">💡 رؤى مستخلصة</h3>
+                                <div id="insightsContainer" class="space-y-3"></div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-4 text-blue-400">🚀 توصيات</h3>
+                                <div id="recommendationsContainer" class="space-y-3"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <button class="upload-btn" id="analyzeBtn" style="display: none; width: 100%;" onclick="analyzeFile()">
-                    <i class="fas fa-chart-line"></i> بدء التحليل
-                </button>
-
-                <button class="upload-btn" onclick="runDemo()" style="width: 100%; margin-top: 20px; background: linear-gradient(135deg, #11998e, #38ef7d);">
-                    <i class="fas fa-play"></i> تجربة توضيحية (بدون ملف)
-                </button>
             </div>
 
-            <div class="analysis-section">
-                <div class="loading" id="loading">
-                    <div class="loading-spinner"></div>
-                    <h3 id="loadingMessage">جارٍ تحليل البيانات...</h3>
-                    <p>يرجى الانتظار بينما يقوم Yazeed AI analysiss بتحليل ملفك</p>
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="feature-card text-center p-8">
+                    <i class="fas fa-wand-magic-sparkles text-3xl text-indigo-400 mb-4"></i>
+                    <h3 class="font-bold text-white mb-2">تحليل فوري</h3>
+                    <p class="text-slate-400 text-sm">معالجة فورية للبيانات باستخدام Gemini Pro</p>
                 </div>
-
-                <div class="results" id="results">
-                    <h2><i class="fas fa-chart-bar"></i> نتائج التحليل</h2>
-                    
-                    <div id="metricsContainer"></div>
-                    <div id="chartsContainer"></div>
-                    <div id="insightsContainer"></div>
-                    <div id="recommendationsContainer"></div>
+                <div class="feature-card text-center p-8">
+                    <i class="fas fa-chart-area text-3xl text-purple-400 mb-4"></i>
+                    <h3 class="font-bold text-white mb-2">تصوير بيانات</h3>
+                    <p class="text-slate-400 text-sm">تحويل الأرقام إلى رسوم بيانية تفاعلية</p>
                 </div>
-
-                <div id="welcomeMessage">
-                    <div style="text-align: center; padding: 50px; color: #666;">
-                        <i class="fas fa-robot" style="font-size: 5rem; color: #667eea; margin-bottom: 20px;"></i>
-                        <h3>مرحباً بك في Bright AI</h3>
-                        <p>ارفع ملفك لبدء التحليل الذكي أو جرب العرض التوضيحي</p>
-                    </div>
+                <div class="feature-card text-center p-8">
+                    <i class="fas fa-lightbulb text-3xl text-gold-400 mb-4"></i>
+                    <h3 class="font-bold text-white mb-2">توصيات ذكية</h3>
+                    <p class="text-slate-400 text-sm">اقتراحات عملية لتحسين الأداء</p>
                 </div>
             </div>
         </div>
+    </main>
 
-        <div class="features-section">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-line"></i>
+    <!-- UNIFIED FOOTER -->
+    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+                        <span class="text-lg font-bold text-white">B</span>
+                    </div>
+                    <span class="font-semibold text-white">Bright AI</span>
                 </div>
-                <h3>تحليل البيانات المتقدم</h3>
-                <p>تحليل شامل للبيانات باستخدام خوارزميات الذكاء الاصطناعي المتطورة لاستخراج رؤى قيمة</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-eye"></i>
-                </div>
-                <h3>رؤى تجارية ذكية</h3>
-                <p>احصل على رؤى تجارية قابلة للتنفيذ تساعدك في اتخاذ قرارات مدروسة لتطوير أعمالك</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <h3>توصيات ذكية</h3>
-                <p>احصل على توصيات مخصصة لتحسين الأداء وزيادة الكفاءة بناءً على تحليل بياناتك</p>
+                <p class="text-slate-500 text-sm">© 2025 Bright AI. جميع الحقوق محفوظة.</p>
             </div>
         </div>
+    </footer>
 
-        <footer class="footer">
-            <h3>Bright AI</h3>
-            <p>نحن نعيد تعريف مستقبل تحليل البيانات بالذكاء الاصطناعي</p>
-            <div style="margin-top: 20px;">
-                <i class="fab fa-twitter" style="margin: 0 10px; font-size: 1.5rem;"></i>
-                <i class="fab fa-linkedin" style="margin: 0 10px; font-size: 1.5rem;"></i>
-                <i class="fab fa-github" style="margin: 0 10px; font-size: 1.5rem;"></i>
-            </div>
-        </footer>
-    </div>
 
-    <script type="module"> // تغيير type إلى module للسماح بـ import
-        // التأكد من أن pdfjsLib متاح عالميًا إذا لزم الأمر أو استيراده مباشرة
+    <script type="module">
         const { pdfjsLib } = globalThis;
-        // تحديد مسار العامل لـ pdf.js
         const PDFJS_WORKER_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.3.136/pdf.worker.min.mjs';
         if (pdfjsLib) {
             pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER_SRC;
         }
 
-        const GEMINI_API_KEY = 'GEMINI_KEY_REDACTED'; // استبدل بمفتاحك الحقيقي
+        const GEMINI_API_KEY = 'GEMINI_KEY_REDACTED';
         const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-        
+
         let currentFile = null;
-        let debugMode = true; 
+        let chartInstance = null; // To destroy old charts
 
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const loadingMessageElement = document.getElementById('loadingMessage');
+        const fileInfoElement = document.getElementById('fileInfo');
+        const fileNameElement = document.getElementById('fileName');
+        const fileSizeElement = document.getElementById('fileSize');
+        const progressFill = document.getElementById('progressFill');
+        const analyzeBtn = document.getElementById('analyzeBtn');
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             uploadArea.addEventListener(eventName, preventDefaults, false);
@@ -505,7 +529,7 @@
             handleFiles(files);
         }
 
-        fileInput.addEventListener('change', function(e) {
+        fileInput.addEventListener('change', function (e) {
             handleFiles(this.files);
         });
 
@@ -518,570 +542,243 @@
         }
 
         function displayFileInfo(file) {
-            const fileInfo = document.getElementById('fileInfo');
-            const fileName = document.getElementById('fileName');
-            const fileSize = document.getElementById('fileSize');
-            const fileType = document.getElementById('fileType');
-
-            fileName.textContent = `اسم الملف: ${file.name}`;
-            fileSize.textContent = `حجم الملف: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
-            fileType.textContent = `نوع الملف: ${file.type || 'غير محدد'}`;
-
-            fileInfo.style.display = 'block';
+            fileNameElement.textContent = file.name;
+            fileSizeElement.textContent = (file.size / 1024 / 1024).toFixed(2) + ' MB';
+            fileInfoElement.classList.remove('hidden');
         }
 
         function simulateUpload() {
-            const progressFill = document.getElementById('progressFill');
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            
             let progress = 0;
+            progressFill.style.width = '0%';
+            analyzeBtn.classList.add('hidden');
+
             const interval = setInterval(() => {
-                progress += Math.random() * 30;
+                progress += Math.random() * 20;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
-                    analyzeBtn.style.display = 'block';
+                    analyzeBtn.classList.remove('hidden');
                 }
                 progressFill.style.width = progress + '%';
-            }, 200);
+            }, 100);
         }
-        
-        // جعل الدوال متاحة عالميًا إذا تم استدعاؤها من HTML onclick
-        window.runDemo = function runDemo() {
+
+        // Global functions for HTML onclick access
+        window.runDemo = function () {
             const loading = document.getElementById('loading');
             const results = document.getElementById('results');
             const welcomeMessage = document.getElementById('welcomeMessage');
-            loadingMessageElement.textContent = 'جارٍ تحضير العرض التوضيحي...';
 
-            loading.style.display = 'block';
-            results.style.display = 'none';
-            welcomeMessage.style.display = 'none';
+            loadingMessageElement.textContent = 'جارٍ تحضير النموذج التجريبي...';
+            loading.classList.remove('hidden');
+            results.classList.add('hidden');
+            welcomeMessage.classList.add('hidden');
 
             setTimeout(() => {
                 const demoAnalysis = {
                     metrics: [
-                        {title: "إجمالي المبيعات", value: "2.5M ريال", change: "+15.2%", icon: "dollar-sign"},
-                        {title: "عدد العملاء", value: "1,234", change: "+8.7%", icon: "users"},
-                        {title: "معدل التحويل", value: "3.2%", change: "+0.5%", icon: "chart-line"},
-                        {title: "متوسط قيمة الطلب", value: "325 ريال", change: "+12.1%", icon: "shopping-cart"}
+                        { title: "إجمالي المبيعات", value: "2.5M", change: "+15.2%", icon: "dollar-sign" },
+                        { title: "نمو العملاء", value: "1,234", change: "+8.7%", icon: "users" },
+                        { title: "معدل التحويل", value: "3.2%", change: "+0.5%", icon: "chart-line" },
+                        { title: "متوسط السلة", value: "325", change: "+12.1%", icon: "shopping-cart" }
                     ],
                     insights: [
-                        {text: "المبيعات في الربع الأخير تُظهر نمواً مستداماً بنسبة 15.2%", icon: "chart-line", type: "positive"},
-                        {text: "هناك زيادة ملحوظة في عدد العملاء الجدد خلال الشهر الماضي", icon: "user-plus", type: "positive"},
-                        {text: "منتجات الإلكترونيات تحقق أعلى معدلات ربح", icon: "microchip", type: "neutral"},
-                        {text: "يُنصح بالتركيز على التسويق الرقمي لزيادة الوصول", icon: "bullhorn", type: "suggestion"}
+                        { text: "نمو مستدام في المبيعات الربع سنوية بنسبة 15%", type: "positive" },
+                        { text: "زيادة ملحوظة في عملاء جدد خلال الشهر الماضي", type: "positive" },
+                        { text: "الالكترونيات تحقق أعلى هامش ربح", type: "neutral" }
                     ],
                     recommendations: [
-                        {text: "زيادة الاستثمار في قنوات التسويق الرقمي بنسبة 20%", priority: "عالية"},
-                        {text: "تطوير برنامج ولاء للعملاء لزيادة معدل الاحتفاظ", priority: "متوسطة"},
-                        {text: "توسيع مجموعة المنتجات الإلكترونية", priority: "عالية"},
-                        {text: "تحسين تجربة المستخدم على الموقع الإلكتروني", priority: "متوسطة"}
+                        { text: "زيادة ميزانية التسويق الرقمي 20%", priority: "عالية" },
+                        { text: "إطلاق برنامج ولاء للمحافظة على العملاء", priority: "متوسطة" },
+                        { text: "توسيع خط منتجات الالكترونيات", priority: "عالية" }
                     ],
                     chartData: {
                         sales: [120, 135, 158, 142, 167, 189, 203, 195, 218, 241, 256, 278],
                         labels: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
-                        categories: ["إلكترونيات", "ملابس", "كتب", "منزل وحديقة", "رياضة"],
+                        categories: ["إلكترونيات", "ملابس", "كتب", "منزل", "رياضة"],
                         values: [35, 25, 15, 15, 10]
                     }
                 };
-
-                loading.style.display = 'none';
+                loading.classList.add('hidden');
                 displayResults(demoAnalysis);
-            }, 3000);
+            }, 2000);
         }
 
-        window.analyzeFile = async function analyzeFile() { // جعلها عالمية
-            if (!currentFile) {
-                displayError('لم يتم اختيار ملف للتحليل');
-                return;
-            }
+        window.analyzeFile = async function () {
+            if (!currentFile) return;
 
             const loading = document.getElementById('loading');
             const results = document.getElementById('results');
             const welcomeMessage = document.getElementById('welcomeMessage');
+
             loadingMessageElement.textContent = 'جارٍ تحليل البيانات...';
             if (currentFile.type === 'application/pdf') {
-                loadingMessageElement.textContent = 'جارٍ قراءة ملف PDF...';
+                loadingMessageElement.textContent = 'جارٍ معالجة ملف PDF...';
             }
 
-            loading.style.display = 'block';
-            results.style.display = 'none';
-            welcomeMessage.style.display = 'none';
+            loading.classList.remove('hidden');
+            results.classList.add('hidden');
+            welcomeMessage.classList.add('hidden');
 
             try {
-                console.log('بدء قراءة الملف...');
                 const fileContent = await readFile(currentFile);
-                console.log('تم قراءة الملف بنجاح، الحجم:', fileContent.length);
-                
-                loadingMessageElement.textContent = 'جارٍ إرسال البيانات إلى Yazeed AI analysiss...';
-                console.log('إرسال البيانات إلى Gemini...');
+                loadingMessageElement.textContent = 'جارٍ استخراج الرؤى عبر Gemini AI...';
                 const analysis = await sendToGemini(fileContent, currentFile.type, currentFile.name);
-                console.log('تم استلام النتائج من Gemini');
-                
                 displayResults(analysis);
             } catch (error) {
-                console.error('خطأ مفصل:', error);
-                displayError('حدث خطأ أثناء تحليل الملف', error);
+                console.error(error);
+                alert('حدث خطأ: ' + error.message);
+                welcomeMessage.classList.remove('hidden'); // Show welcome back on error
             } finally {
-                loading.style.display = 'none';
+                loading.classList.add('hidden');
             }
         }
-        
-        // --- دالة readFile المعدلة لدعم PDF ---
+
         function readFile(file) {
             return new Promise(async (resolve, reject) => {
                 if (file.type === 'application/pdf') {
-                    console.log('قراءة ملف PDF...');
-                    if (!pdfjsLib) {
-                        console.error("pdf.js لم يتم تحميلها.");
-                        return reject(new Error("مكتبة PDF.js غير متاحة."));
-                    }
+                    if (!pdfjsLib) return reject(new Error("PDF lib missing"));
                     const reader = new FileReader();
-                    reader.onload = async function(event) {
+                    reader.onload = async function (e) {
                         try {
-                            const typedarray = new Uint8Array(event.target.result);
+                            const typedarray = new Uint8Array(e.target.result);
                             const pdfDoc = await pdfjsLib.getDocument({ data: typedarray }).promise;
-                            console.log("عدد صفحات PDF:", pdfDoc.numPages);
                             let fullText = '';
                             for (let i = 1; i <= pdfDoc.numPages; i++) {
                                 const page = await pdfDoc.getPage(i);
                                 const textContent = await page.getTextContent();
                                 fullText += textContent.items.map(item => item.str).join(' ') + '\n';
                             }
-                            console.log('تم استخراج النص من PDF:', fullText.substring(0,200) + "...");
                             resolve(fullText);
-                        } catch (pdfError) {
-                            console.error('خطأ في معالجة PDF:', pdfError);
-                            reject(pdfError);
-                        }
-                    };
-                    reader.onerror = error => {
-                        console.error('خطأ في قراءة ملف PDF كـ ArrayBuffer:', error);
-                        reject(error);
+                        } catch (err) { reject(err); }
                     };
                     reader.readAsArrayBuffer(file);
                 } else {
-                    // المعالجة الحالية للملفات النصية الأخرى
-                    console.log('قراءة ملف نصي...');
                     const reader = new FileReader();
-                    reader.onload = e => {
-                        console.log('تم قراءة الملف النصي:', e.target.result.length, 'حرف');
-                        resolve(e.target.result);
-                    };
-                    reader.onerror = error => {
-                        console.error('خطأ في قراءة الملف النصي:', error);
-                        reject(error);
-                    };
+                    reader.onload = e => resolve(e.target.result);
                     reader.readAsText(file);
                 }
             });
         }
 
-        async function sendToGemini(fileContent, fileType, fileName) {
-            const maxContentLength = 30000; // زيادة الحد الأقصى للمحتوى لملفات PDF
-            let truncatedContent = fileContent;
-            if (fileContent.length > maxContentLength) {
-                truncatedContent = fileContent.substring(0, maxContentLength) + `... (تم اقتطاع المحتوى، الحجم الأصلي: ${fileContent.length} حرف)`;
-                console.warn(`تم اقتطاع محتوى الملف ${fileName} لأنه تجاوز الحد الأقصى ${maxContentLength}`);
-            }
-
+        async function sendToGemini(content, type, name) {
             const prompt = `
-            قم بتحليل البيانات التالية بشكل شامل ومفصل قدر الإمكان. إذا كان الملف PDF، حاول استخلاص معلومات هيكلية إذا أمكن.
-
-            اسم الملف: ${fileName}
-            نوع الملف: ${fileType}
-            عدد الأحرف في المحتوى المرسل: ${truncatedContent.length}
-            عدد الأحرف في المحتوى الأصلي: ${fileContent.length}
-
-            محتوى البيانات (أو عينة منها إذا تم اقتطاعها):
-            --- بداية المحتوى ---
-            ${truncatedContent}
-            --- نهاية المحتوى ---
-
-            المطلوب:
-            1.  ملخص تنفيذي للبيانات (3-5 نقاط رئيسية).
-            2.  أهم المقاييس أو الإحصائيات التي يمكن استنتاجها (مثال: عدد السجلات، متوسط قيمة، اتجاهات ملحوظة).
-            3.  رؤى رئيسية (insights) يمكن استخلاصها من هذه البيانات (3-4 رؤى على الأقل).
-            4.  توصيات عملية (recommendations) بناءً على هذه الرؤى (2-3 توصيات).
-            5.  إذا كانت البيانات مناسبة، اقترح بيانات وهمية لرسم بياني خطي (تسميات وقيم) ورسم بياني دائري (فئات وقيم).
-                - الرسم الخطي: sales (array of numbers), labels (array of strings)
-                - الرسم الدائري: categories (array of strings), values (array of numbers)
+            تحليل بيانات لملف: ${name} (${type}).
+            المحتوى:
+            ${content.substring(0, 30000)} ... (truncated)
             
-            الرجاء تنسيق الإخراج ككائن JSON صالح بالبنية التالية تمامًا:
+            استخرج:
+            1. 4 مقاييس رئيسية (Key Metrics) بأرقام.
+            2. 3 رؤى (Insights).
+            3. 3 توصيات (Recommendations).
+            4. بيانات لرسم بياني (Chart Data) لاتجاهات أو فئات.
+            
+            JSON format required:
             {
-              "summary_points": ["نقطة 1", "نقطة 2", "نقطة 3"],
-              "key_metrics": [
-                {"title": "عنوان المقياس 1", "value": "القيمة", "change": "ملاحظة", "icon": "dollar-sign"},
-                {"title": "عنوان المقياس 2", "value": "القيمة", "change": "ملاحظة", "icon": "users"}
-              ],
-              "insights": [
-                {"text": "نص الرؤية الأولى", "icon": "lightbulb", "type": "positive"},
-                {"text": "نص الرؤية الثانية", "icon": "chart-line", "type": "neutral"}
-              ],
-              "recommendations": [
-                {"text": "نص التوصية الأولى", "priority": "عالية"},
-                {"text": "نص التوصية الثانية", "priority": "متوسطة"}
-              ],
-              "chart_data": {
-                "sales": [10, 20, 15, 25, 30],
-                "labels": ["أ", "ب", "ج", "د", "ه"],
-                "categories": ["فئة س", "فئة ص", "فئة ع"],
-                "values": [50, 30, 20]
-              },
-              "raw_analysis_text": "هنا ضع تحليلاً نصيًا إضافيًا أو ملاحظات حول عملية التحليل إذا لزم الأمر."
-            }
-            تأكد من أن جميع النصوص باللغة العربية. الأيقونات يجب أن تكون من Font Awesome.
-            `;
-
-            console.log('إرسال الطلب إلى:', GEMINI_URL);
-            // console.log('محتوى الطلب:', prompt); // يمكن أن يكون طويلاً جدًا
-
-            try {
-                const response = await fetch(GEMINI_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }],
-                        generationConfig: {
-                            temperature: 0.6, // تقليل الحرارة قليلاً لنتائج أكثر اتساقاً مع JSON
-                            topK: 40,
-                            topP: 0.95,
-                            maxOutputTokens: 2048, // زيادة الحد الأقصى للتوكنات للتحليل المفصل
-                            responseMimeType: "application/json", // طلب استجابة JSON
-                        }
-                    })
-                });
-
-                console.log('استجابة الخادم:', response.status, response.statusText);
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('نص الخطأ من Gemini:', errorText);
-                    throw new Error(`خطأ في API Gemini: ${response.status} - ${errorText}`);
-                }
-
-                const data = await response.json();
-                console.log('البيانات المستلمة من Gemini:', data);
-
-                if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts[0]) {
-                    throw new Error('استجابة غير صحيحة أو فارغة من API Gemini (لا يوجد مرشحون أو محتوى)');
-                }
-                
-                const analysisJsonString = data.candidates[0].content.parts[0].text;
-                console.log('نص JSON المستلم من Gemini:', analysisJsonString);
-
-                try {
-                    const parsedAnalysis = JSON.parse(analysisJsonString);
-                    // التحقق من وجود الحقول الأساسية
-                    if (!parsedAnalysis.key_metrics || !parsedAnalysis.insights || !parsedAnalysis.recommendations || !parsedAnalysis.chart_data) {
-                        console.warn("الـ JSON المستلم لا يحتوي على كل الحقول المطلوبة، سيتم استخدام هيكل افتراضي.");
-                        return createAnalysisFromText(analysisJsonString, fileName); // fallback
-                    }
-                    // إعادة تسمية المفاتيح لتناسب الدالة displayResults
-                    return {
-                        metrics: parsedAnalysis.key_metrics,
-                        insights: parsedAnalysis.insights,
-                        recommendations: parsedAnalysis.recommendations,
-                        chartData: parsedAnalysis.chart_data,
-                        summaryPoints: parsedAnalysis.summary_points,
-                        rawAnalysis: parsedAnalysis.raw_analysis_text || "لم يتم تقديم تحليل نصي إضافي."
-                    };
-                } catch (e) {
-                    console.error("خطأ في تحليل JSON من Gemini:", e);
-                    console.error("النص الذي فشل تحليله:", analysisJsonString);
-                    // إذا فشل تحليل JSON، استخدم النص الخام
-                    return createAnalysisFromText(analysisJsonString, fileName);
-                }
-
-            } catch (fetchError) {
-                console.error('خطأ في الشبكة أو في طلب Gemini:', fetchError);
-                throw fetchError;
-            }
-        }
-
-        function createAnalysisFromText(analysisText, fileName) {
-            // هذا يستخدم كـ fallback إذا فشل تحليل JSON المعقد
-            return {
-                metrics: [
-                    {title: "حالة الملف", value: "تم التحليل (Fallback)", change: "✓", icon: "check-circle"},
-                    {title: "اسم الملف", value: fileName.substring(0, 20) + (fileName.length > 20 ? "..." : ""), change: "معالج", icon: "file"},
-                ],
-                insights: [
-                    {text: "تم تحليل الملف بنجاح باستخدام Yazeed AI analysiss. يرجى مراجعة النص الخام أدناه.", icon: "brain", type: "positive"},
-                    {text: analysisText.substring(0, 150) + (analysisText.length > 150 ? "..." : ""), icon: "lightbulb", type: "neutral"}
-                ],
-                recommendations: [
-                    {text: "مراجعة النتائج بعناية.", priority: "عالية"},
-                ],
-                chartData: { // بيانات افتراضية للرسم البياني
-                    sales: [10, 20, 15, 25, 30, 35, 20, 40, 50, 45, 60, 55],
-                    labels: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
-                    categories: ["فئة أ", "فئة ب", "فئة ج", "فئة د"],
-                    values: [40, 25, 20, 15]
-                },
-                rawAnalysis: analysisText 
-            };
-        }
-
-        function displayResults(analysis) {
-            const results = document.getElementById('results');
-            results.style.display = 'block';
-            results.innerHTML = `<h2><i class="fas fa-chart-bar"></i> نتائج التحليل</h2>
-                                <div id="metricsContainer"></div>
-                                <div id="summaryContainer" class="insights-section" style="display:none;"></div>
-                                <div id="chartsContainer"></div>
-                                <div id="insightsContainer"></div>
-                                <div id="recommendationsContainer"></div>
-                                <div id="rawAnalysisContainer" style="display:none;"></div>`;
-
-            if (analysis.summaryPoints && analysis.summaryPoints.length > 0) {
-                displaySummary(analysis.summaryPoints);
-            }
-            displayMetrics(analysis.metrics || []);
-            displayCharts(analysis.chartData || getDefaultChartData());
-            displayInsights(analysis.insights || []);
-            displayRecommendations(analysis.recommendations || []);
-            
-            if (analysis.rawAnalysis) {
-                displayRawAnalysis(analysis.rawAnalysis);
-            }
-        }
-
-        function getDefaultChartData() {
-            return {
-                sales: [10, 15, 12, 18, 22, 20, 25, 23, 28, 30, 26, 32],
-                labels: ["ق1", "ق2", "ق3", "ق4", "ق5", "ق6", "ق7", "ق8", "ق9", "ق10", "ق11", "ق12"],
-                categories: ["م1", "م2", "م3"],
-                values: [50, 30, 20]
-            };
-        }
-        function displaySummary(summaryPoints) {
-            const container = document.getElementById('summaryContainer');
-            if (!container) return;
-            container.innerHTML = `
-                <h3><i class="fas fa-clipboard-list"></i> ملخص تنفيذي</h3>
-                ${summaryPoints.map(point => `
-                    <div class="insight-item" style="border-right-color: #17a2b8;">
-                        <i class="fas fa-check-circle insight-icon" style="color: #17a2b8;"></i>
-                        ${point}
-                    </div>
-                `).join('')}
-            `;
-            container.style.display = 'block';
-        }
-
-        function displayRawAnalysis(rawText) {
-            const container = document.getElementById('rawAnalysisContainer');
-            if (!container) { // إنشاء الحاوية إذا لم تكن موجودة
-                 const resultsDiv = document.getElementById('results');
-                 const newContainer = document.createElement('div');
-                 newContainer.id = 'rawAnalysisContainer';
-                 resultsDiv.appendChild(newContainer);
-                 container = newContainer;
-            }
-            container.innerHTML = `
-                <div class="insights-section" style="border-right-color: #fd7e14;">
-                    <h3><i class="fas fa-file-alt"></i> التحليل النصي من Yazeed AI analysiss</h3>
-                    <div class="insight-item" style="white-space: pre-wrap; line-height: 1.6; max-height: 400px; overflow-y: auto; border-right-color: #fd7e14;">
-                        ${rawText}
-                    </div>
-                </div>
-            `;
-             container.style.display = 'block';
-        }
-
-        function displayMetrics(metrics) {
-            const container = document.getElementById('metricsContainer');
-            if (!container) return;
-            if (!metrics || metrics.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#777; padding:10px;">لا توجد مقاييس رئيسية لعرضها.</p>';
-                return;
-            }
-            container.innerHTML = metrics.map(metric => `
-                <div class="metric-card">
-                    <div class="metric-title">
-                        <i class="fas fa-${metric.icon || 'info-circle'}"></i> ${metric.title}
-                    </div>
-                    <div class="metric-value">${metric.value}</div>
-                    ${metric.change ? `<div class="metric-change"><i class="fas fa-info-circle"></i> ${metric.change}</div>` : ''}
-                </div>
-            `).join('');
-        }
-
-        function displayCharts(chartData) {
-            const container = document.getElementById('chartsContainer');
-            if (!container) return;
-
-            const safeChartData = chartData || getDefaultChartData();
-
-            container.innerHTML = `
-                <div class="chart-container">
-                    <h3><i class="fas fa-chart-line"></i> الاتجاه العام للبيانات</h3>
-                    <canvas id="salesChart" width="400" height="200"></canvas>
-                </div>
-                <div class="chart-container">
-                    <h3><i class="fas fa-chart-pie"></i> توزيع البيانات</h3>
-                    <canvas id="categoriesChart" width="400" height="200"></canvas>
-                </div>
-            `;
-
-            const salesCtx = document.getElementById('salesChart').getContext('2d');
-            new Chart(salesCtx, {
-                type: 'line',
-                data: {
-                    labels: safeChartData.labels,
-                    datasets: [{
-                        label: 'البيانات',
-                        data: safeChartData.sales,
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                font: { family: 'Cairo' }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { font: { family: 'Cairo' } }
-                        },
-                        x: {
-                            ticks: { font: { family: 'Cairo' } }
-                        }
-                    }
-                }
-            });
-
-            const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
-            new Chart(categoriesCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: safeChartData.categories,
-                    datasets: [{
-                        data: safeChartData.values,
-                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#11998e', '#38ef7d'],
-                        borderWidth: 0
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { family: 'Cairo' }, padding: 20 }}}}
-            });
-        }
-
-        function displayInsights(insights) {
-            const container = document.getElementById('insightsContainer');
-            if (!container) return;
-             if (!insights || insights.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#777; padding:10px;">لا توجد رؤى لعرضها.</p>';
-                return;
-            }
-            container.innerHTML = `
-                <div class="insights-section">
-                    <h3><i class="fas fa-lightbulb"></i> الرؤى المستخلصة</h3>
-                    ${insights.map(insight => `
-                        <div class="insight-item">
-                            <i class="fas fa-${insight.icon || 'lightbulb'} insight-icon"></i>
-                            ${insight.text}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function displayRecommendations(recommendations) {
-            const container = document.getElementById('recommendationsContainer');
-            if (!container) return;
-            if (!recommendations || recommendations.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#777; padding:10px;">لا توجد توصيات لعرضها.</p>';
-                return;
-            }
-            container.innerHTML = `
-                <div class="recommendations">
-                    <h3><i class="fas fa-rocket"></i> التوصيات الذكية</h3>
-                    ${recommendations.map(rec => `
-                        <div class="recommendation-item">
-                            <strong>أولوية ${rec.priority || 'غير محددة'}:</strong> ${rec.text}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function displayError(message, error = null) {
-            const results = document.getElementById('results');
-            let errorDetails = '';
-            
-            if (error && debugMode) {
-                errorDetails = `<div class="error-details"><strong>تفاصيل الخطأ:</strong><br>${error.message || error.toString()}</div>`;
-                if (error.stack) {
-                    errorDetails += `<div class="debug-info"><strong>Stack Trace:</strong><br>${error.stack}</div>`;
-                }
-                 if (error.response && typeof error.response.text === 'function') { // لخطأ Gemini API
-                    error.response.text().then(text => {
-                        const geminiErrorDiv = document.createElement('div');
-                        geminiErrorDiv.className = 'debug-info';
-                        geminiErrorDiv.innerHTML = `<strong>Yazeed AI analysiss API Response Error:</strong><br><pre>${text}</pre>`;
-                        document.querySelector('.error-details').insertAdjacentElement('afterend', geminiErrorDiv);
-                    });
+                "key_metrics": [{"title": "", "value": "", "change": "", "icon": "keywords like user, dollar, chart"}],
+                "insights": [{"text": "", "type": "positive/neutral/negative"}],
+                "recommendations": [{"text": "", "priority": "high/medium"}],
+                "chart_data": {
+                    "sales": [numbers...],
+                    "labels": [strings...],
+                    "categories": [strings...],
+                     "values": [numbers...]
                 }
             }
-            
-            results.innerHTML = `
-                <div style="text-align: center; padding: 50px;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #e74c3c; margin-bottom: 20px;"></i>
-                    <h3 style="color: #e74c3c;">خطأ في التحليل</h3>
-                    <p style="color: #666; margin: 20px 0;">${message}</p>
-                    ${errorDetails}
-                    <button class="upload-btn" onclick="window.runDemo()" style="margin-top: 20px;">
-                        <i class="fas fa-play"></i> جرب العرض التوضيحي بدلاً من ذلك
-                    </button>
-                </div>
+            Arabic language only.
             `;
-            results.style.display = 'block';
-        }
 
-        window.addEventListener('load', function() {
-            console.log('تم تحميل الصفحة، التحقق من API...');
-            if (typeof pdfjsLib === 'undefined') {
-                console.error("PDF.js library (pdfjsLib) is not loaded. PDF functionality will not work.");
-                displayError("مكتبة قراءة PDF غير متاحة. يرجى التحقق من اتصال الإنترنت أو إعدادات الصفحة.");
-            } else {
-                 console.log("PDF.js library loaded successfully.");
-            }
-            
-            fetch(GEMINI_URL, {
+            const response = await fetch(GEMINI_URL, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({contents: [{parts: [{text: "مرحبا"}]}]})
-            })
-            .then(response => {
-                if (response.ok) console.log('✓ API يعمل بشكل صحيح');
-                else console.warn('⚠️ مشكلة في API:', response.status, response.statusText);
-            })
-            .catch(error => console.error('❌ خطأ في الاتصال بـ API:', error));
-        });
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { responseMimeType: "application/json" }
+                })
+            });
 
-        const fileSelectBtn = document.querySelector('.upload-area .upload-btn');
-fileSelectBtn.addEventListener('click', () => {
-    const fileInput = document.getElementById('fileInput');
-    fileInput.value = "";
-    fileInput.click();
-});
+            if (!response.ok) throw new Error('API Error');
+            const data = await response.json();
+            const text = data.candidates[0].content.parts[0].text;
+            return JSON.parse(text);
+        }
 
+        function displayResults(data) {
+            const results = document.getElementById('results');
+            results.classList.remove('hidden');
+
+            // Metrics
+            const metricsHTML = (data.metrics || data.key_metrics).map(m => `
+                <div class="metric-card p-6 rounded-xl bg-slate-800 border border-slate-700">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-slate-400 text-sm">${m.title}</span>
+                        <i class="fas fa-${m.icon || 'chart-bar'} text-indigo-400"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-white mb-1">${m.value}</div>
+                    <div class="text-xs text-emerald-400 font-mono">${m.change || ''}</div>
+                </div>
+             `).join('');
+            document.getElementById('metricsContainer').innerHTML = metricsHTML;
+
+            // Insights
+            const insightsHTML = (data.insights).map(i => `
+                <div class="insight-item p-4 rounded-lg bg-white/5 border-r-4 ${i.type === 'positive' ? 'border-emerald-500' : 'border-indigo-500'}">
+                    <p class="text-slate-300 text-sm">${i.text}</p>
+                </div>
+             `).join('');
+            document.getElementById('insightsContainer').innerHTML = insightsHTML;
+
+            // Recommendations
+            const recsHTML = (data.recommendations).map(r => `
+                <div class="recommendation-item p-4 rounded-lg bg-white/5 flex justify-between items-center gap-4">
+                    <p class="text-slate-300 text-sm flex-1">${r.text}</p>
+                    <span class="text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 whitespace-nowrap">${r.priority || 'عام'}</span>
+                </div>
+             `).join('');
+            document.getElementById('recommendationsContainer').innerHTML = recsHTML;
+
+            // Charts
+            if (data.chartData || data.chart_data) {
+                const cData = data.chartData || data.chart_data;
+                const ctxId = 'analysisChart';
+
+                // Clear old canvas if exists
+                const container = document.getElementById('chartsContainer');
+                container.innerHTML = `<canvas id="${ctxId}" style="max-height: 400px;"></canvas>`;
+
+                const ctx = document.getElementById(ctxId).getContext('2d');
+
+                const config = {
+                    type: cData.sales ? 'line' : 'bar',
+                    data: {
+                        labels: cData.labels,
+                        datasets: [{
+                            label: 'البيانات',
+                            data: cData.sales || cData.values,
+                            borderColor: '#818cf8',
+                            backgroundColor: 'rgba(129, 140, 248, 0.2)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        },
+                        scales: {
+                            y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+                            x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+                        }
+                    }
+                };
+                new Chart(ctx, config);
+            }
+        }
     </script>
+
+    <script src="js/main.min.js" defer></script>
+    <script src="js/premium-animations.min.js" defer></script>
+    <script src="js/neural-canvas.min.js" defer></script>
 </body>
+
 </html>

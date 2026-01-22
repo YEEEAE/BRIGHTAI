@@ -1,1697 +1,340 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 
 <head>
-    <!-- Google tag (gtag.js) -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bright AI | استشارات الذكاء الاصطناعي</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-8LLESL207Q');
     </script>
 
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bright AI - استشارات الذكاء الاصطناعي المتقدمة | خدمات تحليل البيانات والأتمتة</title>
     <meta name="description"
-        content="خدمات استشارات الذكاء الاصطناعي المتقدمة، أتمتة العمليات، تحليل البيانات، التحول الرقمي، حلول الذكاء الاصطناعي للشركات والمؤسسات">
-    <meta name="keywords"
-        content="استشارات الذكاء الاصطناعي, أتمتة العمليات, تحليل البيانات, التحول الرقمي, حلول الذكاء الاصطناعي, خدمات تقنية, الذكاء الاصطناعي للأعمال">
-    <link rel="canonical" href="https://brightai.site/consultation">
+        content="استشارات متخصصة في الذكاء الاصطناعي، التحول الرقمي، وأتمتة العمليات للمؤسسات السعودية." />
+    <meta name="author" content="Bright AI" />
+    <link rel="canonical" href="https://brightai.site/consultation" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
+    <link rel="stylesheet" href="css/critical.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Bright AI - استشارات الذكاء الاصطناعي المتقدمة">
-    <meta property="og:description"
-        content="خدمات استشارات الذكاء الاصطناعي المتقدمة، أتمتة العمليات، تحليل البيانات، التحول الرقمي، حلول الذكاء الاصطناعي للشركات والمؤسسات">
-    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-    <meta property="og:url" content="https://brightai.site/consultation">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_SA">
-    <meta property="og:site_name" content="مُشرقة AI">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bright AI - استشارات الذكاء الاصطناعي المتقدمة">
-    <meta name="twitter:description"
-        content="خدمات استشارات الذكاء الاصطناعي المتقدمة، أتمتة العمليات، تحليل البيانات، التحول الرقمي">
-    <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-
-    <!-- JSON-LD Schemas -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "استشارات الذكاء الاصطناعي",
-      "description": "خدمات استشارات الذكاء الاصطناعي المتقدمة، أتمتة العمليات، تحليل البيانات، التحول الرقمي، حلول الذكاء الاصطناعي للشركات والمؤسسات",
-      "provider": {
-        "@type": "Organization",
-        "name": "مُشرقة AI",
-        "url": "https://brightai.site/"
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": "المملكة العربية السعودية"
-      },
-      "serviceType": "استشارات الذكاء الاصطناعي",
-      "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock",
-        "priceCurrency": "SAR"
-      }
-    }
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('css/design-tokens.css');
+                loadCSS('css/typography.css');
+                loadCSS('css/glass-morphism.css');
+                loadCSS('css/main.min.css');
+                loadCSS('css/premium-effects.min.css');
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            function loadAnimations() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                    setTimeout(loadAnimations, 300);
+                });
+            } else {
+                loadDeferredResources();
+                setTimeout(loadAnimations, 300);
+            }
+        })();
     </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "الرئيسية",
-          "item": "https://brightai.site/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "استشارات الذكاء الاصطناعي",
-          "item": "https://brightai.site/consultation.html"
-        }
-      ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "ما هي مدة تنفيذ مشروع الذكاء الاصطناعي؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "تتراوح مدة المشاريع من 3-12 شهر حسب تعقيد المشروع وحجم البيانات. نقدم جدولاً زمنياً مفصلاً في الاستشارة الأولية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل يمكن تطبيق الذكاء الاصطناعي في الشركات الصغيرة؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "نعم، نقدم حلول مقننة ومناسبة لجميع أحجام الشركات. لدينا حزم خاصة للشركات الصغيرة والمتوسطة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "ما هي تكلفة الاستشارة؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "الاستشارة الأولية مجانية تماماً. تتحدد التكلفة النهائية بناءً على نطاق المشروع ومتطلباته الفنية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل تقدمون دعم ما بعد التنفيذ؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "نعم، نقدم دعم فني شامل لمدة عام كامل مع إمكانية التجديد. يشمل الدعم الصيانة والتحديثات والتدريب."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "كيف تضمنون أمان البيانات؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "نطبق أعلى معايير الأمان العالمية ونلتزم بقوانين حماية البيانات. جميع البيانات مشفرة ومحمية بأحدث التقنيات."
-          }
-        }
-      ]
-    }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.min.js"></script>
-
-    <style>
-        :root {
-            --primary-color: #0A192F;
-            --secondary-color: #64FFDA;
-            --accent-color: #FF6B6B;
-            --text-color: #FFFFFF;
-            --subtext-color: #8892B0;
-            --card-background: #1D2B3A;
-            --gradient-bg: linear-gradient(135deg, #0A192F 0%, #1D2B3A 100%);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: var(--gradient-bg);
-            color: var(--text-color);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 25, 47, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--secondary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .mobile-menu span {
-            width: 25px;
-            height: 3px;
-            background: var(--text-color);
-            margin: 3px 0;
-            transition: 0.3s;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            z-index: 2;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            color: var(--subtext-color);
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-            color: var(--primary-color);
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.4);
-        }
-
-        /* 3D Background */
-        #chart-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: 0.3;
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            color: var(--text-color);
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--subtext-color);
-            margin-bottom: 4rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .service-card {
-            background: var(--card-background);
-            padding: 2.5rem;
-            border-radius: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(100, 255, 218, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .service-card:hover::before {
-            left: 100%;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow);
-        }
-
-        .service-icon {
-            font-size: 3rem;
-            color: var(--secondary-color);
-            margin-bottom: 1.5rem;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-        }
-
-        .service-card p {
-            color: var(--subtext-color);
-            line-height: 1.8;
-        }
-
-        /* Statistics */
-        .stats-section {
-            background: var(--card-background);
-            padding: 4rem 2rem;
-            border-radius: 20px;
-            margin: 4rem 0;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-
-        .stat-item {
-            padding: 1.5rem;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--subtext-color);
-            font-weight: 500;
-        }
-
-        /* Process Steps */
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .process-step {
-            background: var(--card-background);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            position: relative;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .process-step:hover {
-            border-color: var(--secondary-color);
-            transform: scale(1.05);
-        }
-
-        .step-number {
-            position: absolute;
-            top: -15px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: var(--secondary-color);
-            color: var(--primary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        /* Technologies Section */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .tech-item {
-            background: var(--card-background);
-            padding: 2rem 1rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .tech-item:hover {
-            transform: translateY(-5px);
-            background: linear-gradient(45deg, var(--card-background), rgba(100, 255, 218, 0.1));
-        }
-
-        .tech-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
-        }
-
-        /* Benefits Grid */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .benefit-card {
-            background: var(--card-background);
-            padding: 2rem;
-            border-radius: 15px;
-            border-right: 4px solid var(--secondary-color);
-            transition: all 0.3s ease;
-        }
-
-        .benefit-card:hover {
-            transform: translateX(-10px);
-            box-shadow: var(--shadow);
-        }
-
-        .benefit-icon {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-
-        /* Case Studies */
-        .case-studies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .case-study-card {
-            background: var(--card-background);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(100, 255, 218, 0.1);
-        }
-
-        .case-study-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .case-study-header {
-            padding: 2rem;
-            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-            color: var(--primary-color);
-        }
-
-        .case-study-content {
-            padding: 2rem;
-        }
-
-        /* FAQ Section */
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            background: var(--card-background);
-            margin-bottom: 1rem;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            transition: background 0.3s ease;
-        }
-
-        .faq-question:hover {
-            background: rgba(100, 255, 218, 0.1);
-        }
-
-        .faq-answer {
-            padding: 0 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .faq-answer.active {
-            max-height: 200px;
-            padding: 1.5rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: var(--card-background);
-            margin: 5% auto;
-            padding: 2rem;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            left: 20px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--subtext-color);
-            transition: color 0.3s ease;
-        }
-
-        .close:hover {
-            color: var(--accent-color);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid rgba(100, 255, 218, 0.2);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            font-family: 'Cairo', sans-serif;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-            color: var(--primary-color);
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.3);
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--primary-color);
-            padding: 4rem 2rem 2rem;
-            border-top: 1px solid rgba(100, 255, 218, 0.1);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-
-        .footer-section h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--secondary-color);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            color: var(--subtext-color);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary-color);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-icon {
-            width: 45px;
-            height: 45px;
-            background: var(--card-background);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background: var(--secondary-color);
-            color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(100, 255, 218, 0.1);
-            color: var(--subtext-color);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--primary-color);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1rem;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-menu {
-                display: flex;
-            }
-
-            .services-grid,
-            .process-grid,
-            .benefits-grid,
-            .case-studies-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .tech-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .section {
-                padding: 3rem 1rem;
-            }
-
-            .hero {
-                padding: 0 1rem;
-            }
-
-            .modal-content {
-                margin: 10% auto;
-                width: 95%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .tech-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Scroll animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .animate-on-scroll.animated {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
-    <link rel="stylesheet" href="css/unified-nav.min.css">
 </head>
 
-<body>
-    <!-- Unified Navigation JS -->
-    <script src="js/unified-nav.min.js" defer></script>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
-    <!-- التنقل الموحد -->
+    <!-- UNIFIED HEADER -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
             <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+                <img src="Gemini.png" alt="Bright AI" width="42" height="42" />
+                <span>Bright AI</span>
             </a>
-            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
             <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="/">الرئيسية</a></li>
-                <li role="none"><a role="menuitem" href="our-products">خدمات الذكاء الاصطناعي</a></li>
-                <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
-                <li role="none"><a role="menuitem" href="consultation" class="active">استشارات الذكاء الاصطناعي</a>
-                </li>
-                <li role="none"><a role="menuitem" href="smart-automation">الأتمتة الذكية</a></li>
-                <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
-                <li role="none"><a role="menuitem" href="about-us">عن شركة مُشرقة AI</a></li>
-                <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
-                <li role="none"><a role="menuitem" href="Docs">DOCS</a></li>
+                <li role="none"><a role="menuitem" href="/" class="flex items-center gap-2">الرئيسية</a></li>
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أنظمة ذكية بالكامل لأقسام شركتك
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        أنظمة ذكية مؤسسية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="h/projects/interview/">نظام توظيف ذكي
-                                متكامل</a></li>
-                        <li role="none"><a role="menuitem" href="health-bright">ثورة الذكاء الاصطناعي في الرعاية
-                                الصحية</a></li>
+                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي</a>
+                        </li>
+                        <li role="none"><a role="menuitem" href="Smart-Medical-Archive/index.html">الارشيف الطبي
+                                الذكي</a></li>
                     </ul>
                 </li>
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أدوات ذكية مجانية
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        خدمات ذكية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="tools">أدوات ذكية مجانية</a></li>
-                        <li role="none"><a role="menuitem" href="h/projects/interview/">نماذج AI تجريبية</a>
-                        </li>
-                        <li role="none"><a role="menuitem" href="ai-bots">شات بوت</a></li>
+                        <li role="none"><a role="menuitem" href="ai-agent.html">AIaaS</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
+                        <li role="none"><a role="menuitem" href="about-us.html">عن الشركة</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="nav-overlay" aria-hidden="true"></div>
+    <div class="nav-overlay" id="nav-overlay"></div>
 
-    <!-- Breadcrumb Navigation -->
-    <nav class="breadcrumb-nav" aria-label="مسار التنقل">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
-                <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-                    <a href="/" itemprop="item"><span itemprop="name">الرئيسية</span></a>
-                    <meta itemprop="position" content="1" />
-                </li>
-                <li class="breadcrumb-separator" aria-hidden="true">›</li>
-                <li class="breadcrumb-item current" itemprop="itemListElement" itemscope
-                    itemtype="https://schema.org/ListItem">
-                    <span itemprop="name">استشارات الذكاء الاصطناعي</span>
-                    <meta itemprop="position" content="2" />
-                </li>
-            </ol>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div id="chart-container"></div>
-        <div class="hero-content">
-            <h1>استشارات الذكاء الاصطناعي المتقدمة</h1>
-            <p>نحول رؤيتك إلى واقع رقمي من خلال حلول الذكاء الاصطناعي المبتكرة والمخصصة لاحتياجات عملك الفريدة</p>
-            <a href="#" class="cta-button" id="openConsultationForm" data-track="احجز استشارة مجانية"
-                data-track-category="Consultation CTA" data-track-location="hero">احجز استشارة مجانية</a>
-        </div>
-    </section>
-
-    <!-- Statistics Section -->
-    <section class="section animate-on-scroll">
-        <div class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" data-target="500">0</div>
-                    <div class="stat-label">مشروع ناجح</div>
+    <!-- HERO -->
+    <header class="hero-section relative min-h-[60vh] flex items-center pt-32 pb-16 px-6 overflow-hidden"
+        style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
+        <div class="absolute inset-0 gradient-animate opacity-20"></div>
+        <div class="max-w-7xl mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-12">
+            <div class="w-full md:w-1/2" data-aos="fade-left">
+                <div
+                    class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-gold-500/30 mb-8">
+                    <span class="text-gold-300 text-sm font-medium tracking-wide">✨ شريكك الاستراتيجي في التحول
+                        الرقمي</span>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="150">0</div>
-                    <div class="stat-label">عميل راضي</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="95">0</div>
-                    <div class="stat-label">% نسبة النجاح</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="10">0</div>
-                    <div class="stat-label">سنوات خبرة</div>
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+                    استشارات <span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-amber-500">الذكاء
+                        الاصطناعي</span>
+                </h1>
+                <p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed mb-10">
+                    نرافقك في رحلة تبني الذكاء الاصطناعي من التخطيط الاستراتيجي وحتى التنفيذ وقياس الأثر، لضمان تحقيق
+                    أهداف مؤسستك.
+                </p>
+                <a href="#contact-modal" class="btn-primary"
+                    onclick="document.getElementById('contact-modal').style.display='block'">
+                    احجز استشارة مجانية
+                </a>
+            </div>
+            <div class="w-full md:w-1/2 flex justify-center" data-aos="fade-right">
+                <div class="relative w-full max-w-md aspect-square">
+                    <div class="absolute inset-0 bg-gold-500/20 rounded-full blur-[80px] animate-pulse"></div>
+                    <div
+                        class="glass-card w-full h-full rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden">
+                        <iconify-icon icon="lucide:message-square" width="120"
+                            class="text-gold-400 opacity-80"></iconify-icon>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
-    <!-- Services Section -->
-    <section id="services" class="section animate-on-scroll">
-        <h2 class="section-title">خدماتنا المتخصصة</h2>
-        <p class="section-subtitle">نقدم مجموعة شاملة من خدمات الذكاء الاصطناعي المصممة لتلبية احتياجات الأعمال الحديثة
-        </p>
-
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-robot"></i>
+    <!-- SERVICES -->
+    <section class="py-24 px-6 bg-[#020617]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-16 text-center">خدماتنا الاستشارية</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card hover:bg-white/5 transition duration-300 p-8" data-aos="fade-up">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                        <iconify-icon icon="lucide:lightbulb" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">استراتيجية AI</h3>
+                    <p class="text-slate-400 text-sm">تطوير خارطة طريق شاملة لتبني الذكاء الاصطناعي بما يخدم أهدافك.</p>
                 </div>
-                <h3>أتمتة العمليات الذكية</h3>
-                <p>تطوير أنظمة أتمتة متقدمة باستخدام الذكاء الاصطناعي وتعلم الآلة لتحسين كفاءة العمليات التجارية وتقليل
-                    التكاليف التشغيلية</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>تحليل البيانات المتقدم</h3>
-                <p>استخراج رؤى قيمة من البيانات الضخمة باستخدام خوارزميات الذكاء الاصطناعي المتطورة لاتخاذ قرارات أعمال
-                    مدروسة</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h3>معالجة اللغات الطبيعية</h3>
-                <p>تطوير حلول ذكية لفهم وتحليل النصوص والمحادثات باللغة العربية والإنجليزية لتحسين تجربة العملاء</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-eye"></i>
-                </div>
-                <h3>رؤية الكمبيوتر</h3>
-                <p>تطبيقات متقدمة للتعرف على الصور والفيديو، من كشف الأشياء إلى التحليل الطبي والأمني</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>الأمن السيبراني الذكي</h3>
-                <p>حلول أمنية متطورة تستخدم الذكاء الاصطناعي للكشف المبكر عن التهديدات السيبرانية ومنعها</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-cogs"></i>
-                </div>
-                <h3>التحول الرقمي الشامل</h3>
-                <p>استراتيجيات متكاملة لتحويل المؤسسات إلى منظمات رقمية ذكية باستخدام أحدث تقنيات الذكاء الاصطناعي</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technologies Section -->
-    <section id="technologies" class="section animate-on-scroll">
-        <h2 class="section-title">التقنيات المتقدمة</h2>
-        <p class="section-subtitle">نستخدم أحدث التقنيات والأدوات في مجال الذكاء الاصطناعي</p>
-
-        <div class="tech-grid">
-            <div class="tech-item">
-                <div class="tech-icon">🐍</div>
-                <h4>Python</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">🧠</div>
-                <h4>TensorFlow</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">🔥</div>
-                <h4>PyTorch</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">☁️</div>
-                <h4>AWS ML</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">🔬</div>
-                <h4>Scikit-learn</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">📊</div>
-                <h4>Pandas</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">🎯</div>
-                <h4>OpenCV</h4>
-            </div>
-            <div class="tech-item">
-                <div class="tech-icon">🗣️</div>
-                <h4>NLTK</h4>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section id="process" class="section animate-on-scroll">
-        <h2 class="section-title">منهجية العمل</h2>
-        <p class="section-subtitle">عملية منظمة ومدروسة لضمان تحقيق أفضل النتائج</p>
-
-        <div class="process-grid">
-            <div class="process-step">
-                <div class="step-number">1</div>
-                <div class="service-icon">
-                    <i class="fas fa-handshake"></i>
-                </div>
-                <h3>الاستشارة الأولية</h3>
-                <p>تحليل شامل لاحتياجات عملك وتحديد الفرص المناسبة لتطبيق الذكاء الاصطناعي</p>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">2</div>
-                <div class="service-icon">
-                    <i class="fas fa-search"></i>
-                </div>
-                <h3>تحليل وتقييم البيانات</h3>
-                <p>دراسة البيانات المتاحة وتقييم جودتها وإمكانية استخدامها في نماذج الذكاء الاصطناعي</p>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">3</div>
-                <div class="service-icon">
-                    <i class="fas fa-lightbulb"></i>
-                </div>
-                <h3>تصميم الحلول</h3>
-                <p>تطوير نماذج أولية وخطة تنفيذية مفصلة مخصصة لأهداف مشروعك</p>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">4</div>
-                <div class="service-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <h3>التطوير والتنفيذ</h3>
-                <p>بناء وتدريب النماذج باستخدام أحدث التقنيات مع اختبارات شاملة للأداء</p>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">5</div>
-                <div class="service-icon">
-                    <i class="fas fa-rocket"></i>
-                </div>
-                <h3>النشر والتشغيل</h3>
-                <p>نشر الحلول في بيئة الإنتاج مع ضمان الاستقرار والأداء المطلوب</p>
-            </div>
-
-            <div class="process-step">
-                <div class="step-number">6</div>
-                <div class="service-icon">
-                    <i class="fas fa-chart-bar"></i>
-                </div>
-                <h3>المتابعة والتحسين</h3>
-                <p>مراقبة مستمرة للأداء وإجراء تحسينات دورية لضمان تحقيق أفضل النتائج</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section class="section animate-on-scroll">
-        <h2 class="section-title">فوائد الذكاء الاصطناعي لأعمالك</h2>
-
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-tachometer-alt"></i>
-                </div>
-                <h3>تحسين الكفاءة التشغيلية</h3>
-                <p>زيادة الإنتاجية بنسبة تصل إلى 40% من خلال أتمتة المهام المتكررة والعمليات المعقدة</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-dollar-sign"></i>
-                </div>
-                <h3>تقليل التكاليف</h3>
-                <p>خفض التكاليف التشغيلية بنسبة 25-50% من خلال تحسين العمليات وتقليل الأخطاء البشرية</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3>تحسين تجربة العملاء</h3>
-                <p>تقديم خدمات مخصصة وسريعة الاستجابة لزيادة رضا العملاء وولائهم</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-bullseye"></i>
-                </div>
-                <h3>دقة في اتخاذ القرارات</h3>
-                <p>اتخاذ قرارات مبنية على البيانات والتحليل المتقدم بدقة تصل إلى 95%</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <h3>توفير الوقت</h3>
-                <p>تسريع العمليات والمهام لتوفير وقت ثمين يمكن استثماره في التطوير والنمو</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <h3>ميزة تنافسية</h3>
-                <p>الحصول على ميزة تنافسية مستدامة في السوق من خلال التقنيات المتطورة</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Case Studies Section -->
-    <section id="case-studies" class="section animate-on-scroll">
-        <h2 class="section-title">قصص نجاح ملهمة</h2>
-        <p class="section-subtitle">تعرف على كيف ساعدنا عملاءنا في تحقيق نتائج استثنائية</p>
-
-        <div class="case-studies-grid">
-            <div class="case-study-card">
-                <div class="case-study-header">
-                    <h3>بنك الرياض - نظام كشف الاحتيال</h3>
-                </div>
-                <div class="case-study-content">
-                    <p>طورنا نظام ذكي لكشف المعاملات المشبوهة باستخدام التعلم العميق، مما أدى إلى:</p>
-                    <ul style="margin: 1rem 0; padding-right: 2rem;">
-                        <li>تحسين دقة الكشف بنسبة 87%</li>
-                        <li>تقليل الإيجابيات الخاطئة بنسبة 60%</li>
-                        <li>توفير 2.5 مليون ريال سنوياً</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="case-study-card">
-                <div class="case-study-header">
-                    <h3>مستشفى الملك فيصل - تشخيص الأشعة</h3>
-                </div>
-                <div class="case-study-content">
-                    <p>نظام ذكي لتحليل الأشعة الطبية باستخدام رؤية الكمبيوتر حقق:</p>
-                    <ul style="margin: 1rem 0; padding-right: 2rem;">
-                        <li>دقة تشخيص 94% للحالات المعقدة</li>
-                        <li>تسريع عملية التشخيص بنسبة 70%</li>
-                        <li>تحسين رضا المرضى بنسبة 85%</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="case-study-card">
-                <div class="case-study-header">
-                    <h3>شركة الاتصالات السعودية - خدمة العملاء</h3>
-                </div>
-                <div class="case-study-content">
-                    <p>مساعد ذكي متعدد اللغات للرد على استفسارات العملاء حقق:</p>
-                    <ul style="margin: 1rem 0; padding-right: 2rem;">
-                        <li>حل 80% من الاستفسارات تلقائياً</li>
-                        <li>تقليل وقت الانتظار بنسبة 65%</li>
-                        <li>زيادة رضا العملاء بنسبة 78%</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="case-study-card">
-                <div class="case-study-header">
-                    <h3>مجموعة صافولا - تحسين سلسلة التوريد</h3>
-                </div>
-                <div class="case-study-content">
-                    <p>نظام تنبؤ ذكي لإدارة المخزون والطلب حقق:</p>
-                    <ul style="margin: 1rem 0; padding-right: 2rem;">
-                        <li>تقليل تكاليف المخزون بنسبة 35%</li>
-                        <li>تحسين دقة التنبؤ إلى 92%</li>
-                        <li>تقليل الفاقد بنسبة 45%</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="section animate-on-scroll">
-        <h2 class="section-title">الأسئلة الشائعة</h2>
-
-        <div class="faq-container">
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <span>ما هي مدة تنفيذ مشروع الذكاء الاصطناعي؟</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>تتراوح مدة المشاريع من 3-12 شهر حسب تعقيد المشروع وحجم البيانات. نقدم جدولاً زمنياً مفصلاً في
-                        الاستشارة الأولية.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <span>هل يمكن تطبيق الذكاء الاصطناعي في الشركات الصغيرة؟</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>نعم، نقدم حلول مقننة ومناسبة لجميع أحجام الشركات. لدينا حزم خاصة للشركات الصغيرة والمتوسطة.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <span>ما هي تكلفة الاستشارة؟</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>الاستشارة الأولية مجانية تماماً. تتحدد التكلفة النهائية بناءً على نطاق المشروع ومتطلباته الفنية.
+                <div class="glass-card hover:bg-white/5 transition duration-300 p-8" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-purple-400">
+                        <iconify-icon icon="lucide:cpu" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">أتمتة العمليات</h3>
+                    <p class="text-slate-400 text-sm">تحديد العمليات القابلة للأتمتة وتنفيذ حلول ذكية لزيادة الكفاءة.
                     </p>
                 </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <span>هل تقدمون دعم ما بعد التنفيذ؟</span>
-                    <i class="fas fa-chevron-down"></i>
+                <div class="glass-card hover:bg-white/5 transition duration-300 p-8" data-aos="fade-up"
+                    data-aos-delay="200">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400">
+                        <iconify-icon icon="lucide:bar-chart-2" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">تحليل البيانات</h3>
+                    <p class="text-slate-400 text-sm">بناء بنية تحتية قوية للبيانات واستخراج الرؤى لدعم القرار.</p>
                 </div>
-                <div class="faq-answer">
-                    <p>نعم، نقدم دعم فني شامل لمدة عام كامل مع إمكانية التجديد. يشمل الدعم الصيانة والتحديثات والتدريب.
-                    </p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)">
-                    <span>كيف تضمنون أمان البيانات؟</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <p>نطبق أعلى معايير الأمان العالمية ونلتزم بقوانين حماية البيانات. جميع البيانات مشفرة ومحمية بأحدث
-                        التقنيات.</p>
+                <div class="glass-card hover:bg-white/5 transition duration-300 p-8" data-aos="fade-up"
+                    data-aos-delay="300">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gold-500/20 flex items-center justify-center mb-6 text-gold-400">
+                        <iconify-icon icon="lucide:layers" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">التحول الرقمي</h3>
+                    <p class="text-slate-400 text-sm">قيادة التحول الرقمي الشامل للمؤسسة باستخدام أحدث التقنيات.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section animate-on-scroll">
-        <h2 class="section-title">تواصل معنا</h2>
-        <p class="section-subtitle">نحن هنا لمساعدتك في رحلة التحول الرقمي</p>
-
-        <div
-            style="max-width: 600px; margin: 0 auto; background: var(--card-background); padding: 3rem; border-radius: 20px;">
-            <form>
-                <div class="form-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" required>
+    <!-- PROCESS -->
+    <section class="py-24 px-6 relative bg-gradient-to-b from-black/0 to-black/40">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-16 text-center">منهجية العمل</h2>
+            <div class="flex flex-col md:flex-row gap-8 justify-between relative">
+                <!-- Line connector visual could be added here -->
+                <div class="glass-card p-6 text-center flex-1" data-aos="zoom-in">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                        1</div>
+                    <h3 class="text-lg font-bold text-white mb-2">الاكتشاف</h3>
+                    <p class="text-slate-400 text-sm">فهم تحدياتك وأهدافك الحالية.</p>
                 </div>
-
-                <div class="form-group">
-                    <label>البريد الإلكتروني</label>
-                    <input type="email" required>
+                <div class="glass-card p-6 text-center flex-1" data-aos="zoom-in" data-aos-delay="100">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                        2</div>
+                    <h3 class="text-lg font-bold text-white mb-2">التحليل</h3>
+                    <p class="text-slate-400 text-sm">دراسة البيانات وتحديد الفرص.</p>
                 </div>
-
-                <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <input type="tel" required>
+                <div class="glass-card p-6 text-center flex-1" data-aos="zoom-in" data-aos-delay="200">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                        3</div>
+                    <h3 class="text-lg font-bold text-white mb-2">الاستراتيجية</h3>
+                    <p class="text-slate-400 text-sm">وضع خطة عمل مفصلة وقابلة للتنفيذ.</p>
                 </div>
-
-                <div class="form-group">
-                    <label>اسم الشركة</label>
-                    <input type="text">
+                <div class="glass-card p-6 text-center flex-1" data-aos="zoom-in" data-aos-delay="300">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
+                        4</div>
+                    <h3 class="text-lg font-bold text-white mb-2">التنفيذ</h3>
+                    <p class="text-slate-400 text-sm">تطبيق الحلول ومراقبة الأداء.</p>
                 </div>
-
-                <div class="form-group">
-                    <label>نوع الخدمة المطلوبة</label>
-                    <select required>
-                        <option value="">اختر الخدمة</option>
-                        <option value="automation">أتمتة العمليات</option>
-                        <option value="data-analysis">تحليل البيانات</option>
-                        <option value="nlp">معالجة اللغات الطبيعية</option>
-                        <option value="computer-vision">رؤية الكمبيوتر</option>
-                        <option value="cybersecurity">الأمن السيبراني</option>
-                        <option value="digital-transformation">التحول الرقمي</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>تفاصيل المشروع</label>
-                    <textarea rows="5" placeholder="اكتب تفاصيل مشروعك واحتياجاتك..."></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">إرسال الطلب</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- قسم الخدمات ذات الصلة -->
-    <section class="related-services"
-        style="background: linear-gradient(135deg, #0A192F 0%, #112240 100%); padding: 4rem 2rem;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto;">
-            <h2 style="color: #64FFDA; text-align: center; margin-bottom: 1rem; font-size: 1.8rem;">خدمات ذات صلة</h2>
-            <p
-                style="color: #8892B0; text-align: center; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                اكتشف المزيد من حلول الذكاء الاصطناعي المتكاملة لتعزيز أعمالك في المملكة العربية السعودية</p>
-            <div class="services-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                <a href="data-analysis" class="service-link-card"
-                    style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">📊 تحليل البيانات</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">تحويل البيانات إلى رؤى قابلة للتنفيذ
-                        باستخدام الذكاء الاصطناعي</p>
-                </a>
-                <a href="smart-automation" class="service-link-card"
-                    style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">🤖 الأتمتة الذكية</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">أتمتة العمليات التجارية باستخدام الذكاء
-                        الاصطناعي لزيادة الكفاءة</p>
-                </a>
-                <a href="ai-agent" class="service-link-card"
-                    style="background: rgba(17, 34, 64, 0.8); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 1.5rem; text-decoration: none; transition: all 0.3s ease; display: block;">
-                    <h3 style="color: #CCD6F6; margin-bottom: 0.5rem; font-size: 1.1rem;">🧠 وكلاء الذكاء الاصطناعي</h3>
-                    <p style="color: #8892B0; font-size: 0.9rem; margin: 0;">وكلاء ذكاء اصطناعي مخصصون لتلبية احتياجات
-                        أعمالك</p>
-                </a>
-            </div>
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="our-products"
-                    style="display: inline-block; background: linear-gradient(135deg, #64FFDA 0%, #4facfe 100%); color: #0A192F; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">استعرض
-                    جميع خدماتنا</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Bright AI</h3>
-                <p>نحن متخصصون في تقديم حلول الذكاء الاصطناعي المتقدمة التي تساعد الشركات على التحول الرقمي وتحقيق النمو
-                    المستدام.</p>
-                <div class="social-links">
-                    <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                </div>
+    <!-- CONTACT MODAL -->
+    <div id="contact-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onclick="document.getElementById('contact-modal').style.display='none'"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg p-6">
+            <div class="glass-card p-8 relative">
+                <button class="absolute top-4 left-4 text-slate-400 hover:text-white"
+                    onclick="document.getElementById('contact-modal').style.display='none'">
+                    <iconify-icon icon="lucide:x" width="24"></iconify-icon>
+                </button>
+                <h3 class="text-2xl font-bold text-white mb-6">احجز استشارتك المجانية</h3>
+                <form class="space-y-4">
+                    <input type="text" placeholder="الاسم الكامل"
+                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500">
+                    <input type="email" placeholder="البريد الإلكتروني"
+                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500">
+                    <textarea placeholder="كيف يمكننا مساعدتك؟"
+                        class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 min-h-[120px]"></textarea>
+                    <button type="submit" class="btn-primary w-full justify-center">إرسال الطلب</button>
+                </form>
             </div>
-
-            <div class="footer-section">
-                <h3>الخدمات</h3>
-                <ul class="footer-links">
-                    <li><a href="#">أتمتة العمليات</a></li>
-                    <li><a href="#">تحليل البيانات</a></li>
-                    <li><a href="#">معالجة اللغات الطبيعية</a></li>
-                    <li><a href="#">رؤية الكمبيوتر</a></li>
-                    <li><a href="#">الأمن السيبراني</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>روابط سريعة</h3>
-                <ul class="footer-links">
-                    <li><a href="#home">الرئيسية</a></li>
-                    <li><a href="#services">الخدمات</a></li>
-                    <li><a href="#process">العملية</a></li>
-                    <li><a href="#case-studies">دراسات الحالة</a></li>
-                    <li><a href="#contact">اتصل بنا</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>معلومات التواصل</h3>
-                <p><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</p>
-                <p><i class="fas fa-phone"></i> +966 11 234 5678</p>
-                <p><i class="fas fa-envelope"></i> info@brightai.sa</p>
-                <p><i class="fas fa-clock"></i> الأحد - الخميس: 9:00 - 17:00</p>
-            </div>
-        </div>
-
-        <div class="copyright">
-            <p>&copy; 2025 Bright AI. جميع الحقوق محفوظة.</p>
-        </div>
-    </footer>
-
-    <!-- Consultation Modal -->
-    <div id="consultationModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 style="text-align: center; margin-bottom: 2rem; color: var(--secondary-color);">احجز استشارة مجانية</h2>
-
-            <form>
-                <div class="form-group">
-                    <label>التاريخ المفضل</label>
-                    <input type="date" required>
-                </div>
-
-                <div class="form-group">
-                    <label>الوقت المفضل</label>
-                    <select required>
-                        <option value="">اختر الوقت</option>
-                        <option value="09:00">9:00 صباحاً</option>
-                        <option value="10:00">10:00 صباحاً</option>
-                        <option value="11:00">11:00 صباحاً</option>
-                        <option value="14:00">2:00 مساءً</option>
-                        <option value="15:00">3:00 مساءً</option>
-                        <option value="16:00">4:00 مساءً</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>الاسم الشخصي</label>
-                    <input type="text" required>
-                </div>
-
-                <div class="form-group">
-                    <label>اسم الشركة</label>
-                    <input type="text" required>
-                </div>
-
-                <div class="form-group">
-                    <label>طبيعة عمل الشركة</label>
-                    <select required>
-                        <option value="">اختر القطاع</option>
-                        <option value="banking">البنوك والمصارف</option>
-                        <option value="healthcare">الرعاية الصحية</option>
-                        <option value="retail">التجارة والتجزئة</option>
-                        <option value="manufacturing">التصنيع</option>
-                        <option value="education">التعليم</option>
-                        <option value="government">القطاع الحكومي</option>
-                        <option value="telecom">الاتصالات</option>
-                        <option value="energy">الطاقة والنفط</option>
-                        <option value="other">أخرى</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>البريد الإلكتروني</label>
-                    <input type="email" required>
-                </div>
-
-                <button type="submit" class="submit-btn">تأكيد الحجز</button>
-            </form>
         </div>
     </div>
 
-    <script>
-        // Three.js 3D Background
-        document.addEventListener('DOMContentLoaded', function () {
-            const chartContainer = document.getElementById('chart-container');
 
-            if (chartContainer) {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, chartContainer.offsetWidth / chartContainer.offsetHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    <!-- UNIFIED FOOTER -->
+    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+                            <span class="text-lg font-bold text-white">B</span>
+                        </div>
+                        <span class="font-semibold text-white">Bright AI</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        نبتكر المستقبل اليوم. حلول ذكاء اصطناعي آمنة وموثوقة.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon
+                                icon="lucide:message-circle" width="20"></iconify-icon></a>
+                        <a href="mailto:yazeed1job@gmail.com"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon icon="lucide:mail"
+                                width="20"></iconify-icon></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الشركة</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="about-us.html" class="hover:text-gold-400">عن Bright AI</a></li>
+                        <li><a href="contact.html" class="hover:text-gold-400">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الموارد</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="blog.html" class="hover:text-gold-400">المدونة</a></li>
+                        <li><a href="Docs.html" class="hover:text-gold-400">الوثائق</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">خدماتنا</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="ai-agent.html" class="hover:text-gold-400">AIaaS</a></li>
+                        <li><a href="data-analysis.html" class="hover:text-gold-400">تحليل البيانات</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
+                <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
 
-                renderer.setSize(chartContainer.offsetWidth, chartContainer.offsetHeight);
-                chartContainer.appendChild(renderer.domElement);
-
-                // Create multiple geometric shapes
-                const geometries = [
-                    new THREE.TorusKnotGeometry(10, 3, 100, 16),
-                    new THREE.SphereGeometry(8, 32, 32),
-                    new THREE.ConeGeometry(8, 16, 32)
-                ];
-
-                const materials = [
-                    new THREE.MeshBasicMaterial({ color: 0x64FFDA, wireframe: true }),
-                    new THREE.MeshBasicMaterial({ color: 0xFF6B6B, wireframe: true }),
-                    new THREE.MeshBasicMaterial({ color: 0x4ECDC4, wireframe: true })
-                ];
-
-                const meshes = [];
-                for (let i = 0; i < 3; i++) {
-                    const mesh = new THREE.Mesh(geometries[ i ], materials[ i ]);
-                    mesh.position.x = (i - 1) * 30;
-                    scene.add(mesh);
-                    meshes.push(mesh);
-                }
-
-                camera.position.z = 50;
-
-                function animate() {
-                    requestAnimationFrame(animate);
-
-                    meshes.forEach((mesh, index) => {
-                        mesh.rotation.x += 0.005 + index * 0.002;
-                        mesh.rotation.y += 0.005 + index * 0.002;
-                        mesh.position.y = Math.sin(Date.now() * 0.001 + index) * 5;
-                    });
-
-                    renderer.render(scene, camera);
-                }
-
-                animate();
-
-                window.addEventListener('resize', () => {
-                    camera.aspect = chartContainer.offsetWidth / chartContainer.offsetHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(chartContainer.offsetWidth, chartContainer.offsetHeight);
-                });
-            }
-        });
-
-        // Modal functionality
-        const modal = document.getElementById("consultationModal");
-        const openBtn = document.getElementById("openConsultationForm");
-        const closeBtn = document.querySelector(".close");
-
-        if (openBtn && modal) {
-            openBtn.addEventListener("click", function (e) {
-                e.preventDefault();
-                modal.style.display = "flex";
-            });
-        }
-
-        if (closeBtn && modal) {
-            closeBtn.addEventListener("click", function () {
-                modal.style.display = "none";
-            });
-        }
-
-        window.addEventListener("click", function (event) {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-
-        // Mobile menu toggle
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        }
-
-        // FAQ functionality
-        function toggleFAQ(element) {
-            const answer = element.nextElementSibling;
-            const icon = element.querySelector('i');
-
-            answer.classList.toggle('active');
-            icon.style.transform = answer.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Counter animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number');
-
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const duration = 2000;
-                const increment = target / (duration / 16);
-                let current = 0;
-
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    counter.textContent = Math.floor(current);
-                }, 16);
-            });
-        }
-
-        // Trigger counter animation when stats section is visible
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const statsSection = document.querySelector('.stats-section');
-        if (statsSection) {
-            statsObserver.observe(statsSection);
-        }
-
-        // Form submission handling
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                // Show success message
-                const button = this.querySelector('button[type="submit"]');
-                const originalText = button.textContent;
-                button.textContent = 'تم الإرسال بنجاح!';
-                button.style.background = '#2ecc71';
-
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.style.background = '';
-                    this.reset();
-                    if (modal) {
-                        modal.style.display = 'none';
-                    }
-                }, 2000);
-            });
-        });
-
-        // Navbar background on scroll
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 100) {
-                navbar.style.background = 'rgba(10, 25, 47, 0.98)';
-            } else {
-                navbar.style.background = 'rgba(10, 25, 47, 0.95)';
-            }
-        });
-    </script>
-
-    <!-- Analytics scripts removed - files not found -->
+    <!-- Scripts -->
+    <script src="js/main.min.js" defer></script>
+    <script src="js/premium-animations.min.js" defer></script>
+    <script src="js/neural-canvas.min.js" defer></script>
+    <script src="js/chat-groq.min.js" defer></script>
 </body>
 
 </html>

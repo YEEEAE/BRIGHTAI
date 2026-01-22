@@ -1,93 +1,244 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>المستندات والموارد - Bright AI</title>
-  <meta name="description" content="مكتبة مستندات Bright AI">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bright AI | الوثائق والموارد</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="description" content="مكتبة مستندات Bright AI، أدلة الاستخدام، والموارد التعليمية." />
+  <meta name="author" content="Bright AI" />
+  <link rel="canonical" href="https://brightai.site/Docs" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="Docs.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="css/critical.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      function loadCSS(href) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        document.head.appendChild(link);
+      }
+      function loadScript(src, callback) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        if (callback) script.onload = callback;
+        document.body.appendChild(script);
+      }
+      function loadDeferredResources() {
+        loadScript('https://cdn.tailwindcss.com', function () {
+          loadScript('js/tailwind-config.min.js');
+        });
+        loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+        loadCSS('css/design-tokens.css');
+        loadCSS('css/typography.css');
+        loadCSS('css/glass-morphism.css');
+        loadCSS('css/main.min.css');
+        loadCSS('css/premium-effects.min.css');
+        loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+        loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          setTimeout(loadDeferredResources, 50);
+        });
+      } else {
+        loadDeferredResources();
+      }
+    })();
+  </script>
 </head>
 
-<body>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+  <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
-  <header class="main-header">
-    <a href="/" class="logo-link">
-      <img src="Gemini.webp" alt="Bright AI Logo" class="logo">
-    </a>
-    <div class="header-titles">
-      <h1>مكتبة المستندات</h1>
-      <div class="breadcrumbs">
-        <a href="/">الرئيسية</a> / <span>المستندات</span>
+  <!-- UNIFIED HEADER -->
+  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+    <div class="nav-container">
+      <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+        <img src="Gemini.png" alt="Bright AI" width="42" height="42" />
+        <span>Bright AI</span>
+      </a>
+      <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false" id="mobile-menu-btn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <ul class="nav-links" id="nav-links-list" role="menubar">
+        <li role="none"><a role="menuitem" href="/" class="flex items-center gap-2">الرئيسية</a></li>
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2">
+            أنظمة ذكية مؤسسية
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي</a></li>
+            <li role="none"><a role="menuitem" href="Smart-Medical-Archive/index.html">الارشيف الطبي الذكي</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2">
+            خدمات ذكية
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none"><a role="menuitem" href="ai-agent.html">AIaaS</a></li>
+            <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+            <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+          </ul>
+        </li>
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2">
+            بوابة المعرفة
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
+            <li role="none"><a role="menuitem" href="about-us.html">عن الشركة</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- HERO -->
+  <header class="hero-section relative min-h-[40vh] flex items-center pt-32 pb-16 px-6 overflow-hidden"
+    style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
+    <div class="absolute inset-0 gradient-animate opacity-20"></div>
+    <div class="max-w-7xl mx-auto w-full relative z-10 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white">
+        مكتبة <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-500">الوثائق</span>
+      </h1>
+      <div class="max-w-2xl mx-auto relative mt-8">
+        <input type="text" id="searchInput" placeholder="ابحث عن مستند..."
+          class="w-full bg-white/10 border border-white/20 rounded-full py-3 px-6 text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white/10 transition backdrop-blur-md">
+        <button id="searchBtn"
+          class="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 text-slate-400 hover:text-white">
+          <iconify-icon icon="lucide:search" width="20"></iconify-icon>
+        </button>
       </div>
     </div>
   </header>
 
-  <section class="search-section">
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="ابحث عن مستند...">
-      <button id="searchBtn">
-        <iconify-icon icon="lucide:search"></iconify-icon> بحث
-      </button>
-    </div>
-  </section>
-
-  <div class="content-wrapper">
-    <aside class="sidebar">
-      <h2>التصنيفات</h2>
-      <ul class="categories">
-        <li class="active">جميع المستندات</li>
-        <li>نبذة عن الشركة</li>
-        <li>الخدمات</li>
-        <li>أتمتة العمليات</li>
-        <li>تحليل البيانات</li>
-        <li>الاستشارات الذكية</li>
-        <li>مساعد "وكيل" الذكاء الاصطناعي</li>
-        <li>مكتبة الموارد</li>
-      </ul>
+  <!-- MAIN CONTENT -->
+  <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-4 gap-8 relative z-10">
+    <!-- Sidebar -->
+    <aside class="col-span-1">
+      <div class="glass-card p-6 sticky top-24">
+        <h3 class="text-lg font-bold text-white mb-4 border-b border-white/10 pb-2">التصنيفات</h3>
+        <ul class="categories space-y-2 text-sm text-slate-400 cursor-pointer">
+          <li
+            class="active hover:text-emerald-400 transition pb-1 border-b border-transparent hover:border-emerald-400 w-fit">
+            جميع المستندات</li>
+          <li class="hover:text-emerald-400 transition pb-1 border-b border-transparent hover:border-emerald-400 w-fit">
+            نبذة عن الشركة</li>
+          <li class="hover:text-emerald-400 transition pb-1 border-b border-transparent hover:border-emerald-400 w-fit">
+            الخدمات</li>
+          <li class="hover:text-emerald-400 transition pb-1 border-b border-transparent hover:border-emerald-400 w-fit">
+            أتمتة العمليات</li>
+          <li class="hover:text-emerald-400 transition pb-1 border-b border-transparent hover:border-emerald-400 w-fit">
+            تحليل البيانات</li>
+          <li class="hover:text-emerald-400 transition pb-1 border-b border-transparent hover:border-emerald-400 w-fit">
+            الاستشارات الذكية</li>
+        </ul>
+      </div>
     </aside>
 
-    <main class="documents-grid" id="documentsGrid">
-      <!-- Content via JS -->
+    <!-- Main Grid -->
+    <main class="col-span-1 lg:col-span-3">
+      <div id="documentsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Content injected by JS -->
+      </div>
+
+      <!-- Document Preview Area (Hidden by default) -->
+      <section id="docPreview" class="hidden glass-card p-8 mt-12 bg-black/80 ring-1 ring-emerald-500/50">
+        <div class="flex justify-between items-start mb-6">
+          <h2 id="docTitle" class="text-2xl font-bold text-white"></h2>
+          <div class="flex gap-3">
+            <button class="download-btn btn-primary text-sm py-1 px-4">فتح المستند</button>
+            <button class="share-btn btn-secondary text-sm py-1 px-4">مشاركة</button>
+          </div>
+        </div>
+        <div class="flex gap-4 text-xs text-slate-500 mb-6">
+          <span id="docCategory" class="bg-white/10 px-2 py-1 rounded"></span>
+          <span id="docDate" class="flex items-center gap-1"><iconify-icon icon="lucide:calendar"></iconify-icon>
+          </span>
+        </div>
+        <p id="docDescription" class="text-slate-300 leading-relaxed mb-8"></p>
+      </section>
+
+      <!-- Recommendations -->
+      <section class="mt-16">
+        <h2 class="text-xl font-bold text-white mb-6">مستندات موصى بها</h2>
+        <div id="recGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Content injected by JS -->
+        </div>
+      </section>
     </main>
   </div>
 
-  <section id="docPreview" class="document-preview">
-    <div class="preview-header">
-      <h2 id="docTitle"></h2>
-      <div class="doc-actions">
-        <button class="download-btn">فتح المستند</button>
-        <button class="share-btn">مشاركة</button>
+  <!-- UNIFIED FOOTER -->
+  <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1 md:col-span-1">
+          <div class="flex items-center gap-2 mb-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+              <span class="text-lg font-bold text-white">B</span>
+            </div>
+            <span class="font-semibold text-white">Bright AI</span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-white font-medium mb-6">الشركة</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li><a href="about-us.html" class="hover:text-gold-400">عن Bright AI</a></li>
+            <li><a href="contact.html" class="hover:text-gold-400">اتصل بنا</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-medium mb-6">الموارد</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li><a href="blog.html" class="hover:text-gold-400">المدونة</a></li>
+            <li><a href="Docs.html" class="hover:text-gold-400">الوثائق</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-medium mb-6">خدماتنا</h4>
+          <ul class="space-y-3 text-sm text-slate-400">
+            <li><a href="ai-agent.html" class="hover:text-gold-400">AIaaS</a></li>
+            <li><a href="data-analysis.html" class="hover:text-gold-400">تحليل البيانات</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="doc-meta">
-      <span id="docCategory"></span>
-      <span id="docDate"></span>
-    </div>
-    <div class="preview-content">
-      <p id="docDescription"></p>
-    </div>
-  </section>
-
-  <section class="recommendations">
-    <h2>مستندات موصى بها</h2>
-    <div class="rec-grid" id="recGrid">
-      <!-- Content via JS -->
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <p class="copyright">&copy; 2025 Bright AI. جميع الحقوق محفوظة.</p>
+      <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
+        <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+      </div>
     </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="js/main.min.js" defer></script>
+  <script src="js/premium-animations.min.js" defer></script>
+  <script src="js/neural-canvas.min.js" defer></script>
   <script src="Docs.js"></script>
 </body>
 

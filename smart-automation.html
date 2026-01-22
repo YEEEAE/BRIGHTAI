@@ -82,60 +82,184 @@
     <!-- UNIFIED HEADER -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
+            <!-- Logo -->
             <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="Gemini.png" alt="Bright AI" width="42" height="42" />
+                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42"
+                    height="42" fetchpriority="high" decoding="async" />
                 <span>Bright AI</span>
             </a>
+            <!-- Hamburger Menu Button (Mobile) -->
             <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
                 id="mobile-menu-btn">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
+            <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="/" class="flex items-center gap-2">الرئيسية</a></li>
+                <li role="none">
+                    <a role="menuitem" href="/" class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:home" width="16"
+                            class="text-slate-400 group-hover:text-white"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle flex items-center gap-2">
-                        أنظمة ذكية مؤسسية
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:cpu" width="16" class="text-indigo-400"></iconify-icon>
+                        أنظمة ذكية مؤسسية متكاملة
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
                             <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي</a>
+                        <li role="none">
+                            <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:users" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                رحلة التوظيف الذكية بالكامل
+                            </a>
                         </li>
-                        <li role="none"><a role="menuitem" href="Smart-Medical-Archive/index.html">الارشيف الطبي
-                                الذكي</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="Smart-Medical-Archive/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-heart" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الارشيف الطبي الذكي
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="try.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:database" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                ذكاء البيانات المُشرق
+                            </a>
+                        </li>
                     </ul>
                 </li>
+                <!-- Dropdown: خدمات ذكية -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:sparkles" width="16" class="text-purple-400"></iconify-icon>
                         خدمات ذكية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
                             <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="ai-agent.html">AIaaS</a></li>
-                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
-                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="smart-automation.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:zap" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الأتمتة الذكية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="ai-agent.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:cloud" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الذكاء الاصطناعي كخدمة (AIaaS)
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="data-analysis.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:bar-chart" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                تحليل البيانات
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="consultation.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:message-square" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                استشارات الذكاء الاصطناعي
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="our-products.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:layers" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                جميع الخدمات
+                            </a>
+                        </li>
                     </ul>
                 </li>
+                <!-- Dropdown: بوابة المعرفة -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:book-open" width="16" class="text-cyan-400"></iconify-icon>
                         بوابة المعرفة
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
                             <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
-                        <li role="none"><a role="menuitem" href="about-us.html">عن الشركة</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="blog.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:library" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                المكتبة الذكية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="about-us.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:info" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                عن شركة مُشرقة AI
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="Docs.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-text" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                المستندات
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Dropdown: أدوات ذكية مجانية -->
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:wrench" width="16" class="text-gold-400"></iconify-icon>
+                        أدوات ذكية مجانية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none">
+                            <a role="menuitem" href="tools.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:gift" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                أدوات ذكية مجانية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:play" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                نماذج AI تجريبية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="ai-bots.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:message-circle" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                شات بوت
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
     <div class="nav-overlay" id="nav-overlay"></div>
 
     <!-- HERO SECTION -->

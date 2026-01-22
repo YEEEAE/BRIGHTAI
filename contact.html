@@ -1,442 +1,412 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bright AI | اتصل بنا</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-8LLESL207Q');
     </script>
 
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اتصل بنا - Bright AI</title>
     <meta name="description"
-        content="تواصل مع فريق Bright AI عبر واتساب، انستقرام، تيك توك أو تويتر. نحن هنا لمساعدتك في حلول الذكاء الاصطناعي.">
-    <link rel="canonical" href="https://brightai.site/contact">
-
-    <!-- Favicon -->
+        content="تواصل مع فريق Bright AI. نحن هنا لمساعدتك في رحلة التحول الرقمي وحلول الذكاء الاصطناعي." />
+    <meta name="author" content="Bright AI" />
+    <link rel="canonical" href="https://brightai.site/contact" />
     <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="اتصل بنا - Bright AI">
-    <meta property="og:description"
-        content="تواصل مع فريق Bright AI عبر واتساب، انستقرام، تيك توك أو تويتر. نحن هنا لمساعدتك في حلول الذكاء الاصطناعي.">
-    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-    <meta property="og:url" content="https://brightai.site/contact">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_SA">
-    <meta property="og:site_name" content="مُشرقة AI">
+    <link rel="stylesheet" href="css/critical.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="اتصل بنا - Bright AI">
-    <meta name="twitter:description" content="تواصل مع فريق Bright AI عبر واتساب، انستقرام، تيك توك أو تويتر">
-    <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-
-    <!-- JSON-LD Schemas -->
-    <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "name": "اتصل بنا - Bright AI",
-    "description": "تواصل مع فريق Bright AI عبر واتساب، انستقرام، تيك توك أو تويتر",
-    "url": "https://brightai.site/contact.html",
-    "mainEntity": {
-      "@type": "Organization",
-      "name": "مُشرقة AI",
-      "telephone": "+966538229013",
-      "email": "yazeed1job@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "طريق الملك فهد",
-        "addressLocality": "الرياض",
-        "addressRegion": "منطقة الرياض",
-        "postalCode": "11564",
-        "addressCountry": "SA"
-      }
-    }
-  }
-  </script>
-    <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "الرئيسية",
-        "item": "https://brightai.site/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "اتصل بنا",
-        "item": "https://brightai.site/contact.html"
-      }
-    ]
-  }
-  </script>
-
-    <!-- Resource Hints -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap"
-        rel="stylesheet">
-
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/unified-nav.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('css/design-tokens.css');
+                loadCSS('css/typography.css');
+                loadCSS('css/glass-morphism.css');
+                loadCSS('css/main.min.css');
+                loadCSS('css/premium-effects.min.css');
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                });
+            } else {
+                loadDeferredResources();
+            }
+        })();
+    </script>
 </head>
 
-<body>
-    <!-- Skip to main content link for keyboard navigation -->
-    <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
-    <!-- Unified Navigation JS -->
-    <script src="js/unified-nav.min.js" defer></script>
-
-    <!-- التنقل الموحد الجديد -->
+    <!-- UNIFIED HEADER -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
             <!-- Logo -->
             <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42"
+                    height="42" fetchpriority="high" decoding="async" />
+                <span>Bright AI</span>
             </a>
-
             <!-- Hamburger Menu Button (Mobile) -->
-            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-
             <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="/">الرئيسية</a></li>
-
+                <li role="none">
+                    <a role="menuitem" href="/" class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:home" width="16"
+                            class="text-slate-400 group-hover:text-white"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
                 <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:cpu" width="16" class="text-indigo-400"></iconify-icon>
                         أنظمة ذكية مؤسسية متكاملة
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="h/projects/interview/">نظام توظيف ذكي
-                                متكامل</a></li>
-                        <li role="none"><a role="menuitem" href="health-bright">ثورة الذكاء الاصطناعي في الرعاية
-                                الصحية</a></li>
-                        <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:users" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                رحلة التوظيف الذكية بالكامل
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="Smart-Medical-Archive/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-heart" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الارشيف الطبي الذكي
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="try.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:database" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                ذكاء البيانات المُشرق
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
                 <!-- Dropdown: خدمات ذكية -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:sparkles" width="16" class="text-purple-400"></iconify-icon>
                         خدمات ذكية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
-                        <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
-                        <li role="none"><a role="menuitem" href="consultation">استشارات الذكاء الاصطناعي</a></li>
-                        <li role="none"><a role="menuitem" href="smart-automation">الأتمتة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="our-products">خدمات الذكاء الاصطناعي</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="smart-automation.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:zap" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الأتمتة الذكية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="ai-agent.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:cloud" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                الذكاء الاصطناعي كخدمة (AIaaS)
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="data-analysis.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:bar-chart" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                تحليل البيانات
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="consultation.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:message-square" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                استشارات الذكاء الاصطناعي
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="our-products.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:layers" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                جميع الخدمات
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
                 <!-- Dropdown: بوابة المعرفة -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:book-open" width="16" class="text-cyan-400"></iconify-icon>
                         بوابة المعرفة
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="about-us">عن شركة مُشرقة AI</a>
+                        <li role="none">
+                            <a role="menuitem" href="blog.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:library" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                المكتبة الذكية
+                            </a>
                         </li>
-                        <li role="none"><a role="menuitem" href="Docs">DOCS</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="about-us.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:info" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                عن شركة مُشرقة AI
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="Docs.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:file-text" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                المستندات
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
                 <!-- Dropdown: أدوات ذكية مجانية -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+                        aria-haspopup="true">
+                        <iconify-icon icon="lucide:wrench" width="16" class="text-gold-400"></iconify-icon>
                         أدوات ذكية مجانية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="tools">أدوات ذكية مجانية</a></li>
-                        <li role="none"><a role="menuitem" href="h/projects/interview/">نماذج AI تجريبية</a>
+                        <li role="none">
+                            <a role="menuitem" href="tools.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:gift" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                أدوات ذكية مجانية
+                            </a>
                         </li>
-                        <li role="none"><a role="menuitem" href="ai-bots">شات بوت</a></li>
+                        <li role="none">
+                            <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:play" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                نماذج AI تجريبية
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a role="menuitem" href="ai-bots.html" class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:message-circle" width="14"
+                                    class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                                شات بوت
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="nav-overlay" aria-hidden="true"></div>
 
-    <!-- Breadcrumb Navigation -->
-    <nav class="breadcrumb-nav" aria-label="مسار التنقل"
-        style="background: rgba(17, 34, 64, 0.9); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; border-bottom: 1px solid rgba(100, 255, 218, 0.1);">
-        <div class="breadcrumb-container"
-            style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 0.5rem;">
-            <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList"
-                style="display: flex; align-items: center; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; gap: 0.5rem;">
-                <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
-                    style="display: flex; align-items: center; font-size: 0.875rem;">
-                    <a href="/" itemprop="item"
-                        style="color: #8892B0; text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 4px; transition: color 0.2s ease;"><span
-                            itemprop="name">الرئيسية</span></a>
-                    <meta itemprop="position" content="1" />
-                </li>
-                <li class="breadcrumb-separator" aria-hidden="true"
-                    style="color: #8892B0; opacity: 0.5; margin: 0 0.25rem; font-size: 0.75rem; transform: rotate(180deg);">
-                    ›</li>
-                <li class="breadcrumb-item current" itemprop="itemListElement" itemscope
-                    itemtype="https://schema.org/ListItem"
-                    style="display: flex; align-items: center; font-size: 0.875rem; color: #64FFDA; font-weight: 500;">
-                    <span itemprop="name" style="padding: 0.25rem 0.5rem;">اتصل بنا</span>
-                    <meta itemprop="position" content="2" />
-                </li>
-            </ol>
+    <!-- Mobile Navigation Overlay -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+    <!-- HERO SECTION -->
+    <header class="hero-section relative min-h-[50vh] flex items-center pt-32 pb-16 px-6 overflow-hidden"
+        style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
+        <div class="absolute inset-0 gradient-animate opacity-20"></div>
+        <div class="max-w-7xl mx-auto w-full relative z-10 flex flex-col items-center text-center">
+            <div
+                class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-indigo-500/30 mb-8">
+                <span class="text-indigo-300 text-sm font-medium tracking-wide">نحن هنا للمساعدة</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+                اتصل <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">بنا</span>
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 leading-relaxed">
+                هل لديك استفسار أو ترغب في بدء مشروع جديد؟ فريقنا جاهز للتواصل معك ومساعدتك في تحقيق أهدافك.
+            </p>
         </div>
-    </nav>
+    </header>
 
-    <main id="main-content" role="main">
+    <!-- CONTACT GRID -->
+    <section class="py-24 px-6 bg-[#020617] relative">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <!-- Saudi Contact Section (Requirements 18.1, 18.3, 18.4, 18.5) -->
-        <section class="saudi-contact-section" aria-labelledby="contact-section-title">
-            <div class="saudi-contact-container">
-                <!-- Section Header -->
-                <header class="saudi-contact-header">
-                    <span class="section-mini-title">تواصل معنا</span>
-                    <h1 id="contact-section-title" class="section-title">اتصل بنا - شركة مُشرقة AI</h1>
-                    <p class="section-description">
-                        نحن هنا لمساعدتك في رحلة التحول الرقمي. تواصل معنا عبر الطريقة المفضلة لديك وسنرد عليك في أقرب
-                        وقت ممكن.
+                <!-- WhatsApp -->
+                <a href="https://wa.me/966538229013"
+                    class="glass-card p-8 hover:bg-white/5 transition flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <iconify-icon icon="lucide:message-circle" width="32" class="text-emerald-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">واتساب</h3>
+                    <p class="text-slate-400 text-sm mb-4">تواصل فوري ومباشر مع فريقنا</p>
+                    <span class="text-emerald-400 font-medium dir-ltr font-mono">+966 53 822 9013</span>
+                </a>
+
+                <!-- Phone -->
+                <a href="tel:+966538229013"
+                    class="glass-card p-8 hover:bg-white/5 transition flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <iconify-icon icon="lucide:phone" width="32" class="text-blue-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">الهاتف</h3>
+                    <p class="text-slate-400 text-sm mb-4">متاح من الأحد - الخميس، ٩ ص - ٦ م</p>
+                    <span class="text-blue-400 font-medium dir-ltr font-mono">+966 53 822 9013</span>
+                </a>
+
+                <!-- Email -->
+                <a href="mailto:yazeed1job@gmail.com"
+                    class="glass-card p-8 hover:bg-white/5 transition flex flex-col items-center text-center group">
+                    <div
+                        class="w-16 h-16 rounded-full bg-purple-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                        <iconify-icon icon="lucide:mail" width="32" class="text-purple-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">البريد الإلكتروني</h3>
+                    <p class="text-slate-400 text-sm mb-4">للشراكات والاستفسارات الرسمية</p>
+                    <span class="text-purple-400 font-medium font-sans">yazeed1job@gmail.com</span>
+                </a>
+            </div>
+
+            <!-- Additional Info / Map placeholder -->
+            <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-6">زورونا في مقرنا</h2>
+                    <p class="text-slate-400 leading-relaxed mb-8">
+                        نسعد بزيارتكم في مقر الشركة بالرياض لمناقشة احتياجاتكم بشكل مباشر والعمل على بناء شراكات
+                        استراتيجية.
                     </p>
-                </header>
 
-                <!-- Contact Grid -->
-                <div class="saudi-contact-grid">
-                    <!-- Contact Options Card -->
-                    <div class="contact-options-card">
-                        <h2 style="color: var(--heading-color); font-size: 1.3rem; margin-bottom: 0.5rem;">
-                            <i class="fas fa-headset" style="color: var(--primary-color); margin-left: 0.5rem;"
-                                aria-hidden="true"></i>
-                            طرق التواصل
-                        </h2>
-
-                        <!-- WhatsApp - Primary Contact Method -->
-                        <a href="https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A"
-                            class="contact-option contact-option-primary" target="_blank" rel="noopener noreferrer"
-                            aria-label="تواصل معنا عبر واتساب - الطريقة الأسرع للتواصل" data-track="WhatsApp Contact"
-                            data-track-category="Contact" data-track-location="contact-page">
-                            <div class="contact-option-icon">
-                                <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                            </div>
-                            <div class="contact-option-content">
-                                <span class="contact-option-label">واتساب - الطريقة الأسرع</span>
-                                <span class="contact-option-value">+٩٦٦ ٥٣ ٨٢٢ ٩٠١٣</span>
-                                <span class="contact-option-hint">متاح للرد الفوري</span>
-                            </div>
-                        </a>
-
-                        <!-- Phone -->
-                        <a href="tel:+966538229013" class="contact-option" aria-label="اتصل بنا هاتفياً"
-                            data-track="Phone Contact" data-track-category="Contact" data-track-location="contact-page">
-                            <div class="contact-option-icon">
-                                <i class="fas fa-phone-alt" aria-hidden="true"></i>
-                            </div>
-                            <div class="contact-option-content">
-                                <span class="contact-option-label">الهاتف</span>
-                                <span class="contact-option-value">+966 53 822 9013</span>
-                                <span class="contact-option-hint">الأحد - الخميس، ٩ص - ٦م</span>
-                            </div>
-                        </a>
-
-                        <!-- Email -->
-                        <a href="mailto:yazeed1job@gmail.com" class="contact-option"
-                            aria-label="راسلنا عبر البريد الإلكتروني" data-track="Email Contact"
-                            data-track-category="Contact" data-track-location="contact-page">
-                            <div class="contact-option-icon">
-                                <i class="fas fa-envelope" aria-hidden="true"></i>
-                            </div>
-                            <div class="contact-option-content">
-                                <span class="contact-option-label">البريد الإلكتروني</span>
-                                <span class="contact-option-value">yazeed1job@gmail.com</span>
-                                <span class="contact-option-hint">نرد خلال ٢٤ ساعة</span>
-                            </div>
-                        </a>
-
-                        <!-- Address -->
-                        <div class="contact-option">
-                            <div class="contact-option-icon">
-                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                            </div>
-                            <div class="contact-option-content">
-                                <span class="contact-option-label">العنوان</span>
-                                <span class="contact-option-value contact-option-value-rtl">طريق الملك فهد،
-                                    الرياض</span>
-                                <span class="contact-option-hint">المملكة العربية السعودية</span>
-                            </div>
-                        </div>
-
-                        <!-- Working Hours Badge -->
-                        <div class="working-hours-badge">
-                            <i class="fas fa-clock" aria-hidden="true"></i>
-                            <span>أوقات العمل: الأحد - الخميس، ٩:٠٠ ص - ٦:٠٠ م (توقيت السعودية)</span>
-                        </div>
-
-                        <!-- Social Media Links -->
-                        <div style="margin-top: 1rem;">
-                            <h3 style="color: var(--heading-color); font-size: 1rem; margin-bottom: 1rem;">تابعنا على
-                                وسائل التواصل</h3>
-                            <div class="social-links" style="justify-content: flex-start;">
-                                <a href="https://www.instagram.com/iililil44" class="social-link" target="_blank"
-                                    rel="noopener noreferrer" aria-label="انستقرام">
-                                    <i class="fab fa-instagram" aria-hidden="true"></i>
-                                </a>
-                                <a href="https://www.tiktok.com/@bright1ai" class="social-link" target="_blank"
-                                    rel="noopener noreferrer" aria-label="تيك توك">
-                                    <i class="fab fa-tiktok" aria-hidden="true"></i>
-                                </a>
-                                <a href="https://x.com/yeaeeae" class="social-link" target="_blank"
-                                    rel="noopener noreferrer" aria-label="تويتر">
-                                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                                </a>
-                                <a href="https://www.youtube.com/@TeechLab" class="social-link" target="_blank"
-                                    rel="noopener noreferrer" aria-label="يوتيوب">
-                                    <i class="fab fa-youtube" aria-hidden="true"></i>
-                                </a>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <iconify-icon icon="lucide:map-pin" class="text-gold-400 mt-1" width="20"></iconify-icon>
+                            <div>
+                                <h4 class="text-white font-medium">العنوان</h4>
+                                <p class="text-slate-500 text-sm">طريق الملك فهد، الرياض 11564، المملكة العربية السعودية
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Map Card -->
-                    <div class="contact-map-card">
-                        <h2 class="contact-map-title">
-                            <i class="fas fa-location-dot" aria-hidden="true"></i>
-                            موقعنا في الرياض
-                        </h2>
+                    <div class="mt-8 flex gap-4">
+                        <a href="https://www.instagram.com/iililil44"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon icon="lucide:instagram"
+                                width="24"></iconify-icon></a>
+                        <a href="https://x.com/BrightAIII"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon icon="lucide:twitter"
+                                width="24"></iconify-icon></a>
+                        <a href="https://www.youtube.com/@TeechLab"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon icon="lucide:youtube"
+                                width="24"></iconify-icon></a>
+                    </div>
+                </div>
 
-                        <!-- Address Details -->
-                        <div class="contact-address-details">
-                            <div class="contact-address-line">
-                                <i class="fas fa-building" aria-hidden="true"></i>
-                                <span>شركة مُشرقة AI</span>
-                            </div>
-                            <div class="contact-address-line">
-                                <i class="fas fa-road" aria-hidden="true"></i>
-                                <span>طريق الملك فهد</span>
-                            </div>
-                            <div class="contact-address-line">
-                                <i class="fas fa-city" aria-hidden="true"></i>
-                                <span>الرياض، منطقة الرياض</span>
-                            </div>
-                            <div class="contact-address-line">
-                                <i class="fas fa-flag" aria-hidden="true"></i>
-                                <span>المملكة العربية السعودية</span>
-                            </div>
-                            <div class="contact-address-line">
-                                <i class="fas fa-mailbox" aria-hidden="true"></i>
-                                <span>الرمز البريدي: ١١٥٦٤</span>
-                            </div>
+                <div class="glass-card p-2 h-80 rounded-2xl overflow-hidden relative">
+                    <!-- Static Map Image or Placeholder -->
+                    <div class="absolute inset-0 bg-slate-800 flex items-center justify-center">
+                        <div class="text-center">
+                            <iconify-icon icon="lucide:map" width="48"
+                                class="text-slate-600 mb-4 mx-auto"></iconify-icon>
+                            <p class="text-slate-500">خريطة جوجل</p>
+                            <a href="https://goo.gl/maps/example" target="_blank"
+                                class="text-indigo-400 hover:text-indigo-300 text-sm mt-2 block underline">عرض على خرائط
+                                جوجل</a>
                         </div>
-
-                        <!-- Google Map Embed (Lightweight) -->
-                        <div class="contact-map-wrapper" id="map-container">
-                            <!-- Lazy load placeholder -->
-                            <button type="button" class="contact-map-placeholder" id="map-placeholder"
-                                onclick="loadMap()" aria-label="انقر لتحميل الخريطة">
-                                <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
-                                <span>انقر لعرض الخريطة</span>
-                            </button>
-                        </div>
-
-                        <!-- Get Directions Link -->
-                        <a href="https://www.google.com/maps/dir/?api=1&destination=24.7136,46.6753&destination_place_id=ChIJN1t_tDeuEmsRUsoyG83frY4"
-                            target="_blank" rel="noopener noreferrer" class="cta-button"
-                            style="text-align: center; margin-top: 1rem;"
-                            aria-label="احصل على الاتجاهات إلى مقرنا في الرياض">
-                            <i class="fas fa-directions" aria-hidden="true" style="margin-left: 0.5rem;"></i>
-                            احصل على الاتجاهات
-                        </a>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <!-- Floating WhatsApp Button (Requirements 18.1, 18.2) -->
-    <div class="floating-whatsapp" id="floating-whatsapp">
-        <a href="https://wa.me/966538229013?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A"
-            class="floating-whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="تواصل معنا عبر واتساب"
-            data-track="Floating WhatsApp" data-track-category="Contact" data-track-location="floating-button">
-            <i class="fab fa-whatsapp" aria-hidden="true"></i>
-            <span class="floating-whatsapp-tooltip">تواصل معنا عبر واتساب</span>
-        </a>
-        <span class="floating-whatsapp-label">واتساب</span>
-    </div>
-
-    <!-- Map Loading Script -->
-    <script>
-        // Lazy load Google Map for performance
-        function loadMap() {
-            const mapContainer = document.getElementById('map-container');
-            const placeholder = document.getElementById('map-placeholder');
-
-            if (placeholder) {
-                // Create iframe
-                const iframe = document.createElement('iframe');
-                iframe.src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.674896!2d46.6753!3d24.7136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjTCsDQyJzQ5LjAiTiA0NsKwNDAnMzEuMSJF!5e0!3m2!1sar!2ssa!4v1234567890';
-                iframe.width = '100%';
-                iframe.height = '100%';
-                iframe.style.border = '0';
-                iframe.allowFullscreen = true;
-                iframe.loading = 'lazy';
-                iframe.referrerPolicy = 'no-referrer-when-downgrade';
-                iframe.title = 'موقع شركة مُشرقة AI على خرائط جوجل';
-
-                // Remove placeholder and add iframe
-                placeholder.remove();
-                mapContainer.appendChild(iframe);
-            }
-        }
-
-        // Allow keyboard activation of map placeholder
-        document.getElementById('map-placeholder')?.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                loadMap();
-            }
-        });
-    </script>
+    <!-- UNIFIED FOOTER -->
+    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+                            <span class="text-lg font-bold text-white">B</span>
+                        </div>
+                        <span class="font-semibold text-white">Bright AI</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        نبتكر المستقبل اليوم.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الشركة</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="about-us.html" class="hover:text-gold-400">عن Bright AI</a></li>
+                        <li><a href="contact.html" class="hover:text-gold-400">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الموارد</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="blog.html" class="hover:text-gold-400">المدونة</a></li>
+                        <li><a href="Docs.html" class="hover:text-gold-400">الوثائق</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">خدماتنا</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="ai-agent.html" class="hover:text-gold-400">AIaaS</a></li>
+                        <li><a href="data-analysis.html" class="hover:text-gold-400">تحليل البيانات</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
+                <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Scripts -->
-    <!-- Analytics scripts removed - files not found -->
+    <script src="js/main.min.js" defer></script>
+    <script src="js/premium-animations.min.js" defer></script>
+    <script src="js/neural-canvas.min.js" defer></script>
 </body>
 
 </html>
