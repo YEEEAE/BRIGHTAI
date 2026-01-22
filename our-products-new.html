@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-8LLESL207Q');
     </script>
@@ -13,34 +14,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منتجاتنا وخدماتنا - Bright AI | حلول الذكاء الاصطناعي في السعودية</title>
-    <meta name="description" content="اكتشف مجموعة واسعة من منتجات وخدمات الذكاء الاصطناعي من Bright AI: تحليل البيانات، الأتمتة الذكية، وكلاء AI، والروبوتات المتطورة للسوق السعودي.">
-    
+    <meta name="description"
+        content="اكتشف مجموعة واسعة من منتجات وخدمات الذكاء الاصطناعي من Bright AI: تحليل البيانات، الأتمتة الذكية، وكلاء AI، والروبوتات المتطورة للسوق السعودي.">
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/design-tokens.min.css">
     <link rel="stylesheet" href="css/unified-gradient.min.css">
     <link rel="stylesheet" href="css/unified-nav.min.css">
     <link rel="stylesheet" href="css/products-enhanced.min.css">
     <link rel="stylesheet" href="our-products.min.css">
-    
+
     <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.min.js"></script>
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="Gemini.png">
     <link rel="apple-touch-icon" href="Gemini.png">
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="منتجاتنا وخدماتنا - Bright AI">
     <meta property="og:description" content="حلول الذكاء الاصطناعي المتطورة للسوق السعودي">
     <meta property="og:image" content="Gemini.png">
     <meta property="og:url" content="https://brightai.site/our-products-new">
+    <link rel="canonical" href="https://brightai.site/our-products-new">
     <meta property="og:type" content="website">
-    
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -52,11 +55,12 @@
     }
     </script>
 </head>
+
 <body>
     <!-- Unified Navigation -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+            <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
                 <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
             </a>
             <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
@@ -65,11 +69,12 @@
                 <span class="hamburger-line"></span>
             </button>
             <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="index.html">الرئيسية</a></li>
-                <li role="none"><a role="menuitem" href="our-products-new.html" class="active">خدمات الذكاء الاصطناعي</a></li>
-                <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
-                <li role="none"><a role="menuitem" href="consultation.html">استشارات</a></li>
-                <li role="none"><a role="menuitem" href="blog.html">المكتبة الذكية</a></li>
+                <li role="none"><a role="menuitem" href="/">الرئيسية</a></li>
+                <li role="none"><a role="menuitem" href="our-products-new" class="active">خدمات الذكاء
+                        الاصطناعي</a></li>
+                <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
+                <li role="none"><a role="menuitem" href="consultation">استشارات</a></li>
+                <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
             </ul>
         </div>
     </nav>
@@ -92,19 +97,17 @@
             <div class="filters-row">
                 <div class="search-box">
                     <iconify-icon icon="lucide:search" width="20"></iconify-icon>
-                    <input type="text" 
-                           id="search-input" 
-                           placeholder="ابحث عن منتج أو خدمة..."
-                           aria-label="البحث في المنتجات">
+                    <input type="text" id="search-input" placeholder="ابحث عن منتج أو خدمة..."
+                        aria-label="البحث في المنتجات">
                 </div>
-                
+
                 <select id="price-filter" class="filter-select" aria-label="فلترة حسب السعر">
                     <option value="all">جميع الأسعار</option>
                     <option value="low">أقل من 500 ريال</option>
                     <option value="medium">500 - 2000 ريال</option>
                     <option value="high">أكثر من 2000 ريال</option>
                 </select>
-                
+
                 <select id="sort-select" class="filter-select" aria-label="ترتيب المنتجات">
                     <option value="popular">الأكثر شعبية</option>
                     <option value="price-low">السعر: من الأقل للأعلى</option>
@@ -113,7 +116,7 @@
                     <option value="name">الاسم (أ-ي)</option>
                 </select>
             </div>
-            
+
             <div class="results-info">
                 <span id="results-count">جاري التحميل...</span>
             </div>
@@ -255,15 +258,21 @@
             padding: 60px 20px;
             color: var(--text-primary);
         }
-        
+
         .spin {
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </body>
+
 </html>
