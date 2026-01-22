@@ -11,5 +11,6 @@
     "editor.suggest.showStatusBar": true,
     "telemetry.editStats.showStatusBar": true,
     "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
-    "task.quickOpen.showAll": true
+    "task.quickOpen.showAll": true,
+    "workbench.commandPalette.history": 1
 }
