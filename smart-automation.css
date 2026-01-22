@@ -26,7 +26,8 @@ body {
     line-height: 1.6;
 }
 
-h2, h3 {
+h2,
+h3 {
     color: var(--text-on-gradient-primary, #FFFFFF);
 }
 
@@ -137,13 +138,14 @@ section {
     text-align: center;
 }
 
-section > h2 {
+section>h2 {
     font-size: 2em;
     margin-bottom: 40px;
 }
 
 /* قسم الخدمات */
-.service-cards, .importance-cards {
+.service-cards,
+.importance-cards {
     display: flex;
     justify-content: center;
     gap: 30px;
@@ -160,7 +162,14 @@ section > h2 {
     box-shadow: var(--glass-shadow-unified, 0 8px 32px rgba(0, 0, 0, 0.1));
     padding: 30px;
     width: 320px;
+    max-width: 100%;
     transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+    }
 }
 
 .card:hover {
@@ -405,130 +414,138 @@ footer .social a:hover {
     .header h1 {
         font-size: 2em;
     }
+
     .navbar {
-        position: static; /* إزالة التثبيت */
+        position: static;
+        /* إزالة التثبيت */
         flex-direction: column;
         align-items: center;
     }
+
     .navbar li {
         margin: 0;
     }
+
     .navbar a {
         padding: 10px 0;
     }
-    .service-cards, .importance-cards {
+
+    .service-cards,
+    .importance-cards {
         flex-direction: column;
         align-items: center;
     }
+
     .card {
         width: 90%;
     }
+
     .benefit-items {
         grid-template-columns: 1fr;
     }
+
     .application-examples {
         grid-template-columns: 1fr;
     }
+
     .tech-logos {
         gap: 20px;
     }
+
     .tech-logos img {
         height: 60px;
     }
+
     .case-study-cards {
         grid-template-columns: 1fr;
     }
 }
- * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
 
-        .footer {
-            background-color: var(--background-color);
-            color: white;
-            padding: 3rem 0;
-            width: 100%; /* إضافة هذه السطر */
-        }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+.footer {
+    background-color: var(--background-color);
+    color: white;
+    padding: 3rem 0;
+    width: 100%;
+    /* إضافة هذه السطر */
+}
 
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
 
-        .footer-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
 
-        .footer-section p {
-            color: #ffffff;
-            line-height: 1.6;
-        }
+.footer-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
 
-        .quick-links ul {
-            list-style: none;
-        }
+.footer-section p {
+    color: #ffffff;
+    line-height: 1.6;
+}
 
-        .quick-links ul li {
-            margin-bottom: 0.5rem;
-        }
+.quick-links ul {
+    list-style: none;
+}
 
-        .quick-links ul li a {
-            color: #ffffff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+.quick-links ul li {
+    margin-bottom: 0.5rem;
+}
 
-        .quick-links ul li a:hover {
-            color: white;
-        }
+.quick-links ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
 
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
+.quick-links ul li a:hover {
+    color: white;
+}
 
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #005BB5;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease;
-        }
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
 
-        .social-icon:hover {
-            background-color: #004a94;
-        }
+.social-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #005BB5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
 
-        .social-icon img {
-            width: 20px;
-            height: 20px;
-            filter: invert(1);
-        }
+.social-icon:hover {
+    background-color: #004a94;
+}
 
-        .copyright {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #374151;
-            color: #ffffff;
-        }
+.social-icon img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+}
 
-        @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-        }
+.copyright {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #374151;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+}

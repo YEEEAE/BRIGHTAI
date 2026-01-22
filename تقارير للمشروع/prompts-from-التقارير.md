@@ -1,47 +1,422 @@
-Smart Agent Development Prompts for BrightAI Project
-BrightAI’s website audit reveals several key issues – duplicate navigation links, mixed-language UI, lack of internal search, unused files, and weak SEO targeting – that impede usability and performance. Removing redundant links and unused assets streamlines the site and improves load speed, since “eliminating unused JavaScript code can directly improve your website’s loading speed – making it lighter and faster”
-. Consistent design and localized content are also crucial: mixed English/Arabic labels add cognitive load
-, while building a localized SEO strategy (bilingual keywords, meta tags, sitemaps) boosts discoverability
-. Based on the attached code and report analysis, the following development prompts and explanations will guide a “smart agent” to fix these issues:
-(x) Prompt: “Scan the project codebase (HTML, CSS, JS) to identify unused pages, scripts, and assets. Compare files against the navigation menu and sitemap. Produce a list of orphaned or redundant files (e.g. old docs in /Docfile, test HTML pages) for removal.”
-Explanation: Cleaning up unused files reduces bloat and improves performance
-. A code audit (using tools like Chrome DevTools Coverage or Lighthouse) will spot unreferenced files (e.g. legacy .doc.html pages, temporary testing files like checkout.html, new_content.html) so they can be deleted. This minimizes load time and maintenance overhead.
-Prompt: “Refactor the navigation menu: remove duplicate links and ensure each menu item has a clear label in one language. For example, merge the two ‘smart-automation’ entries into one link, and consistently use Arabic or English labels per section. Verify all menu links point to existing pages.”
-Explanation: Duplicate links confuse users and increase cognitive load. As Nielsen Norman Group advises, “eliminate redundancy on webpages whenever possible to reduce cognitive overload. Each extra link makes your site harder to use”
-. Consistent language prevents ambiguity; mixing Arabic and English in interface text looks unprofessional and “adds cognitive load”
-. Refactoring the menu ensures users see only distinct, meaningful choices.
-Prompt: “Test and improve responsive layout: ensure all pages use a mobile-friendly <meta name="viewport"> and that CSS layouts adapt for different screen sizes. Fix any layout shifts or horizontal scrolling issues.”
-Explanation: With over half of Saudi users on mobile
-, a responsive design is critical. Improving mobile responsiveness prevents users from abandoning the site; one strategy is Google’s mobile-first indexing
-. Ensuring fast, stable page rendering (by optimizing CSS grids, using media queries, compressing images) aligns with best practices and local user habits
-.
-Prompt: “Implement a site-wide internal search function. Integrate an open-source JS search library (e.g. Lunr.js, FlexSearch) to index all main pages and content. Add a visible search input in the header (or sidebar) so users can search instantly.”
-Explanation: An internal search greatly aids usability. When users can’t find content, many simply leave; in fact, “poor search functionality is a top reason for site abandonment”
-. Empirical data shows about one-third of visitors use on-site search
-. Adding a fast search box (with live suggestions) will directly “guide users precisely where they need to go” and significantly boost conversion rates
-.
-Prompt: “Optimize SEO metadata for a Saudi audience. Update each page’s <title>, meta description, and heading tags to include Arabic keywords like ‘الذكاء الاصطناعي’, ‘أتمتة الشركات’, etc. Translate key content and image alt text into Arabic. Create or update robots.txt and sitemap.xml, and ensure sitemap.xml is referenced in robots.txt. Add <link rel="alternate" hreflang="ar-SA" …> tags (and English equivalents) so search engines serve the correct language version.”
-Explanation: Localizing SEO ensures the site appears in regional searches. Expert guides recommend using both English and Arabic keywords for Saudi users
-. A sitemap and robots.txt help search engines crawl the site efficiently
-, and hreflang tags signal language targeting
-. Also, translating metadata (titles, descriptions, alt text) into Arabic improves search relevance
-. These steps help increase traffic from local organic search.
-Prompt: “Integrate Groq Cloud’s free-tier API to add AI features. For example, build a bilingual AI chatbot interface (e.g. using Llama-3 via Groq) that answers visitor questions about BrightAI’s services. Also add a ‘Summarize’ button on blog pages that sends the article text to the Groq API and displays a short summary.”
-Explanation: AI-powered tools enhance user engagement. An on-site AI chatbot can improve support and lead generation by providing instant answers in Arabic/English. Similarly, automated content summarization (using an LLM) keeps articles fresh and accessible. Although no citation is needed for using LLMs, industry trend reports note that AI chatbots and summarizers boost UX and content turnover.
-Prompt: “Add interactive illustrations and a unified design system. Choose a consistent color palette and font scheme across all pages. Introduce dark mode support. Enhance pages with icons or infographics relevant to the content (e.g. data charts for analytics). Incorporate subtle animations (e.g. scroll-triggered pulses) that do not hinder performance.”
-Explanation: Consistency and visuals improve usability. A design system (consistent colors, typography, component placements) makes the experience “more straightforward to use”
-. Visual aids like icons and infographics make information “more engaging and easier to understand”
-. Dark mode and smooth animations can enhance appeal, as long as they are lightweight, leveraging CSS animations or small JavaScript libraries.
-Prompt: “Compress and optimize all media and code. Convert large images to modern formats (e.g. WebP) and use responsive images (<picture>). Minify and bundle CSS/JS files. Use lazy-loading for offscreen content. Then run a performance audit (e.g. Google Lighthouse) and fix critical issues (render-blocking resources, inefficient code).”
-Explanation: Faster pages improve SEO and UX. Unused code and unoptimized assets slow loading
-. Tools like PageSpeed Insights or Lighthouse identify bottlenecks. Performance tuning (minification, lazy-loading, image compression) aligns with SEO best practices
- and reduces bounce rates.
-Prompt: “Ensure accessibility and SEO markup. Verify all images have descriptive alt text (in both languages) and add ARIA labels to interactive elements. Use a logical heading structure (one <h1> per page, clear <h2>, <h3> hierarchies). Implement Schema.org markup for key content (organization details, breadcrumbs) to improve search trust.”
-Explanation: Accessibility features also boost SEO. As recommended, translate metadata and alt text for each language version
-. ARIA labels and proper headings help screen readers. Schema markup (e.g. organization, breadcrumbList) signals site structure to crawlers, enhancing rich results. This builds user trust and complies with modern web standards.
-Prompt: “Set up analytics and QA processes. Install Google Analytics and Search Console. After changes, run automated tests (broken-link checker, sitemap validator) to confirm all pages load correctly and no links are broken. Conduct A/B tests on critical pages (e.g. homepage layout) and gather user feedback.”
-Explanation: Ongoing monitoring ensures sustained quality. Analytics allow tracking SEO ranking and user behavior. Automated QA checks prevent regressions (especially after removals). Periodic user testing can catch any residual UX issues and guide further improvements.
-Each of these prompts should be issued to the development agent in context. They directly address the issues identified in the audit. Citations from UX and SEO research support the importance of these tasks (e.g. removing duplicate links
-, improving searchability
-, and localizing content
-). Implementing these steps will systematically improve BrightAI’s website usability, performance, and search visibility. Sources: UX and SEO best practices from Nielsen Norman Group, UX StackExchange, SEO guides, and accessibility experts
+# تحليل التقارير وإنشاء البرومبتات للوكيل الذكي
+
+بعد تحليل التقارير الستة المرفقة بعناية، لاحظت أنها تغطي المحاور التالية:
+
+1.⁠ ⁠*تحسين الأداء والسرعة* (ضغط، تخزين مؤقت، تحميل كسول)
+2.⁠ ⁠*إصلاح المشاكل التقنية* (أخطاء HTML، ملفات غير مستخدمة، أمان)
+3.⁠ ⁠*تحسين واجهة وتجربة المستخدم* (UI/UX، تصميم متجاوب، نظام تصميم موحد)
+4.⁠ ⁠*تحسين محركات البحث* (SEO، كلمات مفتاحية، بيانات منظمة)
+5.⁠ ⁠*إعادة هيكلة المشروع* (تنظيم الملفات، توحيد التسمية)
+6.⁠ ⁠*إضافة ميزات ذكية* (بحث داخلي، شات بوت، AIaaS)
+7.⁠ ⁠*تحسين المحتوى* (صفحات Smart Automation وAI Agent)
+
+---
+
+## البرومبتات للوكيل الذكي (بالعربية)
+
+### المجموعة الأولى: تحسين الأداء والسرعة
+
+
+البرومبت 1: ضغط وتحسين ملفات CSS
+─────────────────────────────────
+افحص جميع ملفات CSS في المشروع واعمل على:
+- دمج الملفات المتشابهة في ملف واحد رئيسي (main.css)
+- ضغط الملفات وإزالة المسافات والتعليقات (Minify)
+- إزالة الأكواد غير المستخدمة (Dead CSS)
+- إنشاء CSS Variables موحدة للألوان والخطوط:
+  :root {
+    --primary: #0A1AFF;
+    --secondary: #0F172A;
+    --accent: #22D3EE;
+  }
+- تنظيم الملفات في مجلد assets/css/
+
+
+
+البرومبت 2: ضغط وتحسين ملفات JavaScript
+─────────────────────────────────────
+افحص جميع ملفات JavaScript في المشروع واعمل على:
+- دمج الملفات ذات الوظائف المتشابهة
+- ضغط الملفات باستخدام أدوات Minification
+- إضافة خاصية defer أو async للسكربتات غير الحرجة
+- إزالة الأكواد المكررة والوظائف غير المستخدمة
+- تنظيم الملفات في مجلد assets/js/
+- التأكد من عدم وجود أخطاء في Console
+
+
+
+البرومبت 3: تحسين الصور
+───────────────────────
+افحص جميع الصور في المشروع واعمل على:
+- تحويل الصور إلى صيغة WebP للتقليل من الحجم
+- ضغط الصور الكبيرة باستخدام أدوات مثل TinyPNG
+- إضافة خاصية width و height لكل وسم <img>
+- تفعيل التحميل الكسول (lazy loading) للصور غير المرئية
+- إضافة نص بديل (alt) وصفي لكل صورة
+- تنظيم الصور في مجلد assets/images/
+
+
+
+البرومبت 4: تفعيل التخزين المؤقت والضغط
+─────────────────────────────────────
+عدّل ملف .htaccess لتفعيل:
+- التخزين المؤقت Cache-Control للملفات الثابتة
+- ضغط Gzip أو Brotli للملفات النصية
+- تفعيل Headers الأمنية
+- منع استعراض المجلدات
+- إعادة التوجيه من HTTP إلى HTTPS
+
+
+---
+
+### المجموعة الثانية: إصلاح المشاكل التقنية والأمنية
+
+
+البرومبت 5: إزالة الملفات الحساسة والخطرة
+──────────────────────────────────────
+افحص المشروع وأزل فوراً:
+- ملف .env من المستودع (انقله خارج المشروع)
+- ملفات .DS_Store
+- مجلدات IDE مثل .vscode
+- ملفات النسخ الاحتياطي القديمة
+- مجلد old/ والملفات غير المستخدمة
+- تأكد من أن .gitignore يستثني هذه الملفات
+- أنشئ ملف .env.example كمرجع بدون قيم حقيقية
+
+
+
+البرومبت 6: فحص وإصلاح الروابط
+──────────────────────────────
+افحص جميع صفحات HTML واعمل على:
+- اكتشاف الروابط المعطلة (404) وإصلاحها
+- استبدال روابط http:// بـ https://
+- توحيد الروابط الداخلية وإزالة التكرار
+- التحقق من عمل جميع روابط التنقل
+- إنشاء قائمة بالصفحات غير المرتبطة في التنقل
+
+
+
+البرومبت 7: تنظيف الملفات غير المستخدمة
+──────────────────────────────────────
+افحص المشروع وحدد الملفات غير المستخدمة:
+- صفحات HTML قديمة أو مكررة (مثل Jobs.html وjobs.html وJobs2.html)
+- ملفات CSS غير مرتبطة بأي صفحة
+- ملفات JS غير مستدعاة
+- صور غير مستخدمة في أي صفحة
+- مجلدات فارغة أو غير ضرورية
+أنشئ تقريراً بهذه الملفات قبل الحذف للمراجعة
+
+
+
+البرومبت 8: إصلاح هيكل HTML
+───────────────────────────
+افحص جميع صفحات HTML وأصلح:
+- التأكد من وجود وسم <h1> واحد في كل صفحة
+- ترتيب العناوين بتسلسل منطقي (H1 → H2 → H3)
+- استخدام Semantic HTML (header, nav, main, footer, section, article)
+- إضافة وسم <meta name="viewport"> للتجاوب
+- التأكد من إغلاق جميع الوسوم بشكل صحيح
+
+
+---
+
+### المجموعة الثالثة: تحسين واجهة وتجربة المستخدم
+
+
+البرومبت 9: إنشاء نظام تصميم موحد (Design System)
+──────────────────────────────────────────────
+أنشئ نظام تصميم موحد يتضمن:
+- ملف CSS للألوان الأساسية (3 ألوان: Primary, Secondary, Accent)
+- خط موحد (Inter أو Poppins) بأحجام ثابتة
+- أنماط موحدة للأزرار (Buttons)
+- أنماط موحدة للبطاقات (Cards)
+- أنماط موحدة للنماذج (Forms)
+- مكون Header موحد لجميع الصفحات
+- مكون Footer موحد لجميع الصفحات
+احفظ في ملفات: design-system.css و components.css
+
+
+
+البرومبت 10: توحيد شريط التنقل
+─────────────────────────────
+أنشئ شريط تنقل (Header) موحد لجميع الصفحات:
+- 5 عناصر كحد أقصى في القائمة الرئيسية
+- زر CTA واضح (احجز استشارة / Get Started)
+- قائمة منسدلة للأقسام الفرعية
+- توحيد اللغة (عربي أو إنجليزي حسب الصفحة)
+- إزالة الروابط المكررة
+- تصميم متجاوب مع قائمة Hamburger للجوال
+
+
+
+البرومبت 11: تحسين التصميم للجوال (Mobile First)
+───────────────────────────────────────────────
+راجع جميع الصفحات وطبق:
+- تصميم متجاوب يعمل على جميع أحجام الشاشات
+- استخدام Flexbox أو CSS Grid للتخطيط المرن
+- تقليل النصوص الطويلة على الشاشات الصغيرة
+- تحويل الأقسام الطويلة إلى بطاقات (Cards)
+- زيادة المسافات بين العناصر القابلة للنقر
+- اختبار على أحجام: 320px, 768px, 1024px, 1440px
+
+
+
+البرومبت 12: تحسين تجربة المستخدم
+─────────────────────────────────
+طبق التحسينات التالية على الموقع:
+- إضافة Skeleton Loading أثناء تحميل المحتوى
+- تحسين التباين اللوني للنصوص والخلفيات
+- إضافة تأثيرات Hover خفيفة للأزرار والروابط
+- إنشاء صفحة خطأ 404 مخصصة واحترافية
+- إضافة Breadcrumbs للتنقل السهل
+- تحسين سرعة التنقل بين الصفحات
+
+
+---
+
+### المجموعة الرابعة: تحسين محركات البحث (SEO)
+
+
+البرومبت 13: تحسين Meta Tags
+───────────────────────────
+راجع جميع صفحات HTML وأضف/حسّن:
+- عنوان <title> فريد لكل صفحة (60 حرف كحد أقصى)
+- وصف <meta name="description"> فريد (155 حرف)
+- كلمات مفتاحية سعودية مثل:
+  • الذكاء الاصطناعي في السعودية
+  • حلول الأتمتة الذكية
+  • تحليل البيانات للشركات
+  • AIaaS للمؤسسات
+- وسم canonical لمنع المحتوى المكرر
+- وسوم Open Graph للمشاركة على السوشيال ميديا
+
+
+
+البرومبت 14: إنشاء ملفات SEO الأساسية
+────────────────────────────────────
+أنشئ أو حدّث الملفات التالية:
+1. robots.txt:
+   - السماح بالزحف للصفحات المهمة
+   - منع الصفحات الإدارية والخاصة
+   - إضافة رابط Sitemap
+2. sitemap.xml:
+   - إدراج جميع الصفحات المهمة
+   - تحديد الأولوية والتكرار
+   - دعم اللغتين العربية والإنجليزية
+3. التحقق من hreflang للغات المتعددة
+
+
+
+البرومبت 15: إضافة البيانات المنظمة (Schema)
+──────────────────────────────────────────
+أضف Schema Markup للصفحات:
+- Organization Schema للصفحة الرئيسية
+- Service Schema لصفحات الخدمات
+- FAQ Schema لقسم الأسئلة الشائعة
+- BreadcrumbList Schema للتنقل
+- Article Schema لصفحات المدونة
+استخدم JSON-LD في وسم <script type="application/ld+json">
+
+
+
+البرومبت 16: تحسين المحتوى للكلمات المفتاحية
+───────────────────────────────────────────
+حسّن محتوى الصفحات الرئيسية بإضافة كلمات مفتاحية:
+- سير عمل الذكاء الاصطناعي (AI Workflows)
+- الذكاء الاصطناعي كخدمة (AIaaS)
+- الأتمتة الذكية بالذكاء الاصطناعي
+- التعلم الآلي السحابي
+- التحليل التنبؤي والذكاء الاصطناعي
+- حلول الذكاء الاصطناعي التوليدي
+وزّع الكلمات بشكل طبيعي في العناوين والفقرات
+
+
+---
+
+### المجموعة الخامسة: إعادة هيكلة المشروع
+
+
+البرومبت 17: إعادة تنظيم هيكل المجلدات
+────────────────────────────────────
+أعد تنظيم المشروع وفق الهيكل التالي:
+/
+├── index.html
+├── pages/
+│   ├── about-us.html
+│   ├── our-products.html
+│   ├── consultation.html
+│   └── ...
+├── assets/
+│   ├── css/
+│   │   ├── main.css
+│   │   └── components.css
+│   ├── js/
+│   │   ├── main.js
+│   │   └── components.js
+│   └── images/
+│       ├── icons/
+│       └── photos/
+├── config/
+│   └── .htaccess
+└── sitemap.xml
+
+
+
+البرومبت 18: توحيد تسمية الملفات
+─────────────────────────────────
+راجع جميع أسماء الملفات وطبق:
+- استخدام أحرف صغيرة فقط (lowercase)
+- استخدام الشرطة (-) بدل المسافات والشرطة السفلية
+- أسماء وصفية وواضحة بالإنجليزية
+- إزالة الأرقام العشوائية من الأسماء
+أمثلة:
+  - Jobs.html → jobs.html
+  - Business2.css → business-alt.css
+  - newindex.html → index.html
+
+
+---
+
+### المجموعة السادسة: إضافة ميزات ذكية
+
+
+البرومبت 19: إنشاء محرك بحث داخلي
+─────────────────────────────────
+أنشئ محرك بحث داخلي فعال:
+- استخدم مكتبة Lunr.js أو FlexSearch
+- أضف حقل البحث في شريط التنقل
+- فهرس جميع الصفحات المهمة (العناوين والمحتوى)
+- عرض النتائج فورياً أثناء الكتابة
+- دعم البحث باللغتين العربية والإنجليزية
+- إضافة اقتراحات بحث ذكية
+
+
+
+البرومبت 20: دمج شات بوت ذكي باستخدام Groq API
+────────────────────────────────────────────
+أنشئ مساعد دردشة ذكي:
+- استخدم Groq API المجاني مع نموذج Llama
+- صمم واجهة دردشة أنيقة (Widget) في زاوية الصفحة
+- دعم اللغتين العربية والإنجليزية
+- تدريب البوت على الإجابة عن:
+  • خدمات Bright AI
+  • أسعار الاستشارات
+  • طريقة التواصل
+- حفظ المحادثات للمراجعة
+- إضافة رسائل ترحيبية تلقائية
+
+
+
+البرومبت 21: إضافة ميزة تلخيص المحتوى
+────────────────────────────────────
+أضف ميزة تلخيص ذكي لصفحات المدونة:
+- زر "تلخيص المقال" في كل مقالة
+- استخدام Groq API لتوليد الملخص
+- عرض الملخص في نافذة منبثقة أو قسم علوي
+- دعم التلخيص بالعربية والإنجليزية
+- إمكانية نسخ الملخص أو مشاركته
+
+
+---
+
+### المجموعة السابعة: تحسين المحتوى
+
+
+البرومبت 22: إعادة كتابة صفحة Smart Automation
+──────────────────────────────────────────────
+أعد كتابة محتوى صفحة smart-automation.html ليركز على:
+سير عمل الذكاء الاصطناعي (AI Workflows)
+
+الأقسام المطلوبة:
+1. مقدمة: شرح مفهوم سير عمل الذكاء الاصطناعي
+2. الفرق عن الأتمتة التقليدية
+3. الفوائد: تحرير الموارد، زيادة الدقة، المرونة
+4. أمثلة تطبيقية: التصنيع، اللوجستيات، الخدمات المالية
+5. التقنيات: تعلم عميق، تحليل تنبؤي، AI توليدي
+6. دعوة للعمل (CTA): تواصل معنا لتصميم سير عمل مخصص
+
+استخدم كلمات مفتاحية: سير عمل الذكاء الاصطناعي، الأتمتة الذكية
+
+
+
+البرومبت 23: إعادة كتابة صفحة AI Agent
+─────────────────────────────────────
+أعد كتابة محتوى صفحة ai-agent.html ليركز على:
+الذكاء الاصطناعي كخدمة (AIaaS)
+
+الأقسام المطلوبة:
+1. تعريف AIaaS وكيف يعمل
+2. المزايا: لا حاجة لبنية تحتية، اشتراك مرن، تحديث مستمر
+3. الخدمات المتاحة: NLP، رؤية حاسوبية، تحليل بيانات، AI توليدي
+4. حالات الاستخدام: شات بوت، فحص جودة، توقعات
+5. نموذج التسعير والاشتراك
+6. دعوة للعمل: جرب AIaaS من Bright AI
+
+استخدم كلمات مفتاحية: الذكاء الاصطناعي كخدمة، AIaaS
+
+البرومبت 24: إنشاء قسم الأسئلة الشائعة (FAQ)
+───────────────────────────────────────────
+أنشئ صفحة أو قسم للأسئلة الشائعة يتضمن:
+
+الأسئلة المقترحة:
+- ما هو الذكاء الاصطناعي كخدمة (AIaaS)؟
+- كيف يحسّن الذكاء الاصطناعي سير العمل؟
+- ما الفرق بين الأتمتة التقليدية والذكية؟
+- هل تحتاج شركتي لخبراء AI لاستخدام خدماتكم؟
+- ما تكلفة خدمات Bright AI؟
+- كيف أبدأ مع Bright AI؟
+
+أضف Schema FAQ للظهور في نتائج البحث
+صمم بتنسيق Accordion للسهولة
+البرومبت 25: إنشاء صفحات إضافية
+──────────────────────────────
+أنشئ الصفحات التالية لتعزيز الموقع:
+
+1. صفحة دراسات الحالة (Case Studies):
+   - قصص نجاح عملاء
+   - النتائج المحققة بالأرقام
+
+2. صفحة المدونة (Blog):
+   - مقالات عن أحدث تطورات AI
+   - نصائح وإرشادات تقنية
+
+3. صفحة فريق العمل:
+   - التعريف بالفريق وخبراتهم
+   - رؤية الشركة وأهدافها
+
+4. صفحة المكتبة الذكية:
+   - كتب إلكترونية
+   - أوراق بيضاء
+   - فيديوهات تعليمية
+المجموعة الثامنة: المراقبة والتحليل
+
+البرومبت 26: إعداد أدوات التحليل
+───────────────────────────────
+أضف وفعّل أدوات المراقبة:
+- Google Analytics 4 لتتبع الزوار
+- Google Search Console لمراقبة SEO
+- إعداد الأهداف والتحويلات
+- تتبع الأحداث (النقرات، التنزيلات، النماذج)
+- إنشاء لوحة تحكم للمقاييس الأساسية
+- إعداد تنبيهات للمشاكل التقنية
+البرومبت 27: اختبار الأداء والإصلاح
+──────────────────────────────────
+شغّل اختبارات الأداء وأصلح المشاكل:
+- استخدم Lighthouse لقياس الأداء
+- تحقق من Core Web Vitals (LCP, FID, CLS)
+- اختبر على PageSpeed Insights
+- أصلح أي مشاكل حرجة (Critical)
+- وثّق النتائج قبل وبعد التحسين
+- اختبر على متصفحات مختلفة (Chrome, Firefox, Safari, Edge)
+ملخص البرومبتات حسب الأولوية
+
+الأولوية	البرومبتات	الوصف
+عاجل	5, 6, 7	أمان وتنظيف الملفات
+مهم جداً	1, 2, 3, 4	تحسين الأداء والسرعة
+مهم	8, 13, 14, 15	SEO وهيكل HTML
+متوسط	9, 10, 11, 12	UI/UX والتصميم
+تطويري	17, 18	إعادة الهيكلة
+إضافي	19, 20, 21	ميزات ذكية
+محتوى	22, 23, 24, 25	تحسين المحتوى
+مراقبة	26, 27	التحليل والاختبار
+هل تريد أن أوسّع في أي برومبت معين أو أضيف برومبتات إضافية لجانب محدد؟

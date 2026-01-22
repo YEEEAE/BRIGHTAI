@@ -427,7 +427,7 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -1651,7 +1651,7 @@
 
                 // Start animation when visible
                 const observer = new IntersectionObserver((entries) => {
-                    if (entries[ 0 ].isIntersecting) {
+                    if (entries[0].isIntersecting) {
                         updateCounter();
                         observer.disconnect();
                     }
