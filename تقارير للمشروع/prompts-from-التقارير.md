@@ -3,7 +3,7 @@ BrightAI’s website audit reveals several key issues – duplicate navigation l
 . Consistent design and localized content are also crucial: mixed English/Arabic labels add cognitive load
 , while building a localized SEO strategy (bilingual keywords, meta tags, sitemaps) boosts discoverability
 . Based on the attached code and report analysis, the following development prompts and explanations will guide a “smart agent” to fix these issues:
-Prompt: “Scan the project codebase (HTML, CSS, JS) to identify unused pages, scripts, and assets. Compare files against the navigation menu and sitemap. Produce a list of orphaned or redundant files (e.g. old docs in /Docfile, test HTML pages) for removal.”
+(x) Prompt: “Scan the project codebase (HTML, CSS, JS) to identify unused pages, scripts, and assets. Compare files against the navigation menu and sitemap. Produce a list of orphaned or redundant files (e.g. old docs in /Docfile, test HTML pages) for removal.”
 Explanation: Cleaning up unused files reduces bloat and improves performance
 . A code audit (using tools like Chrome DevTools Coverage or Lighthouse) will spot unreferenced files (e.g. legacy .doc.html pages, temporary testing files like checkout.html, new_content.html) so they can be deleted. This minimizes load time and maintenance overhead.
 Prompt: “Refactor the navigation menu: remove duplicate links and ensure each menu item has a clear label in one language. For example, merge the two ‘smart-automation’ entries into one link, and consistently use Arabic or English labels per section. Verify all menu links point to existing pages.”
