@@ -116,3 +116,74 @@
     border-radius: inherit;
     margin: -1px;
 }
+
+/* ==========================================================================
+   Services Cards - Enhanced Styles
+   ========================================================================== */
+
+/* Featured Health Service Card */
+.featured-health-service {
+    min-height: 280px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.featured-health-service:hover {
+    transform: translateY(-8px);
+}
+
+/* Service Card Links */
+.service-card-link {
+    text-decoration: none;
+    display: block;
+}
+
+.service-card-link:hover .service-card {
+    transform: translateY(-8px);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(99, 102, 241, 0.15);
+}
+
+.service-card-link .service-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Service Icon Enhanced */
+.service-card-link:hover .service-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Featured Badge Animation */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(244, 63, 94, 0.8);
+    }
+}
+
+.featured-health-service .animate-pulse {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .featured-health-service .text-3xl {
+        font-size: 1.75rem;
+    }
+
+    .featured-health-service .w-28 {
+        width: 5rem;
+        height: 5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .featured-health-service {
+        min-height: auto;
+    }
+}
