@@ -1,1138 +1,374 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bright AI | المدونة</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-8LLESL207Q');
     </script>
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6941824700617912"
-        crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
-    <meta name="keywords" content="ذكاء اصطناعي, تقنية, مدونة, Bright AI">
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="Gemini.png">
-    <link rel="stylesheet" href="blog.min.css">
-    <link rel="stylesheet" href="css/unified-nav.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة</title>
-    <link rel="canonical" href="https://brightai.site/blog">
-    <meta property="og:title" content="مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
-    <meta property="og:description" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
-    <meta property="og:image" content="https://d.top4top.io/p_33354e90u1.png">
-    <meta property="og:type" content="website">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Bright AI",
-      "logo": "https://d.top4top.io/p_33354e90u1.png"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "مدونة Bright AI",
-      "description": "مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة",
-      "url": "https://brightai.site/blog.html",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Bright AI",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://d.top4top.io/p_33354e90u1.png"
-        }
-      },
-      "inLanguage": "ar-SA"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "الرئيسية",
-          "item": "https://brightai.site/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "المدونة",
-          "item": "https://brightai.site/blog.html"
-        }
-      ]
-    }
-    </script>
+    <!-- Meta Tags -->
+    <meta name="description" content="مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة من Bright AI." />
+    <meta name="author" content="Bright AI" />
+    <link rel="canonical" href="https://brightai.site/blog" />
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
-    <meta name="twitter:description"
-        content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-    <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+    <!-- Performance Resources -->
+    <link rel="stylesheet" href="css/critical.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
-    <meta property="og:description" content="مدونة Bright AI - مقالات وأخبار عن الذكاء الاصطناعي والتقنيات الحديثة">
-    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-    <meta property="og:url" content="https://brightai.site/blog">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_SA">
-    <meta property="og:site_name" content="مُشرقة AI">
+    <!-- Performance Loader Script -->
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('css/design-tokens.css');
+                loadCSS('css/typography.css');
+                loadCSS('css/glass-morphism.css');
+                loadCSS('css/main.min.css');
+                loadCSS('css/premium-effects.min.css');
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            function loadAnimations() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                    setTimeout(loadAnimations, 300);
+                });
+            } else {
+                loadDeferredResources();
+                setTimeout(loadAnimations, 300);
+            }
+        })();
+    </script>
 </head>
 
-<body>
-    <!-- Loader -->
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-    </div>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <!-- Background -->
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
-    <!-- Unified Navigation JS -->
-    <script src="js/unified-nav.min.js" defer></script>
-
-    <!-- التنقل الموحد الجديد -->
+    <!-- UNIFIED HEADER -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
-            <!-- Logo -->
             <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+                <img src="Gemini.png" alt="Bright AI" width="42" height="42" />
+                <span>Bright AI</span>
             </a>
-
-            <!-- Hamburger Menu Button (Mobile) -->
-            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-
-            <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="/">الرئيسية</a></li>
-
-                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+                <li role="none"><a role="menuitem" href="/" class="flex items-center gap-2">الرئيسية</a></li>
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أنظمة ذكية مؤسسية متكاملة
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        أنظمة ذكية مؤسسية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="h/projects/interview/">نظام توظيف ذكي
-                                متكامل</a></li>
-                        <li role="none"><a role="menuitem" href="health-bright">ثورة الذكاء الاصطناعي في الرعاية
-                                الصحية</a></li>
-                        <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
+                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي</a>
+                        </li>
+                        <li role="none"><a role="menuitem" href="Smart-Medical-Archive/index.html">الارشيف الطبي
+                                الذكي</a></li>
                     </ul>
                 </li>
-
-                <!-- Dropdown: خدمات ذكية -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
                         خدمات ذكية
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
-                        <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
-                        <li role="none"><a role="menuitem" href="consultation">استشارات الذكاء الاصطناعي</a></li>
-                        <li role="none"><a role="menuitem" href="smart-automation">الأتمتة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="our-products">خدمات الذكاء الاصطناعي</a></li>
+                        <li role="none"><a role="menuitem" href="ai-agent.html">AIaaS</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
                     </ul>
                 </li>
-
-                <!-- Dropdown: بوابة المعرفة -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
                         بوابة المعرفة
                         <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
                         </svg>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="about-us">عن شركة مُشرقة AI</a>
-                        </li>
-                        <li role="none"><a role="menuitem" href="Docs">DOCS</a></li>
-                    </ul>
-                </li>
-
-                <!-- Dropdown: أدوات ذكية مجانية -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أدوات ذكية مجانية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="tools">أدوات ذكية مجانية</a></li>
-                        <li role="none"><a role="menuitem" href="h/projects/interview/">نماذج AI تجريبية</a>
-                        </li>
-                        <li role="none"><a role="menuitem" href="ai-bots">شات بوت</a></li>
+                        <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
+                        <li role="none"><a role="menuitem" href="about-us.html">عن الشركة</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
-    <div class="nav-overlay" aria-hidden="true"></div>
+    <div class="nav-overlay" id="nav-overlay"></div>
 
-    <!-- Header -->
-    <header class="header" style="margin-top: 72px;">
-        <h1><i class="fas fa-lightbulb"></i> مدونة Bright AI</h1>
+    <!-- HERO SECTION -->
+    <header class="hero-section relative min-h-[50vh] flex items-center pt-32 pb-16 px-6 overflow-hidden"
+        style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
+        <div class="absolute inset-0 gradient-animate opacity-20"></div>
+        <div class="max-w-7xl mx-auto w-full relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" data-aos="fade-up">
+                المكتبة <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">الذكية</span>
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto" data-aos="fade-up"
+                data-aos-delay="200">
+                أحدث المقالات والرؤى حول الذكاء الاصطناعي وتقنيات المستقبل
+            </p>
+        </div>
     </header>
 
-    <!-- Breadcrumb Navigation -->
-    <nav class="breadcrumb-nav" aria-label="مسار التنقل"
-        style="background: rgba(17, 34, 64, 0.8); backdrop-filter: blur(10px); padding: 0.75rem 1.5rem; border-bottom: 1px solid rgba(100, 255, 218, 0.1);">
-        <div class="breadcrumb-container"
-            style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 0.5rem;">
-            <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList"
-                style="display: flex; align-items: center; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; gap: 0.5rem;">
-                <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
-                    style="display: flex; align-items: center; font-size: 0.875rem;">
-                    <a href="/" itemprop="item"
-                        style="color: #8892B0; text-decoration: none; padding: 0.25rem 0.5rem; border-radius: 4px; transition: color 0.2s ease;"><span
-                            itemprop="name">الرئيسية</span></a>
-                    <meta itemprop="position" content="1" />
-                </li>
-                <li class="breadcrumb-separator" aria-hidden="true"
-                    style="color: #8892B0; opacity: 0.5; margin: 0 0.25rem; font-size: 0.75rem; transform: rotate(180deg);">
-                    ›</li>
-                <li class="breadcrumb-item current" itemprop="itemListElement" itemscope
-                    itemtype="https://schema.org/ListItem"
-                    style="display: flex; align-items: center; font-size: 0.875rem; color: #64FFDA; font-weight: 500;">
-                    <span itemprop="name" style="padding: 0.25rem 0.5rem;">المدونة</span>
-                    <meta itemprop="position" content="2" />
-                </li>
-            </ol>
+    <!-- BLOG GRID -->
+    <section class="py-24 px-6 bg-[#020617] relative">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <!-- Categories Filter (Visual Only for now) -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="px-6 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium">الكل</button>
+                <button
+                    class="px-6 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">الذكاء
+                    الاصطناعي</button>
+                <button
+                    class="px-6 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">الأتمتة</button>
+                <button
+                    class="px-6 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">تحليل
+                    البيانات</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <article
+                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
+                    data-aos="fade-up">
+                    <div class="h-48 bg-indigo-900/30 w-full relative group-hover:scale-105 transition duration-500">
+                        <!-- Placeholder Image or Icon if no image -->
+                        <div class="absolute inset-0 flex items-center justify-center text-indigo-400/30">
+                            <iconify-icon icon="lucide:newspaper" width="64"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 text-xs text-indigo-400 mb-3">
+                            <span>الذكاء الاصطناعي</span>
+                            <span>•</span>
+                            <span>01/03/2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">تأثير الذكاء الاصطناعي التوليدي على
+                            صناعة المحتوى في السعودية</h3>
+                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
+                            تقنيات الذكاء الاصطناعي التوليدي تلعب دوراً محورياً في تشكيل مستقبل صناعة المحتوى في
+                            المملكة.
+                        </p>
+                        <a href="blogger/ai-generative-content-industry-saudi-arabia"
+                            class="text-white font-medium hover:text-indigo-400 transition flex items-center gap-2 mt-auto">
+                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article
+                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
+                    data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-purple-900/30 w-full relative group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center text-purple-400/30">
+                            <iconify-icon icon="lucide:trophy" width="64"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 text-xs text-purple-400 mb-3">
+                            <span>عام</span>
+                            <span>•</span>
+                            <span>12/11/2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">السعودية ومونديال 2034: رحلة طموحة
+                        </h3>
+                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
+                            تستعد المملكة لاستضافة حدث تاريخي. اكتشف التفاصيل حول الاستعدادات وتأثيرها الاقتصادي.
+                        </p>
+                        <a href="article_2"
+                            class="text-white font-medium hover:text-purple-400 transition flex items-center gap-2 mt-auto">
+                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article
+                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
+                    data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-48 bg-cyan-900/30 w-full relative group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center text-cyan-400/30">
+                            <iconify-icon icon="lucide:briefcase" width="64"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 text-xs text-cyan-400 mb-3">
+                            <span>سوق العمل</span>
+                            <span>•</span>
+                            <span>12/2/2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">مستقبل الوظائف في عصر الذكاء
+                            الاصطناعي</h3>
+                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
+                            هل سيغير الذكاء الاصطناعي مستقبل الوظائف في المملكة؟ تحليل للفرص والتحديات.
+                        </p>
+                        <a href="blogger/will-ai-change-job-future-saudi-arabia"
+                            class="text-white font-medium hover:text-cyan-400 transition flex items-center gap-2 mt-auto">
+                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article
+                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
+                    data-aos="fade-up">
+                    <div class="h-48 bg-blue-900/30 w-full relative group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center text-blue-400/30">
+                            <iconify-icon icon="lucide:bar-chart" width="64"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 text-xs text-blue-400 mb-3">
+                            <span>المالية</span>
+                            <span>•</span>
+                            <span>12/11/2024</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">التحليل الذكي للبيانات في القطاع
+                            المالي</h3>
+                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
+                            مستقبل التحليل المالي في المملكة ضمن رؤية 2030 والتحول الرقمي.
+                        </p>
+                        <a href="blogger/future-of-intelligent-data-analysis-finance-sector"
+                            class="text-white font-medium hover:text-blue-400 transition flex items-center gap-2 mt-auto">
+                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article
+                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
+                    data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-48 bg-pink-900/30 w-full relative group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 flex items-center justify-center text-pink-400/30">
+                            <iconify-icon icon="lucide:rocket" width="64"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 text-xs text-pink-400 mb-3">
+                            <span>الأعمال</span>
+                            <span>•</span>
+                            <span>12/2/2025</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">دور الذكاء الاصطناعي في تطوير الأعمال
+                        </h3>
+                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
+                            نظرة شاملة على مستقبل التقنية في المملكة وأثرها على تطوير الأعمال.
+                        </p>
+                        <a href="blogger/ai in soudi"
+                            class="text-white font-medium hover:text-pink-400 transition flex items-center gap-2 mt-auto">
+                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- More articles can be added here following the same pattern -->
+
+            </div>
         </div>
-    </nav>
+    </section>
 
-    <!-- Search Area -->
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="ابحث في المقالات...">
-        <div class="categories">
-            <button class="category-btn active" data-category="all">جميع المقالات</button>
-            <button class="category-btn" data-category="ai">الذكاء الاصطناعي</button>
-            <button class="category-btn" data-category="tech">التقنية الحديثة</button>
-            <button class="category-btn" data-category="automation">الأتمتة</button>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <main class="blog-container">
-        <div class="articles-grid">
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🎯</span> <!-- تغيير من ⚽ إلى 🎯 -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">01/03/2025</time>
-                        <span class="read-time">5 دقائق قراءة</span>
+    <!-- UNIFIED FOOTER -->
+    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+                            <span class="text-lg font-bold text-white">B</span>
+                        </div>
+                        <span class="font-semibold text-white">Bright AI</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        نبتكر المستقبل اليوم. حلول ذكاء اصطناعي آمنة وموثوقة.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon
+                                icon="lucide:message-circle" width="20"></iconify-icon></a>
+                        <a href="mailto:yazeed1job@gmail.com"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon icon="lucide:mail"
+                                width="20"></iconify-icon></a>
                     </div>
                 </div>
-                <h2>تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في المملكة العربية السعودية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 01/03/2025 | 5 دقائق قراءة</div>
-                <p class="description">
-                    . هذه التقنيات أصبحت تلعب دوراً محورياً في تشكيل مستقبل صناعة المحتوى ليس فقط على المستوى العالمي،
-                    ولكن أيضاً في المملكة العربية السعودية التي تشهد تحولاً رقمياً غير مسبوق.
-                </p>
-                <a href="blogger/ai-generative-content-industry-saudi-arabia" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 1 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚽</span> <!-- لم يتم التغيير لأنه مناسب للمحتوى -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/11/2024</time>
-                        <span class="read-time">5 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>السعودية ومونديال 2034: رحلة طموحة نحو استضافة كأس العالم</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 5 دقائق قراءة</div>
-                <p class="description">
-                    تستعد المملكة العربية السعودية لاستضافة حدث تاريخي غير مسبوق. اكتشف التفاصيل الكاملة حول الاستعدادات
-                    والمنشآت الرياضية الجديدة والتأثير الاقتصادي المتوقع.
-                </p>
-                <a href="article_2" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span> <!-- تغيير من 📢 إلى ⚙️ -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/2/2025</time>
-                        <span class="read-time">3 دقائق قراءة</span>
-                    </div>
-                </div>
-                </h2>هل ستغير تقنيات الذكاء الاصطناعي مستقبل الوظائف في المملكة العربية السعودية؟</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 3 دقائق قراءة</div>
-                <p class="description">
-                    >تشهد المملكة العربية السعودية تحولاً جذرياً في بنيتها الاقتصادية والتكنولوجية، حيث تسعى جاهدة
-                    لتنويع مصادر الدخل بعيداً عن الاعتماد التقليدي على النفط. وفي قلب هذا التحول، تبرز تقنيات <a
-                        href="https://brightai.site/what-is-ai">الذكاء الاصطناعي</a> كمحرك رئيسي للتغيير، مما يثير
-                    تساؤلات عميقة حول مستقبل العمل والوظائف في المملكة. </p>
-                <a href="blogger/will-ai-change-job-future-saudi-arabia" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚽</span> <!-- لم يتم التغيير لأنه مناسب للمحتوى -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/11/2024</time>
-                        <span class="read-time">5 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>دراسة حالة: مستقبل التحليل الذكي للبيانات في القطاع المالي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 5 دقائق قراءة</div>
-                <p class="description">
-                    هذه الدراسة تستكشف مستقبل التحليل الذكي للبيانات في القطاع المالي، مع التركيز على تأثيره في المملكة
-                    العربية السعودية ضمن إطار رؤية 2030 والتحول الرقمي الشامل.</p>
-                </p>
-                <a href="blogger/future-of-intelligent-data-analysis-finance-sector" class="read-more">اقرأ المزيد
-                    <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🔮</span> <!-- تغيير من 📢 إلى 🔮 -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/2/2025</time>
-                        <span class="read-time">3 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>دور الذكاء الاصطناعي في تطوير الأعمال: نظرة شاملة على مستقبل التقنية في المملكة العربية السعودية
-                </h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 3 دقائق قراءة</div>
-                <p class="description">
-                    تحليل عميق لتأثير تقنيات الذكاء الاصطناعي على القطاعات المختلفة ودورها في تحقيق رؤية المملكة 2030
-                </p>
-                <a href="blogger/ai in soudi" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span> <!-- تغيير من 📢 إلى 🤖 -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/2/2025</time>
-                        <span class="read-time">3 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>مستقبل التعلم الآلي وتطبيقاته في تحسين تجربة العملاء</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 3 دقائق قراءة</div>
-                <p class="description">
-                    دراسة تحليلية شاملة لدور تقنيات الذكاء الاصطناعي في تعزيز رضا العملاء وزيادة الإيرادات </p>
-                <a href="blogger/anal" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span> <!-- تغيير من 📢 إلى ⚙️ -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/2/2025</time>
-                        <span class="read-time">3 دقائق قراءة</span>
-                    </div>
-                </div>
-                </h2>دراسة حالة: كيف تستخدم الشركات السعودية وكلاء الذكاء الاصطناعي لتحسين خدمة العملاء</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 3 دقائق قراءة</div>
-                <p class="description">
-                    أصبحت الشركات بحاجة لتبني حلول ذكية لتحسين أداء خدمة العملاء وتعزيز تجربة المستخدم.
-                    في هذا المقال سنستعرض دراسة حالة عن كيفية استخدام الشركات السعودية لوكلاء الذكاء الاصطناعي لتحسين
-                    خدمة العملاء </p>
-                <a href="blogger/case-study-saudi-companies-ai-agents-customer-service" class="read-more">اقرأ
-                    المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span> <!-- تغيير من 📢 إلى ⚙️ -->
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/2/2025</time>
-                        <span class="read-time">3 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟ - BrightAI</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 3 دقائق قراءة</div>
-                <p class="description">
-                    دليل شامل حول دور الذكاء الاصطناعي في تحسين الإنتاج الصناعي </p>
-                <a href="blogger/ production-line" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">📢</span>
-                    <div class="article-meta">
-                        <time datetime="2024-11-12">12/11/2024</time>
-                        <span class="read-time">3 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>السعودية تترقب إعلان فيفا التاريخي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/11/2024 | 3 دقائق قراءة</div>
-                <p class="description">
-                    لحظات تاريخية تنتظرها المملكة مع اقتراب إعلان فيفا الرسمي. تعرف على الخطط المستقبلية والتحضيرات
-                    الجارية لهذا الحدث العالمي.
-                </p>
-                <a href="article_2034" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 3 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الذكاء الاصطناعي: مستقبل التقنية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    استكشف عالم الذكاء الاصطناعي وتطبيقاته المختلفة في حياتنا اليومية. دليل شامل يوضح المفاهيم الأساسية
-                    والتطورات الحديثة.
-                </p>
-                <a href="article_3" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 4 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الذكاء الاصطناعي التوليدي: ثورة في عالم الإبداع</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    استكشف عالم الذكاء الاصطناعي التوليدي وكيف يغير طريقة إنتاج المحتوى والإبداع. تعرف على تطبيقاته في
-                    مجالات الفن، والكتابة، والموسيقى
-                </p>
-                <a href="blogger/Generative artificial intelligence" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 5 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">📘</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>المصطلحات والتعريفات</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">تعرف على أهم المصطلحات والتعريفات المستخدمة في مجال الذكاء الاصطناعي وتقنيات
-                    التحول الرقمي.</p>
-                <a href="definitions" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 6 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">💼</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الاستشارات المتخصصة في تطوير الأعمال باستخدام تقنيات الذكاء الاصطناعي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">كيف يمكن لتقنيات الذكاء الاصطناعي أن تساهم في تطوير الأعمال وزيادة الكفاءة؟</p>
-                <a href="consultingblog" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 7 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🌟</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>Bright AI: مؤسسة سعودية رائدة في مجال الذكاء الاصطناعي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">نفخر بكوننا جزءًا من المنظومة التقنية المتنامية في المملكة العربية السعودية.</p>
-                <a href="about-us" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 8 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">📊</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>فوائد تحليل البيانات</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">تحليل البيانات يساعد الشركات على اتخاذ قرارات أفضل وتحقيق النجاح.</p>
-                <a href="data-benefits" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 9 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>فوائد أتمتة الذكاء الاصطناعي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">الأتمتة تسهم في تحسين الأداء وتقليل الأخطاء في العمليات اليومية.</p>
-                <a href="automation-benefits" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 10 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🌐</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>ماهو الذكاء الاصطناعي (AI)؟</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">تعرف على أساسيات الذكاء الاصطناعي وكيف يغير العالم من حولنا.</p>
-                <a href="what-is-ai" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 11 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>أفضل الممارسات لتحليل البيانات: تحويل البيانات إلى قرارات ذكية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف أفضل الممارسات لتحليل البيانات وكيفية تحويلها إلى قرارات ذكية ومؤثرة. دليل شامل يغطي خطوات
-                    تحليل البيانات الفعال، من جمع البيانات إلى استخلاص الرؤى القيمة
-                </p>
-                <a href="blogger/analysy" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 12 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🗿</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>كيف يمكن للذكاء الاصطناعي تحسين أداء الشركات الصغيرة والمتوسطة؟</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن للذكاء الاصطناعي أن يحدث ثورة في أداء الشركات الصغيرة والمتوسطة. تعرف على التطبيقات
-                    العملية والأدوات التي يمكن أن تساعد الشركات في زيادة الكفاءة والإنتاجية والربحية
-                </p>
-                <a href="blogger/ai" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 13 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">🎭</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الأتمتة في مكان العمل: كيف تبدأ؟</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    قبل أن نبدأ في خطوات التنفيذ، من المهم أن نفهم لماذا أصبحت الأتمتة ضرورية في مكان العمل الحديث وكيف
-                    يمكن البدء بها بفعالية.
-                </p>
-                <a href="blogger/auto" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 14 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>وكيل الذكاء الاصطناعي: تحسين الأداء وزيادة الكفاءة</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن لوكلاء الذكاء الاصطناعي تحسين الأداء وزيادة الكفاءة في مختلف المجالات. تعرف على
-                    التطبيقات العملية والفوائد التي يمكن أن تحققها الشركات من خلال استخدام وكلاء الذكاء الاصطناعي.
-                </p>
-                <a href="blogger/ai-agent" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 15 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">💡</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>كيف تُحدث حلول الذكاء الاصطناعي المبتكرة تحولًا في الأعمال الحديثة</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف تُحدث حلول الذكاء الاصطناعي المبتكرة تحولًا في الأعمال الحديثة. تعرف على التطبيقات العملية
-                    والفوائد التي يمكن أن تحققها الشركات من خلال استخدام حلول الذكاء الاصطناعي.
-                </p>
-                <a href="blogger/ai-transformation" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 16 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">📊</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات استراتيجية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن لتحليل البيانات الذكي تحويل المعلومات إلى قرارات استراتيجية. تعرف على الأدوات
-                    والتقنيات والأساليب التي يمكن أن تساعد الشركات على تحقيق أقصى استفادة من بياناتها.
-                </p>
-                <a href="blogger/intelligent-data-analysis" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 17 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>فوائد الأتمتة الذكية في تحسين الكفاءة وتقليل الأخطاء البشرية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن للأتمتة الذكية تحسين الكفاءة وتقليل الأخطاء البشرية في مختلف المجالات. تعرف على
-                    التطبيقات العملية والفوائد التي يمكن أن تحققها الشركات من خلال استخدام الأتمتة الذكية.
-                </p>
-                <a href="blogger/smart-automation-benefits" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 18 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">👨‍💼</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    تستخدم شركة General Electric هذه التقنية لمراقبة أداء المحركات والآلات الصناعية، مما يسمح بإجراء
-                    الصيانة في الوقت المناسب دون تعطيل الإنتاج.
-                </p>
-                <a href="blogger/production-line" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 19 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">👨‍💼</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>استشارات الذكاء الاصطناعي: كيف تساعد خبراتنا في تطوير أعمالك</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن لاستشارات الذكاء الاصطناعي أن تساعد في تطوير أعمالك. تعرف على الخدمات التي نقدمها
-                    وكيف يمكن لخبراتنا أن تساعدك في تحقيق أهدافك.
-                </p>
-                <a href="blogger/ai-consulting" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 20 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">🔄</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة بالكامل</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن لأتمتة العمليات تحويل المهام الروتينية إلى عمليات مؤتمتة بالكامل. تعرف على الفوائد
-                    والتطبيقات العملية وكيف يمكن للشركات تحقيق أقصى استفادة من أتمتة العمليات.
-                </p>
-                <a href="blogger/process-automation" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 21 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">📊</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>تحليل البيانات الضخمة: استخراج رؤى قيمة لدعم نمو الأعمال</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن لتحليل البيانات الضخمة استخراج رؤى قيمة لدعم نمو الأعمال. تعرف على الأدوات والتقنيات
-                    والأساليب التي يمكن أن تساعد الشركات على تحقيق أقصى استفادة من بياناتها الضخمة.
-                </p>
-                <a href="blogger/big-data-analysis" class="read-more">اقرأ المزيد <i
-                        class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 22 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">🔄</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>التحول الرقمي وأتمتة العمليات: كيف يمكن للذكاء الاصطناعي أن يقود الابتكار</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن للذكاء الاصطناعي أن يقود التحول الرقمي وأتمتة العمليات في الشركات الحديثة. تعرف على
-                    أحدث التقنيات والاستراتيجيات.
-                </p>
-                <a href="blogger/dxftt" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 23 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">💼</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">10 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 10 دقائق قراءة</div>
-                <p class="description">
-                    تعرف على كيفية تحسين العمليات المالية وإدارة الموارد البشرية باستخدام حلول الأتمتة المتقدمة. دليل
-                    شامل للشركات الحديثة.
-                </p>
-                <a href="blogger/moneyy" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 24 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">💡</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">9 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>استشارات الذكاء الاصطناعي: كيف تسهم في تحقيق التحول الرقمي للشركات</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 9 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن لاستشارات الذكاء الاصطناعي أن تساعد شركتك في تحقيق التحول الرقمي الناجح وتحسين
-                    الأداء.
-                </p>
-                <a href="blogger/xsxd" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 25 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>أتمتة الذكاء الاصطناعي: حلول مخصصة لتحليل المشاريع وتحسين محركات البحث</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    تعرف على كيفية استخدام حلول الذكاء الاصطناعي المخصصة لتحليل المشاريع وتحسين أداء محركات البحث
-                    لموقعك.
-                </p>
-                <a href="blogger/1212344" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 26 -->
-            <article class="article" data-category="tech">
-                <div class="article-header">
-                    <span class="article-icon">🔬</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور
-                </h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يشكل التعلم الآلي والرؤية الحاسوبية مستقبل تطبيقات الذكاء الاصطناعي في معالجة اللغة
-                    الطبيعية والتعرف على الصور.
-                </p>
-                <a href="blogger/compypterrrr" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 27 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    تعرف على كيفية تحسين الكفاءة الإنتاجية من خلال الأتمتة الصناعية وأتمتة المهام المتكررة، واكتشف أفضل
-                    الممارسات والحلول المتقدمة.
-                </p>
-                <a href="blogger/atou-job" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 28 -->
-            <article class="article" data-category="tech">
-                <div class="article-header">
-                    <span class="article-icon">📱</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>10 تطبيقات مذهلة للذكاء الاصطناعي تغير حياتنا اليومية</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    تعرف على أبرز تطبيقات الذكاء الاصطناعي التي تغير حياتنا اليومية. من الأعمال إلى الصحة والتعليم،
-                    اكتشف كيف تؤثر هذه التقنيات على مستقبلنا وكيف يمكنك الاستفادة منها.
-                </p>
-                <a href="blogger/tadbagat" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 29 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">🏭</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع وكيفية تنفيذ خطة عملية للتحول الرقمي. تعرف
-                    على أفضل الممارسات والاستراتيجيات لتحسين الكفاءة الإنتاجية.
-                </p>
-                <a href="blogger/digital" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 30 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    تعرف على الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات والخطوات العملية لتحقيق
-                    النجاح الرقمي. اكتشف كيفية تطوير وكلاء AI فعالين وتحسين تجربة المستخدم.
-                </p>
-                <a href="blogger/agint-bblog" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 31 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>فوائد التحليل الذكي في تحسين أداء الشركات</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    في عالم الأعمال التنافسي اليوم، لم يعد النجاح مجرد مسألة حظ أو حدس، بل أصبح يعتمد بشكل كبير على
-                    القدرة على تحليل البيانات واستخلاص رؤى قابلة للتنفيذ. هنا يأتي دور التحليل الذكي، الذي يمثل ثورة في
-                    كيفية إدارة الشركات وتحسين أدائها.
-                </p>
-                <a href="blogger/6v5m" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 32 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>استراتيجيات تصميم وكلاء ذكاء اصطناعي تناسب متطلباتك</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    في عصر يشهد فيه الذكاء الاصطناعي تطوراً متسارعاً، أصبحت وكلاء الذكاء الاصطناعي أدوات لا غنى عنها
-                    للشركات والأفراد على حد سواء. هذه الكيانات الرقمية قادرة على التفاعل والتعلم واتخاذ القرارات بشكل
-                    تلقائي.
-                </p>
-                <a href="blogger/r24v" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 33 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>استراتيجيات فعالة لتحليل المنافسين</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    في عالم الأعمال الديناميكي والمتغير باستمرار، لم يعد النجاح مجرد تقديم منتج أو خدمة جيدة. بل يتطلب
-                    الأمر رؤية شاملة للسوق، وفهم دقيق للمنافسين، وقدرة على التكيف والمرونة.
-                </p>
-                <a href="blogger/rcc" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 34 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>أسرار الحصول على رؤى دقيقة لتحليل المشاريع بنجاح</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    في عالم الأعمال الديناميكي، حيث تتنافس الأفكار والمشاريع على جذب الانتباه والموارد، يصبح تحليل
-                    المشاريع بدقة وفعالية أمرًا بالغ الأهمية. ليس مجرد التخطيط الجيد هو ما يضمن النجاح، بل القدرة على
-                    رؤية الصورة الكبيرة.
-                </p>
-                <a href="blogger/rc524" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 35 -->
-            <article class="article" data-category="automation">
-                <div class="article-header">
-                    <span class="article-icon">⚙️</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">8 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>أتمتة الذكاء الاصطناعي: حلول مخصصة لتحليل المشاريع وتحسين محركات البحث</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 8 دقائق قراءة</div>
-                <p class="description">
-                    في عالم الأعمال المتسارع اليوم، حيث تتنافس الشركات على كل حصة سوقية، أصبح البقاء في الطليعة ليس مجرد
-                    هدف، بل ضرورة حتمية. هنا، تبرز أتمتة الذكاء الاصطناعي كأداة لا تقدر بثمن.
-                </p>
-                <a href="blogger/1212344" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 36 -->
-            <article class="article" data-category="ai">
-                <div class="article-header">
-                    <span class="article-icon">💡</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>استشارات الذكاء الاصطناعي: تحويل التحديات إلى فرص للنمو والابتكار</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    تُعد استشارات الذكاء الاصطناعي من Bright AI عنصراً أساسياً في تحويل التحديات إلى فرص للنمو
-                    والابتكار. اكتشف كيف يمكن للاستشارات المتخصصة أن تساعد مؤسستك في تحقيق أهدافها.
-                </p>
-                <a href="blogger/3" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-
-            <!-- Article 37 -->
-            <article class="article" data-category="tech">
-                <div class="article-header">
-                    <span class="article-icon">🤖</span>
-                    <div class="article-meta">
-                        <time datetime="2024-04-12">12/4/2024</time>
-                        <span class="read-time">7 دقائق قراءة</span>
-                    </div>
-                </div>
-                <h2>الأمن السيبراني والذكاء الاصطناعي: حماية المؤسسات في العصر الرقمي</h2>
-                <div class="date"><i class="fas fa-calendar"></i> 12/4/2024 | 7 دقائق قراءة</div>
-                <p class="description">
-                    اكتشف كيف يمكن للذكاء الاصطناعي تعزيز الأمن السيبراني وحماية المؤسسات من التهديدات الإلكترونية
-                    المتزايدة. تعرف على أحدث التقنيات والاستراتيجيات في مجال الأمن السيبراني.
-                </p>
-                <a href="blogger/4" class="read-more">اقرأ المزيد <i class="fas fa-arrow-left"></i></a>
-            </article>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <!-- Company Info -->
-                <div class="footer-section">
-                    <h3>Bright AI</h3>
-                    <p>تقدم حلول وتقنيات الذكاء الاصطناعي المتطورة</p>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="footer-section quick-links">
-                    <h3>روابط سريعة</h3>
-                    <ul>
-                        <li><a href="about-us">من نحن</a></li>
-                        <li><a href="our-products">خدماتنا</a></li>
-                        <li><a href="smart-automation">مشاريعنا</a></li>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الشركة</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="about-us.html" class="hover:text-gold-400">عن Bright AI</a></li>
+                        <li><a href="contact.html" class="hover:text-gold-400">اتصل بنا</a></li>
                     </ul>
                 </div>
-
-                <!-- Social Media -->
-                <div class="footer-section">
-                    <h3>تواصل معنا</h3>
-                    <div class="social-links">
-                        <a href="https://www.tiktok.com/@bright1ai" class="social-icon" target="_blank"
-                            rel="noopener noreferrer">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                                <path
-                                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 014.07-4.07v-3.45a6.34 6.34 0 00-3.15.82 6.33 6.33 0 104.59 7.75 6.13 6.13 0 00.14-1.4V7.59a8.33 8.33 0 005.04 1.61V6.69z" />
-                            </svg>
-                        </a>
-                        <a href="https://www.instagram.com/iililil44" class="social-icon" target="_blank"
-                            rel="noopener noreferrer">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                                <path
-                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                            </svg>
-                        </a>
-                        <a href="https://wa.me/966538229013" class="social-icon" target="_blank"
-                            rel="noopener noreferrer">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                                <path
-                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                            </svg>
-                        </a>
-                    </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الموارد</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="blog.html" class="hover:text-gold-400">المدونة</a></li>
+                        <li><a href="Docs.html" class="hover:text-gold-400">الوثائق</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">خدماتنا</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="ai-agent.html" class="hover:text-gold-400">AIaaS</a></li>
+                        <li><a href="data-analysis.html" class="hover:text-gold-400">تحليل البيانات</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="copyright">
+            <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
                 <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script>
-        // Loader
-        window.addEventListener('load', function () {
-            const loader = document.getElementById('loader');
-            setTimeout(function () {
-                loader.classList.add('hidden');
-            }, 1000);
-        });
-
-        // Search functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('searchInput');
-            const articles = document.querySelectorAll('.article');
-            const categoryButtons = document.querySelectorAll('.category-btn');
-
-            // Search filter
-            if (searchInput) {
-                searchInput.addEventListener('input', function () {
-                    const searchTerm = this.value.toLowerCase();
-
-                    articles.forEach(article => {
-                        const title = article.querySelector('h2').textContent.toLowerCase();
-                        const description = article.querySelector('.description').textContent.toLowerCase();
-
-                        if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                            article.style.display = 'flex';
-                            article.classList.add('fade-in');
-                        } else {
-                            article.style.display = 'none';
-                        }
-                    });
-                });
-            }
-
-            // Category filter
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    // Remove active class from all buttons
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-
-                    // Add active class to clicked button
-                    this.classList.add('active');
-
-                    const category = this.dataset.category;
-
-                    articles.forEach(article => {
-                        if (category === 'all' || article.dataset.category === category) {
-                            article.style.display = 'flex';
-                            article.classList.add('fade-in');
-                        } else {
-                            article.style.display = 'none';
-                        }
-                    });
-                });
-            });
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="js/main.min.js" defer></script>
+    <script src="js/premium-animations.min.js" defer></script>
+    <script src="js/neural-canvas.min.js" defer></script>
+    <script src="js/chat-groq.min.js" defer></script>
 </body>
 
 </html>
