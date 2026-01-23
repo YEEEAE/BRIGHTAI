@@ -885,7 +885,7 @@
             width: 100%;
             height: 100vh;
             min-height: 700px;
-            background: linear-gradient(135deg, #030014 0%, #0a0a20 30%, #0f0f2e 60%, #1a0a2e 100%);
+            background: #020617;
             display: flex;
             align-items: center;
             overflow: hidden;
@@ -899,9 +899,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse at 20% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 80%, rgba(0, 255, 136, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 60%);
             animation: gradientShift 10s ease-in-out infinite alternate;
         }
 
@@ -982,7 +982,7 @@
         .orb-1 {
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
             top: -100px;
             right: -100px;
             animation-delay: 0s;
@@ -991,7 +991,7 @@
         .orb-2 {
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
             bottom: -50px;
             left: -50px;
             animation-delay: 5s;
@@ -1000,7 +1000,7 @@
         .orb-3 {
             width: 250px;
             height: 250px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
             top: 50%;
             left: 30%;
             animation-delay: 2.5s;
@@ -1912,28 +1912,30 @@
                         <div class="orbit"></div>
                         <div class="orbit"></div>
                         
-                        <!-- Chatbot Icon -->
+                        <!-- SYNC Icon -->
                         <div class="service-icon icon-chatbot">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 2.98.97 4.29L2 22l5.71-.97A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm-2 13h4v2h-4v-2zm0-3h4v2h-4v-2zm0-3h4v2h-4V9z"/>
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
                             </svg>
-                            <span>Chatbot</span>
+                            <span>SYNC</span>
                         </div>
                         
-                        <!-- RPA Icon -->
+                        <!-- FLUX Icon -->
                         <div class="service-icon icon-rpa">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 017 7h1a1 1 0 011 1v3a1 1 0 01-1 1h-1v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1H2a1 1 0 01-1-1v-3a1 1 0 011-1h1a7 7 0 017-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 012-2zM9 14.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/>
                             </svg>
-                            <span>RPA</span>
+                            <span>FLUX</span>
                         </div>
                         
-                        <!-- Analytics Icon -->
+                        <!-- NEXUS Icon -->
                         <div class="service-icon icon-analytics">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/>
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
                             </svg>
-                            <span>Analytics</span>
+                            <span>NEXUS</span>
                         </div>
                     </div>
                 </div>
