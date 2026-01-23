@@ -867,227 +867,1254 @@
   <!-- Mobile Navigation Overlay -->
   <div class="nav-overlay" id="nav-overlay"></div>
 
-  <!-- 1. HERO SECTION - WORLD-CLASS DESIGN -->
-  <header
-    class="hero-section relative min-h-screen flex items-center pt-20 pb-16 lg:pt-24 lg:pb-24 px-6 overflow-hidden"
-    style="background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #0f0f23 50%, #1e1e4a 75%, #0f0f23 100%);">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Animated Gradient Background -->
-    <div class="absolute inset-0 gradient-animate opacity-30"></div>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            overflow-x: hidden;
+        }
 
-    <!-- Morphing Blobs Background -->
-    <div class="absolute inset-0 pointer-events-none overflow-hidden">
-      <div class="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] morph-blob">
-      </div>
-      <div
-        class="absolute bottom-1/4 -right-20 w-[600px] h-[600px] bg-purple-600/15 rounded-full blur-[150px] morph-blob"
-        style="animation-delay: -4s;"></div>
-      <div
-        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-cyan-500/10 rounded-full blur-[180px] morph-blob"
-        style="animation-delay: -2s;"></div>
-    </div>
+        /* Hero Section */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 700px;
+            background: linear-gradient(135deg, #030014 0%, #0a0a20 30%, #0f0f2e 60%, #1a0a2e 100%);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
 
-    <!-- Floating Particles Container -->
-    <div class="particles-container" id="hero-particles"></div>
+        /* Animated Gradient Background */
+        .gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
+            animation: gradientShift 10s ease-in-out infinite alternate;
+        }
 
-    <!-- Grid Pattern Overlay -->
-    <div class="absolute inset-0 pointer-events-none opacity-10"
-      style="background-image: radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.3) 1px, transparent 0); background-size: 40px 40px;">
-    </div>
+        @keyframes gradientShift {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
 
-    <div class="max-w-7xl mx-auto w-full relative z-10">
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        /* Geometric Grid Pattern */
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
+        }
 
-        <!-- Text Content -->
-        <div class="space-y-8" data-aos="fade-up" data-aos-duration="1000">
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
 
-          <!-- Status Badge -->
-          <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-indigo-500/30"
-            data-aos="fade-right" data-aos-delay="200">
-            <span class="relative flex h-3 w-3">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
-            <span class="text-indigo-300 text-sm font-medium tracking-wide">
-              نقود الثورة الرقمية في المملكة
-            </span>
-          </div>
+        /* Hexagon Network Background */
+        .hex-network {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4;
+        }
 
-          <!-- Main Heading with Glow -->
-          <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-          </h1>
+        /* Stars Background */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-          <!-- Tagline -->
-          <h2 class="text-xl md:text-2xl font-light text-slate-300 max-w-xl" data-aos="fade-up" data-aos-delay="400">
-            نُضيء الذكاء الاصطناعي.. بمعايير سعودية وآفاق عالمية
-          </h2>
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
 
-          <!-- Description -->
-          <p class="text-slate-400 text-lg lg:text-xl font-light leading-relaxed max-w-xl" data-aos="fade-up"
-            data-aos-delay="500">
-            المحرك الأقوى للتحول الرقمي في المملكة. نحول التحديات إلى فرص نمو عبر حلول ذكية تعيد صياغة مفاهيم الكفاءة
-            والابتكار. نحن شريكك الاستراتيجي لصناعة مستقبل مستدام.
-          </p>
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-          <!-- SEO Hidden Text -->
-          <span class="sr-only">
-            خدمات الذكاء الاصطناعي في السعودية | AIaaS حلول سحابية | chatbot عربي للشركات | تحليل البيانات للشركات
-            السعودية | معالجة المستندات الذكية | روبوتات ذكية للأعمال | أتمتة العمليات RPA | التحول الرقمي للمؤسسات
-          </span>
+        /* Floating Orbs */
+        .floating-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
 
-          <!-- CTA Buttons -->
-          <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="600">
-            <!-- Primary CTA -->
-            <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
-              class="group relative w-full sm:w-auto text-center inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-semibold text-lg overflow-hidden transition-all duration-300 hover:scale-105 btn-magnetic"
-              style="background: linear-gradient(135deg, #6366f1, #8b5cf6); box-shadow: 0 0 40px rgba(99, 102, 241, 0.4);">
-              <span
-                class="absolute inset-0 bg-gradient-to-r from-indigo-400 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              <iconify-icon icon="lucide:rocket" width="22" class="relative z-10 text-white"></iconify-icon>
-              <span class="relative z-10 text-white">ابدأ الآن</span>
-              <iconify-icon icon="lucide:arrow-left" width="18"
-                class="relative z-10 text-white transform group-hover:-translate-x-1 transition-transform"></iconify-icon>
-            </a>
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: orbFloat 15s ease-in-out infinite;
+        }
 
-            <!-- Secondary CTA -->
-            <a href="#services-section"
-              class="group w-full sm:w-auto text-center inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-semibold text-lg glass-premium border border-white/10 hover:border-indigo-500/50 hover:bg-white/5 transition-all duration-300 text-white btn-magnetic">
-              <iconify-icon icon="lucide:play-circle" width="22"
-                class="group-hover:scale-110 transition-transform"></iconify-icon>
-              <span>شاهد العرض</span>
-            </a>
-          </div>
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
 
-          <!-- Trust Indicators -->
-          <div class="flex flex-wrap items-center gap-6 pt-4" data-aos="fade-up" data-aos-delay="700">
-            <div class="flex items-center gap-2 text-sm text-slate-400">
-              <iconify-icon icon="lucide:shield-check" width="18" class="text-green-500"></iconify-icon>
-              <span>استضافة محلية آمنة</span>
-            </div>
-            <div class="flex items-center gap-2 text-sm text-slate-400">
-              <iconify-icon icon="lucide:award" width="18" class="text-gold-500"></iconify-icon>
-              <span>متوافق مع NCA</span>
-            </div>
-            <div class="flex items-center gap-2 text-sm text-slate-400">
-              <iconify-icon icon="lucide:clock" width="18" class="text-indigo-400"></iconify-icon>
-              <span>دعم 24/7</span>
-            </div>
-          </div>
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
+            bottom: -50px;
+            left: -50px;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 30%;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.05); }
+        }
+
+        /* DNA Helix Lines */
+        .dna-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* Content Container */
+        .hero-container {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        /* Text Content - Right Side */
+        .hero-content {
+            flex: 1;
+            max-width: 550px;
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 50px;
+            color: #00ff88;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            animation: fadeInRight 1s ease-out, badgePulse 3s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: dotPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 136, 0.2); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.6rem;
+            color: #ffffff;
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: fadeInRight 1s ease-out 0.3s forwards;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .hero-subtitle .glow-text {
+            background: linear-gradient(135deg, #00ff88, #00d4ff, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            position: relative;
+        }
+
+        .typewriter-container {
+            min-height: 120px;
+            margin-bottom: 35px;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 2;
+            opacity: 0;
+            border-right: 3px solid #00ff88;
+            padding-right: 15px;
+            animation: fadeInRight 1s ease-out 0.6s forwards;
+        }
+
+        .typewriter-text {
+            display: inline;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background: #00ff88;
+            margin-right: 5px;
+            animation: cursorBlink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .cta-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            animation: fadeInRight 1s ease-out 0.9s forwards;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #00ff88 0%, #00d4ff 50%, #00ff88 100%);
+            background-size: 200% 100%;
+            color: #030014;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 136, 0.3),
+                0 0 0 0 rgba(0, 255, 136, 0.4);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            animation: buttonShine 3s ease-in-out infinite;
+        }
+
+        @keyframes buttonShine {
+            0% { background-position: 200% center; }
+            100% { background-position: -200% center; }
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 20px 60px rgba(0, 255, 136, 0.4),
+                0 0 0 4px rgba(0, 255, 136, 0.2);
+        }
+
+        .cta-button svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover svg {
+            transform: translateX(-8px);
+        }
+
+        .cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 18px 35px;
+            background: transparent;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-secondary:hover {
+            border-color: #00ff88;
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 3D Brain Container - Left Side */
+        .brain-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 650px;
+        }
+
+        .brain-wrapper {
+            position: relative;
+            width: 550px;
+            height: 550px;
+            animation: float 6s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotateY(0deg); }
+            50% { transform: translateY(-25px) rotateY(5deg); }
+        }
+
+        /* Glow Effects */
+        .glow-effect {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: glowPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .glow-effect-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            animation-delay: 2s;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.15);
+            }
+        }
+
+        /* 3D Brain SVG */
+        .brain-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.3));
+            animation: brainRotate 25s linear infinite;
+        }
+
+        @keyframes brainRotate {
+            0% { transform: rotateY(0deg) rotateX(5deg); }
+            100% { transform: rotateY(360deg) rotateX(5deg); }
+        }
+
+        /* Neural Network Lines */
+        .neural-line {
+            stroke: url(#neuralGradient);
+            stroke-width: 1.5;
+            fill: none;
+            stroke-dasharray: 200;
+            animation: dashMove 3s linear infinite;
+            filter: drop-shadow(0 0 3px rgba(0, 255, 136, 0.5));
+        }
+
+        @keyframes dashMove {
+            to { stroke-dashoffset: -400; }
+        }
+
+        /* Data Points */
+        .data-point {
+            fill: #00ff88;
+            animation: pulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 6px #00ff88);
+        }
+
+        .data-point-blue {
+            fill: #00d4ff;
+            filter: drop-shadow(0 0 6px #00d4ff);
+        }
+
+        .data-point-purple {
+            fill: #8b5cf6;
+            filter: drop-shadow(0 0 6px #8b5cf6);
+        }
+
+        .data-point:nth-child(3n) { animation-delay: 0.3s; }
+        .data-point:nth-child(3n+1) { animation-delay: 0.6s; }
+        .data-point:nth-child(3n+2) { animation-delay: 0.9s; }
+
+        @keyframes pulse {
+            0%, 100% { 
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        /* Circuit Paths */
+        .circuit-path {
+            stroke: rgba(0, 212, 255, 0.5);
+            stroke-width: 1;
+            fill: none;
+        }
+
+        /* Orbiting Service Icons */
+        .orbit-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            animation: orbitContainerRotate 40s linear infinite;
+        }
+
+        @keyframes orbitContainerRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 50%;
+        }
+
+        .orbit:nth-child(2) {
+            width: 130%;
+            height: 130%;
+            top: -15%;
+            left: -15%;
+            border-color: rgba(139, 92, 246, 0.1);
+        }
+
+        .orbit:nth-child(3) {
+            width: 160%;
+            height: 160%;
+            top: -30%;
+            left: -30%;
+            border-color: rgba(0, 212, 255, 0.1);
+        }
+
+        .service-icon {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(139, 92, 246, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            animation: counterRotate 40s linear infinite;
+        }
+
+        @keyframes counterRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        .service-icon:hover {
+            transform: scale(1.2) rotate(0deg) !important;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(139, 92, 246, 0.25));
+            box-shadow: 
+                0 0 30px rgba(0, 255, 136, 0.4),
+                inset 0 0 20px rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+        }
+
+        .service-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: #00ff88;
+            transition: all 0.3s ease;
+        }
+
+        .service-icon:hover svg {
+            transform: scale(1.1);
+            fill: #ffffff;
+        }
+
+        .service-icon span {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 6px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .icon-chatbot {
+            top: -5%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .icon-rpa {
+            bottom: 10%;
+            left: 0%;
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
+        .icon-rpa svg {
+            fill: #8b5cf6;
+        }
+
+        .icon-analytics {
+            bottom: 10%;
+            right: 0%;
+            border-color: rgba(0, 212, 255, 0.4);
+        }
+
+        .icon-analytics svg {
+            fill: #00d4ff;
+        }
+
+        /* Particles */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat 12s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Connection Lines Animation */
+        .connection-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-container {
+                flex-direction: column-reverse;
+                padding: 80px 30px 50px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+                padding-right: 0;
+                margin-top: 20px;
+            }
+
+            .hero-description {
+                border-right: none;
+                border-bottom: 3px solid #00ff88;
+                padding-right: 0;
+                padding-bottom: 15px;
+            }
+
+            .brain-wrapper {
+                width: 400px;
+                height: 400px;
+            }
+
+            .cta-container {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .brain-wrapper {
+                width: 320px;
+                height: 320px;
+            }
+
+            .service-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: 15px;
+            }
+
+            .service-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .service-icon span {
+                font-size: 8px;
+            }
+
+            .cta-button {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+
+            .cta-secondary {
+                padding: 15px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Scrolling Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator .mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .scroll-indicator .wheel {
+            width: 4px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 2px;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollWheel 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        @keyframes scrollWheel {
+            0%, 100% { opacity: 1; top: 10px; }
+            50% { opacity: 0.3; top: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <!-- Animated Gradient Background -->
+        <div class="gradient-bg"></div>
+
+        <!-- Grid Pattern -->
+        <div class="grid-pattern"></div>
+
+        <!-- Floating Orbs -->
+        <div class="floating-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
         </div>
 
-        <!-- Visual: 3D Neural Network Animation -->
-        <div class="relative h-[400px] lg:h-[600px] flex items-center justify-center" data-aos="fade-left"
-          data-aos-duration="1200">
+        <!-- Stars Background -->
+        <div class="stars" id="stars"></div>
 
-          <!-- Outer Glow Ring -->
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div
-              class="w-[300px] h-[300px] md:w-[450px] md:h-[450px] lg:w-[550px] lg:h-[550px] rounded-full border border-indigo-500/20"
-              style="animation: pulse 4s ease-in-out infinite;"></div>
-          </div>
+        <!-- Hexagon Network -->
+        <svg class="hex-network" id="hexNetwork"></svg>
 
-          <!-- 3D Rotating Rings -->
-          <div class="absolute inset-0 flex items-center justify-center" style="perspective: 1000px;">
-            <div class="relative w-[250px] h-[250px] md:w-[350px] md:h-[350px] lg:w-[450px] lg:h-[450px]"
-              style="transform-style: preserve-3d;">
+        <!-- DNA Lines -->
+        <svg class="dna-lines" id="dnaLines"></svg>
 
-              <!-- Ring 1 -->
-              <div class="absolute inset-0 border-2 border-indigo-500/40 rounded-full"
-                style="animation: spin3D 15s linear infinite; transform-style: preserve-3d;"></div>
+        <!-- Particles -->
+        <div class="particles" id="particles"></div>
 
-              <!-- Ring 2 -->
-              <div class="absolute inset-[15%] border-2 border-purple-500/40 rounded-full"
-                style="animation: spin3D 12s linear infinite reverse;"></div>
+        <!-- Connection Lines -->
+        <svg class="connection-lines" id="connectionLines"></svg>
 
-              <!-- Ring 3 -->
-              <div class="absolute inset-[30%] border-2 border-cyan-500/40 rounded-full"
-                style="animation: spin3D 10s linear infinite;"></div>
-
-              <!-- Floating Nodes -->
-              <div
-                class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-indigo-500 rounded-full shadow-[0_0_20px_#6366f1] float-slow">
-              </div>
-              <div
-                class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-3 h-3 bg-purple-500 rounded-full shadow-[0_0_20px_#8b5cf6] float-medium"
-                style="animation-delay: -1s;"></div>
-              <div
-                class="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-cyan-500 rounded-full shadow-[0_0_20px_#06b6d4] float-slow"
-                style="animation-delay: -2s;"></div>
-              <div
-                class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-gold-500 rounded-full shadow-[0_0_20px_#d4af37] float-medium"
-                style="animation-delay: -3s;"></div>
-
-              <!-- Orbiting Elements -->
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="orbit" style="animation-duration: 8s;">
-                  <div class="w-3 h-3 bg-indigo-400 rounded-full shadow-[0_0_15px_#818cf8]"
-                    style="transform: translateX(-100px);"></div>
+        <!-- Main Content -->
+        <div class="hero-container">
+            <!-- Text Content - Right Side -->
+            <div class="hero-content">
+                <span class="hero-badge">
+                    <span class="badge-dot"></span>
+                    مستقبل الذكاء الاصطناعي
+                </span>
+                
+                <h2 class="hero-subtitle">
+                    نُضيء <span class="glow-text">الذكاء الاصطناعي</span>.. بمعايير سعودية وآفاق عالمية
+                </h2>
+                
+                <div class="typewriter-container">
+                    <p class="hero-description">
+                        <span class="typewriter-text" id="typewriter"></span>
+                        <span class="cursor"></span>
+                    </p>
                 </div>
-              </div>
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="orbit" style="animation-duration: 12s; animation-direction: reverse;">
-                  <div class="w-2 h-2 bg-purple-400 rounded-full shadow-[0_0_15px_#a78bfa]"
-                    style="transform: translateX(-150px);"></div>
+                
+                <div class="cta-container">
+                    <a href="#" class="cta-button">
+                        ابدأ الآن
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="cta-secondary">
+                        اكتشف المزيد
+                    </a>
                 </div>
-              </div>
+            </div>
 
-              <!-- Center Core with Logo -->
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div
-                  class="relative w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full glass-premium flex items-center justify-center"
-                  style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); box-shadow: 0 0 60px rgba(99, 102, 241, 0.4), inset 0 0 30px rgba(99, 102, 241, 0.2);">
-                  <div class="absolute inset-0 rounded-full"
-                    style="background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent); animation: pulse 3s ease-in-out infinite;">
-                  </div>
-                  <iconify-icon icon="lucide:brain-circuit" width="48" class="text-white md:hidden"></iconify-icon>
-                  <iconify-icon icon="lucide:brain-circuit" width="64"
-                    class="text-white hidden md:block lg:hidden"></iconify-icon>
-                  <iconify-icon icon="lucide:brain-circuit" width="80"
-                    class="text-white hidden lg:block"></iconify-icon>
+            <!-- 3D Brain - Left Side -->
+            <div class="brain-container">
+                <div class="brain-wrapper">
+                    <div class="glow-effect"></div>
+                    <div class="glow-effect glow-effect-2"></div>
+                    
+                    <!-- Main Brain SVG -->
+                    <svg class="brain-svg" viewBox="0 0 400 400">
+                        <defs>
+                            <!-- Neural Gradient -->
+                            <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1">
+                                    <animate attributeName="stop-color" values="#00ff88;#00d4ff;#8b5cf6;#00ff88" dur="4s" repeatCount="indefinite"/>
+                                </stop>
+                                <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1">
+                                    <animate attributeName="stop-color" values="#00d4ff;#8b5cf6;#00ff88;#00d4ff" dur="4s" repeatCount="indefinite"/>
+                                </stop>
+                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1">
+                                    <animate attributeName="stop-color" values="#8b5cf6;#00ff88;#00d4ff;#8b5cf6" dur="4s" repeatCount="indefinite"/>
+                                </stop>
+                            </linearGradient>
+                            
+                            <!-- Brain Fill Gradient -->
+                            <radialGradient id="brainGradient" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" style="stop-color:#00ff88;stop-opacity:0.15" />
+                                <stop offset="40%" style="stop-color:#00d4ff;stop-opacity:0.1" />
+                                <stop offset="70%" style="stop-color:#8b5cf6;stop-opacity:0.08" />
+                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.02" />
+                            </radialGradient>
+
+                            <!-- Inner Glow -->
+                            <filter id="innerGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="4" result="blur"/>
+                                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                            </filter>
+
+                            <!-- Outer Glow -->
+                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- Brain Outer Shape -->
+                        <g filter="url(#glow)">
+                            <!-- Left Hemisphere -->
+                            <path d="M200 40 
+                                     Q140 50 100 100 
+                                     Q60 160 70 220 
+                                     Q80 280 120 320 
+                                     Q160 360 200 370" 
+                                  fill="url(#brainGradient)" 
+                                  stroke="url(#neuralGradient)" 
+                                  stroke-width="2"/>
+                            
+                            <!-- Right Hemisphere -->
+                            <path d="M200 40 
+                                     Q260 50 300 100 
+                                     Q340 160 330 220 
+                                     Q320 280 280 320 
+                                     Q240 360 200 370" 
+                                  fill="url(#brainGradient)" 
+                                  stroke="url(#neuralGradient)" 
+                                  stroke-width="2"/>
+                            
+                            <!-- Brain Stem -->
+                            <path d="M180 350 Q200 380 220 350" 
+                                  fill="none" 
+                                  stroke="url(#neuralGradient)" 
+                                  stroke-width="2"/>
+
+                            <!-- Left Brain Folds -->
+                            <path class="circuit-path" d="M90 150 Q130 130 170 150 Q130 170 100 180"/>
+                            <path class="circuit-path" d="M80 200 Q140 175 185 200 Q130 225 90 240"/>
+                            <path class="circuit-path" d="M100 270 Q150 245 180 270 Q140 295 110 310"/>
+                            <path class="circuit-path" d="M120 120 Q150 100 180 115"/>
+                            
+                            <!-- Right Brain Folds -->
+                            <path class="circuit-path" d="M310 150 Q270 130 230 150 Q270 170 300 180"/>
+                            <path class="circuit-path" d="M320 200 Q260 175 215 200 Q270 225 310 240"/>
+                            <path class="circuit-path" d="M300 270 Q250 245 220 270 Q260 295 290 310"/>
+                            <path class="circuit-path" d="M280 120 Q250 100 220 115"/>
+
+                            <!-- Central Line -->
+                            <path d="M200 50 L200 350" stroke="rgba(0, 212, 255, 0.3)" stroke-width="1" stroke-dasharray="5,5"/>
+
+                            <!-- Neural Network Lines - Horizontal -->
+                            <path class="neural-line" d="M100 130 Q200 80 300 130"/>
+                            <path class="neural-line" d="M80 180 Q200 130 320 180" style="animation-delay: 0.3s"/>
+                            <path class="neural-line" d="M75 230 Q200 180 325 230" style="animation-delay: 0.6s"/>
+                            <path class="neural-line" d="M90 280 Q200 230 310 280" style="animation-delay: 0.9s"/>
+                            <path class="neural-line" d="M120 320 Q200 280 280 320" style="animation-delay: 1.2s"/>
+                            
+                            <!-- Neural Network Lines - Vertical -->
+                            <path class="neural-line" d="M140 80 Q120 200 140 340" style="animation-delay: 0.2s"/>
+                            <path class="neural-line" d="M200 50 Q200 200 200 360" style="animation-delay: 0.5s"/>
+                            <path class="neural-line" d="M260 80 Q280 200 260 340" style="animation-delay: 0.8s"/>
+
+                            <!-- Cross Neural Lines -->
+                            <path class="neural-line" d="M100 100 Q200 200 300 300" style="animation-delay: 1s"/>
+                            <path class="neural-line" d="M300 100 Q200 200 100 300" style="animation-delay: 1.3s"/>
+
+                            <!-- Circuit Details -->
+                            <path class="circuit-path" d="M200 80 L200 60 L180 60 L180 45"/>
+                            <path class="circuit-path" d="M200 80 L200 60 L220 60 L220 45"/>
+                            <path class="circuit-path" d="M130 150 L110 150 L110 130"/>
+                            <path class="circuit-path" d="M270 150 L290 150 L290 130"/>
+                            <path class="circuit-path" d="M100 230 L80 230 L80 250"/>
+                            <path class="circuit-path" d="M300 230 L320 230 L320 250"/>
+                        </g>
+
+                        <!-- Data Points (Neurons) - Multiple Colors -->
+                        <g class="neurons">
+                            <!-- Main nodes -->
+                            <circle class="data-point" cx="200" cy="100" r="6"/>
+                            <circle class="data-point data-point-blue" cx="200" cy="200" r="8"/>
+                            <circle class="data-point data-point-purple" cx="200" cy="300" r="5"/>
+                            
+                            <!-- Left side nodes -->
+                            <circle class="data-point" cx="100" cy="130" r="4"/>
+                            <circle class="data-point data-point-blue" cx="80" cy="180" r="5"/>
+                            <circle class="data-point" cx="75" cy="230" r="4"/>
+                            <circle class="data-point data-point-purple" cx="90" cy="280" r="5"/>
+                            <circle class="data-point" cx="120" cy="320" r="4"/>
+                            <circle class="data-point data-point-blue" cx="140" cy="150" r="3"/>
+                            <circle class="data-point" cx="130" cy="200" r="4"/>
+                            <circle class="data-point data-point-purple" cx="150" cy="250" r="3"/>
+                            <circle class="data-point" cx="160" cy="300" r="4"/>
+                            
+                            <!-- Right side nodes -->
+                            <circle class="data-point data-point-blue" cx="300" cy="130" r="4"/>
+                            <circle class="data-point" cx="320" cy="180" r="5"/>
+                            <circle class="data-point data-point-purple" cx="325" cy="230" r="4"/>
+                            <circle class="data-point" cx="310" cy="280" r="5"/>
+                            <circle class="data-point data-point-blue" cx="280" cy="320" r="4"/>
+                            <circle class="data-point data-point-purple" cx="260" cy="150" r="3"/>
+                            <circle class="data-point" cx="270" cy="200" r="4"/>
+                            <circle class="data-point data-point-blue" cx="250" cy="250" r="3"/>
+                            <circle class="data-point" cx="240" cy="300" r="4"/>
+
+                            <!-- Inner nodes -->
+                            <circle class="data-point data-point-purple" cx="170" cy="120" r="3"/>
+                            <circle class="data-point" cx="230" cy="120" r="3"/>
+                            <circle class="data-point data-point-blue" cx="160" cy="180" r="4"/>
+                            <circle class="data-point" cx="240" cy="180" r="4"/>
+                            <circle class="data-point data-point-purple" cx="170" cy="230" r="3"/>
+                            <circle class="data-point" cx="230" cy="230" r="3"/>
+                            <circle class="data-point data-point-blue" cx="180" cy="280" r="4"/>
+                            <circle class="data-point" cx="220" cy="280" r="4"/>
+                        </g>
+
+                        <!-- Animated Light Pulses -->
+                        <g class="light-pulses">
+                            <!-- Horizontal pulses -->
+                            <circle r="4" fill="#ffffff">
+                                <animateMotion dur="2s" repeatCount="indefinite">
+                                    <mpath href="#pulse-h-1"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
+                                <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle r="4" fill="#00ff88">
+                                <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.3s">
+                                    <mpath href="#pulse-h-2"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="0.3s"/>
+                            </circle>
+                            <circle r="4" fill="#00d4ff">
+                                <animateMotion dur="3s" repeatCount="indefinite" begin="0.6s">
+                                    <mpath href="#pulse-h-3"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="0.6s"/>
+                            </circle>
+                            <circle r="4" fill="#8b5cf6">
+                                <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.9s">
+                                    <mpath href="#pulse-h-4"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="2.8s" repeatCount="indefinite" begin="0.9s"/>
+                            </circle>
+                            
+                            <!-- Vertical pulses -->
+                            <circle r="3" fill="#ffffff">
+                                <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.2s">
+                                    <mpath href="#pulse-v-1"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="3.5s" repeatCount="indefinite" begin="0.2s"/>
+                            </circle>
+                            <circle r="3" fill="#00ff88">
+                                <animateMotion dur="4s" repeatCount="indefinite" begin="0.5s">
+                                    <mpath href="#pulse-v-2"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" begin="0.5s"/>
+                            </circle>
+
+                            <!-- Diagonal pulses -->
+                            <circle r="3" fill="#00d4ff">
+                                <animateMotion dur="3s" repeatCount="indefinite" begin="1s">
+                                    <mpath href="#pulse-d-1"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+                            </circle>
+                            <circle r="3" fill="#8b5cf6">
+                                <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.5s">
+                                    <mpath href="#pulse-d-2"/>
+                                </animateMotion>
+                                <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" repeatCount="indefinite" begin="1.5s"/>
+                            </circle>
+                        </g>
+
+                        <!-- Hidden paths for light animation -->
+                        <path id="pulse-h-1" d="M100 130 Q200 80 300 130" fill="none"/>
+                        <path id="pulse-h-2" d="M80 180 Q200 130 320 180" fill="none"/>
+                        <path id="pulse-h-3" d="M75 230 Q200 180 325 230" fill="none"/>
+                        <path id="pulse-h-4" d="M90 280 Q200 230 310 280" fill="none"/>
+                        <path id="pulse-v-1" d="M140 80 Q120 200 140 340" fill="none"/>
+                        <path id="pulse-v-2" d="M200 50 Q200 200 200 360" fill="none"/>
+                        <path id="pulse-d-1" d="M100 100 Q200 200 300 300" fill="none"/>
+                        <path id="pulse-d-2" d="M300 100 Q200 200 100 300" fill="none"/>
+                    </svg>
+
+                    <!-- Orbiting Service Icons -->
+                    <div class="orbit-container">
+                        <div class="orbit"></div>
+                        <div class="orbit"></div>
+                        <div class="orbit"></div>
+                        
+                        <!-- Chatbot Icon -->
+                        <div class="service-icon icon-chatbot">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 2.98.97 4.29L2 22l5.71-.97A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm-2 13h4v2h-4v-2zm0-3h4v2h-4v-2zm0-3h4v2h-4V9z"/>
+                            </svg>
+                            <span>Chatbot</span>
+                        </div>
+                        
+                        <!-- RPA Icon -->
+                        <div class="service-icon icon-rpa">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 017 7h1a1 1 0 011 1v3a1 1 0 01-1 1h-1v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1H2a1 1 0 01-1-1v-3a1 1 0 011-1h1a7 7 0 017-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 012-2zM9 14.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
+                            </svg>
+                            <span>RPA</span>
+                        </div>
+                        
+                        <!-- Analytics Icon -->
+                        <div class="service-icon icon-analytics">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/>
+                            </svg>
+                            <span>Analytics</span>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-
-          <!-- Floating 3D Icons (Freepik Premium Assets) -->
-          <div class="absolute top-10 right-10 float-slow" style="animation-delay: -1s;">
-            <div
-              class="w-20 h-20 rounded-2xl glass-premium flex items-center justify-center border border-indigo-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
-              <img src="assets/3d-icons/icon_1_3d_robot_artificial_intelligence_icon.jpg"
-                alt="روبوت ذكاء اصطناعي - أتمتة العمليات الذكية" width="80" height="80" loading="lazy"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-            </div>
-          </div>
-          <div class="absolute bottom-20 left-10 float-medium" style="animation-delay: -2s;">
-            <div
-              class="w-16 h-16 rounded-2xl glass-premium flex items-center justify-center border border-purple-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
-              <img src="assets/3d-icons/icon_2_3d_robot_artificial_intelligence_icon.jpg"
-                alt="ذراع روبوتية - حلول التصنيع الذكي" width="64" height="64" loading="lazy"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-            </div>
-          </div>
-          <div class="absolute top-1/3 left-5 float-slow" style="animation-delay: -3s;">
-            <div
-              class="w-14 h-14 rounded-xl glass-premium flex items-center justify-center border border-cyan-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
-              <img src="assets/3d-icons/icon_3_3d_robot_artificial_intelligence_icon.jpg"
-                alt="شريحة معالجة بيانات - تحليل البيانات الضخمة" width="56" height="56" loading="lazy"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-            </div>
-          </div>
-          <div class="absolute bottom-10 right-20 float-medium" style="animation-delay: -4s;">
-            <div
-              class="w-16 h-16 rounded-2xl glass-premium flex items-center justify-center border border-gold-500/30 overflow-hidden group hover:scale-110 transition-transform duration-300">
-              <img src="assets/3d-icons/icon_1_3d_rocket_startup_icon.jpg"
-                alt="صاروخ انطلاق - نمو الشركات الناشئة بالذكاء الاصطناعي" width="64" height="64" loading="lazy"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-            </div>
-          </div>
         </div>
-      </div>
 
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
 
-    </div>
-  </header>
+    <script>
+        // Generate Stars with variety
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                // Random colors for some stars
+                const colors = ['#ffffff', '#00ff88', '#00d4ff', '#8b5cf6'];
+                star.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Generate Particles with different sizes and colors
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+            const colors = ['#00ff88', '#00d4ff', '#8b5cf6', '#ffffff'];
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (Math.random() * 8 + 8) + 's';
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 ${size * 2}px ${particle.style.background}`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Typewriter Effect with better timing
+        function typeWriter() {
+            const text = "نحول التحديات إلى فرص نمو عبر حلول ذكية تعيد صياغة مفاهيم الكفاءة والابتكار. نحن شريكك الاستراتيجي لصناعة مستقبل مستدام.";
+            const element = document.getElementById('typewriter');
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 40);
+                }
+            }
+            
+            setTimeout(type, 1500);
+        }
+
+        // Generate Hexagon Network
+        function createHexNetwork() {
+            const svg = document.getElementById('hexNetwork');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            
+            // Create connection points
+            const points = [];
+            const numPoints = 30;
+            
+            for (let i = 0; i < numPoints; i++) {
+                points.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
+            
+            // Draw lines between nearby points
+            function drawLines() {
+                svg.innerHTML = '';
+                
+                points.forEach((point, i) => {
+                    // Update position
+                    point.x += point.vx;
+                    point.y += point.vy;
+                    
+                    // Bounce off edges
+                    if (point.x < 0 || point.x > width) point.vx *= -1;
+                    if (point.y < 0 || point.y > height) point.vy *= -1;
+                    
+                    // Draw connections
+                    points.forEach((other, j) => {
+                        if (i < j) {
+                            const dist = Math.hypot(point.x - other.x, point.y - other.y);
+                            if (dist < 200) {
+                                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                                line.setAttribute('x1', point.x);
+                                line.setAttribute('y1', point.y);
+                                line.setAttribute('x2', other.x);
+                                line.setAttribute('y2', other.y);
+                                line.setAttribute('stroke', `rgba(0, 255, 136, ${0.15 * (1 - dist/200)})`);
+                                line.setAttribute('stroke-width', '1');
+                                svg.appendChild(line);
+                            }
+                        }
+                    });
+                    
+                    // Draw point
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', point.x);
+                    circle.setAttribute('cy', point.y);
+                    circle.setAttribute('r', '2');
+                    circle.setAttribute('fill', 'rgba(0, 255, 136, 0.3)');
+                    svg.appendChild(circle);
+                });
+                
+                requestAnimationFrame(drawLines);
+            }
+            
+            drawLines();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createParticles();
+            typeWriter();
+            createHexNetwork();
+        });
+
+        // Mouse Parallax Effect for Brain
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 30;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 30;
+        });
+
+        function animateBrain() {
+            currentX += (mouseX - currentX) * 0.05;
+            currentY += (mouseY - currentY) * 0.05;
+            
+            const brain = document.querySelector('.brain-wrapper');
+            if (brain) {
+                brain.style.transform = `translateY(${-15 + currentY * 0.5}px) rotateX(${currentY * 0.3}deg) rotateY(${currentX * 0.3}deg)`;
+            }
+            
+            requestAnimationFrame(animateBrain);
+        }
+
+        animateBrain();
+
+        // Resize handler for hex network
+        window.addEventListener('resize', () => {
+            createHexNetwork();
+        });
+    </script>
 
   <!-- Hero Section Animations -->
   <style>
@@ -1339,16 +2366,16 @@
 
           <!-- Step 1: الاستشارة -->
           <div class="timeline-item text-center" data-aos="fade-up" data-aos-delay="100">
-            <div class="relative mb-6 lg:mb-0">
+            <div class="relative mb-6 lg:mb-8">
               <div
                 class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 relative z-10">
                 <iconify-icon icon="lucide:message-circle" width="32" class="text-white"></iconify-icon>
               </div>
               <div
-                class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617]">
+                class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617] shadow-lg">
                 1</div>
             </div>
-            <div class="mt-8">
+            <div>
               <h3 class="text-xl font-bold text-white mb-2">الاستشارة</h3>
               <p class="text-slate-400 text-sm">نفهم أهدافك ونحدد الفرص مع استشارة مجانية لفريقك</p>
             </div>
@@ -1356,16 +2383,16 @@
 
           <!-- Step 2: التحليل -->
           <div class="timeline-item text-center" data-aos="fade-up" data-aos-delay="200">
-            <div class="relative mb-6 lg:mb-0">
+            <div class="relative mb-6 lg:mb-8">
               <div
                 class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/30 relative z-10">
                 <iconify-icon icon="lucide:search" width="32" class="text-white"></iconify-icon>
               </div>
               <div
-                class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617]">
+                class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617] shadow-lg">
                 2</div>
             </div>
-            <div class="mt-8">
+            <div>
               <h3 class="text-xl font-bold text-white mb-2">التحليل</h3>
               <p class="text-slate-400 text-sm">نحلل بياناتك وأنظمتك الحالية لتصميم الحل الأمثل</p>
             </div>
@@ -1373,16 +2400,16 @@
 
           <!-- Step 3: التطوير -->
           <div class="timeline-item text-center" data-aos="fade-up" data-aos-delay="300">
-            <div class="relative mb-6 lg:mb-0">
+            <div class="relative mb-6 lg:mb-8">
               <div
                 class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/30 relative z-10">
                 <iconify-icon icon="lucide:code-2" width="32" class="text-white"></iconify-icon>
               </div>
               <div
-                class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617]">
+                class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617] shadow-lg">
                 3</div>
             </div>
-            <div class="mt-8">
+            <div>
               <h3 class="text-xl font-bold text-white mb-2">التطوير</h3>
               <p class="text-slate-400 text-sm">نبني الحل بمعايير عالمية مع اختبارات مستمرة</p>
             </div>
@@ -1390,16 +2417,16 @@
 
           <!-- Step 4: التنفيذ -->
           <div class="timeline-item text-center" data-aos="fade-up" data-aos-delay="400">
-            <div class="relative mb-6 lg:mb-0">
+            <div class="relative mb-6 lg:mb-8">
               <div
                 class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 relative z-10">
                 <iconify-icon icon="lucide:rocket" width="32" class="text-white"></iconify-icon>
               </div>
               <div
-                class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617]">
+                class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617] shadow-lg">
                 4</div>
             </div>
-            <div class="mt-8">
+            <div>
               <h3 class="text-xl font-bold text-white mb-2">التنفيذ</h3>
               <p class="text-slate-400 text-sm">ننشر الحل ونتكامل مع أنظمتك بسلاسة تامة</p>
             </div>
@@ -1407,16 +2434,16 @@
 
           <!-- Step 5: الدعم -->
           <div class="timeline-item text-center" data-aos="fade-up" data-aos-delay="500">
-            <div class="relative mb-6 lg:mb-0">
+            <div class="relative mb-6 lg:mb-8">
               <div
                 class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-gold-500 to-amber-600 flex items-center justify-center shadow-lg shadow-gold-500/30 relative z-10">
                 <iconify-icon icon="lucide:headphones" width="32" class="text-white"></iconify-icon>
               </div>
               <div
-                class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617]">
+                class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center text-white font-bold text-sm border-4 border-[#020617] shadow-lg">
                 5</div>
             </div>
-            <div class="mt-8">
+            <div>
               <h3 class="text-xl font-bold text-white mb-2">الدعم</h3>
               <p class="text-slate-400 text-sm">نوفر دعماً مستمراً وتحسينات دورية لضمان النجاح</p>
             </div>
