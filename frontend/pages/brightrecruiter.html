@@ -1,264 +1,265 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
-</script>
-
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5468067620830797"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://brightai.site/brightrecruiter">
-    <title>BrightRecruiter - نظام التوظيف الذكي</title>
-  <meta name="description" content="BrightRecruiter - نظام التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-    
-    <!-- Favicon -->
+    <title>BrightRecruiter | نظام التوظيف الذكي المعزز بالذكاء الاصطناعي</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8LLESL207Q');
+    </script>
+
+    <meta name="description"
+        content="نظام التوظيف الذكي BrightRecruiter. أتمتة عملية التوظيف، فحص السير الذاتية، وإدارة المرشحين بدقة عالية باستخدام الذكاء الاصطناعي للشركات السعودية.">
+    <meta name="keywords"
+        content="نظام توظيف ذكي, AI recruiting, فحص السير الذاتية, أتمتة التوظيف السعودية, BrightRecruiter">
+    <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي">
+    <link rel="canonical" href="https://brightai.site/frontend/pages/brightrecruiter.html">
     <link rel="icon" type="image/png" href="../assets/images/Gemini.png">
-    <link rel="apple-touch-icon" sizes="240x240" href="../assets/images/Gemini.png">
-    
-    <link rel="stylesheet" href="brightrecruiter.min.css">
-    <link rel="stylesheet" href="../css/unified-nav.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.min.css" />
-    <!-- Add Google API script for sheets -->
-     <script src="https://apis.google.com/js/api.min.js"></script>
 
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="BrightRecruiter | نظام التوظيف الذكي">
+    <meta property="og:description" content="نظام التوظيف الذكي للشركات السعودية. وظف الأفضل بسرعة ودقة.">
+    <meta property="og:url" content="https://brightai.site/frontend/pages/brightrecruiter.html">
+    <meta property="og:image" content="https://brightai.site/Gemini.png">
+    <meta property="og:locale" content="ar_SA">
 
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="BrightRecruiter - نظام التوظيف الذكي">
-  <meta property="og:description" content="BrightRecruiter - نظام التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  <meta property="og:url" content="https://brightai.site/brightrecruiter">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ar_SA">
-  <meta property="og:site_name" content="مُشرقة AI">
-  
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BrightRecruiter - نظام التوظيف الذكي">
-  <meta name="twitter:description" content="BrightRecruiter - نظام التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
-  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  </head>
+    <!-- CSS & Fonts -->
+    <link rel="stylesheet" href="../css/critical.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<body>
-    <!-- Unified Navigation JS -->
-    <script src="../js/unified-nav.min.js" defer></script>
-    
-    <!-- التنقل الموحد الجديد -->
+    <!-- Deferred Loader -->
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('../js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('../css/brightai-core.css');
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            function loadAnimations() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                    setTimeout(loadAnimations, 300);
+                });
+            } else {
+                loadDeferredResources();
+                setTimeout(loadAnimations, 300);
+            }
+        })();
+    </script>
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight bg-[#020617] text-white">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full opacity-30"></canvas>
+
+    <!-- UNIFIED HEADER -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
-            <!-- Logo -->
             <a href="../../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+                <img src="../assets/images/Gemini.png" alt="Bright AI" width="42" height="42" />
+                <span>Bright AI</span>
             </a>
-            
-            <!-- Hamburger Menu Button (Mobile) -->
-            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-            
-            <!-- Navigation Links -->
             <ul class="nav-links" id="nav-links-list" role="menubar">
                 <li role="none"><a role="menuitem" href="../../index.html">الرئيسية</a></li>
-                
-                <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
                 <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أنظمة ذكية مؤسسية متكاملة
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
+                    <button type="button" class="dropdown-toggle">
+                        خدماتنا
+                        <iconify-icon icon="lucide:chevron-down" width="14"></iconify-icon>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="../h/projects/interview/">نظام توظيف ذكي متكامل</a></li>
-                        <li role="none"><a role="menuitem" href="health-bright">ثورة الذكاء الاصطناعي في الرعاية الصحية</a></li>
-                        <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
+                        <li role="none"><a role="menuitem" href="our-products.html">منتجات AI</a></li>
+                        <li role="none"><a role="menuitem" href="consultation.html">استشارات</a></li>
                     </ul>
                 </li>
-                
-                <!-- Dropdown: خدمات ذكية -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        خدمات ذكية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="ai-agent">الوكلاء</a></li>
-                        <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
-                        <li role="none"><a role="menuitem" href="consultation">استشارات الذكاء الاصطناعي</a></li>
-                        <li role="none"><a role="menuitem" href="smart-automation">الأتمتة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="our-products">خدمات الذكاء الاصطناعي</a></li>
-                    </ul>
-                </li>
-                
-                <!-- Dropdown: بوابة المعرفة -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        بوابة المعرفة
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="about-us">عن شركة مُشرقة AI</a></li>
-                        <li role="none"><a role="menuitem" href="Docs">DOCS</a></li>
-                    </ul>
-                </li>
-                
-                <!-- Dropdown: أدوات ذكية مجانية -->
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                        أدوات ذكية مجانية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="tools">أدوات ذكية مجانية</a></li>
-                        <li role="none"><a role="menuitem" href="../h/projects/interview/">نماذج AI تجريبية</a></li>
-                        <li role="none"><a role="menuitem" href="ai-bots">شات بوت</a></li>
-                    </ul>
-                </li>
+                <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
+                <li role="none"><a role="menuitem" href="about-us.html">من نحن</a></li>
             </ul>
         </div>
     </nav>
-    <div class="nav-overlay" aria-hidden="true"></div>
+    <div class="nav-overlay" id="nav-overlay"></div>
 
-    <div class="container" style="margin-top: 90px;">
-        <h1>BrightRecruiter - نظام التوظيف الذكي</h1>
+    <!-- HERO SECTION -->
+    <header class="hero-section relative min-h-[80vh] flex items-center pt-32 pb-16 px-6 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-[#020617] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-        <h2>إضافة وظيفة جديدة</h2>
-        <div class="form-container">
-            <input type="text" id="job-title" placeholder="مسمى الوظيفة">
-            <textarea id="job-description" placeholder="وصف الوظيفة"></textarea>
-            <button id="add-job-btn" class="button">
-                 <i class="fas fa-plus"></i>
-                 إضافة وظيفة
-            </button>
-        </div>
+            <div class="text-center lg:text-right" data-aos="fade-left">
+                <div
+                    class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-emerald-500/30 mb-8">
+                    <span class="text-emerald-300 text-sm font-medium tracking-wide">الجيل الجديد من التوظيف</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+                    Bright<span
+                        class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Recruiter</span>
+                </h1>
+                <p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed mb-10">
+                    وظّف الكفاءات الأنسب لشركتك بسرعة ودقة باستخدام خوارزميات الذكاء الاصطناعي التي تحلل آلاف السير
+                    الذاتية في ثوانٍ.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#features" class="btn-primary bg-emerald-600 hover:bg-emerald-700">
+                        كيف يعمل؟
+                        <iconify-icon icon="lucide:arrow-down" width="20"></iconify-icon>
+                    </a>
+                    <a href="contact.html"
+                        class="glass-btn px-8 py-4 rounded-xl font-medium hover:bg-white/10 transition">
+                        تواصل معنا
+                    </a>
+                </div>
+            </div>
 
-        <h2>قائمة الوظائف</h2>
-          <div class="search-area">
-            <input type="text" id="search-job" placeholder="بحث عن وظيفة...">
-           <button id="search-job-btn" class="button">
-               <i class="fas fa-search"></i>
-               بحث
-            </button>
-        </div>
-        <div class="jobs-table">
-            <table id="jobs-list">
-                <thead>
-                    <tr>
-                        <th>مسمى الوظيفة</th>
-                        <th>وصف الوظيفة</th>
-                          <th>الاجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- يتم عرض الوظائف هنا -->
-                </tbody>
-            </table>
-              <div id="edit-job-modal" class="modal" style="display: none;">
-                <div class="modal-content">
-                    <span class="close-modal">×</span>
-                    <h2>تعديل بيانات الوظيفة</h2>
-                   <input type="hidden" id="edit-job-index">
-                    <input type="text" id="edit-job-title" placeholder="مسمى الوظيفة">
-                     <textarea id="edit-job-description" placeholder="وصف الوظيفة"></textarea>
-                     <button id="save-edit-job-btn" class="button">
-                       <i class="fas fa-save"></i>
-                        حفظ التعديلات
-                  </button>
+            <div class="relative" data-aos="fade-right">
+                <div class="absolute inset-0 bg-emerald-500/20 rounded-full blur-[100px] animate-pulse"></div>
+                <div
+                    class="glass-card p-6 rounded-2xl border border-white/10 relative transform rotate-y-12 hover:rotate-0 transition duration-700">
+                    <!-- Candidate Card Mockup -->
+                    <div class="bg-[#0f172a] rounded-xl p-6 border border-slate-700/50 flex flex-col gap-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-full bg-slate-700"></div>
+                            <div>
+                                <div class="h-4 w-32 bg-slate-600 rounded mb-2"></div>
+                                <div class="h-3 w-24 bg-slate-700 rounded"></div>
+                            </div>
+                            <div class="mr-auto px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs">96%
+                                تطابق</div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex gap-2">
+                                <div class="h-2 w-full bg-emerald-500/30 rounded-full overflow-hidden">
+                                    <div class="h-full w-[85%] bg-emerald-500"></div>
+                                </div>
+                            </div>
+                            <div class="h-2 w-3/4 bg-slate-700 rounded"></div>
+                            <div class="h-2 w-1/2 bg-slate-700 rounded"></div>
+                        </div>
+                        <div class="flex gap-3 mt-2">
+                            <div class="px-3 py-1 bg-slate-800 rounded-lg text-xs text-slate-400">Python</div>
+                            <div class="px-3 py-1 bg-slate-800 rounded-lg text-xs text-slate-400">AI/ML</div>
+                            <div class="px-3 py-1 bg-slate-800 rounded-lg text-xs text-slate-400">Leadership</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <h2>إضافة مرشح</h2>
-          <div class="form-container">
-              <select id="job-select">
-                    <option value="">اختر الوظيفة</option>
-                    <!-- خيارات الوظائف سيتم إضافتها هنا -->
-               </select>
-               <input type="text" id="candidate-name" placeholder="اسم المرشح">
-               <input type="email" id="candidate-email" placeholder="البريد الإلكتروني للمرشح">
-               <input type="text" id="candidate-skills" placeholder="مهارات المرشح (مفصولة بفاصلة)">
-               <button id="add-candidate-btn" class="button">
-                <i class="fas fa-user-plus"></i>
-                إضافة مرشح
-              </button>
-           </div>
-        <h2>قائمة المرشحين</h2>
-          <div class="search-area">
-            <input type="text" id="search-candidate" placeholder="بحث عن مرشح...">
-               <input type="text" id="filter-skills" placeholder="تصفية حسب المهارات (فاصلة)">
-            <button id="search-candidate-btn" class="button">
-               <i class="fas fa-search"></i>
-               بحث
-            </button>
-         </div>
-        <div class="candidates-table">
-            <table id="candidates-list">
-                <thead>
-                    <tr>
-                       <th>اسم المرشح</th>
-                        <th>البريد الإلكتروني</th>
-                        <th>الوظيفة</th>
-                         <th>المهارات</th>
-                         <th>الاجراءات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- يتم عرض المرشحين هنا -->
-                </tbody>
-            </table>
-        </div>
-          <div id="edit-candidate-modal" class="modal" style="display: none;">
-                <div class="modal-content">
-                    <span class="close-modal">×</span>
-                    <h2>تعديل بيانات المرشح</h2>
-                   <input type="hidden" id="edit-candidate-index">
-                    <select id="edit-job-select">
-                        <option value="">اختر الوظيفة</option>
-                        <!-- خيارات الوظائف سيتم إضافتها هنا -->
-                    </select>
-                     <input type="text" id="edit-candidate-name" placeholder="اسم المرشح">
-                     <input type="email" id="edit-candidate-email" placeholder="البريد الإلكتروني للمرشح">
-                   <input type="text" id="edit-candidate-skills" placeholder="مهارات المرشح (مفصولة بفاصلة)">
-                     <button id="save-edit-candidate-btn" class="button">
-                       <i class="fas fa-save"></i>
-                        حفظ التعديلات
-                  </button>
+    </header>
+
+    <!-- FEATURES -->
+    <section id="features" class="py-24 px-6 bg-[#020617] relative">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-16" data-aos="fade-up">لماذا <span
+                    class="text-emerald-400">BrightRecruiter؟</span></h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 group hover:-translate-y-2 transition duration-300" data-aos="fade-up">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 text-emerald-400 group-hover:scale-110 transition">
+                        <iconify-icon icon="lucide:user-check" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">تصفية آلية دقيقة</h3>
+                    <p class="text-slate-400 leading-relaxed">يقوم النظام بفرز المرشحين تلقائياً بناءً على المهارات
+                        والخبرة المطلوبة بدقة تفوق الفرز اليدوي.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 group hover:-translate-y-2 transition duration-300" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center mb-6 text-teal-400 group-hover:scale-110 transition">
+                        <iconify-icon icon="lucide:clock" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">تقليل وقت التوظيف</h3>
+                    <p class="text-slate-400 leading-relaxed">قلل الوقت المستغرق في عملية التوظيف بنسبة تصل إلى 70% وركز
+                        على مقابلة أفضل الكفاءات فقط.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 group hover:-translate-y-2 transition duration-300" data-aos="fade-up"
+                    data-aos-delay="200">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mb-6 text-green-400 group-hover:scale-110 transition">
+                        <iconify-icon icon="lucide:bar-chart" width="32"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">تحليلات التوظيف</h3>
+                    <p class="text-slate-400 leading-relaxed">لوحات معلومات تفاعلية تعطيك نظرة شاملة على أداء عمليات
+                        التوظيف ومصادر المرشحين.</p>
                 </div>
             </div>
-    </div>
-    <footer>
-        <div class="container">
-            <div class="social-media">
-                <h3>تواصل معنا عبر</h3>
-                <a href="#" title="فيسبوك"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/iililil44/profilecard/?igsh=bm5pOXhycjZucTRh" title="انستجرام"><i class="fab fa-instagram"></i></a>
-                <a href="https://x.com/BrightAIII" title="تويتر"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.youtube.com/@TeechLab" title="يوتيوب"><i class="fab fa-youtube"></i></a>
+        </div>
+    </section>
+
+    <!-- UNIFIED FOOTER -->
+    <footer class="footer bg-[#020617] border-t border-white/10 pt-20 pb-10">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <a href="../../index.html" class="block mb-6"><img src="../assets/images/Gemini.png" alt="Logo"
+                            width="40"></a>
+                    <p class="text-slate-400 text-sm">Bright AI - تمكين المستقبل بالذكاء الاصطناعي.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">روابط سريعة</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="../../index.html" class="hover:text-emerald-400">الرئيسية</a></li>
+                        <li><a href="our-products.html" class="hover:text-emerald-400">منتجاتنا</a></li>
+                        <li><a href="docs.html" class="hover:text-gold-400">التوثيق</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">تواصل معنا</h4>
+                    <p class="text-slate-400 text-sm">الرياض، المملكة العربية السعودية</p>
+                </div>
             </div>
-             <div class="contact-info">
-                <h3>معلومات التواصل</h3>
-                <p><i class="fas fa-envelope"></i> <a href="mailto:yazeed1job@gmail.com" style="color: #666;">البريد الإلكتروني: yazeed1job@gmail.com</a></p>
-                 <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/966538229013" style="color: #666;">واتساب: +966 53 822 9013</a></p>
+            <div class="text-center text-slate-500 text-xs pt-8 border-t border-white/10">
+                &copy; 2025 Bright AI. جميع الحقوق محفوظة.
             </div>
         </div>
     </footer>
-    <script src="brightrecruiter.min.js"></script>
+
+    <!-- Core Scripts -->
+    <script src="../../js/core/dom-utils.min.js" defer></script>
+    <script src="../../js/core/format-utils.min.js" defer></script>
+    <script src="../../js/core/api-client.min.js" defer></script>
+    <script src="../../js/core/ui-utils.min.js" defer></script>
+    <script src="../../js/core/index.min.js" defer></script>
+    <script src="../js/main.min.js" defer></script>
 </body>
 
 </html>
