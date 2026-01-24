@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8LLESL207Q');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منتجاتنا وخدماتنا - Bright AI | حلول الذكاء الاصطناعي في السعودية</title>
+    <meta name="description"
+        content="اكتشف مجموعة واسعة من منتجات وخدمات الذكاء الاصطناعي من Bright AI: تحليل البيانات، الأتمتة الذكية، وكلاء AI، والروبوتات المتطورة للسوق السعودي.">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/design-tokens.min.css">
+    <link rel="stylesheet" href="../css/unified-gradient.min.css">
+    <link rel="stylesheet" href="../css/unified-nav.min.css">
+    <link rel="stylesheet" href="../css/products-enhanced.min.css">
+    <link rel="stylesheet" href="our-products.min.css">
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/images/Gemini.png">
+    <link rel="apple-touch-icon" href="../assets/images/Gemini.png">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="منتجاتنا وخدماتنا - Bright AI">
+    <meta property="og:description" content="حلول الذكاء الاصطناعي المتطورة للسوق السعودي">
+    <meta property="og:image" content="../assets/images/Gemini.png">
+    <meta property="og:url" content="https://brightai.site/our-products-new">
+    <link rel="canonical" href="https://brightai.site/our-products-new">
+    <meta property="og:type" content="website">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "منتجات وخدمات Bright AI",
+        "description": "مجموعة شاملة من حلول الذكاء الاصطناعي للسوق السعودي",
+        "url": "https://brightai.site/our-products-new.html"
+    }
+    </script>
+</head>
+
+<body>
+    <!-- Unified Navigation -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+            </a>
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="../index.html">الرئيسية</a></li>
+                <li role="none"><a role="menuitem" href="our-products-new" class="active">خدمات الذكاء
+                        الاصطناعي</a></li>
+                <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
+                <li role="none"><a role="menuitem" href="consultation">استشارات</a></li>
+                <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="nav-overlay" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header>
+        <h1>منتجاتنا وخدماتنا المبتكرة</h1>
+        <p>اختر الحل المناسب لعملك واستفد من تقنيات الذكاء الاصطناعي المتطورة</p>
+        <button type="button" class="cart-icon" aria-label="سلة المشتريات">
+            <iconify-icon icon="lucide:shopping-cart" width="24"></iconify-icon>
+            <span class="cart-count">0</span>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Filters Bar -->
+        <div class="filters-bar">
+            <div class="filters-row">
+                <div class="search-box">
+                    <iconify-icon icon="lucide:search" width="20"></iconify-icon>
+                    <input type="text" id="search-input" placeholder="ابحث عن منتج أو خدمة..."
+                        aria-label="البحث في المنتجات">
+                </div>
+
+                <select id="price-filter" class="filter-select" aria-label="فلترة حسب السعر">
+                    <option value="all">جميع الأسعار</option>
+                    <option value="low">أقل من 500 ريال</option>
+                    <option value="medium">500 - 2000 ريال</option>
+                    <option value="high">أكثر من 2000 ريال</option>
+                </select>
+
+                <select id="sort-select" class="filter-select" aria-label="ترتيب المنتجات">
+                    <option value="popular">الأكثر شعبية</option>
+                    <option value="price-low">السعر: من الأقل للأعلى</option>
+                    <option value="price-high">السعر: من الأعلى للأقل</option>
+                    <option value="rating">الأعلى تقييماً</option>
+                    <option value="name">الاسم (أ-ي)</option>
+                </select>
+            </div>
+
+            <div class="results-info">
+                <span id="results-count">جاري التحميل...</span>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <a href="#" class="category-tab active" data-category="all">
+                <iconify-icon icon="lucide:grid-3x3" width="20"></iconify-icon>
+                جميع المنتجات
+            </a>
+            <a href="#" class="category-tab" data-category="data-analysis">
+                <iconify-icon icon="lucide:bar-chart-3" width="20"></iconify-icon>
+                تحليل البيانات
+            </a>
+            <a href="#" class="category-tab" data-category="automation">
+                <iconify-icon icon="lucide:zap" width="20"></iconify-icon>
+                الأتمتة الذكية
+            </a>
+            <a href="#" class="category-tab" data-category="ai-agents">
+                <iconify-icon icon="lucide:bot" width="20"></iconify-icon>
+                وكلاء AI
+            </a>
+            <a href="#" class="category-tab" data-category="robots">
+                <iconify-icon icon="lucide:cpu" width="20"></iconify-icon>
+                الروبوتات
+            </a>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid">
+            <!-- Products will be rendered here by JavaScript -->
+            <div class="loading-state">
+                <iconify-icon icon="lucide:loader-2" width="48" class="spin"></iconify-icon>
+                <p>جاري تحميل المنتجات...</p>
+            </div>
+        </div>
+
+        <!-- Comparison Bar -->
+        <div id="comparison-bar">
+            <div class="comparison-info">
+                <iconify-icon icon="lucide:git-compare" width="24"></iconify-icon>
+                <span>تمت إضافة <strong class="comparison-count">0</strong> منتجات للمقارنة</span>
+            </div>
+            <div class="comparison-items"></div>
+            <div class="comparison-actions">
+                <button id="compare-btn" class="btn-primary">
+                    <iconify-icon icon="lucide:eye" width="18"></iconify-icon>
+                    مقارنة
+                </button>
+                <button id="clear-compare" class="btn-secondary">
+                    <iconify-icon icon="lucide:x" width="18"></iconify-icon>
+                    مسح
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Product Details Modal -->
+    <div id="product-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تفاصيل المنتج</h2>
+                <button class="modal-close" aria-label="إغلاق">
+                    <iconify-icon icon="lucide:x" width="24"></iconify-icon>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be injected by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal (from original file) -->
+    <div class="cart-modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>سلة المشتريات</h2>
+                <button type="button" class="modal-close" id="closeCartModal" aria-label="إغلاق">
+                    <iconify-icon icon="lucide:x" width="24"></iconify-icon>
+                </button>
+            </div>
+            <div class="cart-items"></div>
+            <div class="cart-summary">
+                <p>المجموع: <span class="cart-total">0.00</span> ريال سعودي</p>
+                <button type="button" class="checkout-button">
+                    <iconify-icon icon="lucide:credit-card" width="20"></iconify-icon>
+                    إتمام الشراء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal (from original file) -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إتمام الدفع</h2>
+                <button type="button" class="modal-close" id="closePaymentModal" aria-label="إغلاق">
+                    <iconify-icon icon="lucide:x" width="24"></iconify-icon>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="bank-details">
+                    <div class="detail-group">
+                        <h3>معلومات التحويل البنكي</h3>
+                        <div class="iban-container">
+                            <p>رقم الآيبان:</p>
+                            <p id="ibanNumber">SA0000000000000000000000</p>
+                            <button id="copyIban" class="copy-button">
+                                <iconify-icon icon="lucide:copy" width="18"></iconify-icon>
+                                نسخ
+                            </button>
+                        </div>
+                    </div>
+                    <div class="total-amount">
+                        <h3>المبلغ الإجمالي</h3>
+                        <p class="amount"><span class="payment-total">0.00</span> ريال سعودي</p>
+                    </div>
+                </div>
+                <div class="payment-actions">
+                    <a href="#" class="send-receipt-button">
+                        <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+                        إرسال إيصال الدفع عبر واتساب
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/unified-nav.min.js" defer></script>
+    <script src="../js/products-manager.min.js" defer></script>
+    <script src="our-products.min.js" defer></script>
+
+    <style>
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-primary);
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</body>
+
+</html>

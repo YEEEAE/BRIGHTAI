@@ -77,13 +77,13 @@
   <link rel="dns-prefetch" href="https://code.iconify.design">
 
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="Gemini.webp" as="image" type="image/webp">
-  <link rel="preload" href="css/critical.css" as="style">
+  <link rel="preload" href="assets/images/Gemini.webp" as="image" type="image/webp">
+  <link rel="preload" href="frontend/css/critical.css" as="style">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style"
     crossorigin>
 
   <!-- Critical CSS (Inline for fastest FCP) -->
-  <link rel="stylesheet" href="css/critical.css" />
+  <link rel="stylesheet" href="frontend/css/critical.css" />
 
   <!-- Performance Loader Script (Load all resources intelligently) -->
   <script>
@@ -112,7 +112,7 @@
       function loadDeferredResources() {
         // Tailwind CSS (non-blocking)
         loadScript('https://cdn.tailwindcss.com', function () {
-          loadScript('js/tailwind-config.min.js');
+          loadScript('frontend/js/tailwind-config.min.js');
         });
 
         // Fonts
@@ -121,11 +121,11 @@
         loadCSS('https://fonts.googleapis.com/css?family=Amiri&subset=arabic,latin');
 
         // Design System CSS
-        loadCSS('css/design-tokens.css');
-        loadCSS('css/typography.css');
-        loadCSS('css/glass-morphism.css');
-        loadCSS('css/main.min.css');
-        loadCSS('css/premium-effects.min.css');
+        loadCSS('frontend/css/design-tokens.css');
+        loadCSS('frontend/css/typography.css');
+        loadCSS('frontend/css/glass-morphism.css');
+        loadCSS('frontend/css/main.min.css');
+        loadCSS('frontend/css/premium-effects.min.css');
 
         // External CSS
         loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
@@ -693,8 +693,8 @@
     <div class="nav-container">
       <!-- Logo -->
       <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-        <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42" height="42"
-          fetchpriority="high" decoding="async" />
+        <img src="frontend/assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42"
+          height="42" fetchpriority="high" decoding="async" />
         <span>Bright AI</span>
       </a>
       <!-- Hamburger Menu Button (Mobile) -->
@@ -723,21 +723,21 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li role="none">
-              <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+              <a role="menuitem" href="../h/projects/interview/index.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:users" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 رحلة التوظيف الذكية بالكامل
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="Smart-Medical-Archive/index.html" class="flex items-center gap-2">
+              <a role="menuitem" href="../Smart-Medical-Archive/index.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:file-heart" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 الارشيف الطبي الذكي
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="try.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/try.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:database" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 ذكاء البيانات المُشرق
@@ -757,35 +757,35 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li role="none">
-              <a role="menuitem" href="smart-automation.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/smart-automation.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:zap" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 الأتمتة الذكية
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="ai-agent.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/ai-agent.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:cloud" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 الذكاء الاصطناعي كخدمة (AIaaS)
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="data-analysis.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/data-analysis.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:bar-chart" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 تحليل البيانات
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="consultation.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/consultation.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:message-square" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 استشارات الذكاء الاصطناعي
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="our-products.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/our-products.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:layers" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 جميع الخدمات
@@ -805,14 +805,14 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li role="none">
-              <a role="menuitem" href="blog.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/blog.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:library" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 المكتبة الذكية
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="about-us.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/about-us.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:info" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 عن شركة مُشرقة AI
@@ -839,7 +839,7 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <li role="none">
-              <a role="menuitem" href="tools.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/tools.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:gift" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 أدوات ذكية مجانية
@@ -853,7 +853,7 @@
               </a>
             </li>
             <li role="none">
-              <a role="menuitem" href="ai-bots.html" class="flex items-center gap-2">
+              <a role="menuitem" href="frontend/pages/ai-bots.html" class="flex items-center gap-2">
                 <iconify-icon icon="lucide:message-circle" width="14"
                   class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                 شات بوت
@@ -869,7 +869,7 @@
   <div class="nav-overlay" id="nav-overlay"></div>
 
   <!-- Hero CSS -->
-  <link rel="stylesheet" href="css/hero.css" />
+  <link rel="stylesheet" href="frontend/css/hero.css" />
   </head>
 
   <body>
@@ -1201,7 +1201,7 @@
     </section>
 
     <!-- Hero Scripts -->
-    <script src="js/hero.js"></script>
+    <script src="frontend/js/hero.js"></script>
 
     <!-- Hero Section Animations -->
     <style>
@@ -2027,7 +2027,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-12">
 
           <!-- Service: AIaaS حلول سحابية -->
-          <a href="ai-agent.html" class="service-card-link group block" data-aos="fade-up" data-aos-delay="50">
+          <a href="frontend/pages/ai-agent.html" class="service-card-link group block" data-aos="fade-up"
+            data-aos-delay="50">
             <div class="service-card tilt-card h-full">
               <div class="service-icon bg-gradient-to-br from-sky-500 to-blue-600">
                 <iconify-icon icon="lucide:cloud" width="28" class="text-white"></iconify-icon>
@@ -2051,7 +2052,8 @@
           </a>
 
           <!-- Service: أتمتة العمليات RPA -->
-          <a href="smart-automation.html" class="service-card-link group block" data-aos="fade-up" data-aos-delay="100">
+          <a href="frontend/pages/smart-automation.html" class="service-card-link group block" data-aos="fade-up"
+            data-aos-delay="100">
             <div class="service-card tilt-card h-full">
               <div class="service-icon bg-gradient-to-br from-orange-500 to-amber-600">
                 <iconify-icon icon="lucide:cog" width="28" class="text-white"></iconify-icon>
@@ -2076,7 +2078,8 @@
           </a>
 
           <!-- Service: تحليل البيانات الضخمة -->
-          <a href="data-analysis.html" class="service-card-link group block" data-aos="fade-up" data-aos-delay="150">
+          <a href="frontend/pages/data-analysis.html" class="service-card-link group block" data-aos="fade-up"
+            data-aos-delay="150">
             <div class="service-card tilt-card h-full">
               <div class="service-icon bg-gradient-to-br from-blue-500 to-cyan-600">
                 <iconify-icon icon="lucide:bar-chart-3" width="28" class="text-white"></iconify-icon>
@@ -2100,7 +2103,8 @@
           </a>
 
           <!-- Service: روبوتات ذكية للأعمال -->
-          <a href="ai-bots.html" class="service-card-link group block" data-aos="fade-up" data-aos-delay="200">
+          <a href="frontend/pages/ai-bots.html" class="service-card-link group block" data-aos="fade-up"
+            data-aos-delay="200">
             <div class="service-card tilt-card h-full">
               <div class="service-icon bg-gradient-to-br from-indigo-500 to-purple-600">
                 <iconify-icon icon="lucide:bot" width="28" class="text-white"></iconify-icon>
@@ -2126,7 +2130,8 @@
           </a>
 
           <!-- Service: استشارات الذكاء الاصطناعي -->
-          <a href="consultation.html" class="service-card-link group block" data-aos="fade-up" data-aos-delay="250">
+          <a href="frontend/pages/consultation.html" class="service-card-link group block" data-aos="fade-up"
+            data-aos-delay="250">
             <div class="service-card tilt-card h-full">
               <div class="service-icon bg-gradient-to-br from-violet-500 to-fuchsia-600">
                 <iconify-icon icon="lucide:message-square" width="28" class="text-white"></iconify-icon>
@@ -5742,60 +5747,13 @@
       </div>
     </footer>
 
-    <!-- INSTRUCTION 3: GEMINI CHATBOT WIDGET -->
-    <div class="chat-widget">
-      <!-- Chat Window -->
-      <div id="chat-window" class="chat-window shadow-2xl">
-        <!-- Header -->
-        <div class="p-4 border-b border-white/10 bg-indigo-900/30 flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="font-medium text-white text-sm">مساعد Bright AI</span>
-          </div>
-          <button onclick="toggleChat()" class="text-slate-400 hover:text-white" aria-label="إغلاق المحادثة">
-            <iconify-icon icon="lucide:x" width="18"></iconify-icon>
-          </button>
-        </div>
-
-        <!-- Messages Area -->
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm">
-          <div class="flex items-start gap-3">
-            <div
-              class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-300 shrink-0 border border-indigo-500/30">
-              <iconify-icon icon="lucide:bot" width="16"></iconify-icon>
-            </div>
-            <div class="bg-white/5 p-3 rounded-2xl rounded-tr-none text-slate-200 border border-white/5">
-              مرحباً! كيف يمكنني مساعدتك في خدمات الذكاء الاصطناعي اليوم؟
-            </div>
-          </div>
-        </div>
-
-        <!-- Input Area -->
-        <div class="p-4 border-t border-white/10 bg-black/20">
-          <form id="chat-form" class="flex gap-2" onsubmit="handleChatSubmit(event)">
-            <input type="text" id="chat-input" placeholder="اكتب رسالتك..."
-              class="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-600" />
-            <button type="submit" aria-label="إرسال الرسالة"
-              class="p-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition flex items-center justify-center">
-              <iconify-icon icon="lucide:send" width="16"></iconify-icon>
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Floating Button -->
-      <button onclick="toggleChat()" aria-label="فتح المحادثة"
-        class="w-14 h-14 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full shadow-[0_0_20px_rgba(99,102,241,0.5)] flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 border border-white/20">
-        <iconify-icon icon="lucide:message-square-text" width="24"></iconify-icon>
-      </button>
-    </div>
-
     <!-- JavaScript Files -->
-    <script src="js/main.min.js" defer></script>
-    <script src="js/premium-animations.min.js" defer></script>
-    <script src="js/neural-canvas.min.js" defer></script>
-    <script src="js/scroll-animations.min.js" defer></script>
-    <script src="js/chat-groq.min.js" defer></script>
+    <script src="frontend/js/main.min.js" defer></script>
+    <script src="frontend/js/premium-animations.min.js" defer></script>
+    <script src="frontend/js/neural-canvas.min.js" defer></script>
+    <script src="frontend/js/scroll-animations.min.js" defer></script>
+    <!-- Enterprise Chatbot (Backend Integrated) -->
+    <script src="frontend/js/gemini-chat-enterprise.js" defer></script>
   </body>
 
 </html>

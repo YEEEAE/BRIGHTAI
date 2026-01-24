@@ -12,7 +12,7 @@
   "scripts": {
     "test": "vitest --run",
     "test:watch": "vitest",
-    "server": "node server/index.js",
-    "server:dev": "node --watch server/index.js"
+    "server": "node backend/server.js",
+    "server:dev": "node --watch backend/server.js"
   }
 }

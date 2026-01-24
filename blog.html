@@ -1,707 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>مدونة الذكاء الاصطناعي في السعودية | Bright AI - مقالات وأدلة شاملة</title>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
-
-    <!-- Enterprise SEO Meta Tags -->
-    <meta name="description"
-        content="أحدث المقالات والأدلة الشاملة حول الذكاء الاصطناعي، التعلم الآلي، الأتمتة الذكية، وتحليل البيانات للشركات السعودية. رؤى خبراء Bright AI حول التحول الرقمي ورؤية 2030." />
-    <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
-    <link rel="canonical" href="https://brightai.site/blog" />
-
-    <!-- Keywords -->
-    <meta name="keywords"
-        content="مدونة الذكاء الاصطناعي, مقالات AI السعودية, التعلم الآلي, الأتمتة الذكية, تحليل البيانات, ChatGPT للأعمال, Gemini AI, وكلاء الذكاء الاصطناعي, التحول الرقمي السعودي, رؤية 2030, معالجة اللغة العربية, NLP عربي" />
-
-    <!-- Geo Tags -->
-    <meta name="geo.region" content="SA" />
-    <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Bright AI" />
-    <meta property="og:title" content="مدونة الذكاء الاصطناعي في السعودية | Bright AI" />
-    <meta property="og:description" content="أحدث المقالات حول الذكاء الاصطناعي والتحول الرقمي للشركات السعودية." />
-    <meta property="og:url" content="https://brightai.site/blog" />
-    <meta property="og:image" content="https://brightai.site/Gemini.png" />
-    <meta property="og:locale" content="ar_SA" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="مدونة الذكاء الاصطناعي | Bright AI" />
-    <meta name="twitter:description" content="أحدث المقالات حول الذكاء الاصطناعي والتحول الرقمي للشركات السعودية." />
-    <meta name="twitter:image" content="https://brightai.site/Gemini.png" />
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="Gemini.png">
-
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Critical CSS -->
-    <link rel="stylesheet" href="css/critical.css" />
-
-    <!-- Performance Loader -->
-    <script>
-        (function () {
-            'use strict';
-            function loadCSS(href) {
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = href;
-                document.head.appendChild(link);
-            }
-            function loadScript(src, callback) {
-                var script = document.createElement('script');
-                script.src = src;
-                script.async = true;
-                if (callback) script.onload = callback;
-                document.body.appendChild(script);
-            }
-            function loadDeferredResources() {
-                loadScript('https://cdn.tailwindcss.com', function () {
-                    loadScript('js/tailwind-config.min.js');
-                });
-                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
-                loadCSS('css/design-tokens.css');
-                loadCSS('css/typography.css');
-                loadCSS('css/glass-morphism.css');
-                loadCSS('css/main.min.css');
-                loadCSS('css/premium-effects.min.css');
-                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
-                loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
-                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
-            }
-            function loadAnimations() {
-                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
-                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
-                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
-                });
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function () {
-                    setTimeout(loadDeferredResources, 50);
-                    setTimeout(loadAnimations, 300);
-                });
-            } else {
-                loadDeferredResources();
-                setTimeout(loadAnimations, 300);
-            }
-        })();
-    </script>
-
-    <!-- Structured Data: Blog Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "مدونة Bright AI",
-        "description": "مقالات وأدلة شاملة حول الذكاء الاصطناعي والتحول الرقمي للشركات السعودية",
-        "url": "https://brightai.site/blog",
-        "publisher": {
-            "@type": "Organization",
-            "name": "Bright AI",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://brightai.site/Gemini.png"
-            }
-        },
-        "inLanguage": "ar"
-    }
-    </script>
-</head>
-
-<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
-    <!-- Background Canvas -->
-    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
-
-    <!-- UNIFIED HEADER -->
-    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-        <div class="nav-container">
-            <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42" />
-                <span>Bright AI</span>
-            </a>
-            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
-                id="mobile-menu-btn">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-            <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="/" class="flex items-center gap-2">الرئيسية</a></li>
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle flex items-center gap-2">
-                        أنظمة ذكية مؤسسية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="h/projects/interview/index.html">نظام توظيف ذكي</a>
-                        </li>
-                        <li role="none"><a role="menuitem" href="Smart-Medical-Archive/index.html">الأرشيف الطبي
-                                الذكي</a></li>
-                        <li role="none"><a role="menuitem" href="try.html">ذكاء البيانات المُشرق</a></li>
-                    </ul>
-                </li>
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle flex items-center gap-2">
-                        خدمات ذكية
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="ai-agent.html">AIaaS - الذكاء كخدمة</a></li>
-                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
-                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
-                        <li role="none"><a role="menuitem" href="consultation.html">استشارات AI</a></li>
-                    </ul>
-                </li>
-                <li class="nav-dropdown" role="none">
-                    <button type="button" class="dropdown-toggle flex items-center gap-2">
-                        بوابة المعرفة
-                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
-                        </svg>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
-                        <li role="none"><a role="menuitem" href="about-us.html">عن الشركة</a></li>
-                        <li role="none"><a role="menuitem" href="Docs.html">الوثائق</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="nav-overlay" id="nav-overlay"></div>
-
-    <!-- HERO SECTION -->
-    <header class="hero-section relative min-h-[50vh] flex items-center pt-32 pb-16 px-6 overflow-hidden"
-        style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
-        <div class="absolute inset-0 gradient-animate opacity-20"></div>
-        <div class="max-w-7xl mx-auto w-full relative z-10 text-center">
-            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-indigo-500/30 mb-8"
-                data-aos="fade-down">
-                <span class="text-indigo-300 text-sm font-medium tracking-wide">+30 مقال متخصص</span>
-            </div>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" data-aos="fade-up">
-                المكتبة <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">الذكية</span>
-            </h1>
-            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto" data-aos="fade-up"
-                data-aos-delay="100">
-                أحدث المقالات والأدلة الشاملة حول الذكاء الاصطناعي، التعلم الآلي، والتحول الرقمي للشركات السعودية
-            </p>
-        </div>
-    </header>
-
-    <!-- FEATURED ARTICLES -->
-    <section class="py-16 px-6 bg-gradient-to-b from-[#020617] to-black/40">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-2xl font-bold text-white mb-8">📌 مقالات مميزة</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Featured 1 -->
-                <a href="blogger/Generative-artificial-intelligence.html"
-                    class="glass-card p-6 flex flex-col md:flex-row gap-6 hover:bg-white/5 transition group"
-                    data-aos="fade-right">
-                    <div
-                        class="w-full md:w-48 h-40 bg-indigo-900/30 rounded-xl flex items-center justify-center shrink-0">
-                        <iconify-icon icon="lucide:brain" width="64" class="text-indigo-400/50"></iconify-icon>
-                    </div>
-                    <div class="flex-1 flex flex-col">
-                        <span class="text-indigo-400 text-xs mb-2">الذكاء الاصطناعي التوليدي</span>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gold-400 transition">دليلك الشامل
-                            للذكاء الاصطناعي التوليدي (Generative AI)</h3>
-                        <p class="text-slate-400 text-sm flex-1">كل ما تحتاج معرفته عن تقنيات الذكاء التوليدي من GPT إلى
-                            Gemini وتطبيقاتها في الأعمال السعودية.</p>
-                        <span class="text-white font-medium mt-4 flex items-center gap-2">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </span>
-                    </div>
-                </a>
-                <!-- Featured 2 -->
-                <a href="blogger/case-study-saudi-companies-ai-agents-customer-service.html"
-                    class="glass-card p-6 flex flex-col md:flex-row gap-6 hover:bg-white/5 transition group"
-                    data-aos="fade-left">
-                    <div
-                        class="w-full md:w-48 h-40 bg-emerald-900/30 rounded-xl flex items-center justify-center shrink-0">
-                        <iconify-icon icon="lucide:users" width="64" class="text-emerald-400/50"></iconify-icon>
-                    </div>
-                    <div class="flex-1 flex flex-col">
-                        <span class="text-emerald-400 text-xs mb-2">دراسة حالة</span>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gold-400 transition">كيف وفرت
-                            شركات سعودية 40% من تكاليف خدمة العملاء بالذكاء الاصطناعي</h3>
-                        <p class="text-slate-400 text-sm flex-1">دراسة حالة حقيقية لشركات سعودية استخدمت وكلاء AI لتحسين
-                            خدمة العملاء.</p>
-                        <span class="text-white font-medium mt-4 flex items-center gap-2">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- CATEGORIES FILTER -->
-    <section class="py-8 px-6 bg-[#020617] sticky top-[72px] z-40 border-b border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-wrap justify-center gap-3">
-                <button class="px-5 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium">الكل</button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">الذكاء
-                    الاصطناعي</button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">الأتمتة</button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">تحليل
-                    البيانات</button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">التحول
-                    الرقمي</button>
-                <button
-                    class="px-5 py-2 rounded-full bg-white/5 text-slate-400 text-sm font-medium hover:bg-white/10 transition">التعلم
-                    الآلي</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- BLOG GRID -->
-    <section class="py-16 px-6 bg-[#020617]">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                <!-- Article: الذكاء الاصطناعي التوليدي وصناعة المحتوى -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up">
-                    <div class="h-48 bg-indigo-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-indigo-400/30">
-                            <iconify-icon icon="lucide:pen-tool" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-indigo-400 mb-3">
-                            <span>الذكاء الاصطناعي</span>
-                            <span>•</span>
-                            <span>01/03/2025</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">تأثير الذكاء الاصطناعي التوليدي على
-                            صناعة المحتوى في السعودية</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف تغير تقنيات الذكاء التوليدي مثل ChatGPT و Gemini مستقبل صناعة المحتوى العربي.
-                        </p>
-                        <a href="blogger/ai-generative-content-industry-saudi-arabia.html"
-                            class="text-white font-medium hover:text-indigo-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: وكلاء الذكاء الاصطناعي -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="100">
-                    <div class="h-48 bg-purple-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-purple-400/30">
-                            <iconify-icon icon="lucide:bot" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-purple-400 mb-3">
-                            <span>الوكلاء الذكية</span>
-                            <span>•</span>
-                            <span>15/02/2025</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">دليل شامل لوكلاء الذكاء الاصطناعي (AI
-                            Agents) للشركات</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            ما هي وكلاء AI وكيف يمكنها أتمتة المهام المعقدة في مؤسستك.
-                        </p>
-                        <a href="blogger/agint-bblog.html"
-                            class="text-white font-medium hover:text-purple-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: التحليل المالي الذكي -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="200">
-                    <div class="h-48 bg-blue-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-blue-400/30">
-                            <iconify-icon icon="lucide:bar-chart-3" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-blue-400 mb-3">
-                            <span>تحليل البيانات</span>
-                            <span>•</span>
-                            <span>20/01/2025</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">مستقبل التحليل الذكي للبيانات في
-                            القطاع المالي السعودي</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف يساهم الذكاء الاصطناعي في تحسين التحليل المالي وإدارة المخاطر للبنوك السعودية.
-                        </p>
-                        <a href="blogger/future-of-intelligent-data-analysis-finance-sector.html"
-                            class="text-white font-medium hover:text-blue-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: أتمتة العمليات -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up">
-                    <div class="h-48 bg-cyan-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-cyan-400/30">
-                            <iconify-icon icon="lucide:workflow" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-cyan-400 mb-3">
-                            <span>الأتمتة</span>
-                            <span>•</span>
-                            <span>10/01/2025</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">أتمتة العمليات باستخدام الذكاء
-                            الاصطناعي: دليل الكفاءة التشغيلية</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            خطوات عملية لأتمتة العمليات المتكررة في مؤسستك وتوفير الوقت والتكاليف.
-                        </p>
-                        <a href="blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html"
-                            class="text-white font-medium hover:text-cyan-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: التحول الرقمي -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="100">
-                    <div class="h-48 bg-emerald-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-emerald-400/30">
-                            <iconify-icon icon="lucide:rocket" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-emerald-400 mb-3">
-                            <span>التحول الرقمي</span>
-                            <span>•</span>
-                            <span>05/01/2025</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">التحول الرقمي وأتمتة العمليات: كيف
-                            يقود AI الابتكار</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            استراتيجيات التحول الرقمي الناجحة باستخدام الذكاء الاصطناعي ضمن رؤية 2030.
-                        </p>
-                        <a href="blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html"
-                            class="text-white font-medium hover:text-emerald-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: التعلم الآلي -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="200">
-                    <div class="h-48 bg-pink-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-pink-400/30">
-                            <iconify-icon icon="lucide:cpu" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-pink-400 mb-3">
-                            <span>التعلم الآلي</span>
-                            <span>•</span>
-                            <span>28/12/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">التعلم الآلي والرؤية الحاسوبية:
-                            مستقبل معالجة اللغة العربية</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف تطور تقنيات NLP العربية لتخدم الشركات في المنطقة.
-                        </p>
-                        <a href="blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html"
-                            class="text-white font-medium hover:text-pink-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: الأتمتة المالية -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up">
-                    <div class="h-48 bg-amber-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-amber-400/30">
-                            <iconify-icon icon="lucide:wallet" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-amber-400 mb-3">
-                            <span>الأتمتة المالية</span>
-                            <span>•</span>
-                            <span>20/12/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">الأتمتة المالية وأتمتة الموارد
-                            البشرية: حلول مستقبلية</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف تستفيد إدارات المالية والموارد البشرية من تقنيات الأتمتة الذكية.
-                        </p>
-                        <a href="blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html"
-                            class="text-white font-medium hover:text-amber-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: الأتمتة الصناعية -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="100">
-                    <div class="h-48 bg-slate-800/50 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-slate-400/30">
-                            <iconify-icon icon="lucide:factory" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
-                            <span>الصناعة</span>
-                            <span>•</span>
-                            <span>15/12/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">الأتمتة الصناعية: تحسين الكفاءة
-                            الإنتاجية بالذكاء الاصطناعي</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            دور AI في تحسين خطوط الإنتاج والصيانة التنبؤية للمصانع السعودية.
-                        </p>
-                        <a href="blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html"
-                            class="text-white font-medium hover:text-slate-300 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: استشارات AI -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="200">
-                    <div class="h-48 bg-violet-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-violet-400/30">
-                            <iconify-icon icon="lucide:lightbulb" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-violet-400 mb-3">
-                            <span>الاستشارات</span>
-                            <span>•</span>
-                            <span>10/12/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">استشارات الذكاء الاصطناعي: كيف تحقق
-                            التحول الرقمي</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            دليل اختيار شريك استشاري في الذكاء الاصطناعي لمؤسستك.
-                        </p>
-                        <a href="blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html"
-                            class="text-white font-medium hover:text-violet-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: تحليل البيانات الكبيرة -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up">
-                    <div class="h-48 bg-teal-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-teal-400/30">
-                            <iconify-icon icon="lucide:database" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-teal-400 mb-3">
-                            <span>البيانات الكبيرة</span>
-                            <span>•</span>
-                            <span>05/12/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">تحليل البيانات الكبيرة (Big Data)
-                            للشركات السعودية</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف تستفيد من بياناتك الضخمة لاتخاذ قرارات أفضل وأسرع.
-                        </p>
-                        <a href="blogger/big-data-analysis.html"
-                            class="text-white font-medium hover:text-teal-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: الذكاء الاصطناعي والتسويق -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="100">
-                    <div class="h-48 bg-rose-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-rose-400/30">
-                            <iconify-icon icon="lucide:megaphone" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-rose-400 mb-3">
-                            <span>التسويق</span>
-                            <span>•</span>
-                            <span>01/12/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">الذكاء الاصطناعي والتسويق الرقمي:
-                            استراتيجيات 2025</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف يغير AI مستقبل التسويق الرقمي وتجربة العملاء.
-                        </p>
-                        <a href="blogger/الذكاء-الاصطناعي-و-التسويق.html"
-                            class="text-white font-medium hover:text-rose-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Article: التوظيف الذكي -->
-                <article
-                    class="glass-card hover:bg-white/5 transition duration-300 overflow-hidden flex flex-col h-full"
-                    data-aos="fade-up" data-aos-delay="200">
-                    <div class="h-48 bg-sky-900/30 w-full relative">
-                        <div class="absolute inset-0 flex items-center justify-center text-sky-400/30">
-                            <iconify-icon icon="lucide:user-check" width="64"></iconify-icon>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-center gap-2 text-xs text-sky-400 mb-3">
-                            <span>التوظيف</span>
-                            <span>•</span>
-                            <span>25/11/2024</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 leading-snug">أتمتة التوظيف والمقابلات بالذكاء
-                            الاصطناعي</h3>
-                        <p class="text-slate-400 text-sm mb-6 flex-1 line-clamp-3">
-                            كيف تختصر وقت التوظيف 70% باستخدام AI في فحص السير الذاتية والمقابلات.
-                        </p>
-                        <a href="blogger/atou-job.html"
-                            class="text-white font-medium hover:text-sky-400 transition flex items-center gap-2 mt-auto">
-                            اقرأ المزيد <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-                        </a>
-                    </div>
-                </article>
-
-            </div>
-
-            <!-- Load More Button -->
-            <div class="text-center mt-12">
-                <button class="btn-secondary px-8 py-3">
-                    عرض المزيد من المقالات
-                    <iconify-icon icon="lucide:chevron-down" width="16"></iconify-icon>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEWSLETTER CTA -->
-    <section class="py-20 px-6 bg-gradient-to-r from-indigo-600/10 to-purple-600/10 border-y border-white/5">
-        <div class="max-w-3xl mx-auto text-center">
-            <h2 class="text-3xl font-bold text-white mb-6">📧 اشترك في نشرتنا البريدية</h2>
-            <p class="text-slate-400 mb-8">احصل على أحدث المقالات والأدلة حول الذكاء الاصطناعي مباشرة في بريدك</p>
-            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input type="email" placeholder="بريدك الإلكتروني"
-                    class="flex-1 px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
-                <button type="submit" class="btn-primary whitespace-nowrap">اشترك الآن</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- UNIFIED FOOTER -->
-    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
-                    <div class="flex items-center gap-2 mb-6">
-                        <div
-                            class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
-                            <span class="text-lg font-bold text-white">B</span>
-                        </div>
-                        <span class="font-semibold text-white">Bright AI</span>
-                    </div>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                        شريكك الاستراتيجي في التحول الرقمي والذكاء الاصطناعي في المملكة العربية السعودية.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="https://wa.me/966538229013" class="text-slate-400 hover:text-white transition"
-                            aria-label="واتساب"><iconify-icon icon="lucide:message-circle"
-                                width="20"></iconify-icon></a>
-                        <a href="mailto:yazeed1job@gmail.com" class="text-slate-400 hover:text-white transition"
-                            aria-label="البريد"><iconify-icon icon="lucide:mail" width="20"></iconify-icon></a>
-                        <a href="https://x.com/BrightAIII" class="text-slate-400 hover:text-white transition"
-                            aria-label="تويتر"><iconify-icon icon="lucide:twitter" width="20"></iconify-icon></a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-white font-medium mb-6">الشركة</h4>
-                    <ul class="space-y-3 text-sm text-slate-400">
-                        <li><a href="about-us.html" class="hover:text-gold-400 transition">عن Bright AI</a></li>
-                        <li><a href="contact.html" class="hover:text-gold-400 transition">اتصل بنا</a></li>
-                        <li><a href="blog.html" class="hover:text-gold-400 transition">المدونة</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-medium mb-6">خدماتنا</h4>
-                    <ul class="space-y-3 text-sm text-slate-400">
-                        <li><a href="ai-agent.html" class="hover:text-gold-400 transition">AIaaS</a></li>
-                        <li><a href="data-analysis.html" class="hover:text-gold-400 transition">تحليل البيانات</a></li>
-                        <li><a href="smart-automation.html" class="hover:text-gold-400 transition">الأتمتة الذكية</a>
-                        </li>
-                        <li><a href="consultation.html" class="hover:text-gold-400 transition">الاستشارات</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-white font-medium mb-6">الموارد</h4>
-                    <ul class="space-y-3 text-sm text-slate-400">
-                        <li><a href="Docs.html" class="hover:text-gold-400 transition">الوثائق</a></li>
-                        <li><a href="tools.html" class="hover:text-gold-400 transition">أدوات مجانية</a></li>
-                        <li><a href="faq_content.html" class="hover:text-gold-400 transition">الأسئلة الشائعة</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div
-                class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
-                <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
-                <div class="flex gap-6">
-                    <a href="privacy-cookies.html" class="hover:text-slate-400 transition">سياسة الخصوصية</a>
-                    <a href="terms-and-conditions.html" class="hover:text-slate-400 transition">الشروط والأحكام</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="js/main.min.js" defer></script>
-    <script src="js/premium-animations.min.js" defer></script>
-    <script src="js/neural-canvas.min.js" defer></script>
-</body>
-
-</html>
