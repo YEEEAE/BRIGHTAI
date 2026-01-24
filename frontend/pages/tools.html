@@ -48,12 +48,20 @@
                 loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
                 loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
             }
+            function loadAnimations() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+            }
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(loadDeferredResources, 50);
+                    setTimeout(loadAnimations, 300);
                 });
             } else {
                 loadDeferredResources();
+                setTimeout(loadAnimations, 300);
             }
         })();
     </script>
@@ -270,7 +278,7 @@
         <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             <!-- Resume Tool -->
-            <div class="glass-card p-6 border-t-4 border-t-indigo-500" id="resume-tool">
+            <div class="glass-card p-6 border-t-4 border-t-indigo-500" id="resume-tool" data-aos="fade-up">
                 <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400">
                         <iconify-icon icon="lucide:file-text" width="24"></iconify-icon>
@@ -319,7 +327,8 @@
             </div>
 
             <!-- Job Search Tool -->
-            <div class="glass-card p-6 border-t-4 border-t-emerald-500" id="saudi-jobs-tool">
+            <div class="glass-card p-6 border-t-4 border-t-emerald-500" id="saudi-jobs-tool" data-aos="fade-up"
+                data-aos-delay="100">
                 <div class="flex items-center gap-4 mb-6">
                     <div
                         class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
@@ -344,7 +353,8 @@
             </div>
 
             <!-- Learning Plan Tool -->
-            <div class="glass-card p-6 border-t-4 border-t-cyan-500" id="learning-tool">
+            <div class="glass-card p-6 border-t-4 border-t-cyan-500" id="learning-tool" data-aos="fade-up"
+                data-aos-delay="200">
                 <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">
                         <iconify-icon icon="lucide:book-open" width="24"></iconify-icon>
@@ -363,7 +373,8 @@
             </div>
 
             <!-- Content Generator -->
-            <div class="glass-card p-6 border-t-4 border-t-purple-500" id="content-tool">
+            <div class="glass-card p-6 border-t-4 border-t-purple-500" id="content-tool" data-aos="fade-up"
+                data-aos-delay="300">
                 <div class="flex items-center gap-4 mb-6">
                     <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400">
                         <iconify-icon icon="lucide:edit-3" width="24"></iconify-icon>

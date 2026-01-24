@@ -1,0 +1,369 @@
+/**
+ * BrightAI Core Components Styles
+ * ========================================
+ * Styles for cursor, toast, and loader components
+ * 
+ * @version 1.0.0
+ */
+
+/* ========================================
+   CUSTOM CURSOR
+   ======================================== */
+
+.custom-cursor {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(99, 102, 241, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition:
+        width 0.2s ease,
+        height 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+    mix-blend-mode: difference;
+}
+
+.custom-cursor.hover {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(212, 175, 55, 0.8);
+    background-color: rgba(212, 175, 55, 0.1);
+}
+
+.custom-cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100000;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+
+    .custom-cursor,
+    .custom-cursor-dot {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   TOAST NOTIFICATIONS
+   ======================================== */
+
+.toast-container {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99998;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 90vw;
+    width: 400px;
+    pointer-events: none;
+}
+
+/* RTL Support */
+[dir="rtl"] .toast-container {
+    direction: rtl;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    color: #f1f5f9;
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast-show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.toast-hide {
+    animation: toastHide 0.3s ease forwards;
+}
+
+@keyframes toastHide {
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+}
+
+/* Toast Icons */
+.toast iconify-icon {
+    flex-shrink: 0;
+}
+
+/* Toast Message */
+.toast-message {
+    flex: 1;
+    line-height: 1.5;
+}
+
+/* Toast Close Button */
+.toast-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toast-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #f1f5f9;
+}
+
+/* Toast Types */
+.toast-success {
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.toast-success iconify-icon {
+    color: #22c55e;
+}
+
+.toast-error {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.toast-error iconify-icon {
+    color: #ef4444;
+}
+
+.toast-warning {
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.toast-warning iconify-icon {
+    color: #f59e0b;
+}
+
+.toast-info {
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.toast-info iconify-icon {
+    color: #3b82f6;
+}
+
+/* ========================================
+   LOADER / SPINNER
+   ======================================== */
+
+.loader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99997;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.loader-overlay.loader-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 40px;
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.loader-spinner {
+    position: relative;
+    width: 60px;
+    height: 60px;
+}
+
+.loader-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    animation: loaderSpin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.loader-ring:nth-child(1) {
+    border-top-color: #6366f1;
+    animation-delay: -0.45s;
+}
+
+.loader-ring:nth-child(2) {
+    border-top-color: #8b5cf6;
+    animation-delay: -0.3s;
+    inset: 6px;
+}
+
+.loader-ring:nth-child(3) {
+    border-top-color: #d4af37;
+    animation-delay: -0.15s;
+    inset: 12px;
+}
+
+@keyframes loaderSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader-text {
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+   PAGE LOADER (Initial Load)
+   ======================================== */
+
+#page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#page-loader .loader-logo {
+    width: 80px;
+    height: 80px;
+    animation: logoGlow 2s ease-in-out infinite;
+}
+
+@keyframes logoGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.8));
+    }
+}
+
+/* ========================================
+   GLASS CARD GLOW EFFECT
+   ======================================== */
+
+.glass-card,
+.service-card,
+.feature-card,
+.stat-card,
+.card {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card::before,
+.service-card::before,
+.feature-card::before,
+.stat-card::before,
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+            rgba(99, 102, 241, 0.15),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.glass-card:hover::before,
+.service-card:hover::before,
+.feature-card:hover::before,
+.stat-card:hover::before,
+.card:hover::before {
+    opacity: 1;
+}
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .custom-cursor,
+    .custom-cursor-dot {
+        display: none !important;
+    }
+
+    .toast {
+        transition: none;
+    }
+
+    .loader-ring {
+        animation: none;
+    }
+
+    #page-loader .loader-logo {
+        animation: none;
+    }
+}

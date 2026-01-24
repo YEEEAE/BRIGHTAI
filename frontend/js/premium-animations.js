@@ -234,7 +234,7 @@
         }
 
         type() {
-            const currentText = this.texts[ this.textIndex ];
+            const currentText = this.texts[this.textIndex];
 
             if (this.isDeleting) {
                 this.element.textContent = currentText.substring(0, this.charIndex - 1);
@@ -576,7 +576,7 @@
             new FloatingElements(floatingContainer, 15);
         }
 
-        console.log('🚀 BrightAI Premium Animations Initialized');
+        // BrightAI Premium Animations Initialized
     });
 
     // Expose classes globally if needed

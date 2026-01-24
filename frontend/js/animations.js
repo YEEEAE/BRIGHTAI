@@ -1,5 +1,8 @@
-// GSAP Animations System
-// Ensure GSAP and ScrollTrigger are loaded before this script
+/**
+ * GSAP Animations System
+ * Ensure GSAP and ScrollTrigger are loaded before this script
+ */
+'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof gsap !== 'undefined') {
@@ -8,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gsap.registerPlugin(ScrollTrigger);
         }
 
-        console.log('GSAP Animations System initialized');
+        // GSAP Animations System initialized
 
         // Export common animation functions to window for global use
         window.BrightAnimations = {
@@ -38,6 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     } else {
-        console.warn('GSAP not loaded');
+        // GSAP not loaded - animations disabled
     }
 });

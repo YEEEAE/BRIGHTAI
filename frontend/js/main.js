@@ -2,6 +2,7 @@
  * Bright AI - Main JavaScript
  * ========================================
  */
+'use strict';
 
 // ========== Mobile Menu Logic ==========
 document.addEventListener('DOMContentLoaded', function () {
@@ -66,14 +67,19 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ========== Glass Card Mouse Effect ==========
-// ========== Glass Card Mouse Effect ==========
-document.querySelectorAll('.glass-card, .service-card, .feature-card, .stat-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+// Delegated to DOMUtils.initGlassCardEffect() if available
+// Fallback implementation for standalone use
+if (typeof DOMUtils !== 'undefined' && DOMUtils.initGlassCardEffect) {
+  DOMUtils.initGlassCardEffect();
+} else {
+  document.querySelectorAll('.glass-card, .service-card, .feature-card, .stat-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+      card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+    });
   });
-});
+}
 
 // ========== Typewriter Effect for Terminal ==========
 const codeElement = document.getElementById('typewriter-code');
@@ -112,7 +118,7 @@ if (codeElement) {
 
   function typeWriter() {
     if (lineIndex < codeLines.length) {
-      currentHTML += (lineIndex > 0 ? '<br>' : '') + codeLines[ lineIndex ];
+      currentHTML += (lineIndex > 0 ? '<br>' : '') + codeLines[lineIndex];
       codeElement.innerHTML = currentHTML + '<span class="cursor-blink">|</span>';
       lineIndex++;
       setTimeout(typeWriter, 400);

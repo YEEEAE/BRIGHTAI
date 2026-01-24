@@ -26,7 +26,7 @@
  */
 const debounce = (func, wait) => {
     let timeoutId;
-    return function(...args) {
+    return function (...args) {
         const context = this;
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => func.apply(context, args), wait);
@@ -41,7 +41,7 @@ const debounce = (func, wait) => {
  */
 const throttle = (func, limit) => {
     let inThrottle = false;
-    return function(...args) {
+    return function (...args) {
         const context = this;
         if (!inThrottle) {
             func.apply(context, args);
@@ -79,10 +79,10 @@ const isInViewport = (element, threshold = 0) => {
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight || document.documentElement.clientHeight;
     const windowWidth = window.innerWidth || document.documentElement.clientWidth;
-    
+
     const vertInView = (rect.top <= windowHeight * (1 - threshold)) && ((rect.top + rect.height) >= windowHeight * threshold);
     const horInView = (rect.left <= windowWidth * (1 - threshold)) && ((rect.left + rect.width) >= windowWidth * threshold);
-    
+
     return vertInView && horInView;
 };
 
@@ -116,17 +116,17 @@ const initDataLayer = () => {
  */
 const pushDataLayerEvent = (eventName, eventData = {}, debug = false) => {
     initDataLayer();
-    
+
     const event = {
         event: eventName,
         ...eventData
     };
-    
+
     window.dataLayer.push(event);
-    
-    if (debug) {
-        console.log('[BrightAI Utils] DataLayer event pushed:', event);
-    }
+
+    // Debug logging disabled in production
+    // Enable via: pushDataLayerEvent(eventName, eventData, true)
+    void debug;
 };
 
 /**
@@ -235,25 +235,25 @@ const DEFAULT_FALLBACK_IMAGE = 'Gemini.png';
  */
 const handleImageError = (img, fallbackSrc = DEFAULT_FALLBACK_IMAGE) => {
     if (!img || img.dataset.fallbackApplied) return;
-    
+
     // Mark as fallback applied to prevent infinite loops
     img.dataset.fallbackApplied = 'true';
-    
+
     // Try to determine the correct path based on current page location
     const currentPath = window.location.pathname;
     let adjustedFallback = fallbackSrc;
-    
+
     // If we're in a subdirectory, adjust the path
-    if (currentPath.includes('/blogger/') || 
-        currentPath.includes('/Customer/') || 
+    if (currentPath.includes('/blogger/') ||
+        currentPath.includes('/Customer/') ||
         currentPath.includes('/Docfile/') ||
         currentPath.includes('/botAI/')) {
         adjustedFallback = '../' + fallbackSrc;
     }
-    
+
     img.src = adjustedFallback;
     img.alt = img.alt || 'صورة بديلة';
-    
+
     // Add a subtle visual indicator that this is a fallback
     img.style.opacity = '0.9';
 };
@@ -265,21 +265,21 @@ const handleImageError = (img, fallbackSrc = DEFAULT_FALLBACK_IMAGE) => {
  */
 const initImageErrorHandlers = (selector = 'img', fallbackSrc = DEFAULT_FALLBACK_IMAGE) => {
     const images = document.querySelectorAll(selector);
-    
+
     images.forEach(img => {
         // Skip if already has onerror or is a local image
         if (img.onerror || img.dataset.errorHandled) return;
-        
+
         // Check if it's an external image
         const src = img.src || img.getAttribute('src') || '';
         const isExternal = src.startsWith('http://') || src.startsWith('https://');
-        
+
         if (isExternal) {
             img.dataset.errorHandled = 'true';
-            img.onerror = function() {
+            img.onerror = function () {
                 handleImageError(this, fallbackSrc);
             };
-            
+
             // If image already failed (complete but naturalWidth is 0)
             if (img.complete && img.naturalWidth === 0) {
                 handleImageError(img, fallbackSrc);
@@ -299,17 +299,17 @@ const createImageWithFallback = (src, alt, options = {}) => {
     const img = document.createElement('img');
     img.src = src;
     img.alt = alt;
-    
+
     if (options.className) img.className = options.className;
     if (options.width) img.width = options.width;
     if (options.height) img.height = options.height;
     if (options.loading) img.loading = options.loading;
-    
+
     const fallbackSrc = options.fallbackSrc || DEFAULT_FALLBACK_IMAGE;
-    img.onerror = function() {
+    img.onerror = function () {
         handleImageError(this, fallbackSrc);
     };
-    
+
     return img;
 };
 
@@ -348,31 +348,31 @@ window.BrightAIUtils = {
     // Performance
     debounce,
     throttle,
-    
+
     // DOM
     escapeHtml,
     isInViewport,
     generateId,
-    
+
     // Analytics
     initDataLayer,
     pushDataLayerEvent,
-    
+
     // Storage
     getFromStorage,
     setToStorage,
-    
+
     // Format
     formatTimeArabic,
     formatDateArabic,
     formatTimeLocale,
-    
+
     // Image Helpers
     handleImageError,
     initImageErrorHandlers,
     createImageWithFallback,
     DEFAULT_FALLBACK_IMAGE,
-    
+
     // Validation
     isValidSaudiPhone,
     isValidEmail
@@ -402,4 +402,4 @@ if (typeof module !== 'undefined' && module.exports) {
     };
 }
 
-console.log('[BrightAI Utils] Utilities module loaded');
+// BrightAI Utils module loaded - see js/core/ for modular utilities

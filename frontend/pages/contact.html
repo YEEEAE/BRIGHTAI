@@ -51,12 +51,20 @@
                 loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
                 loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
             }
+            function loadAnimations() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+            }
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(loadDeferredResources, 50);
+                    setTimeout(loadAnimations, 300);
                 });
             } else {
                 loadDeferredResources();
+                setTimeout(loadAnimations, 300);
             }
         })();
     </script>
@@ -403,6 +411,16 @@
             </div>
         </div>
     </footer>
+
+    <!-- Core Utilities (Load First) -->
+    <script src="../../js/core/dom-utils.min.js" defer></script>
+    <script src="../../js/core/format-utils.min.js" defer></script>
+    <script src="../../js/core/api-client.min.js" defer></script>
+    <script src="../../js/core/ui-utils.min.js" defer></script>
+    <script src="../../js/core/index.min.js" defer></script>
+
+    <!-- Core Components CSS -->
+    <link rel="stylesheet" href="../../css/core-components.css" media="all" />
 
     <!-- Scripts -->
     <script src="../js/main.min.js" defer></script>

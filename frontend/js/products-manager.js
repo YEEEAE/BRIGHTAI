@@ -42,13 +42,13 @@ class ProductsManager {
         try {
             const response = await fetch('data/products-data.json');
             if (!response.ok) throw new Error('Failed to load products data');
-            
+
             const data = await response.json();
             this.products = data.products;
             this.categories = data.categories;
             this.filteredProducts = [...this.products];
-            
-            console.log(`Loaded ${this.products.length} products`);
+
+            // Products data loaded successfully
         } catch (error) {
             console.error('Error loading data:', error);
             throw error;
@@ -123,7 +123,7 @@ class ProductsManager {
         if (this.filters.priceRange !== 'all') {
             filtered = filtered.filter(p => {
                 const price = p.pricing.current;
-                switch(this.filters.priceRange) {
+                switch (this.filters.priceRange) {
                     case 'low': return price < 500;
                     case 'medium': return price >= 500 && price <= 2000;
                     case 'high': return price > 2000;
@@ -135,7 +135,7 @@ class ProductsManager {
         // Filter by search term
         if (this.filters.searchTerm) {
             const term = this.filters.searchTerm.toLowerCase();
-            filtered = filtered.filter(p => 
+            filtered = filtered.filter(p =>
                 p.name.toLowerCase().includes(term) ||
                 p.shortDescription.toLowerCase().includes(term) ||
                 p.features.some(f => f.toLowerCase().includes(term))
@@ -155,8 +155,8 @@ class ProductsManager {
      */
     sortProducts(products, sortBy) {
         const sorted = [...products];
-        
-        switch(sortBy) {
+
+        switch (sortBy) {
             case 'price-low':
                 return sorted.sort((a, b) => a.pricing.current - b.pricing.current);
             case 'price-high':
@@ -423,7 +423,7 @@ class ProductsManager {
      */
     toggleComparison(productId) {
         const index = this.comparison.indexOf(productId);
-        
+
         if (index > -1) {
             this.comparison.splice(index, 1);
             this.updateCompareButton(productId, false);
@@ -479,7 +479,7 @@ class ProductsManager {
         }
 
         // سيتم تنفيذ هذا لاحقاً
-        console.log('Show comparison modal');
+        // Show comparison modal - TODO: implement modal
     }
 
     clearComparison() {
@@ -546,10 +546,10 @@ class ProductsManager {
         // Reset UI
         const searchInput = document.getElementById('search-input');
         if (searchInput) searchInput.value = '';
-        
+
         const priceFilter = document.getElementById('price-filter');
         if (priceFilter) priceFilter.value = 'all';
-        
+
         const sortSelect = document.getElementById('sort-select');
         if (sortSelect) sortSelect.value = 'popular';
 
@@ -572,9 +572,9 @@ class ProductsManager {
         `;
 
         document.body.appendChild(notification);
-        
+
         setTimeout(() => notification.classList.add('show'), 10);
-        
+
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);

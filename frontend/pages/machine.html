@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 
 <head>
     <!-- Google tag (gtag.js) -->
@@ -8,429 +8,486 @@
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-8LLESL207Q');
     </script>
 
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-SZKTP4496K');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حلول التعلم الآلي المتقدمة | تحليل البيانات واتخاذ قرارات مستنيرة</title>
+    <title>حلول التعلم الآلي المتقدمة | Bright AI</title>
     <link rel="icon" type="image/png" href="../assets/images/Gemini.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/Gemini.png">
     <meta name="description"
         content="اكتشف حلول التعلم الآلي المتقدمة لتحليل البيانات والتنبؤ بالاتجاهات واتخاذ قرارات مستنيرة في مجالات مثل التنبؤ بالمبيعات والكشف عن الاحتيال وتخصيص تجربة المستخدم.">
     <meta name="keywords"
         content="تعلم آلي, ذكاء اصطناعي, تحليل بيانات, تنبؤ بالمبيعات, كشف احتيال, تخصيص تجربة المستخدم, حلول تقنية, بيانات ضخمة">
-    <meta name="author" content="اسم شركتك أو اسمك">
+    <meta name="author" content="Bright AI">
     <link rel="canonical" href="https://brightai.site/machine">
-    <meta property="og:title" content="حلول التعلم الآلي المتقدمة">
+
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="../css/critical.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Deferred Resource Loading -->
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('../js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('../css/brightai-core.css');
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            function loadAnimations() {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                    setTimeout(loadAnimations, 300);
+                });
+            } else {
+                loadDeferredResources();
+                setTimeout(loadAnimations, 300);
+            }
+        })();
+    </script>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="حلول التعلم الآلي المتقدمة | Bright AI">
     <meta property="og:description" content="نقدم حلولاً متطورة في مجال التعلم الآلي لمساعدتك على النمو.">
-    <meta property="og:image" content="رابط لصورة شعارك أو صورة ذات صلة">
-    <meta property="og:url" content="عنوان صفحتك الثابت">
+    <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+    <meta property="og:url" content="https://brightai.site/machine">
     <meta property="og:type" content="website">
-
-    <style>
-        /* CSS Styling */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
-            overflow-x: hidden;
-            /* منع ظهور شريط التمرير الأفقي */
-        }
-
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding-top: 30px;
-            min-height: 70px;
-            border-bottom: #ff9800 3px solid;
-        }
-
-        header a {
-            color: white;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
-        }
-
-        header ul {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            overflow: hidden;
-        }
-
-        header li {
-            float: right;
-            display: inline;
-            padding: 0 20px 0 20px;
-        }
-
-        header #شعار_الشركة {
-            float: right;
-        }
-
-        header #شعار_الشركة h1 {
-            margin: 0;
-        }
-
-        header nav {
-            float: left;
-            margin-top: 10px;
-        }
-
-        #الرئيسية {
-            background-image: url('url_لصورة_الخلفية_الرئيسية');
-            /* استبدل هذا الرابط بصورة مناسبة */
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 100px 0;
-        }
-
-        #الرئيسية h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-
-        #الرئيسية p {
-            font-size: 1.2em;
-            margin-bottom: 30px;
-        }
-
-        .زر {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff9800;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        #عن_الشركة,
-        #حلولنا,
-        #مميزاتنا,
-        #اراء_العملاء,
-        #تواصل_معنا {
-            padding: 50px 0;
-            text-align: center;
-        }
-
-        #عن_الشركة h2,
-        #حلولنا h2,
-        #مميزاتنا h2,
-        #اراء_العملاء h2,
-        #تواصل_معنا h2 {
-            font-size: 2em;
-            margin-bottom: 30px;
-        }
-
-        .قسم_حل {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .قسم_حل div {
-            flex-basis: 30%;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .قسم_حل h3 {
-            margin-top: 0;
-        }
-
-        .شهادة_عميل {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 5px solid #ff9800;
-            text-align: right;
-        }
-
-        .شهادة_عميل p {
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .شهادة_عميل cite {
-            display: block;
-            text-align: right;
-            color: #777;
-        }
-
-        footer {
-            padding: 20px;
-            margin-top: 40px;
-            color: white;
-            background-color: #333;
-            text-align: center;
-        }
-
-        /* تأثير 3D بسيط على العناصر */
-        .three-d-element {
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .three-d-element:hover {
-            transform: rotateY(10deg) scale(1.05);
-        }
-
-        /* تصميم متجاوب */
-        @media(max-width: 768px) {
-
-            header #شعار_الشركة,
-            header nav {
-                float: none;
-                text-align: center;
-            }
-
-            header ul li {
-                float: none;
-                display: block;
-                text-align: center;
-            }
-
-            .قسم_حل {
-                flex-direction: column;
-            }
-
-            .قسم_حل div {
-                flex-basis: 100%;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* حاوية ثلاثية الأبعاد */
-        .cube-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 50px auto;
-            perspective: 1000px;
-        }
-
-        .cube {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotateCube 10s infinite linear;
-        }
-
-        .face {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background-color: rgba(51, 51, 51, 0.7);
-            border: 2px solid #ff9800;
-            color: white;
-            font-size: 20px;
-            text-align: center;
-            line-height: 200px;
-        }
-
-        .front {
-            transform: translateZ(100px);
-        }
-
-        .back {
-            transform: rotateY(180deg) translateZ(100px);
-        }
-
-        .right {
-            transform: rotateY(90deg) translateZ(100px);
-        }
-
-        .left {
-            transform: rotateY(-90deg) translateZ(100px);
-        }
-
-        .top {
-            transform: rotateX(90deg) translateZ(100px);
-        }
-
-        .bottom {
-            transform: rotateX(-90deg) translateZ(100px);
-        }
-
-        @keyframes rotateCube {
-            from {
-                transform: rotateX(0deg) rotateY(0deg);
-            }
-
-            to {
-                transform: rotateX(360deg) rotateY(360deg);
-            }
-        }
-    </style>
+    <meta property="og:locale" content="ar_SA">
+    <meta property="og:site_name" content="مُشرقة AI">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="حلول التعلم الآلي المتقدمة | تحليل البيانات واتخاذ قرارات مستنيرة">
+    <meta name="twitter:title" content="حلول التعلم الآلي المتقدمة | Bright AI">
     <meta name="twitter:description"
-        content="حلول التعلم الآلي المتقدمة | تحليل البيانات واتخاذ قرارات مستنيرة - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+        content="حلول التعلم الآلي المتقدمة | تحليل البيانات واتخاذ قرارات مستنيرة - مُشرقة AI">
     <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
 </head>
 
-<body>
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
-    <header>
-        <div class="container">
-            <div id="شعار_الشركة">
-                <h1>حلول التعلم الآلي المتقدمة</h1>
-            </div>
-            <nav>
-                <ul class="navbar">
-                    <li><a href="../index.html">الرئيسية</a></li>
-                    <li><a href="consultation">استشارات الذكاء الاصطناعي</a></li>
-                    <li><a href="smart-automation">أتمتة العمليات بالذكاء الاصطناعي</a></li>
-                    <li><a href="data-analysis">تحليل البيانات باستخدام الذكاء الاصطناعي</a></li>
-                    <li><a href="ai-agent">وكيل الذكاء الإصطناعي</a></li>
-                    <li><a href="our-products">عرض للخدمات</a></li>
-                    <li><a href="AAA">منتجاتنا و فائدتها</a></li>
-                    <li><a href="blog">مكتبة رقمية للذكاء الاصطناعي</a></li>
-                    <li><a href="tools">أدوات الذكاء الاصطناعي</a></li>
-                    <li><a href="company-performance-monitoring-tool"> انظمة ذكية</a></li>
-                </ul>
-            </nav>
-
-    </header>
-
-    <section id="الرئيسية">
-        <div class="container">
-            <h2>استفد من قوة التعلم الآلي</h2>
-            <p>نقدم حلولًا متطورة لتحليل البيانات والتنبؤ بالاتجاهات واتخاذ قرارات مستنيرة.</p>
-            <a href="#حلولنا" class="زر three-d-element">اكتشف حلولنا</a>
+    <!-- UNIFIED HEADER -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="../assets/images/Gemini.png" alt="Bright AI" width="42" height="42" />
+                <span>Bright AI</span>
+            </a>
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="../index.html" class="flex items-center gap-2">الرئيسية</a>
+                </li>
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        خدماتنا
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="our-products">خدمات الذكاء الاصطناعي</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation">الأتمتة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="consultation">استشارات AI</a></li>
+                        <li role="none"><a role="menuitem" href="ai-agent">وكيل الذكاء الاصطناعي</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="blog">المكتبة الذكية</a></li>
+                        <li role="none"><a role="menuitem" href="about-us">عن شركة مُشرقة AI</a></li>
+                    </ul>
+                </li>
+                <li role="none"><a role="menuitem" href="tools" class="flex items-center gap-2">أدوات ذكية</a></li>
+                <li role="none"><a role="menuitem" href="contact" class="flex items-center gap-2">تواصل معنا</a></li>
+            </ul>
         </div>
-    </section>
+    </nav>
+    <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
 
-    <section id="عن_الشركة">
-        <div class="container">
-            <h2>عن الشركة</h2>
-            <p>نحن شركة متخصصة في تقديم حلول التعلم الآلي المتقدمة، نساعد الشركات على استغلال قوة البيانات لتحقيق
-                أهدافها. فريقنا من الخبراء ملتزم بتقديم أحدث التقنيات والحلول المبتكرة.</p>
-            <div class="cube-container">
-                <div class="cube">
-                    <div class="face front three-d-element">تحليل البيانات</div>
-                    <div class="face back three-d-element">تنبؤات</div>
-                    <div class="face right three-d-element">قرارات</div>
-                    <div class="face left three-d-element">نمو</div>
-                    <div class="face top three-d-element">ابتكار</div>
-                    <div class="face bottom three-d-element">كفاءة</div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Hero Section -->
+    <section class="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/95 to-slate-950"></div>
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
 
-    <section id="حلولنا">
-        <div class="container">
-            <h2>حلولنا</h2>
-            <div class="قسم_حل">
-                <div class="three-d-element">
-                    <h3>التنبؤ بالمبيعات</h3>
-                    <p>استخدم قوة التعلم الآلي للتنبؤ الدقيق بالمبيعات المستقبلية واتخاذ قرارات تخطيطية أفضل.</p>
-                </div>
-                <div class="three-d-element">
-                    <h3>الكشف عن الاحتيال</h3>
-                    <p>قلل من المخاطر المالية عن طريق الكشف المبكر عن الأنشطة الاحتيالية باستخدام أحدث الخوارزميات.</p>
-                </div>
-                <div class="three-d-element">
-                    <h3>تخصيص تجربة المستخدم</h3>
-                    <p>قدم تجارب مخصصة لعملائك بناءً على تحليل سلوكهم وتفضيلاتهم لزيادة الرضا والولاء.</p>
-                </div>
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center" data-aos="fade-up">
+            <div
+                class="inline-flex items-center gap-3 px-5 py-2 mb-8 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-sm">
+                <iconify-icon icon="lucide:brain" width="20" class="text-amber-400"></iconify-icon>
+                <span class="text-slate-300 text-sm font-medium">التعلم الآلي المتقدم</span>
             </div>
-        </div>
-    </section>
 
-    <section id="مميزاتنا">
-        <div class="container">
-            <h2>مميزاتنا</h2>
-            <div class="قسم_حل">
-                <div class="three-d-element">
-                    <h3>تقنيات متقدمة</h3>
-                    <p>نستخدم أحدث التقنيات والخوارزميات في مجال التعلم الآلي لتقديم حلول فعالة ومبتكرة.</p>
-                </div>
-                <div class="three-d-element">
-                    <h3>فريق خبراء</h3>
-                    <p>فريقنا مكون من متخصصين ذوي خبرة عالية في مجال تحليل البيانات والتعلم الآلي.</p>
-                </div>
-                <div class="three-d-element">
-                    <h3>حلول مخصصة</h3>
-                    <p>نقدم حلولًا مصممة خصيصًا لتلبية احتياجات عملك الفريدة وأهدافك الاستراتيجية.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                حلول التعلم الآلي
+                <span
+                    class="block bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent mt-2">لتحليل
+                    البيانات واتخاذ قرارات مستنيرة</span>
+            </h1>
 
-    <section id="اراء_العملاء">
-        <div class="container">
-            <h2>آراء العملاء</h2>
-            <div class="شهادة_عميل three-d-element">
-                <p>"لقد ساعدتنا حلول التعلم الآلي في شركتكم على تحسين دقة توقعات المبيعات بشكل ملحوظ."</p>
-                <cite> - اسم العميل، مسمى الوظيفة، اسم الشركة</cite>
-            </div>
-            <div class="شهادة_عميل three-d-element">
-                <p>"الكشف عن الاحتيال أصبح أكثر فعالية بفضل التقنيات المتقدمة التي تقدمونها."</p>
-                <cite> - اسم عميل آخر، مسمى الوظيفة، اسم شركة أخرى</cite>
+            <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                نقدم حلولاً متطورة لتحليل البيانات والتنبؤ بالاتجاهات واتخاذ قرارات مستنيرة
+                باستخدام أحدث تقنيات التعلم الآلي والذكاء الاصطناعي.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#solutions"
+                    class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 font-semibold text-lg rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+                    <span>اكتشف حلولنا</span>
+                    <iconify-icon icon="lucide:arrow-down" width="20"></iconify-icon>
+                </a>
+                <a href="https://wa.me/966538229013" target="_blank"
+                    class="inline-flex items-center gap-3 px-8 py-4 bg-white/5 text-white font-medium text-lg rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                    <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+                    <span>تحدث مع خبير</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="تواصل_معنا">
-        <div class="container">
-            <h2>تواصل معنا</h2>
-            <p>هل لديك أي استفسارات أو ترغب في معرفة المزيد عن حلولنا؟ تواصل معنا اليوم!</p>
-            <p>البريد الإلكتروني: <a href="yazeed1job@gmail.com">yazeed1job@gmail.com</a></p>
-            <p>رقم الهاتف: +966501120781</p>
-            <a href="yazeed1job@gmail.com" class="زر three-d-element">ارسل لنا بريد الكتروني</a>
+    <!-- About Section -->
+    <section class="py-20 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="glass-card p-8 md:p-12" data-aos="fade-up">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-6">
+                            عن خدماتنا في التعلم الآلي
+                        </h2>
+                        <p class="text-slate-400 leading-relaxed mb-6">
+                            نحن شركة متخصصة في تقديم حلول التعلم الآلي المتقدمة، نساعد الشركات على استغلال قوة البيانات
+                            لتحقيق
+                            أهدافها. فريقنا من الخبراء ملتزم بتقديم أحدث التقنيات والحلول المبتكرة.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-center gap-3 text-slate-300">
+                                <iconify-icon icon="lucide:check-circle" width="20"
+                                    class="text-green-400"></iconify-icon>
+                                <span>تحليل البيانات باستخدام أحدث الخوارزميات</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-300">
+                                <iconify-icon icon="lucide:check-circle" width="20"
+                                    class="text-green-400"></iconify-icon>
+                                <span>التنبؤ بالاتجاهات المستقبلية بدقة عالية</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-300">
+                                <iconify-icon icon="lucide:check-circle" width="20"
+                                    class="text-green-400"></iconify-icon>
+                                <span>حلول مخصصة لاحتياجات عملك</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex justify-center">
+                        <div class="relative w-64 h-64">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/10 rounded-2xl animate-pulse">
+                            </div>
+                            <div class="absolute inset-4 glass-card flex items-center justify-center">
+                                <iconify-icon icon="lucide:brain-cog" width="80" class="text-amber-400"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p>© 2023 جميع الحقوق محفوظة لـ شركتك أو اسمك</p>
+    <!-- Solutions Section -->
+    <section id="solutions" class="py-20 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">حلولنا</h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                    نقدم مجموعة شاملة من حلول التعلم الآلي لمختلف الاحتياجات
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Solution 1 -->
+                <div class="glass-card p-8 group" data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <iconify-icon icon="lucide:trending-up" width="32" class="text-amber-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">التنبؤ بالمبيعات</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        استخدم قوة التعلم الآلي للتنبؤ الدقيق بالمبيعات المستقبلية واتخاذ قرارات تخطيطية أفضل.
+                    </p>
+                </div>
+
+                <!-- Solution 2 -->
+                <div class="glass-card p-8 group" data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <iconify-icon icon="lucide:shield-alert" width="32" class="text-red-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">الكشف عن الاحتيال</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        قلل من المخاطر المالية عن طريق الكشف المبكر عن الأنشطة الاحتيالية باستخدام أحدث الخوارزميات.
+                    </p>
+                </div>
+
+                <!-- Solution 3 -->
+                <div class="glass-card p-8 group" data-aos="fade-up" data-aos-delay="300">
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <iconify-icon icon="lucide:user-check" width="32" class="text-blue-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">تخصيص تجربة المستخدم</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        قدم تجارب مخصصة لعملائك بناءً على تحليل سلوكهم وتفضيلاتهم لزيادة الرضا والولاء.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">مميزاتنا</h2>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                    لماذا تختار خدماتنا في التعلم الآلي
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:cpu" width="40" class="text-amber-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">تقنيات متقدمة</h3>
+                    <p class="text-slate-400">
+                        نستخدم أحدث التقنيات والخوارزميات في مجال التعلم الآلي لتقديم حلول فعالة ومبتكرة.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:users" width="40" class="text-blue-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">فريق خبراء</h3>
+                    <p class="text-slate-400">
+                        فريقنا مكون من متخصصين ذوي خبرة عالية في مجال تحليل البيانات والتعلم الآلي.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div
+                        class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/10 flex items-center justify-center mb-6">
+                        <iconify-icon icon="lucide:settings" width="40" class="text-green-400"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-3">حلول مخصصة</h3>
+                    <p class="text-slate-400">
+                        نقدم حلولًا مصممة خصيصًا لتلبية احتياجات عملك الفريدة وأهدافك الاستراتيجية.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">آراء العملاء</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <iconify-icon icon="lucide:quote" width="32" class="text-amber-400"></iconify-icon>
+                    </div>
+                    <p class="text-slate-300 text-lg leading-relaxed mb-6 italic">
+                        "لقد ساعدتنا حلول التعلم الآلي في شركتكم على تحسين دقة توقعات المبيعات بشكل ملحوظ."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white font-bold">
+                            ع
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">عميل سعودي</p>
+                            <p class="text-slate-400 text-sm">مدير المبيعات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <iconify-icon icon="lucide:quote" width="32" class="text-amber-400"></iconify-icon>
+                    </div>
+                    <p class="text-slate-300 text-lg leading-relaxed mb-6 italic">
+                        "الكشف عن الاحتيال أصبح أكثر فعالية بفضل التقنيات المتقدمة التي تقدمونها."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold">
+                            م
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">مؤسسة مالية</p>
+                            <p class="text-slate-400 text-sm">مدير الأمان</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card p-12 text-center relative overflow-hidden" data-aos="fade-up">
+                <div
+                    class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500">
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                    تواصل معنا
+                </h2>
+                <p class="text-slate-400 text-lg mb-8 max-w-2xl mx-auto">
+                    هل لديك أي استفسارات أو ترغب في معرفة المزيد عن حلولنا؟ تواصل معنا اليوم!
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                    <a href="mailto:yazeed1job@gmail.com"
+                        class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 font-semibold text-lg rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+                        <iconify-icon icon="lucide:mail" width="20"></iconify-icon>
+                        <span>أرسل لنا بريد</span>
+                    </a>
+                    <a href="https://wa.me/966538229013" target="_blank"
+                        class="inline-flex items-center gap-3 px-8 py-4 bg-green-600 hover:bg-green-500 text-white font-semibold text-lg rounded-xl transition-all duration-300">
+                        <iconify-icon icon="lucide:phone" width="20"></iconify-icon>
+                        <span>اتصل بنا</span>
+                    </a>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:mail" width="18"></iconify-icon>
+                        <span>yazeed1job@gmail.com</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:phone" width="18"></iconify-icon>
+                        <span dir="ltr">+966 53 822 9013</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+                            <span class="text-lg font-bold text-white">B</span>
+                        </div>
+                        <span class="font-semibold text-white">Bright AI</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        نبتكر المستقبل اليوم بحلول الذكاء الاصطناعي المتقدمة.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4">الخدمات</h4>
+                    <ul class="space-y-3">
+                        <li><a href="our-products"
+                                class="text-slate-400 hover:text-white transition-colors text-sm">خدمات الذكاء
+                                الاصطناعي</a></li>
+                        <li><a href="data-analysis"
+                                class="text-slate-400 hover:text-white transition-colors text-sm">تحليل البيانات</a>
+                        </li>
+                        <li><a href="smart-automation"
+                                class="text-slate-400 hover:text-white transition-colors text-sm">الأتمتة الذكية</a>
+                        </li>
+                        <li><a href="consultation"
+                                class="text-slate-400 hover:text-white transition-colors text-sm">استشارات AI</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4">المعرفة</h4>
+                    <ul class="space-y-3">
+                        <li><a href="blog" class="text-slate-400 hover:text-white transition-colors text-sm">المدونة</a>
+                        </li>
+                        <li><a href="about-us" class="text-slate-400 hover:text-white transition-colors text-sm">من
+                                نحن</a></li>
+                        <li><a href="tools" class="text-slate-400 hover:text-white transition-colors text-sm">أدوات
+                                ذكية</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-medium mb-4">تواصل معنا</h4>
+                    <ul class="space-y-3">
+                        <li><a href="contact" class="text-slate-400 hover:text-white transition-colors text-sm">اتصل
+                                بنا</a></li>
+                        <li><a href="https://wa.me/966538229013"
+                                class="text-slate-400 hover:text-white transition-colors text-sm">واتساب</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600">
+                <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="privacy-cookies" class="hover:text-slate-400 transition-colors">سياسة الخصوصية</a>
+                    <a href="terms-and-conditions" class="hover:text-slate-400 transition-colors">الشروط والأحكام</a>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <script>
-        // يمكنك إضافة أي تفاعلية JavaScript هنا إذا لزم الأمر
-        // مثال بسيط لتغيير لون خلفية قسم عند التمرير فوقه
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            section.addEventListener('mouseover', function () {
-                this.style.backgroundColor = '#eee';
-                this.style.transition = 'background-color 0.5s ease';
-            });
-            section.addEventListener('mouseout', function () {
-                this.style.backgroundColor = '';
-            });
-        });
-    </script>
-
+    <!-- Scripts -->
+    <script src="../js/unified-nav.min.js" defer></script>
+    <script src="../js/neural-canvas.min.js" defer></script>
 </body>
 
 </html>

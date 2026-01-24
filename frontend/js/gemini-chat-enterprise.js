@@ -9,15 +9,8 @@
 /**
  * Enterprise Chatbot Configuration
  */
-const getApiEndpoint = () => {
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:3000/api/ai/chat';
-  }
-  return '/api/ai/chat';
-};
-
 const ENTERPRISE_CONFIG = {
-  apiEndpoint: getApiEndpoint(),
+  apiEndpoint: '/api/ai/chat',
   welcomeMessage: 'مرحباً بكم في Bright AI. أنا مستشاركم الذكي للحلول المؤسسية. كيف يمكنني مساعدتكم اليوم؟',
   placeholder: 'اكتب استفسارك هنا...',
   title: 'مستشار Bright AI',
@@ -54,7 +47,7 @@ class BrightAIEnterpriseChatbot {
     this.createWidget();
     this.attachEventListeners();
     this.addMessage(this.config.welcomeMessage, 'bot');
-    console.log('[Bright AI Enterprise Chatbot] Initialized');
+    // Enterprise Chatbot initialized
   }
 
   /**

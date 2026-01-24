@@ -2,6 +2,7 @@
  * Bright AI - Chatbot Logic (Groq API Integration)
  * Replaces Gemini with Groq (Mixtral-8x7b)
  */
+'use strict';
 
 const CHAT_CONFIG = {
     // In a real build, use process.env or similar. 
@@ -53,7 +54,7 @@ window.handleChatSubmit = async function (e) {
 
     const now = Date.now();
     if (now - lastRequestTime < MIN_REQUEST_INTERVAL) {
-        console.warn('Rate limit: Please wait before sending another message.');
+        // Rate limited - waiting before next message
         return;
     }
     lastRequestTime = now;
@@ -75,7 +76,7 @@ window.handleChatSubmit = async function (e) {
         addMessage(responseText, 'bot');
     } catch (error) {
         removeTypingIndicator();
-        console.error('Groq API Error:', error);
+        // API Error occurred - showing fallback message
         addMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.', 'bot');
     }
 };
@@ -99,9 +100,9 @@ function addMessage(text, sender) {
     if (messageHistory.length > CHAT_CONFIG.maxHistory + 1) {
         // Keep system prompt [0], remove oldest pairs
         // logic: keep [0], take last N
-        const system = messageHistory[ 0 ];
+        const system = messageHistory[0];
         const recent = messageHistory.slice(-CHAT_CONFIG.maxHistory);
-        messageHistory = [ system, ...recent ];
+        messageHistory = [system, ...recent];
     }
 
     // Create UI Element
@@ -167,7 +168,7 @@ function removeTypingIndicator() {
  */
 async function callGroqAPI(userMessage) {
     if (CHAT_CONFIG.apiKey === 'gsk_yours_here') {
-        console.warn('Please set your Groq API Key in js/groq-chat.js');
+        // API key not configured
         return "عذراً، لم يتم إعداد مفتاح API. يرجى مراجعة إعدادات النظام.";
     }
 
@@ -191,7 +192,7 @@ async function callGroqAPI(userMessage) {
     }
 
     const data = await response.json();
-    return data.choices[ 0 ]?.message?.content || "عذراً، لم أتمكن من فهم ذلك.";
+    return data.choices[0]?.message?.content || "عذراً، لم أتمكن من فهم ذلك.";
 }
 
 // Helpers
@@ -201,7 +202,18 @@ function scrollToBottom() {
     }
 }
 
+/**
+ * Escape HTML - uses centralized utility if available
+ * @param {string} text
+ * @returns {string}
+ */
 function escapeHtml(text) {
+    // Use centralized utility if available
+    if (typeof DOMUtils !== 'undefined' && DOMUtils.escapeHtml) {
+        const escaped = DOMUtils.escapeHtml(text);
+        return escaped.replace(/\n/g, '<br>');
+    }
+    // Fallback
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML.replace(/\n/g, '<br>');

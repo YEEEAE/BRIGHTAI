@@ -1,4 +1,7 @@
-// Three.js Effects System
+/**
+ * Three.js Effects System
+ */
+'use strict';
 
 class ThreeEffects {
     constructor() {
@@ -8,10 +11,10 @@ class ThreeEffects {
 
     init() {
         if (typeof THREE === 'undefined') {
-            console.warn('Three.js not loaded');
+            // Three.js not loaded - effects disabled
             return;
         }
-        console.log('Three.js effects initialized');
+        // Three.js effects initialized
     }
 
     // Placeholders for specific effects

@@ -137,32 +137,36 @@
     /**
      * Load animation libraries
      */
-    function loadAnimationLibraries() {
-        // GSAP
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', { crossorigin: 'anonymous' })
-            .then(() => loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', { crossorigin: 'anonymous' }))
-            .catch(() => { });
+    async function loadAnimationLibraries() {
+        // GSAP - load sequentially (ScrollTrigger depends on GSAP)
+        try {
+            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', { crossorigin: 'anonymous' });
+            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', { crossorigin: 'anonymous' });
+        } catch {
+            // GSAP loading failed - graceful degradation
+        }
 
         // AOS
-        loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', { crossorigin: 'anonymous' })
-            .then(() => {
-                if (typeof AOS !== 'undefined') {
-                    AOS.init({
-                        duration: 800,
-                        once: true,
-                        offset: 100
-                    });
-                }
-            })
-            .catch(() => { });
+        try {
+            await loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', { crossorigin: 'anonymous' });
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 800,
+                    once: true,
+                    offset: 100
+                });
+            }
+        } catch {
+            // AOS loading failed - graceful degradation
+        }
 
-        // Typed.js
+        // Typed.js - can load in parallel
         loadScript('https://cdn.jsdelivr.net/npm/typed.js@2.0.16/dist/typed.umd.js', { crossorigin: 'anonymous' })
-            .catch(() => { });
+            .catch(() => { /* Typed.js not critical */ });
 
-        // Swiper
+        // Swiper - can load in parallel
         loadScript('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', { crossorigin: 'anonymous' })
-            .catch(() => { });
+            .catch(() => { /* Swiper not critical */ });
     }
 
     /**
@@ -247,12 +251,12 @@
         // Load on user interaction (for very heavy resources)
         const loadOnInteraction = () => {
             // Remove listeners after first interaction
-            [ 'mousemove', 'scroll', 'keydown', 'touchstart' ].forEach(event => {
+            ['mousemove', 'scroll', 'keydown', 'touchstart'].forEach(event => {
                 document.removeEventListener(event, loadOnInteraction);
             });
         };
 
-        [ 'mousemove', 'scroll', 'keydown', 'touchstart' ].forEach(event => {
+        ['mousemove', 'scroll', 'keydown', 'touchstart'].forEach(event => {
             document.addEventListener(event, loadOnInteraction, { passive: true, once: true });
         });
     }

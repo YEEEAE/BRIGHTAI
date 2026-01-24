@@ -32,6 +32,41 @@
     <link rel="icon" type="image/png" href="../assets/images/Gemini.png">
     <link rel="apple-touch-icon" sizes="240x240" href="../assets/images/Gemini.png">
 
+    <!-- Deferred Resource Loading for Animations -->
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadAnimations() {
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+                });
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadAnimations, 100);
+                });
+            } else {
+                setTimeout(loadAnimations, 100);
+            }
+        })();
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.min.css" />
     <style>
         /* General Styles */
@@ -282,7 +317,8 @@
         <div class="nav-container">
             <!-- Logo -->
             <a href="../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42"
+                    height="42">
             </a>
 
             <!-- Hamburger Menu Button (Mobile) -->
@@ -368,7 +404,7 @@
 
     <!-- Unified Navigation JS -->
     <script src="../js/unified-nav.min.js" defer></script>
-    <div class="container">
+    <div class="container" data-aos="fade-up">
         <h1>ما هو الذكاء الاصطناعي (AI)؟</h1>
         <p>الذكاء الاصطناعي (AI) هو تقنية تتيح للآلات محاكاة الذكاء البشري لحل المشكلات، التفاعل، واتخاذ القرارات. يمكنه
             التعرف على الصور، كتابة النصوص، وإجراء تنبؤات قائمة على البيانات.</p>

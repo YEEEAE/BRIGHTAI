@@ -142,7 +142,7 @@
     <!-- CONTENT SECTION -->
     <section class="py-24 px-6 bg-[#020617] relative">
         <div class="max-w-4xl mx-auto relative z-10">
-            <div class="glass-card p-8 md:p-12">
+            <div class="glass-card p-8 md:p-12" data-aos="fade-up">
                 <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed">
                     <h2 class="text-2xl font-bold text-white mb-6 border-b border-white/10 pb-4">اتفاقية الاستخدام</h2>
                     <p class="text-sm text-slate-500 mb-8">آخر تحديث: 23 سبتمبر 2025</p>
@@ -211,6 +211,22 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function loadAnimations() {
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
+            loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 50 });
+            });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                setTimeout(loadAnimations, 300);
+            });
+        } else {
+            setTimeout(loadAnimations, 300);
+        }
+    </script>
 
     <!-- UNIFIED FOOTER -->
     <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
