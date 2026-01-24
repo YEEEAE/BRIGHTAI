@@ -79,11 +79,8 @@
                     loadScript('../js/tailwind-config.min.js');
                 });
                 loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
-                loadCSS('../css/design-tokens.css');
-                loadCSS('../css/typography.css');
-                loadCSS('../css/glass-morphism.css');
-                loadCSS('../css/main.min.css');
-                loadCSS('../css/premium-effects.min.css');
+                // Centralized Design System
+                loadCSS('../css/brightai-core.css');
                 loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
                 loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
                 loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
@@ -135,7 +132,8 @@
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
             <a href="../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42" />
+                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42"
+                    height="42" />
                 <span>Bright AI</span>
             </a>
             <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
@@ -145,7 +143,8 @@
                 <span class="hamburger-line"></span>
             </button>
             <ul class="nav-links" id="nav-links-list" role="menubar">
-                <li role="none"><a role="menuitem" href="../index.html" class="flex items-center gap-2">الرئيسية</a></li>
+                <li role="none"><a role="menuitem" href="../index.html" class="flex items-center gap-2">الرئيسية</a>
+                </li>
                 <li class="nav-dropdown" role="none">
                     <button type="button" class="dropdown-toggle flex items-center gap-2">
                         أنظمة ذكية مؤسسية

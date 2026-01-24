@@ -1,232 +1,424 @@
-<!-- FAQ SECTION - قسم الأسئلة الشائعة -->
-<section id="faq" class="py-24 px-6 relative" style="background-color: #020617;">
-    <div class="max-w-4xl mx-auto">
-        <!-- Section Header -->
-        <div class="text-center mb-16 animate-on-scroll">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-                style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">
-                <iconify-icon icon="lucide:help-circle" width="18" class="text-gold-500"></iconify-icon>
-                <span class="text-sm font-medium text-gold-400">
-                    إجابات لأسئلتك
-                </span>
-            </div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
 
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                الأسئلة الشائعة
-            </h2>
-            <p class="text-slate-400 text-lg">
-                إجابات شاملة حول خدماتنا وتقنياتنا
-            </p>
-        </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bright AI | الأسئلة الشائعة</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8LLESL207Q');
+    </script>
 
-        <!-- FAQ Tabs -->
-        <div class="flex flex-wrap justify-center gap-4 mb-12">
-            <button
-                class="faq-tab active px-6 py-2 rounded-full border border-gold-500/20 bg-gold-500/10 text-gold-400 font-medium transition hover:bg-gold-500/20"
-                onclick="switchFaqTab('bi', this)">
-                ذكاء الأعمال
-            </button>
-            <button
-                class="faq-tab px-6 py-2 rounded-full border border-white/5 bg-white/5 text-slate-400 font-medium transition hover:bg-white/10 hover:text-white"
-                onclick="switchFaqTab('ai', this)">
-                الذكاء الاصطناعي
-            </button>
-            <button
-                class="faq-tab px-6 py-2 rounded-full border border-white/5 bg-white/5 text-slate-400 font-medium transition hover:bg-white/10 hover:text-white"
-                onclick="switchFaqTab('tools', this)">
-                الأدوات والتطبيقات
-            </button>
-        </div>
+    <meta name="description" content="إجابات شاملة حول خدمات Bright AI وتقنيات الذكاء الاصطناعي." />
+    <meta name="author" content="Bright AI" />
+    <link rel="canonical" href="https://brightai.site/faq_content" />
+    <link rel="icon" type="image/png" href="../assets/images/Gemini.png">
 
-        <!-- FAQ Content Containers -->
-        <div class="space-y-4 min-h-[400px]">
-
-            <!-- BI Category -->
-            <div id="faq-bi" class="faq-category block space-y-4">
-                <!-- Q1 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">ما هي أفضل أدوات ذكاء الأعمال (BI) في
-                            السعودية؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">نستخدم ونوصي بأدوات عالمية رائدة مثل Microsoft Power
-                            BI و Tableau و Looker، نظراً لدعمها الممتاز للغة العربية ومرونتها العالية في التكامل مع
-                            الأنظمة المحلية.</p>
-                    </div>
-                </div>
-                <!-- Q2 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">كيف أختار برنامج ذكاء الأعمال المناسب
-                            لشركتي؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">يعتمد الاختيار على حجم البيانات، الميزانية، والأنظمة
-                            الحالية لديكم. نحن نقدم خدمة استشارية لتقييم بنيتكم التحتية وترشيح الأداة الأنسب التي تحقق
-                            أعلى عائد على الاستثمار.</p>
-                    </div>
-                </div>
-                <!-- Q3 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">هل يمكن دمج ذكاء الأعمال مع أنظمة ERP
-                            الحالية؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">نعم، نتخصص في ربط أدوات BI مع مختلف أنظمة ERP مثل SAP
-                            و Oracle و Odoo، لضمان تدفق البيانات بشكل آلي ودقيق وبناء لوحات تحكم مركزية.</p>
-                    </div>
-                </div>
-                <!-- Q4 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">ما الفرق بين الحلول السحابية والمحلية
-                            (On-Premise)؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">الحلول السحابية توفر مرونة وتكلفة أولية أقل، بينما
-                            الحلول المحلية توفر سيطرة كاملة على البيانات. نحن نساعدك في اتخاذ القرار بناءً على متطلبات
-                            الامتثال والأمان الخاصة بمؤسستك.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AI Category -->
-            <div id="faq-ai" class="faq-category hidden space-y-4">
-                <!-- Q1 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">ما هي منصات الذكاء الاصطناعي الأفضل للشركات
-                            السعودية؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">نعمل مع منصات رائدة عالمياً ومحلياً، وندعم نماذج
-                            مفتوحة المصدر (Llama, Mistral) المستضافة محلياً لضمان سيادة البيانات، بالإضافة إلى خدمات
-                            Azure AI و Google Cloud AI للمرونة.</p>
-                    </div>
-                </div>
-                <!-- Q2 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">هل تدعم حلولكم اللغة العربية؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">بالتأكيد، جميع نماذجنا وحلولنا، بما في ذلك روبوتات
-                            المحادثة وتحليل النصوص، مُدربة ومُحسنة للعمل بكفاءة عالية مع اللغة العربية واللهجات المحلية
-                            السعودية.</p>
-                    </div>
-                </div>
-                <!-- Q3 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">كيف يمكن للذكاء الاصطناعي تحسين خدمة
-                            العملاء؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">من خلال روبوتات الدردشة الذكية التي تعمل 24/7، وتحليل
-                            مشاعر العملاء من المكالمات والرسائل، مما يتيح استجابة أسرع وأكثر شخصية لاحتياجاتهم.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tools Category -->
-            <div id="faq-tools" class="faq-category hidden space-y-4">
-                <!-- Q1 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">ما هي الأدوات الذكية المناسبة لإدارة الشركات
-                            الصغيرة؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">ننصح بأدوات الأتمتة منخفضة الكود (Low-Code) التي تسمح
-                            بربط التطبيقات المختلفة وأتمتة المهام الروتينية (مثل الفوترة، وجدولة المواعيد) بتكلفة
-                            معقولة.</p>
-                    </div>
-                </div>
-                <!-- Q2 -->
-                <div class="faq-item rounded-xl overflow-hidden"
-                    style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
-                    <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
-                        onclick="toggleFaq(this)">
-                        <span class="text-lg font-medium text-white">هل توفرون تدريباً على استخدام الأدوات؟</span>
-                        <iconify-icon icon="lucide:chevron-down" width="24"
-                            class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-6">
-                        <p class="text-slate-400 leading-relaxed">نعم، جزء أساسي من خدماتنا هو تمكين فريق عملكم. نقدم
-                            ورش عمل ودورات تدريبية مخصصة لضمان الاستفادة القصوى من الأدوات والتقنيات التي ننفذها.</p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- CTA After FAQ -->
-        <div class="text-center mt-16">
-            <p class="text-slate-400 mb-6">لم تجد إجابة لسؤالك؟</p>
-            <a href="https://wa.me/966538229013" target="_blank" rel="noopener"
-                class="inline-flex items-center gap-3 px-8 py-4 bg-gold-500 hover:bg-gold-400 text-navy-900 font-semibold text-lg rounded-lg shadow-lg shadow-gold-500/20 hover:shadow-gold-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
-                <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
-                <span>تواصل معنا مباشرة</span>
-            </a>
-        </div>
-    </div>
+    <link rel="stylesheet" href="../css/critical.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <script>
-        function switchFaqTab(category, btn) {
-            // Hide all categories
-            document.querySelectorAll('.faq-category').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.faq-category').forEach(el => el.classList.remove('block'));
-
-            // Show selected category
-            const selected = document.getElementById('faq-' + category);
-            if (selected) {
-                selected.classList.remove('hidden');
-                selected.classList.add('block');
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
             }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadScript('https://cdn.tailwindcss.com', function () {
+                    loadScript('../js/tailwind-config.min.js');
+                });
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                // Centralized Design System
+                loadCSS('../css/brightai-core.css');
 
-            // Update tabs state
-            document.querySelectorAll('.faq-tab').forEach(el => {
-                el.classList.remove('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
-                el.classList.add('border-white/5', 'bg-white/5', 'text-slate-400');
-            });
-
-            // Active styled tab
-            btn.classList.remove('border-white/5', 'bg-white/5', 'text-slate-400');
-            btn.classList.add('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
-        }
+                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    setTimeout(loadDeferredResources, 50);
+                });
+            } else {
+                loadDeferredResources();
+            }
+        })();
     </script>
-</section>
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- UNIFIED HEADER -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+                <img src="../assets/images/Gemini.png" alt="Bright AI" width="42" height="42" />
+                <span>Bright AI</span>
+            </a>
+            <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false"
+                id="mobile-menu-btn">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-links" id="nav-links-list" role="menubar">
+                <li role="none"><a role="menuitem" href="../index.html" class="flex items-center gap-2">الرئيسية</a>
+                </li>
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        أنظمة ذكية مؤسسية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="../h/projects/interview/index.html">نظام توظيف ذكي</a>
+                        </li>
+                        <li role="none"><a role="menuitem" href="../Smart-Medical-Archive/index.html">الارشيف الطبي
+                                الذكي</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        خدمات ذكية
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="ai-agent.html">AIaaS</a></li>
+                        <li role="none"><a role="menuitem" href="data-analysis.html">تحليل البيانات</a></li>
+                        <li role="none"><a role="menuitem" href="smart-automation.html">الأتمتة الذكية</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown" role="none">
+                    <button type="button" class="dropdown-toggle flex items-center gap-2">
+                        بوابة المعرفة
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none"><a role="menuitem" href="blog.html">المدونة</a></li>
+                        <li role="none"><a role="menuitem" href="about-us.html">عن الشركة</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <!-- HERO SECTION -->
+    <header class="hero-section relative min-h-[40vh] flex items-center pt-32 pb-16 px-6 overflow-hidden"
+        style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
+        <div class="absolute inset-0 gradient-animate opacity-20"></div>
+        <div class="max-w-7xl mx-auto w-full relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+                الأسئلة <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-amber-500">الشائعة</span>
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                كل ما تحتاج معرفته عن خدماتنا وحلولنا الذكية.
+            </p>
+        </div>
+    </header>
+
+    <!-- FAQ SECTION CONTENT -->
+    <section id="faq" class="py-24 px-6 relative" style="background-color: #020617;">
+        <div class="max-w-4xl mx-auto">
+            <!-- FAQ Tabs -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button
+                    class="faq-tab active px-6 py-2 rounded-full border border-gold-500/20 bg-gold-500/10 text-gold-400 font-medium transition hover:bg-gold-500/20"
+                    onclick="switchFaqTab('bi', this)">
+                    ذكاء الأعمال
+                </button>
+                <button
+                    class="faq-tab px-6 py-2 rounded-full border border-white/5 bg-white/5 text-slate-400 font-medium transition hover:bg-white/10 hover:text-white"
+                    onclick="switchFaqTab('ai', this)">
+                    الذكاء الاصطناعي
+                </button>
+                <button
+                    class="faq-tab px-6 py-2 rounded-full border border-white/5 bg-white/5 text-slate-400 font-medium transition hover:bg-white/10 hover:text-white"
+                    onclick="switchFaqTab('tools', this)">
+                    الأدوات والتطبيقات
+                </button>
+            </div>
+
+            <!-- FAQ Content Containers -->
+            <div class="space-y-4 min-h-[400px]">
+
+                <!-- BI Category -->
+                <div id="faq-bi" class="faq-category block space-y-4">
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">ما هي أفضل أدوات ذكاء الأعمال (BI) في
+                                السعودية؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">نستخدم ونوصي بأدوات عالمية رائدة مثل Microsoft
+                                Power BI و
+                                Tableau و Looker، نظراً لدعمها الممتاز للغة العربية ومرونتها العالية في التكامل مع
+                                الأنظمة المحلية.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">كيف أختار برنامج ذكاء الأعمال المناسب
+                                لشركتي؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">يعتمد الاختيار على حجم البيانات، الميزانية،
+                                والأنظمة الحالية
+                                لديكم. نحن نقدم خدمة استشارية لتقييم بنيتكم التحتية وترشيح الأداة الأنسب التي تحقق أعلى
+                                عائد على
+                                الاستثمار.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">هل يمكن دمج ذكاء الأعمال مع أنظمة ERP
+                                الحالية؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">نعم، نتخصص في ربط أدوات BI مع مختلف أنظمة ERP مثل
+                                SAP و Oracle
+                                و Odoo، لضمان تدفق البيانات بشكل آلي ودقيق وبناء لوحات تحكم مركزية.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">ما الفرق بين الحلول السحابية والمحلية
+                                (On-Premise)؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">الحلول السحابية توفر مرونة وتكلفة أولية أقل، بينما
+                                الحلول
+                                المحلية توفر سيطرة كاملة على البيانات. نحن نساعدك في اتخاذ القرار بناءً على متطلبات
+                                الامتثال والأمان
+                                الخاصة بمؤسستك.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Category -->
+                <div id="faq-ai" class="faq-category hidden space-y-4">
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">ما هي منصات الذكاء الاصطناعي الأفضل للشركات
+                                السعودية؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">نعمل مع منصات رائدة عالمياً ومحلياً، وندعم نماذج
+                                مفتوحة المصدر
+                                (Llama, Mistral) المستضافة محلياً لضمان سيادة البيانات، بالإضافة إلى خدمات Azure AI و
+                                Google Cloud AI
+                                للمرونة.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">هل تدعم حلولكم اللغة العربية؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">بالتأكيد، جميع نماذجنا وحلولنا، بما في ذلك روبوتات
+                                المحادثة
+                                وتحليل النصوص، مُدربة ومُحسنة للعمل بكفاءة عالية مع اللغة العربية واللهجات المحلية
+                                السعودية.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">كيف يمكن للذكاء الاصطناعي تحسين خدمة
+                                العملاء؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">من خلال روبوتات الدردشة الذكية التي تعمل 24/7،
+                                وتحليل مشاعر
+                                العملاء من المكالمات والرسائل، مما يتيح استجابة أسرع وأكثر شخصية لاحتياجاتهم.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools Category -->
+                <div id="faq-tools" class="faq-category hidden space-y-4">
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">ما هي الأدوات الذكية المناسبة لإدارة الشركات
+                                الصغيرة؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">ننصح بأدوات الأتمتة منخفضة الكود (Low-Code) التي
+                                تسمح بربط
+                                التطبيقات المختلفة وأتمتة المهام الروتينية (مثل الفوترة، وجدولة المواعيد) بتكلفة معقولة.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item rounded-xl overflow-hidden"
+                        style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(71, 85, 105, 0.5);">
+                        <button class="faq-toggle w-full p-6 text-right flex items-center justify-between gap-4"
+                            onclick="toggleFaq(this)">
+                            <span class="text-lg font-medium text-white">هل توفرون تدريباً على استخدام الأدوات؟</span>
+                            <iconify-icon icon="lucide:chevron-down" width="24"
+                                class="text-gold-500 faq-icon transition-transform duration-300"></iconify-icon>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-6">
+                            <p class="text-slate-400 leading-relaxed">نعم، جزء أساسي من خدماتنا هو تمكين فريق عملكم.
+                                نقدم ورش عمل
+                                ودورات تدريبية مخصصة لضمان الاستفادة القصوى من الأدوات والتقنيات التي ننفذها.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA After FAQ -->
+            <div class="text-center mt-16">
+                <p class="text-slate-400 mb-6">لم تجد إجابة لسؤالك؟</p>
+                <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+                    class="inline-flex items-center gap-3 px-8 py-4 bg-gold-500 hover:bg-gold-400 text-navy-900 font-semibold text-lg rounded-lg shadow-lg shadow-gold-500/20 hover:shadow-gold-500/30 transition-all duration-300 transform hover:-translate-y-0.5">
+                    <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+                    <span>تواصل معنا مباشرة</span>
+                </a>
+            </div>
+        </div>
+
+        <script>
+            function switchFaqTab(category, btn) {
+                document.querySelectorAll('.faq-category').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.faq-category').forEach(el => el.classList.remove('block'));
+                const selected = document.getElementById('faq-' + category);
+                if (selected) {
+                    selected.classList.remove('hidden');
+                    selected.classList.add('block');
+                }
+                document.querySelectorAll('.faq-tab').forEach(el => {
+                    el.classList.remove('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
+                    el.classList.add('border-white/5', 'bg-white/5', 'text-slate-400');
+                });
+                btn.classList.remove('border-white/5', 'bg-white/5', 'text-slate-400');
+                btn.classList.add('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
+            }
+            // Simple accordion toggle if main.js is not handling it
+            function toggleFaq(btn) {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('.faq-icon');
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+        </script>
+    </section>
+
+    <!-- UNIFIED FOOTER -->
+    <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div
+                            class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
+                            <span class="text-lg font-bold text-white">B</span>
+                        </div>
+                        <span class="font-semibold text-white">Bright AI</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        نبتكر المستقبل اليوم.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon
+                                icon="lucide:message-circle" width="20"></iconify-icon></a>
+                        <a href="mailto:yazeed1job@gmail.com"
+                            class="text-slate-400 hover:text-white transition"><iconify-icon icon="lucide:mail"
+                                width="20"></iconify-icon></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الشركة</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="about-us.html" class="hover:text-gold-400">عن Bright AI</a></li>
+                        <li><a href="contact.html" class="hover:text-gold-400">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">الموارد</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="blog.html" class="hover:text-gold-400">المدونة</a></li>
+                        <li><a href="Docs.html" class="hover:text-gold-400">الوثائق</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-6">خدماتنا</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li><a href="ai-agent.html" class="hover:text-gold-400">AIaaS</a></li>
+                        <li><a href="data-analysis.html" class="hover:text-gold-400">تحليل البيانات</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
+                <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.min.js" defer></script>
+    <script src="../js/premium-animations.min.js" defer></script>
+    <script src="../js/neural-canvas.min.js" defer></script>
+</body>
+
+</html>

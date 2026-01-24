@@ -43,11 +43,8 @@
                     loadScript('../js/tailwind-config.min.js');
                 });
                 loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
-                loadCSS('../css/design-tokens.css');
-                loadCSS('../css/typography.css');
-                loadCSS('../css/glass-morphism.css');
-                loadCSS('../css/main.min.css');
-                loadCSS('../css/premium-effects.min.css');
+                // Centralized Design System
+                loadCSS('../css/brightai-core.css');
                 loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
                 loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
             }
@@ -73,8 +70,8 @@
         <div class="nav-container">
             <!-- Logo -->
             <a href="../index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية" width="42"
-                    height="42" fetchpriority="high" decoding="async" />
+                <img src="../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية"
+                    width="42" height="42" fetchpriority="high" decoding="async" />
                 <span>Bright AI</span>
             </a>
             <!-- Hamburger Menu Button (Mobile) -->
@@ -105,14 +102,16 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li role="none">
-                            <a role="menuitem" href="../h/projects/interview/index.html" class="flex items-center gap-2">
+                            <a role="menuitem" href="../h/projects/interview/index.html"
+                                class="flex items-center gap-2">
                                 <iconify-icon icon="lucide:users" width="14"
                                     class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                                 رحلة التوظيف الذكية بالكامل
                             </a>
                         </li>
                         <li role="none">
-                            <a role="menuitem" href="../Smart-Medical-Archive/index.html" class="flex items-center gap-2">
+                            <a role="menuitem" href="../Smart-Medical-Archive/index.html"
+                                class="flex items-center gap-2">
                                 <iconify-icon icon="lucide:file-heart" width="14"
                                     class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                                 الارشيف الطبي الذكي
@@ -228,7 +227,8 @@
                             </a>
                         </li>
                         <li role="none">
-                            <a role="menuitem" href="../h/projects/interview/index.html" class="flex items-center gap-2">
+                            <a role="menuitem" href="../h/projects/interview/index.html"
+                                class="flex items-center gap-2">
                                 <iconify-icon icon="lucide:play" width="14"
                                     class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
                                 نماذج AI تجريبية

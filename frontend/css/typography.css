@@ -1,194 +1,80 @@
-/**
- * BrightAI Typography Utilities
- * Utility classes for typography based on design tokens
- */
+/* BrightAI Typography System */
 
 /* Font Families */
-.font-primary {
-    font-family: var(--font-family-primary);
+:root {
+    --font-primary: 'Tajawal', sans-serif;
+    --font-secondary: 'IBM Plex Sans Arabic', sans-serif;
+    --font-mono: 'Fira Code', monospace;
 }
 
-.font-arabic {
-    font-family: var(--font-family-arabic-fallback);
+body {
+    font-family: var(--font-primary);
 }
 
-.font-mono {
-    font-family: var(--font-family-mono);
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-primary);
+    line-height: 1.2;
 }
 
-/* Font Sizes */
-.text-xs {
-    font-size: var(--font-size-xs);
+/* Prose (Rich Text) Utilities */
+.prose {
+    max-width: 65ch;
+    color: #d1d5db;
+    /* slate-300 */
 }
 
-.text-sm {
-    font-size: var(--font-size-sm);
+.prose-invert {
+    color: #d1d5db;
 }
 
-.text-base {
-    font-size: var(--font-size-base);
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+    color: #fff;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-weight: 700;
 }
 
-.text-lg {
-    font-size: var(--font-size-lg);
+.prose p {
+    margin-bottom: 1.5em;
+    line-height: 1.75;
 }
 
-.text-xl {
-    font-size: var(--font-size-xl);
+.prose ul {
+    margin-bottom: 1.5em;
+    padding-right: 1.5em;
+    /* RTL */
+    list-style-type: disc;
 }
 
-.text-2xl {
-    font-size: var(--font-size-2xl);
+.prose li {
+    margin-bottom: 0.5em;
 }
 
-.text-3xl {
-    font-size: var(--font-size-3xl);
+.prose strong {
+    color: #fff;
+    font-weight: 600;
 }
 
-.text-4xl {
-    font-size: var(--font-size-4xl);
+.prose a {
+    color: #818cf8;
+    /* indigo-400 */
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
-.text-5xl {
-    font-size: var(--font-size-5xl);
+.prose a:hover {
+    color: #a5b4fc;
 }
 
-/* Font Weights */
-.font-normal {
-    font-weight: var(--font-weight-normal);
-}
-
-.font-medium {
-    font-weight: var(--font-weight-medium);
-}
-
-.font-semibold {
-    font-weight: var(--font-weight-semibold);
-}
-
-.font-bold {
-    font-weight: var(--font-weight-bold);
-}
-
-/* Line Heights (Leading) */
-.leading-tight {
-    line-height: var(--line-height-tight);
-}
-
-.leading-normal {
-    line-height: var(--line-height-normal);
-}
-
-.leading-relaxed {
-    line-height: var(--line-height-relaxed);
-}
-
-/* Text Alignment */
-.text-left {
-    text-align: left;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-right {
-    text-align: right;
-}
-
-.text-justify {
-    text-align: justify;
-}
-
-/* Text Transforms */
-.uppercase {
-    text-transform: uppercase;
-}
-
-.lowercase {
-    text-transform: lowercase;
-}
-
-.capitalize {
-    text-transform: capitalize;
-}
-
-/* Text Overflow */
-.truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.break-words {
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-}
-
-/* Colors (using design tokens) */
-.text-primary {
-    color: var(--primary-color);
-}
-
-.text-secondary {
-    color: var(--secondary-color);
-}
-
-.text-accent {
-    color: var(--accent-color);
-}
-
-.text-white {
-    color: var(--white);
-}
-
-.text-error {
-    color: var(--error-color);
-}
-
-.text-success {
-    color: var(--success-color);
-}
-
-.text-warning {
-    color: var(--warning-color);
-}
-
-.text-info {
-    color: var(--info-color);
-}
-
-/* Gradient Text */
-.text-gradient {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.text-gradient-hover:hover {
-    background: var(--gradient-primary-hover);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Arabic Specific Optimization */
-:lang(ar) {
-    font-family: var(--font-family-primary);
-    line-height: 1.8;
-    letter-spacing: 0;
-}
-
-:lang(ar) .leading-tight {
-    line-height: 1.4;
-}
-
-:lang(ar) .leading-normal {
-    line-height: 1.8;
-}
-
-:lang(ar) .leading-relaxed {
-    line-height: 2.0;
+.max-w-none {
+    max-width: none;
 }
