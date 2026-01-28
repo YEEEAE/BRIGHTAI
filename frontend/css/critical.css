@@ -280,26 +280,82 @@ body {
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, .1);
     border-color: rgba(255, 255, 255, .2)
+}
+
+.btn-pulse {
+    animation: pulse-gold 2s infinite;
+}
+
+@keyframes pulse-gold {
+    0% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+    }
 }
 
 /* ============================================
    GLASS MORPHISM CARDS
    ============================================ */
 .glass-card {
-    background: rgba(255, 255, 255, .02);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, .05);
+    background: rgba(255, 255, 255, .03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .08);
     border-radius: 1rem;
     padding: 2rem;
-    transition: transform .3s ease, box-shadow .3s ease
+    transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.glass-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, .3)
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .glass-card:hover::before {
+        left: 100%;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border-color: rgba(212, 175, 55, 0.4) !important;
+    }
+}
+
+/* Mobile Adjustments for Glass Card */
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1.5rem;
+        backdrop-filter: blur(12px);
+        /* Reduce blur for performance */
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.04);
+        /* Slightly improved contrast */
+    }
+
+    .glass-card:active {
+        transform: scale(0.98);
+        /* Tactile feedback on touch */
+        background: rgba(255, 255, 255, 0.06);
+    }
 }
 
 /* ============================================
@@ -615,6 +671,111 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    pointer-events: none;
     opacity: .5
+}
+
+/* ============================================
+   UI ENHANCEMENTS (Progress & Back-to-Top)
+   ============================================ */
+.scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 10000;
+    background: transparent;
+    pointer-events: none;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #d4af37, #fcd34d);
+    width: 0%;
+    transition: width 0.1s;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.back-to-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.9);
+    /* More opaque on mobile for visibility */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: #d4af37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .back-to-top-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 44px;
+        /* Minimum touch target is fine, but kept accessible */
+        height: 44px;
+        background: rgba(15, 23, 42, 0.95);
+    }
+
+    .chat-widget {
+        bottom: 1.5rem;
+        left: 1.5rem;
+    }
+
+    .chat-button {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+.back-to-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top-btn:hover {
+    background: rgba(212, 175, 55, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+}
+
+/* Form Validation Helper */
+.input-group {
+    position: relative;
+}
+
+.validation-icon {
+    position: absolute;
+    right: 12px;
+    /* RTL aware if needed, check dir="rtl" */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10b981;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+/* RTL Adjustment */
+[dir="rtl"] .validation-icon {
+    right: auto;
+    left: 12px;
+}
+
+.input-valid+.validation-icon {
+    opacity: 1;
 }
