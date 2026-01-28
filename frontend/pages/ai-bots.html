@@ -167,7 +167,6 @@
 
 <body>
     <!-- Unified Navigation JS -->
-    <script src="../js/unified-nav.min.js" defer></script>
 
     <!-- التنقل الموحد الجديد -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
@@ -711,7 +710,6 @@
         <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </a>
 
-    <script src="ai-bots.min.js"></script>
     <script>
         // Logic for hamburger menu and back-to-top button visibility
         const hamburger = document.querySelector('.hamburger');
@@ -746,6 +744,14 @@
             });
         }
     </script>
+
+    <!-- JavaScript Bundles (Consolidated) -->
+    <script src="../js/dist/core.bundle.js" defer></script>
+    <script src="../js/dist/ui.bundle.js" defer></script>
+    <script src="../js/dist/app.bundle.js" defer></script>
+    <script src="../js/dist/features.bundle.js" defer></script>
+    <script src="../js/dist/pages.bundle.js" defer></script>
+    
 </body>
 
 </html>

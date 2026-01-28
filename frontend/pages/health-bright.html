@@ -920,7 +920,6 @@
 
 <body>
   <!-- Unified Navigation JS -->
-  <script src="../js/unified-nav.min.js" defer></script>
 
   <!-- التنقل الموحد -->
   <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
@@ -2179,6 +2178,14 @@ ${mgSelectedFile ? `\n\nتم تحليل الملف المرفق: ${mgSelectedFil
       obs.observe(el, { childList: true });
     });
   </script>
+
+    <!-- JavaScript Bundles (Consolidated) -->
+    <script src="../js/dist/core.bundle.js" defer></script>
+    <script src="../js/dist/ui.bundle.js" defer></script>
+    <script src="../js/dist/app.bundle.js" defer></script>
+    <script src="../js/dist/features.bundle.js" defer></script>
+    <script src="../js/dist/pages.bundle.js" defer></script>
+    
 </body>
 
 </html>

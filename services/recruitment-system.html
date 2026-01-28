@@ -24,7 +24,6 @@
 
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../js/tailwind-config.min.js"></script>
 
     <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.min.js"></script>
@@ -641,12 +640,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.min.js"></script>
 
     <!-- Custom Scripts -->
-    <script src="../js/animations.min.js"></script>
-    <script src="../js/three-effects.min.js"></script>
-    <script src="../js/design-system.js"></script>
 
     <!-- Page Specific Script -->
-    <script type="module" src="../js/pages/recruitment.js"></script>
 
     <!-- Initialize Components -->
     <script type="module">
@@ -659,6 +654,14 @@
         });
     </script>
 
+
+    <!-- JavaScript Bundles (Consolidated) -->
+    <script src="../frontend/js/dist/core.bundle.js" defer></script>
+    <script src="../frontend/js/dist/ui.bundle.js" defer></script>
+    <script src="../frontend/js/dist/app.bundle.js" defer></script>
+    <script src="../frontend/js/dist/features.bundle.js" defer></script>
+    <script src="../frontend/js/dist/pages.bundle.js" defer></script>
+    
 </body>
 
 </html>
