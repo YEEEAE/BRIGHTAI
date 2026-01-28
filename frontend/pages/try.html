@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- ===== Meta Tags الأساسية ===== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- ===== SEO Meta Tags - محسّنة للسعودية ===== -->
+    <title>Bright AI | نظام تحليل بيانات وذكاء اصطناعي للشركات في السعودية</title>
+    <meta name="description" content="Bright AI - منصة تحليل البيانات بالذكاء الاصطناعي للمؤسسات السعودية. حوّل بياناتك إلى قرارات ذكية مع نظام AI Analytics المتقدم. اطلب تجربتك المجانية الآن.">
+    <meta name="keywords" content="نظام تحليل بيانات, ذكاء اصطناعي للشركات, تحليل البيانات في السعودية, AI Analytics Saudi Arabia, منصة ذكاء اصطناعي, تحليل بيانات المؤسسات">
+    <meta name="author" content="Bright AI">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Arabic">
+    <meta name="geo.region" content="SA">
+    <meta name="geo.placename" content="Saudi Arabia">
+    
+    <!-- ===== Open Graph للمشاركة ===== -->
+    <meta property="og:title" content="Bright AI | نظام تحليل بيانات وذكاء اصطناعي للشركات">
+    <meta property="og:description" content="حوّل بياناتك إلى قرارات استراتيجية مع Bright AI - منصة الذكاء الاصطناعي الرائدة في السعودية">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
+    <meta property="og:site_name" content="Bright AI">
+    
+    <!-- ===== Twitter Card ===== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bright AI | ذكاء اصطناعي للشركات السعودية">
+    <meta name="twitter:description" content="منصة تحليل البيانات بالذكاء الاصطناعي للمؤسسات">
+    
+    <!-- ===== Canonical URL ===== -->
+    <link rel="canonical" href="https://brightai.sa/">
+    
+    <!-- ===== Schema Markup - SoftwareApplication ===== -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Bright AI",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "نظام تحليل بيانات وذكاء اصطناعي مخصص للمؤسسات والشركات في السعودية",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "SAR",
+            "description": "تجربة مجانية متاحة"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Bright AI",
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "SA",
+                "addressRegion": "الرياض"
+            }
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "127"
+        }
+    }
+    </script>
+    
+    <!-- ===== Organization Schema ===== -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Bright AI",
+        "url": "https://brightai.sa",
+        "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي وتحليل البيانات للمؤسسات",
+        "areaServed": {
+            "@type": "Country",
+            "name": "Saudi Arabia"
+        }
+    }
+    </script>
+
+    <style>
+        /* ========================================
+           CSS Variables - نظام الألوان والتصميم
+           ======================================== */
+        :root {
+            /* الألوان الرئيسية */
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            
+            /* ألوان الخلفية */
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            
+            /* ألوان النص */
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            /* التدرجات */
+            --gradient-primary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --gradient-glow: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+            
+            /* الظلال */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.3);
+            
+            /* الحدود */
+            --border-color: rgba(148, 163, 184, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 20px;
+            
+            /* الخطوط */
+            --font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            
+            /* الأبعاد */
+            --container-max: 1200px;
+            --section-padding: 100px;
+            --header-height: 80px;
+        }
+
+        /* ========================================
+           Reset & Base Styles
+           ======================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* خلفية متحركة بتأثير النجوم */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button, input, textarea {
+            font-family: inherit;
+            font-size: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ========================================
+           Utility Classes
+           ======================================== */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            padding: var(--section-padding) 0;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        /* ========================================
+           Buttons - أزرار CTA
+           ======================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 60px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ========================================
+           Header & Navigation
+           ======================================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: var(--shadow-md);
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-list {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            font-weight: 500;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 12px 24px;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* ========================================
+           Hero Section
+           ======================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: var(--header-height);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثير الجزيئات المتحركة */
+        .hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-100px) translateX(50px); opacity: 0.6; }
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary-light);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* H1 - العنوان الرئيسي الوحيد */
+        .hero-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero-title-highlight {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 540px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeInRight 1s ease 0.5s both;
+        }
+
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .hero-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .hero-card-badge {
+            padding: 4px 12px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* الرسم البياني التوضيحي */
+        .hero-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 180px;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--gradient-primary);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            animation: growUp 1s ease forwards;
+            animation-delay: var(--delay, 0s);
+            transform-origin: bottom;
+        }
+
+        @keyframes growUp {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+
+        .hero-card-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 12px;
+            background: rgba(37, 99, 235, 0.05);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-md);
+            animation: float-element 6s ease-in-out infinite;
+        }
+
+        .floating-element-1 {
+            top: -20px;
+            right: -30px;
+            animation-delay: 0s;
+        }
+
+        .floating-element-2 {
+            bottom: 40px;
+            left: -40px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float-element {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .floating-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 8px;
+        }
+
+        .floating-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .floating-value {
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        /* ========================================
+           Why Bright AI Section
+           ======================================== */
+        .why-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(37, 99, 235, 0.03) 50%, transparent 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(37, 99, 235, 0.3);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-glow);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ========================================
+           How It Works Section
+           ======================================== */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+        }
+
+        /* خط الاتصال بين الخطوات */
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: var(--gradient-primary);
+            opacity: 0.3;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-glow);
+            position: relative;
+        }
+
+        .step-number::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            border-radius: 50%;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0; }
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ========================================
+           Use Cases Section
+           ======================================== */
+        .usecases-section {
+            background: linear-gradient(180deg, rgba(124, 58, 237, 0.03) 0%, transparent 100%);
+        }
+
+        .usecases-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .usecase-tab {
+            padding: 14px 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .usecase-tab:hover,
+        .usecase-tab.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .usecase-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .usecase-content.active {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .usecase-info {
+            padding-left: 20px;
+        }
+
+        .usecase-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .usecase-description {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .usecase-benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .usecase-benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-secondary);
+        }
+
+        .benefit-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .usecase-visual {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 32px;
+            position: relative;
+        }
+
+        .usecase-visual::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius-lg);
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        /* ========================================
+           Before/After Comparison Section
+           ======================================== */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .comparison-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            position: relative;
+        }
+
+        .comparison-card.before {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .comparison-card.after {
+            border-color: rgba(34, 197, 94, 0.3);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(34, 197, 94, 0.05) 100%);
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .comparison-card.before .comparison-icon {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .comparison-card.after .comparison-icon {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .comparison-label {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .comparison-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: var(--text-secondary);
+        }
+
+        .comparison-item-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .comparison-card.before .comparison-item-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .comparison-card.after .comparison-item-icon {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .comparison-divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .comparison-arrow {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-glow);
+            animation: bounce-horizontal 2s infinite;
+        }
+
+        @keyframes bounce-horizontal {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        /* ========================================
+           Interactive Demo Section
+           ======================================== */
+        .demo-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(6, 182, 212, 0.05) 50%, transparent 100%);
+        }
+
+        .demo-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-card) 100%);
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .demo-header-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .demo-header-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .demo-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .demo-status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .demo-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 500px;
+        }
+
+        .demo-input-panel {
+            padding: 32px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .demo-input-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .demo-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 14px 18px;
+            background: var(--bg-darker);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .demo-analyze-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+        }
+
+        .demo-output-panel {
+            padding: 32px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.02) 0%, rgba(124, 58, 237, 0.02) 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .demo-output-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-output-placeholder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .demo-output-placeholder-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 2px dashed var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 2rem;
+        }
+
+        .demo-results {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .demo-results.active {
+            display: flex;
+        }
+
+        .result-card {
+            background: var(--bg-darker);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .result-value.positive {
+            color: #22c55e;
+        }
+
+        .result-value.negative {
+            color: #ef4444;
+        }
+
+        .result-value.neutral {
+            color: var(--accent);
+        }
+
+        .result-bar {
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .result-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .result-insights {
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .insight-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .insight-bullet {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Loading Animation */
+        .demo-loading {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .demo-loading.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .loading-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: right;
+        }
+
+        .loading-step {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-step.active {
+            color: var(--primary-light);
+        }
+
+        .loading-step.done {
+            color: #22c55e;
+        }
+
+        /* ========================================
+           Final CTA Section
+           ======================================== */
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-container {
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn-primary {
+            background: white;
+            color: var(--primary-dark);
+        }
+
+        .cta-btn-primary:hover {
+            background: var(--text-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cta-btn-secondary:hover {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ========================================
+           Footer
+           ======================================== */
+        .footer {
+            background: var(--bg-darker);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            margin-bottom: 16px;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-column-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-light);
+            padding-right: 5px;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-legal a {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-legal a:hover {
+            color: var(--text-secondary);
+        }
+
+        /* ========================================
+           Animations
+           ======================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========================================
+           Responsive Design
+           ======================================== */
+        @media (max-width: 1024px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content {
+                order: 1;
+            }
+
+            .hero-visual {
+                order: 2;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .hero-description {
+                margin: 0 auto 32px;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-divider {
+                transform: rotate(90deg);
+                padding: 20px 0;
+            }
+
+            .demo-body {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-input-panel {
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .usecase-content.active {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 60px;
+            }
+
+            .nav-list {
+                display: none;
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .steps-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .steps-container::before {
+                display: none;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .floating-element {
+                display: none;
+            }
+
+            .cta-container {
+                padding: 50px 30px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .hero-cta .btn {
+                width: 100%;
+            }
+
+            .usecases-tabs {
+                flex-direction: column;
+            }
+
+            .usecase-tab {
+                width: 100%;
+                text-align: center;
+            }
+
+            .demo-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            z-index: 999;
+            padding: 40px 24px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .mobile-menu-link {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mobile-menu-link:hover {
+            color: var(--text-primary);
+        }
+
+        .mobile-menu-cta {
+            margin-top: 32px;
+        }
+
+        .mobile-menu-cta .btn {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Header ===== -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="#" class="logo">
+                <div class="logo-icon">✦</div>
+                <span class="logo-text">Bright AI</span>
+            </a>
+            
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#features" class="nav-link">المميزات</a></li>
+                    <li><a href="#how-it-works" class="nav-link">آلية العمل</a></li>
+                    <li><a href="#usecases" class="nav-link">حالات الاستخدام</a></li>
+                    <li><a href="#demo" class="nav-link">التجربة</a></li>
+                </ul>
+                <a href="#contact" class="btn btn-primary nav-cta">اطلب عرضاً</a>
+            </nav>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== Mobile Menu ===== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu-list">
+            <li><a href="#features" class="mobile-menu-link">المميزات</a></li>
+            <li><a href="#how-it-works" class="mobile-menu-link">آلية العمل</a></li>
+            <li><a href="#usecases" class="mobile-menu-link">حالات الاستخدام</a></li>
+            <li><a href="#demo" class="mobile-menu-link">التجربة</a></li>
+        </ul>
+        <div class="mobile-menu-cta">
+            <a href="#contact" class="btn btn-primary">اطلب عرضاً توضيحياً</a>
+        </div>
+    </div>
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero" id="hero">
+        <!-- Animated Particles Background -->
+        <div class="hero-particles" id="particles"></div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    <span>الجيل الجديد من تحليل البيانات</span>
+                </div>
+                
+                <!-- H1 - العنوان الرئيسي الوحيد في الصفحة -->
+                <h1 class="hero-title">
+                    حوّل بياناتك إلى
+                    <span class="hero-title-highlight">قرارات استراتيجية</span>
+                    بقوة الذكاء الاصطناعي
+                </h1>
+                
+                <p class="hero-description">
+                    منصة Bright AI تُمكّن المؤسسات السعودية من استخراج رؤى قيّمة من البيانات الضخمة، وأتمتة التقارير، واتخاذ قرارات أذكى في وقت أقل بنسبة 80%.
+                </p>
+                
+                <div class="hero-cta">
+                    <a href="#demo" class="btn btn-primary">
+                        <span>اطلب تجربة مجانية</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#how-it-works" class="btn btn-secondary">
+                        <span>شاهد كيف يعمل</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">+150</div>
+                        <div class="hero-stat-label">مؤسسة تثق بنا</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">80%</div>
+                        <div class="hero-stat-label">توفير في الوقت</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">99.9%</div>
+                        <div class="hero-stat-label">دقة التحليل</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="hero-card-header">
+                        <span class="hero-card-title">لوحة التحليل الذكي</span>
+                        <span class="hero-card-badge">مباشر</span>
+                    </div>
+                    
+                    <div class="hero-chart">
+                        <div class="chart-bar" style="height: 45%; --delay: 0.1s;"></div>
+                        <div class="chart-bar" style="height: 65%; --delay: 0.2s;"></div>
+                        <div class="chart-bar" style="height: 50%; --delay: 0.3s;"></div>
+                        <div class="chart-bar" style="height: 85%; --delay: 0.4s;"></div>
+                        <div class="chart-bar" style="height: 70%; --delay: 0.5s;"></div>
+                        <div class="chart-bar" style="height: 95%; --delay: 0.6s;"></div>
+                        <div class="chart-bar" style="height: 75%; --delay: 0.7s;"></div>
+                    </div>
+                    
+                    <div class="hero-card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">+24%</div>
+                            <div class="metric-label">نمو المبيعات</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">1.2M</div>
+                            <div class="metric-label">سجل محلل</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">-18%</div>
+                            <div class="metric-label">تقليل التكلفة</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating Elements -->
+                <div class="floating-element floating-element-1">
+                    <div class="floating-icon">📊</div>
+                    <div class="floating-text">تحليل مكتمل</div>
+                    <div class="floating-value">+15 رؤية جديدة</div>
+                </div>
+                
+                <div class="floating-element floating-element-2">
+                    <div class="floating-icon">🎯</div>
+                    <div class="floating-text">دقة التنبؤ</div>
+                    <div class="floating-value">98.5%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Why Bright AI Section ===== -->
+    <section class="section why-section" id="features">
+        <div class="container">
+            <h2 class="section-title reveal">لماذا تختار Bright AI؟</h2>
+            <p class="section-subtitle reveal">
+                منصة متكاملة صُممت خصيصاً لتلبية احتياجات السوق السعودي بأحدث تقنيات الذكاء الاصطناعي
+            </p>
+            
+            <div class="features-grid">
+                <article class="feature-card reveal">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">ذكاء اصطناعي متقدم</h3>
+                    <p class="feature-description">
+                        خوارزميات تعلم آلي متطورة تتعلم من بياناتك وتقدم تنبؤات دقيقة تصل إلى 99.9% مع تحسن مستمر بمرور الوقت.
+                    </p>
+                </article>
+                
+                <article class="feature-card reveal">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">سرعة فائقة</h3>
+                    <p class="feature-description">
+                        تحليل ملايين السجلات في ثوانٍ معدودة. وفّر 80% من وقت فريقك واحصل على نتائج فورية للقرارات العاجلة.
+                    </p>
+                </article>
+                
+                <article class="feature-card reveal">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">أمان على مستوى البنوك</h3>
+                    <p class="feature-description">
+                        تشفير من طرف إلى طرف، استضافة محلية في السعودية، ومطابقة كاملة لمعايير هيئة البيانات والذكاء الاصطناعي (سدايا).
+                    </p>
+                </article>
+                
+                <article class="feature-card reveal">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">دعم اللغة العربية</h3>
+                    <p class="feature-description">
+                        واجهة عربية كاملة مع معالجة لغة طبيعية (NLP) متخصصة للهجة السعودية والخليجية لفهم أدق لبياناتك.
+                    </p>
+                </article>
+                
+                <article class="feature-card reveal">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">تقارير تلقائية</h3>
+                    <p class="feature-description">
+                        إنشاء تقارير احترافية تلقائياً وجدولتها للإرسال لأصحاب القرار مع رؤى وتوصيات قابلة للتنفيذ مباشرة.
+                    </p>
+                </article>
+                
+                <article class="feature-card reveal">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">تكامل شامل</h3>
+                    <p class="feature-description">
+                        اتصال سلس مع أكثر من 100 نظام ومنصة شائعة في السوق السعودي بما فيها SAP وOracle وأنظمة ERP المحلية.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== How It Works Section ===== -->
+    <section class="section" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title reveal">كيف يعمل Bright AI؟</h2>
+            <p class="section-subtitle reveal">
+                ثلاث خطوات بسيطة لتحويل بياناتك الخام إلى رؤى استراتيجية قيّمة
+            </p>
+            
+            <div class="steps-container">
+                <div class="step-card reveal">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">اربط بياناتك</h3>
+                    <p class="step-description">
+                        اتصل بقواعد بياناتك ومصادرك المختلفة بنقرة واحدة. ندعم أكثر من 100 مصدر بيانات مع تحديث فوري ومستمر.
+                    </p>
+                </div>
+                
+                <div class="step-card reveal">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">حلل بالذكاء الاصطناعي</h3>
+                    <p class="step-description">
+                        يقوم النظام بتحليل بياناتك تلقائياً واكتشاف الأنماط والفرص المخفية باستخدام خوارزميات التعلم العميق.
+                    </p>
+                </div>
+                
+                <div class="step-card reveal">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">اتخذ قرارات أذكى</h3>
+                    <p class="step-description">
+                        احصل على توصيات قابلة للتنفيذ وتقارير تفاعلية تساعدك على اتخاذ قرارات مبنية على البيانات بثقة.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Use Cases Section ===== -->
+    <section class="section usecases-section" id="usecases">
+        <div class="container">
+            <h2 class="section-title reveal">حالات الاستخدام</h2>
+            <p class="section-subtitle reveal">
+                حلول مخصصة لكل قطاع تناسب احتياجات مؤسستك الفريدة
+            </p>
+            
+            <div class="usecases-tabs reveal">
+                <button class="usecase-tab active" data-tab="corporate">الشركات</button>
+                <button class="usecase-tab" data-tab="government">القطاع الحكومي</button>
+                <button class="usecase-tab" data-tab="finance">القطاع المالي</button>
+            </div>
+            
+            <div class="usecase-content active" id="corporate">
+                <div class="usecase-info">
+                    <h3 class="usecase-title">تحليلات الشركات والمؤسسات</h3>
+                    <p class="usecase-description">
+                        حوّل بيانات شركتك إلى ميزة تنافسية. من تحليل المبيعات إلى تحسين سلسلة التوريد، نوفر لك الأدوات اللازمة للنمو المستدام والتوسع الذكي.
+                    </p>
+                    <div class="usecase-benefits">
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تنبؤ بالمبيعات بدقة تصل إلى 95%</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تحليل سلوك العملاء وتقسيمهم ذكياً</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تحسين المخزون وتقليل الهدر بنسبة 40%</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>لوحات تحكم تنفيذية مخصصة للإدارة العليا</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="usecase-visual">
+                    <div class="hero-chart" style="height: 200px;">
+                        <div class="chart-bar" style="height: 55%; background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);"></div>
+                        <div class="chart-bar" style="height: 70%; background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);"></div>
+                        <div class="chart-bar" style="height: 60%; background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);"></div>
+                        <div class="chart-bar" style="height: 85%; background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);"></div>
+                        <div class="chart-bar" style="height: 75%; background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);"></div>
+                        <div class="chart-bar" style="height: 90%; background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);"></div>
+                    </div>
+                    <div class="hero-card-metrics">
+                        <div class="metric">
+                            <div class="metric-value" style="color: #22c55e;">+35%</div>
+                            <div class="metric-label">زيادة الإيرادات</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" style="color: #22c55e;">-25%</div>
+                            <div class="metric-label">تقليل التكاليف</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" style="color: #22c55e;">2x</div>
+                            <div class="metric-label">سرعة القرارات</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="usecase-content" id="government">
+                <div class="usecase-info">
+                    <h3 class="usecase-title">حلول القطاع الحكومي</h3>
+                    <p class="usecase-description">
+                        دعم رؤية 2030 بتحليلات متقدمة. نساعد الجهات الحكومية على تحسين الخدمات العامة ورفع كفاءة الأداء من خلال قرارات مبنية على البيانات.
+                    </p>
+                    <div class="usecase-benefits">
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تحليل مؤشرات الأداء الحكومي (KPIs)</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تحسين تجربة المواطن في الخدمات الإلكترونية</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>اكتشاف الاحتيال والمخالفات تلقائياً</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>مطابقة كاملة لمعايير سدايا والأمن السيبراني</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="usecase-visual">
+                    <div class="hero-chart" style="height: 200px;">
+                        <div class="chart-bar" style="height: 65%; background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);"></div>
+                        <div class="chart-bar" style="height: 80%; background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);"></div>
+                        <div class="chart-bar" style="height: 70%; background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);"></div>
+                        <div class="chart-bar" style="height: 90%; background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);"></div>
+                        <div class="chart-bar" style="height: 85%; background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);"></div>
+                        <div class="chart-bar" style="height: 95%; background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%);"></div>
+                    </div>
+                    <div class="hero-card-metrics">
+                        <div class="metric">
+                            <div class="metric-value" style="color: #7c3aed;">+60%</div>
+                            <div class="metric-label">كفاءة الخدمات</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" style="color: #7c3aed;">-45%</div>
+                            <div class="metric-label">وقت المعاملات</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" style="color: #7c3aed;">98%</div>
+                            <div class="metric-label">رضا المستفيدين</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="usecase-content" id="finance">
+                <div class="usecase-info">
+                    <h3 class="usecase-title">تحليلات القطاع المالي</h3>
+                    <p class="usecase-description">
+                        حلول متخصصة للبنوك وشركات التأمين والاستثمار. من إدارة المخاطر إلى اكتشاف الاحتيال، نوفر أدوات تحليل مالي متقدمة ومتوافقة مع متطلبات البنك المركزي.
+                    </p>
+                    <div class="usecase-benefits">
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>اكتشاف الاحتيال في الوقت الفعلي بدقة 99.8%</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تقييم المخاطر الائتمانية بالذكاء الاصطناعي</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تحليل سلوك العملاء وتخصيص العروض</span>
+                        </div>
+                        <div class="usecase-benefit">
+                            <span class="benefit-icon">✓</span>
+                            <span>تقارير تنظيمية تلقائية متوافقة مع ساما</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="usecase-visual">
+                    <div class="hero-chart" style="height: 200px;">
+                        <div class="chart-bar" style="height: 70%; background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);"></div>
+                        <div class="chart-bar" style="height: 85%; background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);"></div>
+                        <div class="chart-bar" style="height: 75%; background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);"></div>
+                        <div class="chart-bar" style="height: 95%; background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);"></div>
+                        <div class="chart-bar" style="height: 88%; background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);"></div>
+                        <div class="chart-bar" style="height: 92%; background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);"></div>
+                    </div>
+                    <div class="hero-card-metrics">
+                        <div class="metric">
+                            <div class="metric-value" style="color: #06b6d4;">99.8%</div>
+                            <div class="metric-label">دقة كشف الاحتيال</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" style="color: #06b6d4;">-70%</div>
+                            <div class="metric-label">خسائر الاحتيال</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" style="color: #06b6d4;">3x</div>
+                            <div class="metric-label">سرعة الموافقات</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Before/After Comparison Section ===== -->
+    <section class="section" id="comparison">
+        <div class="container">
+            <h2 class="section-title reveal">قبل وبعد Bright AI</h2>
+            <p class="section-subtitle reveal">
+                اكتشف الفرق الجوهري في طريقة إدارة وتحليل بيانات مؤسستك
+            </p>
+            
+            <div class="comparison-grid reveal">
+                <div class="comparison-card before">
+                    <div class="comparison-header">
+                        <div class="comparison-icon">😓</div>
+                        <span class="comparison-label">قبل Bright AI</span>
+                    </div>
+                    <div class="comparison-list">
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✕</span>
+                            <span>تقارير يدوية تستغرق أيام أو أسابيع</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✕</span>
+                            <span>بيانات مشتتة في أنظمة متفرقة</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✕</span>
+                            <span>قرارات مبنية على الحدس والتخمين</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✕</span>
+                            <span>فرص ضائعة بسبب بطء التحليل</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✕</span>
+                            <span>تكاليف عالية على فرق التحليل</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✕</span>
+                            <span>أخطاء بشرية متكررة في البيانات</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comparison-divider">
+                    <div class="comparison-arrow">←</div>
+                </div>
+                
+                <div class="comparison-card after">
+                    <div class="comparison-header">
+                        <div class="comparison-icon">🚀</div>
+                        <span class="comparison-label">بعد Bright AI</span>
+                    </div>
+                    <div class="comparison-list">
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✓</span>
+                            <span>تقارير فورية وتلقائية في ثوانٍ</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✓</span>
+                            <span>بيانات موحدة في منصة واحدة ذكية</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✓</span>
+                            <span>قرارات مبنية على بيانات دقيقة وتنبؤات</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✓</span>
+                            <span>اقتناص الفرص في الوقت المناسب</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✓</span>
+                            <span>توفير 80% من تكاليف التحليل</span>
+                        </div>
+                        <div class="comparison-item">
+                            <span class="comparison-item-icon">✓</span>
+                            <span>دقة 99.9% مع التحقق الآلي</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Interactive Demo Section ===== -->
+    <section class="section demo-section" id="demo">
+        <div class="container">
+            <h2 class="section-title reveal">جرّب قوة Bright AI الآن</h2>
+            <p class="section-subtitle reveal">
+                أدخل بيانات تجريبية وشاهد كيف يحللها الذكاء الاصطناعي ويستخرج رؤى قيّمة
+            </p>
+            
+            <div class="demo-container reveal">
+                <div class="demo-header">
+                    <div class="demo-header-title">
+                        <div class="demo-header-icon">🤖</div>
+                        <span>محرك التحليل الذكي - Bright AI Engine</span>
+                    </div>
+                    <div class="demo-status">
+                        <span class="demo-status-dot"></span>
+                        <span>جاهز للتحليل</span>
+                    </div>
+                </div>
+                
+                <div class="demo-body">
+                    <div class="demo-output-panel">
+                        <div class="demo-output-title">
+                            <span>📊</span>
+                            <span>نتائج التحليل</span>
+                        </div>
+                        
+                        <div class="demo-output-placeholder" id="demoPlaceholder">
+                            <div class="demo-output-placeholder-icon">🔮</div>
+                            <p>أدخل البيانات واضغط "تحليل" لرؤية النتائج</p>
+                        </div>
+                        
+                        <div class="demo-loading" id="demoLoading">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">جارِ التحليل بالذكاء الاصطناعي...</div>
+                            <div class="loading-steps">
+                                <div class="loading-step" id="step1">◯ جمع البيانات</div>
+                                <div class="loading-step" id="step2">◯ معالجة البيانات</div>
+                                <div class="loading-step" id="step3">◯ تحليل الأنماط</div>
+                                <div class="loading-step" id="step4">◯ استخراج الرؤى</div>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-results" id="demoResults">
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <span class="result-label">مؤشر الأداء العام</span>
+                                    <span class="result-value positive" id="performanceScore">--</span>
+                                </div>
+                                <div class="result-bar">
+                                    <div class="result-bar-fill" id="performanceBar" style="width: 0%; background: var(--gradient-accent);"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <span class="result-label">احتمالية النمو</span>
+                                    <span class="result-value neutral" id="growthPotential">--</span>
+                                </div>
+                                <div class="result-bar">
+                                    <div class="result-bar-fill" id="growthBar" style="width: 0%; background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <span class="result-label">مستوى المخاطر</span>
+                                    <span class="result-value" id="riskLevel">--</span>
+                                </div>
+                                <div class="result-bar">
+                                    <div class="result-bar-fill" id="riskBar" style="width: 0%; background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="result-insights">
+                                <div class="insight-title">
+                                    <span>💡</span>
+                                    <span>رؤى وتوصيات الذكاء الاصطناعي</span>
+                                </div>
+                                <div class="insight-list" id="insightsList">
+                                    <!-- Insights will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-input-panel">
+                        <div class="demo-input-title">⚙️ إدخال البيانات</div>
+                        
+                        <form class="demo-form" id="demoForm">
+                            <div class="form-group">
+                                <label class="form-label" for="businessType">نوع النشاط التجاري</label>
+                                <select class="form-select" id="businessType" required>
+                                    <option value="">اختر نوع النشاط</option>
+                                    <option value="retail">تجارة التجزئة</option>
+                                    <option value="tech">التقنية والبرمجيات</option>
+                                    <option value="finance">الخدمات المالية</option>
+                                    <option value="healthcare">الرعاية الصحية</option>
+                                    <option value="manufacturing">التصنيع</option>
+                                    <option value="realestate">العقارات</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="revenue">الإيرادات السنوية (مليون ريال)</label>
+                                <input type="number" class="form-input" id="revenue" placeholder="مثال: 50" min="1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="employees">عدد الموظفين</label>
+                                <input type="number" class="form-input" id="employees" placeholder="مثال: 200" min="1" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="dataVolume">حجم البيانات الشهري</label>
+                                <select class="form-select" id="dataVolume" required>
+                                    <option value="">اختر الحجم التقريبي</option>
+                                    <option value="small">أقل من 10,000 سجل</option>
+                                    <option value="medium">10,000 - 100,000 سجل</option>
+                                    <option value="large">100,000 - 1,000,000 سجل</option>
+                                    <option value="enterprise">أكثر من 1,000,000 سجل</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="challenges">التحديات الرئيسية</label>
+                                <textarea class="form-textarea" id="challenges" placeholder="صف التحديات التي تواجهها في تحليل البيانات..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary demo-analyze-btn">
+                                <span>🚀</span>
+                                <span>تحليل البيانات</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Final CTA Section ===== -->
+    <section class="section cta-section" id="contact">
+        <div class="container">
+            <div class="cta-container reveal">
+                <div class="cta-content">
+                    <h2 class="cta-title">جاهز لتحويل بياناتك إلى قوة؟</h2>
+                    <p class="cta-description">
+                        انضم إلى أكثر من 150 مؤسسة سعودية تستخدم Bright AI لاتخاذ قرارات أذكى. احصل على تجربة مجانية لمدة 14 يوم بدون أي التزام.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="#demo" class="btn cta-btn-primary">
+                            <span>ابدأ تجربتك المجانية</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="tel:+966500000000" class="btn cta-btn-secondary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <span>تحدث مع خبير</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <a href="#" class="logo">
+                            <div class="logo-icon">✦</div>
+                            <span class="logo-text">Bright AI</span>
+                        </a>
+                    </div>
+                    <p class="footer-description">
+                        منصة الذكاء الاصطناعي الرائدة في تحليل البيانات للمؤسسات السعودية. نُمكّنك من تحويل بياناتك إلى قرارات استراتيجية.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="تويتر">𝕏</a>
+                        <a href="#" class="social-link" aria-label="لينكدإن">in</a>
+                        <a href="#" class="social-link" aria-label="يوتيوب">▶</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-column-title">المنتج</h3>
+                    <nav class="footer-links">
+                        <a href="#features" class="footer-link">المميزات</a>
+                        <a href="#usecases" class="footer-link">حالات الاستخدام</a>
+                        <a href="#" class="footer-link">التسعير</a>
+                        <a href="#" class="footer-link">التكاملات</a>
+                    </nav>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-column-title">الشركة</h3>
+                    <nav class="footer-links">
+                        <a href="#" class="footer-link">من نحن</a>
+                        <a href="#" class="footer-link">المدونة</a>
+                        <a href="#" class="footer-link">الوظائف</a>
+                        <a href="#contact" class="footer-link">تواصل معنا</a>
+                    </nav>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-column-title">الدعم</h3>
+                    <nav class="footer-links">
+                        <a href="#" class="footer-link">مركز المساعدة</a>
+                        <a href="#" class="footer-link">التوثيق</a>
+                        <a href="#" class="footer-link">الأسئلة الشائعة</a>
+                        <a href="#" class="footer-link">حالة النظام</a>
+                    </nav>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 Bright AI. جميع الحقوق محفوظة. صُنع بـ ❤️ في السعودية
+                </p>
+                <div class="footer-legal">
+                    <a href="#">سياسة الخصوصية</a>
+                    <a href="#">شروط الاستخدام</a>
+                    <a href="#">سياسة البيانات</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ========================================
+        // Bright AI Landing Page - JavaScript
+        // ========================================
+
+        // ===== DOM Elements =====
+        const header = document.getElementById('header');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const demoForm = document.getElementById('demoForm');
+        const demoPlaceholder = document.getElementById('demoPlaceholder');
+        const demoLoading = document.getElementById('demoLoading');
+        const demoResults = document.getElementById('demoResults');
+
+        // ===== Header Scroll Effect =====
+        // تأثير الهيدر عند التمرير
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // ===== Mobile Menu Toggle =====
+        // تبديل القائمة المتنقلة
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        });
+
+        // إغلاق القائمة عند النقر على رابط
+        document.querySelectorAll('.mobile-menu-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+            });
+        });
+
+        // ===== Smooth Scroll for Navigation Links =====
+        // التمرير السلس للروابط
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const headerHeight = header.offsetHeight;
+                    const targetPosition = targetElement.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ===== Scroll Reveal Animation =====
+        // تأثير الظهور عند التمرير
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const revealPoint = 150;
+                
+                if (elementTop < windowHeight - revealPoint) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // ===== Use Cases Tabs =====
+        // تبويبات حالات الاستخدام
+        const usecaseTabs = document.querySelectorAll('.usecase-tab');
+        const usecaseContents = document.querySelectorAll('.usecase-content');
+
+        usecaseTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                // إزالة الفئة النشطة من جميع التبويبات
+                usecaseTabs.forEach(t => t.classList.remove('active'));
+                usecaseContents.forEach(c => c.classList.remove('active'));
+                
+                // إضافة الفئة النشطة للتبويب المحدد
+                tab.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
+
+        // ===== Hero Particles Animation =====
+        // تأثير الجزيئات المتحركة في Hero
+        const particlesContainer = document.getElementById('particles');
+
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // ===== Interactive Demo - AI Analysis Simulation =====
+        // محاكاة التحليل بالذكاء الاصطناعي (بيانات وهمية)
+
+        // بيانات النتائج الوهمية بناءً على نوع النشاط
+        const mockResults = {
+            retail: {
+                performance: 78,
+                growth: 85,
+                risk: 25,
+                insights: [
+                    'تظهر البيانات فرصة لزيادة المبيعات بنسبة 23% خلال الربع القادم',
+                    'يُنصح بتوسيع قنوات البيع الإلكتروني لاستهداف شريحة الشباب',
+                    'تحسين إدارة المخزون يمكن أن يوفر 15% من التكاليف التشغيلية',
+                    'العملاء الأكثر ولاءً يمثلون 60% من الإيرادات - يُنصح ببرنامج مكافآت'
+                ]
+            },
+            tech: {
+                performance: 92,
+                growth: 95,
+                risk: 18,
+                insights: [
+                    'معدل النمو يتجاوز متوسط السوق بـ 3 أضعاف - مؤشر إيجابي قوي',
+                    'يُنصح بالاستثمار في R&D لتعزيز الميزة التنافسية',
+                    'فرصة للتوسع في أسواق الخليج مع احتمالية نجاح 87%',
+                    'تحسين تجربة المستخدم يمكن أن يرفع معدل الاحتفاظ بـ 40%'
+                ]
+            },
+            finance: {
+                performance: 85,
+                growth: 72,
+                risk: 35,
+                insights: [
+                    'مستوى المخاطر معتدل مع إمكانية التحسين عبر التنويع',
+                    'تحليل السلوك يُظهر فرصة لمنتجات ادخارية جديدة',
+                    'يُنصح بتعزيز أنظمة كشف الاحتيال - عائد متوقع 200%',
+                    'الخدمات الرقمية تُظهر نمواً بـ 45% - يُنصح بالتركيز عليها'
+                ]
+            },
+            healthcare: {
+                performance: 81,
+                growth: 88,
+                risk: 22,
+                insights: [
+                    'الطلب على الخدمات الصحية الرقمية في نمو مستمر',
+                    'يُنصح بتوسيع خدمات الرعاية عن بُعد - فرصة نمو 60%',
+                    'تحليل البيانات يُظهر إمكانية تحسين كفاءة العمليات بـ 35%',
+                    'برامج الصحة الوقائية تُظهر عائداً استثمارياً مرتفعاً'
+                ]
+            },
+            manufacturing: {
+                performance: 74,
+                growth: 68,
+                risk: 40,
+                insights: [
+                    'يُنصح بتطبيق الصيانة التنبؤية لتقليل التوقفات بـ 50%',
+                    'تحسين سلسلة التوريد يمكن أن يوفر 20% من التكاليف',
+                    'فرصة لأتمتة 30% من العمليات اليدوية',
+                    'تحليل الجودة يُظهر نقاط تحسين في خط الإنتاج الثاني'
+                ]
+            },
+            realestate: {
+                performance: 79,
+                growth: 82,
+                risk: 30,
+                insights: [
+                    'تحليل السوق يُظهر فرصاً واعدة في المناطق الشمالية',
+                    'الطلب على العقارات التجارية في نمو بنسبة 15% سنوياً',
+                    'يُنصح بالتركيز على مشاريع الإسكان المتوسط',
+                    'التسويق الرقمي يحقق عائداً أعلى بـ 3x من التقليدي'
+                ]
+            }
+        };
+
+        // معالجة نموذج Demo
+        demoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // الحصول على قيم الحقول
+            const businessType = document.getElementById('businessType').value;
+            const revenue = document.getElementById('revenue').value;
+            const employees = document.getElementById('employees').value;
+            const dataVolume = document.getElementById('dataVolume').value;
+            
+            // التحقق من صحة البيانات
+            if (!businessType || !revenue || !employees || !dataVolume) {
+                alert('الرجاء ملء جميع الحقول المطلوبة');
+                return;
+            }
+            
+            // إخفاء placeholder وإظهار Loading
+            demoPlaceholder.style.display = 'none';
+            demoResults.classList.remove('active');
+            demoLoading.classList.add('active');
+            
+            // محاكاة خطوات التحليل
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            
+            for (let i = 0; i < steps.length; i++) {
+                await delay(800);
+                document.getElementById(steps[i]).classList.add('active');
+                if (i > 0) {
+                    document.getElementById(steps[i-1]).classList.remove('active');
+                    document.getElementById(steps[i-1]).classList.add('done');
+                    document.getElementById(steps[i-1]).innerHTML = '✓ ' + document.getElementById(steps[i-1]).innerHTML.substring(2);
+                }
+            }
+            
+            await delay(600);
+            document.getElementById('step4').classList.remove('active');
+            document.getElementById('step4').classList.add('done');
+            document.getElementById('step4').innerHTML = '✓ ' + document.getElementById('step4').innerHTML.substring(2);
+            
+            await delay(400);
+            
+            // إخفاء Loading وإظهار النتائج
+            demoLoading.classList.remove('active');
+            
+            // إعادة تعيين خطوات التحميل
+            steps.forEach(step => {
+                const el = document.getElementById(step);
+                el.classList.remove('active', 'done');
+                el.innerHTML = '◯ ' + el.innerHTML.substring(2);
+            });
+            
+            // عرض النتائج
+            displayResults(businessType, revenue, employees);
+        });
+
+        // دالة عرض النتائج
+        function displayResults(businessType, revenue, employees) {
+            const results = mockResults[businessType];
+            
+            // تعديل النتائج بناءً على حجم الشركة
+            const sizeFactor = Math.min(revenue / 100, 1.2);
+            const adjustedPerformance = Math.min(Math.round(results.performance * sizeFactor), 99);
+            const adjustedGrowth = Math.min(Math.round(results.growth * (employees > 500 ? 1.1 : 1)), 99);
+            const adjustedRisk = Math.max(Math.round(results.risk * (revenue < 20 ? 1.2 : 0.9)), 10);
+            
+            // تحديث القيم
+            document.getElementById('performanceScore').textContent = adjustedPerformance + '%';
+            document.getElementById('growthPotential').textContent = adjustedGrowth + '%';
+            document.getElementById('riskLevel').textContent = adjustedRisk + '%';
+            
+            // تحديث لون مستوى المخاطر
+            const riskElement = document.getElementById('riskLevel');
+            if (adjustedRisk < 30) {
+                riskElement.className = 'result-value positive';
+            } else if (adjustedRisk < 50) {
+                riskElement.className = 'result-value neutral';
+            } else {
+                riskElement.className = 'result-value negative';
+            }
+            
+            // تحديث الرؤى
+            const insightsList = document.getElementById('insightsList');
+            insightsList.innerHTML = results.insights.map(insight => `
+                <div class="insight-item">
+                    <span class="insight-bullet"></span>
+                    <span>${insight}</span>
+                </div>
+            `).join('');
+            
+            // إظهار النتائج مع تأثير
+            demoResults.classList.add('active');
+            
+            // تحريك أشرطة التقدم
+            setTimeout(() => {
+                document.getElementById('performanceBar').style.width = adjustedPerformance + '%';
+                document.getElementById('growthBar').style.width = adjustedGrowth + '%';
+                document.getElementById('riskBar').style.width = adjustedRisk + '%';
+            }, 100);
+        }
+
+        // دالة التأخير
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // ===== Chart Animation on Scroll =====
+        // تحريك الرسوم البيانية عند الظهور
+        const chartBars = document.querySelectorAll('.chart-bar');
+        
+        const animateCharts = () => {
+            chartBars.forEach(bar => {
+                const rect = bar.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    bar.style.transform = 'scaleY(1)';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateCharts);
+        window.addEventListener('load', animateCharts);
+
+        // ===== Intersection Observer for Performance =====
+        // مراقب التقاطع لتحسين الأداء
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // ===== Prevent Form Resubmission =====
+        // منع إعادة إرسال النموذج عند تحديث الصفحة
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+
+        // ===== Console Welcome Message =====
+        console.log('%c🚀 Bright AI', 'font-size: 24px; font-weight: bold; color: #2563eb;');
+        console.log('%cمنصة تحليل البيانات بالذكاء الاصطناعي', 'font-size: 14px; color: #64748b;');
+        console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #334155;');
+        console.log('%cللتواصل: contact@brightai.sa', 'font-size: 12px; color: #94a3b8;');
+    </script>
+</body>
+</html>
