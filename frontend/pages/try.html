@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+      <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-8LLESL207Q');
+  </script>
     <!-- ===== Meta Tags الأساسية ===== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +39,8 @@
     
     <!-- ===== Canonical URL ===== -->
     <link rel="canonical" href="https://brightai.sa/">
+    <link rel="stylesheet" href="frontend/css/critical.css" />
+
     
     <!-- ===== Schema Markup - SoftwareApplication ===== -->
     <script type="application/ld+json">
@@ -298,6 +309,109 @@
             transition: all 0.3s ease;
         }
 
+        /* Unified navigation (make NAV look like header) */
+        .unified-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .unified-nav .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .unified-nav .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .unified-nav .nav-logo img {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .unified-nav .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .unified-nav .nav-links li a {
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 8px 6px;
+            border-radius: 8px;
+            transition: color 0.2s ease, background 0.2s ease;
+        }
+
+        .unified-nav .nav-links li a:hover {
+            color: var(--text-primary);
+            background: rgba(37, 99, 235, 0.04);
+        }
+
+        .unified-nav .nav-dropdown {
+            position: relative;
+        }
+
+        .unified-nav .dropdown-toggle {
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .unified-nav .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            min-width: 220px;
+            box-shadow: var(--shadow-md);
+            display: none;
+            z-index: 1100;
+        }
+
+        .unified-nav .nav-dropdown:hover .dropdown-menu,
+        .unified-nav .nav-dropdown:focus-within .dropdown-menu {
+            display: block;
+        }
+
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: none;
+            padding: 8px;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .hamburger-btn .hamburger-line {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .unified-nav .nav-links { display: none; }
+            .hamburger-btn { display: flex; }
+        }
         .header.scrolled {
             background: rgba(15, 23, 42, 0.95);
             box-shadow: var(--shadow-md);
@@ -1767,15 +1881,182 @@
                 <span class="logo-text">Bright AI</span>
             </a>
             
-            <nav class="nav">
-                <ul class="nav-list">
-                    <li><a href="#features" class="nav-link">المميزات</a></li>
-                    <li><a href="#how-it-works" class="nav-link">آلية العمل</a></li>
-                    <li><a href="#usecases" class="nav-link">حالات الاستخدام</a></li>
-                    <li><a href="#demo" class="nav-link">التجربة</a></li>
-                </ul>
-                <a href="#contact" class="btn btn-primary nav-cta">اطلب عرضاً</a>
-            </nav>
+  <!-- INSTRUCTION 1: THE HEADER (MANDATORY CODE) -->
+  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+    <div class="nav-container">
+      <!-- Logo -->
+      <a href="/" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
+        <img src="frontend/assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي وذكاء الأعمال في السعودية"
+          width="42" height="42" fetchpriority="high" decoding="async" />
+        <span>Bright AI</span>
+      </a>
+      <!-- Hamburger Menu Button (Mobile) -->
+      <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false" id="mobile-menu-btn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="nav-links-list" role="menubar">
+        <li role="none">
+          <a role="menuitem" href="/" class="flex items-center gap-2">
+            <iconify-icon icon="lucide:home" width="16" class="text-slate-400 group-hover:text-white"></iconify-icon>
+            الرئيسية
+          </a>
+        </li>
+        <!-- Dropdown: أنظمة ذكية مؤسسية متكاملة -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+            aria-haspopup="true">
+            <iconify-icon icon="lucide:cpu" width="16" class="text-indigo-400"></iconify-icon>
+            أنظمة ذكية مؤسسية متكاملة
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:users" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                رحلة التوظيف الذكية بالكامل
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="Smart-Medical-Archive/index.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:file-heart" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                الارشيف الطبي الذكي
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/try.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:database" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                ذكاء البيانات المُشرق
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Dropdown: خدمات ذكية -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+            aria-haspopup="true">
+            <iconify-icon icon="lucide:sparkles" width="16" class="text-purple-400"></iconify-icon>
+            خدمات ذكية
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/smart-automation.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:zap" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                الأتمتة الذكية
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/ai-agent.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:cloud" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                الذكاء الاصطناعي كخدمة (AIaaS)
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/data-analysis.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:bar-chart" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                تحليل البيانات
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/consultation.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:message-square" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                استشارات الذكاء الاصطناعي
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/our-products.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:layers" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                جميع الخدمات
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Dropdown: بوابة المعرفة -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+            aria-haspopup="true">
+            <iconify-icon icon="lucide:book-open" width="16" class="text-cyan-400"></iconify-icon>
+            بوابة المعرفة
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/blog.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:library" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                المكتبة الذكية
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/about-us.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:info" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                عن شركة مُشرقة AI
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="Docs.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:file-text" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                المستندات
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- Dropdown: أدوات ذكية مجانية -->
+        <li class="nav-dropdown" role="none">
+          <button type="button" class="dropdown-toggle flex items-center gap-2" aria-expanded="false"
+            aria-haspopup="true">
+            <iconify-icon icon="lucide:wrench" width="16" class="text-gold-400"></iconify-icon>
+            أدوات ذكية مجانية
+            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/tools.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:gift" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                أدوات ذكية مجانية
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="h/projects/interview/index.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:play" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                نماذج AI تجريبية
+              </a>
+            </li>
+            <li role="none">
+              <a role="menuitem" href="frontend/pages/ai-bots.html" class="flex items-center gap-2">
+                <iconify-icon icon="lucide:message-circle" width="14"
+                  class="text-slate-400 group-hover:text-gold-400"></iconify-icon>
+                شات بوت
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
             
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
                 <span></span>
@@ -2827,5 +3108,22 @@
         console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #334155;');
         console.log('%cللتواصل: contact@brightai.sa', 'font-size: 12px; color: #94a3b8;');
     </script>
+        <!-- Core Utilities (Load First) -->
+    <script src="js/core/dom-utils.min.js" defer></script>
+    <script src="js/core/format-utils.min.js" defer></script>
+    <script src="js/core/api-client.min.js" defer></script>
+    <script src="js/core/ui-utils.min.js" defer></script>
+    <script src="js/core/index.min.js" defer></script>
+
+    <!-- Core Components CSS -->
+    <link rel="stylesheet" href="css/core-components.css" media="all" />
+
+    <!-- Application Scripts -->
+    <script src="frontend/js/main.min.js" defer></script>
+    <script src="frontend/js/premium-animations.min.js" defer></script>
+    <script src="frontend/js/neural-canvas.min.js" defer></script>
+    <script src="frontend/js/scroll-animations.min.js" defer></script>
+    <!-- Enterprise Chatbot (Backend Integrated) -->
+    <script src="frontend/js/gemini-chat-enterprise.js" defer></script>
 </body>
 </html>
