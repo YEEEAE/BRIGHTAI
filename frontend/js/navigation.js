@@ -13,7 +13,7 @@ function initNavigation() {
   const mobileDrawer = document.querySelector('.mobile-menu-drawer');
   const backdrop = document.querySelector('.backdrop-overlay');
   const dropdownToggles = document.querySelectorAll('.nav-link[aria-haspopup="true"]');
-  
+
   // 1. Scroll Effect (Glassmorphism intensity)
   window.addEventListener('scroll', () => {
     if (window.scrollY > 20) {
@@ -29,7 +29,7 @@ function initNavigation() {
   function toggleMobileMenu() {
     const isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
     mobileToggle.setAttribute('aria-expanded', !isExpanded);
-    
+
     if (!isExpanded) {
       mobileDrawer.classList.add('active');
       backdrop.classList.add('active');
@@ -111,55 +111,44 @@ function initNavigation() {
     toggle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        // For keyboard users, we might need a way to keep it open or toggle
-        // Simplest is to let focus-within handle it in CSS or toggle a class
         toggle.setAttribute('aria-expanded', toggle.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
       }
     });
 
-    // Mobile: Accordion Expand
-    toggle.addEventListener('click', (e) => {
-      if (window.innerWidth < 1024) {
-        e.preventDefault();
-        const submenu = toggle.nextElementSibling; // The .dropdown-menu or similar
-        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-        
-        // Close other mobile dropdowns (Optional: Accordion behavior)
-        if (!isExpanded) {
-           dropdownToggles.forEach(other => {
-             if (other !== toggle) {
-               other.setAttribute('aria-expanded', 'false');
-               // Logic to hide other submenus if handled via JS classes
-               if (other.nextElementSibling) {
-                 other.nextElementSibling.style.display = 'none'; 
-               }
-             }
-           });
-        }
+  });
 
-        toggle.setAttribute('aria-expanded', !isExpanded);
-        
-        // Toggle submenu visibility for mobile
-        if (submenu) {
-          if (!isExpanded) {
-            submenu.style.display = 'block';
-            submenu.style.position = 'static';
-            submenu.style.width = '100%';
-            submenu.style.opacity = '1';
-            submenu.style.visibility = 'visible';
-            submenu.style.transform = 'translateY(0)';
-            submenu.style.background = 'transparent';
-            submenu.style.border = 'none';
-            submenu.style.paddingLeft = '0'; // align right in RTL? check CSS
-            submenu.style.boxShadow = 'none';
-            submenu.style.pointerEvents = 'auto'; // تأكيد إمكانية النقر
-          } else {
-            submenu.style.display = 'none';
+
+  // --- MOBILE DROPDOWN HANDLING ---
+  const mobileDropdownToggles = document.querySelectorAll('.mobile-nav-link[aria-haspopup="true"]');
+
+  mobileDropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      const submenu = toggle.nextElementSibling; // Expected to be .mobile-dropdown
+      const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+      // Close other mobile dropdowns (Classic Accordion)
+      // Optional: Remove if you want to allow multiple open
+      if (!isExpanded) {
+        mobileDropdownToggles.forEach(other => {
+          if (other !== toggle) {
+            other.setAttribute('aria-expanded', 'false');
+            const otherSub = other.nextElementSibling;
+            if (otherSub && otherSub.classList.contains('mobile-dropdown')) {
+              otherSub.classList.remove('open');
+            }
           }
-        }
+        });
+      }
+
+      // Toggle current
+      toggle.setAttribute('aria-expanded', !isExpanded);
+      if (submenu) {
+        submenu.classList.toggle('open');
       }
     });
   });
+
 
   // 4. التأكد من أن الروابط داخل القوائم المنسدلة قابلة للنقر
   const dropdownItems = document.querySelectorAll('.dropdown-item');

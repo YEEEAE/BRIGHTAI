@@ -919,3 +919,56 @@
 .subtle-float {
     animation: subtleFloat 4s ease-in-out infinite !important;
 }
+
+/* ---------------------------------
+   Mobile Optimization (< 480px)
+--------------------------------- */
+@media (max-width: 480px) {
+    .hero {
+        min-height: auto;
+        /* Allow natural height */
+        padding-top: 100px;
+        /* Space for fixed nav */
+        padding-bottom: 50px;
+        height: auto;
+    }
+
+    .hero-container {
+        padding: 0 20px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    .brain-wrapper {
+        width: 260px;
+        height: 260px;
+        margin-bottom: 20px;
+    }
+
+    /* Stack buttons for better touch targets */
+    .cta-container {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .cta-button,
+    .cta-secondary {
+        width: 100%;
+        justify-content: center;
+        padding: 16px 20px;
+    }
+
+    /* Hide scroll indicator on very small screens to avoid clutter */
+    .scroll-indicator {
+        display: none;
+    }
+
+    .hero-badge {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
