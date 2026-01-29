@@ -6,7 +6,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://brightai.site/</loc>
-    <lastmod>2026-01-24</lastmod>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/"/>
@@ -20,191 +20,207 @@
 
   <!-- Contact Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/contact</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/contact.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/contact"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/contact"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/contact"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/contact.html"/>
   </url>
 
   <!-- Products & Services Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/our-products</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/our-products.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/our-products"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/our-products"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/our-products"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/our-products.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/our-products.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/our-products.html"/>
   </url>
 
   <!-- About Us Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/about-us</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/about-us.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/about-us"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/about-us"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/about-us.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/about-us.html"/>
   </url>
 
   <!-- AI Agent (AIaaS) Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/ai-agent</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/ai-agent.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/ai-agent"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/ai-agent"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/ai-agent.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/ai-agent.html"/>
   </url>
 
   <!-- Data Analysis Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/data-analysis</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/data-analysis.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/data-analysis"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/data-analysis"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/data-analysis.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/data-analysis.html"/>
   </url>
 
   <!-- Smart Automation Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/smart-automation</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/smart-automation.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/smart-automation"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/smart-automation"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/smart-automation.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/smart-automation.html"/>
   </url>
 
   <!-- Consultation Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/consultation</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/consultation.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/consultation"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/consultation"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/consultation.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/consultation.html"/>
   </url>
 
   <!-- Blog Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/blog</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/blog.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/blog"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/blog"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/blog.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/blog.html"/>
   </url>
 
   <!-- Tools Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/tools</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/tools.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/tools"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/tools"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/tools.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/tools.html"/>
   </url>
 
   <!-- AI Bots Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/ai-bots.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/ai-bots"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/ai-bots"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/ai-bots.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/ai-bots.html"/>
   </url>
 
   <!-- Solutions Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/solutions</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/solutions.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/solutions"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/solutions"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/solutions.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/solutions.html"/>
   </url>
 
   <!-- What is AI Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/what-is-ai</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/what-is-ai.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/what-is-ai"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/what-is-ai"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/what-is-ai.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/what-is-ai.html"/>
   </url>
 
   <!-- FAQ Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/faq_content</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/faq_content.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/faq_content"/>
-    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/faq_content"/>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/faq_content.html"/>
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/frontend/pages/faq_content.html"/>
   </url>
 
   <!-- Privacy & Cookies Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/privacy-cookies</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/privacy-cookies.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <!-- Terms & Conditions Page -->
   <url>
-    <loc>https://brightai.site/frontend/pages/terms-and-conditions</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/frontend/pages/terms-and-conditions.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
+  <!-- Smart Medical Archive -->
+  <url>
+    <loc>https://brightai.site/frontend/pages/smart-medical-archive/</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Interview/HR Page -->
+  <url>
+    <loc>https://brightai.site/frontend/pages/interview/</loc>
+    <lastmod>2026-01-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- High-Priority Blog Articles -->
   <url>
-    <loc>https://brightai.site/blogger/ai-transformation</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/blogger/ai-transformation.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://brightai.site/blogger/intelligent-data-analysis</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/blogger/intelligent-data-analysis.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://brightai.site/blogger/process-automation</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/blogger/process-automation.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://brightai.site/blogger/smart-automation-benefits</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/blogger/smart-automation-benefits.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://brightai.site/blogger/ai-generative-content-industry-saudi-arabia</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/blogger/ai-generative-content-industry-saudi-arabia.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://brightai.site/blogger/case-study-saudi-companies-ai-agents-customer-service</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://brightai.site/blogger/case-study-saudi-companies-ai-agents-customer-service.html</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
