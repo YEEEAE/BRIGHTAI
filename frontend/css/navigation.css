@@ -1,0 +1,421 @@
+/* 
+ * Bright AI - Modern Navigation System
+ * Designed for High-End Enterprise (OpenAI / Stripe Style)
+ */
+
+:root {
+  --nav-height: 80px;
+  --nav-bg: rgba(2, 6, 23, 0.85);
+  --nav-backdrop-blur: 16px;
+  --nav-border: 1px solid rgba(255, 255, 255, 0.08);
+  --nav-text-color: #e2e8f0;
+  --nav-hover-color: #ffffff;
+  --dropdown-bg: #0f172a;
+  --dropdown-border: 1px solid rgba(255, 255, 255, 0.1);
+  --dropdown-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
+  --accent-color: #fbbf24;
+  /* Gold/Amber */
+  --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------------------------------
+   1. Base Header Structure
+--------------------------------- */
+.unified-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: blur(var(--nav-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--nav-backdrop-blur));
+  border-bottom: var(--nav-border);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.unified-nav.nav-hidden {
+  transform: translateY(-100%);
+}
+
+.nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+/* ---------------------------------
+   2. Logo
+--------------------------------- */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  z-index: 1002;
+}
+
+.nav-logo img {
+  height: 40px;
+  width: auto;
+  transition: transform 0.5s var(--transition-smooth);
+}
+
+.nav-logo:hover img {
+  transform: scale(1.05) rotate(-5deg);
+}
+
+.nav-logo span {
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+/* ---------------------------------
+   3. Desktop Navigation
+--------------------------------- */
+.nav-links {
+  display: none;
+  /* Mobile first */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .nav-links {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1rem;
+  color: var(--nav-text-color);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover,
+.nav-link[aria-expanded="true"] {
+  color: var(--nav-hover-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link .icon {
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.nav-link:hover .icon {
+  opacity: 1;
+}
+
+.chevron-down {
+  transition: transform 0.3s ease;
+}
+
+.nav-link[aria-expanded="true"] .chevron-down {
+  transform: rotate(180deg);
+}
+
+/* ---------------------------------
+   4. Mega Dropdowns (Big Tech Style)
+--------------------------------- */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  /* Center relative to parent if needed, or adjust */
+  transform: translateX(-50%) translateY(10px);
+  width: max-content;
+  min-width: 260px;
+  background: var(--dropdown-bg);
+  border: var(--dropdown-border);
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: var(--dropdown-shadow);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s var(--transition-smooth);
+  z-index: 1001;
+}
+
+/* Invisible bridge to close gap */
+.dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  /* Bridge the gap */
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: transparent;
+}
+
+/* Align Dropdown properly for RTL */
+.dropdown-menu {
+  right: 0;
+  left: auto;
+  transform: translateY(10px);
+}
+
+.nav-item:hover .dropdown-menu,
+.nav-link[aria-expanded="true"]+.dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+  /* Show immediately */
+}
+
+/* Add slight delay when leaving so it doesn't close instantly */
+.nav-item .dropdown-menu {
+  transition-delay: 0.15s;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transform: translateX(-4px);
+  /* Slight move left for RTL */
+}
+
+.dropdown-item iconify-icon {
+  font-size: 1.25rem;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.dropdown-item:hover iconify-icon {
+  color: var(--accent-color);
+}
+
+.dropdown-item-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-title {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.dropdown-desc {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.dropdown-item:hover .dropdown-desc {
+  color: #94a3b8;
+}
+
+/* ---------------------------------
+   5. Mobile Menu (Hamburger)
+--------------------------------- */
+.mobile-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1002;
+  padding: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+  .mobile-toggle {
+    display: none;
+  }
+}
+
+.bar {
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.mobile-toggle[aria-expanded="true"] .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-toggle[aria-expanded="true"] .bar:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.mobile-toggle[aria-expanded="true"] .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ---------------------------------
+   6. Mobile Drawer (Side Panel)
+--------------------------------- */
+.mobile-menu-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 320px;
+  background: #020617;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  transform: translateX(100%);
+  transition: transform 0.4s var(--transition-smooth);
+  padding: calc(var(--nav-height) + 2rem) 1.5rem 2rem;
+  overflow-y: auto;
+  z-index: 1001;
+  /* Below logo/toggle */
+}
+
+.mobile-menu-drawer.active {
+  transform: translateX(0);
+}
+
+.mobile-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+}
+
+.mobile-dropdown {
+  display: none;
+  padding-right: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.mobile-dropdown.open {
+  display: block;
+  animation: slideDown 0.3s var(--transition-smooth);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.backdrop-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.backdrop-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---------------------------------
+   7. Breadcrumbs (SEO)
+--------------------------------- */
+.breadcrumb-nav {
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumb-item a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--accent-color);
+}
+
+.breadcrumb-separator {
+  color: #64748b;
+}
+
+/* ---------------------------------
+   8. Utility Classes
+--------------------------------- */
+.nav-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 0.6rem 1.25rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
