@@ -677,6 +677,110 @@
         </div>
     </section>
 
+    <!-- TECHNICAL ARCHITECTURE (NEW) -->
+    <section class="py-24 px-6 relative bg-[#050B14]">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-12 text-center">بنيتنا التحتية للبيانات</h2>
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8" data-aos="fade-right">
+                    <div class="flex gap-6">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-blue-900/20 flex items-center justify-center shrink-0 border border-blue-500/20">
+                            <span class="text-2xl font-bold text-blue-400">01</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">تكامل البيانات (ETL/ELT)</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                نبني أنابيب بيانات (Pipelines) قوية لجمع البيانات من مصادر متباينة (SQL, NoSQL, APIs)
+                                وتنظيفها وتوحيدها في الوقت الفعلي لضمان دقة التحليل.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-purple-900/20 flex items-center justify-center shrink-0 border border-purple-500/20">
+                            <span class="text-2xl font-bold text-purple-400">02</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">مستودعات البيانات (Data Warehousing)</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                نصمم وننشر مستودعات بيانات سحابية آمنة وقابلة للتوسع (مثل BigQuery أو Snowflake) لتكون
+                                المصدر الموحد للحقيقة (Single Source of Truth) لمؤسستك.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-cyan-900/20 flex items-center justify-center shrink-0 border border-cyan-500/20">
+                            <span class="text-2xl font-bold text-cyan-400">03</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">تحليلات متقدمة (ML Models)</h3>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                نطبق خوارزميات التعلم الآلي المتقدمة (Regression, Clustering, Time-Series) لاكتشاف
+                                الأنماط الخفية والتنبؤ بالاتجاهات المستقبلية بدقة عالية.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative" data-aos="fade-left">
+                    <!-- Visual Representation of Data Flow -->
+                    <div
+                        class="aspect-video rounded-2xl bg-gradient-to-br from-slate-900 to-black border border-white/10 p-6 flex flex-col justify-between">
+                        <div class="flex justify-between items-center text-xs text-slate-500 uppercase tracking-widest">
+                            <span>Input Sources</span>
+                            <span>Processing</span>
+                            <span>Actionable Insights</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="space-y-2">
+                                <div class="w-12 h-12 rounded bg-slate-800 flex items-center justify-center">
+                                    <iconify-icon icon="lucide:database" class="text-slate-400"></iconify-icon></div>
+                                <div class="w-12 h-12 rounded bg-slate-800 flex items-center justify-center">
+                                    <iconify-icon icon="lucide:file-spreadsheet" class="text-slate-400"></iconify-icon>
+                                </div>
+                                <div class="w-12 h-12 rounded bg-slate-800 flex items-center justify-center">
+                                    <iconify-icon icon="lucide:globe" class="text-slate-400"></iconify-icon></div>
+                            </div>
+                            <!-- Animated Arrow -->
+                            <div class="flex-1 px-4 flex items-center justify-center relative">
+                                <div class="h-0.5 w-full bg-slate-800 relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-[shimmer_2s_infinite]">
+                                    </div>
+                                </div>
+                                <div class="absolute w-16 h-16 bg-blue-500/10 rounded-full blur-xl animate-pulse"></div>
+                            </div>
+                            <div
+                                class="w-24 h-24 rounded-full border-2 border-blue-500/50 flex items-center justify-center relative">
+                                <iconify-icon icon="lucide:brain-circuit" width="40"
+                                    class="text-blue-400"></iconify-icon>
+                                <div class="absolute inset-0 border-2 border-purple-500/50 rounded-full animate-[spin_4s_linear_infinite]"
+                                    style="clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);"></div>
+                            </div>
+                            <!-- Animated Arrow -->
+                            <div class="flex-1 px-4 flex items-center justify-center relative">
+                                <div class="h-0.5 w-full bg-slate-800 relative overflow-hidden">
+                                    <div
+                                        class="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-purple-500 to-transparent animate-[shimmer_2s_infinite] delay-75">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div
+                                    class="px-4 py-2 rounded bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-500/30">
+                                    Dashboards</div>
+                                <div
+                                    class="px-4 py-2 rounded bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30">
+                                    Predictions</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- INDUSTRIES & TOOLS -->
     <section class="py-24 px-6 bg-[#0B1120]">
         <div class="max-w-7xl mx-auto">
@@ -743,6 +847,45 @@
                             class="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white font-medium">SQL
                             & NoSQL</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION (NEW) -->
+    <section class="py-24 px-6 relative">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-white mb-8 text-center">الأسئلة الشائعة حول تحليل البيانات</h2>
+            <div class="space-y-4">
+                <div class="border border-white/10 rounded-xl bg-white/5 overflow-hidden">
+                    <details class="group">
+                        <summary class="flex justify-between items-center cursor-pointer p-6">
+                            <span class="font-medium text-white">ما هي مصادر البيانات التي يمكنكم التعامل معها؟</span>
+                            <span class="transition group-open:rotate-180">
+                                <iconify-icon icon="lucide:chevron-down" class="text-slate-400"></iconify-icon>
+                            </span>
+                        </summary>
+                        <div class="px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                            نمتلك القدرة على دمج وتحليل البيانات من أي مصدر تقريباً، بما في ذلك قواعد البيانات التقليدية
+                            (SQL)، البيانات غير المهيكلة (NoSQL)، واجهات برمجة التطبيقات (APIs)، ملفات Excel/CSV، وحتى
+                            بيانات إنترنت الأشياء (IoT) ومنصات التواصل الاجتماعي.
+                        </div>
+                    </details>
+                </div>
+                <div class="border border-white/10 rounded-xl bg-white/5 overflow-hidden">
+                    <details class="group">
+                        <summary class="flex justify-between items-center cursor-pointer p-6">
+                            <span class="font-medium text-white">كيف تضمنون دقة التنبؤات المستقبلية؟</span>
+                            <span class="transition group-open:rotate-180">
+                                <iconify-icon icon="lucide:chevron-down" class="text-slate-400"></iconify-icon>
+                            </span>
+                        </summary>
+                        <div class="px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                            نعتمد على منهجية علمية صارمة تبدأ بتنظيف البيانات (Data Cleansing) لضمان جودتها، ثم نستخدم
+                            خوارزميات تعلم آلي متعددة ونقارن أدائها (Model Validation) لاختيار النموذج الأكثر دقة، مع
+                            المراقبة المستمرة وإعادة التدريب (Retraining) لضمان استمرارية الدقة مع مرور الوقت.
+                        </div>
+                    </details>
                 </div>
             </div>
         </div>
