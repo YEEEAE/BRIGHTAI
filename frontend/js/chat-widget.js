@@ -204,7 +204,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return cleanText;
     }
 
-    function appendMessage(text, sender) {
+    // === Typing Effect ===
+    async function typeMessage(element, htmlContent) {
+        // Match HTML tags or single characters
+        const regex = /(<[^>]+>|[^<])/g;
+        const matches = htmlContent.match(regex) || [];
+
+        element.innerHTML = '';
+
+        for (const match of matches) {
+            element.innerHTML += match;
+            // Scroll to bottom continuously
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Delay only for text characters, not HTML tags
+            if (!match.startsWith('<')) {
+                await new Promise(resolve => setTimeout(resolve, 15));
+            }
+        }
+    }
+
+    function appendMessage(text, sender, isStreaming = false) {
         // Hide welcome message and quick actions after first user message
         const welcomeMsg = chatMessages.querySelector('.welcome-message');
         if (welcomeMsg && sender === 'user') {
@@ -218,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.classList.add('message-wrapper', sender);
 
         const avatarIcon = sender === 'ai'
-            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />'
+            ? '<img src="frontend/assets/images/Gemini.webp" alt="AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">'
             : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />';
 
         // Parse the message text
@@ -231,12 +251,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 </svg>
             </div>
             <div class="message-content">
-                <div class="message-bubble">${formattedText}</div>
+                <div class="message-bubble">${isStreaming ? '' : formattedText}</div>
                 <span class="message-time">${getCurrentTime()}</span>
             </div>
         `;
 
         chatMessages.appendChild(wrapper);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Return the bubble element if we want to stream into it
+        if (isStreaming) {
+            return { wrapper, bubble: wrapper.querySelector('.message-bubble'), formattedText };
+        }
+    }
+
+    function updateQuickActions(suggestions) {
+        if (!quickActions) return;
+
+        quickActions.innerHTML = '';
+        quickActions.style.display = 'flex'; // Show if it was hidden
+
+        suggestions.forEach(suggestion => {
+            if (!suggestion.trim()) return;
+            const btn = document.createElement('button');
+            btn.className = 'quick-action-btn';
+            btn.dataset.message = suggestion.trim();
+            btn.textContent = suggestion.trim();
+
+            // Add subtle animation
+            btn.style.opacity = '0';
+            btn.style.transform = 'translateY(10px)';
+            quickActions.appendChild(btn);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                btn.style.transition = 'all 0.3s ease';
+                btn.style.opacity = '1';
+                btn.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Scroll to bottom to show suggestions
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
@@ -247,9 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.innerHTML = `
             <div class="message-avatar">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+                <img src="frontend/assets/images/Gemini.webp" alt="AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
             </div>
             <div class="message-content">
                 <div class="message-bubble">
@@ -283,13 +336,28 @@ document.addEventListener('DOMContentLoaded', () => {
         showTypingIndicator();
 
         try {
-            const response = await callGeminiAPI(text);
+            const fullResponse = await callGeminiAPI(text);
             removeTypingIndicator();
-            appendMessage(response, 'ai');
+
+            // Split response and suggestions
+            const parts = fullResponse.split('---SUGGESTIONS---');
+            const mainAnswer = parts[0].trim();
+            const suggestionsRaw = parts[1] ? parts[1].trim() : '';
+
+            // Stream the main answer
+            const { bubble, formattedText } = appendMessage(mainAnswer, 'ai', true);
+            await typeMessage(bubble, formattedText);
 
             if (isSoundEnabled) {
-                speakText(response);
+                speakText(mainAnswer);
             }
+
+            // Process and show suggestions
+            if (suggestionsRaw) {
+                const suggestions = suggestionsRaw.split('\n').filter(s => s.trim().length > 0).slice(0, 3);
+                updateQuickActions(suggestions);
+            }
+
         } catch (error) {
             removeTypingIndicator();
             appendMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'ai');
@@ -392,7 +460,14 @@ document.addEventListener('DOMContentLoaded', () => {
 ⚡ أكّد على التزامنا بالأمان والخصوصية والامتثال للمعايير السعودية
 ⚡ ركّز على قيمة التحول الرقمي ودوره في تحقيق رؤية 2030
 
+في نهاية إجابتك، اقترح دائماً 3 أسئلة قصيرة يمكن للمستخدم طرحها تالياً لمتابعة المحادثة.
+افصل بين الإجابة والاقتراحات بهذا الفاصل بالضبط:
+---SUGGESTIONS---
+ثم ضع كل اقتراح في سطر جديد. لا تضع أي ترقيم أو رموز إضافية أمام الاقتراحات، فقط نص السؤال.
+
 تذكر: أنت ممثل Bright AI الرقمي، كن مفيداً ومحترفاً دائماً! 🚀`;
+
+
 
         const response = await fetch(API_URL, {
             method: 'POST',
@@ -408,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!response.ok) {
-            throw new Error(`Request failed: ${response.status}`);
+            throw new Error(`Request failed: ${response.status} `);
         }
 
         const data = await response.json();
