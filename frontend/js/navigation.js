@@ -56,8 +56,57 @@ function initNavigation() {
     }
   });
 
-  // 3. Dropdown Interactions
+  // 3. Dropdown Interactions - تحسين التحكم بالقوائم المنسدلة
   dropdownToggles.forEach(toggle => {
+    const navItem = toggle.closest('.nav-item');
+    const dropdown = toggle.nextElementSibling;
+    let closeTimer = null;
+
+    // إلغاء إغلاق القائمة عند التحويم على العنصر الرئيسي أو القائمة
+    const cancelClose = () => {
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+    };
+
+    // جدولة إغلاق القائمة مع تأخير
+    const scheduleClose = () => {
+      closeTimer = setTimeout(() => {
+        if (toggle.getAttribute('aria-expanded') === 'true') {
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      }, 500); // نصف ثانية تأخير
+    };
+
+    // Desktop: تحسين التفاعل مع الماوس
+    if (navItem && dropdown) {
+      navItem.addEventListener('mouseenter', () => {
+        if (window.innerWidth >= 1024) {
+          cancelClose();
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      navItem.addEventListener('mouseleave', () => {
+        if (window.innerWidth >= 1024) {
+          scheduleClose();
+        }
+      });
+
+      dropdown.addEventListener('mouseenter', () => {
+        if (window.innerWidth >= 1024) {
+          cancelClose();
+        }
+      });
+
+      dropdown.addEventListener('mouseleave', () => {
+        if (window.innerWidth >= 1024) {
+          scheduleClose();
+        }
+      });
+    }
+
     // Desktop: Hover is handled by CSS mostly, but we add keyboard support
     toggle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -103,11 +152,22 @@ function initNavigation() {
             submenu.style.border = 'none';
             submenu.style.paddingLeft = '0'; // align right in RTL? check CSS
             submenu.style.boxShadow = 'none';
+            submenu.style.pointerEvents = 'auto'; // تأكيد إمكانية النقر
           } else {
             submenu.style.display = 'none';
           }
         }
       }
+    });
+  });
+
+  // 4. التأكد من أن الروابط داخل القوائم المنسدلة قابلة للنقر
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      // السماح بالنقر الطبيعي على الروابط
+      // لا نستخدم preventDefault هنا لأننا نريد أن يعمل الرابط بشكل طبيعي
+      console.log('تم النقر على:', item.textContent.trim());
     });
   });
 

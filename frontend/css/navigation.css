@@ -156,20 +156,25 @@
   box-shadow: var(--dropdown-shadow);
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: all 0.25s var(--transition-smooth);
-  z-index: 1001;
+  z-index: 9999;
+  /* زيادة z-index لضمان الظهور فوق كل شيء */
 }
 
-/* Invisible bridge to close gap */
+/* Invisible bridge to close gap - منطقة أمان أكبر */
 .dropdown-menu::before {
   content: '';
   position: absolute;
-  top: -20px;
-  /* Bridge the gap */
-  left: 0;
-  right: 0;
-  height: 20px;
+  top: -30px;
+  /* Bridge the gap - جسر أكبر */
+  left: -20px;
+  right: -20px;
+  height: 30px;
   background: transparent;
+  z-index: -1;
+  pointer-events: none;
+  /* لا تعيق النقر */
 }
 
 /* Align Dropdown properly for RTL */
@@ -183,14 +188,26 @@
 .nav-link[aria-expanded="true"]+.dropdown-menu {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
+  /* تفعيل إمكانية النقر */
   transform: translateY(0);
   transition-delay: 0s;
   /* Show immediately */
 }
 
-/* Add slight delay when leaving so it doesn't close instantly */
+/* تأخير أطول عند مغادرة القائمة - يعطي وقت للمستخدم */
 .nav-item .dropdown-menu {
-  transition-delay: 0.15s;
+  transition-delay: 0.5s;
+  /* زيادة من 0.15s إلى 0.5s */
+}
+
+/* إزالة التأخير عند التحويم على القائمة نفسها */
+.dropdown-menu:hover {
+  transition-delay: 0s !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  /* تأكيد إمكانية النقر */
 }
 
 .dropdown-item {
@@ -202,6 +219,26 @@
   color: #cbd5e1;
   text-decoration: none;
   transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+  /* تأكيد قابلية النقر */
+  pointer-events: auto;
+  /* تأكيد قابلية النقر */
+  z-index: 1;
+}
+
+/* منطقة أمان حول كل عنصر */
+.dropdown-item::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: -8px;
+  right: -8px;
+  background: transparent;
+  z-index: -1;
+  pointer-events: none;
+  /* المنطقة الأمان لا تمنع النقر */
 }
 
 .dropdown-item:hover {
