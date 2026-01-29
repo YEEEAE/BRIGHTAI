@@ -159,11 +159,11 @@
 
 <body class="h-screen flex text-sm">
 
-    
+
     <!-- UNIFIED HEADER (REBUILT) -->
     <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
         <div class="nav-container">
-            
+
             <!-- Mobile Toggle -->
             <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
                 <span class="bar"></span>
@@ -307,17 +307,17 @@
     <div class="mobile-menu-drawer">
         <ul class="mobile-nav-list">
             <li><a href="../../../index.html" class="mobile-nav-link">الرئيسية</a></li>
-            
+
             <li>
                 <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
                     المنتجات والخدمات
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../../../frontend/pages/smart-automation.html" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="../../../frontend/pages/ai-agent.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="../../../frontend/pages/data-analysis.html" class="dropdown-item">تحليل البيانات</a>
-                   <a href="../../../frontend/pages/consultation.html" class="dropdown-item">استشارات تقنية</a>
+                    <a href="../../../frontend/pages/smart-automation.html" class="dropdown-item">الأتمتة الذكية</a>
+                    <a href="../../../frontend/pages/ai-agent.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                    <a href="../../../frontend/pages/data-analysis.html" class="dropdown-item">تحليل البيانات</a>
+                    <a href="../../../frontend/pages/consultation.html" class="dropdown-item">استشارات تقنية</a>
                 </div>
             </li>
 
@@ -327,10 +327,11 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../../../frontend/pages/try.html" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="../../../frontend/pages/tools.html" class="dropdown-item">أدوات مجانية</a>
-                   <a href="../../../frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="../../../frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
+                    <a href="../../../frontend/pages/try.html" class="dropdown-item">ذكاء البيانات</a>
+                    <a href="../../../frontend/pages/tools.html" class="dropdown-item">أدوات مجانية</a>
+                    <a href="../../../frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف
+                        الطبي الذكي</a>
+                    <a href="../../../frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
                 </div>
             </li>
 
@@ -340,9 +341,9 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../../../frontend/pages/about-us.html" class="dropdown-item">من نحن</a>
-                   <a href="../../../frontend/pages/blog.html" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="../../../Docs.html" class="dropdown-item">المستندات</a>
+                    <a href="../../../frontend/pages/about-us.html" class="dropdown-item">من نحن</a>
+                    <a href="../../../frontend/pages/blog.html" class="dropdown-item">المكتبة الذكية</a>
+                    <a href="../../../Docs.html" class="dropdown-item">المستندات</a>
                 </div>
             </li>
 
@@ -613,11 +614,17 @@
         const userInput = document.getElementById('userInput');
         const nerContainer = document.getElementById('nerContainer');
         const statusBadge = document.getElementById('connectionStatus');
+        const sendBtn = document.getElementById('sendBtn');
 
         // --- Event Listeners ---
-        userInput.addEventListener('input', function () { this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px'; });
-        userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } });
-        document.getElementById('sendBtn').addEventListener('click', handleSend);
+        if (userInput) {
+            userInput.addEventListener('input', function () { this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px'; });
+            userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } });
+        }
+
+        if (sendBtn) {
+            sendBtn.addEventListener('click', handleSend);
+        }
 
         // --- Main Functions ---
         async function handleSend() {

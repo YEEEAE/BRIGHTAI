@@ -106,205 +106,207 @@
   <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
   <!-- INSTRUCTION 1: THE HEADER (REBUILT - BIG TECH STYLE) -->
-  
-    
-    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-        <div class="nav-container">
-            
-            <!-- Mobile Toggle -->
-            <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
 
-            <!-- Logo -->
-            <a href="index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
-                <span>Bright AI</span>
+
+  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+    <div class="nav-container">
+
+      <!-- Mobile Toggle -->
+      <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <!-- Logo -->
+      <a href="index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
+        <img src="frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+        <span>Bright AI</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="nav-links">
+        <li class="nav-item">
+          <a href="index.html" class="nav-link">
+            الرئيسية
+          </a>
+        </li>
+
+        <!-- Products & Services -->
+        <li class="nav-item">
+          <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+            المنتجات والخدمات
+            <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+          </a>
+          <div class="dropdown-menu">
+            <a href="frontend/pages/smart-automation.html" class="dropdown-item">
+              <iconify-icon icon="lucide:zap"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">الأتمتة الذكية</span>
+                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
+              </div>
             </a>
+            <a href="frontend/pages/ai-agent.html" class="dropdown-item">
+              <iconify-icon icon="lucide:bot"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
+                <span class="dropdown-desc">حلول AIaaS المرنة</span>
+              </div>
+            </a>
+            <a href="frontend/pages/data-analysis.html" class="dropdown-item">
+              <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">تحليل البيانات</span>
+                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
+              </div>
+            </a>
+            <a href="frontend/pages/consultation.html" class="dropdown-item">
+              <iconify-icon icon="lucide:message-square"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">استشارات تقنية</span>
+                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
+              </div>
+            </a>
+          </div>
+        </li>
 
-            <!-- Desktop Navigation -->
-            <ul class="nav-links">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">
-                        الرئيسية
-                    </a>
-                </li>
+        <!-- Solutions & Experience Models -->
+        <li class="nav-item">
+          <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+            الحلول و نماذج التجربة
+            <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+          </a>
+          <div class="dropdown-menu">
+            <a href="frontend/pages/try.html" class="dropdown-item">
+              <iconify-icon icon="lucide:database"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">ذكاء البيانات</span>
+                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
+              </div>
+            </a>
+            <a href="frontend/pages/tools.html" class="dropdown-item">
+              <iconify-icon icon="lucide:wrench"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">أدوات مجانية</span>
+                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
+              </div>
+            </a>
+            <a href="frontend/pages/smart-medical-archive/index.html" class="dropdown-item">
+              <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
+                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
+              </div>
+            </a>
+            <a href="frontend/pages/interview/index.html" class="dropdown-item">
+              <iconify-icon icon="lucide:users"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">التوظيف الذكي</span>
+                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
+              </div>
+            </a>
+          </div>
+        </li>
 
-                <!-- Products & Services -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        المنتجات والخدمات
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="frontend/pages/smart-automation.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:zap"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأتمتة الذكية</span>
-                                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/ai-agent.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:bot"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/data-analysis.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">تحليل البيانات</span>
-                                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/consultation.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:message-square"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">استشارات تقنية</span>
-                                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
+        <!-- Company -->
+        <li class="nav-item">
+          <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+            الشركة
+            <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+          </a>
+          <div class="dropdown-menu">
+            <a href="frontend/pages/about-us.html" class="dropdown-item">
+              <iconify-icon icon="lucide:info"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">من نحن</span>
+                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
+              </div>
+            </a>
+            <a href="frontend/pages/blog.html" class="dropdown-item">
+              <iconify-icon icon="lucide:book-open"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">المكتبة الذكية</span>
+                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
+              </div>
+            </a>
+            <a href="Docs.html" class="dropdown-item">
+              <iconify-icon icon="lucide:file-text"></iconify-icon>
+              <div class="dropdown-item-content">
+                <span class="dropdown-title">المستندات</span>
+                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
+              </div>
+            </a>
+          </div>
+        </li>
+      </ul>
 
-                <!-- Solutions & Experience Models -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        الحلول و نماذج التجربة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="frontend/pages/try.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:database"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">ذكاء البيانات</span>
-                                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/tools.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:wrench"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">أدوات مجانية</span>
-                                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/smart-medical-archive/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
-                                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/interview/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:users"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">التوظيف الذكي</span>
-                                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
+      <!-- CTA Button -->
+      <div class="hidden lg:block">
+        <a href="https://wa.me/966538229013" class="nav-btn">
+          اتصل بنا
+        </a>
+      </div>
 
-                <!-- Company -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        الشركة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="frontend/pages/about-us.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:info"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">من نحن</span>
-                                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
-                            </div>
-                        </a>
-                        <a href="frontend/pages/blog.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:book-open"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المكتبة الذكية</span>
-                                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
-                            </div>
-                        </a>
-                        <a href="Docs.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:file-text"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المستندات</span>
-                                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-
-            <!-- CTA Button -->
-            <div class="hidden lg:block">
-                <a href="https://wa.me/966538229013" class="nav-btn">
-                    اتصل بنا
-                </a>
-            </div>
-
-        </div>
-    </nav>
-
-    <!-- Mobile Menu Drawer -->
-    <div class="mobile-menu-drawer">
-        <ul class="mobile-nav-list">
-            <li><a href="index.html" class="mobile-nav-link">الرئيسية</a></li>
-            
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    المنتجات والخدمات
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="frontend/pages/smart-automation.html" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="frontend/pages/ai-agent.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="frontend/pages/data-analysis.html" class="dropdown-item">تحليل البيانات</a>
-                   <a href="frontend/pages/consultation.html" class="dropdown-item">استشارات تقنية</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    الحلول و نماذج التجربة
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="frontend/pages/try.html" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="frontend/pages/tools.html" class="dropdown-item">أدوات مجانية</a>
-                   <a href="frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    الشركة
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="frontend/pages/about-us.html" class="dropdown-item">من نحن</a>
-                   <a href="frontend/pages/blog.html" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="Docs.html" class="dropdown-item">المستندات</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
-                    اتصل بنا
-                </a>
-            </li>
-        </ul>
     </div>
+  </nav>
 
-    <!-- Backdrop -->
-    <div class="backdrop-overlay"></div>
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu-drawer">
+    <ul class="mobile-nav-list">
+      <li><a href="index.html" class="mobile-nav-link">الرئيسية</a></li>
+
+      <li>
+        <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+          المنتجات والخدمات
+          <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+        </a>
+        <div class="mobile-dropdown">
+          <a href="frontend/pages/smart-automation.html" class="dropdown-item">الأتمتة الذكية</a>
+          <a href="frontend/pages/ai-agent.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+          <a href="frontend/pages/data-analysis.html" class="dropdown-item">تحليل البيانات</a>
+          <a href="frontend/pages/consultation.html" class="dropdown-item">استشارات تقنية</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+          الحلول و نماذج التجربة
+          <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+        </a>
+        <div class="mobile-dropdown">
+          <a href="frontend/pages/try.html" class="dropdown-item">ذكاء البيانات</a>
+          <a href="frontend/pages/tools.html" class="dropdown-item">أدوات مجانية</a>
+          <a href="frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
+          <a href="frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+          الشركة
+          <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+        </a>
+        <div class="mobile-dropdown">
+          <a href="frontend/pages/about-us.html" class="dropdown-item">من نحن</a>
+          <a href="frontend/pages/blog.html" class="dropdown-item">المكتبة الذكية</a>
+          <a href="Docs.html" class="dropdown-item">المستندات</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
+          اتصل بنا
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Backdrop -->
+  <div class="backdrop-overlay"></div>
 
 
+  <!-- Chat Widget CSS -->
+  <link rel="stylesheet" href="frontend/css/chat-widget.css" />
   <!-- Hero CSS -->
   <link rel="stylesheet" href="frontend/css/hero.css" />
   </head>
@@ -5035,6 +5037,97 @@
     <script src="frontend/js/dist/app.bundle.js" defer></script>
     <script src="frontend/js/dist/features.bundle.js" defer></script>
     <script src="frontend/js/dist/pages.bundle.js" defer></script>
+    <!-- Chat Widget HTML -->
+    <div class="chat-overlay" id="chatOverlay"></div>
+
+    <button class="chat-toggle-btn" id="chatToggle" aria-label="فتح المحادثة">
+      <span class="badge">1</span>
+      <svg class="icon-chat" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+      <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="chat-widget" id="chatWidget" role="dialog" aria-label="نافذة المحادثة">
+      <header class="chat-header">
+        <div class="chat-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span class="status-dot"></span>
+        </div>
+        <div class="chat-header-info">
+          <h3>Yazeed AI</h3>
+          <div class="status">
+            <span>متصل الآن</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="header-btn" id="soundToggle" title="إيقاف/تشغيل الصوت">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            </svg>
+          </button>
+          <button class="header-btn" id="minimizeChat" title="تصغير">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="welcome-message">
+          <div class="welcome-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          </div>
+          <h4>مرحباً بك!</h4>
+          <p>أنا Yazeed AI، مساعدك الذكي للدعم الفني. كيف يمكنني مساعدتك اليوم؟</p>
+        </div>
+      </div>
+
+      <div class="quick-actions" id="quickActions">
+        <button class="quick-action-btn" data-message="ما هي خدماتكم؟">ما هي خدماتكم؟</button>
+        <button class="quick-action-btn" data-message="كيف أتواصل معكم؟">كيف أتواصل معكم؟</button>
+        <button class="quick-action-btn" data-message="أريد استشارة تقنية">استشارة تقنية</button>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="input-container">
+          <input type="text" id="userInput" placeholder="اكتب رسالتك هنا..." autocomplete="off"
+            aria-label="أدخل رسالتك">
+          <div class="input-actions">
+            <button class="input-btn mic-btn" id="micButton" title="التحدث صوتياً">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+              </svg>
+            </button>
+            <button class="input-btn send-btn" id="sendButton" title="إرسال" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M3.478 2.405a.75.75 0 0 0-.926.94l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.405Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="chat-footer">
+        <p>مدعوم بواسطة <a href="https://brightai.site" target="_blank">Bright AI</a></p>
+      </footer>
+    </div>
+
+    <!-- Chat Widget Script -->
+    <script src="frontend/js/chat-widget.js"></script>
   </body>
 
 </html>
