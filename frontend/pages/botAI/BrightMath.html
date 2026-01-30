@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="https://d.top4top.io/p_33458j6zm1.png">
+    <link rel="icon" type="image/png" href="../../assets/images/Gemini.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/images/Gemini.png">
+    <title>BrightMath - مساعد الرياضيات الذكي</title>
+    <meta name="description" content="BrightMath - مساعد الرياضيات الذكي من Bright AI لحل المسائل الرياضية">
+    <link rel="canonical" href="https://brightai.site/botAI/BrightMath">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .header {
+            background-color: #3f51b5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        #chatMessages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 12px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            line-height: 1.5;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        
+        .user-message {
+            background-color: #e1f5fe;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+        
+        .bot-message {
+            background-color: #f1f3f4;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+        
+        .input-area {
+            display: flex;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+        
+        #userInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            height: 45px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 10px;
+            margin-right: 10px;
+        }
+        
+        #sendButton, #fileButton {
+            background-color: #3f51b5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        #sendButton:hover, #fileButton:hover {
+            background-color: #303f9f;
+        }
+        
+        #sendButton i, #fileButton i {
+            font-size: 20px;
+        }
+        
+        .math-formula {
+            background-color: #f9f9f9;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .features-list {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 10px 0;
+            gap: 10px;
+        }
+        
+        .feature-item {
+            background-color: #e8eaf6;
+            border-radius: 8px;
+            padding: 12px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .feature-item:hover {
+            background-color: #c5cae9;
+            transform: translateY(-2px);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .file-preview {
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .file-preview i {
+            color: #43a047;
+        }
+        
+        .file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .remove-file {
+            color: #e53935;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+        }
+        
+        .remove-file:hover {
+            background-color: rgba(229, 57, 53, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .header p {
+                font-size: 12px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .features-list {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js"></script>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="BrightMath - مساعد الرياضيات الذكي">
+  <meta property="og:description" content="BrightMath - مساعد الرياضيات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  <meta property="og:url" content="https://brightai.site/botAI/BrightMath">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="مُشرقة AI">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BrightMath - مساعد الرياضيات الذكي">
+  <meta name="twitter:description" content="BrightMath - مساعد الرياضيات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+      <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <script src="../../js/navigation.js" defer></script>
+</head>
+<body>
+
+    
+    <!-- UNIFIED HEADER (REBUILT) -->
+    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <div class="nav-container">
+            
+            <!-- Mobile Toggle -->
+            <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <!-- Logo -->
+            <a href="../index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
+                <img src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <span>Bright AI</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link">
+                        الرئيسية
+                    </a>
+                </li>
+
+                <!-- Products & Services -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+                        المنتجات والخدمات
+                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../frontend/pages/smart-automation.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:zap"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">الأتمتة الذكية</span>
+                                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/ai-agent.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:bot"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
+                                <span class="dropdown-desc">حلول AIaaS المرنة</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/data-analysis.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">تحليل البيانات</span>
+                                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/consultation.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:message-square"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">استشارات تقنية</span>
+                                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Solutions & Experience Models -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+                        الحلول و نماذج التجربة
+                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../frontend/pages/try.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:database"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">ذكاء البيانات</span>
+                                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/tools.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:wrench"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">أدوات مجانية</span>
+                                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/smart-medical-archive/index.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
+                                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/interview/index.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:users"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">التوظيف الذكي</span>
+                                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Company -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+                        الشركة
+                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="../frontend/pages/about-us.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:info"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">من نحن</span>
+                                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
+                            </div>
+                        </a>
+                        <a href="../frontend/pages/blog.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:book-open"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">المكتبة الذكية</span>
+                                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
+                            </div>
+                        </a>
+                        <a href="../Docs.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:file-text"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">المستندات</span>
+                                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- CTA Button -->
+            <div class="hidden lg:block">
+                <a href="https://wa.me/966538229013" class="nav-btn">
+                    اتصل بنا
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="../index.html" class="mobile-nav-link">الرئيسية</a></li>
+            
+            <li>
+                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+                    المنتجات والخدمات
+                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+                </a>
+                <div class="mobile-dropdown">
+                   <a href="../frontend/pages/smart-automation.html" class="dropdown-item">الأتمتة الذكية</a>
+                   <a href="../frontend/pages/ai-agent.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                   <a href="../frontend/pages/data-analysis.html" class="dropdown-item">تحليل البيانات</a>
+                   <a href="../frontend/pages/consultation.html" class="dropdown-item">استشارات تقنية</a>
+                </div>
+            </li>
+
+            <li>
+                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+                    الحلول و نماذج التجربة
+                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+                </a>
+                <div class="mobile-dropdown">
+                   <a href="../frontend/pages/try.html" class="dropdown-item">ذكاء البيانات</a>
+                   <a href="../frontend/pages/tools.html" class="dropdown-item">أدوات مجانية</a>
+                   <a href="../frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
+                   <a href="../frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
+                </div>
+            </li>
+
+            <li>
+                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+                    الشركة
+                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+                </a>
+                <div class="mobile-dropdown">
+                   <a href="../frontend/pages/about-us.html" class="dropdown-item">من نحن</a>
+                   <a href="../frontend/pages/blog.html" class="dropdown-item">المكتبة الذكية</a>
+                   <a href="../Docs.html" class="dropdown-item">المستندات</a>
+                </div>
+            </li>
+
+            <li>
+                <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
+                    اتصل بنا
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Backdrop -->
+    <div class="backdrop-overlay"></div>
+
+
+
+    <div class="header">
+        <h1>BrightMath - مساعد الرياضيات الذكي</h1>
+        <p>مساعدك الشخصي في تعلم الرياضيات وحل المسائل</p>
+    </div>
+    
+    <div class="chat-container">
+        <div id="chatMessages"></div>
+        
+        <div class="input-area">
+            <textarea id="userInput" placeholder="اكتب سؤالك هنا..."></textarea>
+            <div class="input-actions">
+                <button id="fileButton">
+                    <i class="material-icons">attach_file</i>
+                </button>
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx,.xls,.xlsx">
+                <button id="sendButton">
+                    <i class="material-icons">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'GEMINI_KEY_REDACTED'; // قم بتغيير هذا بمفتاح API الخاص بك
+
+        class MathBot {
+            constructor() {
+                this.chatMessages = document.getElementById('chatMessages');
+                this.userInput = document.getElementById('userInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.fileButton = document.getElementById('fileButton');
+                this.fileInput = document.getElementById('fileInput');
+                
+                this.uploadedFile = null;
+                
+                this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                this.userInput.addEventListener('input', () => {
+                    this.adjustTextareaHeight();
+                });
+                
+                this.fileButton.addEventListener('click', () => {
+                    this.fileInput.click();
+                });
+                
+                this.fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.handleFileUpload(e.target.files[0]);
+                    }
+                });
+
+                this.initialize();
+            }
+
+            adjustTextareaHeight() {
+                const textarea = this.userInput;
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+            }
+            
+            handleFileUpload(file) {
+                this.uploadedFile = file;
+                
+                // إظهار معاينة الملف في المحادثة
+                const filePreviewHTML = `
+                    <div class="file-preview" id="filePreview">
+                        <i class="material-icons">description</i>
+                        <span class="file-name">${file.name}</span>
+                        <span class="remove-file" id="removeFile">
+                            <i class="material-icons">close</i>
+                        </span>
+                    </div>
+                `;
+                
+                this.addHTMLMessage(filePreviewHTML, 'user');
+                
+                // إضافة المستمع لإزالة الملف
+                document.getElementById('removeFile').addEventListener('click', () => {
+                    document.getElementById('filePreview').remove();
+                    this.uploadedFile = null;
+                    this.fileInput.value = '';
+                });
+            }
+
+            initialize() {
+                const welcomeMessage = `مرحباً بك في BrightMath - مساعد الرياضيات الذكي! 🔢✨
+
+يمكنني مساعدتك في العديد من مجالات الرياضيات. الرجاء اختيار نوع المساعدة التي تحتاجها:`;
+                
+                this.addMessage(welcomeMessage, 'bot');
+                
+                setTimeout(() => {
+                    const featuresHTML = `
+                    <div class="features-list">
+                        <div class="feature-item" data-feature="explain">شرح المفاهيم الرياضية</div>
+                        <div class="feature-item" data-feature="solve">حل المسائل خطوة بخطوة</div>
+                        <div class="feature-item" data-feature="practice">تمارين وأمثلة للممارسة</div>
+                        <div class="feature-item" data-feature="project">المساعدة في المشاريع</div>
+                        <div class="feature-item" data-feature="exam">تحضير للاختبارات</div>
+                    </div>`;
+                    
+                    this.addHTMLMessage(featuresHTML, 'bot');
+                    
+                    // إضافة مستمعي الأحداث للميزات المقترحة
+                    document.querySelectorAll('.feature-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            const feature = item.getAttribute('data-feature');
+                            let prompt = '';
+                            
+                            switch(feature) {
+                                case 'explain':
+                                    prompt = 'أريد شرحاً مبسطاً لمفهوم رياضي. يمكنك مساعدتي في فهم:';
+                                    break;
+                                case 'solve':
+                                    prompt = 'أريد حل مسألة رياضية خطوة بخطوة. المسألة هي:';
+                                    break;
+                                case 'practice':
+                                    prompt = 'أريد بعض التمارين للممارسة في موضوع:';
+                                    break;
+                                case 'project':
+                                    prompt = 'أحتاج مساعدة في مشروع رياضي عن:';
+                                    break;
+                                case 'exam':
+                                    prompt = 'أريد التحضير لاختبار في مادة:';
+                                    break;
+                            }
+                            
+                            // عرض اختيار المستخدم في المحادثة
+                            this.addMessage(item.textContent, 'user');
+                            
+                            // معالجة الرد على الاختيار
+                            this.processFeatureSelection(feature);
+                        });
+                    });
+                }, 500);
+            }
+            
+            async processFeatureSelection(feature) {
+                let response = '';
+                
+                // إظهار مؤشر الكتابة
+                const typingIndicator = this.addTypingIndicator();
+                
+                try {
+                    switch(feature) {
+                        case 'explain':
+                            response = `أستطيع شرح مفاهيم الرياضيات بطريقة سهلة ومبسطة! 📚
+
+أخبرني من فضلك عن المفهوم الرياضي الذي تريد فهمه بشكل أفضل.
+يمكنك اختيار من هذه المجالات:
+
+• الجبر (المعادلات، كثيرات الحدود، الدوال)
+• الهندسة (المثلثات، الدوائر، المضلعات)
+• حساب التفاضل والتكامل
+• الاحتمالات والإحصاء
+• النظريات والبراهين الرياضية
+
+من فضلك، اكتب المفهوم الذي ترغب في معرفته أو فهمه بشكل أفضل.`;
+                            break;
+                            
+                        case 'solve':
+                            response = `سأساعدك في حل المسائل الرياضية خطوة بخطوة! 🧮
+
+يمكنك كتابة المسألة التي تريد حلها، وسأقوم بتوضيح الخطوات بالتفصيل.
+كما يمكنك إرفاق صورة للمسألة باستخدام زر المرفقات إذا كانت المسألة تحتوي على صيغ رياضية معقدة.
+
+من فضلك، اكتب المسألة الرياضية التي تحتاج إلى حلها.`;
+                            break;
+                            
+                        case 'practice':
+                            response = `سأساعدك بتوفير تمارين وأمثلة للممارسة! 📝
+
+أخبرني عن الموضوع الرياضي الذي تريد التمرن عليه، ومستواك فيه (مبتدئ، متوسط، متقدم)، وسأقدم لك مجموعة من التمارين المناسبة.
+
+من فضلك، اكتب الموضوع ومستواك للحصول على تمارين مخصصة لك.`;
+                            break;
+                            
+                        case 'project':
+                            response = `سأساعدك في مشروعك الرياضي! 🏗️
+
+أخبرني عن تفاصيل المشروع الذي تعمل عليه:
+• ما هو موضوع المشروع؟
+• ما هي المتطلبات الأساسية؟
+• هل هناك مفاهيم محددة تحتاج المساعدة فيها؟
+• هل لديك موعد نهائي للتسليم؟
+
+يمكنك أيضاً إرفاق أي مستندات متعلقة بالمشروع باستخدام زر المرفقات.`;
+                            break;
+                            
+                        case 'exam':
+                            response = `سأساعدك في التحضير للاختبارات ومراجعة المواد! 📚✅
+
+أخبرني عن:
+• نوع الاختبار الذي تستعد له
+• المواضيع الرئيسية التي يغطيها
+• الصعوبات التي تواجهها في هذه المواضيع
+• متى سيكون الاختبار
+
+سأقدم لك خطة مراجعة مع تركيز على النقاط المهمة وأمثلة لأسئلة متوقعة.`;
+                            break;
+                    }
+                    
+                    // إزالة مؤشر الكتابة
+                    this.chatMessages.removeChild(typingIndicator);
+                    
+                    // إضافة الرد
+                    this.addMessage(response, 'bot');
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // إزالة مؤشر الكتابة
+                    this.chatMessages.removeChild(typingIndicator);
+                    
+                    this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
+                }
+            }
+
+            async sendMessage() {
+                const message = this.userInput.value.trim();
+                if (!message && !this.uploadedFile) return;
+
+                // عرض رسالة المستخدم
+                if (message) {
+                    this.addMessage(message, 'user');
+                }
+                this.userInput.value = '';
+                this.userInput.style.height = '45px';
+                
+                // إظهار مؤشر الكتابة
+                const typingIndicator = this.addTypingIndicator();
+
+                try {
+                    // إضافة معلومات عن الملف إذا تم رفع ملف
+                    let fileInfo = '';
+                    if (this.uploadedFile) {
+                        fileInfo = `\n\nملف مرفق: ${this.uploadedFile.name} (${this.uploadedFile.type})`;
+                        // بعد إرسال الرسالة، نقوم بإعادة تعيين الملف المرفق
+                        this.uploadedFile = null;
+                    }
+                    
+                    const response = await this.getGeminiResponse(message + fileInfo);
+                    
+                    // إزالة مؤشر الكتابة
+                    this.chatMessages.removeChild(typingIndicator);
+                    
+                    this.addMessage(response, 'bot');
+                    this.renderMathJax();
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // إزالة مؤشر الكتابة
+                    this.chatMessages.removeChild(typingIndicator);
+                    
+                    this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
+                }
+            }
+
+            addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.classList.add('message', 'bot-message');
+                typingDiv.innerHTML = '<div style="display: flex; gap: 4px;"><span class="typing-dot">.</span><span class="typing-dot">.</span><span class="typing-dot">.</span></div>';
+                
+                // تحريك النقاط بالتناوب
+                const dots = typingDiv.querySelectorAll('.typing-dot');
+                let i = 0;
+                const animateDots = setInterval(() => {
+                    dots.forEach((dot, index) => {
+                        dot.style.opacity = index === i % 3 ? '1' : '0.5';
+                    });
+                    i++;
+                }, 300);
+                
+                // تخزين مرجع الفاصل الزمني للحذف لاحقاً
+                typingDiv.animationInterval = animateDots;
+                
+                this.chatMessages.appendChild(typingDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                return typingDiv;
+            }
+
+            async getGeminiResponse(message) {
+                const context = `أنت BrightMath، مساعد متخصص في تعليم الرياضيات للطلاب الثانوية. 
+                تقدم شرحاً مفصلاً وحلولاً للمسائل الرياضية بأسلوب سهل وتفاعلي.
+                قدم معلومات دقيقة ومحدثة عن الرياضيات بكافة فروعها.
+                عند شرح المسائل الرياضية، قم بتقسيم الحل إلى خطوات واضحة.
+                يمكنك استخدام صيغة التيكس (LaTeX) لعرض الصيغ الرياضية بين علامتي $$.
+                اجعل إجاباتك مفيدة وباللغة العربية، واحرص على التبسيط دون الإخلال بدقة المعلومات.`;
+
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+                
+                const response = await fetch(`${url}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `${context}\n\nسؤال المستخدم: ${message}`
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.candidates || !data.candidates[0]) {
+                    throw new Error('لم يتم العثور على استجابة من API');
+                }
+                return data.candidates[0].content.parts[0].text;
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${sender}-message`);
+                
+                // تنسيق النص للرياضيات
+                text = this.formatMathText(text);
+                
+                messageDiv.innerHTML = text;
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+            
+            addHTMLMessage(html, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${sender}-message`);
+                messageDiv.innerHTML = html;
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            formatMathText(text) {
+                // تحويل الخطوط المائلة إلى تنسيق HTML
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                
+                // الحفاظ على تنسيق الأسطر الجديدة
+                text = text.replace(/\n/g, '<br>');
+                
+                return text;
+            }
+
+            renderMathJax() {
+                if (window.MathJax) {
+                    MathJax.typesetPromise();
+                }
+            }
+        }
+
+        // تهيئة البوت عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            new MathBot();
+        });
+    </script>
+</body>
+</html>
