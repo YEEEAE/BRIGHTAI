@@ -4,25 +4,40 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تحليل البيانات والذكاء التجاري | Bright AI</title>
+    <title>تحليل البيانات | Bright AI - ذكاء الأعمال والقرارات</title>
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
     <meta name="description"
-        content="حول بياناتك لقرارات ذكية مع تحليل البيانات من Bright AI. داشبوردات تفاعلية، تقارير آنية، وتنبؤات دقيقة." />
-    <link rel="canonical" href="https://brightai.site/frontend/pages/data-analysis" />
-    <meta name="keywords" content="تحليل البيانات، ذكاء الأعمال، BI، داشبورد، تقارير، تنبؤات، Big Data" />
+        content="حول بياناتك الخام إلى قرارات استراتيجية. خدمات تحليل البيانات متقدمة (Big Data Analysis) ولوحات تحكم تفاعلية (Dashboards) للشركات السعودية." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/data-analysis" />
+    <meta name="keywords"
+        content="تحليل بيانات، Big Data، ذكاء الأعمال BI، لوحات تحكم، Power BI، Tableau، علم البيانات، تنبؤ بالمبيعات" />
+
+    <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
     <link rel="stylesheet" href="../../css/bundle-main.css" />
-    <link rel="stylesheet" href="../../css/bundle-pages.css" /><link rel="stylesheet" href="../../css/docs.css" />
-    <script>setTimeout(function () { var s1 = document.createElement('script'); s1.src = 'https://cdn.tailwindcss.com'; s1.async = true; document.body.appendChild(s1); var s2 = document.createElement('script'); s2.src = 'https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js'; s2.async = true; document.body.appendChild(s2); }, 50);</script>
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
     <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Service","name":"تحليل البيانات والذكاء التجاري","provider":{"@type":"Organization","name":"Bright AI"},"description":"تحليل البيانات الضخمة وحلول ذكاء الأعمال للشركات السعودية","areaServed":"SA"}
+    {"@context":"https://schema.org","@type":"Service","name":"تحليل البيانات وذكاء الأعمال","provider":{"@type":"Organization","name":"Bright AI"},"description":"خدمات تحليل البيانات الضخمة وإنشاء لوحات المعلومات التفاعلية","areaServed":"SA"}
     </script>
 </head>
 
-<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight doc-page">
+<body class="antialiased selection:bg-purple-500/30 selection:text-purple-400 tracking-tight doc-page">
     <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
     <nav class="unified-nav" role="navigation">
         <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
                     class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
@@ -46,193 +61,113 @@
     <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
         <ol class="breadcrumb-list">
             <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
-            <li><a href="Docfile/services-overview">الخدمات</a></li><span class="breadcrumb-separator">/</span>
-            <li class="active">تحليل البيانات</li>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">تحليل البيانات (Data Analysis)</li>
         </ol>
     </nav>
 
     <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
 
         <!-- Hero Section -->
-        <header class="text-center mb-16">
+        <header class="doc-header text-center mb-16">
             <div
-                class="w-24 h-24 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center">
-                <iconify-icon icon="lucide:bar-chart-3" width="48" class="text-white"></iconify-icon>
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 shadow-2xl shadow-purple-500/10 animate-float">
+                <iconify-icon icon="solar:chart-square-bold-duotone" width="48" class="text-purple-400"></iconify-icon>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">تحليل البيانات<br><span
-                    class="gradient-text-animate">والذكاء التجاري</span></h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">بياناتك فيها كنز مخفي! نحولها لرؤى قابلة للتنفيذ تساعدك
-                تاخذ قرارات أذكى وأسرع.</p>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">تحليل البيانات <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">الذكي</span></h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                لا تتخذ قراراتك بناءً على "التخمين". حول بياناتك الخام إلى رؤى واضحة وقابلة للتنفيذ باستخدام أحدث تقنيات
+                ذكاء الأعمال (BI).
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#dashboards"
+                    class="px-8 py-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition-all shadow-lg shadow-purple-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:presentation-graph-linear" width="24"></iconify-icon>
+                    شوف أمثلة للدشبورد
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    تحليل مبدئي مجاني
+                </a>
+            </div>
         </header>
 
         <!-- Main Content -->
-        <article class="space-y-12">
+        <div class="doc-content space-y-12">
 
-            <!-- What We Offer -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                    <iconify-icon icon="lucide:target" class="text-blue-400"></iconify-icon> وش نقدم لك؟
+            <!-- Context -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="solar:database-bold-duotone" class="text-purple-400"></iconify-icon> البيانات هي
+                    النفط الجديد، لكن..
                 </h2>
-                <p class="text-slate-300 leading-relaxed mb-4">
-                    كل يوم شركتك تنتج كميات ضخمة من البيانات - من المبيعات، العملاء، العمليات، والموظفين. لكن السؤال: هل
-                    تستفيد منها؟
-                </p>
-                <p class="text-slate-300 leading-relaxed">
-                    إحنا نساعدك تحول هذي البيانات العشوائية لـ <strong class="text-blue-400">رؤى واضحة</strong> و<strong
-                        class="text-blue-400">قرارات مبنية على أرقام</strong> بدل التخمين.
-                </p>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-4">
+                        نسمع هالعبارة كثير، لكن الحقيقة إن النفط الخام ما له قيمة إذا ما تكرر. نفس الشي بيانات شركتك.
+                        عندك أرقام مبيعات، بيانات عملاء، سجلات مخزون.. لكن هل قاعد تستفيد منها؟
+                    </p>
+                    <p>
+                        خدماتنا في تحليل البيانات تاخذ هذه الأرقام الجامدة وتحولها لقصة واضحة. نجاوب لك على أسئلة مثل:
+                        "ليش مبيعاتنا انخفضت الشهر الماضي؟"، "من هم أكثر العملاء ربحية؟"، ووين ممكن نفتح فرعنا الجديد؟".
+                    </p>
+                </div>
             </section>
 
-            <!-- Services -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:layers" class="text-cyan-400"></iconify-icon> خدماتنا في تحليل البيانات
-                </h2>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-4 rounded-xl bg-white/5 border border-blue-500/20">
-                        <iconify-icon icon="lucide:layout-dashboard" width="24"
-                            class="text-blue-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">داشبوردات تفاعلية</h3>
-                        <p class="text-slate-400 text-sm">لوحات معلومات حية تعرض أهم المؤشرات بشكل مرئي وسهل الفهم.</p>
+            <!-- Features -->
+            <section id="benefits">
+                <h3 class="text-3xl font-bold mb-10 text-center">أدوات صناعة القرار</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-purple-500">
+                        <div class="text-4xl font-bold text-purple-400 mb-4">
+                            <iconify-icon icon="solar:pie-chart-2-bold-duotone" width="40"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2">لوحات تحكم تفاعلية (Dashboards)</h4>
+                        <p class="text-slate-400 text-sm">صممناها عشان المدراء. شاشة وحدة فيها كل مؤشرات الأداء (KPIs)
+                            المهمة. تقدر تفلتر وتتعمق في التفاصيل بضغطة زر. متوافق مع Power BI و Tableau.</p>
                     </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-cyan-500/20">
-                        <iconify-icon icon="lucide:file-chart" width="24" class="text-cyan-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">تقارير تلقائية</h3>
-                        <p class="text-slate-400 text-sm">تقارير يومية وأسبوعية وشهرية تصلك تلقائياً بدون جهد.</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-indigo-500/20">
-                        <iconify-icon icon="lucide:trending-up" width="24" class="text-indigo-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">تحليل تنبؤي</h3>
-                        <p class="text-slate-400 text-sm">تنبأ بالمبيعات والطلب والاتجاهات المستقبلية بدقة عالية.</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-violet-500/20">
-                        <iconify-icon icon="lucide:database" width="24" class="text-violet-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">تكامل البيانات</h3>
-                        <p class="text-slate-400 text-sm">نجمع بياناتك من مصادر متعددة في مكان واحد موحد.</p>
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-pink-500">
+                        <div class="text-4xl font-bold text-pink-400 mb-4">
+                            <iconify-icon icon="solar:magic-stick-3-bold-duotone" width="40"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2">التحليل التنبؤي (Predictive Analytics)</h4>
+                        <p class="text-slate-400 text-sm">ما نكتفي بتحليل الماضي، نستخدم الـ Machine Learning عشان نتوقع
+                            المستقبل. كم بنبيع الشهر الجاي؟ وش المنتجات اللي بيزيد الطلب عليها؟</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Key Metrics Example -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:gauge" class="text-emerald-400"></iconify-icon> أمثلة على المؤشرات اللي
-                    نتابعها
-                </h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20">
-                        <iconify-icon icon="lucide:shopping-cart" width="28" class="text-blue-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">المبيعات</p>
+            <!-- Steps -->
+            <section>
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">رحلة البيانات معنا</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 rounded-xl glass-card border border-white/5">
+                        <span
+                            class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white">1</span>
+                        <span class="text-slate-300 font-medium">تجميع البيانات (Data Collection) من مصادر مختلفة (CRM,
+                            ERP, Excel)</span>
                     </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 border border-emerald-500/20">
-                        <iconify-icon icon="lucide:users" width="28" class="text-emerald-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">العملاء</p>
+                    <div class="flex items-center gap-4 p-4 rounded-xl glass-card border border-white/5">
+                        <span
+                            class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white">2</span>
+                        <span class="text-slate-300 font-medium">تنظيف البيانات (Data Cleaning) وإزالة التكرار
+                            والأخطاء</span>
                     </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-orange-500/10 to-orange-600/10 border border-orange-500/20">
-                        <iconify-icon icon="lucide:package" width="28" class="text-orange-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">المخزون</p>
+                    <div class="flex items-center gap-4 p-4 rounded-xl glass-card border border-white/5">
+                        <span
+                            class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white">3</span>
+                        <span class="text-slate-300 font-medium">التحليل وبناء النماذج (Modeling)</span>
                     </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-600/10 border border-violet-500/20">
-                        <iconify-icon icon="lucide:dollar-sign" width="28" class="text-violet-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">الأرباح</p>
-                    </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-pink-500/10 to-pink-600/10 border border-pink-500/20">
-                        <iconify-icon icon="lucide:mouse-pointer-click" width="28"
-                            class="text-pink-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">التحويلات</p>
-                    </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-cyan-600/10 border border-cyan-500/20">
-                        <iconify-icon icon="lucide:clock" width="28" class="text-cyan-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">الأداء</p>
-                    </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-rose-500/10 to-rose-600/10 border border-rose-500/20">
-                        <iconify-icon icon="lucide:heart" width="28" class="text-rose-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">رضا العملاء</p>
-                    </div>
-                    <div
-                        class="text-center p-4 rounded-xl bg-gradient-to-br from-gold-500/10 to-amber-600/10 border border-gold-500/20">
-                        <iconify-icon icon="lucide:star" width="28" class="text-gold-400 mb-2"></iconify-icon>
-                        <p class="text-white font-medium text-sm">الجودة</p>
+                    <div class="flex items-center gap-4 p-4 rounded-xl glass-card border border-white/5">
+                        <span
+                            class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white">4</span>
+                        <span class="text-slate-300 font-medium">التصور والعرض (Visualization) عبر لوحات التحكم</span>
                     </div>
                 </div>
             </section>
 
-            <!-- Industries -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:building-2" class="text-gold-400"></iconify-icon> قطاعات نخدمها
-                </h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                        <iconify-icon icon="lucide:shopping-bag" width="20" class="text-blue-400"></iconify-icon>
-                        <span class="text-slate-300">التجزئة والتجارة</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                        <iconify-icon icon="lucide:factory" width="20" class="text-blue-400"></iconify-icon>
-                        <span class="text-slate-300">التصنيع</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                        <iconify-icon icon="lucide:heart-pulse" width="20" class="text-blue-400"></iconify-icon>
-                        <span class="text-slate-300">الرعاية الصحية</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                        <iconify-icon icon="lucide:landmark" width="20" class="text-blue-400"></iconify-icon>
-                        <span class="text-slate-300">البنوك والمالية</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                        <iconify-icon icon="lucide:truck" width="20" class="text-blue-400"></iconify-icon>
-                        <span class="text-slate-300">اللوجستيات</span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5">
-                        <iconify-icon icon="lucide:home" width="20" class="text-blue-400"></iconify-icon>
-                        <span class="text-slate-300">العقارات</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <section class="glass-card p-8 rounded-2xl text-center"
-                style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid rgba(59, 130, 246, 0.3);">
-                <h2 class="text-2xl font-bold text-white mb-4">بياناتك تستاهل تتحول لقرارات 📊</h2>
-                <p class="text-slate-300 mb-6">خلنا نشوف بياناتك ونعطيك نظرة أولية مجانية على الإمكانيات</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="https://wa.me/966538229013"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105"
-                        style="background: linear-gradient(135deg, #25D366, #128C7E);"><iconify-icon
-                            icon="logos:whatsapp-icon" width="20"></iconify-icon> تواصل واتساب</a>
-                    <a href="mailto:yazeed1job@gmail.com"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white glass-premium border border-white/20 hover:bg-white/10"><iconify-icon
-                            icon="lucide:mail" width="20"></iconify-icon> راسلنا إيميل</a>
-                </div>
-            </section>
-        </article>
-
-        <!-- Related Services -->
-        <aside class="mt-12">
-            <h3 class="text-xl font-bold text-white mb-6">خدمات ذات صلة</h3>
-            <div class="grid md:grid-cols-3 gap-4">
-                <a href="ai-agent" class="glass-card p-4 rounded-xl hover:bg-white/5 transition group"><iconify-icon
-                        icon="lucide:cloud" width="24" class="text-sky-400 mb-2"></iconify-icon>
-                    <h4 class="text-white font-medium">AIaaS</h4>
-                </a>
-                <a href="smart-automation"
-                    class="glass-card p-4 rounded-xl hover:bg-white/5 transition group"><iconify-icon icon="lucide:cog"
-                        width="24" class="text-orange-400 mb-2"></iconify-icon>
-                    <h4 class="text-white font-medium">أتمتة العمليات</h4>
-                </a>
-                <a href="consultation" class="glass-card p-4 rounded-xl hover:bg-white/5 transition group"><iconify-icon
-                        icon="lucide:message-square" width="24" class="text-violet-400 mb-2"></iconify-icon>
-                    <h4 class="text-white font-medium">الاستشارات</h4>
-                </a>
-            </div>
-        </aside>
+        </div>
     </main>
 
     <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
@@ -240,7 +175,6 @@
             <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-    <script src="../../js/navigation.js" defer></script>
-<script src="../../js/docs-scripts.js" defer></script></body>
+</body>
 
 </html>

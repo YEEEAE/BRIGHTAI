@@ -5,27 +5,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AIaaS - الذكاء الاصطناعي كخدمة | Bright AI</title>
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
     <meta name="description"
         content="احصل على قوة الذكاء الاصطناعي بدون بنية تحتية معقدة. AIaaS من Bright AI - حلول سحابية آمنة ومستضافة محلياً في السعودية." />
-    <link rel="canonical" href="https://brightai.site/frontend/pages/ai-agent" />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/ai-agent" />
     <meta name="keywords"
         content="AIaaS، ذكاء اصطناعي كخدمة، حلول سحابية AI، استضافة محلية السعودية، API ذكاء اصطناعي" />
     <meta property="og:title" content="AIaaS - الذكاء الاصطناعي كخدمة | Bright AI" />
     <meta property="og:description" content="حلول AI سحابية آمنة ومستضافة محلياً. APIs جاهزة للتكامل مع أنظمتك." />
+
+    <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
     <link rel="stylesheet" href="../../css/bundle-main.css" />
-    <link rel="stylesheet" href="../../css/bundle-pages.css" /><link rel="stylesheet" href="../../css/docs.css" />
-    <script>setTimeout(function () { var s1 = document.createElement('script'); s1.src = 'https://cdn.tailwindcss.com'; s1.async = true; document.body.appendChild(s1); var s2 = document.createElement('script'); s2.src = 'https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js'; s2.async = true; document.body.appendChild(s2); }, 50);</script>
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
     <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"Service","name":"AIaaS - الذكاء الاصطناعي كخدمة","provider":{"@type":"Organization","name":"Bright AI"},"description":"حلول الذكاء الاصطناعي كخدمة سحابية مستضافة محلياً في السعودية","areaServed":"SA"}
     </script>
 </head>
 
-<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight doc-page">
+<body class="antialiased selection:bg-sky-500/30 selection:text-sky-400 tracking-tight doc-page">
     <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
     <nav class="unified-nav" role="navigation">
         <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
                     class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
@@ -49,199 +63,189 @@
     <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
         <ol class="breadcrumb-list">
             <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
-            <li><a href="Docfile/services-overview">الخدمات</a></li><span class="breadcrumb-separator">/</span>
-            <li class="active">AIaaS</li>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">AIaaS (الذكاء الاصطناعي كخدمة)</li>
         </ol>
     </nav>
 
     <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
 
         <!-- Hero Section -->
-        <header class="text-center mb-16">
+        <header class="doc-header text-center mb-16">
             <div
-                class="w-24 h-24 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center">
-                <iconify-icon icon="lucide:cloud" width="48" class="text-white"></iconify-icon>
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-sky-500/10 flex items-center justify-center border border-sky-500/20 shadow-2xl shadow-sky-500/10 animate-float">
+                <iconify-icon icon="solar:cloud-bold-duotone" width="48" class="text-sky-400"></iconify-icon>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">AIaaS<br><span
-                    class="gradient-text-animate">الذكاء الاصطناعي كخدمة</span></h1>
-            <p class="text-slate-400 text-lg max-w-2xl mx-auto">استفد من قوة الذكاء الاصطناعي بدون ما تحتاج تبني بنية
-                تحتية كاملة. كل شي سحابي وآمن ومستضاف محلياً في السعودية.</p>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">AIaaS <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-300">السحابي</span></h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                استفد من قوة الذكاء الاصطناعي بدون ما تحتاج تبني بنية تحتية كاملة. كل شي سحابي، آمن، ومستضاف محلياً في
+                السعودية لتلبية متطلبات السيادة على البيانات.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#models"
+                    class="px-8 py-4 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold transition-all shadow-lg shadow-sky-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:server-square-linear" width="24"></iconify-icon>
+                    استعرض النماذج
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    طلب API Key
+                </a>
+            </div>
         </header>
 
         <!-- Main Content -->
-        <article class="space-y-12">
+        <div class="doc-content space-y-12">
 
             <!-- What is AIaaS -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
-                    <iconify-icon icon="lucide:help-circle" class="text-sky-400"></iconify-icon> وش يعني AIaaS؟
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl"></div>
+                <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="solar:question-circle-bold-duotone" class="text-sky-400"></iconify-icon> وش يعني
+                    AIaaS؟
                 </h2>
-                <p class="text-slate-300 leading-relaxed mb-4">
-                    <strong class="text-sky-400">AIaaS</strong> (AI as a Service) يعني إنك تاخذ قوة الذكاء الاصطناعي
-                    كاشتراك سحابي. بدل ما تشتري سيرفرات وتوظف فريق متخصص وتصرف ملايين على البنية التحتية، تقدر تستخدم
-                    خدماتنا الجاهزة وتدفع حسب استخدامك فقط.
-                </p>
-                <p class="text-slate-300 leading-relaxed">
-                    تخيلها مثل الكهرباء - ما تبني محطة توليد، تستخدم وتدفع الفاتورة. نفس الفكرة مع الذكاء الاصطناعي!
-                </p>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-4">
+                        <strong class="text-sky-400">AIaaS</strong> (Artificial Intelligence as a Service) يعني إنك تاخذ
+                        الذكاء الاصطناعي كـ "خدمة" بدل ما تشتريه كـ "منتج". تخيلها مثل الكهرباء؛ ما تحتاج تبني محطة
+                        توليد عشان تشغل اللمبة، بس تشبك وتحاسب عالفاتورة.
+                    </p>
+                    <p>
+                        نفس الشي معنا.. نوفر لك APIs جاهزة لـ: التعرف على الصور، تحليل النصوص، تحويل الكلام لنص، وغيرها،
+                        وأنت بس عليك تربطها في تطبيقك أو نظامك بخطوات بسيطة.
+                    </p>
+                </div>
             </section>
 
-            <!-- Benefits -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:sparkles" class="text-gold-400"></iconify-icon> ليش تختار AIaaS من Bright
-                    AI؟
-                </h2>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-4 rounded-xl bg-white/5 border border-sky-500/20">
-                        <iconify-icon icon="lucide:server" width="24" class="text-sky-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">استضافة محلية سعودية</h3>
-                        <p class="text-slate-400 text-sm">بياناتك تبقى داخل المملكة. متوافقين مع متطلبات NCA و NDMO.</p>
+            <!-- Benefits Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">ليش تختار AIaaS من Bright AI؟</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-t-4 border-sky-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400">
+                                <iconify-icon icon="solar:shield-check-bold-duotone" width="24"></iconify-icon>
+                            </div>
+                            <h4 class="text-xl font-bold text-white">استضافة محلية (KSA Hosted)</h4>
+                        </div>
+                        <p class="text-slate-400">بياناتك ما تطلع برا المملكة. سيرفراتنا في الرياض وجدة، متوافقة تماماً
+                            مع ضوابط الأمن السيبراني (NCA) وتشريعات حماية البيانات.</p>
                     </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-emerald-500/20">
-                        <iconify-icon icon="lucide:zap" width="24" class="text-emerald-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">سرعة في التنفيذ</h3>
-                        <p class="text-slate-400 text-sm">ابدأ خلال أيام مو أشهر. APIs جاهزة للتكامل مع أنظمتك الحالية.
-                        </p>
+
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-t-4 border-blue-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                                <iconify-icon icon="solar:rocket-2-bold-duotone" width="24"></iconify-icon>
+                            </div>
+                            <h4 class="text-xl font-bold text-white">سرعة تكامل (Fast Integration)</h4>
+                        </div>
+                        <p class="text-slate-400">وثائق API واضحة وسهلة (Documentation). مطورك يقدر يربط الخدمة بتطبيقك
+                            في أقل من ساعة.</p>
                     </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-violet-500/20">
-                        <iconify-icon icon="lucide:trending-up" width="24" class="text-violet-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">مرونة في التوسع</h3>
-                        <p class="text-slate-400 text-sm">كبّر أو صغّر حسب احتياجك. تدفع فقط على اللي تستخدمه.</p>
+
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-t-4 border-indigo-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                                <iconify-icon icon="solar:wallet-money-bold-duotone" width="24"></iconify-icon>
+                            </div>
+                            <h4 class="text-xl font-bold text-white">دفع حسب الاستخدام (Pay-as-you-go)</h4>
+                        </div>
+                        <p class="text-slate-400">ما فيه رسوم تأسيس غالية. ادفع بس حق الـ Calls اللي تستهلكها. مثالي
+                            للشركات الناشئة والمشاريع التجريبية.</p>
                     </div>
-                    <div class="p-4 rounded-xl bg-white/5 border border-gold-500/20">
-                        <iconify-icon icon="lucide:shield-check" width="24" class="text-gold-400 mb-3"></iconify-icon>
-                        <h3 class="font-bold text-white mb-2">أمان من الدرجة الأولى</h3>
-                        <p class="text-slate-400 text-sm">تشفير AES-256، مراقبة على مدار الساعة، ونسخ احتياطية تلقائية.
-                        </p>
+
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-t-4 border-cyan-500">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                <iconify-icon icon="solar:settings-bold-duotone" width="24"></iconify-icon>
+                            </div>
+                            <h4 class="text-xl font-bold text-white">نماذج مخصصة (Custom Models)</h4>
+                        </div>
+                        <p class="text-slate-400">تحتاج نموذج يفهم لهجتك المحلية؟ أو يفهم مصطلحات طبية خاصة؟ نقدر ندرب
+                            لك نموذج خاص (Fine-tuning) على بياناتك.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Use Cases -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:lightbulb" class="text-amber-400"></iconify-icon> استخدامات عملية
-                </h2>
+            <!-- Models Catalog -->
+            <section id="models">
+                <h3 class="text-3xl font-bold mb-8 text-white">كتالوج الخدمات (Service Catalog)</h3>
+                <div class="glass-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead class="bg-white/5 text-slate-300">
+                                <tr>
+                                    <th class="p-4 font-bold">الخدمة</th>
+                                    <th class="p-4 font-bold">الوصف</th>
+                                    <th class="p-4 font-bold">حالة الخدمة</th>
+                                    <th class="p-4 font-bold">التكلفة التقريبية</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/10 text-slate-400">
+                                <tr class="hover:bg-white/5 transition">
+                                    <td class="p-4 font-medium text-white">OCR Engine</td>
+                                    <td class="p-4">استخراج النصوص من الصور والمستندات (يدعم العربية)</td>
+                                    <td class="p-4"><span
+                                            class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs">Live</span>
+                                    </td>
+                                    <td class="p-4">0.05 هللة / صفحة</td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition">
+                                    <td class="p-4 font-medium text-white">Sentiment Analysis</td>
+                                    <td class="p-4">تحليل المشاعر (إيجابي، سلبي) للنصوص العربية</td>
+                                    <td class="p-4"><span
+                                            class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs">Live</span>
+                                    </td>
+                                    <td class="p-4">0.01 هللة / 1000 حرف</td>
+                                </tr>
+                                <tr class="hover:bg-white/5 transition">
+                                    <td class="p-4 font-medium text-white">Speech-to-Text</td>
+                                    <td class="p-4">تحويل التسجيلات الصوتية إلى نص مكتوب (اللهجة السعودية)</td>
+                                    <td class="p-4"><span
+                                            class="px-2 py-1 rounded bg-amber-500/20 text-amber-400 text-xs">Beta</span>
+                                    </td>
+                                    <td class="p-4">0.50 هللة / دقيقة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section>
+                <h3 class="text-2xl font-bold text-white mb-6">الأسئلة الشائعة</h3>
                 <div class="space-y-4">
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5">
-                        <div
-                            class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0">
-                            <iconify-icon icon="lucide:message-square" width="20" class="text-white"></iconify-icon>
+                    <div class="faq-item glass-card rounded-xl border-none">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>هل بياناتي آمنة؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" class="faq-icon"></iconify-icon>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-1">تحليل المحادثات</h3>
-                            <p class="text-slate-400 text-sm">حلل محادثات خدمة العملاء تلقائياً واستخرج الأنماط والمشاكل
-                                المتكررة.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5">
-                        <div
-                            class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
-                            <iconify-icon icon="lucide:file-search" width="20" class="text-white"></iconify-icon>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-1">معالجة المستندات</h3>
-                            <p class="text-slate-400 text-sm">استخرج البيانات من الفواتير، العقود، والنماذج بشكل آلي
-                                ودقيق.</p>
+                        <div class="faq-answer">
+                            <p class="py-4 text-slate-400">نعم، وبشدة. نستخدم تشفير AES-256 للبيانات المحفوظة وتشفير TLS
+                                1.3 للبيانات المرسلة. والأهم من ذلك، سيرفراتنا موجودة فيزيائياً داخل المملكة لضمان
+                                السيادة الكاملة.</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5">
-                        <div
-                            class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shrink-0">
-                            <iconify-icon icon="lucide:brain" width="20" class="text-white"></iconify-icon>
+                    <div class="faq-item glass-card rounded-xl border-none">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>كيف أبدأ؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" class="faq-icon"></iconify-icon>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-white mb-1">التنبؤ والتحليل</h3>
-                            <p class="text-slate-400 text-sm">تنبأ بالمبيعات، الطلب، وسلوك العملاء باستخدام نماذج ML
-                                متقدمة.</p>
+                        <div class="faq-answer">
+                            <p class="py-4 text-slate-400">تواصل معنا للحصول على API Key تجريبي. بعدين اتبع التوثيق
+                                الفني (Documentation) للربط مع نظامك. فريقنا التقني جاهز للمساعدة في أي وقت.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- How It Works -->
-            <section class="glass-card p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:git-branch" class="text-indigo-400"></iconify-icon> كيف تشتغل الخدمة؟
-                </h2>
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center text-white font-bold shrink-0">
-                            1</div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white mb-1">تحديد الاحتياج</h3>
-                            <p class="text-slate-400 text-sm">نسمعك ونفهم المشكلة اللي تبي تحلها بالذكاء الاصطناعي.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold shrink-0">
-                            2</div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white mb-1">تهيئة البيئة</h3>
-                            <p class="text-slate-400 text-sm">نجهز لك بيئة سحابية خاصة ونربطها مع أنظمتك الحالية.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-white font-bold shrink-0">
-                            3</div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white mb-1">التدريب والتخصيص</h3>
-                            <p class="text-slate-400 text-sm">ندرب النماذج على بياناتك عشان تعطي نتائج دقيقة لمجالك.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-bold shrink-0">
-                            4</div>
-                        <div>
-                            <h3 class="text-lg font-bold text-white mb-1">الإطلاق والدعم</h3>
-                            <p class="text-slate-400 text-sm">نطلق الخدمة ونوفر دعم مستمر لضمان أفضل أداء.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <section class="glass-card p-8 rounded-2xl text-center"
-                style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.1)); border: 1px solid rgba(14, 165, 233, 0.3);">
-                <h2 class="text-2xl font-bold text-white mb-4">جاهز تبدأ مع AIaaS؟</h2>
-                <p class="text-slate-300 mb-6">احصل على استشارة مجانية وخلنا نشوف كيف ممكن نساعدك</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="https://wa.me/966538229013"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105"
-                        style="background: linear-gradient(135deg, #25D366, #128C7E);"><iconify-icon
-                            icon="logos:whatsapp-icon" width="20"></iconify-icon> تواصل واتساب</a>
-                    <a href="Docfile/services-overview"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white glass-premium border border-white/20 hover:bg-white/10"><iconify-icon
-                            icon="lucide:arrow-right" width="20"></iconify-icon> شوف باقي الخدمات</a>
-                </div>
-            </section>
-        </article>
-
-        <!-- Related Services -->
-        <aside class="mt-12">
-            <h3 class="text-xl font-bold text-white mb-6">خدمات ذات صلة</h3>
-            <div class="grid md:grid-cols-3 gap-4">
-                <a href="smart-automation"
-                    class="glass-card p-4 rounded-xl hover:bg-white/5 transition group"><iconify-icon icon="lucide:cog"
-                        width="24" class="text-orange-400 mb-2"></iconify-icon>
-                    <h4 class="text-white font-medium">أتمتة العمليات RPA</h4>
-                </a>
-                <a href="data-analysis"
-                    class="glass-card p-4 rounded-xl hover:bg-white/5 transition group"><iconify-icon
-                        icon="lucide:bar-chart-3" width="24" class="text-blue-400 mb-2"></iconify-icon>
-                    <h4 class="text-white font-medium">تحليل البيانات</h4>
-                </a>
-                <a href="ai-bots" class="glass-card p-4 rounded-xl hover:bg-white/5 transition group"><iconify-icon
-                        icon="lucide:bot" width="24" class="text-indigo-400 mb-2"></iconify-icon>
-                    <h4 class="text-white font-medium">روبوتات ذكية</h4>
-                </a>
-            </div>
-        </aside>
+        </div>
     </main>
 
     <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
@@ -249,7 +253,6 @@
             <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-    <script src="../../js/navigation.js" defer></script>
-<script src="../../js/docs-scripts.js" defer></script></body>
+</body>
 
 </html>

@@ -135,6 +135,25 @@ frontend/css/bundle-pages.css  ✅ تم إضافة أنماط Docfile الموح
 frontend/pages/smart-medical-archive/
 /frontend/pages/interview/
 pages/ai-bots/ < هاذي متفرعه لاكثر من ريبو كل ريبو يكون مستند لوحده>
+- كل الصفحات اللي انشائت او بتسوي تكون تاكد وانت تكتب او ماحدثته سابقا مندرج تحت 
+docs.css
+ 
+docs-scripts.js
+ 
+او تضيف تصميم الصفحه المطلوب *الموحد لكل المستندات*
+
+
+- اضف لجميع المستندات في head : 
+<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+
 
 ### JSON-LD Schema
 - Organization

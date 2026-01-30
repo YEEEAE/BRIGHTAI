@@ -4,21 +4,38 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>حلول الذكاء الاصطناعي للتجزئة والتجارة الإلكترونية | Bright AI</title>
+    <title>حلول التجزئة والتجارة الإلكترونية | Bright AI - بيع بذكاء</title>
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
     <meta name="description"
-        content="حلول AI للتجزئة والمتاجر: توصيات المنتجات الشخصية، إدارة المخزون الذكية، وتحسين تجربة العميل." />
+        content="حلول ذكاء اصطناعي لقطاع التجزئة و E-commerce في السعودية. توصيات منتجات ذكية، إدارة مخزون آلية، وتحليل المتسوقين لزيادة المبيعات." />
     <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-retail" />
+    <meta name="keywords"
+        content="تجارة إلكترونية، Retail AI، إدارة المخزون الذكي، توصيات المنتجات، سلة، زد، تحليل المتسوقين، زيادة المبيعات" />
+
+    <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
     <link rel="stylesheet" href="../../css/bundle-main.css" />
     <link rel="stylesheet" href="../../css/bundle-pages.css" />
     <link rel="stylesheet" href="../../css/docs.css" />
-    <script>setTimeout(function () { var s1 = document.createElement('script'); s1.src = 'https://cdn.tailwindcss.com'; s1.async = true; document.body.appendChild(s1); var s2 = document.createElement('script'); s2.src = 'https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js'; s2.async = true; document.body.appendChild(s2); }, 50);</script>
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
     <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"حلول التجزئة الذكية","provider":{"@type":"Organization","name":"Bright AI"},"description":"حلول الذكاء الاصطناعي للتجارة الإلكترونية وإدارة المخزون","areaServed":"SA"}
+    </script>
 </head>
 
-<body class="antialiased selection:bg-orange-500/30 selection:text-orange-400 tracking-tight doc-page">
+<body
+    class="antialiased selection:bg-orange-500/30 selection:text-orange-400 tracking-tight doc-page bg-slate-950 text-slate-300">
     <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
     <!-- Navigation -->
@@ -46,118 +63,209 @@
         <ol class="breadcrumb-list">
             <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
             <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
-            <li class="active">التجزئة والتجارة الإلكترونية</li>
+            <li class="active">التجزئة والتجارة (Retail)</li>
         </ol>
     </nav>
 
     <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
 
-        <!-- Header -->
-        <header class="doc-header text-center">
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
             <div
-                class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20">
-                <iconify-icon icon="lucide:shopping-bag" width="40" class="text-orange-400"></iconify-icon>
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 shadow-2xl shadow-orange-500/10 animate-float">
+                <iconify-icon icon="solar:bag-heart-bold-duotone" width="48" class="text-orange-400"></iconify-icon>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">حلول قطاع <span class="text-orange-400">التجزئة
-                    Retail</span></h1>
-            <p class="text-xl text-slate-400 max-w-2xl mx-auto">افهم عميلك صح.. وبع له اللي يحتاجه، قبل يطلبه</p>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">تجارة تجزئة <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">ذكية</span></h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                سواء كان عندك متجر إلكتروني أو فروع، نساعدك تعرف عملائك أكثر، تدير مخزونك بذكاء، وتزيد مبيعاتك بتوصيات
+                شخصية لكل عميل.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#sales-demo"
+                    class="px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all shadow-lg shadow-orange-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:cart-large-2-linear" width="24"></iconify-icon>
+                    جرب البائع الذكي
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    تحليل لمتجرك
+                </a>
+            </div>
         </header>
 
-        <div class="doc-content space-y-12">
+        <div class="doc-content space-y-20">
 
-            <!-- Overview -->
-            <section class="glass-card p-8">
-                <div class="flex flex-col md:flex-row gap-8 items-center">
-                    <div class="flex-1">
-                        <h2>حوّل الزائر لعميل.. وما يروح لغيرك</h2>
-                        <p>
-                            المنافسة بالسوق حامية، والعميل صار يبي تجربة تفهم جوّه. حنا نساعدك تغوص ببيانات عملائك،
-                            وتعرف وش يحبون ووش يكرهون، عشان تقدم لهم العروض اللي ما يقدرون يقولون لها "لا".
-                        </p>
-                        <p class="mt-4">
-                            والأهم؟ مخزونك دايم مضبوط، لا بزيادة ولا ناقص. كل شي مدروس بالملي.
-                        </p>
-                    </div>
-                    <div class="w-full md:w-1/3">
-                        <div
-                            class="aspect-square rounded-2xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/30 flex items-center justify-center">
-                            <iconify-icon icon="lucide:tags" width="80" class="text-orange-400/80"></iconify-icon>
-                        </div>
-                    </div>
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-orange-500 to-amber-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:shop-window-bold-duotone" class="text-orange-400"></iconify-icon>
+                    السوق تغير.. هل أنت جاهز؟
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        المنافسة اليوم شرسة. العميل السعودي صار يتوقع تجربة شخصية وسرعة في التوصيل. المتاجر اللي تعتمد
+                        "الحدس" في طلب البضاعة تخسر بسبب تكدس المخزون أو نفاذه.
+                    </p>
+                    <p class="mb-6">
+                        في <strong>Bright AI</strong>، نربط أنظمة الـ POS والمتجر الإلكتروني بخوارزميات ذكية تتوقع
+                        الطلب، وتقترح المنتجات، وتعيد استهداف العملاء برسائل مخصصة تزيد من قيمة السلة الشرائية.
+                    </p>
                 </div>
             </section>
 
-            <!-- Use Cases -->
+            <!-- Features Grid -->
             <section>
-                <h3 class="flex items-center gap-2 mb-6 text-2xl">
-                    <iconify-icon icon="lucide:shopping-cart" class="text-orange-400"></iconify-icon>
-                    تطبيقات الـ AI في متجرك
+                <h3 class="text-3xl font-bold mb-10 text-center">حلولنا للتجار</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-orange-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 text-orange-400">
+                            <iconify-icon icon="solar:box-minimalistic-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">إدارة المخزون التنبؤية</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يتوقع لك: "ترا منتج X بيخلص بعد 3 أيام بسبب العروض، اطلب كمية الحين". يقلل الهدر
+                            ويضمن توفر البضاعة المطلوبة.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-amber-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6 text-amber-400">
+                            <iconify-icon icon="solar:magic-stick-3-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">محرك التوصيات (Personalization)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            مثل أمازون ونتفليكس. "العملاء اللي اشتروا هذا اشتروا هذا أيضاً". يرفع معدل التحويل
+                            (Conversion Rate) بنسبة تصل لـ 30%.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-red-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 text-red-400">
+                            <iconify-icon icon="solar:users-group-rounded-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تحليل سلوك العملاء (Churn Prediction)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            نوريك مين العملاء اللي "ساحبين" عليك، ونعطيك خطة لاستعادتهم قبل ما تخسرهم للأبد.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-yellow-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-yellow-500/20 flex items-center justify-center mb-6 text-yellow-400">
+                            <iconify-icon icon="solar:chat-round-money-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">شات بوت المبيعات (Sales Bot)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            مو بس خدمة عملاء، هذا بياع شاطر! يقترح منتجات، يجاوب عالأسئلة، ويقنع العميل يشتري الحين.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE DEMO (Sales Bot) -->
+            <section id="sales-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold mb-4 border border-orange-500/20 w-fit">
+                                ديمو تفاعلي 👇
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">جرب "برايت سيلز" - بياعك الذكي</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                هذا البوت مدرب إنه يفهم ذوق العميل ويقترح عليه منتجات مناسبة. جربه وكأنه موظف حقيقي في
+                                محلك.
+                            </p>
+                            <a href="../ai-bots/BrightSales/index.html" target="_blank"
+                                class="w-full py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all shadow-lg text-center flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:chat-square-like-bold"></iconify-icon>
+                                ابدأ المحادثة مع BrightSales
+                            </a>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-orange-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+                            <!-- Chat Preview Code -->
+                            <div class="w-full max-w-sm bg-slate-900 rounded-xl border border-white/10 shadow-2xl p-4">
+                                <div class="flex items-center gap-3 border-b border-white/10 pb-3 mb-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white">
+                                        <iconify-icon icon="lucide:bot"></iconify-icon></div>
+                                    <div>
+                                        <div class="text-white text-sm font-bold">BrightSales</div>
+                                        <div class="text-slate-500 text-xs">Active now</div>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 text-sm">
+                                    <div
+                                        class="bg-white/5 p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl text-slate-300">
+                                        هلا فيك! 👋<br>أنا لاحظت إنك تدور على لابتوب للجيمنج. عندي عرض رهيب على جهاز RTX
+                                        4070، وش رايك تشوفه؟ 🎮
+                                    </div>
+                                    <div
+                                        class="bg-orange-600/20 border border-orange-500/20 p-3 rounded-tl-xl rounded-bl-xl rounded-br-xl text-orange-200 ml-auto w-fit">
+                                        كم سعره؟ وهل عليه ضمان؟
+                                    </div>
+                                    <div
+                                        class="bg-white/5 p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl text-slate-300">
+                                        سعره بعد الخصم 5499 ريال بس! 🔥<br>والضمان سنتين شامل الوكيل. تحب أضيفه للسلة؟
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats/Integrations -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">نتكامل مع منصتك المفضلة
                 </h3>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="glass-card p-6 border-t-4 border-t-orange-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:heart" width="24" class="text-orange-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">نظام التوصيات الذكي</h4>
-                        </div>
-                        <p class="text-sm">زي "أمازون" بس لمتجرك! نقترح منتجات مكملة للعميل بناءً على ذوقه، وهالشي يرفع
-                            السلة الشرائية (Up-selling).</p>
+                <div
+                    class="flex flex-wrap justify-center gap-8 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+                    <iconify-icon icon="logos:shopify" width="100"></iconify-icon>
+                    <iconify-icon icon="logos:woocommerce" width="100"></iconify-icon>
+                    <!-- Salla & Zid placeholders (using text as icons might not exist) -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-[#baff39]">Salla</span>
                     </div>
-                    <div class="glass-card p-6 border-t-4 border-t-amber-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:package-check" width="24" class="text-amber-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">إدارة المخزون التنبؤية</h4>
-                        </div>
-                        <p class="text-sm">لا تتوهق بمنتجات مكدسة ولا تخسر زباين عشان "نافذ من المخزون". نظامنا يعلمك وش
-                            تطلب ومتى تطلب بدقة.</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-[#7635f3]">Zid</span>
                     </div>
-                    <div class="glass-card p-6 border-t-4 border-t-red-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:scan-face" width="24" class="text-red-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">تحليل المشاعر داخل المتجر</h4>
-                        </div>
-                        <p class="text-sm">للمحلات: كاميرات ذكية تعرف ردة فعل الزبون أول ما يشوف البضاعة. هل أعجبته؟ هل
-                            استغرب؟ بيانات ذهبية لتوزيع الأرفف.</p>
-                    </div>
-                    <div class="glass-card p-6 border-t-4 border-t-yellow-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:search" width="24" class="text-yellow-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">البحث بالصور</h4>
-                        </div>
-                        <p class="text-sm">العميل صور شنطة شافها بالشارع؟ يقدر يرفع الصورة بمتجرك ويلاقي نفس المنتج أو
-                            شي يشبه له فوراً.</p>
-                    </div>
+                    <iconify-icon icon="logos:magento" width="100"></iconify-icon>
                 </div>
             </section>
 
-            <!-- ROI Stats -->
-            <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="glass-card p-4 text-center">
-                    <div class="text-2xl font-bold text-orange-400">+35%</div>
-                    <div class="text-xs text-slate-400">زيادة بالمبيعات</div>
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-500/10 blur-3xl rounded-full z-0">
                 </div>
-                <div class="glass-card p-4 text-center">
-                    <div class="text-2xl font-bold text-orange-400">-20%</div>
-                    <div class="text-xs text-slate-400">توفير بتكاليف التخزين</div>
-                </div>
-                <div class="glass-card p-4 text-center">
-                    <div class="text-2xl font-bold text-orange-400">2x</div>
-                    <div class="text-xs text-slate-400">دبلنا معدل التحويل</div>
-                </div>
-                <div class="glass-card p-4 text-center">
-                    <div class="text-2xl font-bold text-orange-400">24/7</div>
-                    <div class="text-xs text-slate-400">خدمة عملاء ما تنام</div>
-                </div>
-            </section>
-
-            <!-- CTA -->
-            <section class="text-center py-8">
-                <h2 class="text-2xl font-bold text-white mb-4">ودك تدبّل مبيعاتك اليوم قبل بكرة؟</h2>
-                <div class="flex justify-center gap-4">
-                    <a href="contact"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-semibold transition-all">
-                        <iconify-icon icon="lucide:rocket"></iconify-icon>
-                        ابدأ تجربتك المجانية
-                    </a>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">زيد مبيعاتك اليوم</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        لا تخسر عملاءك للمنافسين. خل متجرك أذكى، وخدمتك أسرع.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل معنا
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            احجز ديمو
+                        </a>
+                    </div>
                 </div>
             </section>
 
@@ -169,7 +277,6 @@
             <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-    <script src="../../js/docs-scripts.js" defer></script>
 </body>
 
 </html>

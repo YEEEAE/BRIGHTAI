@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="نظام توظيف ذكي يقوم بفرز السير الذاتية وإجراء مقابلات فيديو آلية مع المرشحين. وفر 70% من وقت فريق HR مع حلول Bright AI." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-interview" />
+    <meta name="keywords"
+        content="نظام توظيف ذكي، مقابلات AI، فرز السير الذاتية، ATS ذكي، الموارد البشرية السعودية، تقييم المرشحين آلياً" />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"نظام التوظيف الذكي","provider":{"@type":"Organization","name":"Bright AI"},"description":"أتمتة عملية التوظيف من فرز السير الذاتية إلى المقابلات الشخصية","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-emerald-500/30 selection:text-emerald-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">الموارد البشرية (HR Tech)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-2xl shadow-emerald-500/10 animate-float">
+                <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" width="48"
+                    class="text-emerald-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">التوظيف <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">الذكي</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                لا تضيع وقتك في قراءة مئات السير الذاتية غير المطابقة. دع الذكاء الاصطناعي يفرز المرشحين، ويجري مقابلات
+                أولية، ويعطيك "الزبدة" عن أفضل المواهب.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#interview-demo"
+                    class="px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:videocamera-record-linear" width="24"></iconify-icon>
+                    جرب المقابلة الذكية
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    احجز ديمو للشركات
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-emerald-500 to-teal-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:stopwatch-bold-duotone" class="text-emerald-400"></iconify-icon>
+                    التوظيف التقليدي بطيء ومكلف
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        في المتوسط، يستغرق التوظيف 42 يوماً ويكلف آلاف الريالات. ومسؤول التوظيف يقضي 7 ثوانٍ فقط في مسح
+                        كل CV. هذا يعني إن مواهب كثير تضيع بسبب السرعة أو التحيز غير المقصود.
+                    </p>
+                    <p class="mb-6">
+                        في <strong>Bright AI</strong>، نقدم لك مساعد توظيف افتراضي يقرأ كل كلمة في الـ CV، يطابق
+                        المهارات مع الوصف الوظيفي بدقة، وحتى يجري مقابلة فيديو مع المرشح لتقييم مهاراته الناعمة (Soft
+                        Skills) قبل ما تشوفه أنت.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">مميزات نظام التوظيف</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-emerald-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400">
+                            <iconify-icon icon="solar:document-text-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">فرز السير الذاتية (CV Parsing)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يستخرج البيانات (الاسم، المهارات، الخبرة) من ملفات PDF/Word ويرتب المرشحين حسب نسبة
+                            تطابقهم مع الوظيفة (Matching Score).
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-teal-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-500/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:videocamera-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">مقابلات الذكاء الاصطناعي</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            مرشحك يجاوب على أسئلة صوتية أو فيديو، والنظام يحلل نبرة الصوت، لغة الجسد، ومحتوى الإجابة
+                            لتقييم الثقة والاتصال.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-cyan-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:user-check-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">كشف الغش (Proctoring)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            أثناء الاختبارات التقنية، النظام يتأكد إن المرشح ما يستخدم ChatGPT أو يفتح صفحات ثانية
+                            للإجابة.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:graph-up-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تحليلات التوظيف</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تعرف على مصادر التوظيف الأكثر فعالية، والوقت المستغرق للتوظيف (Time to Hire)، وأداء فريق
+                            التوظيف لديك.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE DEMO (Interview Bot) -->
+            <section id="interview-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold mb-4 border border-emerald-500/20 w-fit">
+                                نظام تفاعلي 🎤
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">جرب المقابلة الشخصية مع AI</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                تخيل أنك متقدم لوظيفة "مدير تسويق". المساعد الذكي سيسألك بعض الأسئلة ويحلل إجاباتك
+                                فوراً. هل أنت مستعد؟
+                            </p>
+                            <a href="../interview/index.html" target="_blank"
+                                class="w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-lg text-center flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:microphone-bold"></iconify-icon>
+                                بدء المقابلة التجريبية
+                            </a>
+                            <p class="text-xs text-slate-500 mt-4 text-center">
+                                * تأكد من السماح باستخدام الميكروفون للمتصفح.
+                            </p>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-emerald-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+                            <!-- Visual Representation -->
+                            <div
+                                class="w-full max-w-sm bg-slate-800 rounded-2xl border border-white/10 shadow-2xl overflow-hidden relative">
+                                <div
+                                    class="absolute top-4 right-4 bg-red-500 px-2 py-1 rounded text-white text-xs font-bold animate-pulse">
+                                    ● LIVE</div>
+                                <div class="h-48 bg-slate-700 flex items-center justify-center">
+                                    <iconify-icon icon="solar:user-circle-bold"
+                                        class="text-8xl text-slate-500"></iconify-icon>
+                                </div>
+                                <div class="p-4 bg-slate-900">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                                            <iconify-icon icon="lucide:bot"></iconify-icon></div>
+                                        <div>
+                                            <div class="text-white text-sm font-bold">Smart Recruiter</div>
+                                            <div class="text-emerald-400 text-xs">Listening...</div>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 w-2/3 animate-pulse"></div>
+                                    </div>
+                                    <p class="text-slate-400 text-sm mt-3 italic">
+                                        "حدثني عن موقف صعب واجهته في عملك السابق وكيف تعاملت معه؟"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Specification (Privacy Focused) -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">الخصوصية والإنصاف</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:scale-bold" class="text-purple-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">تحيز صفري (Zero Bias)</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            خوارزمياتنا مصممة لتجاهل الجنس، العمر، والجنسية، وتركز فقط على المهارات والخبرات لضمان تكافؤ
+                            الفرص.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:shield-check-bold" class="text-purple-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">حماية البيانات</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            جميع المقابلات المسجلة والسير الذاتية مشفرة ولا يتم مشاركتها مع أي طرف ثالث.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:document-add-bold" class="text-purple-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">GDPR Compliant</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            نظامنا متوافق مع كافة تشريعات حماية البيانات العالمية والمحلية.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">ابني فريق أحلامك، بجهد أقل</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        جرب مستقبل التوظيف اليوم. دقة أعلى، سرعة أكبر، وتكلفة أقل.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تحدث مع خبير HR
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            طلب عرض سعر
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -4,21 +4,38 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>حلول الذكاء الاصطناعي للمالية والبنوك | Bright AI</title>
+    <title>حلول المالية (Fintech) | Bright AI - كشف الاحتيال والامتثال</title>
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
     <meta name="description"
-        content="حلول AI للقطاع المالي: كشف الاحتيال، التحليل المالي التنبؤي، وخدمة العملاء الذكية للبنوك وشركات التقنية المالية." />
+        content="حلول ذكاء اصطناعي للقطاع المالي السعودي. كشف الاحتيال، تقييم الائتمان، والامتثال لتشريعات SAMA و NCA باستخدام خوارزميات متقدمة." />
     <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-finance" />
+    <meta name="keywords"
+        content="فنتك السعودية، Fintech، كشف الاحتيال البنكي، ساما SAMA، البنوك الرقمية السعودية، تحليل الائتمان AI، مكافحة غسيل الأموال AML" />
+
+    <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
     <link rel="stylesheet" href="../../css/bundle-main.css" />
     <link rel="stylesheet" href="../../css/bundle-pages.css" />
     <link rel="stylesheet" href="../../css/docs.css" />
-    <script>setTimeout(function () { var s1 = document.createElement('script'); s1.src = 'https://cdn.tailwindcss.com'; s1.async = true; document.body.appendChild(s1); var s2 = document.createElement('script'); s2.src = 'https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js'; s2.async = true; document.body.appendChild(s2); }, 50);</script>
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
     <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"حلول المالية والتقنية المالية","provider":{"@type":"Organization","name":"Bright AI"},"description":"حلول الذكاء الاصطناعي للقطاع المالي وكشف الاحتيال والامتثال","areaServed":"SA"}
+    </script>
 </head>
 
-<body class="antialiased selection:bg-blue-500/30 selection:text-blue-400 tracking-tight doc-page">
+<body
+    class="antialiased selection:bg-blue-500/30 selection:text-blue-400 tracking-tight doc-page bg-slate-950 text-slate-300">
     <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
     <!-- Navigation -->
@@ -46,124 +63,256 @@
         <ol class="breadcrumb-list">
             <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
             <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
-            <li class="active">المالية والبنوك</li>
+            <li class="active">حلول المالية (Fintech)</li>
         </ol>
     </nav>
 
     <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
 
-        <!-- Header -->
-        <header class="doc-header text-center">
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
             <div
-                class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
-                <iconify-icon icon="lucide:landmark" width="40" class="text-blue-400"></iconify-icon>
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 shadow-2xl shadow-blue-500/10 animate-float">
+                <iconify-icon icon="solar:card-recive-bold-duotone" width="48" class="text-blue-400"></iconify-icon>
             </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">حلول قطاع <span class="text-blue-400">المالية
-                    وFinTech</span></h1>
-            <p class="text-xl text-slate-400 max-w-2xl mx-auto">أمانك المالي وراحة بالك.. همنا الأول</p>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">التقنية المالية <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">الآمنة</span></h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                في عالم المال، الثقة هي العملة الأغلى. حلولنا تساعدك تحمي عملائك من الاحتيال، وتقيم المخاطر بدقة، وتضمن
+                الامتثال لكل تشريعات "ساما" بضغطة زر.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#fraud-detection"
+                    class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all shadow-lg shadow-blue-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:shield-check-linear" width="24"></iconify-icon>
+                    سيناريو كشف الاحتيال
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    طلب استشارة SAMA
+                </a>
+            </div>
         </header>
 
-        <div class="doc-content space-y-12">
+        <div class="doc-content space-y-20">
 
-            <!-- Overview -->
-            <section class="glass-card p-8">
-                <div class="flex flex-col md:flex-row gap-8 items-center">
-                    <div class="flex-1">
-                        <h2>ذكاء مالي.. يختصر عليك الطريق</h2>
-                        <p>
-                            القطاع المالي يتغير بسرعة البرق، والبيانات هي "الذهب الجديد". سواء كنت بنك أو شركة FinTech،
-                            حنا في Bright AI نساعدك تحلل ملايين العمليات في ثواني، وتكشف أي تلاعب قبل لا يصير.
-                        </p>
-                        <p class="mt-4">
-                            مهمتنا؟ نخليك تسبق الكل بخطوة، وتضمن لعملائك تجربة بنكية ولا في الأحلام.
-                        </p>
-                        <ul class="space-y-2 text-sm text-slate-300 mt-4">
-                            <li class="flex items-center gap-2"><iconify-icon icon="lucide:check-circle"
-                                    class="text-blue-400"></iconify-icon> تحليل فوري للمعاملات (Real-time)</li>
-                            <li class="flex items-center gap-2"><iconify-icon icon="lucide:check-circle"
-                                    class="text-blue-400"></iconify-icon> تقييم ائتماني عادل ودقيق</li>
-                        </ul>
-                    </div>
-                    <div class="w-full md:w-1/3">
-                        <div
-                            class="aspect-square rounded-2xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center">
-                            <iconify-icon icon="lucide:trending-up" width="80" class="text-blue-400/80"></iconify-icon>
-                        </div>
-                    </div>
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-blue-500 to-cyan-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:danger-triangle-bold-duotone" class="text-blue-400"></iconify-icon>
+                    التحدي: المحتالون أذكى من قبل
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        مع صعود البنوك الرقمية وخدمات الـ Fintech في السعودية، زادت أيضاً محاولات الاحتيال وغسيل
+                        الأموال. الطرق التقليدية للكشف (Rule-based) صارت قديمة وتسبب إزعاج للعملاء (False Positives) أو
+                        تمرر عمليات مشبوهة.
+                    </p>
+                    <p class="mb-6">
+                        في <strong>Bright AI</strong>، نستخدم نماذج تعلم عميق (Deep Learning) تحلل سلوك العميل، مو بس
+                        قيمة العملية. متى يشتري؟ من وين؟ كيف يمسك الجوال؟ كل هذي عوامل نستخدمها لنقول لك: "هذه العملية
+                        آمنة" أو "انتبه، فيه خطر".
+                    </p>
                 </div>
             </section>
 
-            <!-- Use Cases -->
+            <!-- Features Grid -->
             <section>
-                <h3 class="flex items-center gap-2 mb-6 text-2xl">
-                    <iconify-icon icon="lucide:pie-chart" class="text-blue-400"></iconify-icon>
-                    وش نقدم للبنوك والشركات؟
-                </h3>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="glass-card p-6 border-t-4 border-t-blue-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:shield-alert" width="24" class="text-blue-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">كشف الاحتيال (Fraud Detection)</h4>
+                <h3 class="text-3xl font-bold mb-10 text-center">خدماتنا للقطاع المالي</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:shield-warning-bold-duotone" width="32"></iconify-icon>
                         </div>
-                        <p class="text-sm">نظامنا الذكي "يشم" الحركات المشبوهة ويوقفها فوراً. يعني، فلوس عملائك وسمعتك
-                            في أمان تام.</p>
+                        <h4 class="text-xl font-bold text-white mb-3">نظام كشف الاحتيال اللحظي</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            يراقب ملايين العمليات في الثانية. يوقف العمليات المشبوهة فوراً قبل ما تتم، ويرسل تنبيه لفريق
+                            الامتثال. الدقة عندنا تتجاوز 98%.
+                        </p>
                     </div>
-                    <div class="glass-card p-6 border-t-4 border-t-indigo-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:bot" width="24" class="text-indigo-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">المستشار المالي الذكي</h4>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-cyan-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:document-text-bold-duotone" width="32"></iconify-icon>
                         </div>
-                        <p class="text-sm">كل عميل يبي يحس إنه VIP. وفّر لهم مساعد شخصي يعطيهم نصائح استثمارية وخطط
-                            توفير تفصّل عليهم تفصيل.</p>
+                        <h4 class="text-xl font-bold text-white mb-3">التقييم الائتماني الذكي (Credit Scoring)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            بدل الاعتماد فقط على "سمة"، نحلل بيانات بديلة (Alternative Data) مثل فواتير الخدمات وسلوك
+                            الدفع، لنعطيك صورة أدق عن قدرة العميل على السداد.
+                        </p>
                     </div>
-                    <div class="glass-card p-6 border-t-4 border-t-sky-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:file-text" width="24" class="text-sky-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">أتمتة العمليات (RPA)</h4>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-indigo-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:user-check-bold-duotone" width="32"></iconify-icon>
                         </div>
-                        <p class="text-sm">ليه تضيع وقت موظفينك في تعبئة نماذج وتدقيق بيانات؟ الـ Bots حقتنا تخلص شغل
-                            أيام في دقايق، وبدقة 100%.</p>
+                        <h4 class="text-xl font-bold text-white mb-3">eKYC & Identity Verification</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            التحقق من الهوية عبر بصمة الوجه ومطابقتها مع الهوية الوطنية في ثواني. تجربة فتح حساب
+                            (Onboarding) سلسة وآمنة تماماً.
+                        </p>
                     </div>
-                    <div class="glass-card p-6 border-t-4 border-t-cyan-500">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="lucide:bar-chart-2" width="24" class="text-cyan-400"></iconify-icon>
-                            <h4 class="text-white font-bold text-lg m-0">التداول اللحظي</h4>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-teal-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-500/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:book-bookmark-bold-duotone" width="32"></iconify-icon>
                         </div>
-                        <p class="text-sm">خوارزميات تقتنص الفرص في أجزاء من الثانية. السوق يطلع، السوق ينزل.. أنت دايم
-                            مستفيد.</p>
+                        <h4 class="text-xl font-bold text-white mb-3">أتمتة الامتثال (RegTech)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تقارير آلية لمتطلبات البنك المركزي (SAMA) وهيئة السوق المالية. نضمن إنك دائماً في "الجانب
+                            السليم" من القانون.
+                        </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Case Study / Highlight -->
-            <section class="glass-card p-8 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-                <h3 class="text-xl mb-4 text-white">ليش Bright AI هي خيارك الصح؟</h3>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-white mb-1">تشفير عالي</div>
-                        <p class="text-sm text-slate-400">حماية من الطراز العسكري (AES-256)</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-white mb-1">امتثال كامل</div>
-                        <p class="text-sm text-slate-400">نمشي حسب أنظمة البنك المركزي (SAMA)</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-white mb-1">صفر أخطاء</div>
-                        <p class="text-sm text-slate-400">لا مجال للخطأ في الحسابات</p>
+            <!-- INTERACTIVE SCENARIO (Instead of Try Guide) -->
+            <section id="fraud-detection" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-red-500/20 text-red-400 text-xs font-bold mb-4 border border-red-500/20 w-fit">
+                                سيناريو حقيقي 🚨
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">كيف بوقف النظام عملية احتيال؟</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                هذا السيناريو يوضح رحلة عملية تحويل مبلغ كبير تم اكتشافها وإيقافها بواسطة نظامنا في أقل
+                                من 50 ملي ثانية.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">
+                                        1</div>
+                                    <p class="text-sm text-slate-300">العميل بدأ عملية تحويل بقيمة 50,000 ريال لجهة
+                                        دولية.</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">
+                                        2</div>
+                                    <p class="text-sm text-slate-300">النظام حلل الموقع الجغرافي: "العميل في الرياض،
+                                        الطلب من IP في دولة أخرى".</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">
+                                        3</div>
+                                    <p class="text-sm text-slate-300">تحليل السلوك: "العميل لم يحول لهذه الدولة سابقاً".
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs font-bold">
+                                        ✓</div>
+                                    <p class="text-sm text-green-400 font-bold">الإجراء: تم تجميد العملية وإرسال رمز OTP
+                                        إضافي للتحقق.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-blue-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+                            <!-- Visual Representation needed here, maybe an svg or code snippet image -->
+                            <div class="glass-card p-6 w-full max-w-sm border-l-4 border-red-500">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-red-400 font-bold flex items-center gap-2"><iconify-icon
+                                            icon="solar:shield-warning-bold"></iconify-icon> High Risk Found</span>
+                                    <span class="text-slate-500 text-xs">09:41:23 PM</span>
+                                </div>
+                                <div class="space-y-2 font-mono text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Transaction ID:</span>
+                                        <span class="text-white">TRX-998231</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Amount:</span>
+                                        <span class="text-white">50,000 SAR</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Risk Score:</span>
+                                        <span class="text-red-400 font-bold">94/100</span>
+                                    </div>
+                                    <div class="pt-2 border-t border-white/10 mt-2">
+                                        <span class="text-slate-400 block mb-1">Reason:</span>
+                                        <span class="text-yellow-400">Geo-location mismatch + Unusual Volume</span>
+                                    </div>
+                                </div>
+                                <button
+                                    class="w-full mt-4 py-2 bg-red-600/20 text-red-400 rounded-lg text-xs font-bold border border-red-500/30">Auto-Blocked</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CTA -->
-            <section class="text-center py-8">
-                <h2 class="text-2xl font-bold text-white mb-4">جاهز تأمن مستقبل منشأتك المالي؟</h2>
-                <div class="flex justify-center gap-4">
-                    <a href="contact"
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all">
-                        <iconify-icon icon="lucide:briefcase"></iconify-icon>
-                        اطلب عرض فني الحين
-                    </a>
+            <!-- Technical Specification (Compliance Focused) -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">مواصفات الامتثال
+                    (Compliance Specs)</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:verified-check-bold" class="text-teal-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">SAMA Cyber Security Framework</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            أنظمتنا مصممة لتلبية ضوابط الأمن السيبراني الصادرة عن البنك المركزي السعودي بالكامل.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:lock-password-unlocked-bold"
+                                class="text-teal-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">PCI-DSS Compliant</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            بيانات البطاقات والمدفوعات يتم معالجتها وتخزينها وفق أعلى معايير الأمان العالمية.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:file-check-bold" class="text-teal-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">PDPL KSA</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            نضمن الامتثال الكامل لنظام حماية البيانات الشخصية السعودي الجديد.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">احمِ مؤسستك المالية اليوم</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        لا تنتظر وقوع الاحتيال. تواصل معنا للحصول على عرض توضيحي وحساب العائد على الاستثمار.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل مع خبير Fintech
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            نموذج الاتصال
+                        </a>
+                    </div>
                 </div>
             </section>
 
@@ -175,7 +324,6 @@
             <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-    <script src="../../js/docs-scripts.js" defer></script>
 </body>
 
 </html>
