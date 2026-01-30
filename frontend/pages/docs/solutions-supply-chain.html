@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب</title>
+    <title>إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب والمخزون</title>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
 
     <meta name="description"
-        content="حلول إدارة سلاسل الإمداد (Supply Chain) بالذكاء الاصطناعي. توقع الطلب (Demand Forecasting)، إدارة الموردين، وتحسين المخزون للشركات الصناعية." />
+        content="حلول إدارة سلاسل الإمداد (Supply Chain) بالذكاء الاصطناعي من Bright AI. توقع الطلب (Demand Forecasting)، إدارة الموردين، وتحسين المخزون للشركات السعودية والمصانع." />
     <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-supply-chain" />
     <meta name="keywords"
-        content="سلسلة الإمداد، Supply Chain، SCM، تخطيط الطلب، إدارة المشتريات، المخزون الصفري، التوريد، Logistics 4.0" />
+        content="سلسلة الإمداد، Supply Chain، SCM، تخطيط الطلب، إدارة المشتريات، المخزون الصفري، التوريد، Logistics 4.0، إدارة المستودعات، WMS، التخليص الجمركي، الفاتورة الإلكترونية، تخطيط موارد المؤسسات" />
 
     <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
@@ -30,7 +30,51 @@
     <script src="../../js/docs-scripts.js" defer></script>
 
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@type":"Service","name":"إدارة سلاسل الإمداد SCM","provider":{"@type":"Organization","name":"Bright AI"},"description":"تحسين كفاءة سلاسل الإمداد وتوقع الطلب باستخدام الذكاء الاصطناعي","areaServed":"SA"}
+    [
+        {
+            "@context":"https://schema.org",
+            "@type":"Service",
+            "name":"إدارة سلاسل الإمداد SCM",
+            "provider": {
+                "@type":"Organization",
+                "name":"Bright AI",
+                "url": "https://brightai.site"
+            },
+            "description":"حلول متكاملة لتحسين سلاسل الإمداد وتوقع الطلب وإدارة المخزون",
+            "areaServed":"SA",
+            "serviceType": "Supply Chain Management Software"
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "كيف يختلف نظامكم عن أنظمة ERP التقليدية؟",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "نظامنا يركز على 'الذكاء والتوقع' وليس فقط 'التسجيل'. نحن نستخدم الذكاء الاصطناعي للتنبؤ بالطلب المستقبلي وليس فقط تسجيل المبيعات السابقة."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "هل يدعم النظام تعدد المستودعات والفروع؟",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "نعم، النظام مصمم لإدارة شبكة معقدة من المستودعات ونقاط البيع مع موازنة المخزون (Stock Balancing) بينها تلقائياً."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "هل يمكن ربط النظام مع الموردين؟",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "نعم، نوفر بوابة خاصة للموردين (Vendor Portal) تسمح لهم باستلام أوامر الشراء وتحديث حالة التسليم وتحميل الفواتير."
+                    }
+                }
+            ]
+        }
+    ]
     </script>
 </head>
 
@@ -217,7 +261,8 @@
                                         class="w-1/6 bg-cyan-600 rounded-t h-[75%] relative group animate-pulse shadow-[0_0_15px_rgba(8,145,178,0.5)]">
                                         <span
                                             class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Mar
-                                            (Predicted)</span></div>
+                                            (Predicted)</span>
+                                    </div>
                                     <div
                                         class="w-1/6 bg-slate-700/50 rounded-t h-[60%] border-t-2 border-dashed border-cyan-400 relative group">
                                         <span
@@ -241,6 +286,73 @@
                                 style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Us Section (NEW) -->
+            <section class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:database-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">تكامل كامل</h4>
+                    <p class="text-slate-400 text-sm">ربط مباشر مع أنظمة ERP (SAP, Oracle, Microsoft) ومنصات الجمارك.
+                    </p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:chart-square-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">دقة 95%</h4>
+                    <p class="text-slate-400 text-sm">خوارزميات مجربة ترفع دقة التوقعات وتقلل الهدر في المخزون.</p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:server-square-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">مرونة عالية</h4>
+                    <p class="text-slate-400 text-sm">حلول قابلة للتخصيص لتناسب مختلف القطاعات (الصناعة، التجزئة،
+                        الأغذية).</p>
+                </div>
+            </section>
+
+            <!-- FAQ Section (NEW) -->
+            <section>
+                <h3 class="text-2xl font-bold text-white mb-6">الأسئلة الشائعة</h3>
+                <div class="space-y-4">
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            كيف يختلف نظامكم عن أنظمة ERP التقليدية؟
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            نظامنا يركز على 'الذكاء والتوقع' وليس فقط 'التسجيل'. نحن نستخدم الذكاء الاصطناعي للتنبؤ
+                            بالطلب المستقبلي وليس فقط تسجيل المبيعات السابقة.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            هل يدعم النظام تعدد المستودعات والفروع؟
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            نعم، النظام مصمم لإدارة شبكة معقدة من المستودعات ونقاط البيع مع موازنة المخزون (Stock
+                            Balancing) بينها تلقائياً.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            هل يمكن ربط النظام مع الموردين؟
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            نعم، نوفر بوابة خاصة للموردين (Vendor Portal) تسمح لهم باستلام أوامر الشراء وتحديث حالة
+                            التسليم وتحميل الفواتير.
+                        </p>
                     </div>
                 </div>
             </section>
