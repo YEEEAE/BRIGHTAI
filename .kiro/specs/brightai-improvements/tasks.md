@@ -160,14 +160,14 @@
   - إضافة قسم الاختبارات
   - _المتطلبات: 4.1، 4.2، 4.3، 4.4، 4.5_
 
-- [ ] 18. إنشاء وثائق OpenAPI
-  - [ ] 18.1 إنشاء `docs/openapi.yaml`
+- [x] 18. إنشاء وثائق OpenAPI
+  - [x] 18.1 إنشاء `frontend/pages/docs/openapi.html`
     - توثيق جميع endpoints (chat, search, medical, summary)
     - توثيق جميع request/response schemas
     - توثيق جميع أكواد الأخطاء
     - _المتطلبات: 9.2، 9.3، 9.4_
   
-  - [ ] 18.2 إضافة Swagger UI endpoint
+  - [x] 18.2 إضافة Swagger UI endpoint
     - إضافة endpoint `/api/docs` لعرض Swagger UI
     - إضافة endpoint `/api/docs/openapi.yaml` لتقديم ملف YAML
     - _المتطلبات: 9.1_

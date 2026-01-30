@@ -1,0 +1,357 @@
+openapi: 3.0.0
+info:
+  title: BrightAI API
+  description: واجهة برمجة تطبيقات الذكاء الاصطناعي للسوق السعودي
+  version: 1.0.0
+  contact:
+    name: BrightAI Support
+    email: support@brightai.sa
+    url: https://brightai.sa
+
+servers:
+  - url: http://localhost:3000
+    description: خادم التطوير
+  - url: https://api.brightai.sa
+    description: خادم الإنتاج
+
+paths:
+  /api/ai/chat:
+    post:
+      summary: محادثة ذكية
+      description: إرسال رسالة والحصول على رد من الذكاء الاصطناعي
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            example:
+              message: "ما هي خدمات BrightAI؟"
+              history: []
+              sessionId: "session_123456"
+      responses:
+        '200':
+          description: استجابة ناجحة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+
+  /api/ai/search:
+    post:
+      summary: بحث ذكي
+      description: البحث الذكي في محتوى موقع BrightAI
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            example:
+              query: "وكلاء الذكاء الاصطناعي"
+      responses:
+        '200':
+          description: استجابة ناجحة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/ai/medical:
+    post:
+      summary: تحليل طبي
+      description: تحليل البيانات الطبية والصور باستخدام الذكاء الاصطناعي
+      tags:
+        - Medical
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRequest'
+      responses:
+        '200':
+          description: استجابة ناجحة
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+
+  /api/ai/summary:
+    post:
+      summary: تلخيص نصوص
+      description: توليد ملخص موجز وجذاب للنصوص الطويلة
+      tags:
+        - Summary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SummaryRequest'
+            example:
+              text: "نص طويل يحتاج إلى تلخيص..."
+      responses:
+        '200':
+          description: استجابة ناجحة
+          headers:
+            X-Cache:
+              description: Cache status (HIT or MISS)
+              schema:
+                type: string
+                enum: [HIT, MISS]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SummaryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
+  /api/health:
+    get:
+      summary: Health Check
+      description: التحقق من حالة الخادم
+      tags:
+        - System
+      responses:
+        '200':
+          description: الخادم يعمل بشكل صحيح
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: number
+                    example: 1234567890
+
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          maxLength: 1000
+          description: الرسالة المراد إرسالها
+        history:
+          type: array
+          description: سجل المحادثة السابقة
+          items:
+            type: object
+            properties:
+              sender:
+                type: string
+                enum: [user, bot]
+              text:
+                type: string
+        sessionId:
+          type: string
+          description: معرف الجلسة
+
+    ChatResponse:
+      type: object
+      properties:
+        reply:
+          type: string
+          description: رد الذكاء الاصطناعي
+        sessionId:
+          type: string
+          description: معرف الجلسة
+
+    SearchRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 3
+          description: كلمة البحث
+
+    SearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+              description:
+                type: string
+        query:
+          type: string
+
+
+    MedicalRequest:
+      type: object
+      required:
+        - textParts
+      properties:
+        textParts:
+          type: array
+          items:
+            type: string
+          description: مصفوفة من النصوص للتحليل
+        inlineDataParts:
+          type: array
+          items:
+            type: object
+            properties:
+              mimeType:
+                type: string
+                enum: [image/jpeg, image/png, image/webp, application/dicom]
+              data:
+                type: string
+                format: byte
+                description: بيانات الصورة بترميز base64
+        config:
+          type: object
+          properties:
+            temperature:
+              type: number
+              minimum: 0
+              maximum: 1
+              default: 0.2
+            top_p:
+              type: number
+              default: 0.9
+            top_k:
+              type: number
+              default: 40
+            max_output_tokens:
+              type: number
+              default: 2048
+
+    MedicalResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          description: نتيجة التحليل الطبي
+
+    SummaryRequest:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          maxLength: 5000
+          description: النص المراد تلخيصه
+
+    SummaryResponse:
+      type: object
+      properties:
+        summary:
+          type: string
+          description: الملخص المولد
+        timestamp:
+          type: number
+          description: وقت التوليد
+
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: رسالة الخطأ بالعربية
+        errorCode:
+          type: string
+          description: كود الخطأ
+          enum:
+            - NO_MESSAGE
+            - MESSAGE_TOO_LONG
+            - NO_QUERY
+            - QUERY_TOO_SHORT
+            - QUERY_TOO_LONG
+            - MISSING_TEXT
+            - INVALID_REQUEST
+            - INVALID_IMAGE_DATA
+            - UNSUPPORTED_FILE_TYPE
+            - INVALID_JSON
+            - BODY_TOO_LARGE
+            - RATE_LIMIT_EXCEEDED
+            - API_NOT_CONFIGURED
+            - SERVICE_UNAVAILABLE
+            - API_ERROR
+            - ANALYSIS_ERROR
+            - SUMMARY_ERROR
+            - SERVER_ERROR
+            - NOT_FOUND
+        timestamp:
+          type: number
+          description: وقت حدوث الخطأ
+
+  responses:
+    BadRequest:
+      description: طلب غير صالح
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "يرجى إدخال رسالة"
+            errorCode: "NO_MESSAGE"
+            timestamp: 1234567890
+
+    RateLimitExceeded:
+      description: تم تجاوز الحد المسموح من الطلبات
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "تم تجاوز الحد المسموح من الطلبات"
+            errorCode: "RATE_LIMIT_EXCEEDED"
+            timestamp: 1234567890
+
+    ServiceUnavailable:
+      description: الخدمة غير متاحة حالياً
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "خدمة الذكاء الاصطناعي غير متاحة حالياً"
+            errorCode: "API_NOT_CONFIGURED"
+            timestamp: 1234567890

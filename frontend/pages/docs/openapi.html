@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightAI API Documentation - وثائق واجهة برمجة التطبيقات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .section {
+            background: white;
+            margin: 20px 0;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .endpoint {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-right: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        
+        .endpoint h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        
+        .method.post {
+            background: #10b981;
+            color: white;
+        }
+        
+        .method.get {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .param-table th,
+        .param-table td {
+            padding: 12px;
+            text-align: right;
+            border: 1px solid #ddd;
+        }
+        
+        .param-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .param-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .required {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .optional {
+            color: #10b981;
+        }
+        
+        .error-codes {
+            margin: 20px 0;
+        }
+        
+        .error-code {
+            padding: 10px;
+            margin: 10px 0;
+            border-right: 3px solid #ef4444;
+            background: #fef2f2;
+            border-radius: 4px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .status-200 { background: #d1fae5; color: #065f46; }
+        .status-400 { background: #fee2e2; color: #991b1b; }
+        .status-429 { background: #fef3c7; color: #92400e; }
+        .status-500 { background: #fee2e2; color: #991b1b; }
+        .status-503 { background: #fef3c7; color: #92400e; }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+            }
+            
+            .param-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BrightAI API Documentation</h1>
+        <p>وثائق واجهة برمجة التطبيقات - منصة الذكاء الاصطناعي للسوق السعودي</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">الإصدار 1.0.0</p>
+    </header>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">نظرة عامة</a></li>
+                <li><a href="#authentication">المصادقة</a></li>
+                <li><a href="#chat">محادثة ذكية</a></li>
+                <li><a href="#search">بحث ذكي</a></li>
+                <li><a href="#medical">تحليل طبي</a></li>
+                <li><a href="#summary">تلخيص نصوص</a></li>
+                <li><a href="#errors">أكواد الأخطاء</a></li>
+                <li><a href="#rate-limits">حدود الاستخدام</a></li>
+            </ul>
+        </nav>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <h2>نظرة عامة</h2>
+            <p>BrightAI API توفر مجموعة من خدمات الذكاء الاصطناعي المصممة خصيصاً للسوق السعودي. جميع الخدمات تدعم اللغة العربية بشكل كامل وتتماشى مع رؤية المملكة 2030.</p>
+            
+            <h3 style="margin-top: 20px;">الخوادم المتاحة</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li><strong>خادم التطوير:</strong> http://localhost:3000</li>
+                <li><strong>خادم الإنتاج:</strong> https://api.brightai.sa</li>
+            </ul>
+
+            
+            <h3 style="margin-top: 20px;">تنسيق الطلبات والاستجابات</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>جميع الطلبات يجب أن تكون بتنسيق JSON</li>
+                <li>جميع الاستجابات بتنسيق JSON</li>
+                <li>الترميز: UTF-8</li>
+                <li>Content-Type: application/json</li>
+            </ul>
+        </section>
+
+        <!-- Authentication Section -->
+        <section id="authentication" class="section">
+            <h2>المصادقة</h2>
+            <p>حالياً، API لا يتطلب مصادقة للاستخدام العام. ومع ذلك، يتم تطبيق حدود معدل الطلبات (Rate Limiting) بناءً على عنوان IP.</p>
+            <p style="margin-top: 10px;"><strong>ملاحظة:</strong> في الإصدارات المستقبلية، سيتم إضافة نظام مصادقة باستخدام API Keys.</p>
+        </section>
+
+        <!-- Chat Endpoint -->
+        <section id="chat" class="section">
+            <h2>محادثة ذكية (Chat)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/chat
+                </h3>
+                <p>إرسال رسالة والحصول على رد من الذكاء الاصطناعي. يدعم المحادثات متعددة الأدوار مع الاحتفاظ بالسياق.</p>
+
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>الرسالة المراد إرسالها (حد أقصى 1000 حرف)</td>
+                            <td>string</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>message</td>
+                        </tr>
+                        <tr>
+                            <td>سجل المحادثة السابقة (مصفوفة من الرسائل)</td>
+                            <td>array</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>history</td>
+                        </tr>
+                        <tr>
+                            <td>معرف الجلسة للحفاظ على السياق</td>
+                            <td>string</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>sessionId</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "message": "ما هي خدمات BrightAI؟",
+  "history": [
+    {
+      "sender": "user",
+      "text": "مرحباً"
+    },
+    {
+      "sender": "bot",
+      "text": "مرحباً بك في BrightAI"
+    }
+  ],
+  "sessionId": "session_123456"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "reply": "BrightAI تقدم مجموعة من خدمات الذكاء الاصطناعي...",
+  "sessionId": "session_123456"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> NO_MESSAGE:</strong> يرجى إدخال رسالة
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> MESSAGE_TOO_LONG:</strong> الرسالة طويلة جداً. الحد الأقصى هو 1000 حرف
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> API_NOT_CONFIGURED:</strong> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Search Endpoint -->
+        <section id="search" class="section">
+            <h2>بحث ذكي (Search)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/search
+                </h3>
+                <p>البحث الذكي في محتوى موقع BrightAI باستخدام الذكاء الاصطناعي.</p>
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>كلمة البحث (3 أحرف على الأقل)</td>
+                            <td>string</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>query</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "query": "وكلاء الذكاء الاصطناعي"
+}
+                </div>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "results": [
+    {
+      "title": "وكلاء الذكاء الاصطناعي",
+      "url": "/ai-agent.html",
+      "description": "حلول وكلاء ذكية لأتمتة المهام المعقدة"
+    },
+    {
+      "title": "الأتمتة الذكية",
+      "url": "/smart-automation.html",
+      "description": "أتمتة العمليات باستخدام الذكاء الاصطناعي"
+    }
+  ],
+  "query": "وكلاء الذكاء الاصطناعي"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> NO_QUERY:</strong> يرجى إدخال كلمة البحث
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> QUERY_TOO_SHORT:</strong> يجب أن تكون كلمة البحث 3 أحرف على الأقل
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> API_NOT_CONFIGURED:</strong> خدمة البحث غير متاحة حالياً
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Medical Endpoint -->
+        <section id="medical" class="section">
+            <h2>تحليل طبي (Medical)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/medical
+                </h3>
+                <p>تحليل البيانات الطبية والصور باستخدام الذكاء الاصطناعي.</p>
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>مصفوفة من النصوص للتحليل</td>
+                            <td>array[string]</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>textParts</td>
+                        </tr>
+                        <tr>
+                            <td>مصفوفة من الصور (base64)</td>
+                            <td>array[object]</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>inlineDataParts</td>
+                        </tr>
+                        <tr>
+                            <td>إعدادات التوليد</td>
+                            <td>object</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>config</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+                <h4 style="margin-top: 20px;">بنية inlineDataParts</h4>
+                <div class="code-block">
+{
+  "mimeType": "image/jpeg",
+  "data": "base64_encoded_image_data"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">أنواع الملفات المدعومة</h4>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>image/jpeg</li>
+                    <li>image/png</li>
+                    <li>image/webp</li>
+                    <li>application/dicom</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "textParts": ["قم بتحليل هذه الصورة الطبية"],
+  "inlineDataParts": [
+    {
+      "mimeType": "image/jpeg",
+      "data": "/9j/4AAQSkZJRgABAQAA..."
+    }
+  ],
+  "config": {
+    "temperature": 0.2,
+    "max_output_tokens": 2048
+  }
+}
+                </div>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "text": "التحليل الطبي: الصورة تظهر..."
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> MISSING_TEXT:</strong> الرجاء تقديم نص للتحليل
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> INVALID_IMAGE_DATA:</strong> بيانات الصورة غير صالحة
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> UNSUPPORTED_FILE_TYPE:</strong> نوع الملف غير مدعوم
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> SERVICE_UNAVAILABLE:</strong> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Summary Endpoint -->
+        <section id="summary" class="section">
+            <h2>تلخيص نصوص (Summary)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/summary
+                </h3>
+                <p>توليد ملخص موجز وجذاب للنصوص الطويلة باللغة العربية.</p>
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>النص المراد تلخيصه (حد أقصى 5000 حرف)</td>
+                            <td>string</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>text</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "text": "نص طويل يحتاج إلى تلخيص..."
+}
+                </div>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "summary": "الملخص: النص يتحدث عن...",
+  "timestamp": 1234567890
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">Cache Headers</h4>
+                <p>يدعم هذا Endpoint التخزين المؤقت (Caching). ستحصل على أحد هذه Headers:</p>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li><strong>X-Cache: HIT</strong> - الاستجابة من Cache</li>
+                    <li><strong>X-Cache: MISS</strong> - استجابة جديدة من API</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> MISSING_TEXT:</strong> يجب تقديم نص للتلخيص
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> API_NOT_CONFIGURED:</strong> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-500">500</span> SUMMARY_ERROR:</strong> حدث خطأ أثناء إنشاء الملخص
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Error Codes Section -->
+        <section id="errors" class="section">
+            <h2>أكواد الأخطاء</h2>
+            <p>جميع الأخطاء تُرجع بتنسيق موحد يحتوي على:</p>
+            <div class="code-block">
+{
+  "error": "رسالة الخطأ بالعربية",
+  "errorCode": "ERROR_CODE",
+  "timestamp": 1234567890
+}
+            </div>
+            
+            <h3 style="margin-top: 30px;">أخطاء المدخلات (4xx)</h3>
+            <div class="error-codes">
+                <div class="error-code">
+                    <strong>NO_MESSAGE / NO_QUERY / MISSING_TEXT</strong><br>
+                    <span class="status-badge status-400">400</span> يجب تقديم البيانات المطلوبة
+                </div>
+                <div class="error-code">
+                    <strong>MESSAGE_TOO_LONG / QUERY_TOO_LONG</strong><br>
+                    <span class="status-badge status-400">400</span> المدخلات تتجاوز الحد المسموح
+                </div>
+                <div class="error-code">
+                    <strong>QUERY_TOO_SHORT</strong><br>
+                    <span class="status-badge status-400">400</span> كلمة البحث قصيرة جداً (3 أحرف على الأقل)
+                </div>
+                <div class="error-code">
+                    <strong>INVALID_REQUEST</strong><br>
+                    <span class="status-badge status-400">400</span> طلب غير صالح
+                </div>
+
+                <div class="error-code">
+                    <strong>INVALID_IMAGE_DATA</strong><br>
+                    <span class="status-badge status-400">400</span> بيانات الصورة غير صالحة
+                </div>
+                <div class="error-code">
+                    <strong>UNSUPPORTED_FILE_TYPE</strong><br>
+                    <span class="status-badge status-400">400</span> نوع الملف غير مدعوم
+                </div>
+                <div class="error-code">
+                    <strong>RATE_LIMIT_EXCEEDED</strong><br>
+                    <span class="status-badge status-429">429</span> تم تجاوز الحد المسموح من الطلبات
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">أخطاء الخادم (5xx)</h3>
+            <div class="error-codes">
+                <div class="error-code">
+                    <strong>API_NOT_CONFIGURED / SERVICE_UNAVAILABLE</strong><br>
+                    <span class="status-badge status-503">503</span> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+                <div class="error-code">
+                    <strong>API_ERROR / ANALYSIS_ERROR / SUMMARY_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> حدث خطأ أثناء المعالجة
+                </div>
+                <div class="error-code">
+                    <strong>NETWORK_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> خطأ في الاتصال بالشبكة
+                </div>
+
+                <div class="error-code">
+                    <strong>TIMEOUT_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> انتهت مهلة الطلب
+                </div>
+                <div class="error-code">
+                    <strong>UNKNOWN_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> حدث خطأ غير متوقع
+                </div>
+            </div>
+        </section>
+
+        <!-- Rate Limits Section -->
+        <section id="rate-limits" class="section">
+            <h2>حدود الاستخدام (Rate Limits)</h2>
+            <p>لضمان جودة الخدمة لجميع المستخدمين، يتم تطبيق حدود معدل الطلبات التالية:</p>
+            
+            <table class="param-table" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>الوصف</th>
+                        <th>الحد</th>
+                        <th>النطاق الزمني</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>جميع Endpoints</td>
+                        <td>30 طلب</td>
+                        <td>دقيقة واحدة</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 style="margin-top: 30px;">Response Headers</h3>
+            <p>عند تجاوز الحد، ستحصل على:</p>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li><strong>Status Code:</strong> 429 Too Many Requests</li>
+                <li><strong>Error Code:</strong> RATE_LIMIT_EXCEEDED</li>
+                <li><strong>Retry-After:</strong> عدد الثواني قبل المحاولة مرة أخرى</li>
+            </ul>
+        </section>
+
+
+        <!-- Request/Response Schemas Section -->
+        <section id="schemas" class="section">
+            <h2>Request/Response Schemas</h2>
+            
+            <h3>ChatRequest Schema</h3>
+            <div class="code-block">
+{
+  "message": "string (required, max 1000 chars)",
+  "history": [
+    {
+      "sender": "user | bot",
+      "text": "string"
+    }
+  ],
+  "sessionId": "string (optional)"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">ChatResponse Schema</h3>
+            <div class="code-block">
+{
+  "reply": "string",
+  "sessionId": "string"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SearchRequest Schema</h3>
+            <div class="code-block">
+{
+  "query": "string (required, min 3 chars)"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SearchResponse Schema</h3>
+            <div class="code-block">
+{
+  "results": [
+    {
+      "title": "string",
+      "url": "string",
+      "description": "string"
+    }
+  ],
+  "query": "string"
+}
+            </div>
+
+            
+            <h3 style="margin-top: 20px;">MedicalRequest Schema</h3>
+            <div class="code-block">
+{
+  "textParts": ["string (required)"],
+  "inlineDataParts": [
+    {
+      "mimeType": "string (image/jpeg, image/png, etc.)",
+      "data": "string (base64 encoded)"
+    }
+  ],
+  "config": {
+    "temperature": "number (0.0-1.0, default: 0.2)",
+    "top_p": "number (default: 0.9)",
+    "top_k": "number (default: 40)",
+    "max_output_tokens": "number (default: 2048)"
+  }
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">MedicalResponse Schema</h3>
+            <div class="code-block">
+{
+  "text": "string"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SummaryRequest Schema</h3>
+            <div class="code-block">
+{
+  "text": "string (required, max 5000 chars)"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SummaryResponse Schema</h3>
+            <div class="code-block">
+{
+  "summary": "string",
+  "timestamp": "number"
+}
+            </div>
+
+            
+            <h3 style="margin-top: 20px;">ErrorResponse Schema</h3>
+            <div class="code-block">
+{
+  "error": "string (Arabic error message)",
+  "errorCode": "string (ERROR_CODE)",
+  "timestamp": "number (Unix timestamp)",
+  "details": "string (only in development mode)"
+}
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="section">
+            <h2>أمثلة cURL</h2>
+            
+            <h3>Chat Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "ما هي خدمات BrightAI؟"
+  }'
+            </div>
+            
+            <h3 style="margin-top: 20px;">Search Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "وكلاء الذكاء الاصطناعي"
+  }'
+            </div>
+            
+            <h3 style="margin-top: 20px;">Medical Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/medical \
+  -H "Content-Type: application/json" \
+  -d '{
+    "textParts": ["قم بتحليل هذه البيانات الطبية"]
+  }'
+            </div>
+
+            
+            <h3 style="margin-top: 20px;">Summary Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/summary \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "نص طويل يحتاج إلى تلخيص..."
+  }'
+            </div>
+        </section>
+
+        <!-- Best Practices Section -->
+        <section id="best-practices" class="section">
+            <h2>أفضل الممارسات</h2>
+            
+            <h3>1. معالجة الأخطاء</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>تحقق دائماً من HTTP status code</li>
+                <li>اعرض رسالة الخطأ العربية للمستخدم</li>
+                <li>استخدم errorCode للمعالجة البرمجية</li>
+                <li>أعد المحاولة عند حدوث أخطاء 5xx</li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">2. Rate Limiting</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>احترم حدود معدل الطلبات (30 طلب/دقيقة)</li>
+                <li>استخدم Retry-After header عند تجاوز الحد</li>
+                <li>قم بتخزين النتائج مؤقتاً في تطبيقك</li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">3. الأداء</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>استفد من X-Cache header في Summary endpoint</li>
+                <li>قلل حجم المدخلات قدر الإمكان</li>
+                <li>استخدم sessionId للحفاظ على سياق المحادثة</li>
+            </ul>
+
+            
+            <h3 style="margin-top: 20px;">4. الأمان</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>لا ترسل معلومات حساسة في الطلبات</li>
+                <li>استخدم HTTPS في الإنتاج</li>
+                <li>قم بتنظيف المدخلات قبل الإرسال</li>
+                <li>لا تعرض API keys في الكود العام</li>
+            </ul>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2>الدعم والتواصل</h2>
+            <p>للحصول على دعم فني أو استفسارات حول API:</p>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li><strong>الموقع:</strong> <a href="https://brightai.sa" style="color: #667eea;">https://brightai.sa</a></li>
+                <li><strong>البريد الإلكتروني:</strong> support@brightai.sa</li>
+                <li><strong>واتساب:</strong> <a href="https://wa.me/966538229013" style="color: #667eea;">+966538229013</a></li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">التحديثات</h3>
+            <p>تابع صفحة المدونة للحصول على آخر التحديثات والميزات الجديدة:</p>
+            <p style="margin-top: 10px;"><a href="/blog.html" style="color: #667eea;">مدونة BrightAI</a></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 BrightAI - جميع الحقوق محفوظة</p>
+        <p style="margin-top: 10px;">منصة الذكاء الاصطناعي للسوق السعودي</p>
+    </footer>
+</body>
+</html>
