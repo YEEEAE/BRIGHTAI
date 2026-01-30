@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة علاقات العملاء الذكية (CRM) | Bright AI</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="نظام CRM سعودي مدعوم بالذكاء الاصطناعي. أتمتة المتابعة عبر واتساب، تقييم العملاء المحتملين (Lead Scoring)، وتحليل المشاعر لزيادة المبيعات." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-crm" />
+    <meta name="keywords"
+        content="نظام CRM، إدارة علاقات العملاء، Salesforce، HubSpot، واتساب CRM، أتمتة المبيعات، Lead Scoring، خدمة عملاء" />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"نظام CRM الذكي","provider":{"@type":"Organization","name":"Bright AI"},"description":"منصة إدارة علاقات العملاء المدعومة بالذكاء الاصطناعي","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-fuchsia-500/30 selection:text-fuchsia-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">علاقات العملاء (Smart CRM)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-fuchsia-500/10 flex items-center justify-center border border-fuchsia-500/20 shadow-2xl shadow-fuchsia-500/10 animate-float">
+                <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" width="48"
+                    class="text-fuchsia-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">اعرف عميلك <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-pink-300">صح</span></h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                لا تضيع وقتك في متابعة عملاء "مو صاملين". نظام CRM الذكي من Bright AI يحلل تفاعلات العملاء، ويقول لك
+                مين اللي جاهز يشتري الحين، ومين يحتاج متابعة زيادة.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#feature-showcase"
+                    class="px-8 py-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold transition-all shadow-lg shadow-fuchsia-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:star-fall-minimalistic-linear" width="24"></iconify-icon>
+                    شوف كيف يشتغل
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    تكامل مع واتساب
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-fuchsia-500 to-pink-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:notebook-bold-duotone" class="text-fuchsia-400"></iconify-icon>
+                    واتساب وإكسل ما يكفون!
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        كثير شركات سعودية لليوم تعتمد على محادثات واتساب المتناثرة أو ملفات Excel عشان تتابع مبيعاتها.
+                        والنتيجة؟ عملاء ينسحب عليهم، ومواعيد تتنسي.
+                    </p>
+                    <p class="mb-6">
+                        نظامنا يجمع لك كل شيء في مكان واحد: "محمد اتصل أمس، وأرسل واتساب اليوم، وفتح عرض السعر قبل
+                        ساعة". كذا فريق مبيعاتك يكون عنده الصورة الكاملة (360-Degree View) وما تفوتهم أي فرصة بيع.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">أدوات تضاعف مبيعاتك</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-fuchsia-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-fuchsia-500/20 flex items-center justify-center mb-6 text-fuchsia-400">
+                            <iconify-icon icon="solar:funnel-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تقييم الفرص (Smart Lead Scoring)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            الذكاء الاصطناعي يعطي كل عميل "درجة" من 100 بناءً على تفاعله. إذا الدرجة عالية، يدق جرس عند
+                            موظف المبيعات: "كلمه الحين، هذا بيشتري!".
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-pink-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-pink-500/20 flex items-center justify-center mb-6 text-pink-400">
+                            <iconify-icon icon="solar:chat-round-line-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تكامل واتساب (WhatsApp CRM)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            اربط واتساب الأعمال بنظام الـ CRM. أي محادثة تتسجل تلقائياً في ملف العميل. وتقدر ترسل حملات
+                            تسويقية لكل العملاء بضغطة زر.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-purple-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-purple-400">
+                            <iconify-icon icon="solar:calendar-mark-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">المتابعة الآلية (Automated Follow-ups)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            العميل قال "بفكر وأرد لكم"؟ النظام يرسل له رسالة تذكير بعد يومين، ويسأله إذا عنده استفسارات،
+                            بدون تدخل بشري.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-rose-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-rose-500/20 flex items-center justify-center mb-6 text-rose-400">
+                            <iconify-icon icon="solar:heart-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تحليل المشاعر (Sentiment Analysis)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يقرأ ايميلات العملاء ويقول لك: "هذا العميل زعلان، انتبه له" أو "هذا العميل مبسوط،
+                            اعرض عليه منتج إضافي".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visual Section -->
+            <section id="feature-showcase" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-fuchsia-500/20 text-fuchsia-400 text-xs font-bold mb-4 border border-fuchsia-500/20 w-fit">
+                                سيناريو عملي 🚀
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">كيف يكتشف النظام "العميل الذهبي"؟</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                تخيل عندك 1000 عميل محتمل. كيف تعرف مين تبدأ فيه؟ شوف كيف يرتبهم لك Bright CRM بناءً على
+                                الجدية.
+                            </p>
+                            <ul class="space-y-4 text-slate-300 text-sm">
+                                <li class="flex items-center gap-3">
+                                    <iconify-icon icon="solar:check-circle-bold"
+                                        class="text-fuchsia-500"></iconify-icon>
+                                    فتح الايميل مرتين (+10 نقاط)
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <iconify-icon icon="solar:check-circle-bold"
+                                        class="text-fuchsia-500"></iconify-icon>
+                                    زار صفحة الأسعار في الموقع (+20 نقطة)
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <iconify-icon icon="solar:check-circle-bold"
+                                        class="text-fuchsia-500"></iconify-icon>
+                                    منصب المدير التنفيذي (+15 نقطة)
+                                </li>
+                                <li class="flex items-center gap-3 font-bold text-fuchsia-400">
+                                    <iconify-icon icon="solar:star-bold" class="text-fuchsia-400"></iconify-icon>
+                                    المجموع: عميل ساخن (Hot Lead) 🔥
+                                </li>
+                            </ul>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-fuchsia-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+                            <!-- Lead Card Mockup -->
+                            <div
+                                class="w-full max-w-sm bg-slate-900 rounded-xl border border-white/10 shadow-2xl p-6 relative">
+                                <div
+                                    class="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border border-red-400 animate-pulse">
+                                    Score: 85/100
+                                </div>
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div
+                                        class="w-16 h-16 rounded-full bg-slate-700 overflow-hidden border-2 border-fuchsia-500">
+                                        <!-- Placeholder Avatar -->
+                                        <iconify-icon icon="solar:user-bold"
+                                            class="w-full h-full text-slate-400 text-5xl flex items-center justify-center mt-1"></iconify-icon>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-bold text-lg">سالم العتيبي</h4>
+                                        <p class="text-slate-500 text-sm">CTO @ TechGrowth</p>
+                                        <div class="flex gap-2 mt-2">
+                                            <span class="p-1.5 bg-green-500/20 rounded-lg text-green-400"><iconify-icon
+                                                    icon="logos:whatsapp-icon"></iconify-icon></span>
+                                            <span class="p-1.5 bg-blue-500/20 rounded-lg text-blue-400"><iconify-icon
+                                                    icon="solar:letter-bold"></iconify-icon></span>
+                                            <span class="p-1.5 bg-slate-700 rounded-lg text-slate-400"><iconify-icon
+                                                    icon="solar:phone-bold"></iconify-icon></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white/5 rounded-lg p-3 mb-4">
+                                    <p class="text-xs text-slate-300 font-mono mb-1">Latest Activity:</p>
+                                    <div class="flex items-center gap-2 text-xs text-fuchsia-300">
+                                        <iconify-icon icon="solar:clock-circle-bold"></iconify-icon>
+                                        Just now visited "Pricing Page"
+                                    </div>
+                                </div>
+
+                                <button
+                                    class="w-full py-3 bg-fuchsia-600 hover:bg-fuchsia-500 text-white rounded-lg font-bold transition flex items-center justify-center gap-2">
+                                    <iconify-icon icon="solar:phone-calling-bold"></iconify-icon>
+                                    اتصال الآن
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-fuchsia-500/10 to-pink-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">جاهز تنظم مبيعاتك؟</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        ابدأ بتجربة النسخة المجانية وشوف الفرق بنفسك خلال أسبوع واحد.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل معنا
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            تجربة مجانية
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

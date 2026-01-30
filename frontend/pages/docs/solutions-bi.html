@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ذكاء الأعمال (BI) | Bright AI - لوحات تحكم تفاعلية</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="حول بيانات شركتك المتناثرة إلى لوحات تحكم (Dashboards) تفاعلية وسهلة القراءة. خدمات Power BI و Tableau مخصصة للشركات السعودية." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-bi" />
+    <meta name="keywords"
+        content="ذكاء الأعمال، BI، لوحات تحكم، Dashboards، Power BI، Tableau، تقارير تفاعلية، تحليل أداء الشركات، KPIs" />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"حلول ذكاء الأعمال (BI)","provider":{"@type":"Organization","name":"Bright AI"},"description":"تصميم وتطوير لوحات التحكم التفاعلية وتقارير ذكاء الأعمال","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-cyan-500/30 selection:text-cyan-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">ذكاء الأعمال (Business Intelligence)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 shadow-2xl shadow-cyan-500/10 animate-float">
+                <iconify-icon icon="solar:chart-2-bold-duotone" width="48" class="text-cyan-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">رؤية أوضح <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-300">لقراراتك</span></h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                لا تغرق في جداول Excel المملة. نجمع بياناتك من كل المصادر ونحولها إلى لوحات تحكم (Dashboards) تفاعلية
+                تخليك تفهم "وش صاير" في شركتك بلمحة بصر.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#dashboard-example"
+                    class="px-8 py-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all shadow-lg shadow-cyan-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:monitor-chart-linear" width="24"></iconify-icon>
+                    شوف مثال للداشبورد
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    تصميم داشبورد مخصص
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-cyan-500 to-sky-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:eye-bold-duotone" class="text-cyan-400"></iconify-icon>
+                    البيانات "ناشفة"؟ حنا نخليها تنطق!
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        مشكلة المدراء اليوم مو قلة البيانات، بالعكس، عندهم "تخمة بيانات" (Data Overload). تقارير من
+                        المحاسبة، تقارير من التسويق، وأرقام في السيستم.. والتحدي كيف تربط بينهم.
+                    </p>
+                    <p class="mb-6">
+                        خدمات <strong>Bright BI</strong> تاخذ كل هالفوضى وترتبها لك في شاشات جميلة وسهلة. بدل ما تقرأ 50
+                        صفحة، تشوف مؤشر أحمر ينبهك: "ترا المبيعات في فرع جدة نزلت، والسبب هو نقص المخزون". هذي هي
+                        "الزبدة" اللي يحتاجها كل مدير.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">أدوات ذكاء الأعمال</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-cyan-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:layers-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">توحيد مصدر الحقيقة (Unified Data)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            نسحب البيانات من (ERP, CRM, Google Sheets, databases) ونحطها في مكان واحد (Data Warehouse)
+                            عشان تقاريرك تكون دقيقة ومحدثة.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-sky-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-sky-500/20 flex items-center justify-center mb-6 text-sky-400">
+                            <iconify-icon icon="solar:pie-chart-3-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تصميم بصري (Data Visualization)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            نستخدم علم النفس البصري لاختيار أفضل المخططات (Charts) اللي توصل المعلومة لعقلك في ثواني،
+                            بدون ما تضيع في التفاصيل.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:smartphone-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تقارير على جوالك (Mobile BI)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            ما يحتاج تفتح اللابتوب. داشبورداتنا متجاوبة (Responsive) وتقدر تتابع أرقامك المهمة من جوالك
+                            وأنت مسافر أو في اجتماع.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-indigo-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:bell-bing-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تنبيهات ذكية (Smart Alerts)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يراقب عنك. إذا نزلت الأرباح عن حد معين، أو زادت المصاريف بشكل فجائي، يجيك تنبيه فوري
+                            عشان تتصرف.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive/Visual Section -->
+            <section id="dashboard-example" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col items-center p-8 md:p-12">
+                        <div class="text-center mb-10">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-bold mb-4 border border-cyan-500/20">
+                                عينة داشبورد 📊
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">نظرة شاملة على الأداء</h3>
+                            <p class="text-slate-400 max-w-2xl mx-auto">
+                                هذا مثال مبسط لواجهة "المدير التنفيذي" اللي نصممها. كل KPIs المهمة في مكان واحد.
+                            </p>
+                        </div>
+
+                        <!-- Dashboard Mockup -->
+                        <div
+                            class="w-full max-w-4xl bg-[#1e293b] border border-slate-700/50 rounded-xl shadow-2xl p-4 overflow-hidden relative">
+                            <!-- Header Bar -->
+                            <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                                <h4 class="text-white font-bold">Executive Overview</h4>
+                                <div class="flex gap-2 text-xs">
+                                    <span class="px-2 py-1 bg-slate-700 text-slate-300 rounded">This Month</span>
+                                    <span class="px-2 py-1 bg-cyan-600 text-white rounded">Last Month</span>
+                                </div>
+                            </div>
+
+                            <!-- KPI Cards -->
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-cyan-500">
+                                    <div class="text-slate-400 text-xs text-right">إجمالي المبيعات</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">450,230 ر.س</div>
+                                    <div class="text-green-400 text-xs mt-2 text-right">▲ 12% vs last month</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-purple-500">
+                                    <div class="text-slate-400 text-xs text-right">عدد العملاء الجدد</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">1,240</div>
+                                    <div class="text-green-400 text-xs mt-2 text-right">▲ 5% vs last month</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-orange-500">
+                                    <div class="text-slate-400 text-xs text-right">متوسط السلة</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">363 ر.س</div>
+                                    <div class="text-red-400 text-xs mt-2 text-right">▼ 2% vs last month</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-blue-500">
+                                    <div class="text-slate-400 text-xs text-right">هامش الربح</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">24.5%</div>
+                                    <div class="text-slate-500 text-xs mt-2 text-right">- ثابت</div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Area Mockup -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div
+                                    class="col-span-2 bg-slate-800 p-4 rounded-lg h-64 flex items-end justify-between gap-2 px-6 pb-4">
+                                    <!-- Fake Bar Chart -->
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[40%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">40k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[60%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">60k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[50%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">50k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[80%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">80k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600 hover:bg-cyan-500 transition-all h-[95%] rounded-t-sm relative group shadow-lg shadow-cyan-500/20">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">95k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[70%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">70k</span>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg h-64 flex items-center justify-center relative">
+                                    <!-- Fake Donut Chart -->
+                                    <div
+                                        class="w-32 h-32 rounded-full border-[12px] border-cyan-500 border-r-purple-500 border-b-orange-500 rotate-45">
+                                    </div>
+                                    <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                        <span class="text-xs text-slate-400">التوزيع</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Section -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">خبراء في الأدوات العالمية
+                </h3>
+                <div class="flex flex-wrap justify-center gap-12 opacity-80">
+                    <div class="text-center group">
+                        <iconify-icon icon="logos:microsoft-power-bi" width="60"
+                            class="mb-3 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Power BI</p>
+                    </div>
+                    <div class="text-center group">
+                        <iconify-icon icon="logos:tableau-icon" width="60"
+                            class="mb-3 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Tableau</p>
+                    </div>
+                    <div class="text-center group">
+                        <iconify-icon icon="logos:google-looker-icon" width="60"
+                            class="mb-3 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Looker Studio</p>
+                    </div>
+                    <div class="text-center group">
+                        <iconify-icon icon="simple-icons:qlik" width="60"
+                            class="mb-3 text-green-500 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Qlik</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-sky-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">جاهز تشوف الصورة الكاملة؟</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        تواصل معنا اليوم لبناء أول داشبورد لشركتك. قراراتك تستحق الدقة.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل مع مستشار BI
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            طلب عرض سعر
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="نظام HRMS متكامل للشركات السعودية. إدارة الرواتب (Payroll)، التأمينات الاجتماعية، الحضور والانصراف ببصمة الوجه، وتقييم الأداء بالذكاء الاصطناعي." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-hr" />
+    <meta name="keywords"
+        content="نظام موارد بشرية، HRMS، مسير الرواتب، مكتب العمل، التأمينات الاجتماعية، بصمة الوجه، تقييم الموظفين، إدارة الإجازات" />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"نظام إدارة الموارد البشرية HRMS","provider":{"@type":"Organization","name":"Bright AI"},"description":"نظام سحابي لإدارة شؤون الموظفين والرواتب والامتثال الحكومي","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-indigo-500/30 selection:text-indigo-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">الموارد البشرية (HRMS)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 shadow-2xl shadow-indigo-500/10 animate-float">
+                <iconify-icon icon="solar:users-group-rounded-bold-duotone" width="48"
+                    class="text-indigo-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">إدارة موظفين <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-300">أسهل</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                انسى ملفات الرواتب المعقدة ومشاكل الحضور. نظام Bright HR يدير كل شيء من التوظيف إلى التقاعد، وبامتثال
+                كامل لنظام العمل السعودي.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#salary-demo"
+                    class="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all shadow-lg shadow-indigo-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:calculator-minimalistic-linear" width="24"></iconify-icon>
+                    احسب تكلفة الرواتب
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    عرض ديمو للنظام
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-indigo-500 to-purple-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:shield-check-bold-duotone" class="text-indigo-400"></iconify-icon>
+                    الامتثال بنسبة 100%
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        تحديات الـ HR في السعودية مو سهلة: مدد، توطين، حماية الأجور، وتأمينات اجتماعية. أي غلطة ممكن
+                        تكلفك غرامات.
+                    </p>
+                    <p class="mb-6">
+                        نظامنا مصمم للسوق السعودي. نحدث القوانين أول بأول، نحسب لك الخصومات والبدلات، ونرسل ملف حماية
+                        الأجور (WPS) للبنك بضغطة زر. ريح راسك وركز على تطوير فريقك.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">كل ما يحتاجه قسم الـ HR</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-indigo-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:wallet-money-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">مسير الرواتب الآلي (Payroll)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يسحب الحضور، يحسب التأخير والغياب، يضيف البدلات، يخصم التأمينات، ويطلع الصافي..
+                            كل هذا في ثواني.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-purple-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-purple-400">
+                            <iconify-icon icon="solar:user-scan-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">الحضور الذكي (Smart Attendance)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            ما يحتاج بصمة اصبع تنقل عدوى. الموظف يبصم بوجهه من جواله (مع تحديد الموقع GPS) أو من جهاز
+                            التابلت في الاستقبال.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:smartphone-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">خدمة ذاتية للموظف (Self-Service)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تطبيق جوال لكل موظف: يقدم إجازة، يشوف رصيده، يحمل تعريف راتب، ويتابع طلباته بدون ما يزعج
+                            قسم الـ HR.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-teal-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-500/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:chart-square-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تقييم الأداء (Performance)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تتبع OKRs و KPIs لكل موظف. النظام يساعدك تحدد مين النجم اللي يستاهل بونص، ومين يحتاج تدريب
+                            إضافي.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visual/Interactive Section -->
+            <section id="salary-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row shadow-2xl">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold mb-4 border border-indigo-500/20 w-fit">
+                                واجهة التطبيق 📱
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">كل شيء في جوال موظفك</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                واجهة سهلة وبسيطة تدعم العربي والإنجليزي. الموظف يقدر يخلص كل أموره بنفسه.
+                            </p>
+                            <ul class="space-y-4 text-slate-300 text-sm">
+                                <li class="flex items-center gap-3">
+                                    <span
+                                        class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs"><iconify-icon
+                                            icon="solar:check-bold"></iconify-icon></span>
+                                    إشعار فوري عند نزول الراتب
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span
+                                        class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs"><iconify-icon
+                                            icon="solar:check-bold"></iconify-icon></span>
+                                    موافقة فورية على الإجازات (Workflow)
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span
+                                        class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs"><iconify-icon
+                                            icon="solar:check-bold"></iconify-icon></span>
+                                    طباعة خطابات التعريف (مصدقة)
+                                </li>
+                            </ul>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-indigo-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+
+                            <!-- Mobile App Mockup -->
+                            <div
+                                class="w-64 bg-slate-900 rounded-[2.5rem] border-[8px] border-slate-800 shadow-xl overflow-hidden relative">
+                                <!-- Status Bar -->
+                                <div class="h-6 bg-slate-900 flex justify-between items-center px-4 pt-2">
+                                    <span class="text-[10px] text-white">9:41</span>
+                                    <div class="flex gap-1">
+                                        <div class="w-3 h-3 bg-white rounded-full opacity-20"></div>
+                                        <div class="w-3 h-3 bg-white rounded-full"></div>
+                                    </div>
+                                </div>
+
+                                <!-- App Header -->
+                                <div class="bg-indigo-600 p-6 pt-8 rounded-b-[2rem] shadow-lg relative z-10">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <div class="text-white">
+                                            <p class="text-xs opacity-80">صباح الخير ☀️</p>
+                                            <h4 class="font-bold text-lg">أحمد الفهد</h4>
+                                        </div>
+                                        <div
+                                            class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30">
+                                            <iconify-icon icon="solar:user-bold"
+                                                class="text-white text-xl"></iconify-icon>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-[10px] text-indigo-200">الراتب القادم</p>
+                                            <p class="text-white font-bold text-lg">27 يناير</p>
+                                        </div>
+                                        <div class="p-2 bg-indigo-500 rounded-lg text-white">
+                                            <iconify-icon icon="solar:wallet-bold"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- App Body -->
+                                <div class="p-4 space-y-3 bg-slate-50">
+                                    <div
+                                        class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center">
+                                                <iconify-icon icon="solar:calendar-bold"></iconify-icon>
+                                            </div>
+                                            <div>
+                                                <p class="text-slate-800 font-bold text-sm">رصيد الإجازات</p>
+                                                <p class="text-slate-500 text-[10px]">متبقي 21 يوم</p>
+                                            </div>
+                                        </div>
+                                        <iconify-icon icon="solar:alt-arrow-left-linear"
+                                            class="text-slate-400"></iconify-icon>
+                                    </div>
+
+                                    <div
+                                        class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                                                <iconify-icon icon="solar:file-text-bold"></iconify-icon>
+                                            </div>
+                                            <div>
+                                                <p class="text-slate-800 font-bold text-sm">الطلبات</p>
+                                                <p class="text-green-600 text-[10px]">تمت الموافقة (1)</p>
+                                            </div>
+                                        </div>
+                                        <iconify-icon icon="solar:alt-arrow-left-linear"
+                                            class="text-slate-400"></iconify-icon>
+                                    </div>
+                                </div>
+
+                                <!-- Floating Action Button -->
+                                <div
+                                    class="absolute bottom-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-indigo-600 rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center text-white text-2xl">
+                                    <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">جاهز لأتمتة الـ HR؟</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        تخلص من الأوراق، ووفر وقت فريقك للتركيز على استراتيجية الموارد البشرية.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل مع مستشار
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            احجز ديمو مجاني
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

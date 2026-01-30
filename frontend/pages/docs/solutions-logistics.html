@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حلول اللوجستيات والنقل | Bright AI - إدارة الأسطول</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="نظام إدارة أسطول ذكي (Fleet Management) يساعدك تتبع شاحناتك، تحسن المسارات لتقليل الوقود، وتضمن وصول الشحنات في وقتها." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-logistics" />
+    <meta name="keywords"
+        content="لوجستيات، إدارة أسطول، تتبع الشاحنات، Route Optimization، توصيل الطلبات، Last Mile Delivery، هيئة النقل" />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"حلول اللوجستيات الذكية","provider":{"@type":"Organization","name":"Bright AI"},"description":"نظام إدارة الأسطول وتحسين مسارات التوصيل بالذكاء الاصطناعي","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-yellow-500/30 selection:text-yellow-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">اللوجستيات (Logistics)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20 shadow-2xl shadow-yellow-500/10 animate-float">
+                <iconify-icon icon="solar:delivery-bold-duotone" width="48" class="text-yellow-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">أسطولك تحت <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">سيطرتك</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                لا تخلي سياراتك تمشي "على عماها". ذكاء اصطناعي يخطط أفضل المسارات، يراقب سلوك السائقين، ويضمن توصيل
+                طلباتك بأقل تكلفة ووقت.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#feature-showcase"
+                    class="px-8 py-4 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-white font-bold transition-all shadow-lg shadow-yellow-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:map-point-wave-linear" width="24"></iconify-icon>
+                    شوف الخريطة الذكية
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    عرض لشركات النقل
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-yellow-500 to-amber-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:fuel-bold-duotone" class="text-yellow-400"></iconify-icon>
+                    البنزين والوقت.. فلوس!
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        في قطاع اللوجستيات، كل دقيقة تأخير وكل لتر بنزين زيادة يحسب عليك. المشكلة إن التخطيط اليدوي
+                        للمسارات مستحيل يكون مثالي، خاصة مع زحمة مدننا.
+                    </p>
+                    <p class="mb-6">
+                        نظام <strong>Bright Logistics</strong> يستخدم خوارزميات (Genetic Algorithms) عشان يعطيك المسار
+                        الأذكى. يجنبك الزحمة، ويجمع الطلبات القريبة من بعض، ويخلي السيارة ما ترجع فاضية (Backhaul
+                        Optimization).
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">خدمات إدارة الأسطول</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-yellow-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-yellow-500/20 flex items-center justify-center mb-6 text-yellow-400">
+                            <iconify-icon icon="solar:routing-2-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تحسين المسارات (Route Optimization)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            بدل ما السواق يلف ويدور، النظام يعطيه خط سير مرتب نقطة بنقطة. يوفر حتى 30% من استهلاك
+                            الوقود والوقت.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-amber-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6 text-amber-400">
+                            <iconify-icon icon="solar:wheel-angle-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">مراقبة سلوك السائق</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تعرف مين السواق اللي يسرع، يفرمل بقوة، أو يخلي السيارة شغالة وهو واقف (Idling). حافظ على
+                            سلامة سياراتك وبضائعك.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-orange-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 text-orange-400">
+                            <iconify-icon icon="solar:box-check-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">إثبات التوصيل (Proof of Delivery)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            كل شي مؤتمت. العميل يوقع على جوال السواق، أو يصور الشحنة عند الباب، ويجيك إشعار فوري إن
+                            الطلب "تم التوصيل".
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-red-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 text-red-400">
+                            <iconify-icon icon="solar:settings-minimalistic-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">الصيانة التنبؤية</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام ينبهك: "ترى الكفرات تحتاج تغيير بعد 500 كم" أو "فيه مشكلة في حرارة المحرك للشاحنة
+                            رقم 5".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visual Section -->
+            <section id="feature-showcase" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold mb-4 border border-yellow-500/20 w-fit">
+                                تتبع حي 🗺️
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">وين شحنتك الحين؟</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                لوحة تحكم تعطيك مكان كل سيارة في أسطولك لحظة بلحظة، مع تفاصيل السرعة والحالة.
+                            </p>
+                            <div class="bg-white/5 rounded-lg p-4 border border-white/10">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-white font-bold text-sm">شاحنة رقم #402</span>
+                                    <span class="text-green-400 text-xs font-bold flex items-center gap-1">
+                                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                        تتحرك
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs text-slate-400">
+                                    <span>الموقع: طريق الملك فهد، الرياض</span>
+                                    <span>السرعة: 75 كم/س</span>
+                                </div>
+                                <div class="mt-3 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full w-3/4 bg-yellow-500 rounded-full"></div>
+                                </div>
+                                <div class="mt-1 flex justify-between text-[10px] text-slate-500">
+                                    <span>المسافة المتبقية: 12 كم</span>
+                                    <span>الوصول: 15 دقيقة</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-slate-900 relative overflow-hidden flex items-center justify-center min-h-[300px]">
+                            <!-- Map Representation -->
+                            <div class="absolute inset-0 opacity-30"
+                                style="background-image: radial-gradient(#334155 1px, transparent 1px); background-size: 20px 20px;">
+                            </div>
+
+                            <!-- Route Line -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none"
+                                style="filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));">
+                                <path d="M50 250 Q 150 200, 200 150 T 350 100" fill="none" stroke="#eab308"
+                                    stroke-width="3" stroke-dasharray="8 4" class="animate-dash" />
+                                <circle cx="50" cy="250" r="6" fill="#ef4444" /> <!-- Start -->
+                                <circle cx="350" cy="100" r="6" fill="#22c55e" /> <!-- End -->
+
+                                <!-- Moving Truck Icon -->
+                                <g>
+                                    <circle cx="200" cy="150" r="15" fill="#eab308" opacity="0.2"
+                                        class="animate-ping" />
+                                    <circle cx="200" cy="150" r="6" fill="#eab308" />
+                                </g>
+                            </svg>
+
+                            <!-- Location Pins -->
+                            <div
+                                class="absolute top-20 right-20 bg-slate-800 p-2 rounded text-xs border border-white/10 shadow-xl">
+                                <span class="block text-white font-bold">المستودع المركزي</span>
+                            </div>
+
+                            <div
+                                class="absolute bottom-20 left-10 bg-slate-800 p-2 rounded text-xs border border-white/10 shadow-xl">
+                                <span class="block text-white font-bold">نقطة التسليم</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">وصل أسرع، وفر أكثر</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        حلولنا معتمدة ومتوافقة مع متطلبات هيئة النقل العام.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            استشر خبير لوجستي
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            طلب نظام
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <style>
+        .animate-dash {
+            stroke-dashoffset: 100;
+            animation: dash 2s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</body>
+
+</html>

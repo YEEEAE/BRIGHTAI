@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="حلول إدارة سلاسل الإمداد (Supply Chain) بالذكاء الاصطناعي. توقع الطلب (Demand Forecasting)، إدارة الموردين، وتحسين المخزون للشركات الصناعية." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-supply-chain" />
+    <meta name="keywords"
+        content="سلسلة الإمداد، Supply Chain، SCM، تخطيط الطلب، إدارة المشتريات، المخزون الصفري، التوريد، Logistics 4.0" />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"إدارة سلاسل الإمداد SCM","provider":{"@type":"Organization","name":"Bright AI"},"description":"تحسين كفاءة سلاسل الإمداد وتوقع الطلب باستخدام الذكاء الاصطناعي","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-cyan-500/30 selection:text-cyan-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">سلسلة الإمداد (SCM)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-cyan-600/10 flex items-center justify-center border border-cyan-600/20 shadow-2xl shadow-cyan-600/10 animate-float">
+                <iconify-icon icon="solar:box-minimalistic-bold-duotone" width="48"
+                    class="text-cyan-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">سلسلة إمداد <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300">لا تتوقف</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                حول المخاطر إلى فرص. ذكاء اصطناعي يتوقع الطلب قبل حدوثه، يدير علاقاتك مع الموردين، ويضمن أن مستودعاتك
+                دائماً جاهزة بدون تكدس.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#forecasting-demo"
+                    class="px-8 py-4 rounded-xl bg-cyan-700 hover:bg-cyan-600 text-white font-bold transition-all shadow-lg shadow-cyan-700/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:graph-new-linear" width="24"></iconify-icon>
+                    توقع الطلب الآن
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    استشارة SCM
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-cyan-600 to-teal-600"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:global-warning-bold-duotone" class="text-cyan-400"></iconify-icon>
+                    عندما تنقطع السلسلة.. الكل يخسر
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        تأخر حاوية واحدة ممكن يوقف مصنع كامل. في عالم اليوم المتغير، الاعتماد على التوقعات اليدوية (Gut
+                        Feeling)
+                        هو مخاطرة كبيرة.
+                    </p>
+                    <p class="mb-6">
+                        نظام <strong>Bright SCM</strong> يراقب كل حلقة في السلسلة: من المواد الخام عند المورد، مروراً
+                        بالتصنيع، وحتى التوصيل للعميل النهائي. نستخدم البيانات التاريخية ومؤشرات السوق لنعطيك أدق توقع
+                        للطلب.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center">أتمتة سلاسل الإمداد</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-cyan-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-600/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:chart-2-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تخطيط الطلب (Demand Planning)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            خوارزميات تعرف "موسمية" منتجاتك. تقول لك: "في رمضان بيزيد الطلب على المنتج X بنسبة 40%، جهز
+                            مخزونك من الحين".
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-teal-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-600/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">إدارة الموردين (SRM)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تقييم آلي لأداء الموردين. مين اللي يتأخر؟ مين جودته قلت؟ النظام يعطيك تقارير تساعدك تفاوض
+                            بشكل أفضل.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-blue-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-600/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:box-minimalistic-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">أتمتة المخزون (Inventory Optimization)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            حافظ على مستويات المخزون المثالية (Optimal Stock Level). لا تكدس بضاعة تجمد فلوسك، ولا تفرغ
+                            مخازنك وتخسر مبيعات.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-indigo-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-600/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:bill-check-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">أوامر الشراء الذكية (Smart POs)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يقترح عليك أوامر الشراء (Purchase Orders) جاهزة، كل اللي عليك تضغط "موافقة".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Chart Section -->
+            <section id="forecasting-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-cyan-600/20 text-cyan-400 text-xs font-bold mb-4 border border-cyan-600/20 w-fit">
+                                نظرة للمستقبل 🔮
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">شفافية كاملة في التخطيط</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                مخطط تفاعلي يوضح لك الطلب الفعلي (بالأزرق) وتوقعات الذكاء الاصطناعي للأشهر القادمة
+                                (بالخط المتقطع).
+                            </p>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                                <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-2">
+                                    <span class="text-white text-sm font-bold">توقعات شهر مارس</span>
+                                    <span class="text-green-400 text-sm font-bold">▲ 15% زيادة</span>
+                                </div>
+                                <p class="text-xs text-slate-400">
+                                    بناءً على: اقتراب شهر رمضان + حملة تسويقية مجدولة.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-slate-900 relative overflow-hidden flex items-end justify-center p-8 min-h-[300px]">
+                            <!-- Chart Visualization -->
+                            <div class="w-full h-full flex flex-col justify-end gap-2 relative z-10">
+                                <div class="flex items-end justify-between h-48 gap-2 w-full px-4">
+                                    <!-- Bars -->
+                                    <div class="w-1/6 bg-slate-700 rounded-t h-[40%] relative group"><span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Jan</span>
+                                    </div>
+                                    <div class="w-1/6 bg-slate-700 rounded-t h-[55%] relative group"><span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Feb</span>
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-cyan-600 rounded-t h-[75%] relative group animate-pulse shadow-[0_0_15px_rgba(8,145,178,0.5)]">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Mar
+                                            (Predicted)</span></div>
+                                    <div
+                                        class="w-1/6 bg-slate-700/50 rounded-t h-[60%] border-t-2 border-dashed border-cyan-400 relative group">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-slate-400 hidden group-hover:block">Apr</span>
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-slate-700/50 rounded-t h-[50%] border-t-2 border-dashed border-cyan-400 relative group">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-slate-400 hidden group-hover:block">May</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-px bg-white/10 mt-2"></div>
+                                <div class="flex justify-between text-[10px] text-slate-500 px-4">
+                                    <span>Past Data</span>
+                                    <span class="text-cyan-400">AI Forecast</span>
+                                </div>
+                            </div>
+
+                            <!-- Grid Background -->
+                            <div class="absolute inset-0 opacity-20"
+                                style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyan-600/10 to-teal-600/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">امن مستقبل أعمالك</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        سلاسل الإمداد الذكية هي الفرق بين الربح والخسارة. ابدأ التحول الرقمي اليوم.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-cyan-700 hover:bg-cyan-600 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل مع خبير SCM
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            استشارة مجانية
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
