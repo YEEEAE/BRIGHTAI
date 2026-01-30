@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ | Bright AI - Got Questions? We Got Answers 💡</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+    <meta name="description"
+        content="Answers to the most asked questions about Bright AI services, pricing, security, and support. Can't find your answer? Hit us up!" />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/Docfile/faq-en" />
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" /><link rel="stylesheet" href="../../css/docs.css" />
+    <script>setTimeout(function () { var s1 = document.createElement('script'); s1.src = 'https://cdn.tailwindcss.com'; s1.async = true; document.body.appendChild(s1); var s2 = document.createElement('script'); s2.src = 'https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js'; s2.async = true; document.body.appendChild(s2); }, 50);</script>
+    <script src="../../js/navigation.js" defer></script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"How much do Bright AI services cost?","acceptedAnswer":{"@type":"Answer","text":"Pricing depends on the service type and project scope. We offer a free consultation to understand your needs and provide a custom quote that fits your budget."}},
+        {"@type":"Question","name":"How long does it take to complete a project?","acceptedAnswer":{"@type":"Answer","text":"It varies. Simple projects take 2-4 weeks, while complex ones might need 2-3 months. We'll give you a realistic timeline upfront."}},
+        {"@type":"Question","name":"Is my data safe with you?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. All data is hosted locally in Saudi Arabia with AES-256 encryption. We comply with NCA and NDMO standards."}},
+        {"@type":"Question","name":"Do you provide ongoing support?","acceptedAnswer":{"@type":"Answer","text":"100%. We offer 24/7 support in Arabic and English via WhatsApp and email. We don't ghost our clients."}}
+    ]}
+    </script>
+    <style>
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding-top: 1rem;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">Let's Talk</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">Docs</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list flex gap-2 text-sm text-slate-400">
+            <li><a href="/">Home</a></li><span>/</span>
+            <li><a href="/Docs">Docs</a></li><span>/</span>
+            <li class="text-white">FAQ</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 relative z-10">
+        <header class="doc-header mb-12 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-premium border border-emerald-500/30 mb-6">
+                <iconify-icon icon="lucide:help-circle" width="18" class="text-emerald-400"></iconify-icon>
+                <span class="text-emerald-300 text-sm font-medium">Help Center</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Frequently Asked <span
+                    class="gradient-text-animate">Questions</span></h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">Got questions? Bet. Here are the ones people ask us the
+                most. If you don't find your answer, just slide into our DMs! 📱</p>
+        </header>
+
+        <article class="doc-content">
+
+            <!-- General -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:info" class="text-gold-400"></iconify-icon> General Stuff
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">What exactly is Bright AI?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>We're a Saudi-based AI company that helps businesses level up with smart tech. Think
+                                automation, data analytics, chatbots, and custom AI solutions. Our squad of 11 experts
+                                has shipped 47 projects and counting. We're basically your tech homies who actually
+                                deliver. 🤙</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Where are you guys based?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>We're in Riyadh, Saudi Arabia! 🇸🇦 Specifically at: 6913 Al Mubarak Bin Fadalah, Al
+                                Fayha District, Riyadh 14254. But hey, we work with clients from all over KSA – most of
+                                our collabs happen over video calls anyway.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Do you work with clients outside Riyadh?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>For sure! We serve clients across all of Saudi Arabia. Most of our communication happens
+                                remotely through video calls, but if you need us on-site, we can make that happen too.
+                                Distance ain't an issue.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:layers" class="text-indigo-400"></iconify-icon> Services
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">What services do you offer?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>We've got a full stack of AI goodies:</p>
+                            <ul class="mt-3 space-y-2 list-disc list-inside">
+                                <li>AIaaS – AI as a Service (cloud-based, local hosting)</li>
+                                <li>RPA – Robotic Process Automation</li>
+                                <li>Big Data Analytics & BI</li>
+                                <li>Smart Chatbots (Arabic-native!)</li>
+                                <li>Smart Medical Archive</li>
+                                <li>AI Recruitment System</li>
+                                <li>Technical Consulting</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Can you build custom solutions?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>Absolutely! That's actually our specialty. Every project we take on is tailored to your
+                                specific needs. We don't do cookie-cutter solutions – we build stuff that actually fits
+                                your business like a glove. 🧤</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:credit-card" class="text-emerald-400"></iconify-icon> Pricing & Money
+                    Talk 💰
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">How much does this stuff cost?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>Real talk – it depends on what you need. A simple automation might cost way less than a
+                                full AI platform. That's why we start with a free consultation to understand your
+                                situation and give you a quote that actually makes sense for your budget.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Is the first consultation really free?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>100% free. No strings attached. We'll hop on a call, hear you out, understand your
+                                challenges, and give you an honest assessment. If we're a good fit, cool. If not, no
+                                hard feelings. We keep it real. ✌️</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">How long do projects usually take?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>It really depends on the complexity. Simple projects might take 2-4 weeks. More complex
+                                enterprise solutions could take 2-3 months. We'll always give you a realistic timeline
+                                upfront – no cap.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:shield" class="text-cyan-400"></iconify-icon> Security & Privacy 🔐
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Is my data safe with you?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>Security is literally our top priority. All data is hosted locally in Saudi Arabia with
+                                AES-256 encryption. We comply with NCA (National Cybersecurity Authority) and NDMO
+                                standards. Your data stays safe, stays local, stays private. Period.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Where do you host the data?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>Everything is hosted locally within Saudi Arabia. This ensures data sovereignty and
+                                compliance with local regulations. No offshore servers, no sketchy third parties. Just
+                                secure, local hosting.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:headphones" class="text-violet-400"></iconify-icon> Support
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">Do you provide support after launch?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>We don't ghost. Ever. We provide ongoing support 24/7 in both Arabic and English. Whether
+                                it's WhatsApp or email, we're always just a message away. Your success is our success.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">How can I reach you?</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>Multiple ways to slide into our DMs:</p>
+                            <ul class="mt-3 space-y-2">
+                                <li>📱 WhatsApp: <a href="https://wa.me/966538229013"
+                                        class="text-emerald-400 hover:underline">+966538229013</a></li>
+                                <li>📧 Email: <a href="mailto:yazeed1job@gmail.com"
+                                        class="text-emerald-400 hover:underline">yazeed1job@gmail.com</a></li>
+                                <li>📸 Instagram: <a href="https://instagram.com/brightai_"
+                                        class="text-emerald-400 hover:underline">@brightai_</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="glass-card p-8 rounded-2xl text-center"
+                style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid rgba(16, 185, 129, 0.3);">
+                <h2 class="text-2xl font-bold text-white mb-4">Still Got Questions? 🤔</h2>
+                <p class="text-slate-300 mb-6">No worries! Hit us up and we'll get back to you ASAP</p>
+                <a href="https://wa.me/966538229013"
+                    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105"
+                    style="background: linear-gradient(135deg, #25D366, #128C7E);">
+                    <iconify-icon icon="logos:whatsapp-icon" width="20"></iconify-icon> Message Us Now
+                </a>
+            </section>
+        </article>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. All rights reserved. Built with 💜 in Saudi Arabia.</p>
+        </div>
+    </footer>
+
+    <script>function toggleFaq(el) { const item = el.parentElement; document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); }); item.classList.toggle('open'); }</script>
+    <script src="../../js/navigation.js" defer></script>
+<script src="../../js/docs-scripts.js" defer></script></body>
+
+</html>

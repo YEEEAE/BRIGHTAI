@@ -43,6 +43,7 @@
                 loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
                 // Centralized Design System
                 loadCSS('frontend/css/brightai-core.css');
+                loadCSS('frontend/css/docs.css');
 
                 loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
                 loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
@@ -517,32 +518,226 @@
         <!-- Main Grid -->
         <main class="col-span-1 lg:col-span-3">
             <div id="documentsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Content injected by JS -->
-            </div>
 
-            <!-- Document Preview Area (Hidden by default) -->
-            <section id="docPreview" class="hidden glass-card p-8 mt-12 bg-black/80 ring-1 ring-emerald-500/50">
-                <div class="flex justify-between items-start mb-6">
-                    <h2 id="docTitle" class="text-2xl font-bold text-white"></h2>
-                    <div class="flex gap-3">
-                        <button class="download-btn btn-primary text-sm py-1 px-4">فتح المستند</button>
-                        <button class="share-btn btn-secondary text-sm py-1 px-4">مشاركة</button>
+                <!-- نظرة عامة على الخدمات -->
+                <a href="frontend/pages/docs/services-overview.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-emerald-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:layers" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition">نظرة عامة
+                                على الخدمات</h3>
+                            <p class="text-slate-400 text-sm mt-1">تعرف على جميع خدمات Bright AI في مكان واحد</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">الخدمات</span>
+                        </div>
                     </div>
-                </div>
-                <div class="flex gap-4 text-xs text-slate-500 mb-6">
-                    <span id="docCategory" class="bg-white/10 px-2 py-1 rounded"></span>
-                    <span id="docDate" class="flex items-center gap-1"><iconify-icon
-                            icon="lucide:calendar"></iconify-icon>
-                    </span>
-                </div>
-                <p id="docDescription" class="text-slate-300 leading-relaxed mb-8"></p>
-            </section>
+                </a>
+
+                <!-- Services Overview EN -->
+                <a href="frontend/pages/docs/services-overview-en.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-sky-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:globe" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-sky-400 transition">Services
+                                Overview</h3>
+                            <p class="text-slate-400 text-sm mt-1">Explore all Bright AI services in one place</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-sky-400 bg-sky-500/10 px-2 py-1 rounded">Services
+                                • EN</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- الأسئلة الشائعة -->
+                <a href="frontend/pages/docs/faq.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-amber-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:help-circle" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-amber-400 transition">الأسئلة
+                                الشائعة</h3>
+                            <p class="text-slate-400 text-sm mt-1">إجابات على أكثر الأسئلة شيوعاً</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-amber-400 bg-amber-500/10 px-2 py-1 rounded">FAQ</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- FAQ EN -->
+                <a href="frontend/pages/docs/faq-en.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-orange-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:message-circle" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-orange-400 transition">FAQ</h3>
+                            <p class="text-slate-400 text-sm mt-1">Answers to your most common questions</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-orange-400 bg-orange-500/10 px-2 py-1 rounded">FAQ
+                                • EN</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- سياسة الخصوصية -->
+                <a href="frontend/pages/docs/privacy-policy.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-rose-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:shield" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-rose-400 transition">سياسة الخصوصية
+                            </h3>
+                            <p class="text-slate-400 text-sm mt-1">كيف نحمي بياناتك ونحافظ على خصوصيتك</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-rose-400 bg-rose-500/10 px-2 py-1 rounded">قانوني</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Privacy Policy EN -->
+                <a href="frontend/pages/docs/privacy-policy-en.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-cyan-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:lock" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition">Privacy Policy
+                            </h3>
+                            <p class="text-slate-400 text-sm mt-1">How we protect your data and privacy</p>
+                            <span class="inline-block mt-3 text-xs text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded">Legal
+                                • EN</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- الشروط والأحكام -->
+                <a href="frontend/pages/docs/terms-and-conditions.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-violet-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:file-check" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-violet-400 transition">الشروط
+                                والأحكام</h3>
+                            <p class="text-slate-400 text-sm mt-1">شروط استخدام خدماتنا والتزاماتنا المتبادلة</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-violet-400 bg-violet-500/10 px-2 py-1 rounded">قانوني</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Terms EN -->
+                <a href="frontend/pages/docs/terms-and-conditions-en.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-indigo-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:scale" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition">Terms &
+                                Conditions</h3>
+                            <p class="text-slate-400 text-sm mt-1">Service terms and mutual obligations</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded">Legal
+                                • EN</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- اتصل بنا -->
+                <a href="frontend/pages/docs/contact.html"
+                    class="glass-card p-6 group hover:ring-2 hover:ring-gold-500/50 transition">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-500 to-amber-600 flex items-center justify-center shrink-0">
+                            <iconify-icon icon="lucide:phone" width="24" class="text-white"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-gold-400 transition">اتصل بنا</h3>
+                            <p class="text-slate-400 text-sm mt-1">جميع طرق التواصل مع فريق Bright AI</p>
+                            <span
+                                class="inline-block mt-3 text-xs text-gold-400 bg-gold-500/10 px-2 py-1 rounded">تواصل</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
 
             <!-- Recommendations -->
             <section class="mt-16">
-                <h2 class="text-xl font-bold text-white mb-6">مستندات موصى بها</h2>
+                <h2 class="text-xl font-bold text-white mb-6">خدماتنا الرئيسية</h2>
                 <div id="recGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Content injected by JS -->
+
+                    <!-- AIaaS -->
+                    <a href="frontend/pages/ai-agent.html"
+                        class="glass-card p-5 group hover:ring-1 hover:ring-sky-500/50 transition">
+                        <iconify-icon icon="lucide:cloud" width="28" class="text-sky-400 mb-3"></iconify-icon>
+                        <h4 class="font-bold text-white group-hover:text-sky-400">AIaaS</h4>
+                        <p class="text-slate-500 text-sm mt-1">الذكاء الاصطناعي كخدمة</p>
+                    </a>
+
+                    <!-- RPA -->
+                    <a href="frontend/pages/smart-automation.html"
+                        class="glass-card p-5 group hover:ring-1 hover:ring-orange-500/50 transition">
+                        <iconify-icon icon="lucide:cog" width="28" class="text-orange-400 mb-3"></iconify-icon>
+                        <h4 class="font-bold text-white group-hover:text-orange-400">أتمتة العمليات</h4>
+                        <p class="text-slate-500 text-sm mt-1">RPA - روبوتات الأتمتة</p>
+                    </a>
+
+                    <!-- Data Analytics -->
+                    <a href="frontend/pages/data-analysis.html"
+                        class="glass-card p-5 group hover:ring-1 hover:ring-blue-500/50 transition">
+                        <iconify-icon icon="lucide:bar-chart-3" width="28" class="text-blue-400 mb-3"></iconify-icon>
+                        <h4 class="font-bold text-white group-hover:text-blue-400">تحليل البيانات</h4>
+                        <p class="text-slate-500 text-sm mt-1">ذكاء الأعمال والتقارير</p>
+                    </a>
+
+                    <!-- Chatbots -->
+                    <a href="frontend/pages/ai-bots.html"
+                        class="glass-card p-5 group hover:ring-1 hover:ring-indigo-500/50 transition">
+                        <iconify-icon icon="lucide:bot" width="28" class="text-indigo-400 mb-3"></iconify-icon>
+                        <h4 class="font-bold text-white group-hover:text-indigo-400">شات بوت ذكي</h4>
+                        <p class="text-slate-500 text-sm mt-1">روبوتات المحادثة</p>
+                    </a>
+
+                    <!-- Consultation -->
+                    <a href="frontend/pages/consultation.html"
+                        class="glass-card p-5 group hover:ring-1 hover:ring-violet-500/50 transition">
+                        <iconify-icon icon="lucide:message-square" width="28"
+                            class="text-violet-400 mb-3"></iconify-icon>
+                        <h4 class="font-bold text-white group-hover:text-violet-400">الاستشارات</h4>
+                        <p class="text-slate-500 text-sm mt-1">استشارات تقنية متخصصة</p>
+                    </a>
+
+                    <!-- Blog -->
+                    <a href="frontend/pages/blog"
+                        class="glass-card p-5 group hover:ring-1 hover:ring-emerald-500/50 transition">
+                        <iconify-icon icon="lucide:book-open" width="28" class="text-emerald-400 mb-3"></iconify-icon>
+                        <h4 class="font-bold text-white group-hover:text-emerald-400">المدونة</h4>
+                        <p class="text-slate-500 text-sm mt-1">مقالات وأخبار التقنية</p>
+                    </a>
+
                 </div>
             </section>
         </main>

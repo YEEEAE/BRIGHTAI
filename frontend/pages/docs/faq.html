@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الأسئلة الشائعة | Bright AI - كل ما تحتاج معرفته</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+    <meta name="description"
+        content="إجابات لأهم الأسئلة الشائعة حول خدمات Bright AI، الأسعار، طريقة العمل، والدعم الفني. تواصل معنا لمزيد من التفاصيل." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/Docfile/faq" />
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" /><link rel="stylesheet" href="../../css/docs.css" />
+    <script>
+        (function () {
+            function loadScript(src) { var s = document.createElement('script'); s.src = src; s.async = true; document.body.appendChild(s); }
+            setTimeout(function () { loadScript('https://cdn.tailwindcss.com'); loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js'); }, 50);
+        })();
+    </script>
+    <script src="../../js/navigation.js" defer></script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"كم تكلفة خدمات Bright AI؟","acceptedAnswer":{"@type":"Answer","text":"الأسعار تختلف حسب نوع الخدمة وحجم المشروع. نقدم استشارة مجانية لتقييم احتياجاتك وتقديم عرض سعر مخصص يناسب ميزانيتك."}},
+        {"@type":"Question","name":"كم يستغرق تنفيذ المشروع؟","acceptedAnswer":{"@type":"Answer","text":"يعتمد على حجم وتعقيد المشروع. المشاريع البسيطة قد تستغرق 2-4 أسابيع، بينما المشاريع المعقدة قد تحتاج 2-3 أشهر."}},
+        {"@type":"Question","name":"هل بياناتي آمنة معكم؟","acceptedAnswer":{"@type":"Answer","text":"نعم، جميع البيانات مستضافة محلياً في السعودية مع تشفير متقدم ومتوافقة مع معايير NCA وNDMO."}},
+        {"@type":"Question","name":"هل تقدمون دعم فني؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نوفر دعم فني مستمر على مدار الساعة باللغة العربية عبر واتساب والبريد الإلكتروني."}}
+    ]}
+    </script>
+    <style>
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding-top: 1rem;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">الرئيسية</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">المستندات</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">اتصل بنا</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">المستندات</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="/">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="/Docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">الأسئلة الشائعة</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 relative z-10">
+        <header class="doc-header mb-12 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-premium border border-emerald-500/30 mb-6">
+                <iconify-icon icon="lucide:help-circle" width="18" class="text-emerald-400"></iconify-icon>
+                <span class="text-emerald-300 text-sm font-medium">مركز المساعدة</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">الأسئلة <span
+                    class="gradient-text-animate">الشائعة</span></h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">جمعنا لك أكثر الأسئلة اللي يسألها عملاءنا. ما لقيت
+                جوابك؟ تواصل معنا مباشرة!</p>
+        </header>
+
+        <article class="doc-content">
+            <!-- FAQ Category 1: General -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:info" class="text-gold-400"></iconify-icon> أسئلة عامة
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وش هي Bright AI بالضبط؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>إحنا شركة سعودية متخصصة في حلول الذكاء الاصطناعي للشركات. نساعد المنشآت السعودية تستفيد
+                                من تقنيات AI لتحسين عملياتها، تحليل بياناتها، وتوفير الوقت والتكاليف. فريقنا يتكون من 11
+                                خبير متخصصين في مجالات مختلفة من الذكاء الاصطناعي.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وين مقركم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>مقرنا في الرياض، حي الفيحاء. العنوان الكامل: 6913 المبارك بن فضالة، RQFA6913، 3041، حي
+                                الفيحاء، الرياض 14254.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تخدمون العملاء خارج الرياض؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>أكيد! نخدم عملاء في جميع مناطق المملكة. أغلب تواصلنا يكون عن بُعد عبر الاجتماعات
+                                الافتراضية، وإذا احتجنا حضور ميداني نوفره بكل سهولة.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Category 2: Services -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:layers" class="text-indigo-400"></iconify-icon> الخدمات
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وش الخدمات اللي تقدمونها؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نقدم مجموعة متكاملة من خدمات الذكاء الاصطناعي:</p>
+                            <ul class="mt-3 space-y-2 list-disc list-inside">
+                                <li>AIaaS - الذكاء الاصطناعي كخدمة سحابية</li>
+                                <li>أتمتة العمليات (RPA)</li>
+                                <li>تحليل البيانات الضخمة</li>
+                                <li>روبوتات المحادثة الذكية</li>
+                                <li>الأرشيف الطبي الذكي</li>
+                                <li>نظام التوظيف الذكي</li>
+                                <li>الاستشارات التقنية</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تقدمون حلول مخصصة؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>أكيد! كل مشروع نصممه حسب احتياجات العميل الخاصة. نبدأ بفهم تحدياتك وأهدافك، وبعدين نصمم
+                                حل يناسب متطلباتك بالضبط.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Category 3: Pricing -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:credit-card" class="text-emerald-400"></iconify-icon> الأسعار والتكاليف
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كم تكلفة خدماتكم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>الأسعار تختلف حسب نوع الخدمة وحجم المشروع ومتطلباتك الخاصة. عشان كذا نقدم استشارة مجانية
+                                لتقييم احتياجاتك وتقديم عرض سعر مخصص يناسب ميزانيتك.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل الاستشارة الأولى مجانية؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نعم! الاستشارة الأولى مجانية 100%. نسمعك ونفهم احتياجاتك ونعطيك تصور أولي عن الحلول
+                                الممكنة قبل أي التزام مالي.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Category 4: Security -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:shield" class="text-cyan-400"></iconify-icon> الأمان والخصوصية
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل بياناتي آمنة معكم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>الأمان أولويتنا رقم واحد! جميع البيانات مستضافة محلياً في السعودية مع تشفير متقدم
+                                AES-256. نلتزم بمعايير الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية
+                                (NDMO).</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وين تستضيفون البيانات؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>جميع بيانات عملائنا مستضافة محلياً داخل المملكة العربية السعودية. هذا يضمن السيادة على
+                                البيانات والامتثال للأنظمة المحلية.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Category 5: Support -->
+            <section class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:headphones" class="text-violet-400"></iconify-icon> الدعم الفني
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تقدمون دعم فني بعد التنفيذ؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>طبعاً! نوفر دعم فني مستمر على مدار الساعة باللغة العربية. تقدر تتواصل معنا عبر واتساب أو
+                                البريد الإلكتروني وبنرد عليك بأسرع وقت.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كيف أتواصل معكم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>عندنا عدة طرق للتواصل:</p>
+                            <ul class="mt-3 space-y-2">
+                                <li>📱 واتساب: <a href="https://wa.me/966538229013"
+                                        class="text-emerald-400 hover:underline">+966538229013</a></li>
+                                <li>📧 البريد: <a href="mailto:yazeed1job@gmail.com"
+                                        class="text-emerald-400 hover:underline">yazeed1job@gmail.com</a></li>
+                                <li>📸 إنستغرام: <a href="https://instagram.com/brightai_"
+                                        class="text-emerald-400 hover:underline">@brightai_</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="glass-card p-8 rounded-2xl text-center"
+                style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid rgba(16, 185, 129, 0.3);">
+                <h2 class="text-2xl font-bold text-white mb-4">ما لقيت جوابك؟</h2>
+                <p class="text-slate-300 mb-6">لا تتردد تتواصل معنا مباشرة وبنجاوب على كل استفساراتك</p>
+                <a href="https://wa.me/966538229013"
+                    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105"
+                    style="background: linear-gradient(135deg, #25D366, #128C7E);">
+                    <iconify-icon icon="logos:whatsapp-icon" width="20"></iconify-icon> تواصل معنا الحين
+                </a>
+            </section>
+        </article>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const allItems = document.querySelectorAll('.faq-item');
+            allItems.forEach(item => { if (item !== faqItem) item.classList.remove('open'); });
+            faqItem.classList.toggle('open');
+        }
+    </script>
+    <script src="../../js/navigation.js" defer></script>
+<script src="../../js/docs-scripts.js" defer></script></body>
+
+</html>

@@ -1,0 +1,281 @@
+/* 
+ * BrightAI Documentation & Services Styles
+ * Independent stylesheet for docs/ folder pages
+ */
+
+/* Document Page Base Styles */
+.doc-page {
+    background: #020617;
+    min-height: 100vh;
+    color: #cbd5e1;
+    font-family: 'Tajawal', sans-serif;
+}
+
+/* Glass Card Component */
+.glass-card {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass Premium - More Visible */
+.glass-premium {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Gradient Text Animation */
+.gradient-text-animate {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706, #fbbf24);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Document Header */
+.doc-header {
+    position: relative;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.doc-header h1 {
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+/* Document Content Styles */
+.doc-content h2 {
+    color: #ffffff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.doc-content h3 {
+    color: #f1f5f9;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.doc-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+}
+
+.doc-content ul,
+.doc-content ol {
+    margin-bottom: 1.25rem;
+    padding-right: 1.5rem;
+}
+
+.doc-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* FAQ Accordion Styles */
+.faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.faq-question {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-question h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #f1f5f9;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 1.5rem;
+    color: #94a3b8;
+}
+
+.faq-item.open .faq-answer {
+    max-height: 1000px;
+    /* Large enough to fit content */
+    padding-bottom: 1.5rem;
+}
+
+.faq-icon {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+    color: #fbbf24;
+}
+
+.faq-item.open .faq-icon {
+    transform: rotate(180deg);
+}
+
+/* Helper Text Classes taken from design tokens */
+.text-gold-400 {
+    color: #fbbf24;
+}
+
+.text-gold-300 {
+    color: #fcd34d;
+}
+
+.text-emerald-400 {
+    color: #34d399;
+}
+
+.text-indigo-400 {
+    color: #818cf8;
+}
+
+.text-cyan-400 {
+    color: #22d3ee;
+}
+
+.text-violet-400 {
+    color: #a78bfa;
+}
+
+.text-rose-400 {
+    color: #fb7185;
+}
+
+.text-sky-400 {
+    color: #38bdf8;
+}
+
+.text-orange-400 {
+    color: #fb923c;
+}
+
+.text-blue-400 {
+    color: #60a5fa;
+}
+
+.text-purple-400 {
+    color: #c084fc;
+}
+
+.text-amber-400 {
+    color: #fbbf24;
+}
+
+.text-pink-400 {
+    color: #f472b6;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-slate-300 {
+    color: #cbd5e1;
+}
+
+.text-slate-400 {
+    color: #94a3b8;
+}
+
+.text-slate-500 {
+    color: #64748b;
+}
+
+/* Backgrounds */
+.bg-white\/5 {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.bg-white\/10 {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Breadcrumb Nav */
+.breadcrumb-nav {
+    margin-bottom: 2rem;
+}
+
+.breadcrumb-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.breadcrumb-list a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumb-list a:hover {
+    color: #fbbf24;
+}
+
+.breadcrumb-separator {
+    color: #64748b;
+}
+
+.breadcrumb-list .active {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 1.5rem !important;
+    }
+
+    .doc-header h1 {
+        font-size: 2rem !important;
+    }
+
+    main {
+        padding-top: 2rem !important;
+    }
+}
