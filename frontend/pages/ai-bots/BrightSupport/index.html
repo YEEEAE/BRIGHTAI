@@ -13,11 +13,11 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="Gemini.png">
-    <title>BrightSales - روبوت المبيعات الذكي</title>
-    <meta name="description" content="BrightSales - روبوت المبيعات الذكي من Bright AI لتحسين عمليات البيع">
-    <link rel="canonical" href="https://brightai.site/botAI/BrightSales">
+    <link rel="icon" type="image/png" href="../../../../Gemini.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../Gemini.png">
+    <title>BrightSupport - روبوت خدمة العملاء الذكي</title>
+    <meta name="description" content="BrightSupport - روبوت خدمة العملاء الذكي من Bright AI لدعم العملاء">
+    <link rel="canonical" href="https://brightai.site/botAI/BrightSupport">
     <style>
         * {
             margin: 0;
@@ -25,32 +25,32 @@
             box-sizing: border-box;
             font-family: 'Tajawal', 'Arial', sans-serif;
         }
-
+        
         body {
             background-color: #f5f7fb;
             display: flex;
             flex-direction: column;
             height: 100vh;
         }
-
+        
         .header {
-            background-color: #FF9800; /* Orange color scheme */
+            background-color: #4CAF50;
             color: white;
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
+        
         .header h1 {
             font-size: 24px;
             margin-bottom: 5px;
         }
-
+        
         .header p {
             font-size: 14px;
             opacity: 0.9;
         }
-
+        
         .chat-container {
             flex: 1;
             display: flex;
@@ -62,7 +62,7 @@
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.05);
         }
-
+        
         #chatMessages {
             flex: 1;
             overflow-y: auto;
@@ -71,7 +71,7 @@
             flex-direction: column;
             gap: 10px;
         }
-
+        
         .message {
             padding: 12px 15px;
             border-radius: 12px;
@@ -80,26 +80,26 @@
             position: relative;
             margin-bottom: 5px;
         }
-
+        
         .user-message {
-            background-color: #FFF3E0; /* Light orange for user */
+            background-color: #DCF8C6;
             align-self: flex-end;
             border-bottom-right-radius: 0;
         }
-
+        
         .bot-message {
             background-color: #f1f3f4;
             align-self: flex-start;
             border-bottom-left-radius: 0;
         }
-
+        
         .input-area {
             display: flex;
             padding: 15px 0;
             border-top: 1px solid #eee;
             margin-top: 10px;
         }
-
+        
         #userInput {
             flex: 1;
             padding: 12px 15px;
@@ -112,15 +112,15 @@
             max-height: 150px;
             overflow-y: auto;
         }
-
+        
         .input-actions {
             display: flex;
             gap: 10px;
             margin-right: 10px;
         }
-
-        #sendButton, #fileButton {
-            background-color: #FF9800; /* Orange color scheme */
+        
+        .action-button {
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 50%;
@@ -132,63 +132,77 @@
             justify-content: center;
             transition: background-color 0.3s;
         }
-
-        #sendButton:hover, #fileButton:hover {
-            background-color: #F57C00;
+        
+        .action-button:hover {
+            background-color: #388E3C;
         }
-
-        #sendButton i, #fileButton i {
+        
+        .action-button i {
             font-size: 20px;
         }
 
-        #fileInput {
-            display: none;
-        }
-
         .file-preview {
-            background-color: #FFFDE7; /* Lighter orange for file preview */
-            border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
 
         .file-preview i {
-            color: #EF6C00; /* Darker orange for file icon */
+            color: #4CAF50;
         }
 
-        .file-name {
+        .file-preview .file-name {
             flex: 1;
-            white-space: nowrap;
+            font-size: 14px;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .remove-file {
-            color: #e53935;
+        .file-preview .remove-file {
+            color: #dc3545;
             cursor: pointer;
             padding: 4px;
-            border-radius: 50%;
-        }
-
-        .remove-file:hover {
-            background-color: rgba(229, 57, 53, 0.1);
         }
 
         @media (max-width: 600px) {
+            .chat-container {
+                padding: 10px;
+            }
+
             .header h1 {
                 font-size: 20px;
             }
-
+            
             .header p {
                 font-size: 12px;
             }
-
+            
             .message {
                 max-width: 90%;
+                padding: 10px;
+            }
+
+            .input-area {
+                padding: 10px 0;
+            }
+
+            #userInput {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .action-button {
+                width: 40px;
+                height: 40px;
+            }
+
+            .action-button i {
+                font-size: 18px;
             }
         }
     </style>
@@ -196,21 +210,21 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="BrightSales - روبوت المبيعات الذكي">
-  <meta property="og:description" content="BrightSales - روبوت المبيعات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:title" content="BrightSupport - روبوت خدمة العملاء الذكي">
+  <meta property="og:description" content="BrightSupport - روبوت خدمة العملاء الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  <meta property="og:url" content="https://brightai.site/botAI/BrightSales">
+  <meta property="og:url" content="https://brightai.site/botAI/BrightSupport">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:site_name" content="مُشرقة AI">
   
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BrightSales - روبوت المبيعات الذكي">
-  <meta name="twitter:description" content="BrightSales - روبوت المبيعات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:title" content="BrightSupport - روبوت خدمة العملاء الذكي">
+  <meta name="twitter:description" content="BrightSupport - روبوت خدمة العملاء الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-      <link rel="stylesheet" href="../frontend/css/bundle-main.css" />
-    <script src="../frontend/js/navigation.js" defer></script>
+      <link rel="stylesheet" href="../../../../../frontend/css/bundle-main.css" />
+    <script src="../../../../../frontend/js/navigation.js" defer></script>
 </head>
 <body>
 
@@ -227,15 +241,15 @@
             </button>
 
             <!-- Logo -->
-            <a href="../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+            <a href="../../../../../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
+                <img src="../../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
             <!-- Desktop Navigation -->
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a href="../" class="nav-link">
+                    <a href="../../../../../" class="nav-link">
                         الرئيسية
                     </a>
                 </li>
@@ -247,28 +261,28 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/smart-automation" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/smart-automation" class="dropdown-item">
                             <iconify-icon icon="lucide:zap"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">الأتمتة الذكية</span>
                                 <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/ai-agent" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/ai-agent" class="dropdown-item">
                             <iconify-icon icon="lucide:bot"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
                                 <span class="dropdown-desc">حلول AIaaS المرنة</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/data-analysis" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/data-analysis" class="dropdown-item">
                             <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">تحليل البيانات</span>
                                 <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/consultation" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/consultation" class="dropdown-item">
                             <iconify-icon icon="lucide:message-square"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">استشارات تقنية</span>
@@ -285,28 +299,28 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/try" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/try" class="dropdown-item">
                             <iconify-icon icon="lucide:database"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">ذكاء البيانات</span>
                                 <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/tools" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/tools" class="dropdown-item">
                             <iconify-icon icon="lucide:wrench"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">أدوات مجانية</span>
                                 <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/smart-medical-archive/" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/smart-medical-archive/" class="dropdown-item">
                             <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">الأرشيف الطبي الذكي</span>
                                 <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/interview/" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/interview/" class="dropdown-item">
                             <iconify-icon icon="lucide:users"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">التوظيف الذكي</span>
@@ -323,21 +337,21 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/about-us" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/about-us" class="dropdown-item">
                             <iconify-icon icon="lucide:info"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">من نحن</span>
                                 <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/blog" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/blog" class="dropdown-item">
                             <iconify-icon icon="lucide:book-open"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">المكتبة الذكية</span>
                                 <span class="dropdown-desc">مقالات وأخبار التقنية</span>
                             </div>
                         </a>
-                        <a href="../Docs" class="dropdown-item">
+                        <a href="../../../../../Docs" class="dropdown-item">
                             <iconify-icon icon="lucide:file-text"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">المستندات</span>
@@ -361,7 +375,7 @@
     <!-- Mobile Menu Drawer -->
     <div class="mobile-menu-drawer">
         <ul class="mobile-nav-list">
-            <li><a href="../" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="../../../../../" class="mobile-nav-link">الرئيسية</a></li>
             
             <li>
                 <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
@@ -369,10 +383,10 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/smart-automation" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="../frontend/pages/ai-agent" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="../frontend/pages/data-analysis" class="dropdown-item">تحليل البيانات</a>
-                   <a href="../frontend/pages/consultation" class="dropdown-item">استشارات تقنية</a>
+                   <a href="../../../../../frontend/pages/smart-automation" class="dropdown-item">الأتمتة الذكية</a>
+                   <a href="../../../../../frontend/pages/ai-agent" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                   <a href="../../../../../frontend/pages/data-analysis" class="dropdown-item">تحليل البيانات</a>
+                   <a href="../../../../../frontend/pages/consultation" class="dropdown-item">استشارات تقنية</a>
                 </div>
             </li>
 
@@ -382,10 +396,10 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/try" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="../frontend/pages/tools" class="dropdown-item">أدوات مجانية</a>
-                   <a href="../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
+                   <a href="../../../../../frontend/pages/try" class="dropdown-item">ذكاء البيانات</a>
+                   <a href="../../../../../frontend/pages/tools" class="dropdown-item">أدوات مجانية</a>
+                   <a href="../../../../../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
+                   <a href="../../../../../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
                 </div>
             </li>
 
@@ -395,9 +409,9 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/about-us" class="dropdown-item">من نحن</a>
-                   <a href="../frontend/pages/blog" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="../Docs" class="dropdown-item">المستندات</a>
+                   <a href="../../../../../frontend/pages/about-us" class="dropdown-item">من نحن</a>
+                   <a href="../../../../../frontend/pages/blog" class="dropdown-item">المكتبة الذكية</a>
+                   <a href="../../../../../Docs" class="dropdown-item">المستندات</a>
                 </div>
             </li>
 
@@ -415,21 +429,21 @@
 
 
     <div class="header">
-        <h1>BrightSales - روبوت المبيعات الذكي</h1>
-        <p>تأهيل العملاء المحتملين وزيادة المبيعات بفعالية</p>
+        <h1>BrightSupport - خدمة العملاء الذكية</h1>
+        <p>دعم فوري على مدار الساعة لحل جميع استفساراتك</p>
     </div>
-
+    
     <div class="chat-container">
         <div id="chatMessages"></div>
-
+        
         <div class="input-area">
-            <textarea id="userInput" placeholder="اكتب سؤالك هنا..."></textarea>
+            <textarea id="userInput" placeholder="اكتب استفسارك هنا..."></textarea>
             <div class="input-actions">
-                <button id="fileButton">
+                <input type="file" id="fileInput" style="display: none;">
+                <button id="attachButton" class="action-button">
                     <i class="material-icons">attach_file</i>
                 </button>
-                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx,.xls,.xlsx">
-                <button id="sendButton">
+                <button id="sendButton" class="action-button">
                     <i class="material-icons">send</i>
                 </button>
             </div>
@@ -437,19 +451,21 @@
     </div>
 
     <script>
-        const API_KEY = 'GEMINI_KEY_REDACTED'; // قم بتغيير هذا بمفتاح API الخاص بك
+        const API_KEY = 'GEMINI_KEY_REDACTED';
 
-        class SalesBot {
+        class SupportBot {
             constructor() {
                 this.chatMessages = document.getElementById('chatMessages');
                 this.userInput = document.getElementById('userInput');
                 this.sendButton = document.getElementById('sendButton');
-                this.fileButton = document.getElementById('fileButton');
+                this.attachButton = document.getElementById('attachButton');
                 this.fileInput = document.getElementById('fileInput');
-
-                this.uploadedFile = null;
+                this.currentFile = null;
 
                 this.sendButton.addEventListener('click', () => this.sendMessage());
+                this.attachButton.addEventListener('click', () => this.fileInput.click());
+                this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+                
                 this.userInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
@@ -461,16 +477,6 @@
                     this.adjustTextareaHeight();
                 });
 
-                this.fileButton.addEventListener('click', () => {
-                    this.fileInput.click();
-                });
-
-                this.fileInput.addEventListener('change', (e) => {
-                    if (e.target.files.length > 0) {
-                        this.handleFileUpload(e.target.files[0]);
-                    }
-                });
-
                 this.initialize();
             }
 
@@ -480,42 +486,103 @@
                 textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
             }
 
-            handleFileUpload(file) {
-                this.uploadedFile = file;
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                // Check file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('حجم الملف كبير جداً. الحد الأقصى هو 10 ميجابايت.');
+                    return;
+                }
 
-                const filePreviewHTML = `
-                    <div class="file-preview" id="filePreview">
-                        <i class="material-icons">description</i>
-                        <span class="file-name">${file.name}</span>
-                        <span class="remove-file" id="removeFile">
-                            <i class="material-icons">close</i>
-                        </span>
-                    </div>
+                this.currentFile = file;
+                this.showFilePreview(file);
+            }
+
+            showFilePreview(file) {
+                // Remove existing preview if any
+                const existingPreview = document.querySelector('.file-preview');
+                if (existingPreview) {
+                    existingPreview.remove();
+                }
+
+                // Create preview element
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'file-preview';
+                previewDiv.innerHTML = `
+                    <i class="material-icons">insert_drive_file</i>
+                    <span class="file-name">${file.name}</span>
+                    <i class="material-icons remove-file">close</i>
                 `;
 
-                this.addHTMLMessage(filePreviewHTML, 'user');
-
-                document.getElementById('removeFile').addEventListener('click', () => {
-                    document.getElementById('filePreview').remove();
-                    this.uploadedFile = null;
+                // Add remove functionality
+                const removeButton = previewDiv.querySelector('.remove-file');
+                removeButton.addEventListener('click', () => {
+                    previewDiv.remove();
+                    this.currentFile = null;
                     this.fileInput.value = '';
                 });
+
+                // Insert preview before input area
+                const inputArea = document.querySelector('.input-area');
+                inputArea.parentNode.insertBefore(previewDiv, inputArea);
+            }
+
+            async sendMessage() {
+                const message = this.userInput.value.trim();
+                if (!message && !this.currentFile) return;
+
+                if (this.currentFile) {
+                    // Create file message
+                    const fileMessage = `مرفق: ${this.currentFile.name}`;
+                    this.addMessage(fileMessage, 'user');
+                    
+                    // Here you would typically upload the file to your server
+                    // For demo purposes, we'll just show a success message
+                    const response = 'تم استلام الملف بنجاح. سيتم مراجعته والرد عليك في أقرب وقت.';
+                    this.addMessage(response, 'bot');
+                    
+                    // Clear file
+                    this.currentFile = null;
+                    this.fileInput.value = '';
+                    const preview = document.querySelector('.file-preview');
+                    if (preview) preview.remove();
+                }
+
+                if (message) {
+                    this.addMessage(message, 'user');
+                    this.userInput.value = '';
+                    this.userInput.style.height = '45px';
+
+                    const typingIndicator = this.addTypingIndicator();
+
+                    try {
+                        const response = await this.getGeminiResponse(message);
+                        this.chatMessages.removeChild(typingIndicator);
+                        this.addMessage(response, 'bot');
+                    } catch (error) {
+                        console.error('Error:', error);
+                        this.chatMessages.removeChild(typingIndicator);
+                        this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
+                    }
+                }
             }
 
             initialize() {
-                const welcomeMessage = `مرحباً بك في BrightSales! 👋 كيف يمكنني مساعدتك في زيادة مبيعاتك اليوم؟
-                أنا هنا للإجابة على أسئلتك وتقديم توصيات مخصصة لمنتجاتك.`;
+                const welcomeMessage = `مرحباً بك في BrightSupport! 👋 كيف يمكنني مساعدتك اليوم؟
+                أنا هنا للإجابة على أسئلتك وتقديم الدعم اللازم على مدار الساعة.`;
 
                 this.addMessage(welcomeMessage, 'bot');
 
                 setTimeout(() => {
                     const optionsHTML = `
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <button class="option-button" data-option="product_recommendations">توصيات للمنتجات</button>
-                            <button class="option-button" data-option="pricing_information">معلومات حول الأسعار</button>
-                            <button class="option-button" data-option="demo_request">طلب عرض توضيحي</button>
-                            <button class="option-button" data-option="other">استفسار آخر</button>
-                        </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="option-button" data-option="track_order">تتبع طلبي</button>
+                        <button class="option-button" data-option="returns">سياسة الإرجاع والاستبدال</button>
+                        <button class="option-button" data-option="contact">معلومات الاتصال</button>
+                        <button class="option-button" data-option="other">استفسار آخر</button>
+                    </div>
                     `;
 
                     this.addHTMLMessage(optionsHTML, 'bot');
@@ -537,17 +604,17 @@
 
                 try {
                     switch (option) {
-                        case 'product_recommendations':
-                            response = "من فضلك، أخبرني عن اهتماماتك أو عن نوع المنتج الذي تبحث عنه وسأقدم لك توصيات مخصصة.";
+                        case 'track_order':
+                            response = "من فضلك، أدخل رقم طلبك لتتبعه.";
                             break;
-                        case 'pricing_information':
-                            response = "من فضلك، حدد المنتج الذي تود معرفة سعره بالتحديد.";
+                        case 'returns':
+                            response = "تفضل بزيارة صفحة الإرجاع والاستبدال الخاصة بنا: [رابط صفحة الإرجاع والاستبدال]";
                             break;
-                        case 'demo_request':
-                            response = "يمكنك طلب عرض توضيحي عن طريق ملء النموذج التالي: [رابط لنموذج طلب عرض توضيحي]"; // Replace with your link
+                        case 'contact':
+                            response = "يمكنك التواصل معنا عبر البريد الإلكتروني: support@example.com أو الاتصال بنا على الرقم: 0555555555.";
                             break;
                         case 'other':
-                            response = "من فضلك، وضح استفسارك وسأبذل قصارى جهدي لمساعدتك.";
+                            response = "من فضلك، وضح استفسارك وسأبذل قصارى جهدي لمساعدتك. يمكنك أيضاً إرفاق ملفات إذا كنت بحاجة لذلك.";
                             break;
                     }
 
@@ -558,37 +625,6 @@
                     console.error('Error:', error);
                     this.chatMessages.removeChild(typingIndicator);
                     this.addMessage("عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.", 'bot');
-                }
-            }
-
-            async sendMessage() {
-                const message = this.userInput.value.trim();
-                if (!message && !this.uploadedFile) return;
-
-                if (message) {
-                    this.addMessage(message, 'user');
-                }
-                this.userInput.value = '';
-                this.userInput.style.height = '45px';
-
-                 // Add file information if a file was uploaded
-                 let fileInfo = '';
-                 if (this.uploadedFile) {
-                     fileInfo = `\n\nملف مرفق: ${this.uploadedFile.name} (${this.uploadedFile.type})`;
-                     // Reset uploaded file after sending
-                     this.uploadedFile = null;
-                 }
-
-                const typingIndicator = this.addTypingIndicator();
-
-                try {
-                    const response = await this.getGeminiResponse(message + fileInfo);
-                    this.chatMessages.removeChild(typingIndicator);
-                    this.addMessage(response, 'bot');
-                } catch (error) {
-                    console.error('Error:', error);
-                    this.chatMessages.removeChild(typingIndicator);
-                    this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
                 }
             }
 
@@ -615,13 +651,14 @@
             }
 
             async getGeminiResponse(message) {
-                const context = `أنت BrightSales، روبوت مبيعات ذكي وودود.
-                تهدف إلى تأهيل العملاء المحتملين وزيادة المبيعات من خلال التفاعل الشخصي وتقديم توصيات مخصصة.
-                يمكنك الإجابة على استفسارات المنتجات وتقديم معلومات حول الأسعار.
-                إذا قام المستخدم بتحميل ملف، فقم بتحليله لتقديم أفضل مساعدة ممكنة بناءً على محتواه.
-                حافظ على لهجة إيجابية ومقنعة لتشجيع العملاء على الشراء.`;
+                const context = `أنت BrightSupport، روبوت خدمة عملاء ذكي ومفيد.
+                تساعد العملاء في حل مشاكلهم والإجابة على استفساراتهم بسرعة وكفاءة.
+                تعتمد على المعلومات المتاحة لك وتقدم إجابات دقيقة وموجزة.
+                تتجنب الإجابات المطولة وغير الضرورية وتركز على تقديم الحلول الفورية.
+                تحافظ على لهجة ودية ومهنية في جميع الأوقات.
+                إذا لم تتمكن من الإجابة على سؤال، توجه العميل إلى فريق الدعم البشري.`;
 
-                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"; // Replace with your Gemini model
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
                 const response = await fetch(`${url}?key=${API_KEY}`, {
                     method: 'POST',
@@ -672,7 +709,7 @@
             const style = document.createElement('style');
             style.innerHTML = `
                 .option-button {
-                    background-color: #FFE0B2; /* Light orange for buttons */
+                    background-color: #e2e2e2;
                     border: none;
                     color: black;
                     padding: 10px 20px;
@@ -686,7 +723,7 @@
                     transition: background-color 0.3s ease;
                 }
                 .option-button:hover {
-                    background-color: #FFCC80;
+                    background-color: #d0d0d0;
                 }
 
                 .typing-dot {
@@ -699,20 +736,14 @@
                 }
 
                 @keyframes typing {
-                    0% {
-                        opacity: 0.5;
-                    }
-                    50% {
-                        opacity: 1;
-                    }
-                    100% {
-                        opacity: 0.5;
-                    }
+                    0% { opacity: 0.5; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0.5; }
                 }
             `;
             document.head.appendChild(style);
 
-            new SalesBot();
+            new SupportBot();
         });
     </script>
 </body>

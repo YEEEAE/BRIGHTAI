@@ -13,11 +13,11 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="Gemini.png">
-    <title>BrightRecruiter - روبوت التوظيف الذكي</title>
-    <meta name="description" content="BrightRecruiter - روبوت التوظيف الذكي من Bright AI لإدارة عمليات التوظيف">
-    <link rel="canonical" href="https://brightai.site/botAI/BrightRecruiter">
+    <link rel="icon" type="image/png" href="../../../../Gemini.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../Gemini.png">
+    <title>BrightSales - روبوت المبيعات الذكي</title>
+    <meta name="description" content="BrightSales - روبوت المبيعات الذكي من Bright AI لتحسين عمليات البيع">
+    <link rel="canonical" href="https://brightai.site/botAI/BrightSales">
     <style>
         * {
             margin: 0;
@@ -34,7 +34,7 @@
         }
 
         .header {
-            background-color: #2196F3; /* Blue color scheme for professional feel */
+            background-color: #FF9800; /* Orange color scheme */
             color: white;
             padding: 20px;
             text-align: center;
@@ -82,7 +82,7 @@
         }
 
         .user-message {
-            background-color: #BBDEFB; /* Light blue for user messages */
+            background-color: #FFF3E0; /* Light orange for user */
             align-self: flex-end;
             border-bottom-right-radius: 0;
         }
@@ -119,8 +119,8 @@
             margin-right: 10px;
         }
 
-        #sendButton {
-            background-color: #2196F3; /* Blue color scheme */
+        #sendButton, #fileButton {
+            background-color: #FF9800; /* Orange color scheme */
             color: white;
             border: none;
             border-radius: 50%;
@@ -133,36 +133,49 @@
             transition: background-color 0.3s;
         }
 
-        #sendButton:hover {
-            background-color: #1976D2;
+        #sendButton:hover, #fileButton:hover {
+            background-color: #F57C00;
         }
 
-        #sendButton i {
-            font-size: 20px;
-        }
-                #fileButton {
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
-        
-        #fileButton:hover {
-            background-color: #1976D2;
-        }
-        
         #sendButton i, #fileButton i {
             font-size: 20px;
         }
-                #fileInput {
+
+        #fileInput {
             display: none;
+        }
+
+        .file-preview {
+            background-color: #FFFDE7; /* Lighter orange for file preview */
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-preview i {
+            color: #EF6C00; /* Darker orange for file icon */
+        }
+
+        .file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .remove-file {
+            color: #e53935;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+        }
+
+        .remove-file:hover {
+            background-color: rgba(229, 57, 53, 0.1);
         }
 
         @media (max-width: 600px) {
@@ -183,21 +196,21 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="BrightRecruiter - روبوت التوظيف الذكي">
-  <meta property="og:description" content="BrightRecruiter - روبوت التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:title" content="BrightSales - روبوت المبيعات الذكي">
+  <meta property="og:description" content="BrightSales - روبوت المبيعات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  <meta property="og:url" content="https://brightai.site/botAI/BrightRecruiter">
+  <meta property="og:url" content="https://brightai.site/botAI/BrightSales">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:site_name" content="مُشرقة AI">
   
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BrightRecruiter - روبوت التوظيف الذكي">
-  <meta name="twitter:description" content="BrightRecruiter - روبوت التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:title" content="BrightSales - روبوت المبيعات الذكي">
+  <meta name="twitter:description" content="BrightSales - روبوت المبيعات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-      <link rel="stylesheet" href="../frontend/css/bundle-main.css" />
-    <script src="../frontend/js/navigation.js" defer></script>
+      <link rel="stylesheet" href="../../../../../frontend/css/bundle-main.css" />
+    <script src="../../../../../frontend/js/navigation.js" defer></script>
 </head>
 <body>
 
@@ -214,15 +227,15 @@
             </button>
 
             <!-- Logo -->
-            <a href="../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+            <a href="../../../../../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
+                <img src="../../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
             <!-- Desktop Navigation -->
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a href="../" class="nav-link">
+                    <a href="../../../../../" class="nav-link">
                         الرئيسية
                     </a>
                 </li>
@@ -234,28 +247,28 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/smart-automation" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/smart-automation" class="dropdown-item">
                             <iconify-icon icon="lucide:zap"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">الأتمتة الذكية</span>
                                 <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/ai-agent" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/ai-agent" class="dropdown-item">
                             <iconify-icon icon="lucide:bot"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
                                 <span class="dropdown-desc">حلول AIaaS المرنة</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/data-analysis" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/data-analysis" class="dropdown-item">
                             <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">تحليل البيانات</span>
                                 <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/consultation" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/consultation" class="dropdown-item">
                             <iconify-icon icon="lucide:message-square"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">استشارات تقنية</span>
@@ -272,28 +285,28 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/try" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/try" class="dropdown-item">
                             <iconify-icon icon="lucide:database"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">ذكاء البيانات</span>
                                 <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/tools" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/tools" class="dropdown-item">
                             <iconify-icon icon="lucide:wrench"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">أدوات مجانية</span>
                                 <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/smart-medical-archive/" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/smart-medical-archive/" class="dropdown-item">
                             <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">الأرشيف الطبي الذكي</span>
                                 <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/interview/" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/interview/" class="dropdown-item">
                             <iconify-icon icon="lucide:users"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">التوظيف الذكي</span>
@@ -310,21 +323,21 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/about-us" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/about-us" class="dropdown-item">
                             <iconify-icon icon="lucide:info"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">من نحن</span>
                                 <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/blog" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/blog" class="dropdown-item">
                             <iconify-icon icon="lucide:book-open"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">المكتبة الذكية</span>
                                 <span class="dropdown-desc">مقالات وأخبار التقنية</span>
                             </div>
                         </a>
-                        <a href="../Docs" class="dropdown-item">
+                        <a href="../../../../../Docs" class="dropdown-item">
                             <iconify-icon icon="lucide:file-text"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">المستندات</span>
@@ -348,7 +361,7 @@
     <!-- Mobile Menu Drawer -->
     <div class="mobile-menu-drawer">
         <ul class="mobile-nav-list">
-            <li><a href="../" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="../../../../../" class="mobile-nav-link">الرئيسية</a></li>
             
             <li>
                 <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
@@ -356,10 +369,10 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/smart-automation" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="../frontend/pages/ai-agent" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="../frontend/pages/data-analysis" class="dropdown-item">تحليل البيانات</a>
-                   <a href="../frontend/pages/consultation" class="dropdown-item">استشارات تقنية</a>
+                   <a href="../../../../../frontend/pages/smart-automation" class="dropdown-item">الأتمتة الذكية</a>
+                   <a href="../../../../../frontend/pages/ai-agent" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                   <a href="../../../../../frontend/pages/data-analysis" class="dropdown-item">تحليل البيانات</a>
+                   <a href="../../../../../frontend/pages/consultation" class="dropdown-item">استشارات تقنية</a>
                 </div>
             </li>
 
@@ -369,10 +382,10 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/try" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="../frontend/pages/tools" class="dropdown-item">أدوات مجانية</a>
-                   <a href="../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
+                   <a href="../../../../../frontend/pages/try" class="dropdown-item">ذكاء البيانات</a>
+                   <a href="../../../../../frontend/pages/tools" class="dropdown-item">أدوات مجانية</a>
+                   <a href="../../../../../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
+                   <a href="../../../../../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
                 </div>
             </li>
 
@@ -382,9 +395,9 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/about-us" class="dropdown-item">من نحن</a>
-                   <a href="../frontend/pages/blog" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="../Docs" class="dropdown-item">المستندات</a>
+                   <a href="../../../../../frontend/pages/about-us" class="dropdown-item">من نحن</a>
+                   <a href="../../../../../frontend/pages/blog" class="dropdown-item">المكتبة الذكية</a>
+                   <a href="../../../../../Docs" class="dropdown-item">المستندات</a>
                 </div>
             </li>
 
@@ -402,21 +415,20 @@
 
 
     <div class="header">
-        <h1>BrightRecruiter - روبوت التوظيف الذكي</h1>
-        <p>تبسيط عملية التوظيف الخاصة بك</p>
+        <h1>BrightSales - روبوت المبيعات الذكي</h1>
+        <p>تأهيل العملاء المحتملين وزيادة المبيعات بفعالية</p>
     </div>
 
     <div class="chat-container">
         <div id="chatMessages"></div>
 
         <div class="input-area">
-            <textarea id="userInput" placeholder="اكتب سؤالك هنا أو أرسل السيرة الذاتية..."></textarea>
+            <textarea id="userInput" placeholder="اكتب سؤالك هنا..."></textarea>
             <div class="input-actions">
-                                <button id="fileButton">
+                <button id="fileButton">
                     <i class="material-icons">attach_file</i>
                 </button>
-                 <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt">
-
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx,.xls,.xlsx">
                 <button id="sendButton">
                     <i class="material-icons">send</i>
                 </button>
@@ -425,16 +437,17 @@
     </div>
 
     <script>
-        const API_KEY = 'GEMINI_KEY_REDACTED'; // Replace with your Gemini API key
+        const API_KEY = 'GEMINI_KEY_REDACTED'; // قم بتغيير هذا بمفتاح API الخاص بك
 
-        class RecruiterBot {
+        class SalesBot {
             constructor() {
                 this.chatMessages = document.getElementById('chatMessages');
                 this.userInput = document.getElementById('userInput');
                 this.sendButton = document.getElementById('sendButton');
                 this.fileButton = document.getElementById('fileButton');
                 this.fileInput = document.getElementById('fileInput');
-                 this.uploadedFile = null;
+
+                this.uploadedFile = null;
 
                 this.sendButton.addEventListener('click', () => this.sendMessage());
                 this.userInput.addEventListener('keypress', (e) => {
@@ -447,10 +460,11 @@
                 this.userInput.addEventListener('input', () => {
                     this.adjustTextareaHeight();
                 });
-                                this.fileButton.addEventListener('click', () => {
+
+                this.fileButton.addEventListener('click', () => {
                     this.fileInput.click();
                 });
-                
+
                 this.fileInput.addEventListener('change', (e) => {
                     if (e.target.files.length > 0) {
                         this.handleFileUpload(e.target.files[0]);
@@ -465,10 +479,10 @@
                 textarea.style.height = 'auto';
                 textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
             }
+
             handleFileUpload(file) {
                 this.uploadedFile = file;
-                
-                // إظهار معاينة الملف في المحادثة
+
                 const filePreviewHTML = `
                     <div class="file-preview" id="filePreview">
                         <i class="material-icons">description</i>
@@ -478,10 +492,9 @@
                         </span>
                     </div>
                 `;
-                
+
                 this.addHTMLMessage(filePreviewHTML, 'user');
-                
-                // إضافة المستمع لإزالة الملف
+
                 document.getElementById('removeFile').addEventListener('click', () => {
                     document.getElementById('filePreview').remove();
                     this.uploadedFile = null;
@@ -490,23 +503,19 @@
             }
 
             initialize() {
-                const welcomeMessage = `مرحباً بك في BrightRecruiter! 👋 كيف يمكنني مساعدتك في عملية التوظيف اليوم؟
-                يمكنني مساعدتك في:
-                * فرز السير الذاتية
-                * إجراء مقابلات أولية
-                * تقييم مهارات المرشحين
-                `;
+                const welcomeMessage = `مرحباً بك في BrightSales! 👋 كيف يمكنني مساعدتك في زيادة مبيعاتك اليوم؟
+                أنا هنا للإجابة على أسئلتك وتقديم توصيات مخصصة لمنتجاتك.`;
 
                 this.addMessage(welcomeMessage, 'bot');
 
                 setTimeout(() => {
                     const optionsHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <button class="option-button" data-option="analyze_resume">تحليل سيرة ذاتية</button>
-                        <button class="option-button" data-option="initial_interview">طلب مقابلة أولية</button>
-                        <button class="option-button" data-option="skill_assessment">تقييم المهارات</button>
-                        <button class="option-button" data-option="other">استفسار آخر</button>
-                    </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button class="option-button" data-option="product_recommendations">توصيات للمنتجات</button>
+                            <button class="option-button" data-option="pricing_information">معلومات حول الأسعار</button>
+                            <button class="option-button" data-option="demo_request">طلب عرض توضيحي</button>
+                            <button class="option-button" data-option="other">استفسار آخر</button>
+                        </div>
                     `;
 
                     this.addHTMLMessage(optionsHTML, 'bot');
@@ -521,21 +530,21 @@
             }
 
             async processOptionSelection(option, buttonText) {
-                this.addMessage(buttonText, 'user'); // Show user selection
+                this.addMessage(buttonText, 'user');
 
                 let response = '';
                 const typingIndicator = this.addTypingIndicator();
 
                 try {
                     switch (option) {
-                        case 'analyze_resume':
-                            response = "يرجى تحميل السيرة الذاتية لتحليلها.  وصف الوظيفة المطلوبة";
+                        case 'product_recommendations':
+                            response = "من فضلك، أخبرني عن اهتماماتك أو عن نوع المنتج الذي تبحث عنه وسأقدم لك توصيات مخصصة.";
                             break;
-                        case 'initial_interview':
-                            response = "أدخل اسم المرشح والوظيفة لترتيب مقابلة أولية.";
+                        case 'pricing_information':
+                            response = "من فضلك، حدد المنتج الذي تود معرفة سعره بالتحديد.";
                             break;
-                        case 'skill_assessment':
-                            response = "ما هي المهارات التي تريد تقييمها؟  اسم المرشح";
+                        case 'demo_request':
+                            response = "يمكنك طلب عرض توضيحي عن طريق ملء النموذج التالي: [رابط لنموذج طلب عرض توضيحي]"; // Replace with your link
                             break;
                         case 'other':
                             response = "من فضلك، وضح استفسارك وسأبذل قصارى جهدي لمساعدتك.";
@@ -556,30 +565,24 @@
                 const message = this.userInput.value.trim();
                 if (!message && !this.uploadedFile) return;
 
-                this.addMessage(message, 'user');
-                this.userInput.value = '';
-                this.userInput.style.height = '45px';
-
-                 // عرض رسالة المستخدم
                 if (message) {
                     this.addMessage(message, 'user');
                 }
                 this.userInput.value = '';
                 this.userInput.style.height = '45px';
-                
-                // إظهار مؤشر الكتابة
+
+                 // Add file information if a file was uploaded
+                 let fileInfo = '';
+                 if (this.uploadedFile) {
+                     fileInfo = `\n\nملف مرفق: ${this.uploadedFile.name} (${this.uploadedFile.type})`;
+                     // Reset uploaded file after sending
+                     this.uploadedFile = null;
+                 }
+
                 const typingIndicator = this.addTypingIndicator();
 
                 try {
-                    // إضافة معلومات عن الملف إذا تم رفع ملف
-                    let fileInfo = '';
-                    if (this.uploadedFile) {
-                        fileInfo = `\n\nملف مرفق: ${this.uploadedFile.name} (${this.uploadedFile.type})`;
-                        // بعد إرسال الرسالة، نقوم بإعادة تعيين الملف المرفق
-                        this.uploadedFile = null;
-                    }
-                                        const response = await this.getGeminiResponse(message + fileInfo);
-
+                    const response = await this.getGeminiResponse(message + fileInfo);
                     this.chatMessages.removeChild(typingIndicator);
                     this.addMessage(response, 'bot');
                 } catch (error) {
@@ -612,12 +615,11 @@
             }
 
             async getGeminiResponse(message) {
-                const context = `أنت BrightRecruiter، روبوت توظيف ذكي متخصص في مساعدة مسؤولي التوظيف.
-                تساعد في فرز السير الذاتية، وإجراء مقابلات أولية، وتقييم مهارات المرشحين.
-                تحافظ على لهجة مهنية وودية.
-                تقوم بتحليل السير الذاتية بناءً على متطلبات الوظيفة.
-                إذا كان المستخدم يطلب إجراء مقابلة أولية، اطرح أسئلة ذات صلة بالوظيفة.
-                إذا كان المستخدم يطلب تقييم المهارات، قم بتقييم المهارات المطلوبة للوظيفة.`;
+                const context = `أنت BrightSales، روبوت مبيعات ذكي وودود.
+                تهدف إلى تأهيل العملاء المحتملين وزيادة المبيعات من خلال التفاعل الشخصي وتقديم توصيات مخصصة.
+                يمكنك الإجابة على استفسارات المنتجات وتقديم معلومات حول الأسعار.
+                إذا قام المستخدم بتحميل ملف، فقم بتحليله لتقديم أفضل مساعدة ممكنة بناءً على محتواه.
+                حافظ على لهجة إيجابية ومقنعة لتشجيع العملاء على الشراء.`;
 
                 const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"; // Replace with your Gemini model
 
@@ -629,7 +631,7 @@
                     body: JSON.stringify({
                         contents: [{
                             parts: [{
-                                text: `${context}\n\nطلب المستخدم: ${message}`
+                                text: `${context}\n\nسؤال العميل: ${message}`
                             }]
                         }]
                     })
@@ -650,7 +652,7 @@
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
             }
 
-             addHTMLMessage(html, sender) {
+            addHTMLMessage(html, sender) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message', `${sender}-message`);
                 messageDiv.innerHTML = html;
@@ -659,21 +661,18 @@
             }
 
             formatText(text) {
-                // Basic formatting (make bold and keep newlines)
-                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
-                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italics
-                text = text.replace(/\n/g, '<br>'); // Newlines
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                text = text.replace(/\n/g, '<br>');
                 return text;
             }
-
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Add some CSS for option buttons (better styling)
             const style = document.createElement('style');
             style.innerHTML = `
                 .option-button {
-                    background-color: #e2e2e2;
+                    background-color: #FFE0B2; /* Light orange for buttons */
                     border: none;
                     color: black;
                     padding: 10px 20px;
@@ -687,7 +686,7 @@
                     transition: background-color 0.3s ease;
                 }
                 .option-button:hover {
-                    background-color: #d0d0d0;
+                    background-color: #FFCC80;
                 }
 
                 .typing-dot {
@@ -713,7 +712,7 @@
             `;
             document.head.appendChild(style);
 
-            new RecruiterBot();
+            new SalesBot();
         });
     </script>
 </body>

@@ -13,12 +13,11 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="https://d.top4top.io/p_33458j6zm1.png">
-    <link rel="icon" type="image/png" href="Gemini.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="Gemini.png">
-    <title>BrightMath - مساعد الرياضيات الذكي</title>
-    <meta name="description" content="BrightMath - مساعد الرياضيات الذكي من Bright AI لحل المسائل الرياضية">
-    <link rel="canonical" href="https://brightai.site/botAI/BrightMath">
+    <link rel="icon" type="image/png" href="../../../../Gemini.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../../../../Gemini.png">
+    <title>BrightProject - روبوت إدارة المشاريع الذكي</title>
+    <meta name="description" content="BrightProject - روبوت إدارة المشاريع الذكي من Bright AI لتنظيم وإدارة مشاريعك">
+    <link rel="canonical" href="https://brightai.site/botAI/BrightProject">
     <style>
         * {
             margin: 0;
@@ -26,32 +25,33 @@
             box-sizing: border-box;
             font-family: 'Tajawal', 'Arial', sans-serif;
         }
-        
+
         body {
             background-color: #f5f7fb;
             display: flex;
             flex-direction: column;
             height: 100vh;
         }
-        
+
         .header {
-            background-color: #3f51b5;
+            background-color: #2979FF;
+            /* Blue project management color */
             color: white;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .header h1 {
             font-size: 24px;
             margin-bottom: 5px;
         }
-        
+
         .header p {
             font-size: 14px;
             opacity: 0.9;
         }
-        
+
         .chat-container {
             flex: 1;
             display: flex;
@@ -61,9 +61,9 @@
             width: 100%;
             padding: 20px;
             background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
         }
-        
+
         #chatMessages {
             flex: 1;
             overflow-y: auto;
@@ -72,7 +72,7 @@
             flex-direction: column;
             gap: 10px;
         }
-        
+
         .message {
             padding: 12px 15px;
             border-radius: 12px;
@@ -81,26 +81,27 @@
             position: relative;
             margin-bottom: 5px;
         }
-        
+
         .user-message {
-            background-color: #e1f5fe;
+            background-color: #E3F2FD;
+            /* Light blue for user */
             align-self: flex-end;
             border-bottom-right-radius: 0;
         }
-        
+
         .bot-message {
             background-color: #f1f3f4;
             align-self: flex-start;
             border-bottom-left-radius: 0;
         }
-        
+
         .input-area {
             display: flex;
-            padding: 15px 0;
-            border-top: 1px solid #eee;
-            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
         }
-        
+
         #userInput {
             flex: 1;
             padding: 12px 15px;
@@ -113,15 +114,16 @@
             max-height: 150px;
             overflow-y: auto;
         }
-        
+
         .input-actions {
             display: flex;
             gap: 10px;
             margin-right: 10px;
         }
-        
-        #sendButton, #fileButton {
-            background-color: #3f51b5;
+
+        #sendButton {
+            background-color: #2979FF;
+            /* Blue project management color */
             color: white;
             border: none;
             border-radius: 50%;
@@ -133,126 +135,90 @@
             justify-content: center;
             transition: background-color 0.3s;
         }
-        
-        #sendButton:hover, #fileButton:hover {
-            background-color: #303f9f;
+
+        #sendButton:hover {
+            background-color: #1A52CB;
         }
-        
-        #sendButton i, #fileButton i {
+
+        #sendButton i {
             font-size: 20px;
         }
-        
-        .math-formula {
-            background-color: #f9f9f9;
-            padding: 8px;
-            border-radius: 5px;
-            margin: 5px 0;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .features-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 10px 0;
-            gap: 10px;
-        }
-        
-        .feature-item {
-            background-color: #e8eaf6;
-            border-radius: 8px;
-            padding: 12px;
-            flex: 1;
-            min-width: 120px;
-            text-align: center;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .feature-item:hover {
-            background-color: #c5cae9;
-            transform: translateY(-2px);
-        }
-        
+
         #fileInput {
             display: none;
         }
-        
+
+        #attachButton {
+            background-color: #2979FF;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .file-preview {
-            background-color: #e8f5e9;
+            width: 100%;
+            padding: 8px;
+            background: #E3F2FD;
             border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 14px;
+            margin-top: 5px;
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-        
-        .file-preview i {
-            color: #43a047;
-        }
-        
-        .file-name {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .remove-file {
-            color: #e53935;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 50%;
-        }
-        
-        .remove-file:hover {
-            background-color: rgba(229, 57, 53, 0.1);
         }
 
         @media (max-width: 600px) {
             .header h1 {
                 font-size: 20px;
             }
-            
+
             .header p {
                 font-size: 12px;
             }
-            
+
             .message {
                 max-width: 90%;
             }
-            
-            .features-list {
-                flex-direction: column;
+
+            .input-area {
+                padding: 10px;
+            }
+
+            #userInput {
+                width: calc(100% - 100px);
+            }
+
+            .chat-container {
+                padding: 10px;
             }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js"></script>
 
   <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="BrightMath - مساعد الرياضيات الذكي">
-  <meta property="og:description" content="BrightMath - مساعد الرياضيات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:title" content="BrightProject - روبوت إدارة المشاريع الذكي">
+  <meta property="og:description" content="BrightProject - روبوت إدارة المشاريع الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-  <meta property="og:url" content="https://brightai.site/botAI/BrightMath">
+  <meta property="og:url" content="https://brightai.site/botAI/BrightProject">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:site_name" content="مُشرقة AI">
   
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BrightMath - مساعد الرياضيات الذكي">
-  <meta name="twitter:description" content="BrightMath - مساعد الرياضيات الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:title" content="BrightProject - روبوت إدارة المشاريع الذكي">
+  <meta name="twitter:description" content="BrightProject - روبوت إدارة المشاريع الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-      <link rel="stylesheet" href="../frontend/css/bundle-main.css" />
-    <script src="../frontend/js/navigation.js" defer></script>
+      <link rel="stylesheet" href="../../../../../frontend/css/bundle-main.css" />
+    <script src="../../../../../frontend/js/navigation.js" defer></script>
 </head>
+
 <body>
 
     
@@ -268,15 +234,15 @@
             </button>
 
             <!-- Logo -->
-            <a href="../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+            <a href="../../../../../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
+                <img src="../../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
             <!-- Desktop Navigation -->
             <ul class="nav-links">
                 <li class="nav-item">
-                    <a href="../" class="nav-link">
+                    <a href="../../../../../" class="nav-link">
                         الرئيسية
                     </a>
                 </li>
@@ -288,28 +254,28 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/smart-automation" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/smart-automation" class="dropdown-item">
                             <iconify-icon icon="lucide:zap"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">الأتمتة الذكية</span>
                                 <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/ai-agent" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/ai-agent" class="dropdown-item">
                             <iconify-icon icon="lucide:bot"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
                                 <span class="dropdown-desc">حلول AIaaS المرنة</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/data-analysis" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/data-analysis" class="dropdown-item">
                             <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">تحليل البيانات</span>
                                 <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/consultation" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/consultation" class="dropdown-item">
                             <iconify-icon icon="lucide:message-square"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">استشارات تقنية</span>
@@ -326,28 +292,28 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/try" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/try" class="dropdown-item">
                             <iconify-icon icon="lucide:database"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">ذكاء البيانات</span>
                                 <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/tools" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/tools" class="dropdown-item">
                             <iconify-icon icon="lucide:wrench"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">أدوات مجانية</span>
                                 <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/smart-medical-archive/" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/smart-medical-archive/" class="dropdown-item">
                             <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">الأرشيف الطبي الذكي</span>
                                 <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/interview/" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/interview/" class="dropdown-item">
                             <iconify-icon icon="lucide:users"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">التوظيف الذكي</span>
@@ -364,21 +330,21 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="../frontend/pages/about-us" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/about-us" class="dropdown-item">
                             <iconify-icon icon="lucide:info"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">من نحن</span>
                                 <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
                             </div>
                         </a>
-                        <a href="../frontend/pages/blog" class="dropdown-item">
+                        <a href="../../../../../frontend/pages/blog" class="dropdown-item">
                             <iconify-icon icon="lucide:book-open"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">المكتبة الذكية</span>
                                 <span class="dropdown-desc">مقالات وأخبار التقنية</span>
                             </div>
                         </a>
-                        <a href="../Docs" class="dropdown-item">
+                        <a href="../../../../../Docs" class="dropdown-item">
                             <iconify-icon icon="lucide:file-text"></iconify-icon>
                             <div class="dropdown-item-content">
                                 <span class="dropdown-title">المستندات</span>
@@ -402,7 +368,7 @@
     <!-- Mobile Menu Drawer -->
     <div class="mobile-menu-drawer">
         <ul class="mobile-nav-list">
-            <li><a href="../" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="../../../../../" class="mobile-nav-link">الرئيسية</a></li>
             
             <li>
                 <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
@@ -410,10 +376,10 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/smart-automation" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="../frontend/pages/ai-agent" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="../frontend/pages/data-analysis" class="dropdown-item">تحليل البيانات</a>
-                   <a href="../frontend/pages/consultation" class="dropdown-item">استشارات تقنية</a>
+                   <a href="../../../../../frontend/pages/smart-automation" class="dropdown-item">الأتمتة الذكية</a>
+                   <a href="../../../../../frontend/pages/ai-agent" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                   <a href="../../../../../frontend/pages/data-analysis" class="dropdown-item">تحليل البيانات</a>
+                   <a href="../../../../../frontend/pages/consultation" class="dropdown-item">استشارات تقنية</a>
                 </div>
             </li>
 
@@ -423,10 +389,10 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/try" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="../frontend/pages/tools" class="dropdown-item">أدوات مجانية</a>
-                   <a href="../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
+                   <a href="../../../../../frontend/pages/try" class="dropdown-item">ذكاء البيانات</a>
+                   <a href="../../../../../frontend/pages/tools" class="dropdown-item">أدوات مجانية</a>
+                   <a href="../../../../../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
+                   <a href="../../../../../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
                 </div>
             </li>
 
@@ -436,9 +402,9 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-                   <a href="../frontend/pages/about-us" class="dropdown-item">من نحن</a>
-                   <a href="../frontend/pages/blog" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="../Docs" class="dropdown-item">المستندات</a>
+                   <a href="../../../../../frontend/pages/about-us" class="dropdown-item">من نحن</a>
+                   <a href="../../../../../frontend/pages/blog" class="dropdown-item">المكتبة الذكية</a>
+                   <a href="../../../../../Docs" class="dropdown-item">المستندات</a>
                 </div>
             </li>
 
@@ -456,40 +422,40 @@
 
 
     <div class="header">
-        <h1>BrightMath - مساعد الرياضيات الذكي</h1>
-        <p>مساعدك الشخصي في تعلم الرياضيات وحل المسائل</p>
+        <h1>BrightProject - روبوت إدارة المشاريع الذكي</h1>
+        <p>تنظيم المهام، متابعة التقدم، وتحسين التواصل بين أعضاء الفريق</p>
     </div>
-    
+
     <div class="chat-container">
         <div id="chatMessages"></div>
-        
+
         <div class="input-area">
-            <textarea id="userInput" placeholder="اكتب سؤالك هنا..."></textarea>
+            <textarea id="userInput" placeholder="أدخل استفسارك أو طلبك هنا..."></textarea>
             <div class="input-actions">
-                <button id="fileButton">
+                <button id="attachButton">
                     <i class="material-icons">attach_file</i>
                 </button>
-                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx,.xls,.xlsx">
+                <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,image/*">
                 <button id="sendButton">
                     <i class="material-icons">send</i>
                 </button>
             </div>
+            <div id="filePreview"></div>
         </div>
     </div>
 
     <script>
         const API_KEY = 'GEMINI_KEY_REDACTED'; // قم بتغيير هذا بمفتاح API الخاص بك
 
-        class MathBot {
+        class ProjectBot {
             constructor() {
                 this.chatMessages = document.getElementById('chatMessages');
                 this.userInput = document.getElementById('userInput');
                 this.sendButton = document.getElementById('sendButton');
-                this.fileButton = document.getElementById('fileButton');
                 this.fileInput = document.getElementById('fileInput');
-                
-                this.uploadedFile = null;
-                
+                this.attachButton = document.getElementById('attachButton');
+                this.filePreview = document.getElementById('filePreview');
+
                 this.sendButton.addEventListener('click', () => this.sendMessage());
                 this.userInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -501,16 +467,9 @@
                 this.userInput.addEventListener('input', () => {
                     this.adjustTextareaHeight();
                 });
-                
-                this.fileButton.addEventListener('click', () => {
-                    this.fileInput.click();
-                });
-                
-                this.fileInput.addEventListener('change', (e) => {
-                    if (e.target.files.length > 0) {
-                        this.handleFileUpload(e.target.files[0]);
-                    }
-                });
+
+                this.attachButton.addEventListener('click', () => this.fileInput.click());
+                this.fileInput.addEventListener('change', () => this.handleFileSelect());
 
                 this.initialize();
             }
@@ -520,211 +479,130 @@
                 textarea.style.height = 'auto';
                 textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
             }
-            
-            handleFileUpload(file) {
-                this.uploadedFile = file;
-                
-                // إظهار معاينة الملف في المحادثة
-                const filePreviewHTML = `
-                    <div class="file-preview" id="filePreview">
-                        <i class="material-icons">description</i>
-                        <span class="file-name">${file.name}</span>
-                        <span class="remove-file" id="removeFile">
-                            <i class="material-icons">close</i>
-                        </span>
-                    </div>
-                `;
-                
-                this.addHTMLMessage(filePreviewHTML, 'user');
-                
-                // إضافة المستمع لإزالة الملف
-                document.getElementById('removeFile').addEventListener('click', () => {
-                    document.getElementById('filePreview').remove();
-                    this.uploadedFile = null;
-                    this.fileInput.value = '';
-                });
-            }
 
             initialize() {
-                const welcomeMessage = `مرحباً بك في BrightMath - مساعد الرياضيات الذكي! 🔢✨
+                const welcomeMessage = `مرحباً بك في BrightProject! 👋 أنا هنا لمساعدتك في إدارة مشاريعك بكفاءة. كيف يمكنني مساعدتك اليوم؟`;
 
-يمكنني مساعدتك في العديد من مجالات الرياضيات. الرجاء اختيار نوع المساعدة التي تحتاجها:`;
-                
                 this.addMessage(welcomeMessage, 'bot');
-                
+
                 setTimeout(() => {
-                    const featuresHTML = `
-                    <div class="features-list">
-                        <div class="feature-item" data-feature="explain">شرح المفاهيم الرياضية</div>
-                        <div class="feature-item" data-feature="solve">حل المسائل خطوة بخطوة</div>
-                        <div class="feature-item" data-feature="practice">تمارين وأمثلة للممارسة</div>
-                        <div class="feature-item" data-feature="project">المساعدة في المشاريع</div>
-                        <div class="feature-item" data-feature="exam">تحضير للاختبارات</div>
-                    </div>`;
-                    
-                    this.addHTMLMessage(featuresHTML, 'bot');
-                    
-                    // إضافة مستمعي الأحداث للميزات المقترحة
-                    document.querySelectorAll('.feature-item').forEach(item => {
-                        item.addEventListener('click', () => {
-                            const feature = item.getAttribute('data-feature');
-                            let prompt = '';
-                            
-                            switch(feature) {
-                                case 'explain':
-                                    prompt = 'أريد شرحاً مبسطاً لمفهوم رياضي. يمكنك مساعدتي في فهم:';
-                                    break;
-                                case 'solve':
-                                    prompt = 'أريد حل مسألة رياضية خطوة بخطوة. المسألة هي:';
-                                    break;
-                                case 'practice':
-                                    prompt = 'أريد بعض التمارين للممارسة في موضوع:';
-                                    break;
-                                case 'project':
-                                    prompt = 'أحتاج مساعدة في مشروع رياضي عن:';
-                                    break;
-                                case 'exam':
-                                    prompt = 'أريد التحضير لاختبار في مادة:';
-                                    break;
-                            }
-                            
-                            // عرض اختيار المستخدم في المحادثة
-                            this.addMessage(item.textContent, 'user');
-                            
-                            // معالجة الرد على الاختيار
-                            this.processFeatureSelection(feature);
+                    const optionsHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="option-button" data-option="create_task">إنشاء مهمة جديدة</button>
+                        <button class="option-button" data-option="list_tasks">عرض قائمة المهام</button>
+                        <button class="option-button" data-option="project_status">التحقق من حالة المشروع</button>
+                        <button class="option-button" data-option="risks">تحديد المخاطر المحتملة</button>
+                        <button class="option-button" data-option="other">استفسار آخر</button>
+                    </div>
+                    `;
+
+                    this.addHTMLMessage(optionsHTML, 'bot');
+
+                    document.querySelectorAll('.option-button').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const option = button.getAttribute('data-option');
+                            this.processOptionSelection(option, button.textContent);
                         });
                     });
                 }, 500);
             }
-            
-            async processFeatureSelection(feature) {
+
+            async processOptionSelection(option, buttonText) {
+                this.addMessage(buttonText, 'user'); // Show user selection
+
                 let response = '';
-                
-                // إظهار مؤشر الكتابة
                 const typingIndicator = this.addTypingIndicator();
-                
+
                 try {
-                    switch(feature) {
-                        case 'explain':
-                            response = `أستطيع شرح مفاهيم الرياضيات بطريقة سهلة ومبسطة! 📚
-
-أخبرني من فضلك عن المفهوم الرياضي الذي تريد فهمه بشكل أفضل.
-يمكنك اختيار من هذه المجالات:
-
-• الجبر (المعادلات، كثيرات الحدود، الدوال)
-• الهندسة (المثلثات، الدوائر، المضلعات)
-• حساب التفاضل والتكامل
-• الاحتمالات والإحصاء
-• النظريات والبراهين الرياضية
-
-من فضلك، اكتب المفهوم الذي ترغب في معرفته أو فهمه بشكل أفضل.`;
+                    switch (option) {
+                        case 'create_task':
+                            response = "ممتاز! ما هو اسم المهمة التي ترغب في إنشائها؟ وما هو تاريخ التسليم النهائي؟ ومن هو المسؤول عنها؟";
                             break;
-                            
-                        case 'solve':
-                            response = `سأساعدك في حل المسائل الرياضية خطوة بخطوة! 🧮
-
-يمكنك كتابة المسألة التي تريد حلها، وسأقوم بتوضيح الخطوات بالتفصيل.
-كما يمكنك إرفاق صورة للمسألة باستخدام زر المرفقات إذا كانت المسألة تحتوي على صيغ رياضية معقدة.
-
-من فضلك، اكتب المسألة الرياضية التي تحتاج إلى حلها.`;
+                        case 'list_tasks':
+                            response = "جاري استعراض قائمة المهام الحالية...";
+                            // In a real implementation, you would fetch task data here and format it.
+                            response += "\n(قائمة المهام سيتم عرضها هنا)"; // Placeholder
                             break;
-                            
-                        case 'practice':
-                            response = `سأساعدك بتوفير تمارين وأمثلة للممارسة! 📝
-
-أخبرني عن الموضوع الرياضي الذي تريد التمرن عليه، ومستواك فيه (مبتدئ، متوسط، متقدم)، وسأقدم لك مجموعة من التمارين المناسبة.
-
-من فضلك، اكتب الموضوع ومستواك للحصول على تمارين مخصصة لك.`;
+                        case 'project_status':
+                            response = "جاري التحقق من حالة المشروع...";
+                            // In a real implementation, you would fetch project status data.
+                            response += "\n(حالة المشروع سيتم عرضها هنا)"; // Placeholder
                             break;
-                            
-                        case 'project':
-                            response = `سأساعدك في مشروعك الرياضي! 🏗️
-
-أخبرني عن تفاصيل المشروع الذي تعمل عليه:
-• ما هو موضوع المشروع؟
-• ما هي المتطلبات الأساسية؟
-• هل هناك مفاهيم محددة تحتاج المساعدة فيها؟
-• هل لديك موعد نهائي للتسليم؟
-
-يمكنك أيضاً إرفاق أي مستندات متعلقة بالمشروع باستخدام زر المرفقات.`;
+                        case 'risks':
+                            response = "ما هي جوانب المشروع التي تعتقد أنها قد تواجه مخاطر؟";
                             break;
-                            
-                        case 'exam':
-                            response = `سأساعدك في التحضير للاختبارات ومراجعة المواد! 📚✅
-
-أخبرني عن:
-• نوع الاختبار الذي تستعد له
-• المواضيع الرئيسية التي يغطيها
-• الصعوبات التي تواجهها في هذه المواضيع
-• متى سيكون الاختبار
-
-سأقدم لك خطة مراجعة مع تركيز على النقاط المهمة وأمثلة لأسئلة متوقعة.`;
+                        case 'other':
+                            response = "من فضلك، وضح استفسارك وسأبذل قصارى جهدي لمساعدتك.";
                             break;
                     }
-                    
-                    // إزالة مؤشر الكتابة
+
                     this.chatMessages.removeChild(typingIndicator);
-                    
-                    // إضافة الرد
                     this.addMessage(response, 'bot');
-                    
+
                 } catch (error) {
                     console.error('Error:', error);
-                    
-                    // إزالة مؤشر الكتابة
                     this.chatMessages.removeChild(typingIndicator);
-                    
-                    this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
+                    this.addMessage("عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.", 'bot');
                 }
             }
 
             async sendMessage() {
                 const message = this.userInput.value.trim();
-                if (!message && !this.uploadedFile) return;
+                const file = this.fileInput.files[0];
 
-                // عرض رسالة المستخدم
+                if (!message && !file) return;
+
                 if (message) {
                     this.addMessage(message, 'user');
                 }
+
+                if (file) {
+                    const fileMessage = `مرفق: ${file.name}`;
+                    this.addMessage(fileMessage, 'user');
+                    this.fileInput.value = '';
+                    this.filePreview.innerHTML = '';
+                }
+
                 this.userInput.value = '';
                 this.userInput.style.height = '45px';
-                
-                // إظهار مؤشر الكتابة
+
                 const typingIndicator = this.addTypingIndicator();
 
                 try {
-                    // إضافة معلومات عن الملف إذا تم رفع ملف
-                    let fileInfo = '';
-                    if (this.uploadedFile) {
-                        fileInfo = `\n\nملف مرفق: ${this.uploadedFile.name} (${this.uploadedFile.type})`;
-                        // بعد إرسال الرسالة، نقوم بإعادة تعيين الملف المرفق
-                        this.uploadedFile = null;
-                    }
-                    
-                    const response = await this.getGeminiResponse(message + fileInfo);
-                    
-                    // إزالة مؤشر الكتابة
+                    const response = await this.getGeminiResponse(message);
                     this.chatMessages.removeChild(typingIndicator);
-                    
                     this.addMessage(response, 'bot');
-                    this.renderMathJax();
                 } catch (error) {
                     console.error('Error:', error);
-                    
-                    // إزالة مؤشر الكتابة
                     this.chatMessages.removeChild(typingIndicator);
-                    
                     this.addMessage('عذراً، حدث خطأ ما. الرجاء المحاولة مرة أخرى.', 'bot');
                 }
+            }
+
+            handleFileSelect() {
+                const file = this.fileInput.files[0];
+                if (!file) return;
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('حجم الملف كبير جداً. الحد الأقصى هو 5 ميجابايت');
+                    this.fileInput.value = '';
+                    return;
+                }
+
+                this.filePreview.innerHTML = `
+                    <div class="file-preview">
+                        <i class="material-icons">description</i>
+                        <span>${file.name}</span>
+                        <i class="material-icons" style="cursor:pointer" onclick="this.parentElement.remove();document.getElementById('fileInput').value='';">close</i>
+                    </div>
+                `;
             }
 
             addTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.classList.add('message', 'bot-message');
                 typingDiv.innerHTML = '<div style="display: flex; gap: 4px;"><span class="typing-dot">.</span><span class="typing-dot">.</span><span class="typing-dot">.</span></div>';
-                
-                // تحريك النقاط بالتناوب
+
                 const dots = typingDiv.querySelectorAll('.typing-dot');
                 let i = 0;
                 const animateDots = setInterval(() => {
@@ -733,26 +611,23 @@
                     });
                     i++;
                 }, 300);
-                
-                // تخزين مرجع الفاصل الزمني للحذف لاحقاً
+
                 typingDiv.animationInterval = animateDots;
-                
+
                 this.chatMessages.appendChild(typingDiv);
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
-                
+
                 return typingDiv;
             }
 
             async getGeminiResponse(message) {
-                const context = `أنت BrightMath، مساعد متخصص في تعليم الرياضيات للطلاب الثانوية. 
-                تقدم شرحاً مفصلاً وحلولاً للمسائل الرياضية بأسلوب سهل وتفاعلي.
-                قدم معلومات دقيقة ومحدثة عن الرياضيات بكافة فروعها.
-                عند شرح المسائل الرياضية، قم بتقسيم الحل إلى خطوات واضحة.
-                يمكنك استخدام صيغة التيكس (LaTeX) لعرض الصيغ الرياضية بين علامتي $$.
-                اجعل إجاباتك مفيدة وباللغة العربية، واحرص على التبسيط دون الإخلال بدقة المعلومات.`;
+                const context = `أنت BrightProject، روبوت ذكي لإدارة المشاريع.
+                تساعد مديري المشاريع وأعضاء الفريق في تنظيم المهام، ومتابعة التقدم، والتواصل بفعالية.
+                تستطيع إنشاء المهام، وعرض قوائم المهام، وتحديث حالة المشاريع، وتحديد المخاطر المحتملة، وتقديم تقارير آلية.
+                تحافظ على لهجة احترافية ومفيدة. عند طلب إنشاء مهمة، اسأل عن الاسم، المسؤول وتاريخ التسليم.`;
 
-                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-                
+                const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"; // Replace with your Gemini model
+
                 const response = await fetch(`${url}?key=${API_KEY}`, {
                     method: 'POST',
                     headers: {
@@ -761,7 +636,7 @@
                     body: JSON.stringify({
                         contents: [{
                             parts: [{
-                                text: `${context}\n\nسؤال المستخدم: ${message}`
+                                text: `${context}\n\nطلب المستخدم: ${message}`
                             }]
                         }]
                     })
@@ -777,15 +652,11 @@
             addMessage(text, sender) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message', `${sender}-message`);
-                
-                // تنسيق النص للرياضيات
-                text = this.formatMathText(text);
-                
-                messageDiv.innerHTML = text;
+                messageDiv.innerHTML = this.formatText(text);
                 this.chatMessages.appendChild(messageDiv);
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
             }
-            
+
             addHTMLMessage(html, sender) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message', `${sender}-message`);
@@ -794,28 +665,63 @@
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
             }
 
-            formatMathText(text) {
-                // تحويل الخطوط المائلة إلى تنسيق HTML
-                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-                
-                // الحفاظ على تنسيق الأسطر الجديدة
-                text = text.replace(/\n/g, '<br>');
-                
+            formatText(text) {
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italics
+                text = text.replace(/\n/g, '<br>'); // Newlines
                 return text;
-            }
-
-            renderMathJax() {
-                if (window.MathJax) {
-                    MathJax.typesetPromise();
-                }
             }
         }
 
-        // تهيئة البوت عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', () => {
-            new MathBot();
+            // Add some CSS for option buttons (better styling)
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .option-button {
+                    background-color: #BBDEFB;
+                    /* Light blue for buttons */
+                    border: none;
+                    color: black;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    border-radius: 5px;
+                    transition: background-color 0.3s ease;
+                }
+                .option-button:hover {
+                    background-color: #90CAF9;
+                }
+
+                .typing-dot {
+                    width: 6px;
+                    height: 6px;
+                    background-color: #999;
+                    border-radius: 50%;
+                    display: inline-block;
+                    animation: typing 1s infinite;
+                }
+
+                @keyframes typing {
+                    0% {
+                        opacity: 0.5;
+                    }
+                    50% {
+                        opacity: 1;
+                    }
+                    100% {
+                        opacity: 0.5;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            new ProjectBot();
         });
     </script>
 </body>
+
 </html>
