@@ -85,14 +85,14 @@
 
   <!-- Preload Critical Resources -->
   <link rel="preload" href="frontend/assets/images/Gemini.webp" as="image" type="image/webp">
-  <link rel="preload" href="frontend/css/critical.css" as="style">
+  <link rel="preload" href="frontend/css/bundle-critical.css" as="style">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style"
     crossorigin>
 
-  <!-- Critical CSS (Inline for fastest FCP) -->
-  <link rel="stylesheet" href="frontend/css/critical.css" />
-  <link rel="stylesheet" href="frontend/css/navigation.css" />
-  <link rel="stylesheet" href="frontend/css/search.css" />
+  <!-- CSS Bundles (Optimized) -->
+  <link rel="stylesheet" href="frontend/css/bundle-critical.css" />
+  <link rel="stylesheet" href="frontend/css/bundle-main.css" />
+  <link rel="stylesheet" href="frontend/css/bundle-components.css" />
 
   <!-- Performance Loader Script (Load all resources intelligently) -->
   <script src="frontend/js/resource-loader.js"></script>
@@ -308,10 +308,6 @@
   <div class="backdrop-overlay"></div>
 
 
-  <!-- Chat Widget CSS -->
-  <link rel="stylesheet" href="frontend/css/chat-widget.css" />
-  <!-- Hero CSS -->
-  <link rel="stylesheet" href="frontend/css/hero.css" />
 
   <section class="hero">
     <!-- Animated Gradient Background -->
@@ -5018,8 +5014,6 @@
     </div>
   </footer>
 
-  <!-- Core Components CSS -->
-  <link rel="stylesheet" href="css/core-components.css" media="all" />
 
   <!-- JavaScript Bundles (Consolidated) -->
   <script src="frontend/js/dist/core.bundle.js" defer></script>
