@@ -35,6 +35,25 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
+    
+    <!-- Floating Share Sidebar -->
+    <div class="floating-share">
+        <a href="#" class="share-btn twitter" aria-label="Share on Twitter" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(window.location.href), '_blank'); return false;">
+            <iconify-icon icon="lucide:twitter" width="20"></iconify-icon>
+        </a>
+        <a href="#" class="share-btn linkedin" aria-label="Share on LinkedIn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank'); return false;">
+            <iconify-icon icon="lucide:linkedin" width="20"></iconify-icon>
+        </a>
+        <a href="#" class="share-btn whatsapp" aria-label="Share on WhatsApp" onclick="window.open('https://wa.me/?text=' + encodeURIComponent(document.title + ' ' + window.location.href), '_blank'); return false;">
+            <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+        </a>
+    </div>
+
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar" id="readingProgress"></div>
+    </div>
+
 
     
     <!-- Header -->
@@ -165,6 +184,18 @@
 
                 </div>
                 
+                
+                <!-- Author Bio -->
+                <div class="author-card" data-aos="fade-up">
+                    <img src="../../assets/images/Gemini.png" alt="BrightAI Team" class="author-avatar">
+                    <div class="author-info">
+                        <h4>فريق BrightAI</h4>
+                        <p class="author-bio">
+                            نحن فريق متخصص في حلول الذكاء الاصطناعي والأتمتة، نسعى لتمكين الشركات من بناء مستقبل ذكي ومستدام من خلال أحدث التقنيات.
+                        </p>
+                    </div>
+                </div>
+
                 <div class="px-8 pb-8 pt-4 border-t border-slate-100 mt-8">
                     <div class="flex flex-wrap gap-2">
                         <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm font-medium">الذكاء الاصطناعي</span>
@@ -229,5 +260,19 @@
             once: true
         });
     </script>
+
+    <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            const progressBar = document.getElementById('readingProgress');
+            if(progressBar) {
+                progressBar.style.width = scrollPercent + '%';
+            }
+        });
+    </script>
+
 </body>
 </html>
