@@ -23,7 +23,8 @@ const config = {
   // Rate Limiting Configuration
   rateLimit: {
     requestsPerMinute: parseInt(process.env.RATE_LIMIT_REQUESTS_PER_MINUTE, 10) || 30,
-    windowMs: 60 * 1000 // 1 minute
+    windowMs: 60 * 1000, // 1 minute
+    storage: process.env.RATE_LIMIT_STORAGE || 'memory' // 'memory' or 'redis'
   },
   
   // Input Validation

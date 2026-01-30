@@ -4,6 +4,14 @@
  */
 
 const { config, isApiKeyConfigured } = require('../config');
+const { CacheManager } = require('../utils/cache');
+
+// Initialize cache manager
+// Cache enabled by default with 10 minutes TTL for summaries
+const cache = new CacheManager({ 
+  ttl: process.env.CACHE_TTL ? parseInt(process.env.CACHE_TTL) : 600,
+  storage: process.env.CACHE_STORAGE || 'memory'
+});
 
 /**
  * Handle summary requests
@@ -20,10 +28,28 @@ async function summaryHandler(req, res) {
             });
         }
 
-        const { text, url } = req.body;
+        const { text } = req.body;
 
-        if (!text && !url) {
-            return res.status(400).json({ error: 'Text or URL is required' });
+        if (!text) {
+            return res.status(400).json({ 
+                error: 'يجب تقديم نص للتلخيص',
+                errorCode: 'MISSING_TEXT'
+            });
+        }
+
+        // Check if caching is enabled
+        const cacheEnabled = process.env.CACHE_ENABLED !== 'false';
+        
+        if (cacheEnabled) {
+            // Generate cache key
+            const cacheKey = cache.generateKey('summary', req.body);
+            
+            // Check cache
+            const cached = await cache.get(cacheKey);
+            if (cached) {
+                res.setHeader('X-Cache', 'HIT');
+                return res.status(200).json(cached);
+            }
         }
 
         // Use fetch-based API call like chat.js
@@ -31,12 +57,12 @@ async function summaryHandler(req, res) {
 
         // Construct prompt
         const prompt = `
-      Lese the following text and provide a concise, engaging summary in Arabic. 
-      The summary should be suitable for a Saudi audience and highlight key value propositions.
-      Use bullet points if appropriate.
-      
-      Text to summarize:
-      ${text ? text.substring(0, 5000) : 'No text provided'}
+اقرأ النص التالي وقدم ملخصاً موجزاً وجذاباً باللغة العربية.
+يجب أن يكون الملخص مناسباً للجمهور السعودي ويبرز القيم الأساسية بما يتماشى مع رؤية المملكة 2030.
+استخدم النقاط إذا كان ذلك مناسباً.
+
+النص المراد تلخيصه:
+${text ? text.substring(0, 5000) : 'لم يتم تقديم نص'}
     `;
 
         // Generate content using fetch
@@ -69,16 +95,26 @@ async function summaryHandler(req, res) {
 
         const summary = data.candidates[0].content.parts[0].text;
 
-        return res.status(200).json({
+        const result = {
             summary,
             timestamp: Date.now()
-        });
+        };
+
+        // Store in cache if enabled
+        if (cacheEnabled) {
+            const cacheKey = cache.generateKey('summary', req.body);
+            await cache.set(cacheKey, result);
+            res.setHeader('X-Cache', 'MISS');
+        }
+
+        return res.status(200).json(result);
 
     } catch (error) {
         console.error('[AI Summary] Error:', error);
         return res.status(500).json({
-            error: 'فشل في إنشاء الملخص',
-            details: error.message
+            error: 'حدث خطأ أثناء إنشاء الملخص',
+            errorCode: 'SUMMARY_ERROR',
+            timestamp: Date.now()
         });
     }
 }

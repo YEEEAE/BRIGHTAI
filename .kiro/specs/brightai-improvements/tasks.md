@@ -8,29 +8,29 @@
 
 ### المرحلة 1: الإصلاحات الحرجة
 
-- [-] 1. إصلاح خطأ API endpoint في medical.js
+- [x] 1. إصلاح خطأ API endpoint في medical.js
   - تصحيح استخدام `config.gemini.baseUrl` إلى `config.gemini.endpoint` في السطر 35
   - التأكد من مطابقة النمط المستخدم في endpoints أخرى
   - _المتطلبات: 1.1، 1.2، 1.3_
 
-- [ ] 2. تصحيح نص Prompt في summary.js
+- [x] 2. تصحيح نص Prompt في summary.js
   - استبدال النص المختلط (ألماني/إنجليزي) بنص عربي كامل
   - إضافة إشارة صريحة للجمهور السعودي ورؤية 2030
   - تحديث رسائل الخطأ لتكون عربية
   - _المتطلبات: 2.1، 2.2_
 
-- [ ] 3. معالجة حقل URL في summary endpoint
+- [x] 3. معالجة حقل URL في summary endpoint
   - إزالة التحقق من حقل `url` مؤقتاً
   - تحديث validation للتحقق من `text` فقط
   - تحديث رسالة الخطأ لتكون واضحة
   - _المتطلبات: 3.1_
 
-- [ ] 4. تنظيف package.json من التبعيات غير المستخدمة
+- [x] 4. تنظيف package.json من التبعيات غير المستخدمة
   - إزالة `pdfjs-dist` من dependencies (سيتم إعادة إضافتها لاحقاً)
   - التحقق من عدم وجود استيرادات لـ pdfjs-dist في الكود
   - _المتطلبات: 5.1، 5.2_
 
-- [ ] 5. Checkpoint - التحقق من الإصلاحات الحرجة
+- [x] 5. Checkpoint - التحقق من الإصلاحات الحرجة
   - التأكد من أن جميع endpoints تعمل بشكل صحيح
   - اسأل المستخدم إذا كانت هناك أسئلة
 
@@ -111,7 +111,7 @@
 
 ### المرحلة 4: تحسين Rate Limiter
 
-- [ ] 14. تحسين Rate Limiter
+- [-] 14. تحسين Rate Limiter
   - [ ] 14.1 إعادة كتابة `server/middleware/rateLimiter.js`
     - تنفيذ class RateLimiter مع دعم memory و Redis
     - إضافة دالة cleanup لتنظيف البيانات القديمة
@@ -128,8 +128,8 @@
 
 ### المرحلة 5: نظام Caching
 
-- [ ] 15. تنفيذ نظام Caching
-  - [ ] 15.1 إنشاء `server/utils/cache.js`
+- [-] 15. تنفيذ نظام Caching
+  - [x] 15.1 إنشاء `server/utils/cache.js`
     - تنفيذ class CacheManager مع دعم memory و Redis
     - تنفيذ دوال generateKey, get, set, clear
     - إضافة حد أقصى لحجم cache في memory mode
