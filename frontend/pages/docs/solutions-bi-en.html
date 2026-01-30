@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Intelligence (BI) | Bright AI - Interactive Dashboards</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="Turn your company data into smart decisions with Bright AI Business Intelligence (BI) solutions. We design interactive Power BI and Tableau dashboards compatible with the Saudi market." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-bi-en" />
+    <meta name="keywords"
+        content="Business Intelligence, BI, Dashboards, Power BI, Tableau, Interactive Reports, Corporate Performance Analysis, KPIs, Saudi BI, Digital Transformation, Sales Analysis" />
+
+    <meta property="og:title" content="Smart BI | Bright AI" />
+    <meta property="og:description"
+        content="Clearer vision for your decisions. Interactive dashboards for your business." />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    [
+        {
+            "@context":"https://schema.org",
+            "@type":"Service",
+            "name":"Business Intelligence Solutions (BI)",
+            "provider": {
+                "@type":"Organization",
+                "name":"Bright AI",
+                "url": "https://brightai.site"
+            },
+            "description":"Designing and developing interactive dashboards and BI reports for Saudi companies",
+            "areaServed":"SA",
+            "serviceType": "Business Intelligence"
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Do you support Arabic in Power BI?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, all dashboards we design fully support Arabic (RTL) with Saudi number and date formatting."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can it connect to local accounting software?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Absolutely, we have experience connecting with systems like Daftra, Qoyod, Odoo, as well as global systems like SAP and Oracle."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How long does it take to build a custom dashboard?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "It depends on data complexity, but we usually deliver the initial version (MVP) within two weeks of receiving data access."
+                    }
+                }
+            ]
+        }
+    ]
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-cyan-500/30 selection:text-cyan-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">Let's Talk</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">Docs</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list flex gap-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-cyan-400">Home</a></li><span>/</span>
+            <li><a href="/Docs" class="hover:text-cyan-400">Docs</a></li><span>/</span>
+            <li class="text-white">Business Intelligence (BI)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 shadow-2xl shadow-cyan-500/10 animate-float">
+                <iconify-icon icon="solar:chart-2-bold-duotone" width="48" class="text-cyan-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">Clearer Vision for Your <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-300">Decisions</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Don't drown in boring Excel sheets. We gather your data from all sources and turn it into interactive
+                Dashboards that let you understand "what's happening" in your company at a glance.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#dashboard-example"
+                    class="px-8 py-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all shadow-lg shadow-cyan-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:monitor-chart-linear" width="24"></iconify-icon>
+                    See Dashboard Example
+                </a>
+                <a href="contact.html"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    Custom Dashboard Design
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-cyan-500 to-sky-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:eye-bold-duotone" class="text-cyan-400"></iconify-icon>
+                    Is Data "Dry"? We Make It Speak!
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        The problem for managers today isn't a lack of data, but "Data Overload". Reports from
+                        accounting, marketing, numbers in the system... and the challenge is how to connect them.
+                    </p>
+                    <p class="mb-6">
+                        <strong>Bright BI</strong> services take all this chaos and organize it into beautiful, easy
+                        screens. Instead of reading 50 pages, you see a red indicator alerting you: "Sales in Jeddah
+                        branch dropped, and the reason is low stock". That's the "gist" every manager needs.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center text-white">BI Tools</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-cyan-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:layers-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Unified Data Source</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            We pull data from (ERP, CRM, Google Sheets, databases) and put it into one place (Data
+                            Warehouse) so your reports are accurate and up-to-date.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-sky-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-sky-500/20 flex items-center justify-center mb-6 text-sky-400">
+                            <iconify-icon icon="solar:pie-chart-3-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Data Visualization</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            We use visual psychology to choose the best Charts that convey information to your brain in
+                            seconds, without getting lost in details.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:smartphone-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Mobile BI</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            No need to open your laptop. Our dashboards are Responsive so you can track your key numbers
+                            from your phone while traveling or in a meeting.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-indigo-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:bell-bing-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Smart Alerts</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            The system watches for you. If profits drop below a certain limit, or expenses suddenly
+                            spike, you get an instant alert to take action.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive/Visual Section -->
+            <section id="dashboard-example" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col items-center p-8 md:p-12">
+                        <div class="text-center mb-10">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-bold mb-4 border border-cyan-500/20">
+                                Sample Dashboard 📊
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">Comprehensive Performance View</h3>
+                            <p class="text-slate-400 max-w-2xl mx-auto">
+                                This is a simplified example of the "CEO Interface" we design. All key KPIs in one
+                                place.
+                            </p>
+                        </div>
+
+                        <!-- Dashboard Mockup -->
+                        <div
+                            class="w-full max-w-4xl bg-[#1e293b] border border-slate-700/50 rounded-xl shadow-2xl p-4 overflow-hidden relative">
+                            <!-- Header Bar -->
+                            <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                                <h4 class="text-white font-bold">Executive Overview</h4>
+                                <div class="flex gap-2 text-xs">
+                                    <span class="px-2 py-1 bg-slate-700 text-slate-300 rounded">This Month</span>
+                                    <span class="px-2 py-1 bg-cyan-600 text-white rounded">Last Month</span>
+                                </div>
+                            </div>
+
+                            <!-- KPI Cards -->
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-cyan-500">
+                                    <div class="text-slate-400 text-xs text-right">Total Sales</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">450,230 SAR</div>
+                                    <div class="text-green-400 text-xs mt-2 text-right">▲ 12% vs last month</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-purple-500">
+                                    <div class="text-slate-400 text-xs text-right">New Customers</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">1,240</div>
+                                    <div class="text-green-400 text-xs mt-2 text-right">▲ 5% vs last month</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-orange-500">
+                                    <div class="text-slate-400 text-xs text-right">Avg Baskets</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">363 SAR</div>
+                                    <div class="text-red-400 text-xs mt-2 text-right">▼ 2% vs last month</div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg border-l-4 border-blue-500">
+                                    <div class="text-slate-400 text-xs text-right">Profit Margin</div>
+                                    <div class="text-white text-xl font-bold mt-1 text-right">24.5%</div>
+                                    <div class="text-slate-500 text-xs mt-2 text-right">- Stable</div>
+                                </div>
+                            </div>
+
+                            <!-- Charts Area Mockup -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div
+                                    class="col-span-2 bg-slate-800 p-4 rounded-lg h-64 flex items-end justify-between gap-2 px-6 pb-4">
+                                    <!-- Fake Bar Chart -->
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[40%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">40k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[60%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">60k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[50%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">50k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[80%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">80k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600 hover:bg-cyan-500 transition-all h-[95%] rounded-t-sm relative group shadow-lg shadow-cyan-500/20">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">95k</span>
+                                    </div>
+                                    <div
+                                        class="w-8 bg-cyan-600/30 hover:bg-cyan-600 transition-all h-[70%] rounded-t-sm relative group">
+                                        <span
+                                            class="absolute -top-6 text-[10px] text-white hidden group-hover:block">70k</span>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-800 p-4 rounded-lg h-64 flex items-center justify-center relative">
+                                    <!-- Fake Donut Chart -->
+                                    <div
+                                        class="w-32 h-32 rounded-full border-[12px] border-cyan-500 border-r-purple-500 border-b-orange-500 rotate-45">
+                                    </div>
+                                    <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                        <span class="text-xs text-slate-400">Distribution</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Section -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">Experts in Global Tools
+                </h3>
+                <div class="flex flex-wrap justify-center gap-12 opacity-80">
+                    <div class="text-center group">
+                        <iconify-icon icon="logos:microsoft-power-bi" width="60"
+                            class="mb-3 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Power BI</p>
+                    </div>
+                    <div class="text-center group">
+                        <iconify-icon icon="logos:tableau-icon" width="60"
+                            class="mb-3 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Tableau</p>
+                    </div>
+                    <div class="text-center group">
+                        <iconify-icon icon="logos:google-looker-icon" width="60"
+                            class="mb-3 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Looker Studio</p>
+                    </div>
+                    <div class="text-center group">
+                        <iconify-icon icon="simple-icons:qlik" width="60"
+                            class="mb-3 text-green-500 grayscale group-hover:grayscale-0 transition duration-300"></iconify-icon>
+                        <p class="text-xs text-slate-500">Qlik</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Us Section (NEW) -->
+            <section class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:global-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Local Expertise</h4>
+                    <p class="text-slate-400 text-sm">We understand the Saudi market and ensure reports align with our
+                        language, culture, and dates.</p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:lock-password-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Data Security</h4>
+                    <p class="text-slate-400 text-sm">Your data is encrypted and protected by the highest standards
+                        because we know it's your most valuable asset.</p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:clock-circle-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Speed of Execution</h4>
+                    <p class="text-slate-400 text-sm">Agile methodology allows us to deliver the first version of the
+                        dashboard in record time.</p>
+                </div>
+            </section>
+
+            <!-- FAQ Section (NEW) -->
+            <section>
+                <h3 class="text-2xl font-bold text-white mb-6">FAQ</h3>
+                <div class="space-y-4">
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            Do you support Arabic in Power BI?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Yes, all our dashboard designs fully support Arabic (RTL) with Saudi number and date
+                            formatting.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            Can it connect to local accounting software?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Absolutely. We have extensive experience connecting via API with accounting systems like
+                            Daftra, Qoyod, and Zoho, as well as global systems like SAP and Oracle.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            How long does it take to build a custom dashboard?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            It depends on data volume and complexity, but we typically deliver the initial version (MVP)
+                            within two weeks of receiving data access.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-sky-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to See the Big Picture?</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Contact us today to build your company's first dashboard. Your decisions deserve precision.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            Contact BI Consultant
+                        </a>
+                        <a href="contact.html"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            Get a Quote
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
