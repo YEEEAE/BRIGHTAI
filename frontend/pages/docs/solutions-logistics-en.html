@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logistics & Fleet | Bright AI</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="Smart Fleet Management by Bright AI. Track trucks, optimize routes, and cut costs with AI. TGA compliant." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-logistics-en" />
+    <meta name="keywords"
+        content="Logistics, Fleet Management, Truck Tracking, Route Optimization, Last Mile Delivery, TGA, Saudi Transport, Driver App" />
+
+    <meta property="og:title" content="Smart Logistics | Bright AI" />
+    <meta property="og:description"
+        content="Take control of your fleet. AI routing, driver monitoring, and full compliance." />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    [
+        {
+            "@context":"https://schema.org",
+            "@type":"Service",
+            "name":"Smart Logistics Solutions",
+            "provider": {
+                "@type":"Organization",
+                "name":"Bright AI",
+                "url": "https://brightai.site"
+            },
+            "description":"Integrated system for fleet management, shipment tracking, and delivery optimization",
+            "areaServed":"SA",
+            "serviceType": "Logistics & Fleet Management"
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Is it compatible with TGA requirements?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, our system fully complies with all data sharing standards required by the Transport General Authority (TGA) and Wasl platform."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can we track trucks in remote areas?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, we support satellite GPS tracking to ensure coverage even where mobile networks are unavailable."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How does it reduce fuel costs?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Through route optimization algorithms that minimize distance, and by monitoring driver behavior to reduce speeding and idling."
+                    }
+                }
+            ]
+        }
+    ]
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-yellow-500/30 selection:text-yellow-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">Let's Talk</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">Docs</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list flex gap-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-yellow-400">Home</a></li><span>/</span>
+            <li><a href="/Docs" class="hover:text-yellow-400">Docs</a></li><span>/</span>
+            <li class="text-white">Logistics</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20 shadow-2xl shadow-yellow-500/10 animate-float">
+                <iconify-icon icon="solar:delivery-bold-duotone" width="48" class="text-yellow-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">Fleet Under <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">Control</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Don't let your trucks drive blind. AI that plans the best routes, monitors driver behavior, and ensures
+                your deliveries arrive on time, every time.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#feature-showcase"
+                    class="px-8 py-4 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-white font-bold transition-all shadow-lg shadow-yellow-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:map-point-wave-linear" width="24"></iconify-icon>
+                    See Smart Map
+                </a>
+                <a href="contact.html"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    Fleet Offer
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-yellow-500 to-amber-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:fuel-bold-duotone" class="text-yellow-400"></iconify-icon>
+                    Gas & Time = Money
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        In logistics, every minute delayed and every extra liter of fuel costs you. Manual route
+                        planning is never perfect, especially with our city traffic.
+                    </p>
+                    <p class="mb-6">
+                        <strong>Bright Logistics</strong> uses genetic algorithms to give you the smartest route. Avoid
+                        traffic, batch nearby orders, and avoid empty return trips (Backhaul Optimization).
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center text-white">Fleet Management Services</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-yellow-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-yellow-500/20 flex items-center justify-center mb-6 text-yellow-400">
+                            <iconify-icon icon="solar:routing-2-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Route Optimization</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Stop the guesswork. The system gives drivers a point-by-point plan. Saves up to 30% on fuel
+                            and time.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-amber-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6 text-amber-400">
+                            <iconify-icon icon="solar:wheel-angle-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Driver Behavior Monitoring</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Know who's speeding, braking hard, or idling. protect your vehicles and cargo.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-orange-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 text-orange-400">
+                            <iconify-icon icon="solar:box-check-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Proof of Delivery</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Everything is automated. Customer signs on the driver's mobile, or snaps a photo at the
+                            door. You get instant verification.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-red-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 text-red-400">
+                            <iconify-icon icon="solar:settings-minimalistic-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Predictive Maintenance</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            The system warns you: "Tires need changing in 500km" or "Engine heat issue on Truck #5".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visual Section -->
+            <section id="feature-showcase" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold mb-4 border border-yellow-500/20 w-fit">
+                                Live Tracking 🗺️
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">Where's Your Cargo?</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                A dashboard showing every vehicle's location, speed, and status in real-time.
+                            </p>
+                            <div class="bg-white/5 rounded-lg p-4 border border-white/10">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-white font-bold text-sm">Truck #402</span>
+                                    <span class="text-green-400 text-xs font-bold flex items-center gap-1">
+                                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                        Moving
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center text-xs text-slate-400">
+                                    <span>Loc: King Fahd Rd, Riyadh</span>
+                                    <span>Speed: 75 km/h</span>
+                                </div>
+                                <div class="mt-3 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                                    <div class="h-full w-3/4 bg-yellow-500 rounded-full"></div>
+                                </div>
+                                <div class="mt-1 flex justify-between text-[10px] text-slate-500">
+                                    <span>Distance Left: 12 km</span>
+                                    <span>ETA: 15 mins</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-slate-900 relative overflow-hidden flex items-center justify-center min-h-[300px]">
+                            <!-- Map Representation -->
+                            <div class="absolute inset-0 opacity-30"
+                                style="background-image: radial-gradient(#334155 1px, transparent 1px); background-size: 20px 20px;">
+                            </div>
+
+                            <!-- Route Line -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none"
+                                style="filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));">
+                                <path d="M50 250 Q 150 200, 200 150 T 350 100" fill="none" stroke="#eab308"
+                                    stroke-width="3" stroke-dasharray="8 4" class="animate-dash" />
+                                <circle cx="50" cy="250" r="6" fill="#ef4444" /> <!-- Start -->
+                                <circle cx="350" cy="100" r="6" fill="#22c55e" /> <!-- End -->
+
+                                <!-- Moving Truck Icon -->
+                                <g>
+                                    <circle cx="200" cy="150" r="15" fill="#eab308" opacity="0.2"
+                                        class="animate-ping" />
+                                    <circle cx="200" cy="150" r="6" fill="#eab308" />
+                                </g>
+                            </svg>
+
+                            <!-- Location Pins -->
+                            <div
+                                class="absolute top-20 right-20 bg-slate-800 p-2 rounded text-xs border border-white/10 shadow-xl">
+                                <span class="block text-white font-bold">Main Warehouse</span>
+                            </div>
+
+                            <div
+                                class="absolute bottom-20 left-10 bg-slate-800 p-2 rounded text-xs border border-white/10 shadow-xl">
+                                <span class="block text-white font-bold">Drop-off Point</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Us Section (NEW) -->
+            <section class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-yellow-900/50 rounded-full flex items-center justify-center text-yellow-400 mb-4">
+                        <iconify-icon icon="solar:shield-check-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Regulatory Compliance</h4>
+                    <p class="text-slate-400 text-sm">We guarantee our systems meet TGA and Saudi Traffic regulations.
+                    </p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-yellow-900/50 rounded-full flex items-center justify-center text-yellow-400 mb-4">
+                        <iconify-icon icon="solar:map-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">High Precision Maps</h4>
+                    <p class="text-slate-400 text-sm">We use updated maps covering all new cities and streets in the
+                        Kingdom.</p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-yellow-900/50 rounded-full flex items-center justify-center text-yellow-400 mb-4">
+                        <iconify-icon icon="solar:smartphone-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Driver App</h4>
+                    <p class="text-slate-400 text-sm">Easy-to-use app for drivers to receive orders, update status, and
+                        get signatures.</p>
+                </div>
+            </section>
+
+            <!-- FAQ Section (NEW) -->
+            <section>
+                <h3 class="text-2xl font-bold text-white mb-6">FAQ</h3>
+                <div class="space-y-4">
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-yellow-500"></iconify-icon>
+                            Is it compatible with TGA requirements?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Yes, our system fully complies with all data sharing standards required by the Transport
+                            General Authority (TGA) and Wasl platform.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-yellow-500"></iconify-icon>
+                            Can we track trucks in remote areas?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Yes, we support satellite GPS tracking to ensure coverage even where mobile networks are
+                            unavailable.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-yellow-500"></iconify-icon>
+                            How does it reduce fuel costs?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Through route optimization algorithms that minimize distance, and by monitoring driver
+                            behavior to reduce speeding and idling.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Arrive Faster, Save More</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Our solutions are certified and compliant with TGA regulations.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-yellow-600 hover:bg-yellow-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            Consult Logistics Expert
+                        </a>
+                        <a href="contact.html"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            Order System
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        .animate-dash {
+            stroke-dashoffset: 100;
+            animation: dash 2s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</body>
+
+</html>

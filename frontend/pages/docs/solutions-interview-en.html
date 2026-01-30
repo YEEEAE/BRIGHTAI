@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Hiring | Bright AI - Recruitment on Autopilot</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="Smart hiring system by Bright AI. Filter resumes, run AI video interviews, and save 70% of your HR team's time. Hire talent, not paper." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-interview-en" />
+    <meta name="keywords"
+        content="Smart hiring, AI Interviews, CV Parsing, Smart ATS, Saudi HR, Talent Acquisition, Automated Recruitment" />
+
+    <meta property="og:title" content="Smart Hiring | Bright AI" />
+    <meta property="og:description"
+        content="Hire faster and smarter with AI. Automated interviews and CV screening. No more bias." />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"Smart Hiring System","provider":{"@type":"Organization","name":"Bright AI"},"description":"Automated recruitment from CV parsing to AI interviews","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-emerald-500/30 selection:text-emerald-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">Let's Talk</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">Docs</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list flex gap-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-emerald-400">Home</a></li><span>/</span>
+            <li><a href="/Docs" class="hover:text-emerald-400">Docs</a></li><span>/</span>
+            <li class="text-white">Smart Hiring</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-2xl shadow-emerald-500/10 animate-float">
+                <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" width="48"
+                    class="text-emerald-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">Hiring on <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Autopilot</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Stop wasting time reading hundreds of mismatched CVs. Let AI filter candidates, conduct initial
+                interviews, and give you the "TL;DR" on top talent.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#interview-demo"
+                    class="px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:videocamera-record-linear" width="24"></iconify-icon>
+                    Try Smart Interview
+                </a>
+                <a href="contact.html"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    Get Enterprise Demo
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-emerald-500 to-teal-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:stopwatch-bold-duotone" class="text-emerald-400"></iconify-icon>
+                    The Old Way is Broken
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        On average, hiring takes 42 days and costs thousands. Recruiters spend only 7 seconds scanning a
+                        resume. That means great talent gets missed because of speed or unconscious bias.
+                    </p>
+                    <p class="mb-6">
+                        At <strong>Bright AI</strong>, we give you a virtual recruiting assistant that reads every word
+                        of a CV, matches skills perfectly, and even interviews candidates to assess soft skills before
+                        you even meet them.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center text-white">Features That Slap</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-emerald-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400">
+                            <iconify-icon icon="solar:document-text-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">CV Parsing</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            The system extracts data (Name, Skills, XP) from PDFs/Docs and ranks candidates by Matching
+                            Score. No more manual data entry.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-teal-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-500/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:videocamera-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">AI Interviews</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Candidates answer video/audio questions. The system analyzes tone, body language, and
+                            content to assess confidence and communication.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-cyan-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:user-check-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Anti-Cheat Mode</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            During technical assessments, the system ensures candidates aren't just copy-pasting from
+                            ChatGPT. We keep it real.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:graph-up-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Hiring Analytics</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Know where your best hires come from, track Time-to-Hire, and see how your recruitment team
+                            is performing. Data-driven hiring.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE DEMO (Interview Bot) -->
+            <section id="interview-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold mb-4 border border-emerald-500/20 w-fit">
+                                Interactive Demo 🎤
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">Try the AI Interviewer</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                Imagine you're applying for a "Marketing Manager" role. The AI assistant will ask you a
+                                question and analyze your answer instantly. Ready?
+                            </p>
+                            <a href="../interview/index.html" target="_blank"
+                                class="w-full py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all shadow-lg text-center flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:microphone-bold"></iconify-icon>
+                                Start Mock Interview
+                            </a>
+                            <p class="text-xs text-slate-500 mt-4 text-center">
+                                * Please allow microphone access.
+                            </p>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-emerald-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+                            <!-- Visual Representation -->
+                            <div
+                                class="w-full max-w-sm bg-slate-800 rounded-2xl border border-white/10 shadow-2xl overflow-hidden relative">
+                                <div
+                                    class="absolute top-4 right-4 bg-red-500 px-2 py-1 rounded text-white text-xs font-bold animate-pulse">
+                                    ● LIVE</div>
+                                <div class="h-48 bg-slate-700 flex items-center justify-center">
+                                    <iconify-icon icon="solar:user-circle-bold"
+                                        class="text-8xl text-slate-500"></iconify-icon>
+                                </div>
+                                <div class="p-4 bg-slate-900">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                                            <iconify-icon icon="lucide:bot"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div class="text-white text-sm font-bold">Smart Recruiter</div>
+                                            <div class="text-emerald-400 text-xs">Listening...</div>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-emerald-500 w-2/3 animate-pulse"></div>
+                                    </div>
+                                    <p class="text-slate-400 text-sm mt-3 italic">
+                                        "Tell me about a difficult situation you faced in your last job and how you
+                                        handled it?"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Specification (Privacy Focused) -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">Privacy & Fairness</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:scale-bold" class="text-purple-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">Zero Bias</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Our algorithms ignore gender, age, and nationality. We only look at skills and XP to ensure
+                            equal opportunity.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:shield-check-bold" class="text-purple-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">Data Protection</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            All recorded interviews and CVs are encrypted and strictly confidential.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-white/10 bg-white/5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:document-add-bold" class="text-purple-400 text-xl"></iconify-icon>
+                            <h4 class="font-bold text-white">GDPR Compliant</h4>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            We follow global best practices for data privacy and security.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Build Your Dream Team, Faster</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Experience the future of hiring today. Higher accuracy, faster speed, lower cost.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            Chat with HR Expert
+                        </a>
+                        <a href="contact.html"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

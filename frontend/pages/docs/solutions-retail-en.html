@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retail & E-commerce | Bright AI - Sell Smarter</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="AI solutions for Saudi Retail & E-commerce. Smart product recommendations, automated inventory, and customer analysis to boost sales." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-retail-en" />
+    <meta name="keywords"
+        content="E-commerce, Retail AI, Smart Inventory, Product Recommendations, Salla, Zid, Shopper Integration, Boost Sales" />
+
+    <meta property="og:title" content="Smart Retail | Bright AI" />
+    <meta property="og:description"
+        content="Sell smarter with AI. Connect your POS, predict demand, and personalize every visit." />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Service","name":"Smart Retail Solutions","provider":{"@type":"Organization","name":"Bright AI"},"description":"AI Solutions for E-commerce and Inventory Management","areaServed":"SA"}
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-orange-500/30 selection:text-orange-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">Let's Talk</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">Docs</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list flex gap-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-orange-400">Home</a></li><span>/</span>
+            <li><a href="/Docs" class="hover:text-orange-400">Docs</a></li><span>/</span>
+            <li class="text-white">Retail & E-commerce</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 shadow-2xl shadow-orange-500/10 animate-float">
+                <iconify-icon icon="solar:bag-heart-bold-duotone" width="48" class="text-orange-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">Retail Made <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">Smarter</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Whether you run an online store or a physical branch, we help you know your customers better, manage
+                inventory wisely, and boost sales with personalized recommendations.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#sales-demo"
+                    class="px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all shadow-lg shadow-orange-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:cart-large-2-linear" width="24"></iconify-icon>
+                    Try Smart Sales Bot
+                </a>
+                <a href="contact.html"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    Get Store Analysis
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-orange-500 to-amber-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:shop-window-bold-duotone" class="text-orange-400"></iconify-icon>
+                    The Market Has Changed. Are You Ready?
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        Competition is fierce. Saudi customers now expect a personalized experience and fast delivery.
+                        Stores relying on "gut feeling" for ordering stock lose out due to overstocking or stockouts.
+                    </p>
+                    <p class="mb-6">
+                        At <strong>Bright AI</strong>, we connect your POS and E-commerce store to smart algorithms that
+                        predict demand, suggest products, and retarget customers with custom messages to increase basket
+                        value.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center text-white">Solutions for Merchants</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-orange-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 text-orange-400">
+                            <iconify-icon icon="solar:box-minimalistic-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Predictive Inventory</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            The system predicts: "Product X will run out in 3 days due to promos, order now." Reduces
+                            waste and ensures popular items are in stock.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-amber-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-6 text-amber-400">
+                            <iconify-icon icon="solar:magic-stick-3-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Recommendation Engine</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Like Amazon and Netflix. "Customers who bought this also bought that." Increases conversion
+                            rates by up to 30%.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-red-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 text-red-400">
+                            <iconify-icon icon="solar:users-group-rounded-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Customer Churn Prediction</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            We show you which customers are "ghosting" you, and give you a plan to win them back before
+                            they're gone forever.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-yellow-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-yellow-500/20 flex items-center justify-center mb-6 text-yellow-400">
+                            <iconify-icon icon="solar:chat-round-money-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Sales Bot</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Not just support, this is a top salesperson! Suggests products, answers questions, and
+                            persuades the customer to buy now.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INTERACTIVE DEMO (Sales Bot) -->
+            <section id="sales-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold mb-4 border border-orange-500/20 w-fit">
+                                Interactive Demo 👇
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">Try "BrightSales" - Your Smart Seller</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                This bot understands customer taste and suggests the right products. Try it like a real
+                                shop assistant.
+                            </p>
+                            <a href="../ai-bots/BrightSales/index.html" target="_blank"
+                                class="w-full py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all shadow-lg text-center flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:chat-square-like-bold"></iconify-icon>
+                                Chat with BrightSales
+                            </a>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-orange-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+                            <!-- Chat Preview Code -->
+                            <div class="w-full max-w-sm bg-slate-900 rounded-xl border border-white/10 shadow-2xl p-4">
+                                <div class="flex items-center gap-3 border-b border-white/10 pb-3 mb-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white">
+                                        <iconify-icon icon="lucide:bot"></iconify-icon>
+                                    </div>
+                                    <div>
+                                        <div class="text-white text-sm font-bold">BrightSales</div>
+                                        <div class="text-slate-500 text-xs">Active now</div>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 text-sm">
+                                    <div
+                                        class="bg-white/5 p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl text-slate-300">
+                                        Hey there! 👋<br>I noticed you're looking for a gaming laptop. I've got a killer
+                                        deal on an RTX 4070 rig. Want to see it? 🎮
+                                    </div>
+                                    <div
+                                        class="bg-orange-600/20 border border-orange-500/20 p-3 rounded-tl-xl rounded-bl-xl rounded-br-xl text-orange-200 ml-auto w-fit">
+                                        Price? And warranty?
+                                    </div>
+                                    <div
+                                        class="bg-white/5 p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl text-slate-300">
+                                        It's 5499 SAR after discount! 🔥<br>With a 2-year agent warranty. Shall I add it
+                                        to cart?
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats/Integrations -->
+            <section class="glass-card p-10 mt-12 bg-[#0a0a0a]">
+                <h3 class="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">We Integrate With Your
+                    Platform
+                </h3>
+                <div
+                    class="flex flex-wrap justify-center gap-8 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+                    <iconify-icon icon="logos:shopify" width="100"></iconify-icon>
+                    <iconify-icon icon="logos:woocommerce" width="100"></iconify-icon>
+                    <!-- Salla & Zid placeholders (using text as icons might not exist) -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-[#baff39]">Salla</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-bold text-[#7635f3]">Zid</span>
+                    </div>
+                    <iconify-icon icon="logos:magento" width="100"></iconify-icon>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Boost Your Sales Today</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Don't lose customers to competitors. Make your store smarter and your service faster.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            Contact Us
+                        </a>
+                        <a href="contact.html"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            Book a Demo
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

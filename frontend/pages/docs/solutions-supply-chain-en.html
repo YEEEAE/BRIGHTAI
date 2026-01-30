@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supply Chain Management | Bright AI - Plan Ahead</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
+    <meta name="description"
+        content="AI Supply Chain solutions by Bright AI. Demand forecasting, supplier management (SRM), and inventory optimization for Saudi industries." />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/docs/solutions-supply-chain-en" />
+    <meta name="keywords"
+        content="Supply Chain, SCM, Demand Planning, Procurement, Zero Inventory, Logistics 4.0, Warehouse Management, WMS, Saudi Industry" />
+
+    <meta property="og:title" content="Smart SCM | Bright AI" />
+    <meta property="og:description" content="Predict demand, optimize stock, and manage suppliers with AI." />
+
+    <!-- CSS Bundles -->
+    <link rel="stylesheet" href="../../css/bundle-critical.css" />
+    <link rel="stylesheet" href="../../css/bundle-main.css" />
+    <link rel="stylesheet" href="../../css/bundle-pages.css" />
+    <link rel="stylesheet" href="../../css/docs.css" />
+
+    <!-- External Scripts (Loaded Directly) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- Internal Scripts -->
+    <script src="../../js/navigation.js" defer></script>
+    <script src="../../js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    [
+        {
+            "@context":"https://schema.org",
+            "@type":"Service",
+            "name":"Smart Supply Chain Solutions",
+            "provider": {
+                "@type":"Organization",
+                "name":"Bright AI",
+                "url": "https://brightai.site"
+            },
+            "description":"AI-driven supply chain management, demand forecasting and inventory optimization",
+            "areaServed":"SA",
+            "serviceType": "Supply Chain Management Software"
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "How is this different from traditional ERP?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Our system focuses on 'Intelligence and Prediction', not just 'Recording'. We use AI to forecast future demand based on market signals, not just past sales."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does it support multiple warehouses?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, it manages complex networks of warehouses and POS, automatically balancing stock between them."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can it integrate with suppliers?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, we provide a Vendor Portal where suppliers can receive POs, update delivery status, and upload invoices."
+                    }
+                }
+            ]
+        }
+    ]
+    </script>
+</head>
+
+<body
+    class="antialiased selection:bg-cyan-500/30 selection:text-cyan-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
+                    class="bar"></span><span class="bar"></span></button><a href="/" class="nav-logo"><img
+                    src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
+                    AI</span></a>
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Docs" class="nav-link">Docs</a></li>
+            </ul>
+            <div class="hidden lg:block"><a href="https://wa.me/966538229013" class="nav-btn">Let's Talk</a></div>
+        </div>
+    </nav>
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li><a href="/Docs" class="mobile-nav-link">Docs</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list flex gap-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-cyan-400">Home</a></li><span>/</span>
+            <li><a href="/Docs" class="hover:text-cyan-400">Docs</a></li><span>/</span>
+            <li class="text-white">Supply Chain (SCM)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        <!-- Hero Section -->
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-cyan-600/10 flex items-center justify-center border border-cyan-600/20 shadow-2xl shadow-cyan-600/10 animate-float">
+                <iconify-icon icon="solar:box-minimalistic-bold-duotone" width="48"
+                    class="text-cyan-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-white">Supply Chain That <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300">Never Stops</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Turn risks into opportunities. AI that predicts demand before it happens, manages suppliers, and keeps
+                your warehouses ready without overstocking.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="#forecasting-demo"
+                    class="px-8 py-4 rounded-xl bg-cyan-700 hover:bg-cyan-600 text-white font-bold transition-all shadow-lg shadow-cyan-700/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:graph-new-linear" width="24"></iconify-icon>
+                    Predict Demand
+                </a>
+                <a href="contact.html"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    SCM Consultation
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            <!-- Context Section -->
+            <section class="glass-card p-10 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-cyan-600 to-teal-600"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:global-warning-bold-duotone" class="text-cyan-400"></iconify-icon>
+                    A Broken Link Costs Everything
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        One delayed container can halt an entire factory. In today's volatile market, relying on gut
+                        feeling is a massive risk.
+                    </p>
+                    <p class="mb-6">
+                        <strong>Bright SCM</strong> monitors every link: from raw materials at the supplier, through
+                        manufacturing, to the final customer. We use historical data and market indicators to give you
+                        accurate demand forecasts.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Features Grid -->
+            <section>
+                <h3 class="text-3xl font-bold mb-10 text-center text-white">Supply Chain Automation</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-cyan-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-cyan-600/20 flex items-center justify-center mb-6 text-cyan-400">
+                            <iconify-icon icon="solar:chart-2-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Demand Planning</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Algorithms that know your "seasonality". "Demand for Product X will spike 40% in Ramadan,
+                            stock up now."
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-teal-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-600/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:users-group-two-rounded-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Supplier Management (SRM)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Automated supplier scoring. Who is late? Who has quality issues? Reports that help you
+                            negotiate better.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-blue-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-600/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:box-minimalistic-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Inventory Optimization</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            Maintain the Optimal Stock Level. Don't freeze cash in overstock, and don't lose sales to
+                            stockouts.
+                        </p>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-l-4 border-indigo-600">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-600/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:bill-check-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Smart Purchase Orders</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            The system suggests ready-made POs based on forecasts. All you have to do is click
+                            "Approve".
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Chart Section -->
+            <section id="forecasting-demo" class="py-12">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-cyan-600/20 text-cyan-400 text-xs font-bold mb-4 border border-cyan-600/20 w-fit">
+                                Future View 🔮
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">Planning with Transparency</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                A chart showing actual demand (blue) vs AI predictions (dashed) for upcoming months.
+                            </p>
+                            <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                                <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-2">
+                                    <span class="text-white text-sm font-bold">March Forecast</span>
+                                    <span class="text-green-400 text-sm font-bold">▲ 15% Growth</span>
+                                </div>
+                                <p class="text-xs text-slate-400">
+                                    Drivers: Ramadan Season + Scheduled Marketing Campaign.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-slate-900 relative overflow-hidden flex items-end justify-center p-8 min-h-[300px]">
+                            <!-- Chart Visualization -->
+                            <div class="w-full h-full flex flex-col justify-end gap-2 relative z-10">
+                                <div class="flex items-end justify-between h-48 gap-2 w-full px-4">
+                                    <!-- Bars -->
+                                    <div class="w-1/6 bg-slate-700 rounded-t h-[40%] relative group"><span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Jan</span>
+                                    </div>
+                                    <div class="w-1/6 bg-slate-700 rounded-t h-[55%] relative group"><span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Feb</span>
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-cyan-600 rounded-t h-[75%] relative group animate-pulse shadow-[0_0_15px_rgba(8,145,178,0.5)]">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white hidden group-hover:block">Mar
+                                            (Predicted)</span>
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-slate-700/50 rounded-t h-[60%] border-t-2 border-dashed border-cyan-400 relative group">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-slate-400 hidden group-hover:block">Apr</span>
+                                    </div>
+                                    <div
+                                        class="w-1/6 bg-slate-700/50 rounded-t h-[50%] border-t-2 border-dashed border-cyan-400 relative group">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-slate-400 hidden group-hover:block">May</span>
+                                    </div>
+                                </div>
+                                <div class="w-full h-px bg-white/10 mt-2"></div>
+                                <div class="flex justify-between text-[10px] text-slate-500 px-4">
+                                    <span>Past Data</span>
+                                    <span class="text-cyan-400">AI Forecast</span>
+                                </div>
+                            </div>
+
+                            <!-- Grid Background -->
+                            <div class="absolute inset-0 opacity-20"
+                                style="background-image: linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px); background-size: 20px 20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Us Section (NEW) -->
+            <section class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:database-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">Full Integration</h4>
+                    <p class="text-slate-400 text-sm">Direct linking with ERPs (SAP, Oracle, Microsoft) and customs
+                        platforms.
+                    </p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:chart-square-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">95% Accuracy</h4>
+                    <p class="text-slate-400 text-sm">Proven algorithms that boost forecast accuracy and reduce waste.
+                    </p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-cyan-900/50 rounded-full flex items-center justify-center text-cyan-400 mb-4">
+                        <iconify-icon icon="solar:server-square-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">High Flexibility</h4>
+                    <p class="text-slate-400 text-sm">Customizable for various sectors (Manufacturing, Retail, Food).
+                    </p>
+                </div>
+            </section>
+
+            <!-- FAQ Section (NEW) -->
+            <section>
+                <h3 class="text-2xl font-bold text-white mb-6">FAQ</h3>
+                <div class="space-y-4">
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            How is this different from traditional ERP?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Our system focuses on 'Intelligence and Prediction', not just 'Recording'. We use AI to
+                            forecast future demand based on market signals, not just past sales.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            Does it support multiple warehouses?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Yes, it manages complex networks of warehouses and POS, automatically balancing stock
+                            between them.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-cyan-500"></iconify-icon>
+                            Can it integrate with suppliers?
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Yes, we provide a Vendor Portal where suppliers can receive POs, update delivery status, and
+                            upload invoices.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="text-center py-12 relative">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-cyan-600/10 to-teal-600/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Secure Your Supply Chain</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        Smart supply chains are the difference between profit and loss. Start your digital
+                        transformation today.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-cyan-700 hover:bg-cyan-600 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            Chat with SCM Expert
+                        </a>
+                        <a href="contact.html"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            Free Consultation
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
