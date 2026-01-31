@@ -264,6 +264,72 @@
         --urgency-pulse-duration: 0ms;
     }
 }
+
+/* ==========================================================================
+   Mobile Performance: Disable Heavy Animations
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Disable floating orbs on mobile */
+    .floating-orbs,
+    .orb,
+    .orb-1,
+    .orb-2,
+    .orb-3,
+    #stars,
+    #particles,
+    .particles,
+    .stars {
+        display: none !important;
+        animation: none !important;
+        opacity: 0 !important;
+    }
+
+    /* Pause non-essential animations */
+    .grid-pattern,
+    .hex-network,
+    .dna-lines,
+    .connection-lines {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    /* Disable orbit animations on mobile */
+    .orbit-container,
+    .orbit {
+        animation: none !important;
+    }
+
+    /* Reduce motion on chat widget button */
+    .chat-toggle-btn {
+        animation-duration: 0.01ms !important;
+    }
+
+    /* Lazy load brain SVG on mobile */
+    .brain-wrapper object[data="frontend/assets/images/hero-brain.svg"] {
+        content: none;
+    }
+
+    /* Performance: Simplify hero background */
+    .hero .gradient-bg::after {
+        display: none;
+    }
+
+    /* Disable neural canvas animations */
+    #neural-canvas {
+        display: none !important;
+    }
+
+    /* Simplify service cards on mobile */
+    .service-card {
+        transform: none !important;
+    }
+
+    /* Simplify floating elements */
+    .ticker-wrap .animate-scroll {
+        animation-duration: 20s !important;
+    }
+}
 /* BrightAI Typography System */
 
 /* Font Families */

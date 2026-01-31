@@ -134,20 +134,22 @@
        PERFORMANCE OPTIMIZED RESOURCE LOADING
        ============================================ -->
 
-  <!-- DNS Prefetch & Preconnect (Highest Priority) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-  <link rel="dns-prefetch" href="https://unpkg.com">
-  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link rel="dns-prefetch" href="https://code.iconify.design">
-
   <!-- Preload Critical Resources -->
   <link rel="preload" href="frontend/assets/images/Gemini.webp" as="image" type="image/webp">
   <link rel="preload" href="frontend/css/bundle-critical.css" as="style">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style"
-    crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/tajawal/v9/Iura6YBj_oCad4k1r5sB_qLuv_Ya.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Performance: DNS Prefetch & Preconnect -->
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://code.iconify.design">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- CSS Bundles (Optimized) -->
   <link rel="stylesheet" href="frontend/css/bundle-critical.css" />
@@ -163,8 +165,53 @@
   <!-- Structured Data: Dynamic Loader -->
   <script src="frontend/js/schema-loader.js" defer></script>
 
+  <!-- Performance: Font Loading with Display Swap -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <!-- Performance: Inline Critical Performance Script -->
+  <script>
+    // Optimize resource loading and disable heavy features on mobile
+    (function() {
+      'use strict';
+
+      // Detect mobile devices
+      var isMobile = window.matchMedia('(max-width: 768px)').matches;
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var isLowPower = navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
+
+      // Disable heavy animations on mobile or low power mode
+      if (isMobile || isLowPower || prefersReducedMotion) {
+        document.documentElement.classList.add('reduce-motion');
+
+        // Stop heavy canvas animations
+        window.addEventListener('load', function() {
+          var neuralCanvas = document.getElementById('neural-canvas');
+          if (neuralCanvas) {
+            neuralCanvas.style.display = 'none';
+          }
+
+          // Disable floating elements
+          var floaters = document.querySelectorAll('.floating-orbs, #stars, #particles');
+          floaters.forEach(function(el) {
+            if (el) el.style.display = 'none';
+          });
+        });
+      }
+
+      // Inline critical font loading with swap behavior
+      if ('fonts' in document) {
+        document.fonts.ready.then(function() {
+          document.documentElement.classList.add('fonts-loaded');
+        });
+      }
+
+      // Preload critical resources hint
+      if (window.performance && window.performance.mark) {
+        window.performance.mark('critical-css-start');
+      }
+    })();
+  </script>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -186,7 +233,7 @@
 
       <!-- Logo -->
       <a href="" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-        <img src="frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+        <img src="frontend/assets/images/Gemini.webp" alt="Bright AI Logo" width="40" height="40" fetchpriority="high" loading="eager" decoding="async" />
         <span>Bright AI</span>
       </a>
 
@@ -322,7 +369,7 @@
 
       <!-- CTA Button -->
       <div class="hidden lg:block">
-        <a href="https://wa.me/966538229013" class="nav-btn">
+        <a href="https://wa.me/966538229013" class="nav-btn" aria-label="اتصل بنا عبر واتساب">
           اتصل بنا
         </a>
       </div>
@@ -4342,11 +4389,11 @@
     </footer>
   </div>
 
-  <!-- Chat Widget Script -->
-  <script src="frontend/js/chat-widget.js"></script>
+  <!-- Chat Widget Script - Lazy loaded for performance -->
+  <script src="frontend/js/chat-widget.js" defer></script>
 
-  <!-- Search System -->
-  <script src="frontend/js/search.js"></script>
+  <!-- Search System - Non-critical, deferred -->
+  <script src="frontend/js/search.js" defer></script>
 </body>
 
 </html>

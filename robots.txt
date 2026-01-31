@@ -1,6 +1,6 @@
 # robots.txt for brightai.site
 # BrightAI - شركة سعودية للذكاء الاصطناعي
-# Last updated: 2026-01-17
+# Last updated: 2026-01-31
 
 # Allow all search engine crawlers
 User-agent: *
@@ -18,6 +18,9 @@ Disallow: /tmp/
 Disallow: /cache/
 Disallow: /backup/
 Disallow: /backups/
+
+# Sitemap
+Sitemap: https://brightai.site/sitemap.xml
 Disallow: /logs/
 Disallow: /cgi-bin/
 Disallow: /.git/
