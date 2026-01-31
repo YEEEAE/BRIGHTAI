@@ -1,68 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Organization + WebSite are in index.html head (static for crawlers)
     const schemas = [
-        // Organization Schema
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Bright AI",
-            "alternateName": ["مُشرقة AI", "مُشرقة للذكاء الاصطناعي", "Bright AI Saudi Arabia"],
-            "url": "https://brightai.site",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://brightai.site/Gemini.png",
-                "width": 512,
-                "height": 512
-            },
-            "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية",
-            "foundingDate": "2023",
-            "founders": [
-                {
-                    "@type": "Person",
-                    "name": "Bright AI Team"
-                }
-            ],
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "الرياض",
-                "addressLocality": "الرياض",
-                "addressRegion": "منطقة الرياض",
-                "postalCode": "12345",
-                "addressCountry": "SA"
-            },
-            "contactPoint": [
-                {
-                    "@type": "ContactPoint",
-                    "telephone": "+966538229013",
-                    "contactType": "sales",
-                    "areaServed": "SA",
-                    "availableLanguage": ["Arabic", "English"]
-                },
-                {
-                    "@type": "ContactPoint",
-                    "telephone": "+966538229013",
-                    "contactType": "customer service",
-                    "areaServed": "SA",
-                    "availableLanguage": ["Arabic", "English"]
-                }
-            ],
-            "sameAs": [
-                "https://wa.me/966538229013"
-            ],
-            "areaServed": {
-                "@type": "Country",
-                "name": "Saudi Arabia"
-            },
-            "knowsAbout": [
-                "Artificial Intelligence",
-                "Machine Learning",
-                "Enterprise Solutions",
-                "Digital Transformation",
-                "Data Analytics",
-                "Process Automation",
-                "Computer Vision",
-                "Natural Language Processing"
-            ]
-        },
         // LocalBusiness Schema
         {
             "@context": "https://schema.org",
@@ -179,23 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             "serviceType": "Process Automation",
             "category": "Technology Services"
-        },
-        // WebSite Schema with SearchAction
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "Bright AI",
-            "alternateName": "مُشرقة للذكاء الاصطناعي",
-            "url": "https://brightai.site",
-            "inLanguage": ["ar", "en"],
-            "publisher": {
-                "@type": "Organization",
-                "name": "Bright AI",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://brightai.site/Gemini.png"
-                }
-            }
         },
         // BreadcrumbList Schema
         {

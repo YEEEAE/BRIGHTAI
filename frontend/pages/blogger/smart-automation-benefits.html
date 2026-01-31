@@ -35,6 +35,10 @@
         body { font-family: 'Tajawal', sans-serif; }
         .blog-content p, .blog-content li { color: #374151; } /* Ensure text visibility */
     </style>
+  <!-- Article Schema -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"فوائد الأتمتة الذكية في تحسين الكفاءة وتقليل الأخطاء البشرية","description":"اكتشف فوائد الأتمتة الذكية في تحسين الكفاءة وتقليل الأخطاء البشرية.","image":"https://brightai.site/Gemini.png","url":"https://brightai.site/blogger/smart-automation-benefits","datePublished":"2024-06-01","dateModified":"2024-06-01","author":{"@type":"Organization","name":"Bright AI","url":"https://brightai.site"},"publisher":{"@type":"Organization","name":"Bright AI","logo":{"@type":"ImageObject","url":"https://brightai.site/Gemini.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://brightai.site/blogger/smart-automation-benefits"}}
+  </script>
 </head>
 <body class="bg-slate-50 text-slate-900">
     
@@ -294,6 +298,31 @@
 
 
     <script src="../../js/navigation.js" defer></script>
+    <!-- Animation Lib -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+
+    <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            const progressBar = document.getElementById('readingProgress');
+            if(progressBar) {
+                progressBar.style.width = scrollPercent + '%';
+            }
+        });
+    </script>
+
+</body>
+</html>>
     <!-- Animation Lib -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
