@@ -1,3 +1,104 @@
+// Inline minimal loader for fastest execution
+(function () {
+    'use strict';
+
+    // Load CSS file dynamically
+    function loadCSS(href) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        document.head.appendChild(link);
+    }
+
+    // Load Script file dynamically  
+    function loadScript(src, callback) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        if (callback) script.onload = callback;
+        document.body.appendChild(script);
+    }
+
+    // Load non-critical resources after initial paint
+    function loadDeferredResources() {
+        // Tailwind CSS (non-blocking)
+        loadScript('https://cdn.tailwindcss.com', function () {
+            loadScript('frontend/js/tailwind-config.min.js');
+        });
+
+        // Fonts - now loaded directly in HTML head for better performance
+        // Removed duplicate font loading
+
+        // Centralized Design System
+        loadCSS('frontend/css/brightai-core.css');
+
+        // External CSS
+        loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+        loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+
+        // Iconify
+        loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
+
+        // Bright AI UI Enhancements (UX/Visuals)
+        loadScript('frontend/js/ui-enhancements.js');
+    }
+
+    // Load animation libraries after interaction or timeout
+    // SKIPPED on mobile for performance
+    function loadAnimations() {
+        // Detect mobile/low-power devices
+        var isMobile = window.matchMedia('(max-width: 768px)').matches;
+        var isLowPower = navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Skip heavy animations on mobile or low-power devices
+        if (isMobile || isLowPower || prefersReducedMotion) {
+            console.log('[Performance] Heavy animations disabled for mobile/low-power device');
+            return;
+        }
+
+        // GSAP - Only on desktop
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
+        });
+
+        // AOS - Only on desktop
+        loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 800, once: true, offset: 100 });
+            }
+        });
+
+        // Typed.js - Only on desktop
+        loadScript('https://cdn.jsdelivr.net/npm/typed.js@2.0.16/dist/typed.umd.js');
+
+        // Swiper - Lazy loaded when needed
+        // Only load if swiper elements exist
+        var swiperElements = document.querySelectorAll('.swiper');
+        if (swiperElements.length > 0) {
+            loadScript('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js');
+        }
+    }
+
+    // Execute after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load deferred resources immediately
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadDeferredResources, { timeout: 1500 });
+            } else {
+                setTimeout(loadDeferredResources, 50);
+            }
+
+            // Load animations after a small delay
+            setTimeout(loadAnimations, 300);
+        });
+    } else {
+        // DOM already loaded
+        loadDeferredResources();
+        setTimeout(loadAnimations, 300);
+    }
+})();
 /**
  * Bright AI - Consolidated Sections Bundle
  * يحتوي على جميع الأكواد المستخرجة والمنطق الخاص بالصفحة الرئيسية
@@ -502,3 +603,147 @@
     initLazySections();
   }
 })();
+
+/**
+ * Bright AI - UI Enhancements & Interactions
+ * Handles Navigation, Mobile Menu, and Animations
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initMobileMenu();
+    initDropdowns();
+    initSmoothScroll();
+});
+
+/**
+ * Mobile Menu Toggle Logic
+ */
+function initMobileMenu() {
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const navLinks = document.getElementById('nav-links-list');
+    const overlay = document.getElementById('nav-overlay');
+    const body = document.body;
+
+    if (!menuBtn || !navLinks) return;
+
+    function toggleMenu() {
+        const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+
+        // Toggle ARIA state
+        menuBtn.setAttribute('aria-expanded', !isExpanded);
+
+        // Toggle active classes
+        menuBtn.classList.toggle('active');
+        navLinks.classList.toggle('active');
+
+        if (overlay) {
+            overlay.classList.toggle('active');
+        }
+
+        // Prevent background scrolling
+        if (!isExpanded) {
+            body.style.overflow = 'hidden';
+        } else {
+            body.style.overflow = '';
+        }
+    }
+
+    // Event Listeners
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+    });
+
+    if (overlay) {
+        overlay.addEventListener('click', toggleMenu);
+    }
+
+    // Close menu when clicking escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            toggleMenu();
+        }
+    });
+
+    // Close menu when resizing to desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+            toggleMenu();
+        }
+    });
+}
+
+/**
+ * Mobile/Touch Dropdown Handling
+ * Ensures dropdowns work on touch devices by handling clicks
+ */
+function initDropdowns() {
+    const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+    dropdowns.forEach(dropdown => {
+        const toggleBtn = dropdown.querySelector('.dropdown-toggle');
+
+        if (!toggleBtn) return;
+
+        toggleBtn.addEventListener('click', (e) => {
+            // Only for mobile/tablet screens or touch interactions
+            if (window.innerWidth <= 1024) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Close other dropdowns
+                dropdowns.forEach(other => {
+                    if (other !== dropdown) {
+                        other.classList.remove('active');
+                        const btn = other.querySelector('.dropdown-toggle');
+                        if (btn) btn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Toggle current
+                dropdown.classList.toggle('active');
+                const isExpanded = dropdown.classList.contains('active');
+                toggleBtn.setAttribute('aria-expanded', isExpanded);
+            }
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-dropdown')) {
+            dropdowns.forEach(d => {
+                d.classList.remove('active');
+                const btn = d.querySelector('.dropdown-toggle');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            });
+        }
+    });
+}
+
+/**
+ * Smooth Scroll for Ancchor Links
+ */
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Close mobile menu if open
+                const navLinks = document.getElementById('nav-links-list');
+                if (navLinks && navLinks.classList.contains('active')) {
+                    const menuBtn = document.getElementById('mobile-menu-btn');
+                    if (menuBtn) menuBtn.click(); // Trigger close
+                }
+
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
