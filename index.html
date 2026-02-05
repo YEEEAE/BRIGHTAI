@@ -137,8 +137,10 @@
   <!-- Preload Critical Resources -->
   <link rel="preload" href="frontend/assets/images/Gemini.webp" as="image" type="image/webp">
   <link rel="preload" href="frontend/css/bundle-critical.css" as="style">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/tajawal/v9/Iura6YBj_oCad4k1r5sB_qLuv_Ya.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style"
+    crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/tajawal/v9/Iura6YBj_oCad4k1r5sB_qLuv_Ya.woff2" as="font"
+    type="font/woff2" crossorigin>
 
   <!-- Performance: DNS Prefetch & Preconnect -->
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
@@ -172,7 +174,7 @@
   <!-- Performance: Inline Critical Performance Script -->
   <script>
     // Optimize resource loading and disable heavy features on mobile
-    (function() {
+    (function () {
       'use strict';
 
       // Detect mobile devices
@@ -185,7 +187,7 @@
         document.documentElement.classList.add('reduce-motion');
 
         // Stop heavy canvas animations
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
           var neuralCanvas = document.getElementById('neural-canvas');
           if (neuralCanvas) {
             neuralCanvas.style.display = 'none';
@@ -193,7 +195,7 @@
 
           // Disable floating elements
           var floaters = document.querySelectorAll('.floating-orbs, #stars, #particles');
-          floaters.forEach(function(el) {
+          floaters.forEach(function (el) {
             if (el) el.style.display = 'none';
           });
         });
@@ -201,7 +203,7 @@
 
       // Inline critical font loading with swap behavior
       if ('fonts' in document) {
-        document.fonts.ready.then(function() {
+        document.fonts.ready.then(function () {
           document.documentElement.classList.add('fonts-loaded');
         });
       }
@@ -233,7 +235,8 @@
 
       <!-- Logo -->
       <a href="/" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-        <img src="frontend/assets/images/Gemini.webp" alt="Bright AI Logo" width="40" height="40" fetchpriority="high" loading="eager" decoding="async" />
+        <img src="frontend/assets/images/Gemini.webp" alt="Bright AI Logo" width="40" height="40" fetchpriority="high"
+          loading="eager" decoding="async" />
         <span>Bright AI</span>
       </a>
 
@@ -297,11 +300,11 @@
                 <span class="dropdown-desc">حلول AIaaS المرنة</span>
               </div>
             </a>
-            <a href="frontend/pages/our-products/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:package"></iconify-icon>
+            <a href="frontend/pages/ai-scolecs/index.html" class="dropdown-item">
+              <iconify-icon icon="lucide:graduation-cap"></iconify-icon>
               <div class="dropdown-item-content">
-                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
+                <span class="dropdown-title">المنصة التعليمية الذكية</span>
+                <span class="dropdown-desc">حلول تعليمية متقدمة (Bright Edu)</span>
               </div>
             </a>
             <a href="frontend/pages/try/index.html" class="dropdown-item">
@@ -402,7 +405,7 @@
         </a>
         <div class="mobile-dropdown">
           <a href="frontend/pages/ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-          <a href="frontend/pages/our-products/index.html" class="dropdown-item">المنتجات والاشتراكات</a>
+          <a href="frontend/pages/ai-scolecs/index.html" class="dropdown-item">المنصة التعليمية الذكية</a>
           <a href="frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
           <a href="frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
           <a href="frontend/pages/try/index.html" class="dropdown-item">ذكاء البيانات</a>
@@ -1057,6 +1060,94 @@
       <div class="grid grid-cols-1 gap-8">
 
         <!-- =====================================================
+             خدمة مميزة جديدة: المنصة التعليمية الذكية - Bright Edu
+             ===================================================== -->
+        <a href="frontend/pages/ai-scolecs/index.html"
+          class="featured-edu-service block group relative overflow-hidden rounded-3xl" data-aos="fade-up">
+          <!-- Background Gradient & Effects -->
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/30 to-blue-900/40"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.2),transparent_50%)]">
+          </div>
+
+          <!-- Animated Border -->
+          <div
+            class="absolute inset-0 rounded-3xl border-2 border-indigo-500/30 group-hover:border-indigo-400/50 transition-all duration-500">
+          </div>
+
+          <!-- Glow Effect -->
+          <div
+            class="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-blue-500/20 rounded-3xl blur-xl opacity-0 hover:opacity-100 transition-opacity duration-500">
+          </div>
+
+          <!-- Content Container -->
+          <div class="relative z-10 p-8 md:p-12 flex flex-col lg:flex-row items-center gap-8">
+
+            <!-- Left: Icon & Badge -->
+            <div class="flex flex-col items-center lg:items-start gap-4">
+              <!-- Featured Badge -->
+              <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/20 border border-indigo-500/40 animate-pulse">
+                <iconify-icon icon="lucide:sparkles" width="16" class="text-indigo-400"></iconify-icon>
+                <span class="text-indigo-300 text-sm font-bold">جديد: الإصدار التعليمي</span>
+              </div>
+
+              <!-- Large Icon -->
+              <div
+                class="w-28 h-28 rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-2xl shadow-indigo-500/30 group-hover:scale-110 transition-transform duration-500">
+                <iconify-icon icon="lucide:graduation-cap" width="56" class="text-white"></iconify-icon>
+              </div>
+            </div>
+
+            <!-- Center: Content -->
+            <div class="flex-1 text-center lg:text-right">
+              <h3 class="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-indigo-200 transition-colors">
+                المنصة التعليمية الذكية
+                <span class="block text-lg md:text-xl font-normal text-indigo-300 mt-2">Bright Edu - مستقبل التعليم
+                  الرقمي في السعودية</span>
+              </h3>
+              <p class="text-slate-300 text-lg leading-relaxed mb-6 max-w-2xl">
+                أحدث منصة تعليمية مدعومة بالذكاء الاصطناعي التوليدي. معلم ذكي يشرح الدروس، مولد اختبارات فوري، ومصحح
+                واجبات آلي. تجربة تعليمية متكاملة تتوافق مع المناهج السعودية وتدعم رؤية 2030.
+              </p>
+
+              <!-- Features List -->
+              <div class="flex flex-wrap justify-center lg:justify-start gap-3 mb-6">
+                <span
+                  class="px-4 py-2 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-200 text-sm font-medium">
+                  <iconify-icon icon="lucide:bot" width="14" class="ml-1"></iconify-icon>
+                  معلم ذكي 24/7
+                </span>
+                <span
+                  class="px-4 py-2 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-200 text-sm font-medium">
+                  <iconify-icon icon="lucide:file-question" width="14" class="ml-1"></iconify-icon>
+                  توليد اختبارات
+                </span>
+                <span
+                  class="px-4 py-2 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-200 text-sm font-medium">
+                  <iconify-icon icon="lucide:check-circle" width="14" class="ml-1"></iconify-icon>
+                  تصحيح آلي
+                </span>
+                <span
+                  class="px-4 py-2 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-200 text-sm font-medium">
+                  <iconify-icon icon="lucide:book-open" width="14" class="ml-1"></iconify-icon>
+                  تحضير دروس
+                </span>
+              </div>
+            </div>
+
+            <!-- Right: CTA Button -->
+            <div class="flex flex-col items-center gap-4">
+              <div
+                class="px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold text-lg shadow-xl shadow-indigo-500/30 group-hover:shadow-indigo-500/50 group-hover:scale-105 transition-all duration-300 flex items-center gap-3">
+                <span>ابدأ التعلم الذكي</span>
+                <iconify-icon icon="lucide:arrow-left" width="24"></iconify-icon>
+              </div>
+              <span class="text-indigo-400/70 text-sm">متاح للطلاب والمعلمين</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- =====================================================
              خدمة مميزة: تطبيقات الصحة الرقمية - الأهم
              ===================================================== -->
         <a href="frontend/pages/smart-medical-archive/index.html"
@@ -1160,7 +1251,8 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-12">
 
         <!-- Service: AIaaS حلول سحابية -->
-        <a href="frontend/pages/ai-agent/index.html"class="service-card-link group block" data-aos="fade-up" data-aos-delay="50">
+        <a href="frontend/pages/ai-agent/index.html" class="service-card-link group block" data-aos="fade-up"
+          data-aos-delay="50">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-sky-500 to-blue-600">
               <iconify-icon icon="lucide:cloud" width="28" class="text-white"
@@ -1185,7 +1277,7 @@
         </a>
 
         <!-- Service: أتمتة العمليات RPA -->
-        <a href="frontend/pages/smart-automation/index.html"class="service-card-link group block" data-aos="fade-up"
+        <a href="frontend/pages/smart-automation/index.html" class="service-card-link group block" data-aos="fade-up"
           data-aos-delay="100">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-orange-500 to-amber-600">
@@ -1212,7 +1304,7 @@
         </a>
 
         <!-- Service: تحليل البيانات الضخمة -->
-        <a href="frontend/pages/data-analysis/index.html"class="service-card-link group block" data-aos="fade-up"
+        <a href="frontend/pages/data-analysis/index.html" class="service-card-link group block" data-aos="fade-up"
           data-aos-delay="150">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-blue-500 to-cyan-600">
@@ -1238,7 +1330,8 @@
         </a>
 
         <!-- Service: روبوتات ذكية للأعمال -->
-        <a href="frontend/pages/ai-bots/index.html" class="service-card-link group block" data-aos="fade-up" data-aos-delay="200">
+        <a href="frontend/pages/ai-bots/index.html" class="service-card-link group block" data-aos="fade-up"
+          data-aos-delay="200">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-indigo-500 to-purple-600">
               <iconify-icon icon="lucide:bot" width="28" class="text-white"
@@ -1265,7 +1358,7 @@
         </a>
 
         <!-- Service: استشارات الذكاء الاصطناعي -->
-        <a href="frontend/pages/consultation/index.html"class="service-card-link group block" data-aos="fade-up"
+        <a href="frontend/pages/consultation/index.html" class="service-card-link group block" data-aos="fade-up"
           data-aos-delay="250">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-violet-500 to-fuchsia-600">
@@ -1316,8 +1409,8 @@
         </a>
 
         <!-- Service: الخدمات المصرفية الرقمية -->
-        <a href="frontend/pages/blogger/digital-banking-saudi.html" class="service-card-link group block" data-aos="fade-up"
-          data-aos-delay="350">
+        <a href="frontend/pages/blogger/digital-banking-saudi.html" class="service-card-link group block"
+          data-aos="fade-up" data-aos-delay="350">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-amber-500 to-yellow-600">
               <iconify-icon icon="lucide:landmark" width="28" class="text-white"></iconify-icon>
@@ -1443,7 +1536,7 @@
         </a>
 
         <!-- Service: إدارة الموارد البشرية -->
-        <a href="frontend/pages/interview/index.html"class="service-card-link group block" data-aos="fade-up"
+        <a href="frontend/pages/interview/index.html" class="service-card-link group block" data-aos="fade-up"
           data-aos-delay="600">
           <div class="service-card tilt-card h-full">
             <div class="service-icon bg-gradient-to-br from-teal-500 to-cyan-600">
