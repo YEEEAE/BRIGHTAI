@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         wrapper.classList.add('message-wrapper', sender);
 
         const avatarIcon = sender === 'ai'
-            ? '<img src="frontend/assets/images/Gemini.webp" alt="AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">'
+            ? '<img src="frontend/assets/images/Gemini.webp.png" alt="AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">'
             : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />';
 
         // Parse the message text
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         wrapper.innerHTML = `
             <div class="message-avatar">
-                <img src="frontend/assets/images/Gemini.webp" alt="AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                <img src="frontend/assets/images/Gemini.webp.png" alt="AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
             </div>
             <div class="message-content">
                 <div class="message-bubble">

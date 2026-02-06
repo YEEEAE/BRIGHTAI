@@ -372,9 +372,18 @@ class BrightSearch {
     }
 
     createSearchModal() {
+        const existing = document.getElementById('searchModal');
+        if (existing) {
+            this.modal = existing;
+            this.input = existing.querySelector('#searchInput');
+            this.resultsContainer = existing.querySelector('#searchResults');
+            return;
+        }
+
         const modal = document.createElement('div');
         modal.className = 'search-modal';
         modal.id = 'searchModal';
+        modal.setAttribute('aria-hidden', 'true');
         modal.innerHTML = `
       <div class="search-modal-backdrop"></div>
       <div class="search-modal-content" role="dialog" aria-modal="true" aria-label="بحث في الموقع">
@@ -496,6 +505,7 @@ class BrightSearch {
     open() {
         this.isOpen = true;
         this.modal.classList.add('active');
+        this.modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
 
         // Focus input after animation
@@ -515,6 +525,7 @@ class BrightSearch {
     close() {
         this.isOpen = false;
         this.modal.classList.remove('active');
+        this.modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
         this.input.value = '';
         this.selectedIndex = -1;

@@ -8,7 +8,7 @@
     Bright AI | نضيء مستقبل أعمالك مع الذكاء الاصطناعي
   </title>
   <!-- Favicon -->
-  <link rel="icon" type="image/webp" href="frontend/assets/images/Gemini.webp">
+  <link rel="icon" type="image/png" href="frontend/assets/images/Gemini.webp.png">
   <!-- Google tag (gtag.js) - deferred for performance -->
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -201,7 +201,7 @@
        ============================================ -->
 
   <!-- Preload Critical Resources -->
-  <link rel="preload" href="frontend/assets/images/Gemini.webp" as="image" type="image/webp">
+  <link rel="preload" href="frontend/assets/images/Gemini.webp.png" as="image" type="image/png">
   <link rel="preload" href="frontend/assets/images/hero-brain.svg" as="image" type="image/svg+xml" fetchpriority="high">
   <link rel="preload" href="frontend/css/bundle-critical.css?v=20260206" as="style">
 
@@ -331,7 +331,7 @@
 
       <!-- Logo -->
       <a href="https://brightai.site/" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-        <img src="frontend/assets/images/Gemini.webp" alt="Bright AI Logo" width="40" height="40" fetchpriority="high"
+        <img src="frontend/assets/images/Gemini.webp.png" alt="Bright AI Logo" width="40" height="40" fetchpriority="high"
           loading="eager" decoding="async" />
         <span>Bright AI</span>
       </a>
@@ -4293,7 +4293,7 @@
   <div class="chat-widget" id="chatWidget" role="dialog" aria-label="نافذة المحادثة">
     <header class="chat-header">
       <div class="chat-avatar">
-        <img src="frontend/assets/images/Gemini.webp" alt="Yazeed AI"
+        <img src="frontend/assets/images/Gemini.webp.png" alt="Yazeed AI"
           style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
         <span class="status-dot"></span>
       </div>
@@ -4321,7 +4321,7 @@
     <div class="chat-messages" id="chatMessages">
       <div class="welcome-message">
         <div class="welcome-icon">
-          <img src="frontend/assets/images/Gemini.webp" alt="Yazeed AI"
+          <img src="frontend/assets/images/Gemini.webp.png" alt="Yazeed AI"
             style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
         </div>
         <h4>مرحباً بك!</h4>
@@ -4358,6 +4358,66 @@
     <footer class="chat-footer">
       <p>مدعوم بواسطة <a href="https://brightai.site/" target="_blank">Bright AI</a></p>
     </footer>
+  </div>
+
+  <!-- Search Modal (pre-rendered to prevent CLS) -->
+  <div class="search-modal" id="searchModal" aria-hidden="true">
+    <div class="search-modal-backdrop"></div>
+    <div class="search-modal-content" role="dialog" aria-modal="true" aria-label="بحث في الموقع">
+      <div class="search-input-wrapper">
+        <iconify-icon icon="lucide:search" class="search-icon"></iconify-icon>
+        <input type="text" class="search-input" placeholder="ابحث عن خدمات، مقالات، حلول..." autocomplete="off"
+          id="searchInput" />
+        <button class="search-close-btn" aria-label="إغلاق البحث">ESC</button>
+      </div>
+
+      <div class="search-results" id="searchResults">
+        <div class="search-quick-actions" id="quickActions">
+          <div class="search-quick-title">
+            <iconify-icon icon="lucide:trending-up"></iconify-icon>
+            عمليات بحث شائعة
+          </div>
+          <div class="search-quick-links">
+            <a href="frontend/pages/smart-automation/index.html" class="search-quick-link">
+              <iconify-icon icon="lucide:zap"></iconify-icon>
+              الأتمتة الذكية
+            </a>
+            <a href="frontend/pages/ai-agent/index.html" class="search-quick-link">
+              <iconify-icon icon="lucide:bot"></iconify-icon>
+              AI Agent
+            </a>
+            <a href="frontend/pages/blogger/smart-crm-system" class="search-quick-link">
+              <iconify-icon icon="lucide:users"></iconify-icon>
+              نظام CRM
+            </a>
+            <a href="frontend/pages/data-analysis/index.html" class="search-quick-link">
+              <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
+              تحليل البيانات
+            </a>
+            <a href="frontend/pages/blog/index.html" class="search-quick-link">
+              <iconify-icon icon="lucide:book-open"></iconify-icon>
+              المكتبة الذكية
+            </a>
+            <a href="frontend/pages/smart-medical-archive/index.html" class="search-quick-link">
+              <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
+              الأرشيف الطبي
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-footer">
+        <div class="search-footer-nav">
+          <span><kbd>↑</kbd><kbd>↓</kbd> للتنقل</span>
+          <span><kbd>↵</kbd> للفتح</span>
+          <span><kbd>ESC</kbd> للإغلاق</span>
+        </div>
+        <div class="search-footer-powered">
+          <iconify-icon icon="lucide:sparkles"></iconify-icon>
+          <span>بحث ذكي من Bright AI</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Chat Widget Script - Lazy loaded for performance -->

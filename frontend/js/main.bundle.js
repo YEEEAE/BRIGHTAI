@@ -39,14 +39,26 @@
     });
   }
 
+  // Environment flags (shared)
+  var isMobile = window.matchMedia('(max-width: 768px)').matches;
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isLowPower = navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
+  var skipHeavy = isMobile || isLowPower || prefersReducedMotion;
+
   // Load non-critical resources after initial paint
   function loadDeferredResources() {
     // Fonts - now loaded directly in HTML head for better performance
     // Removed duplicate font loading
 
-    // External CSS
-    loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
-    loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+    // External CSS (only when needed)
+    var hasAos = document.querySelector('[data-aos]') !== null;
+    var hasSwiper = document.querySelector('.swiper, .testimonials-slider') !== null;
+    if (hasAos && !skipHeavy) {
+      loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+    }
+    if (hasSwiper) {
+      loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
+    }
 
     // Iconify (updated to v2.0.0 for better performance)
     loadScript('https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js');
@@ -56,12 +68,6 @@
   // Load animation libraries after interaction or timeout
   // SKIPPED on mobile for performance
   function loadAnimations() {
-    // Detect mobile/low-power devices
-    var isMobile = window.matchMedia('(max-width: 768px)').matches;
-    var isLowPower = navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
-    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    var skipHeavy = isMobile || isLowPower || prefersReducedMotion;
     if (skipHeavy) {
       console.log('[Performance] Heavy animations disabled for mobile/low-power device');
     } else {

@@ -12,7 +12,7 @@ const STATIC_ASSETS = [
   '/frontend/js/schema-loader.js?v=20260206',
   '/frontend/js/search.js?v=20260206',
   '/frontend/js/chat-widget.js?v=20260206',
-  '/frontend/assets/images/Gemini.webp',
+  '/frontend/assets/images/Gemini.webp.png',
   '/frontend/assets/images/hero-brain.svg',
   '/manifest.json',
   '/robots.txt',
