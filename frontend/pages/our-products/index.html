@@ -287,22 +287,33 @@
         class="sticky top-0 z-50 bg-slate-900/98 backdrop-blur-xl border-b border-slate-700/50 shadow-lg shadow-slate-900/50">
         <div class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Logo with Home Link -->
+                <a href="../../../" class="flex items-center gap-2 sm:gap-3 group">
                     <div
-                        class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/30 icon-float">
+                        class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/30 icon-float group-hover:shadow-cyan-500/50 transition-all">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
-                    <span class="text-lg sm:text-xl font-bold text-gradient">Bright AI</span>
-                </div>
+                    <span
+                        class="text-lg sm:text-xl font-bold text-gradient group-hover:opacity-80 transition-opacity">Bright
+                        AI</span>
+                </a>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden lg:flex items-center gap-1 overflow-x-auto scrollbar-thin max-w-2xl"
                     id="categoryNav">
+                    <a href="../../../"
+                        class="category-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        الرئيسية
+                    </a>
+                    <span class="w-px h-6 bg-slate-700 mx-2"></span>
                     <button onclick="filterProducts('all')" data-category="all"
                         class="category-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-cyan-400 bg-cyan-400/10 shadow-sm">الكل</button>
                 </nav>
