@@ -343,28 +343,38 @@ class BrightSearch {
         const navContainer = document.querySelector('.nav-container');
         if (!navContainer) return;
 
-        // Create desktop search trigger
-        const searchTrigger = document.createElement('button');
-        searchTrigger.className = 'search-trigger';
-        searchTrigger.setAttribute('aria-label', 'فتح البحث');
-        searchTrigger.innerHTML = `
+        // Prefer pre-rendered triggers to prevent CLS
+        let searchTrigger = navContainer.querySelector('.search-trigger');
+        let mobileSearchBtn = navContainer.querySelector('.mobile-search-btn');
+
+        if (!searchTrigger) {
+            searchTrigger = document.createElement('button');
+            searchTrigger.className = 'search-trigger';
+            searchTrigger.setAttribute('aria-label', 'فتح البحث');
+            searchTrigger.innerHTML = `
       <iconify-icon icon="lucide:search"></iconify-icon>
       <span>ابحث في الموقع...</span>
       <span class="search-shortcut">⌘K</span>
     `;
+        }
 
-        // Create mobile search button
-        const mobileSearchBtn = document.createElement('button');
-        mobileSearchBtn.className = 'mobile-search-btn';
-        mobileSearchBtn.setAttribute('aria-label', 'فتح البحث');
-        mobileSearchBtn.innerHTML = `<iconify-icon icon="lucide:search" width="20"></iconify-icon>`;
+        if (!mobileSearchBtn) {
+            mobileSearchBtn = document.createElement('button');
+            mobileSearchBtn.className = 'mobile-search-btn';
+            mobileSearchBtn.setAttribute('aria-label', 'فتح البحث');
+            mobileSearchBtn.innerHTML = `<iconify-icon icon="lucide:search" width="20"></iconify-icon>`;
+        }
 
-        // Insert before CTA button
+        // Insert only if not already in DOM
         const ctaBtn = navContainer.querySelector('.nav-btn');
         const ctaContainer = ctaBtn?.parentElement;
         if (ctaContainer) {
-            ctaContainer.insertAdjacentElement('beforebegin', searchTrigger);
-            ctaContainer.insertAdjacentElement('beforebegin', mobileSearchBtn);
+            if (!searchTrigger.isConnected) {
+                ctaContainer.insertAdjacentElement('beforebegin', searchTrigger);
+            }
+            if (!mobileSearchBtn.isConnected) {
+                ctaContainer.insertAdjacentElement('beforebegin', mobileSearchBtn);
+            }
         }
 
         searchTrigger.addEventListener('click', () => this.open());
