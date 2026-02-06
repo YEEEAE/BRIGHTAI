@@ -1,0 +1,52 @@
+/* === CYBER WAVE SEPARATOR === */
+.cyber-wave-separator {
+    position: absolute;
+    bottom: -1px;
+    /* Overlap slightly to prevent gaps */
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.cyber-wave-separator svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 60px;
+    /* Base height */
+}
+
+@media (min-width: 768px) {
+    .cyber-wave-separator svg {
+        height: 120px;
+    }
+}
+
+.cyber-wave-separator .shape-fill {
+    fill: var(--bg-dark);
+    opacity: 1;
+}
+
+/* Variant: Bottom Separation (Used at top of next section) */
+.cyber-wave-top {
+    top: -1px;
+    bottom: auto;
+    transform: rotate(0deg);
+}
+
+/* Glass Card Premium Hover Effect Override */
+.glass-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 0 1px var(--glass-border-hover);
+}
+
+/* Enhanced Gradient Text */
+.gradient-text-gold {
+    background: linear-gradient(135deg, #FCD34D 0%, #D4AF37 50%, #B45309 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
