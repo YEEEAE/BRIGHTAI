@@ -51,7 +51,7 @@
   <meta property="og:description"
     content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل لمعايير NCA و NDMO." />
   <meta property="og:url" content="https://brightai.site/index.html">
-  <meta property="og:image" content="https://brightai.site/Gemini.png" />
+  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
   <meta property="og:image:alt" content="Bright AI - شعار الشركة" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -65,7 +65,7 @@
   <meta name="twitter:title" content="Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية" />
   <meta name="twitter:description"
     content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل." />
-  <meta name="twitter:image" content="https://brightai.site/Gemini.png" />
+  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
   <meta name="twitter:image:alt" content="Bright AI - شعار الشركة" />
 
   <!-- Structured Data: Organization + WebSite (static for crawlers) -->
@@ -188,11 +188,8 @@
 
   <!-- Preload Critical Resources -->
   <link rel="preload" href="frontend/assets/images/Gemini.webp" as="image" type="image/webp">
+  <link rel="preload" href="frontend/assets/images/hero-brain.svg" as="image" type="image/svg+xml" fetchpriority="high">
   <link rel="preload" href="frontend/css/bundle-critical.css" as="style">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" as="style"
-    crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/tajawal/v9/Iura6YBj_oCad4k1r5sB_qLuv_Ya.woff2" as="font"
-    type="font/woff2" crossorigin>
 
   <!-- Performance: DNS Prefetch & Preconnect -->
   <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
@@ -567,7 +564,7 @@
 
           <!-- Main Brain SVG (Optimized with img tag) -->
           <img src="frontend/assets/images/hero-brain.svg" alt="3D Artificial Intelligence Brain Visualization"
-            width="400" height="400" loading="lazy" decoding="async" style="width: 100%; height: 100%;">
+            width="400" height="400" decoding="async" fetchpriority="high" style="width: 100%; height: 100%;">
 
           <!-- Orbiting Service Icons -->
           <div class="orbit-container">
@@ -2077,9 +2074,6 @@
 
     </div>
   </section>
-
-  <!-- Homepage Sections Scripts (Externalized for better caching) -->
-  <script src="frontend/js/sections-bundle.js" defer></script>
 
   <section class="py-16 md:py-24 px-6 relative z-10 section-divider"
     style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.95) 100%);">

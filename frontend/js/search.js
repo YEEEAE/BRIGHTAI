@@ -208,7 +208,7 @@ class BrightSearch {
                 title: 'نظام CRM الذكي - دليل شامل',
                 description: 'كيفية استخدام الذكاء الاصطناعي في إدارة علاقات العملاء',
                 keywords: ['CRM', 'عملاء', 'ذكاء اصطناعي', 'إدارة'],
-                url: '/frontend/pages/blogger/smart-crm-system.html'.html',
+                url: 'frontend/pages/blogger/smart-crm-system.html',
                 category: 'المقالات'
             },
             {
@@ -217,7 +217,7 @@ class BrightSearch {
                 title: 'الأتمتة الذكية - فوائد وتطبيقات',
                 description: 'اكتشف كيف يمكن للأتمتة الذكية تحسين كفاءة عملك',
                 keywords: ['أتمتة', 'كفاءة', 'إنتاجية', 'عمليات'],
-                url: '/frontend/pages/blogger/smart-automation-benefits.html'.html',
+                url: 'frontend/pages/blogger/smart-automation-benefits.html',
                 category: 'المقالات'
             },
             {
@@ -226,7 +226,7 @@ class BrightSearch {
                 title: 'وكلاء الذكاء الاصطناعي في خدمة العملاء',
                 description: 'دراسة حالة للشركات السعودية في استخدام AI Agents',
                 keywords: ['وكيل', 'agent', 'خدمة عملاء', 'سعودية'],
-                url: '/frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html'.html',
+                url: 'frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html',
                 category: 'المقالات'
             },
             {
@@ -235,7 +235,7 @@ class BrightSearch {
                 title: 'التحول الرقمي والأتمتة',
                 description: 'كيف يقود الذكاء الاصطناعي الابتكار في التحول الرقمي',
                 keywords: ['تحول رقمي', 'ابتكار', 'رقمنة', 'digital'],
-                url: '/frontend/pages/blogger/ai-transformation.html'.html',
+                url: 'frontend/pages/blogger/ai-transformation.html',
                 category: 'المقالات'
             },
             {
@@ -244,7 +244,7 @@ class BrightSearch {
                 title: 'تحليل البيانات الضخمة',
                 description: 'مستقبل تحليل البيانات في القطاع المالي',
                 keywords: ['بيانات ضخمة', 'big data', 'تحليل', 'مالي'],
-                url: '/frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html'.html',
+                url: 'frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html',
                 category: 'المقالات'
             },
             {
@@ -253,7 +253,7 @@ class BrightSearch {
                 title: 'الذكاء الاصطناعي التوليدي',
                 description: 'تطبيقات الذكاء الاصطناعي التوليدي في صناعة المحتوى',
                 keywords: ['توليدي', 'generative', 'محتوى', 'GPT', 'صناعة'],
-                url: '/frontend/pages/blogger/generative-artificial-intelligence.html'.html',
+                url: 'frontend/pages/blogger/Generative-artificial-intelligence.html',
                 category: 'المقالات'
             },
             {
@@ -262,7 +262,7 @@ class BrightSearch {
                 title: 'الامتثال لمعايير NCA',
                 description: 'دليل الامتثال لمعايير الهيئة الوطنية للأمن السيبراني',
                 keywords: ['NCA', 'امتثال', 'أمن سيبراني', 'معايير', 'سعودية'],
-                url: '/frontend/pages/blogger/nca-compliance.html'.html',
+                url: 'frontend/pages/blogger/nca-compliance.html',
                 category: 'المقالات'
             },
             {
@@ -271,7 +271,7 @@ class BrightSearch {
                 title: 'الصحة الرقمية والأرشيف الذكي',
                 description: 'مستقبل الرعاية الصحية الرقمية في المملكة',
                 keywords: ['صحة', 'رقمية', 'أرشيف', 'مستشفى', 'سجلات'],
-                url: '/frontend/pages/blogger/digital-health-smart-archive.html'.html',
+                url: 'frontend/pages/blogger/digital-health-smart-archive.html',
                 category: 'المقالات'
             },
             {
@@ -280,7 +280,7 @@ class BrightSearch {
                 title: 'أتمتة العمليات الروبوتية',
                 description: 'دليلك الشامل لـ RPA وأتمتة العمليات',
                 keywords: ['RPA', 'روبوت', 'عمليات', 'أتمتة'],
-                url: '/frontend/pages/blogger/process-automation.html'.html',
+                url: 'frontend/pages/blogger/process-automation.html',
                 category: 'المقالات'
             },
             {
@@ -289,7 +289,7 @@ class BrightSearch {
                 title: 'إدارة المخزون الذكية',
                 description: 'كيفية تحسين إدارة المخزون باستخدام AI',
                 keywords: ['مخزون', 'inventory', 'إدارة', 'تخزين'],
-                url: '/frontend/pages/blogger/smart-inventory-management.html'.html',
+                url: 'frontend/pages/blogger/smart-inventory-management.html',
                 category: 'المقالات'
             },
             {
@@ -298,7 +298,7 @@ class BrightSearch {
                 title: 'حلول النقل واللوجستيات',
                 description: 'الذكاء الاصطناعي في قطاع النقل والخدمات اللوجستية',
                 keywords: ['نقل', 'لوجستيات', 'شحن', 'توصيل', 'logistics'],
-                url: '/frontend/pages/blogger/transport-logistics-solutions.html'.html',
+                url: 'frontend/pages/blogger/transport-logistics-solutions.html',
                 category: 'المقالات'
             },
             {
@@ -307,7 +307,7 @@ class BrightSearch {
                 title: 'معالجة المستندات الذكية',
                 description: 'أتمتة استخراج البيانات من المستندات',
                 keywords: ['مستندات', 'معالجة', 'OCR', 'استخراج', 'فواتير'],
-                url: '/frontend/pages/blogger/smart-document-processing.html'.html',
+                url: 'frontend/pages/blogger/smart-document-processing.html',
                 category: 'المقالات'
             },
             {
@@ -316,7 +316,7 @@ class BrightSearch {
                 title: 'ذكاء الأعمال في السعودية',
                 description: 'تطبيقات Business Intelligence للشركات السعودية',
                 keywords: ['BI', 'ذكاء أعمال', 'تقارير', 'dashboard'],
-                url: '/frontend/pages/blogger/business-intelligence-saudi.html'.html',
+                url: 'frontend/pages/blogger/business-intelligence-saudi.html',
                 category: 'المقالات'
             },
             {
@@ -325,7 +325,7 @@ class BrightSearch {
                 title: 'الخدمات البنكية الرقمية',
                 description: 'التحول الرقمي في القطاع البنكي السعودي',
                 keywords: ['بنك', 'banking', 'مالي', 'رقمي', 'فنتك'],
-                url: '/frontend/pages/blogger/digital-banking-saudi.html'.html',
+                url: 'frontend/pages/blogger/digital-banking-saudi.html',
                 category: 'المقالات'
             }
         ];

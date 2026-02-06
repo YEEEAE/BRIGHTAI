@@ -42,15 +42,10 @@
     // Load non-critical resources after initial paint
     function loadDeferredResources() {
         // Tailwind CSS (non-blocking)
-        loadScript('https://cdn.tailwindcss.com', function () {
-            loadScript('frontend/js/tailwind-config.min.js');
-        });
+        loadScript('https://cdn.tailwindcss.com');
 
         // Fonts - now loaded directly in HTML head for better performance
         // Removed duplicate font loading
-
-        // Centralized Design System
-        loadCSS('frontend/css/brightai-core.css');
 
         // External CSS
         loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
@@ -59,8 +54,6 @@
         // Iconify
         loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
 
-        // Bright AI UI Enhancements (UX/Visuals)
-        loadScript('frontend/js/ui-enhancements.js');
     }
 
     // Load animation libraries after interaction or timeout
@@ -440,18 +433,32 @@
     }
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, i) => {
-        p.x += p.vx; p.y += p.vy; p.z += p.vz;
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
+
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        if (p.z < 0 || p.z > 1000) p.vz *= -1;
-        const scale = (1000 - p.z) / 1000;
+
+        if (p.z < 0) {
+          p.z = 0;
+          p.vz *= -1;
+        } else if (p.z > 1000) {
+          p.z = 1000;
+          p.vz *= -1;
+        }
+
+        const scale = Math.max(0, (1000 - p.z) / 1000);
         const size = p.radius * scale;
-        const alpha = scale * 0.5;
+        if (size <= 0) return;
+
+        ctx.globalAlpha = Math.min(0.6, scale * 0.5);
         ctx.beginPath();
         ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+        ctx.fillStyle = p.color;
         ctx.fill();
+        ctx.globalAlpha = 1;
       });
       requestAnimationFrame(animate);
     }
