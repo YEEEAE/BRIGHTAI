@@ -6,12 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bright AI — منصة الذكاء الاصطناعي</title>
 
-  <!-- Fonts -->
+  <!-- GTM -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+
+  <!-- Dependencies: Fonts, Tailwind, Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
     rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="frontend/css/main.bundle.css" />
+  <script src="https://unpkg.com/iconify-icon/dist/iconify-icon.min.js"></script>
+  <script src="frontend/js/navigation.js" defer></script>
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -2793,35 +2808,63 @@
   </div>
 
   <!-- Navbar -->
-  <div class="nav">
-    <div class="container">
-      <div class="nav-inner">
-        <a class="brand" href="#top">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <div style="font-size:15px;line-height:1;font-weight:1000">Bright AI</div>
-            <div style="font-size:12px;color:rgba(255,255,255,.56);font-weight:900;margin-top:4px">Saudi AI Solutions
+  <!-- Navbar (Standardized) -->
+  <header
+    class="unified-nav fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/10 transition-all duration-300"
+    id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center gap-3">
+          <a href="index.html" class="flex items-center gap-2 group">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-all duration-300">
+              AI
             </div>
-          </div>
-        </a>
-
-        <div class="nav-links" style="display:none" id="navLinks">
-          <a href="#apis">الـ APIs</a>
-          <a href="#services">الخدمات</a>
-          <a href="#bi">BI & Data</a>
-          <a href="#portfolio">المشاريع</a>
-          <a href="#faq">FAQ</a>
+            <span class="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-white">
+              Bright<span class="text-purple-400">AI</span>
+            </span>
+          </a>
         </div>
 
-        <div class="nav-actions">
-          <button class="btn ghost" id="openSearch"><i data-lucide="search"></i> بحث</button>
-          <button class="btn primary" onclick="document.querySelector('#apis').scrollIntoView({behavior:'smooth'})">
-            <i data-lucide="rocket"></i> ابدأ الآن
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">الرئيسية</a>
+          <a href="frontend/pages/about-us/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">من نحن</a>
+          <a href="frontend/pages/smart-automation/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">الحلول</a>
+          <a href="frontend/pages/blog/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">المدونة</a>
+          <a href="frontend/pages/contact/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">تواصل معنا</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden">
+          <button class="mobile-toggle text-slate-300 hover:text-purple-400 p-2" aria-label="Open Menu"
+            aria-expanded="false">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
           </button>
         </div>
       </div>
     </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-menu-drawer">
+    <ul class="mobile-nav-list">
+      <li><a href="index.html" class="mobile-nav-link">الرئيسية</a></li>
+      <li><a href="frontend/pages/about-us/index.html" class="mobile-nav-link">من نحن</a></li>
+      <li><a href="frontend/pages/smart-automation/index.html" class="mobile-nav-link">الحلول</a></li>
+      <li><a href="frontend/pages/blog/index.html" class="mobile-nav-link">المدونة</a></li>
+      <li><a href="frontend/pages/contact/index.html" class="mobile-nav-link">تواصل معنا</a></li>
+    </ul>
   </div>
+  <div class="backdrop-overlay"></div>
 
   <!-- HERO / APIs Section background -->
   <div id="top" class="hero section tight">
@@ -4099,75 +4142,48 @@
   </section>
 
   <!-- Footer (Section 25) -->
-  <footer id="footer">
-    <div class="container">
-      <div class="foot">
-        <div>
-          <div class="brand" style="margin-bottom:10px">
-            <div class="logo" aria-hidden="true"></div>
-            <div>
-              <div style="font-weight:1000">Bright AI</div>
-              <div style="color:rgba(255,255,255,.55);font-weight:900;font-size:12px">AI Solutions in KSA</div>
+  <!-- Footer (Standardized) -->
+  <footer class="bg-slate-900 border-t border-slate-800 pt-16 pb-8 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1 md:col-span-2">
+          <div class="flex items-center gap-2 mb-6">
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold">
+              AI
             </div>
+            <span class="font-bold text-xl text-white">
+              Bright<span class="text-purple-400">AI</span>
+            </span>
           </div>
-          <p>شريكك في رحلة التحول الرقمي. نقدم حلول ذكاء اصطناعي متقدمة للشركات والجهات الحكومية في المملكة العربية
-            السعودية.</p>
-          <div class="social">
-            <a class="soc" href="#" aria-label="WhatsApp"><i data-lucide="message-circle"></i></a>
-            <a class="soc" href="#" aria-label="X"><i data-lucide="x"></i></a>
-            <a class="soc" href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
-            <a class="soc" href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
-          </div>
+          <p class="text-slate-400 leading-relaxed mb-6 max-w-md">
+            نمكن الشركات من بناء مستقبل ذكي من خلال حلول الذكاء الاصطناعي المتقدمة والأتمتة الشاملة.
+          </p>
         </div>
 
         <div>
-          <h4>روابط سريعة</h4>
-          <p><a href="#top">الرئيسية</a></p>
-          <p><a href="#services">الخدمات</a></p>
-          <p><a href="#blog">المدونة</a></p>
-          <p><a href="#portfolio">المشاريع</a></p>
-          <p><a href="#faq">الأسئلة الشائعة</a></p>
+          <h3 class="text-white font-bold mb-6">روابط سريعة</h3>
+          <ul class="space-y-4">
+            <li><a href="index.html" class="text-slate-400 hover:text-purple-400 transition-colors">الرئيسية</a></li>
+            <li><a href="frontend/pages/about-us/index.html"
+                class="text-slate-400 hover:text-purple-400 transition-colors">من نحن</a></li>
+            <li><a href="frontend/pages/blog/index.html"
+                class="text-slate-400 hover:text-purple-400 transition-colors">المدونة</a></li>
+          </ul>
         </div>
 
         <div>
-          <h4>خدماتنا</h4>
-          <p><a href="#workflows">الأتمتة الذكية (RPA)</a></p>
-          <p><a href="#bi">تحليل البيانات وBI</a></p>
-          <p><a href="#aiaas">الذكاء الاصطناعي كخدمة</a></p>
-          <p><a href="#library">المكتبة الذكية</a></p>
-          <p><a href="#robotics">الروبوتات والدرونز</a></p>
-        </div>
-
-        <div>
-          <h4>تواصل معنا</h4>
-          <p>📞 +966 53 822 9013</p>
-          <p>📧 info@brightai.site</p>
-          <p>📍 الرياض، المملكة العربية السعودية</p>
-          <p>🌐 <a href="https://brightai.site/" target="_blank" rel="noopener">https://brightai.site/</a></p>
+          <h3 class="text-white font-bold mb-6">تواصل معنا</h3>
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3 text-slate-400">
+              <iconify-icon icon="lucide:mail" class="text-purple-400"></iconify-icon>
+              yazeed1job@gmail.com
+            </li>
+          </ul>
         </div>
       </div>
-
-      <div class="partners">
-        <div style="font-weight:1000;color:rgba(255,255,255,.72)">التقنيات والشركاء</div>
-        <div class="stack" aria-label="Partners stack">
-          <span class="chip">Microsoft Azure</span>
-          <span class="chip">Google Cloud</span>
-          <span class="chip">AWS</span>
-          <span class="chip">TensorFlow</span>
-          <span class="chip">PyTorch</span>
-          <span class="chip">Python</span>
-          <span class="chip">React</span>
-          <span class="chip">Node.js</span>
-        </div>
-      </div>
-
-      <div class="legal">
-        <div>© 2024 Bright AI. جميع الحقوق محفوظة. صُنع في المملكة العربية السعودية</div>
-        <div class="policies">
-          <a href="#">سياسة الخصوصية</a>
-          <a href="#">شروط الاستخدام</a>
-          <a href="#">سياسة ملفات الارتباط</a>
-        </div>
+      <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+        © 2024 BrightAI. جميع الحقوق محفوظة.
       </div>
     </div>
   </footer>

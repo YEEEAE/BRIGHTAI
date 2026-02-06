@@ -186,210 +186,65 @@
   <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
 
-  <!-- UNIFIED HEADER (REBUILT) -->
-  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-    <div class="nav-container">
-
-      <!-- Mobile Toggle -->
-      <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-
-      <!-- Logo -->
-      <a href="../../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-        <img src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
-        <span>Bright AI</span>
-      </a>
-
-      <!-- Desktop Navigation -->
-      <ul class="nav-links">
-        <li class="nav-item">
-          <a href="../../.." class="nav-link">
-            الرئيسية
+  <!-- UNIFIED HEADER (Standardized) -->
+  <header
+    class="unified-nav fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/10 transition-all duration-300"
+    id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center gap-3">
+          <a href="../../../index.html" class="flex items-center gap-2 group">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-all duration-300">
+              AI
+            </div>
+            <span class="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-white">
+              Bright<span class="text-purple-400">AI</span>
+            </span>
           </a>
-        </li>
+        </div>
 
-        <!-- Products & Services -->
-        <li class="nav-item">
-          <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-            المنتجات والخدمات
-            <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-          </a>
-          <div class="dropdown-menu">
-            <a href="../smart-automation/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:zap"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">الأتمتة الذكية</span>
-                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
-              </div>
-            </a>
-            <a href="../our-products/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:package"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
-              </div>
-            </a>
-            <a href="../data-analysis/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">تحليل البيانات</span>
-                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
-              </div>
-            </a>
-            <a href="../consultation/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:message-square"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">استشارات تقنية</span>
-                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
-              </div>
-            </a>
-          </div>
-        </li>
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="../../../index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">الرئيسية</a>
+          <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">من
+            نحن</a>
+          <a href="../smart-automation/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">الحلول</a>
+          <a href="../blog/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">المدونة</a>
+          <a href="../contact/index.html"
+            class="text-sm font-medium text-slate-300 hover:text-purple-400 transition-colors">تواصل معنا</a>
+        </nav>
 
-        <!-- Solutions & Experience Models -->
-        <li class="nav-item">
-          <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-            الحلول و نماذج التجربة
-            <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-          </a>
-          <div class="dropdown-menu">
-            <a href="../ai-agent/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:bot"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-              </div>
-            </a>
-            <a href="../try/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:database"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">ذكاء البيانات</span>
-                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
-              </div>
-            </a>
-            <a href="../tools/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:wrench"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">أدوات مجانية</span>
-                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
-              </div>
-            </a>
-            <a href="../smart-medical-archive/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
-                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
-              </div>
-            </a>
-            <a href="../interview/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:users"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">التوظيف الذكي</span>
-                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
-              </div>
-            </a>
-          </div>
-        </li>
-
-        <!-- Company -->
-        <li class="nav-item">
-          <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-            الشركة
-            <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-          </a>
-          <div class="dropdown-menu">
-            <a href="../about-us/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:info"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">من نحن</span>
-                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
-              </div>
-            </a>
-            <a href="../blog/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:book-open"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المكتبة الذكية</span>
-                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
-              </div>
-            </a>
-            <a href="../../../docs.html" class="dropdown-item">
-              <iconify-icon icon="lucide:file-text"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المستندات</span>
-                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
-              </div>
-            </a>
-          </div>
-        </li>
-      </ul>
-
-      <!-- CTA Button -->
-      <div class="hidden lg:block">
-        <a href="https://wa.me/966538229013" class="nav-btn">
-          اتصل بنا
-        </a>
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden">
+          <button class="mobile-toggle text-slate-300 hover:text-purple-400 p-2" aria-label="Open Menu"
+            aria-expanded="false">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </button>
+        </div>
       </div>
-
     </div>
-  </nav>
+  </header>
 
-  <!-- Mobile Menu Drawer -->
+  <!-- Mobile Drawer -->
   <div class="mobile-menu-drawer">
     <ul class="mobile-nav-list">
-      <li><a href="../../.." class="mobile-nav-link">الرئيسية</a></li>
-
-      <li>
-        <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-          المنتجات والخدمات
-          <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-        </a>
-        <div class="mobile-dropdown">
-          <a href="../smart-automation/index.html" class="dropdown-item">الأتمتة الذكية</a>
-          <a href="../our-products/index.html" class="dropdown-item">المنتجات والاشتراكات</a>
-          <a href="../data-analysis/index.html" class="dropdown-item">تحليل البيانات</a>
-          <a href="../consultation/index.html" class="dropdown-item">استشارات تقنية</a>
-        </div>
-      </li>
-
-      <li>
-        <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-          الحلول و نماذج التجربة
-          <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-        </a>
-        <div class="mobile-dropdown">
-          <a href="../ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-          <a href="../try/index.html" class="dropdown-item">ذكاء البيانات</a>
-          <a href="../tools/index.html" class="dropdown-item">أدوات مجانية</a>
-          <a href="../smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
-          <a href="../interview/index.html" class="dropdown-item">التوظيف الذكي</a>
-        </div>
-      </li>
-
-      <li>
-        <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-          الشركة
-          <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-        </a>
-        <div class="mobile-dropdown">
-          <a href="../about-us/index.html" class="dropdown-item">من نحن</a>
-          <a href="../blog/index.html" class="dropdown-item">المكتبة الذكية</a>
-          <a href="../../../docs.html" class="dropdown-item">المستندات</a>
-        </div>
-      </li>
-
-      <li>
-        <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
-          اتصل بنا
-        </a>
-      </li>
+      <li><a href="../../../index.html" class="mobile-nav-link">الرئيسية</a></li>
+      <li><a href="index.html" class="mobile-nav-link">من نحن</a></li>
+      <li><a href="../smart-automation/index.html" class="mobile-nav-link">الحلول</a></li>
+      <li><a href="../blog/index.html" class="mobile-nav-link">المدونة</a></li>
+      <li><a href="../contact/index.html" class="mobile-nav-link">تواصل معنا</a></li>
     </ul>
   </div>
-
-  <!-- Backdrop -->
   <div class="backdrop-overlay"></div>
+
+
 
 
   <!-- Breadcrumb -->
@@ -509,51 +364,48 @@
     </div>
   </section>
 
-  <!-- UNIFIED FOOTER -->
-  <footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
+  <!-- UNIFIED FOOTER (Standardized) -->
+  <footer class="bg-slate-900 border-t border-slate-800 pt-16 pb-8 px-6 mt-20">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-        <div class="col-span-1 md:col-span-1">
+        <div class="col-span-1 md:col-span-2">
           <div class="flex items-center gap-2 mb-6">
-            <div class="w-8 h-8 flex items-center justify-center bg-white/10 rounded border border-white/10">
-              <span class="text-lg font-bold text-white">B</span>
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold">
+              AI
             </div>
-            <span class="font-semibold text-white">Bright AI</span>
+            <span class="font-bold text-xl text-white">
+              Bright<span class="text-purple-400">AI</span>
+            </span>
           </div>
-          <p class="text-slate-500 text-sm leading-relaxed mb-6">
-            نبتكر المستقبل اليوم.
+          <p class="text-slate-400 leading-relaxed mb-6 max-w-md">
+            نمكن الشركات من بناء مستقبل ذكي من خلال حلول الذكاء الاصطناعي المتقدمة والأتمتة الشاملة.
           </p>
-          <div class="flex gap-4">
-            <a href="https://wa.me/966538229013" class="text-slate-400 hover:text-white transition"><iconify-icon
-                icon="lucide:message-circle" width="20"></iconify-icon></a>
-            <a href="mailto:yazeed1job@gmail.com" class="text-slate-400 hover:text-white transition"><iconify-icon
-                icon="lucide:mail" width="20"></iconify-icon></a>
-          </div>
         </div>
+
         <div>
-          <h4 class="text-white font-medium mb-6">الشركة</h4>
-          <ul class="space-y-3 text-sm text-slate-400">
-            <li><a href="../about-us/index.html" class="hover:text-gold-400">عن Bright AI</a></li>
-            <li><a href="../contact/index.html" class="hover:text-gold-400">اتصل بنا</a></li>
+          <h3 class="text-white font-bold mb-6">روابط سريعة</h3>
+          <ul class="space-y-4">
+            <li><a href="../../../index.html"
+                class="text-slate-400 hover:text-purple-400 transition-colors">الرئيسية</a></li>
+            <li><a href="index.html" class="text-slate-400 hover:text-purple-400 transition-colors">من نحن</a></li>
+            <li><a href="../blog/index.html" class="text-slate-400 hover:text-purple-400 transition-colors">المدونة</a>
+            </li>
           </ul>
         </div>
+
         <div>
-          <h4 class="text-white font-medium mb-6">الموارد</h4>
-          <ul class="space-y-3 text-sm text-slate-400">
-            <li><a href="../blog/index.html" class="hover:text-gold-400">المدونة</a></li>
-            <li><a href="../../../docs.html" class="hover:text-gold-400">الوثائق</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-white font-medium mb-6">خدماتنا</h4>
-          <ul class="space-y-3 text-sm text-slate-400">
-            <li><a href="../ai-agent/index.html" class="hover:text-gold-400">AIaaS</a></li>
-            <li><a href="../data-analysis/index.html" class="hover:text-gold-400">تحليل البيانات</a></li>
+          <h3 class="text-white font-bold mb-6">تواصل معنا</h3>
+          <ul class="space-y-4">
+            <li class="flex items-center gap-3 text-slate-400">
+              <iconify-icon icon="lucide:mail" class="text-purple-400"></iconify-icon>
+              yazeed1job@gmail.com
+            </li>
           </ul>
         </div>
       </div>
-      <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
-        <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+      <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+        © 2024 BrightAI. جميع الحقوق محفوظة.
       </div>
     </div>
   </footer>
