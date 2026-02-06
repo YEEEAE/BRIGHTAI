@@ -25,6 +25,33 @@
     min-height: 44px;
 }
 
+/* Accessibility: skip link for keyboard users */
+.skip-link {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 10px 14px;
+    background: #111827;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    z-index: 1001;
+    transform: translateY(-200%);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+    outline: 2px solid #fbbf24;
+    outline-offset: 2px;
+}
+
+/* Accessibility: improve footer link contrast */
+.site-footer .text-slate-400,
+.site-footer .text-slate-500 {
+    color: #cbd5e1;
+}
+
 /* ---------------------------------
    1. Base Header Structure
 --------------------------------- */

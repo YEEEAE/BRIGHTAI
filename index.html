@@ -9,14 +9,27 @@
   </title>
   <!-- Favicon -->
   <link rel="icon" type="image/webp" href="frontend/assets/images/Gemini.webp">
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <!-- Google tag (gtag.js) - deferred for performance -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
 
-    gtag('config', 'G-8LLESL207Q');
+    function loadGtag() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', 'G-8LLESL207Q');
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadGtag, { timeout: 3000 });
+    } else {
+      window.addEventListener('load', function () {
+        setTimeout(loadGtag, 2000);
+      });
+    }
   </script>
 
   <!-- Enterprise SEO Meta Tags -->
@@ -219,12 +232,20 @@
   <!-- Structured Data: Dynamic Loader -->
   <script src="frontend/js/schema-loader.js" defer></script>
 
-  <!-- Performance: Font Loading - Combined requests for Tajawal + Fira Code -->
-  <link rel="preload" as="style" crossorigin
-    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Fira+Code:wght@400;500&display=swap">
+  <!-- Performance: Font Loading - reduce weights + defer mono font -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap">
   <link
-    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Fira+Code:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap"
     rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap"
+    rel="stylesheet"
+    media="print"
+    onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap">
+  </noscript>
 
   <!-- Performance: Inline Critical Performance Script -->
   <script>
@@ -272,6 +293,7 @@
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+  <a class="skip-link" href="#main-content">تخطي إلى المحتوى</a>
   <!-- Background Aurora Effects -->
   <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
 
@@ -493,6 +515,7 @@
 
 
 
+  <main id="main-content">
   <section class="hero">
     <!-- Animated Gradient Background -->
     <div class="gradient-bg"></div>
@@ -1630,7 +1653,7 @@
                 <iconify-icon icon="lucide:server" width="26" class="text-indigo-400" aria-hidden="true"></iconify-icon>
               </div>
               <div>
-                <h4 class="text-lg font-bold text-white mb-1">استضافة محلية سيادية في السعودية</h4>
+        <h3 class="text-lg font-bold text-white mb-1">استضافة محلية سيادية في السعودية</h3>
                 <p class="text-slate-400 text-sm">جميع بياناتك تُستضاف داخل المملكة مع الامتثال الكامل لمعايير NCA</p>
               </div>
             </div>
@@ -1641,7 +1664,7 @@
                 <iconify-icon icon="lucide:users" width="26" class="text-purple-400" aria-hidden="true"></iconify-icon>
               </div>
               <div>
-                <h4 class="text-lg font-bold text-white mb-1">فريق خبراء ذكاء اصطناعي سعودي</h4>
+        <h3 class="text-lg font-bold text-white mb-1">فريق خبراء ذكاء اصطناعي سعودي</h3>
                 <p class="text-slate-400 text-sm">أكثر من 50 خبيراً في تقنيات الذكاء الاصطناعي يفهمون احتياجاتك</p>
               </div>
             </div>
@@ -1652,7 +1675,7 @@
                 <iconify-icon icon="lucide:headphones" width="26" class="text-cyan-400" aria-hidden="true"></iconify-icon>
               </div>
               <div>
-                <h4 class="text-lg font-bold text-white mb-1">دعم فني 24/7</h4>
+        <h3 class="text-lg font-bold text-white mb-1">دعم فني 24/7</h3>
                 <p class="text-slate-400 text-sm">فريق دعم متخصص متواجد على مدار الساعة بالعربية</p>
               </div>
             </div>
@@ -1663,7 +1686,7 @@
                 <iconify-icon icon="lucide:rocket" width="26" class="text-gold-400" aria-hidden="true"></iconify-icon>
               </div>
               <div>
-                <h4 class="text-lg font-bold text-white mb-1">تنفيذ سريع</h4>
+        <h3 class="text-lg font-bold text-white mb-1">تنفيذ سريع</h3>
                 <p class="text-slate-400 text-sm">من الفكرة إلى التنفيذ في أسابيع وليس شهور</p>
               </div>
             </div>
@@ -2653,7 +2676,7 @@
                 1
               </div>
               <div>
-                <h4 class="text-lg font-medium text-white">الفهرسة والأرشفة الآلية</h4>
+                <h3 class="text-lg font-medium text-white">الفهرسة والأرشفة الآلية</h3>
                 <p class="text-sm text-slate-400 mt-1">تصنيف الكتب والمصادر آلياً باستخدام التعرف الضوئي وتحليل
                   النصوص.
                 </p>
@@ -2665,7 +2688,7 @@
                 2
               </div>
               <div>
-                <h4 class="text-lg font-medium text-white">المباني الذكية</h4>
+                <h3 class="text-lg font-medium text-white">المباني الذكية</h3>
                 <p class="text-sm text-slate-400 mt-1">توفير الطاقة، الإضاءة الذكية، والتحكم في المناخ لحماية
                   المخطوطات
                   والكتب.</p>
@@ -2677,7 +2700,7 @@
                 3
               </div>
               <div>
-                <h4 class="text-lg font-medium text-white">تحليل تجربة المستخدم</h4>
+                <h3 class="text-lg font-medium text-white">تحليل تجربة المستخدم</h3>
                 <p class="text-sm text-slate-400 mt-1">فهم اهتمامات القراء وتوصية الكتب المناسبة لهم تلقائياً.</p>
               </div>
             </div>
@@ -3686,7 +3709,7 @@
               <iconify-icon icon="lucide:check" class="text-gold-500"></iconify-icon>
             </div>
             <div>
-              <h4 class="text-white font-medium">توطين التقنية</h4>
+              <h3 class="text-white font-medium">توطين التقنية</h3>
               <p class="text-slate-500 text-xs">
                 حلول مبنية محلياً وليست مجرد قوالب جاهزة.
               </p>
@@ -3697,7 +3720,7 @@
               <iconify-icon icon="lucide:shield" class="text-gold-500"></iconify-icon>
             </div>
             <div>
-              <h4 class="text-white font-medium">الامتثال والسيادة</h4>
+              <h3 class="text-white font-medium">الامتثال والسيادة</h3>
               <p class="text-slate-500 text-xs">
                 بياناتك تبقى داخل المملكة بمعايير أمنية قصوى.
               </p>
@@ -4025,6 +4048,7 @@
       </div>
     </div>
   </section>
+  </main>
   <footer class="site-footer border-t border-white/10 bg-black/40 pt-16 pb-8 px-6">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
@@ -4056,7 +4080,7 @@
         </div>
 
         <div>
-          <h4 class="text-white font-medium mb-6">الشركة</h4>
+          <h3 class="text-white font-medium mb-6">الشركة</h3>
           <ul class="space-y-3 text-sm text-slate-400">
             <li>
               <a href="https://brightai.site/frontend/pages/about-us/index.html" class="hover:text-gold-400 transition">
@@ -4078,7 +4102,7 @@
         </div>
 
         <div>
-          <h4 class="text-white font-medium mb-6">الموارد</h4>
+          <h3 class="text-white font-medium mb-6">الموارد</h3>
           <ul class="space-y-3 text-sm text-slate-400">
             <li>
               <a href="https://brightai.site/frontend/pages/blog/index.html" class="hover:text-gold-400 transition">
@@ -4099,7 +4123,7 @@
         </div>
 
         <div>
-          <h4 class="text-white font-medium mb-6">تواصل معنا</h4>
+          <h3 class="text-white font-medium mb-6">تواصل معنا</h3>
           <ul class="space-y-3 text-sm text-slate-400">
             <li class="flex items-center gap-2">
               <iconify-icon icon="lucide:mail" width="16"></iconify-icon>
