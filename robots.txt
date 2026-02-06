@@ -71,7 +71,7 @@ Disallow: /*.zip$
 Allow: /sitemap.xml
 Allow: /robots.txt
 Allow: /manifest.json
-Allow: /schema.json
+Allow: /schema-saudi-seo.json
 
 # --------------------
 # Sitemap

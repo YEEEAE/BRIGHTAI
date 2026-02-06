@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-
-
 
 <url>
     <loc>https://brightai.site/docs.html</loc>
@@ -269,12 +266,6 @@
     <priority>0.6</priority>
   </url>
 <url>
-    <loc>https://brightai.site/frontend/pages/blogger/generative-artificial-intelligence.html</loc>
-    <lastmod>2026-02-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-<url>
     <loc>https://brightai.site/frontend/pages/blogger/gov.html</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
@@ -294,12 +285,6 @@
   </url>
 <url>
     <loc>https://brightai.site/frontend/pages/blogger/process-automation.html</loc>
-    <lastmod>2026-02-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-<url>
-    <loc>https://brightai.site/frontend/pages/blogger/production-line.html</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -707,7 +692,7 @@
     <priority>0.8</priority>
   </url>
 <url>
-    <loc>https://brightai.site/index.html</loc>
+    <loc>https://brightai.site/</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -820,7 +805,5 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-
 
 </urlset>

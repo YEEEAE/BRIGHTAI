@@ -1259,6 +1259,47 @@ body {
     transform: translateX(-50%);
 }
 
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(139, 92, 246, 0.1));
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 50px;
+    color: #00ff88;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.hero-subtitle {
+    font-size: 1.6rem;
+    color: #ffffff;
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-weight: 600;
+    opacity: 1;
+}
+
+.cta-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    opacity: 1;
+}
+
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 45px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
 iconify-icon {
     display: inline-block;
     min-width: 1em;
