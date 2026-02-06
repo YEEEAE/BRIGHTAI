@@ -110,11 +110,11 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
   ExpiresByType video/mp4 "access plus 1 year"
   ExpiresByType video/webm "access plus 1 year"
   
-  # CSS and JavaScript: 1 month (balance between caching and updates)
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType text/javascript "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/x-javascript "access plus 1 month"
+  # CSS and JavaScript: 1 year (versioned via query string)
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
   
   # Fonts: 1 year
   ExpiresByType font/woff "access plus 1 year"
@@ -148,14 +148,14 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
         Header set Cache-Control "max-age=31536000, public, immutable"
     </FilesMatch>
     
-    # CSS & JavaScript: medium cache
+    # CSS & JavaScript: long cache (requires versioned URLs)
     <FilesMatch "\.(css|js)$">
-        Header set Cache-Control "max-age=2592000, public"
+        Header set Cache-Control "max-age=31536000, public, immutable"
     </FilesMatch>
     
     # HTML: short cache with revalidation
     <FilesMatch "\.(html|htm)$">
-        Header set Cache-Control "max-age=3600, public, must-revalidate"
+        Header set Cache-Control "max-age=300, public, must-revalidate"
     </FilesMatch>
     
     # Remove ETag (better cache performance)

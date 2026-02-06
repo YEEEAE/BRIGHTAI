@@ -1,17 +1,17 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-02-06';
+const CACHE_VERSION = '2026-02-06-1';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
 
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/frontend/css/bundle-critical.css',
-  '/frontend/css/main.bundle.css',
-  '/frontend/js/main.bundle.js',
-  '/frontend/js/schema-loader.js',
-  '/frontend/js/search.js',
-  '/frontend/js/chat-widget.js',
+  '/frontend/css/bundle-critical.css?v=20260206',
+  '/frontend/css/main.bundle.css?v=20260206',
+  '/frontend/js/main.bundle.js?v=20260206',
+  '/frontend/js/schema-loader.js?v=20260206',
+  '/frontend/js/search.js?v=20260206',
+  '/frontend/js/chat-widget.js?v=20260206',
   '/frontend/assets/images/Gemini.webp',
   '/frontend/assets/images/hero-brain.svg',
   '/manifest.json',

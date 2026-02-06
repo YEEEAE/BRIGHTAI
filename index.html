@@ -203,7 +203,7 @@
   <!-- Preload Critical Resources -->
   <link rel="preload" href="frontend/assets/images/Gemini.webp" as="image" type="image/webp">
   <link rel="preload" href="frontend/assets/images/hero-brain.svg" as="image" type="image/svg+xml" fetchpriority="high">
-  <link rel="preload" href="frontend/css/bundle-critical.css" as="style">
+  <link rel="preload" href="frontend/css/bundle-critical.css?v=20260206" as="style">
 
   <!-- Performance: DNS Prefetch & Preconnect -->
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -219,18 +219,18 @@
   <link rel="preconnect" href="https://code.iconify.design" crossorigin>
 
   <!-- CSS Optimized: 2 files instead of 4 -->
-  <link rel="stylesheet" href="frontend/css/bundle-critical.css" />
+  <link rel="stylesheet" href="frontend/css/bundle-critical.css?v=20260206" />
   <!-- Non-critical CSS: loaded with low priority -->
-  <link rel="stylesheet" href="frontend/css/main.bundle.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="frontend/css/main.bundle.css?v=20260206" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="frontend/css/main.bundle.css">
+    <link rel="stylesheet" href="frontend/css/main.bundle.css?v=20260206">
   </noscript>
 
   <!-- Consolidated JS Bundle (resource-loader + sections + ui-enhancements) -->
-  <script src="frontend/js/main.bundle.js" defer></script>
+  <script src="frontend/js/main.bundle.js?v=20260206" defer></script>
 
   <!-- Structured Data: Dynamic Loader -->
-  <script src="frontend/js/schema-loader.js" defer></script>
+  <script src="frontend/js/schema-loader.js?v=20260206" defer></script>
 
   <!-- Performance: Font Loading - reduce weights + defer mono font -->
   <link rel="preload" as="style"
@@ -4248,10 +4248,10 @@
   </div>
 
   <!-- Chat Widget Script - Lazy loaded for performance -->
-  <script src="frontend/js/chat-widget.js" defer></script>
+  <script src="frontend/js/chat-widget.js?v=20260206" defer></script>
 
   <!-- Search System - Non-critical, deferred -->
-  <script src="frontend/js/search.js" defer></script>
+  <script src="frontend/js/search.js?v=20260206" defer></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
