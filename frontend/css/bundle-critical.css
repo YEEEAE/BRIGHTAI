@@ -51,7 +51,7 @@
     /* ========== New Primary Gradient Theme ========== */
     --gradient-primary: linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1);
     --gradient-primary-hover: linear-gradient(135deg, #DB2777, #7C3AED, #4F46E5);
-    
+
     /* Complementary Colors (Pink, Purple, Indigo) */
     --color-pink-500: #EC4899;
     --color-purple-500: #8B5CF6;
@@ -59,18 +59,18 @@
     --color-pink-600: #DB2777;
     --color-purple-600: #7C3AED;
     --color-indigo-600: #4F46E5;
-    
+
     /* Text Colors for Gradient Backgrounds (High Contrast) */
     --text-on-gradient: #FFFFFF;
     --text-primary-light: #F8FAFC;
     --text-secondary-light: #CBD5E1;
     --text-muted-light: #94A3B8;
-    
+
     /* Background Colors for New Theme */
     --bg-dark: #0F172A;
     --bg-card: #1E293B;
     --bg-elevated: #334155;
-    
+
     /* Accent Colors */
     --accent-success: #10B981;
     --accent-warning: #F59E0B;
@@ -129,23 +129,33 @@
     --border-radius-full: 9999px;
 
     /* ========== Spacing Scale (8px base) ========== */
-    --space-2xs: 0.25rem; /* 4px */
-    --space-xs: 0.5rem;   /* 8px */
-    --space-sm: 0.75rem;  /* 12px */
-    --space-md: 1rem;     /* 16px */
-    --space-lg: 1.5rem;   /* 24px */
-    --space-xl: 2rem;     /* 32px */
-    --space-2xl: 3rem;    /* 48px */
-    --space-3xl: 4rem;    /* 64px */
-    --space-4xl: 6rem;    /* 96px */
-    --space-5xl: 8rem;    /* 128px */
+    --space-2xs: 0.25rem;
+    /* 4px */
+    --space-xs: 0.5rem;
+    /* 8px */
+    --space-sm: 0.75rem;
+    /* 12px */
+    --space-md: 1rem;
+    /* 16px */
+    --space-lg: 1.5rem;
+    /* 24px */
+    --space-xl: 2rem;
+    /* 32px */
+    --space-2xl: 3rem;
+    /* 48px */
+    --space-3xl: 4rem;
+    /* 64px */
+    --space-4xl: 6rem;
+    /* 96px */
+    --space-5xl: 8rem;
+    /* 128px */
 
     /* ========== Typography ========== */
     /* Comprehensive fallback font stack for Arabic/RTL support */
     --font-family-primary: 'Tajawal', 'Tajawal Fallback', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Noto Sans Arabic', sans-serif;
     --font-family-arabic-fallback: 'Segoe UI', 'Tahoma', 'Arial', 'Noto Sans Arabic', sans-serif;
     --font-family-mono: 'Courier New', 'Consolas', monospace;
-    
+
     /* Fluid Typography (clamp) */
     /* Mobile (320px) to Desktop (1200px) */
     --font-size-xs: clamp(0.75rem, 0.70rem + 0.25vw, 0.875rem);
@@ -270,6 +280,7 @@
    ========================================================================== */
 
 @media (max-width: 768px) {
+
     /* Disable floating orbs on mobile */
     .floating-orbs,
     .orb,
@@ -330,6 +341,7 @@
         animation-duration: 20s !important;
     }
 }
+
 /* BrightAI Typography System */
 
 /* Font Families */
@@ -409,7 +421,9 @@ h6 {
 
 .max-w-none {
     max-width: none;
-}/* Critical CSS - BrightAI */
+}
+
+/* Critical CSS - BrightAI */
 /* This file contains the minimum CSS needed for above-the-fold content */
 /* Loaded inline for fastest initial render */
 
@@ -1323,11 +1337,32 @@ body {
     text-decoration: none;
 }
 
+/* Prevent CLS for iconify-icon elements */
 iconify-icon {
     display: inline-block;
     min-width: 1em;
     min-height: 1em;
+    width: 1em;
+    height: 1em;
     vertical-align: middle;
+    /* Reserve space while loading */
+    contain: layout size;
+}
+
+/* Prevent CLS on images - aspect ratio boxes */
+img[width][height] {
+    aspect-ratio: attr(width) / attr(height);
+    height: auto;
+}
+
+/* Critical: Font loading indicator for CLS prevention */
+html:not(.fonts-loaded) .hero-title,
+html:not(.fonts-loaded) .hero-subtitle,
+html:not(.fonts-loaded) h1,
+html:not(.fonts-loaded) h2,
+html:not(.fonts-loaded) h3 {
+    letter-spacing: -0.02em;
+    /* Compensate for fallback font */
 }
 
 @media (max-width: 1200px) {

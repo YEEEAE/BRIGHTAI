@@ -82,3 +82,8 @@ Sitemap: https://brightai.site/sitemap.xml
 # LLMs.txt (للنماذج اللغوية الكبيرة)
 # --------------------
 # https://brightai.site/llms.txt
+
+# --------------------
+# Crawl-delay (optional - be nice to servers)
+# --------------------
+# Crawl-delay: 1
