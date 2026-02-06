@@ -434,3 +434,234 @@ html {
         padding-top: 2rem !important;
     }
 }
+
+/* ============================================
+   Enhanced Documentation Page Styles
+   Updated: February 2026
+   ============================================ */
+
+/* Sidebar Navigation for Docs */
+.docs-sidebar {
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-right: 1.5rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.docs-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.docs-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.3);
+    border-radius: 4px;
+}
+
+.docs-sidebar-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+    padding-right: 0.5rem;
+}
+
+.docs-sidebar-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    margin-bottom: 0.25rem;
+}
+
+.docs-sidebar-link:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: #fff;
+}
+
+.docs-sidebar-link.active {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    font-weight: 500;
+}
+
+/* Table of Contents */
+.toc-container {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.toc-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+}
+
+.toc-list a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toc-list a:hover {
+    color: #818cf8;
+}
+
+.toc-list a::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: rgba(99, 102, 241, 0.5);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Code Blocks in Docs */
+.doc-code-block {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Monaco', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.doc-code-block code {
+    color: #e2e8f0;
+}
+
+/* Info/Warning/Tip Boxes */
+.doc-callout {
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.doc-callout-info {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.doc-callout-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.doc-callout-success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.doc-callout-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.doc-callout-content {
+    flex: 1;
+}
+
+.doc-callout-title {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.doc-callout-text {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+/* Improved Card Hover Effects */
+.doc-card-enhanced {
+    position: relative;
+    overflow: hidden;
+}
+
+.doc-card-enhanced::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.doc-card-enhanced:hover::after {
+    opacity: 1;
+}
+
+/* Reading Progress Bar */
+.reading-progress {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #c084fc);
+    z-index: 999;
+    transition: width 0.1s ease;
+}
+
+/* Print Styles for Docs */
+@media print {
+    .unified-nav,
+    .mobile-menu-drawer,
+    .backdrop-overlay,
+    .docs-sidebar,
+    .reading-progress {
+        display: none !important;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .doc-content {
+        max-width: 100% !important;
+    }
+
+    .glass-card {
+        background: #f8f9fa !important;
+        border: 1px solid #dee2e6 !important;
+        box-shadow: none !important;
+    }
+}

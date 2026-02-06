@@ -4,28 +4,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مركز المستندات | Bright AI</title>
+  <title>مركز المستندات | Bright AI - دليلك الشامل للحلول الذكية</title>
   <meta name="description"
     content="مركز المستندات الرسمي لـ Bright AI. أدلة شاملة للخدمات، الحلول القطاعية، التكاملات التقنية، وOpenAPI." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://brightai.site/docs.html" />
+  <link rel="canonical" href="https://brightai.site/docs" />
 
   <link rel="icon" type="image/webp" href="frontend/assets/images/Gemini.webp">
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Bright AI" />
   <meta property="og:title" content="مركز المستندات | Bright AI" />
-  <meta property="og:description"
-    content="أدلة كاملة للخدمات والحلول والتكاملات التقنية. ابدأ من هنا للوصول إلى جميع مستندات Bright AI." />
-  <meta property="og:url" content="https://brightai.site/docs.html" />
+  <meta property="og:description" content="أدلة كاملة للخدمات والحلول والتكاملات التقنية." />
+  <meta property="og:url" content="https://brightai.site/docs" />
   <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
   <meta property="og:locale" content="ar_SA" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="مركز المستندات | Bright AI" />
-  <meta name="twitter:description"
-    content="كل ما تحتاجه من أدلة وحلول وتكاملات تقنية في مكان واحد." />
-  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
+  <meta name="twitter:description" content="كل ما تحتاجه من أدلة وحلول وتكاملات تقنية في مكان واحد." />
 
   <link rel="stylesheet" href="frontend/css/bundle-critical.css" />
   <link rel="stylesheet" href="frontend/css/main.bundle.css" media="print" onload="this.media='all'">
@@ -43,36 +40,285 @@
       padding: 8px 12px;
       border-radius: 8px;
       z-index: 50;
-      transition: top 0.2s ease;
+      transition: top .2s ease
     }
+
     .skip-link:focus {
-      top: 16px;
+      top: 16px
+    }
+
+    /* Hero Docs Section */
+    .docs-hero {
+      background: linear-gradient(180deg, rgba(2, 6, 23, 1) 0%, rgba(15, 23, 42, .96) 100%);
+      position: relative;
+      overflow: hidden
+    }
+
+    .docs-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99, 102, 241, .15) 0%, transparent 70%);
+      pointer-events: none
+    }
+
+    .docs-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: 0;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(16, 185, 129, .1) 0%, transparent 70%);
+      pointer-events: none
+    }
+
+    /* Search Box */
+    .docs-search {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto
+    }
+
+    .docs-search input {
+      width: 100%;
+      padding: 1rem 1.25rem 1rem 3rem;
+      background: rgba(15, 23, 42, .8);
+      border: 1px solid rgba(99, 102, 241, .3);
+      border-radius: 16px;
+      color: #fff;
+      font-size: 1rem;
+      transition: all .3s ease
+    }
+
+    .docs-search input:focus {
+      outline: none;
+      border-color: rgba(99, 102, 241, .6);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, .15)
+    }
+
+    .docs-search input::placeholder {
+      color: #64748b
+    }
+
+    .docs-search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b
+    }
+
+    /* Category Tabs */
+    .docs-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      justify-content: center;
+      margin-bottom: 2rem
+    }
+
+    .docs-tab {
+      padding: .625rem 1.25rem;
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 50px;
+      color: #94a3b8;
+      font-size: .875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .3s ease
+    }
+
+    .docs-tab:hover,
+    .docs-tab.active {
+      background: rgba(99, 102, 241, .15);
+      border-color: rgba(99, 102, 241, .4);
+      color: #fff
+    }
+
+    /* Doc Cards Grid */
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem
+    }
+
+    .doc-card {
+      background: rgba(15, 23, 42, .6);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 20px;
+      padding: 1.75rem;
+      transition: all .4s cubic-bezier(.4, 0, .2, 1);
+      position: relative;
+      overflow: hidden
+    }
+
+    .doc-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .03), transparent);
+      transition: .6s;
+      pointer-events: none
+    }
+
+    .doc-card:hover::before {
+      left: 100%
+    }
+
+    .doc-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(99, 102, 241, .4);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, .3)
+    }
+
+    .doc-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem
+    }
+
+    .doc-card h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .5rem
+    }
+
+    .doc-card p {
+      font-size: .875rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 1rem
+    }
+
+    .doc-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .375rem;
+      padding: .25rem .75rem;
+      border-radius: 50px;
+      font-size: .75rem;
+      font-weight: 600
+    }
+
+    .badge-new {
+      background: rgba(16, 185, 129, .15);
+      color: #34d399
+    }
+
+    .badge-updated {
+      background: rgba(251, 191, 36, .15);
+      color: #fbbf24
+    }
+
+    .badge-popular {
+      background: rgba(236, 72, 153, .15);
+      color: #f472b6
+    }
+
+    /* Section Titles */
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.5rem
+    }
+
+    .section-title h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff
+    }
+
+    .section-title-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    /* Quick Links */
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 14px;
+      transition: all .3s ease;
+      text-decoration: none
+    }
+
+    .quick-link:hover {
+      background: rgba(255, 255, 255, .06);
+      border-color: rgba(99, 102, 241, .3);
+      transform: translateX(-4px)
+    }
+
+    .quick-link-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .quick-link h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: .25rem
+    }
+
+    .quick-link p {
+      font-size: .8rem;
+      color: #64748b
+    }
+
+    /* CTA Section */
+    .docs-cta {
+      background: linear-gradient(135deg, rgba(99, 102, 241, .1), rgba(139, 92, 246, .1));
+      border: 1px solid rgba(99, 102, 241, .3);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      text-align: center
+    }
+
+    @media(max-width:768px) {
+      .docs-grid {
+        grid-template-columns: 1fr
+      }
+
+      .docs-hero {
+        padding-top: 6rem !important
+      }
+
+      .doc-card {
+        padding: 1.25rem
+      }
     }
   </style>
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "مركز مستندات Bright AI",
-    "url": "https://brightai.site/docs.html",
-    "inLanguage": "ar-SA",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Bright AI",
-      "url": "https://brightai.site/"
-    },
-    "hasPart": [
-      {"@type": "WebPage", "name": "نظرة عامة على الخدمات", "url": "https://brightai.site/frontend/pages/docs/services-overview.html"},
-      {"@type": "WebPage", "name": "الأسئلة الشائعة", "url": "https://brightai.site/frontend/pages/docs/faq.html"},
-      {"@type": "WebPage", "name": "حلول ذكاء الأعمال", "url": "https://brightai.site/frontend/pages/docs/solutions-bi.html"},
-      {"@type": "WebPage", "name": "حلول CRM", "url": "https://brightai.site/frontend/pages/docs/solutions-crm.html"},
-      {"@type": "WebPage", "name": "حلول الرعاية الصحية", "url": "https://brightai.site/frontend/pages/docs/solutions-healthcare.html"},
-      {"@type": "WebPage", "name": "حلول سلسلة الإمداد", "url": "https://brightai.site/frontend/pages/docs/solutions-supply-chain.html"},
-      {"@type": "WebPage", "name": "سياسة الخصوصية", "url": "https://brightai.site/frontend/pages/docs/privacy-policy.html"},
-      {"@type": "WebPage", "name": "الشروط والأحكام", "url": "https://brightai.site/frontend/pages/docs/terms-and-conditions.html"}
-    ]
-  }
+  {"@context":"https://schema.org","@type":"CollectionPage","name":"مركز مستندات Bright AI","url":"https://brightai.site/docs","inLanguage":"ar-SA","isPartOf":{"@type":"WebSite","name":"Bright AI","url":"https://brightai.site/"}}
   </script>
 </head>
 
@@ -82,214 +328,284 @@
   <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
     <div class="nav-container">
       <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
       </button>
-
-      <a href="https://brightai.site/index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
+      <a href="index" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
         <img src="frontend/assets/images/Gemini.webp" alt="Bright AI Logo" width="40" height="40" loading="eager"
           decoding="async" />
         <span>Bright AI</span>
       </a>
-
       <ul class="nav-links">
-        <li class="nav-item"><a href="https://brightai.site/index.html" class="nav-link">الرئيسية</a></li>
-        <li class="nav-item"><a href="https://brightai.site/frontend/pages/our-products/index.html" class="nav-link">المنتجات والخدمات</a></li>
-        <li class="nav-item"><a href="https://brightai.site/frontend/pages/ai-agent/index.html" class="nav-link">الحلول</a></li>
-        <li class="nav-item"><a href="https://brightai.site/frontend/pages/blog/index.html" class="nav-link">المدونة</a></li>
-        <li class="nav-item"><a href="https://brightai.site/frontend/pages/contact/index.html" class="nav-link">تواصل</a></li>
-        <li class="nav-item"><a href="https://brightai.site/docs.html" class="nav-link">المستندات</a></li>
+        <li class="nav-item"><a href="index" class="nav-link">الرئيسية</a></li>
+        <li class="nav-item"><a href="frontend/pages/our-products/index" class="nav-link">المنتجات</a></li>
+        <li class="nav-item"><a href="frontend/pages/ai-agent/index" class="nav-link">الحلول</a></li>
+        <li class="nav-item"><a href="frontend/pages/blog/index" class="nav-link">المدونة</a></li>
+        <li class="nav-item"><a href="frontend/pages/contact/index" class="nav-link">تواصل</a></li>
+        <li class="nav-item"><a href="docs" class="nav-link" style="color:#818cf8">المستندات</a></li>
       </ul>
-
       <a href="https://wa.me/966538229013" class="nav-btn">احجز استشارة</a>
     </div>
   </nav>
 
   <div class="mobile-menu-drawer" aria-hidden="true">
     <div class="mobile-menu-content">
-      <a href="https://brightai.site/index.html" class="mobile-nav-link">الرئيسية</a>
-      <a href="https://brightai.site/frontend/pages/our-products/index.html" class="mobile-nav-link">المنتجات والخدمات</a>
-      <a href="https://brightai.site/frontend/pages/ai-agent/index.html" class="mobile-nav-link">الحلول</a>
-      <a href="https://brightai.site/frontend/pages/blog/index.html" class="mobile-nav-link">المدونة</a>
-      <a href="https://brightai.site/frontend/pages/contact/index.html" class="mobile-nav-link">تواصل</a>
-      <a href="https://brightai.site/docs.html" class="mobile-nav-link" style="color: var(--accent-color);">المستندات</a>
+      <a href="index" class="mobile-nav-link">الرئيسية</a>
+      <a href="frontend/pages/our-products/index" class="mobile-nav-link">المنتجات</a>
+      <a href="frontend/pages/ai-agent/index" class="mobile-nav-link">الحلول</a>
+      <a href="frontend/pages/blog/index" class="mobile-nav-link">المدونة</a>
+      <a href="frontend/pages/contact/index" class="mobile-nav-link">تواصل</a>
+      <a href="docs" class="mobile-nav-link" style="color:#818cf8">المستندات</a>
     </div>
   </div>
   <div class="backdrop-overlay"></div>
 
   <main id="main" class="relative z-10">
-    <section class="pt-28 pb-16 px-6 relative overflow-hidden" style="background: linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(15,23,42,0.96) 100%);">
-      <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute top-10 right-10 w-72 h-72 bg-indigo-500/20 blur-[120px] rounded-full"></div>
-        <div class="absolute bottom-0 left-10 w-64 h-64 bg-emerald-500/15 blur-[120px] rounded-full"></div>
-      </div>
+    <!-- Hero Section -->
+    <section class="docs-hero pt-28 pb-16 px-6">
       <div class="max-w-7xl mx-auto relative">
-        <div class="glass-card p-10 rounded-3xl" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.25);">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3);">
-            <iconify-icon icon="lucide:file-text" width="16"></iconify-icon>
-            <span class="text-indigo-300 text-sm font-medium">مركز المستندات</span>
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+            style="background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3)">
+            <iconify-icon icon="lucide:book-open" width="18"></iconify-icon>
+            <span class="text-indigo-300 text-sm font-medium">مركز المعرفة</span>
           </div>
-          <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">كل ما تحتاجه لفهم حلول Bright AI</h1>
-          <p class="text-slate-300 text-lg leading-relaxed max-w-3xl">أدلة واضحة للخدمات والحلول القطاعية والتكاملات التقنية. اختر المسار المناسب لعملك وابدأ التنفيذ بسرعة.</p>
-          <div class="flex flex-wrap gap-4 mt-8">
-            <a href="https://brightai.site/frontend/pages/docs/services-overview.html"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105"
-              style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
-              ابدأ من نظرة عامة
-            </a>
-            <a href="https://brightai.site/frontend/pages/docs/openapi.html"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white glass-premium border border-white/20 hover:bg-white/10">
-              وثائق OpenAPI
-            </a>
-            <a href="https://brightai.site/frontend/pages/docs/faq.html"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white glass-premium border border-white/10 hover:bg-white/10">
-              الأسئلة الشائعة
-            </a>
+          <h1 class="text-3xl md:text-5xl font-bold text-white mb-4">مركز مستندات <span
+              style="background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Bright
+              AI</span></h1>
+          <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-8">كل ما تحتاجه لفهم خدماتنا وحلولنا. أدلة واضحة وتوثيق
+            شامل للمطورين وصناع القرار.</p>
+
+          <!-- Search Box -->
+          <div class="docs-search">
+            <iconify-icon icon="lucide:search" width="20" class="docs-search-icon"></iconify-icon>
+            <input type="text" id="docsSearch" placeholder="ابحث في المستندات..." autocomplete="off" />
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="py-16 px-6" style="background: #0b1220;">
-      <div class="max-w-7xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">الوصول السريع</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <a href="https://brightai.site/frontend/pages/docs/services-overview.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-xl font-bold text-white mb-2">نظرة عامة على الخدمات</h3>
-            <p class="text-slate-400 text-sm">تعرف على المنهجية والخدمات الأساسية وخطوات التنفيذ.</p>
+        <!-- Quick Access Cards -->
+        <div class="grid md:grid-cols-3 gap-4 mt-10">
+          <a href="frontend/pages/docs/services-overview" class="quick-link">
+            <div class="quick-link-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">
+              <iconify-icon icon="lucide:layers" width="22" style="color:#fff"></iconify-icon>
+            </div>
+            <div>
+              <h4>نظرة عامة على الخدمات</h4>
+              <p>ابدأ من هنا لفهم حلولنا</p>
+            </div>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-bi.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-xl font-bold text-white mb-2">حلول ذكاء الأعمال</h3>
-            <p class="text-slate-400 text-sm">لوحات قياس، تحليلات تنفيذية، وربط البيانات المؤسسية.</p>
+          <a href="frontend/pages/docs/openapi" class="quick-link">
+            <div class="quick-link-icon" style="background:linear-gradient(135deg,#10b981,#14b8a6)">
+              <iconify-icon icon="lucide:code-2" width="22" style="color:#fff"></iconify-icon>
+            </div>
+            <div>
+              <h4>وثائق OpenAPI</h4>
+              <p>للمطورين والتكاملات</p>
+            </div>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/openapi.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-xl font-bold text-white mb-2">OpenAPI والتكاملات</h3>
-            <p class="text-slate-400 text-sm">تعريفات الواجهات، نماذج الطلبات، وأفضل الممارسات.</p>
+          <a href="frontend/pages/docs/faq" class="quick-link">
+            <div class="quick-link-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316)">
+              <iconify-icon icon="lucide:help-circle" width="22" style="color:#fff"></iconify-icon>
+            </div>
+            <div>
+              <h4>الأسئلة الشائعة</h4>
+              <p>إجابات سريعة لأسئلتك</p>
+            </div>
           </a>
         </div>
       </div>
     </section>
 
-    <section class="py-16 px-6" style="background: #0f172a;">
+    <!-- Sector Solutions -->
+    <section class="py-16 px-6" style="background:#0b1220">
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">الحلول حسب القطاع</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="https://brightai.site/frontend/pages/docs/solutions-healthcare.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">الرعاية الصحية</h3>
-            <p class="text-slate-400 text-sm">تحليلات سريرية، أرشفة طبية، وتكاملات ذكية.</p>
+        <div class="section-title">
+          <div class="section-title-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">
+            <iconify-icon icon="lucide:briefcase" width="20" style="color:#fff"></iconify-icon>
+          </div>
+          <h2>الحلول القطاعية</h2>
+        </div>
+        <div class="docs-grid">
+          <a href="frontend/pages/docs/solutions-healthcare" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#ec4899,#f43f5e)">
+              <iconify-icon icon="lucide:heart-pulse" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>الرعاية الصحية</h3>
+            <p>تحليلات سريرية، أرشفة طبية ذكية، وتكاملات PACS.</p>
+            <span class="doc-card-badge badge-popular">الأكثر طلباً</span>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-finance.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">المالية والتأمين</h3>
-            <p class="text-slate-400 text-sm">كشف احتيال، تحليلات مخاطر، وقرارات مالية دقيقة.</p>
+          <a href="frontend/pages/docs/solutions-finance" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#10b981,#14b8a6)">
+              <iconify-icon icon="lucide:landmark" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>المالية والتأمين</h3>
+            <p>كشف الاحتيال، تحليلات المخاطر، والامتثال التنظيمي.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-crm.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">CRM والمبيعات</h3>
-            <p class="text-slate-400 text-sm">إدارة علاقات العملاء وتحسين مسار المبيعات.</p>
+          <a href="frontend/pages/docs/solutions-bi" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">
+              <iconify-icon icon="lucide:bar-chart-3" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>ذكاء الأعمال</h3>
+            <p>لوحات قياس تفاعلية وتحليلات تنفيذية متقدمة.</p>
+            <span class="doc-card-badge badge-updated">محدّث</span>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-logistics.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">اللوجستيات والنقل</h3>
-            <p class="text-slate-400 text-sm">تحسين المسارات، إدارة الأساطيل، والتنبؤ بالطلب.</p>
+          <a href="frontend/pages/docs/solutions-crm" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#8b5cf6,#a855f7)">
+              <iconify-icon icon="lucide:users" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>CRM والمبيعات</h3>
+            <p>إدارة علاقات العملاء وتحسين مسار المبيعات.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-hr.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">الموارد البشرية</h3>
-            <p class="text-slate-400 text-sm">توظيف ذكي، تحليل أداء، وأتمتة إجراءات.</p>
+          <a href="frontend/pages/docs/solutions-logistics" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316)">
+              <iconify-icon icon="lucide:truck" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>اللوجستيات والنقل</h3>
+            <p>تحسين المسارات وإدارة الأساطيل الذكية.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-supply-chain.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">سلسلة الإمداد</h3>
-            <p class="text-slate-400 text-sm">تنبؤ المخزون، تخطيط الإنتاج، والشراء الذكي.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-ocr.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">OCR ومعالجة المستندات</h3>
-            <p class="text-slate-400 text-sm">استخراج آلي للبيانات من المستندات العربية.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-retail.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">التجزئة الذكية</h3>
-            <p class="text-slate-400 text-sm">تجربة عملاء شخصية وتحليلات سلوك الشراء.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-interview.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">التوظيف الذكي</h3>
-            <p class="text-slate-400 text-sm">مقابلات ذكية وتقييم مرشحين بسرعة ودقة.</p>
+          <a href="frontend/pages/docs/solutions-supply-chain" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">
+              <iconify-icon icon="lucide:package" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>سلسلة الإمداد</h3>
+            <p>تنبؤ المخزون والتخطيط الذكي للإنتاج.</p>
           </a>
         </div>
       </div>
     </section>
 
-    <section class="py-16 px-6" style="background: #0b1220;">
+    <!-- Core Services -->
+    <section class="py-16 px-6" style="background:#0f172a">
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">توثيق الخدمات الأساسية</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="https://brightai.site/frontend/pages/docs/ai-agent.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">AI Agent</h3>
-            <p class="text-slate-400 text-sm">تفاصيل الخدمة، الاستخدامات، وخارطة الطريق.</p>
+        <div class="section-title">
+          <div class="section-title-icon" style="background:linear-gradient(135deg,#10b981,#14b8a6)">
+            <iconify-icon icon="lucide:cpu" width="20" style="color:#fff"></iconify-icon>
+          </div>
+          <h2>الخدمات الأساسية</h2>
+        </div>
+        <div class="docs-grid">
+          <a href="frontend/pages/docs/ai-agent" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">
+              <iconify-icon icon="lucide:bot" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>AI Agent</h3>
+            <p>وكلاء ذكاء اصطناعي مخصصون لأتمتة المهام المعقدة.</p>
+            <span class="doc-card-badge badge-new">جديد</span>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/ai-bots.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">الروبوتات الذكية</h3>
-            <p class="text-slate-400 text-sm">نماذج البوتات المتاحة وآلية التكامل.</p>
+          <a href="frontend/pages/docs/ai-bots" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#ec4899,#f472b6)">
+              <iconify-icon icon="lucide:message-circle" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>الروبوتات الذكية</h3>
+            <p>شات بوت يفهم العربية ويرد على العملاء 24/7.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/smart-automation.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">الأتمتة الذكية</h3>
-            <p class="text-slate-400 text-sm">أتمتة العمليات وخفض التكاليف التشغيلية.</p>
+          <a href="frontend/pages/docs/smart-automation" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316)">
+              <iconify-icon icon="lucide:workflow" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>الأتمتة الذكية</h3>
+            <p>أتمتة العمليات الروتينية وتوفير الوقت والتكاليف.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/data-analysis.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">تحليل البيانات</h3>
-            <p class="text-slate-400 text-sm">منهجيات التحليل ولوحات القياس.</p>
+          <a href="frontend/pages/docs/data-analysis" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">
+              <iconify-icon icon="lucide:line-chart" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>تحليل البيانات</h3>
+            <p>تحويل البيانات لرؤى قابلة للتنفيذ.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/consultation.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">الاستشارات التقنية</h3>
-            <p class="text-slate-400 text-sm">كيف تبدأ مع خبرائنا وخطة التنفيذ.</p>
+          <a href="frontend/pages/docs/solutions-ocr" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#14b8a6,#06b6d4)">
+              <iconify-icon icon="lucide:scan" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>OCR ومعالجة المستندات</h3>
+            <p>استخراج آلي للبيانات من المستندات العربية.</p>
           </a>
-          <a href="https://brightai.site/frontend/pages/docs/contact.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">التواصل والدعم</h3>
-            <p class="text-slate-400 text-sm">طرق التواصل، قنوات الدعم، ونقاط الاتصال.</p>
+          <a href="frontend/pages/docs/consultation" class="doc-card">
+            <div class="doc-card-icon" style="background:linear-gradient(135deg,#a855f7,#c084fc)">
+              <iconify-icon icon="lucide:handshake" style="color:#fff"></iconify-icon>
+            </div>
+            <h3>الاستشارات التقنية</h3>
+            <p>خارطة طريق واضحة للتحول الرقمي.</p>
           </a>
         </div>
       </div>
     </section>
 
-    <section class="py-16 px-6" style="background: #0f172a;">
+    <!-- Legal & English Docs -->
+    <section class="py-16 px-6" style="background:#0b1220">
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-8">نسخة إنجليزية للمستندات</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="https://brightai.site/frontend/pages/docs/services-overview-en.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">Services Overview</h3>
-            <p class="text-slate-400 text-sm">High-level overview of services and delivery.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-bi-en.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">BI Solutions</h3>
-            <p class="text-slate-400 text-sm">Dashboards, analytics, and insights.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/solutions-healthcare-en.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">Healthcare Solutions</h3>
-            <p class="text-slate-400 text-sm">Medical archive, AI diagnostics, and compliance.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/faq-en.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">FAQ</h3>
-            <p class="text-slate-400 text-sm">Answers to the most common questions.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/privacy-policy-en.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">Privacy Policy</h3>
-            <p class="text-slate-400 text-sm">Data protection and privacy practices.</p>
-          </a>
-          <a href="https://brightai.site/frontend/pages/docs/terms-and-conditions-en.html" class="glass-card p-6 rounded-2xl hover:bg-white/5 transition">
-            <h3 class="text-lg font-semibold text-white mb-2">Terms & Conditions</h3>
-            <p class="text-slate-400 text-sm">Legal terms for service usage.</p>
-          </a>
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Legal -->
+          <div>
+            <div class="section-title">
+              <div class="section-title-icon" style="background:linear-gradient(135deg,#64748b,#475569)">
+                <iconify-icon icon="lucide:shield-check" width="20" style="color:#fff"></iconify-icon>
+              </div>
+              <h2>القانونية</h2>
+            </div>
+            <div class="space-y-3">
+              <a href="frontend/pages/docs/privacy-policy" class="quick-link">
+                <iconify-icon icon="lucide:lock" width="20" style="color:#94a3b8"></iconify-icon>
+                <div>
+                  <h4>سياسة الخصوصية</h4>
+                </div>
+              </a>
+              <a href="frontend/pages/docs/terms-and-conditions" class="quick-link">
+                <iconify-icon icon="lucide:file-text" width="20" style="color:#94a3b8"></iconify-icon>
+                <div>
+                  <h4>الشروط والأحكام</h4>
+                </div>
+              </a>
+            </div>
+          </div>
+          <!-- English -->
+          <div>
+            <div class="section-title">
+              <div class="section-title-icon" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">
+                <iconify-icon icon="lucide:globe" width="20" style="color:#fff"></iconify-icon>
+              </div>
+              <h2>English Documentation</h2>
+            </div>
+            <div class="space-y-3">
+              <a href="frontend/pages/docs/services-overview-en" class="quick-link">
+                <div>
+                  <h4>Services Overview</h4>
+                </div>
+              </a>
+              <a href="frontend/pages/docs/faq-en" class="quick-link">
+                <div>
+                  <h4>FAQ</h4>
+                </div>
+              </a>
+              <a href="frontend/pages/docs/privacy-policy-en" class="quick-link">
+                <div>
+                  <h4>Privacy Policy</h4>
+                </div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="py-16 px-6" style="background: #0b1220;">
-      <div class="max-w-7xl mx-auto">
-        <div class="glass-card p-8 rounded-2xl text-center" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.3);">
+    <!-- CTA Section -->
+    <section class="py-16 px-6" style="background:#0f172a">
+      <div class="max-w-4xl mx-auto">
+        <div class="docs-cta">
+          <iconify-icon icon="lucide:headphones" width="48" style="color:#818cf8;margin-bottom:1rem"></iconify-icon>
           <h2 class="text-2xl font-bold text-white mb-4">تحتاج مساعدة إضافية؟</h2>
-          <p class="text-slate-300 mb-6">تواصل مع فريقنا للحصول على توجيه مناسب لمسار التنفيذ.</p>
+          <p class="text-slate-300 mb-6">فريقنا جاهز لمساعدتك في أي استفسار أو توجيه.</p>
           <div class="flex flex-wrap justify-center gap-4">
             <a href="https://wa.me/966538229013"
               class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105"
-              style="background: linear-gradient(135deg, #25D366, #128C7E);">تواصل عبر واتساب</a>
+              style="background:linear-gradient(135deg,#25D366,#128C7E)">
+              <iconify-icon icon="logos:whatsapp-icon" width="20"></iconify-icon>
+              تواصل عبر واتساب
+            </a>
             <a href="mailto:yazeed1job@gmail.com"
-              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white glass-premium border border-white/20 hover:bg-white/10">راسلنا بالبريد</a>
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white border border-white/20 hover:bg-white/10">
+              <iconify-icon icon="lucide:mail" width="20"></iconify-icon>
+              راسلنا بالبريد
+            </a>
           </div>
         </div>
       </div>
@@ -300,15 +616,25 @@
     <div class="max-w-7xl mx-auto text-center">
       <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
       <div class="flex justify-center gap-6 mt-4 text-slate-400 text-sm">
-        <a href="https://brightai.site/frontend/pages/docs/privacy-policy.html" class="hover:text-gold-400">سياسة الخصوصية</a>
-        <a href="https://brightai.site/frontend/pages/docs/terms-and-conditions.html" class="hover:text-gold-400">الشروط والأحكام</a>
-        <a href="https://brightai.site/frontend/pages/contact/index.html" class="hover:text-gold-400">تواصل</a>
+        <a href="frontend/pages/docs/privacy-policy" class="hover:text-indigo-400">سياسة الخصوصية</a>
+        <a href="frontend/pages/docs/terms-and-conditions" class="hover:text-indigo-400">الشروط والأحكام</a>
+        <a href="frontend/pages/contact/index" class="hover:text-indigo-400">تواصل</a>
       </div>
     </div>
   </footer>
 
   <script src="frontend/js/navigation.js" defer></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" defer></script>
+  <script>
+    // Simple search functionality
+    document.getElementById('docsSearch')?.addEventListener('input', function (e) {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.doc-card, .quick-link').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+  </script>
 </body>
 
 </html>
