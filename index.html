@@ -192,7 +192,6 @@
   <link rel="preload" href="frontend/css/bundle-critical.css" as="style">
 
   <!-- Performance: DNS Prefetch & Preconnect -->
-  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -4247,6 +4246,15 @@
 
   <!-- Search System - Non-critical, deferred -->
   <script src="frontend/js/search.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('[SW] registration failed', err);
+        });
+      });
+    }
+  </script>
 </body>
 
 </html>
