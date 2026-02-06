@@ -5954,3 +5954,19 @@
         transform: translateY(-10px) scale(1);
     }
 }
+
+/* Reduce motion and heavy transitions on low power or user preference */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+    animation: none !important;
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}

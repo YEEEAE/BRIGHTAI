@@ -41,9 +41,6 @@
 
     // Load non-critical resources after initial paint
     function loadDeferredResources() {
-        // Tailwind CSS (non-blocking)
-        loadScript('https://cdn.tailwindcss.com');
-
         // Fonts - now loaded directly in HTML head for better performance
         // Removed duplicate font loading
 
@@ -139,7 +136,7 @@
         nav.style.background = 'rgba(2, 6, 23, 0.85)';
         nav.style.boxShadow = 'none';
       }
-    });
+    }, { passive: true });
 
     // 2. Mobile Menu Toggle
     function toggleMobileMenu() {
@@ -375,27 +372,36 @@
   'use strict';
 
   function initHomepageLogic() {
+    const scheduleIdle = (fn, timeout = 1200) => {
+      if (typeof fn !== 'function') return;
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(fn, { timeout });
+      } else {
+        setTimeout(fn, Math.min(300, timeout));
+      }
+    };
+
     try {
       initDynamicYear();
     } catch (e) { }
     try {
-      initMedicalArchiveCanvas();
+      scheduleIdle(initMedicalArchiveCanvas, 1500);
     } catch (e) { console.warn('Canvas init failed', e); }
 
     try {
-      initCounters();
+      scheduleIdle(initCounters, 1200);
     } catch (e) { console.warn('Counters init failed', e); }
 
     try {
-      initScrollAnimations();
+      scheduleIdle(initScrollAnimations, 1200);
     } catch (e) { }
 
     try {
-      initFaqTabs();
+      scheduleIdle(initFaqTabs, 800);
     } catch (e) { }
 
     try {
-      initFeatureTabs();
+      scheduleIdle(initFeatureTabs, 800);
     } catch (e) { }
   }
 
@@ -409,29 +415,46 @@
   function initMedicalArchiveCanvas() {
     const canvas = document.getElementById('medical-archive-canvas');
     if (!canvas) return;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowPower = navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
+    if (prefersReducedMotion || isLowPower) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let isRunning = false;
+    let rafId = null;
+
     function resize() {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
     }
-    resize();
-    window.addEventListener('resize', resize);
 
-    // Simplified Particles
-    const particles = [];
-    for (let i = 0; i < 30; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        z: Math.random() * 1000,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        vz: (Math.random() - 0.5) * 2,
-        radius: Math.random() * 2 + 1,
-        color: Math.random() > 0.5 ? '#06b6d4' : '#10b981'
-      });
+    function buildParticles() {
+      const particles = [];
+      const count = Math.min(24, Math.max(16, Math.floor((canvas.width * canvas.height) / 60000)));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: Math.random() * 1000,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          vz: (Math.random() - 0.5) * 2,
+          radius: Math.random() * 2 + 1,
+          color: Math.random() > 0.5 ? '#06b6d4' : '#10b981'
+        });
+      }
+      return particles;
     }
+
+    let particles = [];
+
     function animate() {
+      if (!isRunning) return;
+      if (canvas.width === 0 || canvas.height === 0) {
+        rafId = requestAnimationFrame(animate);
+        return;
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
         p.x += p.vx;
@@ -451,7 +474,7 @@
 
         const scale = Math.max(0, (1000 - p.z) / 1000);
         const size = p.radius * scale;
-        if (size <= 0) return;
+        if (!Number.isFinite(size) || size <= 0) return;
 
         ctx.globalAlpha = Math.min(0.6, scale * 0.5);
         ctx.beginPath();
@@ -460,9 +483,41 @@
         ctx.fill();
         ctx.globalAlpha = 1;
       });
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     }
-    animate();
+
+    function start() {
+      if (isRunning) return;
+      resize();
+      particles = buildParticles();
+      isRunning = true;
+      animate();
+    }
+
+    function stop() {
+      isRunning = false;
+      if (rafId) cancelAnimationFrame(rafId);
+    }
+
+    window.addEventListener('resize', () => {
+      resize();
+      particles = buildParticles();
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            start();
+          } else {
+            stop();
+          }
+        });
+      }, { rootMargin: '100px 0px', threshold: 0.01 });
+      observer.observe(canvas);
+    } else {
+      start();
+    }
   }
 
   function initCounters() {
@@ -491,7 +546,17 @@
   }
 
   function initScrollAnimations() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const elements = document.querySelectorAll('.feature-card-3d, .benefit-card-3d');
+    if (elements.length === 0) return;
+    if (prefersReducedMotion) {
+      elements.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.transition = 'none';
+      });
+      return;
+    }
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, index) => {
         if (entry.isIntersecting) {

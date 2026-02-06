@@ -1190,3 +1190,111 @@ body {
 .input-valid+.validation-icon {
     opacity: 1;
 }
+
+/* Critical hero layout to reduce CLS before main CSS loads */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 700px;
+    background: #020617;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 72px;
+}
+
+.hero-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 550px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.brain-container {
+    flex: 0 0 420px;
+    width: 420px;
+    height: 420px;
+}
+
+.brain-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.brain-wrapper img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.gradient-bg,
+.grid-pattern,
+.floating-orbs,
+.stars,
+.hex-network,
+.dna-lines,
+.connection-lines {
+    position: absolute;
+    inset: 0;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+iconify-icon {
+    display: inline-block;
+    min-width: 1em;
+    min-height: 1em;
+    vertical-align: middle;
+}
+
+@media (max-width: 1200px) {
+    .hero-container {
+        flex-direction: column-reverse;
+        padding: 80px 30px 50px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+        padding-right: 0;
+        margin-top: 20px;
+    }
+
+    .brain-container {
+        width: 400px;
+        height: 400px;
+        flex: 0 0 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 640px;
+        padding-top: 64px;
+    }
+
+    .brain-container {
+        width: 300px;
+        height: 300px;
+        flex: 0 0 300px;
+    }
+}
