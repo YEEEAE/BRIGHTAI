@@ -23,13 +23,13 @@
       gtag('config', 'G-8LLESL207Q');
     }
 
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadGtag, { timeout: 3000 });
-    } else {
-      window.addEventListener('load', function () {
-        setTimeout(loadGtag, 2000);
-      });
-    }
+    window.addEventListener('load', function () {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGtag, { timeout: 5000 });
+      } else {
+        setTimeout(loadGtag, 3000);
+      }
+    });
   </script>
 
   <!-- Enterprise SEO Meta Tags -->
@@ -65,7 +65,7 @@
   <meta property="og:description"
     content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل لمعايير NCA و NDMO." />
   <meta property="og:url" content="https://brightai.site/">
-  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
+  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.webp.png" />
   <meta property="og:image:alt" content="Bright AI - شعار الشركة" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -79,7 +79,7 @@
   <meta name="twitter:title" content="Bright AI | حلول ذكاء اصطناعي مؤسسية للشركات الكبرى والجهات الحكومية السعودية" />
   <meta name="twitter:description"
     content="شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل." />
-  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
+  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.webp.png" />
   <meta name="twitter:image:alt" content="Bright AI - شعار الشركة" />
 
   <!-- Structured Data: Organization + WebSite (static for crawlers) -->
@@ -92,7 +92,7 @@
     "url":"https://brightai.site/",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://brightai.site/frontend/assets/images/Gemini.png",
+      "url": "https://brightai.site/frontend/assets/images/Gemini.webp.png",
       "width": 512,
       "height": 512
     },
@@ -137,7 +137,7 @@
     "publisher": {
       "@type": "Organization",
       "name": "Bright AI",
-      "logo": { "@type": "ImageObject", "url": "https://brightai.site/frontend/assets/images/Gemini.png" }
+      "logo": { "@type": "ImageObject", "url": "https://brightai.site/frontend/assets/images/Gemini.webp.png" }
     }
   }
   </script>
@@ -254,9 +254,9 @@
     @font-face {
       font-family: 'Tajawal Fallback';
       src: local('Arial'), local('Helvetica');
-      size-adjust: 105%;
-      ascent-override: 90%;
-      descent-override: 20%;
+      size-adjust: 100%;
+      ascent-override: 95%;
+      descent-override: 25%;
       line-gap-override: 0%;
     }
 
@@ -265,6 +265,23 @@
       font-family: 'Tajawal Fallback', Arial, sans-serif;
     }
   </style>
+
+  <!-- Security Headers (Meta Equivalents) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <!-- CSP: Allow GTM, Iconify, Google Fonts, YouTube, etc. -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https:; 
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://code.iconify.design https://api.iconify.design; 
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; 
+    img-src 'self' data: https: blob:; 
+    font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; 
+    connect-src 'self' https://api.iconify.design https://generativelanguage.googleapis.com https://www.google-analytics.com;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+  ">
 
   <!-- Performance: Inline Critical Performance Script -->
   <script>
@@ -331,8 +348,8 @@
 
       <!-- Logo -->
       <a href="https://brightai.site/" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-        <img src="frontend/assets/images/Gemini.webp.png" alt="Bright AI Logo" width="40" height="40" fetchpriority="high"
-          loading="eager" decoding="async" />
+        <img src="frontend/assets/images/Gemini.webp.png" alt="Bright AI Logo" width="40" height="40"
+          fetchpriority="high" loading="eager" decoding="async" />
         <span>Bright AI</span>
       </a>
 
@@ -1055,11 +1072,11 @@
                 <div class="w-1.5 h-1.5 bg-rose-500 rounded-full"></div>تحليل البيانات الصحية السكانية
               </li>
             </ul>
-          <a href="frontend/pages/sectors/healthcare"
-            class="mt-5 inline-flex items-center gap-2 text-sm text-rose-300 hover:text-rose-200 transition">
-            استكشف حلول الرعاية الصحية
-            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-          </a>
+            <a href="frontend/pages/sectors/healthcare"
+              class="mt-5 inline-flex items-center gap-2 text-sm text-rose-300 hover:text-rose-200 transition">
+              استكشف حلول الرعاية الصحية
+              <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            </a>
           </div>
 
           <!-- Education -->
@@ -1088,11 +1105,11 @@
               تحسين مسارات التوصيل، إدارة المخزون الذكي، وتتبع الأساطيل في الوقت الفعلي لتقليل التكاليف وزيادة سرعة
               التوصيل.
             </p>
-          <a href="frontend/pages/sectors/logistics"
-            class="mt-5 inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-cyan-200 transition">
-            استكشف حلول اللوجستيات
-            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-          </a>
+            <a href="frontend/pages/sectors/logistics"
+              class="mt-5 inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-cyan-200 transition">
+              استكشف حلول اللوجستيات
+              <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            </a>
           </div>
 
           <!-- Manufacturing -->
@@ -1106,60 +1123,61 @@
               مصانع ذكية تعتمد على إنترنت الأشياء، الروبوتات المؤتمتة، والتحكم الذكي في الجودة لزيادة الإنتاجية وتقليل
               الهدر.
             </p>
-          <a href="frontend/pages/sectors/manufacturing"
-            class="mt-5 inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 transition">
-            استكشف حلول الصناعة
-            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-          </a>
+            <a href="frontend/pages/sectors/manufacturing"
+              class="mt-5 inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 transition">
+              استكشف حلول الصناعة
+              <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            </a>
           </div>
 
-        <!-- Finance -->
-        <div class="service-card tilt-card h-full group">
-          <div class="service-icon bg-gradient-to-br from-blue-500 to-sky-600">
-            <iconify-icon icon="lucide:banknote" width="28" class="text-white" aria-hidden="true"></iconify-icon>
+          <!-- Finance -->
+          <div class="service-card tilt-card h-full group">
+            <div class="service-icon bg-gradient-to-br from-blue-500 to-sky-600">
+              <iconify-icon icon="lucide:banknote" width="28" class="text-white" aria-hidden="true"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition">القطاع المالي</h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              مكافحة الاحتيال، قرارات ائتمانية أدق، وتجربة عميل رقمية متقدمة للبنوك وشركات التأمين.
+            </p>
+            <ul class="text-xs text-slate-500 space-y-2">
+              <li class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>كشف الاحتيال بالذكاء الاصطناعي
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>تحليلات مالية تنبؤية
+              </li>
+            </ul>
+            <a href="frontend/pages/sectors/finance"
+              class="mt-5 inline-flex items-center gap-2 text-sm text-blue-300 hover:text-blue-200 transition">
+              استكشف حلول القطاع المالي
+              <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            </a>
           </div>
-          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-blue-300 transition">القطاع المالي</h3>
-          <p class="text-slate-400 text-sm leading-relaxed mb-4">
-            مكافحة الاحتيال، قرارات ائتمانية أدق، وتجربة عميل رقمية متقدمة للبنوك وشركات التأمين.
-          </p>
-          <ul class="text-xs text-slate-500 space-y-2">
-            <li class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>كشف الاحتيال بالذكاء الاصطناعي
-            </li>
-            <li class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>تحليلات مالية تنبؤية
-            </li>
-          </ul>
-          <a href="frontend/pages/sectors/finance"
-            class="mt-5 inline-flex items-center gap-2 text-sm text-blue-300 hover:text-blue-200 transition">
-            استكشف حلول القطاع المالي
-            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-          </a>
-        </div>
 
-        <!-- E-commerce -->
-        <div class="service-card tilt-card h-full group">
-          <div class="service-icon bg-gradient-to-br from-emerald-500 to-green-600">
-            <iconify-icon icon="lucide:shopping-cart" width="28" class="text-white" aria-hidden="true"></iconify-icon>
+          <!-- E-commerce -->
+          <div class="service-card tilt-card h-full group">
+            <div class="service-icon bg-gradient-to-br from-emerald-500 to-green-600">
+              <iconify-icon icon="lucide:shopping-cart" width="28" class="text-white" aria-hidden="true"></iconify-icon>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-emerald-300 transition">التجارة الإلكترونية
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+              توصيات شخصية، تسعير ديناميكي، وأتمتة خدمة العملاء لزيادة المبيعات والولاء.
+            </p>
+            <ul class="text-xs text-slate-500 space-y-2">
+              <li class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>توصيات منتجات ذكية
+              </li>
+              <li class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>تحسين معدل التحويل
+              </li>
+            </ul>
+            <a href="frontend/pages/sectors/ecommerce"
+              class="mt-5 inline-flex items-center gap-2 text-sm text-emerald-300 hover:text-emerald-200 transition">
+              استكشف حلول التجارة الإلكترونية
+              <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            </a>
           </div>
-          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-emerald-300 transition">التجارة الإلكترونية</h3>
-          <p class="text-slate-400 text-sm leading-relaxed mb-4">
-            توصيات شخصية، تسعير ديناميكي، وأتمتة خدمة العملاء لزيادة المبيعات والولاء.
-          </p>
-          <ul class="text-xs text-slate-500 space-y-2">
-            <li class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>توصيات منتجات ذكية
-            </li>
-            <li class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>تحسين معدل التحويل
-            </li>
-          </ul>
-          <a href="frontend/pages/sectors/ecommerce"
-            class="mt-5 inline-flex items-center gap-2 text-sm text-emerald-300 hover:text-emerald-200 transition">
-            استكشف حلول التجارة الإلكترونية
-            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-          </a>
-        </div>
 
         </div>
       </div>
@@ -1599,8 +1617,8 @@
           </a>
 
           <!-- Service: نظام CRM ذكي -->
-          <a href="https://brightai.site/frontend/pages/blogger/smart-crm-system"
-            class="service-card-link group block" data-aos="fade-up" data-aos-delay="450">
+          <a href="https://brightai.site/frontend/pages/blogger/smart-crm-system" class="service-card-link group block"
+            data-aos="fade-up" data-aos-delay="450">
             <div class="service-card tilt-card h-full">
               <div class="service-icon bg-gradient-to-br from-cyan-500 to-blue-600">
                 <iconify-icon icon="lucide:users" width="28" class="text-white"></iconify-icon>
@@ -2617,11 +2635,11 @@
             <p class="text-slate-400 text-xs">
               الصيانة التنبؤية ومراقبة الجودة الآلية.
             </p>
-          <a href="frontend/pages/sectors/manufacturing"
-            class="mt-5 inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 transition">
-            استكشف حلول الصناعة
-            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
-          </a>
+            <a href="frontend/pages/sectors/manufacturing"
+              class="mt-5 inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 transition">
+              استكشف حلول الصناعة
+              <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            </a>
           </div>
 
           <!-- Security Card -->

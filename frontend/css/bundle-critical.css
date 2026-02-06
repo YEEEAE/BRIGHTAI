@@ -441,7 +441,8 @@ h6 {
 html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    font-feature-settings: "kern" 1
+    font-feature-settings: "kern" 1;
+    height: 100%;
 }
 
 body {
@@ -451,6 +452,7 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
+    height: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
 }
