@@ -568,6 +568,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
+    padding-top: 72px;
 }
 
 /* Animated Gradient Background */
@@ -1332,6 +1333,10 @@
 }
 
 @media (max-width: 768px) {
+    .hero {
+        padding-top: 64px;
+    }
+
     .hero-subtitle {
         font-size: 1.3rem;
     }
@@ -1397,7 +1402,7 @@
     position: absolute;
     top: 10px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, 0);
     animation: scrollWheel 2s ease-in-out infinite;
 }
 
@@ -1418,12 +1423,12 @@
     0%,
     100% {
         opacity: 1;
-        top: 10px;
+        transform: translate(-50%, 0);
     }
 
     50% {
         opacity: 0.3;
-        top: 25px;
+        transform: translate(-50%, 15px);
     }
 }
 
