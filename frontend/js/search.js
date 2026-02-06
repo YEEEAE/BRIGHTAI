@@ -30,7 +30,7 @@ class BrightSearch {
                 title: 'الأتمتة الذكية',
                 description: 'تحسين كفاءة العمليات التشغيلية من خلال أتمتة المهام المتكررة باستخدام الذكاء الاصطناعي',
                 keywords: ['أتمتة', 'عمليات', 'كفاءة', 'RPA', 'روبوت', 'تشغيل', 'إنتاجية'],
-                url: 'frontend/pages/smart-automation.html',
+                url: 'frontend/pages/smart-automation/index.html',
                 category: 'الخدمات'
             },
             {
@@ -39,7 +39,7 @@ class BrightSearch {
                 title: 'AI (AIaaS) للمنشآت',
                 description: 'حلول الذكاء الاصطناعي كخدمة مرنة تناسب جميع أحجام الشركات',
                 keywords: ['AIaaS', 'خدمة', 'مرنة', 'شركات', 'مؤسسات', 'وكيل ذكي', 'agent'],
-                url: 'frontend/pages/ai-agent.html',
+                url: 'frontend/pages/ai-agent/index.html',
                 category: 'الخدمات'
             },
             {
@@ -48,7 +48,7 @@ class BrightSearch {
                 title: 'تحليل البيانات',
                 description: 'رؤى دقيقة لاتخاذ القرارات الاستراتيجية من خلال تحليل البيانات الضخمة',
                 keywords: ['بيانات', 'تحليل', 'أعمال', 'تقارير', 'BI', 'ذكاء أعمال', 'إحصائيات', 'big data'],
-                url: 'frontend/pages/data-analysis.html',
+                url: 'frontend/pages/data-analysis/index.html',
                 category: 'الخدمات'
             },
             {
@@ -57,7 +57,7 @@ class BrightSearch {
                 title: 'استشارات تقنية',
                 description: 'خبراء في استراتيجيات الذكاء الاصطناعي والتحول الرقمي',
                 keywords: ['استشارة', 'خبراء', 'استراتيجية', 'تحول رقمي', 'مشورة', 'تخطيط'],
-                url: 'frontend/pages/consultation.html',
+                url: 'frontend/pages/consultation/index.html',
                 category: 'الخدمات'
             },
 
@@ -70,7 +70,7 @@ class BrightSearch {
                 title: 'ذكاء البيانات',
                 description: 'منصة متكاملة لمعالجة وتحليل البيانات باستخدام تقنيات الذكاء الاصطناعي المتقدمة',
                 keywords: ['بيانات', 'ذكاء', 'منصة', 'معالجة', 'تحليل متقدم'],
-                url: 'frontend/pages/try.html',
+                url: 'frontend/pages/try/index.html',
                 category: 'الحلول'
             },
             {
@@ -79,7 +79,7 @@ class BrightSearch {
                 title: 'أدوات مجانية',
                 description: 'جرب تقنياتنا المتقدمة مجاناً - أدوات ذكاء اصطناعي متنوعة',
                 keywords: ['مجاني', 'أدوات', 'تجربة', 'تجريبي', 'free', 'tools'],
-                url: 'frontend/pages/tools.html',
+                url: 'frontend/pages/tools/index.html',
                 category: 'الحلول'
             },
             {
@@ -106,7 +106,7 @@ class BrightSearch {
                 title: 'معالجة اللغة الطبيعية',
                 description: 'تقنيات NLP متقدمة لفهم ومعالجة النصوص العربية والإنجليزية',
                 keywords: ['NLP', 'لغة طبيعية', 'نصوص', 'معالجة', 'فهم', 'عربي'],
-                url: 'frontend/pages/nlp.html',
+                url: 'frontend/pages/blog/index.html',
                 category: 'الحلول'
             },
             {
@@ -115,7 +115,7 @@ class BrightSearch {
                 title: 'تعلم الآلة',
                 description: 'نماذج تعلم آلة مخصصة لتلبية احتياجات عملك',
                 keywords: ['تعلم آلة', 'machine learning', 'ML', 'نماذج', 'تدريب', 'خوارزميات'],
-                url: 'frontend/pages/machine.html',
+                url: 'frontend/pages/machine/index.html',
                 category: 'الحلول'
             },
             {
@@ -124,7 +124,7 @@ class BrightSearch {
                 title: 'الذكاء الاصطناعي الفيزيائي',
                 description: 'روبوتات وأنظمة ذكاء اصطناعي للتطبيقات الفيزيائية والصناعية',
                 keywords: ['روبوت', 'فيزيائي', 'صناعي', 'أتمتة', 'مصنع', 'إنتاج'],
-                url: 'frontend/pages/physical-ai.html',
+                url: 'frontend/pages/our-products/index.html',
                 category: 'الحلول'
             },
 
@@ -137,7 +137,7 @@ class BrightSearch {
                 title: 'نظام CRM الذكي',
                 description: 'نظام إدارة علاقات العملاء المدعوم بالذكاء الاصطناعي',
                 keywords: ['CRM', 'عملاء', 'مبيعات', 'علاقات', 'إدارة', 'customer'],
-                url: 'frontend/pages/brightsales-pro.html',
+                url: 'frontend/pages/ai-bots/BrightSales/index.html',
                 category: 'المنتجات'
             },
             {
@@ -146,7 +146,7 @@ class BrightSearch {
                 title: 'إدارة المشاريع الذكية',
                 description: 'منصة متكاملة لإدارة المشاريع بذكاء اصطناعي',
                 keywords: ['مشاريع', 'إدارة', 'تخطيط', 'فريق', 'مهام', 'project'],
-                url: 'frontend/pages/brightproject-pro.html',
+                url: 'frontend/pages/ai-bots/BrightProject/index.html',
                 category: 'المنتجات'
             },
             {
@@ -155,7 +155,7 @@ class BrightSearch {
                 title: 'نظام التوظيف الذكي',
                 description: 'منصة توظيف ذكية لأتمتة عمليات الموارد البشرية',
                 keywords: ['توظيف', 'موظفين', 'HR', 'موارد', 'تعيين'],
-                url: 'frontend/pages/brightrecruiter.html',
+                url: 'frontend/pages/ai-bots/BrightRecruiter/index.html',
                 category: 'المنتجات'
             },
 
@@ -168,7 +168,7 @@ class BrightSearch {
                 title: 'من نحن',
                 description: 'تعرف على رؤيتنا وفريقنا في Bright AI - شريكك للتحول الرقمي',
                 keywords: ['من نحن', 'فريق', 'رؤية', 'رسالة', 'شركة', 'about'],
-                url: 'frontend/pages/about-us.html',
+                url: 'frontend/pages/about-us/index.html',
                 category: 'الشركة'
             },
             {
@@ -177,7 +177,7 @@ class BrightSearch {
                 title: 'المكتبة الذكية',
                 description: 'مقالات وأخبار التقنية والذكاء الاصطناعي',
                 keywords: ['مدونة', 'مقالات', 'أخبار', 'تقنية', 'blog', 'مكتبة'],
-                url: 'frontend/pages/blog.html',
+                url: 'frontend/pages/blog/index.html',
                 category: 'الشركة'
             },
             {
@@ -186,7 +186,7 @@ class BrightSearch {
                 title: 'المستندات',
                 description: 'التوثيق التقني والأدلة الإرشادية',
                 keywords: ['مستندات', 'توثيق', 'دليل', 'تعليمات', 'docs', 'documentation'],
-                url: 'docs.html',
+                url: 'frontend/pages/docs/services-overview.html',
                 category: 'الشركة'
             },
             {
@@ -195,7 +195,7 @@ class BrightSearch {
                 title: 'اتصل بنا',
                 description: 'تواصل معنا للحصول على استشارة مجانية',
                 keywords: ['اتصال', 'تواصل', 'واتساب', 'هاتف', 'contact'],
-                url: 'frontend/pages/contact.html',
+                url: 'frontend/pages/contact/index.html',
                 category: 'الشركة'
             },
 
@@ -398,27 +398,27 @@ class BrightSearch {
               عمليات بحث شائعة
             </div>
             <div class="search-quick-links">
-              <a href="frontend/pages/smart-automation.html" class="search-quick-link">
+              <a href="frontend/pages/smart-automation/index.html" class="search-quick-link">
                 <iconify-icon icon="lucide:zap"></iconify-icon>
                 الأتمتة الذكية
               </a>
-              <a href="frontend/pages/ai-agent.html" class="search-quick-link">
+              <a href="frontend/pages/ai-agent/index.html" class="search-quick-link">
                 <iconify-icon icon="lucide:bot"></iconify-icon>
                 AI Agent
               </a>
-              <a href="blogger/smart-crm-system.html" class="search-quick-link">
+              <a href="frontend/pages/blogger/smart-crm-system.html" class="search-quick-link">
                 <iconify-icon icon="lucide:users"></iconify-icon>
                 نظام CRM
               </a>
-              <a href="frontend/pages/data-analysis.html" class="search-quick-link">
+              <a href="frontend/pages/data-analysis/index.html" class="search-quick-link">
                 <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                 تحليل البيانات
               </a>
-              <a href="frontend/pages/blog.html" class="search-quick-link">
+              <a href="frontend/pages/blog/index.html" class="search-quick-link">
                 <iconify-icon icon="lucide:book-open"></iconify-icon>
                 المكتبة الذكية
               </a>
-              <a href="frontend/pages/smart-medical-archive/" class="search-quick-link">
+              <a href="frontend/pages/smart-medical-archive/index.html" class="search-quick-link">
                 <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
                 الأرشيف الطبي
               </a>
