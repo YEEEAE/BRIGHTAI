@@ -1,14 +1,14 @@
 # ======================================================
-# BrightAI – Production Robots.txt (Static site / Firebase / Hosting)
-# Generated: 2026-02-01
+# BrightAI - Production Robots.txt (Static site / Firebase / Hosting)
+# Updated: 2026-02-06
 # ======================================================
 
 User-agent: *
 Allow: /
 
-# ––––––––––
+# --------------------
 # Block sensitive paths (do not expose admin/config/backups)
-# ––––––––––
+# --------------------
 Disallow: /admin/
 Disallow: /private/
 Disallow: /config/
@@ -22,20 +22,19 @@ Disallow: /.env
 Disallow: /.vscode/
 Disallow: /node_modules/
 Disallow: /tests/
-Disallow: /tests/
 
-# ––––––––––
+# --------------------
 # Dev / build artifacts (common)
-# ––––––––––
+# --------------------
 Disallow: /_next/
 Disallow: /.nuxt/
 Disallow: /dist/
 Disallow: /build/
 Disallow: /src/
 
-# ––––––––––
+# --------------------
 # NEVER block rendering resources (CRITICAL for Lighthouse & Google)
-# ––––––––––
+# --------------------
 Allow: /assets/
 Allow: /static/
 Allow: /images/
@@ -44,44 +43,37 @@ Allow: /css/
 Allow: /js/
 Allow: /favicon.ico
 
-# ––––––––––
+# --------------------
 # Blog / content (ensure crawlers see content)
-# ––––––––––
+# --------------------
 Allow: /blog/
 Allow: /blogger/
 Allow: /frontend/pages/
 
-# ––––––––––
+# --------------------
 # API rules
-# ––––––––––
+# --------------------
 Disallow: /api/auth/
 Disallow: /api/internal/
 Allow: /api/public/
 
-# ––––––––––
+# --------------------
 # Files handling - block non-public dump files
-# ––––––––––
-Disallow: /.map$
-Disallow: /.log$
-Disallow: /.sql$
-Disallow: /.zip$
+# --------------------
+Disallow: /*.map$
+Disallow: /*.log$
+Disallow: /*.sql$
+Disallow: /*.zip$
 
-# ––––––––––
+# --------------------
 # SEO essential files
-# ––––––––––
+# --------------------
 Allow: /sitemap.xml
 Allow: /robots.txt
 Allow: /manifest.json
 Allow: /schema.json
 
-# ––––––––––
-# Googlebot optimization
-# ––––––––––
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-# ––––––––––
+# --------------------
 # Sitemap
-# ––––––––––
+# --------------------
 Sitemap: https://brightai.site/sitemap.xml
