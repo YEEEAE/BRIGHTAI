@@ -236,10 +236,10 @@
   <!-- Structured Data: Dynamic Loader -->
   <script src="frontend/js/schema-loader.js?v=20260206" defer></script>
 
-  <!-- Performance: Font Loading - FOUT prevention with font-display:swap -->
+  <!-- Performance: Font Loading - FOUT prevention with font-display:optional to fix CLS -->
   <!-- Preconnect already done above for fonts.googleapis.com and fonts.gstatic.com -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=optional">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=optional" rel="stylesheet">
 
   <!-- Defer non-critical mono font -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap" rel="stylesheet" media="print"
@@ -248,15 +248,28 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap">
   </noscript>
 
-  <!-- CLS Fix: Reserve space for fonts to prevent layout shift -->
+  <!-- CLS Fix: Critical Styles to prevent layout shifts before CSS bundle loads -->
   <style>
+    /* Prevent Search Modal from taking space in document flow before JS/CSS loads */
+    .search-modal {
+      display: none;
+      visibility: hidden;
+    }
+
+    .search-modal.active {
+      display: block;
+      visibility: visible;
+    }
+
     /* Font fallback with size-adjust to match Tajawal metrics */
     @font-face {
       font-family: 'Tajawal Fallback';
       src: local('Arial'), local('Helvetica');
       size-adjust: 100%;
-      ascent-override: 95%;
-      descent-override: 25%;
+      ascent-override: 92%;
+      /* Adjusted from 95% to better match Tajawal's height */
+      descent-override: 28%;
+      /* Adjusted from 25% */
       line-gap-override: 0%;
     }
 
@@ -564,7 +577,8 @@
 
 
   <main id="main-content">
-    <section class="hero">
+    <!-- CLS Fix: Explicit height and overflow hidden to prevent expansion -->
+    <section class="hero" style="min-height: 100vh; height: 100vh; overflow: hidden; contain: layout paint;">
       <!-- Animated Gradient Background -->
       <div class="gradient-bg"></div>
 
