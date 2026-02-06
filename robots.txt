@@ -77,3 +77,8 @@ Allow: /schema-saudi-seo.json
 # Sitemap
 # --------------------
 Sitemap: https://brightai.site/sitemap.xml
+
+# --------------------
+# LLMs.txt (للنماذج اللغوية الكبيرة)
+# --------------------
+# https://brightai.site/llms.txt
