@@ -1049,9 +1049,17 @@ body {
    ============================================ */
 .chat-widget {
     position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    z-index: 100
+    bottom: 100px;
+    left: 24px;
+    width: 400px;
+    max-width: calc(100vw - 48px);
+    height: 600px;
+    max-height: calc(100vh - 140px);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
 }
 
 .chat-button {
@@ -1250,6 +1258,21 @@ body {
 .connection-lines {
     position: absolute;
     inset: 0;
+}
+
+.hex-network,
+.dna-lines,
+.connection-lines {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.chat-widget.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
 }
 
 .scroll-indicator {
