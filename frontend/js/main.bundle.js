@@ -19,6 +19,26 @@
         document.body.appendChild(script);
     }
 
+    function initSwipers() {
+        if (typeof Swiper === 'undefined') return;
+        var sliders = document.querySelectorAll('.testimonials-slider');
+        sliders.forEach(function (el) {
+            if (el.swiper) return;
+            var paginationEl = el.querySelector('.swiper-pagination');
+            new Swiper(el, {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 24,
+                autoplay: { delay: 5000, disableOnInteraction: false },
+                pagination: paginationEl ? { el: paginationEl, clickable: true } : undefined,
+                breakpoints: {
+                    768: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 }
+                }
+            });
+        });
+    }
+
     // Load non-critical resources after initial paint
     function loadDeferredResources() {
         // Tailwind CSS (non-blocking)
@@ -51,32 +71,30 @@
         var isLowPower = navigator.connection && (navigator.connection.saveData || navigator.connection.effectiveType === '2g' || navigator.connection.effectiveType === 'slow-2g');
         var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Skip heavy animations on mobile or low-power devices
-        if (isMobile || isLowPower || prefersReducedMotion) {
+        var skipHeavy = isMobile || isLowPower || prefersReducedMotion;
+        if (skipHeavy) {
             console.log('[Performance] Heavy animations disabled for mobile/low-power device');
-            return;
+        } else {
+            // GSAP - Only on desktop
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
+            });
+
+            // AOS - Only on desktop
+            loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                if (typeof AOS !== 'undefined') {
+                    AOS.init({ duration: 800, once: true, offset: 100 });
+                }
+            });
+
+            // Typed.js - Only on desktop
+            loadScript('https://cdn.jsdelivr.net/npm/typed.js@2.0.16/dist/typed.umd.js');
         }
 
-        // GSAP - Only on desktop
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', function () {
-            loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js');
-        });
-
-        // AOS - Only on desktop
-        loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
-            if (typeof AOS !== 'undefined') {
-                AOS.init({ duration: 800, once: true, offset: 100 });
-            }
-        });
-
-        // Typed.js - Only on desktop
-        loadScript('https://cdn.jsdelivr.net/npm/typed.js@2.0.16/dist/typed.umd.js');
-
-        // Swiper - Lazy loaded when needed
-        // Only load if swiper elements exist
+        // Swiper - Needed on all devices if slider exists
         var swiperElements = document.querySelectorAll('.swiper');
         if (swiperElements.length > 0) {
-            loadScript('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js');
+            loadScript('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', initSwipers);
         }
     }
 
@@ -365,6 +383,9 @@
 
   function initHomepageLogic() {
     try {
+      initDynamicYear();
+    } catch (e) { }
+    try {
       initMedicalArchiveCanvas();
     } catch (e) { console.warn('Canvas init failed', e); }
 
@@ -383,6 +404,13 @@
     try {
       initFeatureTabs();
     } catch (e) { }
+  }
+
+  function initDynamicYear() {
+    const year = String(new Date().getFullYear());
+    document.querySelectorAll('.copyright-year').forEach(el => {
+      el.textContent = year;
+    });
   }
 
   function initMedicalArchiveCanvas() {
@@ -475,6 +503,10 @@
   }
 
   function initFaqTabs() {
+    document.querySelectorAll('.faq-toggle').forEach(el => {
+      if (!el.hasAttribute('aria-expanded')) el.setAttribute('aria-expanded', 'false');
+    });
+
     window.switchFaqTab = function (category, btn) {
       document.querySelectorAll('.faq-category').forEach(el => el.classList.add('hidden', 'block')); // Reset
       document.querySelectorAll('.faq-category').forEach(el => el.classList.remove('block')); // Fix classList logic error
@@ -492,6 +524,26 @@
       });
       btn.classList.remove('border-white/5', 'bg-white/5', 'text-slate-400');
       btn.classList.add('active', 'border-gold-500/20', 'bg-gold-500/10', 'text-gold-400');
+    }
+
+    window.toggleFaq = function (btn) {
+      if (!btn) return;
+      const item = btn.closest('.faq-item');
+      if (!item) return;
+      const content = item.querySelector('.faq-content');
+      const icon = item.querySelector('.faq-icon');
+      const isOpen = content && !content.classList.contains('hidden');
+
+      // Close all
+      document.querySelectorAll('.faq-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(el => { el.style.transform = ''; });
+      document.querySelectorAll('.faq-toggle').forEach(el => el.setAttribute('aria-expanded', 'false'));
+
+      if (content && !isOpen) {
+        content.classList.remove('hidden');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+        btn.setAttribute('aria-expanded', 'true');
+      }
     }
   }
 
