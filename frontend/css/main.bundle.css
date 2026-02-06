@@ -778,8 +778,8 @@
     font-size: 1.6rem;
     color: #ffffff;
     margin-bottom: 25px;
-    opacity: 0;
-    animation: fadeInRight 1s ease-out 0.3s forwards;
+    opacity: 1;
+    animation: none;
     line-height: 1.6;
     font-weight: 600;
 }
@@ -802,10 +802,10 @@
     font-size: 1.15rem;
     color: rgba(255, 255, 255, 0.75);
     line-height: 2;
-    opacity: 0;
+    opacity: 1;
     border-right: 3px solid #00ff88;
     padding-right: 15px;
-    animation: fadeInRight 1s ease-out 0.6s forwards;
+    animation: none;
 }
 
 .typewriter-text {
@@ -838,8 +838,8 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    opacity: 0;
-    animation: fadeInRight 1s ease-out 0.9s forwards;
+    opacity: 1;
+    animation: none;
 }
 
 .cta-button {
@@ -2267,7 +2267,7 @@
 }
 
 .text-slate-500 {
-    color: #64748b;
+    color: #cbd5e1;
 }
 
 .text-emerald-400 {
