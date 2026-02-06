@@ -55,6 +55,27 @@ Bright AI هي شركة سعودية رائدة متخصصة في حلول ال�
 - دراسات جدوى مشاريع الذكاء الاصطناعي
 - **الرابط:** https://brightai.site/frontend/pages/consultation/index.html
 
+## دراسات حالة وقصص نجاح (Success Stories)
+
+نماذج واقعية لتطبيق حلولنا في السوق السعودي:
+
+### 1. القطاع الحكومي
+- **وزارة التجارة:** شات بوت ذكي يخدم 50,000 تاجر يومياً. (https://brightai.site/frontend/pages/blogger/commerce-ministry-chatbot.html)
+- **بلدية الرياض:** خفض وقت التراخيص بنسبة 70% باستخدام الذكاء الاصطناعي. (https://brightai.site/frontend/pages/blogger/riyadh-municipality-ai-license.html)
+
+### 2. القطاع الصحي
+- **مستشفى الملك فيصل التخصصي:** الذكاء الاصطناعي للكشف المبكر عن سرطان الثدي. (https://brightai.site/frontend/pages/blogger/kfshrc-breast-cancer-ai.html)
+- **مجموعة صحية خاصة:** تقليل أوقات الانتظار بنسبة 60% عبر الجدولة الذكية. (https://brightai.site/frontend/pages/blogger/private-hospital-scheduling-optimization.html)
+
+### 3. القطاع المالي
+- **بنك سعودي:** كشف 95% من محاولات الاحتيال بدقة عالية. (https://brightai.site/frontend/pages/blogger/saudi-bank-fraud-detection.html)
+- **الخدمات المصرفية الرقمية:** تحسين تجربة العملاء عبر التحليل التنبؤي. (https://brightai.site/frontend/pages/blogger/digital-banking-saudi.html)
+
+### 4. قطاعات حيوية أخرى
+- **التجارة الإلكترونية:** زيادة المبيعات بنسبة 35% عبر التوصيات الذكية. (https://brightai.site/frontend/pages/blogger/saudi-ecommerce-ai-growth.html)
+- **الصناعة:** رفع الإنتاجية 30% في مصنع سعودي باستخدام تحليلات AI. (https://brightai.site/frontend/pages/blogger/saudi-factory-ai-productivity.html)
+- **التعدين:** استكشاف الموارد بدقة وكفاءة عالية (كنز التريليون دولار). (https://brightai.site/frontend/pages/blogger/saudi-mining-ai-exploration.html)
+
 ## المنتجات
 
 ### خطط الاشتراك
