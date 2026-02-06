@@ -186,7 +186,7 @@ class BrightSearch {
                 title: 'المستندات',
                 description: 'التوثيق التقني والأدلة الإرشادية',
                 keywords: ['مستندات', 'توثيق', 'دليل', 'تعليمات', 'docs', 'documentation'],
-                url: 'frontend/pages/docs/services-overview.html',
+                url: 'docs.html',
                 category: 'الشركة'
             },
             {
