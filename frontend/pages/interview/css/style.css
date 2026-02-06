@@ -752,7 +752,7 @@ ul, ol {
         left: var(--spacing-unit) * 2;
     }
 }
-/* Ensure the iframe modal for supportAI.html takes full height of its container */
+/* Ensure the iframe modal for support-ai.html takes full height of its container */
 .support-modal-iframe {
     width: 100%;
     height: 100%; /* Changed from 70vh to 100% to fill modal-content height */

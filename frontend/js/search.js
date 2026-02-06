@@ -186,7 +186,7 @@ class BrightSearch {
                 title: 'المستندات',
                 description: 'التوثيق التقني والأدلة الإرشادية',
                 keywords: ['مستندات', 'توثيق', 'دليل', 'تعليمات', 'docs', 'documentation'],
-                url: 'Docs.html',
+                url: 'docs.html',
                 category: 'الشركة'
             },
             {
@@ -253,7 +253,7 @@ class BrightSearch {
                 title: 'الذكاء الاصطناعي التوليدي',
                 description: 'تطبيقات الذكاء الاصطناعي التوليدي في صناعة المحتوى',
                 keywords: ['توليدي', 'generative', 'محتوى', 'GPT', 'صناعة'],
-                url: '/frontend/pages/blogger/Generative-artificial-intelligence.html'.html',
+                url: '/frontend/pages/blogger/generative-artificial-intelligence.html'.html',
                 category: 'المقالات'
             },
             {
