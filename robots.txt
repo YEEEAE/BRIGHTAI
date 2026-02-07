@@ -1,6 +1,6 @@
 # ======================================================
 # BrightAI - Production Robots.txt (Static site / Firebase / Hosting)
-# Updated: 2026-02-06
+# Updated: 2026-02-07
 # ======================================================
 
 User-agent: *
@@ -49,6 +49,7 @@ Allow: /favicon.ico
 Allow: /blog/
 Allow: /blogger/
 Allow: /frontend/pages/
+Allow: /demo/
 
 # --------------------
 # API rules

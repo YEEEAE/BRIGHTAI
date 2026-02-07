@@ -237,3 +237,39 @@
 - تم تحويل روابط صفحات الملك داخل عناصر <a> إلى مسارات نسبية (root-relative) لتسهيل احتساب الروابط الداخلية.
 - إعادة قياس الزحف: نسبة اليتيم أصبحت 1.9% (بقيت فقط صفحات 404 و500).
 - تم تحديث crawl_data.json بنتائج القياس الجديدة.
+
+تحديث إضافي — المرحلة 3 (تحسينات Technical SEO)
+- إصلاح العناوين المكررة ("تم نقل الصفحة" و"mais co .") واستبدالها بعناوين دلالية.
+- إضافة Meta description للصفحات الناقصة بالكامل.
+- إضافة H1 للصفحات الناقصة بالكامل (بما فيها صفحات التحويل المؤقتة).
+- تحديث canonical لصفحات مكررة وتحسين توجيهها للمسارات المعتمدة.
+- تحديث sitemap.xml بإضافة صفحات الملك الجديدة تحت /demo/.
+- تحديث robots.txt (تاريخ التحديث + السماح الصريح لمسار /demo/).
+- إعادة تحديث crawl_data.json و authority_map.json لتعكس التحسينات الأخيرة.
+
+أهم الملفات المعدلة في المرحلة 3:
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightMath.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightProject.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightRecruiter.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightSales.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightSupport.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/docs/docs.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/docs/openapi.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ai-workflows/index.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/health-bright/index.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/interview/index.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/interview/Presentation.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/interview/pages/supportAI.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/job.MAISco/index.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/index.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/analytics-insights.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/Analytics&Insights.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/EHR-Viewer.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/Ingestion.html
+- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/NLP-Search.html
+- /Users/yzydalshmry/Desktop/BrightAI/services/_template.html
+- /Users/yzydalshmry/Desktop/BrightAI/services/template.html
+- /Users/yzydalshmry/Desktop/BrightAI/sitemap.xml
+- /Users/yzydalshmry/Desktop/BrightAI/robots.txt
+- /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/crawl_data.json
+- /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/authority_map.json

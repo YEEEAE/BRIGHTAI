@@ -1,5 +1,5 @@
 {
-  "crawl_limit": 200,
+  "crawl_limit": 120,
   "pages": [
     {
       "path": "/404.html",
@@ -203,11 +203,11 @@
       "path": "/ai-workflows/",
       "file": "frontend/pages/ai-workflows/index.html",
       "title": "AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI",
-      "h1": "",
+      "h1": "AI Workflows — سير عمل ذكي للشركات السعودية",
       "meta_description": "حلول AI Workflows المتقدمة من Bright AI - أتمتة ذكية لسير العمل، تكامل سلس مع أنظمتك، وتحسين الكفاءة التشغيلية بنسبة تصل إلى 80%",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 15.3,
+      "size_kb": 16.0,
       "internal_inlinks": 3
     },
     {
@@ -224,56 +224,56 @@
     {
       "path": "/botAI/BrightMath.html",
       "file": "frontend/pages/botAI/BrightMath.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل BrightMath - مساعد الرياضيات الذكي",
+      "h1": "تم نقل صفحة BrightMath",
+      "meta_description": "تم نقل صفحة BrightMath إلى الرابط الجديد الخاص بمساعد الرياضيات الذكي.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.2,
       "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightProject.html",
       "file": "frontend/pages/botAI/BrightProject.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل BrightProject - روبوت إدارة المشاريع",
+      "h1": "تم نقل صفحة BrightProject",
+      "meta_description": "تم نقل صفحة BrightProject إلى الرابط الجديد الخاص بروبوت إدارة المشاريع.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.2,
       "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightRecruiter.html",
       "file": "frontend/pages/botAI/BrightRecruiter.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل BrightRecruiter - روبوت التوظيف",
+      "h1": "تم نقل صفحة BrightRecruiter",
+      "meta_description": "تم نقل صفحة BrightRecruiter إلى الرابط الجديد الخاص بروبوت التوظيف.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.2,
       "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightSales.html",
       "file": "frontend/pages/botAI/BrightSales.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل BrightSales - روبوت المبيعات",
+      "h1": "تم نقل صفحة BrightSales",
+      "meta_description": "تم نقل صفحة BrightSales إلى الرابط الجديد الخاص بروبوت المبيعات.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.1,
       "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightSupport.html",
       "file": "frontend/pages/botAI/BrightSupport.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل BrightSupport - روبوت الدعم",
+      "h1": "تم نقل صفحة BrightSupport",
+      "meta_description": "تم نقل صفحة BrightSupport إلى الرابط الجديد الخاص بروبوت الدعم.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.1,
       "internal_inlinks": 3
     },
     {
@@ -318,7 +318,7 @@
       "has_jsonld": false,
       "has_form": true,
       "size_kb": 14.5,
-      "internal_inlinks": 6
+      "internal_inlinks": 7
     },
     {
       "path": "/demo/ocr-demo/",
@@ -466,12 +466,12 @@
     {
       "path": "/docs/docs.html",
       "file": "frontend/pages/docs/docs.html",
-      "title": "تم نقل المستندات",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل مركز المستندات | BrightAI",
+      "h1": "تم نقل مركز المستندات",
+      "meta_description": "تم نقل مركز المستندات إلى الرابط الجديد لعرض الوثائق والحلول.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 0.9,
+      "size_kb": 1.2,
       "internal_inlinks": 3
     },
     {
@@ -501,10 +501,10 @@
       "file": "frontend/pages/docs/openapi.html",
       "title": "BrightAI API Documentation - وثائق واجهة برمجة التطبيقات",
       "h1": "BrightAI API Documentation",
-      "meta_description": "",
+      "meta_description": "توثيق واجهات BrightAI للمطورين مع أمثلة واضحة وتكامل سريع للشركات السعودية.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 33.5,
+      "size_kb": 33.6,
       "internal_inlinks": 1
     },
     {
@@ -819,7 +819,7 @@
       "path": "/health-bright/",
       "file": "frontend/pages/health-bright/index.html",
       "title": "Bright AI - حلول الذكاء الاصطناعي الطبية المتقدمة في السعودية",
-      "h1": "",
+      "h1": "حلول طبية متقدمة لتحسين التشخيص والعناية بالمرضى في المملكة",
       "meta_description": "حلول طبية متقدمة بالذكاء الاصطناعي لتحليل الصور الطبية، المراقبة الصحية عن بعد، إدارة المستشفيات، وتطبيقات Med-Gemini.",
       "has_jsonld": true,
       "has_form": true,
@@ -829,12 +829,12 @@
     {
       "path": "/interview/Presentation.html",
       "file": "frontend/pages/interview/Presentation.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل صفحة العرض التقديمي",
+      "h1": "تم نقل صفحة العرض التقديمي",
+      "meta_description": "تم نقل صفحة العرض التقديمي لحلول المقابلات الذكية إلى الرابط الجديد.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.1,
       "internal_inlinks": 3
     },
     {
@@ -851,9 +851,9 @@
     {
       "path": "/interview/",
       "file": "frontend/pages/interview/index.html",
-      "title": "mais co .",
+      "title": "منصة المقابلات الذكية | BrightAI",
       "h1": "ابدأ رحلتك المهنية",
-      "meta_description": "mais co . - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
+      "meta_description": "منصة مقابلات ذكية للشركات السعودية لتسريع التوظيف وتحسين جودة الاختيار.",
       "has_jsonld": false,
       "has_form": true,
       "size_kb": 228.1,
@@ -917,23 +917,23 @@
     {
       "path": "/interview/pages/supportAI.html",
       "file": "frontend/pages/interview/pages/supportAI.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل صفحة الدعم الفني الذكي",
+      "h1": "تم نقل صفحة الدعم الفني الذكي",
+      "meta_description": "تم نقل صفحة الدعم الفني الذكي إلى الرابط الجديد.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.2,
       "internal_inlinks": 3
     },
     {
       "path": "/job.MAISco/",
       "file": "frontend/pages/job.MAISco/index.html",
-      "title": "mais co .",
+      "title": "بوابة وظائف BrightAI | التوظيف الذكي",
       "h1": "ابدأ رحلتك المهنية",
-      "meta_description": "mais co . - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
+      "meta_description": "بوابة وظائف مرتبطة بحلول التوظيف الذكي من BrightAI لفرق الموارد البشرية في السعودية.",
       "has_jsonld": false,
       "has_form": true,
-      "size_kb": 125.7,
+      "size_kb": 125.8,
       "internal_inlinks": 1
     },
     {
@@ -1049,45 +1049,45 @@
     {
       "path": "/smart-medical-archive/Analytics&Insights.html",
       "file": "frontend/pages/smart-medical-archive/Analytics&Insights.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل صفحة التحليلات والرؤى",
+      "h1": "تم نقل صفحة التحليلات والرؤى",
+      "meta_description": "تم نقل صفحة التحليلات والرؤى الخاصة بالأرشيف الطبي الذكي إلى الرابط الجديد.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 2.0,
+      "size_kb": 2.3,
       "internal_inlinks": 2
     },
     {
       "path": "/smart-medical-archive/EHR-Viewer.html",
       "file": "frontend/pages/smart-medical-archive/EHR-Viewer.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل صفحة عارض السجلات الطبية",
+      "h1": "تم نقل صفحة عارض السجلات الطبية",
+      "meta_description": "تم نقل صفحة عارض السجلات الطبية إلى الرابط الجديد.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.2,
       "internal_inlinks": 2
     },
     {
       "path": "/smart-medical-archive/Ingestion.html",
       "file": "frontend/pages/smart-medical-archive/Ingestion.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل صفحة استيعاب البيانات الطبية",
+      "h1": "تم نقل صفحة استيعاب البيانات الطبية",
+      "meta_description": "تم نقل صفحة استيعاب البيانات الطبية إلى الرابط الجديد.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.2,
       "internal_inlinks": 2
     },
     {
       "path": "/smart-medical-archive/NLP-Search.html",
       "file": "frontend/pages/smart-medical-archive/NLP-Search.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل صفحة البحث الذكي",
+      "h1": "تم نقل صفحة البحث الذكي",
+      "meta_description": "تم نقل صفحة البحث الذكي في الأرشيف الطبي إلى الرابط الجديد.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 1.9,
+      "size_kb": 2.1,
       "internal_inlinks": 2
     },
     {
@@ -1095,10 +1095,10 @@
       "file": "frontend/pages/smart-medical-archive/analytics-insights.html",
       "title": "Bright AI | التحليلات والرؤى",
       "h1": "مركز التحليلات والتنبؤ (Analytics Hub)",
-      "meta_description": "",
+      "meta_description": "لوحة تحليلات ورؤى للأرشيف الطبي الذكي لقياس الأداء واتخاذ قرارات أسرع في القطاع الصحي السعودي.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 40.8,
+      "size_kb": 41.0,
       "internal_inlinks": 3
     },
     {
@@ -1106,10 +1106,10 @@
       "file": "frontend/pages/smart-medical-archive/index.html",
       "title": "Bright AI | Smart Medical Archive",
       "h1": "نظرة عامة على النظام",
-      "meta_description": "",
+      "meta_description": "منصة الأرشيف الطبي الذكي لإدارة السجلات واستخراج البيانات الطبية بدقة مع تكاملات محلية في السعودية.",
       "has_jsonld": false,
       "has_form": true,
-      "size_kb": 32.7,
+      "size_kb": 33.0,
       "internal_inlinks": 25
     },
     {
@@ -1126,12 +1126,12 @@
     {
       "path": "/services/_template.html",
       "file": "services/_template.html",
-      "title": "تم نقل الصفحة",
-      "h1": "",
-      "meta_description": "",
+      "title": "تم نقل قالب الخدمات | BrightAI",
+      "h1": "تم نقل قالب الخدمات",
+      "meta_description": "تم نقل قالب الخدمات إلى الرابط الجديد لصفحات الخدمات.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 0.9,
+      "size_kb": 1.2,
       "internal_inlinks": 3
     },
     {
@@ -1150,10 +1150,10 @@
       "file": "services/template.html",
       "title": "Bright AI - Service Template",
       "h1": "العنوان الرئيسي للخدمة",
-      "meta_description": "",
+      "meta_description": "قالب صفحة خدمة BrightAI لتوثيق الخدمة والمزايا وحالات الاستخدام للشركات السعودية.",
       "has_jsonld": false,
       "has_form": false,
-      "size_kb": 15.9,
+      "size_kb": 16.1,
       "internal_inlinks": 3
     }
   ],
@@ -1465,6 +1465,7 @@
       "/blog/",
       "/consultation/",
       "/data-analysis/",
+      "/demo/",
       "/docs.html",
       "/interview/",
       "/our-products/",
