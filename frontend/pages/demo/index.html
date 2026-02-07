@@ -12,8 +12,8 @@
     </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>ديمو BrightAI الفوري | جرّب الذكاء الاصطناعي للشركات السعودية</title>
-<meta content="جرّب ديمو BrightAI الفوري بدون تسجيل. اكتب طلبك وشاهد النتائج خلال ثواني مع دعم العربية ولهجة سعودية واضحة." name="description"/>
+<title>ديمو ذكاء اصطناعي مباشر للشركات السعودية | BrightAI</title>
+<meta content="اكتب طلبك وشاهد البث الفوري خلال ثوانٍ بدون تسجيل. مخرجات تنفيذية مخصصة للشركات السعودية." name="description"/>
 <meta content="ديمو ذكاء اصطناعي, تجربة فورية, BrightAI, الذكاء الاصطناعي للشركات السعودية, روبوتات أعمال, أتمتة" name="keywords"/>
 <meta content="Bright AI" name="author"/>
 <meta content="index, follow" name="robots"/>
@@ -21,14 +21,14 @@
 <!-- Open Graph -->
 <meta content="website" property="og:type"/>
 <meta content="Bright AI" property="og:site_name"/>
-<meta content="ديمو BrightAI الفوري | جرّب الذكاء الاصطناعي للشركات السعودية" property="og:title"/>
-<meta content="جرّب الديمو الآن بدون تسجيل وشاهد النتائج خلال ثواني." property="og:description"/>
+<meta content="ديمو ذكاء اصطناعي مباشر للشركات السعودية | BrightAI" property="og:title"/>
+<meta content="جرّب الديمو الآن بدون تسجيل وشاهد البث الفوري خلال ثوانٍ." property="og:description"/>
 <meta content="https://brightai.site/demo/" property="og:url"/>
 <meta content="ar_SA" property="og:locale"/>
 <!-- Twitter Card -->
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="ديمو BrightAI الفوري" name="twitter:title"/>
-<meta content="تجربة مباشرة لذكاء BrightAI مع استجابات فورية بالعربية." name="twitter:description"/>
+<meta content="ديمو ذكاء اصطناعي مباشر للشركات السعودية" name="twitter:title"/>
+<meta content="تجربة مباشرة ببث فوري ومخرجات تنفيذية بالعربية." name="twitter:description"/>
 <!-- CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
 <link href="../../css/main.bundle.css" rel="stylesheet"/>
@@ -172,6 +172,7 @@
             min-height: 160px;
             color: #cbd5f5;
             line-height: 1.8;
+            white-space: pre-wrap;
         }
 
         .features-grid {
@@ -304,8 +305,8 @@
 <section class="demo-shell" id="live-demo">
 <div class="demo-card">
 <h3>١) اكتب طلبك</h3>
-<textarea class="demo-input" placeholder="مثال: جهّز لي ملخص تنفيذي لتحسين خدمة العملاء في شركة لوجستية سعودية" rows="6"></textarea>
-<select aria-label="اختر نوع المخرجات" class="demo-input">
+<textarea class="demo-input" id="demo-prompt" placeholder="مثال: جهّز لي ملخص تنفيذي لتحسين خدمة العملاء في شركة لوجستية سعودية" rows="6"></textarea>
+<select aria-label="اختر نوع المخرجات" class="demo-input" id="demo-output-type">
 <option>ملخص تنفيذي</option>
 <option>خطة عمل مختصرة</option>
 <option>أسئلة وأجوبة</option>
@@ -321,7 +322,7 @@
 </div>
 <div class="demo-card">
 <h3>٢) النتائج الفورية</h3>
-<div class="demo-output" id="demo-output">
+<div aria-live="polite" class="demo-output" id="demo-output">
                     اكتب طلبك واضغط "تشغيل الديمو" لعرض النتائج هنا بشكل مباشر.
                 </div>
 </div>
@@ -372,13 +373,107 @@
 <script>
         const runBtn = document.getElementById('demo-run');
         const output = document.getElementById('demo-output');
-        if (runBtn && output) {
-            runBtn.addEventListener('click', function () {
-                output.textContent = 'جارٍ توليد النتائج...';
-                setTimeout(function () {
-                    output.innerHTML = 'ملخص تنفيذي مختصر: <br>1) تحسين سرعة الردود عبر أتمتة أولية.<br>2) بناء قاعدة معرفة سعودية خاصة بالقطاع.<br>3) ربط قنوات التواصل بلوحة مركزية لقياس الرضا خلال أسبوعين.';
-                }, 900);
-            });
+        const promptInput = document.getElementById('demo-prompt');
+        const outputType = document.getElementById('demo-output-type');
+        let activeController = null;
+
+        const originalBtnHtml = runBtn ? runBtn.innerHTML : '';
+
+        function getSessionId() {
+            return sessionStorage.getItem('brightai_demo_session') || '';
+        }
+
+        function setSessionId(id) {
+            if (!id) return;
+            sessionStorage.setItem('brightai_demo_session', id);
+        }
+
+        async function streamDemo() {
+            if (!runBtn || !output || !promptInput || !outputType) return;
+            const message = promptInput.value.trim();
+            if (!message) {
+                output.textContent = 'يرجى كتابة طلب واضح قبل التشغيل.';
+                return;
+            }
+
+            if (activeController) {
+                activeController.abort();
+            }
+
+            activeController = new AbortController();
+            runBtn.disabled = true;
+            runBtn.innerHTML = 'جارٍ البث...';
+            output.textContent = 'جارٍ الاتصال بخدمة الذكاء الاصطناعي...';
+
+            try {
+                const response = await fetch('/api/groq/stream', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message,
+                        outputType: outputType.value,
+                        sessionId: getSessionId()
+                    }),
+                    signal: activeController.signal
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    output.textContent = errorData.error || 'تعذر الاتصال بالخدمة حالياً.';
+                    return;
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let buffer = '';
+                let fullText = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                    const events = buffer.split('\n\n');
+                    buffer = events.pop();
+
+                    for (const event of events) {
+                        const line = event.split('\n').find((l) => l.startsWith('data:'));
+                        if (!line) continue;
+                        const payload = line.replace(/^data:\s*/, '').trim();
+                        if (!payload) continue;
+                        if (payload === '[DONE]') {
+                            continue;
+                        }
+                        try {
+                            const data = JSON.parse(payload);
+                            if (data.sessionId) {
+                                setSessionId(data.sessionId);
+                            }
+                            if (data.error) {
+                                output.textContent = data.error;
+                                continue;
+                            }
+                            if (data.token) {
+                                fullText += data.token;
+                                output.textContent = fullText;
+                            }
+                        } catch (e) {
+                            continue;
+                        }
+                    }
+                }
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    output.textContent = 'حدث خطأ أثناء البث. جرّب مرة أخرى.';
+                }
+            } finally {
+                runBtn.disabled = false;
+                runBtn.innerHTML = originalBtnHtml;
+                activeController = null;
+            }
+        }
+
+        if (runBtn) {
+            runBtn.addEventListener('click', streamDemo);
         }
     </script>
 </body>

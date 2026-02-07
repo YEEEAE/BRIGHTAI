@@ -198,6 +198,23 @@
 - تم إنشاء صفحة /resources/report-ai-saudi-2026 في المسار:
   /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/resources/report-ai-saudi-2026/index.html
   السبب: صفحة هبوط لتحميل التقرير وربطها بالتحويل نحو الديمو والاستشارة.
+
+تحديث إضافي — المرحلة 5 (تكاملات Groq)
+التاريخ: 2026-02-07 22:20
+
+- إضافة مسارات Groq عبر باكند وسيط لحماية المفاتيح:
+  /api/groq/stream, /api/groq/ocr, /api/groq/faq.
+- تنفيذ بث SSE للديمو مع ذاكرة جلسة قصيرة (10 دقائق) وحد أقصى 8 رسائل.
+- تنفيذ مسار OCR: استخراج النص عبر Gemini ثم توليد JSON من Groq.
+- توليد FAQ ديناميكي للتقرير وتحويله إلى JSON-LD داخل الصفحة.
+- تطبيق rate limit للمسارات الجديدة الخاصة بـ Groq.
+- تحديث صفحات الديمو وربطها بالمسارات الجديدة:
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/ocr-demo/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+- تحسين عناوين الصفحات ووصف الميتا لرفع CTR في صفحات الديمو وOCR والتقرير.
+- تحديث إعدادات config لإضافة GROQ_API_KEY وحدود body للـ OCR.
+- تحديث ملف tasks.md لتعليم إنجاز جميع عناصر المرحلة الخامسة.
 - تم إنشاء صفحة /pricing في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/pricing/index.html
   السبب: صفحة تسعير واضحة تدعم التحويل والتواصل مع المبيعات.
 - تم تضمين canonical + Open Graph + Twitter meta في الصفحات الأربع.

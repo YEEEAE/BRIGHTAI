@@ -12,8 +12,8 @@
     </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>تقرير الذكاء الاصطناعي السعودي 2026 | تحميل مجاني</title>
-<meta content="حمّل تقرير BrightAI عن سوق الذكاء الاصطناعي في السعودية لعام 2026. اتجاهات الاستثمار، حالات استخدام محلية، وفرص النمو." name="description"/>
+<title>تقرير الذكاء الاصطناعي السعودي 2026 | تحميل لصناع القرار</title>
+<meta content="حمّل التقرير المجاني لصناع القرار في السعودية: اتجاهات الاستثمار، حالات استخدام محلية، وخارطة فرص قابلة للتنفيذ." name="description"/>
 <meta content="تقرير الذكاء الاصطناعي السعودي, سوق السعودية 2026, BrightAI, تقرير مجاني" name="keywords"/>
 <meta content="Bright AI" name="author"/>
 <meta content="index, follow" name="robots"/>
@@ -21,8 +21,8 @@
 <!-- Open Graph -->
 <meta content="website" property="og:type"/>
 <meta content="Bright AI" property="og:site_name"/>
-<meta content="تقرير الذكاء الاصطناعي السعودي 2026" property="og:title"/>
-<meta content="حمّل التقرير المجاني لمعرفة اتجاهات السوق السعودي في الذكاء الاصطناعي." property="og:description"/>
+<meta content="تقرير الذكاء الاصطناعي السعودي 2026 | تحميل لصناع القرار" property="og:title"/>
+<meta content="حمّل التقرير المجاني لمعرفة اتجاهات السوق السعودي وحالات الاستخدام المحلية." property="og:description"/>
 <meta content="https://brightai.site/demo/resources/report-ai-saudi-2026/" property="og:url"/>
 <meta content="ar_SA" property="og:locale"/>
 <!-- CSS -->
@@ -282,16 +282,16 @@
 <a class="btn-secondary" href="https://brightai.site/consultation/">احجز استشارة</a>
 </div>
 </section>
-<section class="faq">
-<div class="faq-item">
+<section class="faq" id="report-faq">
+<div class="faq-item" data-static="true">
 <strong>هل التقرير مخصص للسوق السعودي؟</strong>
 <p style="color:#94a3b8;margin-top:8px;">نعم، جميع البيانات والأمثلة مركزة على السوق السعودي لعام 2026.</p>
 </div>
-<div class="faq-item">
+<div class="faq-item" data-static="true">
 <strong>هل يمكن مشاركة التقرير داخلياً؟</strong>
 <p style="color:#94a3b8;margin-top:8px;">تقدر تشاركه مع فريقك الداخلي لاتخاذ قرارات أسرع.</p>
 </div>
-<div class="faq-item">
+<div class="faq-item" data-static="true">
 <strong>هل يتضمن التقرير خطوات تنفيذ؟</strong>
 <p style="color:#94a3b8;margin-top:8px;">نعم، يوجد Playbook مختصر لـ 90 يوم قابل للتطبيق.</p>
 </div>
@@ -316,5 +316,69 @@
 </footer>
 <script defer="" src="../../../../js/navigation.js"></script>
 <script defer="" src="../../../../js/main.bundle.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqSection = document.getElementById('report-faq');
+            if (!faqSection) return;
+
+            const context = `
+عنوان التقرير: تقرير الذكاء الاصطناعي السعودي 2026.
+الجمهور المستهدف: صناع القرار في الشركات السعودية.
+المحاور: اتجاهات الاستثمار، القطاعات الأسرع نمواً، حالات استخدام محلية ناجحة، توصيات تنفيذ خلال 90 يوم.
+القيمة: بيانات محلية، أمثلة سعودية، وخارطة فرص حسب القطاع.
+`;
+
+            fetch('/api/groq/faq', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ context })
+            })
+                .then((response) => response.json().then((data) => ({ ok: response.ok, data })))
+                .then(({ ok, data }) => {
+                    if (!ok || !data || !Array.isArray(data.faqs) || data.faqs.length === 0) {
+                        return;
+                    }
+
+                    faqSection.innerHTML = '';
+                    data.faqs.forEach((item) => {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'faq-item';
+
+                        const question = document.createElement('strong');
+                        question.textContent = item.question;
+
+                        const answer = document.createElement('p');
+                        answer.style.color = '#94a3b8';
+                        answer.style.marginTop = '8px';
+                        answer.textContent = item.answer;
+
+                        wrapper.appendChild(question);
+                        wrapper.appendChild(answer);
+                        faqSection.appendChild(wrapper);
+                    });
+
+                    const faqSchema = {
+                        '@context': 'https://schema.org',
+                        '@type': 'FAQPage',
+                        mainEntity: data.faqs.map((item) => ({
+                            '@type': 'Question',
+                            name: item.question,
+                            acceptedAnswer: {
+                                '@type': 'Answer',
+                                text: item.answer
+                            }
+                        }))
+                    };
+
+                    const schemaScript = document.createElement('script');
+                    schemaScript.type = 'application/ld+json';
+                    schemaScript.textContent = JSON.stringify(faqSchema);
+                    document.head.appendChild(schemaScript);
+                })
+                .catch(() => {
+                    return;
+                });
+        });
+    </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ const { chatHandler } = require('./routes/chat');
 const { searchHandler } = require('./routes/search');
 const { medicalHandler } = require('./routes/medical');
 const { summaryHandler } = require('./routes/summary');
+const { groqStreamHandler, groqOcrHandler, groqFaqHandler } = require('./routes/groq');
 
 // CORS headers for API responses
 const CORS_HEADERS = {
@@ -23,15 +24,18 @@ const CORS_HEADERS = {
 /**
  * Parse JSON body from request
  * @param {http.IncomingMessage} req
+ * @param {number} maxSizeBytes
  * @returns {Promise<object>}
  */
-function parseBody(req) {
+function parseBody(req, maxSizeBytes = config.validation.maxBodyBytes) {
   return new Promise((resolve, reject) => {
     let body = '';
+    let size = 0;
     req.on('data', chunk => {
+      size += chunk.length;
       body += chunk.toString();
-      // Limit body size to 10KB
-      if (body.length > 10240) {
+      // Limit body size
+      if (size > maxSizeBytes) {
         reject(new Error('Body too large'));
       }
     });
@@ -100,7 +104,10 @@ async function handleRequest(req, res) {
   try {
     // Parse body for POST requests
     if (method === 'POST') {
-      ctx.req.body = await parseBody(req);
+      const maxSize = url === '/api/groq/ocr'
+        ? config.validation.ocrMaxBodyBytes
+        : config.validation.maxBodyBytes;
+      ctx.req.body = await parseBody(req, maxSize);
     }
 
     // Apply rate limiting - use a promise to handle async middleware
@@ -128,6 +135,12 @@ async function handleRequest(req, res) {
       await medicalHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/summary') {
       await summaryHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/groq/stream') {
+      await groqStreamHandler(ctx.req, ctx.res, res);
+    } else if (method === 'POST' && url === '/api/groq/ocr') {
+      await groqOcrHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/groq/faq') {
+      await groqFaqHandler(ctx.req, ctx.res);
     } else if (url === '/api/health') {
       ctx.res.status(200).json({ status: 'ok', timestamp: Date.now() });
     } else {
@@ -166,7 +179,7 @@ function startServer() {
   // Validate configuration
   if (!validateConfig()) {
     console.warn('Warning: Server starting with incomplete configuration');
-    console.warn('AI features will return 503 until GEMINI_API_KEY is configured');
+    console.warn('AI features will return 503 until GEMINI_API_KEY and GROQ_API_KEY are configured');
   }
 
   const server = http.createServer(handleRequest);
@@ -178,6 +191,10 @@ function startServer() {
     console.log('  POST /api/ai/chat    - Chatbot conversations');
     console.log('  POST /api/ai/search  - Smart search');
     console.log('  POST /api/ai/medical - Medical image analysis');
+    console.log('  POST /api/ai/summary - Content summary');
+    console.log('  POST /api/groq/stream - Groq streaming demo');
+    console.log('  POST /api/groq/ocr    - OCR JSON extraction');
+    console.log('  POST /api/groq/faq    - FAQ generation');
     console.log('  GET  /api/health     - Health check');
   });
 

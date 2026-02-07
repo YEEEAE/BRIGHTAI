@@ -15,6 +15,18 @@ const ENDPOINT_LIMITS = {
     requestsPerMinute: 10,  // Stricter limit for chat endpoint
     windowMs: 60 * 1000
   },
+  '/api/groq/stream': {
+    requestsPerMinute: 6,
+    windowMs: 60 * 1000
+  },
+  '/api/groq/ocr': {
+    requestsPerMinute: 4,
+    windowMs: 60 * 1000
+  },
+  '/api/groq/faq': {
+    requestsPerMinute: 10,
+    windowMs: 60 * 1000
+  },
   'default': {
     requestsPerMinute: config.rateLimit.requestsPerMinute,
     windowMs: config.rateLimit.windowMs

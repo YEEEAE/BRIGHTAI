@@ -38,11 +38,11 @@
 - [ ] قياس LCP على الجوال وضبطه أقل من 2.5 ثانية.
 
 ## المرحلة 5 — تكاملات Groq (UX مباشر)
-- [ ] تنفيذ بث Streaming داخل `/demo` (SSE/WebSocket).
-- [ ] إضافة ذاكرة جلسة قصيرة للديمو (session context).
-- [ ] تنفيذ استخراج JSON بعد OCR في `/demo/ocr-demo/`.
-- [ ] توليد FAQ ديناميكي للتقرير وتحويله إلى JSON-LD.
-- [ ] تطبيق rate-limit + حماية مفاتيح API (Backend proxy).
+- [x] تنفيذ بث Streaming داخل `/demo` (SSE/WebSocket).
+- [x] إضافة ذاكرة جلسة قصيرة للديمو (session context).
+- [x] تنفيذ استخراج JSON بعد OCR في `/demo/ocr-demo/`.
+- [x] توليد FAQ ديناميكي للتقرير وتحويله إلى JSON-LD.
+- [x] تطبيق rate-limit + حماية مفاتيح API (Backend proxy).
 
 ## المرحلة 6 — Schema / JSON-LD
 - [ ] إدراج `demo.jsonld` في صفحة `/demo`.

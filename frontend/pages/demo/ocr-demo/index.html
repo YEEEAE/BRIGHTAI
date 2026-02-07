@@ -12,8 +12,8 @@
     </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>تجربة OCR فورية | استخراج النصوص العربية بدقة</title>
-<meta content="ارفع مستندك وجرب OCR فوري من BrightAI. استخراج حقول الفواتير والهويات بصيغة JSON خلال ثواني." name="description"/>
+<title>OCR عربي فوري للشركات السعودية | استخراج JSON دقيق</title>
+<meta content="ارفع مستندك واحصل على نص وحقول الفواتير والهويات بصيغة JSON خلال ثوانٍ، مناسب للشركات السعودية." name="description"/>
 <meta content="OCR عربي, استخراج النصوص, فواتير, مستندات, BrightAI, السعودية" name="keywords"/>
 <meta content="Bright AI" name="author"/>
 <meta content="index, follow" name="robots"/>
@@ -21,8 +21,8 @@
 <!-- Open Graph -->
 <meta content="website" property="og:type"/>
 <meta content="Bright AI" property="og:site_name"/>
-<meta content="تجربة OCR فورية | استخراج النصوص العربية بدقة" property="og:title"/>
-<meta content="حل OCR سريع للشركات السعودية مع نتائج JSON جاهزة." property="og:description"/>
+<meta content="OCR عربي فوري للشركات السعودية | استخراج JSON دقيق" property="og:title"/>
+<meta content="حل OCR سريع للشركات السعودية مع JSON جاهز للتكامل." property="og:description"/>
 <meta content="https://brightai.site/demo/ocr-demo/" property="og:url"/>
 <meta content="ar_SA" property="og:locale"/>
 <!-- CSS -->
@@ -130,6 +130,12 @@
             line-height: 1.8;
             color: #e2e8f0;
             min-height: 200px;
+        }
+
+        .json-box {
+            white-space: pre-wrap;
+            font-size: 0.92rem;
+            color: #cbd5f5;
         }
 
         .field-row {
@@ -265,7 +271,7 @@
 <div class="drop-zone">
 <i class="fa-solid fa-cloud-arrow-up"></i>
 <p>اسحب الملف هنا أو اختره من جهازك</p>
-<input accept=".pdf,.png,.jpg,.jpeg" type="file"/>
+<input accept=".pdf,.png,.jpg,.jpeg" id="ocr-file" type="file"/>
 </div>
 <button class="btn-primary" id="ocr-run" type="button">
                     بدء التحليل
@@ -278,12 +284,9 @@
 <div class="upload-card">
 <h3>٢) الحقول المستخرجة</h3>
 <div class="result-box" id="ocr-output">
-<div class="field-row"><span>رقم الفاتورة</span><span>—</span></div>
-<div class="field-row"><span>المبلغ الإجمالي</span><span>—</span></div>
-<div class="field-row"><span>التاريخ</span><span>—</span></div>
-<div class="field-row"><span>الضريبة</span><span>—</span></div>
-<div class="field-row"><span>الجهة</span><span>—</span></div>
+<div class="field-row"><span>الحالة</span><span>بانتظار ملف</span></div>
 </div>
+<div class="result-box json-box" id="ocr-json" style="margin-top:14px;">سيظهر JSON هنا بعد التحليل.</div>
 </div>
 <div class="upload-card">
 <h3>٣) استخدم النتائج فوراً</h3>
@@ -332,18 +335,144 @@
 <script>
         const ocrBtn = document.getElementById('ocr-run');
         const ocrOutput = document.getElementById('ocr-output');
-        if (ocrBtn && ocrOutput) {
-            ocrBtn.addEventListener('click', function () {
-                ocrOutput.innerHTML = '<div style="color:#f59e0b;">جارٍ التحليل...</div>';
-                setTimeout(function () {
-                    ocrOutput.innerHTML =
-                        '<div class="field-row"><span>رقم الفاتورة</span><span>INV-2026-114</span></div>' +
-                        '<div class="field-row"><span>المبلغ الإجمالي</span><span>12,750 ر.س</span></div>' +
-                        '<div class="field-row"><span>التاريخ</span><span>2026-02-05</span></div>' +
-                        '<div class="field-row"><span>الضريبة</span><span>15%</span></div>' +
-                        '<div class="field-row"><span>الجهة</span><span>شركة لوجستية سعودية</span></div>';
-                }, 1000);
+        const ocrJson = document.getElementById('ocr-json');
+        const ocrFile = document.getElementById('ocr-file');
+        const originalOcrBtnHtml = ocrBtn ? ocrBtn.innerHTML : '';
+
+        const fieldLabels = {
+            document_type: 'نوع المستند',
+            invoice_number: 'رقم الفاتورة',
+            total_amount: 'المبلغ الإجمالي',
+            tax_amount: 'قيمة الضريبة',
+            date: 'التاريخ',
+            vendor_name: 'الجهة',
+            currency: 'العملة'
+        };
+
+        function renderFields(fields) {
+            if (!ocrOutput) return;
+            ocrOutput.innerHTML = '';
+            if (!fields || typeof fields !== 'object') {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                const label = document.createElement('span');
+                label.textContent = 'الحالة';
+                const value = document.createElement('span');
+                value.textContent = 'لم يتم العثور على حقول واضحة';
+                row.appendChild(label);
+                row.appendChild(value);
+                ocrOutput.appendChild(row);
+                return;
+            }
+
+            const entries = Object.keys(fieldLabels)
+                .filter((key) => fields[key] !== undefined && fields[key] !== null && fields[key] !== '')
+                .map((key) => [key, fields[key]]);
+
+            if (entries.length === 0) {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                const label = document.createElement('span');
+                label.textContent = 'الحالة';
+                const value = document.createElement('span');
+                value.textContent = 'لم يتم العثور على حقول واضحة';
+                row.appendChild(label);
+                row.appendChild(value);
+                ocrOutput.appendChild(row);
+                return;
+            }
+
+            for (const [key, value] of entries) {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                const label = document.createElement('span');
+                label.textContent = fieldLabels[key] || key;
+                const val = document.createElement('span');
+                val.textContent = String(value);
+                row.appendChild(label);
+                row.appendChild(val);
+                ocrOutput.appendChild(row);
+            }
+        }
+
+        function renderJson(fields) {
+            if (!ocrJson) return;
+            try {
+                ocrJson.textContent = JSON.stringify(fields || {}, null, 2);
+            } catch (e) {
+                ocrJson.textContent = 'تعذر توليد JSON.';
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('READ_ERROR'));
+                reader.readAsDataURL(file);
             });
+        }
+
+        async function runOcr() {
+            if (!ocrBtn || !ocrFile) return;
+            const file = ocrFile.files && ocrFile.files[0];
+            if (!file) {
+                renderFields(null);
+                if (ocrJson) ocrJson.textContent = 'يرجى اختيار ملف قبل البدء.';
+                return;
+            }
+
+            if (file.size > 4 * 1024 * 1024) {
+                renderFields(null);
+                if (ocrJson) ocrJson.textContent = 'حجم الملف كبير. الحد الأقصى 4 ميجابايت.';
+                return;
+            }
+
+            ocrBtn.disabled = true;
+            ocrBtn.innerHTML = 'جارٍ التحليل...';
+            if (ocrOutput) {
+                ocrOutput.innerHTML = '<div style="color:#f59e0b;">جارٍ استخراج النص والحقول...</div>';
+            }
+            if (ocrJson) {
+                ocrJson.textContent = 'جارٍ تجهيز JSON...';
+            }
+
+            try {
+                const base64 = await fileToBase64(file);
+                const response = await fetch('/api/groq/ocr', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fileBase64: base64,
+                        mimeType: file.type,
+                        fileName: file.name
+                    })
+                });
+
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    renderFields(null);
+                    if (ocrJson) {
+                        ocrJson.textContent = data.error || 'تعذر تحليل الملف حالياً.';
+                    }
+                    return;
+                }
+
+                renderFields(data.fields);
+                renderJson(data.fields);
+            } catch (error) {
+                renderFields(null);
+                if (ocrJson) {
+                    ocrJson.textContent = 'حدث خطأ أثناء التحليل. جرّب مرة أخرى.';
+                }
+            } finally {
+                ocrBtn.disabled = false;
+                ocrBtn.innerHTML = originalOcrBtnHtml;
+            }
+        }
+
+        if (ocrBtn) {
+            ocrBtn.addEventListener('click', runOcr);
         }
     </script>
 </body>
