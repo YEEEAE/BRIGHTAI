@@ -4,6 +4,15 @@
    RTL/Arabic Optimized | Awwwards-Level Quality
    ============================================ */
 
+/* === SCHEHERAZADE NEW FONT === */
+@font-face {
+    font-family: 'Scheherazade New';
+    src: url('../assets/fonts/ScheherazadeNew-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 iconify-icon {
     display: inline-block;
     width: 1em;
@@ -102,7 +111,7 @@ html {
 }
 
 body {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Scheherazade New', 'Tajawal', sans-serif;
     background: var(--bg-dark);
     color: #e2e8f0;
     line-height: 1.6;

@@ -1,11 +1,19 @@
 @import url(css/design-tokens.css);
 @import url(css/unified-gradient.css);
 
+@font-face {
+    font-family: 'Scheherazade New';
+    src: url('../assets/fonts/ScheherazadeNew-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Cairo, sans-serif
+    font-family: 'Scheherazade New', Cairo, sans-serif
 }
 
 body {
@@ -1478,7 +1486,7 @@ html {
 }
 
 body {
-    font-family: Tajawal, Tajawal Fallback, Segoe UI, system-ui, -apple-system, Noto Sans Arabic, sans-serif;
+    font-family: 'Scheherazade New', Tajawal, Tajawal Fallback, Segoe UI, system-ui, -apple-system, Noto Sans Arabic, sans-serif;
     color: var(--text-on-gradient-primary, #FFFFFF);
     line-height: 1.6;
     background-color: var(--gradient-fallback, #8B5CF6);
@@ -2119,7 +2127,7 @@ footer .container {
     border: none;
     background-color: transparent;
     color: #fff;
-    font-family: Tajawal, Tajawal Fallback, Segoe UI, system-ui, Noto Sans Arabic, sans-serif
+    font-family: 'Scheherazade New', Tajawal, Tajawal Fallback, Segoe UI, system-ui, Noto Sans Arabic, sans-serif
 }
 
 .newsletter-input::placeholder {
@@ -2453,7 +2461,7 @@ footer .container {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Cairo, Tajawal, Tajawal Fallback, Segoe UI, system-ui, Noto Sans Arabic, sans-serif
+    font-family: 'Scheherazade New', Cairo, Tajawal, Tajawal Fallback, Segoe UI, system-ui, Noto Sans Arabic, sans-serif
 }
 
 body {
@@ -3126,7 +3134,7 @@ body {
 }
 
 body {
-    font-family: var(--font-family-primary);
+    font-family: 'Scheherazade New', var(--font-family-primary), Cairo, Tajawal, sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;

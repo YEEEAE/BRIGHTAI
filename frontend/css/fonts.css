@@ -1,0 +1,8 @@
+/* Scheherazade New - Arabic font for Bright AI */
+@font-face {
+    font-family: 'Scheherazade New';
+    src: url('../assets/fonts/ScheherazadeNew-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
