@@ -1,75 +1,1143 @@
 {
-    "meta": {
-        "generated_at": "2026-02-07T06:20:00+03:00",
-        "strategy": "Saudi Market Dominance",
-        "total_pages_scanned": 85
+  "meta": {
+    "crawl_limit": 120,
+    "pages_crawled": 101,
+    "ga_data": null,
+    "notes": "تم استبعاد صفحات blogger لتقليل الضوضاء والتركيز على صفحات التحويل والخدمات."
+  },
+  "command_pages": [
+    {
+      "page": "/demo",
+      "status": "missing",
+      "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
     },
-    "pyramid": {
-        "command_pages": [
-            {
-                "url": "/frontend/pages/try/index.html",
-                "role": "conversion_core",
-                "priority": "Critical",
-                "notes": "Main lead magnet. Requires high-speed streaming feedback."
-            },
-            {
-                "url": "/frontend/pages/our-products/index.html",
-                "role": "transactional",
-                "priority": "High",
-                "notes": "Direct sales catalog."
-            },
-            {
-                "url": "/frontend/pages/contact/index.html",
-                "role": "lead_gen",
-                "priority": "High"
-            },
-            {
-                "url": "/frontend/pages/smart-medical-archive/index.html",
-                "role": "niche_landing",
-                "priority": "Medium",
-                "notes": "High-value B2B entry point."
-            }
-        ],
-        "persuasion_pages": [
-            {
-                "url": "/index.html",
-                "role": "hub",
-                "priority": "Critical",
-                "notes": "Traffic distributor."
-            },
-            {
-                "url": "/frontend/pages/about-us/index.html",
-                "role": "trust_builder",
-                "priority": "Medium"
-            },
-            {
-                "url": "/frontend/pages/smart-automation/index.html",
-                "role": "solution_explainer",
-                "priority": "Medium"
-            }
-        ],
-        "discovery_pages": [
-            {
-                "url": "/frontend/pages/blogger/*",
-                "count": 80,
-                "role": "traffic_magnet",
-                "priority": "Low (Individual) / High (Aggregate)",
-                "notes": "Long-tail SEO keywords capture."
-            }
-        ],
-        "orphans": [
-            {
-                "url": "/frontend/pages/blogger/saudi-dates-quality-ai.html",
-                "reason": "No incoming internal links detected from main nav or pillars."
-            },
-            {
-                "url": "/frontend/pages/blogger/saudi-mining-ai-exploration.html",
-                "reason": "Deep page, likely isolated."
-            },
-            {
-                "url": "/frontend/pages/blogger/saudi-sports-analytics-ai.html",
-                "reason": "Niche topic, needs linking to Reports."
-            }
-        ]
+    {
+      "page": "/ocr-demo",
+      "status": "missing",
+      "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
+    },
+    {
+      "page": "/resources/report-ai-saudi-2026",
+      "status": "missing",
+      "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
+    },
+    {
+      "page": "/pricing",
+      "status": "missing",
+      "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
     }
+  ],
+  "pages": [
+    {
+      "page": "/404.html",
+      "role": "orphan",
+      "title": "الصفحة غير موجودة - 404 | Bright AI",
+      "h1": "404",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 16.2,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/500.html",
+      "role": "orphan",
+      "title": "خطأ في الخادم - 500 | Bright AI",
+      "h1": "500",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 15.2,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/docs.html",
+      "role": "discovery",
+      "title": "مركز المستندات | Bright AI - دليلك الشامل للحلول الذكية",
+      "h1": "مركز مستنداتBright AI",
+      "visits": null,
+      "internal_inlinks": 18,
+      "size_kb": 24.2,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/tools/",
+      "role": "persuasion",
+      "title": "أدوات ذكية مجانية | Bright AI - مولد السيرة الذاتية، البحث عن وظائف السعودية",
+      "h1": "أدواتذكيةللتعليم والأعمال",
+      "visits": null,
+      "internal_inlinks": 19,
+      "size_kb": 40.9,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/try/data-analyzer/",
+      "role": "discovery",
+      "title": "محلل البيانات الذكي | Bright AI - تحليل CSV و Excel",
+      "h1": "حلل بياناتك فوراً",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 25.6,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/try/data-quality/",
+      "role": "discovery",
+      "title": "مراقبة جودة البيانات والمنتجات | Bright AI Enterprise",
+      "h1": "نظام مراقبة الجودة الذكي",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 38.3,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/try/",
+      "role": "persuasion",
+      "title": "نماذج الذكاء الاصطناعي | Bright AI - جرب أدواتنا مجاناً",
+      "h1": "جرب نماذجنا الذكية",
+      "visits": null,
+      "internal_inlinks": 23,
+      "size_kb": 16.2,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/try/text-analysis/",
+      "role": "discovery",
+      "title": "التحليل النصي الذكي | Bright AI",
+      "h1": "التحليل النصي الذكي",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 21.2,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/",
+      "role": "persuasion",
+      "title": "Bright AI — منصة الذكاء الاصطناعي",
+      "h1": "حوّل فكرتك لحل ذكي قابل للتنفيذ.",
+      "visits": null,
+      "internal_inlinks": 38,
+      "size_kb": 133.4,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/about-us/",
+      "role": "persuasion",
+      "title": "عن Bright AI | شركة ذكاء اصطناعي سعودية رائدة منذ 2018",
+      "h1": "نبتكرالمستقبلاليوم",
+      "visits": null,
+      "internal_inlinks": 29,
+      "size_kb": 20.9,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/ai-agent/",
+      "role": "persuasion",
+      "title": "الذكاء الاصطناعي كخدمة (AIaaS) للشركات السعودية | Bright AI",
+      "h1": "الذكاء الاصطناعيكخدمة",
+      "visits": null,
+      "internal_inlinks": 26,
+      "size_kb": 60.8,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/ai-bots/BrightMath/",
+      "role": "orphan",
+      "title": "BrightMath - مساعد الرياضيات الذكي",
+      "h1": "BrightMath - مساعد الرياضيات الذكي",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 37.1,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/ai-bots/BrightProject/",
+      "role": "orphan",
+      "title": "BrightProject - روبوت إدارة المشاريع الذكي",
+      "h1": "BrightProject - روبوت إدارة المشاريع الذكي",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 32.1,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/ai-bots/BrightRecruiter/",
+      "role": "persuasion",
+      "title": "BrightRecruiter - روبوت التوظيف الذكي",
+      "h1": "BrightRecruiter - روبوت التوظيف الذكي",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 32.1,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/ai-bots/BrightSales/",
+      "role": "persuasion",
+      "title": "BrightSales - روبوت المبيعات الذكي",
+      "h1": "BrightSales - روبوت المبيعات الذكي",
+      "visits": null,
+      "internal_inlinks": 4,
+      "size_kb": 31.6,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/ai-bots/BrightSupport/",
+      "role": "persuasion",
+      "title": "BrightSupport - روبوت خدمة العملاء الذكي",
+      "h1": "BrightSupport - خدمة العملاء الذكية",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 32.9,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/ai-bots/",
+      "role": "persuasion",
+      "title": "روبوتات ذكاء اصطناعي متقدمة للشركات السعودية | Bright AI",
+      "h1": "روبوتات الذكاء الاصطناعي المتطورة من Bright AI لخدمة أعمالك في السعودية",
+      "visits": null,
+      "internal_inlinks": 8,
+      "size_kb": 61.0,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/ai-scolecs/",
+      "role": "discovery",
+      "title": "المنصة التعليمية الذكية - التعليم المعزز بالذكاء الاصطناعي | Bright Edu",
+      "h1": "المنصة التعليمية الذكيةمستقبل التعليم في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 87.6,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/ai-workflows/",
+      "role": "orphan",
+      "title": "AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 15.0,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/blog/",
+      "role": "discovery",
+      "title": "مكتبة الذكاء الاصطناعي في السعودية | Bright AI - مقالات وأدلة شاملة",
+      "h1": "المكتبةالذكية",
+      "visits": null,
+      "internal_inlinks": 29,
+      "size_kb": 132.0,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/botAI/BrightMath.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/botAI/BrightProject.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/botAI/BrightRecruiter.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/botAI/BrightSales.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/botAI/BrightSupport.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/consultation/",
+      "role": "persuasion",
+      "title": "استشارات الذكاء الاصطناعي والتحول الرقمي | Bright AI السعودية",
+      "h1": "استشاراتالذكاء الاصطناعي",
+      "visits": null,
+      "internal_inlinks": 21,
+      "size_kb": 42.2,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/contact/",
+      "role": "persuasion",
+      "title": "تواصل معنا | Bright AI - استشارات الذكاء الاصطناعي في السعودية",
+      "h1": "اتصلبنا",
+      "visits": null,
+      "internal_inlinks": 19,
+      "size_kb": 30.7,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/data-analysis/",
+      "role": "discovery",
+      "title": "Bright AI | تحليل البيانات بالذكاء الاصطناعي",
+      "h1": "تحليل البياناتبالذكاء الاصطناعي",
+      "visits": null,
+      "internal_inlinks": 28,
+      "size_kb": 54.6,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/ai-agent-en.html",
+      "role": "orphan",
+      "title": "AIaaS - AI As A Service | Bright AI",
+      "h1": "CloudAIaaS",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 15.3,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/ai-agent.html",
+      "role": "discovery",
+      "title": "AIaaS - الذكاء الاصطناعي كخدمة | Bright AI",
+      "h1": "AIaaSالسحابي",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 16.8,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/ai-bots-en.html",
+      "role": "orphan",
+      "title": "Smart Chatbots | Bright AI - Arabic AI Assistants",
+      "h1": "SmartAssistants",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 16.5,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/ai-bots.html",
+      "role": "discovery",
+      "title": "روبوتات المحادثة الذكية | Bright AI - شات بوت عربي",
+      "h1": "مساعدينأذكياء",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 16.8,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/consultation-en.html",
+      "role": "orphan",
+      "title": "Tech Consultation | Bright AI - Digital Transformation Roadmap",
+      "h1": "StrategicConsultation",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 11.4,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/consultation.html",
+      "role": "discovery",
+      "title": "استشارات تقنية | Bright AI - خارطة الطريق للتحول الرقمي",
+      "h1": "استشاراتاستراتيجية",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 12.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/contact-en.html",
+      "role": "orphan",
+      "title": "Contact Us | Bright AI - Get in Touch",
+      "h1": "Get inTouch",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 14.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/contact.html",
+      "role": "discovery",
+      "title": "اتصل بنا | Bright AI - تواصل معنا اليوم",
+      "h1": "تواصلمعنا",
+      "visits": null,
+      "internal_inlinks": 30,
+      "size_kb": 14.7,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/data-analysis-en.html",
+      "role": "orphan",
+      "title": "Data Analysis | Bright AI - Intelligence for Decision Making",
+      "h1": "SmartData Analysis",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 12.3,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/data-analysis.html",
+      "role": "discovery",
+      "title": "تحليل البيانات | Bright AI - ذكاء الأعمال والقرارات",
+      "h1": "تحليل البياناتالذكي",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 11.9,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/docs.html",
+      "role": "orphan",
+      "title": "تم نقل المستندات",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 0.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/docs/faq-en.html",
+      "role": "discovery",
+      "title": "FAQ | Bright AI - Got Questions? We Got Answers 💡",
+      "h1": "Frequently AskedQuestions",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 21.3,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/faq.html",
+      "role": "discovery",
+      "title": "الأسئلة الشائعة | Bright AI - كل ما تحتاج معرفته",
+      "h1": "الأسئلةالشائعة",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 21.5,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/openapi.html",
+      "role": "discovery",
+      "title": "BrightAI API Documentation - وثائق واجهة برمجة التطبيقات",
+      "h1": "BrightAI API Documentation",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 33.2,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/docs/privacy-policy-en.html",
+      "role": "discovery",
+      "title": "Privacy Policy | Bright AI - How We Protect Your Data",
+      "h1": "PrivacyPolicy",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 15.9,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/docs/privacy-policy.html",
+      "role": "discovery",
+      "title": "سياسة الخصوصية | Bright AI - حماية بياناتك أولويتنا",
+      "h1": "سياسةالخصوصية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 19.8,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/docs/services-overview-en.html",
+      "role": "discovery",
+      "title": "Bright AI Services | AI Solutions That Actually Slap 🚀",
+      "h1": "OurGame-ChangingAI Services",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 22.8,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/services-overview.html",
+      "role": "discovery",
+      "title": "خدمات Bright AI | حلول ذكاء اصطناعي متكاملة للشركات السعودية",
+      "h1": "نظرة شاملة على خدماتBright AI",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 24.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/smart-automation-en.html",
+      "role": "orphan",
+      "title": "RPA Automation | Bright AI - Smart Work",
+      "h1": "ProcessAutomation",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 13.6,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/smart-automation.html",
+      "role": "discovery",
+      "title": "أتمتة العمليات RPA | Bright AI - أتمتة ذكية للشركات",
+      "h1": "أتمتة العملياتRPA",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 14.3,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-bi-en.html",
+      "role": "orphan",
+      "title": "Business Intelligence (BI) | Bright AI - Interactive Dashboards",
+      "h1": "Clearer Vision for YourDecisions",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 27.6,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-bi.html",
+      "role": "discovery",
+      "title": "ذكاء الأعمال (BI) | Bright AI - لوحات تحكم تفاعلية",
+      "h1": "رؤية أوضحلقراراتك",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 29.5,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-crm-en.html",
+      "role": "orphan",
+      "title": "Smart CRM Solutions | Bright AI - Know Your Customer",
+      "h1": "Know Your CustomerTruly",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 24.0,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-crm.html",
+      "role": "discovery",
+      "title": "إدارة علاقات العملاء الذكية (CRM) | Bright AI",
+      "h1": "اعرف عميلكصح",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 26.2,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-finance-en.html",
+      "role": "orphan",
+      "title": "Fintech Solutions | Bright AI - Smart & Secure",
+      "h1": "Fintech That'sBulletproof",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 20.3,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-finance.html",
+      "role": "discovery",
+      "title": "حلول المالية (Fintech) | Bright AI - كشف الاحتيال والامتثال",
+      "h1": "التقنية الماليةالآمنة",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 22.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-healthcare-en.html",
+      "role": "orphan",
+      "title": "Healthcare Solutions | Bright AI - Smart Medicine",
+      "h1": "Healthcare MadeSmarter",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 18.8,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-healthcare.html",
+      "role": "discovery",
+      "title": "حلول الرعاية الصحية | Bright AI - الطب المتصل والذكي",
+      "h1": "رعاية صحيةأذكى",
+      "visits": null,
+      "internal_inlinks": 3,
+      "size_kb": 20.2,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-hr-en.html",
+      "role": "orphan",
+      "title": "HR Management (HRMS) | Bright AI - Payroll & Automation",
+      "h1": "HR ManagementMade Easy",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 26.0,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-hr.html",
+      "role": "orphan",
+      "title": "إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة",
+      "h1": "إدارة موظفينأسهل",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 28.4,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-interview-en.html",
+      "role": "orphan",
+      "title": "Smart Hiring | Bright AI - Recruitment on Autopilot",
+      "h1": "Hiring onAutopilot",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 18.9,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-interview.html",
+      "role": "orphan",
+      "title": "حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء",
+      "h1": "التوظيفالذكي",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 20.2,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-logistics-en.html",
+      "role": "orphan",
+      "title": "Logistics & Fleet | Bright AI",
+      "h1": "Fleet UnderControl",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 22.8,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-logistics.html",
+      "role": "discovery",
+      "title": "حلول اللوجستيات والنقل الذكي | Bright AI",
+      "h1": "أسطولك تحتسيطرتك",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 25.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-ocr-en.html",
+      "role": "orphan",
+      "title": "Intelligent Document Processing (OCR) | Bright AI",
+      "h1": "IntelligentDocument Reading",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 10.7,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-ocr.html",
+      "role": "discovery",
+      "title": "معالجة المستندات الذكية (OCR) | Bright AI",
+      "h1": "قراءة المستنداتالذكية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 11.0,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-retail-en.html",
+      "role": "orphan",
+      "title": "Retail & E-commerce | Bright AI - Sell Smarter",
+      "h1": "Retail MadeSmarter",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 17.6,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-retail.html",
+      "role": "orphan",
+      "title": "حلول التجزئة والتجارة الإلكترونية | Bright AI - بيع بذكاء",
+      "h1": "تجارة تجزئةذكية",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 18.4,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-supply-chain-en.html",
+      "role": "orphan",
+      "title": "Supply Chain Management | Bright AI - Plan Ahead",
+      "h1": "Supply Chain ThatNever Stops",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 23.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/solutions-supply-chain.html",
+      "role": "discovery",
+      "title": "إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب والمخزون",
+      "h1": "سلسلة إمدادلا تتوقف",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 25.1,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/docs/terms-and-conditions-en.html",
+      "role": "orphan",
+      "title": "Terms & Conditions | Bright AI - The Fine Print",
+      "h1": "Terms &Conditions",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 18.9,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/docs/terms-and-conditions.html",
+      "role": "discovery",
+      "title": "الشروط والأحكام | Bright AI - شروط استخدام خدماتنا",
+      "h1": "الشروطوالأحكام",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 20.5,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/health-bright/",
+      "role": "discovery",
+      "title": "Bright AI - حلول الذكاء الاصطناعي الطبية المتقدمة في السعودية",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 96.1,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/interview/Presentation.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/interview/g.html",
+      "role": "orphan",
+      "title": "بوابة التوظيف الذكية - منصة نمو",
+      "h1": "بوابة التوظيف الذكية",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 110.1,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/",
+      "role": "persuasion",
+      "title": "mais co .",
+      "h1": "ابدأ رحلتك المهنية",
+      "visits": null,
+      "internal_inlinks": 22,
+      "size_kb": 228.1,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/pages/Visitor-registration/",
+      "role": "orphan",
+      "title": "نظام إدارة تسجيل الزوار - MAIS مع الذكاء الاصطناعي",
+      "h1": "نظام إدارة تسجيل الزوار مع الذكاء الاصطناعي",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 29.0,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/pages/admin.html",
+      "role": "persuasion",
+      "title": "لوحة تحكم المسؤول - بوابة التوظيف Mais Co",
+      "h1": "لوحة تحكم المسؤول",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 135.9,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/pages/appointment/",
+      "role": "orphan",
+      "title": "حجز مواعيد الموارد البشرية - MAIS",
+      "h1": "حجز مواعيد الموارد البشرية",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 34.9,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/pages/dashboard/",
+      "role": "orphan",
+      "title": "لوحة تحكم المسؤول - نظام التوظيف الذكي",
+      "h1": "نظرة عامة",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 73.3,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/pages/support-ai.html",
+      "role": "orphan",
+      "title": "نافذة الدعم الفني الذكي",
+      "h1": "نافذة الدعم الفني الذكي",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 49.6,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/interview/pages/supportAI.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 1.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/job.MAISco/",
+      "role": "discovery",
+      "title": "mais co .",
+      "h1": "ابدأ رحلتك المهنية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 125.7,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/machine/",
+      "role": "orphan",
+      "title": "حلول التعلم الآلي المتقدمة | Bright AI",
+      "h1": "حلول التعلم الآليلتحليل البيانات واتخاذ قرارات مستنيرة",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 47.8,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/our-products/",
+      "role": "persuasion",
+      "title": "منتجات وخدمات الذكاء الاصطناعي | Bright AI السعودية",
+      "h1": "حلول الذكاء الاصطناعيلتحويل أعمالك",
+      "visits": null,
+      "internal_inlinks": 28,
+      "size_kb": 65.4,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/privacy-cookies/",
+      "role": "discovery",
+      "title": "Bright AI | سياسة ملفات تعريف الارتباط",
+      "h1": "سياسةالخصوصية",
+      "visits": null,
+      "internal_inlinks": 5,
+      "size_kb": 33.9,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/sectors/ecommerce.html",
+      "role": "discovery",
+      "title": "الذكاء الاصطناعي للتجارة الإلكترونية السعودية | Bright AI",
+      "h1": "حلول الذكاء الاصطناعي للتجارة الإلكترونية في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 16.7,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/sectors/energy.html",
+      "role": "discovery",
+      "title": "الذكاء الاصطناعي لقطاع الطاقة السعودي | Bright AI",
+      "h1": "حلول الذكاء الاصطناعي لقطاع الطاقة في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 16.8,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/sectors/finance.html",
+      "role": "discovery",
+      "title": "الذكاء الاصطناعي للقطاع المالي السعودي | Bright AI",
+      "h1": "حلول الذكاء الاصطناعي للقطاع المالي في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 16.6,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/sectors/healthcare.html",
+      "role": "discovery",
+      "title": "الذكاء الاصطناعي للرعاية الصحية في السعودية | Bright AI",
+      "h1": "حلول الذكاء الاصطناعي لقطاع الرعاية الصحية في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 16.3,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/sectors/logistics.html",
+      "role": "discovery",
+      "title": "الذكاء الاصطناعي للوجستيات في السعودية | Bright AI",
+      "h1": "حلول الذكاء الاصطناعي لقطاع النقل واللوجستيات في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 16.5,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/sectors/manufacturing.html",
+      "role": "discovery",
+      "title": "الذكاء الاصطناعي للصناعة السعودية | Bright AI",
+      "h1": "حلول الذكاء الاصطناعي لقطاع الصناعة والتصنيع في السعودية",
+      "visits": null,
+      "internal_inlinks": 1,
+      "size_kb": 16.5,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/smart-automation/",
+      "role": "persuasion",
+      "title": "الأتمتة الذكية وسير عمل AI | Bright AI السعودية",
+      "h1": "سير عملالذكاء الاصطناعي",
+      "visits": null,
+      "internal_inlinks": 29,
+      "size_kb": 42.9,
+      "has_jsonld": true,
+      "has_form": false
+    },
+    {
+      "page": "/smart-medical-archive/Analytics&Insights.html",
+      "role": "persuasion",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 1.7,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/smart-medical-archive/EHR-Viewer.html",
+      "role": "persuasion",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 1.7,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/smart-medical-archive/Ingestion.html",
+      "role": "persuasion",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 1.7,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/smart-medical-archive/NLP-Search.html",
+      "role": "persuasion",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 2,
+      "size_kb": 1.7,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/smart-medical-archive/analytics-insights.html",
+      "role": "orphan",
+      "title": "Bright AI | التحليلات والرؤى",
+      "h1": "مركز التحليلات والتنبؤ (Analytics Hub)",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 40.5,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/smart-medical-archive/",
+      "role": "persuasion",
+      "title": "Bright AI | Smart Medical Archive",
+      "h1": "نظرة عامة على النظام",
+      "visits": null,
+      "internal_inlinks": 25,
+      "size_kb": 38.7,
+      "has_jsonld": false,
+      "has_form": true
+    },
+    {
+      "page": "/what-is-ai/",
+      "role": "orphan",
+      "title": "ما هو الذكاء الاصطناعي؟ | Bright AI - دليلك الشامل",
+      "h1": "ما هو الذكاء الاصطناعي؟",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 32.5,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/services/_template.html",
+      "role": "orphan",
+      "title": "تم نقل الصفحة",
+      "h1": "",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 0.7,
+      "has_jsonld": false,
+      "has_form": false
+    },
+    {
+      "page": "/services/recruitment-system.html",
+      "role": "orphan",
+      "title": "نظام التوظيف الذكي للشركات السعودية | Bright AI",
+      "h1": "وظّف أفضل الكفاءاتفي دقائقوليس أسابيع",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 54.4,
+      "has_jsonld": true,
+      "has_form": true
+    },
+    {
+      "page": "/services/template.html",
+      "role": "orphan",
+      "title": "Bright AI - Service Template",
+      "h1": "العنوان الرئيسي للخدمة",
+      "visits": null,
+      "internal_inlinks": 0,
+      "size_kb": 15.6,
+      "has_jsonld": false,
+      "has_form": false
+    }
+  ]
 }

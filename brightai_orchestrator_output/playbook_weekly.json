@@ -1,88 +1,112 @@
 {
-    "strategy_name": "BrightAI Saudi Domination",
-    "start_date": "2026-02-08",
-    "weeks": [
+  "weeks": [
+    {
+      "week": 1,
+      "range": "2026-02-09 إلى 2026-02-15",
+      "theme": "التحكم الداخلي + تأسيس صفحات الملك",
+      "tasks": [
         {
-            "week": 1,
-            "theme": "Control & Foundation",
-            "tasks": [
-                {
-                    "title": "Internal Link Injection",
-                    "description": "Implement the CSV linking plan (High Priority rows).",
-                    "owner": "Dev Team",
-                    "est_hours": 4
-                },
-                {
-                    "title": "Product Schema Rollout",
-                    "description": "Add AggregateRating and FAQ schemas to /our-products.",
-                    "owner": "SEO Specialist",
-                    "est_hours": 2
-                },
-                {
-                    "title": "Orphan Rescue",
-                    "description": "Link top 10 orphaned blog posts to 'Services' pillars.",
-                    "owner": "Content Lead",
-                    "est_hours": 3
-                }
-            ],
-            "kpi": "Zero Critical Orphans"
+          "task": "إنشاء صفحات الملك الأربع (/demo, /ocr-demo, /resources/report-ai-saudi-2026, /pricing) مع H1 وMeta وCTA واضح",
+          "owner": "Frontend + Content",
+          "start_date": "2026-02-09",
+          "end_date": "2026-02-13",
+          "estimated_hours": 14,
+          "kpi": "نشر 4 صفحات تحويلية مع مؤشرات تتبع"
         },
         {
-            "week": 2,
-            "theme": "Technical Sprint (Groq)",
-            "tasks": [
-                {
-                    "title": "Demo Stream Prototype",
-                    "description": "Implement the Groq streaming hook on /demo (backend proxy).",
-                    "owner": "Backend Eng",
-                    "est_hours": 8
-                },
-                {
-                    "title": "Speed Optimization",
-                    "description": "Defer non-critical JS on Blog pages to boost Mobile Score > 90.",
-                    "owner": "Frontend Eng",
-                    "est_hours": 5
-                }
-            ],
-            "kpi": "LCP < 1.5s on Mobile"
+          "task": "تنفيذ 10+ روابط داخلية عالية الأولوية نحو صفحات الملك (من الخطة)",
+          "owner": "SEO",
+          "start_date": "2026-02-10",
+          "end_date": "2026-02-15",
+          "estimated_hours": 10,
+          "kpi": ">=10 روابط داخلية فعالة إلى صفحات الملك"
         },
         {
-            "week": 3,
-            "theme": "Content Authority",
-            "tasks": [
-                {
-                    "title": "Saudi Industry Reports",
-                    "description": "Publish 'AI in Saudi Healthcare 2026' report.",
-                    "owner": "Content Team",
-                    "est_hours": 12
-                },
-                {
-                    "title": "Social Signal Boost",
-                    "description": "Share blog snippets on LinkedIn/Twitter with localized hashtags.",
-                    "owner": "Marketing",
-                    "est_hours": 4
-                }
-            ],
-            "kpi": "+15% Organic Traffic"
-        },
-        {
-            "week": 4,
-            "theme": "Measurement & Scale",
-            "tasks": [
-                {
-                    "title": "Conversion Audit",
-                    "description": "Analyze drop-off rates on /try page.",
-                    "owner": "Product Owner",
-                    "est_hours": 3
-                },
-                {
-                    "title": "Refine Authority Map",
-                    "description": "Re-crawl site and update the map based on new links.",
-                    "owner": "Orchestrator",
-                    "est_hours": 2
-                }
-            ],
-            "kpi": "Demo Signups +10%"
+          "task": "إضافة Schema أساسي (SoftwareApplication + FAQ لـ /demo)",
+          "owner": "Frontend",
+          "start_date": "2026-02-12",
+          "end_date": "2026-02-15",
+          "estimated_hours": 4,
+          "kpi": "ظهور نتائج منسّقة FAQ خلال 2-3 أسابيع"
         }
-    ]
+      ]
+    },
+    {
+      "week": 2,
+      "range": "2026-02-16 إلى 2026-02-22",
+      "theme": "Technical SEO sprint",
+      "tasks": [
+        {
+          "task": "معالجة العناوين/الوصف المفقود وتوحيد القوالب المكررة (تم نقل الصفحة)",
+          "owner": "SEO + Content",
+          "start_date": "2026-02-16",
+          "end_date": "2026-02-19",
+          "estimated_hours": 8,
+          "kpi": "0 صفحات بدون Meta description في الصفحات الأساسية"
+        },
+        {
+          "task": "تحسين LCP عبر ضغط صور الهيرو الكبيرة وتفعيل lazy-load",
+          "owner": "Frontend",
+          "start_date": "2026-02-16",
+          "end_date": "2026-02-20",
+          "estimated_hours": 6,
+          "kpi": "LCP < 2.5s على الجوال"
+        },
+        {
+          "task": "تحديث sitemap وrobots وربط canonical للنسخ المكررة",
+          "owner": "SEO",
+          "start_date": "2026-02-18",
+          "end_date": "2026-02-22",
+          "estimated_hours": 4,
+          "kpi": "Index Coverage نظيف بدون تضارب"
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "range": "2026-02-23 إلى 2026-03-01",
+      "theme": "Content/Outreach",
+      "tasks": [
+        {
+          "task": "إنشاء 4 مقالات سعودية داعمة تربط مباشرة بصفحات الملك",
+          "owner": "Content",
+          "start_date": "2026-02-23",
+          "end_date": "2026-02-28",
+          "estimated_hours": 16,
+          "kpi": "4 مقالات منشورة + 4 روابط داخلية تحويلية"
+        },
+        {
+          "task": "بناء 5 روابط خارجية نوعية من مواقع سعودية ذات صلة",
+          "owner": "SEO",
+          "start_date": "2026-02-24",
+          "end_date": "2026-03-01",
+          "estimated_hours": 12,
+          "kpi": ">=5 روابط dofollow جديدة"
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "range": "2026-03-02 إلى 2026-03-08",
+      "theme": "Measurement & Scaling",
+      "tasks": [
+        {
+          "task": "تهيئة تتبع التحويلات (CTA click, Demo start, OCR upload)",
+          "owner": "Analytics",
+          "start_date": "2026-03-02",
+          "end_date": "2026-03-04",
+          "estimated_hours": 6,
+          "kpi": "تغطية 100% لمسار التحويل الأساسي"
+        },
+        {
+          "task": "اختبار A/B لنسخ CTA في /demo و/pricing",
+          "owner": "Growth",
+          "start_date": "2026-03-04",
+          "end_date": "2026-03-08",
+          "estimated_hours": 8,
+          "kpi": "+15% CTR على CTA الرئيسي"
+        }
+      ]
+    }
+  ]
 }

@@ -1,25 +1,929 @@
-[
+{
+  "orphans_count": 44,
+  "orphans": [
     {
-        "page": "/frontend/pages/blogger/saudi-dates-quality-ai.html",
-        "suggested_sources": [
-            "/frontend/pages/our-products/index.html",
-            "/frontend/pages/smart-automation/index.html"
-        ],
-        "anchor_text": "حلول فحص الجودة بالذكاء الاصطناعي"
+      "page": "/404.html",
+      "title": "الصفحة غير موجودة - 404 | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/",
+          "anchor_text_ar": "تعرّف على 404",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "جرّب 404 الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "حلول 404 للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
     },
     {
-        "page": "/frontend/pages/blogger/saudi-mining-ai-exploration.html",
-        "suggested_sources": [
-            "/frontend/pages/data-analysis/index.html",
-            "/index.html"
-        ],
-        "anchor_text": "تحليل البيانات الجيولوجية"
+      "page": "/500.html",
+      "title": "خطأ في الخادم - 500 | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "تعرّف على 500",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "جرّب 500 الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "حلول 500 للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
     },
     {
-        "page": "/frontend/pages/blogger/saudi-sports-analytics-ai.html",
-        "suggested_sources": [
-            "/frontend/pages/try/index.html"
-        ],
-        "anchor_text": "جرب تحليل بيانات اللاعبين"
+      "page": "/ai-bots/BrightMath/",
+      "title": "BrightMath - مساعد الرياضيات الذكي",
+      "suggested_links": [
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "تعرّف على Math مساعد الرياضيات الذكي",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "جرّب Math مساعد الرياضيات الذكي الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "حلول Math مساعد الرياضيات الذكي للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/ai-bots/BrightProject/",
+      "title": "BrightProject - روبوت إدارة المشاريع الذكي",
+      "suggested_links": [
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "تعرّف على Project روبوت إدارة المشاريع الذكي",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "جرّب Project روبوت إدارة المشاريع الذكي الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "حلول Project روبوت إدارة المشاريع الذكي للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/ai-workflows/",
+      "title": "AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "تعرّف على AI Workflows سير عمل الذكاء الاصطناعي",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "جرّب AI Workflows سير عمل الذكاء الاصطناعي الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "حلول AI Workflows سير عمل الذكاء الاصطناعي للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/botAI/BrightMath.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/botAI/BrightProject.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/botAI/BrightRecruiter.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/botAI/BrightSales.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/botAI/BrightSupport.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/ai-agent-en.html",
+      "title": "AIaaS - AI As A Service | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "اقرأ عن CloudAIaaS",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "تفاصيل CloudAIaaS بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "ملخص سريع عن CloudAIaaS",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/ai-bots-en.html",
+      "title": "Smart Chatbots | Bright AI - Arabic AI Assistants",
+      "suggested_links": [
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "اقرأ عن SmartAssistants",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "تفاصيل SmartAssistants بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/",
+          "anchor_text_ar": "ملخص سريع عن SmartAssistants",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/consultation-en.html",
+      "title": "Tech Consultation | Bright AI - Digital Transformation Roadmap",
+      "suggested_links": [
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "اقرأ عن StrategicConsultation",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/",
+          "anchor_text_ar": "تفاصيل StrategicConsultation بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "ملخص سريع عن StrategicConsultation",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/contact-en.html",
+      "title": "Contact Us | Bright AI - Get in Touch",
+      "suggested_links": [
+        {
+          "source_page": "/",
+          "anchor_text_ar": "اقرأ عن Get inTouch",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "تفاصيل Get inTouch بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "ملخص سريع عن Get inTouch",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/data-analysis-en.html",
+      "title": "Data Analysis | Bright AI - Intelligence for Decision Making",
+      "suggested_links": [
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "اقرأ عن SmartData Analysis",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "تفاصيل SmartData Analysis بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "ملخص سريع عن SmartData Analysis",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/docs.html",
+      "title": "تم نقل المستندات",
+      "suggested_links": [
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "اقرأ عن تم نقل المستندات",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "تفاصيل تم نقل المستندات بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "ملخص سريع عن تم نقل المستندات",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/smart-automation-en.html",
+      "title": "RPA Automation | Bright AI - Smart Work",
+      "suggested_links": [
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "اقرأ عن ProcessAutomation",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "تفاصيل ProcessAutomation بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "ملخص سريع عن ProcessAutomation",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-bi-en.html",
+      "title": "Business Intelligence (BI) | Bright AI - Interactive Dashboards",
+      "suggested_links": [
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "اقرأ عن Clearer Vision for YourDecisions",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "تفاصيل Clearer Vision for YourDecisions بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "ملخص سريع عن Clearer Vision for YourDecisions",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-crm-en.html",
+      "title": "Smart CRM Solutions | Bright AI - Know Your Customer",
+      "suggested_links": [
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "اقرأ عن Know Your CustomerTruly",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "تفاصيل Know Your CustomerTruly بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "ملخص سريع عن Know Your CustomerTruly",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-finance-en.html",
+      "title": "Fintech Solutions | Bright AI - Smart & Secure",
+      "suggested_links": [
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "اقرأ عن Fintech That'sBulletproof",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "تفاصيل Fintech That'sBulletproof بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "ملخص سريع عن Fintech That'sBulletproof",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-healthcare-en.html",
+      "title": "Healthcare Solutions | Bright AI - Smart Medicine",
+      "suggested_links": [
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "اقرأ عن Healthcare MadeSmarter",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "تفاصيل Healthcare MadeSmarter بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "ملخص سريع عن Healthcare MadeSmarter",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-hr-en.html",
+      "title": "HR Management (HRMS) | Bright AI - Payroll & Automation",
+      "suggested_links": [
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "اقرأ عن HR ManagementMade Easy",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "تفاصيل HR ManagementMade Easy بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "ملخص سريع عن HR ManagementMade Easy",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-hr.html",
+      "title": "إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة",
+      "suggested_links": [
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "اقرأ عن إدارة موظفينأسهل",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "تفاصيل إدارة موظفينأسهل بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "ملخص سريع عن إدارة موظفينأسهل",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-interview-en.html",
+      "title": "Smart Hiring | Bright AI - Recruitment on Autopilot",
+      "suggested_links": [
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "اقرأ عن Hiring onAutopilot",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "تفاصيل Hiring onAutopilot بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "ملخص سريع عن Hiring onAutopilot",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-interview.html",
+      "title": "حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء",
+      "suggested_links": [
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "اقرأ عن التوظيفالذكي",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "تفاصيل التوظيفالذكي بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/",
+          "anchor_text_ar": "ملخص سريع عن التوظيفالذكي",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-logistics-en.html",
+      "title": "Logistics & Fleet | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "اقرأ عن Fleet UnderControl",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/",
+          "anchor_text_ar": "تفاصيل Fleet UnderControl بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "ملخص سريع عن Fleet UnderControl",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-ocr-en.html",
+      "title": "Intelligent Document Processing (OCR) | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/",
+          "anchor_text_ar": "اقرأ عن IntelligentDocument Reading",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "تفاصيل IntelligentDocument Reading بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "ملخص سريع عن IntelligentDocument Reading",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-retail-en.html",
+      "title": "Retail & E-commerce | Bright AI - Sell Smarter",
+      "suggested_links": [
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "اقرأ عن Retail MadeSmarter",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "تفاصيل Retail MadeSmarter بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "ملخص سريع عن Retail MadeSmarter",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-retail.html",
+      "title": "حلول التجزئة والتجارة الإلكترونية | Bright AI - بيع بذكاء",
+      "suggested_links": [
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "اقرأ عن تجارة تجزئةذكية",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "تفاصيل تجارة تجزئةذكية بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "ملخص سريع عن تجارة تجزئةذكية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/solutions-supply-chain-en.html",
+      "title": "Supply Chain Management | Bright AI - Plan Ahead",
+      "suggested_links": [
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "اقرأ عن Supply Chain ThatNever Stops",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "تفاصيل Supply Chain ThatNever Stops بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "ملخص سريع عن Supply Chain ThatNever Stops",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/docs/terms-and-conditions-en.html",
+      "title": "Terms & Conditions | Bright AI - The Fine Print",
+      "suggested_links": [
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "اقرأ عن Terms &Conditions",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "تفاصيل Terms &Conditions بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "ملخص سريع عن Terms &Conditions",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/Presentation.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/g.html",
+      "title": "بوابة التوظيف الذكية - منصة نمو",
+      "suggested_links": [
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "تعرّف على بوابة التوظيف الذكية",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "جرّب بوابة التوظيف الذكية الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "حلول بوابة التوظيف الذكية للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/pages/Visitor-registration/",
+      "title": "نظام إدارة تسجيل الزوار - MAIS مع الذكاء الاصطناعي",
+      "suggested_links": [
+        {
+          "source_page": "/data-analysis/",
+          "anchor_text_ar": "تعرّف على نظام إدارة تسجيل الزوار مع الذكاء",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "جرّب نظام إدارة تسجيل الزوار مع الذكاء الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "حلول نظام إدارة تسجيل الزوار مع الذكاء للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/pages/appointment/",
+      "title": "حجز مواعيد الموارد البشرية - MAIS",
+      "suggested_links": [
+        {
+          "source_page": "/smart-automation/",
+          "anchor_text_ar": "تعرّف على حجز مواعيد الموارد البشرية",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "جرّب حجز مواعيد الموارد البشرية الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "حلول حجز مواعيد الموارد البشرية للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/pages/dashboard/",
+      "title": "لوحة تحكم المسؤول - نظام التوظيف الذكي",
+      "suggested_links": [
+        {
+          "source_page": "/smart-medical-archive/",
+          "anchor_text_ar": "تعرّف على نظرة عامة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "جرّب نظرة عامة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "حلول نظرة عامة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/pages/support-ai.html",
+      "title": "نافذة الدعم الفني الذكي",
+      "suggested_links": [
+        {
+          "source_page": "/try/",
+          "anchor_text_ar": "تعرّف على نافذة الدعم الفني الذكي",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "جرّب نافذة الدعم الفني الذكي الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "حلول نافذة الدعم الفني الذكي للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/interview/pages/supportAI.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/tools/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/machine/",
+      "title": "حلول التعلم الآلي المتقدمة | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/blog/",
+          "anchor_text_ar": "تعرّف على حلول التعلم الآليلتحليل البيانات واتخاذ قرارات",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/",
+          "anchor_text_ar": "جرّب حلول التعلم الآليلتحليل البيانات واتخاذ قرارات الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "حلول حلول التعلم الآليلتحليل البيانات واتخاذ قرارات للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/smart-medical-archive/analytics-insights.html",
+      "title": "Bright AI | التحليلات والرؤى",
+      "suggested_links": [
+        {
+          "source_page": "/",
+          "anchor_text_ar": "تعرّف على مركز التحليلات والتنبؤ (Analytics Hub)",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "جرّب مركز التحليلات والتنبؤ (Analytics Hub) الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "حلول مركز التحليلات والتنبؤ (Analytics Hub) للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/what-is-ai/",
+      "title": "ما هو الذكاء الاصطناعي؟ | Bright AI - دليلك الشامل",
+      "suggested_links": [
+        {
+          "source_page": "/about-us/",
+          "anchor_text_ar": "اقرأ عن ما هو الذكاء الاصطناعي؟",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "تفاصيل ما هو الذكاء الاصطناعي؟ بالسوق السعودي",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "ملخص سريع عن ما هو الذكاء الاصطناعي؟",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/services/_template.html",
+      "title": "تم نقل الصفحة",
+      "suggested_links": [
+        {
+          "source_page": "/our-products/",
+          "anchor_text_ar": "تعرّف على تم نقل الصفحة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "جرّب تم نقل الصفحة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "حلول تم نقل الصفحة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/services/recruitment-system.html",
+      "title": "نظام التوظيف الذكي للشركات السعودية | Bright AI",
+      "suggested_links": [
+        {
+          "source_page": "/ai-agent/",
+          "anchor_text_ar": "تعرّف على وظّف أفضل الكفاءاتفي دقائقوليس أسابيع",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "جرّب وظّف أفضل الكفاءاتفي دقائقوليس أسابيع الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "حلول وظّف أفضل الكفاءاتفي دقائقوليس أسابيع للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
+    },
+    {
+      "page": "/services/template.html",
+      "title": "Bright AI - Service Template",
+      "suggested_links": [
+        {
+          "source_page": "/ai-bots/",
+          "anchor_text_ar": "تعرّف على العنوان الرئيسي للخدمة",
+          "place_hint": "inline paragraph"
+        },
+        {
+          "source_page": "/consultation/",
+          "anchor_text_ar": "جرّب العنوان الرئيسي للخدمة الآن",
+          "place_hint": "CTA"
+        },
+        {
+          "source_page": "/contact/",
+          "anchor_text_ar": "حلول العنوان الرئيسي للخدمة للشركات السعودية",
+          "place_hint": "sidebar"
+        }
+      ]
     }
-]
+  ]
+}

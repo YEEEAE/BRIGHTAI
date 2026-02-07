@@ -1,0 +1,11 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "BrightAI Pricing",
+  "applicationCategory": "BusinessApplication",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "SAR",
+    "availability": "https://schema.org/InStock"
+  }
+}
