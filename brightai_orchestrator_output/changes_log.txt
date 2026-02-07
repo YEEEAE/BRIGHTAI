@@ -1,0 +1,179 @@
+سجل التغييرات — BrightAI Authority Orchestrator (تفصيلي)
+التاريخ: 2026-02-07 16:10
+
+أولاً: ماذا تم عمله تقنياً (ملخص تنفيذي)
+- تنفيذ زحف محلي للصفحات ضمن المشروع.
+- توليد مخرجات تحليلية وخطط تنفيذية داخل مجلد: /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output.
+- لم يتم تعديل أي ملفات إنتاج/واجهة داخل الموقع نفسه.
+
+ثانياً: إعدادات الزحف (Crawl Config)
+- project_root: /Users/yzydalshmry/Desktop/BrightAI
+- crawl_limit المستهدف: 120
+- pages_crawled فعلياً: 101
+- الاستبعاد: node_modules, performance-optimizer, tests, frontend/assets, frontend/pages/blogger
+- التطبيع: إزالة بادئة frontend/pages من المسارات لتمثيل المسار الحقيقي للموقع.
+
+ثالثاً: مؤشرات الجودة العامة (Highlights)
+- صفحات يتيمة: 44 صفحة (43.6%).
+- صفحات بدون Meta description: 18 صفحة.
+- صفحات بدون H1: 15 صفحة.
+- صفحات بدون Title: 0 صفحة.
+- صفحات تحتوي JSON-LD: 50 صفحة.
+- صفحات تحتوي نماذج/مدخلات: 26 صفحة.
+- صفحات فيها صور ثقيلة (>=200KB): 1 صفحة.
+
+رابعاً: مؤشرات خاصة (SEO Risk Signals)
+- عناوين مكررة (Duplicate Titles) في 2 مجموعات.
+- أمثلة على العنوان المكرر:
+"تم نقل الصفحة" يظهر في عدة صفحات خدمية.
+
+خامساً: أعلى صفحات من حيث الروابط الداخلية (Top Inlinks)
+- / (inlinks: 38)
+- /docs/contact.html (inlinks: 30)
+- /about-us/ (inlinks: 29)
+- /blog/ (inlinks: 29)
+- /smart-automation/ (inlinks: 29)
+- /data-analysis/ (inlinks: 28)
+
+سادساً: حالة صفحات الملك (Command Pages)
+- /demo: غير موجود
+- /ocr-demo: غير موجود
+- /resources/report-ai-saudi-2026: غير موجود
+- /pricing: غير موجود
+
+سابعاً: الملفات التي تم إنشاؤها/تعديلها ولماذا
+1) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/crawl_data.json
+- الإجراء: إنشاء/تحديث ملف زحف داخلي.
+- السبب: حفظ جميع خصائص الصفحات لتحليل الروابط والـ SEO.
+
+2) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/authority_map.json
+- الإجراء: إنشاء خريطة السلطة.
+- السبب: تصنيف الصفحات إلى command / persuasion / discovery / orphan لتوجيه خطة الربط الداخلي.
+
+3) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/orphan_suggestions.json
+- الإجراء: إنشاء اقتراحات ربط للصفحات اليتيمة.
+- السبب: تقليل نسبة اليتيم وتحسين توزيع السلطة داخلياً.
+
+4) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/internal_links_plan.csv
+- الإجراء: إنشاء خطة روابط داخلية بصيغة CSV (UTF-8 BOM).
+- السبب: ملف تنفيذي جاهز للتكليف مع أولوية ومهام وUTM.
+
+5) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/internal_links_plan.json
+- الإجراء: إنشاء نسخة JSON.
+- السبب: تسهيل التكامل البرمجي مع نفس محتوى الـCSV.
+
+6) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/playbook_weekly.json
+- الإجراء: إنشاء خطة أسبوعية 4 أسابيع.
+- السبب: تحويل التوصيات إلى مهام قابلة للتنفيذ مع KPI ووقت.
+
+7) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/groq_integration_snippets.md
+- الإجراء: إنشاء ثم تحديث الملف.
+- السبب: إضافة أفكار تكامل Groq + pseudocode + طريقة تشغيل مختصرة وآمنة.
+
+8) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/schemas/demo.jsonld
+- الإجراء: إنشاء Schema لصفحة /demo.
+- السبب: دعم نتائج منسّقة + رفع CTR.
+
+9) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/schemas/ocr-demo.jsonld
+- الإجراء: إنشاء Schema HowTo لصفحة /ocr-demo.
+- السبب: تحسين الفهم الدلالي لمحركات البحث.
+
+10) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/schemas/report-ai-saudi-2026.jsonld
+- الإجراء: إنشاء Schema تقرير.
+- السبب: تثبيت هوية التقرير محركياً.
+
+11) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/schemas/pricing.jsonld
+- الإجراء: إنشاء Schema للأسعار.
+- السبب: دعم فهم العروض والباقات.
+
+12) /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/summary.txt
+- الإجراء: إنشاء/تحديث ملخص تنفيذي.
+- السبب: خلاصة إدارية قابلة للمشاركة ضمن 200–300 كلمة.
+
+ثامناً: ملاحظات سلامة
+- لم يتم إدراج أي مفاتيح حساسة.
+- لا توجد تغييرات مباشرة على كود الموقع أو قاعدة البيانات.
+
+
+تاسعاً: مقارنة قبل/بعد متوقعة (CTR/LCP)
+- قبل: لا توجد بيانات أداء مباشرة في هذا التحليل (GA غير متوفر).
+- بعد مستهدف (للقياس خلال 3–6 أسابيع):
+  - CTR للصفحات التحويلية: +10% إلى +20%.
+  - LCP على الجوال: أقل من 2.5 ثانية للصفحة الرئيسية والصفحات الملكية.
+  - نسبة التحويل من الزيارات العضوية إلى CTA: +15%.
+
+عاشراً: عينات صفحات يتيمة مع اقتراحات ربط
+- الصفحة: /404.html
+  - مصدر: / | نص: تعرّف على 404 | موضع: inline paragraph
+  - مصدر: /about-us/ | نص: جرّب 404 الآن | موضع: CTA
+  - مصدر: /our-products/ | نص: حلول 404 للشركات السعودية | موضع: sidebar
+- الصفحة: /500.html
+  - مصدر: /about-us/ | نص: تعرّف على 500 | موضع: inline paragraph
+  - مصدر: /our-products/ | نص: جرّب 500 الآن | موضع: CTA
+  - مصدر: /ai-agent/ | نص: حلول 500 للشركات السعودية | موضع: sidebar
+- الصفحة: /ai-bots/BrightMath/
+  - مصدر: /our-products/ | نص: تعرّف على Math مساعد الرياضيات الذكي | موضع: inline paragraph
+  - مصدر: /ai-agent/ | نص: جرّب Math مساعد الرياضيات الذكي الآن | موضع: CTA
+  - مصدر: /ai-bots/ | نص: حلول Math مساعد الرياضيات الذكي للشركات السعودية | موضع: sidebar
+- الصفحة: /ai-bots/BrightProject/
+  - مصدر: /ai-agent/ | نص: تعرّف على Project روبوت إدارة المشاريع الذكي | موضع: inline paragraph
+  - مصدر: /ai-bots/ | نص: جرّب Project روبوت إدارة المشاريع الذكي الآن | موضع: CTA
+  - مصدر: /consultation/ | نص: حلول Project روبوت إدارة المشاريع الذكي للشركات السعودية | موضع: sidebar
+- الصفحة: /ai-workflows/
+  - مصدر: /ai-bots/ | نص: تعرّف على AI Workflows سير عمل الذكاء الاصطناعي | موضع: inline paragraph
+  - مصدر: /consultation/ | نص: جرّب AI Workflows سير عمل الذكاء الاصطناعي الآن | موضع: CTA
+  - مصدر: /contact/ | نص: حلول AI Workflows سير عمل الذكاء الاصطناعي للشركات السعودية | موضع: sidebar
+- الصفحة: /botAI/BrightMath.html
+  - مصدر: /consultation/ | نص: تعرّف على تم نقل الصفحة | موضع: inline paragraph
+  - مصدر: /contact/ | نص: جرّب تم نقل الصفحة الآن | موضع: CTA
+  - مصدر: /data-analysis/ | نص: حلول تم نقل الصفحة للشركات السعودية | موضع: sidebar
+- الصفحة: /botAI/BrightProject.html
+  - مصدر: /contact/ | نص: تعرّف على تم نقل الصفحة | موضع: inline paragraph
+  - مصدر: /data-analysis/ | نص: جرّب تم نقل الصفحة الآن | موضع: CTA
+  - مصدر: /smart-automation/ | نص: حلول تم نقل الصفحة للشركات السعودية | موضع: sidebar
+- الصفحة: /botAI/BrightRecruiter.html
+  - مصدر: /data-analysis/ | نص: تعرّف على تم نقل الصفحة | موضع: inline paragraph
+  - مصدر: /smart-automation/ | نص: جرّب تم نقل الصفحة الآن | موضع: CTA
+  - مصدر: /smart-medical-archive/ | نص: حلول تم نقل الصفحة للشركات السعودية | موضع: sidebar
+- الصفحة: /botAI/BrightSales.html
+  - مصدر: /smart-automation/ | نص: تعرّف على تم نقل الصفحة | موضع: inline paragraph
+  - مصدر: /smart-medical-archive/ | نص: جرّب تم نقل الصفحة الآن | موضع: CTA
+  - مصدر: /try/ | نص: حلول تم نقل الصفحة للشركات السعودية | موضع: sidebar
+- الصفحة: /botAI/BrightSupport.html
+  - مصدر: /smart-medical-archive/ | نص: تعرّف على تم نقل الصفحة | موضع: inline paragraph
+  - مصدر: /try/ | نص: جرّب تم نقل الصفحة الآن | موضع: CTA
+  - مصدر: /tools/ | نص: حلول تم نقل الصفحة للشركات السعودية | موضع: sidebar
+
+الحادي عشر: صفحات تحتاج تعديل عنوان/وصف + اقتراحات جاهزة
+- عناوين مكررة تحتاج تعديل:
+  - العنوان الحالي: تم نقل الصفحة
+    - /botAI/BrightMath.html -> مقترح: تم نقل الصفحة | روبوت أعمال ذكي للشركات السعودية
+    - /botAI/BrightProject.html -> مقترح: تم نقل الصفحة | روبوت أعمال ذكي للشركات السعودية
+    - /botAI/BrightRecruiter.html -> مقترح: تم نقل الصفحة | روبوت أعمال ذكي للشركات السعودية
+    - /botAI/BrightSales.html -> مقترح: تم نقل الصفحة | روبوت أعمال ذكي للشركات السعودية
+    - /botAI/BrightSupport.html -> مقترح: تم نقل الصفحة | روبوت أعمال ذكي للشركات السعودية
+    - /interview/Presentation.html -> مقترح: تم نقل الصفحة | حلول المقابلات الذكية
+    - /interview/pages/supportAI.html -> مقترح: تم نقل الصفحة | حلول المقابلات الذكية
+    - /smart-medical-archive/Analytics&Insights.html -> مقترح: تم نقل الصفحة | الأرشفة الطبية الذكية
+  - العنوان الحالي: mais co .
+    - /interview/ -> مقترح: ابدأ رحلتك المهنية | حلول المقابلات الذكية
+    - /job.MAISco/ -> مقترح: ابدأ رحلتك المهنية | BrightAI السعودية
+- صفحات بدون Meta description (مع اقتراحات):
+  - / -> حلول ذكاء اصطناعي سعودية تساعد الشركات على الأتمتة والتحليل بسرعة مع تجربة فورية ودعم عربي.
+  - /botAI/BrightMath.html -> تم نقل الصفحة روبوت أعمال ذكي يرفع الإنتاجية ويختصر الوقت للشركات السعودية.
+  - /botAI/BrightProject.html -> تم نقل الصفحة روبوت أعمال ذكي يرفع الإنتاجية ويختصر الوقت للشركات السعودية.
+  - /botAI/BrightRecruiter.html -> تم نقل الصفحة روبوت أعمال ذكي يرفع الإنتاجية ويختصر الوقت للشركات السعودية.
+  - /botAI/BrightSales.html -> تم نقل الصفحة روبوت أعمال ذكي يرفع الإنتاجية ويختصر الوقت للشركات السعودية.
+  - /botAI/BrightSupport.html -> تم نقل الصفحة روبوت أعمال ذكي يرفع الإنتاجية ويختصر الوقت للشركات السعودية.
+  - /docs/docs.html -> مستندات تم نقل المستندات من BrightAI: شرح المزايا، حالات الاستخدام، وخطوات التنفيذ بالسوق السعودي.
+  - /docs/openapi.html -> توثيق واجهات BrightAI للمطورين، أمثلة واضحة وتكامل سريع للشركات السعودية.
+  - /interview/Presentation.html -> حلول مقابلات ذكية تساعد فرق الموارد البشرية على فرز المرشحين وتحسين القرار.
+  - /interview/pages/supportAI.html -> حلول مقابلات ذكية تساعد فرق الموارد البشرية على فرز المرشحين وتحسين القرار.
+  - /smart-medical-archive/Analytics&Insights.html -> حلول الأرشفة الطبية الذكية لاستخراج البيانات وتنظيم السجلات بسرعة وموثوقية.
+  - /smart-medical-archive/EHR-Viewer.html -> حلول الأرشفة الطبية الذكية لاستخراج البيانات وتنظيم السجلات بسرعة وموثوقية.
+  - /smart-medical-archive/Ingestion.html -> حلول الأرشفة الطبية الذكية لاستخراج البيانات وتنظيم السجلات بسرعة وموثوقية.
+  - /smart-medical-archive/NLP-Search.html -> حلول الأرشفة الطبية الذكية لاستخراج البيانات وتنظيم السجلات بسرعة وموثوقية.
+  - /smart-medical-archive/analytics-insights.html -> حلول الأرشفة الطبية الذكية لاستخراج البيانات وتنظيم السجلات بسرعة وموثوقية.
+  - /smart-medical-archive/ -> حلول الأرشفة الطبية الذكية لاستخراج البيانات وتنظيم السجلات بسرعة وموثوقية.
+  - /services/_template.html -> خدمات BrightAI للتطبيق والاستشارة والتحويل الذكي للشركات السعودية.
+  - /services/template.html -> خدمات BrightAI للتطبيق والاستشارة والتحويل الذكي للشركات السعودية.
