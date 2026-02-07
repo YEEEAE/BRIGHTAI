@@ -13,6 +13,13 @@ const config = {
     model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/models'
   },
+
+  // Groq AI Configuration
+  groq: {
+    apiKey: process.env.GROQ_API_KEY,
+    model: process.env.GROQ_MODEL || 'llama3-70b-8192',
+    endpoint: process.env.GROQ_ENDPOINT || 'https://api.groq.com/openai/v1/chat/completions'
+  },
   
   // Server Configuration
   server: {
@@ -29,7 +36,9 @@ const config = {
   
   // Input Validation
   validation: {
-    maxInputLength: 1000
+    maxInputLength: 1000,
+    maxBodyBytes: parseInt(process.env.MAX_BODY_BYTES, 10) || 10240,
+    ocrMaxBodyBytes: parseInt(process.env.OCR_MAX_BODY_BYTES, 10) || 6 * 1024 * 1024
   }
 };
 
@@ -42,6 +51,10 @@ function validateConfig() {
   
   if (!config.gemini.apiKey) {
     errors.push('GEMINI_API_KEY is required');
+  }
+
+  if (!config.groq.apiKey) {
+    errors.push('GROQ_API_KEY is required');
   }
   
   if (errors.length > 0) {
@@ -60,8 +73,17 @@ function isApiKeyConfigured() {
   return !!config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE';
 }
 
+/**
+ * Check if Groq API key is configured
+ * @returns {boolean}
+ */
+function isGroqConfigured() {
+  return !!config.groq.apiKey && config.groq.apiKey !== 'YOUR_KEY_HERE';
+}
+
 module.exports = {
   config,
   validateConfig,
-  isApiKeyConfigured
+  isApiKeyConfigured,
+  isGroqConfigured
 };

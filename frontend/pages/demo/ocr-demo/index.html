@@ -413,6 +413,14 @@
             });
         }
 
+        function resolveApiBase() {
+            if (window.BRIGHTAI_API_BASE) return window.BRIGHTAI_API_BASE;
+            if (location && location.origin && location.origin !== 'null') {
+                return location.origin;
+            }
+            return 'http://localhost:3000';
+        }
+
         async function runOcr() {
             if (!ocrBtn || !ocrFile) return;
             const file = ocrFile.files && ocrFile.files[0];
@@ -439,7 +447,8 @@
 
             try {
                 const base64 = await fileToBase64(file);
-                const response = await fetch('/api/groq/ocr', {
+                const apiBase = resolveApiBase();
+                const response = await fetch(`${apiBase}/api/groq/ocr`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

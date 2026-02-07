@@ -215,6 +215,17 @@
 - تحسين عناوين الصفحات ووصف الميتا لرفع CTR في صفحات الديمو وOCR والتقرير.
 - تحديث إعدادات config لإضافة GROQ_API_KEY وحدود body للـ OCR.
 - تحديث ملف tasks.md لتعليم إنجاز جميع عناصر المرحلة الخامسة.
+
+تحديث إضافي — إصلاح استجابة Groq
+التاريخ: 2026-02-07 23:17
+
+- إضافة آلية تحديد عنوان API تلقائياً في صفحات الديمو لتفادي فشل الطلبات عند فتح الصفحة محلياً:
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/ocr-demo/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+- إضافة مسارات Groq في خادم /server لضمان الاستجابة سواء تم تشغيل خادم backend أو server.
+- إضافة تخزين جلسات قصير المدى في خادم /server لمزامنة بث الديمو.
+- تحديث إعدادات /server لإضافة GROQ_API_KEY وحدود حجم الطلبات للـ OCR.
 - تم إنشاء صفحة /pricing في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/pricing/index.html
   السبب: صفحة تسعير واضحة تدعم التحويل والتواصل مع المبيعات.
 - تم تضمين canonical + Open Graph + Twitter meta في الصفحات الأربع.

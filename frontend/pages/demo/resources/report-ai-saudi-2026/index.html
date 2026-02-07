@@ -321,6 +321,10 @@
             const faqSection = document.getElementById('report-faq');
             if (!faqSection) return;
 
+            const apiBase = (window.BRIGHTAI_API_BASE)
+                ? window.BRIGHTAI_API_BASE
+                : ((location && location.origin && location.origin !== 'null') ? location.origin : 'http://localhost:3000');
+
             const context = `
 عنوان التقرير: تقرير الذكاء الاصطناعي السعودي 2026.
 الجمهور المستهدف: صناع القرار في الشركات السعودية.
@@ -328,7 +332,7 @@
 القيمة: بيانات محلية، أمثلة سعودية، وخارطة فرص حسب القطاع.
 `;
 
-            fetch('/api/groq/faq', {
+            fetch(`${apiBase}/api/groq/faq`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ context })

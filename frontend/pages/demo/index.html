@@ -388,6 +388,14 @@
             sessionStorage.setItem('brightai_demo_session', id);
         }
 
+        function resolveApiBase() {
+            if (window.BRIGHTAI_API_BASE) return window.BRIGHTAI_API_BASE;
+            if (location && location.origin && location.origin !== 'null') {
+                return location.origin;
+            }
+            return 'http://localhost:3000';
+        }
+
         async function streamDemo() {
             if (!runBtn || !output || !promptInput || !outputType) return;
             const message = promptInput.value.trim();
@@ -406,7 +414,8 @@
             output.textContent = 'جارٍ الاتصال بخدمة الذكاء الاصطناعي...';
 
             try {
-                const response = await fetch('/api/groq/stream', {
+                const apiBase = resolveApiBase();
+                const response = await fetch(`${apiBase}/api/groq/stream`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
