@@ -45,10 +45,10 @@
 - [x] تطبيق rate-limit + حماية مفاتيح API (Backend proxy).
 
 ## المرحلة 6 — Schema / JSON-LD
-- [ ] إدراج `demo.jsonld` في صفحة `/demo`.
-- [ ] إدراج `ocr-demo.jsonld` في صفحة `/demo/ocr-demo/`.
-- [ ] إدراج `report-ai-saudi-2026.jsonld` في صفحة التقرير.
-- [ ] إدراج `pricing.jsonld` في صفحة الأسعار.
+- [x] إدراج `demo.jsonld` في صفحة `/demo`.
+- [x] إدراج `ocr-demo.jsonld` في صفحة `/demo/ocr-demo/`.
+- [x] إدراج `report-ai-saudi-2026.jsonld` في صفحة التقرير.
+- [x] إدراج `pricing.jsonld` في صفحة الأسعار.
 
 ## المرحلة 7 — محتوى سعودي داعم
 - [ ] إنتاج 4 مقالات سعودية داعمة تربط مباشرة بصفحات الملك.
