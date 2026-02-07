@@ -273,3 +273,15 @@
 - /Users/yzydalshmry/Desktop/BrightAI/robots.txt
 - /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/crawl_data.json
 - /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/authority_map.json
+
+تحديث إضافي — المرحلة 4 (الأداء وCore Web Vitals)
+- إنشاء نسخ WebP محسّنة للصور الثقيلة داخل الصفحة الرئيسية:
+  /Users/yzydalshmry/Desktop/BrightAI/assets/3d-icons/*.webp
+- تحديث index.html لاستخدام <picture> مع WebP + fallback JPG وإضافة loading="lazy" و decoding="async" وأبعاد ثابتة للصور الثقيلة.
+- تحسين تحميل الخطوط عبر preload + noscript في:
+  /Users/yzydalshmry/Desktop/BrightAI/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/ocr-demo/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/pricing/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+- ملاحظة: لم يتم تشغيل قياس Lighthouse/LCP فعلياً (يتطلب تشغيل محلي عبر المتصفح).
