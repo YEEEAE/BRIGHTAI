@@ -88,6 +88,19 @@
             height: 18px
         }
 
+        i[data-lucide] {
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+        }
+
+        iconify-icon {
+            width: 1em;
+            height: 1em;
+            display: inline-flex;
+            vertical-align: -0.125em;
+        }
+
         h1,
         h2,
         h3 {
@@ -257,9 +270,16 @@
             position: absolute;
             inset: -20px 0 0 0;
             pointer-events: none;
-            opacity: .38;
+            opacity: 0;
+            visibility: hidden;
             mix-blend-mode: screen;
             filter: saturate(1.2);
+            transition: opacity .6s ease, visibility .6s ease;
+        }
+
+        .code-wall.ready {
+            opacity: .38;
+            visibility: visible;
         }
 
         .code-wall::before {
@@ -2551,12 +2571,13 @@
             display: grid;
             place-items: center;
             z-index: 2000;
-            transition: opacity .35s ease, visibility .35s ease;
+            transition: opacity .35s ease;
+            will-change: opacity;
         }
 
         .loading.hide {
             opacity: 0;
-            visibility: hidden
+            pointer-events: none
         }
 
         .spinner {

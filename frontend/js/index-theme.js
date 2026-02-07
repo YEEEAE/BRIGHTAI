@@ -5,13 +5,22 @@
 (function () {
     'use strict';
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const whenIdle = (cb, timeout = 1200) => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(cb, { timeout });
+        } else {
+            setTimeout(cb, timeout);
+        }
+    };
+
     const safeLucide = () => {
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
             window.lucide.createIcons();
         }
     };
 
-    safeLucide();
+    whenIdle(safeLucide, 900);
 
     // Loading screen
     const loading = document.getElementById('loading');
@@ -23,33 +32,43 @@
 
     // Matrix code background (fake)
     const matrixEl = document.getElementById('matrixBackground');
+    const codeWall = document.querySelector('.code-wall');
     if (matrixEl) {
-        const seedLines = [
-            "GET /api/v1/nlp/sentiment 200 78ms",
-            "POST /api/v1/nlp/ner 200 64ms",
-            "POST /api/v1/nlp/summarize 200 83ms",
-            "POST /api/v1/nlp/translate 200 71ms",
-            "POST /api/v1/predict/forecast 200 92ms",
-            "POST /api/v1/predict/demand 200 88ms",
-            "POST /api/v1/predict/risk 200 95ms",
-            "POST /api/v1/predict/anomaly 200 69ms",
-            "WS /api/v1/speech/stream CONNECTED",
-            "POST /api/v1/speech/stt 200 84ms",
-            "POST /api/v1/speech/tts 200 79ms",
-            "OAuth2 token issued: *****",
-            "SDK: python | javascript | java",
-            "OpenAPI: swagger.json loaded",
-        ];
-        let bg = "";
-        for (let i = 0; i < 220; i++) {
-            bg += (seedLines[i % seedLines.length] + "   " + Math.random().toString(16).slice(2) + "\n");
-        }
-        matrixEl.textContent = bg;
+        const renderMatrix = () => {
+            const seedLines = [
+                "GET /api/v1/nlp/sentiment 200 78ms",
+                "POST /api/v1/nlp/ner 200 64ms",
+                "POST /api/v1/nlp/summarize 200 83ms",
+                "POST /api/v1/nlp/translate 200 71ms",
+                "POST /api/v1/predict/forecast 200 92ms",
+                "POST /api/v1/predict/demand 200 88ms",
+                "POST /api/v1/predict/risk 200 95ms",
+                "POST /api/v1/predict/anomaly 200 69ms",
+                "WS /api/v1/speech/stream CONNECTED",
+                "POST /api/v1/speech/stt 200 84ms",
+                "POST /api/v1/speech/tts 200 79ms",
+                "OAuth2 token issued: *****",
+                "SDK: python | javascript | java",
+                "OpenAPI: swagger.json loaded",
+            ];
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const maxLines = isMobile ? 120 : 180;
+            let bg = "";
+            for (let i = 0; i < maxLines; i++) {
+                bg += (seedLines[i % seedLines.length] + "   " + Math.random().toString(16).slice(2) + "\n");
+            }
+            matrixEl.textContent = bg;
+            if (codeWall) codeWall.classList.add('ready');
+        };
+
+        const scheduleMatrix = () => whenIdle(renderMatrix, 1400);
+        if (document.readyState === 'complete') scheduleMatrix();
+        else window.addEventListener('load', scheduleMatrix, { once: true });
     }
 
     // Terminal typing animation
     const terminal = document.getElementById('terminalTyping');
-    if (terminal) {
+    if (terminal && !prefersReducedMotion) {
         const lines = [
             `$ curl -X POST https://api.brightai.site/api/v1/nlp\n  -H "Authorization: Bearer <token>"\n  -d '{"task":"sentiment","text":"الخدمة ممتازة ولكن الدعم يحتاج تحسين"}'`,
             `{ "sentiment":"mixed", "score":0.62, "latency_ms":78 }`,
@@ -93,14 +112,16 @@
             setTimeout(typeTick, 18 + Math.random() * 22);
         }
 
-        setTimeout(typeTick, 600);
+        whenIdle(() => setTimeout(typeTick, 600), 1500);
     }
 
     // Bento random reveal
     const bento = [...document.querySelectorAll('[data-order]')];
     if (bento.length) {
-        bento.sort(() => Math.random() - 0.5);
-        bento.forEach((el, idx) => setTimeout(() => el.classList.add('show'), 120 + idx * 110));
+        whenIdle(() => {
+            bento.sort(() => Math.random() - 0.5);
+            bento.forEach((el, idx) => setTimeout(() => el.classList.add('show'), 120 + idx * 110));
+        }, 1200);
     }
 
     // Scroll progress + toTop button
@@ -232,16 +253,18 @@
     const req = document.getElementById('req');
     const models = document.getElementById('models');
     if (acc && lat && req && models) {
-        setInterval(() => {
-            const a = (98.2 + Math.random() * 0.8).toFixed(1);
-            const l = (0.11 + Math.random() * 0.10).toFixed(2);
-            const r = (15200 + Math.floor(Math.random() * 200)).toLocaleString('en-US');
-            const m = 10 + Math.floor(Math.random() * 5);
-            acc.textContent = a + "%";
-            lat.textContent = l + "s";
-            req.textContent = r;
-            models.textContent = m;
-        }, 1400);
+        whenIdle(() => {
+            setInterval(() => {
+                const a = (98.2 + Math.random() * 0.8).toFixed(1);
+                const l = (0.11 + Math.random() * 0.10).toFixed(2);
+                const r = (15200 + Math.floor(Math.random() * 200)).toLocaleString('en-US');
+                const m = 10 + Math.floor(Math.random() * 5);
+                acc.textContent = a + "%";
+                lat.textContent = l + "s";
+                req.textContent = r;
+                models.textContent = m;
+            }, 1400);
+        }, 1500);
     }
 
     // Portfolio filters
@@ -266,32 +289,34 @@
     const bars = [...document.querySelectorAll('.bar > div')];
     const results = document.getElementById('results');
     if (results && (kpiNumbers.length || bars.length)) {
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (!e.isIntersecting) return;
-                if (bars.length) bars.forEach(b => b.style.width = b.dataset.fill + "%");
-                if (kpiNumbers.length) {
-                    kpiNumbers.forEach(el => {
-                        const target = parseFloat(el.dataset.count);
-                        const isFloat = ("" + target).includes(".");
-                        const start = 0;
-                        const duration = 1100;
-                        const t0 = performance.now();
-                        function step(now) {
-                            const p = Math.min(1, (now - t0) / duration);
-                            const v = start + (target - start) * p;
-                            el.textContent = (isFloat ? v.toFixed(1) : Math.round(v)) + (el.textContent.includes("%") ? "%" : "");
-                            if (p < 1) requestAnimationFrame(step);
-                        }
-                        const suffixPercent = (target <= 100 && el.dataset.count !== "256");
-                        el.textContent = suffixPercent ? "0%" : "0";
-                        requestAnimationFrame(step);
-                    });
-                }
-                obs.disconnect();
-            });
-        }, { threshold: .25 });
-        obs.observe(results);
+        whenIdle(() => {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    if (bars.length) bars.forEach(b => b.style.width = b.dataset.fill + "%");
+                    if (kpiNumbers.length) {
+                        kpiNumbers.forEach(el => {
+                            const target = parseFloat(el.dataset.count);
+                            const isFloat = ("" + target).includes(".");
+                            const start = 0;
+                            const duration = 1100;
+                            const t0 = performance.now();
+                            function step(now) {
+                                const p = Math.min(1, (now - t0) / duration);
+                                const v = start + (target - start) * p;
+                                el.textContent = (isFloat ? v.toFixed(1) : Math.round(v)) + (el.textContent.includes("%") ? "%" : "");
+                                if (p < 1) requestAnimationFrame(step);
+                            }
+                            const suffixPercent = (target <= 100 && el.dataset.count !== "256");
+                            el.textContent = suffixPercent ? "0%" : "0";
+                            requestAnimationFrame(step);
+                        });
+                    }
+                    obs.disconnect();
+                });
+            }, { threshold: .25 });
+            obs.observe(results);
+        }, 1600);
     }
 
     // ROI calculator (simple fake formula)

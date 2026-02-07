@@ -285,3 +285,20 @@
   /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/pricing/index.html
   /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
 - ملاحظة: لم يتم تشغيل قياس Lighthouse/LCP فعلياً (يتطلب تشغيل محلي عبر المتصفح).
+
+تحديث إضافي — تحسينات أداء على الصفحة الرئيسية (استناداً لتقرير Lighthouse 7 فبراير 2026)
+- إصلاح وتهيئة head في /Users/yzydalshmry/Desktop/BrightAI/index.html:
+  - إغلاق صحيح لسكربت JSON-LD الخاص بالأسئلة الشائعة.
+  - إزالة وسوم إغلاق غير صحيحة في نهاية head.
+- تحسينات شبكة وتحميل الموارد:
+  - إضافة preconnect لـ api.iconify.design و api.simplesvg.com لتسريع تحميل الأيقونات.
+  - إضافة dns-prefetch لـ cdn.tailwindcss.com و unpkg.com لتقليل زمن DNS.
+  - تحويل سكربتات iconify و lucide إلى defer لتقليل حظر العرض.
+- تحسينات Core Web Vitals في /Users/yzydalshmry/Desktop/BrightAI/frontend/css/index-theme.css:
+  - تثبيت أبعاد الأيقونات (lucide + iconify) لتقليل CLS.
+  - جعل خلفية الكود (code-wall) مخفية مبدئياً مع إظهار تدريجي بعد التحميل.
+  - تحسين شاشة التحميل بتخفيف خصائص غير مركّبة (إزالة visibility واستخدام opacity فقط).
+- تحسينات أداء في /Users/yzydalshmry/Desktop/BrightAI/frontend/js/index-theme.js:
+  - تأخير توليد خلفية الكود إلى idle بعد اكتمال التحميل لتقليل LCP.
+  - تقليل عدد أسطر الخلفية على الجوال.
+  - تأخير تشغيل الأنيميشنات (الكتابة، الكشف العشوائي، الإحصائيات، عدادات KPI) إلى idle لتقليل ضغط الـmain thread.
