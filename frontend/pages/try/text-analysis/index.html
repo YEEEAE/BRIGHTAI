@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://brightai.site/try/text-analysis/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحليل النصي الذكي | Bright AI</title>
+
+    <meta name="description"
+        content="حلل النصوص بالذكاء الاصطناعي - استخراج الكلمات المفتاحية، تحليل المشاعر، تلخيص النصوص مع Groq API.">
+    <meta name="keywords" content="تحليل نصي, NLP, ذكاء اصطناعي, تحليل المشاعر, تلخيص, السعودية">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="التحليل النصي الذكي | Bright AI">
+    <meta property="og:description" content="حلل النصوص واستخرج الرؤى بالذكاء الاصطناعي">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../css/bundle-critical.css">
+    <link rel="stylesheet" href="../../../css/main.bundle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: var(--bg-dark, #0a0f1a);
+            color: var(--text-color, #e2e8f0);
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(at 0% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
+        }
+
+        .tool-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+        }
+
+        .text-area {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            font-size: 16px;
+            line-height: 1.8;
+            resize: vertical;
+            min-height: 200px;
+            transition: all 0.3s;
+        }
+
+        .text-area:focus {
+            outline: none;
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .text-area::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .analysis-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+
+        .sentiment-positive {
+            color: #10b981;
+        }
+
+        .sentiment-negative {
+            color: #ef4444;
+        }
+
+        .sentiment-neutral {
+            color: #f59e0b;
+        }
+
+        .keyword-tag {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 4px;
+            transition: all 0.2s;
+        }
+
+        .keyword-tag:hover {
+            background: rgba(139, 92, 246, 0.3);
+            transform: scale(1.05);
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .analysis-type-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .analysis-type-btn:hover,
+        .analysis-type-btn.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.4);
+            color: #a78bfa;
+        }
+
+        .result-box {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #8b5cf6;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+    </style>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/index-theme.css">
+    <script src="https://unpkg.com/iconify-icon/dist/iconify-icon.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container">
+            <a href="../../../.." class="nav-logo">
+                <img src="../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40">
+                <span>Bright AI</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="../index.html" class="text-gray-400 hover:text-white transition-colors text-sm">
+                    <i class="fa-solid fa-arrow-right ml-2"></i> العودة للنماذج
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="tool-container">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <div
+                class="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 px-4 py-2 rounded-full text-sm mb-6">
+                <i class="fa-solid fa-language"></i>
+                <span>معالجة اللغة الطبيعية</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400">
+                    التحليل النصي الذكي
+                </span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                حلل النصوص العربية والإنجليزية - استخراج الكلمات المفتاحية، تحليل المشاعر، التلخيص، والمزيد
+            </p>
+        </div>
+
+        <!-- Analysis Types -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <button class="analysis-type-btn active" data-type="summary">
+                <i class="fa-solid fa-compress ml-2"></i> تلخيص
+            </button>
+            <button class="analysis-type-btn" data-type="keywords">
+                <i class="fa-solid fa-key ml-2"></i> كلمات مفتاحية
+            </button>
+            <button class="analysis-type-btn" data-type="sentiment">
+                <i class="fa-solid fa-face-smile ml-2"></i> تحليل المشاعر
+            </button>
+            <button class="analysis-type-btn" data-type="entities">
+                <i class="fa-solid fa-tags ml-2"></i> استخراج الكيانات
+            </button>
+            <button class="analysis-type-btn" data-type="questions">
+                <i class="fa-solid fa-circle-question ml-2"></i> توليد أسئلة
+            </button>
+        </div>
+
+        <!-- Input -->
+        <div class="mb-6">
+            <textarea id="text-input" class="text-area w-full"
+                placeholder="اكتب أو الصق النص هنا للتحليل...&#10;&#10;يمكنك إدخال نص عربي أو إنجليزي - سيتم تحليله تلقائياً بالذكاء الاصطناعي."></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-center gap-4 mb-8">
+            <button id="analyze-btn" class="action-btn">
+                <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                تحليل النص
+            </button>
+            <button id="clear-btn"
+                class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-6 py-3 rounded-xl border border-white/10 transition-all">
+                <i class="fa-solid fa-eraser ml-2"></i>
+                مسح
+            </button>
+        </div>
+
+        <!-- Results -->
+        <div id="results-section" class="hidden space-y-6">
+            <!-- Analysis Result -->
+            <div class="analysis-card">
+                <div class="flex items-center gap-3 mb-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                        <i class="fa-solid fa-robot text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white" id="result-title">نتيجة التحليل</h3>
+                        <p class="text-gray-500 text-sm" id="result-type">تلخيص</p>
+                    </div>
+                </div>
+                <div id="analysis-result" class="result-box text-gray-300 leading-relaxed"></div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="analysis-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">عدد الكلمات</p>
+                    <h3 id="stat-words" class="text-2xl font-bold text-white">0</h3>
+                </div>
+                <div class="analysis-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">عدد الجمل</p>
+                    <h3 id="stat-sentences" class="text-2xl font-bold text-white">0</h3>
+                </div>
+                <div class="analysis-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">عدد الأحرف</p>
+                    <h3 id="stat-chars" class="text-2xl font-bold text-white">0</h3>
+                </div>
+                <div class="analysis-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">وقت القراءة</p>
+                    <h3 id="stat-time" class="text-2xl font-bold text-white">0 د</h3>
+                </div>
+            </div>
+
+            <!-- Keywords (shown for keywords analysis) -->
+            <div id="keywords-section" class="analysis-card hidden">
+                <h3 class="font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-hashtag text-purple-400"></i>
+                    الكلمات المفتاحية
+                </h3>
+                <div id="keywords-container"></div>
+            </div>
+        </div>
+
+        <!-- Sample Texts -->
+        <div class="mt-12">
+            <h3 class="text-gray-400 text-sm mb-4 text-center">أو جرب أحد النصوص النموذجية:</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button
+                    class="sample-btn bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm transition-all"
+                    data-sample="news">
+                    📰 خبر صحفي
+                </button>
+                <button
+                    class="sample-btn bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm transition-all"
+                    data-sample="review">
+                    ⭐ مراجعة منتج
+                </button>
+                <button
+                    class="sample-btn bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white px-4 py-2 rounded-lg text-sm transition-all"
+                    data-sample="article">
+                    📝 مقال تقني
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-slate-900/50 mt-16">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-center">
+            <p class="text-gray-500 text-sm">© 2026 Bright AI - أدوات تحليل النصوص الذكية</p>
+        </div>
+    </footer>
+
+    <script>
+        const GROQ_API_KEY = 'GROQ_KEY_REDACTED';
+
+        const sampleTexts = {
+            news: `أعلنت المملكة العربية السعودية عن إطلاق مشروع "نيوم" كأحد أهم المشاريع الضخمة ضمن رؤية 2030. يهدف المشروع إلى بناء مدينة ذكية مستدامة على ساحل البحر الأحمر بتكلفة تتجاوز 500 مليار دولار. ستعتمد المدينة بالكامل على الطاقة المتجددة وستضم أحدث التقنيات في مجالات الذكاء الاصطناعي والروبوتات.`,
+            review: `قمت بتجربة هاتف آيفون 15 برو ماكس لمدة شهر كامل. التصميم رائع والكاميرا ممتازة خصوصاً في التصوير الليلي. الأداء سريع جداً مع شريحة A17 Pro. السلبيات الوحيدة هي السعر المرتفع ووزن الجهاز الثقيل نسبياً. بشكل عام أنصح به لمحبي التصوير والأداء العالي.`,
+            article: `يعد الذكاء الاصطناعي من أهم التقنيات التي ستغير مستقبل العمل. تشير الدراسات إلى أن 40% من الوظائف الحالية قد تتأثر بالأتمتة خلال العقد القادم. لكن في المقابل، ستظهر ملايين الوظائف الجديدة في مجالات تطوير وصيانة أنظمة الذكاء الاصطناعي. المفتاح هو التكيف والتعلم المستمر.`
+        };
+
+        const prompts = {
+            summary: 'قم بتلخيص النص التالي في 2-3 جمل مركزة:\n\n',
+            keywords: 'استخرج 8-10 كلمات مفتاحية من النص التالي، وقدمها كقائمة مفصولة بفواصل:\n\n',
+            sentiment: 'حلل مشاعر النص التالي (إيجابي/سلبي/محايد) واشرح السبب بإختصار:\n\n',
+            entities: 'استخرج الكيانات المهمة (أشخاص، أماكن، منظمات، تواريخ، أرقام) من النص التالي:\n\n',
+            questions: 'بناءً على النص التالي، قم بتوليد 5 أسئلة مهمة يمكن طرحها:\n\n'
+        };
+
+        const typeTitles = {
+            summary: 'ملخص النص',
+            keywords: 'الكلمات المفتاحية',
+            sentiment: 'تحليل المشاعر',
+            entities: 'الكيانات المستخرجة',
+            questions: 'الأسئلة المُولدة'
+        };
+
+        let currentType = 'summary';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const textInput = document.getElementById('text-input');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const typeBtns = document.querySelectorAll('.analysis-type-btn');
+            const sampleBtns = document.querySelectorAll('.sample-btn');
+
+            // Type selection
+            typeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    typeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentType = btn.dataset.type;
+                });
+            });
+
+            // Sample texts
+            sampleBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    textInput.value = sampleTexts[btn.dataset.sample];
+                });
+            });
+
+            // Clear
+            clearBtn.addEventListener('click', () => {
+                textInput.value = '';
+                document.getElementById('results-section').classList.add('hidden');
+            });
+
+            // Analyze
+            analyzeBtn.addEventListener('click', async () => {
+                const text = textInput.value.trim();
+                if (!text) {
+                    alert('يرجى إدخال نص للتحليل');
+                    return;
+                }
+
+                analyzeBtn.disabled = true;
+                analyzeBtn.innerHTML = '<span class="typing-indicator"><span></span><span></span><span></span></span> جاري التحليل...';
+
+                // Update stats
+                updateStats(text);
+
+                // Show results section
+                document.getElementById('results-section').classList.remove('hidden');
+                document.getElementById('result-type').textContent = typeTitles[currentType];
+                document.getElementById('result-title').textContent = 'نتيجة التحليل';
+
+                const resultBox = document.getElementById('analysis-result');
+                resultBox.innerHTML = '<span class="typing-indicator"><span></span><span></span><span></span></span>';
+
+                try {
+                    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROQ_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            messages: [
+                                { role: "system", content: "أنت محلل نصوص خبير. أجب باللغة العربية بشكل مختصر ومفيد." },
+                                { role: "user", content: prompts[currentType] + text }
+                            ],
+                            model: "llama3-70b-8192",
+                            temperature: 0.7,
+                            max_tokens: 500
+                        })
+                    });
+
+                    const data = await response.json();
+                    const result = data.choices?.[0]?.message?.content || 'تعذر إجراء التحليل';
+
+                    // Animate result
+                    resultBox.innerHTML = '';
+                    await typeText(resultBox, result);
+
+                    // Show keywords if applicable
+                    if (currentType === 'keywords') {
+                        showKeywords(result);
+                    } else {
+                        document.getElementById('keywords-section').classList.add('hidden');
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    resultBox.innerHTML = '<span class="text-red-400">حدث خطأ في التحليل. يرجى المحاولة مرة أخرى.</span>';
+                }
+
+                analyzeBtn.disabled = false;
+                analyzeBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles ml-2"></i> تحليل النص';
+            });
+        });
+
+        function updateStats(text) {
+            const words = text.split(/\s+/).filter(w => w.length > 0);
+            const sentences = text.split(/[.!?،؟]+/).filter(s => s.trim().length > 0);
+            const chars = text.length;
+            const readTime = Math.ceil(words.length / 200); // 200 words per minute
+
+            document.getElementById('stat-words').textContent = words.length.toLocaleString('ar-SA');
+            document.getElementById('stat-sentences').textContent = sentences.length.toLocaleString('ar-SA');
+            document.getElementById('stat-chars').textContent = chars.toLocaleString('ar-SA');
+            document.getElementById('stat-time').textContent = readTime + ' د';
+        }
+
+        async function typeText(element, text) {
+            for (const char of text) {
+                element.innerHTML += char === '\n' ? '<br>' : char;
+                await new Promise(r => setTimeout(r, 15));
+            }
+        }
+
+        function showKeywords(result) {
+            const container = document.getElementById('keywords-container');
+            const section = document.getElementById('keywords-section');
+
+            // Extract keywords (assuming comma-separated)
+            const keywords = result.split(/[,،\n]+/).map(k => k.trim()).filter(k => k.length > 0 && k.length < 30);
+
+            container.innerHTML = keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('');
+            section.classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>

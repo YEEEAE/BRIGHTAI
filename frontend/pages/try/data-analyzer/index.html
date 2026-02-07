@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://brightai.site/try/data-analyzer/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محلل البيانات الذكي | Bright AI - تحليل CSV و Excel</title>
+
+    <meta name="description"
+        content="حلل ملفات CSV و Excel بالذكاء الاصطناعي. رسوم بيانية تفاعلية، إحصائيات دقيقة، ورؤى ذكية مع Groq AI.">
+    <meta name="keywords" content="تحليل بيانات, CSV, Excel, ذكاء اصطناعي, رسوم بيانية, السعودية">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="محلل البيانات الذكي | Bright AI">
+    <meta property="og:description" content="حلل ملفات CSV و Excel واحصل على رؤى ذكية">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../css/bundle-critical.css">
+    <link rel="stylesheet" href="../../../css/main.bundle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: var(--bg-dark, #0a0f1a);
+            color: var(--text-color, #e2e8f0);
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
+        }
+
+        .tool-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 20px 40px;
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.highlight {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+            transform: scale(1.01);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 15, 26, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #EC4899, #8B5CF6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            animation: pulse-avatar 3s infinite;
+        }
+
+        @keyframes pulse-avatar {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(139, 92, 246, 0);
+            }
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+        }
+    </style>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/index-theme.css">
+    <script src="https://unpkg.com/iconify-icon/dist/iconify-icon.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="unified-nav" role="navigation">
+        <div class="nav-container">
+            <a href="../../../.." class="nav-logo">
+                <img src="../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40">
+                <span>Bright AI</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="../index.html" class="text-gray-400 hover:text-white transition-colors text-sm">
+                    <i class="fa-solid fa-arrow-right ml-2"></i> العودة للنماذج
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="tool-container">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div
+                class="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 px-4 py-2 rounded-full text-sm mb-6">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>محلل البيانات</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">
+                    حلل بياناتك فوراً
+                </span>
+            </h1>
+            <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                ارفع ملف CSV أو Excel واحصل على رسوم بيانية تفاعلية، إحصائيات دقيقة، ورؤى مدعومة بـ Groq AI.
+            </p>
+        </div>
+
+        <!-- Upload Section -->
+        <section id="upload-section" class="flex flex-col items-center justify-center min-h-[50vh] text-center">
+            <div id="upload-area"
+                class="upload-zone relative p-12 rounded-3xl w-full max-w-3xl mx-auto flex flex-col items-center gap-6">
+                <div class="w-24 h-24 rounded-full bg-purple-500/10 flex items-center justify-center">
+                    <i class="fa-solid fa-cloud-arrow-up text-4xl text-purple-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold text-white mb-2">اسحب الملف هنا أو اضغط للرفع</h3>
+                    <p class="text-gray-400">يدعم ملفات .csv, .xlsx, .xls</p>
+                </div>
+                <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    accept=".csv,.xlsx,.xls">
+                <div class="flex gap-4 text-sm text-gray-500">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> معالجة آمنة</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-bolt"></i> تحليل فوري</span>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <button id="sample-data-btn"
+                    class="bg-white/5 hover:bg-white/10 text-purple-400 hover:text-purple-300 px-6 py-3 rounded-xl border border-purple-500/20 transition-all flex items-center gap-3">
+                    <i class="fa-solid fa-table"></i>
+                    <span>جرب بيانات نموذجية</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="ai-avatar mb-8 w-24 h-24 text-4xl">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">جاري تحليل البيانات...</h2>
+            <p class="text-gray-400 mb-4" id="loading-status">قراءة الملف</p>
+            <div class="w-64 h-2 bg-gray-800 rounded-full overflow-hidden">
+                <div id="loading-bar"
+                    class="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 transition-all"
+                    style="width:0%"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="hidden min-h-screen">
+            <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-2">لوحة التحليل الذكي</h2>
+                    <p class="text-gray-400 flex items-center gap-2">
+                        <i class="fa-regular fa-file-excel"></i>
+                        ملف: <span id="file-name-display" class="text-purple-400 font-mono">data.csv</span>
+                    </p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="location.reload()"
+                        class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg text-sm border border-white/10 transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-upload"></i> رفع ملف جديد
+                    </button>
+                    <button data-action="export"
+                        class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-lg text-sm transition-all shadow-lg flex items-center gap-2">
+                        <i class="fa-solid fa-file-export"></i> تصدير التقرير
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">إجمالي السجلات</p>
+                    <h3 id="total-rows" class="text-3xl font-bold text-white">0</h3>
+                </div>
+                <div class="metric-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">الأعمدة</p>
+                    <h3 id="total-columns" class="text-3xl font-bold text-white">0</h3>
+                </div>
+                <div class="metric-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">جودة البيانات</p>
+                    <h3 id="ai-quality-score" class="text-3xl font-bold text-green-400">0%</h3>
+                </div>
+                <div class="metric-card text-center">
+                    <p class="text-gray-400 text-sm mb-1">الحالة</p>
+                    <h3 class="text-xl font-bold text-purple-300">تم التحليل ✓</h3>
+                </div>
+            </div>
+
+            <!-- Charts & Insights -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-4">توزيع البيانات</h4>
+                        <div class="h-[300px]"><canvas id="chart-1"></canvas></div>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-4">المخطط الدائري</h4>
+                        <div class="h-[300px]"><canvas id="chart-2"></canvas></div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <div
+                        class="glass-card h-full p-6 border-purple-500/20 bg-gradient-to-b from-purple-900/10 to-transparent flex flex-col">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+                            <div class="ai-avatar w-10 h-10 text-lg">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <h3 class="font-bold text-white text-lg">رؤى Groq AI</h3>
+                        </div>
+                        <div class="flex-1 custom-scroll overflow-y-auto pr-2">
+                            <ul id="ai-insights-list" class="space-y-4 text-sm text-gray-300 leading-relaxed"></ul>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-white/10">
+                            <div class="relative">
+                                <input type="text" id="ask-input" placeholder="اسأل AI عن بياناتك..."
+                                    class="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-500 pl-12">
+                                <button id="ask-btn"
+                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400 hover:text-white">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-slate-900/50 mt-16">
+        <div class="max-w-7xl mx-auto px-6 py-8 text-center">
+            <p class="text-gray-500 text-sm">© 2026 Bright AI - محلل البيانات الذكي</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../../../js/data-analyzer.js"></script>
+    <script>
+        const GROQ_API_KEY = 'GROQ_KEY_REDACTED';
+
+        class DataAnalyzerPage {
+            constructor() {
+                this.analyzer = new DataAnalyzer();
+                this.currentAnalysis = null;
+                this.init();
+            }
+
+            init() {
+                const fileInput = document.getElementById('file-input');
+                const uploadArea = document.getElementById('upload-area');
+                const sampleBtn = document.getElementById('sample-data-btn');
+                const exportBtn = document.querySelector('[data-action="export"]');
+                const askInput = document.getElementById('ask-input');
+                const askBtn = document.getElementById('ask-btn');
+
+                fileInput.addEventListener('change', (e) => this.handleFile(e.target.files[0]));
+
+                uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.add('highlight');
+                });
+                uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('highlight'));
+                uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('highlight');
+                    this.handleFile(e.dataTransfer.files[0]);
+                });
+
+                sampleBtn?.addEventListener('click', () => this.loadSampleData());
+                exportBtn?.addEventListener('click', () => this.exportReport());
+
+                askBtn?.addEventListener('click', () => this.askQuestion(askInput.value));
+                askInput?.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.askQuestion(askInput.value);
+                });
+            }
+
+            loadSampleData() {
+                const headers = ['المنتج', 'الفئة', 'المبيعات', 'الكمية', 'المنطقة'];
+                const data = [
+                    ['لابتوب برو', 'إلكترونيات', '15000', '25', 'الرياض'],
+                    ['هاتف ذكي', 'إلكترونيات', '8500', '45', 'جدة'],
+                    ['سماعات', 'إكسسوارات', '1200', '120', 'الدمام'],
+                    ['شاشة 4K', 'إلكترونيات', '4500', '18', 'الرياض'],
+                    ['كيبورد', 'إكسسوارات', '800', '65', 'جدة'],
+                    ['ماوس', 'إكسسوارات', '350', '90', 'الرياض'],
+                    ['تابلت', 'إلكترونيات', '6200', '30', 'مكة'],
+                    ['ساعة ذكية', 'إلكترونيات', '2800', '55', 'الرياض'],
+                    ['شاحن', 'إكسسوارات', '150', '200', 'جدة'],
+                    ['كاميرا', 'إلكترونيات', '950', '40', 'الدمام'],
+                ];
+
+                this.showLoading();
+                setTimeout(() => {
+                    this.currentAnalysis = this.analyzer.analyzeData(data, headers);
+                    this.showDashboard('sample-data.csv');
+                }, 2000);
+            }
+
+            async handleFile(file) {
+                if (!file) return;
+                this.showLoading();
+
+                try {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    let result;
+
+                    if (ext === 'csv') {
+                        result = await new Promise((resolve, reject) => {
+                            Papa.parse(file, {
+                                complete: (r) => resolve({ headers: r.data[0], data: r.data.slice(1).filter(row => row.some(c => c)) }),
+                                error: reject
+                            });
+                        });
+                    } else {
+                        result = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                const wb = XLSX.read(e.target.result, { type: 'binary' });
+                                const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
+                                resolve({ headers: json[0], data: json.slice(1).filter(row => row.some(c => c)) });
+                            };
+                            reader.onerror = reject;
+                            reader.readAsBinaryString(file);
+                        });
+                    }
+
+                    this.currentAnalysis = this.analyzer.analyzeData(result.data, result.headers);
+                    setTimeout(() => this.showDashboard(file.name), 1500);
+
+                } catch (error) {
+                    console.error(error);
+                    alert('حدث خطأ في معالجة الملف');
+                    location.reload();
+                }
+            }
+
+            showLoading() {
+                document.getElementById('upload-section').classList.add('hidden');
+                document.getElementById('loading-overlay').classList.remove('hidden');
+                this.animateLoading();
+            }
+
+            animateLoading() {
+                const bar = document.getElementById('loading-bar');
+                const status = document.getElementById('loading-status');
+                const stages = [
+                    { w: '25%', t: 'قراءة البيانات...' },
+                    { w: '50%', t: 'تحليل الأعمدة...' },
+                    { w: '75%', t: 'رسم المخططات...' },
+                    { w: '100%', t: 'توليد الرؤى...' }
+                ];
+                stages.forEach((s, i) => {
+                    setTimeout(() => {
+                        bar.style.width = s.w;
+                        status.textContent = s.t;
+                    }, i * 400);
+                });
+            }
+
+            showDashboard(filename) {
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('dashboard-section').classList.remove('hidden');
+
+                const a = this.currentAnalysis;
+                document.getElementById('file-name-display').textContent = filename;
+                document.getElementById('total-rows').textContent = a.totalRows.toLocaleString('ar-SA');
+                document.getElementById('total-columns').textContent = a.totalColumns;
+                document.getElementById('ai-quality-score').textContent = a.qualityScore + '%';
+
+                this.analyzer.renderCharts(a);
+                this.getAIInsights();
+            }
+
+            async getAIInsights() {
+                const container = document.getElementById('ai-insights-list');
+                container.innerHTML = '<li class="text-gray-500">جاري توليد الرؤى...</li>';
+
+                const a = this.currentAnalysis;
+                const prompt = `كمحلل بيانات، قدم 4 رؤى مختصرة لهذه البيانات:
+                - سجلات: ${a.totalRows}, أعمدة: ${a.totalColumns}, جودة: ${a.qualityScore}%
+                - أعمدة رقمية: ${a.numericColumns.map(c => c.name).join(', ')}
+                - أعمدة نصية: ${a.categoricalColumns.map(c => c.name).join(', ')}
+                اكتب بالعربية مع إيموجي.`;
+
+                try {
+                    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROQ_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            messages: [{ role: "user", content: prompt }],
+                            model: "llama3-70b-8192",
+                            temperature: 0.7,
+                            max_tokens: 400
+                        })
+                    });
+
+                    const data = await response.json();
+                    const text = data.choices?.[0]?.message?.content || '';
+                    const insights = text.split('\n').filter(l => l.trim());
+
+                    container.innerHTML = insights.map(i => `
+                        <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i class="fa-solid fa-lightbulb text-yellow-400 mt-1"></i>
+                            <span>${i}</span>
+                        </li>
+                    `).join('');
+
+                } catch (e) {
+                    container.innerHTML = `
+                        <li class="flex gap-3 bg-white/5 p-4 rounded-xl">
+                            <i class="fa-solid fa-chart-pie text-purple-400"></i>
+                            <span>تم تحليل ${a.totalRows} سجل بنسبة جودة ${a.qualityScore}%</span>
+                        </li>
+                    `;
+                }
+            }
+
+            async askQuestion(question) {
+                if (!question?.trim()) return;
+
+                const container = document.getElementById('ai-insights-list');
+                const input = document.getElementById('ask-input');
+
+                container.innerHTML += `
+                    <li class="flex gap-3 bg-blue-500/10 p-4 rounded-xl border border-blue-500/20">
+                        <i class="fa-solid fa-user text-blue-400"></i>
+                        <span>${question}</span>
+                    </li>
+                `;
+                input.value = '';
+
+                const a = this.currentAnalysis;
+                const prompt = `السؤال: ${question}
+                سياق البيانات: ${a.totalRows} سجل, ${a.totalColumns} عمود, جودة ${a.qualityScore}%
+                أجب بإختصار بالعربية.`;
+
+                try {
+                    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${GROQ_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            messages: [{ role: "user", content: prompt }],
+                            model: "llama3-70b-8192",
+                            temperature: 0.7,
+                            max_tokens: 300
+                        })
+                    });
+
+                    const data = await response.json();
+                    const answer = data.choices?.[0]?.message?.content || 'تعذر الإجابة';
+
+                    container.innerHTML += `
+                        <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <i class="fa-solid fa-robot text-purple-400"></i>
+                            <span>${answer}</span>
+                        </li>
+                    `;
+                    container.parentElement.scrollTop = container.parentElement.scrollHeight;
+
+                } catch (e) {
+                    container.innerHTML += `
+                        <li class="flex gap-3 bg-red-500/10 p-4 rounded-xl">
+                            <i class="fa-solid fa-exclamation-circle text-red-400"></i>
+                            <span>حدث خطأ في الإجابة</span>
+                        </li>
+                    `;
+                }
+            }
+
+            exportReport() {
+                if (this.currentAnalysis) {
+                    this.analyzer.exportReport(this.currentAnalysis, document.getElementById('file-name-display').textContent);
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => new DataAnalyzerPage());
+    </script>
+</body>
+
+</html>
