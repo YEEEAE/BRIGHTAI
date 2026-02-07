@@ -15,10 +15,10 @@
 - [x] إضافة canonical + Open Graph لكل صفحة ملك.
 
 ## المرحلة 2 — الروابط الداخلية (Internal Linking)
-- [ ] تنفيذ أعلى 10 روابط من `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/internal_links_plan.csv`.
-- [ ] تنفيذ بقية الروابط عالية الأولوية (High).
-- [ ] تقليل نسبة الصفحات اليتيمة باستخدام `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/orphan_suggestions.json`.
-- [ ] إعادة قياس نسبة اليتيم بعد التنفيذ (الهدف < 5%).
+- [x] تنفيذ أعلى 10 روابط من `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/internal_links_plan.csv`. (تم تنفيذ 12 رابط عالي الأولوية)
+- [x] تنفيذ بقية الروابط عالية الأولوية (High).
+- [x] تقليل نسبة الصفحات اليتيمة باستخدام `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/orphan_suggestions.json`.
+- [x] إعادة قياس نسبة اليتيم بعد التنفيذ (الهدف < 5%). النتيجة: 1.9% (باستثناء صفحات 404/500).
 
 ## المرحلة 3 — تحسينات Technical SEO
 - [ ] إصلاح عناوين مكررة مثل "تم نقل الصفحة" وتحديثها بعناوين دلالية.

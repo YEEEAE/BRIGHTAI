@@ -1,5 +1,5 @@
 {
-  "crawl_limit": 120,
+  "crawl_limit": 200,
   "pages": [
     {
       "path": "/404.html",
@@ -7,13 +7,9 @@
       "title": "الصفحة غير موجودة - 404 | Bright AI",
       "h1": "404",
       "meta_description": "الصفحة التي تبحث عنها غير موجودة. قد تكون تم نقلها أو حذفها.",
-      "size_kb": 16.2,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 16.2,
       "internal_inlinks": 0
     },
     {
@@ -22,13 +18,9 @@
       "title": "خطأ في الخادم - 500 | Bright AI",
       "h1": "500",
       "meta_description": "حدث خطأ في الخادم. نعمل على حل المشكلة في أسرع وقت ممكن.",
-      "size_kb": 15.2,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 15.2,
       "internal_inlinks": 0
     },
     {
@@ -37,13 +29,9 @@
       "title": "مركز المستندات | Bright AI - دليلك الشامل للحلول الذكية",
       "h1": "مركز مستنداتBright AI",
       "meta_description": "مركز المستندات الرسمي لـ Bright AI. أدلة شاملة للخدمات، الحلول القطاعية، التكاملات التقنية، وOpenAPI.",
-      "size_kb": 24.2,
-      "images_count": 1,
-      "scripts_count": 2,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 22.3,
       "internal_inlinks": 18
     },
     {
@@ -52,13 +40,9 @@
       "title": "أدوات ذكية مجانية | Bright AI - مولد السيرة الذاتية، البحث عن وظائف السعودية",
       "h1": "أدواتذكيةللتعليم والأعمال",
       "meta_description": "أدوات ذكية مجانية مدعومة بالذكاء الاصطناعي: مولد السيرة الذاتية الاحترافي، البحث عن وظائف في السعودية، مولد خطط التعلم، ومولد المحتوى الإبداعي. جربها مجاناً الآن!",
-      "size_kb": 40.9,
-      "images_count": 2,
-      "scripts_count": 7,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 33.8,
       "internal_inlinks": 19
     },
     {
@@ -67,13 +51,9 @@
       "title": "محلل البيانات الذكي | Bright AI - تحليل CSV و Excel",
       "h1": "حلل بياناتك فوراً",
       "meta_description": "حلل ملفات CSV و Excel بالذكاء الاصطناعي. رسوم بيانية تفاعلية، إحصائيات دقيقة، ورؤى ذكية مع Groq AI.",
-      "size_kb": 25.6,
-      "images_count": 1,
-      "scripts_count": 6,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 25.9,
       "internal_inlinks": 2
     },
     {
@@ -82,13 +62,9 @@
       "title": "مراقبة جودة البيانات والمنتجات | Bright AI Enterprise",
       "h1": "نظام مراقبة الجودة الذكي",
       "meta_description": "نظام ذكي لمراقبة جودة البيانات والمنتجات للشركات. تحليل التكرارات، كشف الانحرافات، تنبيهات فورية، وتكامل مع أنظمة ERP.",
-      "size_kb": 38.3,
-      "images_count": 0,
-      "scripts_count": 2,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 38.6,
       "internal_inlinks": 2
     },
     {
@@ -97,13 +73,9 @@
       "title": "نماذج الذكاء الاصطناعي | Bright AI - جرب أدواتنا مجاناً",
       "h1": "جرب نماذجنا الذكية",
       "meta_description": "جرب أدوات Bright AI للذكاء الاصطناعي مجاناً. تحليل البيانات، تحليل النصوص، فحص جودة البيانات، والمزيد من الأدوات الذكية.",
-      "size_kb": 16.2,
-      "images_count": 2,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 17.3,
       "internal_inlinks": 23
     },
     {
@@ -112,45 +84,20 @@
       "title": "التحليل النصي الذكي | Bright AI",
       "h1": "التحليل النصي الذكي",
       "meta_description": "حلل النصوص بالذكاء الاصطناعي - استخراج الكلمات المفتاحية، تحليل المشاعر، تلخيص النصوص مع Groq API.",
-      "size_kb": 21.2,
-      "images_count": 1,
-      "scripts_count": 1,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 21.5,
       "internal_inlinks": 2
     },
     {
       "path": "/",
       "file": "index.html",
-      "title": "Bright AI — منصة الذكاء الاصطناعي",
+      "title": "Bright AI | نضيء مستقبل أعمالك مع الذكاء الاصطناعي",
       "h1": "حوّل فكرتك لحل ذكي قابل للتنفيذ.",
-      "meta_description": "",
-      "size_kb": 133.4,
-      "images_count": 4,
-      "scripts_count": 6,
-      "heavy_images": [
-        {
-          "src": "assets/3d-icons/gpt-image-1.5_Smart_drones_Aerial_surveying_infrastructure_monitoring_industrial_inspection_pr-0.jpg",
-          "size_kb": 328.7
-        },
-        {
-          "src": "assets/3d-icons/gpt-image-1.5_Warehouse_automation_Goods_handling_parcel_sorting_inventory_management_truck_lo-0.jpg",
-          "size_kb": 325.9
-        },
-        {
-          "src": "assets/3d-icons/gpt-image-1.5_Digital_twins_Accurate_simulation_of_equipment_and_processes_—_testing_scenari-0.jpg",
-          "size_kb": 325.0
-        },
-        {
-          "src": "assets/3d-icons/seedream-4.5_Customer_interaction_robots_Reception_shopping_cleaning_and_hospitality_robots_-0.jpg",
-          "size_kb": 1384.9
-        }
-      ],
-      "heavy_js": [],
-      "has_jsonld": false,
+      "meta_description": "شريككم الاستراتيجي للتحول الرقمي في المملكة العربية السعودية. حلول ذكاء اصطناعي مؤسسية مع استضافة محلية وامتثال كامل لمعايير NCA و NDMO. نقدم أنظمة أتمتة ذكية، تحليل بيانات، وحلول طبية وتعليمية متطورة.",
+      "has_jsonld": true,
       "has_form": true,
+      "size_kb": 106.2,
       "internal_inlinks": 38
     },
     {
@@ -159,13 +106,9 @@
       "title": "عن Bright AI | شركة ذكاء اصطناعي سعودية رائدة منذ 2018",
       "h1": "نبتكرالمستقبلاليوم",
       "meta_description": "تعرف على Bright AI (مُشرقة للذكاء الاصطناعي)، الشركة السعودية الرائدة منذ 2018 في حلول الذكاء الاصطناعي والتحول الرقمي. شريكك الاستراتيجي لرؤية 2030.",
-      "size_kb": 20.9,
-      "images_count": 0,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 23.3,
       "internal_inlinks": 29
     },
     {
@@ -174,13 +117,9 @@
       "title": "الذكاء الاصطناعي كخدمة (AIaaS) للشركات السعودية | Bright AI",
       "h1": "الذكاء الاصطناعيكخدمة",
       "meta_description": "خدمات الذكاء الاصطناعي السحابية (AIaaS) للمؤسسات السعودية. نماذج لغوية كبيرة، معالجة لغة طبيعية عربية، وحلول AI مخصصة مع استضافة بيانات محلية متوافقة مع NCA.\\",
-      "size_kb": 60.8,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 49.8,
       "internal_inlinks": 26
     },
     {
@@ -189,14 +128,10 @@
       "title": "BrightMath - مساعد الرياضيات الذكي",
       "h1": "BrightMath - مساعد الرياضيات الذكي",
       "meta_description": "BrightMath - مساعد الرياضيات الذكي من Bright AI لحل المسائل الرياضية",
-      "size_kb": 37.1,
-      "images_count": 1,
-      "scripts_count": 7,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 37.1,
+      "internal_inlinks": 3
     },
     {
       "path": "/ai-bots/BrightProject/",
@@ -204,14 +139,10 @@
       "title": "BrightProject - روبوت إدارة المشاريع الذكي",
       "h1": "BrightProject - روبوت إدارة المشاريع الذكي",
       "meta_description": "BrightProject - روبوت إدارة المشاريع الذكي من Bright AI لتنظيم وإدارة مشاريعك",
-      "size_kb": 32.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 32.1,
+      "internal_inlinks": 3
     },
     {
       "path": "/ai-bots/BrightRecruiter/",
@@ -219,13 +150,9 @@
       "title": "BrightRecruiter - روبوت التوظيف الذكي",
       "h1": "BrightRecruiter - روبوت التوظيف الذكي",
       "meta_description": "BrightRecruiter - روبوت التوظيف الذكي من Bright AI لإدارة عمليات التوظيف",
-      "size_kb": 32.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 32.1,
       "internal_inlinks": 2
     },
     {
@@ -234,13 +161,9 @@
       "title": "BrightSales - روبوت المبيعات الذكي",
       "h1": "BrightSales - روبوت المبيعات الذكي",
       "meta_description": "BrightSales - روبوت المبيعات الذكي من Bright AI لتحسين عمليات البيع",
-      "size_kb": 31.6,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 31.6,
       "internal_inlinks": 4
     },
     {
@@ -249,13 +172,9 @@
       "title": "BrightSupport - روبوت خدمة العملاء الذكي",
       "h1": "BrightSupport - خدمة العملاء الذكية",
       "meta_description": "BrightSupport - روبوت خدمة العملاء الذكي من Bright AI لدعم العملاء",
-      "size_kb": 32.9,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 32.9,
       "internal_inlinks": 2
     },
     {
@@ -264,13 +183,9 @@
       "title": "روبوتات ذكاء اصطناعي متقدمة للشركات السعودية | Bright AI",
       "h1": "روبوتات الذكاء الاصطناعي المتطورة من Bright AI لخدمة أعمالك في السعودية",
       "meta_description": "اكتشف روبوتات الذكاء الاصطناعي من Bright AI المصممة خصيصاً لخدمة العملاء، المبيعات، والتوظيف في المملكة العربية السعودية. حلول بوتات دردشة ذكية تدعم اللغة العربية وتساهم في التحول الرقمي.",
-      "size_kb": 61.0,
-      "images_count": 6,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 52.9,
       "internal_inlinks": 8
     },
     {
@@ -279,13 +194,9 @@
       "title": "المنصة التعليمية الذكية - التعليم المعزز بالذكاء الاصطناعي | Bright Edu",
       "h1": "المنصة التعليمية الذكيةمستقبل التعليم في السعودية",
       "meta_description": "منصة Bright Edu التعليمية الذكية: مساعد تعليمي متقدم، مولد اختبارات ذكي، تصحيح واجبات تلقائي، وخطط دراسية للمعلمين وفق المنهج السعودي ورؤية 2030.",
-      "size_kb": 87.6,
-      "images_count": 0,
-      "scripts_count": 10,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 87.9,
       "internal_inlinks": 1
     },
     {
@@ -294,14 +205,10 @@
       "title": "AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI",
       "h1": "",
       "meta_description": "حلول AI Workflows المتقدمة من Bright AI - أتمتة ذكية لسير العمل، تكامل سلس مع أنظمتك، وتحسين الكفاءة التشغيلية بنسبة تصل إلى 80%",
-      "size_kb": 15.0,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 15.3,
+      "internal_inlinks": 3
     },
     {
       "path": "/blog/",
@@ -309,13 +216,9 @@
       "title": "مكتبة الذكاء الاصطناعي في السعودية | Bright AI - مقالات وأدلة شاملة",
       "h1": "المكتبةالذكية",
       "meta_description": "أحدث المقالات والأدلة الشاملة حول الذكاء الاصطناعي، التعلم الآلي، الأتمتة الذكية، وتحليل البيانات للشركات السعودية. رؤى خبراء Bright AI حول التحول الرقمي ورؤية 2030.",
-      "size_kb": 132.0,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 100.9,
       "internal_inlinks": 29
     },
     {
@@ -324,14 +227,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightProject.html",
@@ -339,14 +238,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightRecruiter.html",
@@ -354,14 +249,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightSales.html",
@@ -369,14 +260,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/botAI/BrightSupport.html",
@@ -384,14 +271,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/consultation/",
@@ -399,13 +282,9 @@
       "title": "استشارات الذكاء الاصطناعي والتحول الرقمي | Bright AI السعودية",
       "h1": "استشاراتالذكاء الاصطناعي",
       "meta_description": "استشارات متخصصة في الذكاء الاصطناعي والتحول الرقمي للمؤسسات السعودية. نرافقك من التخطيط الاستراتيجي حتى التنفيذ وقياس الأثر. احجز استشارة مجانية اليوم!",
-      "size_kb": 42.2,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 35.7,
       "internal_inlinks": 21
     },
     {
@@ -414,13 +293,9 @@
       "title": "تواصل معنا | Bright AI - استشارات الذكاء الاصطناعي في السعودية",
       "h1": "اتصلبنا",
       "meta_description": "تواصل مع خبراء الذكاء الاصطناعي في الرياض. احجز استشارة مجانية لحلول AI المؤسسية، تحليل البيانات، والأتمتة الذكية للشركات السعودية. ☎️ +966538229013",
-      "size_kb": 30.7,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 33.2,
       "internal_inlinks": 19
     },
     {
@@ -429,14 +304,54 @@
       "title": "Bright AI | تحليل البيانات بالذكاء الاصطناعي",
       "h1": "تحليل البياناتبالذكاء الاصطناعي",
       "meta_description": "خدمات تحليل البيانات المتقدمة بالذكاء الاصطناعي في السعودية. تحويل البيانات الخام إلى رؤى استراتيجية قابلة للتنفيذ. لوحات معلومات تفاعلية، تحليل تنبؤي، Power BI، Tableau.",
-      "size_kb": 54.6,
-      "images_count": 2,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 43.8,
       "internal_inlinks": 28
+    },
+    {
+      "path": "/demo/",
+      "file": "frontend/pages/demo/index.html",
+      "title": "ديمو BrightAI الفوري | جرّب الذكاء الاصطناعي للشركات السعودية",
+      "h1": "جرّب ذكاء BrightAI الآن وشوف النتائج خلال ثواني",
+      "meta_description": "جرّب ديمو BrightAI الفوري بدون تسجيل. اكتب طلبك وشاهد النتائج خلال ثواني مع دعم العربية ولهجة سعودية واضحة.",
+      "has_jsonld": false,
+      "has_form": true,
+      "size_kb": 14.5,
+      "internal_inlinks": 6
+    },
+    {
+      "path": "/demo/ocr-demo/",
+      "file": "frontend/pages/demo/ocr-demo/index.html",
+      "title": "تجربة OCR فورية | استخراج النصوص العربية بدقة",
+      "h1": "حوّل المستندات إلى بيانات جاهزة خلال ثواني",
+      "meta_description": "ارفع مستندك وجرب OCR فوري من BrightAI. استخراج حقول الفواتير والهويات بصيغة JSON خلال ثواني.",
+      "has_jsonld": false,
+      "has_form": true,
+      "size_kb": 13.1,
+      "internal_inlinks": 6
+    },
+    {
+      "path": "/demo/pricing/",
+      "file": "frontend/pages/demo/pricing/index.html",
+      "title": "أسعار BrightAI | باقات مرنة للشركات السعودية",
+      "h1": "باقات BrightAI المصممة للشركات السعودية",
+      "meta_description": "اختر الباقة المناسبة لفريقك مع BrightAI. باقات مرنة، دعم عربي، وتجربة فورية قبل الشراء.",
+      "has_jsonld": false,
+      "has_form": true,
+      "size_kb": 11.4,
+      "internal_inlinks": 6
+    },
+    {
+      "path": "/demo/resources/report-ai-saudi-2026/",
+      "file": "frontend/pages/demo/resources/report-ai-saudi-2026/index.html",
+      "title": "تقرير الذكاء الاصطناعي السعودي 2026 | تحميل مجاني",
+      "h1": "تقرير الذكاء الاصطناعي السعودي 2026",
+      "meta_description": "حمّل تقرير BrightAI عن سوق الذكاء الاصطناعي في السعودية لعام 2026. اتجاهات الاستثمار، حالات استخدام محلية، وفرص النمو.",
+      "has_jsonld": false,
+      "has_form": true,
+      "size_kb": 12.2,
+      "internal_inlinks": 6
     },
     {
       "path": "/docs/ai-agent-en.html",
@@ -444,14 +359,10 @@
       "title": "AIaaS - AI As A Service | Bright AI",
       "h1": "CloudAIaaS",
       "meta_description": "Get AI power without the infrastructure hassle. Bright AI AIaaS - secure cloud solutions hosted locally in KSA.",
-      "size_kb": 15.3,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 15.3,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/ai-agent.html",
@@ -459,13 +370,9 @@
       "title": "AIaaS - الذكاء الاصطناعي كخدمة | Bright AI",
       "h1": "AIaaSالسحابي",
       "meta_description": "احصل على قوة الذكاء الاصطناعي بدون بنية تحتية معقدة. AIaaS من Bright AI - حلول سحابية آمنة ومستضافة محلياً في السعودية.",
-      "size_kb": 16.8,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 16.8,
       "internal_inlinks": 2
     },
     {
@@ -474,14 +381,10 @@
       "title": "Smart Chatbots | Bright AI - Arabic AI Assistants",
       "h1": "SmartAssistants",
       "meta_description": "Smart chatbots that understand Arabic and Saudi dialect! 24/7 AI assistants that serve your customers naturally from Bright AI.",
-      "size_kb": 16.5,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 16.5,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/ai-bots.html",
@@ -489,13 +392,9 @@
       "title": "روبوتات المحادثة الذكية | Bright AI - شات بوت عربي",
       "h1": "مساعدينأذكياء",
       "meta_description": "شات بوت ذكي يفهم العربي والسعودي! روبوتات محادثة تخدم عملاءك 24/7 بطريقة طبيعية وبشرية. من Bright AI.",
-      "size_kb": 16.8,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 16.8,
       "internal_inlinks": 2
     },
     {
@@ -504,14 +403,10 @@
       "title": "Tech Consultation | Bright AI - Digital Transformation Roadmap",
       "h1": "StrategicConsultation",
       "meta_description": "Expert consultants to build your AI strategy. We help you choose the right tech, conduct feasibility studies, and plan a secure digital transformation.",
-      "size_kb": 11.4,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 11.4,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/consultation.html",
@@ -519,13 +414,9 @@
       "title": "استشارات تقنية | Bright AI - خارطة الطريق للتحول الرقمي",
       "h1": "استشاراتاستراتيجية",
       "meta_description": "خبراء استشاريون لبناء استراتيجية الذكاء الاصطناعي لمنشأتك. نساعدك في اختيار التقنية المناسبة، دراسة الجدوى، وتخطيط التحول الرقمي الآمن.",
-      "size_kb": 12.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 12.1,
       "internal_inlinks": 2
     },
     {
@@ -534,14 +425,10 @@
       "title": "Contact Us | Bright AI - Get in Touch",
       "h1": "Get inTouch",
       "meta_description": "Contact Bright AI team for a free consultation. WhatsApp: +966538229013 | Email: yazeed1job@gmail.com | Riyadh, Al-Fayha Dist.",
-      "size_kb": 14.1,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 14.1,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/contact.html",
@@ -549,13 +436,9 @@
       "title": "اتصل بنا | Bright AI - تواصل معنا اليوم",
       "h1": "تواصلمعنا",
       "meta_description": "تواصل مع فريق Bright AI للحصول على استشارة مجانية. واتساب: +966538229013 | البريد: yazeed1job@gmail.com | الرياض، حي الفيحاء",
-      "size_kb": 14.7,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 14.7,
       "internal_inlinks": 30
     },
     {
@@ -564,14 +447,10 @@
       "title": "Data Analysis | Bright AI - Intelligence for Decision Making",
       "h1": "SmartData Analysis",
       "meta_description": "Turn your raw data into strategic decisions. Advanced Big Data Analytics and interactive Dashboards for Saudi businesses.",
-      "size_kb": 12.3,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 12.3,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/data-analysis.html",
@@ -579,13 +458,9 @@
       "title": "تحليل البيانات | Bright AI - ذكاء الأعمال والقرارات",
       "h1": "تحليل البياناتالذكي",
       "meta_description": "حول بياناتك الخام إلى قرارات استراتيجية. خدمات تحليل البيانات متقدمة (Big Data Analysis) ولوحات تحكم تفاعلية (Dashboards) للشركات السعودية.",
-      "size_kb": 11.9,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 11.9,
       "internal_inlinks": 2
     },
     {
@@ -594,14 +469,10 @@
       "title": "تم نقل المستندات",
       "h1": "",
       "meta_description": "",
-      "size_kb": 0.6,
-      "images_count": 0,
-      "scripts_count": 0,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 0.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/faq-en.html",
@@ -609,13 +480,9 @@
       "title": "FAQ | Bright AI - Got Questions? We Got Answers 💡",
       "h1": "Frequently AskedQuestions",
       "meta_description": "Answers to the most asked questions about Bright AI services, pricing, security, and support. Can't find your answer? Hit us up!",
-      "size_kb": 21.3,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 21.3,
       "internal_inlinks": 2
     },
     {
@@ -624,13 +491,9 @@
       "title": "الأسئلة الشائعة | Bright AI - كل ما تحتاج معرفته",
       "h1": "الأسئلةالشائعة",
       "meta_description": "إجابات لأهم الأسئلة الشائعة حول خدمات Bright AI، الأسعار، طريقة العمل، والدعم الفني. تواصل معنا لمزيد من التفاصيل.",
-      "size_kb": 21.5,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 21.5,
       "internal_inlinks": 2
     },
     {
@@ -639,13 +502,9 @@
       "title": "BrightAI API Documentation - وثائق واجهة برمجة التطبيقات",
       "h1": "BrightAI API Documentation",
       "meta_description": "",
-      "size_kb": 33.2,
-      "images_count": 0,
-      "scripts_count": 0,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 33.5,
       "internal_inlinks": 1
     },
     {
@@ -654,13 +513,9 @@
       "title": "Privacy Policy | Bright AI - How We Protect Your Data",
       "h1": "PrivacyPolicy",
       "meta_description": "Our privacy policy explains how Bright AI collects, uses, and protects your data. Spoiler: we take it seriously. All data stays in Saudi Arabia.",
-      "size_kb": 15.9,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 15.9,
       "internal_inlinks": 2
     },
     {
@@ -669,13 +524,9 @@
       "title": "سياسة الخصوصية | Bright AI - حماية بياناتك أولويتنا",
       "h1": "سياسةالخصوصية",
       "meta_description": "سياسة الخصوصية الخاصة بـ Bright AI. تعرف على كيفية جمع واستخدام وحماية بياناتك. استضافة محلية سعودية ومتوافقة مع معايير NCA.",
-      "size_kb": 19.8,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 19.8,
       "internal_inlinks": 1
     },
     {
@@ -684,13 +535,9 @@
       "title": "Bright AI Services | AI Solutions That Actually Slap 🚀",
       "h1": "OurGame-ChangingAI Services",
       "meta_description": "Bright AI delivers fire AI solutions for Saudi businesses. Automation, data analytics, smart chatbots & more. 47 projects shipped, 46 happy clients. Let's build something epic!",
-      "size_kb": 22.8,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 22.8,
       "internal_inlinks": 1
     },
     {
@@ -699,13 +546,9 @@
       "title": "خدمات Bright AI | حلول ذكاء اصطناعي متكاملة للشركات السعودية",
       "h1": "نظرة شاملة على خدماتBright AI",
       "meta_description": "اكتشف خدمات Bright AI المتكاملة: أتمتة العمليات، تحليل البيانات، روبوتات ذكية، واستشارات الذكاء الاصطناعي. 47 مشروع منجز و46 عميل راضي.",
-      "size_kb": 24.1,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 24.1,
       "internal_inlinks": 1
     },
     {
@@ -714,14 +557,10 @@
       "title": "RPA Automation | Bright AI - Smart Work",
       "h1": "ProcessAutomation",
       "meta_description": "Automate routine tasks with AI. Save time and reduce errors with Bright AI's RPA solutions.",
-      "size_kb": 13.6,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 13.6,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/smart-automation.html",
@@ -729,13 +568,9 @@
       "title": "أتمتة العمليات RPA | Bright AI - أتمتة ذكية للشركات",
       "h1": "أتمتة العملياتRPA",
       "meta_description": "أتمتة العمليات الروتينية بالذكاء الاصطناعي. وفر وقت فريقك وقلل الأخطاء مع حلول RPA من Bright AI.",
-      "size_kb": 14.3,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 14.3,
       "internal_inlinks": 2
     },
     {
@@ -744,14 +579,10 @@
       "title": "Business Intelligence (BI) | Bright AI - Interactive Dashboards",
       "h1": "Clearer Vision for YourDecisions",
       "meta_description": "Turn your company data into smart decisions with Bright AI Business Intelligence (BI) solutions. We design interactive Power BI and Tableau dashboards compatible with the Saudi market.",
-      "size_kb": 27.6,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 27.6,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-bi.html",
@@ -759,13 +590,9 @@
       "title": "ذكاء الأعمال (BI) | Bright AI - لوحات تحكم تفاعلية",
       "h1": "رؤية أوضحلقراراتك",
       "meta_description": "حول بيانات شركتك إلى قرارات ذكية مع حلول ذكاء الأعمال (BI) من Bright AI. نصمم لوحات تحكم Power BI و Tableau تفاعلية باللغة العربية، متوافقة مع متطلبات السوق السعودي ورؤية 2030.",
-      "size_kb": 29.5,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 29.5,
       "internal_inlinks": 1
     },
     {
@@ -774,14 +601,10 @@
       "title": "Smart CRM Solutions | Bright AI - Know Your Customer",
       "h1": "Know Your CustomerTruly",
       "meta_description": "Saudi AI-powered CRM system by Bright AI. Automate WhatsApp follow-ups, score leads, and analyze sentiment to boost sales.",
-      "size_kb": 24.0,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 24.0,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-crm.html",
@@ -789,13 +612,9 @@
       "title": "إدارة علاقات العملاء الذكية (CRM) | Bright AI",
       "h1": "اعرف عميلكصح",
       "meta_description": "نظام CRM سعودي مدعوم بالذكاء الاصطناعي من Bright AI. أتمتة المتابعة عبر واتساب، تقييم العملاء المحتملين (Lead Scoring)، وتحليل المشاعر لزيادة المبيعات في السوق السعودي.",
-      "size_kb": 26.2,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 26.2,
       "internal_inlinks": 1
     },
     {
@@ -804,14 +623,10 @@
       "title": "Fintech Solutions | Bright AI - Smart & Secure",
       "h1": "Fintech That'sBulletproof",
       "meta_description": "AI solutions for Saudi Fintech. Fraud detection, credit scoring, and full SAMA/NCA compliance. Banking made smarter.",
-      "size_kb": 20.3,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 20.3,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-finance.html",
@@ -819,13 +634,9 @@
       "title": "حلول المالية (Fintech) | Bright AI - كشف الاحتيال والامتثال",
       "h1": "التقنية الماليةالآمنة",
       "meta_description": "حلول ذكاء اصطناعي للقطاع المالي السعودي. كشف الاحتيال، تقييم الائتمان، والامتثال لتشريعات SAMA و NCA باستخدام خوارزميات متقدمة.",
-      "size_kb": 22.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 22.1,
       "internal_inlinks": 1
     },
     {
@@ -834,14 +645,10 @@
       "title": "Healthcare Solutions | Bright AI - Smart Medicine",
       "h1": "Healthcare MadeSmarter",
       "meta_description": "AI solutions for Saudi healthcare. Smart diagnosis, medical archiving, and radiology AI analysis. CBAHI & HIPAA compliant. Next-level patient care.",
-      "size_kb": 18.8,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 18.8,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-healthcare.html",
@@ -849,13 +656,9 @@
       "title": "حلول الرعاية الصحية | Bright AI - الطب المتصل والذكي",
       "h1": "رعاية صحيةأذكى",
       "meta_description": "حلول ذكاء اصطناعي للقطاع الصحي في السعودية. تشخيص ذكي، أرشفة طبية، وتحليل صور الأشعة بدقة متناهية. متوافق مع معايير سباهي ووزارة الصحة.",
-      "size_kb": 20.2,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 20.2,
       "internal_inlinks": 3
     },
     {
@@ -864,14 +667,10 @@
       "title": "HR Management (HRMS) | Bright AI - Payroll & Automation",
       "h1": "HR ManagementMade Easy",
       "meta_description": "Saudi HRMS by Bright AI. Automated payroll, GOSI, Madad, Muqeem, smart attendance. Fully compliant with Saudi Labor Law. 100% Legit.",
-      "size_kb": 26.0,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 26.0,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-hr.html",
@@ -879,14 +678,10 @@
       "title": "إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة",
       "h1": "إدارة موظفينأسهل",
       "meta_description": "نظام HRMS سعودي متكامل من Bright AI. إدارة الرواتب (Payroll)، التأمينات، مدد، مقيم، الحضور والانصراف الذكي، وتقييم الأداء. متوافق مع نظام العمل السعودي.",
-      "size_kb": 28.4,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 28.4,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-interview-en.html",
@@ -894,14 +689,10 @@
       "title": "Smart Hiring | Bright AI - Recruitment on Autopilot",
       "h1": "Hiring onAutopilot",
       "meta_description": "Smart hiring system by Bright AI. Filter resumes, run AI video interviews, and save 70% of your HR team's time. Hire talent, not paper.",
-      "size_kb": 18.9,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 18.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-interview.html",
@@ -909,14 +700,10 @@
       "title": "حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء",
       "h1": "التوظيفالذكي",
       "meta_description": "نظام توظيف ذكي يقوم بفرز السير الذاتية وإجراء مقابلات فيديو آلية مع المرشحين. وفر 70% من وقت فريق HR مع حلول Bright AI.",
-      "size_kb": 20.2,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 20.2,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-logistics-en.html",
@@ -924,14 +711,10 @@
       "title": "Logistics & Fleet | Bright AI",
       "h1": "Fleet UnderControl",
       "meta_description": "Smart Fleet Management by Bright AI. Track trucks, optimize routes, and cut costs with AI. TGA compliant.",
-      "size_kb": 22.8,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 22.8,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-logistics.html",
@@ -939,13 +722,9 @@
       "title": "حلول اللوجستيات والنقل الذكي | Bright AI",
       "h1": "أسطولك تحتسيطرتك",
       "meta_description": "نظام إدارة أسطول ذكي (Fleet Management) من Bright AI. تتبع الشاحنات، تحسين مسارات التوصيل وتقليل التكاليف باستخدام الذكاء الاصطناعي، متوافق مع هيئة النقل العام.",
-      "size_kb": 25.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 25.1,
       "internal_inlinks": 1
     },
     {
@@ -954,14 +733,10 @@
       "title": "Intelligent Document Processing (OCR) | Bright AI",
       "h1": "IntelligentDocument Reading",
       "meta_description": "Convert paper documents into searchable digital data with Bright AI's advanced Arabic OCR. High accuracy in reading text and invoices.",
-      "size_kb": 10.7,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 10.7,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-ocr.html",
@@ -969,13 +744,9 @@
       "title": "معالجة المستندات الذكية (OCR) | Bright AI",
       "h1": "قراءة المستنداتالذكية",
       "meta_description": "حول مستنداتك الورقية إلى بيانات رقمية قابلة للبحث باستخدام تقنية OCR العربية المتقدمة من Bright AI. دقة عالية في قراءة النصوص والفواتير.",
-      "size_kb": 11.0,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 10.1,
       "internal_inlinks": 1
     },
     {
@@ -984,14 +755,10 @@
       "title": "Retail & E-commerce | Bright AI - Sell Smarter",
       "h1": "Retail MadeSmarter",
       "meta_description": "AI solutions for Saudi Retail & E-commerce. Smart product recommendations, automated inventory, and customer analysis to boost sales.",
-      "size_kb": 17.6,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 17.6,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-retail.html",
@@ -999,14 +766,10 @@
       "title": "حلول التجزئة والتجارة الإلكترونية | Bright AI - بيع بذكاء",
       "h1": "تجارة تجزئةذكية",
       "meta_description": "حلول ذكاء اصطناعي لقطاع التجزئة و E-commerce في السعودية. توصيات منتجات ذكية، إدارة مخزون آلية، وتحليل المتسوقين لزيادة المبيعات.",
-      "size_kb": 18.4,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 18.4,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-supply-chain-en.html",
@@ -1014,14 +777,10 @@
       "title": "Supply Chain Management | Bright AI - Plan Ahead",
       "h1": "Supply Chain ThatNever Stops",
       "meta_description": "AI Supply Chain solutions by Bright AI. Demand forecasting, supplier management (SRM), and inventory optimization for Saudi industries.",
-      "size_kb": 23.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 23.1,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/solutions-supply-chain.html",
@@ -1029,13 +788,9 @@
       "title": "إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب والمخزون",
       "h1": "سلسلة إمدادلا تتوقف",
       "meta_description": "حلول إدارة سلاسل الإمداد (Supply Chain) بالذكاء الاصطناعي من Bright AI. توقع الطلب (Demand Forecasting)، إدارة الموردين، وتحسين المخزون للشركات السعودية والمصانع.",
-      "size_kb": 25.1,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 25.1,
       "internal_inlinks": 1
     },
     {
@@ -1044,14 +799,10 @@
       "title": "Terms & Conditions | Bright AI - The Fine Print",
       "h1": "Terms &Conditions",
       "meta_description": "Terms and conditions for using Bright AI services. We keep it real and transparent about what you can expect when working with us.",
-      "size_kb": 18.9,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 18.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/docs/terms-and-conditions.html",
@@ -1059,13 +810,9 @@
       "title": "الشروط والأحكام | Bright AI - شروط استخدام خدماتنا",
       "h1": "الشروطوالأحكام",
       "meta_description": "الشروط والأحكام الخاصة باستخدام خدمات Bright AI. تعرف على حقوقك والتزاماتك عند التعامل معنا.",
-      "size_kb": 20.5,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 20.5,
       "internal_inlinks": 1
     },
     {
@@ -1074,13 +821,9 @@
       "title": "Bright AI - حلول الذكاء الاصطناعي الطبية المتقدمة في السعودية",
       "h1": "",
       "meta_description": "حلول طبية متقدمة بالذكاء الاصطناعي لتحليل الصور الطبية، المراقبة الصحية عن بعد، إدارة المستشفيات، وتطبيقات Med-Gemini.",
-      "size_kb": 96.1,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
+      "size_kb": 96.1,
       "internal_inlinks": 2
     },
     {
@@ -1089,14 +832,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/interview/g.html",
@@ -1104,14 +843,10 @@
       "title": "بوابة التوظيف الذكية - منصة نمو",
       "h1": "بوابة التوظيف الذكية",
       "meta_description": "بوابة التوظيف الذكية - منصة نمو - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 110.1,
-      "images_count": 1,
-      "scripts_count": 10,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 110.1,
+      "internal_inlinks": 3
     },
     {
       "path": "/interview/",
@@ -1119,13 +854,9 @@
       "title": "mais co .",
       "h1": "ابدأ رحلتك المهنية",
       "meta_description": "mais co . - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 228.1,
-      "images_count": 1,
-      "scripts_count": 10,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 228.1,
       "internal_inlinks": 22
     },
     {
@@ -1134,14 +865,10 @@
       "title": "نظام إدارة تسجيل الزوار - MAIS مع الذكاء الاصطناعي",
       "h1": "نظام إدارة تسجيل الزوار مع الذكاء الاصطناعي",
       "meta_description": "نظام إدارة تسجيل الزوار - MAIS مع الذكاء الاصطناعي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 29.0,
-      "images_count": 0,
-      "scripts_count": 12,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 29.0,
+      "internal_inlinks": 3
     },
     {
       "path": "/interview/pages/admin.html",
@@ -1149,13 +876,9 @@
       "title": "لوحة تحكم المسؤول - بوابة التوظيف Mais Co",
       "h1": "لوحة تحكم المسؤول",
       "meta_description": "لوحة تحكم المسؤول - بوابة التوظيف Mais Co - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 135.9,
-      "images_count": 2,
-      "scripts_count": 13,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 135.9,
       "internal_inlinks": 1
     },
     {
@@ -1164,14 +887,10 @@
       "title": "حجز مواعيد الموارد البشرية - MAIS",
       "h1": "حجز مواعيد الموارد البشرية",
       "meta_description": "حجز مواعيد الموارد البشرية - MAIS - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 34.9,
-      "images_count": 0,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 34.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/interview/pages/dashboard/",
@@ -1179,14 +898,10 @@
       "title": "لوحة تحكم المسؤول - نظام التوظيف الذكي",
       "h1": "نظرة عامة",
       "meta_description": "لوحة تحكم المسؤول - نظام التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 73.3,
-      "images_count": 0,
-      "scripts_count": 6,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 73.3,
+      "internal_inlinks": 3
     },
     {
       "path": "/interview/pages/support-ai.html",
@@ -1194,14 +909,10 @@
       "title": "نافذة الدعم الفني الذكي",
       "h1": "نافذة الدعم الفني الذكي",
       "meta_description": "نافذة الدعم الفني الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 49.6,
-      "images_count": 0,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 49.6,
+      "internal_inlinks": 3
     },
     {
       "path": "/interview/pages/supportAI.html",
@@ -1209,14 +920,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.6,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 1.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/job.MAISco/",
@@ -1224,13 +931,9 @@
       "title": "mais co .",
       "h1": "ابدأ رحلتك المهنية",
       "meta_description": "mais co . - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
-      "size_kb": 125.7,
-      "images_count": 2,
-      "scripts_count": 10,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 125.7,
       "internal_inlinks": 1
     },
     {
@@ -1239,14 +942,10 @@
       "title": "حلول التعلم الآلي المتقدمة | Bright AI",
       "h1": "حلول التعلم الآليلتحليل البيانات واتخاذ قرارات مستنيرة",
       "meta_description": "اكتشف حلول التعلم الآلي المتقدمة لتحليل البيانات والتنبؤ بالاتجاهات واتخاذ قرارات مستنيرة في مجالات مثل التنبؤ بالمبيعات والكشف عن الاحتيال وتخصيص تجربة المستخدم.",
-      "size_kb": 47.8,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 47.8,
+      "internal_inlinks": 3
     },
     {
       "path": "/our-products/",
@@ -1254,13 +953,9 @@
       "title": "منتجات وخدمات الذكاء الاصطناعي | Bright AI السعودية",
       "h1": "حلول الذكاء الاصطناعيلتحويل أعمالك",
       "meta_description": "اكتشف منتجات وخدمات الذكاء الاصطناعي من Bright AI: تحليل البيانات، وكلاء AI، الأتمتة الذكية، الروبوتات، ومنصات AI للشركات السعودية. أسعار تنافسية وحلول مخصصة.",
-      "size_kb": 65.4,
-      "images_count": 0,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 62.7,
       "internal_inlinks": 28
     },
     {
@@ -1269,13 +964,9 @@
       "title": "Bright AI | سياسة ملفات تعريف الارتباط",
       "h1": "سياسةالخصوصية",
       "meta_description": "سياسة ملفات تعريف الارتباط (الكوكيز) لموقع Bright AI - تعرف على كيفية استخدامنا لملفات تعريف الارتباط لتحسين تجربتك.",
-      "size_kb": 33.9,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 33.9,
       "internal_inlinks": 5
     },
     {
@@ -1284,13 +975,9 @@
       "title": "الذكاء الاصطناعي للتجارة الإلكترونية السعودية | Bright AI",
       "h1": "حلول الذكاء الاصطناعي للتجارة الإلكترونية في السعودية",
       "meta_description": "حلول ذكاء اصطناعي لرفع مبيعات المتاجر الإلكترونية في السعودية: توصيات شخصية، تسعير ديناميكي، وأتمتة خدمة العملاء.",
-      "size_kb": 16.7,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 17.0,
       "internal_inlinks": 1
     },
     {
@@ -1299,13 +986,9 @@
       "title": "الذكاء الاصطناعي لقطاع الطاقة السعودي | Bright AI",
       "h1": "حلول الذكاء الاصطناعي لقطاع الطاقة في السعودية",
       "meta_description": "حلول ذكاء اصطناعي للطاقة في السعودية: صيانة تنبؤية، تحسين الإنتاج، خفض التكاليف، وإدارة الشبكات الذكية وفق رؤية 2030.",
-      "size_kb": 16.8,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 17.1,
       "internal_inlinks": 1
     },
     {
@@ -1314,13 +997,9 @@
       "title": "الذكاء الاصطناعي للقطاع المالي السعودي | Bright AI",
       "h1": "حلول الذكاء الاصطناعي للقطاع المالي في السعودية",
       "meta_description": "حلول ذكاء اصطناعي للبنوك وشركات التأمين في السعودية: مكافحة الاحتيال، قرارات ائتمانية أدق، وتجربة عميل أذكى.",
-      "size_kb": 16.6,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 16.9,
       "internal_inlinks": 1
     },
     {
@@ -1329,13 +1008,9 @@
       "title": "الذكاء الاصطناعي للرعاية الصحية في السعودية | Bright AI",
       "h1": "حلول الذكاء الاصطناعي لقطاع الرعاية الصحية في السعودية",
       "meta_description": "حلول ذكاء اصطناعي للرعاية الصحية: تشخيص أدق، جدولة ذكية، وتحسين تجربة المريض في المستشفيات السعودية.",
-      "size_kb": 16.3,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 16.6,
       "internal_inlinks": 1
     },
     {
@@ -1344,13 +1019,9 @@
       "title": "الذكاء الاصطناعي للوجستيات في السعودية | Bright AI",
       "h1": "حلول الذكاء الاصطناعي لقطاع النقل واللوجستيات في السعودية",
       "meta_description": "حلول ذكية لتحسين مسارات التوصيل، خفض التكاليف، ورفع سرعة التسليم في قطاع النقل واللوجستيات السعودي.",
-      "size_kb": 16.5,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 16.8,
       "internal_inlinks": 1
     },
     {
@@ -1359,13 +1030,9 @@
       "title": "الذكاء الاصطناعي للصناعة السعودية | Bright AI",
       "h1": "حلول الذكاء الاصطناعي لقطاع الصناعة والتصنيع في السعودية",
       "meta_description": "مصانع ذكية في السعودية عبر الذكاء الاصطناعي: صيانة تنبؤية، ضبط جودة، وأتمتة خطوط الإنتاج لزيادة الإنتاجية.",
-      "size_kb": 16.5,
-      "images_count": 1,
-      "scripts_count": 3,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 16.8,
       "internal_inlinks": 1
     },
     {
@@ -1374,13 +1041,9 @@
       "title": "الأتمتة الذكية وسير عمل AI | Bright AI السعودية",
       "h1": "سير عملالذكاء الاصطناعي",
       "meta_description": "خدمات الأتمتة الذكية وسير عمل الذكاء الاصطناعي للشركات السعودية. تجاوز RPA التقليدية إلى حلول تعلم آلي تتخذ قرارات مستقلة. وفر 60% من التكاليف و80% زيادة في الإنتاجية.",
-      "size_kb": 42.9,
-      "images_count": 1,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": false,
+      "size_kb": 45.3,
       "internal_inlinks": 29
     },
     {
@@ -1389,13 +1052,9 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.7,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 2.0,
       "internal_inlinks": 2
     },
     {
@@ -1404,13 +1063,9 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.7,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 1.9,
       "internal_inlinks": 2
     },
     {
@@ -1419,13 +1074,9 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.7,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 1.9,
       "internal_inlinks": 2
     },
     {
@@ -1434,13 +1085,9 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 1.7,
-      "images_count": 0,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
+      "size_kb": 1.9,
       "internal_inlinks": 2
     },
     {
@@ -1449,14 +1096,10 @@
       "title": "Bright AI | التحليلات والرؤى",
       "h1": "مركز التحليلات والتنبؤ (Analytics Hub)",
       "meta_description": "",
-      "size_kb": 40.5,
-      "images_count": 1,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 40.8,
+      "internal_inlinks": 3
     },
     {
       "path": "/smart-medical-archive/",
@@ -1464,13 +1107,9 @@
       "title": "Bright AI | Smart Medical Archive",
       "h1": "نظرة عامة على النظام",
       "meta_description": "",
-      "size_kb": 38.7,
-      "images_count": 0,
-      "scripts_count": 5,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": true,
+      "size_kb": 32.7,
       "internal_inlinks": 25
     },
     {
@@ -1479,14 +1118,10 @@
       "title": "ما هو الذكاء الاصطناعي؟ | Bright AI - دليلك الشامل",
       "h1": "ما هو الذكاء الاصطناعي؟",
       "meta_description": "دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، تطبيقاته في الحياة اليومية والأعمال، وكيف سيغير مستقبلنا. مقدم من Bright AI.",
-      "size_kb": 32.5,
-      "images_count": 2,
-      "scripts_count": 4,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 32.5,
+      "internal_inlinks": 3
     },
     {
       "path": "/services/_template.html",
@@ -1494,14 +1129,10 @@
       "title": "تم نقل الصفحة",
       "h1": "",
       "meta_description": "",
-      "size_kb": 0.7,
-      "images_count": 0,
-      "scripts_count": 0,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 0.9,
+      "internal_inlinks": 3
     },
     {
       "path": "/services/recruitment-system.html",
@@ -1509,14 +1140,10 @@
       "title": "نظام التوظيف الذكي للشركات السعودية | Bright AI",
       "h1": "وظّف أفضل الكفاءاتفي دقائقوليس أسابيع",
       "meta_description": "نظام توظيف ذكي للشركات السعودية لفرز المرشحين تلقائياً وتقليل زمن التوظيف مع تحسين جودة الاختيار وامتثال مؤسسي.",
-      "size_kb": 54.4,
-      "images_count": 2,
-      "scripts_count": 11,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": true,
       "has_form": true,
-      "internal_inlinks": 0
+      "size_kb": 54.7,
+      "internal_inlinks": 3
     },
     {
       "path": "/services/template.html",
@@ -1524,14 +1151,10 @@
       "title": "Bright AI - Service Template",
       "h1": "العنوان الرئيسي للخدمة",
       "meta_description": "",
-      "size_kb": 15.6,
-      "images_count": 1,
-      "scripts_count": 11,
-      "heavy_images": [],
-      "heavy_js": [],
       "has_jsonld": false,
       "has_form": false,
-      "internal_inlinks": 0
+      "size_kb": 15.9,
+      "internal_inlinks": 3
     }
   ],
   "link_graph": {
@@ -1560,6 +1183,7 @@
       "/ai-agent/",
       "/blog/",
       "/contact/",
+      "/demo/resources/report-ai-saudi-2026/",
       "/docs.html",
       "/docs/ai-agent.html",
       "/docs/ai-bots.html",
@@ -1589,11 +1213,21 @@
       "/about-us/",
       "/ai-agent/",
       "/blog/",
+      "/botAI/BrightSupport.html",
       "/consultation/",
       "/contact/",
       "/data-analysis/",
+      "/demo/ocr-demo/",
       "/docs.html",
+      "/docs/ai-agent-en.html",
+      "/docs/ai-bots-en.html",
+      "/docs/solutions-hr.html",
+      "/docs/solutions-interview-en.html",
+      "/docs/solutions-interview.html",
       "/interview/",
+      "/interview/pages/dashboard/",
+      "/interview/pages/support-ai.html",
+      "/interview/pages/supportAI.html",
       "/our-products/",
       "/smart-automation/",
       "/smart-medical-archive/",
@@ -1611,6 +1245,16 @@
     "/try/": [
       "/../..",
       "/about-us/",
+      "/botAI/BrightSales.html",
+      "/botAI/BrightSupport.html",
+      "/demo/",
+      "/docs/ai-agent-en.html",
+      "/docs/solutions-hr-en.html",
+      "/docs/solutions-hr.html",
+      "/docs/solutions-interview-en.html",
+      "/interview/pages/appointment/",
+      "/interview/pages/dashboard/",
+      "/interview/pages/support-ai.html",
       "/our-products/",
       "/try/data-analyzer/",
       "/try/data-quality/",
@@ -1628,12 +1272,22 @@
       "/blog/",
       "/contact/",
       "/data-analysis/",
+      "/demo/",
+      "/docs/ai-bots-en.html",
+      "/docs/consultation-en.html",
+      "/docs/contact-en.html",
+      "/docs/solutions-interview.html",
+      "/docs/solutions-logistics-en.html",
+      "/docs/solutions-ocr-en.html",
       "/frontend/pages/docs/index.html",
       "/health-bright/",
+      "/interview/pages/supportAI.html",
       "/job.MAISco/",
+      "/machine/",
       "/privacy-cookies/",
       "/smart-automation/",
       "/smart-medical-archive/",
+      "/smart-medical-archive/analytics-insights.html",
       "/try/",
       "/try/data-analyzer/",
       "/try/data-quality/",
@@ -1644,7 +1298,16 @@
       "/about-us/",
       "/blog/",
       "/contact/",
-      "/smart-automation/"
+      "/docs/consultation-en.html",
+      "/docs/contact-en.html",
+      "/docs/data-analysis-en.html",
+      "/docs/solutions-logistics-en.html",
+      "/docs/solutions-ocr-en.html",
+      "/docs/solutions-retail-en.html",
+      "/machine/",
+      "/smart-automation/",
+      "/smart-medical-archive/analytics-insights.html",
+      "/what-is-ai/"
     ],
     "/ai-agent/": [
       "/",
@@ -1653,6 +1316,8 @@
       "/../terms-and-conditions",
       "/about-us/",
       "/ai-agent/",
+      "/ai-bots/BrightMath/",
+      "/ai-bots/BrightProject/",
       "/blog/",
       "/blogger/Generative-artificial-intelligence.html",
       "/blogger/ai-agent.html",
@@ -1660,14 +1325,24 @@
       "/consultation/",
       "/contact/",
       "/data-analysis/",
+      "/demo/",
       "/docs.html",
+      "/docs/data-analysis-en.html",
+      "/docs/docs.html",
+      "/docs/smart-automation-en.html",
+      "/docs/solutions-retail-en.html",
+      "/docs/solutions-retail.html",
+      "/docs/solutions-supply-chain-en.html",
       "/interview/",
       "/our-products/",
       "/privacy-cookies/",
+      "/services/_template.html",
+      "/services/recruitment-system.html",
       "/smart-automation/",
       "/smart-medical-archive/",
       "/tools/",
-      "/try/"
+      "/try/",
+      "/what-is-ai/"
     ],
     "/ai-bots/BrightMath/": [
       "/",
@@ -1754,16 +1429,29 @@
       "/about-us/",
       "/ai-agent/",
       "/ai-bots/",
+      "/ai-bots/BrightMath/",
+      "/ai-bots/BrightProject/",
+      "/ai-workflows/",
       "/blog/",
       "/blogger/Generative-artificial-intelligence.html",
       "/consultation/",
       "/contact/",
       "/data-analysis/",
+      "/demo/pricing/",
       "/docs.html",
+      "/docs/docs.html",
+      "/docs/smart-automation-en.html",
+      "/docs/solutions-bi-en.html",
+      "/docs/solutions-retail.html",
+      "/docs/solutions-supply-chain-en.html",
+      "/docs/terms-and-conditions-en.html",
       "/health-bright/",
       "/interview/",
       "/our-products/",
       "/privacy-cookies/",
+      "/services/_template.html",
+      "/services/recruitment-system.html",
+      "/services/template.html",
       "/smart-automation/",
       "/smart-medical-archive/",
       "/tools/",
@@ -1834,8 +1522,18 @@
       "/consultation/",
       "/contact/",
       "/data-analysis/",
+      "/demo/resources/report-ai-saudi-2026/",
       "/docs.html",
+      "/docs/ai-agent-en.html",
+      "/docs/ai-bots-en.html",
+      "/docs/consultation-en.html",
+      "/docs/solutions-interview-en.html",
+      "/docs/solutions-interview.html",
+      "/docs/solutions-logistics-en.html",
       "/interview/",
+      "/interview/pages/support-ai.html",
+      "/interview/pages/supportAI.html",
+      "/machine/",
       "/our-products/",
       "/privacy-cookies/",
       "/sectors/ecommerce.html",
@@ -1859,13 +1557,25 @@
       "/../..",
       "/about-us/",
       "/ai-agent/",
+      "/ai-bots/BrightProject/",
+      "/ai-workflows/",
       "/blog/",
+      "/botAI/BrightMath.html",
       "/consultation/",
       "/contact/",
       "/data-analysis/",
+      "/demo/pricing/",
       "/docs.html",
+      "/docs/smart-automation-en.html",
+      "/docs/solutions-bi-en.html",
+      "/docs/solutions-crm-en.html",
+      "/docs/solutions-supply-chain-en.html",
+      "/docs/terms-and-conditions-en.html",
       "/interview/",
+      "/interview/Presentation.html",
       "/our-products/",
+      "/services/recruitment-system.html",
+      "/services/template.html",
       "/smart-automation/",
       "/smart-medical-archive/",
       "/tools/",
@@ -1875,13 +1585,23 @@
       "/",
       "/about-us/",
       "/ai-agent/",
+      "/ai-workflows/",
       "/blog/",
+      "/botAI/BrightMath.html",
+      "/botAI/BrightProject.html",
       "/consultation/",
       "/contact/",
       "/data-analysis/",
       "/docs.html",
+      "/docs/solutions-bi-en.html",
+      "/docs/solutions-crm-en.html",
+      "/docs/solutions-finance-en.html",
+      "/docs/terms-and-conditions-en.html",
       "/interview/",
+      "/interview/Presentation.html",
+      "/interview/g.html",
       "/our-products/",
+      "/services/template.html",
       "/smart-automation/",
       "/smart-medical-archive/",
       "/tools/",
@@ -1893,16 +1613,49 @@
       "/about-us/",
       "/ai-agent/",
       "/blog/",
+      "/botAI/BrightMath.html",
+      "/botAI/BrightProject.html",
+      "/botAI/BrightRecruiter.html",
       "/consultation/",
       "/contact/",
       "/data-analysis/",
+      "/demo/resources/report-ai-saudi-2026/",
       "/docs.html",
+      "/docs/solutions-crm-en.html",
+      "/docs/solutions-finance-en.html",
+      "/docs/solutions-healthcare-en.html",
       "/interview/",
+      "/interview/Presentation.html",
+      "/interview/g.html",
+      "/interview/pages/Visitor-registration/",
       "/our-products/",
       "/smart-automation/",
       "/smart-medical-archive/",
       "/tools/",
       "/try/"
+    ],
+    "/demo/": [
+      "/demo/ocr-demo/",
+      "/demo/pricing/",
+      "/demo/resources/report-ai-saudi-2026/"
+    ],
+    "/demo/ocr-demo/": [
+      "/demo/",
+      "/demo/ocr-demo/",
+      "/demo/pricing/",
+      "/demo/resources/report-ai-saudi-2026/"
+    ],
+    "/demo/pricing/": [
+      "/demo/",
+      "/demo/ocr-demo/",
+      "/demo/pricing/",
+      "/demo/resources/report-ai-saudi-2026/"
+    ],
+    "/demo/resources/report-ai-saudi-2026/": [
+      "/demo/",
+      "/demo/ocr-demo/",
+      "/demo/pricing/",
+      "/demo/resources/report-ai-saudi-2026/"
     ],
     "/docs/ai-agent-en.html": [
       "/docs/contact.html"
@@ -2025,6 +1778,7 @@
       "/smart-medical-archive/"
     ],
     "/docs/solutions-ocr.html": [
+      "/demo/ocr-demo/",
       "/docs/contact.html",
       "/smart-medical-archive/"
     ],
@@ -2138,7 +1892,18 @@
       "/try/"
     ],
     "/our-products/": [
-      "/"
+      "/",
+      "/ai-bots/BrightMath/",
+      "/demo/pricing/",
+      "/docs/contact-en.html",
+      "/docs/data-analysis-en.html",
+      "/docs/docs.html",
+      "/docs/solutions-ocr-en.html",
+      "/docs/solutions-retail-en.html",
+      "/docs/solutions-retail.html",
+      "/services/_template.html",
+      "/smart-medical-archive/analytics-insights.html",
+      "/what-is-ai/"
     ],
     "/privacy-cookies/": [
       "/",
@@ -2245,11 +2010,20 @@
       "/about-us/",
       "/ai-agent/",
       "/blog/",
+      "/botAI/BrightProject.html",
+      "/botAI/BrightRecruiter.html",
+      "/botAI/BrightSales.html",
       "/consultation/",
       "/contact/",
       "/data-analysis/",
       "/docs.html",
+      "/docs/solutions-finance-en.html",
+      "/docs/solutions-healthcare-en.html",
+      "/docs/solutions-hr-en.html",
       "/interview/",
+      "/interview/g.html",
+      "/interview/pages/Visitor-registration/",
+      "/interview/pages/appointment/",
       "/our-products/",
       "/smart-automation/",
       "/smart-medical-archive/",
@@ -2280,7 +2054,17 @@
       "/try/"
     ],
     "/smart-medical-archive/": [
+      "/botAI/BrightRecruiter.html",
+      "/botAI/BrightSales.html",
+      "/botAI/BrightSupport.html",
+      "/demo/ocr-demo/",
+      "/docs/solutions-healthcare-en.html",
       "/docs/solutions-healthcare.html",
+      "/docs/solutions-hr-en.html",
+      "/docs/solutions-hr.html",
+      "/interview/pages/Visitor-registration/",
+      "/interview/pages/appointment/",
+      "/interview/pages/dashboard/",
       "/smart-medical-archive/Analytics&Insights.html",
       "/smart-medical-archive/EHR-Viewer.html",
       "/smart-medical-archive/Ingestion.html",

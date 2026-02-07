@@ -215,3 +215,25 @@
 تحديث إضافي — فحص الروابط الداخلية بعد النقل
 - تم إجراء فحص شامل لجميع ملفات HTML/MD/XML للبحث عن المسارات القديمة.
 - النتيجة: لا توجد روابط قديمة متبقية داخل صفحات الموقع؛ الروابط كلها تشير للمسارات الجديدة تحت /demo/.
+
+تحديث إضافي — المرحلة 2 (الروابط الداخلية)
+- تم تنفيذ 12 رابط عالي الأولوية موجّهة لصفحات الملك.
+- تمت الإضافة داخل الصفحات التالية:
+  /Users/yzydalshmry/Desktop/BrightAI/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/try/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ai-agent/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/docs/solutions-ocr.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/tools/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/blog/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/docs.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/data-analysis/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/our-products/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/consultation/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ai-bots/index.html
+
+تحديث إضافي — المرحلة 2 (اليتيم + إعادة القياس)
+- تم إدراج روابط إضافية للصفحات اليتيمة داخل صفحات المصدر المقترحة.
+- تم تحويل روابط صفحات الملك داخل عناصر <a> إلى مسارات نسبية (root-relative) لتسهيل احتساب الروابط الداخلية.
+- إعادة قياس الزحف: نسبة اليتيم أصبحت 1.9% (بقيت فقط صفحات 404 و500).
+- تم تحديث crawl_data.json بنتائج القياس الجديدة.
