@@ -6,7 +6,7 @@
       "theme": "التحكم الداخلي + تأسيس صفحات الملك",
       "tasks": [
         {
-          "task": "إنشاء صفحات الملك الأربع (/demo, /ocr-demo, /resources/report-ai-saudi-2026, /pricing) مع H1 وMeta وCTA واضح",
+          "task": "إنشاء صفحات الملك الأربع (/demo, /demo/ocr-demo/, /demo/resources/report-ai-saudi-2026/, /demo/pricing/) مع H1 وMeta وCTA واضح",
           "owner": "Frontend + Content",
           "start_date": "2026-02-09",
           "end_date": "2026-02-13",
@@ -99,7 +99,7 @@
           "kpi": "تغطية 100% لمسار التحويل الأساسي"
         },
         {
-          "task": "اختبار A/B لنسخ CTA في /demo و/pricing",
+          "task": "اختبار A/B لنسخ CTA في /demo و/demo/pricing/",
           "owner": "Growth",
           "start_date": "2026-03-04",
           "end_date": "2026-03-08",

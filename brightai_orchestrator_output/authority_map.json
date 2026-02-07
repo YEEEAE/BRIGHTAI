@@ -18,7 +18,8 @@
     },
     "notes": "تم استبعاد صفحات blogger لتقليل الضوضاء والتركيز على صفحات التحويل والخدمات.",
     "site_url": "https://brightai.site",
-    "focus": "all"
+    "focus": "all",
+    "command_pages_note": "تم نقل صفحات الملك تحت /demo/ بناءً على طلب التوحيد."
   },
   "command_pages": [
     {
@@ -27,17 +28,17 @@
       "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
     },
     {
-      "page": "/ocr-demo",
+      "page": "/demo/ocr-demo/",
       "status": "missing",
       "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
     },
     {
-      "page": "/resources/report-ai-saudi-2026",
+      "page": "/demo/resources/report-ai-saudi-2026/",
       "status": "missing",
       "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
     },
     {
-      "page": "/pricing",
+      "page": "/demo/pricing/",
       "status": "missing",
       "reason": "غير موجودة في المشروع الحالي وتحتاج إنشاء"
     }

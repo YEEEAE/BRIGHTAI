@@ -18,7 +18,7 @@ groq.send(session=session_id, message=user_message)
 # keep session context for N minutes (configurable)
 ```
 
-## /ocr-demo — أفكار تنفيذية (2)
+## /demo/ocr-demo/ — أفكار تنفيذية (2)
 
 1) بعد رفع الملف: استخراج النص ثم تلخيص فوري + إعادة الحقول المهمة JSON.
 
@@ -35,7 +35,7 @@ result = groq.complete(
 render_json(result)
 ```
 
-## /resources/report-ai-saudi-2026 — أفكار تنفيذية (2)
+## /demo/resources/report-ai-saudi-2026/ — أفكار تنفيذية (2)
 
 1) استخراج FAQ ديناميكي من التقرير وتحويله إلى JSON-LD FAQ.
 
@@ -49,7 +49,7 @@ json_ld = build_faq_jsonld(faq)
 render_schema(json_ld)
 ```
 
-## /pricing — أفكار تنفيذية (2)
+## /demo/pricing/ — أفكار تنفيذية (2)
 
 1) توصية باقة ذكية بناءً على حجم الفريق واستخدامه (سؤالين فقط).
 

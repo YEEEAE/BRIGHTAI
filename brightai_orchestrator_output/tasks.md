@@ -8,11 +8,11 @@
 - [x] تأكيد `crawl_limit` النهائي إذا كان مختلفاً عن 120. (اعتمد 120)
 
 ## المرحلة 1 — صفحات الملك (Command Pages)
-- [ ] إنشاء صفحة `/demo` مع H1 وMeta وCTA واضح (نسخة سعودية) + مسار تتبع CTA.
-- [ ] إنشاء صفحة `/ocr-demo` مع رفع ملف وتجربة فورية + عرض JSON.
-- [ ] إنشاء صفحة `/resources/report-ai-saudi-2026` بهبوط تحميل التقرير وCTA.
-- [ ] إنشاء صفحة `/pricing` بعرض الباقات + CTA ثانوي للاستشارة.
-- [ ] إضافة canonical + Open Graph لكل صفحة ملك.
+- [x] إنشاء صفحة `/demo` مع H1 وMeta وCTA واضح (نسخة سعودية) + مسار تتبع CTA.
+- [x] إنشاء صفحة `/demo/ocr-demo/` مع رفع ملف وتجربة فورية + عرض JSON.
+- [x] إنشاء صفحة `/demo/resources/report-ai-saudi-2026/` بهبوط تحميل التقرير وCTA.
+- [x] إنشاء صفحة `/demo/pricing/` بعرض الباقات + CTA ثانوي للاستشارة.
+- [x] إضافة canonical + Open Graph لكل صفحة ملك.
 
 ## المرحلة 2 — الروابط الداخلية (Internal Linking)
 - [ ] تنفيذ أعلى 10 روابط من `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/internal_links_plan.csv`.
@@ -35,13 +35,13 @@
 ## المرحلة 5 — تكاملات Groq (UX مباشر)
 - [ ] تنفيذ بث Streaming داخل `/demo` (SSE/WebSocket).
 - [ ] إضافة ذاكرة جلسة قصيرة للديمو (session context).
-- [ ] تنفيذ استخراج JSON بعد OCR في `/ocr-demo`.
+- [ ] تنفيذ استخراج JSON بعد OCR في `/demo/ocr-demo/`.
 - [ ] توليد FAQ ديناميكي للتقرير وتحويله إلى JSON-LD.
 - [ ] تطبيق rate-limit + حماية مفاتيح API (Backend proxy).
 
 ## المرحلة 6 — Schema / JSON-LD
 - [ ] إدراج `demo.jsonld` في صفحة `/demo`.
-- [ ] إدراج `ocr-demo.jsonld` في صفحة `/ocr-demo`.
+- [ ] إدراج `ocr-demo.jsonld` في صفحة `/demo/ocr-demo/`.
 - [ ] إدراج `report-ai-saudi-2026.jsonld` في صفحة التقرير.
 - [ ] إدراج `pricing.jsonld` في صفحة الأسعار.
 
@@ -52,7 +52,7 @@
 
 ## المرحلة 8 — القياس والتحسين
 - [ ] تفعيل تتبع CTA وبدء الديمو ورفع ملفات OCR.
-- [ ] تنفيذ اختبار A/B لنسخ CTA في `/demo` و`/pricing`.
+- [ ] تنفيذ اختبار A/B لنسخ CTA في `/demo` و`/demo/pricing/`.
 - [ ] مراجعة CTR وLCP بعد 2–4 أسابيع وتحسين النصوص.
 
 ## مخرجات مرجعية
@@ -61,3 +61,5 @@
 - Playbook أسبوعي: `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/playbook_weekly.json`
 - تكاملات Groq: `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/groq_integration_snippets.md`
 - مقترحات اليتيم: `/Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/orphan_suggestions.json`
+
+**ملاحظة تنظيمية:** تم نقل صفحات الملك لتكون جميعها داخل `/frontend/pages/demo/` كما طُلب، وأصبحت المسارات الجديدة تحت `/demo/`.

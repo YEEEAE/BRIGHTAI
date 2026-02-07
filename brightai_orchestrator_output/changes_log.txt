@@ -189,3 +189,29 @@
 - تم تحسين قواعد المطابقة (إزالة بادئات /frontend/pages، معالجة .html، وتحويل index.html إلى مسار قياسي).
 - تم رفع عدد الصفحات المطابقة إلى 39 صفحة.
 - تم تحديث analytics_map.json بنتائج المطابقة الجديدة.
+
+تحديث إضافي — المرحلة 1 (صفحات الملك)
+- تم إنشاء صفحة /demo في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
+  السبب: صفحة تحويل رئيسية للديمو الفوري مع CTA وتجربة تفاعلية مبسطة.
+- تم إنشاء صفحة /ocr-demo في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ocr-demo/index.html
+  السبب: صفحة تحويل مخصصة لتجربة OCR مع رفع ملف ونتائج فورية.
+- تم إنشاء صفحة /resources/report-ai-saudi-2026 في المسار:
+  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/resources/report-ai-saudi-2026/index.html
+  السبب: صفحة هبوط لتحميل التقرير وربطها بالتحويل نحو الديمو والاستشارة.
+- تم إنشاء صفحة /pricing في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/pricing/index.html
+  السبب: صفحة تسعير واضحة تدعم التحويل والتواصل مع المبيعات.
+- تم تضمين canonical + Open Graph + Twitter meta في الصفحات الأربع.
+
+تحديث إضافي — توحيد الصفحات داخل مجلد demo
+- تم نقل صفحات الملك إلى داخل /frontend/pages/demo/ كطلب المستخدم.
+- المسارات الجديدة:
+  - /demo/ (بدون تغيير)
+  - /demo/ocr-demo/
+  - /demo/pricing/
+  - /demo/resources/report-ai-saudi-2026/
+- تم تحديث الروابط الداخلية والـ canonical وملفات التخطيط الداخلية لتتوافق مع المسارات الجديدة.
+- تم حذف المجلدات القديمة الفارغة (ocr-demo, pricing, resources).
+
+تحديث إضافي — فحص الروابط الداخلية بعد النقل
+- تم إجراء فحص شامل لجميع ملفات HTML/MD/XML للبحث عن المسارات القديمة.
+- النتيجة: لا توجد روابط قديمة متبقية داخل صفحات الموقع؛ الروابط كلها تشير للمسارات الجديدة تحت /demo/.
