@@ -85,75 +85,203 @@
 
             <!-- Main Navigation -->
             <nav class="hidden lg:flex items-center gap-1">
-                <ul class="nav-links flex items-center">
+                <ul class="nav-links flex items-center gap-1">
                     <li class="nav-item">
-                        <a href="#top" class="nav-link">الرئيسية</a>
+                        <a href="index.html" class="nav-link">الرئيسية</a>
                     </li>
-                    <li class="nav-item group/dropdown">
-                        <a href="#services" class="nav-link flex items-center gap-1.5" aria-haspopup="true"
-                            aria-expanded="false">
+
+                    <!-- Smart Solutions Dropdown -->
+                    <li class="nav-item group/dropdown relative">
+                        <button class="nav-link flex items-center gap-1.5" aria-haspopup="true" aria-expanded="false">
                             الحلول الذكية
                             <iconify-icon icon="lucide:chevron-down"
                                 class="chevron-down text-xs opacity-60"></iconify-icon>
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="grid grid-cols-2 gap-2 w-[520px]">
-                                <a href="#workflows" class="dropdown-item">
-                                    <div
-                                        class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
-                                        <iconify-icon icon="lucide:workflow"></iconify-icon>
-                                    </div>
-                                    <div class="dropdown-item-content">
-                                        <span class="dropdown-title">أتمتة العمليات</span>
-                                        <span class="dropdown-desc">ربط الأنظمة وتحسين كفاءة العمل الذكي.</span>
-                                    </div>
-                                </a>
-                                <a href="#bi" class="dropdown-item">
-                                    <div
-                                        class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
-                                        <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
-                                    </div>
-                                    <div class="dropdown-item-content">
-                                        <span class="dropdown-title">ذكاء الأعمال BI</span>
-                                        <span class="dropdown-desc">تحويل البيانات إلى رؤى استراتيجية دقيقة.</span>
-                                    </div>
-                                </a>
-                                <a href="#robotics" class="dropdown-item">
-                                    <div
-                                        class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/20">
-                                        <iconify-icon icon="lucide:bot"></iconify-icon>
-                                    </div>
-                                    <div class="dropdown-item-content">
-                                        <span class="dropdown-title">الروبوتات الذكية</span>
-                                        <span class="dropdown-desc">حلول الأتمتة الميكانيكية للجيل القادم.</span>
-                                    </div>
-                                </a>
-                                <a href="#library" class="dropdown-item">
-                                    <div
-                                        class="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
-                                        <iconify-icon icon="lucide:book-open"></iconify-icon>
-                                    </div>
-                                    <div class="dropdown-item-content">
-                                        <span class="dropdown-title">المكتبة الذكية</span>
-                                        <span class="dropdown-desc">إدارة المعرفة والبيانات بلمسة ذكاء.</span>
-                                    </div>
-                                </a>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
                                 <a href="frontend/pages/smart-automation/index.html"
-                                    class="dropdown-item col-span-2 mt-2 bg-white/5 border border-white/10 text-center justify-center hover:bg-white/10">
-                                    <span class="text-xs font-bold text-slate-400">مشاهدة كافة الحلول التقنية</span>
-                                    <iconify-icon icon="lucide:arrow-left" class="text-xs"></iconify-icon>
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="frontend/pages/ai-agent/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="frontend/pages/contact/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="frontend/pages/data-analysis/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
                                 </a>
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="frontend/pages/blog/index.html" class="nav-link">المدونة</a>
+
+                    <!-- Smart Models Dropdown -->
+                    <li class="nav-item group/dropdown relative">
+                        <button class="nav-link flex items-center gap-1.5" aria-haspopup="true" aria-expanded="false">
+                            النماذج الذكية
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="chevron-down text-xs opacity-60"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a href="frontend/pages/smart-medical-archive/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="frontend/pages/job.MAISco/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="frontend/pages/ai-scolecs/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="frontend/pages/health-bright/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a href="frontend/pages/about-us/index.html" class="nav-link">عن برايت</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="frontend/pages/contact/index.html" class="nav-link">تواصل معنا</a>
+
+                    <!-- About Bright Dropdown -->
+                    <li class="nav-item group/dropdown relative">
+                        <button class="nav-link flex items-center gap-1.5" aria-haspopup="true" aria-expanded="false">
+                            عن برايت
+                            <iconify-icon icon="lucide:chevron-down"
+                                class="chevron-down text-xs opacity-60"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a href="frontend/pages/about-us/index.html"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a href="#"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a href="#library"
+                                    class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </nav>
