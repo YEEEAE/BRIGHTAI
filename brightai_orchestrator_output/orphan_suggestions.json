@@ -1,0 +1,25 @@
+[
+    {
+        "page": "/frontend/pages/blogger/saudi-dates-quality-ai.html",
+        "suggested_sources": [
+            "/frontend/pages/our-products/index.html",
+            "/frontend/pages/smart-automation/index.html"
+        ],
+        "anchor_text": "حلول فحص الجودة بالذكاء الاصطناعي"
+    },
+    {
+        "page": "/frontend/pages/blogger/saudi-mining-ai-exploration.html",
+        "suggested_sources": [
+            "/frontend/pages/data-analysis/index.html",
+            "/index.html"
+        ],
+        "anchor_text": "تحليل البيانات الجيولوجية"
+    },
+    {
+        "page": "/frontend/pages/blogger/saudi-sports-analytics-ai.html",
+        "suggested_sources": [
+            "/frontend/pages/try/index.html"
+        ],
+        "anchor_text": "جرب تحليل بيانات اللاعبين"
+    }
+]

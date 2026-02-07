@@ -1,0 +1,75 @@
+{
+    "meta": {
+        "generated_at": "2026-02-07T06:20:00+03:00",
+        "strategy": "Saudi Market Dominance",
+        "total_pages_scanned": 85
+    },
+    "pyramid": {
+        "command_pages": [
+            {
+                "url": "/frontend/pages/try/index.html",
+                "role": "conversion_core",
+                "priority": "Critical",
+                "notes": "Main lead magnet. Requires high-speed streaming feedback."
+            },
+            {
+                "url": "/frontend/pages/our-products/index.html",
+                "role": "transactional",
+                "priority": "High",
+                "notes": "Direct sales catalog."
+            },
+            {
+                "url": "/frontend/pages/contact/index.html",
+                "role": "lead_gen",
+                "priority": "High"
+            },
+            {
+                "url": "/frontend/pages/smart-medical-archive/index.html",
+                "role": "niche_landing",
+                "priority": "Medium",
+                "notes": "High-value B2B entry point."
+            }
+        ],
+        "persuasion_pages": [
+            {
+                "url": "/index.html",
+                "role": "hub",
+                "priority": "Critical",
+                "notes": "Traffic distributor."
+            },
+            {
+                "url": "/frontend/pages/about-us/index.html",
+                "role": "trust_builder",
+                "priority": "Medium"
+            },
+            {
+                "url": "/frontend/pages/smart-automation/index.html",
+                "role": "solution_explainer",
+                "priority": "Medium"
+            }
+        ],
+        "discovery_pages": [
+            {
+                "url": "/frontend/pages/blogger/*",
+                "count": 80,
+                "role": "traffic_magnet",
+                "priority": "Low (Individual) / High (Aggregate)",
+                "notes": "Long-tail SEO keywords capture."
+            }
+        ],
+        "orphans": [
+            {
+                "url": "/frontend/pages/blogger/saudi-dates-quality-ai.html",
+                "reason": "No incoming internal links detected from main nav or pillars."
+            },
+            {
+                "url": "/frontend/pages/blogger/saudi-mining-ai-exploration.html",
+                "reason": "Deep page, likely isolated."
+            },
+            {
+                "url": "/frontend/pages/blogger/saudi-sports-analytics-ai.html",
+                "reason": "Niche topic, needs linking to Reports."
+            }
+        ]
+    }
+}

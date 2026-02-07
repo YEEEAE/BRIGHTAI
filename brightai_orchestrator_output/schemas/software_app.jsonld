@@ -1,0 +1,25 @@
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Bright AI Data Analyzer",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "SAR"
+    },
+    "description": "نظام ذكاء اصطناعي لتحليل البيانات للشركات السعودية. يدعم العربية ويعالج البيانات محلياً.",
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "120"
+    },
+    "featureList": [
+        "تحليل CSV فوري",
+        "دعم اللغة العربية",
+        "توصيات بذكاء الاصطناعي"
+    ]
+}
+</script>

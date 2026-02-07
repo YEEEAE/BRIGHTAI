@@ -1,0 +1,88 @@
+{
+    "strategy_name": "BrightAI Saudi Domination",
+    "start_date": "2026-02-08",
+    "weeks": [
+        {
+            "week": 1,
+            "theme": "Control & Foundation",
+            "tasks": [
+                {
+                    "title": "Internal Link Injection",
+                    "description": "Implement the CSV linking plan (High Priority rows).",
+                    "owner": "Dev Team",
+                    "est_hours": 4
+                },
+                {
+                    "title": "Product Schema Rollout",
+                    "description": "Add AggregateRating and FAQ schemas to /our-products.",
+                    "owner": "SEO Specialist",
+                    "est_hours": 2
+                },
+                {
+                    "title": "Orphan Rescue",
+                    "description": "Link top 10 orphaned blog posts to 'Services' pillars.",
+                    "owner": "Content Lead",
+                    "est_hours": 3
+                }
+            ],
+            "kpi": "Zero Critical Orphans"
+        },
+        {
+            "week": 2,
+            "theme": "Technical Sprint (Groq)",
+            "tasks": [
+                {
+                    "title": "Demo Stream Prototype",
+                    "description": "Implement the Groq streaming hook on /demo (backend proxy).",
+                    "owner": "Backend Eng",
+                    "est_hours": 8
+                },
+                {
+                    "title": "Speed Optimization",
+                    "description": "Defer non-critical JS on Blog pages to boost Mobile Score > 90.",
+                    "owner": "Frontend Eng",
+                    "est_hours": 5
+                }
+            ],
+            "kpi": "LCP < 1.5s on Mobile"
+        },
+        {
+            "week": 3,
+            "theme": "Content Authority",
+            "tasks": [
+                {
+                    "title": "Saudi Industry Reports",
+                    "description": "Publish 'AI in Saudi Healthcare 2026' report.",
+                    "owner": "Content Team",
+                    "est_hours": 12
+                },
+                {
+                    "title": "Social Signal Boost",
+                    "description": "Share blog snippets on LinkedIn/Twitter with localized hashtags.",
+                    "owner": "Marketing",
+                    "est_hours": 4
+                }
+            ],
+            "kpi": "+15% Organic Traffic"
+        },
+        {
+            "week": 4,
+            "theme": "Measurement & Scale",
+            "tasks": [
+                {
+                    "title": "Conversion Audit",
+                    "description": "Analyze drop-off rates on /try page.",
+                    "owner": "Product Owner",
+                    "est_hours": 3
+                },
+                {
+                    "title": "Refine Authority Map",
+                    "description": "Re-crawl site and update the map based on new links.",
+                    "owner": "Orchestrator",
+                    "est_hours": 2
+                }
+            ],
+            "kpi": "Demo Signups +10%"
+        }
+    ]
+}
