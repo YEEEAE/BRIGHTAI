@@ -900,9 +900,9 @@
         document.body.appendChild(script);
       }
       function loadAnimations() {
-        loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
-        loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+        loadCSS('/frontend/css/vendor/aos.css');
+        loadScript('/frontend/js/vendor/gsap.min.js');
+        loadScript('/frontend/js/vendor/aos.js', function () {
           if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
         });
 }

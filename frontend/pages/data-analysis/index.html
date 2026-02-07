@@ -124,11 +124,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                 // Centralized Design System
                 loadCSS('../css/brightai-core.css');
 
-                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadCSS('/frontend/css/vendor/aos.css');
 }
             function loadAnimations() {
-                loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
-                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                loadScript('/frontend/js/vendor/gsap.min.js');
+                loadScript('/frontend/js/vendor/aos.js', function () {
                     if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
                 });
             }

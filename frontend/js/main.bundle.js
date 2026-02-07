@@ -957,8 +957,8 @@
 
                 // Load AOS if needed
                 if (hasAos && !skipHeavyAnimations) {
-                    this.loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
-                    this.loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', () => {
+                    this.loadCSS('/frontend/css/vendor/aos.css');
+                    this.loadScript('/frontend/js/vendor/aos.js', () => {
                         if (typeof AOS !== 'undefined') {
                             AOS.init({ duration: 800, once: true, offset: 100 });
                         }
@@ -967,8 +967,8 @@
 
                 // Load Swiper if needed
                 if (hasSwiper) {
-                    this.loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
-                    this.loadScript('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', () => {
+                    this.loadCSS('/frontend/css/vendor/swiper-bundle.min.css');
+                    this.loadScript('/frontend/js/vendor/swiper-bundle.min.js', () => {
                         this.initSwipers();
                     });
                 }

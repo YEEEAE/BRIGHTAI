@@ -74,10 +74,10 @@
             }
             function loadDeferredResources() {
 loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
-                loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
+                loadCSS('/frontend/css/vendor/aos.css');
 }
             function loadAnimations() {
-                loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
+                loadScript('/frontend/js/vendor/aos.js', function () {
                     if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
                 });
             }

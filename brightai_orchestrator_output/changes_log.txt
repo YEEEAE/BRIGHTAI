@@ -321,3 +321,12 @@
 - إزالة تحميل Iconify من CDN داخل /Users/yzydalshmry/Desktop/BrightAI/frontend/js/main.bundle.js (اعتماد التحميل المحلي فقط).
 - تقرير أيقونات مفقودة (للتدقيق): /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/iconify-missing.json
 - إزالة preconnect/dns-prefetch الخاصة بـ cdn.tailwindcss.com وواجهات iconify بعد التوطين المحلي.
+
+تحديث إضافي — توطين مكتبات الحركة (AOS/Swiper/GSAP)
+- تنزيل المكتبات محلياً ونسخ ملفاتها إلى مجلدات vendor:
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/js/vendor/aos.js
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/css/vendor/aos.css
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/js/vendor/gsap.min.js
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/js/vendor/swiper-bundle.min.js
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/css/vendor/swiper-bundle.min.css
+- استبدال كل روابط CDN الخاصة بـ AOS/Swiper/GSAP في صفحات الموقع والسكربتات إلى المسارات المحلية.
