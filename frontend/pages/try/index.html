@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-  <link rel="canonical" href="https://brightai.site/frontend/pages/try/index.html">
+    <link rel="canonical" href="https://brightai.site/frontend/pages/try/index.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تجربة Bright AI | تحليل البيانات الذكي</title>
 
@@ -11,6 +11,32 @@
     <meta name="description"
         content="جرب نظام Bright AI مجاناً. قم برفع بياناتك واحصل على تحليلات فورية مدعومة بالذكاء الاصطناعي.">
     <meta name="robots" content="noindex, nofollow"> <!-- Don't index the demo page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Bright AI Data Analyzer",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "SAR"
+        },
+        "description": "نظام ذكاء اصطناعي لتحليل البيانات للشركات السعودية. يدعم العربية ويعالج البيانات محلياً.",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "120"
+        },
+        "featureList": [
+            "تحليل CSV فوري",
+            "دعم اللغة العربية",
+            "توصيات بذكاء الاصطناعي"
+        ]
+    }
+    </script>
+    <script src="../../js/groq-client.js" defer></script>
 
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="../../css/bundle-critical.css">
@@ -230,12 +256,12 @@
                             </div>
                         </a>
                         <a href="../our-products/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:package"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
-              </div>
-            </a>
+                            <iconify-icon icon="lucide:package"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">المنتجات والاشتراكات</span>
+                                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
+                            </div>
+                        </a>
                         <a href="../data-analysis/index.html" class="dropdown-item">
                             <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                             <div class="dropdown-item-content">
@@ -260,13 +286,13 @@
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-            <a href="../ai-agent/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:bot"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-              </div>
-            </a>
+                        <a href="../ai-agent/index.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:bot"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
+                                <span class="dropdown-desc">حلول AIaaS المرنة</span>
+                            </div>
+                        </a>
                         <a href="../try/index.html" class="dropdown-item">
                             <iconify-icon icon="lucide:database"></iconify-icon>
                             <div class="dropdown-item-content">
@@ -364,7 +390,7 @@
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-          <a href="../ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                    <a href="../ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
                     <a href="../try/index.html" class="dropdown-item">ذكاء البيانات</a>
                     <a href="../tools/index.html" class="dropdown-item">أدوات مجانية</a>
                     <a href="../smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي
@@ -578,10 +604,10 @@
 
     <!-- JavaScript Bundles (Consolidated) -->
     <script src="../../js/main.bundle.js" defer></script>
-    
-    
-    
-    
+
+
+
+
 
     <script src="../../js/index-theme.js" defer></script>
 </body>

@@ -8,7 +8,7 @@ const path = require('path');
  */
 
 const CONFIG = {
-    rootDir: path.join(__dirname, '../frontend/pages/blogger'),
+    rootDir: path.join(__dirname, '../../frontend/pages/blogger'),
     targets: [
         {
             keywords: ['تحليل بيانات', 'Data Analysis', 'بيانات ضخمة'],
@@ -30,7 +30,7 @@ const CONFIG = {
         }
     ],
     // Only inject if the file doesn't already link to the target
-    dryRun: true // Change to false to execute
+    dryRun: false // Change to false to execute
 };
 
 function processFiles(directory) {
@@ -68,8 +68,8 @@ function processFiles(directory) {
 
                     if (!CONFIG.dryRun) {
                         // Actual injection logic would go here
-                        // content = content.slice(0, insertionPoint) + ctaHTML + content.slice(insertionPoint);
-                        // modified = true;
+                        content = content.slice(0, insertionPoint) + ctaHTML + content.slice(insertionPoint);
+                        modified = true;
                     }
                 }
             }
