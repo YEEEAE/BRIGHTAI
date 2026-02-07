@@ -102,10 +102,8 @@
     </script>
 
     <!-- CDNs -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet"
@@ -117,65 +115,7 @@
 
 
     <!-- Configuration for Tailwind -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['IBM Plex Sans Arabic', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            200: '#ddd6fe',
-                            300: '#c4b5fd',
-                            400: '#a78bfa',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            800: '#5b21b6',
-                            900: '#4c1d95',
-                            950: '#2e1065',
-                        },
-                        dark: {
-                            bg: '#030014',
-                            card: '#0f0728',
-                            surface: '#1a103c'
-                        }
-                    },
-                    animation: {
-                        'blob': 'blob 7s infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'scanline': 'scanline 8s linear infinite',
-                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        scanline: {
-                            '0%': { transform: 'translateY(-100%)' },
-                            '100%': { transform: 'translateY(100%)' },
-                        },
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    
 
     <style>
         /* Custom Styles & Glassmorphism */
@@ -370,8 +310,11 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/main.bundle.css" />
     <link rel="stylesheet" href="../../css/index-theme.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
 
+<link rel="stylesheet" href="../../css/tailwind.local.min.css">
+<script defer src="../../js/iconify-preload.js"></script>
+<script defer src="../../js/vendor/iconify.min.js"></script>
+<script defer src="../../js/vendor/iconify-icon.min.js"></script>
 </head>
 
 <body class="bg-dark-bg font-sans min-h-screen text-gray-100 selection:bg-brand-600 selection:text-white">

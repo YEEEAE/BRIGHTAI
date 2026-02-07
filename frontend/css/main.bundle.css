@@ -4,6 +4,13 @@
    RTL/Arabic Optimized | Awwwards-Level Quality
    ============================================ */
 
+iconify-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
 /* === DESIGN TOKENS === */
 :root {
     /* Navigation */

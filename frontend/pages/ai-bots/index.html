@@ -65,8 +65,7 @@
                 loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
                     if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
                 });
-                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
-            }
+}
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function () {
                     setTimeout(loadAnimations, 100);
@@ -152,7 +151,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
 <link href="../../css/index-theme.css" rel="stylesheet">
-</link></link></link></head>
+</link></link></link>
+<link rel="stylesheet" href="../../css/tailwind.local.min.css">
+<script defer src="../../js/iconify-preload.js"></script>
+<script defer src="../../js/vendor/iconify.min.js"></script>
+<script defer src="../../js/vendor/iconify-icon.min.js"></script>
+</head>
 <body>
 <!-- UNIFIED HEADER (REBUILT) -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">

@@ -302,3 +302,22 @@
   - تأخير توليد خلفية الكود إلى idle بعد اكتمال التحميل لتقليل LCP.
   - تقليل عدد أسطر الخلفية على الجوال.
   - تأخير تشغيل الأنيميشنات (الكتابة، الكشف العشوائي، الإحصائيات، عدادات KPI) إلى idle لتقليل ضغط الـmain thread.
+
+تحديث إضافي — تحسينات أداء جذرية (إزالة CDN + توطين Tailwind والأيقونات)
+- إنشاء إعداد Tailwind محلي شامل وتوليد CSS مضغوط:
+  - /Users/yzydalshmry/Desktop/BrightAI/tailwind.config.cjs
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/css/tailwind-input.css
+  - /Users/yzydalshmry/Desktop/BrightAI/frontend/css/tailwind.local.min.css
+- إزالة تحميل Tailwind عبر CDN من جميع الصفحات، وإضافة ملف Tailwind المحلي داخل <head> لكل الصفحات.
+- توطين Iconify وإلغاء جميع استدعاءات الأيقونات الخارجية:
+  - توليد preload للأيقونات المستخدمة: /Users/yzydalshmry/Desktop/BrightAI/frontend/js/iconify-preload.js
+  - نسخ السكربتات محلياً: 
+    /Users/yzydalshmry/Desktop/BrightAI/frontend/js/vendor/iconify.min.js
+    /Users/yzydalshmry/Desktop/BrightAI/frontend/js/vendor/iconify-icon.min.js
+- تحويل جميع أيقونات Lucide (data-lucide) إلى Iconify (lucide:*) وإلغاء الاعتماد على lucide CDN.
+- تحديث /Users/yzydalshmry/Desktop/BrightAI/frontend/js/index-theme.js لإزالة safeLucide واستبدال تبديل الأيقونات إلى Iconify.
+- تحديث /Users/yzydalshmry/Desktop/BrightAI/frontend/css/index-theme.css و /Users/yzydalshmry/Desktop/BrightAI/frontend/css/main.bundle.css لتحسين دعم iconify-icon.
+- إصلاح أسماء أيقونات غير موجودة (solar/logos) في صفحات الوثائق إلى بدائل متاحة.
+- إزالة تحميل Iconify من CDN داخل /Users/yzydalshmry/Desktop/BrightAI/frontend/js/main.bundle.js (اعتماد التحميل المحلي فقط).
+- تقرير أيقونات مفقودة (للتدقيق): /Users/yzydalshmry/Desktop/BrightAI/brightai_orchestrator_output/iconify-missing.json
+- إزالة preconnect/dns-prefetch الخاصة بـ cdn.tailwindcss.com وواجهات iconify بعد التوطين المحلي.

@@ -74,16 +74,12 @@
                 document.body.appendChild(script);
             }
             function loadDeferredResources() {
-                loadScript('https://cdn.tailwindcss.com', function () {
-                    loadScript('../js/tailwind-config.min.js');
-                });
-                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
                 // Centralized Design System
                 loadCSS('../css/brightai-core.css');
                 loadCSS('https://unpkg.com/aos@2.3.4/dist/aos.css');
                 loadCSS('https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css');
-                loadScript('https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js');
-            }
+}
             function loadAnimations() {
                 loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js');
                 loadScript('https://unpkg.com/aos@2.3.4/dist/aos.js', function () {
@@ -125,7 +121,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
 <link href="../../css/index-theme.css" rel="stylesheet">
-</link></link></link></meta></head>
+</link></link></link></meta>
+<link rel="stylesheet" href="../../css/tailwind.local.min.css">
+<script defer src="../../js/iconify-preload.js"></script>
+<script defer src="../../js/vendor/iconify.min.js"></script>
+<script defer src="../../js/vendor/iconify-icon.min.js"></script>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 <!-- UNIFIED HEADER (REBUILT) -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">

@@ -14,13 +14,7 @@
         }
     };
 
-    const safeLucide = () => {
-        if (window.lucide && typeof window.lucide.createIcons === 'function') {
-            window.lucide.createIcons();
-        }
-    };
-
-    whenIdle(safeLucide, 900);
+    // Iconify handles icons without runtime setup
 
     // Loading screen
     const loading = document.getElementById('loading');
@@ -157,7 +151,7 @@
               <div style="font-weight:1000">Object Detection</div>
               <div style="color:rgba(255,255,255,.62);font-weight:900;margin-top:4px">جرب تحميل صورة (Demo)</div>
             </div>
-            <div class="fake-upload"><i data-lucide="upload" style="width:16px;height:16px"></i> Upload Image</div>
+            <div class="fake-upload"><iconify-icon style="width:16px;height:16px" icon="lucide:upload"></iconify-icon> Upload Image</div>
           </div>
           <div class="viz">
             <div class="box" style="top:28px;right:26px;width:160px;height:170px">
@@ -176,7 +170,7 @@
               <div style="font-weight:1000">Face Recognition</div>
               <div style="color:rgba(255,255,255,.62);font-weight:900;margin-top:4px">كشف الوجوه والمشاعر (Demo)</div>
             </div>
-            <div class="fake-upload"><i data-lucide="user" style="width:16px;height:16px"></i> Analyze</div>
+            <div class="fake-upload"><iconify-icon style="width:16px;height:16px" icon="lucide:user"></iconify-icon> Analyze</div>
           </div>
           <div class="viz">
             <div class="box" style="top:35px;right:120px;width:230px;height:190px;border-color:rgba(255,79,216,.75)">
@@ -192,7 +186,7 @@
               <div style="font-weight:1000">Text Extraction (OCR)</div>
               <div style="color:rgba(255,255,255,.62);font-weight:900;margin-top:4px">صورة وثيقة → نص مستخرج</div>
             </div>
-            <div class="fake-upload"><i data-lucide="scan-text" style="width:16px;height:16px"></i> Extract</div>
+            <div class="fake-upload"><iconify-icon style="width:16px;height:16px" icon="lucide:scan-text"></iconify-icon> Extract</div>
           </div>
           <div class="viz" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px">
             <div style="border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(0,0,0,.26);position:relative;overflow:hidden">
@@ -218,7 +212,7 @@
               <div style="font-weight:1000">Predictive Analysis</div>
               <div style="color:rgba(255,255,255,.62);font-weight:900;margin-top:4px">تنبؤات في الوقت الفعلي (Demo)</div>
             </div>
-            <div class="fake-upload"><i data-lucide="activity" style="width:16px;height:16px"></i> Live</div>
+            <div class="fake-upload"><iconify-icon style="width:16px;height:16px" icon="lucide:activity"></iconify-icon> Live</div>
           </div>
           <div class="viz">
             <div class="chart">
@@ -233,7 +227,6 @@
         `;
         }
 
-        safeLucide();
     }
 
     if (demoArea && tabs.length) {
@@ -348,10 +341,9 @@
     // FAQ plus/minus icon toggling
     document.querySelectorAll('details').forEach(d => {
         d.addEventListener('toggle', () => {
-            const ico = d.querySelector('.pm i');
+            const ico = d.querySelector('.pm iconify-icon');
             if (!ico) return;
-            ico.setAttribute('data-lucide', d.open ? 'minus' : 'plus');
-            safeLucide();
+            ico.setAttribute('icon', d.open ? 'lucide:minus' : 'lucide:plus');
         });
     });
 
