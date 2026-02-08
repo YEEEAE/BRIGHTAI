@@ -69,6 +69,64 @@ module.exports = {
       backdropBlur: {
         glass: "18px",
       },
+      keyframes: {
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        "fade-out": {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
+        "slide-up": {
+          from: { opacity: "0", transform: "translateY(16px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-down": {
+          from: { opacity: "0", transform: "translateY(-16px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-left": {
+          from: { opacity: "0", transform: "translateX(16px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        "slide-right": {
+          from: { opacity: "0", transform: "translateX(-16px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        "scale-in": {
+          from: { opacity: "0", transform: "scale(0.96)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        "scale-out": {
+          from: { opacity: "1", transform: "scale(1)" },
+          to: { opacity: "0", transform: "scale(0.96)" },
+        },
+        "pulse-soft": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.65" },
+        },
+        "bounce-soft": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+        "spin-slow": {
+          to: { transform: "rotate(360deg)" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.4s ease-out",
+        "fade-out": "fade-out 0.3s ease-in",
+        "slide-up": "slide-up 0.45s ease-out",
+        "slide-down": "slide-down 0.45s ease-out",
+        "slide-left": "slide-left 0.45s ease-out",
+        "slide-right": "slide-right 0.45s ease-out",
+        "scale-in": "scale-in 0.35s ease-out",
+        "scale-out": "scale-out 0.3s ease-in",
+        "pulse-soft": "pulse-soft 2.4s ease-in-out infinite",
+        "bounce-soft": "bounce-soft 1.8s ease-in-out infinite",
+        "spin-slow": "spin-slow 2.6s linear infinite",
+      },
     },
   },
   plugins: [
