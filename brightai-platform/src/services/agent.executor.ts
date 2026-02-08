@@ -1,6 +1,9 @@
 import supabase from "../lib/supabase";
 import { http } from "./http";
-import { GroqError, GroqRequest, GroqService } from "./groq.service";
+import agentMemory from "./agent.memory";
+import agentMonitoring from "./agent.monitoring";
+import agentTools, { type ToolType } from "./agent.tools";
+import { GroqError, GroqMessage, GroqRequest, GroqService } from "./groq.service";
 
 export type AgentExecutionInput = {
   agentId: string;
@@ -10,6 +13,8 @@ export type AgentExecutionInput = {
     apiKey?: string;
     useUserKey?: boolean;
     maxCostUsd?: number;
+    traceId?: string;
+    depth?: number;
     metadata?: Record<string, unknown>;
     variables?: Record<string, unknown>;
   };
@@ -67,7 +72,23 @@ export type Workflow = {
   settings?: {
     parallel?: boolean;
     memoryLimit?: number;
+    contextWindowTokens?: number;
+    prompting?: PromptingSettings;
+    collaboration?: {
+      maxDepth?: number;
+      shareContext?: boolean;
+      useUserKey?: boolean;
+    };
   };
+};
+
+export type PromptingSettings = {
+  systemPrefix?: string;
+  systemSuffix?: string;
+  fewShot?: Array<{ user: string; assistant: string }>;
+  reactPattern?: boolean;
+  selfReflection?: boolean;
+  iterativeRefinement?: boolean;
 };
 
 export type ExecutionContext = {
@@ -87,6 +108,9 @@ export type ExecutionContext = {
     model: string;
     apiKey: string;
     workflow: Workflow;
+    traceId: string;
+    depth: number;
+    parentExecutionId?: string;
     streamMode?: boolean;
     streamCallback?: (chunk: string) => Promise<void>;
   };
@@ -141,6 +165,18 @@ export class AgentExecutorError extends Error {
 const MAX_EXECUTION_TIME_MS = 5 * 60 * 1000;
 const DEFAULT_MEMORY_LIMIT = 50;
 const DEFAULT_MODEL = "llama-3.1-70b-versatile";
+const DEFAULT_CONTEXT_WINDOW = 8000;
+const DEFAULT_MAX_DEPTH = 2;
+const TOOL_ACTIONS: ToolType[] = [
+  "web_search",
+  "db_query",
+  "file_upload",
+  "file_delete",
+  "http_request",
+  "web_scrape",
+  "email_send",
+  "calendar_event",
+];
 
 /**
  * محرك تنفيذ الوكلاء مع دعم التحقق والبث والتتبع.
@@ -152,6 +188,8 @@ export class AgentExecutor {
   async execute(input: AgentExecutionInput): Promise<AgentExecutionResult> {
     const startedAt = Date.now();
     const executionId = this.generateExecutionId();
+    const traceId = input.context?.traceId || executionId;
+    const depth = input.context?.depth ?? 0;
 
     const { agent, workflow } = await this.loadAgent(input.agentId);
     const validation = this.validateWorkflow(workflow);
@@ -169,7 +207,15 @@ export class AgentExecutor {
 
     const apiKey = await this.resolveApiKey(input, agent);
     const model = this.resolveModel(agent);
-    const context = this.buildContext(input, model, apiKey, workflow);
+    const context = this.buildContext(input, model, apiKey, workflow, false, undefined, traceId, depth);
+
+    agentMonitoring.record({
+      executionId: traceId,
+      agentId: input.agentId,
+      message: "بدء تنفيذ الوكيل",
+      level: "info",
+      data: { depth },
+    });
 
     try {
       const result = await this.withTimeout(
@@ -208,6 +254,15 @@ export class AgentExecutor {
         "فشل",
         error instanceof Error ? error.message : "فشل التنفيذ."
       );
+      agentMonitoring.record({
+        executionId: traceId,
+        agentId: input.agentId,
+        message: "فشل تنفيذ الوكيل",
+        level: "error",
+        data: {
+          error: error instanceof Error ? error.message : "خطأ غير معروف",
+        },
+      });
       throw error;
     }
   }
@@ -239,6 +294,8 @@ export class AgentExecutor {
     const runner = (async () => {
       const startedAt = Date.now();
       const executionId = this.generateExecutionId();
+      const traceId = input.context?.traceId || executionId;
+      const depth = input.context?.depth ?? 0;
       pushUpdate({ type: "بدء", data: { executionId }, progress: 0 });
 
       try {
@@ -258,8 +315,25 @@ export class AgentExecutor {
 
         const apiKey = await this.resolveApiKey(input, agent);
         const model = this.resolveModel(agent);
-        const context = this.buildContext(input, model, apiKey, workflow, true, async (chunk) => {
+        const context = this.buildContext(
+          input,
+          model,
+          apiKey,
+          workflow,
+          true,
+          async (chunk) => {
           pushUpdate({ type: "رسالة", data: chunk, progress: 0 });
+        },
+          traceId,
+          depth
+        );
+
+        agentMonitoring.record({
+          executionId: traceId,
+          agentId: input.agentId,
+          message: "بدء تنفيذ الوكيل مع البث",
+          level: "info",
+          data: { depth },
         });
 
         const nodesTotal = workflow.nodes.length || 1;
@@ -320,6 +394,15 @@ export class AgentExecutor {
           type: "خطأ",
           data: { message: error instanceof Error ? error.message : "فشل التنفيذ." },
           progress: 0,
+        });
+        agentMonitoring.record({
+          executionId: traceId,
+          agentId: input.agentId,
+          message: "فشل تنفيذ الوكيل مع البث",
+          level: "error",
+          data: {
+            error: error instanceof Error ? error.message : "خطأ غير معروف",
+          },
         });
       } finally {
         finished = true;
@@ -401,18 +484,70 @@ export class AgentExecutor {
   /**
    * بناء رسالة النظام وفق تعليمات المخطط.
    */
-  buildSystemPrompt(workflow: Workflow): string {
+  buildSystemPrompt(workflow: Workflow, context?: ExecutionContext): string {
     const instructions = workflow.nodes
       .filter((node) => node.type === "instruction" || node.type === "prompt")
       .map((node) => String(node.data.text || node.data.content || ""))
       .filter((text) => text.trim().length > 0);
+
+    const prompting = workflow.settings?.prompting;
+    const memoryRaw = context?.variables.long_term_memory
+      ? String(context.variables.long_term_memory)
+      : "";
+    const recentRaw = context?.variables.recent_history
+      ? String(context.variables.recent_history)
+      : "";
+    const memorySnippet = memoryRaw
+      ? this.limitText(memoryRaw, Math.floor(DEFAULT_CONTEXT_WINDOW / 2))
+      : "";
+    const recentSnippet = recentRaw
+      ? this.limitText(recentRaw, Math.floor(DEFAULT_CONTEXT_WINDOW / 3))
+      : "";
 
     const base = [
       "أنت وكيل تنفيذي لمنصة برايت أي آي وتعمل ضمن سياق أعمال سعودي.",
       "ركز على الإجابات التنفيذية المختصرة والقابلة للتطبيق فوراً.",
     ];
 
+    if (prompting?.reactPattern) {
+      base.push(
+        "اتبع نمط التنفيذ خطوة بخطوة داخلياً دون عرض التفكير الداخلي للمستخدم."
+      );
+    }
+    if (prompting?.selfReflection) {
+      base.push("راجع الإجابة وتحقق من الدقة قبل الإخراج النهائي.");
+    }
+    if (prompting?.iterativeRefinement) {
+      base.push("حسّن الإجابة بشكل تكراري حتى تصل إلى أفضل صياغة ممكنة.");
+    }
+    if (prompting?.systemPrefix) {
+      base.unshift(prompting.systemPrefix);
+    }
+    if (prompting?.systemSuffix) {
+      base.push(prompting.systemSuffix);
+    }
+
+    if (memorySnippet) {
+      base.push(`ذاكرة طويلة المدى مفيدة:\\n${memorySnippet}`);
+    }
+    if (recentSnippet) {
+      base.push(`سياق قريب من المحادثة:\\n${recentSnippet}`);
+    }
+
     return [...base, ...instructions].join("\n");
+  }
+
+  private buildFewShotMessages(workflow: Workflow): GroqMessage[] {
+    const examples = workflow.settings?.prompting?.fewShot || [];
+    const messages: GroqMessage[] = [];
+    for (const example of examples) {
+      if (!example.user || !example.assistant) {
+        continue;
+      }
+      messages.push({ role: "user", content: example.user });
+      messages.push({ role: "assistant", content: example.assistant });
+    }
+    return messages;
   }
 
   /**
@@ -423,6 +558,14 @@ export class AgentExecutor {
     context: ExecutionContext
   ): Promise<NodeResult> {
     const startedAt = Date.now();
+    agentMonitoring.record({
+      executionId: context.metadata.traceId,
+      agentId: context.metadata.agentId,
+      nodeId: node.id,
+      message: "بدء تنفيذ عقدة",
+      level: "debug",
+      data: { type: node.type },
+    });
 
     try {
       switch (node.type) {
@@ -570,6 +713,13 @@ export class AgentExecutor {
           };
         }
         default: {
+          agentMonitoring.record({
+            executionId: context.metadata.traceId,
+            agentId: context.metadata.agentId,
+            nodeId: node.id,
+            message: "نوع عقدة غير مدعوم",
+            level: "warn",
+          });
           return {
             success: false,
             error: "نوع عقدة غير مدعوم.",
@@ -578,6 +728,16 @@ export class AgentExecutor {
         }
       }
     } catch (error) {
+      agentMonitoring.record({
+        executionId: context.metadata.traceId,
+        agentId: context.metadata.agentId,
+        nodeId: node.id,
+        message: "فشل تنفيذ عقدة",
+        level: "error",
+        data: {
+          error: error instanceof Error ? error.message : "خطأ غير معروف",
+        },
+      });
       if (error instanceof AgentExecutorError) {
         return {
           success: false,
@@ -630,6 +790,24 @@ export class AgentExecutor {
     context.variables.userMessage = userMessage;
     context.variables.memory_limit =
       workflow.settings?.memoryLimit || DEFAULT_MEMORY_LIMIT;
+
+    if (context.metadata.userId) {
+      await agentMemory.addEntry({
+        userId: context.metadata.userId,
+        agentId: context.metadata.agentId,
+        content: userMessage,
+        role: "user",
+        metadata: { traceId: context.metadata.traceId },
+      });
+    }
+
+    const memoryContext = await agentMemory.getContext(
+      context.metadata.userId,
+      context.metadata.agentId,
+      userMessage
+    );
+    context.variables.long_term_memory = memoryContext.snippet;
+    context.variables.semantic_hits = memoryContext.items;
 
     while (queue.length > 0) {
       const batch = workflow.settings?.parallel
@@ -722,6 +900,16 @@ export class AgentExecutor {
         "تم تجاوز الحد الأعلى للتكلفة.",
         "NODE_FAILED"
       );
+    }
+
+    if (context.metadata.userId) {
+      await agentMemory.addEntry({
+        userId: context.metadata.userId,
+        agentId: context.metadata.agentId,
+        content: String(lastOutput || ""),
+        role: "assistant",
+        metadata: { traceId: context.metadata.traceId },
+      });
     }
 
     return { output: lastOutput, tokensUsed, cost };
@@ -818,6 +1006,7 @@ export class AgentExecutor {
 
   private async executeAction(node: WorkflowNode, context: ExecutionContext) {
     const actionType = String(node.data.actionType || "http");
+
     if (actionType === "http") {
       const url = this.resolveTemplate(String(node.data.url || ""), context);
       const method = String(node.data.method || "POST");
@@ -845,11 +1034,235 @@ export class AgentExecutor {
       });
       return response.data;
     }
+
     if (actionType === "compute") {
       const expression = String(node.data.expression || "");
       return this.resolveTemplate(expression, context);
     }
+
+    if (actionType === "agent_call" || actionType === "agent_sequence") {
+      return await this.executeAgentSequence(node, context);
+    }
+
+    if (actionType === "agent_parallel") {
+      return await this.executeAgentParallel(node, context);
+    }
+
+    if (actionType === "agent_orchestration") {
+      return await this.executeAgentOrchestration(node, context);
+    }
+
+    if (TOOL_ACTIONS.includes(actionType as ToolType)) {
+      return await this.executeToolAction(actionType as ToolType, node, context);
+    }
+
     return null;
+  }
+
+  private async executeToolAction(
+    toolType: ToolType,
+    node: WorkflowNode,
+    context: ExecutionContext
+  ) {
+    const params =
+      node.data.params && typeof node.data.params === "object"
+        ? (node.data.params as Record<string, unknown>)
+        : (node.data as Record<string, unknown>);
+
+    const result = await agentTools.execute(
+      { type: toolType, params },
+      {
+        userId: context.metadata.userId,
+        agentId: context.metadata.agentId,
+        variables: context.variables,
+        traceId: context.metadata.traceId,
+      }
+    );
+
+    if (!result.success) {
+      throw new AgentExecutorError(
+        result.error || "فشل تنفيذ الأداة.",
+        this.mapToolError(result.errorCode)
+      );
+    }
+    return result.data;
+  }
+
+  private async executeAgentSequence(node: WorkflowNode, context: ExecutionContext) {
+    const agentIds = this.extractAgentIds(node);
+    if (agentIds.length === 0) {
+      throw new AgentExecutorError("لا توجد وكلاء للتنفيذ.", "INVALID_WORKFLOW");
+    }
+    const message = this.resolveActionMessage(node, context);
+    const shareContext = this.resolveShareContext(node, context);
+    const results: AgentExecutionResult[] = [];
+    let latestMessage = message;
+
+    for (const agentId of agentIds) {
+      const result = await this.executeAgentCall(agentId, latestMessage, context, shareContext);
+      results.push(result);
+      latestMessage = String(result.output || latestMessage);
+      this.storeAgentOutput(context, agentId, result.output);
+    }
+
+    return node.data.returnAll ? results : results[results.length - 1]?.output;
+  }
+
+  private async executeAgentParallel(node: WorkflowNode, context: ExecutionContext) {
+    const agentIds = this.extractAgentIds(node);
+    if (agentIds.length === 0) {
+      throw new AgentExecutorError("لا توجد وكلاء للتنفيذ.", "INVALID_WORKFLOW");
+    }
+    const message = this.resolveActionMessage(node, context);
+    const shareContext = this.resolveShareContext(node, context);
+    const parallelLimit = Math.min(Number(node.data.parallelLimit || 3), 6);
+
+    const chunks = this.chunkArray(agentIds, parallelLimit);
+    const results: AgentExecutionResult[] = [];
+
+    for (const chunk of chunks) {
+      const batchResults = await Promise.all(
+        chunk.map((agentId) =>
+          this.executeAgentCall(agentId, message, context, shareContext)
+        )
+      );
+      batchResults.forEach((result, index) => {
+        results.push(result);
+        this.storeAgentOutput(context, chunk[index], result.output);
+      });
+    }
+
+    return node.data.returnAll ? results : results.map((item) => item.output);
+  }
+
+  private async executeAgentOrchestration(node: WorkflowNode, context: ExecutionContext) {
+    const plan =
+      node.data.plan && typeof node.data.plan === "object"
+        ? (node.data.plan as Record<string, unknown>)
+        : {};
+    const sequence = Array.isArray(plan.sequence) ? (plan.sequence as string[]) : [];
+    const parallelGroups = Array.isArray(plan.parallel) ? (plan.parallel as string[][]) : [];
+
+    const results: unknown[] = [];
+    if (sequence.length > 0) {
+      const sequenceNode: WorkflowNode = {
+        ...node,
+        data: { ...node.data, agentIds: sequence, returnAll: true },
+      };
+      results.push(await this.executeAgentSequence(sequenceNode, context));
+    }
+
+    for (const group of parallelGroups) {
+      const parallelNode: WorkflowNode = {
+        ...node,
+        data: { ...node.data, agentIds: group, returnAll: true },
+      };
+      results.push(await this.executeAgentParallel(parallelNode, context));
+    }
+
+    return results;
+  }
+
+  private resolveActionMessage(node: WorkflowNode, context: ExecutionContext) {
+    const template = String(node.data.message || "{{last_output}}");
+    return this.resolveTemplate(template, context);
+  }
+
+  private extractAgentIds(node: WorkflowNode) {
+    const direct = node.data.agentId ? [String(node.data.agentId)] : [];
+    const list = Array.isArray(node.data.agentIds)
+      ? (node.data.agentIds as string[]).map((id) => String(id))
+      : [];
+    return [...direct, ...list].filter(Boolean);
+  }
+
+  private resolveShareContext(node: WorkflowNode, context: ExecutionContext) {
+    if (typeof node.data.shareContext === "boolean") {
+      return node.data.shareContext;
+    }
+    return Boolean(context.metadata.workflow.settings?.collaboration?.shareContext ?? true);
+  }
+
+  private async executeAgentCall(
+    agentId: string,
+    message: string,
+    context: ExecutionContext,
+    shareContext: boolean
+  ) {
+    const maxDepth =
+      context.metadata.workflow.settings?.collaboration?.maxDepth ?? DEFAULT_MAX_DEPTH;
+    const nextDepth = context.metadata.depth + 1;
+    if (nextDepth > maxDepth) {
+      throw new AgentExecutorError("تم تجاوز عمق التعاون بين الوكلاء.", "INVALID_WORKFLOW");
+    }
+
+    const variables = shareContext
+      ? this.selectSharedVariables(context.variables)
+      : {};
+
+    const useUserKey = Boolean(
+      context.metadata.workflow.settings?.collaboration?.useUserKey ??
+        context.variables.useUserKey
+    );
+
+    const childInput: AgentExecutionInput = {
+      agentId,
+      userMessage: message,
+      context: {
+        userId: context.metadata.userId,
+        apiKey: context.metadata.apiKey,
+        useUserKey,
+        variables,
+        traceId: context.metadata.traceId,
+        depth: nextDepth,
+        metadata: {
+          parentAgentId: context.metadata.agentId,
+          parentExecutionId: context.metadata.traceId,
+        },
+      },
+    };
+
+    return await this.execute(childInput);
+  }
+
+  private selectSharedVariables(variables: Record<string, unknown>) {
+    const shared: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(variables)) {
+      if (/key|token|secret/i.test(key)) {
+        continue;
+      }
+      shared[key] = value;
+    }
+    return shared;
+  }
+
+  private storeAgentOutput(context: ExecutionContext, agentId: string, output: unknown) {
+    if (!context.variables.agent_outputs || typeof context.variables.agent_outputs !== "object") {
+      context.variables.agent_outputs = {};
+    }
+    const store = context.variables.agent_outputs as Record<string, unknown>;
+    store[agentId] = output;
+  }
+
+  private chunkArray<T>(items: T[], size: number) {
+    const chunks: T[][] = [];
+    for (let i = 0; i < items.length; i += size) {
+      chunks.push(items.slice(i, i + size));
+    }
+    return chunks;
+  }
+
+  private mapToolError(code?: string): AgentExecutorErrorCode {
+    switch (code) {
+      case "RATE_LIMIT":
+        return "RATE_LIMIT";
+      case "UNAUTHORIZED":
+      case "MISSING_ENDPOINT":
+      case "INVALID_PARAMS":
+      case "FAILED":
+      default:
+        return "NODE_FAILED";
+    }
   }
 
   private interpolateObject(
@@ -897,6 +1310,11 @@ export class AgentExecutor {
     if (context.history.length > limit) {
       context.history.splice(0, context.history.length - limit);
     }
+
+    context.variables.recent_history = context.history
+      .slice(-6)
+      .map((item) => `${item.type}: ${String(item.output ?? "")}`)
+      .join("\n");
   }
 
   private resolveModel(agent: { settings?: Record<string, unknown> }) {
@@ -909,14 +1327,19 @@ export class AgentExecutor {
     apiKey: string,
     workflow: Workflow,
     streamMode = false,
-    streamCallback?: (chunk: string) => Promise<void>
+    streamCallback?: (chunk: string) => Promise<void>,
+    traceId?: string,
+    depth = 0,
+    parentExecutionId?: string
   ): ExecutionContext {
+    const resolvedTrace = traceId || this.generateExecutionId();
     return {
       variables: {
         ...(input.context?.variables || {}),
         userMessage: input.userMessage,
         memory_limit: workflow.settings?.memoryLimit || DEFAULT_MEMORY_LIMIT,
         maxCostUsd: input.context?.maxCostUsd,
+        trace_id: resolvedTrace,
       },
       history: [],
       metadata: {
@@ -926,6 +1349,9 @@ export class AgentExecutor {
         model,
         apiKey,
         workflow,
+        traceId: resolvedTrace,
+        depth,
+        parentExecutionId,
         streamMode,
         streamCallback,
       },
@@ -942,11 +1368,19 @@ export class AgentExecutor {
       overrides?.stream && context.metadata.streamMode && context.metadata.streamCallback
     );
 
+    const contextWindow =
+      context.metadata.workflow.settings?.contextWindowTokens || DEFAULT_CONTEXT_WINDOW;
+    const trimmedPrompt = this.limitText(prompt, contextWindow);
+
     const request: GroqRequest = {
       model: context.metadata.model,
       messages: [
-        { role: "system", content: this.buildSystemPrompt(context.metadata.workflow) },
-        { role: "user", content: prompt },
+        {
+          role: "system",
+          content: this.buildSystemPrompt(context.metadata.workflow, context),
+        },
+        ...this.buildFewShotMessages(context.metadata.workflow),
+        { role: "user", content: trimmedPrompt },
       ],
       temperature: overrides?.temperature ?? 0.4,
       max_tokens: overrides?.max_tokens ?? 1000,
@@ -961,7 +1395,7 @@ export class AgentExecutor {
         aggregated += chunk;
         await context.metadata.streamCallback(chunk);
       }
-      const promptTokens = this.estimateTokens(prompt);
+      const promptTokens = this.estimateTokens(trimmedPrompt);
       const completionTokens = this.estimateTokens(aggregated);
       const tokensUsed = promptTokens + completionTokens;
       const cost = client.calculateCost(request.model, tokensUsed);
@@ -992,6 +1426,16 @@ export class AgentExecutor {
       return 0;
     }
     return Math.max(1, Math.ceil(text.length / 4));
+  }
+
+  private limitText(text: string, maxTokens: number) {
+    const estimated = this.estimateTokens(text);
+    if (estimated <= maxTokens) {
+      return text;
+    }
+    const ratio = maxTokens / Math.max(1, estimated);
+    const limit = Math.max(120, Math.floor(text.length * ratio));
+    return text.slice(0, limit);
   }
 
   private async loadAgent(agentId: string) {

@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   Menu,
   Settings,
+  ShoppingBag,
   Wand2,
   X,
 } from "lucide-react";
@@ -37,6 +38,7 @@ const MainLayout = () => {
     { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
     { to: "/agents/new", label: t("nav.builder"), icon: Wand2 },
     { to: "/templates", label: t("nav.templates"), icon: Boxes },
+    { to: "/marketplace", label: t("nav.marketplace"), icon: ShoppingBag },
     { to: "/analytics", label: t("nav.analytics"), icon: BarChart3 },
     { to: "/settings", label: t("nav.settings"), icon: Settings },
   ];

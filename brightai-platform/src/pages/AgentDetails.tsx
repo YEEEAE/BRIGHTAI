@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type ComponentType,
+} from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Line,
@@ -8,7 +15,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { List, type RowComponentProps } from "react-window";
+import { List, type CellComponentProps } from "react-window";
 import supabase from "../lib/supabase";
 
 const supabaseClient = supabase as unknown as {
@@ -39,6 +46,7 @@ type ExecutionRow = {
 };
 
 const tabs = ["نظرة عامة", "التنفيذات", "الإعدادات", "التحليلات"];
+const VirtualList = List as unknown as ComponentType<any>;
 
 const AgentDetails = () => {
   const { id } = useParams();
@@ -142,13 +150,23 @@ const AgentDetails = () => {
   }, [executionFilter, executions]);
 
   const ExecutionRow = useCallback(
-    ({ index, style, rows, ariaAttributes }: RowComponentProps<{ rows: ExecutionRow[] }>) => {
-      const execution = rows[index];
+    ({
+      index,
+      style,
+      ariaAttributes,
+    }: CellComponentProps & {
+      index: number;
+      style: CSSProperties;
+      ariaAttributes?: Record<string, string | number>;
+    }) => {
+      const execution = filteredExecutions[index];
       if (!execution) {
         return null;
       }
+      const attrs =
+        (ariaAttributes as Record<string, string | number>) || {};
       return (
-        <div style={style} className="px-2" {...ariaAttributes}>
+        <div style={style} className="px-2" {...attrs}>
           <div className="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-400">{execution.id}</span>
@@ -169,7 +187,7 @@ const AgentDetails = () => {
         </div>
       );
     },
-    []
+    [filteredExecutions]
   );
 
   const stats = useMemo(() => {
@@ -445,11 +463,11 @@ const AgentDetails = () => {
                 لا توجد تنفيذات مطابقة.
               </div>
             ) : filteredExecutions.length > 8 ? (
-              <List
+              <VirtualList
                 rowCount={filteredExecutions.length}
                 rowHeight={88}
                 rowComponent={ExecutionRow}
-                rowProps={{ rows: filteredExecutions }}
+                rowProps={{}}
                 style={{
                   height: Math.min(filteredExecutions.length * 88, 520),
                   width: "100%",

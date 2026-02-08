@@ -17,6 +17,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AgentBuilder = lazy(() => import("./pages/AgentBuilder"));
 const AgentDetails = lazy(() => import("./pages/AgentDetails"));
 const Templates = lazy(() => import("./pages/Templates"));
+const Marketplace = lazy(() => import("./pages/Marketplace"));
 const Analytics = lazy(() => import("./pages/Analytics"));
 const Settings = lazy(() => import("./pages/Settings"));
 
@@ -54,6 +55,7 @@ const App = () => {
             <Route path="/agents/:id/builder" element={<AgentBuilder />} />
             <Route path="/agents/:id" element={<AgentDetails />} />
             <Route path="/templates" element={<Templates />} />
+            <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/workflow" element={<WorkflowPage />} />
