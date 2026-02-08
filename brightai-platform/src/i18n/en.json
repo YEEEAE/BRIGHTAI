@@ -5,7 +5,12 @@
   },
   "nav": {
     "home": "Home",
-    "workflow": "Workflow Builder"
+    "workflow": "Workflow Builder",
+    "dashboard": "Dashboard",
+    "builder": "Agent Builder",
+    "templates": "Templates",
+    "analytics": "Analytics",
+    "settings": "Settings"
   },
   "actions": {
     "start": "Start the platform",

@@ -5,7 +5,12 @@
   },
   "nav": {
     "home": "الرئيسية",
-    "workflow": "مصمم سير العمل"
+    "workflow": "مصمم سير العمل",
+    "dashboard": "لوحة التحكم",
+    "builder": "مصمم الوكلاء",
+    "templates": "القوالب",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات"
   },
   "actions": {
     "start": "ابدأ تجربة المنصة",

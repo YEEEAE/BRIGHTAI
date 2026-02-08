@@ -38,6 +38,11 @@ const WorkflowCanvas = () => {
   const futureRef = useRef<FlowSnapshot[]>([]);
   const restoringRef = useRef(false);
   const autosaveTimer = useRef<number | null>(null);
+  const handlersRef = useRef({
+    onEdit: (_id: string) => {},
+    onCopy: (_id: string) => {},
+    onDelete: (_id: string) => {},
+  });
 
   const hydrateNodes = useCallback(
     (items: Node<WorkflowNodeData>[]) =>
@@ -45,9 +50,9 @@ const WorkflowCanvas = () => {
         ...node,
         data: {
           ...node.data,
-          onEdit: (id: string) => handleEditNode(id),
-          onCopy: (id: string) => handleCopyNode(id),
-          onDelete: (id: string) => handleDeleteNode(id),
+          onEdit: handlersRef.current.onEdit,
+          onCopy: handlersRef.current.onCopy,
+          onDelete: handlersRef.current.onDelete,
         },
       })),
     []
@@ -288,6 +293,12 @@ const WorkflowCanvas = () => {
     },
     []
   );
+
+  handlersRef.current = {
+    onEdit: handleEditNode,
+    onCopy: handleCopyNode,
+    onDelete: handleDeleteNode,
+  };
 
   const handleSaveNode = useCallback(
     (id: string, data: WorkflowNodeData) => {

@@ -6,6 +6,16 @@ import MainLayout from "./components/layout/MainLayout";
 import HomePage from "./pages/HomePage";
 import WorkflowPage from "./pages/WorkflowPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Dashboard from "./pages/Dashboard";
+import AgentBuilder from "./pages/AgentBuilder";
+import AgentDetails from "./pages/AgentDetails";
+import Templates from "./pages/Templates";
+import Analytics from "./pages/Analytics";
+import Settings from "./pages/Settings";
 import { setDocumentDirection } from "./i18n";
 
 const App = () => {
@@ -19,8 +29,19 @@ const App = () => {
   return (
     <>
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/agents/new" element={<AgentBuilder />} />
+          <Route path="/agents/:id/builder" element={<AgentBuilder />} />
+          <Route path="/agents/:id" element={<AgentDetails />} />
+          <Route path="/templates" element={<Templates />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="/workflow" element={<WorkflowPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

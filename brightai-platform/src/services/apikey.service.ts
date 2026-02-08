@@ -720,4 +720,6 @@ export class ApiKeyService {
   }
 }
 
-export default new ApiKeyService();
+const apiKeyService = new ApiKeyService();
+
+export default apiKeyService;
