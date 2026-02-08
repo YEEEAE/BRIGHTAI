@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "Bright AI Platform",
+    "tagline": "Automation and executive analytics for Saudi enterprises"
+  },
+  "nav": {
+    "home": "Home",
+    "workflow": "Workflow Builder"
+  },
+  "actions": {
+    "start": "Start the platform",
+    "contact": "Request a commercial demo"
+  },
+  "status": {
+    "loading": "Loading...",
+    "error": "Something went wrong"
+  },
+  "home": {
+    "heroBadge": "Ready for fast enterprise rollout",
+    "heroTitle": "Turn operational data into executive decisions in minutes",
+    "heroSubtitle": "Bright AI unifies integrations, workflow design, and executive analytics for Saudi leadership teams.",
+    "heroSecondary": "Explore the workflow builder",
+    "metricOneTitle": "Automation setup time",
+    "metricOneValue": "48 hours",
+    "metricOneNote": "From request to production in your current stack.",
+    "metricTwoTitle": "Decision readiness",
+    "metricTwoValue": "92%",
+    "metricTwoNote": "Automated reports with actionable recommendations.",
+    "metricThreeTitle": "Data compliance",
+    "metricThreeValue": "Saudi standards",
+    "metricThreeNote": "Clear governance and documented data lineage.",
+    "problemTitle": "The problem",
+    "problemBody": "Operations teams lose time consolidating data and aligning decisions across fragmented systems.",
+    "solutionTitle": "The solution",
+    "solutionBody": "A unified platform that builds visual workflows, runs AI analysis, and distributes results instantly.",
+    "proofTitle": "Proof",
+    "proofBody": "Executive dashboards with traceability and measurable impact on decision speed.",
+    "useCasesTitle": "Saudi use cases",
+    "useCaseOne": "Automated daily reporting for contact centers tied to commercial KPIs.",
+    "useCaseTwo": "Supply chain analysis connected to government data lakes.",
+    "useCaseThree": "Operational compliance monitoring for semi-government entities.",
+    "ctaTitle": "Launch Bright AI inside your organization",
+    "ctaBody": "A 30-minute discovery session to define the first measurable workflow."
+  },
+  "workflow": {
+    "title": "Visual workflow builder",
+    "subtitle": "Drag stages, connect AI analysis, and track the impact on executive decisions."
+  },
+  "footer": {
+    "rights": "All rights reserved for Bright AI",
+    "agentLabel": "Ops agent",
+    "agentReady": "Ready"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The requested route is not available.",
+    "notFoundAction": "Back to home"
+  }
+}

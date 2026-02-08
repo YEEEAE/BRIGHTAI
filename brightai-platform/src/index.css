@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ضبط الأساسيات للواجهة العربية والاتجاه من اليمين لليسار */
+:root {
+  color-scheme: light;
+}
+
+html {
+  direction: rtl;
+  font-family: "Cairo", "Tajawal", ui-sans-serif, system-ui;
+  text-align: right;
+  background-color: #0b1020;
+}
+
+body {
+  margin: 0;
+  background-color: #0b1020;
+  color: #e2e8f0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* شريط تمرير مناسب للاتجاه من اليمين لليسار */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #0b1020;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #0b1020;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #334155;
+  border-radius: 999px;
+  border: 2px solid #0b1020;
+}
