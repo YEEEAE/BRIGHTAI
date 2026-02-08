@@ -114,13 +114,6 @@ export type Database = {
   };
 };
 
-class SupabaseConfigError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "SupabaseConfigError";
-  }
-}
-
 class SupabaseAuthError extends Error {
   constructor(message: string) {
     super(message);
@@ -144,17 +137,24 @@ class SupabaseQueryError extends Error {
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || "";
+const hasSupabaseConfig = Boolean(supabaseUrl && supabaseAnonKey);
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new SupabaseConfigError("بيانات Supabase غير متوفرة في متغيرات البيئة.");
+// منع توقف الواجهة عند غياب إعدادات Supabase في بيئة التطوير
+if (!hasSupabaseConfig) {
+  console.warn("بيانات Supabase غير متوفرة في متغيرات البيئة.");
 }
+
+const resolvedSupabaseUrl =
+  supabaseUrl || "https://placeholder.supabase.co";
+const resolvedSupabaseKey =
+  supabaseAnonKey || "placeholder-anon-key";
 
 const storage =
   typeof window !== "undefined" ? window.localStorage : undefined;
 
 const supabase: SupabaseClient<Database> = createClient<Database>(
-  supabaseUrl,
-  supabaseAnonKey,
+  resolvedSupabaseUrl,
+  resolvedSupabaseKey,
   {
     auth: {
       autoRefreshToken: true,
@@ -163,6 +163,8 @@ const supabase: SupabaseClient<Database> = createClient<Database>(
     },
   }
 );
+
+export const isSupabaseConfigured = hasSupabaseConfig;
 
 export const fromTable = <T extends keyof Database["public"]["Tables"]>(
   table: T
