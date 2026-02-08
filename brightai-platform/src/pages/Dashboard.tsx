@@ -149,6 +149,9 @@ const Dashboard = () => {
 
   const recentAgents = filteredAgents.slice(0, 6);
   const recentExecutions = executions.slice(0, 8);
+  const agentNameMap = useMemo(() => {
+    return new Map(agents.map((agent) => [agent.id, agent.name]));
+  }, [agents]);
 
   const stats = useMemo(() => {
     const totalAgents = agents.length;
@@ -373,7 +376,9 @@ const Dashboard = () => {
                   className="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-400">{execution.agent_id}</span>
+                    <span className="text-xs text-slate-400">
+                      {agentNameMap.get(execution.agent_id) || "وكيل غير معروف"}
+                    </span>
                     <span className="text-xs text-emerald-300">{execution.status}</span>
                   </div>
                   <div className="mt-2 flex items-center justify-between text-xs text-slate-400">
@@ -416,7 +421,7 @@ const Dashboard = () => {
 
       <Link
         to="/agents/new"
-        className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400 text-xl font-bold text-slate-950 shadow-lg shadow-emerald-400/40"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-400 text-xl font-bold text-slate-950 shadow-lg shadow-emerald-400/40"
         aria-label="إنشاء وكيل جديد"
       >
         +

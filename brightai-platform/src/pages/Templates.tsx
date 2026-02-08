@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import supabase from "../lib/supabase";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
+  channel: (name: string) => any;
+  removeChannel: (channel: unknown) => void;
 };
 
 type TemplateRow = {
@@ -35,18 +37,43 @@ const Templates = () => {
     document.title = "القوالب | منصة برايت أي آي";
   }, []);
 
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      const { data } = await supabaseClient
-        .from("templates")
-        .select("*")
-        .order("created_at", { ascending: false });
-      setTemplates((data || []) as TemplateRow[]);
-      setLoading(false);
-    };
-    load();
+  const loadTemplates = useCallback(async () => {
+    setLoading(true);
+    const { data } = await supabaseClient
+      .from("templates")
+      .select("*")
+      .order("created_at", { ascending: false });
+    setTemplates((data || []) as TemplateRow[]);
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    let channel: any;
+    let active = true;
+    const init = async () => {
+      await loadTemplates();
+      if (!active) {
+        return;
+      }
+      channel = supabaseClient
+        .channel("templates-updates")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "templates" },
+          () => {
+            loadTemplates();
+          }
+        )
+        .subscribe();
+    };
+    init();
+    return () => {
+      active = false;
+      if (channel) {
+        supabaseClient.removeChannel(channel);
+      }
+    };
+  }, [loadTemplates]);
 
   const categories = useMemo(() => {
     const values = new Set<string>();

@@ -38,10 +38,23 @@ const AgentBuilder = () => {
     nodes: [],
     edges: [],
   });
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "مصمم الوكلاء | منصة برايت أي آي";
   }, []);
+
+  useEffect(() => {
+    const ensureSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        navigate("/login", { replace: true });
+        return;
+      }
+      setUserId(data.session.user.id);
+    };
+    ensureSession();
+  }, [navigate]);
 
   useEffect(() => {
     const stored = localStorage.getItem(DRAFT_KEY);
@@ -62,12 +75,24 @@ const AgentBuilder = () => {
       if (!id) {
         return;
       }
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+      if (!session) {
+        navigate("/login", { replace: true });
+        return;
+      }
+      setUserId(session.user.id);
       const { data } = await supabaseClient
         .from("agents")
-        .select("name, description, category, workflow, settings, is_public")
+        .select("name, description, category, workflow, settings, is_public, user_id")
         .eq("id", id)
+        .eq("user_id", session.user.id)
         .maybeSingle();
       if (!data) {
+        setErrorMessage("لا تملك صلاحية الوصول إلى هذا الوكيل.");
+        window.setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 1200);
         return;
       }
       setName(data.name || "");
@@ -86,7 +111,7 @@ const AgentBuilder = () => {
     };
 
     loadAgent();
-  }, [id]);
+  }, [id, navigate]);
 
   useEffect(() => {
     if (autosaveRef.current) {
@@ -106,7 +131,7 @@ const AgentBuilder = () => {
           isPublic,
         })
       );
-      if (id && workflow) {
+      if (id && workflow && userId) {
         supabaseClient.from("agents").update({
           name,
           description,
@@ -114,7 +139,8 @@ const AgentBuilder = () => {
           workflow: JSON.parse(workflow),
           settings: { model, temperature, maxTokens },
           is_public: isPublic,
-        }).eq("id", id);
+          user_id: userId,
+        }).eq("id", id).eq("user_id", userId);
       }
       setStatusMessage("تم حفظ المسودة تلقائياً.");
     }, 30000);
@@ -123,7 +149,7 @@ const AgentBuilder = () => {
         window.clearInterval(autosaveRef.current);
       }
     };
-  }, [category, description, id, isPublic, maxTokens, model, name, temperature]);
+  }, [category, description, id, isPublic, maxTokens, model, name, temperature, userId]);
 
   useEffect(() => {
     const stored = localStorage.getItem(AUTO_SAVE_KEY);

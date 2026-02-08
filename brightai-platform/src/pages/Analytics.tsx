@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Area,
   AreaChart,
@@ -15,6 +16,8 @@ import supabase from "../lib/supabase";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
+  channel: (name: string) => any;
+  removeChannel: (channel: unknown) => void;
 };
 
 type ExecutionRow = {
@@ -34,28 +37,77 @@ const timeRanges = [
 ];
 
 const Analytics = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [executions, setExecutions] = useState<ExecutionRow[]>([]);
+  const [agents, setAgents] = useState<{ id: string; name: string }[]>([]);
   const [range, setRange] = useState("7");
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [schedule, setSchedule] = useState("أسبوعي");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "التحليلات | منصة برايت أي آي";
   }, []);
 
+  const loadAnalytics = useCallback(async () => {
+    setLoading(true);
+    setErrorMessage(null);
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData.session;
+    if (!session) {
+      navigate("/login", { replace: true });
+      return null;
+    }
+    const { data: executionsData } = await supabaseClient
+      .from("executions")
+      .select("id, status, started_at, tokens_used, cost_usd, agent_id")
+      .eq("user_id", session.user.id)
+      .order("started_at", { ascending: false });
+    const { data: agentsData } = await supabaseClient
+      .from("agents")
+      .select("id, name")
+      .eq("user_id", session.user.id);
+    setExecutions((executionsData || []) as ExecutionRow[]);
+    setAgents((agentsData || []) as { id: string; name: string }[]);
+    setLoading(false);
+    return session.user.id;
+  }, [navigate]);
+
   useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      const { data } = await supabaseClient
-        .from("executions")
-        .select("id, status, started_at, tokens_used, cost_usd, agent_id")
-        .order("started_at", { ascending: false });
-      setExecutions((data || []) as ExecutionRow[]);
-      setLoading(false);
+    let channel: any;
+    let active = true;
+    const init = async () => {
+      const userId = await loadAnalytics();
+      if (!userId || !active) {
+        return;
+      }
+      channel = supabaseClient
+        .channel("analytics-updates")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "executions", filter: `user_id=eq.${userId}` },
+          () => {
+            loadAnalytics();
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "agents", filter: `user_id=eq.${userId}` },
+          () => {
+            loadAnalytics();
+          }
+        )
+        .subscribe();
     };
-    load();
-  }, []);
+    init();
+    return () => {
+      active = false;
+      if (channel) {
+        supabaseClient.removeChannel(channel);
+      }
+    };
+  }, [loadAnalytics]);
 
   const filteredExecutions = useMemo(() => {
     if (range === "all") {
@@ -86,7 +138,10 @@ const Analytics = () => {
   }, [filteredExecutions]);
 
   const timeSeries = useMemo(() => {
-    const map = new Map<string, { date: string; count: number; success: number; tokens: number }>();
+    const map = new Map<
+      string,
+      { date: string; count: number; success: number; tokens: number; cost: number }
+    >();
     filteredExecutions.forEach((execution) => {
       if (!execution.started_at) {
         return;
@@ -97,12 +152,14 @@ const Analytics = () => {
         count: 0,
         success: 0,
         tokens: 0,
+        cost: 0,
       };
       current.count += 1;
       if (execution.status === "ناجح") {
         current.success += 1;
       }
       current.tokens += execution.tokens_used || 0;
+      current.cost += execution.cost_usd || 0;
       map.set(key, current);
     });
     return Array.from(map.values())
@@ -113,8 +170,37 @@ const Analytics = () => {
         count: item.count,
         successRate: item.count ? Math.round((item.success / item.count) * 100) : 0,
         tokens: item.tokens,
+        cost: Number(item.cost.toFixed(2)),
       }));
   }, [filteredExecutions]);
+
+  const topAgents = useMemo(() => {
+    const agentMap = new Map(agents.map((agent) => [agent.id, agent.name]));
+    const statsMap = new Map<
+      string,
+      { id: string; name: string; total: number; success: number }
+    >();
+    filteredExecutions.forEach((execution) => {
+      const current = statsMap.get(execution.agent_id) || {
+        id: execution.agent_id,
+        name: agentMap.get(execution.agent_id) || "وكيل غير معروف",
+        total: 0,
+        success: 0,
+      };
+      current.total += 1;
+      if (execution.status === "ناجح") {
+        current.success += 1;
+      }
+      statsMap.set(execution.agent_id, current);
+    });
+    return Array.from(statsMap.values())
+      .map((item) => ({
+        ...item,
+        successRate: item.total ? Math.round((item.success / item.total) * 100) : 0,
+      }))
+      .sort((a, b) => b.successRate - a.successRate || b.total - a.total)
+      .slice(0, 5);
+  }, [agents, filteredExecutions]);
 
   const selectedExecutions = useMemo(() => {
     if (!selectedDay) {
@@ -211,6 +297,12 @@ const Analytics = () => {
         </div>
       </header>
 
+      {errorMessage ? (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          {errorMessage}
+        </div>
+      ) : null}
+
       <section className="grid gap-4 md:grid-cols-4">
         {loading
           ? Array.from({ length: 4 }).map((_, index) => (
@@ -301,6 +393,48 @@ const Analytics = () => {
               <Bar dataKey="tokens" fill="#fbbf24" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+        <h2 className="text-sm font-semibold text-slate-200">تفصيل التكلفة</h2>
+        <div className="mt-4 h-52">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={timeSeries}>
+              <XAxis dataKey="label" stroke="#64748b" fontSize={12} />
+              <YAxis stroke="#64748b" fontSize={12} />
+              <Tooltip
+                contentStyle={{
+                  background: "#0f172a",
+                  border: "1px solid #1e293b",
+                  color: "#e2e8f0",
+                }}
+              />
+              <Bar dataKey="cost" fill="#f472b6" radius={[8, 8, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
+        <h2 className="text-sm font-semibold text-slate-200">أفضل الوكلاء أداءً</h2>
+        <div className="mt-4 grid gap-3">
+          {topAgents.length === 0 ? (
+            <div className="text-sm text-slate-400">لا توجد بيانات كافية.</div>
+          ) : (
+            topAgents.map((agent) => (
+              <div
+                key={agent.id}
+                className="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-200"
+              >
+                <div className="flex items-center justify-between">
+                  <span>{agent.name}</span>
+                  <span className="text-xs text-emerald-300">{agent.successRate}% نجاح</span>
+                </div>
+                <div className="mt-2 text-xs text-slate-400">إجمالي التنفيذات: {agent.total}</div>
+              </div>
+            ))
+          )}
         </div>
       </section>
 

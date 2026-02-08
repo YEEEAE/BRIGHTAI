@@ -12,6 +12,8 @@ import supabase from "../lib/supabase";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
+  channel: (name: string) => any;
+  removeChannel: (channel: unknown) => void;
 };
 
 type AgentRow = {
@@ -45,34 +47,92 @@ const AgentDetails = () => {
   const [executions, setExecutions] = useState<ExecutionRow[]>([]);
   const [activeTab, setActiveTab] = useState("نظرة عامة");
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [executionFilter, setExecutionFilter] = useState("الكل");
+  const [userId, setUserId] = useState<string | null>(null);
 
   const loadAgent = useCallback(async () => {
     if (!id) {
       navigate("/dashboard", { replace: true });
-      return;
+      return null;
     }
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData.session;
+    if (!session) {
+      navigate("/login", { replace: true });
+      return null;
+    }
+    setUserId(session.user.id);
     setLoading(true);
     const { data: agentData } = await supabaseClient
       .from("agents")
       .select("id, name, description, status, is_public, category, workflow, settings, created_at")
       .eq("id", id)
+      .eq("user_id", session.user.id)
       .maybeSingle();
+    if (!agentData) {
+      setErrorMessage("لا تملك صلاحية الوصول إلى هذا الوكيل.");
+      setLoading(false);
+      window.setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 1200);
+      return session.user.id;
+    }
     const { data: executionsData } = await supabaseClient
       .from("executions")
       .select("id, status, started_at, duration_ms, tokens_used, cost_usd")
       .eq("agent_id", id)
+      .eq("user_id", session.user.id)
       .order("started_at", { ascending: false });
 
     setAgent(agentData as AgentRow);
     setExecutions((executionsData || []) as ExecutionRow[]);
     setLoading(false);
+    return session.user.id;
   }, [id, navigate]);
 
   useEffect(() => {
     document.title = "تفاصيل الوكيل | منصة برايت أي آي";
     loadAgent();
   }, [loadAgent]);
+
+  useEffect(() => {
+    let channel: any;
+    let active = true;
+
+    const init = async () => {
+      const currentUserId = await loadAgent();
+      if (!currentUserId || !id || !active) {
+        return;
+      }
+      channel = supabaseClient
+        .channel(`agent-${id}-updates`)
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "agents", filter: `id=eq.${id}` },
+          () => {
+            loadAgent();
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "executions", filter: `agent_id=eq.${id}` },
+          () => {
+            loadAgent();
+          }
+        )
+        .subscribe();
+    };
+
+    init();
+
+    return () => {
+      active = false;
+      if (channel) {
+        supabaseClient.removeChannel(channel);
+      }
+    };
+  }, [id, loadAgent]);
 
   const filteredExecutions = useMemo(() => {
     return executions.filter((execution) =>
@@ -111,7 +171,11 @@ const AgentDetails = () => {
       return;
     }
     const nextStatus = agent.status === "نشط" ? "متوقف" : "نشط";
-    await supabaseClient.from("agents").update({ status: nextStatus }).eq("id", agent.id);
+    await supabaseClient
+      .from("agents")
+      .update({ status: nextStatus })
+      .eq("id", agent.id)
+      .eq("user_id", userId);
     setAgent({ ...agent, status: nextStatus });
   };
 
@@ -122,7 +186,7 @@ const AgentDetails = () => {
     if (!window.confirm("هل أنت متأكد من حذف الوكيل؟")) {
       return;
     }
-    await supabaseClient.from("agents").delete().eq("id", agent.id);
+    await supabaseClient.from("agents").delete().eq("id", agent.id).eq("user_id", userId);
     navigate("/dashboard", { replace: true });
   };
 
@@ -182,7 +246,11 @@ const AgentDetails = () => {
       return;
     }
     const next = !agent.is_public;
-    await supabaseClient.from("agents").update({ is_public: next }).eq("id", agent.id);
+    await supabaseClient
+      .from("agents")
+      .update({ is_public: next })
+      .eq("id", agent.id)
+      .eq("user_id", userId);
     setAgent({ ...agent, is_public: next });
   };
 
@@ -273,13 +341,15 @@ const AgentDetails = () => {
         ))}
       </nav>
 
-      {statusMessage ? (
+      {statusMessage || errorMessage ? (
         <div
           className={`rounded-xl border px-4 py-3 text-sm ${
-            "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
+            errorMessage
+              ? "border-red-500/30 bg-red-500/10 text-red-200"
+              : "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
           }`}
         >
-          {statusMessage}
+          {errorMessage || statusMessage}
         </div>
       ) : null}
 
@@ -391,7 +461,8 @@ const AgentDetails = () => {
                 await supabaseClient
                   .from("agents")
                   .update({ description: agent.description, category: agent.category })
-                  .eq("id", agent.id);
+                  .eq("id", agent.id)
+                  .eq("user_id", userId);
                 setStatusMessage("تم حفظ الإعدادات.");
               }}
               className="rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950"
