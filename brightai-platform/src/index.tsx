@@ -57,5 +57,9 @@ root.render(
 // قياس مؤشرات الأداء الأساسية عند الحاجة
 reportWebVitals();
 
-// تفعيل Service Worker لتحسين الأداء والعمل دون اتصال
-serviceWorkerRegistration.register();
+// تفعيل Service Worker في الإنتاج فقط لتجنب التخزين المؤقت أثناء التطوير
+if (process.env.NODE_ENV === "production") {
+  serviceWorkerRegistration.register();
+} else {
+  serviceWorkerRegistration.unregister();
+}
