@@ -12,6 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import supabase from "../lib/supabase";
 import type { User } from "@supabase/supabase-js";
+import { logSecurityEvent } from "../lib/security";
+import { setUserContext, setUserProperties } from "../lib/analytics";
 
 type AuthContextValue = {
   currentUser: User | null;
@@ -38,12 +40,32 @@ type UseAuthOptions = {
 };
 
 const USER_CACHE_KEY = "brightai_auth_user";
+const LOGIN_STATE_KEY = "brightai_login_state";
+const LAST_ACTIVITY_KEY = "brightai_last_activity";
+
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOGIN_WINDOW_MS = 10 * 60 * 1000;
+const LOCKOUT_MS = 15 * 60 * 1000;
+const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+type LoginState = {
+  attempts: number[];
+  lockedUntil?: number;
+};
+
+const getSessionStorage = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return window.sessionStorage;
+};
+
 const readCachedUser = () => {
   try {
-    const raw = localStorage.getItem(USER_CACHE_KEY);
+    const storage = getSessionStorage();
+    const raw = storage?.getItem(USER_CACHE_KEY);
     if (!raw) {
       return null;
     }
@@ -53,15 +75,75 @@ const readCachedUser = () => {
   }
 };
 
+const readLoginState = (): LoginState => {
+  const storage = getSessionStorage();
+  if (!storage) {
+    return { attempts: [] };
+  }
+  try {
+    const raw = storage.getItem(LOGIN_STATE_KEY);
+    if (!raw) {
+      return { attempts: [] };
+    }
+    return JSON.parse(raw) as LoginState;
+  } catch {
+    return { attempts: [] };
+  }
+};
+
+const writeLoginState = (state: LoginState) => {
+  const storage = getSessionStorage();
+  if (!storage) {
+    return;
+  }
+  storage.setItem(LOGIN_STATE_KEY, JSON.stringify(state));
+};
+
+const clearLoginState = () => {
+  const storage = getSessionStorage();
+  storage?.removeItem(LOGIN_STATE_KEY);
+};
+
+const isLoginLocked = () => {
+  const state = readLoginState();
+  if (!state.lockedUntil) {
+    return false;
+  }
+  if (Date.now() >= state.lockedUntil) {
+    clearLoginState();
+    return false;
+  }
+  return true;
+};
+
+const recordFailedLogin = () => {
+  const state = readLoginState();
+  const now = Date.now();
+  const attempts = state.attempts.filter((time) => now - time < LOGIN_WINDOW_MS);
+  attempts.push(now);
+  let lockedUntil = state.lockedUntil;
+  if (attempts.length >= MAX_LOGIN_ATTEMPTS) {
+    lockedUntil = now + LOCKOUT_MS;
+    logSecurityEvent({
+      type: "auth-lockout",
+      message: "تم تفعيل قفل الحساب بسبب محاولات متكررة.",
+      meta: { attempts: attempts.length },
+    });
+  }
+  writeLoginState({ attempts, lockedUntil });
+};
+
 export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(() => readCachedUser());
   const [loading, setLoading] = useState(true);
   const [sessionExpired, setSessionExpired] = useState(false);
   const redirectRef = useRef(redirectOnLogout || "/login");
+  const idleTimerRef = useRef<number | null>(null);
 
   const persistUser = useCallback((user: User | null) => {
     if (!user) {
-      localStorage.removeItem(USER_CACHE_KEY);
+      const storage = getSessionStorage();
+      storage?.removeItem(USER_CACHE_KEY);
       return;
     }
     const cache = {
@@ -70,7 +152,8 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
       user_metadata: user.user_metadata,
       app_metadata: user.app_metadata,
     } as User;
-    localStorage.setItem(USER_CACHE_KEY, JSON.stringify(cache));
+    const storage = getSessionStorage();
+    storage?.setItem(USER_CACHE_KEY, JSON.stringify(cache));
   }, []);
 
   useEffect(() => {
@@ -79,6 +162,20 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
     const init = async () => {
       const { data } = await supabase.auth.getSession();
       if (!active) {
+        return;
+      }
+      const storage = getSessionStorage();
+      const lastActivity = storage?.getItem(LAST_ACTIVITY_KEY);
+      if (lastActivity && Date.now() - Number(lastActivity) > IDLE_TIMEOUT_MS) {
+        await supabase.auth.signOut();
+        setCurrentUser(null);
+        persistUser(null);
+        setSessionExpired(true);
+        setLoading(false);
+        logSecurityEvent({
+          type: "session-timeout",
+          message: "انتهت الجلسة بسبب عدم النشاط.",
+        });
         return;
       }
       if (data.session?.user) {
@@ -116,10 +213,24 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
   }, [persistUser]);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
+    if (isLoginLocked()) {
+      logSecurityEvent({
+        type: "auth-blocked",
+        message: "تم رفض محاولة تسجيل الدخول بسبب القفل المؤقت.",
+      });
       return false;
     }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      recordFailedLogin();
+      logSecurityEvent({
+        type: "auth-failed",
+        message: "فشل تسجيل الدخول.",
+        meta: { reason: error.message },
+      });
+      return false;
+    }
+    clearLoginState();
     return true;
   }, []);
 
@@ -140,6 +251,8 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
 
   const logout = useCallback(async () => {
     await supabase.auth.signOut();
+    const storage = getSessionStorage();
+    storage?.removeItem(LAST_ACTIVITY_KEY);
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
@@ -202,6 +315,50 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
       window.location.replace(redirectRef.current);
     }
   }, [loading, sessionExpired]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      setUserContext({ id: "مجهول" });
+      setUserProperties({ authenticated: false });
+      return;
+    }
+    setUserContext({
+      id: currentUser.id,
+      email: currentUser.email || undefined,
+      name: currentUser.user_metadata?.full_name || undefined,
+    });
+    setUserProperties({
+      authenticated: true,
+      role: currentUser.app_metadata?.role || "user",
+    });
+    const storage = getSessionStorage();
+    const updateActivity = () => {
+      const now = Date.now();
+      storage?.setItem(LAST_ACTIVITY_KEY, String(now));
+      if (idleTimerRef.current) {
+        window.clearTimeout(idleTimerRef.current);
+      }
+      idleTimerRef.current = window.setTimeout(async () => {
+        await supabase.auth.signOut();
+        setSessionExpired(true);
+        logSecurityEvent({
+          type: "session-timeout",
+          message: "انتهت الجلسة بسبب عدم النشاط.",
+        });
+      }, IDLE_TIMEOUT_MS);
+    };
+
+    const events = ["mousemove", "keydown", "touchstart", "scroll"];
+    events.forEach((evt) => window.addEventListener(evt, updateActivity, { passive: true }));
+    updateActivity();
+
+    return () => {
+      events.forEach((evt) => window.removeEventListener(evt, updateActivity));
+      if (idleTimerRef.current) {
+        window.clearTimeout(idleTimerRef.current);
+      }
+    };
+  }, [currentUser]);
 
   return createElement(AuthContext.Provider, { value }, children);
 };

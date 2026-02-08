@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import supabase from "../../lib/supabase";
+import { trackSettingsChanged } from "../../lib/analytics";
 
 const SecuritySettings = () => {
   const [password, setPassword] = useState("");
@@ -29,6 +30,7 @@ const SecuritySettings = () => {
       setLoading(false);
       return;
     }
+    trackSettingsChanged("الأمان");
     setMessage("تم تحديث كلمة المرور بنجاح.");
     setPassword("");
     setConfirm("");

@@ -1,4 +1,5 @@
 import supabase from "../lib/supabase";
+import { trackApiKeyAdded } from "../lib/analytics";
 
 export type ApiProvider =
   | "groq"
@@ -61,6 +62,13 @@ const WRAP_ITERATIONS = 120000;
 const DEFAULT_TIMEOUT_MS = 10000;
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
+};
+
+const getStorage = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return window.sessionStorage;
 };
 
 /**
@@ -167,6 +175,7 @@ export class ApiKeyService {
 
     if (data?.id) {
       await this.ensureDefaultKey(userId, normalizedProvider, data.id, safeName);
+      trackApiKeyAdded(normalizedProvider);
     }
   }
 
@@ -474,7 +483,8 @@ export class ApiKeyService {
   }
 
   private async getUserCryptoKey(userId: string) {
-    const stored = localStorage.getItem(this.getUserKeyStorageKey(userId));
+    const storage = getStorage();
+    const stored = storage?.getItem(this.getUserKeyStorageKey(userId));
     if (!stored) {
       return this.createUserKey(userId);
     }
@@ -517,7 +527,8 @@ export class ApiKeyService {
       wrapped: this.bytesToBase64(new Uint8Array(wrapped)),
     };
 
-    localStorage.setItem(
+    const storage = getStorage();
+    storage?.setItem(
       this.getUserKeyStorageKey(userId),
       JSON.stringify(payload)
     );
@@ -645,7 +656,8 @@ export class ApiKeyService {
     const defaults = this.getDefaultMap(userId);
     if (!defaults[provider] || name === "افتراضي") {
       defaults[provider] = id;
-      localStorage.setItem(
+      const storage = getStorage();
+      storage?.setItem(
         this.getDefaultKeyStorageKey(userId),
         JSON.stringify(defaults)
       );
@@ -658,7 +670,8 @@ export class ApiKeyService {
   }
 
   private getDefaultMap(userId: string) {
-    const stored = localStorage.getItem(this.getDefaultKeyStorageKey(userId));
+    const storage = getStorage();
+    const stored = storage?.getItem(this.getDefaultKeyStorageKey(userId));
     if (!stored) {
       return {} as Record<string, string>;
     }
@@ -680,7 +693,8 @@ export class ApiKeyService {
       }
     }
     if (changed) {
-      localStorage.setItem(
+      const storage = getStorage();
+      storage?.setItem(
         this.getDefaultKeyStorageKey(userId),
         JSON.stringify(defaults)
       );
@@ -709,14 +723,15 @@ export class ApiKeyService {
   private consumeValidationSlot(provider: ApiProvider) {
     const key = `${STORAGE_PREFIX}:validation:${provider}`;
     const now = Date.now();
-    const stored = localStorage.getItem(key);
+    const storage = getStorage();
+    const stored = storage?.getItem(key);
     const timestamps = stored ? (JSON.parse(stored) as number[]) : [];
     const recent = timestamps.filter((time) => now - time < VALIDATION_WINDOW_MS);
     if (recent.length >= VALIDATION_LIMIT) {
       throw new ApiKeyError("تم تجاوز حد محاولات التحقق.", "RATE_LIMIT");
     }
     recent.push(now);
-    localStorage.setItem(key, JSON.stringify(recent));
+    storage?.setItem(key, JSON.stringify(recent));
   }
 }
 

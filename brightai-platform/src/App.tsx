@@ -1,9 +1,10 @@
 import { Suspense, lazy, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import MainLayout from "./components/layout/MainLayout";
 import { setDocumentDirection } from "./i18n";
+import { trackPageView } from "./lib/analytics";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const WorkflowPage = lazy(() => import("./pages/WorkflowPage"));
@@ -21,11 +22,16 @@ const Settings = lazy(() => import("./pages/Settings"));
 
 const App = () => {
   const { i18n } = useTranslation();
+  const location = useLocation();
 
   useEffect(() => {
     // ضبط اتجاه الصفحة حسب اللغة المختارة
     setDocumentDirection(i18n.language);
   }, [i18n.language]);
+
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
 
   return (
     <>

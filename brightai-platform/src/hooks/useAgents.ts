@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import supabase, { Agent } from "../lib/supabase";
 import { useAuth } from "./useAuth";
+import { trackAgentCreated, trackFeatureUsed } from "../lib/analytics";
 
 type AgentInput = Omit<Partial<Agent>, "id" | "created_at" | "updated_at" | "execution_count" | "success_rate" | "avg_response_time">;
 
@@ -114,6 +115,10 @@ export const useAgents = (options?: { realtime?: boolean }): UseAgentsResult => 
         setAgents(previous);
         setError("تعذر إنشاء الوكيل.");
         return null;
+      }
+      if (created?.id) {
+        trackAgentCreated(created.id, created.category || undefined);
+        trackFeatureUsed("إنشاء وكيل", { agentId: created.id });
       }
       invalidateCache();
       await fetchAgents(true);

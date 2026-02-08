@@ -162,7 +162,7 @@ const Select = ({
         disabled={disabled}
         onClick={() => setOpen((prev) => !prev)}
         className={cn(
-          "flex w-full items-center justify-between rounded-xl border bg-slate-950/60 px-4 py-3 text-base text-slate-100 transition",
+          "flex min-h-[44px] w-full items-center justify-between rounded-xl border bg-slate-950/60 px-4 py-3 text-base text-slate-100 transition",
           error
             ? "border-rose-500/60"
             : "border-slate-800 hover:border-emerald-400/50",

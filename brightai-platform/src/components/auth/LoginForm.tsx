@@ -26,9 +26,9 @@ const LoginForm = () => {
   } = useForm<LoginFormValues>({
     mode: "onChange",
     defaultValues: {
-      email: localStorage.getItem("brightai_remember_email") || "",
+      email: sessionStorage.getItem("brightai_remember_email") || "",
       password: "",
-      remember: Boolean(localStorage.getItem("brightai_remember_email")),
+      remember: Boolean(sessionStorage.getItem("brightai_remember_email")),
     },
   });
 
@@ -64,9 +64,9 @@ const LoginForm = () => {
     setSuccessMessage(null);
 
     if (values.remember) {
-      localStorage.setItem("brightai_remember_email", values.email);
+      sessionStorage.setItem("brightai_remember_email", values.email);
     } else {
-      localStorage.removeItem("brightai_remember_email");
+      sessionStorage.removeItem("brightai_remember_email");
     }
 
     const { error } = await supabase.auth.signInWithPassword({

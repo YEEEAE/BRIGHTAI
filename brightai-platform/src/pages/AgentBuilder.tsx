@@ -1,6 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../lib/supabase";
+import { trackFeatureUsed } from "../lib/analytics";
 
 const WorkflowCanvas = lazy(() => import("../components/agent/WorkflowCanvas"));
 
@@ -243,6 +244,7 @@ const AgentBuilder = () => {
       ...prev,
     ]);
     setStatusMessage("تم تشغيل اختبار تجريبي.");
+    trackFeatureUsed("اختبار الوكيل");
   }, []);
 
   const handleExport = () => {
@@ -262,6 +264,7 @@ const AgentBuilder = () => {
     anchor.download = `${name || "وكيل"}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
+    trackFeatureUsed("تصدير الوكيل");
   };
 
   const handleImport = (event: ChangeEvent<HTMLInputElement>) => {
@@ -280,6 +283,7 @@ const AgentBuilder = () => {
         setName(String(data.name || name));
         setDescription(String(data.description || description));
         setStatusMessage("تم استيراد الوكيل بنجاح.");
+        trackFeatureUsed("استيراد الوكيل");
       } catch {
         setErrorMessage("تعذر استيراد الملف، تحقق من صحة البيانات.");
       }
@@ -311,11 +315,11 @@ const AgentBuilder = () => {
             تحرير جماعي قريباً
           </span>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid gap-2 sm:flex sm:flex-wrap">
           <button
             type="button"
             onClick={handleSave}
-            className="rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950"
+            className="w-full rounded-xl bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 sm:w-auto"
             disabled={saving}
           >
             {saving ? "جارٍ الحفظ..." : "حفظ"}
@@ -323,24 +327,24 @@ const AgentBuilder = () => {
           <button
             type="button"
             onClick={handleTest}
-            className="rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200"
+            className="w-full rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200 sm:w-auto"
           >
             اختبار
           </button>
           <button
             type="button"
-            className="rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200"
+            className="w-full rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200 sm:w-auto"
           >
             نشر
           </button>
-          <label className="rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200">
+          <label className="w-full rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200 sm:w-auto">
             استيراد
             <input type="file" accept="application/json" className="hidden" onChange={handleImport} />
           </label>
           <button
             type="button"
             onClick={handleExport}
-            className="rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200"
+            className="w-full rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200 sm:w-auto"
           >
             تصدير
           </button>
@@ -367,7 +371,7 @@ const AgentBuilder = () => {
               <input
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                className="auth-field rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-100"
+                className="auth-field rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-base text-slate-100 sm:text-sm"
                 placeholder="أدخل اسم الوكيل"
               />
             </div>
@@ -376,7 +380,7 @@ const AgentBuilder = () => {
               <textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
-                className="auth-field min-h-[96px] rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-sm text-slate-100"
+                className="auth-field min-h-[96px] rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-base text-slate-100 sm:text-sm"
                 placeholder="وصف مختصر لما يقدمه الوكيل"
               />
             </div>
@@ -398,13 +402,13 @@ const AgentBuilder = () => {
         <aside className="flex flex-col gap-4">
           <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
             <h2 className="text-sm font-semibold text-slate-200">إعدادات الوكيل</h2>
-            <div className="mt-4 grid gap-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <div className="grid gap-2">
                 <label className="text-xs text-slate-400">التصنيف</label>
                 <input
                   value={category}
                   onChange={(event) => setCategory(event.target.value)}
-                  className="auth-field rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-100"
+                  className="auth-field rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2 text-base text-slate-100 sm:text-sm"
                 />
               </div>
               <div className="grid gap-2">
@@ -412,7 +416,7 @@ const AgentBuilder = () => {
                 <select
                   value={model}
                   onChange={(event) => setModel(event.target.value)}
-                  className="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-sm text-slate-100"
+                  className="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-base text-slate-100 sm:text-sm"
                 >
                   {modelOptions.map((option) => (
                     <option key={option.id} value={option.id}>
@@ -439,10 +443,10 @@ const AgentBuilder = () => {
                   type="number"
                   value={maxTokens}
                   onChange={(event) => setMaxTokens(Number(event.target.value))}
-                  className="auth-field rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2 text-sm text-slate-100"
+                  className="auth-field rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2 text-base text-slate-100 sm:text-sm"
                 />
               </div>
-              <label className="flex items-center justify-between text-sm text-slate-200">
+              <label className="flex items-center justify-between text-base text-slate-200 sm:text-sm">
                 إتاحة الوكيل للعامة
                 <input
                   type="checkbox"

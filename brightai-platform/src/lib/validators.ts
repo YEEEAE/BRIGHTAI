@@ -1,3 +1,5 @@
+import DOMPurify from "dompurify";
+
 type ApiProvider = "groq" | "openai" | "anthropic" | "google" | "custom";
 
 type WorkflowPayload = {
@@ -60,5 +62,22 @@ export const validateWorkflow = (workflow: WorkflowPayload) => {
 };
 
 // تنقية المدخلات لمنع حقن الشيفرات
-export const sanitizeInput = (input: string) =>
+const sanitizeWithFallback = (input: string) =>
   input.replace(/[<>"'`]/g, "").replace(/\s+/g, " ").trim();
+
+// تنقية المدخلات لمنع حقن الشيفرات
+export const sanitizeInput = (input: string) => {
+  if (typeof window === "undefined") {
+    return sanitizeWithFallback(input);
+  }
+  const cleaned = DOMPurify.sanitize(input, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
+  return sanitizeWithFallback(cleaned);
+};
+
+// تنقية مخرجات HTML قبل العرض
+export const sanitizeHtml = (html: string) => {
+  if (typeof window === "undefined") {
+    return sanitizeWithFallback(html);
+  }
+  return DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
+};

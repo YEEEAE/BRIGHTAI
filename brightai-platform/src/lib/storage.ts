@@ -2,15 +2,23 @@ import { decrypt, encrypt, generateKey } from "./encryption";
 
 const STORAGE_KEY = "brightai_storage_key";
 
+const getStorage = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return window.sessionStorage;
+};
+
 const getCryptoKey = async () => {
-  const stored = localStorage.getItem(STORAGE_KEY);
+  const storage = getStorage();
+  const stored = storage?.getItem(STORAGE_KEY);
   if (stored) {
     const raw = Uint8Array.from(atob(stored), (char) => char.charCodeAt(0));
     return crypto.subtle.importKey("raw", raw, "AES-GCM", true, ["encrypt", "decrypt"]);
   }
   const key = await generateKey();
   const exported = new Uint8Array(await crypto.subtle.exportKey("raw", key));
-  localStorage.setItem(STORAGE_KEY, btoa(String.fromCharCode(...exported)));
+  storage?.setItem(STORAGE_KEY, btoa(String.fromCharCode(...exported)));
   return key;
 };
 
@@ -18,11 +26,13 @@ export const setItem = async (key: string, value: unknown) => {
   const cryptoKey = await getCryptoKey();
   const payload = JSON.stringify(value ?? null);
   const encrypted = await encrypt(payload, cryptoKey);
-  localStorage.setItem(key, encrypted);
+  const storage = getStorage();
+  storage?.setItem(key, encrypted);
 };
 
 export const getItem = async <T>(key: string): Promise<T | null> => {
-  const stored = localStorage.getItem(key);
+  const storage = getStorage();
+  const stored = storage?.getItem(key);
   if (!stored) {
     return null;
   }
@@ -32,9 +42,11 @@ export const getItem = async <T>(key: string): Promise<T | null> => {
 };
 
 export const removeItem = (key: string) => {
-  localStorage.removeItem(key);
+  const storage = getStorage();
+  storage?.removeItem(key);
 };
 
 export const clear = () => {
-  localStorage.clear();
+  const storage = getStorage();
+  storage?.clear();
 };

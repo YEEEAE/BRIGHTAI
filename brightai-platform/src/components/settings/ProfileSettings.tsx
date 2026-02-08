@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../../lib/supabase";
+import { trackSettingsChanged } from "../../lib/analytics";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
@@ -63,6 +64,7 @@ const ProfileSettings = () => {
         avatar_url: avatarUrl || null,
         updated_at: new Date().toISOString(),
       });
+      trackSettingsChanged("الملف الشخصي");
       setSaving(false);
       setStatusMessage("تم حفظ التحديثات تلقائياً.");
     }, 900);

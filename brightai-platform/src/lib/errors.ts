@@ -1,3 +1,6 @@
+import * as Sentry from "@sentry/react";
+import { trackErrorEvent } from "./analytics";
+
 export class AppError extends Error {
   code?: string;
   constructor(message: string, code?: string) {
@@ -66,5 +69,7 @@ export const getErrorMessage = (error: unknown) => {
 export const handleError = (error: unknown) => {
   const message = getErrorMessage(error);
   console.error("خطأ بالتطبيق:", error);
+  Sentry.captureException(error);
+  trackErrorEvent(error, "app");
   return message;
 };

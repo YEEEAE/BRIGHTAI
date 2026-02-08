@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { trackSettingsChanged } from "../../lib/analytics";
 
 const STORAGE_KEY = "brightai_notifications";
 
@@ -24,6 +25,7 @@ const NotificationsSettings = () => {
         STORAGE_KEY,
         JSON.stringify({ emailReports, executionAlerts, weeklySummary })
       );
+      trackSettingsChanged("الإشعارات");
       setMessage("تم حفظ التفضيلات تلقائياً.");
     }, 600);
     return () => window.clearTimeout(timer);

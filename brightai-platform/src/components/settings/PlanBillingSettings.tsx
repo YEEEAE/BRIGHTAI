@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import supabase from "../../lib/supabase";
+import { trackPlanConversion, trackSettingsChanged } from "../../lib/analytics";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
 };
 
 const planOptions = [
-  { id: "starter", label: "أساسي", price: "٢٩٩ ر.س" },
-  { id: "growth", label: "احترافي", price: "٧٩٩ ر.س" },
-  { id: "enterprise", label: "مؤسسي", price: "حسب الطلب" },
+  { id: "starter", label: "أساسي", price: "٢٩٩ ر.س", amount: 299 },
+  { id: "growth", label: "احترافي", price: "٧٩٩ ر.س", amount: 799 },
+  { id: "enterprise", label: "مؤسسي", price: "حسب الطلب", amount: 0 },
 ];
 
 const PlanBillingSettings = () => {
@@ -45,6 +46,11 @@ const PlanBillingSettings = () => {
       plan: value,
       updated_at: new Date().toISOString(),
     });
+    const selected = planOptions.find((option) => option.id === value);
+    if (selected) {
+      trackPlanConversion(selected.id, selected.amount);
+    }
+    trackSettingsChanged("الخطة والفوترة");
     setSaving(false);
     setMessage("تم تحديث الخطة بنجاح.");
   };

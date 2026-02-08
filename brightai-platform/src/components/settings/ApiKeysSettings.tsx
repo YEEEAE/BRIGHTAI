@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import supabase from "../../lib/supabase";
 import ApiKeyService, { ApiKey, ApiProvider } from "../../services/apikey.service";
+import { trackSettingsChanged } from "../../lib/analytics";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
@@ -66,6 +67,7 @@ const ApiKeysSettings = () => {
       setStatusMessage("تم حفظ المفتاح بنجاح.");
       setName("");
       setKeyValue("");
+      trackSettingsChanged("مفاتيح API");
       await loadKeys();
     } catch (error) {
       setErrorMessage(
@@ -97,6 +99,7 @@ const ApiKeysSettings = () => {
       .from("api_keys")
       .update({ is_active: active })
       .eq("id", id);
+    trackSettingsChanged("مفاتيح API");
     await loadKeys();
     setSaving(false);
   };
@@ -106,11 +109,12 @@ const ApiKeysSettings = () => {
       return;
     }
     const storageKey = `brightai_apikey:default:${userId}`;
-    const stored = localStorage.getItem(storageKey);
+    const stored = sessionStorage.getItem(storageKey);
     const defaults = stored ? (JSON.parse(stored) as Record<string, string>) : {};
     defaults[providerValue] = id;
-    localStorage.setItem(storageKey, JSON.stringify(defaults));
+    sessionStorage.setItem(storageKey, JSON.stringify(defaults));
     setStatusMessage("تم تعيين المفتاح الافتراضي.");
+    trackSettingsChanged("مفاتيح API");
     setKeys((prev) =>
       prev.map((item) => ({
         ...item,

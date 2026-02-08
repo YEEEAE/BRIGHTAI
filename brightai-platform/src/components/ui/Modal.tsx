@@ -17,11 +17,11 @@ export type ModalProps = {
 };
 
 const sizeClasses: Record<ModalSize, string> = {
-  sm: "max-w-md",
-  md: "max-w-lg",
-  lg: "max-w-2xl",
-  xl: "max-w-4xl",
-  full: "max-w-6xl",
+  sm: "max-w-none sm:max-w-md",
+  md: "max-w-none sm:max-w-lg",
+  lg: "max-w-none sm:max-w-2xl",
+  xl: "max-w-none sm:max-w-4xl",
+  full: "max-w-none sm:max-w-6xl",
 };
 
 /**
@@ -116,7 +116,7 @@ const Modal = ({
       <div
         ref={containerRef}
         className={cn(
-          "relative z-10 w-full rounded-2xl border border-slate-800 bg-slate-950/95 p-6 text-right text-slate-100 shadow-2xl shadow-slate-950/40 transition",
+          "relative z-10 h-full w-full rounded-none border border-slate-800 bg-slate-950/95 p-4 text-right text-slate-100 shadow-2xl shadow-slate-950/40 transition sm:h-auto sm:rounded-2xl sm:p-6",
           sizeClasses[size]
         )}
         role="dialog"

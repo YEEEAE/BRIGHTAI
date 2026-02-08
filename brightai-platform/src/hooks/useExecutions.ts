@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import supabase from "../lib/supabase";
 import agentExecutor from "../services/agent.executor";
 import { useAuth } from "./useAuth";
+import { trackAgentExecuted, trackExecutionDuration, trackErrorEvent } from "../lib/analytics";
 
 type ExecutionRow = {
   id: string;
@@ -70,16 +71,29 @@ export const useExecutions = (options?: { realtime?: boolean }) => {
         return null;
       }
       setError(null);
-      const result = await agentExecutor.execute({
-        agentId,
-        userMessage: input.message,
-        context: {
-          userId: currentUser.id,
-          variables: input.context,
-        },
-      });
-      await fetchHistory(agentId);
-      return result;
+      const startedAt = performance.now();
+      try {
+        const result = await agentExecutor.execute({
+          agentId,
+          userMessage: input.message,
+          context: {
+            userId: currentUser.id,
+            variables: input.context,
+          },
+        });
+        const duration = performance.now() - startedAt;
+        trackAgentExecuted(agentId, "ناجح", duration);
+        trackExecutionDuration(agentId, duration, "ناجح");
+        await fetchHistory(agentId);
+        return result;
+      } catch (error) {
+        const duration = performance.now() - startedAt;
+        trackAgentExecuted(agentId, "فشل", duration);
+        trackExecutionDuration(agentId, duration, "فشل");
+        trackErrorEvent(error, "execution");
+        await fetchHistory(agentId);
+        throw error;
+      }
     },
     [currentUser, fetchHistory]
   );

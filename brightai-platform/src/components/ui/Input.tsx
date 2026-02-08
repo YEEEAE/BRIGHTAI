@@ -89,6 +89,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             id={inputId}
             className={cn(
               "auth-field w-full rounded-xl border bg-slate-950/60 px-4 py-3 text-base text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2",
+              "min-h-[44px]",
               leftIcon ? "pr-11" : "",
               rightIcon || loading || (allowClear && length > 0) ? "pl-11" : "",
               error

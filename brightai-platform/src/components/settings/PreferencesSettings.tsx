@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import i18n, { setDocumentDirection } from "../../i18n";
+import { trackSettingsChanged } from "../../lib/analytics";
 
 const STORAGE_KEY = "brightai_preferences";
 
@@ -25,6 +26,7 @@ const PreferencesSettings = () => {
       );
       i18n.changeLanguage(language === "ar" ? "ar" : "en");
       setDocumentDirection(language === "ar" ? "ar" : "en");
+      trackSettingsChanged("التفضيلات");
       setMessage("تم حفظ التفضيلات تلقائياً.");
     }, 600);
     return () => window.clearTimeout(timer);

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import supabase from "../lib/supabase";
+import { trackTemplateUsed } from "../lib/analytics";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
@@ -134,6 +135,7 @@ const Templates = () => {
       .from("templates")
       .update({ downloads: template.downloads + 1 })
       .eq("id", template.id);
+    trackTemplateUsed(template.id, template.category || undefined);
     setMessage("تم نسخ القالب إلى الوكلاء الخاصة بك.");
   };
 
@@ -154,17 +156,17 @@ const Templates = () => {
           <h1 className="text-2xl font-bold text-slate-100">سوق القوالب</h1>
           <p className="mt-1 text-sm text-slate-400">استخدم قوالب جاهزة لتسريع بناء الوكلاء.</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid w-full gap-2 sm:w-auto sm:grid-cols-[1fr_auto_auto] sm:items-center">
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="ابحث عن قالب"
-            className="auth-field w-56 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-2 text-sm text-slate-100"
+            className="auth-field w-full rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-2 text-base text-slate-100 sm:w-56 sm:text-sm"
           />
           <select
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            className="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-sm text-slate-200"
+            className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-base text-slate-200 sm:w-auto sm:text-sm"
           >
             {categories.map((item) => (
               <option key={item}>{item}</option>
@@ -173,7 +175,7 @@ const Templates = () => {
           <select
             value={sortKey}
             onChange={(event) => setSortKey(event.target.value)}
-            className="rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-sm text-slate-200"
+            className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-3 py-2 text-base text-slate-200 sm:w-auto sm:text-sm"
           >
             {sortOptions.map((item) => (
               <option key={item}>{item}</option>

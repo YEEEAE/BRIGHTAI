@@ -13,6 +13,11 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      screens: {
+        tablet: "640px",
+        desktop: "1024px",
+        large: "1536px",
+      },
       fontFamily: {
         sans: ["Cairo", "Tajawal", "ui-sans-serif", "system-ui"],
         display: ["Tajawal", "Cairo", "ui-sans-serif", "system-ui"],

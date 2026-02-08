@@ -25,7 +25,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseClasses =
-  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60";
 
 const sizeClasses: Record<ButtonSize, string> = {
   sm: "h-9 px-4 text-sm",
@@ -51,7 +51,7 @@ const gradientClass =
   "bg-gradient-to-l from-emerald-400 via-emerald-500 to-teal-400 text-slate-950 hover:from-emerald-300 hover:via-emerald-400 hover:to-teal-300";
 
 const iconOnlyClasses: Record<ButtonSize, string> = {
-  sm: "h-9 w-9 p-0",
+  sm: "h-11 w-11 p-0",
   md: "h-11 w-11 p-0",
   lg: "h-12 w-12 p-0",
   xl: "h-14 w-14 p-0",
