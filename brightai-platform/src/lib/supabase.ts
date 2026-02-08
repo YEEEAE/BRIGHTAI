@@ -150,7 +150,7 @@ const resolvedSupabaseKey =
   supabaseAnonKey || "placeholder-anon-key";
 
 const storage =
-  typeof window !== "undefined" ? window.sessionStorage : undefined;
+  typeof window !== "undefined" ? window.localStorage : undefined;
 
 const supabase: SupabaseClient<Database> = createClient<Database>(
   resolvedSupabaseUrl,
