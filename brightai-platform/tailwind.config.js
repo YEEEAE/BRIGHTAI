@@ -1,5 +1,13 @@
 const plugin = require("tailwindcss/plugin");
 
+let rtlPlugin = null;
+try {
+  const loaded = require("@tailwindcss/rtl");
+  rtlPlugin = loaded?.default ?? loaded;
+} catch (error) {
+  rtlPlugin = null;
+}
+
 module.exports = {
   content: ["./public/index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "class",
@@ -64,7 +72,7 @@ module.exports = {
     },
   },
   plugins: [
-
+    rtlPlugin,
     require("tailwindcss-rtl"),
     plugin(({ matchUtilities, theme, addUtilities }) => {
       matchUtilities(
@@ -84,5 +92,5 @@ module.exports = {
         ".rtl-no-flip": { transform: "none" },
       });
     }),
-  ],
+  ].filter(Boolean),
 };

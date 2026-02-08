@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import WorkflowCanvas from "../components/agent/WorkflowCanvas";
 import supabase from "../lib/supabase";
+
+const WorkflowCanvas = lazy(() => import("../components/agent/WorkflowCanvas"));
 
 const AUTO_SAVE_KEY = "brightai_workflow_autosave";
 const DRAFT_KEY = "brightai_agent_draft";
@@ -382,7 +383,15 @@ const AgentBuilder = () => {
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-950/60 p-4">
-            <WorkflowCanvas key={workflowKey} />
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center py-10 text-sm text-slate-300">
+                  جارٍ تحميل المصمم...
+                </div>
+              }
+            >
+              <WorkflowCanvas key={workflowKey} />
+            </Suspense>
           </div>
         </div>
 

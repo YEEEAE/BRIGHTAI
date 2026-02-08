@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import ReactFlow, {
   Background,
   Connection,
@@ -614,4 +614,4 @@ const autoLayout = (nodes: Node<WorkflowNodeData>[], edges: Edge[]) => {
   });
 };
 
-export default WorkflowCanvas;
+export default memo(WorkflowCanvas);

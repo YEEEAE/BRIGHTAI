@@ -24,7 +24,7 @@ const supabaseClient = supabase as unknown as {
   removeChannel: (channel: unknown) => void;
 };
 
-export const useExecutions = () => {
+export const useExecutions = (options?: { realtime?: boolean }) => {
   const { currentUser } = useAuth();
   const [executions, setExecutions] = useState<ExecutionRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,7 @@ export const useExecutions = () => {
   const channelRef = useRef<any>(null);
 
   const fetchHistory = useCallback(
-    async (agentId?: string) => {
+    async (agentId?: string, page = 0, pageSize = 50) => {
       if (!currentUser) {
         setExecutions([]);
         setLoading(false);
@@ -42,9 +42,12 @@ export const useExecutions = () => {
       setError(null);
       let query = supabaseClient
         .from("executions")
-        .select("*")
+        .select(
+          "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd"
+        )
         .eq("user_id", currentUser.id)
-        .order("started_at", { ascending: false });
+        .order("started_at", { ascending: false })
+        .range(page * pageSize, page * pageSize + pageSize - 1);
       if (agentId) {
         query = query.eq("agent_id", agentId);
       }
@@ -111,7 +114,7 @@ export const useExecutions = () => {
   }, [fetchHistory]);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || options?.realtime === false) {
       return;
     }
     if (channelRef.current) {
@@ -133,7 +136,7 @@ export const useExecutions = () => {
         supabaseClient.removeChannel(channelRef.current);
       }
     };
-  }, [currentUser, fetchHistory]);
+  }, [currentUser, fetchHistory, options?.realtime]);
 
   return useMemo(
     () => ({

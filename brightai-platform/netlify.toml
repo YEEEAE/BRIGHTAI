@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build:prod"
+  publish = "build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  NODE_VERSION = "20"

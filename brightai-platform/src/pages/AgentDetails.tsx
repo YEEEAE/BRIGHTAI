@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { List, type RowComponentProps } from "react-window";
 import supabase from "../lib/supabase";
 
 const supabaseClient = supabase as unknown as {
@@ -139,6 +140,37 @@ const AgentDetails = () => {
       executionFilter === "الكل" ? true : execution.status === executionFilter
     );
   }, [executionFilter, executions]);
+
+  const ExecutionRow = useCallback(
+    ({ index, style, rows, ariaAttributes }: RowComponentProps<{ rows: ExecutionRow[] }>) => {
+      const execution = rows[index];
+      if (!execution) {
+        return null;
+      }
+      return (
+        <div style={style} className="px-2" {...ariaAttributes}>
+          <div className="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-slate-400">{execution.id}</span>
+              <span className="text-xs text-emerald-300">{execution.status}</span>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-4 text-xs text-slate-400">
+              <span>
+                {execution.started_at
+                  ? new Date(execution.started_at).toLocaleString("ar-SA")
+                  : "غير محدد"}
+              </span>
+              <span>
+                المدة: {Math.round((execution.duration_ms || 0) / 1000)} ثانية
+              </span>
+              <span>الرموز: {execution.tokens_used || 0}</span>
+            </div>
+          </div>
+        </div>
+      );
+    },
+    []
+  );
 
   const stats = useMemo(() => {
     const total = executions.length;
@@ -412,6 +444,17 @@ const AgentDetails = () => {
               <div className="rounded-xl border border-dashed border-slate-700 p-4 text-sm text-slate-400">
                 لا توجد تنفيذات مطابقة.
               </div>
+            ) : filteredExecutions.length > 8 ? (
+              <List
+                rowCount={filteredExecutions.length}
+                rowHeight={88}
+                rowComponent={ExecutionRow}
+                rowProps={{ rows: filteredExecutions }}
+                style={{
+                  height: Math.min(filteredExecutions.length * 88, 520),
+                  width: "100%",
+                }}
+              />
             ) : (
               filteredExecutions.map((execution) => (
                 <div
@@ -428,7 +471,9 @@ const AgentDetails = () => {
                         ? new Date(execution.started_at).toLocaleString("ar-SA")
                         : "غير محدد"}
                     </span>
-                    <span>المدة: {Math.round((execution.duration_ms || 0) / 1000)} ثانية</span>
+                    <span>
+                      المدة: {Math.round((execution.duration_ms || 0) / 1000)} ثانية
+                    </span>
                     <span>الرموز: {execution.tokens_used || 0}</span>
                   </div>
                 </div>

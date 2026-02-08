@@ -24,7 +24,7 @@ const supabaseClient = supabase as unknown as {
 const CACHE_TTL_MS = 30000;
 let agentsCache: { userId: string; data: Agent[]; timestamp: number } | null = null;
 
-export const useAgents = (): UseAgentsResult => {
+export const useAgents = (options?: { realtime?: boolean }): UseAgentsResult => {
   const { currentUser } = useAuth();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,9 @@ export const useAgents = (): UseAgentsResult => {
       setError(null);
       const { data, error: fetchError } = await supabaseClient
         .from("agents")
-        .select("*")
+        .select(
+          "id, user_id, name, description, category, workflow, settings, status, is_public, execution_count, success_rate, avg_response_time, tags, version, created_at, updated_at"
+        )
         .eq("user_id", currentUser.id)
         .order("updated_at", { ascending: false });
       if (fetchError) {
@@ -197,7 +199,7 @@ export const useAgents = (): UseAgentsResult => {
   }, [fetchAgents]);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser || options?.realtime === false) {
       return;
     }
     if (channelRef.current) {
@@ -219,7 +221,7 @@ export const useAgents = (): UseAgentsResult => {
         supabaseClient.removeChannel(channelRef.current);
       }
     };
-  }, [currentUser, fetchAgents]);
+  }, [currentUser, fetchAgents, options?.realtime]);
 
   const value = useMemo(
     () => ({
