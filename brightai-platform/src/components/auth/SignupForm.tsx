@@ -148,13 +148,13 @@ const SignupForm = () => {
             {...register("password", {
               required: "كلمة المرور مطلوبة.",
               validate: {
-                length: (value) =>
+                length: (value: string) =>
                   value.length >= 8 || "كلمة المرور يجب أن تكون ٨ أحرف على الأقل.",
-                uppercase: (value) =>
+                uppercase: (value: string) =>
                   /[A-Z]/.test(value) || "يجب أن تحتوي على حرف كبير واحد على الأقل.",
-                lowercase: (value) =>
+                lowercase: (value: string) =>
                   /[a-z]/.test(value) || "يجب أن تحتوي على حرف صغير واحد على الأقل.",
-                number: (value) =>
+                number: (value: string) =>
                   /[0-9]/.test(value) || "يجب أن تحتوي على رقم واحد على الأقل.",
               },
             })}
@@ -211,7 +211,7 @@ const SignupForm = () => {
             aria-describedby="confirmPassword-error"
             {...register("confirmPassword", {
               required: "تأكيد كلمة المرور مطلوب.",
-              validate: (value) =>
+              validate: (value: string) =>
                 value === passwordValue || "كلمتا المرور غير متطابقتين.",
             })}
           />

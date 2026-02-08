@@ -64,7 +64,7 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/rtl"),
+
     require("tailwindcss-rtl"),
     plugin(({ matchUtilities, theme, addUtilities }) => {
       matchUtilities(

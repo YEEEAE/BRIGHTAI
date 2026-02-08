@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import ReactFlow, {
   Background,
   Connection,
   Controls,
   Edge,
+  EdgeChange,
   MiniMap,
   Node,
+  NodeChange,
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
@@ -152,13 +154,13 @@ const WorkflowCanvas = () => {
   }, [nodes, edges, pushHistory]);
 
   const handleNodesChange = useCallback(
-    (changes) => {
+    (changes: NodeChange[]) => {
       setNodes((prev) => hydrateNodes(applyNodeChanges(changes, prev)));
     },
     [hydrateNodes]
   );
 
-  const handleEdgesChange = useCallback((changes) => {
+  const handleEdgesChange = useCallback((changes: EdgeChange[]) => {
     setEdges((prev) => applyEdgeChanges(changes, prev));
   }, []);
 
@@ -480,7 +482,7 @@ const WorkflowCanvas = () => {
           onEdgesChange={handleEdgesChange}
           onConnect={handleConnect}
           onInit={setReactFlowInstance}
-          onNodeDoubleClick={(_, node) => {
+          onNodeDoubleClick={(_event: MouseEvent, node: Node<WorkflowNodeData>) => {
             setSelectedNode(node);
             setEditorOpen(true);
           }}

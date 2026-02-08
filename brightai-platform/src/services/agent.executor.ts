@@ -108,6 +108,18 @@ export type ValidationResult = {
   warnings: string[];
 };
 
+type AgentRow = {
+  id: string;
+  user_id: string;
+  workflow?: Workflow;
+  settings?: Record<string, unknown>;
+  [key: string]: unknown;
+};
+
+type ApiKeyRow = {
+  key_encrypted: string | null;
+};
+
 export type AgentExecutorErrorCode =
   | "AGENT_NOT_FOUND"
   | "INVALID_WORKFLOW"
@@ -207,16 +219,21 @@ export class AgentExecutor {
     input: AgentExecutionInput
   ): AsyncGenerator<ExecutionUpdate> {
     const updates: ExecutionUpdate[] = [];
-    let resolver: (() => void) | null = null;
+    let resolver: ((value?: void) => void) | null = null;
     let finished = false;
     let executionError: unknown = null;
 
+    const notify = () => {
+      const current = resolver;
+      resolver = null;
+      if (typeof current === "function") {
+        current();
+      }
+    };
+
     const pushUpdate = (update: ExecutionUpdate) => {
       updates.push(update);
-      if (resolver) {
-        resolver();
-        resolver = null;
-      }
+      notify();
     };
 
     const runner = (async () => {
@@ -306,10 +323,7 @@ export class AgentExecutor {
         });
       } finally {
         finished = true;
-        if (resolver) {
-          resolver();
-          resolver = null;
-        }
+        notify();
       }
     })();
 
@@ -501,11 +515,16 @@ export class AgentExecutor {
         }
         case "loop": {
           const iterations = Number(node.data.iterations || 0);
-          const items =
-            (node.data.items as unknown[]) ||
-            (Array.isArray(node.data.itemsVar) &&
-              (context.variables[node.data.itemsVar as string] as unknown[])) ||
-            [];
+          const directItems = Array.isArray(node.data.items)
+            ? (node.data.items as unknown[])
+            : [];
+          const itemsVar =
+            typeof node.data.itemsVar === "string" ? node.data.itemsVar : "";
+          const variableItems =
+            itemsVar && Array.isArray(context.variables[itemsVar])
+              ? (context.variables[itemsVar] as unknown[])
+              : [];
+          const items = directItems.length > 0 ? directItems : variableItems;
           const results: unknown[] = [];
           const limit = Math.min(iterations || items.length, 50);
 
@@ -711,7 +730,7 @@ export class AgentExecutor {
   private async executeNodeWithRetry(
     node: WorkflowNode,
     context: ExecutionContext
-  ) {
+  ): Promise<NodeResult> {
     const retries = Number(node.data.retry || 2);
     let attempt = 0;
     while (attempt <= retries) {
@@ -811,9 +830,11 @@ export class AgentExecutor {
           : undefined;
       const headers =
         node.data.headers && typeof node.data.headers === "object"
-          ? this.interpolateObject(
-              node.data.headers as Record<string, unknown>,
-              context
+          ? this.normalizeHeaders(
+              this.interpolateObject(
+                node.data.headers as Record<string, unknown>,
+                context
+              )
             )
           : undefined;
       const response = await http.request({
@@ -844,6 +865,17 @@ export class AgentExecutor {
       }
     }
     return result;
+  }
+
+  private normalizeHeaders(value: Record<string, unknown>) {
+    const headers: Record<string, string> = {};
+    for (const [key, raw] of Object.entries(value)) {
+      if (raw === undefined || raw === null) {
+        continue;
+      }
+      headers[key] = String(raw);
+    }
+    return headers;
   }
 
   private pushHistory(
@@ -967,7 +999,7 @@ export class AgentExecutor {
       .from("agents")
       .select("*")
       .eq("id", agentId)
-      .single();
+      .single<AgentRow>();
 
     if (error || !data) {
       throw new AgentExecutorError("الوكيل غير موجود.", "AGENT_NOT_FOUND");
@@ -1009,16 +1041,22 @@ export class AgentExecutor {
       .eq("is_active", true)
       .order("created_at", { ascending: false })
       .limit(1)
-      .single();
+      .single<ApiKeyRow>();
 
     if (error || !data?.key_encrypted) {
       throw new AgentExecutorError("مفتاح المستخدم غير متوفر.", "MISSING_API_KEY");
     }
 
-    const { data: decrypted, error: decryptError } = await supabase.rpc(
-      "decrypt_api_key",
-      { encrypted_key: data.key_encrypted }
-    );
+    const { data: decrypted, error: decryptError } = await (
+      supabase as unknown as {
+        rpc: (
+          fn: string,
+          params: Record<string, unknown>
+        ) => Promise<{ data: string | null; error: unknown }>;
+      }
+    ).rpc("decrypt_api_key", {
+      encrypted_key: data.key_encrypted as string,
+    });
 
     if (decryptError || !decrypted) {
       throw new AgentExecutorError("تعذر فك تشفير المفتاح.", "MISSING_API_KEY");
@@ -1049,7 +1087,19 @@ export class AgentExecutor {
       completed_at: new Date().toISOString(),
     };
 
-    const { error } = await supabase.from("executions").insert(payload);
+    const { error } = await (
+      supabase as unknown as {
+        from: (
+          table: string
+        ) => {
+          insert: (
+            values: Record<string, unknown>
+          ) => Promise<{ error: { message: string } | null }>;
+        };
+      }
+    )
+      .from("executions")
+      .insert(payload);
     if (error) {
       console.error("فشل حفظ سجل التنفيذ.", error.message);
     }

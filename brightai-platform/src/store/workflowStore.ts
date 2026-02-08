@@ -1,4 +1,4 @@
-import { create } from "zustand";
+import { StateCreator, create } from "zustand";
 import {
   addEdge,
   applyEdgeChanges,
@@ -57,22 +57,24 @@ type WorkflowState = {
   onConnect: (connection: Connection) => void;
 };
 
-const useWorkflowStore = create<WorkflowState>((set, get) => ({
+const storeCreator: StateCreator<WorkflowState> = (set, get) => ({
   nodes: initialNodes,
   edges: initialEdges,
-  setNodes: (nodes) => set({ nodes }),
-  setEdges: (edges) => set({ edges }),
-  onNodesChange: (changes) =>
+  setNodes: (nodes: Node[]) => set({ nodes }),
+  setEdges: (edges: Edge[]) => set({ edges }),
+  onNodesChange: (changes: NodeChange[]) =>
     set({ nodes: applyNodeChanges(changes, get().nodes) }),
-  onEdgesChange: (changes) =>
+  onEdgesChange: (changes: EdgeChange[]) =>
     set({ edges: applyEdgeChanges(changes, get().edges) }),
-  onConnect: (connection) =>
+  onConnect: (connection: Connection) =>
     set({
       edges: addEdge(
         { ...connection, animated: true, style: { stroke: "#34d399" } },
         get().edges
       ),
     }),
-}));
+});
+
+const useWorkflowStore = create<WorkflowState>(storeCreator);
 
 export default useWorkflowStore;

@@ -17,6 +17,15 @@ export type ApiKey = {
   is_default: boolean;
 };
 
+type ApiKeyRow = {
+  id: string;
+  provider: string;
+  name: string | null;
+  is_active: boolean;
+  last_used_at: string | null;
+  created_at: string;
+};
+
 export type TestResult = {
   success: boolean;
   provider: ApiProvider;
@@ -50,6 +59,9 @@ const VALIDATION_LIMIT = 5;
 const VALIDATION_WINDOW_MS = 10 * 60 * 1000;
 const WRAP_ITERATIONS = 120000;
 const DEFAULT_TIMEOUT_MS = 10000;
+const supabaseClient = supabase as unknown as {
+  from: (table: string) => any;
+};
 
 /**
  * خدمة إدارة مفاتيح التكامل مع تشفير محلي.
@@ -136,7 +148,7 @@ export class ApiKeyService {
     await this.validateApiKey(normalizedProvider, key);
     const encrypted = await this.encryptKey(key);
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("api_keys")
       .insert({
         provider: normalizedProvider,
@@ -170,7 +182,7 @@ export class ApiKeyService {
     const normalizedProvider = this.normalizeProvider(provider, "");
 
     const defaultId = this.getDefaultKeyId(userId, normalizedProvider);
-    let query = supabase
+    let query = supabaseClient
       .from("api_keys")
       .select("id, key_encrypted, provider, name, is_active")
       .eq("provider", normalizedProvider)
@@ -204,7 +216,7 @@ export class ApiKeyService {
   async deleteApiKey(id: string): Promise<void> {
     this.ensureSafeContext();
     const userId = await this.getUserId();
-    const { error } = await supabase.from("api_keys").delete().eq("id", id);
+    const { error } = await supabaseClient.from("api_keys").delete().eq("id", id);
     if (error) {
       throw new ApiKeyError("تعذر حذف المفتاح.", "PROVIDER_ERROR");
     }
@@ -217,7 +229,7 @@ export class ApiKeyService {
   async listApiKeys(): Promise<ApiKey[]> {
     this.ensureSafeContext();
     const userId = await this.getUserId();
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("api_keys")
       .select("id, provider, name, is_active, last_used_at, created_at")
       .order("created_at", { ascending: false });
@@ -227,7 +239,8 @@ export class ApiKeyService {
     }
 
     const defaults = this.getDefaultMap(userId);
-    return data.map((item) => ({
+    const rows = data as ApiKeyRow[];
+    return rows.map((item: ApiKeyRow) => ({
       ...item,
       provider: item.provider as ApiProvider,
       is_default: defaults[item.provider] === item.id,
@@ -341,39 +354,51 @@ export class ApiKeyService {
     }
   }
 
-  private buildProviderRequest(provider: ApiProvider, key: string) {
+  private buildProviderRequest(
+    provider: ApiProvider,
+    key: string
+  ): { url: string; options: RequestInit } {
     switch (provider) {
       case "groq":
-        return {
-          url: "https://api.groq.com/openai/v1/models",
-          options: {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${key}`,
+        {
+          const headers: Record<string, string> = {
+            Authorization: `Bearer ${key}`,
+          };
+          return {
+            url: "https://api.groq.com/openai/v1/models",
+            options: {
+              method: "GET",
+              headers,
             },
-          },
-        };
+          };
+        }
       case "openai":
-        return {
-          url: "https://api.openai.com/v1/models",
-          options: {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${key}`,
+        {
+          const headers: Record<string, string> = {
+            Authorization: `Bearer ${key}`,
+          };
+          return {
+            url: "https://api.openai.com/v1/models",
+            options: {
+              method: "GET",
+              headers,
             },
-          },
-        };
+          };
+        }
       case "anthropic":
-        return {
-          url: "https://api.anthropic.com/v1/models",
-          options: {
-            method: "GET",
-            headers: {
-              "x-api-key": key,
-              "anthropic-version": "2023-06-01",
+        {
+          const headers: Record<string, string> = {
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+          };
+          return {
+            url: "https://api.anthropic.com/v1/models",
+            options: {
+              method: "GET",
+              headers,
             },
-          },
-        };
+          };
+        }
       case "google":
         return {
           url: `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(
@@ -671,11 +696,11 @@ export class ApiKeyService {
   }
 
   private async disableKey(id: string) {
-    await supabase.from("api_keys").update({ is_active: false }).eq("id", id);
+    await supabaseClient.from("api_keys").update({ is_active: false }).eq("id", id);
   }
 
   private async touchKey(id: string) {
-    await supabase
+    await supabaseClient
       .from("api_keys")
       .update({ last_used_at: new Date().toISOString() })
       .eq("id", id);
