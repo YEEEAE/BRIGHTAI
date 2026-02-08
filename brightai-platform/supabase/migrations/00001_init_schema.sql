@@ -309,42 +309,51 @@ declare
 begin
   v_encrypted_password := crypt(v_admin_password, gen_salt('bf'));
 
-  insert into auth.users (
-    instance_id,
-    id,
-    aud,
-    role,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    confirmation_token,
-    recovery_token
-  ) values (
-    '00000000-0000-0000-0000-000000000000',
-    uuid_generate_v4(),
-    'authenticated',
-    'authenticated',
-    v_admin_email,
-    v_encrypted_password,
-    now(),
-    '{"provider":"email","providers":["email"]}',
-    jsonb_build_object(
-      'full_name', 'Super Admin',
-      'role', 'super_admin',
-      'avatar_url', null
-    ),
-    now(),
-    now(),
-    '',
-    ''
-  )
-  on conflict (email) do update
-  set encrypted_password = v_encrypted_password
-  returning id into v_admin_id;
+  select id into v_admin_id
+  from auth.users
+  where email = v_admin_email
+  limit 1;
+
+  if v_admin_id is null then
+    insert into auth.users (
+      instance_id,
+      id,
+      aud,
+      role,
+      email,
+      encrypted_password,
+      email_confirmed_at,
+      raw_app_meta_data,
+      raw_user_meta_data,
+      created_at,
+      updated_at,
+      confirmation_token,
+      recovery_token
+    ) values (
+      '00000000-0000-0000-0000-000000000000',
+      uuid_generate_v4(),
+      'authenticated',
+      'authenticated',
+      v_admin_email,
+      v_encrypted_password,
+      now(),
+      '{"provider":"email","providers":["email"]}',
+      jsonb_build_object(
+        'full_name', 'Super Admin',
+        'role', 'super_admin',
+        'avatar_url', null
+      ),
+      now(),
+      now(),
+      '',
+      ''
+    )
+    returning id into v_admin_id;
+  else
+    update auth.users
+    set encrypted_password = v_encrypted_password
+    where id = v_admin_id;
+  end if;
 
   insert into public.profiles (
     id,
@@ -1208,7 +1217,7 @@ select
   sum(ul.tokens_used) as total_tokens,
   o.current_api_calls,
   o.max_api_calls_per_month,
-  round((o.current_api_calls::float / nullif(o.max_api_calls_per_month, 0)::float * 100), 2) as usage_percentage
+  round((o.current_api_calls::numeric / nullif(o.max_api_calls_per_month, 0)::numeric * 100), 2) as usage_percentage
 from public.organizations o
 left join public.organization_users ou on o.id = ou.organization_id
 left join public.teams t on o.id = t.organization_id
@@ -1227,8 +1236,8 @@ select
   count(e.id) filter (where e.status = 'ناجح') as successful_executions,
   count(e.id) filter (where e.status = 'فشل') as failed_executions,
   round(
-    (count(e.id) filter (where e.status = 'ناجح')::float /
-    nullif(count(e.id), 0)::float * 100), 2
+    (count(e.id) filter (where e.status = 'ناجح')::numeric /
+    nullif(count(e.id), 0)::numeric * 100), 2
   ) as success_rate,
   avg(e.duration_ms) as avg_duration_ms,
   sum(e.tokens_used) as total_tokens,
@@ -1304,7 +1313,7 @@ insert into public.templates (
   '{}'::jsonb,
   array['تسويق', 'محتوى', 'عربي']
 )
-on conflict do nothing;
+;
 
 -- ===================================
 -- 26. التعليقات التوضيحية

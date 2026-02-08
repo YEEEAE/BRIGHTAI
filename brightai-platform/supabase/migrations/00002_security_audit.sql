@@ -27,7 +27,7 @@ create policy security_audit_block_write on public.security_audit_logs
   for all using (false) with check (false);
 
 -- دالة عامة لتسجيل أحداث التدقيق
-create or replace function public.log_audit_event(user_id_column text)
+create or replace function public.log_audit_event()
 returns trigger
 language plpgsql
 security definer
@@ -37,7 +37,10 @@ declare
   actor_id uuid;
   record_id uuid;
   payload jsonb;
+  user_id_column text;
 begin
+  user_id_column := coalesce(TG_ARGV[0], 'user_id');
+
   if user_id_column = 'id' then
     actor_id := coalesce(new.id, old.id, auth.uid());
   else
