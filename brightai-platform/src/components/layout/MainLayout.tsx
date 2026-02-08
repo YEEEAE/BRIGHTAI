@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowUpLeft, BarChart3, LayoutGrid } from "lucide-react";
 import Button from "../ui/Button";
 import AgentStatus from "../agent/AgentStatus";
+import { formatShortDate } from "../../lib/date";
 
 const MainLayout = () => {
   const { t } = useTranslation();
@@ -11,6 +12,8 @@ const MainLayout = () => {
     `text-sm font-semibold transition ${
       isActive ? "text-emerald-300" : "text-slate-200 hover:text-emerald-200"
     }`;
+
+  const today = formatShortDate(new Date());
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -51,7 +54,12 @@ const MainLayout = () => {
 
       <footer className="border-t border-slate-900/80 bg-slate-950/90">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-6 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
-          <span>{t("footer.rights")}</span>
+          <div className="flex flex-col gap-2">
+            <span>{t("footer.rights")}</span>
+            <span className="text-xs text-slate-500">
+              {t("footer.lastUpdate", { date: today })}
+            </span>
+          </div>
           <AgentStatus label={t("footer.agentLabel")} statusText={t("footer.agentReady")} />
         </div>
       </footer>

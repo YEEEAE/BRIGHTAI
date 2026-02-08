@@ -40,7 +40,8 @@
     "useCaseTwo": "Supply chain analysis connected to government data lakes.",
     "useCaseThree": "Operational compliance monitoring for semi-government entities.",
     "ctaTitle": "Launch Bright AI inside your organization",
-    "ctaBody": "A 30-minute discovery session to define the first measurable workflow."
+    "ctaBody": "A 30-minute discovery session to define the first measurable workflow.",
+    "toastStart": "Your demo request has been received"
   },
   "workflow": {
     "title": "Visual workflow builder",
@@ -48,6 +49,7 @@
   },
   "footer": {
     "rights": "All rights reserved for Bright AI",
+    "lastUpdate": "Last update: {{date}}",
     "agentLabel": "Ops agent",
     "agentReady": "Ready"
   },

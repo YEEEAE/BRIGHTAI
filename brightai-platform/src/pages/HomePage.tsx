@@ -3,9 +3,15 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowUpLeft, Cpu, LineChart, ShieldCheck } from "lucide-react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
+import useAppToast from "../hooks/useAppToast";
 
 const HomePage = () => {
   const { t } = useTranslation();
+  const { showSuccess } = useAppToast();
+
+  const handleStart = () => {
+    showSuccess(t("home.toastStart"));
+  };
 
   return (
     <div className="flex flex-col gap-10">
@@ -19,7 +25,7 @@ const HomePage = () => {
           </h1>
           <p className="text-lg text-slate-300">{t("home.heroSubtitle")}</p>
           <div className="flex flex-wrap items-center gap-4">
-            <Button>
+            <Button onClick={handleStart}>
               <ArrowUpLeft className="h-4 w-4" />
               {t("actions.start")}
             </Button>
@@ -88,7 +94,7 @@ const HomePage = () => {
           <h3 className="text-lg font-bold text-slate-100">{t("home.ctaTitle")}</h3>
           <p className="mt-3 text-sm text-slate-300">{t("home.ctaBody")}</p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
-            <Button>
+            <Button onClick={handleStart}>
               <ArrowUpLeft className="h-4 w-4" />
               {t("actions.start")}
             </Button>
