@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة | Bright AI</title>
+
+    <!-- Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8LLESL207Q');
+    </script>
+
+    <!-- SEO Meta Tags -->
+    <meta
+        content="تعلم كيفية تصميم وبناء لوحة معلومات (KPI Dashboard) فعالة لقياس أداء منشأتك. دليل عملي لاختيار المؤشرات الصحيحة وتصور البيانات لاتخاذ قرارات دقيقة."
+        name="description" />
+    <meta content="Bright AI - مؤشرات الأداء" name="author" />
+    <meta content="index, follow, max-image-preview:large" name="robots" />
+    <link href="https://brightai.site/blog/data-analytics/kpi-dashboard-guide.html" rel="canonical" />
+
+    <!-- Keywords -->
+    <meta
+        content="لوحة معلومات KPI, مؤشرات الأداء الرئيسية, قياس الأداء المؤسسي, تصميم الداشبورد, Dashboard Design, تحليل البيانات للشركات, متابعة الأهداف"
+        name="keywords" />
+
+    <!-- Geo Tags -->
+    <meta content="SA" name="geo.region" />
+    <meta content="Riyadh, Saudi Arabia" name="geo.placename" />
+
+    <!-- Open Graph -->
+    <meta content="article" property="og:type" />
+    <meta content="Bright AI - تحليل البيانات" property="og:site_name" />
+    <meta content="كيف تبني لوحة معلومات KPIs لمنشأتك؟" property="og:title" />
+    <meta content="دليل شامل لبناء نظام قياس أداء ذكي يمنحك رؤية شاملة لشركتك في شاشة واحدة."
+        property="og:description" />
+    <meta content="https://brightai.site/blog/data-analytics/kpi-dashboard-guide.html" property="og:url" />
+    <meta content="https://brightai.site/Gemini.png" property="og:image" />
+    <meta content="ar_SA" property="og:locale" />
+
+    <!-- Favicon -->
+    <link href="../../../../assets/images/Gemini.png" rel="icon" type="image/png" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+
+    <!-- CSS -->
+    <link href="../../../css/bundle-critical.css" rel="stylesheet" />
+    <link href="../../../css/main.bundle.css" rel="stylesheet" />
+    <link href="../../../css/index-theme.css" rel="stylesheet" />
+    <link href="../../../css/tailwind.local.min.css" rel="stylesheet" />
+
+    <!-- Performance Scripts -->
+    <script>
+        (function () {
+            'use strict';
+            function loadCSS(href) {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = href;
+                document.head.appendChild(link);
+            }
+            function loadScript(src, callback) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                if (callback) script.onload = callback;
+                document.body.appendChild(script);
+            }
+            function loadDeferredResources() {
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('../../css/brightai-core.css');
+                loadCSS('../../../frontend/css/vendor/aos.css');
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadDeferredResources);
+            } else {
+                loadDeferredResources();
+            }
+        })();
+    </script>
+
+    <script defer src="../../../js/iconify-preload.js"></script>
+    <script defer src="../../../js/vendor/iconify.min.js"></script>
+    <script defer src="../../../js/vendor/iconify-icon.min.js"></script>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "كيف تبني لوحة معلومات KPIs لمنشأتك",
+        "description": "دليل عملي لتصميم وبناء لوحات معلومات الأداء (Dashboards) للشركات.",
+        "image": "https://brightai.site/Gemini.png",
+        "author": {
+            "@type": "Organization",
+            "name": "Bright AI"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Bright AI",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://brightai.site/Gemini.png"
+            }
+        },
+        "datePublished": "2026-02-08",
+        "dateModified": "2026-02-08",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://brightai.site/blog/data-analytics/kpi-dashboard-guide.html"
+        }
+    }
+    </script>
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight bg-slate-50 text-slate-900">
+
+    <!-- Unified Header -->
+    <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
+        <div class="nav-container">
+            <!-- Mobile Toggle -->
+            <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <!-- Logo -->
+            <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../../index.html">
+                <img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40" />
+                <span>Bright AI</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../../../index.html">الرئيسية</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-expanded="false" aria-haspopup="true" class="nav-link" href="#">
+                        المنتجات والخدمات
+                        <iconify-icon class="chevron-down" icon="lucide:chevron-down" width="14"></iconify-icon>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="../../data-analysis/index.html">
+                            <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">تحليل البيانات</span>
+                                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="../../smart-automation/index.html">
+                            <iconify-icon icon="lucide:zap"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">الأتمتة الذكية</span>
+                                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="../../consultation/index.html">
+                            <iconify-icon icon="lucide:message-square"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">استشارات تقنية</span>
+                                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
+                            </div>
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="../../blog/index.html">المكتبة الذكية</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://wa.me/966538229013">اتصل بنا</a>
+                </li>
+            </ul>
+
+            <!-- CTA Button -->
+            <div class="nav-actions">
+                <a class="btn-primary-gradient" href="https://wa.me/966538229013">
+                    <span>احجز استشارة</span>
+                    <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Drawer -->
+    <div class="mobile-menu-drawer">
+        <ul class="mobile-nav-list">
+            <li><a href="../../../../index.html" class="mobile-nav-link">الرئيسية</a></li>
+            <li><a href="../../blog/index.html" class="mobile-nav-link">المكتبة الذكية</a></li>
+            <li><a href="../../data-analysis/index.html" class="mobile-nav-link">تحليل البيانات</a></li>
+            <li><a href="https://wa.me/966538229013" class="mobile-nav-link">تواصل معنا</a></li>
+        </ul>
+    </div>
+    <div class="backdrop-overlay"></div>
+
+    <!-- Article Content -->
+    <main class="pt-24 pb-16">
+        <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <header class="text-center mb-12">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-4">
+                    <iconify-icon icon="lucide:activity"></iconify-icon>
+                    <span>قياس الأداء</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+                    كيف تبني لوحة معلومات KPIs لمنشأتك: دليلك للرؤية الشاملة
+                </h1>
+                <div class="flex items-center justify-center gap-6 text-slate-500 text-sm">
+                    <div class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:calendar"></iconify-icon>
+                        <span>8 فبراير 2026</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <iconify-icon icon="lucide:clock"></iconify-icon>
+                        <span>7 دقائق قراءة</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Featured Image Placeholder -->
+            <div
+                class="mb-12 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-emerald-900 to-teal-900 aspect-video relative flex items-center justify-center">
+                <div class="text-emerald-100 flex flex-col items-center">
+                    <iconify-icon icon="lucide:layout-dashboard" width="80"
+                        class="text-emerald-400 mb-4"></iconify-icon>
+                    <span class="text-2xl font-bold">Smart KPI Dashboard</span>
+                </div>
+            </div>
+
+            <!-- Content Body -->
+            <div class="prose prose-lg prose-slate max-w-none mx-auto" style="direction: rtl;">
+
+                <p class="lead text-xl text-slate-600 mb-8 leading-relaxed">
+                    يقول بيتر دراكر: "ما لا يمكن قياسه، لا يمكن إدارته". في عالم الأعمال اليوم، لوحة المعلومات
+                    (Dashboard) ليست مجرد رسوم بيانية جميلة، بل هي غرفة القيادة التي تمنحك سيطرة كاملة على منشأتك. ولكن،
+                    كيف تفرق بين لوحة معلومات "مزدحمة" وأخرى "فعالة"؟
+                </p>
+
+                <h2>1. اختر مؤشرات الأداء (KPIs) الصحيحة</h2>
+                <p>
+                    أكبر خطأ تقع فيه الشركات هو محاولة قياس "كل شيء". السر يكمن في التركيز. إليك أهم المؤشرات لكل قطاع:
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 my-8 not-prose">
+                    <div class="p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                        <h3 class="text-lg font-bold text-blue-700 mb-2">🛍️ قطاع التجزئة (Retail)</h3>
+                        <ul class="list-disc pr-4 space-y-1 text-slate-600">
+                            <li>متوسط قيمة السلة (Average Order Value)</li>
+                            <li>معدل الاحتفاظ بالعملاء (Retention Rate)</li>
+                            <li>دوران المخزون (Inventory Turnover)</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                        <h3 class="text-lg font-bold text-green-700 mb-2">🏥 القطاع الصحي</h3>
+                        <ul class="list-disc pr-4 space-y-1 text-slate-600">
+                            <li>وقت انتظار المريض (Average Wait Time)</li>
+                            <li>نسبة إشغال الأسرة (Bed Occupancy Rate)</li>
+                            <li>رضا المرضى (Patient Satisfaction Score)</li>
+                        </ul>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                        <h3 class="text-lg font-bold text-indigo-700 mb-2">💼 الخدمات والاستشارات</h3>
+                        <ul class="list-disc pr-4 space-y-1 text-slate-600">
+                            <li>معدل الاستفادة من الموظفين (Utility Rate)</li>
+                            <li>هامش ربح المشروع (Project Margin)</li>
+                            <li>تراكم المشاريع (Backlog)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>2. قواعد التصميم الذهبية</h2>
+                <p>
+                    لوحة المعلومات الفعالة يجب أن تجيب على سؤال "كيف حال عملي؟" في 5 ثوانٍ فقط.
+                </p>
+                <ul class="list-decimal pr-6 mb-6 space-y-2">
+                    <li><strong>البساطة:</strong> لا تضع أكثر من 5-7 مؤشرات رئيسية في الشاشة الأولى.</li>
+                    <li><strong>السياق:</strong> الرقم وحده لا يكفي. قارنه بالهدف (Target) أو بالفترة السابقة (YoY).
+                        استخدم الألوان (أخضر للأداء الجيد، أحمر للتنبيه).</li>
+                    <li><strong>التسلسل الهرمي:</strong> الأرقام الكبيرة والمهمة في الأعلى، والتفاصيل في الأسفل.</li>
+                </ul>
+
+                <h2>3. الأتمتة والتحديث اللحظي</h2>
+                <p>
+                    التقارير اليدوية التي تصلك نهاية الشهر هي "أخبار قديمة". باستخدام أدوات مثل Power BI أو Tableau
+                    المرتبطة مباشرة بقواعد البيانات، يمكنك متابعة الأداء لحظة بلحظة. تخيل أن ترى مبيعات فروعك تحدث أمام
+                    عينيك مباشرة!
+                </p>
+
+                <h2>4. مشاركة الرؤية مع الفريق</h2>
+                <p>
+                    البيانات المحبوسة في مكتب المدير لا فائدة منها. امنح فريقك صلاحيات الوصول للبيانات التي تخصهم. عندما
+                    يرى موظف المبيعات أداءه مقارنة بالهدف يومياً، يتحفز تلقائياً لتحقيق المزيد.
+                </p>
+
+                <div
+                    class="bg-gradient-to-br from-emerald-900 to-slate-900 rounded-2xl p-8 text-center text-white my-12 not-prose">
+                    <h3 class="text-2xl font-bold mb-4">هل تحتاج لوحة معلومات مصممة خصيصاً لك؟</h3>
+                    <p class="text-slate-300 mb-8 max-w-2xl mx-auto">
+                        في BrightAI، نصمم لك لوحات معلومات ذكية ومتكاملة مع أنظمتك الحالية، لترى الصورة الكاملة وتتخذ
+                        القرارات الصحيحة في الوقت المناسب.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="../../data-analysis/index.html"
+                            class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-xl font-bold transition-all">
+                            <span>اطلب لوحة معلوماتك</span>
+                            <iconify-icon icon="lucide:layout-dashboard"></iconify-icon>
+                        </a>
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold transition-all">
+                            <span>استشارة مجانية</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <a href="../../../../index.html" class="flex items-center gap-2 mb-4">
+                        <img src="../../../frontend/assets/images/Gemini.png" alt="Logo"
+                            class="w-8 h-8 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
+                        <span class="text-xl font-bold text-white">Bright AI</span>
+                    </a>
+                    <p class="text-sm text-slate-400 max-w-xs">
+                        شريكك الاستراتيجي في التحول الرقمي وأتمتة العمليات بالذكاء الاصطناعي في المملكة العربية
+                        السعودية.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="../../data-analysis/index.html"
+                                class="hover:text-emerald-400 transition-colors">تحليل البيانات</a></li>
+                        <li><a href="../../smart-automation/index.html"
+                                class="hover:text-emerald-400 transition-colors">الأتمتة الذكية</a></li>
+                        <li><a href="../../blog/index.html" class="hover:text-emerald-400 transition-colors">المكتبة
+                                الذكية</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">تواصل معنا</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li>الرياض، المملكة العربية السعودية</li>
+                        <li><a href="mailto:info@brightai.site"
+                                class="hover:text-emerald-400 transition-colors">info@brightai.site</a></li>
+                        <li><a href="https://wa.me/966538229013" class="hover:text-emerald-400 transition-colors">+966
+                                53 822 9013</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-12 pt-8 text-center text-sm text-slate-500">
+                &copy; 2026 Bright AI. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script defer src="../../../js/navigation.js"></script>
+
+</body>
+
+</html>

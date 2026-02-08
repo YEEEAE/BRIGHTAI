@@ -174,4 +174,43 @@ select {
     transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease,
       transform 200ms ease, box-shadow 200ms ease;
   }
+
+  .auth-bg {
+    background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.2), transparent 45%),
+      radial-gradient(circle at 80% 10%, rgba(14, 165, 233, 0.2), transparent 45%),
+      radial-gradient(circle at 70% 80%, rgba(20, 184, 166, 0.15), transparent 40%),
+      linear-gradient(135deg, #0b1020 0%, #0f172a 45%, #0b2a24 100%);
+    background-size: 200% 200%;
+    animation: auth-gradient 18s ease infinite;
+  }
+
+  .auth-card {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 25px 70px rgba(2, 8, 23, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .auth-field {
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .auth-field:focus {
+    outline: none;
+    border-color: rgba(16, 185, 129, 0.7);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+}
+
+@keyframes auth-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
