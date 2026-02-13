@@ -172,7 +172,7 @@
     <!-- Dependencies: Fonts, Tailwind, Icons -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-<link rel="preload" as="style"
+    <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
@@ -186,15 +186,15 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap">
     </noscript>
-<link href="frontend/css/main.bundle.css" rel="stylesheet">
-<script defer="" src="frontend/js/navigation.js"></script>
+    <link href="frontend/css/main.bundle.css" rel="stylesheet">
+    <script defer="" src="frontend/js/navigation.js"></script>
     <!-- Lucide Icons -->
-<link href="frontend/css/index-theme.css" rel="stylesheet">
+    <link href="frontend/css/index-theme.css" rel="stylesheet">
 
-<link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
-<script defer src="frontend/js/iconify-preload.js"></script>
-<script defer src="frontend/js/vendor/iconify.min.js"></script>
-<script defer src="frontend/js/vendor/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
+    <script defer src="frontend/js/iconify-preload.js"></script>
+    <script defer src="frontend/js/vendor/iconify.min.js"></script>
+    <script defer src="frontend/js/vendor/iconify-icon.min.js"></script>
 </head>
 
 <body>
@@ -257,6 +257,21 @@
                         <div
                             class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="brightai-platform/build/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
                                     href="frontend/pages/smart-automation/index.html">
                                     <div class="flex items-center gap-3">
@@ -520,18 +535,21 @@
                 <div class="hero-card">
                     <div aria-hidden="true" class="glow"></div>
                     <div class="inner">
-                        <div class="badge"><iconify-icon icon="lucide:code-2"></iconify-icon> RESTful APIs + WebSocket + OAuth 2.0</div>
+                        <div class="badge"><iconify-icon icon="lucide:code-2"></iconify-icon> RESTful APIs + WebSocket +
+                            OAuth 2.0</div>
                         <h1 class="title">حوّل فكرتك لحل ذكي قابل للتنفيذ.</h1>
                         <p class="subtitle">تبغى نتائج فعلية؟ نبدأ معك خطوة بخطوة. بدون تعقيد، بدون مخاطرة، بخطة واضحة
                             ذكاء يصير جزء من فريقك. أتمتة، تحليل، دعم — كلّه سهل وواضح
                         </p>
                         <div class="api-pills" id="apis">
-                            <span class="pill"><iconify-icon icon="lucide:message-square"></iconify-icon> نظام توظيف ذكي بالذكاء
+                            <span class="pill"><iconify-icon icon="lucide:message-square"></iconify-icon> نظام توظيف ذكي
+                                بالذكاء
                                 الاصطناعي</span>
                             <span class="pill"><iconify-icon icon="lucide:zap"></iconify-icon>الأرشيف الطبي الذكي</span>
                             <span class="pill"><iconify-icon icon="lucide:mic"></iconify-icon> ذكاء الأعمال BI </span>
                             <span class="pill"><iconify-icon icon="lucide:wifi"></iconify-icon>تحليل بيانات ضخمة </span>
-                            <span class="pill"><iconify-icon icon="lucide:shield"></iconify-icon>أتمتة العمليات بالذكاء الاصطناعي</span>
+                            <span class="pill"><iconify-icon icon="lucide:shield"></iconify-icon>أتمتة العمليات بالذكاء
+                                الاصطناعي</span>
                         </div>
                         <div class="hero-actions flex flex-col gap-6">
                             <div class="flex flex-wrap gap-4">
@@ -604,6 +622,11 @@
                         <li>APIs غير محدودة</li>
                     </ul>
                 </div>
+                <div class="bento grad-pink" data-order="">
+                    <div class="icon"><iconify-icon icon="lucide:cpu"></iconify-icon></div>
+                    <h3>منصة الوكلاء</h3>
+                    <p>فريق رقمي متكامل</p>
+                </div>
                 <div class="bento grad-blue" data-order="">
                     <div class="icon"><iconify-icon icon="lucide:git-branch"></iconify-icon></div>
                     <h3>أتمتة سير العمل</h3>
@@ -651,6 +674,39 @@
             </div>
             <!-- Featured AI Solutions - النماذج المميزة -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Bright AI Agents Platform -->
+                <div
+                    class="group relative bg-gradient-to-br from-rose-900/20 to-orange-900/20 border border-rose-500/20 rounded-3xl p-8 hover:border-rose-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-rose-500/10">
+                    <div
+                        class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-rose-500 to-orange-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="absolute top-4 left-4">
+                        <span
+                            class="text-xs bg-rose-500/20 text-rose-400 px-3 py-1 rounded-full font-bold animate-pulse">New</span>
+                    </div>
+                    <div
+                        class="w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500/20 to-orange-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <iconify-icon class="w-8 h-8 text-rose-400" icon="lucide:cpu"></iconify-icon>
+                    </div>
+                    <div class="flex gap-2 mb-4">
+                        <span
+                            class="text-xs bg-rose-500/20 text-rose-400 px-3 py-1 rounded-full font-bold">Agents</span>
+                        <span
+                            class="text-xs bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full font-bold">Automation</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">منصة Bright AI Agents</h3>
+                    <p class="text-slate-400 mb-6 leading-relaxed">منصة متكاملة لبناء وإدارة وكلاء الذكاء الاصطناعي،
+                        تمكنك من أتمتة المهام المعقدة وبناء فريق رقمي ذكي.</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🤖 وكلاء مخصصين</span>
+                        <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">⚡ أتمتة</span>
+                        <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🧠 LLMs</span>
+                    </div>
+                    <a class="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-rose-500/20"
+                        href="brightai-platform/build/index.html">
+                        جرب المنصة <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
+                    </a>
+                </div>
                 <!-- Health Bright - AI Medical Solutions -->
                 <div
                     class="group relative bg-gradient-to-br from-cyan-900/20 to-emerald-900/20 border border-cyan-500/20 rounded-3xl p-8 hover:border-cyan-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10">
@@ -890,7 +946,8 @@
                     href="frontend/pages/try/index.html">
                     <iconify-icon class="w-5 h-5" icon="lucide:layout-grid"></iconify-icon>
                     عرض جميع الأدوات
-                    <iconify-icon class="w-4 h-4 group-hover:-translate-x-1 transition-transform" icon="lucide:arrow-left"></iconify-icon>
+                    <iconify-icon class="w-4 h-4 group-hover:-translate-x-1 transition-transform"
+                        icon="lucide:arrow-left"></iconify-icon>
                 </a>
             </div>
         </div>
@@ -898,7 +955,8 @@
     <!-- Section 11: BI & Data Analysis -->
     <section class="section" id="bi">
         <div class="container">
-            <div class="badge"><iconify-icon icon="lucide:bar-chart-3"></iconify-icon> القسم 11: Business Intelligence &amp; Data Analysis
+            <div class="badge"><iconify-icon icon="lucide:bar-chart-3"></iconify-icon> القسم 11: Business Intelligence
+                &amp; Data Analysis
             </div>
             <h2 class="title">ذكاء الأعمال وتحليل البيانات</h2>
             <p class="subtitle">حوّل بياناتك إلى رؤى قابلة للتنفيذ</p>
@@ -988,16 +1046,19 @@
                 </div>
             </div>
             <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                <button class="btn primary"><iconify-icon icon="lucide:calendar-check"></iconify-icon> احجز عرض توضيحي لـ BI</button>
+                <button class="btn primary"><iconify-icon icon="lucide:calendar-check"></iconify-icon> احجز عرض توضيحي
+                    لـ BI</button>
                 <button class="btn"><iconify-icon icon="lucide:life-buoy"></iconify-icon> الدعم المستمر</button>
-                <button class="btn ghost"><iconify-icon icon="lucide:graduation-cap"></iconify-icon> تدريب الفرق</button>
+                <button class="btn ghost"><iconify-icon icon="lucide:graduation-cap"></iconify-icon> تدريب
+                    الفرق</button>
             </div>
         </div>
     </section>
     <!-- Section 12: Advanced Analytics Technologies -->
     <section class="section" id="advanced">
         <div class="container">
-            <div class="badge"><iconify-icon icon="lucide:cpu"></iconify-icon> القسم 12: Advanced Analytics Technologies</div>
+            <div class="badge"><iconify-icon icon="lucide:cpu"></iconify-icon> القسم 12: Advanced Analytics Technologies
+            </div>
             <h2 class="title">تقنيات التحليل المتقدم</h2>
             <p class="subtitle">نستخدم أحدث تقنيات الذكاء الاصطناعي</p>
             <div class="cards-4">
@@ -1087,7 +1148,8 @@
                         <li><span class="check">✓</span> دعم Email</li>
                         <li><span class="check">✓</span> 99% Uptime SLA</li>
                     </ul>
-                    <button class="btn primary cta"><iconify-icon icon="lucide:gift"></iconify-icon> ابدأ تجربة مجانية</button>
+                    <button class="btn primary cta"><iconify-icon icon="lucide:gift"></iconify-icon> ابدأ تجربة
+                        مجانية</button>
                 </div>
                 <div class="price">
                     <h3>Professional</h3>
@@ -1112,7 +1174,8 @@
                         <li><span class="check">✓</span> 99.99% Uptime SLA</li>
                         <li><span class="check">✓</span> SLA مخصص + تدريب مجاني</li>
                     </ul>
-                    <button class="btn primary cta"><iconify-icon icon="lucide:phone-call"></iconify-icon> تحدث مع مستشار</button>
+                    <button class="btn primary cta"><iconify-icon icon="lucide:phone-call"></iconify-icon> تحدث مع
+                        مستشار</button>
                 </div>
             </div>
         </div>
@@ -1133,7 +1196,8 @@
                             src="assets/3d-icons/gpt-image-1.5_Smart_drones_Aerial_surveying_infrastructure_monitoring_industrial_inspection_pr-0.jpg"
                             width="1024" height="1024" loading="lazy" decoding="async">
                     </picture>
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:drone"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:drone"></iconify-icon>
                         درونز ذكية
                     </h3>
                     <p>المسح الجوي، مراقبة البنية التحتية، التفتيش الصناعي، التصوير الاحترافي، توصيل الطرود (تجريبي)</p>
@@ -1143,7 +1207,8 @@
                         <li>تحليل بيانات فوري</li>
                         <li>مدى طيران حتى 50 كم</li>
                     </ul>
-                    <button class="btn primary cta"><iconify-icon icon="lucide:play"></iconify-icon> اطلب عرض توضيحي</button>
+                    <button class="btn primary cta"><iconify-icon icon="lucide:play"></iconify-icon> اطلب عرض
+                        توضيحي</button>
                 </div>
                 <div class="robot">
                     <picture>
@@ -1154,7 +1219,8 @@
                             src="assets/3d-icons/gpt-image-1.5_Warehouse_automation_Goods_handling_parcel_sorting_inventory_management_truck_lo-0.jpg"
                             width="1024" height="1024" loading="lazy" decoding="async">
                     </picture>
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:package"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:package"></iconify-icon>
                         أتمتة
                         المستودعات</h3>
                     <p>نقل البضائع، فرز الطرود، جرد المخزون، تحميل/تفريغ الشاحنات</p>
@@ -1175,7 +1241,8 @@
                             src="assets/3d-icons/gpt-image-1.5_Digital_twins_Accurate_simulation_of_equipment_and_processes_—_testing_scenari-0.jpg"
                             width="1024" height="1024" loading="lazy" decoding="async">
                     </picture>
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:copy"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:copy"></iconify-icon>
                         التوائم
                         الرقمية</h3>
                     <p>محاكاة دقيقة للمعدات والعمليات — اختبار سيناريوهات وتحسين الأداء</p>
@@ -1185,7 +1252,8 @@
                         <li>تحسين الأداء</li>
                         <li>مدن/مباني/طاقة ذكية</li>
                     </ul>
-                    <button class="btn ghost cta"><iconify-icon icon="lucide:monitor-play"></iconify-icon> شاهد Demo</button>
+                    <button class="btn ghost cta"><iconify-icon icon="lucide:monitor-play"></iconify-icon> شاهد
+                        Demo</button>
                 </div>
                 <div class="robot">
                     <picture>
@@ -1196,7 +1264,8 @@
                             src="assets/3d-icons/seedream-4.5_Customer_interaction_robots_Reception_shopping_cleaning_and_hospitality_robots_-0.jpg"
                             width="1024" height="1024" loading="lazy" decoding="async">
                     </picture>
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:bot"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:bot"></iconify-icon>
                         روبوتات
                         التفاعل مع العملاء</h3>
                     <p>روبوتات استقبال، تسوق، تنظيف، ضيافة — تدعم عربي/إنجليزي</p>
@@ -1206,7 +1275,8 @@
                         <li>شاشة تفاعلية</li>
                         <li>للفنادق/المطارات/المولات/المستشفيات</li>
                     </ul>
-                    <button class="btn primary cta"><iconify-icon icon="lucide:shopping-bag"></iconify-icon> استأجر روبوت</button>
+                    <button class="btn primary cta"><iconify-icon icon="lucide:shopping-bag"></iconify-icon> استأجر
+                        روبوت</button>
                 </div>
             </div>
         </div>
@@ -1219,7 +1289,8 @@
             <p class="subtitle">مستقبل إدارة المعرفة</p>
             <div class="tri">
                 <div class="panel brown">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:book-open"></iconify-icon> فهرسة
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:book-open"></iconify-icon> فهرسة
                         تلقائية ذكية</h3>
                     <p>استخدام OCR و NLP لفهرسة الكتب تلقائياً — توفير 90% من وقت الفهرسة</p>
                     <ul>
@@ -1230,7 +1301,8 @@
                     </ul>
                 </div>
                 <div class="panel brown">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:search"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:search"></iconify-icon>
                         بحث دلالي
                         متقدم</h3>
                     <p>بحث يفهم المعنى وليس الكلمات فقط</p>
@@ -1242,7 +1314,8 @@
                     </ul>
                 </div>
                 <div class="panel brown">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:sparkles"></iconify-icon> توصيات
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:sparkles"></iconify-icon> توصيات
                         مخصصة</h3>
                     <p>نظام توصية يتعلم من سلوك القارئ — زيادة الاستعارة 40%</p>
                     <ul>
@@ -1254,7 +1327,8 @@
                 </div>
             </div>
             <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                <button class="btn primary"><iconify-icon icon="lucide:calendar"></iconify-icon> جدولة عرض توضيحي</button>
+                <button class="btn primary"><iconify-icon icon="lucide:calendar"></iconify-icon> جدولة عرض
+                    توضيحي</button>
                 <button class="btn"><iconify-icon icon="lucide:download"></iconify-icon> تحميل دراسة حالة</button>
             </div>
         </div>
@@ -1273,7 +1347,8 @@
                         <div class="tab" data-tab="ocr">Text Extraction</div>
                         <div class="tab" data-tab="pred">Predictive Analysis</div>
                     </div>
-                    <button class="btn primary" style="padding:10px 12px"><iconify-icon icon="lucide:sparkles"></iconify-icon> Try it
+                    <button class="btn primary" style="padding:10px 12px"><iconify-icon
+                            icon="lucide:sparkles"></iconify-icon> Try it
                         yourself</button>
                 </div>
                 <div class="dash-body">
@@ -1303,12 +1378,14 @@
     <!-- Section 17: Autonomous Systems & Digital Teammates -->
     <section class="section" id="teammates">
         <div class="container">
-            <div class="badge"><iconify-icon icon="lucide:users"></iconify-icon> القسم 17: Autonomous Systems &amp; Digital Teammates</div>
+            <div class="badge"><iconify-icon icon="lucide:users"></iconify-icon> القسم 17: Autonomous Systems &amp;
+                Digital Teammates</div>
             <h2 class="title">محركات الذكاء المركزي</h2>
             <p class="subtitle">زملاء رقميون متخصصون لكل قسم</p>
             <div class="engines">
                 <div class="engine">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:database"></iconify-icon> Bright
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:database"></iconify-icon> Bright
                         Data Engine</h3>
                     <p>محرك بيانات مركزي يخدم جميع الأنظمة الأخرى</p>
                     <ul>
@@ -1319,7 +1396,8 @@
                     </ul>
                 </div>
                 <div class="engine">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:users-round"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:users-round"></iconify-icon>
                         Bright Recruiting AI</h3>
                     <p>مساعد توظيف ذكي — يوفر 70% من وقت HR</p>
                     <ul>
@@ -1372,7 +1450,8 @@
                 </div>
             </div>
             <div style="margin-top:16px">
-                <button class="btn primary"><iconify-icon icon="lucide:wand-2"></iconify-icon> بناء روبوتك المخصص</button>
+                <button class="btn primary"><iconify-icon icon="lucide:wand-2"></iconify-icon> بناء روبوتك
+                    المخصص</button>
             </div>
         </div>
     </section>
@@ -1496,7 +1575,8 @@
                             ✅ رضا المستفيدين 92%<br />
                             ✅ توفير 3 ملايين ريال سنوياً
                         </div>
-                        <button class="btn cta"><iconify-icon icon="lucide:file-text"></iconify-icon> اقرأ دراسة الحالة</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:file-text"></iconify-icon> اقرأ دراسة
+                            الحالة</button>
                     </div>
                 </div>
                 <!-- 2 -->
@@ -1514,7 +1594,8 @@
                             ✅ استرجاع فوري (&lt; 2 ثانية)<br />
                             ✅ دقة 99.5%
                         </div>
-                        <button class="btn primary cta"><iconify-icon icon="lucide:play"></iconify-icon> شاهد الفيديو</button>
+                        <button class="btn primary cta"><iconify-icon icon="lucide:play"></iconify-icon> شاهد
+                            الفيديو</button>
                     </div>
                 </div>
                 <!-- 3 -->
@@ -1532,7 +1613,8 @@
                             ✅ العربات المهجورة 45% (بدلاً من 70%)<br />
                             ✅ زيادة المبيعات 35%
                         </div>
-                        <button class="btn cta"><iconify-icon icon="lucide:monitor-play"></iconify-icon> اطلب عرض توضيحي</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:monitor-play"></iconify-icon> اطلب عرض
+                            توضيحي</button>
                     </div>
                 </div>
                 <!-- 4 -->
@@ -1550,7 +1632,8 @@
                             ✅ توفير 5 ملايين ريال سنوياً<br />
                             ✅ زيادة عمر المعدات 25%
                         </div>
-                        <button class="btn ghost cta"><iconify-icon icon="lucide:download"></iconify-icon> تحميل PDF</button>
+                        <button class="btn ghost cta"><iconify-icon icon="lucide:download"></iconify-icon> تحميل
+                            PDF</button>
                     </div>
                 </div>
                 <!-- 5 -->
@@ -1568,7 +1651,8 @@
                             ✅ تقليل زمن الانتظار 70%<br />
                             ✅ رضا العملاء 88%
                         </div>
-                        <button class="btn primary cta"><iconify-icon icon="lucide:mic"></iconify-icon> جرب الروبوت</button>
+                        <button class="btn primary cta"><iconify-icon icon="lucide:mic"></iconify-icon> جرب
+                            الروبوت</button>
                     </div>
                 </div>
                 <!-- 6 -->
@@ -1586,7 +1670,8 @@
                             ✅ تقليل التحيز<br />
                             ✅ جودة أعلى للمرشحين
                         </div>
-                        <button class="btn cta"><iconify-icon icon="lucide:sparkles"></iconify-icon> شاهد كيف يعمل</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:sparkles"></iconify-icon> شاهد كيف
+                            يعمل</button>
                     </div>
                 </div>
             </div>
@@ -1600,7 +1685,8 @@
             <p class="subtitle">نركز على القيمة الحقيقية لأعمالك</p>
             <div class="kpi-grid">
                 <div class="kpi-card grad-blue">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:clock"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:clock"></iconify-icon>
                         تقليل زمن
                         المعالجة</h3>
                     <div class="metric">
@@ -1613,7 +1699,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-green">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:trending-up"></iconify-icon> زيادة
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:trending-up"></iconify-icon> زيادة
                         الإنتاجية</h3>
                     <div class="metric">
                         <div class="big" data-count="40">0%</div>
@@ -1625,7 +1712,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-gold">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:piggy-bank"></iconify-icon> توفير
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:piggy-bank"></iconify-icon> توفير
                         التكاليف</h3>
                     <div class="metric">
                         <div class="big" data-count="35">0%</div>
@@ -1637,7 +1725,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-blue">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:target"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:target"></iconify-icon>
                         دقة
                         التنبؤات</h3>
                     <div class="metric">
@@ -1650,7 +1739,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-green">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:shield-check"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:shield-check"></iconify-icon>
                         تقليل الأخطاء</h3>
                     <div class="metric">
                         <div class="big" data-count="85">0%</div>
@@ -1662,7 +1752,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-pink">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:smile"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:smile"></iconify-icon>
                         رضا العملاء
                     </h3>
                     <div class="metric">
@@ -1675,7 +1766,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-gray">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:file-check"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:file-check"></iconify-icon>
                         الامتثال التنظيمي</h3>
                     <div class="metric">
                         <div class="big" data-count="100">0%</div>
@@ -1687,7 +1779,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-gray">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:lock"></iconify-icon>
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:lock"></iconify-icon>
                         أمن البيانات
                     </h3>
                     <div class="metric">
@@ -1700,7 +1793,8 @@
                     </div>
                 </div>
                 <div class="kpi-card grad-gray">
-                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px" icon="lucide:activity"></iconify-icon> وقت
+                    <h3><iconify-icon style="width:18px;height:18px;vertical-align:-3px;margin-left:8px"
+                            icon="lucide:activity"></iconify-icon> وقت
                         التشغيل</h3>
                     <div class="metric">
                         <div class="big" data-count="99.9">0</div>
@@ -1732,7 +1826,8 @@
                     <span>التوفير المتوقع:</span>
                     <strong id="roiOut" style="font-family:var(--mono)">~2.5 مليون ريال/سنة</strong>
                 </div>
-                <button class="btn primary" style="margin-top:10px;width:100%"><iconify-icon icon="lucide:calculator"></iconify-icon> احسب
+                <button class="btn primary" style="margin-top:10px;width:100%"><iconify-icon
+                        icon="lucide:calculator"></iconify-icon> احسب
                     التوفير
                     المتوقع</button>
             </div>
@@ -1752,7 +1847,8 @@
                         </div>
                         <h3>مستقبل الذكاء الاصطناعي في السعودية 2030</h3>
                         <p>كيف سيشكل AI مستقبل المملكة في ضوء رؤية 2030...</p>
-                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ المزيد</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
+                            المزيد</button>
                     </div>
                 </article>
                 <article class="post">
@@ -1761,7 +1857,8 @@
                         <div class="meta"><span class="tag">تقنية</span><span>12 فبراير 2026 · 8 دقائق</span></div>
                         <h3>كيف تختار نموذج الذكاء الاصطناعي المناسب؟</h3>
                         <p>دليل شامل لاختيار أفضل نموذج ML لمشروعك...</p>
-                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ المزيد</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
+                            المزيد</button>
                     </div>
                 </article>
                 <article class="post">
@@ -1771,7 +1868,8 @@
                         </div>
                         <h3>حماية بياناتك في عصر الذكاء الاصطناعي</h3>
                         <p>أفضل ممارسات أمن البيانات عند استخدام AI...</p>
-                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ المزيد</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
+                            المزيد</button>
                     </div>
                 </article>
                 <article class="post">
@@ -1780,7 +1878,8 @@
                         <div class="meta"><span class="tag">دراسة حالة</span><span>8 فبراير 2026 · 10 دقائق</span></div>
                         <h3>كيف وفرت إحدى الجهات 3 ملايين ريال بـ RPA</h3>
                         <p>قصة نجاح أتمتة ذكية في القطاع الحكومي...</p>
-                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ المزيد</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
+                            المزيد</button>
                     </div>
                 </article>
                 <article class="post">
@@ -1789,7 +1888,8 @@
                         <div class="meta"><span class="tag">تعليمي</span><span>5 فبراير 2026 · 12 دقيقة</span></div>
                         <h3>مقدمة في معالجة اللغة الطبيعية (NLP)</h3>
                         <p>تعلم أساسيات NLP وكيف يفهم الذكاء الاصطناعي اللغة...</p>
-                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ المزيد</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
+                            المزيد</button>
                     </div>
                 </article>
                 <article class="post">
@@ -1798,12 +1898,14 @@
                         <div class="meta"><span class="tag">اتجاهات</span><span>1 فبراير 2026 · 7 دقائق</span></div>
                         <h3>أبرز اتجاهات AI في 2026</h3>
                         <p>تعرف على التقنيات التي ستغير اللعبة هذا العام...</p>
-                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ المزيد</button>
+                        <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
+                            المزيد</button>
                     </div>
                 </article>
             </div>
             <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                <button class="btn primary"><iconify-icon icon="lucide:grid-3x3"></iconify-icon> عرض جميع المقالات</button>
+                <button class="btn primary"><iconify-icon icon="lucide:grid-3x3"></iconify-icon> عرض جميع
+                    المقالات</button>
                 <button class="btn"><iconify-icon icon="lucide:mail"></iconify-icon> اشترك في النشرة البريدية</button>
             </div>
         </div>

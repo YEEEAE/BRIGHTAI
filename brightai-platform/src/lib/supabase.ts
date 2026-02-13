@@ -1,4 +1,10 @@
 import { createClient, SupabaseClient, User } from "@supabase/supabase-js";
+import {
+  clearLocalAdminSession,
+  getLocalAdminSession,
+  getLocalAdminUser,
+  isLocalAdminSessionActive,
+} from "./local-admin";
 
 type Json =
   | string
@@ -164,6 +170,37 @@ const supabase: SupabaseClient<Database> = createClient<Database>(
     },
   }
 );
+
+const originalGetSession = supabase.auth.getSession.bind(supabase.auth);
+const originalGetUser = supabase.auth.getUser.bind(supabase.auth);
+const originalSignOut = supabase.auth.signOut.bind(supabase.auth);
+
+// ربط مؤقت للجلسة المحلية حتى يتم إصلاح المصادقة في قاعدة البيانات
+(supabase.auth as any).getSession = async () => {
+  const localSession = getLocalAdminSession();
+  if (localSession) {
+    return { data: { session: localSession }, error: null };
+  }
+  return originalGetSession();
+};
+
+// إرجاع مستخدم محلي مؤقت عند تفعيل جلسة الطوارئ
+(supabase.auth as any).getUser = async () => {
+  const localUser = getLocalAdminUser();
+  if (localUser) {
+    return { data: { user: localUser }, error: null };
+  }
+  return originalGetUser();
+};
+
+// تسجيل الخروج يمسح الجلسة المحلية فورًا
+(supabase.auth as any).signOut = async () => {
+  if (isLocalAdminSessionActive()) {
+    clearLocalAdminSession();
+    return { error: null };
+  }
+  return originalSignOut();
+};
 
 export const isSupabaseConfigured = hasSupabaseConfig;
 

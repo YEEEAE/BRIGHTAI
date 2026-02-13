@@ -14,6 +14,12 @@ import supabase from "../lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import { logSecurityEvent } from "../lib/security";
 import { setUserContext, setUserProperties } from "../lib/analytics";
+import {
+  clearLocalAdminSession,
+  getLocalAdminUser,
+  isLocalAdminCredentials,
+  setLocalAdminSession,
+} from "../lib/local-admin";
 
 type AuthContextValue = {
   currentUser: User | null;
@@ -182,7 +188,9 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
         setCurrentUser(data.session.user);
         persistUser(data.session.user);
       } else {
-        setCurrentUser(null);
+        const localUser = getLocalAdminUser();
+        setCurrentUser(localUser);
+        persistUser(localUser);
       }
       setLoading(false);
     };
@@ -194,8 +202,9 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
         return;
       }
       if (!session?.user) {
-        setCurrentUser(null);
-        persistUser(null);
+        const localUser = getLocalAdminUser();
+        setCurrentUser(localUser);
+        persistUser(localUser);
         if (event === "SIGNED_OUT" || event === "TOKEN_REFRESHED") {
           setSessionExpired(true);
         }
@@ -220,6 +229,20 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
       });
       return false;
     }
+
+    // مسار مؤقت لتسجيل الدخول المحلي عند تعطل مصادقة قاعدة البيانات
+    if (isLocalAdminCredentials(email, password)) {
+      setLocalAdminSession();
+      const localUser = getLocalAdminUser();
+      if (localUser) {
+        setCurrentUser(localUser);
+        persistUser(localUser);
+      }
+      setSessionExpired(false);
+      clearLoginState();
+      return true;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       recordFailedLogin();
@@ -232,7 +255,7 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
     }
     clearLoginState();
     return true;
-  }, []);
+  }, [persistUser]);
 
   const signup = useCallback(async (email: string, password: string, fullName: string) => {
     const { error } = await supabase.auth.signUp({
@@ -250,6 +273,7 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
   }, []);
 
   const logout = useCallback(async () => {
+    clearLocalAdminSession();
     await supabase.auth.signOut();
     const storage = getSessionStorage();
     storage?.removeItem(LAST_ACTIVITY_KEY);

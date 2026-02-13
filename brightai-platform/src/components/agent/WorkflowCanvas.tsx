@@ -25,6 +25,11 @@ type FlowSnapshot = {
 
 const AUTO_SAVE_KEY = "brightai_workflow_autosave";
 const SAVE_KEY = "brightai_workflow_saved";
+const WORKFLOW_UPDATED_EVENT = "brightai-workflow-updated";
+
+const emitWorkflowUpdated = () => {
+  window.dispatchEvent(new Event(WORKFLOW_UPDATED_EVENT));
+};
 
 const WorkflowCanvas = () => {
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
@@ -66,6 +71,7 @@ const WorkflowCanvas = () => {
       setNodes(hydrated);
       setEdges(parsed.edges || []);
       historyRef.current = [cloneSnapshot({ nodes: hydrated, edges: parsed.edges || [] })];
+      emitWorkflowUpdated();
       return;
     }
 
@@ -124,6 +130,7 @@ const WorkflowCanvas = () => {
     setNodes(initialNodes);
     setEdges(initialEdges);
     historyRef.current = [cloneSnapshot({ nodes: initialNodes, edges: initialEdges })];
+    emitWorkflowUpdated();
   }, [hydrateNodes]);
 
   useEffect(() => {
@@ -150,6 +157,7 @@ const WorkflowCanvas = () => {
       localStorage.setItem(AUTO_SAVE_KEY, JSON.stringify(payload));
       setLastSavedAt(new Date().toLocaleTimeString("ar-SA"));
       pushHistory({ nodes, edges });
+      emitWorkflowUpdated();
     }, 600);
     return () => {
       if (autosaveTimer.current) {
@@ -330,6 +338,7 @@ const WorkflowCanvas = () => {
     const payload = serializeSnapshot({ nodes, edges });
     localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
     setLastSavedAt(new Date().toLocaleTimeString("ar-SA"));
+    emitWorkflowUpdated();
   }, [nodes, edges]);
 
   const handleLoad = useCallback(() => {
@@ -341,6 +350,7 @@ const WorkflowCanvas = () => {
     const hydrated = hydrateNodes(parsed.nodes || []);
     setNodes(hydrated);
     setEdges(parsed.edges || []);
+    emitWorkflowUpdated();
   }, [hydrateNodes]);
 
   const handleUndo = useCallback(() => {

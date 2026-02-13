@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import supabase from "../../lib/supabase";
+import {
+  isLocalAdminCredentials,
+  setLocalAdminSession,
+} from "../../lib/local-admin";
 
 type LoginFormValues = {
   email: string;
@@ -13,6 +18,7 @@ const emailPattern =
   /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -69,6 +75,14 @@ const LoginForm = () => {
       sessionStorage.removeItem("brightai_remember_email");
     }
 
+    // تسجيل دخول محلي مؤقت لحين إصلاح مشكلة المصادقة في قاعدة البيانات
+    if (isLocalAdminCredentials(values.email, values.password)) {
+      setLocalAdminSession();
+      setSuccessMessage("تم تسجيل الدخول المحلي بنجاح.");
+      navigate("/dashboard", { replace: true });
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
@@ -80,6 +94,7 @@ const LoginForm = () => {
     }
 
     setSuccessMessage("تم تسجيل الدخول بنجاح.");
+    navigate("/dashboard", { replace: true });
   };
 
   const handleForgotPassword = async () => {
