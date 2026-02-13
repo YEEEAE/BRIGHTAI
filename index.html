@@ -95,7 +95,22 @@
         }
     ],
     "sameAs": ["https://wa.me/966538229013"],
-    "areaServed": { "@type": "Country", "name": "Saudi Arabia" }
+    "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "خدمات Bright AI للذكاء الاصطناعي",
+        "itemListElement": [
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "الأتمتة الذكية وسير العمل RPA"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "تحليل البيانات الضخمة وذكاء الأعمال BI"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "الذكاء الاصطناعي كخدمة AIaaS"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "الأرشيف الطبي الذكي"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "منصة التوظيف الذكي"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "استشارات التحول الرقمي"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "حلول الروبوتات الذكية"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "المنصة التعليمية الذكية"}}
+        ]
+    },
+    "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Data Analytics", "Digital Transformation", "Business Intelligence", "RPA", "AIaaS", "NLP", "Computer Vision"]
     }
     </script>
     <script type="application/ld+json">
@@ -110,6 +125,14 @@
         "@type": "Organization",
         "name": "Bright AI",
         "logo": { "@type": "ImageObject", "url": "https://brightai.site/frontend/assets/images/Gemini.png" }
+    },
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://brightai.site/?s={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
     }
     }
     </script>
@@ -140,10 +163,10 @@
     "mainEntity": [
         {
         "@type": "Question",
-        "name": "ما هي أفضل أدوات ذكاء الأعمال في السعودية؟",
+        "name": "ما الفرق بين ذكاء الأعمال والذكاء الاصطناعي؟",
         "acceptedAnswer": {
             "@type": "Answer",
-            "text": "نستخدم ونوصي بأدوات عالمية رائدة مثل Microsoft Power BI وTableau مع تخصيص كامل للسوق السعودي ودعم اللغة العربية."
+            "text": "ذكاء الأعمال (BI) يركز على تحليل البيانات التاريخية لفهم ما حدث. أما الذكاء الاصطناعي (AI) فيذهب أبعد من ذلك بالتنبؤ بما سيحدث واتخاذ قرارات ذكية. نحن نجمع بين القوتين لتقديم رؤى شاملة."
         }
         },
         {
@@ -151,15 +174,71 @@
         "name": "هل بياناتي آمنة مع Bright AI؟",
         "acceptedAnswer": {
             "@type": "Answer",
-            "text": "نعم، نستخدم استضافة محلية سيادية داخل المملكة العربية السعودية مع امتثال كامل لمعايير NCA و NDMO وتشفير AES-256."
+            "text": "نعم، نستخدم استضافة محلية سيادية داخل المملكة مع تشفير AES-256 وامتثال كامل لمعايير NCA و NDMO و PDPL. بياناتك لا تغادر المملكة أبداً."
         }
         },
         {
         "@type": "Question",
-        "name": "كم يستغرق تنفيذ مشروع ذكاء اصطناعي؟",
+        "name": "كم يستغرق تنفيذ المشروع؟",
         "acceptedAnswer": {
             "@type": "Answer",
-            "text": "يعتمد على حجم المشروع، لكن معظم المشاريع تبدأ بالعمل خلال 2-4 أسابيع مع دعم فني مستمر على مدار الساعة."
+            "text": "يعتمد على حجم وتعقيد المشروع. المشاريع الصغيرة قد تستغرق 2–4 أسابيع، بينما الحلول المؤسسية قد تستغرق 3–6 أشهر. نقدم timeline مفصل بعد الاستشارة الأولية."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "ما هي أفضل أدوات ذكاء الأعمال في السعودية؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نستخدم ونوصي بأدوات رائدة مثل Microsoft Power BI وTableau مع تخصيص كامل للسوق السعودي ودعم العربية. نختار الأداة الأنسب حسب احتياجاتك."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "هل تقدمون تدريب لفريقنا؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، نقدم برامج تدريبية شاملة تغطي استخدام الأنظمة والأدوات، مع ورش عمل عملية ووثائق ودعم بعد التسليم."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "هل تدعمون اللغة العربية؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، حلولنا تدعم العربية بشكل كامل (NLP/Chatbots/واجهات). وندعم اللهجات السعودية كذلك."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "ما هي تكلفة خدماتكم؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "التكلفة تعتمد على نوع الحل وحجمه. خطط مرنة تبدأ من 500 ريال شهرياً للحلول السحابية وحتى الحلول المؤسسية المخصصة. احجز استشارة مجانية للحصول على عرض سعر مفصل."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "هل تقدمون دعم فني؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، دعم 24/7 عبر الهاتف والبريد والواتساب. زمن الاستجابة أقل من ساعة للقضايا الحرجة، والدعم عربي/إنجليزي."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "هل يمكن تكامل حلولكم مع أنظمتنا الحالية؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، حلولنا مصممة للتكامل عبر APIs وwebhooks. ندعم أنظمة مثل SAP وOracle وMicrosoft Dynamics وغيرها حسب حالة العميل."
+        }
+        },
+        {
+        "@type": "Question",
+        "name": "ما الذي يميزكم عن المنافسين؟",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "شركة سعودية بفريق محلي واستضافة سيادية 100% داخل المملكة مع الالتزام بالمعايير المحلية، ونمزج الخبرة العالمية بفهم عميق للسوق السعودي."
         }
         }
     ]
@@ -180,6 +259,46 @@
     ]
     }
     </script>
+    <!-- Structured Data: LocalBusiness -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Bright AI - مُشرقة للذكاء الاصطناعي",
+    "image": "https://brightai.site/frontend/assets/images/Gemini.png",
+    "url": "https://brightai.site/",
+    "telephone": "+966538229013",
+    "email": "info@brightai.site",
+    "priceRange": "$$",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "طريق الملك فهد، العليا",
+        "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "postalCode": "12211",
+        "addressCountry": "SA"
+    },
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 24.7136,
+        "longitude": 46.6753
+    },
+    "openingHoursSpecification": [
+        {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+        "opens": "09:00",
+        "closes": "18:00"
+        }
+    ],
+    "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+    },
+    "serviceType": ["حلول الذكاء الاصطناعي", "أتمتة العمليات", "تحليل البيانات", "استشارات التحول الرقمي"],
+    "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية في الرياض"
+    }
+    </script>
     <!-- GTM -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
@@ -189,6 +308,9 @@
         gtag('config', 'G-8LLESL207Q');
     </script>
     <!-- Dependencies: Fonts, Tailwind, Icons -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link rel="preload" as="style"

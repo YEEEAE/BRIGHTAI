@@ -465,6 +465,9 @@ const Dashboard = () => {
 
   const channelRef = useRef<any>(null);
   const refreshTimerRef = useRef<number | null>(null);
+  const loadInFlightRef = useRef(false);
+  const reloadRequestedRef = useRef(false);
+  const lastLoadAtRef = useRef(0);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -502,192 +505,213 @@ const Dashboard = () => {
 
   const loadDashboard = useCallback(
     async (force = false, silent = false) => {
-      const sessionUser = await resolveSession();
-      if (!sessionUser) {
+      if (loadInFlightRef.current) {
+        reloadRequestedRef.current = true;
         return;
       }
 
-      setUserId(sessionUser.id);
-      const cached = force ? null : getCache(sessionUser.id);
-
-      if (cached) {
-        setUserName(cached.userName);
-        setUserAvatar(cached.userAvatar);
-        setAgents(cached.agents);
-        setExecutions(cached.executions);
-        setApiKeys(cached.apiKeys);
+      const now = Date.now();
+      if (silent && now - lastLoadAtRef.current < 600) {
+        return;
       }
 
-      if (!silent && !cached) {
-        setLoadingSections({
-          welcome: true,
-          stats: true,
-          chart: true,
-          agents: true,
-          executions: true,
-          activity: true,
-          alerts: true,
+      loadInFlightRef.current = true;
+      try {
+        const sessionUser = await resolveSession();
+        if (!sessionUser) {
+          return;
+        }
+
+        setUserId(sessionUser.id);
+        const cached = force ? null : getCache(sessionUser.id);
+
+        if (cached) {
+          setUserName(cached.userName);
+          setUserAvatar(cached.userAvatar);
+          setAgents(cached.agents);
+          setExecutions(cached.executions);
+          setApiKeys(cached.apiKeys);
+        }
+
+        if (!silent && !cached) {
+          setLoadingSections({
+            welcome: true,
+            stats: true,
+            chart: true,
+            agents: true,
+            executions: true,
+            activity: true,
+            alerts: true,
+          });
+        }
+
+        const profilePromise = supabaseClient
+          .from("profiles")
+          .select("full_name, avatar_url")
+          .eq("id", sessionUser.id)
+          .maybeSingle()
+          .then(({ data }: { data: { full_name?: string; avatar_url?: string } | null }) => {
+            const resolvedName =
+              data?.full_name || sessionUser.user_metadata?.full_name || "مستخدم Bright AI";
+            setUserName(resolvedName);
+            setUserAvatar(data?.avatar_url || "");
+            if (!silent && !cached) {
+              setSectionLoading(["welcome"], false);
+            }
+            return {
+              userName: resolvedName,
+              userAvatar: data?.avatar_url || "",
+            };
+          })
+          .catch(() => {
+            if (!silent && !cached) {
+              setSectionLoading(["welcome"], false);
+            }
+            return {
+              userName: sessionUser.user_metadata?.full_name || "مستخدم Bright AI",
+              userAvatar: "",
+            };
+          });
+
+        const agentsPromise = supabaseClient
+          .from("agents")
+          .select(
+            "id, name, description, category, status, execution_count, success_rate, updated_at, created_at"
+          )
+          .eq("user_id", sessionUser.id)
+          .order("updated_at", { ascending: false })
+          .then(({ data }: { data: any[] | null }) => {
+            const nextAgents: AgentRow[] = (data || []).map((item) => ({
+              id: item.id,
+              name: item.name || "وكيل بدون اسم",
+              description: item.description || null,
+              category: item.category || null,
+              status: normalizeAgentStatus(item.status || null),
+              execution_count: Number(item.execution_count || 0),
+              success_rate:
+                item.success_rate === null || item.success_rate === undefined
+                  ? null
+                  : Number(item.success_rate),
+              updated_at: item.updated_at || new Date().toISOString(),
+              created_at: item.created_at || new Date().toISOString(),
+            }));
+
+            setAgents(nextAgents);
+            if (!silent && !cached) {
+              setSectionLoading(["stats", "chart", "agents", "activity", "alerts"], false);
+            }
+            return nextAgents;
+          })
+          .catch(() => {
+            if (!silent && !cached) {
+              setSectionLoading(["stats", "chart", "agents", "activity", "alerts"], false);
+            }
+            return [] as AgentRow[];
+          });
+
+        const executionsPromise = supabaseClient
+          .from("executions")
+          .select(
+            "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd"
+          )
+          .eq("user_id", sessionUser.id)
+          .order("started_at", { ascending: false })
+          .limit(180)
+          .then(({ data }: { data: any[] | null }) => {
+            const nextExecutions: ExecutionRow[] = (data || []).map((item) => ({
+              id: item.id,
+              agent_id: item.agent_id,
+              user_id: item.user_id,
+              status: normalizeExecutionStatus(item.status || null),
+              input: (item.input || null) as Record<string, unknown> | null,
+              output: (item.output || null) as Record<string, unknown> | null,
+              error_message: item.error_message || null,
+              started_at: item.started_at || null,
+              completed_at: item.completed_at || null,
+              duration_ms: item.duration_ms === null ? null : Number(item.duration_ms),
+              tokens_used: item.tokens_used === null ? null : Number(item.tokens_used),
+              cost_usd: item.cost_usd === null ? null : Number(item.cost_usd),
+            }));
+
+            setExecutions(nextExecutions);
+            if (!silent && !cached) {
+              setSectionLoading(["stats", "chart", "executions", "activity", "alerts"], false);
+            }
+            return nextExecutions;
+          })
+          .catch(() => {
+            if (!silent && !cached) {
+              setSectionLoading(["stats", "chart", "executions", "activity", "alerts"], false);
+            }
+            return [] as ExecutionRow[];
+          });
+
+        const apiKeysPromise = supabaseClient
+          .from("api_keys")
+          .select("id, provider, is_active, usage_count, rate_limit_per_day, created_at, last_used_at")
+          .eq("user_id", sessionUser.id)
+          .order("created_at", { ascending: false })
+          .limit(20)
+          .then(({ data }: { data: any[] | null }) => {
+            const nextApiKeys: ApiKeyRow[] = (data || []).map((item) => ({
+              id: item.id,
+              provider: item.provider || "غير محدد",
+              is_active: Boolean(item.is_active),
+              usage_count: item.usage_count === null ? null : Number(item.usage_count),
+              rate_limit_per_day:
+                item.rate_limit_per_day === null ? null : Number(item.rate_limit_per_day),
+              created_at: item.created_at || new Date().toISOString(),
+              last_used_at: item.last_used_at || null,
+            }));
+            setApiKeys(nextApiKeys);
+            if (!silent && !cached) {
+              setSectionLoading(["activity", "alerts"], false);
+            }
+            return nextApiKeys;
+          })
+          .catch(() => {
+            if (!silent && !cached) {
+              setSectionLoading(["activity", "alerts"], false);
+            }
+            return [] as ApiKeyRow[];
+          });
+
+        const [profilePayload, agentsPayload, executionsPayload, apiPayload] = await Promise.all([
+          profilePromise,
+          agentsPromise,
+          executionsPromise,
+          apiKeysPromise,
+        ]);
+
+        setCache({
+          userId: sessionUser.id,
+          timestamp: Date.now(),
+          userName: profilePayload.userName,
+          userAvatar: profilePayload.userAvatar,
+          agents: agentsPayload,
+          executions: executionsPayload,
+          apiKeys: apiPayload,
         });
-      }
 
-      const profilePromise = supabaseClient
-        .from("profiles")
-        .select("full_name, avatar_url")
-        .eq("id", sessionUser.id)
-        .maybeSingle()
-        .then(({ data }: { data: { full_name?: string; avatar_url?: string } | null }) => {
-          const resolvedName =
-            data?.full_name || sessionUser.user_metadata?.full_name || "مستخدم Bright AI";
-          setUserName(resolvedName);
-          setUserAvatar(data?.avatar_url || "");
-          if (!silent && !cached) {
-            setSectionLoading(["welcome"], false);
-          }
-          return {
-            userName: resolvedName,
-            userAvatar: data?.avatar_url || "",
-          };
-        })
-        .catch(() => {
-          if (!silent && !cached) {
-            setSectionLoading(["welcome"], false);
-          }
-          return {
-            userName: sessionUser.user_metadata?.full_name || "مستخدم Bright AI",
-            userAvatar: "",
-          };
-        });
+        if (!silent && !cached) {
+          setLoadingSections({
+            welcome: false,
+            stats: false,
+            chart: false,
+            agents: false,
+            executions: false,
+            activity: false,
+            alerts: false,
+          });
+        }
 
-      const agentsPromise = supabaseClient
-        .from("agents")
-        .select(
-          "id, name, description, category, status, execution_count, success_rate, updated_at, created_at"
-        )
-        .eq("user_id", sessionUser.id)
-        .order("updated_at", { ascending: false })
-        .then(({ data }: { data: any[] | null }) => {
-          const nextAgents: AgentRow[] = (data || []).map((item) => ({
-            id: item.id,
-            name: item.name || "وكيل بدون اسم",
-            description: item.description || null,
-            category: item.category || null,
-            status: normalizeAgentStatus(item.status || null),
-            execution_count: Number(item.execution_count || 0),
-            success_rate:
-              item.success_rate === null || item.success_rate === undefined
-                ? null
-                : Number(item.success_rate),
-            updated_at: item.updated_at || new Date().toISOString(),
-            created_at: item.created_at || new Date().toISOString(),
-          }));
-
-          setAgents(nextAgents);
-          if (!silent && !cached) {
-            setSectionLoading(["stats", "chart", "agents", "activity", "alerts"], false);
-          }
-          return nextAgents;
-        })
-        .catch(() => {
-          if (!silent && !cached) {
-            setSectionLoading(["stats", "chart", "agents", "activity", "alerts"], false);
-          }
-          return [] as AgentRow[];
-        });
-
-      const executionsPromise = supabaseClient
-        .from("executions")
-        .select(
-          "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd"
-        )
-        .eq("user_id", sessionUser.id)
-        .order("started_at", { ascending: false })
-        .limit(240)
-        .then(({ data }: { data: any[] | null }) => {
-          const nextExecutions: ExecutionRow[] = (data || []).map((item) => ({
-            id: item.id,
-            agent_id: item.agent_id,
-            user_id: item.user_id,
-            status: normalizeExecutionStatus(item.status || null),
-            input: (item.input || null) as Record<string, unknown> | null,
-            output: (item.output || null) as Record<string, unknown> | null,
-            error_message: item.error_message || null,
-            started_at: item.started_at || null,
-            completed_at: item.completed_at || null,
-            duration_ms: item.duration_ms === null ? null : Number(item.duration_ms),
-            tokens_used: item.tokens_used === null ? null : Number(item.tokens_used),
-            cost_usd: item.cost_usd === null ? null : Number(item.cost_usd),
-          }));
-
-          setExecutions(nextExecutions);
-          if (!silent && !cached) {
-            setSectionLoading(["stats", "chart", "executions", "activity", "alerts"], false);
-          }
-          return nextExecutions;
-        })
-        .catch(() => {
-          if (!silent && !cached) {
-            setSectionLoading(["stats", "chart", "executions", "activity", "alerts"], false);
-          }
-          return [] as ExecutionRow[];
-        });
-
-      const apiKeysPromise = supabaseClient
-        .from("api_keys")
-        .select("id, provider, is_active, usage_count, rate_limit_per_day, created_at, last_used_at")
-        .eq("user_id", sessionUser.id)
-        .order("created_at", { ascending: false })
-        .limit(20)
-        .then(({ data }: { data: any[] | null }) => {
-          const nextApiKeys: ApiKeyRow[] = (data || []).map((item) => ({
-            id: item.id,
-            provider: item.provider || "غير محدد",
-            is_active: Boolean(item.is_active),
-            usage_count: item.usage_count === null ? null : Number(item.usage_count),
-            rate_limit_per_day:
-              item.rate_limit_per_day === null ? null : Number(item.rate_limit_per_day),
-            created_at: item.created_at || new Date().toISOString(),
-            last_used_at: item.last_used_at || null,
-          }));
-          setApiKeys(nextApiKeys);
-          if (!silent && !cached) {
-            setSectionLoading(["activity", "alerts"], false);
-          }
-          return nextApiKeys;
-        })
-        .catch(() => {
-          if (!silent && !cached) {
-            setSectionLoading(["activity", "alerts"], false);
-          }
-          return [] as ApiKeyRow[];
-        });
-
-      const [profilePayload, agentsPayload, executionsPayload, apiPayload] = await Promise.all([
-        profilePromise,
-        agentsPromise,
-        executionsPromise,
-        apiKeysPromise,
-      ]);
-
-      setCache({
-        userId: sessionUser.id,
-        timestamp: Date.now(),
-        userName: profilePayload.userName,
-        userAvatar: profilePayload.userAvatar,
-        agents: agentsPayload,
-        executions: executionsPayload,
-        apiKeys: apiPayload,
-      });
-
-      if (!silent && !cached) {
-        setLoadingSections({
-          welcome: false,
-          stats: false,
-          chart: false,
-          agents: false,
-          executions: false,
-          activity: false,
-          alerts: false,
-        });
+        lastLoadAtRef.current = Date.now();
+      } finally {
+        loadInFlightRef.current = false;
+        if (reloadRequestedRef.current) {
+          reloadRequestedRef.current = false;
+          void loadDashboard(true, true);
+        }
       }
     },
     [resolveSession, setSectionLoading]
@@ -780,6 +804,7 @@ const Dashboard = () => {
           tokens: 0,
         };
       });
+      const pointsMap = new Map(points.map((point) => [point.key, point]));
 
       executions.forEach((item) => {
         if (!item.started_at) {
@@ -791,7 +816,7 @@ const Dashboard = () => {
         }
 
         const key = date.toISOString().slice(0, 13);
-        const point = points.find((candidate) => candidate.key === key);
+        const point = pointsMap.get(key);
         if (!point) {
           return;
         }
@@ -828,6 +853,7 @@ const Dashboard = () => {
         tokens: 0,
       };
     });
+    const pointsMap = new Map(points.map((point) => [point.key, point]));
 
     executions.forEach((item) => {
       if (!item.started_at) {
@@ -835,7 +861,7 @@ const Dashboard = () => {
       }
 
       const key = new Date(item.started_at).toISOString().slice(0, 10);
-      const point = points.find((candidate) => candidate.key === key);
+      const point = pointsMap.get(key);
       if (!point) {
         return;
       }

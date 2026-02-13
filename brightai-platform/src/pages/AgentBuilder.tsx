@@ -740,17 +740,32 @@ const AgentBuilder = () => {
 
   useEffect(() => {
     const syncWorkflow = () => {
-      setWorkflowSummary(readWorkflowSummary());
+      const next = readWorkflowSummary();
+      setWorkflowSummary((prev) => {
+        if (
+          prev.nodes === next.nodes &&
+          prev.edges === next.edges &&
+          prev.sizeKb === next.sizeKb
+        ) {
+          return prev;
+        }
+        return next;
+      });
     };
 
     syncWorkflow();
     const handleWorkflowUpdated = () => syncWorkflow();
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === WORKFLOW_STORAGE_KEY) {
+        syncWorkflow();
+      }
+    };
     window.addEventListener(WORKFLOW_UPDATED_EVENT, handleWorkflowUpdated);
-    const interval = window.setInterval(syncWorkflow, 5000);
+    window.addEventListener("storage", handleStorage);
 
     return () => {
       window.removeEventListener(WORKFLOW_UPDATED_EVENT, handleWorkflowUpdated);
-      window.clearInterval(interval);
+      window.removeEventListener("storage", handleStorage);
     };
   }, []);
 
