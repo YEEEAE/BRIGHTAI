@@ -339,6 +339,12 @@ const تقديرالرموز = (text: string) => {
 };
 
 const delay = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+const withTimeout = async <T,>(promise: Promise<T>, ms: number, fallback: T): Promise<T> => {
+  const timeoutPromise = new Promise<T>((resolve) => {
+    window.setTimeout(() => resolve(fallback), ms);
+  });
+  return Promise.race([promise, timeoutPromise]);
+};
 
 const evaluateStep = (stepId: خطوة, form: حالةالنموذج) => {
   if (stepId === 1) {
@@ -615,61 +621,122 @@ const AgentBuilder = () => {
   }, [applyPartialForm, id, showError]);
 
   useEffect(() => {
+    let active = true;
+
     const init = async () => {
       setLoadingPage(true);
-      const { data } = await supabase.auth.getSession();
-      const sessionUser = data.session?.user || null;
-      const localUser = getLocalAdminUser();
-      const activeUserId = sessionUser?.id || localUser?.id || "";
+      try {
+        const sessionPayload = await withTimeout(
+          supabase.auth
+            .getSession()
+            .catch(() => ({ data: { session: null } })),
+          3500,
+          { data: { session: null } }
+        );
+        const { data } = sessionPayload as { data: { session: { user: { id: string } } | null } };
+        if (!active) {
+          return;
+        }
 
-      if (!activeUserId) {
-        navigate("/login", { replace: true });
+        const sessionUser = data.session?.user || null;
+        const localUser = getLocalAdminUser();
+        const activeUserId = sessionUser?.id || localUser?.id || "";
+
+        if (!activeUserId) {
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        const isLocal = !sessionUser && Boolean(localUser);
+        setLocalMode(isLocal);
+
+        const uid = activeUserId;
+        setUserId(uid);
+
+        hydrateFromDraft();
+        setWorkflowSummary(readWorkflowSummary());
+        initializedRef.current = true;
         setLoadingPage(false);
-        return;
+
+        void (async () => {
+          const templatesPromise = withTimeout(
+            loadTemplates().catch(() => undefined),
+            5000,
+            undefined
+          );
+          const hydratePromise =
+            id && !isLocal
+              ? withTimeout(
+                  hydrateFromDatabase(uid).catch(() => undefined),
+                  5000,
+                  undefined
+                )
+              : Promise.resolve(undefined);
+          const apiStatusPromise: Promise<number> = isLocal
+            ? Promise.resolve(0)
+            : withTimeout(
+                supabaseClient
+                  .from("api_keys")
+                  .select("id", { count: "exact", head: true })
+                  .eq("user_id", uid)
+                  .eq("provider", "groq")
+                  .eq("is_active", true)
+                  .then(({ count }: { count?: number | null }) => Number(count || 0))
+                  .catch(() => 0),
+                5000,
+                0
+              );
+
+          const results = await Promise.allSettled([
+            templatesPromise,
+            hydratePromise,
+            apiStatusPromise,
+          ]);
+          if (!active) {
+            return;
+          }
+
+          const apiResult = results[2];
+          const apiCount =
+            apiResult && apiResult.status === "fulfilled"
+              ? Number(apiResult.value || 0)
+              : 0;
+
+          setSystemState((prev) => ({
+            ...prev,
+            apiConnected: apiCount > 0,
+          }));
+        })();
+      } catch {
+        if (!active) {
+          return;
+        }
+
+        const localUser = getLocalAdminUser();
+        if (localUser) {
+          setLocalMode(true);
+          setUserId(localUser.id);
+          hydrateFromDraft();
+          setWorkflowSummary(readWorkflowSummary());
+          initializedRef.current = true;
+          setLoadingPage(false);
+        } else {
+          showError("تعذر تهيئة مصمم الوكلاء. حاول تحديث الصفحة.");
+          navigate("/login", { replace: true });
+        }
+      } finally {
+        if (active) {
+          setLoadingPage(false);
+        }
       }
-
-      const isLocal = !sessionUser && Boolean(localUser);
-      setLocalMode(isLocal);
-
-      const uid = activeUserId;
-      setUserId(uid);
-
-      hydrateFromDraft();
-
-      const workflow = readWorkflowSummary();
-      setWorkflowSummary(workflow);
-
-      const templatesPromise = loadTemplates();
-      const hydratePromise =
-        id && !isLocal ? hydrateFromDatabase(uid) : Promise.resolve();
-      const apiStatusPromise: Promise<number> = isLocal
-        ? Promise.resolve(0)
-        : supabaseClient
-            .from("api_keys")
-            .select("id", { count: "exact", head: true })
-            .eq("user_id", uid)
-            .eq("provider", "groq")
-            .eq("is_active", true)
-            .then(({ count }: { count?: number | null }) => Number(count || 0))
-            .catch(() => 0);
-
-      const [, , apiCount] = await Promise.all([
-        templatesPromise,
-        hydratePromise,
-        apiStatusPromise,
-      ]);
-
-      setSystemState((prev) => ({
-        ...prev,
-        apiConnected: apiCount > 0,
-      }));
-
-      initializedRef.current = true;
-      setLoadingPage(false);
     };
 
-    init();
-  }, [hydrateFromDatabase, hydrateFromDraft, id, loadTemplates, navigate]);
+    void init();
+
+    return () => {
+      active = false;
+    };
+  }, [hydrateFromDatabase, hydrateFromDraft, id, loadTemplates, navigate, showError]);
 
   useEffect(() => {
     const syncWorkflow = () => {
