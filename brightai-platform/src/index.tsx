@@ -2,15 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
-import "reactflow/dist/style.css";
 import "./i18n";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./hooks/useAuth";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { logSecurityEvent } from "./lib/security";
-import * as Sentry from "@sentry/react";
-import { initAnalytics, trackPageLoad } from "./lib/analytics";
+import { initAnalytics, initSentry, trackPageLoad } from "./lib/analytics";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -33,12 +31,23 @@ if (process.env.NODE_ENV === "production") {
   }
 }
 
-const sentryDsn = process.env.REACT_APP_SENTRY_DSN;
-if (sentryDsn) {
-  Sentry.init({ dsn: sentryDsn });
-}
+const initTracking = () => {
+  initAnalytics();
+  void initSentry();
+};
 
-initAnalytics();
+if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+  const win = window as Window & {
+    requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+  };
+  if (typeof win.requestIdleCallback === "function") {
+    win.requestIdleCallback(initTracking, { timeout: 1500 });
+  } else {
+    setTimeout(initTracking, 250);
+  }
+} else if (typeof window !== "undefined") {
+  setTimeout(initTracking, 250);
+}
 
 window.addEventListener("load", () => {
   trackPageLoad();

@@ -13,6 +13,7 @@ import ReactFlow, {
   applyNodeChanges,
   ReactFlowInstance,
 } from "reactflow";
+import "reactflow/dist/style.css";
 import { LayoutGrid, Redo2, Save, Undo2, Wand2 } from "lucide-react";
 import NodePalette from "./NodePalette";
 import NodeEditor from "./NodeEditor";

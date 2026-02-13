@@ -3,6 +3,7 @@ import {
   lazy,
   memo,
   useCallback,
+  useDeferredValue,
   useEffect,
   useMemo,
   useRef,
@@ -468,6 +469,7 @@ const Dashboard = () => {
   const loadInFlightRef = useRef(false);
   const reloadRequestedRef = useRef(false);
   const lastLoadAtRef = useRef(0);
+  const executionLimitRef = useRef(180);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -479,6 +481,29 @@ const Dashboard = () => {
       JSON.stringify(dismissedAlerts)
     );
   }, [dismissedAlerts]);
+
+  useEffect(() => {
+    const connection = (
+      navigator as Navigator & {
+        connection?: {
+          effectiveType?: string;
+          saveData?: boolean;
+        };
+      }
+    ).connection;
+
+    if (connection?.saveData) {
+      executionLimitRef.current = 90;
+      return;
+    }
+
+    if (connection?.effectiveType === "2g" || connection?.effectiveType === "3g") {
+      executionLimitRef.current = 120;
+      return;
+    }
+
+    executionLimitRef.current = 180;
+  }, []);
 
   const setSectionLoading = useCallback(
     (keys: (keyof LoadingState)[], loading: boolean) => {
@@ -616,7 +641,7 @@ const Dashboard = () => {
           )
           .eq("user_id", sessionUser.id)
           .order("started_at", { ascending: false })
-          .limit(180)
+          .limit(executionLimitRef.current)
           .then(({ data }: { data: any[] | null }) => {
             const nextExecutions: ExecutionRow[] = (data || []).map((item) => ({
               id: item.id,
@@ -731,6 +756,11 @@ const Dashboard = () => {
     }
 
     const scheduleRefresh = () => {
+      if (document.visibilityState !== "visible") {
+        reloadRequestedRef.current = true;
+        return;
+      }
+
       if (refreshTimerRef.current) {
         window.clearTimeout(refreshTimerRef.current);
       }
@@ -754,6 +784,14 @@ const Dashboard = () => {
       )
       .subscribe();
 
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible" && reloadRequestedRef.current) {
+        reloadRequestedRef.current = false;
+        void loadDashboard(true, true);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     return () => {
       if (refreshTimerRef.current) {
         window.clearTimeout(refreshTimerRef.current);
@@ -761,15 +799,11 @@ const Dashboard = () => {
       if (channelRef.current) {
         supabaseClient.removeChannel(channelRef.current);
       }
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [userId, loadDashboard]);
 
   const greeting = useMemo(() => getGreeting(new Date()), []);
-
-  const todayExecutionsCount = useMemo(() => {
-    const todayKey = new Date().toISOString().slice(0, 10);
-    return executions.filter((item) => item.started_at?.slice(0, 10) === todayKey).length;
-  }, [executions]);
 
   const activeAgentsCount = useMemo(
     () => agents.filter((item) => item.status === "نشط").length,
@@ -781,12 +815,148 @@ const Dashboard = () => {
     [agents]
   );
 
-  const failedTodayCount = useMemo(() => {
-    const todayKey = new Date().toISOString().slice(0, 10);
-    return executions.filter(
-      (item) => item.status === "فشل" && item.started_at?.slice(0, 10) === todayKey
-    ).length;
+  const deferredAgentSearch = useDeferredValue(agentSearch);
+
+  const executionAnalytics = useMemo(() => {
+    const now = new Date();
+    const todayKey = now.toISOString().slice(0, 10);
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const nowMs = Date.now();
+    const dayMs = 24 * 60 * 60 * 1000;
+    const weekStart = nowMs - 7 * dayMs;
+    const prevWeekStart = nowMs - 14 * dayMs;
+
+    const byHour = new Map<
+      string,
+      { executions: number; success: number; cost: number; tokens: number }
+    >();
+    const byDay = new Map<
+      string,
+      { executions: number; success: number; cost: number; tokens: number }
+    >();
+    const byAgent = new Map<string, { total: number; failed: number }>();
+
+    let todayExecutions = 0;
+    let failedToday = 0;
+    let monthCost = 0;
+    let monthTokens = 0;
+
+    let thisWeekExecutions = 0;
+    let thisWeekSuccess = 0;
+    let thisWeekCost = 0;
+    let thisWeekTokens = 0;
+
+    let prevWeekExecutions = 0;
+    let prevWeekSuccess = 0;
+    let prevWeekCost = 0;
+    let prevWeekTokens = 0;
+
+    executions.forEach((item) => {
+      const agentEntry = byAgent.get(item.agent_id) || { total: 0, failed: 0 };
+      agentEntry.total += 1;
+      if (item.status === "فشل") {
+        agentEntry.failed += 1;
+      }
+      byAgent.set(item.agent_id, agentEntry);
+
+      if (!item.started_at) {
+        return;
+      }
+
+      const date = new Date(item.started_at);
+      const timestamp = date.getTime();
+      if (Number.isNaN(timestamp)) {
+        return;
+      }
+
+      const dayKey = date.toISOString().slice(0, 10);
+      const hourKey = date.toISOString().slice(0, 13);
+      const cost = item.cost_usd || 0;
+      const tokens = item.tokens_used || 0;
+      const isSuccess = item.status === "ناجح";
+
+      const dayPoint = byDay.get(dayKey) || {
+        executions: 0,
+        success: 0,
+        cost: 0,
+        tokens: 0,
+      };
+      dayPoint.executions += 1;
+      dayPoint.cost += cost;
+      dayPoint.tokens += tokens;
+      if (isSuccess) {
+        dayPoint.success += 1;
+      }
+      byDay.set(dayKey, dayPoint);
+
+      if (dayKey === todayKey) {
+        todayExecutions += 1;
+        if (item.status === "فشل") {
+          failedToday += 1;
+        }
+        const hourPoint = byHour.get(hourKey) || {
+          executions: 0,
+          success: 0,
+          cost: 0,
+          tokens: 0,
+        };
+        hourPoint.executions += 1;
+        hourPoint.cost += cost;
+        hourPoint.tokens += tokens;
+        if (isSuccess) {
+          hourPoint.success += 1;
+        }
+        byHour.set(hourKey, hourPoint);
+      }
+
+      if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
+        monthCost += cost;
+        monthTokens += tokens;
+      }
+
+      if (timestamp >= weekStart) {
+        thisWeekExecutions += 1;
+        thisWeekCost += cost;
+        thisWeekTokens += tokens;
+        if (isSuccess) {
+          thisWeekSuccess += 1;
+        }
+        return;
+      }
+
+      if (timestamp >= prevWeekStart && timestamp < weekStart) {
+        prevWeekExecutions += 1;
+        prevWeekCost += cost;
+        prevWeekTokens += tokens;
+        if (isSuccess) {
+          prevWeekSuccess += 1;
+        }
+      }
+    });
+
+    return {
+      todayExecutions,
+      failedToday,
+      monthCost,
+      monthTokens,
+      thisWeekExecutions,
+      thisWeekSuccess,
+      thisWeekCost,
+      thisWeekTokens,
+      prevWeekExecutions,
+      prevWeekSuccess,
+      prevWeekCost,
+      prevWeekTokens,
+      byHour,
+      byDay,
+      byAgent,
+    };
   }, [executions]);
+
+  const todayExecutionsCount = executionAnalytics.todayExecutions;
+  const failedTodayCount = executionAnalytics.failedToday;
 
   const chartData = useMemo<DashboardChartPoint[]>(() => {
     const now = new Date();
@@ -804,38 +974,23 @@ const Dashboard = () => {
           tokens: 0,
         };
       });
-      const pointsMap = new Map(points.map((point) => [point.key, point]));
 
-      executions.forEach((item) => {
-        if (!item.started_at) {
-          return;
-        }
-        const date = new Date(item.started_at);
-        if (date.toDateString() !== now.toDateString()) {
-          return;
-        }
-
-        const key = date.toISOString().slice(0, 13);
-        const point = pointsMap.get(key);
-        if (!point) {
-          return;
-        }
-
-        point.executions += 1;
-        point.cost += item.cost_usd || 0;
-        point.tokens += item.tokens_used || 0;
-        if (item.status === "ناجح") {
-          point.success += 1;
-        }
+      return points.map((point) => {
+        const pointData = executionAnalytics.byHour.get(point.key) || {
+          executions: 0,
+          success: 0,
+          cost: 0,
+          tokens: 0,
+        };
+        return {
+          label: point.label,
+          executions: pointData.executions,
+          successRate:
+            pointData.executions > 0 ? (pointData.success / pointData.executions) * 100 : 0,
+          cost: Number(pointData.cost.toFixed(2)),
+          tokens: pointData.tokens,
+        };
       });
-
-      return points.map((point) => ({
-        label: point.label,
-        executions: point.executions,
-        successRate: point.executions > 0 ? (point.success / point.executions) * 100 : 0,
-        cost: Number(point.cost.toFixed(2)),
-        tokens: point.tokens,
-      }));
     }
 
     const days = chartPeriod === "هذا الأسبوع" ? 7 : chartPeriod === "هذا الشهر" ? 30 : 90;
@@ -851,112 +1006,49 @@ const Dashboard = () => {
         success: 0,
         cost: 0,
         tokens: 0,
+        };
+      });
+
+    return points.map((point) => {
+      const pointData = executionAnalytics.byDay.get(point.key) || {
+        executions: 0,
+        success: 0,
+        cost: 0,
+        tokens: 0,
+      };
+      return {
+        label: point.label,
+        executions: pointData.executions,
+        successRate:
+          pointData.executions > 0 ? (pointData.success / pointData.executions) * 100 : 0,
+        cost: Number(pointData.cost.toFixed(2)),
+        tokens: pointData.tokens,
       };
     });
-    const pointsMap = new Map(points.map((point) => [point.key, point]));
-
-    executions.forEach((item) => {
-      if (!item.started_at) {
-        return;
-      }
-
-      const key = new Date(item.started_at).toISOString().slice(0, 10);
-      const point = pointsMap.get(key);
-      if (!point) {
-        return;
-      }
-
-      point.executions += 1;
-      point.cost += item.cost_usd || 0;
-      point.tokens += item.tokens_used || 0;
-      if (item.status === "ناجح") {
-        point.success += 1;
-      }
-    });
-
-    return points.map((point) => ({
-      label: point.label,
-      executions: point.executions,
-      successRate: point.executions > 0 ? (point.success / point.executions) * 100 : 0,
-      cost: Number(point.cost.toFixed(2)),
-      tokens: point.tokens,
-    }));
-  }, [chartPeriod, executions]);
+  }, [chartPeriod, executionAnalytics.byDay, executionAnalytics.byHour]);
 
   const sparklineValues = useMemo(() => {
     return chartData.slice(-14).map((item) => item.executions);
   }, [chartData]);
 
-  const monthMetrics = useMemo(() => {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-
-    let cost = 0;
-    let tokens = 0;
-
-    executions.forEach((item) => {
-      if (!item.started_at) {
-        return;
-      }
-      const date = new Date(item.started_at);
-      if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
-        cost += item.cost_usd || 0;
-        tokens += item.tokens_used || 0;
-      }
-    });
-
-    return {
-      cost,
-      tokens,
-    };
-  }, [executions]);
+  const monthMetrics = useMemo(
+    () => ({
+      cost: executionAnalytics.monthCost,
+      tokens: executionAnalytics.monthTokens,
+    }),
+    [executionAnalytics.monthCost, executionAnalytics.monthTokens]
+  );
 
   const weekComparisons = useMemo(() => {
+    const thisWeekSuccessRate = executionAnalytics.thisWeekExecutions
+      ? (executionAnalytics.thisWeekSuccess / executionAnalytics.thisWeekExecutions) * 100
+      : 0;
+
+    const prevWeekSuccessRate = executionAnalytics.prevWeekExecutions
+      ? (executionAnalytics.prevWeekSuccess / executionAnalytics.prevWeekExecutions) * 100
+      : 0;
     const now = Date.now();
-    const dayMs = 24 * 60 * 60 * 1000;
-    const weekStart = now - 7 * dayMs;
-    const prevWeekStart = now - 14 * dayMs;
-
-    const thisWeekExecutions = executions.filter((item) => {
-      if (!item.started_at) {
-        return false;
-      }
-      const time = new Date(item.started_at).getTime();
-      return time >= weekStart;
-    });
-
-    const prevWeekExecutions = executions.filter((item) => {
-      if (!item.started_at) {
-        return false;
-      }
-      const time = new Date(item.started_at).getTime();
-      return time >= prevWeekStart && time < weekStart;
-    });
-
-    const thisWeekSuccessRate = thisWeekExecutions.length
-      ? (thisWeekExecutions.filter((item) => item.status === "ناجح").length /
-          thisWeekExecutions.length) *
-        100
-      : 0;
-
-    const prevWeekSuccessRate = prevWeekExecutions.length
-      ? (prevWeekExecutions.filter((item) => item.status === "ناجح").length /
-          prevWeekExecutions.length) *
-        100
-      : 0;
-
-    const thisWeekCost = thisWeekExecutions.reduce((sum, item) => sum + (item.cost_usd || 0), 0);
-    const prevWeekCost = prevWeekExecutions.reduce((sum, item) => sum + (item.cost_usd || 0), 0);
-
-    const thisWeekTokens = thisWeekExecutions.reduce(
-      (sum, item) => sum + (item.tokens_used || 0),
-      0
-    );
-    const prevWeekTokens = prevWeekExecutions.reduce(
-      (sum, item) => sum + (item.tokens_used || 0),
-      0
-    );
+    const weekStart = now - 7 * 24 * 60 * 60 * 1000;
 
     const newAgentsThisWeek = agents.filter(
       (item) => new Date(item.created_at).getTime() >= weekStart
@@ -980,44 +1072,45 @@ const Dashboard = () => {
     return {
       totalAgentsDelta: delta(agents.length, previousTotalAgents),
       activeAgentsDelta: delta(activeAgentsCount, previousActiveAgents),
-      executionsDelta: delta(thisWeekExecutions.length, prevWeekExecutions.length),
+      executionsDelta: delta(
+        executionAnalytics.thisWeekExecutions,
+        executionAnalytics.prevWeekExecutions
+      ),
       successRateDelta: delta(thisWeekSuccessRate, prevWeekSuccessRate),
-      costDelta: delta(thisWeekCost, prevWeekCost),
-      tokensDelta: delta(thisWeekTokens, prevWeekTokens),
+      costDelta: delta(executionAnalytics.thisWeekCost, executionAnalytics.prevWeekCost),
+      tokensDelta: delta(executionAnalytics.thisWeekTokens, executionAnalytics.prevWeekTokens),
       successRateValue: thisWeekSuccessRate,
     };
-  }, [agents, activeAgentsCount, executions]);
+  }, [
+    agents,
+    activeAgentsCount,
+    executionAnalytics.prevWeekCost,
+    executionAnalytics.prevWeekExecutions,
+    executionAnalytics.prevWeekSuccess,
+    executionAnalytics.prevWeekTokens,
+    executionAnalytics.thisWeekCost,
+    executionAnalytics.thisWeekExecutions,
+    executionAnalytics.thisWeekSuccess,
+    executionAnalytics.thisWeekTokens,
+  ]);
 
   const filteredAgents = useMemo(() => {
+    const query = deferredAgentSearch.trim().toLowerCase();
     return agents
       .filter((item) => (agentStatusFilter === "الكل" ? true : item.status === agentStatusFilter))
       .filter((item) => {
-        if (!agentSearch.trim()) {
+        if (!query) {
           return true;
         }
-        const query = agentSearch.trim().toLowerCase();
         return (
           item.name.toLowerCase().includes(query) ||
           (item.description || "").toLowerCase().includes(query)
         );
       })
       .slice(0, 8);
-  }, [agents, agentStatusFilter, agentSearch]);
+  }, [agents, agentStatusFilter, deferredAgentSearch]);
 
-  const executionByAgent = useMemo(() => {
-    const map = new Map<string, { total: number; failed: number }>();
-    executions.forEach((item) => {
-      if (!map.has(item.agent_id)) {
-        map.set(item.agent_id, { total: 0, failed: 0 });
-      }
-      const entry = map.get(item.agent_id)!;
-      entry.total += 1;
-      if (item.status === "فشل") {
-        entry.failed += 1;
-      }
-    });
-    return map;
-  }, [executions]);
+  const executionByAgent = executionAnalytics.byAgent;
 
   const agentNameMap = useMemo(() => {
     const map = new Map<string, string>();

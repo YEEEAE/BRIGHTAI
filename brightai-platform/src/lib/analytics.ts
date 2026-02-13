@@ -1,5 +1,3 @@
-import * as Sentry from "@sentry/react";
-
 declare global {
   interface Window {
     dataLayer?: unknown[];
@@ -43,6 +41,8 @@ type AnalyticsState = {
   measurementId: string | null;
 };
 
+type SentryModule = typeof import("@sentry/react");
+
 const ANALYTICS_QUEUE_KEY = "brightai_analytics_queue";
 const ERROR_COUNTER_KEY = "brightai_error_counter";
 
@@ -50,6 +50,10 @@ const state: AnalyticsState = {
   initialized: false,
   measurementId: null,
 };
+
+let sentryModule: SentryModule | null = null;
+let sentryPromise: Promise<SentryModule | null> | null = null;
+let sentryInitialized = false;
 
 const getSessionStorage = () => {
   if (typeof window === "undefined") {
@@ -80,6 +84,40 @@ const loadGtagScript = (measurementId: string) => {
   script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
   script.setAttribute("data-ga4", measurementId);
   document.head.appendChild(script);
+};
+
+const ensureSentry = async () => {
+  const dsn = process.env.REACT_APP_SENTRY_DSN || "";
+  if (!dsn) {
+    return null;
+  }
+
+  if (sentryModule) {
+    return sentryModule;
+  }
+
+  if (!sentryPromise) {
+    sentryPromise = import("@sentry/react")
+      .then((module) => {
+        sentryModule = module;
+        return module;
+      })
+      .catch(() => null);
+  }
+
+  return sentryPromise;
+};
+
+const withSentry = (handler: (module: SentryModule) => void) => {
+  if (sentryModule) {
+    handler(sentryModule);
+    return;
+  }
+  void ensureSentry().then((module) => {
+    if (module) {
+      handler(module);
+    }
+  });
 };
 
 const queueEvent = (payload: TrackingPayload) => {
@@ -137,6 +175,20 @@ export const initAnalytics = () => {
   return true;
 };
 
+export const initSentry = async () => {
+  const dsn = process.env.REACT_APP_SENTRY_DSN || "";
+  if (!dsn || sentryInitialized) {
+    return false;
+  }
+  const module = await ensureSentry();
+  if (!module) {
+    return false;
+  }
+  module.init({ dsn });
+  sentryInitialized = true;
+  return true;
+};
+
 export const setUserProperties = (properties: Record<string, unknown>) => {
   if (!window.gtag || !state.measurementId) {
     queueEvent({ event: "user_properties", properties });
@@ -149,7 +201,9 @@ export const setUserContext = (user: { id: string; email?: string; name?: string
   if (window.gtag && state.measurementId) {
     window.gtag("set", { user_id: user.id });
   }
-  Sentry.setUser({ id: user.id, email: user.email, username: user.name });
+  withSentry((module) => {
+    module.setUser({ id: user.id, email: user.email, username: user.name });
+  });
 };
 
 export const trackPageView = (page: string) => {
@@ -183,7 +237,9 @@ export const trackSettingsChanged = (section: string) => {
 export const trackErrorEvent = (error: unknown, source?: string) => {
   const message = error instanceof Error ? error.message : "خطأ غير معروف";
   send({ event: "error_occurred", message, source });
-  Sentry.captureException(error);
+  withSentry((module) => {
+    module.captureException(error);
+  });
   incrementErrorRate();
 };
 
@@ -250,17 +306,20 @@ export const trackEngagement = (durationMs: number, page?: string) => {
 };
 
 export const startSpan = (name: string, op: string) => {
-  const sentry = Sentry as unknown as {
+  const sentry = sentryModule as unknown as {
     startSpan?: (config: { name: string; op: string }, callback: (span: any) => any) => any;
   };
   if (!sentry.startSpan) {
+    void ensureSentry();
     return null;
   }
   return sentry.startSpan({ name, op }, (span) => span);
 };
 
 export const addBreadcrumb = (message: string, category: string, data?: Record<string, unknown>) => {
-  Sentry.addBreadcrumb({ message, category, data, level: "info" });
+  withSentry((module) => {
+    module.addBreadcrumb({ message, category, data, level: "info" });
+  });
 };
 
 const incrementErrorRate = () => {

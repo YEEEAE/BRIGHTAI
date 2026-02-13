@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import ReactFlow, { Background, Controls, MiniMap } from "reactflow";
+import "reactflow/dist/style.css";
 import Card from "../components/ui/Card";
 import useWorkflowStore from "../store/workflowStore";
 

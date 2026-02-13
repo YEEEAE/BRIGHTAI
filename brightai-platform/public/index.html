@@ -5,6 +5,8 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0f172a" />
+    <meta name="application-name" content="منصة Bright AI" />
+    <meta name="apple-mobile-web-app-title" content="Bright AI" />
     <meta
       name="description"
       content="منصة لإدارة الأتمتة وتحليل البيانات بالذكاء الاصطناعي للشركات في السعودية"
@@ -24,9 +26,42 @@
       يتم استبدال %PUBLIC_URL% بمسار مجلد public أثناء البناء.
     -->
     <title>منصة Bright AI</title>
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var route = params.get("__route");
+          if (!route) {
+            return;
+          }
+          var query = params.get("__query");
+          var hash = params.get("__hash");
+          var nextPath = decodeURIComponent(route);
+          var nextQuery = query ? "?" + decodeURIComponent(query) : "";
+          var nextHash = hash ? "#" + decodeURIComponent(hash) : "";
+          window.history.replaceState({}, "", nextPath + nextQuery + nextHash);
+        } catch (_error) {
+          // تجاهل أي خطأ في تحليل الرابط الاحتياطي
+        }
+      })();
+    </script>
   </head>
   <body dir="rtl">
-    <noscript>يجب تفعيل جافاسكربت لتشغيل التطبيق.</noscript>
+    <noscript>
+      <div style="font-family: Cairo, Tajawal, sans-serif; padding: 16px; color: #e2e8f0; background: #020617;">
+        <p>يجب تفعيل جافاسكربت لتشغيل التطبيق.</p>
+        <p>روابط التنقل المباشرة:</p>
+        <ul style="line-height: 1.9;">
+          <li><a href="/" style="color: #34d399;">الرئيسية</a></li>
+          <li><a href="/dashboard" style="color: #34d399;">لوحة التحكم</a></li>
+          <li><a href="/agents/new" style="color: #34d399;">مصمم الوكلاء</a></li>
+          <li><a href="/templates" style="color: #34d399;">القوالب</a></li>
+          <li><a href="/marketplace" style="color: #34d399;">سوق الوكلاء</a></li>
+          <li><a href="/analytics" style="color: #34d399;">التحليلات</a></li>
+          <li><a href="/settings" style="color: #34d399;">الإعدادات</a></li>
+        </ul>
+      </div>
+    </noscript>
     <div id="root"></div>
     <!--
       هذا الملف هو قالب، وسيتم حقن السكربتات المجمعة داخل body أثناء البناء.

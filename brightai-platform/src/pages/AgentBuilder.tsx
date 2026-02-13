@@ -1,6 +1,5 @@
 import {
   Suspense,
-  lazy,
   useCallback,
   useEffect,
   useMemo,
@@ -38,6 +37,8 @@ import supabase from "../lib/supabase";
 import useAppToast from "../hooks/useAppToast";
 import { trackFeatureUsed } from "../lib/analytics";
 import { getLocalAdminUser } from "../lib/local-admin";
+import AsyncErrorBoundary from "../components/layout/AsyncErrorBoundary";
+import { lazyWithRetry } from "../lib/lazy";
 import AgentPersonalityEditor, {
   type قيمةمحررالشخصية,
   type رابطمحرر,
@@ -45,7 +46,7 @@ import AgentPersonalityEditor, {
   type شخصيةمحرر,
 } from "../components/agent/AgentPersonalityEditor";
 
-const WorkflowCanvas = lazy(() => import("../components/agent/WorkflowCanvas"));
+const WorkflowCanvas = lazyWithRetry(() => import("../components/agent/WorkflowCanvas"));
 
 type خطوة = 1 | 2 | 3 | 4 | 5;
 type وضعسير = "بسيط" | "متقدم";
@@ -737,6 +738,12 @@ const AgentBuilder = () => {
       active = false;
     };
   }, [hydrateFromDatabase, hydrateFromDraft, id, loadTemplates, navigate, showError]);
+
+  useEffect(() => {
+    if (step >= 2 || form.وضعالسير === "متقدم") {
+      void WorkflowCanvas.preload();
+    }
+  }, [form.وضعالسير, step]);
 
   useEffect(() => {
     const syncWorkflow = () => {
@@ -1725,15 +1732,25 @@ const AgentBuilder = () => {
                 </div>
               ) : (
                 <div className="rounded-2xl border border-slate-700 bg-slate-900/40 p-3 md:p-4">
-                  <Suspense
-                    fallback={
-                      <div className="flex h-[530px] items-center justify-center rounded-2xl bg-slate-900 text-slate-300">
-                        جارٍ تحميل مصمم سير العمل...
-                      </div>
-                    }
+                  <AsyncErrorBoundary
+                    title="تعذر تحميل مصمم سير العمل"
+                    message="حدث خلل أثناء تحميل مكوّن المصمم. يمكنك إعادة المحاولة دون فقدان المسودة."
+                    onRetry={() => {
+                      setWorkflowKey((prev) => prev + 1);
+                      void WorkflowCanvas.preload();
+                    }}
+                    className="flex h-[530px] flex-col items-center justify-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-900/10 p-6 text-center"
                   >
-                    <WorkflowCanvas key={workflowKey} />
-                  </Suspense>
+                    <Suspense
+                      fallback={
+                        <div className="flex h-[530px] items-center justify-center rounded-2xl bg-slate-900 text-slate-300">
+                          جارٍ تحميل مصمم سير العمل...
+                        </div>
+                      }
+                    >
+                      <WorkflowCanvas key={workflowKey} />
+                    </Suspense>
+                  </AsyncErrorBoundary>
                 </div>
               )}
             </div>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>إعادة توجيه - منصة Bright AI</title>
+    <script>
+      (function () {
+        var locationRef = window.location;
+        var route = encodeURIComponent(locationRef.pathname || "/");
+        var query = locationRef.search ? encodeURIComponent(locationRef.search.slice(1)) : "";
+        var hash = locationRef.hash ? encodeURIComponent(locationRef.hash.slice(1)) : "";
+        var target = "%PUBLIC_URL%/?__route=" + route;
+        if (query) {
+          target += "&__query=" + query;
+        }
+        if (hash) {
+          target += "&__hash=" + hash;
+        }
+        locationRef.replace(target);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>جارٍ إعادة التوجيه...</p>
+  </body>
+</html>
