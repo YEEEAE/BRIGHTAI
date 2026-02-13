@@ -94,7 +94,7 @@
         "availableLanguage": ["Arabic", "English"]
         }
     ],
-    "sameAs": ["https://wa.me/966538229013"],
+    "sameAs": ["https://wa.me/966538229013", "https://www.linkedin.com/company/brightai-sa", "https://x.com/brightai_sa", "https://www.youtube.com/@brightai_sa"],
     "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
     "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -299,6 +299,46 @@
     "description": "شركة سعودية رائدة في حلول الذكاء الاصطناعي المؤسسية للشركات الكبرى والجهات الحكومية في الرياض"
     }
     </script>
+    <!-- Structured Data: Offer (AIaaS Pricing) -->
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "AIaaS - الذكاء الاصطناعي كخدمة",
+    "provider": {"@type": "Organization", "name": "Bright AI"},
+    "areaServed": {"@type": "Country", "name": "Saudi Arabia"},
+    "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "خطط الأسعار",
+        "itemListElement": [
+            {
+            "@type": "Offer",
+            "name": "Starter Plan",
+            "description": "للشركات الناشئة والتجارب - 10,000 API calls/شهر",
+            "price": "500",
+            "priceCurrency": "SAR",
+            "priceSpecification": {"@type": "UnitPriceSpecification", "price": "500", "priceCurrency": "SAR", "unitText": "MONTH"}
+            },
+            {
+            "@type": "Offer",
+            "name": "Professional Plan",
+            "description": "للأعمال المتنامية - 100,000 API calls/شهر + نماذج مخصصة",
+            "price": "2500",
+            "priceCurrency": "SAR",
+            "priceSpecification": {"@type": "UnitPriceSpecification", "price": "2500", "priceCurrency": "SAR", "unitText": "MONTH"}
+            },
+            {
+            "@type": "Offer",
+            "name": "Enterprise Plan",
+            "description": "للجهات الكبيرة - API calls غير محدودة + دعم 24/7 + SLA مخصص",
+            "price": "0",
+            "priceCurrency": "SAR",
+            "availability": "https://schema.org/InStock"
+            }
+        ]
+    }
+    }
+    </script>
     <!-- GTM -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
@@ -320,6 +360,11 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
     </noscript>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;display=swap"
+        onload="this.rel='stylesheet'" />
+    <!-- Sitemap Reference -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
@@ -565,7 +610,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="#">
+                                    href="docs.html">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
@@ -1201,12 +1246,17 @@
                     </div>
                 </div>
                 <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                    <button class="btn primary"><iconify-icon icon="lucide:calendar-check"></iconify-icon> احجز عرض
+                    <a class="btn primary"
+                        href="https://wa.me/966538229013?text=%D8%A3%D8%AD%D8%A8%20%D8%A3%D8%AD%D8%AC%D8%B2%20%D8%B9%D8%B1%D8%B6%20%D8%AA%D9%88%D8%B6%D9%8A%D8%AD%D9%8A%20BI"><iconify-icon
+                            icon="lucide:calendar-check"></iconify-icon> احجز عرض
                         توضيحي
-                        لـ BI</button>
-                    <button class="btn"><iconify-icon icon="lucide:life-buoy"></iconify-icon> الدعم المستمر</button>
-                    <button class="btn ghost"><iconify-icon icon="lucide:graduation-cap"></iconify-icon> تدريب
-                        الفرق</button>
+                        لـ BI</a>
+                    <a class="btn" href="https://wa.me/966538229013"><iconify-icon
+                            icon="lucide:life-buoy"></iconify-icon> الدعم المستمر</a>
+                    <a class="btn ghost"
+                        href="https://wa.me/966538229013?text=%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D9%81%D8%B1%D9%82"><iconify-icon
+                            icon="lucide:graduation-cap"></iconify-icon> تدريب
+                        الفرق</a>
                 </div>
             </div>
         </section>
@@ -1306,8 +1356,9 @@
                             <li><span class="check">✓</span> دعم Email</li>
                             <li><span class="check">✓</span> 99% Uptime SLA</li>
                         </ul>
-                        <button class="btn primary cta"><iconify-icon icon="lucide:gift"></iconify-icon> ابدأ تجربة
-                            مجانية</button>
+                        <a class="btn primary cta" href="frontend/pages/try/index.html"><iconify-icon
+                                icon="lucide:gift"></iconify-icon> ابدأ تجربة
+                            مجانية</a>
                     </div>
                     <div class="price">
                         <h3>Professional</h3>
@@ -1319,8 +1370,8 @@
                             <li><span class="check">✓</span> 99.9% Uptime SLA</li>
                             <li><span class="check">✓</span> نماذج مخصصة</li>
                         </ul>
-                        <button class="btn cta"><iconify-icon icon="lucide:columns-3"></iconify-icon> قارن
-                            الخطط</button>
+                        <a class="btn cta" href="#aiaas"><iconify-icon icon="lucide:columns-3"></iconify-icon> قارن
+                            الخطط</a>
                     </div>
                     <div class="price enterprise">
                         <div class="ribbon">Enterprise</div>
@@ -1333,8 +1384,10 @@
                             <li><span class="check">✓</span> 99.99% Uptime SLA</li>
                             <li><span class="check">✓</span> SLA مخصص + تدريب مجاني</li>
                         </ul>
-                        <button class="btn primary cta"><iconify-icon icon="lucide:phone-call"></iconify-icon> تحدث مع
-                            مستشار</button>
+                        <a class="btn primary cta"
+                            href="https://wa.me/966538229013?text=%D8%A3%D8%AD%D8%A8%20%D8%A3%D8%AA%D8%AD%D8%AF%D8%AB%20%D9%85%D8%B9%20%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1"><iconify-icon
+                                icon="lucide:phone-call"></iconify-icon> تحدث مع
+                            مستشار</a>
                     </div>
                 </div>
             </div>
@@ -1367,8 +1420,10 @@
                             <li>تحليل بيانات فوري</li>
                             <li>مدى طيران حتى 50 كم</li>
                         </ul>
-                        <button class="btn primary cta"><iconify-icon icon="lucide:play"></iconify-icon> اطلب عرض
-                            توضيحي</button>
+                        <a class="btn primary cta"
+                            href="https://wa.me/966538229013?text=%D8%A7%D8%B7%D9%84%D8%A8%20%D8%B9%D8%B1%D8%B6%20%D8%AA%D9%88%D8%B6%D9%8A%D8%AD%D9%8A%20%D8%AF%D8%B1%D9%88%D9%86%D8%B2"><iconify-icon
+                                icon="lucide:play"></iconify-icon> اطلب عرض
+                            توضيحي</a>
                     </div>
                     <div class="robot">
                         <picture>
@@ -1390,7 +1445,9 @@
                             <li>تكامل مع WMS</li>
                             <li>تجنب الاصطدام (آمنة بالكامل)</li>
                         </ul>
-                        <button class="btn cta"><iconify-icon icon="lucide:calculator"></iconify-icon> احسب ROI</button>
+                        <a class="btn cta"
+                            href="https://wa.me/966538229013?text=%D8%A3%D8%AD%D8%A8%20%D8%A3%D8%AD%D8%B3%D8%A8%20ROI"><iconify-icon
+                                icon="lucide:calculator"></iconify-icon> احسب ROI</a>
                     </div>
                     <div class="robot">
                         <picture>
@@ -1412,8 +1469,10 @@
                             <li>تحسين الأداء</li>
                             <li>مدن/مباني/طاقة ذكية</li>
                         </ul>
-                        <button class="btn ghost cta"><iconify-icon icon="lucide:monitor-play"></iconify-icon> شاهد
-                            Demo</button>
+                        <a class="btn ghost cta"
+                            href="https://wa.me/966538229013?text=%D8%B4%D8%A7%D9%87%D8%AF%20Demo%20%D8%AA%D9%88%D8%A7%D8%A6%D9%85%20%D8%B1%D9%82%D9%85%D9%8A%D8%A9"><iconify-icon
+                                icon="lucide:monitor-play"></iconify-icon> شاهد
+                            Demo</a>
                     </div>
                     <div class="robot">
                         <picture>
@@ -1435,8 +1494,10 @@
                             <li>شاشة تفاعلية</li>
                             <li>للفنادق/المطارات/المولات/المستشفيات</li>
                         </ul>
-                        <button class="btn primary cta"><iconify-icon icon="lucide:shopping-bag"></iconify-icon> استأجر
-                            روبوت</button>
+                        <a class="btn primary cta"
+                            href="https://wa.me/966538229013?text=%D8%A7%D8%B3%D8%AA%D8%A3%D8%AC%D8%B1%20%D8%B1%D9%88%D8%A8%D9%88%D8%AA"><iconify-icon
+                                icon="lucide:shopping-bag"></iconify-icon> استأجر
+                            روبوت</a>
                     </div>
                 </div>
             </div>
@@ -1487,9 +1548,13 @@
                     </div>
                 </div>
                 <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                    <button class="btn primary"><iconify-icon icon="lucide:calendar"></iconify-icon> جدولة عرض
-                        توضيحي</button>
-                    <button class="btn"><iconify-icon icon="lucide:download"></iconify-icon> تحميل دراسة حالة</button>
+                    <a class="btn primary"
+                        href="https://wa.me/966538229013?text=%D8%AC%D8%AF%D9%88%D9%84%D8%A9%20%D8%B9%D8%B1%D8%B6%20%D8%AA%D9%88%D8%B6%D9%8A%D8%AD%D9%8A"><iconify-icon
+                            icon="lucide:calendar"></iconify-icon> جدولة عرض
+                        توضيحي</a>
+                    <a class="btn"
+                        href="https://wa.me/966538229013?text=%D8%AAحميل%20%D8%AF%D8%B1%D8%A7%D8%B3%D8%A9%20%D8%AD%D8%A7%D9%84%D8%A9"><iconify-icon
+                            icon="lucide:download"></iconify-icon> تحميل دراسة حالة</a>
                 </div>
             </div>
         </section>
@@ -1508,9 +1573,10 @@
                             <div class="tab" data-tab="ocr">Text Extraction</div>
                             <div class="tab" data-tab="pred">Predictive Analysis</div>
                         </div>
-                        <button class="btn primary" style="padding:10px 12px"><iconify-icon
-                                icon="lucide:sparkles"></iconify-icon> Try it
-                            yourself</button>
+                        <a class="btn primary" style="padding:10px 12px"
+                            href="frontend/pages/try/index.html"><iconify-icon icon="lucide:sparkles"></iconify-icon>
+                            Try it
+                            yourself</a>
                     </div>
                     <div class="dash-body">
                         <div aria-label="3D dashboard screen demo" class="screen3d">
@@ -1611,8 +1677,10 @@
                     </div>
                 </div>
                 <div style="margin-top:16px">
-                    <button class="btn primary"><iconify-icon icon="lucide:wand-2"></iconify-icon> بناء روبوتك
-                        المخصص</button>
+                    <a class="btn primary"
+                        href="https://wa.me/966538229013?text=%D8%A8%D9%86%D8%A7%D8%A1%20%D8%B1%D9%88%D8%A8%D9%88%D8%AA%20%D9%85%D8%AE%D8%B5%D8%B5"><iconify-icon
+                            icon="lucide:wand-2"></iconify-icon> بناء روبوتك
+                        المخصص</a>
                 </div>
             </div>
         </section>
@@ -1995,10 +2063,11 @@
                         <span>التوفير المتوقع:</span>
                         <strong id="roiOut" style="font-family:var(--mono)">~2.5 مليون ريال/سنة</strong>
                     </div>
-                    <button class="btn primary" style="margin-top:10px;width:100%"><iconify-icon
+                    <a class="btn primary" style="margin-top:10px;width:100%"
+                        href="https://wa.me/966538229013?text=%D8%A3%D8%AD%D8%A8%20%D8%A3%D8%AD%D8%B3ب%20%D8%A7لتوفير"><iconify-icon
                             icon="lucide:calculator"></iconify-icon> احسب
                         التوفير
-                        المتوقع</button>
+                        المتوقع</a>
                 </div>
             </div>
         </section>
@@ -2017,8 +2086,9 @@
                             </div>
                             <h3>مستقبل الذكاء الاصطناعي في السعودية 2030</h3>
                             <p>كيف سيشكل AI مستقبل المملكة في ضوء رؤية 2030...</p>
-                            <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
-                                المزيد</button>
+                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                                    icon="lucide:arrow-left"></iconify-icon> اقرأ
+                                المزيد</a>
                         </div>
                     </article>
                     <article class="post">
@@ -2027,8 +2097,9 @@
                             <div class="meta"><span class="tag">تقنية</span><span>12 فبراير 2026 · 8 دقائق</span></div>
                             <h3>كيف تختار نموذج الذكاء الاصطناعي المناسب؟</h3>
                             <p>دليل شامل لاختيار أفضل نموذج ML لمشروعك...</p>
-                            <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
-                                المزيد</button>
+                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                                    icon="lucide:arrow-left"></iconify-icon> اقرأ
+                                المزيد</a>
                         </div>
                     </article>
                     <article class="post">
@@ -2039,8 +2110,9 @@
                             </div>
                             <h3>حماية بياناتك في عصر الذكاء الاصطناعي</h3>
                             <p>أفضل ممارسات أمن البيانات عند استخدام AI...</p>
-                            <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
-                                المزيد</button>
+                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                                    icon="lucide:arrow-left"></iconify-icon> اقرأ
+                                المزيد</a>
                         </div>
                     </article>
                     <article class="post">
@@ -2050,8 +2122,9 @@
                             </div>
                             <h3>كيف وفرت إحدى الجهات 3 ملايين ريال بـ RPA</h3>
                             <p>قصة نجاح أتمتة ذكية في القطاع الحكومي...</p>
-                            <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
-                                المزيد</button>
+                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                                    icon="lucide:arrow-left"></iconify-icon> اقرأ
+                                المزيد</a>
                         </div>
                     </article>
                     <article class="post">
@@ -2060,8 +2133,9 @@
                             <div class="meta"><span class="tag">تعليمي</span><span>5 فبراير 2026 · 12 دقيقة</span></div>
                             <h3>مقدمة في معالجة اللغة الطبيعية (NLP)</h3>
                             <p>تعلم أساسيات NLP وكيف يفهم الذكاء الاصطناعي اللغة...</p>
-                            <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
-                                المزيد</button>
+                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                                    icon="lucide:arrow-left"></iconify-icon> اقرأ
+                                المزيد</a>
                         </div>
                     </article>
                     <article class="post">
@@ -2070,16 +2144,20 @@
                             <div class="meta"><span class="tag">اتجاهات</span><span>1 فبراير 2026 · 7 دقائق</span></div>
                             <h3>أبرز اتجاهات AI في 2026</h3>
                             <p>تعرف على التقنيات التي ستغير اللعبة هذا العام...</p>
-                            <button class="btn cta"><iconify-icon icon="lucide:arrow-left"></iconify-icon> اقرأ
-                                المزيد</button>
+                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                                    icon="lucide:arrow-left"></iconify-icon> اقرأ
+                                المزيد</a>
                         </div>
                     </article>
                 </div>
                 <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                    <button class="btn primary"><iconify-icon icon="lucide:grid-3x3"></iconify-icon> عرض جميع
-                        المقالات</button>
-                    <button class="btn"><iconify-icon icon="lucide:mail"></iconify-icon> اشترك في النشرة
-                        البريدية</button>
+                    <a class="btn primary" href="frontend/pages/blog/index.html"><iconify-icon
+                            icon="lucide:grid-3x3"></iconify-icon> عرض جميع
+                        المقالات</a>
+                    <a class="btn"
+                        href="https://wa.me/966538229013?text=%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D8%A7%D9%84%D9%86%D8%B4%D8%B1%D8%A9"><iconify-icon
+                            icon="lucide:mail"></iconify-icon> اشترك في النشرة
+                        البريدية</a>
                 </div>
             </div>
         </section>
@@ -2337,15 +2415,18 @@
                     </p>
                     <div class="flex items-center gap-4">
                         <a class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 transition-all duration-300"
-                            href="#">
+                            href="https://www.linkedin.com/company/brightai-sa" target="_blank"
+                            rel="noopener noreferrer" aria-label="LinkedIn">
                             <iconify-icon icon="lucide:linkedin"></iconify-icon>
                         </a>
                         <a class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white hover:border-black transition-all duration-300"
-                            href="#">
+                            href="https://x.com/brightai_sa" target="_blank" rel="noopener noreferrer"
+                            aria-label="X / Twitter">
                             <iconify-icon icon="ri:twitter-x-line"></iconify-icon>
                         </a>
                         <a class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-300"
-                            href="#">
+                            href="https://www.youtube.com/@brightai_sa" target="_blank" rel="noopener noreferrer"
+                            aria-label="YouTube">
                             <iconify-icon icon="lucide:youtube"></iconify-icon>
                         </a>
                     </div>
@@ -2439,8 +2520,10 @@
                 <div class="flex items-center gap-8">
                     <a class="text-slate-500 hover:text-white text-sm transition-colors"
                         href="frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a>
-                    <a class="text-slate-500 hover:text-white text-sm transition-colors" href="#">شروط الاستخدام</a>
-                    <a class="text-slate-500 hover:text-white text-sm transition-colors" href="#">الكوكيز</a>
+                    <a class="text-slate-500 hover:text-white text-sm transition-colors"
+                        href="frontend/pages/privacy-cookies/index.html">شروط الاستخدام</a>
+                    <a class="text-slate-500 hover:text-white text-sm transition-colors"
+                        href="frontend/pages/privacy-cookies/index.html">الكوكيز</a>
                 </div>
                 <div class="flex items-center gap-2 text-slate-600 text-[10px] font-bold uppercase tracking-widest">
                     <iconify-icon class="text-emerald-500" icon="lucide:shield-check"></iconify-icon>

@@ -2,6 +2,7 @@
   "name": "brightai-platform",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/brightai-platform/build",
   "dependencies": {
     "@sentry/react": "^10.38.0",
     "@supabase/supabase-js": "^2.95.3",
