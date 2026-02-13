@@ -339,6 +339,8 @@ const تقديرالرموز = (text: string) => {
   return Math.ceil(text.trim().length / 4);
 };
 
+type حقلمسودةنصي = "الاسم" | "الوصف" | "فئةمخصصة";
+
 const delay = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
 const withTimeout = async <T,>(promise: Promise<T>, ms: number, fallback: T): Promise<T> => {
   const timeoutPromise = new Promise<T>((resolve) => {
@@ -445,6 +447,14 @@ const AgentBuilder = () => {
 
   const importJsonRef = useRef<HTMLInputElement | null>(null);
   const iconUploadRef = useRef<HTMLInputElement | null>(null);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const customCategoryInputRef = useRef<HTMLInputElement | null>(null);
+  const textDraftTimersRef = useRef<Record<حقلمسودةنصي, number | null>>({
+    الاسم: null,
+    الوصف: null,
+    فئةمخصصة: null,
+  });
   const initializedRef = useRef(false);
   const lastDraftFingerprintRef = useRef("");
 
@@ -455,6 +465,101 @@ const AgentBuilder = () => {
   const applyPartialForm = useCallback((partial: Partial<حالةالنموذج>) => {
     setForm((prev) => ({ ...prev, ...partial }));
   }, []);
+
+  useEffect(() => {
+    const timers = textDraftTimersRef.current;
+    return () => {
+      (Object.keys(timers) as حقلمسودةنصي[]).forEach((field) => {
+        if (timers[field]) {
+          window.clearTimeout(timers[field] as number);
+        }
+      });
+    };
+  }, []);
+
+  const getFieldValueFromRef = useCallback(
+    (field: حقلمسودةنصي) => {
+      if (field === "الاسم") {
+        return nameInputRef.current?.value ?? form.الاسم;
+      }
+      if (field === "الوصف") {
+        return descriptionInputRef.current?.value ?? form.الوصف;
+      }
+      return customCategoryInputRef.current?.value ?? form.فئةمخصصة;
+    },
+    [form.الاسم, form.الوصف, form.فئةمخصصة]
+  );
+
+  const commitTextDraft = useCallback((field: حقلمسودةنصي, nextValue: string) => {
+    setForm((prev) => {
+      if (prev[field] === nextValue) {
+        return prev;
+      }
+      return {
+        ...prev,
+        [field]: nextValue,
+      };
+    });
+  }, []);
+
+  const scheduleTextDraftCommit = useCallback(
+    (field: حقلمسودةنصي, value: string, delayMs = 260) => {
+      const timers = textDraftTimersRef.current;
+      if (timers[field]) {
+        window.clearTimeout(timers[field] as number);
+      }
+      timers[field] = window.setTimeout(() => {
+        commitTextDraft(field, value);
+        textDraftTimersRef.current[field] = null;
+      }, delayMs);
+    },
+    [commitTextDraft]
+  );
+
+  const flushTextDraft = useCallback(
+    (field: حقلمسودةنصي) => {
+      const timers = textDraftTimersRef.current;
+      if (timers[field]) {
+        window.clearTimeout(timers[field] as number);
+        timers[field] = null;
+      }
+      commitTextDraft(field, getFieldValueFromRef(field));
+    },
+    [commitTextDraft, getFieldValueFromRef]
+  );
+
+  const flushBasicTextDrafts = useCallback(() => {
+    flushTextDraft("الاسم");
+    flushTextDraft("الوصف");
+    if (form.الفئة === "أخرى (مخصصة)") {
+      flushTextDraft("فئةمخصصة");
+    }
+  }, [flushTextDraft, form.الفئة]);
+
+  useEffect(() => {
+    const nameInput = nameInputRef.current;
+    if (nameInput && document.activeElement !== nameInput && nameInput.value !== form.الاسم) {
+      nameInput.value = form.الاسم;
+    }
+
+    const descriptionInput = descriptionInputRef.current;
+    if (
+      descriptionInput &&
+      document.activeElement !== descriptionInput &&
+      descriptionInput.value !== form.الوصف
+    ) {
+      descriptionInput.value = form.الوصف;
+    }
+
+    const customCategoryInput = customCategoryInputRef.current;
+    if (
+      customCategoryInput &&
+      document.activeElement !== customCategoryInput &&
+      customCategoryInput.value !== form.فئةمخصصة
+    ) {
+      customCategoryInput.value = form.فئةمخصصة;
+    }
+  }, [form.الاسم, form.الوصف, form.فئةمخصصة]);
 
   const loadTemplates = useCallback(async () => {
     try {
@@ -789,9 +894,16 @@ const AgentBuilder = () => {
       return;
     }
 
+    const formForDraft = {
+      ...form,
+      الاسم: getFieldValueFromRef("الاسم"),
+      الوصف: getFieldValueFromRef("الوصف"),
+      فئةمخصصة: getFieldValueFromRef("فئةمخصصة"),
+    };
+
     const fingerprint = JSON.stringify({
       agentId: id || null,
-      form,
+      form: formForDraft,
       step,
       workflow: workflowSummary.raw || null,
     });
@@ -802,7 +914,7 @@ const AgentBuilder = () => {
     const key = getDraftKey(id);
     const payload: نسخةمسودة = {
       agentId: id || null,
-      form,
+      form: formForDraft,
       step,
       workflow: workflowSummary.raw || null,
       lastSavedAt: new Date().toLocaleString("ar-SA"),
@@ -816,7 +928,7 @@ const AgentBuilder = () => {
     } catch {
       setSaveState("تعذر الحفظ");
     }
-  }, [form, id, step, workflowSummary.raw]);
+  }, [form, getFieldValueFromRef, id, step, workflowSummary.raw]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -899,25 +1011,36 @@ const AgentBuilder = () => {
   }, [applyPartialForm, showError, showSuccess]);
 
   const validateStep = useCallback((stepId: خطوة, silent = false) => {
-    const result = evaluateStep(stepId, form);
+    const draftAwareForm =
+      stepId === 1
+        ? {
+            ...form,
+            الاسم: getFieldValueFromRef("الاسم"),
+            الوصف: getFieldValueFromRef("الوصف"),
+            فئةمخصصة: getFieldValueFromRef("فئةمخصصة"),
+          }
+        : form;
+    const result = evaluateStep(stepId, draftAwareForm);
     if (!result.valid && !silent) {
       showError(result.message);
     }
     return result.valid;
-  }, [form, showError]);
+  }, [form, getFieldValueFromRef, showError]);
 
   const goNext = useCallback(() => {
+    flushBasicTextDrafts();
     if (!validateStep(step)) {
       return;
     }
     setStep((prev) => (prev >= 5 ? 5 : ((prev + 1) as خطوة)));
-  }, [step, validateStep]);
+  }, [flushBasicTextDrafts, step, validateStep]);
 
   const goPrev = useCallback(() => {
     setStep((prev) => (prev <= 1 ? 1 : ((prev - 1) as خطوة)));
   }, []);
 
   const jumpToStep = useCallback((target: خطوة) => {
+    flushBasicTextDrafts();
     if (target === step) {
       return;
     }
@@ -931,7 +1054,7 @@ const AgentBuilder = () => {
       }
     }
     setStep(target);
-  }, [step, validateStep]);
+  }, [flushBasicTextDrafts, step, validateStep]);
 
   const applyTemplate = useCallback(() => {
     const template = templates.find((item) => item.id === selectedTemplateId);
@@ -1005,9 +1128,12 @@ const AgentBuilder = () => {
   }, [applyPartialForm, selectedTemplateId, showError, showSuccess, templates]);
 
   const buildPayload = useCallback((saveType: نوعحفظ) => {
+    const effectiveName = getFieldValueFromRef("الاسم").trim();
+    const effectiveDescription = getFieldValueFromRef("الوصف").trim();
+    const effectiveCustomCategory = getFieldValueFromRef("فئةمخصصة").trim();
     const resolvedCategory =
       form.الفئة === "أخرى (مخصصة)"
-        ? form.فئةمخصصة.trim() || "أخرى"
+        ? effectiveCustomCategory || "أخرى"
         : form.الفئة;
 
     const workflow =
@@ -1083,8 +1209,8 @@ const AgentBuilder = () => {
     const isPublic = saveType === "سوق" ? true : form.عام;
 
     return {
-      name: form.الاسم.trim(),
-      description: form.الوصف.trim(),
+      name: effectiveName,
+      description: effectiveDescription,
       category: resolvedCategory,
       workflow,
       settings,
@@ -1094,9 +1220,10 @@ const AgentBuilder = () => {
       user_id: userId,
       created_by: userId,
     };
-  }, [form, userId, workflowSummary.raw]);
+  }, [form, getFieldValueFromRef, userId, workflowSummary.raw]);
 
   const saveAgent = useCallback(async (saveType: نوعحفظ) => {
+    flushBasicTextDrafts();
     if (!validateStep(1) || !validateStep(2) || !validateStep(4)) {
       return;
     }
@@ -1166,7 +1293,19 @@ const AgentBuilder = () => {
     } finally {
       setSaving(false);
     }
-  }, [buildPayload, form.عام, id, localMode, navigate, saveDraftLocal, showError, showSuccess, userId, validateStep]);
+  }, [
+    buildPayload,
+    flushBasicTextDrafts,
+    form.عام,
+    id,
+    localMode,
+    navigate,
+    saveDraftLocal,
+    showError,
+    showSuccess,
+    userId,
+    validateStep,
+  ]);
 
   const exportJson = useCallback(() => {
     const payload = {
@@ -1183,13 +1322,13 @@ const AgentBuilder = () => {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `${form.الاسم || "وكيل"}.json`;
+    anchor.download = `${getFieldValueFromRef("الاسم") || form.الاسم || "وكيل"}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
 
     showSuccess("تم تصدير الوكيل كملف JSON.");
     trackFeatureUsed("تصدير JSON");
-  }, [form, showSuccess, workflowSummary.raw]);
+  }, [form, getFieldValueFromRef, showSuccess, workflowSummary.raw]);
 
   const importJson = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -1510,8 +1649,12 @@ const AgentBuilder = () => {
               <div className="grid gap-2">
                 <label className="text-sm text-slate-300">اسم الوكيل</label>
                 <input
-                  value={form.الاسم}
-                  onChange={(event) => applyPartialForm({ الاسم: event.target.value })}
+                  ref={nameInputRef}
+                  defaultValue={form.الاسم}
+                  onChange={(event) =>
+                    scheduleTextDraftCommit("الاسم", event.currentTarget.value)
+                  }
+                  onBlur={() => flushTextDraft("الاسم")}
                   placeholder="مثال: مساعد خدمة العملاء"
                   className="min-h-[46px] rounded-xl border border-slate-700 bg-slate-900/70 px-4 text-slate-100"
                 />
@@ -1521,8 +1664,12 @@ const AgentBuilder = () => {
               <div className="grid gap-2">
                 <label className="text-sm text-slate-300">الوصف</label>
                 <textarea
-                  value={form.الوصف}
-                  onChange={(event) => applyPartialForm({ الوصف: event.target.value })}
+                  ref={descriptionInputRef}
+                  defaultValue={form.الوصف}
+                  onChange={(event) =>
+                    scheduleTextDraftCommit("الوصف", event.currentTarget.value)
+                  }
+                  onBlur={() => flushTextDraft("الوصف")}
                   placeholder="اشرح ماذا يفعل الوكيل وما القيمة التي يقدّمها"
                   className="min-h-[120px] rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-3 text-slate-100"
                 />
@@ -1562,8 +1709,12 @@ const AgentBuilder = () => {
                 <div className="grid gap-2">
                   <label className="text-sm text-slate-300">اسم الفئة المخصصة</label>
                   <input
-                    value={form.فئةمخصصة}
-                    onChange={(event) => applyPartialForm({ فئةمخصصة: event.target.value })}
+                    ref={customCategoryInputRef}
+                    defaultValue={form.فئةمخصصة}
+                    onChange={(event) =>
+                      scheduleTextDraftCommit("فئةمخصصة", event.currentTarget.value)
+                    }
+                    onBlur={() => flushTextDraft("فئةمخصصة")}
                     placeholder="مثال: الامتثال القانوني"
                     className="min-h-[46px] rounded-xl border border-slate-700 bg-slate-900/70 px-4 text-slate-100"
                   />
@@ -2211,7 +2362,9 @@ const AgentBuilder = () => {
                 )}
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-100">{form.الاسم || "وكيل جديد"}</p>
+                <p className="text-sm font-semibold text-slate-100">
+                  {getFieldValueFromRef("الاسم") || form.الاسم || "وكيل جديد"}
+                </p>
                 <p className="text-xs text-slate-400">{form.الفئة}</p>
               </div>
             </div>
