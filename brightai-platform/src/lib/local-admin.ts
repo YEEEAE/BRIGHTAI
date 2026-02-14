@@ -14,6 +14,26 @@ const getStorage = () => {
   return window.localStorage;
 };
 
+const clearSupabaseAuthTokens = () => {
+  const storage = getStorage();
+  if (!storage) {
+    return;
+  }
+
+  // تنظيف أي جلسة Supabase مخزنة لتجنب إرسال JWT غير صالح أثناء "الوضع المحلي".
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < storage.length; i += 1) {
+    const key = storage.key(i);
+    if (!key) {
+      continue;
+    }
+    if (key.startsWith("sb-") && key.endsWith("-auth-token")) {
+      keysToRemove.push(key);
+    }
+  }
+  keysToRemove.forEach((key) => storage.removeItem(key));
+};
+
 export const isLocalAdminCredentials = (email: string, password: string) => {
   return (
     email.trim().toLowerCase() === LOCAL_ADMIN_EMAIL.toLowerCase() &&
@@ -26,6 +46,7 @@ export const setLocalAdminSession = () => {
   if (!storage) {
     return;
   }
+  clearSupabaseAuthTokens();
   storage.setItem(LOCAL_ADMIN_SESSION_KEY, "1");
 };
 

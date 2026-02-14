@@ -77,6 +77,12 @@ const LoginForm = () => {
 
     // تسجيل دخول محلي مؤقت لحين إصلاح مشكلة المصادقة في قاعدة البيانات
     if (isLocalAdminCredentials(values.email, values.password)) {
+      // تنظيف أي جلسة Supabase سابقة حتى لا تُرسل رموز غير صالحة للواجهة الخلفية
+      try {
+        await supabase.auth.signOut();
+      } catch {
+        // تجاهل الأخطاء، الهدف فقط تنظيف التخزين
+      }
       setLocalAdminSession();
       setSuccessMessage("تم تسجيل الدخول المحلي بنجاح.");
       navigate("/dashboard", { replace: true });

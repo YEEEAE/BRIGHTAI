@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../lib/supabase";
 import { getLocalAdminUser } from "../../lib/local-admin";
@@ -57,6 +57,7 @@ const useAgentBuilderLifecycle = ({
   hydrateFromDatabase,
 }: Params) => {
   const navigate = useNavigate();
+  const initKeyRef = useRef<string>("");
 
   useEffect(() => {
     document.title = "مصمم الوكلاء المتقدم | منصة برايت";
@@ -89,6 +90,13 @@ const useAgentBuilderLifecycle = ({
 
   useEffect(() => {
     let active = true;
+    const currentInitKey = id || "new";
+    if (initializedRef.current && initKeyRef.current === currentInitKey) {
+      return () => {
+        active = false;
+      };
+    }
+    initKeyRef.current = currentInitKey;
 
     const init = async () => {
       setLoadingPage(true);

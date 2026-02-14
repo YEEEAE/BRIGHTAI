@@ -32,6 +32,40 @@ const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
 };
 
+type SupabaseSaveError = {
+  code?: string;
+  message?: string;
+  details?: string;
+  hint?: string;
+};
+
+const OPTIONAL_AGENT_FIELDS = ["created_by", "tags"] as const;
+
+const getErrorText = (error: unknown) => {
+  if (!error || typeof error !== "object") {
+    return "سبب غير معروف";
+  }
+  const e = error as SupabaseSaveError;
+  return [e.message, e.details, e.hint].filter(Boolean).join(" | ") || "سبب غير معروف";
+};
+
+const shouldRetryWithoutOptionalFields = (error: unknown) => {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+  const e = error as SupabaseSaveError;
+  const msg = `${e.message || ""} ${e.details || ""}`.toLowerCase();
+  return e.code === "42703" || msg.includes("column") || msg.includes("does not exist");
+};
+
+const removeOptionalFields = (payload: Record<string, unknown>) => {
+  const next = { ...payload };
+  OPTIONAL_AGENT_FIELDS.forEach((field) => {
+    delete next[field];
+  });
+  return next;
+};
+
 const useAgentBuilderSaveActions = ({
   id,
   userId,
@@ -179,22 +213,26 @@ const useAgentBuilderSaveActions = ({
     setSaveState("جارٍ الحفظ...");
 
     const payload = buildPayload(saveType);
+    let savedAgentId: string | null = null;
 
     try {
-      if (id) {
-        const { error } = await supabaseClient
-          .from("agents")
-          .update(payload)
-          .eq("id", id)
-          .eq("user_id", userId);
+      const performSave = async (candidatePayload: Record<string, unknown>) => {
+        if (id) {
+          const { error } = await supabaseClient
+            .from("agents")
+            .update(candidatePayload)
+            .eq("id", id)
+            .eq("user_id", userId);
 
-        if (error) {
-          throw error;
+          if (error) {
+            throw error;
+          }
+          return;
         }
-      } else {
+
         const { data, error } = await supabaseClient
           .from("agents")
-          .insert(payload)
+          .insert(candidatePayload)
           .select("id")
           .single();
 
@@ -203,8 +241,21 @@ const useAgentBuilderSaveActions = ({
         }
 
         if (data?.id) {
-          navigate(`/agents/${data.id}/builder`, { replace: true });
+          savedAgentId = String(data.id);
         }
+      };
+
+      try {
+        await performSave(payload as Record<string, unknown>);
+      } catch (firstError) {
+        if (!shouldRetryWithoutOptionalFields(firstError)) {
+          throw firstError;
+        }
+        await performSave(removeOptionalFields(payload as Record<string, unknown>));
+      }
+
+      if (!id && savedAgentId) {
+        navigate(`/agents/${savedAgentId}/builder`, { replace: true });
       }
 
       saveDraftLocal();
@@ -217,9 +268,9 @@ const useAgentBuilderSaveActions = ({
           : "تم نشر الوكيل وتفعيله."
       );
       trackFeatureUsed("حفظ الوكيل", { النوع: saveType });
-    } catch {
+    } catch (error) {
       setSaveState("تعذر الحفظ");
-      showError("تعذر حفظ الوكيل في قاعدة البيانات.");
+      showError(`تعذر حفظ الوكيل في قاعدة البيانات. ${getErrorText(error)}`);
     } finally {
       setSaving(false);
     }
