@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import { List, type CellComponentProps } from "react-window";
 import supabase from "../lib/supabase";
+import { confirmAgentDeleteBySettings } from "../lib/agent-delete-settings";
 
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
@@ -29,6 +30,7 @@ type AgentRow = {
   name: string;
   description: string | null;
   status: "نشط" | "متوقف" | "قيد المراجعة";
+  execution_count: number;
   is_public: boolean;
   category: string | null;
   workflow: Record<string, unknown> | null;
@@ -75,7 +77,7 @@ const AgentDetails = () => {
     setLoading(true);
     const { data: agentData } = await supabaseClient
       .from("agents")
-      .select("id, name, description, status, is_public, category, workflow, settings, created_at")
+      .select("id, name, description, status, execution_count, is_public, category, workflow, settings, created_at")
       .eq("id", id)
       .eq("user_id", session.user.id)
       .maybeSingle();
@@ -94,7 +96,10 @@ const AgentDetails = () => {
       .eq("user_id", session.user.id)
       .order("started_at", { ascending: false });
 
-    setAgent(agentData as AgentRow);
+    setAgent({
+      ...(agentData as AgentRow),
+      execution_count: Number((agentData as { execution_count?: number | null }).execution_count || 0),
+    });
     setExecutions((executionsData || []) as ExecutionRow[]);
     setLoading(false);
     return session.user.id;
@@ -233,7 +238,14 @@ const AgentDetails = () => {
     if (!agent) {
       return;
     }
-    if (!window.confirm("هل أنت متأكد من حذف الوكيل؟")) {
+    const confirmation = confirmAgentDeleteBySettings({
+      name: agent.name,
+      executionCount: agent.execution_count,
+    });
+    if (!confirmation.ok) {
+      if (confirmation.reason) {
+        setErrorMessage(confirmation.reason);
+      }
       return;
     }
     await supabaseClient.from("agents").delete().eq("id", agent.id).eq("user_id", userId);

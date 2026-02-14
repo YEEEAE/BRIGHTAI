@@ -37,6 +37,7 @@ import {
   parseExecutionAiFields,
   setCache,
 } from "../lib/dashboard.utils";
+import { confirmAgentDeleteBySettings } from "../lib/agent-delete-settings";
 import supabase from "../lib/supabase";
 import type {
   ActivityItem,
@@ -1014,8 +1015,14 @@ export const useDashboard = (): UseDashboardResult => {
   };
 
   const handleAgentDelete = async (agent: AgentRow) => {
-    const confirmed = window.confirm(`هل تريد حذف الوكيل: ${agent.name}؟`);
-    if (!confirmed) {
+    const confirmation = confirmAgentDeleteBySettings({
+      name: agent.name,
+      executionCount: agent.execution_count,
+    });
+    if (!confirmation.ok) {
+      if (confirmation.reason) {
+        showError(confirmation.reason);
+      }
       return;
     }
 

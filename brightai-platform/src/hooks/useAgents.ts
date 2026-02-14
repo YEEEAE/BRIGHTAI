@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import supabase, { Agent } from "../lib/supabase";
 import { useAuth } from "./useAuth";
 import { trackAgentCreated, trackFeatureUsed } from "../lib/analytics";
+import { confirmAgentDeleteBySettings } from "../lib/agent-delete-settings";
 
 type AgentInput = Omit<Partial<Agent>, "id" | "created_at" | "updated_at" | "execution_count" | "success_rate" | "avg_response_time">;
 
@@ -161,6 +162,19 @@ export const useAgents = (options?: { realtime?: boolean }): UseAgentsResult => 
         return false;
       }
       setError(null);
+      const target = agents.find((agent) => agent.id === id);
+      if (target) {
+        const confirmation = confirmAgentDeleteBySettings({
+          name: target.name,
+          executionCount: target.execution_count,
+        });
+        if (!confirmation.ok) {
+          if (confirmation.reason) {
+            setError(confirmation.reason);
+          }
+          return false;
+        }
+      }
       const previous = agents;
       setAgents((prev) => prev.filter((agent) => agent.id !== id));
       const { error: deleteError } = await supabaseClient
