@@ -3,7 +3,7 @@ import type {
   رابطمحرر,
   ملفمعرفةمحرر,
   شخصيةمحرر,
-} from "../components/agent/AgentPersonalityEditor";
+} from "./agent-personality.types";
 
 export type خطوة = 1 | 2 | 3 | 4 | 5;
 export type وضعسير = "بسيط" | "متقدم";
