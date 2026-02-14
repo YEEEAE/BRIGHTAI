@@ -24,6 +24,7 @@ const Templates = lazyWithRetry(() => import("./pages/Templates"));
 const Marketplace = lazyWithRetry(() => import("./pages/Marketplace"));
 const Analytics = lazyWithRetry(() => import("./pages/Analytics"));
 const Settings = lazyWithRetry(() => import("./pages/Settings"));
+const AiNativeExpansion = lazyWithRetry(() => import("./pages/AiNativeExpansion"));
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -46,6 +47,7 @@ const App = () => {
       () => Templates.preload(),
       () => Analytics.preload(),
       () => Marketplace.preload(),
+      () => AiNativeExpansion.preload(),
     ]);
   }, []);
 
@@ -82,6 +84,7 @@ const App = () => {
               <Route path="/templates" element={<Templates />} />
               <Route path="/marketplace" element={<Marketplace />} />
               <Route path="/analytics" element={<Analytics />} />
+              <Route path="/ai-native-expansion" element={<AiNativeExpansion />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/workflow" element={<WorkflowPage />} />
               <Route path="*" element={<NotFoundPage />} />

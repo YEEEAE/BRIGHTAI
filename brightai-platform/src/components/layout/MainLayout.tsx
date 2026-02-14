@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
   ArrowUpLeft,
   BarChart3,
+  BrainCircuit,
   Boxes,
   Home,
   LayoutDashboard,
@@ -40,6 +41,7 @@ const MainLayout = () => {
     { to: "/templates", label: t("nav.templates"), icon: Boxes },
     { to: "/marketplace", label: t("nav.marketplace"), icon: ShoppingBag },
     { to: "/analytics", label: t("nav.analytics"), icon: BarChart3 },
+    { to: "/ai-native-expansion", label: "الوكلاء الأصليون", icon: BrainCircuit },
     { to: "/settings", label: t("nav.settings"), icon: Settings },
   ];
 

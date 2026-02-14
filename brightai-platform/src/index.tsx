@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 import "./index.css";
 import "./i18n";
 import App from "./App";
@@ -16,9 +16,9 @@ const root = ReactDOM.createRoot(
 
 if (process.env.NODE_ENV === "production") {
   // تعطيل السجلات غير الضرورية في الإنتاج
-  console.log = () => {};
-  console.debug = () => {};
-  console.info = () => {};
+  console.log = () => { };
+  console.debug = () => { };
+  console.info = () => { };
 
   if (window.location.protocol !== "https:" && window.location.hostname !== "localhost") {
     logSecurityEvent({
@@ -57,9 +57,9 @@ window.addEventListener("load", () => {
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <BrowserRouter>
+      <Router>
         <App />
-      </BrowserRouter>
+      </Router>
     </AuthProvider>
   </React.StrictMode>
 );

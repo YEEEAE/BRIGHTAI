@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { Plus, Settings2, Sparkles, Workflow } from "lucide-react";
+import { BrainCircuit, Plus, Settings2, Sparkles, Workflow } from "lucide-react";
 
 const QuickActionsPanel = () => {
   return (
@@ -51,6 +51,17 @@ const QuickActionsPanel = () => {
           </div>
           <p className="mt-3 text-sm font-bold text-slate-100">مصمم سير العمل</p>
           <p className="text-xs text-slate-300">صمّم تدفقات مرئية مع عقد ذكية</p>
+        </Link>
+
+        <Link
+          to="/ai-native-expansion"
+          className="group rounded-2xl bg-gradient-to-br from-emerald-500/25 to-teal-900/20 p-4 transition hover:-translate-y-1"
+        >
+          <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-400/20 text-emerald-200">
+            <BrainCircuit className="h-4 w-4" />
+          </div>
+          <p className="mt-3 text-sm font-bold text-slate-100">الوكلاء الأصليون</p>
+          <p className="text-xs text-slate-300">تشغيل اكتشاف الفرص والامتثال وقياس الأثر</p>
         </Link>
       </div>
     </div>

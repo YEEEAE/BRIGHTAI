@@ -46,6 +46,7 @@ const DashboardPage = () => {
     handleAgentToggle,
     handleAgentClone,
     handleAgentDelete,
+    deletingAgentIds,
   } = useDashboard();
 
   return (
@@ -82,6 +83,7 @@ const DashboardPage = () => {
           onAgentToggle={handleAgentToggle}
           onAgentClone={handleAgentClone}
           onAgentDelete={handleAgentDelete}
+          deletingAgentIds={deletingAgentIds}
           formatCompactNumber={formatCompactNumber}
           toDisplayDateTime={toDisplayDateTime}
         />

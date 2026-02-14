@@ -248,7 +248,15 @@ const AgentDetails = () => {
       }
       return;
     }
-    await supabaseClient.from("agents").delete().eq("id", agent.id).eq("user_id", userId);
+    const { error } = await supabaseClient
+      .from("agents")
+      .delete()
+      .eq("id", agent.id)
+      .eq("user_id", userId);
+    if (error) {
+      setErrorMessage("تعذر حذف الوكيل حالياً. حاول مرة أخرى.");
+      return;
+    }
     navigate("/dashboard", { replace: true });
   };
 

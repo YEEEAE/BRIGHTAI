@@ -15,6 +15,7 @@ type AgentTableProps = {
   onAgentToggle: (agent: AgentRow) => void;
   onAgentClone: (agent: AgentRow) => void;
   onAgentDelete: (agent: AgentRow) => void;
+  deletingAgentIds: string[];
   formatCompactNumber: (value: number) => string;
   toDisplayDateTime: (value: string | null) => string;
 };
@@ -44,6 +45,7 @@ const AgentTable = ({
   onAgentToggle,
   onAgentClone,
   onAgentDelete,
+  deletingAgentIds,
   formatCompactNumber,
   toDisplayDateTime,
 }: AgentTableProps) => {
@@ -91,11 +93,13 @@ const AgentTable = ({
         </div>
       ) : (
         <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {agents.map((agent) => (
-            <article
-              key={agent.id}
-              className="group rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl transition hover:-translate-y-1 hover:border-emerald-400/40"
-            >
+          {agents.map((agent) => {
+            const isDeleting = deletingAgentIds.includes(agent.id);
+            return (
+              <article
+                key={agent.id}
+                className="group rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl transition hover:-translate-y-1 hover:border-emerald-400/40"
+              >
               <div className="flex items-center justify-between gap-2">
                 <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-300">
                   <Bot className="h-4 w-4" />
@@ -173,15 +177,17 @@ const AgentTable = ({
                 <button
                   type="button"
                   onClick={() => onAgentDelete(agent)}
-                  className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-rose-700/60 px-2 text-xs text-rose-200 hover:border-rose-400/60"
+                  className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-rose-700/60 px-2 text-xs text-rose-200 hover:border-rose-400/60 disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label="حذف"
+                  disabled={isDeleting}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                  حذف
+                  {isDeleting ? "جارٍ الحذف..." : "حذف"}
                 </button>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

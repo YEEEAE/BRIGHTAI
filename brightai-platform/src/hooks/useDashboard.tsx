@@ -83,6 +83,7 @@ type UseDashboardResult = {
   handleAgentToggle: (agent: AgentRow) => Promise<void>;
   handleAgentClone: (agent: AgentRow) => Promise<void>;
   handleAgentDelete: (agent: AgentRow) => Promise<void>;
+  deletingAgentIds: string[];
 };
 
 const supabaseClient = supabase as unknown as {
@@ -122,6 +123,7 @@ export const useDashboard = (): UseDashboardResult => {
   const [agentStatusFilter, setAgentStatusFilter] = useState<"الكل" | AgentStatus>("الكل");
   const [executionFilter, setExecutionFilter] = useState<"الكل" | ExecutionStatus>("الكل");
   const [selectedExecution, setSelectedExecution] = useState<ExecutionRow | null>(null);
+  const [deletingAgentIds, setDeletingAgentIds] = useState<string[]>([]);
 
   const [dismissedAlerts, setDismissedAlerts] = useState<string[]>(() => {
     if (typeof window === "undefined") {
@@ -1015,6 +1017,10 @@ export const useDashboard = (): UseDashboardResult => {
   };
 
   const handleAgentDelete = async (agent: AgentRow) => {
+    if (deletingAgentIds.includes(agent.id)) {
+      return;
+    }
+
     const confirmation = confirmAgentDeleteBySettings({
       name: agent.name,
       executionCount: agent.execution_count,
@@ -1026,6 +1032,20 @@ export const useDashboard = (): UseDashboardResult => {
       return;
     }
 
+    const executionsToRemoveCount = executions.filter(
+      (execution) => execution.agent_id === agent.id
+    ).length;
+    const previousAgents = agents;
+    const previousExecutions = executions;
+    const previousSelectedExecution = selectedExecution;
+
+    setDeletingAgentIds((prev) => [...prev, agent.id]);
+    setAgents((prev) => prev.filter((item) => item.id !== agent.id));
+    setExecutions((prev) => prev.filter((item) => item.agent_id !== agent.id));
+    if (selectedExecution?.agent_id === agent.id) {
+      setSelectedExecution(null);
+    }
+
     const { error } = await supabaseClient
       .from("agents")
       .delete()
@@ -1033,12 +1053,20 @@ export const useDashboard = (): UseDashboardResult => {
       .eq("user_id", userId);
 
     if (error) {
+      setAgents(previousAgents);
+      setExecutions(previousExecutions);
+      setSelectedExecution(previousSelectedExecution);
+      setDeletingAgentIds((prev) => prev.filter((id) => id !== agent.id));
       showError("تعذر حذف الوكيل.");
       return;
     }
 
-    setAgents((prev) => prev.filter((item) => item.id !== agent.id));
-    showSuccess("تم حذف الوكيل.");
+    setDeletingAgentIds((prev) => prev.filter((id) => id !== agent.id));
+    showSuccess(
+      executionsToRemoveCount > 0
+        ? `تم حذف الوكيل وإزالة ${executionsToRemoveCount} تنفيذات مرتبطة من لوحة التحكم.`
+        : "تم حذف الوكيل وإزالته من لوحة التحكم."
+    );
   };
 
   const summaryText = `${activeAgentsCount} وكلاء نشطين و ${todayExecutionsCount} تنفيذ اليوم`;
@@ -1159,6 +1187,7 @@ export const useDashboard = (): UseDashboardResult => {
     handleAgentToggle,
     handleAgentClone,
     handleAgentDelete,
+    deletingAgentIds,
   };
 };
 

@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   Sparkles,
   Workflow,
+  BrainCircuit,
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
@@ -57,6 +58,12 @@ const HomePage = () => {
       title: t("nav.analytics"),
       body: t("home.quickAnalyticsDesc"),
       icon: <LineChart className="h-5 w-5" />,
+    },
+    {
+      to: "/ai-native-expansion",
+      title: "الوكلاء الأصليون",
+      body: "تشغيل فوري لاكتشاف الفرص والامتثال وقياس الأثر",
+      icon: <BrainCircuit className="h-5 w-5" />,
     },
     {
       to: "/settings",
