@@ -216,13 +216,21 @@ const chunkText = (text: string, chunkSize = 1000, overlap = 120): string[] => {
   return chunks;
 };
 
-export const extractKnowledgeContext = (
+export type مقطعمعرفةمسترجع = {
+  id: string;
+  source: string;
+  text: string;
+  score: number;
+};
+
+export const retrieveKnowledgeChunks = (
   question: string,
   directText: string,
   urls: رابطمصدر[],
   files: ملفمعرفة[],
-  maxChunks = 8
-) => {
+  maxChunks = 8,
+  maxChunkChars = 520
+): مقطعمعرفةمسترجع[] => {
   const queryTerms = new Set(tokenize(question));
   const candidates: Array<{ source: string; text: string; score: number }> = [];
 
@@ -235,7 +243,7 @@ export const extractKnowledgeContext = (
       const base = scoreChunk(queryTerms, text);
       const boost = detectIntentBoost(question, source, text);
       const score = base + boost;
-      candidates.push({ source, text, score });
+      candidates.push({ source, text: compressChunk(text, maxChunkChars), score });
     }
   };
 
@@ -261,10 +269,27 @@ export const extractKnowledgeContext = (
     }
   }
 
-  const ranked = dedupeChunks(candidates)
+  return dedupeChunks(candidates)
     .sort((a, b) => b.score - a.score)
     .slice(0, maxChunks)
-    .map((item, index) => `[${index + 1}] ${item.source}\n${compressChunk(item.text)}`);
+    .map((item, index) => ({
+      id: `${item.source}_${index}_${item.score.toFixed(4)}`,
+      source: item.source,
+      text: item.text,
+      score: item.score,
+    }));
+};
+
+export const extractKnowledgeContext = (
+  question: string,
+  directText: string,
+  urls: رابطمصدر[],
+  files: ملفمعرفة[],
+  maxChunks = 8
+) => {
+  const ranked = retrieveKnowledgeChunks(question, directText, urls, files, maxChunks).map(
+    (item, index) => `[${index + 1}] ${item.source}\n${item.text}`
+  );
 
   if (ranked.length === 0) {
     return "";
@@ -346,6 +371,12 @@ export const evaluateStep = (stepId: خطوة, form: حالةالنموذج) => 
     }
     if (form.webhookUrl && !/^https?:\/\//.test(form.webhookUrl)) {
       return { valid: false, message: "رابط الويب هوك غير صالح." };
+    }
+    if (form.حدالمقاطعالمعرفية < 1 || form.حدالمقاطعالمعرفية > 20) {
+      return { valid: false, message: "حد المقاطع المعرفية يجب أن يكون بين ١ و ٢٠." };
+    }
+    if (form.حدطولالمقطعالمعرفي < 120 || form.حدطولالمقطعالمعرفي > 1200) {
+      return { valid: false, message: "طول المقطع المعرفي يجب أن يكون بين ١٢٠ و ١٢٠٠ حرف." };
     }
   }
 

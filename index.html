@@ -539,21 +539,31 @@
     ]
     }
     </script>
-    <!-- GTM: تحميل مؤجل بعد FCP لتقليل TBT -->
+    <!-- GTM: تحميل مؤجل لحين التفاعل أو 5 ثوانٍ -->
     <script>
-        function loadGTM() {
-            var s = document.createElement('script');
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
-            s.async = true;
-            document.head.appendChild(s);
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            window.gtag = gtag;
-            gtag('js', new Date());
-            gtag('config', 'G-8LLESL207Q');
-        }
-        if (document.readyState === 'complete') { setTimeout(loadGTM, 2000); }
-        else { window.addEventListener('load', function () { setTimeout(loadGTM, 2000); }); }
+        (function () {
+            var loaded = false;
+            function loadGTM() {
+                if (loaded) return;
+                loaded = true;
+                var s = document.createElement('script');
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                s.async = true;
+                document.head.appendChild(s);
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true });
+                ['scroll', 'click', 'touchstart', 'mousemove'].forEach(function (e) {
+                    document.removeEventListener(e, loadGTM, { passive: true, capture: true });
+                });
+            }
+            ['scroll', 'click', 'touchstart', 'mousemove'].forEach(function (e) {
+                document.addEventListener(e, loadGTM, { passive: true, capture: true, once: true });
+            });
+            setTimeout(loadGTM, 5000);
+        })();
     </script>
     <!-- Dependencies: Fonts, Tailwind, Icons -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -561,34 +571,32 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <!-- Preload Scheherazade: Critical for LCP + CLS -->
+    <link rel="preload" as="font" type="font/woff2" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2"
+        crossorigin />
+    <!-- Google Fonts: Consolidated into single request -->
     <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap">
+            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap">
     </noscript>
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;display=swap"
-        onload="this.rel='stylesheet'" />
     <!-- Sitemap Reference -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap">
-    </noscript>
     <!-- Critical CSS: Hero & Layout Stability (Fixes CLS/LCP) -->
     <style id="critical-css">
-        /* === SCHEHERAZADE NEW FONT === */
+        /* === SCHEHERAZADE NEW FONT (CLS-Optimized) === */
         @font-face {
             font-family: 'Scheherazade New';
             src: url('frontend/assets/fonts/ScheherazadeNew-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
+            /* CLS Prevention: match fallback font metrics */
+            ascent-override: 88%;
+            descent-override: 32%;
+            line-gap-override: 0%;
         }
 
         /* === DESIGN TOKENS === */
@@ -614,6 +622,7 @@
             --radius-md: 12px;
             --radius-full: 9999px;
             --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         /* === BASE STYLES === */
@@ -628,6 +637,8 @@
         html {
             scroll-behavior: smooth;
             -webkit-text-size-adjust: 100%;
+            /* Prevent CLS on html element */
+            overflow-x: hidden;
         }
 
         body {
@@ -637,6 +648,26 @@
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            /* CLS Prevention: force consistent text sizing */
+            font-size-adjust: 0.5;
+        }
+
+        /* === LOADING SCREEN (Prevent CLS) === */
+        .loading {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #020617;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
         /* === NAVIGATION === */
@@ -829,6 +860,10 @@
             position: absolute;
             inset: 0;
             z-index: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
         }
     </style>
     <!-- Deferred CSS Loading -->
@@ -1305,7 +1340,7 @@
                                             <span class="dot red"></span><span class="dot yellow"></span><span
                                                 class="dot green"></span>
                                         </div>
-                                        <span>brightai@terminal — demo</span>
+                                        <span>brightai<span>@</span>terminal — demo</span>
                                     </div>
                                     <span style="font-family:var(--mono);opacity:.8">matrix-mode</span>
                                 </div>

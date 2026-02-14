@@ -84,6 +84,7 @@ const useAgentBuilderHydration = ({
     const webhook = (settings.webhook || {}) as Record<string, any>;
     const branding = (settings.branding || {}) as Record<string, any>;
     const knowledge = (settings.knowledge || {}) as Record<string, any>;
+    const retrieval = (knowledge.retrieval || advanced.retrieval || {}) as Record<string, any>;
     const identity = (personality.identity || {}) as Record<string, any>;
     const traits = (personality.traits || {}) as Record<string, any>;
     const responseTemplates = (personality.responseTemplates || {}) as Record<string, any>;
@@ -131,6 +132,15 @@ const useAgentBuilderHydration = ({
       topP: Number(advanced.topP ?? الحالةالافتراضية.topP),
       frequencyPenalty: Number(advanced.frequencyPenalty ?? الحالةالافتراضية.frequencyPenalty),
       presencePenalty: Number(advanced.presencePenalty ?? الحالةالافتراضية.presencePenalty),
+      تفعيلالاسترجاعالمعرفي: Boolean(
+        retrieval.enabled ?? الحالةالافتراضية.تفعيلالاسترجاعالمعرفي
+      ),
+      حدالمقاطعالمعرفية: Number(
+        retrieval.maxChunks ?? الحالةالافتراضية.حدالمقاطعالمعرفية
+      ),
+      حدطولالمقطعالمعرفي: Number(
+        retrieval.maxChunkChars ?? الحالةالافتراضية.حدطولالمقطعالمعرفي
+      ),
       حدتنفيذيومي: Number(limits.dailyExecutions ?? الحالةالافتراضية.حدتنفيذيومي),
       حدتكلفةيومية: Number(limits.dailyCostSar ?? الحالةالافتراضية.حدتكلفةيومية),
       timeoutSeconds: Number(limits.timeoutSeconds ?? الحالةالافتراضية.timeoutSeconds),

@@ -1,22 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { خياراتالايقونات, عناوينالخطوات } from "../../constants/agent-builder.constants";
-import {
-  clampKnowledgeContext,
-  delay,
-  extractKnowledgeContext,
-  تقديرالرموز,
-} from "../../lib/agent-builder.utils";
 import { trackFeatureUsed } from "../../lib/analytics";
-import { GroqService } from "../../services/groq.service";
-import apiKeyService from "../../services/apikey.service";
 import type {
   حالةالنموذج,
   حالةنظام,
+  مقطعمعرفةاختبار,
   خطوة,
   ملخصسير,
   رسالةاختبار,
   حقلمسودةنصي,
 } from "../../types/agent-builder.types";
+import {
+  buildFallbackReply,
+  buildKnowledgeContext,
+  buildKnowledgeContextFromChunks,
+  estimateExecutionCostSar,
+  resolveGroqClient,
+  streamFallbackReply,
+} from "./agent-builder-testing.utils";
+import useBuilderKeyboardShortcuts from "./useBuilderKeyboardShortcuts";
 
 type Params = {
   step: خطوة;
@@ -57,88 +59,7 @@ const useAgentBuilderTesting = ({
 }: Params) => {
   const [lastKnowledgeContext, setLastKnowledgeContext] = useState("");
   const [lastKnowledgeSegments, setLastKnowledgeSegments] = useState(0);
-
-  const resolveGroqClient = useCallback(async () => {
-    if (process.env.REACT_APP_GROQ_API_KEY) {
-      return new GroqService(process.env.REACT_APP_GROQ_API_KEY);
-    }
-
-    try {
-      const key = await apiKeyService.getApiKey("groq");
-      if (key) {
-        return new GroqService(key);
-      }
-    } catch {
-      return null;
-    }
-
-    return null;
-  }, []);
-
-  const buildTestReply = useCallback((message: string) => {
-    const resolvedCategory =
-      form.الفئة === "أخرى (مخصصة)" ? form.فئةمخصصة.trim() || "أخرى" : form.الفئة;
-
-    const bullets = [
-      `تلقيت طلبك حول: ${message}`,
-      `سأتعامل معه وفق فئة: ${resolvedCategory}`,
-      `نبرة الإجابة: ${form.اللهجة}`,
-      "الخطوة المقترحة: ابدأ بتحديد الهدف التجاري والقيود المتاحة ثم نفذ خطة قصيرة من ثلاث مراحل.",
-    ];
-
-    if (form.قواعدالسلوك.length > 0) {
-      bullets.push(`قاعدة مطبقة: ${form.قواعدالسلوك[0]}`);
-    }
-
-    return bullets.join("\n");
-  }, [form.فئةمخصصة, form.الفئة, form.اللهجة, form.قواعدالسلوك]);
-
-  const buildKnowledgeContext = useCallback((question: string) => {
-    const semanticContext = extractKnowledgeContext(
-      question,
-      form.نصالمعرفة,
-      form.روابطالمعرفة,
-      form.ملفاتالمعرفة,
-      8
-    );
-
-    if (semanticContext) {
-      return clampKnowledgeContext(semanticContext, form.النموذج, form.maxTokens + 2200);
-    }
-
-    const chunks: string[] = [];
-    if (form.نصالمعرفة.trim()) {
-      chunks.push(`نص معرفة مباشر:\n${form.نصالمعرفة.trim().slice(0, 4000)}`);
-    }
-    if (form.روابطالمعرفة.length > 0) {
-      const urls = form.روابطالمعرفة.map((item) => `- ${item.url} (${item.status})`).join("\n");
-      chunks.push(`روابط معرفة:\n${urls}`);
-    }
-    if (form.ملفاتالمعرفة.length > 0) {
-      const files = form.ملفاتالمعرفة
-        .map((item) => `- ${item.name} | كلمات: ${item.words} | رموز: ${item.tokens}`)
-        .join("\n");
-      chunks.push(`ملفات معرفة:\n${files}`);
-    }
-    if (chunks.length === 0) {
-      return "";
-    }
-    return clampKnowledgeContext(
-      `استخدم سياق المعرفة التالي عند الإجابة:\n${chunks.join("\n\n")}`,
-      form.النموذج,
-      form.maxTokens + 2200
-    );
-  }, [form.نصالمعرفة, form.روابطالمعرفة, form.ملفاتالمعرفة, form.النموذج, form.maxTokens]);
-
-  const streamFallbackReply = useCallback(async (message: string) => {
-    const full = buildTestReply(message);
-    let current = "";
-    for (const char of full) {
-      current += char;
-      await delay(14);
-    }
-    return current;
-  }, [buildTestReply]);
+  const [lastKnowledgeChunks, setLastKnowledgeChunks] = useState<مقطعمعرفةاختبار[]>([]);
 
   const runTestMessage = useCallback(async (message: string) => {
     if (!message.trim() || isStreaming) {
@@ -163,14 +84,9 @@ const useAgentBuilderTesting = ({
     setTestMessages((prev) => [...prev, userMessage, botMessage]);
     setTestInput("");
     setIsStreaming(true);
-    const knowledgeContext = buildKnowledgeContext(message.trim());
-    setLastKnowledgeContext(knowledgeContext);
-    setLastKnowledgeSegments(
-      knowledgeContext
-        .split("\n")
-        .filter((line) => line.trim().startsWith("["))
-        .length
-    );
+    const knowledgeResult = buildKnowledgeContext(message.trim(), form, lastKnowledgeChunks);
+    setLastKnowledgeChunks(knowledgeResult.chunks);
+    const knowledgeContext = knowledgeResult.context;
 
     let full = "";
     const updateAssistantText = (nextText: string) => {
@@ -236,53 +152,38 @@ const useAgentBuilderTesting = ({
           full = streamed;
         }
       } else {
-        full = await streamFallbackReply(message);
+        full = await streamFallbackReply(buildFallbackReply(form, message));
         updateAssistantText(full);
       }
     } catch {
-      full = await streamFallbackReply(message);
+      full = await streamFallbackReply(buildFallbackReply(form, message));
       updateAssistantText(full);
     } finally {
       setIsStreaming(false);
     }
 
     const latency = Math.round(performance.now() - started);
-    const tokens = تقديرالرموز(`${form.الموجهالنظامي}\n${message}\n${full}`);
-    const usdCost = (() => {
-      try {
-        const client = new GroqService(process.env.REACT_APP_GROQ_API_KEY || "");
-        return client.calculateCost(form.النموذج, tokens);
-      } catch {
-        return tokens * 0.00024;
-      }
-    })();
-    const costSar = Number((usdCost * 3.75).toFixed(4));
+    const costInfo = estimateExecutionCostSar(form.النموذج, `${form.الموجهالنظامي}\n${message}\n${full}`);
 
     setTestLatency(latency);
-    setTestTokens(tokens);
-    setTestCost(costSar);
+    setTestTokens(costInfo.tokens);
+    setTestCost(costInfo.costSar);
 
     trackFeatureUsed("اختبار الوكيل", {
-      tokens,
+      tokens: costInfo.tokens,
       latency,
       live: full.trim().length > 0,
     });
   }, [
-    form.الموجهالنظامي,
-    form.النموذج,
-    form.temperature,
-    form.maxTokens,
-    form.topP,
-    buildKnowledgeContext,
+    form,
     isStreaming,
-    resolveGroqClient,
+    lastKnowledgeChunks,
     setIsStreaming,
     setTestCost,
     setTestInput,
     setTestLatency,
     setTestMessages,
     setTestTokens,
-    streamFallbackReply,
   ]);
 
   const clearChat = useCallback(() => {
@@ -290,12 +191,29 @@ const useAgentBuilderTesting = ({
     setTestTokens(0);
     setTestCost(0);
     setTestLatency(0);
+    setLastKnowledgeChunks([]);
   }, [setTestCost, setTestLatency, setTestMessages, setTestTokens]);
 
   const runScenario = useCallback(() => {
     const scenario = "أريد بناء خطة رد تلقائي لشكاوى العملاء المتكررة";
     runTestMessage(scenario);
   }, [runTestMessage]);
+
+  const toggleKnowledgeChunk = useCallback((id: string) => {
+    setLastKnowledgeChunks((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, enabled: !item.enabled } : item))
+    );
+  }, []);
+
+  useEffect(() => {
+    const nextContext = buildKnowledgeContextFromChunks(
+      lastKnowledgeChunks,
+      form.النموذج,
+      form.maxTokens
+    );
+    setLastKnowledgeSegments(lastKnowledgeChunks.filter((item) => item.enabled).length);
+    setLastKnowledgeContext(nextContext);
+  }, [form.maxTokens, form.النموذج, lastKnowledgeChunks]);
 
   useEffect(() => {
     const promptReady = form.الموجهالنظامي.trim().length >= 30;
@@ -338,27 +256,7 @@ const useAgentBuilderTesting = ({
     workflowSummary.nodes,
   ]);
 
-  useEffect(() => {
-    const handleKeys = (event: KeyboardEvent) => {
-      const metaOrCtrl = event.ctrlKey || event.metaKey;
-      if (!metaOrCtrl) {
-        return;
-      }
-
-      if (event.key.toLowerCase() === "s") {
-        event.preventDefault();
-        void saveAgent("مسودة");
-      }
-
-      if (["1", "2", "3", "4", "5"].includes(event.key)) {
-        event.preventDefault();
-        jumpToStep(Number(event.key) as خطوة, step);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeys);
-    return () => window.removeEventListener("keydown", handleKeys);
-  }, [jumpToStep, saveAgent, step]);
+  useBuilderKeyboardShortcuts({ step, saveAgent, jumpToStep });
 
   const progress = useMemo(() => ((step - 1) / 4) * 100, [step]);
 
@@ -389,6 +287,8 @@ const useAgentBuilderTesting = ({
     previewName,
     lastKnowledgeContext,
     lastKnowledgeSegments,
+    lastKnowledgeChunks,
+    toggleKnowledgeChunk,
   };
 };
 

@@ -94,6 +94,11 @@ const useAgentBuilderSaveActions = ({
         urlDetails: form.روابطالمعرفة,
         files: form.ملفاتالمعرفة,
         text: form.نصالمعرفة,
+        retrieval: {
+          enabled: form.تفعيلالاسترجاعالمعرفي,
+          maxChunks: form.حدالمقاطعالمعرفية,
+          maxChunkChars: form.حدطولالمقطعالمعرفي,
+        },
       },
       advanced: {
         model: form.النموذج,
@@ -102,6 +107,11 @@ const useAgentBuilderSaveActions = ({
         topP: form.topP,
         frequencyPenalty: form.frequencyPenalty,
         presencePenalty: form.presencePenalty,
+        retrieval: {
+          enabled: form.تفعيلالاسترجاعالمعرفي,
+          maxChunks: form.حدالمقاطعالمعرفية,
+          maxChunkChars: form.حدطولالمقطعالمعرفي,
+        },
       },
       limits: {
         dailyExecutions: form.حدتنفيذيومي,

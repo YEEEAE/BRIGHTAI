@@ -43,6 +43,7 @@ const AgentBuilder = () => {
     testLatency,
     lastKnowledgeContext,
     lastKnowledgeSegments,
+    lastKnowledgeChunks,
     systemState,
     importJsonRef,
     iconUploadRef,
@@ -67,6 +68,7 @@ const AgentBuilder = () => {
     runTestMessage,
     clearChat,
     runScenario,
+    toggleKnowledgeChunk,
     progress,
     selectedIcon,
     descriptionChars,
@@ -185,6 +187,8 @@ const AgentBuilder = () => {
               testLatency={testLatency}
               lastKnowledgeContext={lastKnowledgeContext}
               lastKnowledgeSegments={lastKnowledgeSegments}
+              lastKnowledgeChunks={lastKnowledgeChunks}
+              onToggleKnowledgeChunk={toggleKnowledgeChunk}
               systemState={systemState}
               saving={saving}
               canPublishMarket={form.عام}

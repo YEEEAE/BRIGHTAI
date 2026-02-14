@@ -11,8 +11,15 @@
 /frontend/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-/frontend/fonts/*
+# الخطوط: سنة كاملة مع CORS
+/frontend/assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# ملفات woff2 بشكل خاص
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
 
 # صفحات HTML: إعادة التحقق دائماً
 /*.html
@@ -20,11 +27,6 @@
 
 /
   Cache-Control: public, max-age=0, must-revalidate
-
-# الخطوط: سنة كاملة مع CORS
-/frontend/assets/fonts/*
-  Cache-Control: public, max-age=31536000, immutable
-  Access-Control-Allow-Origin: *
 
 # Security Headers
 /*

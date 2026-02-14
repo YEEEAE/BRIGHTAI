@@ -9,3 +9,4 @@ export { default as useAgentBuilderState } from "./useAgentBuilderState";
 export { default as useAgentBuilderTesting } from "./useAgentBuilderTesting";
 export { default as useAgentBuilderTextDraft } from "./useAgentBuilderTextDraft";
 export { default as useAgentBuilderTransfer } from "./useAgentBuilderTransfer";
+export { default as useBuilderKeyboardShortcuts } from "./useBuilderKeyboardShortcuts";

@@ -11,6 +11,7 @@ import {
   Store,
 } from "lucide-react";
 import type {
+  مقطعمعرفةاختبار,
   حالةنظام,
   رسالةاختبار,
 } from "../../types/agent-builder.types";
@@ -28,6 +29,8 @@ type BuilderStepTestPublishProps = {
   testLatency: number;
   lastKnowledgeContext: string;
   lastKnowledgeSegments: number;
+  lastKnowledgeChunks: مقطعمعرفةاختبار[];
+  onToggleKnowledgeChunk: (id: string) => void;
   systemState: حالةنظام;
   saving: boolean;
   canPublishMarket: boolean;
@@ -49,6 +52,8 @@ const BuilderStepTestPublish = ({
   testLatency,
   lastKnowledgeContext,
   lastKnowledgeSegments,
+  lastKnowledgeChunks,
+  onToggleKnowledgeChunk,
   systemState,
   saving,
   canPublishMarket,
@@ -154,6 +159,25 @@ const BuilderStepTestPublish = ({
             {lastKnowledgeSegments > 0 ? ` (${lastKnowledgeSegments} مقطع)` : " (لا يوجد مقاطع)"}
           </summary>
           <div className="border-t border-slate-700 px-3 py-3">
+            {lastKnowledgeChunks.length > 0 ? (
+              <div className="mb-3 grid gap-2">
+                {lastKnowledgeChunks.map((chunk, index) => (
+                  <label
+                    key={chunk.id}
+                    className="inline-flex min-h-[38px] items-start justify-between gap-2 rounded-lg border border-slate-700 bg-slate-900/60 px-2 py-2 text-xs text-slate-300"
+                  >
+                    <span className="line-clamp-2">
+                      [{index + 1}] {chunk.source}
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={chunk.enabled}
+                      onChange={() => onToggleKnowledgeChunk(chunk.id)}
+                    />
+                  </label>
+                ))}
+              </div>
+            ) : null}
             <pre className="max-h-48 overflow-y-auto whitespace-pre-wrap break-words text-xs leading-6 text-slate-200">
               {lastKnowledgeContext || "لم يتم حقن سياق معرفي بعد. أرسل رسالة اختبار أولاً."}
             </pre>

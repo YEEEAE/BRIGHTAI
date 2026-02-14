@@ -39,6 +39,14 @@ export type رسالةاختبار = {
   createdAt: string;
 };
 
+export type مقطعمعرفةاختبار = {
+  id: string;
+  source: string;
+  text: string;
+  score: number;
+  enabled: boolean;
+};
+
 export type حالةنظام = {
   apiConnected: boolean;
   promptReady: boolean;
@@ -74,6 +82,9 @@ export type حالةالنموذج = {
   topP: number;
   frequencyPenalty: number;
   presencePenalty: number;
+  تفعيلالاسترجاعالمعرفي: boolean;
+  حدالمقاطعالمعرفية: number;
+  حدطولالمقطعالمعرفي: number;
 
   حدتنفيذيومي: number;
   حدتكلفةيومية: number;
