@@ -38,14 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/develop'
-    env:
-      REACT_APP_SUPABASE_URL: ${{ secrets.STAGING_SUPABASE_URL }}
-      REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.STAGING_SUPABASE_ANON_KEY }}
-      REACT_APP_ANALYTICS_PROVIDER: ${{ secrets.STAGING_ANALYTICS_PROVIDER }}
-      REACT_APP_ANALYTICS_KEY: ${{ secrets.STAGING_ANALYTICS_KEY }}
-      REACT_APP_SENTRY_DSN: ${{ secrets.STAGING_SENTRY_DSN }}
-      REACT_APP_SENTRY_TRACES_SAMPLE_RATE: ${{ secrets.STAGING_SENTRY_TRACES_SAMPLE_RATE }}
-      REACT_APP_RELEASE: brightai-staging-${{ github.run_number }}
+    environment: staging
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -55,33 +48,44 @@ jobs:
       - run: npm ci
       - run: npm run verify:prod
       - run: npm run build:prod
+        env:
+          REACT_APP_SUPABASE_URL: "${{ secrets.STAGING_SUPABASE_URL }}"
+          REACT_APP_SUPABASE_ANON_KEY: "${{ secrets.STAGING_SUPABASE_ANON_KEY }}"
+          REACT_APP_ANALYTICS_PROVIDER: "${{ secrets.STAGING_ANALYTICS_PROVIDER }}"
+          REACT_APP_ANALYTICS_KEY: "${{ secrets.STAGING_ANALYTICS_KEY }}"
+          REACT_APP_SENTRY_DSN: "${{ secrets.STAGING_SENTRY_DSN }}"
+          REACT_APP_SENTRY_TRACES_SAMPLE_RATE: "${{ secrets.STAGING_SENTRY_TRACES_SAMPLE_RATE }}"
+          REACT_APP_RELEASE: "brightai-staging-${{ github.run_number }}"
+          VERCEL_TOKEN: "${{ secrets.VERCEL_TOKEN }}"
+          NETLIFY_AUTH_TOKEN: "${{ secrets.NETLIFY_AUTH_TOKEN }}"
+          NETLIFY_SITE_ID: "${{ secrets.NETLIFY_SITE_ID }}"
+          SLACK_WEBHOOK_URL: "${{ secrets.SLACK_WEBHOOK_URL }}"
+      - name: التحقق من الأسرار
+        id: check_secrets
+        run: |
+          echo "HAS_VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN != '' }}" >> $GITHUB_OUTPUT
+          echo "HAS_NETLIFY_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN != '' }}" >> $GITHUB_OUTPUT
+          echo "HAS_SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK_URL != '' }}" >> $GITHUB_OUTPUT
       - name: نشر إلى Vercel (مرحلة)
-        if: secrets.VERCEL_TOKEN != ''
-        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod=false --yes
+        if: steps.check_secrets.outputs.HAS_VERCEL_TOKEN == 'true'
+        run: npx vercel --token "${{ secrets.VERCEL_TOKEN }}" --prod=false --yes
       - name: نشر إلى Netlify (مرحلة)
-        if: secrets.NETLIFY_AUTH_TOKEN != ''
-        run: npx netlify deploy --dir=build --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }}
+        if: steps.check_secrets.outputs.HAS_NETLIFY_TOKEN == 'true'
+        run: npx netlify deploy --dir=build --auth "${{ secrets.NETLIFY_AUTH_TOKEN }}" --site "${{ secrets.NETLIFY_SITE_ID }}"
       - name: إشعار سلاك
-        if: secrets.SLACK_WEBHOOK_URL != ''
+        if: steps.check_secrets.outputs.HAS_SLACK_WEBHOOK == 'true'
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
             {"text":"تم نشر نسخة المرحلة من برايت أي آي بنجاح."}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: "${{ secrets.SLACK_WEBHOOK_URL }}"
 
   deploy_production:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
-    env:
-      REACT_APP_SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }}
-      REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.PROD_SUPABASE_ANON_KEY }}
-      REACT_APP_ANALYTICS_PROVIDER: ${{ secrets.PROD_ANALYTICS_PROVIDER }}
-      REACT_APP_ANALYTICS_KEY: ${{ secrets.PROD_ANALYTICS_KEY }}
-      REACT_APP_SENTRY_DSN: ${{ secrets.PROD_SENTRY_DSN }}
-      REACT_APP_SENTRY_TRACES_SAMPLE_RATE: ${{ secrets.PROD_SENTRY_TRACES_SAMPLE_RATE }}
-      REACT_APP_RELEASE: brightai-prod-${{ github.run_number }}
+    environment: production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -91,17 +95,35 @@ jobs:
       - run: npm ci
       - run: npm run verify:prod
       - run: npm run build:prod
+        env:
+          REACT_APP_SUPABASE_URL: "${{ secrets.PROD_SUPABASE_URL }}"
+          REACT_APP_SUPABASE_ANON_KEY: "${{ secrets.PROD_SUPABASE_ANON_KEY }}"
+          REACT_APP_ANALYTICS_PROVIDER: "${{ secrets.PROD_ANALYTICS_PROVIDER }}"
+          REACT_APP_ANALYTICS_KEY: "${{ secrets.PROD_ANALYTICS_KEY }}"
+          REACT_APP_SENTRY_DSN: "${{ secrets.PROD_SENTRY_DSN }}"
+          REACT_APP_SENTRY_TRACES_SAMPLE_RATE: "${{ secrets.PROD_SENTRY_TRACES_SAMPLE_RATE }}"
+          REACT_APP_RELEASE: "brightai-prod-${{ github.run_number }}"
+          VERCEL_TOKEN: "${{ secrets.VERCEL_TOKEN }}"
+          NETLIFY_AUTH_TOKEN: "${{ secrets.NETLIFY_AUTH_TOKEN }}"
+          NETLIFY_SITE_ID: "${{ secrets.NETLIFY_SITE_ID }}"
+          SLACK_WEBHOOK_URL: "${{ secrets.SLACK_WEBHOOK_URL }}"
+      - name: التحقق من الأسرار
+        id: check_secrets
+        run: |
+          echo "HAS_VERCEL_TOKEN=${{ secrets.VERCEL_TOKEN != '' }}" >> $GITHUB_OUTPUT
+          echo "HAS_NETLIFY_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN != '' }}" >> $GITHUB_OUTPUT
+          echo "HAS_SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK_URL != '' }}" >> $GITHUB_OUTPUT
       - name: نشر إلى Vercel (إنتاج)
-        if: secrets.VERCEL_TOKEN != ''
-        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
+        if: steps.check_secrets.outputs.HAS_VERCEL_TOKEN == 'true'
+        run: npx vercel --token "${{ secrets.VERCEL_TOKEN }}" --prod --yes
       - name: نشر إلى Netlify (إنتاج)
-        if: secrets.NETLIFY_AUTH_TOKEN != ''
-        run: npx netlify deploy --dir=build --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }} --prod
+        if: steps.check_secrets.outputs.HAS_NETLIFY_TOKEN == 'true'
+        run: npx netlify deploy --dir=build --auth "${{ secrets.NETLIFY_AUTH_TOKEN }}" --site "${{ secrets.NETLIFY_SITE_ID }}" --prod
       - name: إشعار سلاك
-        if: secrets.SLACK_WEBHOOK_URL != ''
+        if: steps.check_secrets.outputs.HAS_SLACK_WEBHOOK == 'true'
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
             {"text":"تم نشر نسخة الإنتاج من برايت أي آي بنجاح."}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: "${{ secrets.SLACK_WEBHOOK_URL }}"
