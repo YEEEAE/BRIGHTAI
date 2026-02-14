@@ -132,6 +132,13 @@ const AgentTable = ({
               </p>
 
               <div className="mt-3 flex flex-wrap gap-1">
+                <Link
+                  to={`/agents/${agent.id}`}
+                  className="inline-flex min-h-[36px] items-center gap-1 rounded-lg border border-slate-700 px-2 text-xs text-slate-200 hover:border-emerald-400/40"
+                  aria-label="تفاصيل"
+                >
+                  تفاصيل
+                </Link>
                 <button
                   type="button"
                   onClick={() => onAgentEdit(agent.id)}

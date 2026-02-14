@@ -1,4 +1,5 @@
 import { Loader2 } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 import {
   BuilderHeader,
   BuilderSidebar,
@@ -13,6 +14,7 @@ import {
 import useAgentBuilder from "../hooks/useAgentBuilder";
 
 const AgentBuilder = () => {
+  const { id } = useParams();
   const {
     step,
     form,
@@ -86,6 +88,23 @@ const AgentBuilder = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-3 py-4 md:px-6 md:py-6">
+      <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+        <Link to="/dashboard" className="rounded-lg border border-slate-800 px-2 py-1 hover:text-emerald-200">
+          لوحة التحكم
+        </Link>
+        {id ? (
+          <Link
+            to={`/agents/${id}`}
+            className="rounded-lg border border-slate-800 px-2 py-1 hover:text-emerald-200"
+          >
+            تفاصيل الوكيل
+          </Link>
+        ) : null}
+        <span className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2 py-1 text-emerald-200">
+          مصمم الوكلاء
+        </span>
+      </nav>
+
       <BuilderHeader
         localMode={localMode}
         currentStepTitle={currentStepTitle}

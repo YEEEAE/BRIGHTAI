@@ -596,6 +596,83 @@
         <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
     </noscript>
     <!-- JS: Iconify deferred -->
+    <!-- Critical CSS: Hero & Layout Stability (Fixes CLS/LCP) -->
+    <style id="critical-css">
+        /* Layout & Container */
+        .container {
+            width: 100%;
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            max-width: 1280px;
+        }
+
+        /* Hero Section Grid - Mobile First */
+        .hero.section {
+            display: flex;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 80px;
+            /* nav-height */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            width: 100%;
+            align-items: center;
+        }
+
+        /* Desktop Grid */
+        @media (min-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1.2fr 1fr;
+                /* Favor text slightly */
+                gap: 4rem;
+            }
+        }
+
+        /* Hero Content Stability */
+        .hero-card {
+            position: relative;
+            z-index: 2;
+            opacity: 1;
+            /* Ensure visibility */
+        }
+
+        .hero-card .inner {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Typography Stability */
+        .title {
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+        }
+
+        /* Prevent Badge Shift */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            height: 2.5rem;
+        }
+
+        /* Ensure Matrix Background doesn't collapse */
+        .code-wall {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+    </style>
     <script defer src="frontend/js/iconify-preload.js"></script>
     <script defer src="frontend/js/vendor/iconify.min.js"></script>
     <script defer src="frontend/js/vendor/iconify-icon.min.js"></script>
