@@ -29,6 +29,13 @@ export type ExecutionRow = {
   duration_ms: number | null;
   tokens_used: number | null;
   cost_usd: number | null;
+  model_used: string | null;
+  execution_context: Record<string, unknown> | null;
+  ai_trace_id: string | null;
+  ai_attempts: number;
+  ai_quality_score: number | null;
+  ai_quality_passed: boolean | null;
+  ai_retry_reasons: string[];
 };
 
 export type ApiKeyRow = {
@@ -113,6 +120,8 @@ export type ExecutionAnalytics = {
   thisWeekSuccess: number;
   thisWeekCost: number;
   thisWeekTokens: number;
+  thisWeekRetried: number;
+  thisWeekLowQuality: number;
   prevWeekExecutions: number;
   prevWeekSuccess: number;
   prevWeekCost: number;

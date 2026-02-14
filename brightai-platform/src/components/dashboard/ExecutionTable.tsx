@@ -79,14 +79,23 @@ const ExecutionTable = ({
                 </tr>
               </thead>
               <tbody>
-                {executions.map((item) => (
+                {executions.map((item) => {
+                  const retryCount = item.ai_attempts || 0;
+                  return (
                   <tr
                     key={item.id}
                     className="cursor-pointer border-b border-slate-900/70 text-slate-200 transition hover:bg-slate-900/60"
                     onClick={() => onSelectExecution(item)}
                   >
                     <td className="px-2 py-2 font-semibold">
-                      {agentNameMap.get(item.agent_id) || "وكيل غير معروف"}
+                      <div className="flex flex-col gap-1">
+                        <span>{agentNameMap.get(item.agent_id) || "وكيل غير معروف"}</span>
+                        {retryCount > 0 ? (
+                          <span className="inline-flex w-fit rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-semibold text-amber-200">
+                            إعادة محاولة: {retryCount}
+                          </span>
+                        ) : null}
+                      </div>
                     </td>
                     <td className="px-2 py-2">
                       <span
@@ -114,13 +123,16 @@ const ExecutionTable = ({
                     <td className="px-2 py-2">{formatCurrency(item.cost_usd || 0)}</td>
                     <td className="px-2 py-2 text-slate-400">{toDisplayDateTime(item.started_at)}</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
           <div className="mt-4 grid gap-2 md:hidden">
-            {executions.map((item) => (
+            {executions.map((item) => {
+              const retryCount = item.ai_attempts || 0;
+              return (
               <button
                 type="button"
                 key={item.id}
@@ -144,9 +156,13 @@ const ExecutionTable = ({
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-slate-400">{jsonPreview(item.input, 60)}</p>
+                {retryCount > 0 ? (
+                  <p className="mt-1 text-[11px] text-amber-300">إعادة محاولة: {retryCount}</p>
+                ) : null}
                 <p className="mt-1 text-[11px] text-slate-500">{toDisplayDateTime(item.started_at)}</p>
               </button>
-            ))}
+              );
+            })}
           </div>
         </>
       )}

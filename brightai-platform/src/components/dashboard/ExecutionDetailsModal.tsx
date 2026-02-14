@@ -19,6 +19,9 @@ const ExecutionDetailsModal = ({
   agentNameMap,
   onClose,
 }: ExecutionDetailsModalProps) => {
+  const retryCount = execution?.ai_attempts || 0;
+  const retryReasons = execution?.ai_retry_reasons || [];
+
   return (
     <Modal
       open={Boolean(execution)}
@@ -58,7 +61,48 @@ const ExecutionDetailsModal = ({
                 {formatCompactNumber(execution.tokens_used || 0)}
               </p>
             </div>
+            <div>
+              <p className="text-xs text-slate-400">الموديل</p>
+              <p className="font-semibold text-slate-100">{execution.model_used || "غير محدد"}</p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">رقم التتبع</p>
+              <p className="font-semibold text-slate-100">{execution.ai_trace_id || "-"}</p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">إعادات المحاولة</p>
+              <p className="font-semibold text-slate-100">{retryCount}</p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">درجة الجودة</p>
+              <p className="font-semibold text-slate-100">
+                {execution.ai_quality_score === null
+                  ? "-"
+                  : `${Math.round(execution.ai_quality_score * 100)}%`}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">اجتياز الجودة</p>
+              <p className="font-semibold text-slate-100">
+                {execution.ai_quality_passed === null
+                  ? "-"
+                  : execution.ai_quality_passed
+                  ? "نعم"
+                  : "لا"}
+              </p>
+            </div>
           </div>
+
+          {retryReasons.length > 0 ? (
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-100">
+              <p className="mb-1 font-semibold">أسباب إعادة المحاولة</p>
+              <ul className="list-inside list-disc space-y-1">
+                {retryReasons.map((reason, index) => (
+                  <li key={`${execution.id}-reason-${index}`}>{reason}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <div className="grid gap-3 md:grid-cols-2">
             <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-3">

@@ -5,6 +5,7 @@ import {
 import type {
   AgentStatus,
   DashboardCache,
+  ExecutionRow,
   ExecutionStatus,
 } from "../types/dashboard.types";
 
@@ -136,6 +137,46 @@ export const jsonPreview = (value: Record<string, unknown> | null, max = 70) => 
   }
   const text = JSON.stringify(value);
   return truncateText(text, max);
+};
+
+export const parseExecutionAiFields = (
+  executionContext: Record<string, unknown> | null
+): Pick<
+  ExecutionRow,
+  "ai_trace_id" | "ai_attempts" | "ai_quality_score" | "ai_quality_passed" | "ai_retry_reasons"
+> => {
+  const orchestration = (
+    executionContext &&
+    typeof executionContext === "object" &&
+    !Array.isArray(executionContext) &&
+    "orchestration" in executionContext
+      ? executionContext.orchestration
+      : null
+  ) as Record<string, unknown> | null;
+
+  const quality = (
+    orchestration &&
+    typeof orchestration === "object" &&
+    !Array.isArray(orchestration) &&
+    "quality" in orchestration
+      ? orchestration.quality
+      : null
+  ) as Record<string, unknown> | null;
+
+  const reasons = quality?.reasons;
+  return {
+    ai_trace_id: typeof orchestration?.traceId === "string" ? orchestration.traceId : null,
+    ai_attempts:
+      typeof orchestration?.attempts === "number" && Number.isFinite(orchestration.attempts)
+        ? Math.max(0, Math.floor(orchestration.attempts))
+        : 0,
+    ai_quality_score:
+      typeof quality?.score === "number" && Number.isFinite(quality.score) ? quality.score : null,
+    ai_quality_passed: typeof quality?.passed === "boolean" ? quality.passed : null,
+    ai_retry_reasons: Array.isArray(reasons)
+      ? reasons.filter((item): item is string => typeof item === "string")
+      : [],
+  };
 };
 
 export const getCache = (userId: string): DashboardCache | null => {

@@ -17,6 +17,7 @@ type ExecutionRow = {
   duration_ms: number | null;
   tokens_used: number | null;
   cost_usd: number | null;
+  model_used?: string | null;
   execution_context?: Record<string, unknown> | null;
 };
 
@@ -45,7 +46,7 @@ export const useExecutions = (options?: { realtime?: boolean }) => {
       let query = supabaseClient
         .from("executions")
         .select(
-          "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd"
+          "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd, model_used, execution_context"
         )
         .eq("user_id", currentUser.id)
         .order("started_at", { ascending: false })

@@ -592,7 +592,7 @@
             src: url('frontend/assets/fonts/ScheherazadeNew-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
-            font-display: swap;
+            font-display: optional;
             /* CLS Prevention: match fallback font metrics */
             ascent-override: 88%;
             descent-override: 32%;
@@ -807,6 +807,7 @@
             /* nav-height */
             overflow: hidden;
             position: relative;
+            contain: layout;
         }
 
         .hero-grid {

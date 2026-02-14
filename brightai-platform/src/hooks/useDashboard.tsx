@@ -34,6 +34,7 @@ import {
   getGreeting,
   normalizeAgentStatus,
   normalizeExecutionStatus,
+  parseExecutionAiFields,
   setCache,
 } from "../lib/dashboard.utils";
 import supabase from "../lib/supabase";
@@ -317,13 +318,18 @@ export const useDashboard = (): UseDashboardResult => {
         const executionsPromise = supabaseClient
           .from("executions")
           .select(
-            "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd"
+            "id, agent_id, user_id, status, input, output, error_message, started_at, completed_at, duration_ms, tokens_used, cost_usd, model_used, execution_context"
           )
           .eq("user_id", sessionUser.id)
           .order("started_at", { ascending: false })
           .limit(executionLimitRef.current)
           .then(({ data }: { data: any[] | null }) => {
             const nextExecutions: ExecutionRow[] = (data || []).map((item) => ({
+              ...parseExecutionAiFields(
+                item.execution_context
+                  ? (item.execution_context as Record<string, unknown>)
+                  : null
+              ),
               id: item.id,
               agent_id: item.agent_id,
               user_id: item.user_id,
@@ -336,6 +342,8 @@ export const useDashboard = (): UseDashboardResult => {
               duration_ms: item.duration_ms === null ? null : Number(item.duration_ms),
               tokens_used: item.tokens_used === null ? null : Number(item.tokens_used),
               cost_usd: item.cost_usd === null ? null : Number(item.cost_usd),
+              model_used: item.model_used || null,
+              execution_context: item.execution_context || null,
             }));
 
             setExecutions(nextExecutions);
@@ -528,6 +536,8 @@ export const useDashboard = (): UseDashboardResult => {
     let thisWeekSuccess = 0;
     let thisWeekCost = 0;
     let thisWeekTokens = 0;
+    let thisWeekRetried = 0;
+    let thisWeekLowQuality = 0;
 
     let prevWeekExecutions = 0;
     let prevWeekSuccess = 0;
@@ -601,6 +611,12 @@ export const useDashboard = (): UseDashboardResult => {
         thisWeekExecutions += 1;
         thisWeekCost += cost;
         thisWeekTokens += tokens;
+        if (item.ai_attempts > 0) {
+          thisWeekRetried += 1;
+        }
+        if (item.ai_quality_passed === false) {
+          thisWeekLowQuality += 1;
+        }
         if (isSuccess) {
           thisWeekSuccess += 1;
         }
@@ -626,6 +642,8 @@ export const useDashboard = (): UseDashboardResult => {
       thisWeekSuccess,
       thisWeekCost,
       thisWeekTokens,
+      thisWeekRetried,
+      thisWeekLowQuality,
       prevWeekExecutions,
       prevWeekSuccess,
       prevWeekCost,
@@ -638,6 +656,8 @@ export const useDashboard = (): UseDashboardResult => {
 
   const todayExecutionsCount = executionAnalytics.todayExecutions;
   const failedTodayCount = executionAnalytics.failedToday;
+  const retriedThisWeekCount = executionAnalytics.thisWeekRetried;
+  const lowQualityThisWeekCount = executionAnalytics.thisWeekLowQuality;
 
   const chartData = useMemo<DashboardChartPoint[]>(() => {
     const now = new Date();
@@ -871,6 +891,15 @@ export const useDashboard = (): UseDashboardResult => {
       });
     }
 
+    if (lowQualityThisWeekCount > 0) {
+      items.push({
+        id: "ai-low-quality",
+        type: "تحذير",
+        title: "جودة AI تحتاج ضبط",
+        description: `تم رصد ${lowQualityThisWeekCount} تنفيذات بجودة أقل من العتبة هذا الأسبوع.`,
+      });
+    }
+
     const keyNearLimit = apiKeys.find((item) => {
       if (!item.rate_limit_per_day || !item.usage_count) {
         return false;
@@ -904,7 +933,15 @@ export const useDashboard = (): UseDashboardResult => {
     });
 
     return items.filter((item) => !dismissedAlerts.includes(item.id));
-  }, [agents, apiKeys, dismissedAlerts, executionByAgent, monthMetrics.tokens, pausedAgentsCount]);
+  }, [
+    agents,
+    apiKeys,
+    dismissedAlerts,
+    executionByAgent,
+    lowQualityThisWeekCount,
+    monthMetrics.tokens,
+    pausedAgentsCount,
+  ]);
 
   const dismissAlert = (id: string) => {
     setDismissedAlerts((prev) => (prev.includes(id) ? prev : [...prev, id]));
@@ -1002,6 +1039,7 @@ export const useDashboard = (): UseDashboardResult => {
   const smartBannerMessages = [
     pausedAgentsCount > 0 ? `يوجد ${pausedAgentsCount} وكلاء متوقفين` : "",
     failedTodayCount > 0 ? `يوجد ${failedTodayCount} أخطاء تنفيذ اليوم` : "",
+    retriedThisWeekCount > 0 ? `تمت ${retriedThisWeekCount} محاولات إعادة ذاتية هذا الأسبوع` : "",
   ].filter(Boolean);
 
   const statsCards: StatCardItem[] = [

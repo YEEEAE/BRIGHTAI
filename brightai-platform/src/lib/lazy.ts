@@ -7,6 +7,8 @@ type LazyWithPreload<T extends ComponentType<any>> = LazyExoticComponent<T> & {
 };
 
 const CHUNK_ERROR_PATTERN = /(loading chunk|failed to fetch dynamically imported module|chunkloaderror)/i;
+const HTML_RESPONSE_PATTERN = /unexpected token '<'|importing a module script failed/i;
+const CHUNK_RELOAD_FLAG = "brightai_chunk_reload_once";
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -14,7 +16,20 @@ const isRetriableChunkError = (error: unknown) => {
   if (!(error instanceof Error)) {
     return false;
   }
-  return CHUNK_ERROR_PATTERN.test(error.message);
+  return CHUNK_ERROR_PATTERN.test(error.message) || HTML_RESPONSE_PATTERN.test(error.message);
+};
+
+const tryRecoverChunkByReload = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  const alreadyReloaded = window.sessionStorage.getItem(CHUNK_RELOAD_FLAG) === "1";
+  if (alreadyReloaded) {
+    return false;
+  }
+  window.sessionStorage.setItem(CHUNK_RELOAD_FLAG, "1");
+  window.location.reload();
+  return true;
 };
 
 /**
@@ -29,10 +44,17 @@ export const lazyWithRetry = <T extends ComponentType<any>>(
     let lastError: unknown = null;
     for (let attempt = 0; attempt <= retries; attempt += 1) {
       try {
-        return await importer();
+        const module = await importer();
+        if (typeof window !== "undefined") {
+          window.sessionStorage.removeItem(CHUNK_RELOAD_FLAG);
+        }
+        return module;
       } catch (error) {
         lastError = error;
         if (attempt >= retries || !isRetriableChunkError(error)) {
+          if (isRetriableChunkError(error) && tryRecoverChunkByReload()) {
+            await new Promise(() => undefined);
+          }
           break;
         }
         await sleep(baseDelayMs * (attempt + 1));
@@ -61,7 +83,7 @@ export const preloadOnIdle = (tasks: Array<() => Promise<unknown> | unknown>) =>
     }
     tasks.forEach((task) => {
       try {
-        void task();
+        void Promise.resolve(task()).catch(() => undefined);
       } catch {
         // تجاهل أخطاء التحميل الخلفي لتجنب كسر الواجهة.
       }
