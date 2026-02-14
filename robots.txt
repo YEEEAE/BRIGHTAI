@@ -1,29 +1,24 @@
 # ======================================================
 # BrightAI - Robots.txt
-# Optimized for Google & AI Control
+# https://brightai.site
+# آخر تحديث: 2026-02-14
 # ======================================================
 
+# --- القواعد الافتراضية لكل الزواحف ---
 User-agent: *
 Allow: /
 
-# --------------------
-# Block AI Training Bots (Standard)
-# --------------------
-User-agent: GPTBot
-Disallow: /
+# المسارات المسموحة صراحةً (موارد العرض)
+Allow: /frontend/css/
+Allow: /frontend/js/
+Allow: /frontend/assets/
+Allow: /frontend/pages/
+Allow: /demo/
+Allow: /sitemap.xml
+Allow: /robots.txt
+Allow: /manifest.json
 
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-# --------------------
-# Block sensitive paths
-# --------------------
+# المسارات المحجوبة (حساسة / تقنية)
 Disallow: /admin/
 Disallow: /private/
 Disallow: /config/
@@ -37,56 +32,61 @@ Disallow: /.env
 Disallow: /.vscode/
 Disallow: /node_modules/
 Disallow: /tests/
-
-# --------------------
-# Dev / build artifacts
-# --------------------
 Disallow: /_next/
 Disallow: /.nuxt/
 Disallow: /dist/
 Disallow: /build/
 Disallow: /src/
-
-# --------------------
-# NEVER block rendering resources
-# --------------------
-Allow: /assets/
-Allow: /static/
-Allow: /images/
-Allow: /fonts/
-Allow: /css/
-Allow: /js/
-Allow: /favicon.ico
-
-# --------------------
-# Blog / content
-# --------------------
-Allow: /blog/
-Allow: /blogger/
-Allow: /frontend/pages/
-Allow: /demo/
-
-# --------------------
-# API rules
-# --------------------
+Disallow: /brightai-platform/
 Disallow: /api/auth/
 Disallow: /api/internal/
-Allow: /api/public/
 
-# --------------------
-# Files handling
-# --------------------
+# حجب ملفات التطوير
 Disallow: /*.map$
 Disallow: /*.log$
 Disallow: /*.sql$
 Disallow: /*.zip$
 
-# --------------------
-# SEO essential files
-# --------------------
-Allow: /sitemap.xml
-Allow: /robots.txt
-Allow: /manifest.json
-Allow: /schema-saudi-seo.json
+# حجب الصفحات المكررة بالأسماء العربية غير المنسقة
+Disallow: /frontend/pages/blogger/Generative artificial intelligence
+Disallow: /frontend/pages/blogger/أتمتة الذكاء الاصطناعي*
+Disallow: /frontend/pages/blogger/أتمتة العمليات باستخدام*
+Disallow: /frontend/pages/blogger/استشارات الذكاء الاصطناعي*
+Disallow: /frontend/pages/blogger/الأتمتة الصناعية*
+Disallow: /frontend/pages/blogger/الأتمتة المالية*
+Disallow: /frontend/pages/blogger/التحول الرقمي وأتمتة*
+Disallow: /frontend/pages/blogger/التعلم الآلي والرؤية*
 
+
+
+# --- حجب بوتات التدريب على الذكاء الاصطناعي ---
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+# --- السماح لـ Google AI (للظهور في AI Overviews) ---
+User-agent: Google-Extended
+Allow: /
+
+# --- خريطة الموقع ---
 Sitemap: https://brightai.site/sitemap.xml
