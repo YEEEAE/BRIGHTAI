@@ -1,5 +1,11 @@
 import { GroqError, type GroqMessage, type GroqRequest, GroqService } from "../groq.service";
 import { DEFAULT_CONTEXT_WINDOW } from "./constants";
+import {
+  clampKnowledgeContext,
+  extractKnowledgeContext,
+  normalizeKnowledgeFiles,
+  normalizeKnowledgeUrls,
+} from "../../lib/agent-builder.utils";
 import type {
   AgentExecutorErrorCode,
   ExecutionContext,
@@ -64,6 +70,33 @@ const buildPromptingBase = (prompting?: PromptingSettings): string[] => {
   return base;
 };
 
+const buildAgentKnowledgeSnippet = (context?: ExecutionContext): string => {
+  if (!context) {
+    return "";
+  }
+
+  const question = String(context.variables.userMessage || "");
+  const raw = (context.variables.agent_knowledge || {}) as Record<string, unknown>;
+  const directText = typeof raw.text === "string" ? raw.text : "";
+  const urls = normalizeKnowledgeUrls(raw.urls);
+  const files = normalizeKnowledgeFiles(raw.files);
+
+  const semantic = extractKnowledgeContext(question, directText, urls, files, 8);
+  if (semantic) {
+    return clampKnowledgeContext(semantic, context.metadata.model, 2600);
+  }
+
+  if (!directText.trim()) {
+    return "";
+  }
+
+  return clampKnowledgeContext(
+    `معرفة الوكيل:\n${limitText(directText, Math.floor(DEFAULT_CONTEXT_WINDOW / 3))}`,
+    context.metadata.model,
+    2600
+  );
+};
+
 export const buildSystemPrompt = (workflow: Workflow, context?: ExecutionContext): string => {
   const instructions = workflow.nodes
     .filter((node) => node.type === "instruction" || node.type === "prompt")
@@ -76,12 +109,16 @@ export const buildSystemPrompt = (workflow: Workflow, context?: ExecutionContext
   const recentSnippet = recentRaw ? limitText(recentRaw, Math.floor(DEFAULT_CONTEXT_WINDOW / 3)) : "";
 
   const base = buildPromptingBase(workflow.settings?.prompting);
+  const agentKnowledgeSnippet = buildAgentKnowledgeSnippet(context);
 
   if (memorySnippet) {
     base.push(`ذاكرة طويلة المدى مفيدة:\n${memorySnippet}`);
   }
   if (recentSnippet) {
     base.push(`سياق قريب من المحادثة:\n${recentSnippet}`);
+  }
+  if (agentKnowledgeSnippet) {
+    base.push(agentKnowledgeSnippet);
   }
 
   return [...base, ...instructions].join("\n");

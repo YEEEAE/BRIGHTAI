@@ -37,6 +37,7 @@ export class WorkflowRunner {
 
     context.variables.userMessage = userMessage;
     context.variables.memory_limit = workflow.settings?.memoryLimit || DEFAULT_MEMORY_LIMIT;
+    context.variables.agent_knowledge = this.extractAgentKnowledge(agent.settings);
 
     await this.attachMemoryContext(context, userMessage);
 
@@ -176,5 +177,19 @@ export class WorkflowRunner {
       role: "assistant",
       metadata: { traceId: context.metadata.traceId },
     });
+  }
+
+  private extractAgentKnowledge(settings?: Record<string, unknown>): {
+    text: string;
+    urls: unknown[];
+    files: unknown[];
+  } {
+    const safeSettings = settings || {};
+    const knowledgeRaw = (safeSettings.knowledge || {}) as Record<string, unknown>;
+    return {
+      text: typeof knowledgeRaw.text === "string" ? knowledgeRaw.text : "",
+      urls: Array.isArray(knowledgeRaw.urlDetails) ? knowledgeRaw.urlDetails : [],
+      files: Array.isArray(knowledgeRaw.files) ? knowledgeRaw.files : [],
+    };
   }
 }

@@ -41,6 +41,8 @@ const AgentBuilder = () => {
     testTokens,
     testCost,
     testLatency,
+    lastKnowledgeContext,
+    lastKnowledgeSegments,
     systemState,
     importJsonRef,
     iconUploadRef,
@@ -181,6 +183,8 @@ const AgentBuilder = () => {
               testTokens={testTokens}
               testCost={testCost}
               testLatency={testLatency}
+              lastKnowledgeContext={lastKnowledgeContext}
+              lastKnowledgeSegments={lastKnowledgeSegments}
               systemState={systemState}
               saving={saving}
               canPublishMarket={form.عام}

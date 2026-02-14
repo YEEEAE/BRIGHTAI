@@ -1,6 +1,11 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { خياراتالايقونات, عناوينالخطوات } from "../../constants/agent-builder.constants";
-import { delay, extractKnowledgeContext, تقديرالرموز } from "../../lib/agent-builder.utils";
+import {
+  clampKnowledgeContext,
+  delay,
+  extractKnowledgeContext,
+  تقديرالرموز,
+} from "../../lib/agent-builder.utils";
 import { trackFeatureUsed } from "../../lib/analytics";
 import { GroqService } from "../../services/groq.service";
 import apiKeyService from "../../services/apikey.service";
@@ -50,6 +55,9 @@ const useAgentBuilderTesting = ({
   jumpToStep,
   getFieldValueFromRef,
 }: Params) => {
+  const [lastKnowledgeContext, setLastKnowledgeContext] = useState("");
+  const [lastKnowledgeSegments, setLastKnowledgeSegments] = useState(0);
+
   const resolveGroqClient = useCallback(async () => {
     if (process.env.REACT_APP_GROQ_API_KEY) {
       return new GroqService(process.env.REACT_APP_GROQ_API_KEY);
@@ -95,7 +103,7 @@ const useAgentBuilderTesting = ({
     );
 
     if (semanticContext) {
-      return semanticContext;
+      return clampKnowledgeContext(semanticContext, form.النموذج, form.maxTokens + 2200);
     }
 
     const chunks: string[] = [];
@@ -115,8 +123,12 @@ const useAgentBuilderTesting = ({
     if (chunks.length === 0) {
       return "";
     }
-    return `استخدم سياق المعرفة التالي عند الإجابة:\n${chunks.join("\n\n")}`;
-  }, [form.نصالمعرفة, form.روابطالمعرفة, form.ملفاتالمعرفة]);
+    return clampKnowledgeContext(
+      `استخدم سياق المعرفة التالي عند الإجابة:\n${chunks.join("\n\n")}`,
+      form.النموذج,
+      form.maxTokens + 2200
+    );
+  }, [form.نصالمعرفة, form.روابطالمعرفة, form.ملفاتالمعرفة, form.النموذج, form.maxTokens]);
 
   const streamFallbackReply = useCallback(async (message: string) => {
     const full = buildTestReply(message);
@@ -151,6 +163,14 @@ const useAgentBuilderTesting = ({
     setTestMessages((prev) => [...prev, userMessage, botMessage]);
     setTestInput("");
     setIsStreaming(true);
+    const knowledgeContext = buildKnowledgeContext(message.trim());
+    setLastKnowledgeContext(knowledgeContext);
+    setLastKnowledgeSegments(
+      knowledgeContext
+        .split("\n")
+        .filter((line) => line.trim().startsWith("["))
+        .length
+    );
 
     let full = "";
     const updateAssistantText = (nextText: string) => {
@@ -172,8 +192,8 @@ const useAgentBuilderTesting = ({
           model: form.النموذج,
           messages: [
             {
-                role: "system",
-              content: [form.الموجهالنظامي, buildKnowledgeContext(message.trim())]
+              role: "system",
+              content: [form.الموجهالنظامي, knowledgeContext]
                 .filter(Boolean)
                 .join("\n\n"),
             },
@@ -199,7 +219,7 @@ const useAgentBuilderTesting = ({
             messages: [
               {
                 role: "system",
-                content: [form.الموجهالنظامي, buildKnowledgeContext(message.trim())]
+                content: [form.الموجهالنظامي, knowledgeContext]
                   .filter(Boolean)
                   .join("\n\n"),
               },
@@ -367,6 +387,8 @@ const useAgentBuilderTesting = ({
     stepHasError,
     currentStepTitle,
     previewName,
+    lastKnowledgeContext,
+    lastKnowledgeSegments,
   };
 };
 

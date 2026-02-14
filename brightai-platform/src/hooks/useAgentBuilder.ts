@@ -220,6 +220,8 @@ const useAgentBuilder = () => {
     testTokens: state.testTokens,
     testCost: state.testCost,
     testLatency: state.testLatency,
+    lastKnowledgeContext: testing.lastKnowledgeContext,
+    lastKnowledgeSegments: testing.lastKnowledgeSegments,
     systemState: state.systemState,
     importJsonRef: state.importJsonRef,
     iconUploadRef: state.iconUploadRef,

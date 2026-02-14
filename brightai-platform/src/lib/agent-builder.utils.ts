@@ -11,6 +11,14 @@ import type {
   رابطمصدر,
 } from "../types/agent-builder.types";
 
+const MODEL_CONTEXT_WINDOWS: Record<string, number> = {
+  "llama-3.1-405b-reasoning": 128000,
+  "llama-3.1-70b-versatile": 128000,
+  "llama-3.1-8b-instant": 128000,
+  "mixtral-8x7b-32768": 32768,
+  "gemma2-9b-it": 8192,
+};
+
 export const normalizeKnowledgeUrls = (input: unknown): رابطمصدر[] => {
   if (!Array.isArray(input)) {
     return [];
@@ -132,6 +140,62 @@ const scoreChunk = (queryTerms: Set<string>, chunk: string): number => {
   return hits / Math.max(terms.length, 1);
 };
 
+const detectIntentBoost = (question: string, source: string, chunk: string): number => {
+  const q = question.toLowerCase();
+  const s = source.toLowerCase();
+  const c = chunk.toLowerCase();
+
+  let boost = 0;
+
+  const hasCodeIntent =
+    q.includes("كود") || q.includes("برمجة") || q.includes("api") || q.includes("تقني");
+  const hasPolicyIntent =
+    q.includes("سياسة") || q.includes("شروط") || q.includes("خصوصية") || q.includes("امتثال");
+  const hasCostIntent = q.includes("تكلفة") || q.includes("سعر") || q.includes("اشتراك");
+  const hasSupportIntent = q.includes("عميل") || q.includes("دعم") || q.includes("مشكلة");
+
+  if (hasCodeIntent && (s.includes("ملف") || c.includes("api") || c.includes("sdk"))) {
+    boost += 0.18;
+  }
+  if (hasPolicyIntent && (c.includes("سياسة") || c.includes("شروط") || c.includes("امتثال"))) {
+    boost += 0.2;
+  }
+  if (hasCostIntent && (c.includes("تكلفة") || c.includes("سعر") || c.includes("خطة"))) {
+    boost += 0.22;
+  }
+  if (hasSupportIntent && (c.includes("عميل") || c.includes("دعم") || c.includes("خدمة"))) {
+    boost += 0.16;
+  }
+
+  if (s.includes("نص مباشر")) {
+    boost += 0.04;
+  }
+
+  return boost;
+};
+
+const compressChunk = (chunk: string, maxChars = 520): string => {
+  const normalized = chunk.replace(/\s+/g, " ").trim();
+  if (normalized.length <= maxChars) {
+    return normalized;
+  }
+  return `${normalized.slice(0, maxChars)}...`;
+};
+
+const dedupeChunks = (rows: Array<{ source: string; text: string; score: number }>) => {
+  const seen = new Set<string>();
+  const out: Array<{ source: string; text: string; score: number }> = [];
+  for (const row of rows) {
+    const key = row.text.toLowerCase().slice(0, 220);
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    out.push(row);
+  }
+  return out;
+};
+
 const chunkText = (text: string, chunkSize = 1000, overlap = 120): string[] => {
   const normalized = text.replace(/\s+/g, " ").trim();
   if (!normalized) {
@@ -168,7 +232,10 @@ export const extractKnowledgeContext = (
       if (!text) {
         continue;
       }
-      candidates.push({ source, text, score: scoreChunk(queryTerms, text) });
+      const base = scoreChunk(queryTerms, text);
+      const boost = detectIntentBoost(question, source, text);
+      const score = base + boost;
+      candidates.push({ source, text, score });
     }
   };
 
@@ -194,16 +261,36 @@ export const extractKnowledgeContext = (
     }
   }
 
-  const ranked = candidates
+  const ranked = dedupeChunks(candidates)
     .sort((a, b) => b.score - a.score)
     .slice(0, maxChunks)
-    .map((item, index) => `[${index + 1}] ${item.source}\n${item.text}`);
+    .map((item, index) => `[${index + 1}] ${item.source}\n${compressChunk(item.text)}`);
 
   if (ranked.length === 0) {
     return "";
   }
 
   return `مقاطع معرفة مسترجعة (الأكثر صلة بالسؤال):\n${ranked.join("\n\n")}`;
+};
+
+export const resolveModelContextWindow = (model: string): number => {
+  return MODEL_CONTEXT_WINDOWS[model] || 32768;
+};
+
+export const clampKnowledgeContext = (
+  text: string,
+  model: string,
+  reservedTokens = 2500
+): string => {
+  const windowTokens = resolveModelContextWindow(model);
+  const budgetTokens = Math.max(1200, Math.floor(windowTokens - reservedTokens));
+  const estimated = تقديرالرموز(text);
+  if (estimated <= budgetTokens) {
+    return text;
+  }
+  const ratio = budgetTokens / Math.max(estimated, 1);
+  const chars = Math.max(1200, Math.floor(text.length * ratio));
+  return `${text.slice(0, chars)}\n\n[تم اختصار سياق المعرفة تلقائيًا ليتوافق مع سعة النموذج]`;
 };
 
 export const getDraftKey = (agentId?: string) => `${DRAFT_STORAGE_PREFIX}_${agentId || "new"}`;

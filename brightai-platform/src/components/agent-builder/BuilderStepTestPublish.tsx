@@ -26,6 +26,8 @@ type BuilderStepTestPublishProps = {
   testTokens: number;
   testCost: number;
   testLatency: number;
+  lastKnowledgeContext: string;
+  lastKnowledgeSegments: number;
   systemState: حالةنظام;
   saving: boolean;
   canPublishMarket: boolean;
@@ -45,6 +47,8 @@ const BuilderStepTestPublish = ({
   testTokens,
   testCost,
   testLatency,
+  lastKnowledgeContext,
+  lastKnowledgeSegments,
   systemState,
   saving,
   canPublishMarket,
@@ -143,6 +147,18 @@ const BuilderStepTestPublish = ({
             <p className="mt-1 text-sm font-bold text-slate-100">{testLatency} مللي ثانية</p>
           </div>
         </div>
+
+        <details className="mt-3 rounded-xl border border-slate-700 bg-slate-950/60">
+          <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-slate-300">
+            السياق المعرفي المستخدم في آخر اختبار
+            {lastKnowledgeSegments > 0 ? ` (${lastKnowledgeSegments} مقطع)` : " (لا يوجد مقاطع)"}
+          </summary>
+          <div className="border-t border-slate-700 px-3 py-3">
+            <pre className="max-h-48 overflow-y-auto whitespace-pre-wrap break-words text-xs leading-6 text-slate-200">
+              {lastKnowledgeContext || "لم يتم حقن سياق معرفي بعد. أرسل رسالة اختبار أولاً."}
+            </pre>
+          </div>
+        </details>
       </div>
 
       <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">

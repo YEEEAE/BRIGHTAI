@@ -580,24 +580,182 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap">
     </noscript>
-    <!-- Critical CSS: يبقى حاجب للعرض (navigation + base styles) -->
-    <link href="frontend/css/main.bundle.min.css" rel="stylesheet">
-    <script defer="" src="frontend/js/navigation.js"></script>
-    <!-- Preload LCP Resources: خط WOFF2 الأساسي -->
-    <link rel="preload" as="font" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2" type="font/woff2"
-        crossorigin>
-    <!-- Non-critical CSS: تحميل غير حاجب -->
-    <link rel="stylesheet" href="frontend/css/index-theme.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="frontend/css/index-theme.min.css">
-    </noscript>
-    <link rel="stylesheet" href="frontend/css/tailwind.local.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
-    </noscript>
-    <!-- JS: Iconify deferred -->
     <!-- Critical CSS: Hero & Layout Stability (Fixes CLS/LCP) -->
     <style id="critical-css">
+        /* === SCHEHERAZADE NEW FONT === */
+        @font-face {
+            font-family: 'Scheherazade New';
+            src: url('frontend/assets/fonts/ScheherazadeNew-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* === DESIGN TOKENS === */
+        :root {
+            /* Navigation */
+            --nav-height: 80px;
+            --nav-bg: rgba(2, 6, 23, 0.7);
+            --nav-backdrop-blur: 20px;
+            --nav-border: 1px solid rgba(255, 255, 255, 0.08);
+            --nav-text-color: #e2e8f0;
+            --nav-hover-color: #ffffff;
+            --dropdown-bg: rgba(15, 23, 42, 0.9);
+            --dropdown-border: 1px solid rgba(255, 255, 255, 0.1);
+            --dropdown-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
+            --bg-dark: #020617;
+            --accent-gold: #D4AF37;
+            --accent-indigo: #6366F1;
+            --accent-emerald: #10B981;
+            --accent-color: var(--accent-gold);
+            --primary-color: var(--accent-indigo);
+            --glass-bg: rgba(15, 23, 42, 0.4);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-full: 9999px;
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* === BASE STYLES === */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Scheherazade New', 'Tajawal', sans-serif;
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* === NAVIGATION === */
+        .unified-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(var(--nav-backdrop-blur));
+            -webkit-backdrop-filter: blur(var(--nav-backdrop-blur));
+            border-bottom: var(--nav-border);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            z-index: 1002;
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-links {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.625rem 1rem;
+            color: var(--nav-text-color);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            left: auto;
+            width: max-content;
+            min-width: 260px;
+            background: var(--dropdown-bg);
+            border: var(--dropdown-border);
+            border-radius: var(--radius-md);
+            padding: 0.75rem;
+            box-shadow: var(--dropdown-shadow);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: all 0.25s var(--transition-smooth);
+            z-index: 9999;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .mobile-toggle {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0.75rem;
+        }
+
+        @media (min-width: 1024px) {
+            .mobile-toggle {
+                display: none;
+            }
+        }
+
+        .bar {
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+        }
+
         /* Layout & Container */
         .container {
             width: 100%;
@@ -673,6 +831,24 @@
             z-index: 0;
         }
     </style>
+    <!-- Deferred CSS Loading -->
+    <link rel="preload" as="style" href="frontend/css/main.bundle.min.css"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="frontend/css/main.bundle.min.css">
+    </noscript>
+
+    <link rel="stylesheet" href="frontend/css/index-theme.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="frontend/css/index-theme.min.css">
+    </noscript>
+
+    <link rel="stylesheet" href="frontend/css/tailwind.local.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
+    </noscript>
+
+    <script defer src="frontend/js/navigation.js"></script>
     <script defer src="frontend/js/iconify-preload.js"></script>
     <script defer src="frontend/js/vendor/iconify.min.js"></script>
     <script defer src="frontend/js/vendor/iconify-icon.min.js"></script>
@@ -2856,7 +3032,10 @@
                             </li>
                             <li class="flex items-center gap-3">
                                 <iconify-icon class="text-indigo-400" icon="lucide:mail"></iconify-icon>
-                                <span class="text-slate-400 text-sm">info@brightai.site</span>
+                                <span class="text-slate-400 text-sm" id="contact-email"></span>
+                                <script>
+                                    document.getElementById('contact-email').innerText = 'info' + '@' + 'brightai.site';
+                                </script>
                             </li>
                         </ul>
                     </div>
