@@ -22,6 +22,7 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [redirecting, setRedirecting] = useState(false);
 
   const {
     register,
@@ -68,6 +69,7 @@ const LoginForm = () => {
   const onSubmit = async (values: LoginFormValues) => {
     setErrorMessage(null);
     setSuccessMessage(null);
+    setRedirecting(false);
 
     if (values.remember) {
       sessionStorage.setItem("brightai_remember_email", values.email);
@@ -85,7 +87,8 @@ const LoginForm = () => {
       }
       setLocalAdminSession();
       setSuccessMessage("تم تسجيل الدخول المحلي بنجاح.");
-      navigate("/dashboard", { replace: true });
+      setRedirecting(true);
+      window.location.replace("/dashboard");
       return;
     }
 
@@ -95,7 +98,13 @@ const LoginForm = () => {
     });
 
     if (error) {
-      setErrorMessage("تعذر تسجيل الدخول. تحقق من البيانات.");
+      // تمييز فشل بيانات الدخول عن أعطال خدمة المصادقة
+      const status = (error as unknown as { status?: number }).status || 0;
+      if (status >= 500) {
+        setErrorMessage("تعذر الاتصال بخدمة تسجيل الدخول حالياً. جرّب بعد دقائق أو حدّث الصفحة.");
+      } else {
+        setErrorMessage("بيانات الدخول غير صحيحة. تحقق من البريد وكلمة المرور.");
+      }
       return;
     }
 
@@ -109,7 +118,9 @@ const LoginForm = () => {
     }
 
     setSuccessMessage("تم تسجيل الدخول بنجاح.");
-    navigate("/dashboard", { replace: true });
+    setRedirecting(true);
+    // التحويل عبر استبدال العنوان يضمن تهيئة الجلسة قبل تحميل لوحة التحكم
+    window.location.replace("/dashboard");
   };
 
   const handleForgotPassword = async () => {
@@ -250,10 +261,10 @@ const LoginForm = () => {
       <button
         type="submit"
         className="flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
-        disabled={!isValid || isSubmitting}
+        disabled={!isValid || isSubmitting || redirecting}
       >
         {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-        {isSubmitting ? "جارٍ التحقق..." : "تسجيل الدخول"}
+        {redirecting ? "جارٍ نقلك إلى لوحة التحكم..." : isSubmitting ? "جارٍ التحقق..." : "تسجيل الدخول"}
       </button>
     </form>
   );
