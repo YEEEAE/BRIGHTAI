@@ -75,7 +75,7 @@ const LoginForm = () => {
       sessionStorage.removeItem("brightai_remember_email");
     }
 
-    // تسجيل دخول محلي مؤقت لحين إصلاح مشكلة المصادقة في قاعدة البيانات
+    // تسجيل دخول محلي (اختياري) - عادة يكون معطلاً في بيئة الإنتاج
     if (isLocalAdminCredentials(values.email, values.password)) {
       // تنظيف أي جلسة Supabase سابقة حتى لا تُرسل رموز غير صالحة للواجهة الخلفية
       try {
@@ -96,6 +96,15 @@ const LoginForm = () => {
 
     if (error) {
       setErrorMessage("تعذر تسجيل الدخول. تحقق من البيانات.");
+      return;
+    }
+
+    // تحقق إضافي: بعض المتصفحات/البيئات قد تمنع التخزين، فنضمن وجود جلسة قبل التحويل
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      setErrorMessage(
+        "تم قبول بيانات الدخول لكن تعذر إنشاء جلسة. جرّب تحديثًا قويًا ومسح بيانات التخزين ثم أعد المحاولة."
+      );
       return;
     }
 

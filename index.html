@@ -540,31 +540,7 @@
     }
     </script>
     <!-- GTM: تحميل مؤجل لحين التفاعل أو 5 ثوانٍ -->
-    <script>
-        (function () {
-            var loaded = false;
-            function loadGTM() {
-                if (loaded) return;
-                loaded = true;
-                var s = document.createElement('script');
-                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
-                s.async = true;
-                document.head.appendChild(s);
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-                window.gtag = gtag;
-                gtag('js', new Date());
-                gtag('config', 'G-8LLESL207Q', { send_page_view: true });
-                ['scroll', 'click', 'touchstart', 'mousemove'].forEach(function (e) {
-                    document.removeEventListener(e, loadGTM, { passive: true, capture: true });
-                });
-            }
-            ['scroll', 'click', 'touchstart', 'mousemove'].forEach(function (e) {
-                document.addEventListener(e, loadGTM, { passive: true, capture: true, once: true });
-            });
-            setTimeout(loadGTM, 8000);
-        })();
-    </script>
+    <!-- GTM moved to frontend/js/optimization.js -->
     <!-- Dependencies: Fonts, Tailwind, Icons -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -574,28 +550,32 @@
     <!-- Preload Scheherazade: Critical for LCP + CLS -->
     <link rel="preload" as="font" type="font/woff2" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2"
         crossorigin fetchpriority="high" />
-    <!-- Google Fonts: Consolidated into single request with display=optional to prevent CLS -->
+    <!-- Google Fonts: Consolidated into single request with display=swap to improve visibility -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=optional"
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=optional">
+            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap">
     </noscript>
     <!-- Sitemap Reference -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <!-- Critical CSS: Hero & Layout Stability (Fixes CLS/LCP) -->
     <style id="critical-css">
         /* === SCHEHERAZADE NEW FONT (CLS-Optimized) === */
+        /* === SCHEHERAZADE NEW FONT (CLS-Optimized) === */
         @font-face {
             font-family: 'Scheherazade New';
             src: url('frontend/assets/fonts/ScheherazadeNew-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
-            font-display: optional;
-            /* CLS Prevention: match fallback font metrics */
-            ascent-override: 88%;
-            descent-override: 32%;
+            font-display: swap;
+            /* CLS Prevention: fixed metrics */
+            size-adjust: 105%;
+            ascent-override: 90%;
+            descent-override: 20%;
             line-gap-override: 0%;
         }
 
@@ -623,6 +603,54 @@
             --radius-full: 9999px;
             --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        /* === MATRIX BACKGROUND === */
+        #matrixBackground {
+            min-height: 100vh;
+            min-height: 100dvh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            content-visibility: auto;
+            contain: strict;
+            /* LCP Optimization: ensure text is visible immediately */
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: rgba(16, 185, 129, 0.15);
+            padding: 20px;
+            overflow: hidden;
+            white-space: pre;
+            pointer-events: none;
+        }
+
+        /* === HERO SECTION (Layout Stability) === */
+        .hero {
+            min-height: 90vh;
+            min-height: 90dvh;
+            contain: layout style;
+            display: flex;
+            align-items: center;
+        }
+
+        /* === GLOBAL ANIMATION FIX (Performance) === */
+        *,
+        *::before,
+        *::after {
+            transition-property: transform, opacity, filter !important;
+        }
+
+        /* Allow colors for interactive elements */
+        a,
+        button,
+        .nav-link,
+        .filter,
+        .tab,
+        .btn,
+        .iconbtn {
+            transition-property: transform, opacity, color, background-color, border-color, box-shadow !important;
         }
 
         /* === BASE STYLES === */
@@ -1104,6 +1132,13 @@
             contain: strict;
         }
 
+        /* === LAZY RENDERING (Performance) === */
+        .lazy-section {
+            content-visibility: auto;
+            contain-intrinsic-size: 1px 800px;
+            /* Estimate height to minimize scroll jump */
+        }
+
         /* Force h1 to be LCP candidate */
         .hero-card .title {
             contain: none;
@@ -1127,23 +1162,7 @@
         <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
     </noscript>
     <!-- Scripts: Deferred for TBT -->
-    <script src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js" defer></script>
-    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js" defer></script>
-    <!-- Local Logic -->
-    <script src="frontend/js/navigation.js" defer></script>
-    <script src="frontend/js/index-theme.min.js" defer></script>
-    <!-- Animation Library (AOS) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" defer></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            AOS.init({
-                duration: 800,
-                once: true,
-                offset: 50,
-                disable: 'mobile' // Improve mobile performance
-            });
-        });
-    </script>
+    <!-- Scripts removed from head to fix TBT. Handled by optimization.js and footer scripts. -->
 </head>
 
 <body>
@@ -1530,7 +1549,16 @@
             <!-- Optimization: Added background color to prevent flash and layout shift -->
             <div aria-hidden="true" class="code-wall" style="background-color: #020617;">
                 <!-- Optimization: Content-visibility to auto for performance -->
-                <pre class="matrix" id="matrixBackground" style="content-visibility: auto; contain: paint;"></pre>
+                <pre class="matrix" id="matrixBackground" style="content-visibility: auto; contain: paint;">    <!-- Matrix Background: Inlined for LCP -->
+GET /api/v1/nlp/sentiment 200 78ms
+POST /api/v1/nlp/ner 200 64ms
+GET /api/v1/vision/object-detection 200 145ms
+SYSTEM_STATUS: ONLINE
+OPTIMIZING_NEURAL_NETWORKS... 98%
+LOADING_SAUDI_DATASETS... 100%
+CONNECTING_TO_RIYADH_SERVER... CONNECTED
+ENCRYPTING_DATA_STREAM... DONE
+</pre>
             </div>
             <div class="container">
                 <div class="hero-grid">
@@ -1981,7 +2009,7 @@
             </div>
         </section>
         <!-- Section 11: BI & Data Analysis -->
-        <section class="section" id="bi">
+        <section class="section lazy-section" id="bi">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:bar-chart-3"></iconify-icon> القسم 11: Business
                     Intelligence
@@ -2090,7 +2118,7 @@
             </div>
         </section>
         <!-- Section 12: Advanced Analytics Technologies -->
-        <section class="section" id="advanced">
+        <section class="section lazy-section" id="advanced">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:cpu"></iconify-icon> القسم 12: Advanced Analytics
                     Technologies
@@ -2138,7 +2166,7 @@
             </div>
         </section>
         <!-- Section 13: Managed AIaaS -->
-        <section class="section" id="aiaas">
+        <section class="section lazy-section" id="aiaas">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:sparkles"></iconify-icon> القسم 13: AIaaS - Managed</div>
                 <h2 class="title">AIaaS — الذكاء الاصطناعي كخدمة</h2>
@@ -2222,7 +2250,7 @@
             </div>
         </section>
         <!-- Section 14: Robotics -->
-        <section class="section" id="robotics">
+        <section class="section lazy-section" id="robotics">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:bot"></iconify-icon> القسم 14: Robotics Applications</div>
                 <h2 class="title">حلول روبوتية متطورة</h2>
@@ -2332,7 +2360,7 @@
             </div>
         </section>
         <!-- Section 15: Smart Library -->
-        <section class="section" id="library">
+        <section class="section lazy-section" id="library">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:book-open"></iconify-icon> القسم 15: المكتبة الذكية</div>
                 <h2 class="title">المكتبة الذكية</h2>
@@ -2388,7 +2416,7 @@
             </div>
         </section>
         <!-- Section 16: Interactive 3D Feature -->
-        <section class="section" id="interactive">
+        <section class="section lazy-section" id="interactive">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:box"></iconify-icon> القسم 16: Interactive 3D Feature
                 </div>
@@ -2436,7 +2464,7 @@
             </div>
         </section>
         <!-- Section 17: Autonomous Systems & Digital Teammates -->
-        <section class="section" id="teammates">
+        <section class="section lazy-section" id="teammates">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:users"></iconify-icon> القسم 17: Autonomous Systems &amp;
                     Digital Teammates</div>
@@ -2518,7 +2546,7 @@
             </div>
         </section>
         <!-- Section 18: AI Workflows -->
-        <section class="section" id="workflows">
+        <section class="section lazy-section" id="workflows">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:workflow"></iconify-icon> القسم 18: AI Workflows</div>
                 <h2 class="title">مراحل معالجة البيانات الذكية</h2>
@@ -2612,7 +2640,7 @@
             </div>
         </section>
         <!-- Section 19: Portfolio -->
-        <section class="section" id="portfolio">
+        <section class="section lazy-section" id="portfolio">
             <div class="container">
                 <div class="badge"><iconify-icon icon="lucide:briefcase"></iconify-icon> القسم 19: أعمالنا ومشاريعنا
                 </div>
@@ -3497,7 +3525,8 @@
             </div>
         </div>
     </div>
-    <script defer="" src="frontend/js/index-theme.min.js"></script>
+    <script defer src="frontend/js/optimization.js"></script>
+    <script defer src="frontend/js/index-theme.min.js"></script>
 </body>
 
 </html>

@@ -153,6 +153,39 @@ const resolvedSupabaseKey =
 const storage =
   typeof window !== "undefined" ? window.localStorage : undefined;
 
+const purgeInvalidSupabaseAuthTokens = () => {
+  if (!storage) {
+    return;
+  }
+
+  // تنظيف أي جلسة تالفة (خصوصاً بعد "وضع محلي" سابق) تسبب خطأ JWT:
+  // Expected 3 parts in JWT; got 1
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < storage.length; i += 1) {
+    const key = storage.key(i);
+    if (!key) continue;
+    if (!key.startsWith("sb-") || !key.endsWith("-auth-token")) continue;
+
+    const raw = storage.getItem(key);
+    if (!raw) continue;
+
+    try {
+      const parsed = JSON.parse(raw) as { access_token?: unknown };
+      const token = typeof parsed.access_token === "string" ? parsed.access_token : "";
+      const looksLikeJwt = token.split(".").length === 3;
+      if (!token || !looksLikeJwt) {
+        keysToRemove.push(key);
+      }
+    } catch {
+      keysToRemove.push(key);
+    }
+  }
+
+  keysToRemove.forEach((key) => storage.removeItem(key));
+};
+
+purgeInvalidSupabaseAuthTokens();
+
 const supabase: SupabaseClient<Database> = createClient<Database>(
   resolvedSupabaseUrl,
   resolvedSupabaseKey,

@@ -7,21 +7,6 @@ create extension if not exists "pgcrypto";
 -- ===================================
 -- 2. الدوال الأساسية للتشفير والتحديث
 -- ===================================
-create or replace function public.get_encryption_key()
-returns text
-language plpgsql
-as $$
-declare
-  encryption_key text;
-begin
-  encryption_key := current_setting('app.encryption_key', true);
-  if encryption_key is null or length(encryption_key) = 0 then
-    raise exception 'مفتاح التشفير غير معرف في إعدادات قاعدة البيانات';
-  end if;
-  return encryption_key;
-end;
-$$;
-
 create or replace function public.update_updated_at_column()
 returns trigger
 language plpgsql
@@ -66,57 +51,12 @@ begin
   return new;
 end;
 $$;
+;
 
-create or replace function public.encrypt_api_key(plain_key text)
-returns text
-language plpgsql
-as $$
-declare
-  encryption_key text;
-  encrypted bytea;
-begin
-  if plain_key is null or length(plain_key) = 0 then
-    return null;
-  end if;
-  encryption_key := public.get_encryption_key();
-  encrypted := pgp_sym_encrypt(plain_key, encryption_key);
-  return 'enc:' || encode(encrypted, 'base64');
-end;
-$$;
-
-create or replace function public.decrypt_api_key(encrypted_key text)
-returns text
-language plpgsql
-as $$
-declare
-  encryption_key text;
-  payload text;
-  decrypted bytea;
-begin
-  if encrypted_key is null or length(encrypted_key) = 0 then
-    return null;
-  end if;
-  if position('enc:' in encrypted_key) <> 1 then
-    raise exception 'صيغة المفتاح المشفر غير صالحة';
-  end if;
-  encryption_key := public.get_encryption_key();
-  payload := substring(encrypted_key from 5);
-  decrypted := pgp_sym_decrypt(decode(payload, 'base64'), encryption_key);
-  return convert_from(decrypted, 'utf8');
-end;
-$$;
-
-create or replace function public.encrypt_api_key_trigger()
-returns trigger
-language plpgsql
-as $$
-begin
-  if new.key_encrypted is not null and position('enc:' in new.key_encrypted) <> 1 then
-    new.key_encrypted := public.encrypt_api_key(new.key_encrypted);
-  end if;
-  return new;
-end;
-$$;
+-- ملاحظة أمنية:
+-- مفاتيح API تُشفّر على جهة العميل قبل التخزين (Web Crypto API).
+-- لذلك لا نضيف هنا أي تشفير على مستوى قاعدة البيانات لتجنب الاعتماد على إعدادات خفية (app.encryption_key)
+-- ولمنع التشفير المزدوج الذي يعطل الاسترجاع لاحقاً.
 
 -- ===================================
 -- 3. جدول الشركات
@@ -294,90 +234,10 @@ create table public.profiles (
 );
 
 -- ===================================
--- إنشاء مدير عام افتراضي
+-- ملاحظة: لا يتم إنشاء مدير عام داخل SQL
 -- ===================================
-create or replace function public.create_super_admin()
-returns table(admin_id uuid, admin_email text, admin_password text)
-language plpgsql
-security definer
-as $$
-declare
-  v_admin_id uuid;
-  v_admin_email text := 'admin@brightai.sa';
-  v_admin_password text := 'BrightAI@2024#Admin!';
-  v_encrypted_password text;
-begin
-  v_encrypted_password := crypt(v_admin_password, gen_salt('bf'));
-
-  select id into v_admin_id
-  from auth.users
-  where email = v_admin_email
-  limit 1;
-
-  if v_admin_id is null then
-    insert into auth.users (
-      instance_id,
-      id,
-      aud,
-      role,
-      email,
-      encrypted_password,
-      email_confirmed_at,
-      raw_app_meta_data,
-      raw_user_meta_data,
-      created_at,
-      updated_at,
-      confirmation_token,
-      recovery_token
-    ) values (
-      '00000000-0000-0000-0000-000000000000',
-      uuid_generate_v4(),
-      'authenticated',
-      'authenticated',
-      v_admin_email,
-      v_encrypted_password,
-      now(),
-      '{"provider":"email","providers":["email"]}',
-      jsonb_build_object(
-        'full_name', 'Super Admin',
-        'role', 'super_admin',
-        'avatar_url', null
-      ),
-      now(),
-      now(),
-      '',
-      ''
-    )
-    returning id into v_admin_id;
-  else
-    update auth.users
-    set encrypted_password = v_encrypted_password
-    where id = v_admin_id;
-  end if;
-
-  insert into public.profiles (
-    id,
-    full_name,
-    role,
-    language,
-    timezone,
-    created_at,
-    updated_at
-  ) values (
-    v_admin_id,
-    'Super Admin',
-    'super_admin',
-    'ar',
-    'Asia/Riyadh',
-    now(),
-    now()
-  )
-  on conflict (id) do update
-  set role = 'super_admin';
-
-  return query select v_admin_id, v_admin_email, v_admin_password;
-end;
-$$;
+-- السبب: منصة Supabase تمنع التعديل المباشر على auth.users من داخل SQL في البيئات المُدارة.
+-- الحل: أنشئ المستخدم من لوحة Supabase (Auth) ثم حدّث role في جدول profiles/organization_users حسب الحاجة.
 
 -- ===================================
 -- 9. جدول الوكلاء
@@ -1056,10 +916,6 @@ create trigger update_invoices_updated_at
 before update on public.invoices
 for each row execute procedure public.update_updated_at_column();
 
-create trigger api_keys_encrypt_before_write
-before insert or update on public.api_keys
-for each row execute procedure public.encrypt_api_key_trigger();
-
 -- ===================================
 -- 22. دوال الإحصاءات والتدقيق
 -- ===================================
@@ -1249,71 +1105,8 @@ group by a.id;
 -- ===================================
 -- 25. بيانات تجريبية
 -- ===================================
-insert into public.organizations (
-  name,
-  slug,
-  description,
-  plan,
-  is_active,
-  is_trial,
-  trial_ends_at
-) values (
-  'شركة تجريبية',
-  'demo-company',
-  'شركة تجريبية لاختبار المنصة',
-  'pro',
-  true,
-  true,
-  now() + interval '30 days'
-) on conflict do nothing;
-
-select * from public.create_super_admin();
-
-insert into public.templates (
-  name,
-  description,
-  category,
-  is_official,
-  is_public,
-  is_featured,
-  workflow,
-  settings,
-  tags
-) values
-(
-  'مساعد خدمة العملاء',
-  'وكيل للرد على استفسارات العملاء بشكل تلقائي',
-  'محادثة',
-  true,
-  true,
-  true,
-  '{"nodes": [], "edges": []}'::jsonb,
-  '{}'::jsonb,
-  array['خدمة العملاء', 'محادثة', 'عربي']
-),
-(
-  'محلل البيانات التنفيذي',
-  'وكيل لتحليل البيانات وإنشاء تقارير تنفيذية',
-  'تحليل',
-  true,
-  true,
-  true,
-  '{"nodes": [], "edges": []}'::jsonb,
-  '{}'::jsonb,
-  array['تحليل', 'تقارير']
-),
-(
-  'مولد المحتوى التسويقي',
-  'وكيل لإنشاء محتوى تسويقي باللغة العربية',
-  'تسويق',
-  true,
-  true,
-  true,
-  '{"nodes": [], "edges": []}'::jsonb,
-  '{}'::jsonb,
-  array['تسويق', 'محتوى', 'عربي']
-)
-;
+-- تم تعطيل إدخال البيانات التجريبية داخل الهجرة لتجنب تلويث بيئة الإنتاج
+-- يمكنك إضافة بيانات أولية عبر seed منفصل أو من داخل لوحة التحكم بعد تشغيل النظام.
 
 -- ===================================
 -- 26. التعليقات التوضيحية

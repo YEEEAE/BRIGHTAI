@@ -2,6 +2,8 @@ import type { User } from "@supabase/supabase-js";
 
 const LOCAL_ADMIN_SESSION_KEY = "brightai_local_admin_session";
 
+const LOCAL_ADMIN_ENABLED = process.env.REACT_APP_ENABLE_LOCAL_ADMIN === "true";
+
 const LOCAL_ADMIN_EMAIL =
   process.env.REACT_APP_LOCAL_ADMIN_EMAIL || "admin@brightai.sa";
 const LOCAL_ADMIN_PASSWORD =
@@ -35,6 +37,9 @@ const clearSupabaseAuthTokens = () => {
 };
 
 export const isLocalAdminCredentials = (email: string, password: string) => {
+  if (!LOCAL_ADMIN_ENABLED) {
+    return false;
+  }
   return (
     email.trim().toLowerCase() === LOCAL_ADMIN_EMAIL.toLowerCase() &&
     password === LOCAL_ADMIN_PASSWORD
@@ -42,6 +47,9 @@ export const isLocalAdminCredentials = (email: string, password: string) => {
 };
 
 export const setLocalAdminSession = () => {
+  if (!LOCAL_ADMIN_ENABLED) {
+    return;
+  }
   const storage = getStorage();
   if (!storage) {
     return;
@@ -56,11 +64,17 @@ export const clearLocalAdminSession = () => {
 };
 
 export const isLocalAdminSessionActive = () => {
+  if (!LOCAL_ADMIN_ENABLED) {
+    return false;
+  }
   const storage = getStorage();
   return storage?.getItem(LOCAL_ADMIN_SESSION_KEY) === "1";
 };
 
 export const getLocalAdminUser = (): User | null => {
+  if (!LOCAL_ADMIN_ENABLED) {
+    return null;
+  }
   if (!isLocalAdminSessionActive()) {
     return null;
   }
