@@ -1,13 +1,28 @@
 # ======================================================
-# BrightAI - Production Robots.txt (Static site / Firebase / Hosting)
-# Updated: 2026-02-07
+# BrightAI - Robots.txt
+# Optimized for Google & AI Control
 # ======================================================
 
 User-agent: *
 Allow: /
 
 # --------------------
-# Block sensitive paths (do not expose admin/config/backups)
+# Block AI Training Bots (Standard)
+# --------------------
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+# --------------------
+# Block sensitive paths
 # --------------------
 Disallow: /admin/
 Disallow: /private/
@@ -24,7 +39,7 @@ Disallow: /node_modules/
 Disallow: /tests/
 
 # --------------------
-# Dev / build artifacts (common)
+# Dev / build artifacts
 # --------------------
 Disallow: /_next/
 Disallow: /.nuxt/
@@ -33,7 +48,7 @@ Disallow: /build/
 Disallow: /src/
 
 # --------------------
-# NEVER block rendering resources (CRITICAL for Lighthouse & Google)
+# NEVER block rendering resources
 # --------------------
 Allow: /assets/
 Allow: /static/
@@ -44,7 +59,7 @@ Allow: /js/
 Allow: /favicon.ico
 
 # --------------------
-# Blog / content (ensure crawlers see content)
+# Blog / content
 # --------------------
 Allow: /blog/
 Allow: /blogger/
@@ -59,7 +74,7 @@ Disallow: /api/internal/
 Allow: /api/public/
 
 # --------------------
-# Files handling - block non-public dump files
+# Files handling
 # --------------------
 Disallow: /*.map$
 Disallow: /*.log$
@@ -74,17 +89,4 @@ Allow: /robots.txt
 Allow: /manifest.json
 Allow: /schema-saudi-seo.json
 
-# --------------------
-# Sitemap
-# --------------------
 Sitemap: https://brightai.site/sitemap.xml
-
-# --------------------
-# LLMs.txt (للنماذج اللغوية الكبيرة)
-# --------------------
-# https://brightai.site/llms.txt
-
-# --------------------
-# Crawl-delay (optional - be nice to servers)
-# --------------------
-# Crawl-delay: 1

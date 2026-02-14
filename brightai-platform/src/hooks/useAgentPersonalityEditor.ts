@@ -398,6 +398,8 @@ const useAgentPersonalityEditor = ({ value, onChange }: خصائصمحررالش
           tokens: تقديرالرموز(cleaned),
           chunks: chunks.length,
           updatedAt: new Date().toISOString(),
+          content: cleaned,
+          chunksData: chunks.slice(0, 180),
         });
       }
 
@@ -479,6 +481,8 @@ const useAgentPersonalityEditor = ({ value, onChange }: خصائصمحررالش
                   ...item,
                   words: عددالكلمات(content),
                   tokens: تقديرالرموز(content),
+                  content,
+                  chunksData: تقسيملنص(content).slice(0, 180),
                   status: "جاهز",
                   updatedAt: new Date().toISOString(),
                 }

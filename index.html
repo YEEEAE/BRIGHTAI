@@ -967,7 +967,7 @@
         <div class="flex flex-col h-full bg-[#020617] border-l border-white/5 p-8">
             <div class="flex items-center justify-between mb-12">
                 <div class="text-xl font-bold text-white">القائمة الرئيسية</div>
-                <button class="mobile-toggle p-2 hover:bg-white/5 rounded-full">
+                <button aria-label="إغلاق القائمة" class="mobile-toggle p-2 hover:bg-white/5 rounded-full">
                     <iconify-icon class="text-white text-2xl" icon="lucide:x"></iconify-icon>
                 </button>
             </div>
@@ -1052,8 +1052,10 @@
     <main id="main" itemscope itemtype="https://schema.org/WebPage">
         <!-- HERO / APIs Section background -->
         <div class="hero section tight" id="top">
-            <div aria-hidden="true" class="code-wall">
-                <pre class="matrix" id="matrixBackground"></pre>
+            <!-- Optimization: Added background color to prevent flash and layout shift -->
+            <div aria-hidden="true" class="code-wall" style="background-color: #020617;">
+                <!-- Optimization: Content-visibility to auto for performance -->
+                <pre class="matrix" id="matrixBackground" style="content-visibility: auto; contain: paint;"></pre>
             </div>
             <div class="container">
                 <div class="hero-grid">
@@ -1064,7 +1066,8 @@
                             <div class="badge"><iconify-icon icon="lucide:code-2"></iconify-icon> RESTful APIs +
                                 WebSocket +
                                 OAuth 2.0</div>
-                            <h1 class="title">حوّل فكرتك لحل ذكي قابل للتنفيذ.</h1>
+                            <!-- Optimization: fetchpriority="high" for LCP Candidate -->
+                            <h1 class="title" fetchpriority="high">حوّل فكرتك لحل ذكي قابل للتنفيذ.</h1>
                             <p class="subtitle">تبغى نتائج فعلية؟ نبدأ معك خطوة بخطوة. بدون تعقيد، بدون مخاطرة، بخطة
                                 واضحة
                                 ذكاء يصير جزء من فريقك. أتمتة، تحليل، دعم — كلّه سهل وواضح
@@ -1555,7 +1558,7 @@
                             <div class="fake-svg"></div>
                         </div>
                         <div>
-                            <h4>Microsoft Power BI</h4>
+                            <h3>Microsoft Power BI</h3>
                             <p>تحليلات تفاعلية ولوحات تحكم احترافية — تقارير مالية، تحليل المبيعات، مراقبة الأداء</p>
                         </div>
                     </div>
@@ -1564,7 +1567,7 @@
                             <div class="fake-svg"></div>
                         </div>
                         <div>
-                            <h4>Tableau</h4>
+                            <h3>Tableau</h3>
                             <p>تصورات بيانات متقدمة — تحليلات تنبؤية، dashboards تفاعلية</p>
                         </div>
                     </div>
@@ -1573,7 +1576,7 @@
                             <div class="fake-svg"></div>
                         </div>
                         <div>
-                            <h4>Google Data Studio</h4>
+                            <h3>Google Data Studio</h3>
                             <p>تقارير سحابية مجانية — تقارير تسويقية، تحليل الويب</p>
                         </div>
                     </div>
@@ -1582,7 +1585,7 @@
                             <div class="fake-svg"></div>
                         </div>
                         <div>
-                            <h4>Apache Superset</h4>
+                            <h3>Apache Superset</h3>
                             <p>منصة BI مفتوحة المصدر — تحليل البيانات الضخمة</p>
                         </div>
                     </div>
@@ -1591,7 +1594,7 @@
                             <div class="fake-svg"></div>
                         </div>
                         <div>
-                            <h4>Metabase</h4>
+                            <h3>Metabase</h3>
                             <p>أداة BI بسيطة وفعالة — استعلامات سريعة، تقارير آلية</p>
                         </div>
                     </div>

@@ -1,3 +1,92 @@
-# https://www.robotstxt.org/robotstxt.html
+# ======================================================
+# BrightAI - Robots.txt
+# Optimized for Google & AI Control
+# ======================================================
+
 User-agent: *
-Disallow:
+Allow: /
+
+# --------------------
+# Block AI Training Bots (Standard)
+# --------------------
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+# --------------------
+# Block sensitive paths
+# --------------------
+Disallow: /admin/
+Disallow: /private/
+Disallow: /config/
+Disallow: /backup/
+Disallow: /backups/
+Disallow: /logs/
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: /.git/
+Disallow: /.env
+Disallow: /.vscode/
+Disallow: /node_modules/
+Disallow: /tests/
+
+# --------------------
+# Dev / build artifacts
+# --------------------
+Disallow: /_next/
+Disallow: /.nuxt/
+Disallow: /dist/
+Disallow: /build/
+Disallow: /src/
+
+# --------------------
+# NEVER block rendering resources
+# --------------------
+Allow: /assets/
+Allow: /static/
+Allow: /images/
+Allow: /fonts/
+Allow: /css/
+Allow: /js/
+Allow: /favicon.ico
+
+# --------------------
+# Blog / content
+# --------------------
+Allow: /blog/
+Allow: /blogger/
+Allow: /frontend/pages/
+Allow: /demo/
+
+# --------------------
+# API rules
+# --------------------
+Disallow: /api/auth/
+Disallow: /api/internal/
+Allow: /api/public/
+
+# --------------------
+# Files handling
+# --------------------
+Disallow: /*.map$
+Disallow: /*.log$
+Disallow: /*.sql$
+Disallow: /*.zip$
+
+# --------------------
+# SEO essential files
+# --------------------
+Allow: /sitemap.xml
+Allow: /robots.txt
+Allow: /manifest.json
+Allow: /schema-saudi-seo.json
+
+Sitemap: https://brightai.site/sitemap.xml

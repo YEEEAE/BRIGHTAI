@@ -16,44 +16,53 @@ export const normalizeKnowledgeUrls = (input: unknown): رابطمصدر[] => {
     return [];
   }
 
-  return input
-    .map((item, index) => {
-      if (typeof item === "string") {
-        return {
-          id: `url_${index}_${Date.now()}`,
-          url: item,
-          words: 0,
-          tokens: 0,
-          status: "غير مفحوص" as const,
-          updatedAt: new Date().toISOString(),
-        };
+  const out: رابطمصدر[] = [];
+
+  for (let index = 0; index < input.length; index += 1) {
+    const item = input[index];
+    if (typeof item === "string") {
+      out.push({
+        id: `url_${index}_${Date.now()}`,
+        url: item,
+        words: 0,
+        tokens: 0,
+        status: "غير مفحوص",
+        updatedAt: new Date().toISOString(),
+        content: "",
+        chunksData: [],
+      });
+      continue;
+    }
+
+    if (item && typeof item === "object") {
+      const row = item as Record<string, unknown>;
+      const url = String(row.url || "");
+      if (!url) {
+        continue;
       }
 
-      if (item && typeof item === "object") {
-        const row = item as Record<string, unknown>;
-        const url = String(row.url || "");
-        if (!url) {
-          return null;
-        }
-        return {
-          id: String(row.id || `url_${index}_${Date.now()}`),
-          url,
-          words: Number(row.words || 0),
-          tokens: Number(row.tokens || 0),
-          status:
-            row.status === "جارٍ الجلب" ||
-            row.status === "جاهز" ||
-            row.status === "فشل" ||
-            row.status === "غير مفحوص"
-              ? (row.status as رابطمصدر["status"])
-              : "غير مفحوص",
-          updatedAt: String(row.updatedAt || new Date().toISOString()),
-        };
-      }
+      out.push({
+        id: String(row.id || `url_${index}_${Date.now()}`),
+        url,
+        words: Number(row.words || 0),
+        tokens: Number(row.tokens || 0),
+        status:
+          row.status === "جارٍ الجلب" ||
+          row.status === "جاهز" ||
+          row.status === "فشل" ||
+          row.status === "غير مفحوص"
+            ? (row.status as رابطمصدر["status"])
+            : "غير مفحوص",
+        updatedAt: String(row.updatedAt || new Date().toISOString()),
+        content: typeof row.content === "string" ? row.content : "",
+        chunksData: Array.isArray(row.chunksData)
+          ? row.chunksData.filter((entry): entry is string => typeof entry === "string")
+          : [],
+      });
+    }
+  }
 
-      return null;
-    })
-    .filter((item): item is رابطمصدر => Boolean(item));
+  return out;
 };
 
 export const normalizeKnowledgeFiles = (input: unknown): ملفمعرفة[] => {
@@ -61,30 +70,140 @@ export const normalizeKnowledgeFiles = (input: unknown): ملفمعرفة[] => {
     return [];
   }
 
-  return input
-    .map((item, index) => {
-      if (!item || typeof item !== "object") {
-        return null;
-      }
+  const out: ملفمعرفة[] = [];
 
-      const row = item as Record<string, unknown>;
-      const name = String(row.name || "");
-      if (!name) {
-        return null;
-      }
+  for (let index = 0; index < input.length; index += 1) {
+    const item = input[index];
+    if (!item || typeof item !== "object") {
+      continue;
+    }
 
-      return {
-        id: String(row.id || `file_${index}_${Date.now()}`),
-        name,
-        size: Number(row.size || 0),
-        type: String(row.type || "application/octet-stream"),
-        words: Number(row.words || 0),
-        tokens: Number(row.tokens || 0),
-        chunks: Number(row.chunks || 0),
-        updatedAt: String(row.updatedAt || new Date().toISOString()),
-      };
-    })
-    .filter((item): item is ملفمعرفة => Boolean(item));
+    const row = item as Record<string, unknown>;
+    const name = String(row.name || "");
+    if (!name) {
+      continue;
+    }
+
+    out.push({
+      id: String(row.id || `file_${index}_${Date.now()}`),
+      name,
+      size: Number(row.size || 0),
+      type: String(row.type || "application/octet-stream"),
+      words: Number(row.words || 0),
+      tokens: Number(row.tokens || 0),
+      chunks: Number(row.chunks || 0),
+      updatedAt: String(row.updatedAt || new Date().toISOString()),
+      content: typeof row.content === "string" ? row.content : "",
+      chunksData: Array.isArray(row.chunksData)
+        ? row.chunksData.filter((entry): entry is string => typeof entry === "string")
+        : [],
+    });
+  }
+
+  return out;
+};
+
+const tokenize = (text: string): string[] =>
+  text
+    .toLowerCase()
+    .replace(/[^A-Za-z0-9\u0600-\u06FF\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .filter((part) => part.length >= 2);
+
+const scoreChunk = (queryTerms: Set<string>, chunk: string): number => {
+  if (!chunk.trim() || queryTerms.size === 0) {
+    return 0;
+  }
+
+  const terms = tokenize(chunk);
+  if (terms.length === 0) {
+    return 0;
+  }
+
+  let hits = 0;
+  for (const term of terms) {
+    if (queryTerms.has(term)) {
+      hits += 1;
+    }
+  }
+
+  return hits / Math.max(terms.length, 1);
+};
+
+const chunkText = (text: string, chunkSize = 1000, overlap = 120): string[] => {
+  const normalized = text.replace(/\s+/g, " ").trim();
+  if (!normalized) {
+    return [];
+  }
+
+  const chunks: string[] = [];
+  let start = 0;
+  while (start < normalized.length) {
+    const end = Math.min(start + chunkSize, normalized.length);
+    chunks.push(normalized.slice(start, end));
+    if (end >= normalized.length) {
+      break;
+    }
+    start = Math.max(0, end - overlap);
+  }
+
+  return chunks;
+};
+
+export const extractKnowledgeContext = (
+  question: string,
+  directText: string,
+  urls: رابطمصدر[],
+  files: ملفمعرفة[],
+  maxChunks = 8
+) => {
+  const queryTerms = new Set(tokenize(question));
+  const candidates: Array<{ source: string; text: string; score: number }> = [];
+
+  const pushChunks = (source: string, chunks: string[]) => {
+    for (const chunk of chunks) {
+      const text = chunk.trim();
+      if (!text) {
+        continue;
+      }
+      candidates.push({ source, text, score: scoreChunk(queryTerms, text) });
+    }
+  };
+
+  if (directText.trim()) {
+    pushChunks("نص مباشر", chunkText(directText, 1000, 120));
+  }
+
+  for (const item of urls) {
+    const source = `رابط: ${item.url}`;
+    if (Array.isArray(item.chunksData) && item.chunksData.length > 0) {
+      pushChunks(source, item.chunksData.slice(0, 120));
+    } else if (item.content) {
+      pushChunks(source, chunkText(item.content, 1000, 120));
+    }
+  }
+
+  for (const item of files) {
+    const source = `ملف: ${item.name}`;
+    if (Array.isArray(item.chunksData) && item.chunksData.length > 0) {
+      pushChunks(source, item.chunksData.slice(0, 120));
+    } else if (item.content) {
+      pushChunks(source, chunkText(item.content, 1000, 120));
+    }
+  }
+
+  const ranked = candidates
+    .sort((a, b) => b.score - a.score)
+    .slice(0, maxChunks)
+    .map((item, index) => `[${index + 1}] ${item.source}\n${item.text}`);
+
+  if (ranked.length === 0) {
+    return "";
+  }
+
+  return `مقاطع معرفة مسترجعة (الأكثر صلة بالسؤال):\n${ranked.join("\n\n")}`;
 };
 
 export const getDraftKey = (agentId?: string) => `${DRAFT_STORAGE_PREFIX}_${agentId || "new"}`;

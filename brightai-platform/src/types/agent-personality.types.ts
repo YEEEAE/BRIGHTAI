@@ -24,6 +24,8 @@ export type ملفمعرفةمحرر = {
   tokens: number;
   chunks: number;
   updatedAt: string;
+  content?: string;
+  chunksData?: string[];
 };
 
 export type رابطمحرر = {
@@ -33,6 +35,8 @@ export type رابطمحرر = {
   tokens: number;
   status: "غير مفحوص" | "جارٍ الجلب" | "جاهز" | "فشل";
   updatedAt: string;
+  content?: string;
+  chunksData?: string[];
 };
 
 export type شخصيةمحرر = {
