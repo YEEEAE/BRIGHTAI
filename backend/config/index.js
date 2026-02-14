@@ -4,8 +4,21 @@
  * Requirements: 23.4, 23.9
  */
 
+const fs = require('fs');
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+const envCandidates = [
+  path.resolve(__dirname, '../../.env'),
+  path.resolve(__dirname, '../.env'),
+  path.resolve(process.cwd(), '.env')
+];
+
+const selectedEnvPath = envCandidates.find(candidate => fs.existsSync(candidate));
+if (selectedEnvPath) {
+  require('dotenv').config({ path: selectedEnvPath });
+} else {
+  require('dotenv').config();
+}
 
 const config = {
   // Gemini AI Configuration

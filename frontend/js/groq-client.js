@@ -3,44 +3,36 @@
  * تكامل Groq مع تحليل البيانات الفعلي
  */
 
-// Groq API Key - يجب نقله لـ backend proxy في الإنتاج
-const GROQ_API_KEY = 'GROQ_KEY_REDACTED';
-
 class GroqStreamManager {
     constructor(config = {}) {
-        this.apiKey = config.apiKey || GROQ_API_KEY;
+        this.endpoint = config.endpoint || '/api/groq/stream';
+        this.outputType = config.outputType || 'تحليل بيانات';
         this.sessionHistory = [];
     }
 
     async streamResponse(prompt, context, onChunk, onComplete) {
-        // وضع العرض التوضيحي
-        if (this.apiKey === "YOUR_SECURE_KEY_OR_PROXY" || !this.apiKey) {
+        // وضع العرض التوضيحي إذا لم يتوفر مسار خادم
+        if (!this.endpoint) {
             await this.mockAnalysis(context, onChunk, onComplete);
             return;
         }
 
-        // الاتصال الحقيقي بـ Groq API
+        // الاتصال الآمن عبر خادم Bright AI (بدون كشف المفتاح للعميل)
         try {
-            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            const response = await fetch(this.endpoint, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${this.apiKey}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    messages: [
-                        {
-                            role: "system",
-                            content: `أنت محلل بيانات ذكي سعودي. قدم رؤى احترافية ومختصرة بناءً على البيانات المقدمة.`
-                        },
-                        { role: "user", content: prompt }
-                    ],
-                    model: "llama3-70b-8192",
-                    stream: true,
-                    temperature: 0.7,
-                    max_tokens: 1024
+                    message: prompt,
+                    outputType: this.outputType
                 })
             });
+
+            if (!response.ok || !response.body) {
+                throw new Error(`Stream request failed: ${response.status}`);
+            }
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder("utf-8");
@@ -57,20 +49,23 @@ class GroqStreamManager {
                 buffer = lines.pop();
 
                 for (const line of lines) {
-                    const message = line.replace(/^data: /, "").trim();
+                    const message = line.replace(/^data:\s*/, "").trim();
+                    if (!message) continue;
+
                     if (message === "[DONE]") {
                         if (onComplete) onComplete();
                         return;
                     }
-                    if (message) {
-                        try {
-                            const parsed = JSON.parse(message);
-                            const content = parsed.choices[0].delta.content;
-                            if (content) onChunk(content);
-                        } catch (e) { /* تجاهل */ }
-                    }
+
+                    try {
+                        const parsed = JSON.parse(message);
+                        const content = parsed?.token || parsed?.choices?.[0]?.delta?.content || '';
+                        if (content) onChunk(content);
+                    } catch (e) { /* تجاهل */ }
                 }
             }
+
+            if (onComplete) onComplete();
         } catch (error) {
             console.error("Groq Stream Error:", error);
             await this.mockAnalysis(context, onChunk, onComplete);

@@ -1,856 +1,1286 @@
 <!DOCTYPE html>
-
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Bright AI | Smart Medical Archive</title>
-  <meta name="description" content="منصة الأرشيف الطبي الذكي لإدارة السجلات واستخراج البيانات الطبية بدقة مع تكاملات محلية في السعودية.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI</title>
+  <meta name="description" content="منصة أرشفة طبية ذكية للمستشفيات السعودية: رقمنة الملفات، استخراج بيانات سريرية دقيقة، وتقليل زمن الوصول للسجل الطبي مع تكامل آمن وقابل للتدقيق.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="theme-color" content="#041823">
   <link rel="canonical" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html">
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Bright AI | Smart Medical Archive" />
-  <meta property="og:description" content="أرشفة طبية ذكية للمستشفيات السعودية مع استخراج بيانات سريرية وربط قابل للتدقيق." />
-  <meta property="og:url" content="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
-  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bright AI | Smart Medical Archive" />
-  <meta name="twitter:description" content="أرشفة طبية ذكية للمستشفيات السعودية مع استخراج بيانات سريرية وربط قابل للتدقيق." />
-  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI">
+  <meta property="og:description" content="قلل زمن استرجاع السجلات الطبية وارفع دقة البيانات السريرية عبر OCR + NLP + تكاملات EHR للمستشفيات داخل السعودية.">
+  <meta property="og:url" content="https://brightai.site/frontend/pages/smart-medical-archive/index.html">
+  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI">
+  <meta name="twitter:description" content="حل SaaS صحي يسرّع الأرشفة الطبية ويحوّل المستندات إلى بيانات قابلة للبحث والتحليل.">
+  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #041823;
+      --bg-deep: #021119;
+      --surface: rgba(9, 34, 48, 0.75);
+      --surface-strong: rgba(12, 45, 62, 0.92);
+      --text: #f4fbff;
+      --muted: #9bc5d8;
+      --border: rgba(118, 196, 225, 0.26);
+      --primary: #0ea5a1;
+      --primary-strong: #06b6d4;
+      --accent: #f59e0b;
+      --danger: #ef4444;
+      --ok: #22c55e;
+      --radius-xl: 22px;
+      --radius-lg: 16px;
+      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.24);
+      --container: min(1120px, 92vw);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #0a3b53 0%, transparent 60%),
+                  radial-gradient(1000px 500px at 100% 0%, #073148 0%, transparent 62%),
+                  linear-gradient(165deg, var(--bg) 0%, var(--bg-deep) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      right: 16px;
+      background: #ffffff;
+      color: #000000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      z-index: 9999;
+      text-decoration: none;
+      transition: top .2s ease;
+    }
+
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(126, 211, 243, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(126, 211, 243, 0.05) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 92%);
+      z-index: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(12px);
+      background: rgba(2, 17, 25, 0.72);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner,
+    .hero,
+    .section,
+    .footer-inner {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      box-shadow: 0 8px 22px rgba(14, 165, 161, 0.4);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1rem;
+      line-height: 1.1;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: .74rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .95rem;
+      font-weight: 600;
+      transition: color .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: #ffffff;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #00131d;
+      box-shadow: 0 12px 28px rgba(6, 182, 212, 0.34);
+      padding: 12px 18px;
+    }
+
+    .btn-secondary {
+      background: rgba(7, 37, 51, 0.7);
+      color: #e8f9ff;
+      border-color: var(--border);
+      padding: 12px 18px;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 46px 0 20px;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1.2fr .9fr;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-search {
+      background: linear-gradient(160deg, rgba(9, 35, 50, 0.95), rgba(4, 20, 31, 0.92));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-copy {
+      padding: 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .9rem;
+      color: #a7e9f6;
+      font-weight: 700;
+      border: 1px solid rgba(167, 233, 246, 0.3);
+      border-radius: 999px;
+      padding: 7px 14px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.7rem, 3.4vw, 2.85rem);
+      line-height: 1.25;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero p {
+      color: #c6e3ef;
+      font-size: 1.04rem;
+      margin-bottom: 22px;
+    }
+
+    .proof-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .proof-list li {
+      border: 1px solid rgba(110, 194, 223, 0.2);
+      border-radius: 12px;
+      background: rgba(5, 29, 43, 0.7);
+      padding: 10px 12px;
+      color: #cdebf6;
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-search {
+      padding: 24px;
+    }
+
+    .hero-search h2 {
+      font-size: 1.18rem;
+      margin-bottom: 8px;
+    }
+
+    .hero-search p {
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-size: .93rem;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: .87rem;
+      color: #d7f1fb;
+      font-weight: 700;
+    }
+
+    .search-row {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr auto;
+      margin-bottom: 12px;
+    }
+
+    .search-row input {
+      width: 100%;
+      border: 1px solid rgba(110, 194, 223, 0.35);
+      border-radius: 12px;
+      background: rgba(2, 20, 30, 0.85);
+      color: #f8fdff;
+      padding: 12px 14px;
+      font-size: .95rem;
+    }
+
+    .search-row input::placeholder {
+      color: #88b9ca;
+    }
+
+    .search-row input:focus-visible {
+      border-color: #67d7ec;
+      box-shadow: 0 0 0 3px rgba(103, 215, 236, 0.22);
+      outline: none;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      border: 1px solid rgba(139, 219, 243, 0.32);
+      background: rgba(8, 44, 60, 0.62);
+      color: #d6f4fc;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: .83rem;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .chip:hover,
+    .chip:focus-visible {
+      background: rgba(10, 70, 92, 0.72);
+      border-color: #8be3f4;
+      outline: none;
+    }
+
+    .search-output {
+      border: 1px dashed rgba(139, 219, 243, 0.4);
+      background: rgba(3, 28, 40, 0.7);
+      color: #d4f3fb;
+      border-radius: 12px;
+      padding: 13px;
+      font-size: .9rem;
+      display: none;
+    }
+
+    .search-output.active {
+      display: block;
+    }
+
+    .section {
+      position: relative;
+      z-index: 1;
+      margin-top: 24px;
+      padding-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: clamp(1.32rem, 2.4vw, 1.9rem);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .section-desc {
+      color: #b7d9e6;
+      margin-bottom: 18px;
+      font-size: .97rem;
+      max-width: 840px;
+    }
+
+    .stats-grid,
+    .triple-grid,
+    .module-grid,
+    .use-case-grid,
+    .footer-links {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .triple-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .module-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .use-case-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-md);
+      min-height: 100%;
+    }
+
+    .card h3 {
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #bbdce9;
+      font-size: .94rem;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      color: #89edff;
+    }
+
+    .metric-label {
+      color: #b8d8e5;
+      font-size: .9rem;
+      margin-bottom: 5px;
+    }
+
+    .metric-note {
+      font-size: .82rem;
+      color: #85b6c8;
+    }
+
+    .severity {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .8rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      width: fit-content;
+    }
+
+    .severity.problem {
+      color: #ffe2d5;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+    }
+
+    .severity.solution {
+      color: #d7fff3;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.38);
+    }
+
+    .severity.proof {
+      color: #fff3d3;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.38);
+    }
+
+    .module-link {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #9deeff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    .module-link:hover,
+    .module-link:focus-visible {
+      color: #d9f8ff;
+      outline: none;
+    }
+
+    .use-case-value {
+      margin-top: 10px;
+      font-size: .87rem;
+      color: #a8e6bd;
+      font-weight: 700;
+    }
+
+    .governance-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1.35fr .85fr;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(118, 196, 225, 0.2);
+      background: rgba(3, 24, 35, 0.75);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 560px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid rgba(118, 196, 225, 0.14);
+      padding: 10px 12px;
+      font-size: .9rem;
+      text-align: right;
+      vertical-align: top;
+    }
+
+    th {
+      background: rgba(8, 40, 58, 0.9);
+      color: #def5fc;
+      font-size: .85rem;
+    }
+
+    td {
+      color: #c0dfeb;
+    }
+
+    .status-ok,
+    .status-plan {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: .79rem;
+      font-weight: 700;
+    }
+
+    .status-ok {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.38);
+      color: #caffdc;
+    }
+
+    .status-plan {
+      background: rgba(14, 165, 161, 0.18);
+      border: 1px solid rgba(14, 165, 161, 0.36);
+      color: #d8fffc;
+    }
+
+    .cta-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .cta-panel .card {
+      padding: 20px;
+    }
+
+    .cta-panel h3 {
+      margin-bottom: 8px;
+      font-size: 1.12rem;
+      line-height: 1.4;
+    }
+
+    .cta-panel p {
+      margin-bottom: 12px;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    details {
+      border: 1px solid rgba(118, 196, 225, 0.24);
+      background: rgba(4, 28, 42, 0.78);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      font-weight: 700;
+      color: #e3f8ff;
+      font-size: .96rem;
+      padding-left: 28px;
+      position: relative;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::before {
+      content: '+';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(142, 224, 245, 0.34);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #9eefff;
+    }
+
+    details[open] summary::before {
+      content: '-';
+    }
+
+    details p {
+      margin-top: 10px;
+      color: #c4e3ef;
+      font-size: .92rem;
+    }
+
+    .final-cta {
+      margin-top: 22px;
+      margin-bottom: 30px;
+    }
+
+    .final-cta .card {
+      padding: 26px;
+      background: linear-gradient(145deg, rgba(5, 39, 56, 0.95), rgba(5, 31, 47, 0.92));
+    }
+
+    .final-cta p {
+      margin-top: 8px;
+      margin-bottom: 16px;
+      color: #b7d8e5;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      background: rgba(0, 13, 20, 0.72);
+      padding: 22px 0 88px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-inner {
+      display: grid;
+      gap: 16px;
+    }
+
+    .footer-links {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-links a {
+      color: #9ec8d9;
+      text-decoration: none;
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: #ffffff;
+      outline: none;
+    }
+
+    .footer-copy {
+      color: #82aab9;
+      font-size: .84rem;
+    }
+
+    .mobile-cta {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 10px;
+      z-index: 60;
+      display: none;
+    }
+
+    .mobile-cta .btn {
+      width: 100%;
+      text-align: center;
+      padding: 13px 16px;
+      font-size: .95rem;
+    }
+
+    @media (max-width: 1120px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .triple-grid,
+      .use-case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .governance-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .topbar-inner {
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .hero-copy,
+      .hero-search,
+      .card {
+        padding: 18px;
+      }
+
+      .proof-list {
+        grid-template-columns: 1fr;
+      }
+
+      .module-grid,
+      .footer-links {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-cta {
+        display: block;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .search-row {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 1.55rem;
+      }
+
+      .hero {
+        padding-top: 26px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Bright AI",
+    "url": "https://brightai.site",
+    "logo": "https://brightai.site/frontend/assets/images/Gemini.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "الرياض",
+      "addressCountry": "SA"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+966538229013",
+      "contactType": "sales",
+      "areaServed": "SA"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "الأرشيف الطبي الذكي",
+    "serviceType": "أرشفة السجلات الطبية بالذكاء الاصطناعي",
+    "provider": {
+      "@type": "Organization",
+      "name": "Bright AI"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Saudi Arabia"
+    },
+    "audience": {
+      "@type": "BusinessAudience",
+      "geographicArea": "Saudi Arabia"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "SAR",
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "priceCurrency": "SAR",
+        "eligibleQuantity": {
+          "@type": "QuantitativeValue",
+          "minValue": 1,
+          "unitText": "مستشفى"
         }
+      }
+    }
+  }
+  </script>
 
-        body {
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
-            background: #000000;
-            color: #ffffff;
-            overflow-x: hidden;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "هل يدعم الحل متطلبات الأمن السيبراني الصحي في السعودية؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نعم. النظام مصمم مع ضوابط وصول، سجلات تدقيق، وتشفير للبيانات أثناء النقل والتخزين بما يتماشى مع متطلبات الجهات المنظمة محلياً."
         }
-
-        /* Animated gradient background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #000000 0%, #1a0b2e 25%, #16003b 50%, #0a0015 75%, #000000 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
-            z-index: 0;
+      },
+      {
+        "@type": "Question",
+        "name": "كم يستغرق إثبات الجدوى الأولي؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "يبدأ إثبات الجدوى خلال أسبوع عمل بعد جلسة مواءمة المتطلبات، ويظهر أول قياس لعائد التشغيل خلال 30 يوماً على عينة واقعية."
         }
-
-        @keyframes gradientShift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
+      },
+      {
+        "@type": "Question",
+        "name": "هل يتكامل الحل مع أنظمة HIS أو EHR الحالية؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "نعم. يتم التكامل تدريجياً عبر واجهات API وربط مع أنظمة السجلات الحالية دون تعطيل سير العمل التشغيلي."
         }
-
-        /* Floating orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: float 25s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.6), transparent);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.5), transparent);
-            bottom: -300px;
-            left: -300px;
-            animation-delay: -10s;
-        }
-
-        .orb-3 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.5), transparent);
-            top: 40%;
-            left: 50%;
-            animation-delay: -5s;
-        }
-
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translate(0, 0) scale(1) rotate(0deg);
-            }
-
-            25% {
-                transform: translate(100px, -100px) scale(1.1) rotate(90deg);
-            }
-
-            50% {
-                transform: translate(-50px, 50px) scale(0.9) rotate(180deg);
-            }
-
-            75% {
-                transform: translate(80px, 80px) scale(1.05) rotate(270deg);
-            }
-        }
-
-        /* Grid overlay */
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
-            animation: gridPulse 6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes gridPulse {
-
-            0%,
-            100% {
-                opacity: 0.3;
-            }
-
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #a78bfa, #60a5fa);
-        }
-
-        /* Glass morphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        .glass-strong {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .glass-hover {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glass-hover:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
-        }
-
-        /* 3D Card effect */
-        .card-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .card-3d:hover {
-            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
-        }
-
-        /* Glow effects */
-        .glow {
-            position: relative;
-        }
-
-        .glow::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: inherit;
-            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
-            background-size: 300% 300%;
-            opacity: 0;
-            filter: blur(20px);
-            transition: opacity 0.5s;
-            z-index: -1;
-            animation: gradientRotate 3s linear infinite;
-        }
-
-        .glow:hover::before {
-            opacity: 0.8;
-        }
-
-        @keyframes gradientRotate {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 100% 50%;
-            }
-        }
-
-        /* Shimmer effect */
-        .shimmer {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .shimmer::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                left: -100%;
-            }
-
-            100% {
-                left: 100%;
-            }
-        }
-
-        /* Pulse glow */
-        .pulse-glow {
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-            }
-
-            50% {
-                box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
-            }
-        }
-
-        /* Gradient text */
-        .gradient-text {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% 200%;
-            animation: gradientShift 5s ease infinite;
-        }
-
-        /* Neon border */
-        .neon-border {
-            position: relative;
-            border: 1px solid transparent;
-        }
-
-        .neon-border::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
-            background-size: 300% 300%;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: gradientRotate 4s linear infinite;
-        }
-
-        /* Floating animation */
-        .float {
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-
-            0%,
-            100% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        /* Number counter animation */
-        .number-glow {
-            text-shadow: 0 0 20px rgba(139, 92, 246, 0.8),
-                0 0 40px rgba(59, 130, 246, 0.4);
-        }
-
-        /* Badge animations */
-        .badge-pulse {
-            animation: badgePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes badgePulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.05);
-                opacity: 0.9;
-            }
-        }
-
-        /* Sidebar hover effect */
-        .nav-item {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 0;
-            background: linear-gradient(180deg, #8b5cf6, #3b82f6);
-            transition: height 0.3s ease;
-            border-radius: 10px;
-        }
-
-        .nav-item:hover::before,
-        .nav-item.active::before {
-            height: 70%;
-        }
-
-        /* Search bar focus effect */
-        .search-focus {
-            transition: all 0.4s ease;
-        }
-
-        .search-focus:focus {
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3),
-                0 0 40px rgba(139, 92, 246, 0.5);
-            transform: scale(1.02);
-        }
-
-        /* Loading spinner */
-        .spinner {
-            border: 2px solid rgba(139, 92, 246, 0.2);
-            border-top-color: #8b5cf6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Scan line effect */
-        .scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
-            animation: scan 3s linear infinite;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-
-        @keyframes scan {
-            0% {
-                transform: translateY(0);
-            }
-
-            100% {
-                transform: translateY(100vh);
-            }
-        }
-
-        /* Table row hover */
-        .table-row {
-            transition: all 0.3s ease;
-        }
-
-        .table-row:hover {
-            background: rgba(139, 92, 246, 0.1) !important;
-            box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Status indicator */
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            animation: statusPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes statusPulse {
-
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-            }
-
-            50% {
-                opacity: 0.8;
-                transform: scale(1.1);
-                box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
-            }
-        }
-
-        /* Metric card special effects */
-        .metric-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .metric-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .metric-card:hover::after {
-            opacity: 1;
-        }
-    </style>
-<!-- BrightAI Global Theme -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet">
-<link href="../../css/index-theme.css" rel="stylesheet">
-</link></link>
-<link rel="stylesheet" href="../../css/tailwind.local.min.css">
-<script defer src="../../js/iconify-preload.js"></script>
-<script defer src="../../js/vendor/iconify.min.js"></script>
-<script defer src="../../js/vendor/iconify-icon.min.js"></script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"Bright AI","url":"https://brightai.site","address":{"@type":"PostalAddress","addressLocality":"الرياض","addressCountry":"SA"},"contactPoint":{"@type":"ContactPoint","telephone":"+966538229013","contactType":"sales"}}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Service","name":"الأرشيف الطبي الذكي","serviceType":"Smart Medical Archive","provider":{"@type":"Organization","name":"Bright AI"},"areaServed":"SA","audience":{"@type":"BusinessAudience","geographicArea":"Saudi Arabia"}}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"هل يدعم الامتثال المحلي للقطاع الصحي؟","acceptedAnswer":{"@type":"Answer","text":"نعم، مع ضوابط وصول وتدقيق عمليات وسجلات استخدام تدعم متطلبات الجهات التنظيمية."}},{"@type":"Question","name":"هل يتكامل مع أنظمة المستشفى الحالية؟","acceptedAnswer":{"@type":"Answer","text":"نعم، يبدأ التكامل بالأنظمة الحالية ثم يتوسع حسب أولويات التشغيل."}}]}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},{"@type":"ListItem","position":2,"name":"سلة القطاعات","item":"https://brightai.site/frontend/pages/silos/sectors.html"},{"@type":"ListItem","position":3,"name":"الأرشيف الطبي الذكي","item":"https://brightai.site/frontend/pages/smart-medical-archive/index.html"}]}
-</script>
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "الرئيسية",
+        "item": "https://brightai.site/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "القطاع الصحي",
+        "item": "https://brightai.site/frontend/pages/sectors/healthcare.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "الأرشيف الطبي الذكي",
+        "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html"
+      }
+    ]
+  }
+  </script>
 </head>
-<body class="antialiased">
-<!-- Background layers -->
-<div class="animated-bg"></div>
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-<div class="grid-overlay"></div>
-<div class="scanline"></div>
-<!-- App Layout -->
-<div class="flex h-screen overflow-hidden relative z-10">
-<!-- Sidebar Navigation -->
-<aside class="w-72 glass-strong border-l border-white/10 flex flex-col justify-between hidden md:flex">
-<div>
-<!-- Logo Area -->
-<div class="h-20 flex items-center px-6 border-b border-white/10">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl glow flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
-<span class="font-bold text-white text-lg relative z-10">AI</span>
-</div>
-<div>
-<span class="font-bold text-white tracking-tight text-xl gradient-text">
-                                Bright AI
-                            </span>
-<div class="text-[10px] text-white/40">Medical Archive</div>
-</div>
-</div>
-</div>
-<!-- Navigation Links -->
-<nav class="p-3 space-y-1 mt-4">
-<a class="nav-item active flex items-center gap-3 px-3 py-2.5 text-white hover:text-white rounded-lg transition-colors" href="https://brightai.site/index.html" onclick="setActive(this)">
-<iconify-icon icon="solar:widget-linear" width="20"></iconify-icon> <span>لوحة التحكم</span>
-</a>
-<a class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" href="NLP-Search" onclick="setActive(this)">
-<iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon> <span>البحث المتقدم
-                            (NLP)</span>
-</a>
-<a class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" href="Ingestion" onclick="setActive(this)">
-<iconify-icon icon="solar:document-add-linear" width="20"></iconify-icon> <span>الإدخال
-                            والمعالجة</span>
-</a>
-<a class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" href="EHR-Viewer" onclick="setActive(this)">
-<iconify-icon icon="solar:user-id-linear" width="20"></iconify-icon> <span>سجلات المرضى</span>
-</a>
-<a class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors" href="Analytics&amp;Insights" onclick="setActive(this)">
-<iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon> <span>التحليلات
-                            والرؤى</span>
-</a>
-</nav>
-</div>
-<!-- Bottom Actions -->
-<div class="p-4 border-t border-white/10">
-<a class="flex items-center gap-3 px-4 py-3 text-sm text-teal-400 hover:text-teal-300 rounded-xl glass-hover mb-2" href="../docs/solutions-healthcare.html">
-<iconify-icon icon="solar:book-bookmark-linear" width="22"></iconify-icon>
-<span>توثيق الحل (Docs)</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white rounded-xl glass-hover mb-4" href="#">
-<iconify-icon icon="solar:settings-linear" width="22"></iconify-icon>
-<span>إعدادات النظام</span>
-</a>
-<div class="glass rounded-xl p-4 neon-border">
-<div class="flex items-center gap-3">
-<div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shimmer" style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
-                            د.م
-                        </div>
-<div class="flex flex-col">
-<span class="text-sm font-medium text-white">د. محمد القحطاني</span>
-<span class="text-xs text-white/40">Admin Access</span>
-</div>
-</div>
-</div>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 flex flex-col h-screen overflow-hidden">
-<!-- Top Header -->
-<header class="h-20 glass border-b border-white/10 flex items-center justify-between px-8">
-<div class="flex items-center gap-4">
-<span class="text-white/30">/</span>
-<h1 class="text-base font-medium text-white">نظرة عامة على النظام</h1>
-</div>
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-2 px-4 py-2 glass rounded-full border border-emerald-500/30 neon-border">
-<div class="status-dot bg-emerald-500"></div>
-<span class="text-xs font-medium text-emerald-400">System Operational</span>
-</div>
-<button class="w-10 h-10 glass-hover rounded-xl flex items-center justify-center text-white/60 hover:text-white glow">
-<iconify-icon icon="solar:bell-linear" width="22"></iconify-icon>
-</button>
-</div>
-</header>
-<!-- Scrollable Content -->
-<div class="flex-1 overflow-y-auto p-8">
-<!-- Natural Language Search Hero -->
-<section class="mb-12 max-w-5xl mx-auto">
-<div class="text-center mb-8 float">
-<h2 class="text-3xl font-bold mb-3 gradient-text">البحث الدلالي الذكي</h2>
-<p class="text-white/50 text-sm">
-                            استخدم اللغة الطبيعية للبحث في السجلات الطبية، التحاليل، والملاحظات السريرية
-                        </p>
-</div>
-<div class="relative group">
-<div class="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-pink-600 rounded-2xl opacity-30 group-hover:opacity-50 blur transition duration-500">
-</div>
-<div class="relative glass-strong rounded-2xl p-2">
-<div class="flex items-center gap-3">
-<div class="flex-1 relative">
-<div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-purple-400">
-<iconify-icon class="pulse-glow" icon="solar:magic-stick-3-linear" width="24"></iconify-icon>
-</div>
-<input class="w-full bg-black/30 border border-white/10 text-white text-base rounded-xl py-5 pr-14 pl-6 outline-none placeholder:text-white/30 search-focus" placeholder="مثال: مرضى السكري فوق 50 سنة الذين تناولوا ميتفورمين خلال آخر 6 أشهر..." type="text"/>
-</div>
-<button class="px-8 py-5 rounded-xl font-medium glow shimmer" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
-<iconify-icon class="text-white" icon="solar:arrow-left-linear" width="24"></iconify-icon>
-</button>
-</div>
-</div>
-</div>
-<div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
-<span class="text-xs text-white/40">مقترحات:</span>
-<span class="glass-hover px-4 py-2 rounded-xl text-xs cursor-pointer border border-white/10 text-white/60 hover:text-white glow">
-                            حالات الربو النشطة
-                        </span>
-<span class="glass-hover px-4 py-2 rounded-xl text-xs cursor-pointer border border-white/10 text-white/60 hover:text-white glow">
-                            نتائج الدم الشاذة
-                        </span>
-<span class="glass-hover px-4 py-2 rounded-xl text-xs cursor-pointer border border-white/10 text-white/60 hover:text-white glow">
-                            تحليلات الأشعة المقطعية
-                        </span>
-</div>
-</section>
-<!-- Metrics Grid -->
-<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-<!-- Metric 1 -->
-<div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));">
-<iconify-icon class="text-purple-400" icon="solar:file-text-linear" width="24"></iconify-icon>
-</div>
-<span class="text-xs font-bold px-3 py-1 rounded-full badge-pulse" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1)); color: #22c55e;">
-                                +12%
-                            </span>
-</div>
-<div class="text-4xl font-bold mb-2 number-glow gradient-text">84,392</div>
-<div class="text-sm text-white/50">وثيقة تمت أرشفتها</div>
-</div>
-<!-- Metric 2 -->
-<div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));">
-<iconify-icon class="text-blue-400" icon="solar:check-read-linear" width="24"></iconify-icon>
-</div>
-<span class="text-xs font-bold px-3 py-1 rounded-full" style="background: rgba(255, 255, 255, 0.1); color: #a1a1aa;">
-                                NLP Score
-                            </span>
-</div>
-<div class="text-4xl font-bold mb-2 number-glow gradient-text">98.2%</div>
-<div class="text-sm text-white/50">دقة استخراج البيانات</div>
-</div>
-<!-- Metric 3 -->
-<div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer" style="background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 146, 60, 0.1));">
-<iconify-icon class="text-orange-400" icon="solar:clock-circle-linear" width="24"></iconify-icon>
-</div>
-<span class="text-xs font-bold px-3 py-1 rounded-full badge-pulse" style="background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(251, 146, 60, 0.1)); color: #fb923c;">
-                                يتطلب مراجعة
-                            </span>
-</div>
-<div class="text-4xl font-bold mb-2 number-glow gradient-text">14</div>
-<div class="text-sm text-white/50">سجل بانتظار التدقيق</div>
-</div>
-<!-- Metric 4 -->
-<div class="metric-card card-3d glass-hover rounded-2xl p-6 glow neon-border">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-xl flex items-center justify-center shimmer" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1));">
-<iconify-icon class="text-pink-400" icon="solar:database-linear" width="24"></iconify-icon>
-</div>
-<span class="text-xs font-bold px-3 py-1 rounded-full" style="background: rgba(255, 255, 255, 0.1); color: #a1a1aa;">
-                                Storage
-                            </span>
-</div>
-<div class="text-4xl font-bold mb-2 number-glow gradient-text">1.2 TB</div>
-<div class="text-sm text-white/50">بيانات مشفرة AES-256</div>
-</div>
-</section>
-<!-- Content Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<!-- Pipeline Status -->
-<section class="lg:col-span-2 glass rounded-2xl overflow-hidden neon-border">
-<div class="px-6 py-5 border-b border-white/10 flex items-center justify-between">
-<h3 class="text-base font-semibold text-white flex items-center gap-2">
-<iconify-icon class="text-purple-400" icon="solar:refresh-circle-linear" width="24"></iconify-icon>
-                                حالة خط المعالجة (Ingestion Pipeline)
-                            </h3>
-<button class="text-sm text-purple-400 hover:text-purple-300 font-medium">عرض الكل</button>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-right">
-<thead class="text-white/40 text-xs uppercase tracking-wider font-medium" style="background: rgba(255, 255, 255, 0.02);">
-<tr>
-<th class="px-6 py-4 font-medium">معرف الملف</th>
-<th class="px-6 py-4 font-medium">المصدر</th>
-<th class="px-6 py-4 font-medium">نوع الوثيقة</th>
-<th class="px-6 py-4 font-medium">المرحلة الحالية</th>
-<th class="px-6 py-4 font-medium">التوقيت</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-white/5 text-sm">
-<tr class="table-row">
-<td class="px-6 py-4 font-mono text-xs text-purple-400">DOC-8821</td>
-<td class="px-6 py-4 text-white/80">مستشفى الملك فيصل</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-2">
-<iconify-icon class="text-white/40" icon="solar:file-text-linear"></iconify-icon>
-<span class="text-white/70 text-xs">تقرير أشعة (PDF)</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium" style="background: rgba(59, 130, 246, 0.2); color: #3b82f6;">
-<div class="spinner w-3 h-3"></div>
-                                                OCR Processing
-                                            </span>
-</td>
-<td class="px-6 py-4 text-white/40 text-xs">منذ 12 ثانية</td>
-</tr>
-<tr class="table-row">
-<td class="px-6 py-4 font-mono text-xs text-purple-400">DOC-8820</td>
-<td class="px-6 py-4 text-white/80">مدينة الملك فهد</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-2">
-<iconify-icon class="text-white/40" icon="solar:pen-new-square-linear"></iconify-icon>
-<span class="text-white/70 text-xs">وصفة بخط اليد</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium" style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6;">
-<iconify-icon icon="solar:magic-stick-3-linear"></iconify-icon>
-                                                NLP Extraction
-                                            </span>
-</td>
-<td class="px-6 py-4 text-white/40 text-xs">منذ 45 ثانية</td>
-</tr>
-<tr class="table-row">
-<td class="px-6 py-4 font-mono text-xs text-purple-400">DOC-8819</td>
-<td class="px-6 py-4 text-white/80">مستشفى قوى الأمن</td>
-<td class="px-6 py-4">
-<div class="flex items-center gap-2">
-<iconify-icon class="text-white/40" icon="solar:test-tube-linear"></iconify-icon>
-<span class="text-white/70 text-xs">تحاليل مختبر</span>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium" style="background: rgba(34, 197, 94, 0.2); color: #22c55e;">
-<iconify-icon icon="solar:check-circle-linear"></iconify-icon>
-                                                EHR Updated
-                                            </span>
-</td>
-<td class="px-6 py-4 text-white/40 text-xs">منذ دقيقتين</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<!-- Right Column -->
-<div class="space-y-6">
-<!-- Compliance Status -->
-<section class="glass rounded-2xl p-6 neon-border glow">
-<h3 class="text-sm font-semibold text-white mb-6 flex items-center gap-2">
-<iconify-icon class="text-emerald-400" icon="solar:shield-check-linear"></iconify-icon>
-                                الامتثال والأمان
-                            </h3>
-<div class="space-y-3">
-<div class="glass-strong rounded-xl p-4 border border-white/10">
-<div class="flex items-center justify-between">
-<div>
-<div class="text-sm font-medium text-white">NCA - ECC</div>
-<div class="text-xs text-white/40 mt-1">Essential Cybersecurity Controls
-                                            </div>
-</div>
-<iconify-icon class="text-emerald-500" icon="solar:check-circle-bold" width="20"></iconify-icon>
-</div>
-</div>
-<div class="glass-strong rounded-xl p-4 border border-white/10">
-<div class="flex items-center justify-between">
-<div>
-<div class="text-sm font-medium text-white">HIPAA Compliant</div>
-<div class="text-xs text-white/40 mt-1">Data Privacy Standard</div>
-</div>
-<iconify-icon class="text-emerald-500" icon="solar:check-circle-bold" width="20"></iconify-icon>
-</div>
-</div>
-</div>
-<div class="mt-5 pt-5 border-t border-white/10">
-<div class="flex items-center justify-between text-xs text-white/50">
-<span>آخر تدقيق أمني:</span>
-<span class="font-mono text-white/70">2023-10-24</span>
-</div>
-</div>
-</section>
-<!-- Quick Upload -->
-<section class="rounded-2xl p-8 relative overflow-hidden glow shimmer cursor-pointer group" style="background: linear-gradient(135deg, #1e1b4b, #312e81);">
-<div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-<iconify-icon icon="solar:cloud-upload-linear" width="100"></iconify-icon>
-</div>
-<div class="relative z-10">
-<div class="w-14 h-14 rounded-2xl glass flex items-center justify-center mb-4 float">
-<iconify-icon class="text-white" icon="solar:add-circle-linear" width="28"></iconify-icon>
-</div>
-<h3 class="font-bold text-xl mb-2 text-white">رفع ملف جديد</h3>
-<p class="text-sm text-white/60 mb-6">
-                                    يدعم PDF, DICOM, وصور الوصفات الطبية
-                                </p>
-<button class="w-full text-sm font-medium px-6 py-3 rounded-xl transition-all glow" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
-                                    استعراض الملفات
-                                </button>
-</div>
-</section>
-</div>
-</div>
-<!-- Footer -->
-<footer class="mt-12 pt-8 border-t border-white/10 text-center md:text-right">
-<p class="text-xs text-white/30">
-                        © 2024 Bright AI Medical Archive. Developed with strict adherence to NCA &amp; Saudi Health Data
-                        Standards.
-                    </p>
-</footer>
-</div>
-<!-- BrightAI Command CTA: https://brightai.site/demo/ocr-demo/ -->
-<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
-<p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">حوّل السجلات الطبية إلى بيانات قابلة للبحث بسرعة.</p>
-<a href="/demo/ocr-demo/" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#fff; text-decoration:none; font-weight:700;">
-            فعل OCR للأرشيف الطبي الآن
-        </a>
-</section>
-<section class="brightai-commercial-path" style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
-<h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">المسار التجاري المرتبط</h3>
-<ul style="margin:0;padding:0 18px;line-height:1.9;color:#cbd5f5;">
-<li><a href="/frontend/pages/landing/saudi-smart-medical-archive.html" style="color:#67e8f9;text-decoration:none;">أرشفة طبية ذكية للمستشفيات السعودية</a></li>
-<li><a href="/frontend/pages/silos/sectors.html" style="color:#67e8f9;text-decoration:none;">سلة القطاعات</a></li>
-<li><a href="/frontend/pages/silos/business-solutions.html" style="color:#67e8f9;text-decoration:none;">سلة حلول الأعمال</a></li>
-<li><a href="/frontend/pages/landing/saudi-ai-data-compliance-consulting.html" style="color:#67e8f9;text-decoration:none;">استشارات الامتثال قبل التعاقد</a></li>
-<li><a href="/frontend/pages/contact/index.html" style="color:#67e8f9;text-decoration:none;">حجز جلسة تقييم تنفيذية</a></li>
-</ul>
-</section>
-</main>
-</div>
-<script defer="" src="../../js/main.bundle.js"></script>
-<script defer="" src="../../js/index-theme.js"></script>
+<body>
+  <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../../../index.html" aria-label="العودة للصفحة الرئيسية">
+        <span class="brand-logo">AI</span>
+        <span class="brand-text">
+          <strong>Bright AI</strong>
+          <span>Smart Medical Archive</span>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="التنقل السريع">
+        <a href="#modules">مكونات النظام</a>
+        <a href="#saudi-cases">حالات الاستخدام</a>
+        <a href="./analytics-insights.html">لوحة التحليلات</a>
+        <a href="#faq">الأسئلة الشائعة</a>
+      </nav>
+
+      <a class="btn btn-primary" href="../consultation/index.html" data-cta="top-consultation">
+        احجز اجتماعاً تنفيذياً
+      </a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <span class="eyebrow">حل SaaS مخصص للمستشفيات في السعودية</span>
+        <h1 id="hero-title">الأرشيف الطبي الذكي: من ملفات مشتتة إلى بيانات سريرية قابلة للقرار</h1>
+        <p>
+          منصة Bright AI توحّد المستندات الطبية الورقية والرقمية داخل مسار واحد: إدخال آلي، استخراج حقول دقيقة، بحث دلالي سريع، وربط مباشر مع السجل الطبي الإلكتروني.
+          النتيجة: زمن أقل للوصول للمعلومة، مخاطر تشغيلية أقل، وقدرة أعلى على اتخاذ قرارات طبية وإدارية.
+        </p>
+
+        <ul class="proof-list" aria-label="مؤشرات قيمة مباشرة">
+          <li>تقليل زمن استرجاع السجل الطبي بنسبة تصل إلى 71%</li>
+          <li>رفع دقة استخراج الحقول السريرية إلى 98.2%</li>
+          <li>تخفيض الأعمال اليدوية في الأرشفة بنسبة 64%</li>
+          <li>تحسين جاهزية التدقيق والتتبع لجميع عمليات الوصول</li>
+        </ul>
+
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="../contact/index.html" data-cta="hero-contact">ابدأ تقييم البنية الحالية</a>
+          <a class="btn btn-secondary" href="../demo/ocr-demo/index.html" data-cta="hero-ocr-demo">جرّب OCR للأرشيف الطبي</a>
+        </div>
+      </div>
+
+      <aside class="hero-search" aria-labelledby="smart-search-title">
+        <h2 id="smart-search-title">تجربة بحث دلالي فورية</h2>
+        <p>اكتب سؤالاً بصياغة طبيعية لتحصل على نتيجة تشغيلية مفهومة لإدارة السجلات.</p>
+
+        <form id="smart-search-form" novalidate>
+          <label class="field-label" for="smart-search-input">استعلام البحث</label>
+          <div class="search-row">
+            <input id="smart-search-input" type="text" name="query" placeholder="مثال: حالات السكري فوق 50 سنة مع نتائج HbA1c مرتفعة خلال آخر 6 أشهر" required>
+            <button class="btn btn-primary" type="submit" data-cta="search-submit">بحث</button>
+          </div>
+
+          <div class="chips" role="list" aria-label="استعلامات مقترحة">
+            <button class="chip" type="button" data-query="المرضى الذين تجاوزوا جرعة دواء الضغط خلال آخر 30 يوماً">تنبيهات الجرعات</button>
+            <button class="chip" type="button" data-query="تقارير الأشعة المتأخرة عن التوقيع لأكثر من 24 ساعة">تأخر تقارير الأشعة</button>
+            <button class="chip" type="button" data-query="ملفات الطوارئ الناقصة في رقم الهوية أو التاريخ المرضي">اكتمال ملفات الطوارئ</button>
+          </div>
+
+          <div id="search-output" class="search-output" aria-live="polite"></div>
+        </form>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="impact-title">
+      <h2 id="impact-title" class="section-title">مؤشرات تشغيلية مرتبطة بعائد مالي</h2>
+      <p class="section-desc">
+        هذه المؤشرات تُستخدم لقياس أثر المنصة على فرق السجلات الطبية، الجودة، وتجربة المريض خلال أول دورة تشغيل.
+      </p>
+
+      <div class="stats-grid">
+        <article class="card">
+          <div class="metric-value">84,392</div>
+          <p class="metric-label">وثيقة تمت أرشفتها</p>
+          <p class="metric-note">نمو شهري مستقر مع أولوية لملفات الطوارئ والعيادات الحرجة</p>
+        </article>
+
+        <article class="card">
+          <div class="metric-value">98.2%</div>
+          <p class="metric-label">دقة استخراج البيانات</p>
+          <p class="metric-note">باستخدام OCR طبي + نماذج لغة متخصصة بالمصطلحات السريرية</p>
+        </article>
+
+        <article class="card">
+          <div class="metric-value">14</div>
+          <p class="metric-label">ملف يحتاج تدقيقاً بشرياً</p>
+          <p class="metric-note">تركيز المراجعة على الحالات منخفضة الثقة فقط لخفض تكلفة الفريق</p>
+        </article>
+
+        <article class="card">
+          <div class="metric-value">1.2 TB</div>
+          <p class="metric-label">بيانات محفوظة بتشفير كامل</p>
+          <p class="metric-note">تشفير أثناء النقل والتخزين مع سجلات وصول قابلة للتدقيق</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="flow-title">
+      <h2 id="flow-title" class="section-title">مسار تحويل المشكلة إلى نتيجة قابلة للقياس</h2>
+      <div class="triple-grid">
+        <article class="card">
+          <span class="severity problem">المشكلة التشغيلية</span>
+          <h3>ملفات مشتتة وتأخير في الوصول للمعلومة</h3>
+          <p>
+            الاعتماد على البحث اليدوي أو مستندات غير مفهرسة يرفع زمن خدمة المريض ويخلق مخاطر في دقة القرار الطبي.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="severity solution">الحل التنفيذي</span>
+          <h3>أرشفة ذكية مع بحث دلالي وربط EHR</h3>
+          <p>
+            المنصة تقرأ الوثائق تلقائياً، تستخرج الحقول الحرجة، ثم تنشئ فهرسة دلالية تمكّن الفرق الطبية والإدارية من استرجاع المعلومة فوراً.
+          </p>
+        </article>
+
+        <article class="card">
+          <span class="severity proof">الإثبات التجاري</span>
+          <h3>انخفاض تكاليف التشغيل وتحسن الالتزام</h3>
+          <p>
+            التتبع الكامل للملفات وسير المعالجة يقلل الهدر التشغيلي ويزيد جاهزية المستشفى للتدقيق والامتثال والعقود الحكومية.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="modules" class="section" aria-labelledby="modules-title">
+      <h2 id="modules-title" class="section-title">مكونات النظام القابلة للتفعيل حسب أولويات المستشفى</h2>
+      <p class="section-desc">
+        كل مكوّن يعمل بشكل مستقل ويمكن ربطه تدريجياً لتسريع الإطلاق وتقليل مخاطر التغيير على الأنظمة الحالية.
+      </p>
+
+      <div class="module-grid">
+        <article class="card">
+          <h3>إدخال المستندات والمعالجة الذكية</h3>
+          <p>
+            استقبال ملفات PDF وDICOM وصور الوصفات، مع تنظيف تلقائي للنصوص وفصل الصفحات وإسناد نوع الوثيقة قبل الفهرسة.
+          </p>
+          <a class="module-link" href="./Ingestion.html" data-cta="module-ingestion">عرض مسار الإدخال</a>
+        </article>
+
+        <article class="card">
+          <h3>استخراج البيانات والبحث الدلالي</h3>
+          <p>
+            تحويل النصوص الطبية إلى حقول قابلة للاستعلام، مع فهم سياق السؤال الطبي والرد بنتيجة مرتبطة بالمريض أو الحالة.
+          </p>
+          <a class="module-link" href="./NLP-Search.html" data-cta="module-nlp">عرض محرك البحث الدلالي</a>
+        </article>
+
+        <article class="card">
+          <h3>عارض السجل الطبي الموحّد</h3>
+          <p>
+            دمج نتائج الفحوصات والتقارير والملاحظات في واجهة واحدة للفرق الطبية، مع تاريخ تغييرات واضح وحقول تدقيق.
+          </p>
+          <a class="module-link" href="./EHR-Viewer.html" data-cta="module-ehr">عرض السجل الموحد</a>
+        </article>
+
+        <article class="card">
+          <h3>لوحة التحليلات والرؤى التشغيلية</h3>
+          <p>
+            قياس سرعة الأرشفة ونسب الدقة والملفات المتعثرة، وربط المؤشرات بخطط تحسين الإنتاجية وخفض تكلفة المعالجة.
+          </p>
+          <a class="module-link" href="./analytics-insights.html" data-cta="module-analytics">فتح لوحة التحليلات</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="saudi-cases" class="section" aria-labelledby="saudi-cases-title">
+      <h2 id="saudi-cases-title" class="section-title">حالات استخدام سعودية مرتبطة بقرار شراء فعلي</h2>
+      <p class="section-desc">
+        تم تصميم السيناريوهات التالية لاحتياجات تشغيلية متكررة لدى المستشفيات الخاصة والمجمعات الطبية ومشغلي الرعاية طويلة الأمد داخل السعودية.
+      </p>
+
+      <div class="use-case-grid">
+        <article class="card">
+          <h3>إدارة ضغط ملفات الطوارئ</h3>
+          <p>فرز تلقائي للحالات العاجلة وربط مستندات الدخول بنتائج الفحوصات لتقليل زمن الإغلاق الإداري للحالة.</p>
+          <p class="use-case-value">القيمة التجارية: تسريع دورة الخدمة وزيادة عدد الحالات المنجزة يومياً.</p>
+        </article>
+
+        <article class="card">
+          <h3>تجهيز ملفات المطالبات التأمينية</h3>
+          <p>استخراج الحقول المطلوبة للمطالبات مع التحقق من اكتمال المستندات قبل الإرسال لشركات التأمين.</p>
+          <p class="use-case-value">القيمة التجارية: خفض المرتجعات وتقليص زمن التحصيل النقدي.</p>
+        </article>
+
+        <article class="card">
+          <h3>التدقيق الدوري على جودة السجلات</h3>
+          <p>كشف السجلات الناقصة أو غير المتطابقة مع سياسات التوثيق، مع تقارير فورية لفريق الجودة والامتثال.</p>
+          <p class="use-case-value">القيمة التجارية: تقليل مخاطر الامتثال وتحسين نتائج التدقيق الخارجي.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="governance-title">
+      <h2 id="governance-title" class="section-title">الامتثال، التكامل، وخطة الإطلاق</h2>
+      <div class="governance-grid">
+        <article class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>المحور</th>
+                  <th>ما يتم تنفيذه</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>حماية البيانات</td>
+                  <td>تشفير أثناء النقل والتخزين + سياسات وصول حسب الدور + سجل تدقيق</td>
+                  <td><span class="status-ok">جاهز للتفعيل</span></td>
+                </tr>
+                <tr>
+                  <td>الامتثال التشغيلي</td>
+                  <td>تقارير دورية لجودة السجلات والملفات الناقصة والتنبيهات الحرجة</td>
+                  <td><span class="status-ok">جاهز للتفعيل</span></td>
+                </tr>
+                <tr>
+                  <td>تكامل الأنظمة</td>
+                  <td>ربط تدريجي مع HIS/EHR وواجهات API لتبادل البيانات بشكل آمن</td>
+                  <td><span class="status-plan">تنفيذ مرحلي</span></td>
+                </tr>
+                <tr>
+                  <td>إثبات الجدوى</td>
+                  <td>تشغيل عينة واقعية لمدة 30 يوماً وقياس أثر الدقة والزمن والتكلفة</td>
+                  <td><span class="status-plan">خطة معتمدة</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <aside class="cta-panel">
+          <article class="card">
+            <h3>حجز جلسة تقييم تنفيذية لمدة 30 دقيقة</h3>
+            <p>نراجع حجم الأرشيف الحالي، الأنظمة القائمة، ونحدد أسرع مسار إطلاق دون تعطيل تشغيل المستشفى.</p>
+            <a class="btn btn-primary" href="../contact/index.html" data-cta="side-contact">احجز جلسة التقييم</a>
+          </article>
+
+          <article class="card">
+            <h3>وثائق فنية موجهة لفرق التقنية والجودة</h3>
+            <p>تشمل هيكل التكامل، نطاق الاستخدام، والمتطلبات التشغيلية للتطبيق في بيئة صحية سعودية.</p>
+            <a class="btn btn-secondary" href="../docs/solutions-healthcare.html" data-cta="side-docs">عرض التوثيق الفني</a>
+          </article>
+        </aside>
+      </div>
+    </section>
+
+    <section id="faq" class="section" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="section-title">أسئلة القرار قبل التعاقد</h2>
+      <div class="faq-list">
+        <details open>
+          <summary>هل يدعم الحل متطلبات الأمن السيبراني الصحي في السعودية؟</summary>
+          <p>نعم. يتم تطبيق ضوابط الوصول، إدارة الصلاحيات، سجلات التدقيق، والتشفير أثناء النقل والتخزين بما يرفع جاهزية المنشأة للتدقيق التشغيلي.</p>
+        </details>
+
+        <details>
+          <summary>هل يتطلب تغيير النظام الحالي في المستشفى؟</summary>
+          <p>لا. يبدأ التنفيذ بطبقة تكامل فوق الأنظمة الحالية ثم التوسع التدريجي حسب أولويات التشغيل وخطة التحول المعتمدة.</p>
+        </details>
+
+        <details>
+          <summary>ما المدة المتوقعة لإظهار أثر واضح على التشغيل؟</summary>
+          <p>يظهر الأثر الأول خلال 30 يوماً عبر قياس سرعة المعالجة، نسبة اكتمال الملفات، ونسبة الملفات التي تتطلب تدخل يدوي.</p>
+        </details>
+
+        <details>
+          <summary>هل يمكن البدء على قسم واحد قبل التوسع؟</summary>
+          <p>نعم. يمكن إطلاق المشروع على قسم مستهدف مثل الطوارئ أو العيادات الخارجية ثم التوسع لباقي الأقسام وفق نتائج القياس.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section final-cta" aria-labelledby="final-cta-title">
+      <div class="card">
+        <h2 id="final-cta-title" class="section-title">ابدأ بخطوة تنفيذية واضحة بدل مشروع تقني مفتوح بلا عائد</h2>
+        <p>
+          إذا كان هدفك خفض تكلفة إدارة السجلات الطبية وتحسين سرعة الوصول للمعلومة السريرية، ابدأ الآن بتقييم تشغيلي قصير وخطة تنفيذ مدتها 30 يوماً.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="../consultation/index.html" data-cta="final-consultation">احجز عرضاً تنفيذياً</a>
+          <a class="btn btn-secondary" href="../blogger/ai-healthcare-saudi.html" data-cta="final-case">اقرأ حالة استخدام سعودية</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-links" aria-label="روابط داخلية">
+        <a href="../sectors/healthcare.html">قطاع الرعاية الصحية</a>
+        <a href="../smart-automation/index.html">حلول الأتمتة الذكية</a>
+        <a href="../demo/ocr-demo/index.html">تجربة OCR</a>
+        <a href="../contact/index.html">تواصل مع فريق الحلول</a>
+      </div>
+      <p class="footer-copy">© <span id="year"></span> Bright AI. الأرشيف الطبي الذكي مصمم لرفع الكفاءة التشغيلية وتحسين الالتزام في المنشآت الصحية السعودية.</p>
+    </div>
+  </footer>
+
+  <div class="mobile-cta">
+    <a class="btn btn-primary" href="../consultation/index.html" data-cta="mobile-consultation">احجز اجتماعاً سريعاً</a>
+  </div>
+
+  <script>
+    (function () {
+      var year = document.getElementById('year');
+      if (year) {
+        year.textContent = String(new Date().getFullYear());
+      }
+
+      var searchInput = document.getElementById('smart-search-input');
+      var searchForm = document.getElementById('smart-search-form');
+      var output = document.getElementById('search-output');
+      var chips = document.querySelectorAll('.chip[data-query]');
+
+      function renderSearchMessage(query) {
+        var safeQuery = query.replace(/[<>]/g, '').trim();
+        if (!safeQuery) {
+          output.classList.remove('active');
+          output.textContent = '';
+          return;
+        }
+
+        output.classList.add('active');
+        output.textContent = 'نتيجة تجريبية: تم العثور على ملفات متوافقة مع طلب "' + safeQuery + '". لعرض النتائج الفعلية وربطها ببيانات المستشفى، ابدأ جلسة التقييم التنفيذية.';
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          var query = chip.getAttribute('data-query') || '';
+          searchInput.value = query;
+          renderSearchMessage(query);
+          searchInput.focus();
+        });
+      });
+
+      if (searchForm) {
+        searchForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+          renderSearchMessage(searchInput.value);
+
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'smart_search_demo_submit', {
+              event_category: 'engagement',
+              event_label: 'smart_medical_archive_demo'
+            });
+          }
+        });
+      }
+
+      var ctas = document.querySelectorAll('[data-cta]');
+      ctas.forEach(function (cta) {
+        cta.addEventListener('click', function () {
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'cta_click', {
+              event_category: 'conversion',
+              event_label: cta.getAttribute('data-cta') || 'unknown'
+            });
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

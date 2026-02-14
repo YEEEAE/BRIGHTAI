@@ -1,847 +1,332 @@
-<!-- START OF FILE analytics.html -->
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تحليلات الأرشيف الطبي والرؤى التنفيذية | Bright AI</title>
+  <meta name="description" content="لوحة تحليلات للأرشيف الطبي تربط سرعة الإدخال ودقة الاستخراج واكتمال السجل بعائد تشغيلي واضح للمستشفيات السعودية.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://brightai.site/frontend/pages/smart-medical-archive/analytics-insights.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:title" content="تحليلات الأرشيف الطبي والرؤى التنفيذية | Bright AI">
+  <meta property="og:description" content="مؤشرات تنفيذية تربط الأرشفة الطبية بتقليل التكلفة ورفع جودة الملف وسرعة القرار.">
+  <meta property="og:url" content="https://brightai.site/frontend/pages/smart-medical-archive/analytics-insights.html">
+  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="تحليلات الأرشيف الطبي والرؤى التنفيذية | Bright AI">
+  <meta name="twitter:description" content="راقب الأداء اليومي، اكتشف الاختناقات، وخذ قرارات تشغيلية مبنية على بيانات فعلية.">
+  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png">
 
-    <meta charset="UTF-8">
-  <link rel="canonical" href="https://brightai.site/smart-medical-archive/analytics-insights.html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bright AI | التحليلات والرؤى</title>
-  <meta name="description" content="لوحة تحليلات ورؤى للأرشيف الطبي الذكي لقياس الأداء واتخاذ قرارات أسرع في القطاع الصحي السعودي.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./system-unified.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "تحليلات الأرشيف الطبي",
+    "serviceType": "Medical Archive Analytics",
+    "provider": {
+      "@type": "Organization",
+      "name": "Bright AI"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Saudi Arabia"
+    },
+    "audience": {
+      "@type": "BusinessAudience",
+      "geographicArea": "Saudi Arabia"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "ما أول مؤشر يجب مراقبته يومياً؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "مؤشر زمن المعالجة من الإدخال حتى الإتاحة داخل السجل لأنه يعكس كفاءة الدورة كاملة." 
         }
-
-        body {
-            font-family: 'IBM Plex Sans Arabic', sans-serif;
-            background: #000000;
-            color: #ffffff;
-            overflow-x: hidden;
+      },
+      {
+        "@type": "Question",
+        "name": "كيف تربط اللوحة بين الجودة والعائد؟",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "من خلال قياس أثر دقة الاستخراج واكتمال الملفات على المرتجعات وزمن التحصيل وزمن خدمة الحالة." 
         }
-
-        /* Animated Background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #000000 0%, #1a0b2e 25%, #16003b 50%, #0a0015 75%, #000000 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
-            z-index: 0;
-        }
-
-        @keyframes gradientShift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-        }
-
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
-            animation: gridPulse 6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes gridPulse {
-
-            0%,
-            100% {
-                opacity: 0.3;
-            }
-
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        /* Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        .glass-strong {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-        }
-
-        .glass-hover {
-            transition: all 0.3s ease;
-        }
-
-        .glass-hover:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(139, 92, 246, 0.5);
-            transform: translateY(-2px);
-        }
-
-        /* Neon Borders & Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #8b5cf6, #3b82f6, #ec4899);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .neon-border {
-            position: relative;
-            border: 1px solid transparent;
-        }
-
-        .neon-border::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(45deg, #8b5cf6, #3b82f6, #ec4899, #8b5cf6);
-            background-size: 300% 300%;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            animation: gradientRotate 4s linear infinite;
-        }
-
-        @keyframes gradientRotate {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 100% 50%;
-            }
-        }
-
-        /* Map Animations */
-        .map-dot {
-            position: absolute;
-            border-radius: 50%;
-            animation: ripple 2s infinite;
-        }
-
-        .map-dot::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            border-radius: 50%;
-            animation: ripple-expand 2s infinite;
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.1);
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes ripple-expand {
-            0% {
-                width: 100%;
-                height: 100%;
-                opacity: 0.8;
-            }
-
-            100% {
-                width: 300%;
-                height: 300%;
-                opacity: 0;
-            }
-        }
-
-        /* Chart CSS Only */
-        .chart-bar {
-            transition: height 1s ease-out;
-            animation: growUp 1.5s ease-out forwards;
-        }
-
-        @keyframes growUp {
-            from {
-                height: 0%;
-            }
-        }
-
-        .donut-chart {
-            background: conic-gradient(#8b5cf6 0% 70%, rgba(255, 255, 255, 0.1) 70% 100%);
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .donut-chart::before {
-            content: '';
-            position: absolute;
-            inset: 10px;
-            background: #000;
-            /* Matches card background approx */
-            border-radius: 50%;
-            z-index: 1;
-        }
-
-        /* Metric Trend Arrow */
-        .trend-up {
-            color: #22c55e;
-        }
-
-        .trend-down {
-            color: #ef4444;
-        }
-    </style>
-    <link rel="stylesheet" href="../../../frontend/css/main.bundle.css?v=20260206" />
-    <script src="../../../frontend/js/navigation.js" defer></script>
-
-    <!-- BrightAI Global Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
-    <link rel="stylesheet" href="../../css/index-theme.css" />
-
-
-<link rel="stylesheet" href="../../css/tailwind.local.min.css">
-<script defer src="../../js/iconify-preload.js"></script>
-<script defer src="../../js/vendor/iconify.min.js"></script>
-<script defer src="../../js/vendor/iconify-icon.min.js"></script>
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "الرئيسية",
+        "item": "https://brightai.site/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "الأرشيف الطبي الذكي",
+        "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "التحليلات والرؤى",
+        "item": "https://brightai.site/frontend/pages/smart-medical-archive/analytics-insights.html"
+      }
+    ]
+  }
+  </script>
 </head>
+<body>
+  <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+  <div class="bg-grid" aria-hidden="true"></div>
 
-<body class="antialiased h-screen overflow-hidden flex">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html" aria-label="العودة لصفحة الأرشيف الطبي الذكي">
+        <span class="brand-logo">AI</span>
+        <span class="brand-text">
+          <strong>Bright AI</strong>
+          <span>Smart Medical Archive</span>
+        </span>
+      </a>
 
-    
-    <!-- UNIFIED HEADER (REBUILT) -->
-    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-        <div class="nav-container">
-            
-            <!-- Mobile Toggle -->
-            <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+      <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="top-nav">القائمة</button>
 
-            <!-- Logo -->
-            <a href="../../../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
-                <span>Bright AI</span>
-            </a>
+      <nav id="top-nav" class="nav-links" aria-label="تنقل النظام">
+        <a class="nav-link" href="./index.html">النظام</a>
+        <a class="nav-link" href="./NLP-Search.html">البحث الدلالي</a>
+        <a class="nav-link" href="./Ingestion.html">الإدخال والمعالجة</a>
+        <a class="nav-link" href="./EHR-Viewer.html">عارض السجل</a>
+        <a class="nav-link active" href="./analytics-insights.html">التحليلات</a>
+      </nav>
 
-            <!-- Desktop Navigation -->
-            <ul class="nav-links">
-                <li class="nav-item">
-                    <a href="../../../" class="nav-link">
-                        الرئيسية
-                    </a>
-                </li>
-
-                <!-- Products & Services -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        المنتجات والخدمات
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../smart-automation/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:zap"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأتمتة الذكية</span>
-                                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
-                            </div>
-                        </a>
-                        <a href="../our-products/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:package"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
-              </div>
-            </a>
-                        <a href="../data-analysis/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">تحليل البيانات</span>
-                                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
-                            </div>
-                        </a>
-                        <a href="../consultation/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:message-square"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">استشارات تقنية</span>
-                                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-
-                <!-- Solutions & Experience Models -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        الحلول و نماذج التجربة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-            <a href="../ai-agent/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:bot"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-              </div>
-            </a>
-                        <a href="../try/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:database"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">ذكاء البيانات</span>
-                                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
-                            </div>
-                        </a>
-                        <a href="../tools/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:wrench"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">أدوات مجانية</span>
-                                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
-                            </div>
-                        </a>
-                        <a href="../../../frontend/pages/smart-medical-archive/" class="dropdown-item">
-                            <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
-                                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
-                            </div>
-                        </a>
-                        <a href="../../../frontend/pages/interview/" class="dropdown-item">
-                            <iconify-icon icon="lucide:users"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">التوظيف الذكي</span>
-                                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-
-                <!-- Company -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        الشركة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../about-us/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:info"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">من نحن</span>
-                                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
-                            </div>
-                        </a>
-                        <a href="../blog/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:book-open"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المكتبة الذكية</span>
-                                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
-                            </div>
-                        </a>
-                        <a href="../../../docs.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:file-text"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المستندات</span>
-                                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-
-            <!-- CTA Button -->
-            <div class="hidden lg:block">
-                <a href="https://wa.me/966538229013" class="nav-btn">
-                    اتصل بنا
-                </a>
-            </div>
-
-        </div>
-    </nav>
-
-    <!-- Mobile Menu Drawer -->
-    <div class="mobile-menu-drawer">
-        <ul class="mobile-nav-list">
-            <li><a href="../../../" class="mobile-nav-link">الرئيسية</a></li>
-            
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    المنتجات والخدمات
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="../smart-automation/index.html" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="../our-products/index.html" class="dropdown-item">المنتجات والاشتراكات</a>
-                   <a href="../data-analysis/index.html" class="dropdown-item">تحليل البيانات</a>
-                   <a href="../consultation/index.html" class="dropdown-item">استشارات تقنية</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    الحلول و نماذج التجربة
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-          <a href="../ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="../try/index.html" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="../tools/index.html" class="dropdown-item">أدوات مجانية</a>
-                   <a href="../../../frontend/pages/smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="../../../frontend/pages/interview/" class="dropdown-item">التوظيف الذكي</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    الشركة
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="../about-us/index.html" class="dropdown-item">من نحن</a>
-                   <a href="../blog/index.html" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="../../../docs.html" class="dropdown-item">المستندات</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
-                    اتصل بنا
-                </a>
-            </li>
-        </ul>
+      <a class="btn btn-primary topbar-cta" href="../consultation/index.html" data-cta="analytics_top_consultation">جلسة قرارات تنفيذية</a>
     </div>
+  </header>
 
-    <!-- Backdrop -->
-    <div class="backdrop-overlay"></div>
-
-
-
-    <div class="animated-bg"></div>
-    <div class="grid-overlay"></div>
-
-    <!-- Sidebar -->
-    <aside class="w-72 glass-strong border-l border-white/10 flex flex-col justify-between hidden md:flex z-20">
-        <div>
-            <div class="h-20 flex items-center px-6 border-b border-white/10">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center relative overflow-hidden"
-                        style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">
-                        <span class="font-bold text-white text-lg relative z-10">AI</span>
-                    </div>
-                    <div>
-                        <span class="font-bold text-white tracking-tight text-xl gradient-text">Bright AI</span>
-                        <div class="text-[10px] text-white/40">Medical Archive</div>
-                    </div>
-                </div>
-            </div>
-
-            <nav class="p-3 space-y-1 mt-4">
-                <a href="https://brightai.site/index.html"
-                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors"
-                    onclick="setActive(this)">
-                    <iconify-icon icon="solar:widget-linear" width="20"></iconify-icon> <span>لوحة التحكم</span>
-                </a>
-                <a href="NLP-Search"
-                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors"
-                    onclick="setActive(this)">
-                    <iconify-icon icon="solar:magnifer-linear" width="20"></iconify-icon> <span>البحث المتقدم
-                        (NLP)</span>
-                </a>
-                <a href="Ingestion"
-                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors"
-                    onclick="setActive(this)">
-                    <iconify-icon icon="solar:document-add-linear" width="20"></iconify-icon> <span>الإدخال
-                        والمعالجة</span>
-                </a>
-                <a href="EHR-Viewer"
-                    class="nav-item flex items-center gap-3 px-3 py-2.5 text-white/60 hover:text-white rounded-lg transition-colors"
-                    onclick="setActive(this)">
-                    <iconify-icon icon="solar:user-id-linear" width="20"></iconify-icon> <span>سجلات المرضى</span>
-                </a>
-                <a href="Analytics&Insights"
-                    class="nav-item active flex items-center gap-3 px-3 py-2.5 text-white hover:text-white rounded-lg transition-colors"
-                    onclick="setActive(this)">
-                    <iconify-icon icon="solar:chart-2-linear" width="22"></iconify-icon> <span>التحليلات والرؤى</span>
-                </a>
-            </nav>
+  <main id="main-content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-panel">
+        <span class="eyebrow">مركز القرار التنفيذي في النظام</span>
+        <h1 id="hero-title" class="hero-title">لوحة تحليلات موحّدة تربط الأداء اليومي بعائد الأعمال</h1>
+        <p class="hero-subtitle">
+          لا تكتفي بعرض الأرقام. هذه اللوحة تُحوّل بيانات الإدخال والبحث والعرض إلى مؤشرات قرار: أين الاختناق، ما أثره المالي، وما الإجراء المطلوب اليوم.
+        </p>
+        <ul class="hero-highlights">
+          <li>قياس لحظي لدورة الملف من الإدخال حتى الإتاحة</li>
+          <li>متابعة جودة الاستخراج واكتمال السجل</li>
+          <li>تنبيهات للمخاطر التشغيلية قبل التصاعد</li>
+          <li>رؤى مباشرة لفريق الإدارة والجودة</li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="../contact/index.html" data-cta="analytics_hero_contact">اطلب لوحة لمنشأتك</a>
+          <a class="btn btn-secondary" href="./Ingestion.html" data-cta="analytics_hero_ingestion">راجع مصدر البيانات</a>
         </div>
-        <div class="p-4 border-t border-white/10">
-            <div class="glass rounded-xl p-4 neon-border">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold"
-                        style="background: linear-gradient(135deg, #14b8a6, #06b6d4);">
-                        د.م
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-sm font-medium text-white">د. محمد القحطاني</span>
-                        <span class="text-xs text-white/40">Admin Access</span>
-                    </div>
-                </div>
-            </div>
+      </div>
+
+      <aside class="hero-panel">
+        <h2 class="panel-title">محاكاة تنبيه تنفيذي</h2>
+        <p class="panel-desc">اكتب المؤشر الذي تريد فحصه وسيعرض النظام تنبيهًا تشغيليًا مع توصية الإجراء.</p>
+
+        <form class="demo-box" data-demo-form data-demo-cta="analytics_demo_submit" data-demo-template="تنبيه تجريبي: المؤشر &quot;{query}&quot; تجاوز الحد التشغيلي. الإجراء المقترح: تحديد سبب الانحراف خلال 24 ساعة، تخصيص مسؤول متابعة، وقياس أثر التصحيح على نفس المؤشر خلال 72 ساعة.">
+          <label class="demo-label" for="analytics-query">المؤشر</label>
+          <div class="demo-row">
+            <input id="analytics-query" data-demo-input type="text" placeholder="مثال: ارتفاع ملفات الطوارئ غير المكتملة" required>
+            <button class="btn btn-primary" type="submit">تحليل</button>
+          </div>
+          <div class="chips" aria-label="أمثلة جاهزة">
+            <button class="chip" type="button" data-demo-chip="زيادة زمن معالجة الملفات فوق الحد">زمن المعالجة</button>
+            <button class="chip" type="button" data-demo-chip="هبوط دقة استخراج كود التشخيص">دقة الاستخراج</button>
+            <button class="chip" type="button" data-demo-chip="ارتفاع الملفات المعادة من التأمين">المرتجعات</button>
+          </div>
+          <div class="demo-output" data-demo-output aria-live="polite"></div>
+        </form>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="kpi-title">
+      <div class="section-header">
+        <h2 id="kpi-title" class="section-title">لوحة المؤشرات التنفيذية</h2>
+      </div>
+      <div class="grid-4">
+        <article class="card">
+          <div class="metric-value">91.4%</div>
+          <p class="metric-label">اكتمال الملفات اليومية</p>
+          <p class="metric-note">مؤشر يقيس جودة التسليم بين الأقسام.</p>
+        </article>
+        <article class="card">
+          <div class="metric-value">2.9 د</div>
+          <p class="metric-label">متوسط زمن المعالجة</p>
+          <p class="metric-note">من الإدخال حتى الجاهزية للعرض.</p>
+        </article>
+        <article class="card">
+          <div class="metric-value">98.1%</div>
+          <p class="metric-label">دقة الاستخراج</p>
+          <p class="metric-note">متوسط دقة الحقول السريرية الأساسية.</p>
+        </article>
+        <article class="card">
+          <div class="metric-value">-24%</div>
+          <p class="metric-label">انخفاض المرتجعات التشغيلية</p>
+          <p class="metric-note">مقارنة بخط الأساس قبل التفعيل.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="alerts-title">
+      <div class="section-header">
+        <h2 id="alerts-title" class="section-title">تنبيهات تشغيلية حسب الأولوية</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>التنبيه</th>
+              <th>الأثر المتوقع</th>
+              <th>الإجراء المقترح</th>
+              <th>الأولوية</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>تأخر إدخال ملفات الطوارئ بعد 12 ساعة</td>
+              <td>رفع زمن تجهيز الحالة وارتفاع مخاطر النقص</td>
+              <td>تخصيص مسار عاجل للطوارئ مع مراقبة لحظية</td>
+              <td><span class="status warn">عالية</span></td>
+            </tr>
+            <tr>
+              <td>انخفاض دقة استخراج كود التشخيص</td>
+              <td>زيادة احتمالية رفض المطالبات التأمينية</td>
+              <td>مراجعة عينات الأخطاء وتحديث قواعد التصنيف</td>
+              <td><span class="status plan">متوسطة</span></td>
+            </tr>
+            <tr>
+              <td>ارتفاع حالات السجل غير المكتمل</td>
+              <td>عبء إضافي على الجودة والتشغيل</td>
+              <td>إلزام التحقق قبل الإغلاق وتفعيل إشعارات تلقائية</td>
+              <td><span class="status ok">متابعة</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="decision-title">
+      <div class="section-header">
+        <h2 id="decision-title" class="section-title">المشكلة ثم الحل ثم الإثبات في لوحة القرار</h2>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <span class="label label-danger">المشكلة</span>
+          <h3>الأرقام موجودة لكن بدون سياق تنفيذي</h3>
+          <p>الفرق ترى تقارير متفرقة ولا تعرف أين تبدأ المعالجة اليومية ذات الأثر الأكبر.</p>
+        </article>
+        <article class="card">
+          <span class="label label-ok">الحل</span>
+          <h3>لوحة ترتّب المؤشرات حسب أثرها التشغيلي</h3>
+          <p>كل مؤشر مرتبط بسبب مرجح وإجراء مقترح ومتابعة زمنية واضحة.</p>
+        </article>
+        <article class="card">
+          <span class="label label-proof">الإثبات</span>
+          <h3>تقليل زمن المعالجة وتحسن جودة الملفات</h3>
+          <p>يظهر الأثر مباشرة على مؤشرات الدورة اليومية والتحصيل وجودة التدقيق.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="saudi-cases-title">
+      <div class="section-header">
+        <h2 id="saudi-cases-title" class="section-title">حالات استخدام سعودية في التحليلات</h2>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <h3>قياس أداء أقسام متعددة في مستشفى واحد</h3>
+          <p>إظهار الاختلاف بين الأقسام في زمن المعالجة واكتمال الملفات لتوجيه الموارد بدقة.</p>
+        </article>
+        <article class="card">
+          <h3>إدارة مخاطر المطالبات التأمينية</h3>
+          <p>تتبع مسببات الرفض وتحديد الأقسام الأكثر تأثيراً على دورة التحصيل.</p>
+        </article>
+        <article class="card">
+          <h3>تحسين جاهزية التدقيق الداخلي</h3>
+          <p>مراقبة الامتثال للحقول الإلزامية وسجل الأثر قبل جولات التدقيق الرسمية.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="faq-title">
+      <div class="section-header">
+        <h2 id="faq-title" class="section-title">أسئلة شائعة</h2>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>ما المؤشرات الأهم في أول 90 يوماً؟</summary>
+          <p>زمن المعالجة، اكتمال الملفات، ودقة الاستخراج، لأنها تعكس جودة الدورة التشغيلية بالكامل.</p>
+        </details>
+        <details>
+          <summary>هل يمكن تخصيص لوحة لكل مستشفى أو فرع؟</summary>
+          <p>نعم، يمكن تخصيص الأهداف والحدود والتنبيهات لكل منشأة أو وحدة تشغيلية.</p>
+        </details>
+        <details>
+          <summary>كيف ترتبط اللوحة بالعائد المالي؟</summary>
+          <p>عبر ربط تحسن المؤشرات التشغيلية بتقليل المرتجعات وتسريع التحصيل ورفع إنتاجية الفريق.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="final-cta-title">
+      <div class="card">
+        <h2 id="final-cta-title" class="section-title">حوّل لوحة المؤشرات إلى قرارات أسبوعية قابلة للتنفيذ</h2>
+        <p class="section-desc">ابدأ بتحديد 3 مؤشرات حرجة لمنشأتك، ثم طبّق دورة تحسين أسبوعية مدعومة بالتنبيهات والرؤى التنفيذية.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="../consultation/index.html" data-cta="analytics_final_consultation">ابدأ خطة التحسين</a>
+          <a class="btn btn-secondary" href="./EHR-Viewer.html" data-cta="analytics_final_ehr">راجع عارض السجل</a>
+          <a class="btn btn-ghost" href="./index.html" data-cta="analytics_final_system">العودة للنظام الكامل</a>
         </div>
-    </aside>
+      </div>
+    </section>
+  </main>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-full relative z-10 overflow-hidden">
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <a href="./index.html">نظرة النظام</a>
+        <a href="./NLP-Search.html">البحث الدلالي</a>
+        <a href="./Ingestion.html">الإدخال والمعالجة</a>
+        <a href="../contact/index.html">تواصل معنا</a>
+      </div>
+      <p class="footer-copy">© <span data-year></span> Bright AI. لوحات التحليلات تجمع مؤشرات الأرشفة الطبية في نموذج قرار موحد للقطاع الصحي السعودي.</p>
+    </div>
+  </footer>
 
-        <!-- Header -->
-        <header class="h-20 glass border-b border-white/10 flex items-center justify-between px-8 shrink-0">
-            <div class="flex items-center gap-4">
-                <span class="text-white/30">/</span>
-                <h1 class="text-base font-medium text-white">مركز التحليلات والتنبؤ (Analytics Hub)</h1>
-            </div>
-            <div class="flex items-center gap-3">
-                <select class="bg-black/20 border border-white/10 rounded-lg text-xs text-white px-3 py-2 outline-none">
-                    <option>جميع المناطق (المملكة)</option>
-                    <option>المنطقة الوسطى</option>
-                    <option>المنطقة الغربية</option>
-                    <option>المنطقة الشرقية</option>
-                </select>
-                <button
-                    class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-xs font-medium text-white flex items-center gap-2 shadow-lg shadow-purple-900/50">
-                    <iconify-icon icon="solar:export-linear"></iconify-icon>
-                    تصدير تقرير تنفيذي
-                </button>
-            </div>
-        </header>
+  <div class="mobile-cta">
+    <a class="btn btn-primary" href="../consultation/index.html" data-cta="analytics_mobile_consultation">احجز جلسة قرارات</a>
+  </div>
 
-        <!-- Scrollable Dashboard -->
-        <div class="flex-1 overflow-y-auto p-6 scroll-smooth">
-
-            <!-- Top KPIs -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="glass rounded-2xl p-5 border border-white/5 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <iconify-icon icon="solar:users-group-rounded-linear" width="60"></iconify-icon>
-                    </div>
-                    <div class="text-sm text-white/50 mb-2">إجمالي المرضى النشطين</div>
-                    <div class="text-3xl font-bold text-white mb-2">1.2M</div>
-                    <div class="flex items-center gap-2 text-xs">
-                        <span class="text-emerald-400 flex items-center"><iconify-icon
-                                icon="solar:arrow-right-up-linear"></iconify-icon> +2.4%</span>
-                        <span class="text-white/30">عن الشهر الماضي</span>
-                    </div>
-                </div>
-
-                <div class="glass rounded-2xl p-5 border border-white/5 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <iconify-icon icon="solar:virus-linear" width="60"></iconify-icon>
-                    </div>
-                    <div class="text-sm text-white/50 mb-2">مؤشر الخطر الوبائي</div>
-                    <div class="text-3xl font-bold text-yellow-400 mb-2">منخفض</div>
-                    <div class="flex items-center gap-2 text-xs">
-                        <span class="text-white/30">معدل R0 الحالي:</span>
-                        <span class="text-white">0.85</span>
-                    </div>
-                </div>
-
-                <div class="glass rounded-2xl p-5 border border-white/5 relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                        <iconify-icon icon="solar:bed-linear" width="60"></iconify-icon>
-                    </div>
-                    <div class="text-sm text-white/50 mb-2">إشغال الأسرة (المتوسط)</div>
-                    <div class="text-3xl font-bold text-white mb-2">74%</div>
-                    <div class="w-full h-1 bg-white/10 rounded-full mt-2">
-                        <div class="h-full bg-blue-500 w-[74%]"></div>
-                    </div>
-                </div>
-
-                <div
-                    class="glass rounded-2xl p-5 border border-purple-500/30 neon-border relative overflow-hidden group">
-                    <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <iconify-icon icon="solar:magic-stick-3-linear" width="60"
-                            class="text-purple-500"></iconify-icon>
-                    </div>
-                    <div class="text-sm text-purple-300 mb-2">دقة تنبؤات AI</div>
-                    <div class="text-3xl font-bold text-white mb-2">94.2%</div>
-                    <div class="flex items-center gap-2 text-xs">
-                        <span class="text-emerald-400 flex items-center"><iconify-icon
-                                icon="solar:check-circle-linear"></iconify-icon> نموذج مُحسّن</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Layout: Map & Prediction -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-
-                <!-- 1. Epidemiological Map (2/3 width) -->
-                <div class="lg:col-span-2 glass rounded-3xl p-6 border border-white/10 relative overflow-hidden">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-semibold text-white flex items-center gap-2">
-                            <iconify-icon icon="solar:global-linear" class="text-purple-400"></iconify-icon>
-                            الخارطة الوبائية الحية (Heatmap)
-                        </h3>
-                        <div class="flex gap-2">
-                            <span class="flex items-center gap-1 text-[10px] text-white/50"><span
-                                    class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> بؤر إنفلونزا</span>
-                            <span class="flex items-center gap-1 text-[10px] text-white/50"><span
-                                    class="w-2 h-2 rounded-full bg-blue-500"></span> استقرار</span>
-                        </div>
-                    </div>
-
-                    <!-- Abstract Map Representation -->
-                    <div
-                        class="relative h-80 w-full bg-[#050510] rounded-2xl border border-white/5 flex items-center justify-center overflow-hidden">
-                        <!-- Stylized Map Background (Abstract Grid) -->
-                        <div class="absolute inset-0 opacity-20"
-                            style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 20px 20px;">
-                        </div>
-
-                        <!-- Saudi Arabia Abstract Shape Outline (Simplified SVG Path) -->
-                        <svg viewBox="0 0 400 300"
-                            class="w-full h-full opacity-30 fill-white/5 stroke-white/20 stroke-1">
-                            <path
-                                d="M120,250 L100,200 L80,150 L60,100 L80,50 L150,30 L250,40 L300,80 L320,150 L300,220 L200,260 Z" />
-                        </svg>
-
-                        <!-- Hotspots -->
-                        <!-- Riyadh -->
-                        <div class="map-dot w-3 h-3 bg-red-500 left-[55%] top-[50%] cursor-pointer group">
-                            <div
-                                class="absolute bottom-4 left-1/2 -translate-x-1/2 glass-strong px-3 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                الرياض: ارتفاع حالات الربو
-                            </div>
-                        </div>
-                        <!-- Jeddah -->
-                        <div class="map-dot w-3 h-3 bg-blue-500 left-[30%] top-[55%] cursor-pointer group"
-                            style="animation-delay: 1s;">
-                            <div
-                                class="absolute bottom-4 left-1/2 -translate-x-1/2 glass-strong px-3 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                جدة: مستقر
-                            </div>
-                        </div>
-                        <!-- Dammam -->
-                        <div class="map-dot w-3 h-3 bg-orange-500 left-[65%] top-[45%] cursor-pointer group"
-                            style="animation-delay: 0.5s;">
-                            <div
-                                class="absolute bottom-4 left-1/2 -translate-x-1/2 glass-strong px-3 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                                الدمام: إنذار مبكر
-                            </div>
-                        </div>
-
-                        <!-- Scanning Line Animation -->
-                        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-purple-500/50 to-transparent blur-sm"
-                            style="animation: scanMap 4s linear infinite;"></div>
-                    </div>
-
-                    <style>
-                        @keyframes scanMap {
-                            0% {
-                                left: 0%;
-                            }
-
-                            100% {
-                                left: 100%;
-                            }
-                        }
-                    </style>
-                </div>
-
-                <!-- 2. Predictive Risk Model (1/3 width) -->
-                <div class="glass rounded-3xl p-6 border border-white/10">
-                    <h3 class="text-sm font-semibold text-white mb-6 flex items-center gap-2">
-                        <iconify-icon icon="solar:graph-up-linear" class="text-emerald-400"></iconify-icon>
-                        توقعات المخاطر (AI Prediction)
-                    </h3>
-
-                    <div class="text-xs text-white/50 mb-4">التنبؤ بمعدلات "الإنفلونزا الموسمية" للأشهر الـ 3 القادمة
-                    </div>
-
-                    <!-- CSS Bar Chart -->
-                    <div
-                        class="h-48 flex items-end justify-between gap-2 mb-4 px-2 relative border-b border-white/10 pb-2">
-                        <!-- Bars -->
-                        <div class="w-full bg-purple-500/20 rounded-t-lg relative group h-[40%] chart-bar">
-                            <div
-                                class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100">
-                                40%</div>
-                        </div>
-                        <div class="w-full bg-purple-500/40 rounded-t-lg relative group h-[55%] chart-bar"
-                            style="animation-delay: 0.1s">
-                            <div
-                                class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100">
-                                55%</div>
-                        </div>
-                        <div class="w-full bg-purple-500/60 rounded-t-lg relative group h-[30%] chart-bar"
-                            style="animation-delay: 0.2s">
-                            <div
-                                class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100">
-                                30%</div>
-                        </div>
-                        <!-- Predicted Bars (Dashed border look) -->
-                        <div class="w-full bg-transparent border-x border-t border-dashed border-purple-400/50 rounded-t-lg relative group h-[65%] chart-bar"
-                            style="animation-delay: 0.3s">
-                            <div class="absolute inset-0 bg-purple-400/10"></div>
-                            <div
-                                class="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] text-purple-300 font-bold opacity-100">
-                                +65%</div>
-                        </div>
-                        <div class="w-full bg-transparent border-x border-t border-dashed border-purple-400/50 rounded-t-lg relative group h-[80%] chart-bar"
-                            style="animation-delay: 0.4s">
-                            <div class="absolute inset-0 bg-purple-400/10"></div>
-                            <div
-                                class="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] text-purple-300 font-bold opacity-100">
-                                +80%</div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between text-[10px] text-white/40 px-2">
-                        <span>نوفمبر</span>
-                        <span>ديسمبر</span>
-                        <span>يناير</span>
-                        <span class="text-purple-400">فبراير (توقع)</span>
-                        <span class="text-purple-400">مارس (توقع)</span>
-                    </div>
-
-                    <div class="mt-4 p-3 rounded-xl bg-purple-500/10 border border-purple-500/20">
-                        <div class="flex items-start gap-2">
-                            <iconify-icon icon="solar:info-circle-linear" class="text-purple-400 mt-0.5"></iconify-icon>
-                            <p class="text-xs text-purple-200">
-                                النموذج يتوقع ذروة في فبراير. يوصى بزيادة مخزون اللقاحات بنسبة 15%.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. Cohort Analysis & Comparative Data -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Cohort Comparison -->
-                <div class="glass rounded-3xl p-6 border border-white/10">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-sm font-semibold text-white flex items-center gap-2">
-                            <iconify-icon icon="solar:users-group-two-rounded-linear"
-                                class="text-blue-400"></iconify-icon>
-                            مقارنة الحالات المتشابهة (Cohort Analysis)
-                        </h3>
-                        <button class="text-xs text-blue-400 hover:text-white">تعديل المجموعة</button>
-                    </div>
-
-                    <div class="flex items-center gap-4 mb-4 text-xs">
-                        <div
-                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-300">
-                            <span>المجموعة أ: مرضى السكري (Metformin)</span>
-                        </div>
-                        <span class="text-white/30">VS</span>
-                        <div
-                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/60">
-                            <span>المجموعة ب: مرضى السكري (Insulin)</span>
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <!-- Metric 1 -->
-                        <div>
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="text-white/60">استقرار سكر الدم التراكمي (HbA1c)</span>
-                                <span class="text-white">المجموعة أ أفضل بـ 12%</span>
-                            </div>
-                            <div class="flex h-2 rounded-full overflow-hidden">
-                                <div class="bg-blue-500 w-[65%]"></div>
-                                <div class="bg-white/10 w-[35%]"></div>
-                            </div>
-                        </div>
-                        <!-- Metric 2 -->
-                        <div>
-                            <div class="flex justify-between text-xs mb-1">
-                                <span class="text-white/60">معدل الدخول للمستشفى</span>
-                                <span class="text-white">المجموعة أ أقل بـ 5%</span>
-                            </div>
-                            <div class="flex h-2 rounded-full overflow-hidden">
-                                <div class="bg-blue-500 w-[20%]"></div>
-                                <div class="bg-white/10 w-[80%]"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hospital Decision Support -->
-                <div class="glass rounded-3xl p-6 border border-white/10 neon-border">
-                    <h3 class="text-sm font-semibold text-white mb-6 flex items-center gap-2">
-                        <iconify-icon icon="solar:shield-warning-linear" class="text-orange-400"></iconify-icon>
-                        دعم القرار (Actionable Insights)
-                    </h3>
-
-                    <div class="space-y-3">
-                        <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/20 flex gap-3">
-                            <div class="mt-1"><iconify-icon icon="solar:danger-triangle-linear"
-                                    class="text-red-400"></iconify-icon></div>
-                            <div>
-                                <h4 class="text-sm font-medium text-white">نقص متوقع في الأسرة (ICU)</h4>
-                                <p class="text-xs text-white/50 mt-1">بناءً على النمط الحالي، قد تصل العناية المركزة في
-                                    "مستشفى الشمال" إلى 98% إشغال خلال 48 ساعة.</p>
-                                <button
-                                    class="mt-2 text-xs text-red-400 border border-red-500/30 px-3 py-1 rounded hover:bg-red-500/20 transition-colors">إعادة
-                                    توجيه الحالات</button>
-                            </div>
-                        </div>
-
-                        <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 flex gap-3">
-                            <div class="mt-1"><iconify-icon icon="solar:lightbulb-linear"
-                                    class="text-blue-400"></iconify-icon></div>
-                            <div>
-                                <h4 class="text-sm font-medium text-white">تحسين بروتوكول العلاج</h4>
-                                <p class="text-xs text-white/50 mt-1">البيانات تشير إلى أن بروتوكول "B" يقلل مدة الإقامة
-                                    بمعدل يومين لمرضى الالتهاب الرئوي.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <script src="../../js/main.bundle.js" defer></script>
-
-    <script src="../../js/index-theme.js" defer></script>
+  <script defer src="./system-unified.js"></script>
 </body>
-
 </html>

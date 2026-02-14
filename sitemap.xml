@@ -68,6 +68,30 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://brightai.site/frontend/pages/smart-medical-archive/NLP-Search.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/frontend/pages/smart-medical-archive/Ingestion.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/frontend/pages/smart-medical-archive/EHR-Viewer.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/frontend/pages/smart-medical-archive/analytics-insights.html</loc>
+    <lastmod>2026-02-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://brightai.site/frontend/pages/job.MAISco/index.html</loc>
     <lastmod>2026-02-14</lastmod>
     <changefreq>weekly</changefreq>
