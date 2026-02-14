@@ -38,9 +38,12 @@
     <meta http-equiv="content-language" content="ar-SA" />
 
     <!-- Hreflang Tags -->
+    <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/smart-automation/index.html" />
+    <link rel="alternate" hreflang="x-default"
+        href="https://brightai.site/frontend/pages/smart-automation/index.html" />
 
 
-<!-- Open Graph -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
     <meta property="og:title" content="الأتمتة الذكية وسير عمل AI | Bright AI السعودية" />
@@ -63,17 +66,55 @@
     {
         "@context": "https://schema.org",
         "@type": "Service",
-        "@id": "https://brightai.site/frontend/pages/smart-automation.html#service",
+        "@id": "https://brightai.site/frontend/pages/smart-automation/index.html#service",
         "name": "الأتمتة الذكية وسير عمل الذكاء الاصطناعي",
         "alternateName": "AI Workflows & Smart Automation",
-        "description": "خدمات أتمتة ذكية تعتمد على التعلم الآلي لاتخاذ قرارات مستقلة وتحسين الكفاءة التشغيلية",
+        "description": "خدمات أتمتة ذكية تعتمد على التعلم الآلي لاتخاذ قرارات مستقلة وتحسين الكفاءة التشغيلية للشركات السعودية",
+        "url": "https://brightai.site/frontend/pages/smart-automation/index.html",
         "provider": {
             "@type": "Organization",
             "name": "Bright AI",
-            "url": "https://brightai.site"
+            "alternateName": "مُشرقة للذكاء الاصطناعي",
+            "url": "https://brightai.site",
+            "logo": "https://brightai.site/Gemini.png"
         },
-        "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
-        "serviceType": "Intelligent Process Automation"
+        "areaServed": {
+            "@type": "Country",
+            "name": "Saudi Arabia",
+            "alternateName": "المملكة العربية السعودية"
+        },
+        "serviceType": "Intelligent Process Automation",
+        "category": "الأتمتة الذكية",
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "حلول الأتمتة الذكية",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "التصنيع الذكي والصناعة 4.0",
+                        "description": "أذرع روبوتية ذكية، أنظمة الرؤية الحاسوبية لفحص الجودة، وخوارزميات الصيانة التنبؤية تقلل وقت التوقف عن العمل بنسبة 40%"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "الخدمات اللوجستية وسلاسل الإمداد",
+                        "description": "أنظمة أتمتة شاملة للمستودعات وإدارة الأسطول مع خوارزميات تحسين مسارات التوصيل والروبوتات الذكية للفرز والتعبئة"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "التقنية المالية (Fintech)",
+                        "description": "أتمتة ذكية لعمليات الامتثال KYC/AML والكشف عن الاحتيال المالي في الوقت الفعلي لتحليل ملايين المعاملات بدقة متناهية"
+                    }
+                }
+            ]
+        }
     }
     </script>
 
@@ -85,6 +126,40 @@
         "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/" },
             { "@type": "ListItem", "position": 2, "name": "الأتمتة الذكية", "item":"https://brightai.site/frontend/pages/smart-automation/index.html" }
+        ]
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "ما الفرق بين الأتمتة التقليدية (RPA) والأتمتة الذكية؟",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "الأتمتة التقليدية (RPA) تتبع قواعد ثابتة لتنفيذ مهام متكررة ومحددة مسبقاً. أما الأتمتة الذكية (Intelligent Automation) التي تقدمها Bright AI، فهي تدمج الذكاء الاصطناعي والتعلم الآلي، مما يسمح للنظام بالفهم واتخاذ القرارات والتعامل مع البيانات غير المهيكلة والتكيف مع المتغيرات دون تدخل بشري."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "هل حلول الأتمتة لديكم تتوافق مع لوائح الأمن السيبراني السعودية؟",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "بالتأكيد. نحن نضع أمن البيانات والامتثال للمعايير الوطنية (NCA) في صميم حلولنا. نقدم خيارات نشر مرنة تشمل الاستضافة المحلية (On-Premise) أو السحابة المحلية الآمنة لضمان بقاء البيانات الحساسة داخل المملكة العربية السعودية وحمايتها وفقاً لأعلى المعايير."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "كم من الوقت يستغرق تنفيذ مشروع أتمتة ذكية؟",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "يعتمد الجدول الزمني على حجم وتعقيد العملية المراد أتمتتها. المشاريع التجريبية (Pilot) يمكن أن تكون جاهزة خلال 4-6 أسابيع، بينما قد تستغرق مشاريع التحول المؤسسي الشامل عدة أشهر. نحن نعمل بمنهجية Agile لتقديم قيمة ملموسة في أسرع وقت ممكن."
+                }
+            }
         ]
     }
     </script>
@@ -116,12 +191,12 @@
                 document.body.appendChild(script);
             }
             function loadDeferredResources() {
-loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
                 // Centralized Design System
                 loadCSS('../css/brightai-core.css');
 
                 loadCSS('/frontend/css/vendor/aos.css');
-}
+            }
             function loadAnimations() {
                 loadScript('/frontend/js/vendor/gsap.min.js');
                 loadScript('/frontend/js/vendor/aos.js', function () {
@@ -147,10 +222,10 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     <link rel="stylesheet" href="../../css/index-theme.css" />
 
 
-<link rel="stylesheet" href="../../css/tailwind.local.min.css">
-<script defer src="../../js/iconify-preload.js"></script>
-<script defer src="../../js/vendor/iconify.min.js"></script>
-<script defer src="../../js/vendor/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="../../css/tailwind.local.min.css">
+    <script defer src="../../js/iconify-preload.js"></script>
+    <script defer src="../../js/vendor/iconify.min.js"></script>
+    <script defer src="../../js/vendor/iconify-icon.min.js"></script>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -198,12 +273,12 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                             </div>
                         </a>
                         <a href="../our-products/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:package"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
-              </div>
-            </a>
+                            <iconify-icon icon="lucide:package"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">المنتجات والاشتراكات</span>
+                                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
+                            </div>
+                        </a>
                         <a href="../data-analysis/index.html" class="dropdown-item">
                             <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                             <div class="dropdown-item-content">
@@ -228,13 +303,13 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
                     </a>
                     <div class="dropdown-menu">
-            <a href="../ai-agent/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:bot"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-              </div>
-            </a>
+                        <a href="../ai-agent/index.html" class="dropdown-item">
+                            <iconify-icon icon="lucide:bot"></iconify-icon>
+                            <div class="dropdown-item-content">
+                                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
+                                <span class="dropdown-desc">حلول AIaaS المرنة</span>
+                            </div>
+                        </a>
                         <a href="../try/index.html" class="dropdown-item">
                             <iconify-icon icon="lucide:database"></iconify-icon>
                             <div class="dropdown-item-content">
@@ -332,7 +407,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
                 </a>
                 <div class="mobile-dropdown">
-          <a href="../ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
+                    <a href="../ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
                     <a href="../try/index.html" class="dropdown-item">ذكاء البيانات</a>
                     <a href="../tools/index.html" class="dropdown-item">أدوات مجانية</a>
                     <a href="../smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي
@@ -717,7 +792,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                 </div>
             </div>
             <div class="border-t border-white/5 pt-8 flex justify-between items-center text-xs text-slate-600">
-                <p>© 2025 Bright AI. جميع الحقوق محفوظة.</p>
+                <p>© 2026 Bright AI. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
@@ -726,21 +801,15 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 
     <!-- JavaScript Bundles (Consolidated) -->
     <script src="../../js/main.bundle.js" defer></script>
-    
-    
-    
-    
+
+
+
+
 
 
     <script src="../../js/index-theme.js" defer></script>
 
-    <!-- BrightAI Orphan Links: /smart-automation/ -->
-    <section class="brightai-orphan-links" style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
-        <h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">روابط ذات صلة</h3>
-        <p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">روابط داخل النص: <a href="/botAI/BrightSales.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">تعرّف على تم نقل الصفحة</a>، <a href="/docs/solutions-hr-en.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">اقرأ عن HR ManagementMade Easy</a>، <a href="/interview/pages/appointment/" style="color:#38bdf8;text-decoration:none;font-weight:600;">تعرّف على حجز مواعيد الموارد البشرية</a></p>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;"><a href="/botAI/BrightRecruiter.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب تم نقل الصفحة الآن</a><a href="/docs/solutions-healthcare-en.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">تفاصيل Healthcare MadeSmarter بالسوق السعودي</a><a href="/interview/pages/Visitor-registration/" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب نظام إدارة تسجيل الزوار مع الذكاء الآن</a></div>
-        <ul style="margin:0;padding:0 18px;line-height:1.9;color:#cbd5f5;"><li><a href="/botAI/BrightProject.html" style="color:#e2e8f0;text-decoration:none;">حلول تم نقل الصفحة للشركات السعودية</a></li><li><a href="/docs/solutions-finance-en.html" style="color:#e2e8f0;text-decoration:none;">ملخص سريع عن Fintech That'sBulletproof</a></li><li><a href="/interview/g.html" style="color:#e2e8f0;text-decoration:none;">حلول بوابة التوظيف الذكية للشركات السعودية</a></li></ul>
-    </section>
+
 
 </body>
 
