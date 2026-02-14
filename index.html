@@ -539,13 +539,21 @@
     ]
     }
     </script>
-    <!-- GTM -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <!-- GTM: تحميل مؤجل بعد FCP لتقليل TBT -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
+        function loadGTM() {
+            var s = document.createElement('script');
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+            s.async = true;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', 'G-8LLESL207Q');
+        }
+        if (document.readyState === 'complete') { setTimeout(loadGTM, 2000); }
+        else { window.addEventListener('load', function () { setTimeout(loadGTM, 2000); }); }
     </script>
     <!-- Dependencies: Fonts, Tailwind, Icons -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -572,13 +580,22 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap">
     </noscript>
-    <link href="frontend/css/main.bundle.css" rel="stylesheet">
+    <!-- Critical CSS: يبقى حاجب للعرض (navigation + base styles) -->
+    <link href="frontend/css/main.bundle.min.css" rel="stylesheet">
     <script defer="" src="frontend/js/navigation.js"></script>
-    <!-- Lucide Icons -->
-    <link href="frontend/css/index-theme.css" rel="stylesheet">
-    <!-- Preload LCP Resources -->
-    <link rel="preload" as="image" href="frontend/assets/images/Gemini.png" type="image/png" />
-    <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
+    <!-- Preload LCP Resources: خط WOFF2 الأساسي -->
+    <link rel="preload" as="font" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2" type="font/woff2"
+        crossorigin>
+    <!-- Non-critical CSS: تحميل غير حاجب -->
+    <link rel="stylesheet" href="frontend/css/index-theme.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="frontend/css/index-theme.min.css">
+    </noscript>
+    <link rel="stylesheet" href="frontend/css/tailwind.local.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
+    </noscript>
+    <!-- JS: Iconify deferred -->
     <script defer src="frontend/js/iconify-preload.js"></script>
     <script defer src="frontend/js/vendor/iconify.min.js"></script>
     <script defer src="frontend/js/vendor/iconify-icon.min.js"></script>
@@ -2922,7 +2939,7 @@
             </div>
         </div>
     </div>
-    <script defer="" src="frontend/js/index-theme.js"></script>
+    <script defer="" src="frontend/js/index-theme.min.js"></script>
 </body>
 
 </html>

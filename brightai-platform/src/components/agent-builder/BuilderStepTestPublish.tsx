@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, type KeyboardEvent } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -53,7 +53,7 @@ const BuilderStepTestPublish = ({
   onPublishMarket,
 }: BuilderStepTestPublishProps) => {
   const onEnterPress = useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
+    (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         void onRunTestMessage(testInput);

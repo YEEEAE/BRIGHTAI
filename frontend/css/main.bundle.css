@@ -7,7 +7,8 @@
 /* === SCHEHERAZADE NEW FONT === */
 @font-face {
     font-family: 'Scheherazade New';
-    src: url('../assets/fonts/ScheherazadeNew-Regular.ttf') format('truetype');
+    src: url('../assets/fonts/ScheherazadeNew-Regular.woff2') format('woff2'),
+        url('../assets/fonts/ScheherazadeNew-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -536,6 +537,8 @@ main>section {
     border-radius: 50%;
     filter: blur(80px);
     animation: orbFloat 25s ease-in-out infinite;
+    will-change: transform;
+    contain: layout style;
 }
 
 .orb-1 {

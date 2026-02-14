@@ -1,11 +1,12 @@
-import { Brain, Coins, FileJson, Hash, SlidersHorizontal, Sparkles, Wrench } from "lucide-react";
+import { Brain, Coins, FileJson, Hash, Wrench } from "lucide-react";
 import type { ملخصسير, حالةالنموذج } from "../../types/agent-builder.types";
-import type { خياراتالايقونات } from "../../constants/agent-builder.constants";
+type خيارايقونة =
+  (typeof import("../../constants/agent-builder.constants").خياراتالايقونات)[number];
 
 type BuilderSidebarProps = {
   form: حالةالنموذج;
   previewName: string;
-  selectedIcon: (typeof خياراتالايقونات)[number];
+  selectedIcon: خيارايقونة;
   workflowSummary: ملخصسير;
   stepHasError: boolean;
 };
