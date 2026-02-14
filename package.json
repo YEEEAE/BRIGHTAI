@@ -13,6 +13,8 @@
     "vitest": "^1.0.0"
   },
   "scripts": {
+    "build": "npm run performance:budget",
+    "performance:budget": "node scripts/check-performance-budget.js",
     "test": "vitest --run",
     "test:watch": "vitest",
     "server": "node backend/server.js",

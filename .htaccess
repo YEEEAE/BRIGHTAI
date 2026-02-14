@@ -10,6 +10,22 @@
 RewriteEngine On
 RewriteBase /
 
+# ============================================
+# BRIGHTAI PLATFORM (React App) REWRITES
+# ============================================
+# 1. Serve static assets directly if they exist in build
+RewriteCond %{REQUEST_URI} ^/brightai-platform/(.*)$
+RewriteCond %{DOCUMENT_ROOT}/brightai-platform/build/%1 -f
+RewriteRule ^brightai-platform/(.*)$ /brightai-platform/build/$1 [L]
+
+# 2. Serve index.html for root of platform
+RewriteRule ^brightai-platform/?$ /brightai-platform/build/index.html [L]
+
+# 3. Fallback for SPA routing (any other path in platform -> index.html)
+RewriteCond %{REQUEST_URI} ^/brightai-platform/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^brightai-platform/.*$ /brightai-platform/build/index.html [L]
+
 # Set default character set for Arabic content
 AddDefaultCharset UTF-8
 

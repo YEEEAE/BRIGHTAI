@@ -1,0 +1,56 @@
+{
+  "assets": [
+    {
+      "path": "frontend/js/main.bundle.js",
+      "maxBytes": 60000,
+      "label": "الحزمة الرئيسية للواجهة"
+    },
+    {
+      "path": "frontend/css/main.bundle.css",
+      "maxBytes": 75000,
+      "label": "أنماط الواجهة الرئيسية"
+    },
+    {
+      "path": "frontend/css/bundle-pages.css",
+      "maxBytes": 75000,
+      "label": "أنماط الصفحات الثانوية"
+    },
+    {
+      "path": "frontend/css/bundle-critical.css",
+      "maxBytes": 25000,
+      "label": "أنماط المسار الحرج"
+    },
+    {
+      "path": "frontend/js/navigation.js",
+      "maxBytes": 5000,
+      "label": "سكربت التنقل"
+    },
+    {
+      "path": "frontend/js/docs-scripts.js",
+      "maxBytes": 4000,
+      "label": "سكربت صفحات الخدمات"
+    }
+  ],
+  "pageGroups": [
+    {
+      "pattern": "frontend/pages/landing/*.html",
+      "maxBytes": 7000,
+      "label": "صفحات الهبوط التجارية"
+    },
+    {
+      "pattern": "frontend/pages/silos/*.html",
+      "maxBytes": 4500,
+      "label": "صفحات السلات"
+    }
+  ],
+  "combined": [
+    {
+      "label": "حمولة CSS الأولية",
+      "paths": [
+        "frontend/css/bundle-critical.css",
+        "frontend/css/main.bundle.css"
+      ],
+      "maxBytes": 100000
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+    "rewrites": [
+        {
+            "source": "/brightai-platform/static/(.*)",
+            "destination": "/brightai-platform/build/static/$1"
+        },
+        {
+            "source": "/brightai-platform/(.*\\.(js|css|png|jpg|jpeg|gif|ico|json|svg|woff|woff2))",
+            "destination": "/brightai-platform/build/$1"
+        },
+        {
+            "source": "/brightai-platform/(.*)",
+            "destination": "/brightai-platform/build/index.html"
+        },
+        {
+            "source": "/brightai-platform",
+            "destination": "/brightai-platform/build/index.html"
+        }
+    ]
+}

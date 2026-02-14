@@ -20,7 +20,11 @@ if (process.env.NODE_ENV === "production") {
   console.debug = () => { };
   console.info = () => { };
 
-  if (window.location.protocol !== "https:" && window.location.hostname !== "localhost") {
+  if (
+    window.location.protocol !== "https:" &&
+    window.location.hostname !== "localhost" &&
+    window.location.protocol !== "file:"
+  ) {
     logSecurityEvent({
       type: "https-redirect",
       message: "تم فرض التحويل إلى HTTPS.",
