@@ -48,6 +48,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:prod": "GENERATE_SOURCEMAP=false react-scripts build",
+    "verify:prod": "node scripts/verify-production.mjs",
+    "smoke:flow": "node scripts/smoke-supabase-flow.mjs",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "lint": "react-scripts lint",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,md,json}\"",

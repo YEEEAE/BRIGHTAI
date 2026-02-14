@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./hooks/useAuth";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { logSecurityEvent } from "./lib/security";
-import { initAnalytics, initSentry, trackPageLoad } from "./lib/analytics";
+import { initAnalytics, initSentry, setupGlobalMonitoring, trackPageLoad } from "./lib/analytics";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -34,6 +34,7 @@ if (process.env.NODE_ENV === "production") {
 const initTracking = () => {
   initAnalytics();
   void initSentry();
+  setupGlobalMonitoring();
 };
 
 if (typeof window !== "undefined" && "requestIdleCallback" in window) {

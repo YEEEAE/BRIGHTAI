@@ -39,6 +39,7 @@ type PerformanceMetric = {
 type AnalyticsState = {
   initialized: boolean;
   measurementId: string | null;
+  provider: "ga4" | "none";
 };
 
 type SentryModule = typeof import("@sentry/react");
@@ -49,6 +50,7 @@ const ERROR_COUNTER_KEY = "brightai_error_counter";
 const state: AnalyticsState = {
   initialized: false,
   measurementId: null,
+  provider: "none",
 };
 
 let sentryModule: SentryModule | null = null;
@@ -155,11 +157,28 @@ const send = (payload: TrackingPayload) => {
 };
 
 export const initAnalytics = () => {
-  const measurementId = process.env.REACT_APP_GA4_ID || "";
-  if (!measurementId) {
+  const providerRaw = (process.env.REACT_APP_ANALYTICS_PROVIDER || "").toLowerCase().trim();
+  const analyticsKey = process.env.REACT_APP_ANALYTICS_KEY || "";
+  const ga4Fallback = process.env.REACT_APP_GA4_ID || "";
+  const provider = providerRaw === "ga4" || (!providerRaw && (analyticsKey || ga4Fallback)) ? "ga4" : "none";
+  const measurementId = analyticsKey || ga4Fallback;
+
+  if (provider !== "ga4") {
+    state.initialized = false;
+    state.provider = "none";
+    state.measurementId = null;
     return false;
   }
+
+  if (!measurementId) {
+    state.initialized = false;
+    state.provider = "none";
+    state.measurementId = null;
+    return false;
+  }
+
   state.initialized = true;
+  state.provider = "ga4";
   state.measurementId = measurementId;
 
   loadGtagScript(measurementId);
@@ -184,9 +203,38 @@ export const initSentry = async () => {
   if (!module) {
     return false;
   }
-  module.init({ dsn });
+  const env = process.env.NODE_ENV || "development";
+  const release = process.env.REACT_APP_RELEASE || "";
+  const tracesSampleRateRaw = process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE || "";
+  const tracesSampleRate = Number(tracesSampleRateRaw);
+
+  module.init({
+    dsn,
+    environment: env,
+    release: release || undefined,
+    tracesSampleRate: Number.isFinite(tracesSampleRate) ? Math.min(Math.max(tracesSampleRate, 0), 1) : 0.15,
+  });
   sentryInitialized = true;
   return true;
+};
+
+export const setupGlobalMonitoring = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const onError = (event: ErrorEvent) => {
+    const error = event.error || new Error(event.message || "خطأ عام في الواجهة");
+    trackErrorEvent(error, "window.error");
+  };
+
+  const onUnhandledRejection = (event: PromiseRejectionEvent) => {
+    const reason = event.reason instanceof Error ? event.reason : new Error("Unhandled Promise Rejection");
+    trackErrorEvent(reason, "window.unhandledrejection");
+  };
+
+  window.addEventListener("error", onError);
+  window.addEventListener("unhandledrejection", onUnhandledRejection);
 };
 
 export const setUserProperties = (properties: Record<string, unknown>) => {

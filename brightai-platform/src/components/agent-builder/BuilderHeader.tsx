@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { ChangeEvent, RefObject } from "react";
 import { Download, Loader2, Save, Upload } from "lucide-react";
 import type { بياناتنموذج, خطوة } from "../../types/agent-builder.types";
@@ -148,4 +149,4 @@ const BuilderHeader = ({
   );
 };
 
-export default BuilderHeader;
+export default memo(BuilderHeader);

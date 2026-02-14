@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Save, SlidersHorizontal, Sparkles } from "lucide-react";
 import type { حالةحفظ, ملخصسير } from "../../types/agent-builder.types";
 
@@ -39,4 +40,4 @@ const BuilderStatusBar = ({
   );
 };
 
-export default BuilderStatusBar;
+export default memo(BuilderStatusBar);

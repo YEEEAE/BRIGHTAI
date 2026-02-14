@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Brain, Coins, FileJson, Hash, Wrench } from "lucide-react";
 import type { ملخصسير, حالةالنموذج } from "../../types/agent-builder.types";
 type خيارايقونة =
@@ -99,4 +100,4 @@ const BuilderSidebar = ({
   );
 };
 
-export default BuilderSidebar;
+export default memo(BuilderSidebar);

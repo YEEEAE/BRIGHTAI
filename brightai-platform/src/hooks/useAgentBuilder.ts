@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { lazyWithRetry } from "../lib/lazy";
 import useAppToast from "./useAppToast";
@@ -141,6 +141,8 @@ const useAgentBuilder = () => {
     showSuccess,
   });
 
+  const lastEditTimerRef = useRef<number | null>(null);
+
   const transferActions = useAgentBuilderTransfer({
     form,
     workflowSummary,
@@ -175,8 +177,24 @@ const useAgentBuilder = () => {
     if (!initializedRef.current) {
       return;
     }
-    setSaveState("غير محفوظ");
-    setLastEditedAt(new Date().toLocaleTimeString("ar-SA"));
+
+    setSaveState((prev) => (prev === "غير محفوظ" ? prev : "غير محفوظ"));
+
+    if (lastEditTimerRef.current) {
+      window.clearTimeout(lastEditTimerRef.current);
+    }
+
+    lastEditTimerRef.current = window.setTimeout(() => {
+      setLastEditedAt(new Date().toLocaleTimeString("ar-SA"));
+      lastEditTimerRef.current = null;
+    }, 380);
+
+    return () => {
+      if (lastEditTimerRef.current) {
+        window.clearTimeout(lastEditTimerRef.current);
+        lastEditTimerRef.current = null;
+      }
+    };
   }, [form, initializedRef, setLastEditedAt, setSaveState, workflowSummary.edges, workflowSummary.nodes]);
 
   useEffect(() => {
