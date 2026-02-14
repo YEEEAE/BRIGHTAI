@@ -76,6 +76,15 @@ export class AgentExecutorRepository {
       duration_ms: durationMs,
       tokens_used: result.tokensUsed,
       cost_usd: result.cost,
+      execution_context: {
+        trace_id: input.context?.traceId || null,
+        metadata: input.context?.metadata || {},
+        variables: input.context?.variables || {},
+      },
+      model_used:
+        typeof input.context?.metadata?.model === "string"
+          ? String(input.context?.metadata?.model)
+          : null,
       started_at: new Date(Date.now() - durationMs).toISOString(),
       completed_at: new Date().toISOString(),
     };

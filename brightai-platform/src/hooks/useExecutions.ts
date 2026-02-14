@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import supabase from "../lib/supabase";
-import agentExecutor from "../services/agent.executor";
+import aiOrchestrator from "../services/ai-core/orchestrator";
 import { useAuth } from "./useAuth";
 import { trackAgentExecuted, trackExecutionDuration, trackErrorEvent } from "../lib/analytics";
 
@@ -17,6 +17,7 @@ type ExecutionRow = {
   duration_ms: number | null;
   tokens_used: number | null;
   cost_usd: number | null;
+  execution_context?: Record<string, unknown> | null;
 };
 
 const supabaseClient = supabase as unknown as {
@@ -73,14 +74,34 @@ export const useExecutions = (options?: { realtime?: boolean }) => {
       setError(null);
       const startedAt = performance.now();
       try {
-        const result = await agentExecutor.execute({
+        const result = await aiOrchestrator.execute({
           agentId,
           userMessage: input.message,
           context: {
             userId: currentUser.id,
             variables: input.context,
           },
+          orchestration: {
+            enabled: true,
+            maxRetries: 1,
+            minimumScore: 0.72,
+          },
         });
+        if (result.executionId) {
+          await supabaseClient
+            .from("executions")
+            .update({
+              execution_context: {
+                orchestration: {
+                  traceId: result.traceId,
+                  attempts: result.attempts,
+                  quality: result.quality,
+                },
+              },
+            })
+            .eq("id", result.executionId)
+            .eq("user_id", currentUser.id);
+        }
         const duration = performance.now() - startedAt;
         trackAgentExecuted(agentId, "ناجح", duration);
         trackExecutionDuration(agentId, duration, "ناجح");

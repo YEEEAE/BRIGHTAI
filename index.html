@@ -562,7 +562,7 @@
             ['scroll', 'click', 'touchstart', 'mousemove'].forEach(function (e) {
                 document.addEventListener(e, loadGTM, { passive: true, capture: true, once: true });
             });
-            setTimeout(loadGTM, 5000);
+            setTimeout(loadGTM, 8000);
         })();
     </script>
     <!-- Dependencies: Fonts, Tailwind, Icons -->
@@ -574,13 +574,13 @@
     <!-- Preload Scheherazade: Critical for LCP + CLS -->
     <link rel="preload" as="font" type="font/woff2" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2"
         crossorigin />
-    <!-- Google Fonts: Consolidated into single request -->
+    <!-- Google Fonts: Consolidated into single request with display=optional to prevent CLS -->
     <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=optional"
         onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap">
+            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=optional">
     </noscript>
     <!-- Sitemap Reference -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
@@ -652,7 +652,7 @@
             font-size-adjust: 0.5;
         }
 
-        /* === LOADING SCREEN (Prevent CLS) === */
+        /* === LOADING SCREEN (CLS-Safe: starts hidden) === */
         .loading {
             position: fixed;
             inset: 0;
@@ -661,10 +661,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
-        .loading.hidden {
+        .loading.hide {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -787,7 +787,7 @@
             border-radius: 2px;
         }
 
-        /* Layout & Container */
+        /* Layout & Container — contain: layout prevents font CLS */
         .container {
             width: 100%;
             margin-right: auto;
@@ -795,6 +795,7 @@
             padding-right: 1rem;
             padding-left: 1rem;
             max-width: 1280px;
+            contain: layout style;
         }
 
         /* Hero Section Grid - Mobile First */
@@ -855,7 +856,7 @@
             height: 2.5rem;
         }
 
-        /* Ensure Matrix Background doesn't collapse */
+        /* Ensure Matrix Background doesn't collapse & doesn't become LCP */
         .code-wall {
             position: absolute;
             inset: 0;
@@ -864,6 +865,13 @@
             height: 100%;
             overflow: hidden;
             pointer-events: none;
+            contain: strict;
+        }
+
+        /* Force h1 to be LCP candidate */
+        .hero-card .title {
+            contain: none;
+            content-visibility: visible;
         }
     </style>
     <!-- Deferred CSS Loading -->
@@ -890,8 +898,8 @@
 </head>
 
 <body>
-    <!-- Loading Screen (اختياري) -->
-    <div class="loading" id="loading">
+    <!-- Loading Screen (CLS-Safe: starts hidden, shown only by JS) -->
+    <div class="loading hide" id="loading" aria-hidden="true">
         <div>
             <div style="display:flex;align-items:center;gap:12px;justify-content:center">
                 <div aria-hidden="true" class="logo"></div>
@@ -936,7 +944,7 @@
                 </a>
             </div>
             <!-- Main Navigation -->
-            <nav class="hidden lg:flex items-center gap-1">
+            <nav class="hidden lg:flex items-center gap-1" style="contain: layout;">
                 <ul class="nav-links flex items-center gap-1">
                     <li class="nav-item">
                         <a class="nav-link" href="index.html">الرئيسية</a>

@@ -16,15 +16,28 @@
 
     // Iconify handles icons without runtime setup
 
-    // Loading screen
+    // Loading screen — CLS-Safe approach:
+    // 1. Starts with class="loading hide" in HTML (invisible → CLS = 0)
+    // 2. JS shows it immediately (removes 'hide') — position:fixed won't cause CLS
+    // 3. After page load + 300ms, re-adds 'hide' to fade out
+    // 4. After transition ends, removes from DOM entirely
     const loading = document.getElementById('loading');
     if (loading) {
+        // Show loading screen (safe: position:fixed doesn't trigger CLS)
+        loading.classList.remove('hide');
+
         window.addEventListener('load', () => {
-            setTimeout(() => loading.classList.add('hide'), 450);
+            setTimeout(() => {
+                loading.classList.add('hide');
+                // Remove from DOM after fade-out transition completes
+                loading.addEventListener('transitionend', () => {
+                    loading.remove();
+                }, { once: true });
+            }, 300);
         });
     }
 
-    // Matrix code background (fake)
+    // Matrix code background (fake) — optimized for performance
     const matrixEl = document.getElementById('matrixBackground');
     const codeWall = document.querySelector('.code-wall');
     if (matrixEl) {
@@ -45,8 +58,9 @@
                 "SDK: python | javascript | java",
                 "OpenAPI: swagger.json loaded",
             ];
+            // Reduced lines for better Style & Layout performance
             const isMobile = window.matchMedia('(max-width: 768px)').matches;
-            const maxLines = isMobile ? 120 : 180;
+            const maxLines = isMobile ? 60 : 90;
             let bg = "";
             for (let i = 0; i < maxLines; i++) {
                 bg += (seedLines[i % seedLines.length] + "   " + Math.random().toString(16).slice(2) + "\n");
@@ -55,7 +69,8 @@
             if (codeWall) codeWall.classList.add('ready');
         };
 
-        const scheduleMatrix = () => whenIdle(renderMatrix, 1400);
+        // Delay rendering to avoid competing with LCP
+        const scheduleMatrix = () => whenIdle(renderMatrix, 2000);
         if (document.readyState === 'complete') scheduleMatrix();
         else window.addEventListener('load', scheduleMatrix, { once: true });
     }

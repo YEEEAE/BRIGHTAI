@@ -3,6 +3,7 @@ export { AiPlanner } from "./planner";
 export { AiQualityEvaluator } from "./evaluator";
 export { PromptOptimizer } from "./prompt-optimizer";
 export { AiOrchestrator } from "./orchestrator";
+export { initAiCoreTelemetry } from "./telemetry";
 
 export type {
   AiEvent,

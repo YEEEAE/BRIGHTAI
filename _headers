@@ -1,36 +1,49 @@
 # Cloudflare Pages Custom Headers
 # https://developers.cloudflare.com/pages/configuration/headers/
 
-# الأصول الثابتة: تخزين مؤقت طويل (سنة واحدة)
-/frontend/css/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/frontend/js/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/frontend/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# الخطوط: سنة كاملة مع CORS
-/frontend/assets/fonts/*
-  Cache-Control: public, max-age=31536000, immutable
-  Access-Control-Allow-Origin: *
-
-# ملفات woff2 بشكل خاص
-/*.woff2
-  Cache-Control: public, max-age=31536000, immutable
-  Access-Control-Allow-Origin: *
-
-# صفحات HTML: إعادة التحقق دائماً
-/*.html
-  Cache-Control: public, max-age=0, must-revalidate
-
-/
-  Cache-Control: public, max-age=0, must-revalidate
-
-# Security Headers
+# Global Security Headers
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# HTML pages: always revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# CSS files: immutable cache (1 year)
+/frontend/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# JS files: immutable cache (1 year)
+/frontend/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images and assets: immutable cache (1 year)
+/frontend/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts: 1 year with CORS
+/frontend/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# woff2 files specifically
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# Service worker: always fresh
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Manifest: short cache
+/manifest.json
+  Cache-Control: public, max-age=3600
