@@ -10,25 +10,15 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import {
   AlertTriangle,
-  Bot,
   Brain,
   CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
   Coins,
-  Download,
   FileJson,
   Hash,
   Loader2,
-  MessageSquare,
-  Play,
   Plus,
-  RefreshCcw,
-  Rocket,
-  Save,
   SlidersHorizontal,
   Sparkles,
-  Store,
   Upload,
   Wrench,
   X,
@@ -39,366 +29,57 @@ import { trackFeatureUsed } from "../lib/analytics";
 import { getLocalAdminUser } from "../lib/local-admin";
 import AsyncErrorBoundary from "../components/layout/AsyncErrorBoundary";
 import { lazyWithRetry } from "../lib/lazy";
-import AgentPersonalityEditor, {
-  type قيمةمحررالشخصية,
-  type رابطمحرر,
-  type ملفمعرفةمحرر,
-  type شخصيةمحرر,
-} from "../components/agent/AgentPersonalityEditor";
+import AgentPersonalityEditor from "../components/agent/AgentPersonalityEditor";
+import {
+  BuilderHeader,
+  BuilderSidebar,
+  BuilderStatusBar,
+  BuilderStepAdvancedSettings,
+  BuilderStepNavigation,
+  BuilderStepTestPublish,
+  BuilderStepWorkflow,
+} from "../components/agent-builder";
+import {
+  WORKFLOW_STORAGE_KEY,
+  WORKFLOW_UPDATED_EVENT,
+  الحالةالافتراضية,
+  خياراتالايقونات,
+  خياراتالنماذج,
+  عناوينالخطوات,
+  فئاتالوكلاء,
+} from "../constants/agent-builder.constants";
+import {
+  delay,
+  evaluateStep,
+  getDraftKey,
+  normalizeKnowledgeFiles,
+  normalizeKnowledgeUrls,
+  readWorkflowSummary,
+  withTimeout,
+  تقديرالرموز,
+  type حقلمسودةنصي,
+} from "../lib/agent-builder.utils";
+import type {
+  بياناتنموذج,
+  حدثويبهوك,
+  حالةحفظ,
+  حالةالنموذج,
+  حالةنظام,
+  ترويسةويبهوك,
+  خطوة,
+  لغةرد,
+  ملخصسير,
+  نوعحفظ,
+  رسالةاختبار,
+  نسخةمسودة,
+  وضعسير,
+  لهجة,
+} from "../types/agent-builder.types";
 
 const WorkflowCanvas = lazyWithRetry(() => import("../components/agent/WorkflowCanvas"));
 
-type خطوة = 1 | 2 | 3 | 4 | 5;
-type وضعسير = "بسيط" | "متقدم";
-type لهجة = قيمةمحررالشخصية["اللهجة"];
-type لغةرد = قيمةمحررالشخصية["لغةالرد"];
-type حدثويبهوك = "عند النجاح" | "عند الفشل" | "الكل";
-type حالةحفظ = "غير محفوظ" | "جارٍ الحفظ..." | "تم الحفظ" | "تعذر الحفظ";
-type نوعحفظ = "مسودة" | "تفعيل" | "سوق";
-
-type ترويسةويبهوك = {
-  id: string;
-  key: string;
-  value: string;
-};
-
-type ملفمعرفة = ملفمعرفةمحرر;
-type رابطمصدر = رابطمحرر;
-
-type بياناتنموذج = {
-  id: string;
-  name: string;
-  description: string | null;
-  category: string | null;
-  workflow: unknown;
-  settings: Record<string, unknown> | null;
-  tags: string[] | null;
-};
-
-type رسالةاختبار = {
-  id: string;
-  role: "مستخدم" | "الوكيل";
-  text: string;
-  createdAt: string;
-};
-
-type حالةنظام = {
-  apiConnected: boolean;
-  promptReady: boolean;
-  workflowReady: boolean;
-  warnings: string[];
-};
-
-type حالةالنموذج = {
-  الاسم: string;
-  الوصف: string;
-  الفئة: string;
-  فئةمخصصة: string;
-  الايقونة: string;
-  صورةايقونة: string;
-  اللون: string;
-  الوسوم: string[];
-
-  وصفمولد: string;
-  الموجهالنظامي: string;
-  اللهجة: لهجة;
-  لغةالرد: لغةرد;
-  قواعدالسلوك: string[];
-  روابطالمعرفة: رابطمصدر[];
-  ملفاتالمعرفة: ملفمعرفة[];
-  نصالمعرفة: string;
-  الشخصية: شخصيةمحرر;
-
-  وضعالسير: وضعسير;
-
-  النموذج: string;
-  temperature: number;
-  maxTokens: number;
-  topP: number;
-  frequencyPenalty: number;
-  presencePenalty: number;
-
-  حدتنفيذيومي: number;
-  حدتكلفةيومية: number;
-  timeoutSeconds: number;
-  retries: number;
-
-  عام: boolean;
-  تسجيلالمحادثات: boolean;
-  مشاركةمعالفريق: boolean;
-
-  webhookUrl: string;
-  webhookEvent: حدثويبهوك;
-  webhookHeaders: ترويسةويبهوك[];
-};
-
-type ملخصسير = {
-  nodes: number;
-  edges: number;
-  sizeKb: number;
-  raw: Record<string, unknown> | null;
-};
-
-type نسخةمسودة = {
-  agentId: string | null;
-  form: حالةالنموذج;
-  lastSavedAt: string;
-  step?: خطوة;
-  workflow?: Record<string, unknown> | null;
-};
-
-const WORKFLOW_STORAGE_KEY = "brightai_workflow_autosave";
-const WORKFLOW_UPDATED_EVENT = "brightai-workflow-updated";
-const DRAFT_STORAGE_PREFIX = "brightai_agent_builder_wizard_v2";
-
-const فئاتالوكلاء = [
-  "خدمة العملاء",
-  "تحليل البيانات",
-  "إنشاء المحتوى",
-  "الترجمة",
-  "البرمجة والتطوير",
-  "التسويق",
-  "المبيعات",
-  "الموارد البشرية",
-  "أخرى (مخصصة)",
-];
-
-const خياراتالنماذج = [
-  { id: "llama-3.1-405b-reasoning", label: "جروك - لاما ٣٫١ ٤٠٥ مليار (الأقوى)" },
-  { id: "llama-3.1-70b-versatile", label: "جروك - لاما ٣٫١ ٧٠ مليار (متوازن)" },
-  { id: "llama-3.1-8b-instant", label: "جروك - لاما ٣٫١ ٨ مليار (الأسرع)" },
-  { id: "mixtral-8x7b-32768", label: "جروك - ميكسترال ٨×٧" },
-  { id: "gemma2-9b-it", label: "جروك - جيمّا٢ ٩ مليار" },
-];
-
-const خياراتالايقونات = [
-  { id: "دعم", label: "دعم", icon: MessageSquare },
-  { id: "تحليل", label: "تحليل", icon: Hash },
-  { id: "محتوى", label: "محتوى", icon: Sparkles },
-  { id: "ترجمة", label: "ترجمة", icon: Upload },
-  { id: "برمجة", label: "برمجة", icon: Wrench },
-  { id: "تسويق", label: "تسويق", icon: Rocket },
-  { id: "مبيعات", label: "مبيعات", icon: Coins },
-  { id: "موارد", label: "موارد", icon: Bot },
-  { id: "أعمال", label: "أعمال", icon: Store },
-  { id: "افتراضي", label: "افتراضي", icon: Bot },
-];
-
-const عناوينالخطوات = [
-  { id: 1 as خطوة, title: "المعلومات الأساسية" },
-  { id: 2 as خطوة, title: "إعداد الشخصية والسلوك" },
-  { id: 3 as خطوة, title: "تصميم سير العمل" },
-  { id: 4 as خطوة, title: "الإعدادات المتقدمة" },
-  { id: 5 as خطوة, title: "الاختبار والنشر" },
-];
-
-const الحالةالافتراضية: حالةالنموذج = {
-  الاسم: "",
-  الوصف: "",
-  الفئة: "خدمة العملاء",
-  فئةمخصصة: "",
-  الايقونة: "افتراضي",
-  صورةايقونة: "",
-  اللون: "#22c55e",
-  الوسوم: [],
-
-  وصفمولد: "",
-  الموجهالنظامي:
-    "أنت وكيل ذكاء اصطناعي لمنصة برايت. قدّم إجابات عملية ومباشرة، واطرح أسئلة توضيحية عند نقص المعلومات، ثم اقترح خطوات قابلة للتنفيذ.",
-  اللهجة: "رسمي ومهني",
-  لغةالرد: "العربية",
-  قواعدالسلوك: ["التزم بنطاق المهمة المحدد.", "قدّم أمثلة عملية عند الحاجة."],
-  روابطالمعرفة: [],
-  ملفاتالمعرفة: [],
-  نصالمعرفة: "",
-  الشخصية: {
-    اسم: "وكيل Bright AI",
-    دور: "مساعد أعمال ذكي",
-    خلفية: "وكيل متخصص في دعم فرق الأعمال واتخاذ القرار.",
-    رسمية: 70,
-    إيجاز: 45,
-    إبداع: 55,
-    جدية: 75,
-    بساطة: 50,
-    تحية: "مرحباً، أنا جاهز لمساعدتك.",
-    عدمفهم: "أحتاج تفاصيل أكثر حتى أقدم إجابة دقيقة.",
-    وداع: "سعيد بخدمتك، ويمكنني المتابعة عند الحاجة.",
-    خطأ: "حدث خطأ أثناء المعالجة وسأحاول من جديد.",
-    خارجالنطاق: "هذا الطلب خارج نطاق الوكيل الحالي، هل تريد توجيهًا بديلًا؟",
-  },
-
-  وضعالسير: "متقدم",
-
-  النموذج: "llama-3.1-70b-versatile",
-  temperature: 0.7,
-  maxTokens: 2200,
-  topP: 0.95,
-  frequencyPenalty: 0,
-  presencePenalty: 0,
-
-  حدتنفيذيومي: 200,
-  حدتكلفةيومية: 120,
-  timeoutSeconds: 90,
-  retries: 1,
-
-  عام: false,
-  تسجيلالمحادثات: true,
-  مشاركةمعالفريق: false,
-
-  webhookUrl: "",
-  webhookEvent: "الكل",
-  webhookHeaders: [],
-};
-
 const supabaseClient = supabase as unknown as {
   from: (table: string) => any;
-};
-
-const normalizeKnowledgeUrls = (input: unknown): رابطمصدر[] => {
-  if (!Array.isArray(input)) {
-    return [];
-  }
-
-  return input
-    .map((item, index) => {
-      if (typeof item === "string") {
-        return {
-          id: `url_${index}_${Date.now()}`,
-          url: item,
-          words: 0,
-          tokens: 0,
-          status: "غير مفحوص" as const,
-          updatedAt: new Date().toISOString(),
-        };
-      }
-
-      if (item && typeof item === "object") {
-        const row = item as Record<string, unknown>;
-        const url = String(row.url || "");
-        if (!url) {
-          return null;
-        }
-        return {
-          id: String(row.id || `url_${index}_${Date.now()}`),
-          url,
-          words: Number(row.words || 0),
-          tokens: Number(row.tokens || 0),
-          status:
-            row.status === "جارٍ الجلب" ||
-            row.status === "جاهز" ||
-            row.status === "فشل" ||
-            row.status === "غير مفحوص"
-              ? (row.status as رابطمصدر["status"])
-              : "غير مفحوص",
-          updatedAt: String(row.updatedAt || new Date().toISOString()),
-        };
-      }
-
-      return null;
-    })
-    .filter((item): item is رابطمصدر => Boolean(item));
-};
-
-const normalizeKnowledgeFiles = (input: unknown): ملفمعرفة[] => {
-  if (!Array.isArray(input)) {
-    return [];
-  }
-
-  return input
-    .map((item, index) => {
-      if (!item || typeof item !== "object") {
-        return null;
-      }
-
-      const row = item as Record<string, unknown>;
-      const name = String(row.name || "");
-      if (!name) {
-        return null;
-      }
-
-      return {
-        id: String(row.id || `file_${index}_${Date.now()}`),
-        name,
-        size: Number(row.size || 0),
-        type: String(row.type || "application/octet-stream"),
-        words: Number(row.words || 0),
-        tokens: Number(row.tokens || 0),
-        chunks: Number(row.chunks || 0),
-        updatedAt: String(row.updatedAt || new Date().toISOString()),
-      };
-    })
-    .filter((item): item is ملفمعرفة => Boolean(item));
-};
-
-const getDraftKey = (agentId?: string) => `${DRAFT_STORAGE_PREFIX}_${agentId || "new"}`;
-
-const تقديرالرموز = (text: string) => {
-  if (!text.trim()) {
-    return 0;
-  }
-  return Math.ceil(text.trim().length / 4);
-};
-
-type حقلمسودةنصي = "الاسم" | "الوصف" | "فئةمخصصة";
-
-const delay = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
-const withTimeout = async <T,>(promise: Promise<T>, ms: number, fallback: T): Promise<T> => {
-  const timeoutPromise = new Promise<T>((resolve) => {
-    window.setTimeout(() => resolve(fallback), ms);
-  });
-  return Promise.race([promise, timeoutPromise]);
-};
-
-const evaluateStep = (stepId: خطوة, form: حالةالنموذج) => {
-  if (stepId === 1) {
-    const nameLength = form.الاسم.trim().length;
-    const descLength = form.الوصف.trim().length;
-    if (nameLength < 3 || nameLength > 50) {
-      return { valid: false, message: "اسم الوكيل يجب أن يكون بين ٣ و ٥٠ حرفًا." };
-    }
-    if (descLength < 10 || descLength > 500) {
-      return { valid: false, message: "الوصف يجب أن يكون بين ١٠ و ٥٠٠ حرف." };
-    }
-    if (form.الفئة === "أخرى (مخصصة)" && form.فئةمخصصة.trim().length < 2) {
-      return { valid: false, message: "أدخل اسمًا واضحًا للفئة المخصصة." };
-    }
-  }
-
-  if (stepId === 2) {
-    if (form.الموجهالنظامي.trim().length < 30) {
-      return { valid: false, message: "الموجه النظامي قصير، أضف تعليمات أدق." };
-    }
-  }
-
-  if (stepId === 4) {
-    if (form.maxTokens < 100 || form.maxTokens > 32000) {
-      return { valid: false, message: "قيمة الحد الأقصى للرموز خارج النطاق." };
-    }
-    if (form.timeoutSeconds < 10 || form.timeoutSeconds > 600) {
-      return { valid: false, message: "مهلة التنفيذ يجب أن تكون بين ١٠ و ٦٠٠ ثانية." };
-    }
-    if (form.webhookUrl && !/^https?:\/\//.test(form.webhookUrl)) {
-      return { valid: false, message: "رابط الويب هوك غير صالح." };
-    }
-  }
-
-  return { valid: true, message: "" };
-};
-
-const readWorkflowSummary = (): ملخصسير => {
-  try {
-    const raw = localStorage.getItem(WORKFLOW_STORAGE_KEY);
-    if (!raw) {
-      return { nodes: 0, edges: 0, sizeKb: 0, raw: null };
-    }
-    const parsed = JSON.parse(raw) as { nodes?: unknown[]; edges?: unknown[] };
-    const nodes = Array.isArray(parsed.nodes) ? parsed.nodes.length : 0;
-    const edges = Array.isArray(parsed.edges) ? parsed.edges.length : 0;
-    const sizeKb = Number((new Blob([raw]).size / 1024).toFixed(2));
-    return { nodes, edges, sizeKb, raw: parsed as Record<string, unknown> };
-  } catch {
-    return { nodes: 0, edges: 0, sizeKb: 0, raw: null };
-  }
 };
 
 const AgentBuilder = () => {
@@ -1531,114 +1212,23 @@ const AgentBuilder = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-4 px-3 py-4 md:px-6 md:py-6">
-      <header className="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/30 p-4 shadow-2xl shadow-slate-950/30 md:p-6">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-          <div>
-            <p className="text-xs text-emerald-300">مصمم الوكلاء المتقدم</p>
-            <h1 className="mt-1 text-2xl font-extrabold text-slate-100 md:text-3xl">
-              إنشاء وكيل ذكاء اصطناعي متكامل
-            </h1>
-            <p className="mt-1 text-sm text-slate-300">
-              الخطوة الحالية: {currentStepTitle}
-            </p>
-            {localMode ? (
-              <p className="mt-2 inline-flex items-center rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs text-amber-200">
-                وضع محلي مؤقت: يمكنك حفظ المسودات محليًا فقط.
-              </p>
-            ) : null}
-          </div>
-
-          <div className="grid gap-2 sm:grid-cols-2 xl:flex xl:flex-wrap">
-            <div className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-xs text-slate-200">
-              <span>استيراد من قالب</span>
-              <select
-                value={selectedTemplateId}
-                onChange={(event) => setSelectedTemplateId(event.target.value)}
-                className="rounded-lg border border-slate-700 bg-slate-950 px-2 py-1 text-xs"
-              >
-                <option value="">اختر قالب</option>
-                {templates.map((template) => (
-                  <option key={template.id} value={template.id}>
-                    {template.name}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                onClick={applyTemplate}
-                className="rounded-lg bg-emerald-500/20 px-2 py-1 text-emerald-200"
-              >
-                تطبيق
-              </button>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => importJsonRef.current?.click()}
-              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-xs text-slate-200"
-            >
-              <Upload className="h-4 w-4" />
-              استيراد من JSON
-            </button>
-
-            <button
-              type="button"
-              onClick={exportJson}
-              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-xs text-slate-200"
-            >
-              <Download className="h-4 w-4" />
-              تصدير كـ JSON
-            </button>
-
-            <button
-              type="button"
-              onClick={() => void saveAgent("مسودة")}
-              disabled={saving}
-              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-bold text-slate-950 disabled:opacity-60"
-            >
-              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-              حفظ مسودة
-            </button>
-          </div>
-        </div>
-
-        <input
-          ref={importJsonRef}
-          type="file"
-          accept="application/json"
-          className="hidden"
-          onChange={importJson}
-        />
-
-        <div className="mt-5">
-          <div className="mb-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-violet-400 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="grid gap-2 sm:grid-cols-5">
-            {عناوينالخطوات.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => jumpToStep(item.id)}
-                className={`rounded-xl border px-3 py-2 text-right text-xs transition ${
-                  step === item.id
-                    ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
-                    : step > item.id
-                    ? "border-sky-400/30 bg-sky-500/10 text-sky-200"
-                    : "border-slate-700 bg-slate-900/60 text-slate-300"
-                }`}
-              >
-                <span className="block font-bold">الخطوة {item.id}</span>
-                <span className="block mt-1">{item.title}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
+      <BuilderHeader
+        localMode={localMode}
+        currentStepTitle={currentStepTitle}
+        templates={templates}
+        selectedTemplateId={selectedTemplateId}
+        onSelectTemplateId={setSelectedTemplateId}
+        onApplyTemplate={applyTemplate}
+        onOpenImportJson={() => importJsonRef.current?.click()}
+        onExportJson={exportJson}
+        onSaveDraft={() => void saveAgent("مسودة")}
+        saving={saving}
+        importJsonRef={importJsonRef}
+        onImportJson={importJson}
+        progress={progress}
+        step={step}
+        onJumpToStep={jumpToStep}
+      />
 
       <main className="grid gap-4 xl:grid-cols-[1.8fr_0.8fr]">
         <section className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 backdrop-blur-xl md:p-6">
@@ -1853,472 +1443,49 @@ const AgentBuilder = () => {
           )}
 
           {step === 3 && (
-            <div className="grid gap-4">
-              <h2 className="text-xl font-bold text-slate-100">تصميم سير العمل</h2>
-
-              <div className="flex flex-wrap gap-2">
-                {(["بسيط", "متقدم"] as وضعسير[]).map((mode) => (
-                  <button
-                    key={mode}
-                    type="button"
-                    onClick={() => applyPartialForm({ وضعالسير: mode })}
-                    className={`inline-flex min-h-[42px] items-center gap-2 rounded-xl border px-3 text-sm ${
-                      form.وضعالسير === mode
-                        ? "border-emerald-400/60 bg-emerald-500/10 text-emerald-200"
-                        : "border-slate-700 bg-slate-900/60 text-slate-300"
-                    }`}
-                  >
-                    {mode === "بسيط" ? <MessageSquare className="h-4 w-4" /> : <SlidersHorizontal className="h-4 w-4" />}
-                    {mode === "بسيط" ? "وضع بسيط" : "وضع متقدم"}
-                  </button>
-                ))}
-              </div>
-
-              {form.وضعالسير === "بسيط" ? (
-                <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-5">
-                  <p className="text-sm text-slate-200">تم تفعيل الوضع البسيط.</p>
-                  <p className="mt-1 text-xs text-slate-400">
-                    الوكيل سيعمل بنمط محادثة مباشر اعتمادًا على الموجه النظامي بدون عقد سير عمل.
-                  </p>
-                </div>
-              ) : (
-                <div className="rounded-2xl border border-slate-700 bg-slate-900/40 p-3 md:p-4">
-                  <AsyncErrorBoundary
-                    title="تعذر تحميل مصمم سير العمل"
-                    message="حدث خلل أثناء تحميل مكوّن المصمم. يمكنك إعادة المحاولة دون فقدان المسودة."
-                    onRetry={() => {
-                      setWorkflowKey((prev) => prev + 1);
-                      void WorkflowCanvas.preload();
-                    }}
-                    className="flex h-[530px] flex-col items-center justify-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-900/10 p-6 text-center"
-                  >
-                    <Suspense
-                      fallback={
-                        <div className="flex h-[530px] items-center justify-center rounded-2xl bg-slate-900 text-slate-300">
-                          جارٍ تحميل مصمم سير العمل...
-                        </div>
-                      }
-                    >
-                      <WorkflowCanvas key={workflowKey} />
-                    </Suspense>
-                  </AsyncErrorBoundary>
-                </div>
-              )}
-            </div>
+            <BuilderStepWorkflow
+              mode={form.وضعالسير}
+              onChangeMode={(mode) => applyPartialForm({ وضعالسير: mode })}
+              workflowKey={workflowKey}
+              onReloadWorkflow={() => {
+                setWorkflowKey((prev) => prev + 1);
+                void WorkflowCanvas.preload();
+              }}
+            />
           )}
 
           {step === 4 && (
-            <div className="grid gap-5">
-              <h2 className="text-xl font-bold text-slate-100">الإعدادات المتقدمة</h2>
-
-              <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                <h3 className="text-sm font-semibold text-slate-200">اختيار النموذج</h3>
-                <div className="mt-3 grid gap-2">
-                  {خياراتالنماذج.map((model) => (
-                    <button
-                      key={model.id}
-                      type="button"
-                      onClick={() => applyPartialForm({ النموذج: model.id })}
-                      className={`rounded-xl border px-3 py-2 text-right text-sm ${
-                        form.النموذج === model.id
-                          ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-200"
-                          : "border-slate-700 bg-slate-950/60 text-slate-300"
-                      }`}
-                    >
-                      {model.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                  <h3 className="text-sm font-semibold text-slate-200">إعدادات النموذج</h3>
-
-                  <label className="mt-3 block text-xs text-slate-400">Temperature: {form.temperature.toFixed(2)}</label>
-                  <input
-                    type="range"
-                    min={0}
-                    max={2}
-                    step={0.01}
-                    value={form.temperature}
-                    onChange={(event) => applyPartialForm({ temperature: Number(event.target.value) })}
-                    className="w-full"
-                  />
-
-                  <label className="mt-3 block text-xs text-slate-400">Max Tokens: {form.maxTokens}</label>
-                  <input
-                    type="range"
-                    min={100}
-                    max={32000}
-                    step={100}
-                    value={form.maxTokens}
-                    onChange={(event) => applyPartialForm({ maxTokens: Number(event.target.value) })}
-                    className="w-full"
-                  />
-
-                  <label className="mt-3 block text-xs text-slate-400">Top P: {form.topP.toFixed(2)}</label>
-                  <input
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={form.topP}
-                    onChange={(event) => applyPartialForm({ topP: Number(event.target.value) })}
-                    className="w-full"
-                  />
-
-                  <label className="mt-3 block text-xs text-slate-400">
-                    Frequency Penalty: {form.frequencyPenalty.toFixed(2)}
-                  </label>
-                  <input
-                    type="range"
-                    min={-2}
-                    max={2}
-                    step={0.01}
-                    value={form.frequencyPenalty}
-                    onChange={(event) => applyPartialForm({ frequencyPenalty: Number(event.target.value) })}
-                    className="w-full"
-                  />
-
-                  <label className="mt-3 block text-xs text-slate-400">
-                    Presence Penalty: {form.presencePenalty.toFixed(2)}
-                  </label>
-                  <input
-                    type="range"
-                    min={-2}
-                    max={2}
-                    step={0.01}
-                    value={form.presencePenalty}
-                    onChange={(event) => applyPartialForm({ presencePenalty: Number(event.target.value) })}
-                    className="w-full"
-                  />
-                </div>
-
-                <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                  <h3 className="text-sm font-semibold text-slate-200">إعدادات التشغيل</h3>
-                  <div className="mt-3 grid gap-3">
-                    <label className="grid gap-1 text-xs text-slate-400">
-                      الحد الأقصى للتنفيذات يوميًا
-                      <input
-                        type="number"
-                        min={1}
-                        value={form.حدتنفيذيومي}
-                        onChange={(event) => applyPartialForm({ حدتنفيذيومي: Number(event.target.value) })}
-                        className="min-h-[40px] rounded-lg border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                      />
-                    </label>
-
-                    <label className="grid gap-1 text-xs text-slate-400">
-                      الحد الأقصى للتكلفة يوميًا (ريال)
-                      <input
-                        type="number"
-                        min={1}
-                        value={form.حدتكلفةيومية}
-                        onChange={(event) => applyPartialForm({ حدتكلفةيومية: Number(event.target.value) })}
-                        className="min-h-[40px] rounded-lg border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                      />
-                    </label>
-
-                    <label className="grid gap-1 text-xs text-slate-400">
-                      مهلة التنفيذ بالثواني
-                      <input
-                        type="number"
-                        min={10}
-                        max={600}
-                        value={form.timeoutSeconds}
-                        onChange={(event) => applyPartialForm({ timeoutSeconds: Number(event.target.value) })}
-                        className="min-h-[40px] rounded-lg border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                      />
-                    </label>
-
-                    <label className="grid gap-1 text-xs text-slate-400">
-                      عدد إعادة المحاولة
-                      <input
-                        type="number"
-                        min={0}
-                        max={5}
-                        value={form.retries}
-                        onChange={(event) => applyPartialForm({ retries: Number(event.target.value) })}
-                        className="min-h-[40px] rounded-lg border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                      />
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                  <h3 className="text-sm font-semibold text-slate-200">إعدادات الخصوصية</h3>
-                  <div className="mt-3 grid gap-2">
-                    <label className="inline-flex min-h-[42px] items-center justify-between rounded-xl border border-slate-700 bg-slate-950/60 px-3 text-sm text-slate-200">
-                      عام (يظهر في السوق)
-                      <input
-                        type="checkbox"
-                        checked={form.عام}
-                        onChange={(event) => applyPartialForm({ عام: event.target.checked })}
-                      />
-                    </label>
-
-                    <label className="inline-flex min-h-[42px] items-center justify-between rounded-xl border border-slate-700 bg-slate-950/60 px-3 text-sm text-slate-200">
-                      تسجيل المحادثات
-                      <input
-                        type="checkbox"
-                        checked={form.تسجيلالمحادثات}
-                        onChange={(event) =>
-                          applyPartialForm({ تسجيلالمحادثات: event.target.checked })
-                        }
-                      />
-                    </label>
-
-                    <label className="inline-flex min-h-[42px] items-center justify-between rounded-xl border border-slate-700 bg-slate-950/60 px-3 text-sm text-slate-200">
-                      مشاركة البيانات مع الفريق
-                      <input
-                        type="checkbox"
-                        checked={form.مشاركةمعالفريق}
-                        onChange={(event) =>
-                          applyPartialForm({ مشاركةمعالفريق: event.target.checked })
-                        }
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                  <h3 className="text-sm font-semibold text-slate-200">Webhooks</h3>
-
-                  <label className="mt-3 block text-xs text-slate-400">رابط الويب هوك</label>
-                  <input
-                    value={form.webhookUrl}
-                    onChange={(event) => applyPartialForm({ webhookUrl: event.target.value })}
-                    placeholder="https://example.com/hook"
-                    className="mt-1 min-h-[40px] w-full rounded-lg border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                  />
-
-                  <label className="mt-3 block text-xs text-slate-400">الحدث</label>
-                  <select
-                    value={form.webhookEvent}
-                    onChange={(event) =>
-                      applyPartialForm({ webhookEvent: event.target.value as حدثويبهوك })
-                    }
-                    className="mt-1 min-h-[40px] w-full rounded-lg border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                  >
-                    <option value="عند النجاح">عند النجاح</option>
-                    <option value="عند الفشل">عند الفشل</option>
-                    <option value="الكل">الكل</option>
-                  </select>
-
-                  <p className="mt-3 text-xs text-slate-400">ترويسات مخصصة</p>
-                  <div className="mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <input
-                      value={headerKeyInput}
-                      onChange={(event) => setHeaderKeyInput(event.target.value)}
-                      placeholder="المفتاح"
-                      className="min-h-[40px] rounded-lg border border-slate-700 bg-slate-950/70 px-2 text-xs text-slate-100"
-                    />
-                    <input
-                      value={headerValueInput}
-                      onChange={(event) => setHeaderValueInput(event.target.value)}
-                      placeholder="القيمة"
-                      className="min-h-[40px] rounded-lg border border-slate-700 bg-slate-950/70 px-2 text-xs text-slate-100"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={addWebhookHeader}
-                    className="mt-2 min-h-[38px] rounded-lg border border-slate-700 px-3 text-xs text-slate-200"
-                  >
-                    إضافة ترويسة
-                  </button>
-
-                  <div className="mt-2 space-y-1">
-                    {form.webhookHeaders.map((header) => (
-                      <div key={header.id} className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-950/70 px-2 py-1 text-xs text-slate-300">
-                        <span className="flex-1 truncate">{header.key}: {header.value}</span>
-                        <button
-                          type="button"
-                          onClick={() => removeWebhookHeader(header.id)}
-                          className="rounded p-0.5 hover:bg-slate-800"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BuilderStepAdvancedSettings
+              form={form}
+              onChangeForm={applyPartialForm}
+              headerKeyInput={headerKeyInput}
+              headerValueInput={headerValueInput}
+              onChangeHeaderKeyInput={setHeaderKeyInput}
+              onChangeHeaderValueInput={setHeaderValueInput}
+              onAddWebhookHeader={addWebhookHeader}
+              onRemoveWebhookHeader={removeWebhookHeader}
+            />
           )}
 
           {step === 5 && (
-            <div className="grid gap-5">
-              <h2 className="text-xl font-bold text-slate-100">الاختبار والنشر</h2>
-
-              <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                <h3 className="text-sm font-semibold text-slate-200">واجهة اختبار مباشرة</h3>
-
-                <div className="mt-3 max-h-[320px] min-h-[220px] space-y-2 overflow-y-auto rounded-xl border border-slate-700 bg-slate-950/70 p-3">
-                  {testMessages.length === 0 ? (
-                    <p className="text-xs text-slate-400">ابدأ رسالة اختبار لرؤية الاستجابة الفورية.</p>
-                  ) : (
-                    testMessages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`rounded-xl px-3 py-2 text-sm ${
-                          message.role === "مستخدم"
-                            ? "mr-8 bg-sky-500/20 text-sky-100"
-                            : "ml-8 bg-emerald-500/20 text-emerald-100"
-                        }`}
-                      >
-                        <p className="text-[11px] text-slate-300">{message.role}</p>
-                        <pre className="whitespace-pre-wrap break-words font-sans leading-7">{message.text || (isStreaming ? "..." : "")}</pre>
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <input
-                    value={testInput}
-                    onChange={(event) => setTestInput(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" && !event.shiftKey) {
-                        event.preventDefault();
-                        void runTestMessage(testInput);
-                      }
-                    }}
-                    placeholder="اكتب رسالة للاختبار"
-                    className="min-h-[44px] flex-1 rounded-xl border border-slate-700 bg-slate-950/70 px-3 text-sm text-slate-100"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => void runTestMessage(testInput)}
-                    disabled={isStreaming}
-                    className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-emerald-500/20 px-3 text-sm font-semibold text-emerald-200 disabled:opacity-60"
-                  >
-                    {isStreaming ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-                    إرسال
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={clearChat}
-                    className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-700 px-3 text-sm text-slate-200"
-                  >
-                    <RefreshCcw className="h-4 w-4" />
-                    مسح المحادثة
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={runScenario}
-                    className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-slate-700 px-3 text-sm text-slate-200"
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    تجربة سيناريو مختلف
-                  </button>
-                </div>
-
-                <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                  <div className="rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-300">
-                    <p>الرموز المستخدمة</p>
-                    <p className="mt-1 text-sm font-bold text-slate-100">{testTokens}</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-300">
-                    <p>التكلفة التقديرية (ر.س)</p>
-                    <p className="mt-1 text-sm font-bold text-slate-100">{testCost.toFixed(4)}</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-300">
-                    <p>وقت الاستجابة</p>
-                    <p className="mt-1 text-sm font-bold text-slate-100">{testLatency} مللي ثانية</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-slate-700 bg-slate-900/50 p-4">
-                <h3 className="text-sm font-semibold text-slate-200">نتائج الاختبار</h3>
-                <div className="mt-3 space-y-2 text-sm">
-                  <div className="flex items-start gap-2 rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2">
-                    {systemState.apiConnected ? (
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-emerald-300" />
-                    ) : (
-                      <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-300" />
-                    )}
-                    <span className="text-slate-200">
-                      {systemState.apiConnected
-                        ? "الاتصال بمفتاح API متاح."
-                        : "لم يتم العثور على مفتاح API نشط لـ Groq."}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start gap-2 rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2">
-                    {systemState.promptReady ? (
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-emerald-300" />
-                    ) : (
-                      <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-300" />
-                    )}
-                    <span className="text-slate-200">
-                      {systemState.promptReady
-                        ? "الموجه النظامي جاهز."
-                        : "الموجه النظامي يحتاج تفاصيل إضافية."}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start gap-2 rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2">
-                    {systemState.workflowReady ? (
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 text-emerald-300" />
-                    ) : (
-                      <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-300" />
-                    )}
-                    <span className="text-slate-200">
-                      {systemState.workflowReady
-                        ? "سير العمل جاهز للتشغيل."
-                        : "سير العمل المتقدم يحتاج عقدًا واحدة على الأقل."}
-                    </span>
-                  </div>
-
-                  {systemState.warnings.map((warning) => (
-                    <div key={warning} className="flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-amber-100">
-                      <AlertTriangle className="mt-0.5 h-4 w-4" />
-                      <span>{warning}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid gap-2 md:grid-cols-3">
-                <button
-                  type="button"
-                  onClick={() => void saveAgent("مسودة")}
-                  disabled={saving}
-                  className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900/70 text-sm font-semibold text-slate-200 disabled:opacity-60"
-                >
-                  <Save className="h-4 w-4" />
-                  حفظ كمسودة
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => void saveAgent("تفعيل")}
-                  disabled={saving}
-                  className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl bg-emerald-500/20 text-sm font-semibold text-emerald-200 disabled:opacity-60"
-                >
-                  <Rocket className="h-4 w-4" />
-                  نشر وتفعيل
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => void saveAgent("سوق")}
-                  disabled={saving || !form.عام}
-                  className="inline-flex min-h-[46px] items-center justify-center gap-2 rounded-xl bg-sky-500/20 text-sm font-semibold text-sky-200 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <Store className="h-4 w-4" />
-                  نشر في السوق
-                </button>
-              </div>
-            </div>
+            <BuilderStepTestPublish
+              testMessages={testMessages}
+              testInput={testInput}
+              onChangeTestInput={setTestInput}
+              onRunTestMessage={runTestMessage}
+              isStreaming={isStreaming}
+              onClearChat={clearChat}
+              onRunScenario={runScenario}
+              testTokens={testTokens}
+              testCost={testCost}
+              testLatency={testLatency}
+              systemState={systemState}
+              saving={saving}
+              canPublishMarket={form.عام}
+              onSaveDraft={() => void saveAgent("مسودة")}
+              onPublish={() => void saveAgent("تفعيل")}
+              onPublishMarket={() => void saveAgent("سوق")}
+            />
           )}
 
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 pt-4">

@@ -1824,11 +1824,15 @@
                 <p class="subtitle">تفاعل مع نماذج الذكاء الاصطناعي مباشرة (Demo — CSS 3D فقط)</p>
                 <div class="dash-3d">
                     <div class="dash-top">
-                        <div class="tabs" role="tablist">
-                            <div class="tab active" data-tab="obj">Object Detection</div>
-                            <div class="tab" data-tab="face">Face Recognition</div>
-                            <div class="tab" data-tab="ocr">Text Extraction</div>
-                            <div class="tab" data-tab="pred">Predictive Analysis</div>
+                        <div class="tabs" role="tablist" aria-label="نماذج الرؤية الحاسوبية">
+                            <div class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="obj">Object
+                                Detection</div>
+                            <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="face">Face
+                                Recognition</div>
+                            <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="ocr">Text
+                                Extraction</div>
+                            <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="pred">Predictive
+                                Analysis</div>
                         </div>
                         <a class="btn primary" style="padding:10px 12px"
                             href="frontend/pages/try/index.html"><iconify-icon icon="lucide:sparkles"></iconify-icon>
@@ -1844,7 +1848,7 @@
                         </div>
                         <div class="stats">
                             <div class="live">Live</div>
-                            <h4>Live Stats</h4>
+                            <h3 class="live-stats-heading">Live Stats</h3>
                             <div class="kpis">
                                 <div class="kpi"><span>دقة النموذج</span><strong id="acc">98.7%</strong></div>
                                 <div class="kpi"><span>زمن المعالجة</span><strong id="lat">0.15s</strong></div>
@@ -2301,19 +2305,21 @@
                     </div>
                 </div>
                 <div class="roi">
-                    <h4>احسب عائد الاستثمار</h4>
+                    <h3 class="roi-heading">احسب عائد الاستثمار</h3>
                     <div class="sliders">
                         <div class="slider">
-                            <label><span>عدد الموظفين</span><span id="empVal">50</span></label>
-                            <input id="emp" max="500" min="5" type="range" value="50" />
+                            <label for="emp"><span>عدد الموظفين</span><span id="empVal">50</span></label>
+                            <input id="emp" max="500" min="5" type="range" value="50" aria-label="عدد الموظفين" />
                         </div>
                         <div class="slider">
-                            <label><span>عدد العمليات الشهرية</span><span id="opsVal">5000</span></label>
-                            <input id="ops" max="50000" min="500" step="500" type="range" value="5000" />
+                            <label for="ops"><span>عدد العمليات الشهرية</span><span id="opsVal">5000</span></label>
+                            <input id="ops" max="50000" min="500" step="500" type="range" value="5000"
+                                aria-label="عدد العمليات الشهرية" />
                         </div>
                         <div class="slider">
-                            <label><span>متوسط زمن العملية (دقيقة)</span><span id="minVal">12</span></label>
-                            <input id="mins" max="60" min="1" type="range" value="12" />
+                            <label for="mins"><span>متوسط زمن العملية (دقيقة)</span><span id="minVal">12</span></label>
+                            <input id="mins" max="60" min="1" type="range" value="12"
+                                aria-label="متوسط زمن العملية بالدقيقة" />
                         </div>
                     </div>
                     <div class="roi-result">
@@ -2792,11 +2798,11 @@
         </div>
     </footer>
     <!-- Extras: Scroll to Top -->
-    <div aria-label="Back to top"
-        class="to-top fixed bottom-8 left-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1"
+    <button type="button" aria-label="العودة إلى الأعلى"
+        class="to-top fixed bottom-8 left-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1 border-none"
         id="toTop">
         <iconify-icon class="text-xl" icon="lucide:arrow-up"></iconify-icon>
-    </div>
+    </button>
     <!-- Extras: Chat Widget -->
     <div class="chat-fab-container fixed bottom-8 right-8 z-40 group">
         <div class="chat-fab w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 cursor-pointer hover:scale-110 transition-transform duration-300 relative"
