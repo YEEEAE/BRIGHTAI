@@ -52,7 +52,8 @@ const config = {
   validation: {
     maxInputLength: 1000,
     maxBodyBytes: parseInt(process.env.MAX_BODY_BYTES, 10) || 10240,
-    ocrMaxBodyBytes: parseInt(process.env.OCR_MAX_BODY_BYTES, 10) || 6 * 1024 * 1024
+    ocrMaxBodyBytes: parseInt(process.env.OCR_MAX_BODY_BYTES, 10) || 8 * 1024 * 1024,
+    uploadMaxBodyBytes: parseInt(process.env.MAX_UPLOAD_BODY_BYTES, 10) || 40 * 1024 * 1024
   }
 };
 

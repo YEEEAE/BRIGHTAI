@@ -11,7 +11,15 @@ const { chatHandler } = require('./routes/chat');
 const { searchHandler } = require('./routes/search');
 const { medicalHandler } = require('./routes/medical');
 const { summaryHandler } = require('./routes/summary');
-const { groqStreamHandler, groqOcrHandler, groqFaqHandler } = require('./routes/groq');
+const {
+  groqStreamHandler,
+  groqOcrHandler,
+  groqExtractTextHandler,
+  groqTranscribeHandler,
+  groqMedicalAgentHandler,
+  groqFaqHandler,
+  groqMedicalArchiveHandler
+} = require('./routes/groq');
 
 // CORS headers for API responses
 const CORS_HEADERS = {
@@ -104,9 +112,16 @@ async function handleRequest(req, res) {
   try {
     // Parse body for POST requests
     if (method === 'POST') {
-      const maxSize = url === '/api/groq/ocr'
+      const maxSize = (
+        url === '/api/groq/ocr' ||
+        url === '/api/groq/extract-text' ||
+        url === '/api/groq/medical-archive' ||
+        url === '/api/groq/medical-agent'
+      )
         ? config.validation.ocrMaxBodyBytes
-        : config.validation.maxBodyBytes;
+        : (url === '/api/groq/transcribe'
+            ? config.validation.uploadMaxBodyBytes
+            : config.validation.maxBodyBytes);
       ctx.req.body = await parseBody(req, maxSize);
     }
 
@@ -139,8 +154,16 @@ async function handleRequest(req, res) {
       await groqStreamHandler(ctx.req, ctx.res, res);
     } else if (method === 'POST' && url === '/api/groq/ocr') {
       await groqOcrHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/groq/extract-text') {
+      await groqExtractTextHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/groq/transcribe') {
+      await groqTranscribeHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/groq/medical-agent') {
+      await groqMedicalAgentHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/groq/faq') {
       await groqFaqHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/groq/medical-archive') {
+      await groqMedicalArchiveHandler(ctx.req, ctx.res);
     } else if (url === '/api/health') {
       ctx.res.status(200).json({ status: 'ok', timestamp: Date.now() });
     } else {
@@ -194,7 +217,11 @@ function startServer() {
     console.log('  POST /api/ai/summary - Content summary');
     console.log('  POST /api/groq/stream - Groq streaming demo');
     console.log('  POST /api/groq/ocr    - OCR JSON extraction');
+    console.log('  POST /api/groq/extract-text - Extract plain text from file');
+    console.log('  POST /api/groq/transcribe   - Audio to text');
+    console.log('  POST /api/groq/medical-agent - Gemini Flash smart agent');
     console.log('  POST /api/groq/faq    - FAQ generation');
+    console.log('  POST /api/groq/medical-archive - Smart medical archive demo');
     console.log('  GET  /api/health     - Health check');
   });
 

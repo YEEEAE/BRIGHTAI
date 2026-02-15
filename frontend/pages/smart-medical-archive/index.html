@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
+
 <head>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
   <script>
@@ -8,1279 +9,643 @@
     gtag('js', new Date());
     gtag('config', 'G-8LLESL207Q');
   </script>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI</title>
-  <meta name="description" content="منصة أرشفة طبية ذكية للمستشفيات السعودية: رقمنة الملفات، استخراج بيانات سريرية دقيقة، وتقليل زمن الوصول للسجل الطبي مع تكامل آمن وقابل للتدقيق.">
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <meta name="theme-color" content="#041823">
-  <link rel="canonical" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html">
 
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ar_SA">
-  <meta property="og:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI">
-  <meta property="og:description" content="قلل زمن استرجاع السجلات الطبية وارفع دقة البيانات السريرية عبر OCR + NLP + تكاملات EHR للمستشفيات داخل السعودية.">
-  <meta property="og:url" content="https://brightai.site/frontend/pages/smart-medical-archive/index.html">
-  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png">
-
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI">
-  <meta name="twitter:description" content="حل SaaS صحي يسرّع الأرشفة الطبية ويحوّل المستندات إلى بيانات قابلة للبحث والتحليل.">
-  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #041823;
-      --bg-deep: #021119;
-      --surface: rgba(9, 34, 48, 0.75);
-      --surface-strong: rgba(12, 45, 62, 0.92);
-      --text: #f4fbff;
-      --muted: #9bc5d8;
-      --border: rgba(118, 196, 225, 0.26);
-      --primary: #0ea5a1;
-      --primary-strong: #06b6d4;
-      --accent: #f59e0b;
-      --danger: #ef4444;
-      --ok: #22c55e;
-      --radius-xl: 22px;
-      --radius-lg: 16px;
-      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.35);
-      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.24);
-      --container: min(1120px, 92vw);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: radial-gradient(1200px 600px at 10% -10%, #0a3b53 0%, transparent 60%),
-                  radial-gradient(1000px 500px at 100% 0%, #073148 0%, transparent 62%),
-                  linear-gradient(165deg, var(--bg) 0%, var(--bg-deep) 100%);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.7;
-    }
-
-    .skip-link {
-      position: absolute;
-      top: -100px;
-      right: 16px;
-      background: #ffffff;
-      color: #000000;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      z-index: 9999;
-      text-decoration: none;
-      transition: top .2s ease;
-    }
-
-    .skip-link:focus {
-      top: 16px;
-    }
-
-    .bg-grid {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(126, 211, 243, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(126, 211, 243, 0.05) 1px, transparent 1px);
-      background-size: 54px 54px;
-      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 92%);
-      z-index: 0;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      backdrop-filter: blur(12px);
-      background: rgba(2, 17, 25, 0.72);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .topbar-inner,
-    .hero,
-    .section,
-    .footer-inner {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
-    .topbar-inner {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-      box-shadow: 0 8px 22px rgba(14, 165, 161, 0.4);
-    }
-
-    .brand-text strong {
-      display: block;
-      font-size: 1rem;
-      line-height: 1.1;
-    }
-
-    .brand-text span {
-      color: var(--muted);
-      font-size: .74rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .95rem;
-      font-weight: 600;
-      transition: color .2s ease;
-    }
-
-    .nav-links a:hover,
-    .nav-links a:focus-visible {
-      color: #ffffff;
-      outline: none;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-weight: 700;
-      text-decoration: none;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
-      color: #00131d;
-      box-shadow: 0 12px 28px rgba(6, 182, 212, 0.34);
-      padding: 12px 18px;
-    }
-
-    .btn-secondary {
-      background: rgba(7, 37, 51, 0.7);
-      color: #e8f9ff;
-      border-color: var(--border);
-      padding: 12px 18px;
-    }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      padding: 46px 0 20px;
-      display: grid;
-      gap: 24px;
-      grid-template-columns: 1.2fr .9fr;
-      align-items: stretch;
-    }
-
-    .hero-copy,
-    .hero-search {
-      background: linear-gradient(160deg, rgba(9, 35, 50, 0.95), rgba(4, 20, 31, 0.92));
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .hero-copy {
-      padding: 34px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: .9rem;
-      color: #a7e9f6;
-      font-weight: 700;
-      border: 1px solid rgba(167, 233, 246, 0.3);
-      border-radius: 999px;
-      padding: 7px 14px;
-      margin-bottom: 14px;
-    }
-
-    .hero h1 {
-      font-size: clamp(1.7rem, 3.4vw, 2.85rem);
-      line-height: 1.25;
-      margin-bottom: 14px;
-      letter-spacing: -0.01em;
-    }
-
-    .hero p {
-      color: #c6e3ef;
-      font-size: 1.04rem;
-      margin-bottom: 22px;
-    }
-
-    .proof-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 26px;
-    }
-
-    .proof-list li {
-      border: 1px solid rgba(110, 194, 223, 0.2);
-      border-radius: 12px;
-      background: rgba(5, 29, 43, 0.7);
-      padding: 10px 12px;
-      color: #cdebf6;
-      font-size: .92rem;
-      font-weight: 600;
-    }
-
-    .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .hero-search {
-      padding: 24px;
-    }
-
-    .hero-search h2 {
-      font-size: 1.18rem;
-      margin-bottom: 8px;
-    }
-
-    .hero-search p {
-      color: var(--muted);
-      margin-bottom: 14px;
-      font-size: .93rem;
-    }
-
-    .field-label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: .87rem;
-      color: #d7f1fb;
-      font-weight: 700;
-    }
-
-    .search-row {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: 1fr auto;
-      margin-bottom: 12px;
-    }
-
-    .search-row input {
-      width: 100%;
-      border: 1px solid rgba(110, 194, 223, 0.35);
-      border-radius: 12px;
-      background: rgba(2, 20, 30, 0.85);
-      color: #f8fdff;
-      padding: 12px 14px;
-      font-size: .95rem;
-    }
-
-    .search-row input::placeholder {
-      color: #88b9ca;
-    }
-
-    .search-row input:focus-visible {
-      border-color: #67d7ec;
-      box-shadow: 0 0 0 3px rgba(103, 215, 236, 0.22);
-      outline: none;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-
-    .chip {
-      border: 1px solid rgba(139, 219, 243, 0.32);
-      background: rgba(8, 44, 60, 0.62);
-      color: #d6f4fc;
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: .83rem;
-      cursor: pointer;
-      transition: background .2s ease, border-color .2s ease;
-    }
-
-    .chip:hover,
-    .chip:focus-visible {
-      background: rgba(10, 70, 92, 0.72);
-      border-color: #8be3f4;
-      outline: none;
-    }
-
-    .search-output {
-      border: 1px dashed rgba(139, 219, 243, 0.4);
-      background: rgba(3, 28, 40, 0.7);
-      color: #d4f3fb;
-      border-radius: 12px;
-      padding: 13px;
-      font-size: .9rem;
-      display: none;
-    }
-
-    .search-output.active {
-      display: block;
-    }
-
-    .section {
-      position: relative;
-      z-index: 1;
-      margin-top: 24px;
-      padding-bottom: 6px;
-    }
-
-    .section-title {
-      font-size: clamp(1.32rem, 2.4vw, 1.9rem);
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-
-    .section-desc {
-      color: #b7d9e6;
-      margin-bottom: 18px;
-      font-size: .97rem;
-      max-width: 840px;
-    }
-
-    .stats-grid,
-    .triple-grid,
-    .module-grid,
-    .use-case-grid,
-    .footer-links {
-      display: grid;
-      gap: 14px;
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .triple-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .module-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .use-case-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      box-shadow: var(--shadow-md);
-      min-height: 100%;
-    }
-
-    .card h3 {
-      font-size: 1.08rem;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      color: #bbdce9;
-      font-size: .94rem;
-    }
-
-    .metric-value {
-      font-size: 2rem;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 6px;
-      color: #89edff;
-    }
-
-    .metric-label {
-      color: #b8d8e5;
-      font-size: .9rem;
-      margin-bottom: 5px;
-    }
-
-    .metric-note {
-      font-size: .82rem;
-      color: #85b6c8;
-    }
-
-    .severity {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: .8rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      border-radius: 999px;
-      padding: 4px 10px;
-      width: fit-content;
-    }
-
-    .severity.problem {
-      color: #ffe2d5;
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid rgba(239, 68, 68, 0.45);
-    }
-
-    .severity.solution {
-      color: #d7fff3;
-      background: rgba(34, 197, 94, 0.18);
-      border: 1px solid rgba(34, 197, 94, 0.38);
-    }
-
-    .severity.proof {
-      color: #fff3d3;
-      background: rgba(245, 158, 11, 0.2);
-      border: 1px solid rgba(245, 158, 11, 0.38);
-    }
-
-    .module-link {
-      margin-top: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #9deeff;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: .9rem;
-    }
-
-    .module-link:hover,
-    .module-link:focus-visible {
-      color: #d9f8ff;
-      outline: none;
-    }
-
-    .use-case-value {
-      margin-top: 10px;
-      font-size: .87rem;
-      color: #a8e6bd;
-      font-weight: 700;
-    }
-
-    .governance-grid {
-      display: grid;
-      gap: 14px;
-      grid-template-columns: 1.35fr .85fr;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 14px;
-      border: 1px solid rgba(118, 196, 225, 0.2);
-      background: rgba(3, 24, 35, 0.75);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 560px;
-    }
-
-    th,
-    td {
-      border-bottom: 1px solid rgba(118, 196, 225, 0.14);
-      padding: 10px 12px;
-      font-size: .9rem;
-      text-align: right;
-      vertical-align: top;
-    }
-
-    th {
-      background: rgba(8, 40, 58, 0.9);
-      color: #def5fc;
-      font-size: .85rem;
-    }
-
-    td {
-      color: #c0dfeb;
-    }
-
-    .status-ok,
-    .status-plan {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: .79rem;
-      font-weight: 700;
-    }
-
-    .status-ok {
-      background: rgba(34, 197, 94, 0.2);
-      border: 1px solid rgba(34, 197, 94, 0.38);
-      color: #caffdc;
-    }
-
-    .status-plan {
-      background: rgba(14, 165, 161, 0.18);
-      border: 1px solid rgba(14, 165, 161, 0.36);
-      color: #d8fffc;
-    }
-
-    .cta-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .cta-panel .card {
-      padding: 20px;
-    }
-
-    .cta-panel h3 {
-      margin-bottom: 8px;
-      font-size: 1.12rem;
-      line-height: 1.4;
-    }
-
-    .cta-panel p {
-      margin-bottom: 12px;
-    }
-
-    .faq-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    details {
-      border: 1px solid rgba(118, 196, 225, 0.24);
-      background: rgba(4, 28, 42, 0.78);
-      border-radius: 14px;
-      padding: 12px 14px;
-    }
-
-    summary {
-      cursor: pointer;
-      list-style: none;
-      font-weight: 700;
-      color: #e3f8ff;
-      font-size: .96rem;
-      padding-left: 28px;
-      position: relative;
-    }
-
-    summary::-webkit-details-marker {
-      display: none;
-    }
-
-    summary::before {
-      content: '+';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1px solid rgba(142, 224, 245, 0.34);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      color: #9eefff;
-    }
-
-    details[open] summary::before {
-      content: '-';
-    }
-
-    details p {
-      margin-top: 10px;
-      color: #c4e3ef;
-      font-size: .92rem;
-    }
-
-    .final-cta {
-      margin-top: 22px;
-      margin-bottom: 30px;
-    }
-
-    .final-cta .card {
-      padding: 26px;
-      background: linear-gradient(145deg, rgba(5, 39, 56, 0.95), rgba(5, 31, 47, 0.92));
-    }
-
-    .final-cta p {
-      margin-top: 8px;
-      margin-bottom: 16px;
-      color: #b7d8e5;
-    }
-
-    .footer {
-      border-top: 1px solid var(--border);
-      background: rgba(0, 13, 20, 0.72);
-      padding: 22px 0 88px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-inner {
-      display: grid;
-      gap: 16px;
-    }
-
-    .footer-links {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .footer-links a {
-      color: #9ec8d9;
-      text-decoration: none;
-      font-size: .9rem;
-      font-weight: 600;
-    }
-
-    .footer-links a:hover,
-    .footer-links a:focus-visible {
-      color: #ffffff;
-      outline: none;
-    }
-
-    .footer-copy {
-      color: #82aab9;
-      font-size: .84rem;
-    }
-
-    .mobile-cta {
-      position: fixed;
-      left: 12px;
-      right: 12px;
-      bottom: 10px;
-      z-index: 60;
-      display: none;
-    }
-
-    .mobile-cta .btn {
-      width: 100%;
-      text-align: center;
-      padding: 13px 16px;
-      font-size: .95rem;
-    }
-
-    @media (max-width: 1120px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .triple-grid,
-      .use-case-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .governance-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 860px) {
-      .topbar-inner {
-        flex-wrap: wrap;
-        padding: 12px 0;
-      }
-
-      .nav-links {
-        order: 3;
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .hero-copy,
-      .hero-search,
-      .card {
-        padding: 18px;
-      }
-
-      .proof-list {
-        grid-template-columns: 1fr;
-      }
-
-      .module-grid,
-      .footer-links {
-        grid-template-columns: 1fr;
-      }
-
-      .mobile-cta {
-        display: block;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .search-row {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero h1 {
-        font-size: 1.55rem;
-      }
-
-      .hero {
-        padding-top: 26px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام الأرشيف الطبي الذكي للمستشفيات في السعودية | تجربة Bright AI</title>
+  <meta name="description"
+    content="نظام تجريبي خارق للمستشفيات السعودية: رفع ملفات تقارير طبية فعلية، استخراج بيانات صحية تلقائياً، بحث لغة طبيعية في السجلات، وتصدير تكاملي إلى FHIR وHL7 وCSV." />
+  <meta name="keywords"
+    content="نظام أرشيف طبي ذكي السعودية, تجربة نظام للمستشفيات, بحث لغة طبيعية في السجلات الطبية, استخراج بيانات صحية تلقائي, تكامل FHIR HL7, منصة ذكاء اصطناعي للمستشفيات السعودية" />
+  <meta name="author" content="Bright AI" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="language" content="Arabic" />
+  <meta http-equiv="content-language" content="ar-SA" />
+  <meta name="geo.region" content="SA" />
+  <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
+  <meta name="geo.position" content="24.7136;46.6753" />
+  <meta name="ICBM" content="24.7136, 46.6753" />
+
+  <link rel="canonical" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bright AI" />
+  <meta property="og:locale" content="ar_SA" />
+  <meta property="og:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" />
+  <meta property="og:description"
+    content="ارفع ملف التقرير الطبي مباشرة، استخرج السجل الصحي تلقائياً، نفذ بحثاً طبياً باللغة الطبيعية، ثم صدّر البيانات بصيغ تكامل EHR." />
+  <meta property="og:url" content="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
+  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" />
+  <meta name="twitter:description"
+    content="تجربة تشغيلية كاملة للمستشفيات: إدخال ملفات فعلية + استخراج ذكي + بحث طبي + تصدير FHIR/HL7/CSV." />
+  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
+
+  <link rel="icon" type="image/png" href="../../assets/images/Gemini.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Cairo:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="../../css/bundle-critical.css" />
+  <link rel="stylesheet" href="../../css/main.bundle.css" />
+  <link rel="stylesheet" href="../../css/index-theme.css" />
+  <link rel="stylesheet" href="../../css/tailwind.local.min.css" />
+  <link rel="stylesheet" href="./system-unified.css" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Bright AI",
-    "url": "https://brightai.site",
-    "logo": "https://brightai.site/frontend/assets/images/Gemini.png",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "الرياض",
-      "addressCountry": "SA"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+966538229013",
-      "contactType": "sales",
-      "areaServed": "SA"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "الأرشيف الطبي الذكي",
-    "serviceType": "أرشفة السجلات الطبية بالذكاء الاصطناعي",
-    "provider": {
-      "@type": "Organization",
-      "name": "Bright AI"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Saudi Arabia"
-    },
-    "audience": {
-      "@type": "BusinessAudience",
-      "geographicArea": "Saudi Arabia"
-    },
-    "offers": {
-      "@type": "Offer",
-      "availability": "https://schema.org/InStock",
-      "priceCurrency": "SAR",
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "priceCurrency": "SAR",
-        "eligibleQuantity": {
-          "@type": "QuantitativeValue",
-          "minValue": 1,
-          "unitText": "مستشفى"
-        }
-      }
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
+    "@graph": [
       {
-        "@type": "Question",
-        "name": "هل يدعم الحل متطلبات الأمن السيبراني الصحي في السعودية؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "نعم. النظام مصمم مع ضوابط وصول، سجلات تدقيق، وتشفير للبيانات أثناء النقل والتخزين بما يتماشى مع متطلبات الجهات المنظمة محلياً."
+        "@type": "Organization",
+        "name": "Bright AI",
+        "alternateName": ["مُشرقة AI", "Bright AI Saudi Arabia"],
+        "url": "https://brightai.site/",
+        "logo": "https://brightai.site/frontend/assets/images/Gemini.png",
+        "sameAs": [
+          "https://wa.me/966538229013",
+          "https://www.linkedin.com/company/brightai-sa",
+          "https://x.com/brightai_sa"
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "name": "نظام الأرشيف الطبي الذكي للمستشفيات في السعودية",
+        "url": "https://brightai.site/frontend/pages/smart-medical-archive/index.html",
+        "inLanguage": "ar-SA",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Bright AI",
+          "url": "https://brightai.site/"
+        },
+        "about": {
+          "@type": "Service",
+          "name": "الأرشيف الطبي الذكي"
         }
       },
       {
-        "@type": "Question",
-        "name": "كم يستغرق إثبات الجدوى الأولي؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "يبدأ إثبات الجدوى خلال أسبوع عمل بعد جلسة مواءمة المتطلبات، ويظهر أول قياس لعائد التشغيل خلال 30 يوماً على عينة واقعية."
+        "@type": "Service",
+        "name": "الأرشيف الطبي الذكي للمستشفيات",
+        "serviceType": "Medical AI Archive System",
+        "description": "نظام تشغيل طبي ذكي للمستشفيات السعودية: استيعاب التقارير، استخراج تلقائي للبيانات، بحث لغة طبيعية، وتصدير تكاملي مع أنظمة السجلات الطبية.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Bright AI"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "priceCurrency": "SAR"
         }
       },
       {
-        "@type": "Question",
-        "name": "هل يتكامل الحل مع أنظمة HIS أو EHR الحالية؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "نعم. يتم التكامل تدريجياً عبر واجهات API وربط مع أنظمة السجلات الحالية دون تعطيل سير العمل التشغيلي."
-        }
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://brightai.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "الأرشيف الطبي الذكي",
+            "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "ما الصيغ المدعومة لرفع التقارير الطبية؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "يدعم النظام ملفات PDF وDOCX وDOC وDICOM وJPG وPNG وMP3 وWAV وExcel إضافة إلى الملفات النصية، مع OCR وتحويل صوت إلى نص قبل التحليل."}
+          },
+          {
+            "@type": "Question",
+            "name": "هل يدعم التكامل مع السجلات الطبية الإلكترونية؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نعم، التجربة توفر تصديراً بصيغ FHIR JSON وHL7 وCSV لتسهيل الإدخال والتكامل مع أنظمة EHR."}
+          },
+          {
+            "@type": "Question",
+            "name": "ما الفائدة التشغيلية للمستشفى؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "تقليل زمن إدخال البيانات، تحسين الوصول للحالات المشابهة، وتمكين إدارة المستشفى من مؤشرات مخاطر وتشغيل لحظية."}
+          }
+        ]
       }
     ]
   }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "الرئيسية",
-        "item": "https://brightai.site/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "القطاع الصحي",
-        "item": "https://brightai.site/frontend/pages/sectors/healthcare.html"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "الأرشيف الطبي الذكي",
-        "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html"
-      }
-    ]
-  }
-  </script>
+  <script defer src="../../js/iconify-preload.js"></script>
+  <script defer src="../../js/vendor/iconify.min.js"></script>
+  <script defer src="../../js/vendor/iconify-icon.min.js"></script>
 </head>
+
 <body>
-  <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
-  <div class="bg-grid" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="../../../index.html" aria-label="العودة للصفحة الرئيسية">
-        <span class="brand-logo">AI</span>
-        <span class="brand-text">
-          <strong>Bright AI</strong>
-          <span>Smart Medical Archive</span>
-        </span>
-      </a>
+  <header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header" role="banner">
+    <div class="nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex-shrink-0 flex items-center gap-3">
+        <a class="nav-logo flex items-center gap-3 group" href="/" aria-label="Bright AI — الصفحة الرئيسية"
+          title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+          <div
+            class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+            <span class="text-white font-black text-xl tracking-tighter">AI</span>
+          </div>
+          <div class="flex flex-col leading-none">
+            <span class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+            <span class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5">Saudi</span>
+          </div>
+        </a>
+      </div>
 
-      <nav class="nav-links" aria-label="التنقل السريع">
-        <a href="#modules">مكونات النظام</a>
-        <a href="#saudi-cases">حالات الاستخدام</a>
-        <a href="./analytics-insights.html">لوحة التحليلات</a>
-        <a href="#faq">الأسئلة الشائعة</a>
+      <nav class="hidden lg:flex items-center gap-1" style="contain: layout;">
+        <ul class="nav-links flex items-center gap-1">
+          <li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
+
+          <li class="nav-item group/dropdown relative">
+            <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+              الحلول الذكية
+              <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
+            </button>
+            <div
+              class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+              <div class="p-2 space-y-1">
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/brightai-platform/build/index.html">منصة Bright AI Agents</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/smart-automation/index.html">الأتمتة الذكية</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/ai-agent/index.html">الذكاء الاصطناعي كخدمة</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/contact/index.html">استشارات</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item group/dropdown relative">
+            <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+              النماذج الذكية
+              <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
+            </button>
+            <div
+              class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+              <div class="p-2 space-y-1">
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/health-bright/index.html">حلول AI الطبية المتقدمة</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/job.MAISco/index.html">منصة التوظيف الذكي</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/ai-scolecs/index.html">المنصة التعليمية الذكية</a>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item group/dropdown relative">
+            <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+              عن برايت
+              <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
+            </button>
+            <div
+              class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+              <div class="p-2 space-y-1">
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/about-us/index.html">من نحن</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/docs.html">المستندات</a>
+                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
+                  href="/frontend/pages/blog/index.html">المدونة</a>
+              </div>
+            </div>
+          </li>
+        </ul>
       </nav>
 
-      <a class="btn btn-primary" href="../consultation/index.html" data-cta="top-consultation">
-        احجز اجتماعاً تنفيذياً
-      </a>
+      <div class="flex items-center gap-4">
+        <a class="nav-btn hidden md:flex items-center gap-2" href="/frontend/pages/try/index.html"
+          aria-label="ابدأ تجربة أدوات الذكاء الاصطناعي مجاناً" title="جرّب أدوات الذكاء الاصطناعي مجاناً">
+          <iconify-icon icon="lucide:sparkles"></iconify-icon>
+          ابدأ الآن مجاناً
+        </a>
+        <button aria-expanded="false" aria-label="فتح القائمة"
+          class="mobile-toggle lg:hidden flex flex-col gap-1.5 p-2 bg-white/5 rounded-lg border border-white/10">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main id="main-content">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <span class="eyebrow">حل SaaS مخصص للمستشفيات في السعودية</span>
-        <h1 id="hero-title">الأرشيف الطبي الذكي: من ملفات مشتتة إلى بيانات سريرية قابلة للقرار</h1>
-        <p>
-          منصة Bright AI توحّد المستندات الطبية الورقية والرقمية داخل مسار واحد: إدخال آلي، استخراج حقول دقيقة، بحث دلالي سريع، وربط مباشر مع السجل الطبي الإلكتروني.
-          النتيجة: زمن أقل للوصول للمعلومة، مخاطر تشغيلية أقل، وقدرة أعلى على اتخاذ قرارات طبية وإدارية.
-        </p>
+  <div
+    class="mobile-menu-drawer fixed inset-y-0 right-0 w-80 z-[60] transform translate-x-full transition-transform duration-500 ease-out rtl:left-0 rtl:right-auto rtl:-translate-x-full">
+    <div class="flex flex-col h-full bg-[#020617] border-l border-white/5 p-8">
+      <div class="flex items-center justify-between mb-12">
+        <div class="text-xl font-bold text-white">القائمة الرئيسية</div>
+        <button aria-label="إغلاق القائمة" class="mobile-toggle p-2 hover:bg-white/5 rounded-full">
+          <iconify-icon class="text-white text-2xl" icon="lucide:x"></iconify-icon>
+        </button>
+      </div>
+      <ul class="mobile-nav-list space-y-2">
+        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/">الرئيسية</a></li>
+        <li>
+          <a aria-expanded="false" aria-haspopup="true"
+            class="mobile-nav-link flex items-center justify-between text-lg py-4 border-b border-white/5" href="#">
+            الحلول والخدمات
+            <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+          </a>
+          <div class="mobile-dropdown space-y-2 mt-2 px-4">
+            <a class="block py-2 text-slate-400 hover:text-white transition-colors"
+              href="/frontend/pages/sectors/healthcare.html">حلول القطاع الصحي</a>
+            <a class="block py-2 text-slate-400 hover:text-white transition-colors"
+              href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a>
+            <a class="block py-2 text-slate-400 hover:text-white transition-colors"
+              href="/frontend/pages/ai-agent/index.html">AIaaS</a>
+          </div>
+        </li>
+        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
+            href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a></li>
+        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
+            href="/frontend/pages/blog/index.html">المدونة</a></li>
+        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5 text-indigo-400"
+            href="/frontend/pages/contact/index.html">تواصل معنا</a></li>
+      </ul>
+      <div class="mt-auto">
+        <a
+          class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2"
+          href="/frontend/pages/consultation/index.html">
+          <iconify-icon icon="lucide:zap"></iconify-icon>
+          احجز استشارة تنفيذية
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
 
-        <ul class="proof-list" aria-label="مؤشرات قيمة مباشرة">
-          <li>تقليل زمن استرجاع السجل الطبي بنسبة تصل إلى 71%</li>
-          <li>رفع دقة استخراج الحقول السريرية إلى 98.2%</li>
-          <li>تخفيض الأعمال اليدوية في الأرشفة بنسبة 64%</li>
-          <li>تحسين جاهزية التدقيق والتتبع لجميع عمليات الوصول</li>
-        </ul>
+  <nav class="breadcrumb-nav" aria-label="مسار التنقل">
+    <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">الرئيسية</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li aria-hidden="true">/</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/frontend/pages/smart-medical-archive/index.html" itemprop="item"><span itemprop="name">الأرشيف الطبي
+            الذكي</span></a>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+  </nav>
 
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="../contact/index.html" data-cta="hero-contact">ابدأ تقييم البنية الحالية</a>
-          <a class="btn btn-secondary" href="../demo/ocr-demo/index.html" data-cta="hero-ocr-demo">جرّب OCR للأرشيف الطبي</a>
+  <main class="site-wrap" id="main">
+    <header class="hero" id="top">
+      <span class="hero-badge">منصة تجريبية تشغيلية للمستشفيات السعودية</span>
+      <div class="hero-grid">
+        <div>
+          <h1>نظام الأرشيف الطبي الذكي: من التقرير الخام إلى قرار سريري وإداري في نفس الواجهة</h1>
+          <p>
+            جرّب سير العمل الكامل للمستشفى: ارفع ملف التقرير الطبي الفعلي، استخرج البيانات الصحية آلياً، نفّذ بحثاً باللغة
+            الطبيعية داخل السجلات، ثم صدّر النتائج بصيغ تكامل مناسبة لأنظمة السجلات الطبية الإلكترونية.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-main" href="#trialConsole">ابدأ التجربة الآن</a>
+            <a class="btn-sub" href="#leadForm">فعّل تجربة المستشفى</a>
+            <a class="btn-outline" href="/frontend/pages/contact/index.html">تحدث مع فريق الحلول الصحية</a>
+          </div>
         </div>
-      </div>
-
-      <aside class="hero-search" aria-labelledby="smart-search-title">
-        <h2 id="smart-search-title">تجربة بحث دلالي فورية</h2>
-        <p>اكتب سؤالاً بصياغة طبيعية لتحصل على نتيجة تشغيلية مفهومة لإدارة السجلات.</p>
-
-        <form id="smart-search-form" novalidate>
-          <label class="field-label" for="smart-search-input">استعلام البحث</label>
-          <div class="search-row">
-            <input id="smart-search-input" type="text" name="query" placeholder="مثال: حالات السكري فوق 50 سنة مع نتائج HbA1c مرتفعة خلال آخر 6 أشهر" required>
-            <button class="btn btn-primary" type="submit" data-cta="search-submit">بحث</button>
-          </div>
-
-          <div class="chips" role="list" aria-label="استعلامات مقترحة">
-            <button class="chip" type="button" data-query="المرضى الذين تجاوزوا جرعة دواء الضغط خلال آخر 30 يوماً">تنبيهات الجرعات</button>
-            <button class="chip" type="button" data-query="تقارير الأشعة المتأخرة عن التوقيع لأكثر من 24 ساعة">تأخر تقارير الأشعة</button>
-            <button class="chip" type="button" data-query="ملفات الطوارئ الناقصة في رقم الهوية أو التاريخ المرضي">اكتمال ملفات الطوارئ</button>
-          </div>
-
-          <div id="search-output" class="search-output" aria-live="polite"></div>
-        </form>
-      </aside>
-    </section>
-
-    <section class="section" aria-labelledby="impact-title">
-      <h2 id="impact-title" class="section-title">مؤشرات تشغيلية مرتبطة بعائد مالي</h2>
-      <p class="section-desc">
-        هذه المؤشرات تُستخدم لقياس أثر المنصة على فرق السجلات الطبية، الجودة، وتجربة المريض خلال أول دورة تشغيل.
-      </p>
-
-      <div class="stats-grid">
-        <article class="card">
-          <div class="metric-value">84,392</div>
-          <p class="metric-label">وثيقة تمت أرشفتها</p>
-          <p class="metric-note">نمو شهري مستقر مع أولوية لملفات الطوارئ والعيادات الحرجة</p>
-        </article>
-
-        <article class="card">
-          <div class="metric-value">98.2%</div>
-          <p class="metric-label">دقة استخراج البيانات</p>
-          <p class="metric-note">باستخدام OCR طبي + نماذج لغة متخصصة بالمصطلحات السريرية</p>
-        </article>
-
-        <article class="card">
-          <div class="metric-value">14</div>
-          <p class="metric-label">ملف يحتاج تدقيقاً بشرياً</p>
-          <p class="metric-note">تركيز المراجعة على الحالات منخفضة الثقة فقط لخفض تكلفة الفريق</p>
-        </article>
-
-        <article class="card">
-          <div class="metric-value">1.2 TB</div>
-          <p class="metric-label">بيانات محفوظة بتشفير كامل</p>
-          <p class="metric-note">تشفير أثناء النقل والتخزين مع سجلات وصول قابلة للتدقيق</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="flow-title">
-      <h2 id="flow-title" class="section-title">مسار تحويل المشكلة إلى نتيجة قابلة للقياس</h2>
-      <div class="triple-grid">
-        <article class="card">
-          <span class="severity problem">المشكلة التشغيلية</span>
-          <h3>ملفات مشتتة وتأخير في الوصول للمعلومة</h3>
-          <p>
-            الاعتماد على البحث اليدوي أو مستندات غير مفهرسة يرفع زمن خدمة المريض ويخلق مخاطر في دقة القرار الطبي.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="severity solution">الحل التنفيذي</span>
-          <h3>أرشفة ذكية مع بحث دلالي وربط EHR</h3>
-          <p>
-            المنصة تقرأ الوثائق تلقائياً، تستخرج الحقول الحرجة، ثم تنشئ فهرسة دلالية تمكّن الفرق الطبية والإدارية من استرجاع المعلومة فوراً.
-          </p>
-        </article>
-
-        <article class="card">
-          <span class="severity proof">الإثبات التجاري</span>
-          <h3>انخفاض تكاليف التشغيل وتحسن الالتزام</h3>
-          <p>
-            التتبع الكامل للملفات وسير المعالجة يقلل الهدر التشغيلي ويزيد جاهزية المستشفى للتدقيق والامتثال والعقود الحكومية.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <section id="modules" class="section" aria-labelledby="modules-title">
-      <h2 id="modules-title" class="section-title">مكونات النظام القابلة للتفعيل حسب أولويات المستشفى</h2>
-      <p class="section-desc">
-        كل مكوّن يعمل بشكل مستقل ويمكن ربطه تدريجياً لتسريع الإطلاق وتقليل مخاطر التغيير على الأنظمة الحالية.
-      </p>
-
-      <div class="module-grid">
-        <article class="card">
-          <h3>إدخال المستندات والمعالجة الذكية</h3>
-          <p>
-            استقبال ملفات PDF وDICOM وصور الوصفات، مع تنظيف تلقائي للنصوص وفصل الصفحات وإسناد نوع الوثيقة قبل الفهرسة.
-          </p>
-          <a class="module-link" href="./Ingestion.html" data-cta="module-ingestion">عرض مسار الإدخال</a>
-        </article>
-
-        <article class="card">
-          <h3>استخراج البيانات والبحث الدلالي</h3>
-          <p>
-            تحويل النصوص الطبية إلى حقول قابلة للاستعلام، مع فهم سياق السؤال الطبي والرد بنتيجة مرتبطة بالمريض أو الحالة.
-          </p>
-          <a class="module-link" href="./NLP-Search.html" data-cta="module-nlp">عرض محرك البحث الدلالي</a>
-        </article>
-
-        <article class="card">
-          <h3>عارض السجل الطبي الموحّد</h3>
-          <p>
-            دمج نتائج الفحوصات والتقارير والملاحظات في واجهة واحدة للفرق الطبية، مع تاريخ تغييرات واضح وحقول تدقيق.
-          </p>
-          <a class="module-link" href="./EHR-Viewer.html" data-cta="module-ehr">عرض السجل الموحد</a>
-        </article>
-
-        <article class="card">
-          <h3>لوحة التحليلات والرؤى التشغيلية</h3>
-          <p>
-            قياس سرعة الأرشفة ونسب الدقة والملفات المتعثرة، وربط المؤشرات بخطط تحسين الإنتاجية وخفض تكلفة المعالجة.
-          </p>
-          <a class="module-link" href="./analytics-insights.html" data-cta="module-analytics">فتح لوحة التحليلات</a>
-        </article>
-      </div>
-    </section>
-
-    <section id="saudi-cases" class="section" aria-labelledby="saudi-cases-title">
-      <h2 id="saudi-cases-title" class="section-title">حالات استخدام سعودية مرتبطة بقرار شراء فعلي</h2>
-      <p class="section-desc">
-        تم تصميم السيناريوهات التالية لاحتياجات تشغيلية متكررة لدى المستشفيات الخاصة والمجمعات الطبية ومشغلي الرعاية طويلة الأمد داخل السعودية.
-      </p>
-
-      <div class="use-case-grid">
-        <article class="card">
-          <h3>إدارة ضغط ملفات الطوارئ</h3>
-          <p>فرز تلقائي للحالات العاجلة وربط مستندات الدخول بنتائج الفحوصات لتقليل زمن الإغلاق الإداري للحالة.</p>
-          <p class="use-case-value">القيمة التجارية: تسريع دورة الخدمة وزيادة عدد الحالات المنجزة يومياً.</p>
-        </article>
-
-        <article class="card">
-          <h3>تجهيز ملفات المطالبات التأمينية</h3>
-          <p>استخراج الحقول المطلوبة للمطالبات مع التحقق من اكتمال المستندات قبل الإرسال لشركات التأمين.</p>
-          <p class="use-case-value">القيمة التجارية: خفض المرتجعات وتقليص زمن التحصيل النقدي.</p>
-        </article>
-
-        <article class="card">
-          <h3>التدقيق الدوري على جودة السجلات</h3>
-          <p>كشف السجلات الناقصة أو غير المتطابقة مع سياسات التوثيق، مع تقارير فورية لفريق الجودة والامتثال.</p>
-          <p class="use-case-value">القيمة التجارية: تقليل مخاطر الامتثال وتحسين نتائج التدقيق الخارجي.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="governance-title">
-      <h2 id="governance-title" class="section-title">الامتثال، التكامل، وخطة الإطلاق</h2>
-      <div class="governance-grid">
-        <article class="card">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>المحور</th>
-                  <th>ما يتم تنفيذه</th>
-                  <th>الحالة</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>حماية البيانات</td>
-                  <td>تشفير أثناء النقل والتخزين + سياسات وصول حسب الدور + سجل تدقيق</td>
-                  <td><span class="status-ok">جاهز للتفعيل</span></td>
-                </tr>
-                <tr>
-                  <td>الامتثال التشغيلي</td>
-                  <td>تقارير دورية لجودة السجلات والملفات الناقصة والتنبيهات الحرجة</td>
-                  <td><span class="status-ok">جاهز للتفعيل</span></td>
-                </tr>
-                <tr>
-                  <td>تكامل الأنظمة</td>
-                  <td>ربط تدريجي مع HIS/EHR وواجهات API لتبادل البيانات بشكل آمن</td>
-                  <td><span class="status-plan">تنفيذ مرحلي</span></td>
-                </tr>
-                <tr>
-                  <td>إثبات الجدوى</td>
-                  <td>تشغيل عينة واقعية لمدة 30 يوماً وقياس أثر الدقة والزمن والتكلفة</td>
-                  <td><span class="status-plan">خطة معتمدة</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
-
-        <aside class="cta-panel">
-          <article class="card">
-            <h3>حجز جلسة تقييم تنفيذية لمدة 30 دقيقة</h3>
-            <p>نراجع حجم الأرشيف الحالي، الأنظمة القائمة، ونحدد أسرع مسار إطلاق دون تعطيل تشغيل المستشفى.</p>
-            <a class="btn btn-primary" href="../contact/index.html" data-cta="side-contact">احجز جلسة التقييم</a>
+        <aside class="kpi-stack" aria-label="مؤشرات التجربة">
+          <article class="kpi-card">
+            <div class="label">السجلات المؤرشفة داخل التجربة</div>
+            <div class="value" id="recordsCount">0</div>
           </article>
-
-          <article class="card">
-            <h3>وثائق فنية موجهة لفرق التقنية والجودة</h3>
-            <p>تشمل هيكل التكامل، نطاق الاستخدام، والمتطلبات التشغيلية للتطبيق في بيئة صحية سعودية.</p>
-            <a class="btn btn-secondary" href="../docs/solutions-healthcare.html" data-cta="side-docs">عرض التوثيق الفني</a>
+          <article class="kpi-card">
+            <div class="label">نتيجة استخراج نشطة</div>
+            <div class="value" id="extractedCount">0</div>
+          </article>
+          <article class="kpi-card">
+            <div class="label">حالات عالية الخطورة مكتشفة</div>
+            <div class="value" id="riskCount">0</div>
           </article>
         </aside>
       </div>
-    </section>
+    </header>
 
-    <section id="faq" class="section" aria-labelledby="faq-title">
-      <h2 id="faq-title" class="section-title">أسئلة القرار قبل التعاقد</h2>
-      <div class="faq-list">
-        <details open>
-          <summary>هل يدعم الحل متطلبات الأمن السيبراني الصحي في السعودية؟</summary>
-          <p>نعم. يتم تطبيق ضوابط الوصول، إدارة الصلاحيات، سجلات التدقيق، والتشفير أثناء النقل والتخزين بما يرفع جاهزية المنشأة للتدقيق التشغيلي.</p>
-        </details>
-
-        <details>
-          <summary>هل يتطلب تغيير النظام الحالي في المستشفى؟</summary>
-          <p>لا. يبدأ التنفيذ بطبقة تكامل فوق الأنظمة الحالية ثم التوسع التدريجي حسب أولويات التشغيل وخطة التحول المعتمدة.</p>
-        </details>
-
-        <details>
-          <summary>ما المدة المتوقعة لإظهار أثر واضح على التشغيل؟</summary>
-          <p>يظهر الأثر الأول خلال 30 يوماً عبر قياس سرعة المعالجة، نسبة اكتمال الملفات، ونسبة الملفات التي تتطلب تدخل يدوي.</p>
-        </details>
-
-        <details>
-          <summary>هل يمكن البدء على قسم واحد قبل التوسع؟</summary>
-          <p>نعم. يمكن إطلاق المشروع على قسم مستهدف مثل الطوارئ أو العيادات الخارجية ثم التوسع لباقي الأقسام وفق نتائج القياس.</p>
-        </details>
+    <section>
+      <div class="section-title">
+        <h2>لماذا هذا النظام مهم للمستشفيات السعودية؟</h2>
+        <p>تركيز مباشر على أثر تشغيلي قابل للقياس في بيئة صحية عالية الضغط.</p>
+      </div>
+      <div class="problem-grid">
+        <article class="problem-card">
+          <h3>المشكلة</h3>
+          <p>تكدس تقارير غير مهيكلة يستهلك وقت الأطباء والكوادر الإدارية ويبطئ الوصول لمعلومة الحالة الصحيحة.</p>
+        </article>
+        <article class="problem-card">
+          <h3>الحل</h3>
+          <p>تحويل التقرير إلى سجل منظم تلقائياً، وربط التشخيصات والأدوية والتنبيهات بمحرك بحث طبي باللغة الطبيعية.</p>
+        </article>
+        <article class="problem-card">
+          <h3>الدليل التشغيلي</h3>
+          <p>قياس واضح: زمن إدخال أقل، دقة أعلى في السجل، واسترجاع أسرع للحالات المشابهة خلال القرار السريري.</p>
+        </article>
       </div>
     </section>
 
-    <section class="section final-cta" aria-labelledby="final-cta-title">
-      <div class="card">
-        <h2 id="final-cta-title" class="section-title">ابدأ بخطوة تنفيذية واضحة بدل مشروع تقني مفتوح بلا عائد</h2>
-        <p>
-          إذا كان هدفك خفض تكلفة إدارة السجلات الطبية وتحسين سرعة الوصول للمعلومة السريرية، ابدأ الآن بتقييم تشغيلي قصير وخطة تنفيذ مدتها 30 يوماً.
-        </p>
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="../consultation/index.html" data-cta="final-consultation">احجز عرضاً تنفيذياً</a>
-          <a class="btn btn-secondary" href="../blogger/ai-healthcare-saudi.html" data-cta="final-case">اقرأ حالة استخدام سعودية</a>
+    <section>
+      <div class="section-title">
+        <h2>نطاق التجربة التشغيلية</h2>
+        <p>مصمم لمسار المستشفى الكامل: تقرير طبي → سجل منظم → بحث سريري → تحليلات إدارية → تصدير تكاملي.</p>
+      </div>
+      <div class="capabilities">
+        <article class="capability-card">
+          <h3>1) استيعاب رقمي للتقارير الطبية</h3>
+          <p>رفع ملفات فعلية من التقارير ثم تحويل النص غير المهيكل إلى عناصر صحية منظمة يمكن الرجوع لها فوراً.</p>
+        </article>
+        <article class="capability-card">
+          <h3>2) بحث لغة طبيعية داخل السجلات</h3>
+          <p>الطبيب أو المدير يكتب سؤاله بالعربية، والنظام يرجع النتائج المطابقة مع تفسير واضح لأسباب التطابق.</p>
+        </article>
+        <article class="capability-card">
+          <h3>3) استخراج تلقائي للبيانات الصحية</h3>
+          <p>تقليل الإدخال اليدوي وتحديث عناصر السجل تلقائياً لرفع الدقة وتحسين سرعة اتخاذ القرار.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>إعداد الاتصال (حل مشكلة Load failed)</h2>
+        <p>يمكنك تشغيل النظام عبر خادم BrightAI أو مباشرة عبر Groq كمسار احتياطي.</p>
+      </div>
+      <div class="connection-box">
+        <div class="connection-grid">
+          <input id="apiBaseInput" type="url" placeholder="عنوان API (مثال: http://localhost:3000)" />
+          <input id="groqApiKeyInput" type="password" placeholder="مفتاح Groq API (اختياري كمسار احتياطي)" />
+          <input id="groqModelInput" type="text" value="llama-3.1-8b-instant" placeholder="نموذج Groq" />
         </div>
+        <div class="action-row">
+          <button class="btn-outline" id="saveConnectionBtn" type="button">حفظ إعدادات الاتصال</button>
+          <button class="btn-outline" id="testConnectionBtn" type="button">اختبار الاتصال الآن</button>
+        </div>
+        <div id="connectionStatus" class="status">استخدم الإعدادات الافتراضية أو حدّثها حسب بيئة التشغيل لديك.</div>
       </div>
     </section>
+
+    <section id="trialConsole">
+      <div class="section-title">
+        <h2>وحدة التجربة للمستشفيات</h2>
+        <p>رفع ملف أو لصق تقرير، تحليل فوري، حفظ سجل، بحث، تحليلات، ثم تصدير متوافق مع EHR.</p>
+      </div>
+
+      <div class="console-grid">
+        <article class="console-panel">
+          <h3>الخطوة 1: تهيئة المنشأة + إدخال التقرير</h3>
+          <p class="panel-sub">حدد سياق المستشفى والقسم، وارفع ملف التقرير الطبي أو الصق النص مباشرة قبل التحليل.</p>
+
+          <div class="form-grid">
+            <input id="hospitalName" type="text" value="مستشفى الملك فهد" placeholder="اسم المستشفى" />
+            <input id="hospitalCity" type="text" value="الرياض" placeholder="المدينة" />
+            <select id="hospitalDepartment">
+              <option value="الطوارئ">قسم الطوارئ</option>
+              <option value="القلب">قسم القلب</option>
+              <option value="الأورام">قسم الأورام</option>
+              <option value="السكري">عيادة السكري</option>
+              <option value="العناية المركزة">العناية المركزة</option>
+            </select>
+          </div>
+
+          <div class="file-box">
+            <input id="reportFile" type="file" multiple
+              accept=".pdf,.docx,.doc,.dcm,.dicom,.jpg,.jpeg,.png,.webp,.mp3,.wav,.m4a,.xls,.xlsx,.txt,.md,.json,.csv,.xml,.html,.htm,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/dicom,image/jpeg,image/png,image/webp,audio/mpeg,audio/wav,audio/x-wav,audio/mp4,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,text/csv,application/json,text/xml,application/xml,text/html" hidden />
+            <input id="reportFolder" type="file" webkitdirectory directory multiple hidden />
+
+            <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="منطقة السحب والإفلات">
+              <div class="drop-title">اسحب وأفلت الملفات الطبية هنا</div>
+              <div class="drop-sub">أو اختر ملفات منفردة أو مجلد كامل للدفعة</div>
+              <div class="drop-actions">
+                <button class="btn-outline" id="pickFilesBtn" type="button">اختيار ملفات</button>
+                <button class="btn-outline" id="pickFolderBtn" type="button">اختيار مجلد كامل</button>
+              </div>
+            </div>
+
+            <div class="file-row">
+              <button class="btn-outline" id="extractFileBtn" type="button">استخراج النص من أول ملف</button>
+              <button class="btn-sub" id="processBatchBtn" type="button">معالجة دفعة الملفات</button>
+              <button class="btn-outline" id="cancelBatchBtn" type="button">إلغاء المعالجة الجارية</button>
+              <button class="btn-outline" id="resumeBatchBtn" type="button">استئناف الملفات المتوقفة</button>
+              <button class="btn-main" id="analyzeBatchBtn" type="button">تحليل الملفات الجاهزة عبر Groq</button>
+            </div>
+
+            <p class="file-note">الصيغ المدعومة: PDF, DOCX, DOC, DICOM, JPG, PNG, MP3, WAV, Excel, TXT, CSV, JSON, XML, HTML</p>
+            <div id="fileStatus" class="status">ارفع ملفات أو اسحبها للمنطقة أعلاه لبدء المعالجة الذكية.</div>
+            <div id="batchStatus" class="status">المعالجة الدُفعية متاحة مع تتبع تقدم وإلغاء/استئناف لكل ملف.</div>
+            <div id="batchSummary" class="status">لم تبدأ أي دفعة بعد.</div>
+            <div id="fileQueue" class="file-queue"></div>
+          </div>
+
+          <div class="storage-box">
+            <h4>تكامل التخزين السحابي (AWS S3 أو Firebase)</h4>
+            <div class="storage-grid">
+              <select id="storageProvider">
+                <option value="none">بدون تخزين سحابي</option>
+                <option value="s3">AWS S3</option>
+                <option value="firebase">Firebase Storage</option>
+              </select>
+              <input id="storageEndpoint" type="url"
+                placeholder="رابط الرفع (S3 Presigned أو Firebase REST Endpoint)" />
+              <input id="storageToken" type="password" placeholder="رمز وصول اختياري" />
+            </div>
+            <div class="file-row">
+              <button class="btn-outline" id="saveStorageBtn" type="button">حفظ إعدادات التخزين</button>
+              <button class="btn-outline" id="uploadStorageBtn" type="button">رفع الملفات المكتملة للسحابة</button>
+            </div>
+            <div id="storageStatus" class="status">اختر مزود التخزين ثم نفذ رفع الملفات المعالجة.</div>
+          </div>
+
+          <textarea id="reportInput" placeholder="أو الصق هنا التقرير الطبي المراد تحليله..."></textarea>
+
+          <div class="sample-bar">
+            <button class="sample-btn" type="button" data-sample="diabetes">عينة: سكري</button>
+            <button class="sample-btn" type="button" data-sample="oncology">عينة: أورام</button>
+            <button class="sample-btn" type="button" data-sample="emergency">عينة: طوارئ</button>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-main" id="analyzeBtn" type="button">تحليل التقرير عبر Groq</button>
+            <button class="btn-outline" id="saveRecordBtn" type="button" disabled>حفظ في الأرشيف التجريبي</button>
+          </div>
+
+          <div id="extractStatus" class="status">ابدأ بتحليل تقرير طبي لتوليد سجل منظم.</div>
+        </article>
+
+        <article class="console-panel">
+          <h3>الخطوة 2: نتيجة الاستخراج المنظم</h3>
+          <p class="panel-sub">النتيجة التالية تمثل التحويل من تقرير نصي أو ملف مرفوع إلى سجل طبي قابل للبحث والتحليل.</p>
+          <div id="extractResult" class="result-box"></div>
+
+          <h3 style="margin-top: 14px;">السجلات المحفوظة في التجربة</h3>
+          <div id="recordsList" class="record-list"></div>
+        </article>
+      </div>
+
+      <div class="console-grid">
+        <article class="console-panel">
+          <h3>الخطوة 3: بحث طبي باللغة الطبيعية</h3>
+          <p class="panel-sub">مثال: "مرضى السكري فوق 60 سنة مع ضغط مرتفع وأدوية إنسولين".</p>
+          <input id="searchQuery" type="text" placeholder="اكتب سؤال البحث الطبي هنا..." />
+          <div class="action-row">
+            <button class="btn-sub" id="searchBtn" type="button">تشغيل البحث الذكي</button>
+          </div>
+          <div id="searchStatus" class="status">بعد حفظ السجلات، يمكنك تشغيل البحث الفوري.</div>
+          <div id="searchResult" class="result-box" style="margin-top: 10px;"></div>
+        </article>
+
+        <article class="console-panel">
+          <h3>الخطوة 4: تحليلات تشغيلية فورية</h3>
+          <p class="panel-sub">مؤشرات مخاطر وتوصيات تنفيذية تدعم إدارة المستشفى والقيادة الطبية.</p>
+          <div class="action-row">
+            <button class="btn-main" id="insightsBtn" type="button">توليد التحليلات</button>
+          </div>
+          <div id="insightsStatus" class="status">هذه الوحدة تبني ملخصاً تنفيذياً من السجلات المحفوظة.</div>
+          <div id="insightsResult" class="result-box" style="margin-top: 10px;"></div>
+        </article>
+      </div>
+
+      <div class="console-grid">
+        <article class="console-panel">
+          <h3>الوكيل الذكي (Gemini Flash)</h3>
+          <p class="panel-sub">مستشار تشغيلي ذكي للمستشفى: توصيات تنفيذية من السجلات المعالجة والدفعات الحالية.</p>
+          <input id="agentQuestion" type="text"
+            placeholder="مثال: ما خطة تحسين تقليل زمن فرز الحالات الحرجة خلال 30 يوماً؟" />
+          <div class="action-row">
+            <button class="btn-sub" id="agentBtn" type="button">تشغيل الوكيل الذكي</button>
+          </div>
+          <div id="agentStatus" class="status">بعد إنشاء سجلات أو معالجة دفعات يمكنك تشغيل الوكيل.</div>
+          <div id="agentResult" class="result-box" style="margin-top: 10px;"></div>
+        </article>
+
+        <article class="console-panel">
+          <h3>تقرير الدفعة بعد المعالجة</h3>
+          <p class="panel-sub">تقرير فوري عن النجاح/الفشل، الملفات الجاهزة للتحليل، ونتيجة الفحص والتحقق.</p>
+          <div id="batchReport" class="result-box"></div>
+        </article>
+      </div>
+
+      <div class="console-grid">
+        <article class="console-panel">
+          <h3>الخطوة 5: تصدير تكاملي لأنظمة السجلات الطبية</h3>
+          <p class="panel-sub">تصدير البيانات المستخرجة بصيغ مناسبة للتكامل مع EHR.</p>
+          <div class="export-grid">
+            <button class="btn-outline" id="exportFhirBtn" type="button">تصدير FHIR JSON</button>
+            <button class="btn-outline" id="exportCsvBtn" type="button">تصدير CSV</button>
+            <button class="btn-outline" id="exportHl7Btn" type="button">تصدير HL7</button>
+            <button class="btn-outline" id="exportArchiveFhirBtn" type="button">تصدير كل السجلات NDJSON</button>
+          </div>
+          <div id="exportStatus" class="status">اختر صيغة التصدير بعد التحليل أو بعد حفظ السجلات.</div>
+        </article>
+
+        <article class="console-panel">
+          <h3>حالات استخدام سعودية جاهزة</h3>
+          <ul class="mini-list">
+            <li>فرز تنبيهات الحالات الحرجة في أقسام الطوارئ أثناء مواسم الضغط.</li>
+            <li>تجميع حالات الأورام ومقارنة بروتوكولات العلاج عبر المراكز.</li>
+            <li>متابعة مرضى السكري والأمراض المزمنة وتقليل التباين في الإدخال الطبي.</li>
+            <li>تجهيز بيانات بحثية منظمة للفرق الطبية والإدارية بسرعة أعلى.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="lead-strip" id="leadForm">
+      <div class="section-title" style="margin: 0 0 10px;">
+        <h2>تفعيل التجربة المؤسسية للمستشفى</h2>
+        <p>أرسل طلب التفعيل لفريق Bright AI مع بيانات المسؤول التشغيلي.</p>
+      </div>
+
+      <div class="lead-grid">
+        <input id="leadHospital" type="text" placeholder="اسم المستشفى" />
+        <input id="leadName" type="text" placeholder="اسم المسؤول" />
+        <input id="leadPhone" type="tel" placeholder="رقم الجوال" />
+        <button class="btn-main" id="leadBtn" type="button">إرسال طلب التجربة</button>
+      </div>
+      <div id="leadStatus" class="status" style="margin-top: 10px;">سيتم إرسال الطلب عبر واتساب إلى فريق التفعيل.</div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>ربط داخلي لخدمات مرتبطة</h2>
+        <p>هيكلة روابط داخلية محسنة لتحسين الزحف والفهرسة لمسار القطاع الصحي.</p>
+      </div>
+      <div class="internal-links">
+        <a href="/frontend/pages/sectors/healthcare.html">حلول الذكاء الاصطناعي للقطاع الصحي السعودي</a>
+        <a href="/frontend/pages/health-bright/index.html">حلول AI الطبية المتقدمة للحالات السريرية</a>
+        <a href="/frontend/pages/data-analysis/index.html">تحليل البيانات الصحية ولوحات المتابعة</a>
+        <a href="/frontend/pages/consultation/index.html">حجز استشارة تنفيذية للتحول الصحي</a>
+        <a href="/frontend/pages/ai-agent/index.html">تكامل الوكلاء الذكية مع أنظمة المستشفى</a>
+        <a href="/frontend/pages/blogger/digital-health-smart-archive.html">دراسة موسعة عن الأرشيف الطبي الذكي</a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>أسئلة تشغيلية متكررة</h2>
+        <p>إجابات عملية للفريق الطبي والإداري قبل تفعيل النظام على بيئة المستشفى الفعلية.</p>
+      </div>
+      <div class="faq-grid" id="faq">
+        <article class="faq-item">
+          <h4>هل يمكن تشغيل التجربة على تقارير عربية وإنجليزية؟</h4>
+          <p>نعم، النظام يتعامل مع تقارير ثنائية اللغة ويعيدها في بنية موحدة قابلة للبحث والتحليل.</p>
+        </article>
+        <article class="faq-item">
+          <h4>ما أول مؤشر نجاح يجب قياسه؟</h4>
+          <p>زمن تحويل التقرير إلى سجل قابل للبحث، ثم زمن وصول الطبيب إلى حالة مشابهة أثناء التشخيص.</p>
+        </article>
+        <article class="faq-item">
+          <h4>هل يدعم الربط مع نظام السجل الصحي الإلكتروني؟</h4>
+          <p>نعم، يمكن البدء بالتصدير بصيغ FHIR وHL7 وCSV، ثم اعتماد تكامل مباشر عبر واجهات برمجة مخصصة.</p>
+        </article>
+        <article class="faq-item">
+          <h4>هل يصلح لمواسم الضغط مثل الحج والعمرة؟</h4>
+          <p>نعم، لأنه يقلل زمن قراءة التقارير ويُظهر التنبيهات الحرجة بسرعة أعلى في أقسام الطوارئ والفرز.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © 2026 Bright AI - نظام الأرشيف الطبي الذكي للمستشفيات في السعودية.
+    </footer>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-links" aria-label="روابط داخلية">
-        <a href="../sectors/healthcare.html">قطاع الرعاية الصحية</a>
-        <a href="../smart-automation/index.html">حلول الأتمتة الذكية</a>
-        <a href="../demo/ocr-demo/index.html">تجربة OCR</a>
-        <a href="../contact/index.html">تواصل مع فريق الحلول</a>
-      </div>
-      <p class="footer-copy">© <span id="year"></span> Bright AI. الأرشيف الطبي الذكي مصمم لرفع الكفاءة التشغيلية وتحسين الالتزام في المنشآت الصحية السعودية.</p>
-    </div>
-  </footer>
-
-  <div class="mobile-cta">
-    <a class="btn btn-primary" href="../consultation/index.html" data-cta="mobile-consultation">احجز اجتماعاً سريعاً</a>
-  </div>
-
-  <script>
-    (function () {
-      var year = document.getElementById('year');
-      if (year) {
-        year.textContent = String(new Date().getFullYear());
-      }
-
-      var searchInput = document.getElementById('smart-search-input');
-      var searchForm = document.getElementById('smart-search-form');
-      var output = document.getElementById('search-output');
-      var chips = document.querySelectorAll('.chip[data-query]');
-
-      function renderSearchMessage(query) {
-        var safeQuery = query.replace(/[<>]/g, '').trim();
-        if (!safeQuery) {
-          output.classList.remove('active');
-          output.textContent = '';
-          return;
-        }
-
-        output.classList.add('active');
-        output.textContent = 'نتيجة تجريبية: تم العثور على ملفات متوافقة مع طلب "' + safeQuery + '". لعرض النتائج الفعلية وربطها ببيانات المستشفى، ابدأ جلسة التقييم التنفيذية.';
-      }
-
-      chips.forEach(function (chip) {
-        chip.addEventListener('click', function () {
-          var query = chip.getAttribute('data-query') || '';
-          searchInput.value = query;
-          renderSearchMessage(query);
-          searchInput.focus();
-        });
-      });
-
-      if (searchForm) {
-        searchForm.addEventListener('submit', function (event) {
-          event.preventDefault();
-          renderSearchMessage(searchInput.value);
-
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'smart_search_demo_submit', {
-              event_category: 'engagement',
-              event_label: 'smart_medical_archive_demo'
-            });
-          }
-        });
-      }
-
-      var ctas = document.querySelectorAll('[data-cta]');
-      ctas.forEach(function (cta) {
-        cta.addEventListener('click', function () {
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'cta_click', {
-              event_category: 'conversion',
-              event_label: cta.getAttribute('data-cta') || 'unknown'
-            });
-          }
-        });
-      });
-    })();
-  </script>
+  <script defer src="../../js/navigation.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script defer src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script defer src="./system-unified.js"></script>
 </body>
+
 </html>
