@@ -1289,6 +1289,7 @@
       setStatus(refs.extractStatus, "أدخل تقريراً طبياً كاملاً (30 حرفاً على الأقل).", "error");
       return;
     }
+    const startAt = performance.now();
 
     setButtonLoading(refs.analyzeBtn, true, "جاري التحليل عبر Groq...");
     setStatus(refs.extractStatus, "جاري استخراج البيانات الصحية من التقرير...", "");
@@ -1315,8 +1316,19 @@
         `تم التحليل بنجاح عبر نموذج ${data.model || "Groq"}. احفظ السجل لإتاحته في البحث والتحليلات.`,
         "success"
       );
+      trackDashboardEvent("analysis", {
+        success: true,
+        durationMs: Math.round(performance.now() - startAt),
+        model: data.model || "Groq",
+        size: reportText.length,
+      });
     } catch (error) {
       setStatus(refs.extractStatus, toFriendlyError(error, "تعذر تحليل التقرير حالياً"), "error");
+      trackDashboardEvent("analysis", {
+        success: false,
+        durationMs: Math.round(performance.now() - startAt),
+        reason: String(error && error.message ? error.message : "error"),
+      });
     } finally {
       setButtonLoading(refs.analyzeBtn, false);
     }
@@ -1335,6 +1347,7 @@
     }
 
     setStatus(refs.extractStatus, "تم حفظ السجل داخل الأرشيف التجريبي ويمكن البحث فيه الآن.", "success");
+    trackDashboardEvent("save_record", { success: true });
   }
 
   function buildWhyMatched(result) {
@@ -2163,24 +2176,40 @@
     }
 
     saveSearchEngineConfig();
+    const startAt = performance.now();
     const page = options && options.page ? options.page : state.searchCurrentPage;
     setStatus(refs.searchStatus, "جاري تنفيذ البحث متعدد المستويات...", "");
 
-    const result = await executeSearchEngine(query, {
-      page,
-      filters: parseFilters(),
-    });
+    try {
+      const result = await executeSearchEngine(query, {
+        page,
+        filters: parseFilters(),
+      });
 
-    state.searchCurrentPage = result.page;
-    state.searchLastKey = buildSearchCacheKey(result.query, parseFilters(), result.page);
-    state.searchLastAllResults = asArray(result.allRows);
-    state.searchLastPagedResults = asArray(result.rows);
-    renderSearchResult(result);
-    setStatus(
-      refs.searchStatus,
-      `تم تنفيذ البحث بنجاح عبر محرك ${result.provider}.`,
-      "success"
-    );
+      state.searchCurrentPage = result.page;
+      state.searchLastKey = buildSearchCacheKey(result.query, parseFilters(), result.page);
+      state.searchLastAllResults = asArray(result.allRows);
+      state.searchLastPagedResults = asArray(result.rows);
+      renderSearchResult(result);
+      setStatus(
+        refs.searchStatus,
+        `تم تنفيذ البحث بنجاح عبر محرك ${result.provider}.`,
+        "success"
+      );
+      trackDashboardEvent("search", {
+        success: true,
+        durationMs: Math.round(performance.now() - startAt),
+        provider: result.provider,
+        matches: result.totalMatches,
+      });
+    } catch (error) {
+      trackDashboardEvent("search", {
+        success: false,
+        durationMs: Math.round(performance.now() - startAt),
+        reason: String(error && error.message ? error.message : "error"),
+      });
+      throw error;
+    }
   }
 
   async function handleSearch() {
@@ -2531,6 +2560,781 @@
     }
   }
 
+  function asDateKey(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function trackDashboardEvent(type, payload) {
+    const event = Object.assign(
+      {
+        type: String(type || "event"),
+        ts: Date.now(),
+        actor: (refs.leadName && refs.leadName.value.trim()) || "مستخدم النظام",
+      },
+      payload || {}
+    );
+    state.dashboardEvents.push(event);
+    if (state.dashboardEvents.length > 1000) {
+      state.dashboardEvents = state.dashboardEvents.slice(-1000);
+    }
+    safeStorageSet(STORAGE_DASHBOARD_EVENTS_KEY, JSON.stringify(state.dashboardEvents.slice(-300)));
+    scheduleDashboardRefresh("تم تسجيل نشاط جديد في النظام.");
+  }
+
+  function getRecordTimestamp(record) {
+    const value = (record && (record.savedAt || record.capturedAt || (record.encounter && record.encounter.date))) || "";
+    const parsed = parseTime(value);
+    return parsed != null ? parsed : Date.now();
+  }
+
+  function normalizeRecordCity(record) {
+    return (
+      (record && record.patient && record.patient.city) ||
+      (record && record.sourceHospital) ||
+      "غير محدد"
+    );
+  }
+
+  function getDashboardHistorySnapshot(metrics) {
+    const key = asDateKey(new Date());
+    const existingIndex = state.dashboardHistory.findIndex(function (item) { return item.dateKey === key; });
+    const snapshot = {
+      dateKey: key,
+      ts: Date.now(),
+      totalRecords: metrics.totalRecords,
+      criticalCases: metrics.criticalCases,
+      dailyUsage: metrics.dailyUsage,
+      avgProcessingSec: metrics.avgProcessingSec,
+      responseMs: metrics.responseMs,
+      accuracy: metrics.accuracy,
+      successRate: metrics.successRate,
+      satisfaction: metrics.satisfaction,
+    };
+    if (existingIndex >= 0) {
+      state.dashboardHistory[existingIndex] = snapshot;
+    } else {
+      state.dashboardHistory.push(snapshot);
+    }
+    state.dashboardHistory = state.dashboardHistory.slice(-180);
+    safeStorageSet(STORAGE_DASHBOARD_HISTORY_KEY, JSON.stringify(state.dashboardHistory));
+  }
+
+  function computeDashboardMetrics() {
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    const oneWeek = 7 * oneDay;
+
+    const totalRecords = state.records.length;
+    const newToday = state.records.filter(function (record) { return now - getRecordTimestamp(record) <= oneDay; }).length;
+    const newWeek = state.records.filter(function (record) { return now - getRecordTimestamp(record) <= oneWeek; }).length;
+
+    const criticalCases = state.records.filter(function (record) {
+      return normalizeTextList(record.alerts).some(function (alert) {
+        const norm = normalizeSearchText(alert);
+        return norm.includes("خطر") || norm.includes("critical") || norm.includes("high");
+      });
+    }).length;
+
+    const todayEvents = state.dashboardEvents.filter(function (event) { return now - event.ts <= oneDay; });
+    const dailyUsage = todayEvents.length;
+
+    const processDurations = state.dashboardEvents
+      .filter(function (event) { return event.durationMs != null && Number(event.durationMs) > 0; })
+      .map(function (event) { return Number(event.durationMs); });
+    const responseMs = processDurations.length
+      ? Math.round(processDurations.reduce(function (sum, value) { return sum + value; }, 0) / processDurations.length)
+      : 0;
+    const avgProcessingSec = responseMs ? (responseMs / 1000).toFixed(1) : "0.0";
+
+    const confidenceValues = state.records
+      .map(function (record) { return Number(record && record.confidence); })
+      .filter(function (value) { return Number.isFinite(value) && value > 0; });
+    const accuracy = confidenceValues.length
+      ? Math.round((confidenceValues.reduce(function (sum, value) { return sum + value; }, 0) / confidenceValues.length) * 100)
+      : 90;
+
+    const analysisEvents = state.dashboardEvents.filter(function (event) { return event.type === "analysis"; });
+    const successEvents = analysisEvents.filter(function (event) { return !!event.success; });
+    const successRate = analysisEvents.length
+      ? Math.round((successEvents.length / analysisEvents.length) * 100)
+      : (totalRecords ? 95 : 0);
+
+    const responsePenalty = Math.min(35, Math.round(responseMs / 80));
+    const satisfaction = Math.max(50, Math.min(99, Math.round((successRate * 0.55) + (accuracy * 0.35) + (100 - responsePenalty) * 0.1)));
+
+    const previous = state.dashboardHistory.length ? state.dashboardHistory[state.dashboardHistory.length - 1] : null;
+    const growth = previous && previous.totalRecords
+      ? Math.round(((totalRecords - previous.totalRecords) / previous.totalRecords) * 100)
+      : (totalRecords ? 100 : 0);
+
+    return {
+      totalRecords,
+      growth,
+      newToday,
+      newWeek,
+      criticalCases,
+      dailyUsage,
+      avgProcessingSec,
+      responseMs,
+      accuracy,
+      successRate,
+      satisfaction,
+    };
+  }
+
+  function renderDashboardOverview(metrics) {
+    if (refs.overviewTotalRecords) refs.overviewTotalRecords.textContent = String(metrics.totalRecords);
+    if (refs.overviewTotalGrowth) refs.overviewTotalGrowth.textContent = `${metrics.growth >= 0 ? "+" : ""}${metrics.growth}%`;
+    if (refs.overviewNewRecords) refs.overviewNewRecords.textContent = `${metrics.newToday} / ${metrics.newWeek}`;
+    if (refs.overviewCriticalCases) refs.overviewCriticalCases.textContent = String(metrics.criticalCases);
+    if (refs.overviewDailyUsage) refs.overviewDailyUsage.textContent = String(metrics.dailyUsage);
+    if (refs.overviewAvgProcessing) refs.overviewAvgProcessing.textContent = `${metrics.avgProcessingSec}ث`;
+    if (refs.kpiResponseTime) refs.kpiResponseTime.textContent = `${metrics.responseMs}ms`;
+    if (refs.kpiExtractionAccuracy) refs.kpiExtractionAccuracy.textContent = `${metrics.accuracy}%`;
+    if (refs.kpiAnalysisSuccess) refs.kpiAnalysisSuccess.textContent = `${metrics.successRate}%`;
+    if (refs.kpiUserSatisfaction) refs.kpiUserSatisfaction.textContent = `${metrics.satisfaction}%`;
+  }
+
+  function createOrUpdateChart(chartKey, canvas, config) {
+    if (!canvas || !window.Chart) return null;
+    const existing = state.dashboardCharts[chartKey];
+    if (existing && typeof existing.destroy === "function") {
+      existing.destroy();
+    }
+    const chart = new window.Chart(canvas.getContext("2d"), config);
+    state.dashboardCharts[chartKey] = chart;
+    return chart;
+  }
+
+  function groupRecordsByPeriod(records, granularity) {
+    const groups = {};
+    const sorted = records.slice().sort(function (a, b) { return getRecordTimestamp(a) - getRecordTimestamp(b); });
+
+    sorted.forEach(function (record) {
+      const date = new Date(getRecordTimestamp(record));
+      let key = "";
+      if (granularity === "monthly") {
+        key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      } else if (granularity === "weekly") {
+        const first = new Date(date);
+        first.setDate(date.getDate() - date.getDay());
+        key = `أسبوع ${asDateKey(first)}`;
+      } else {
+        key = asDateKey(date);
+      }
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(record);
+    });
+    return groups;
+  }
+
+  function renderTimelineChart() {
+    const granularity = refs.timelineGranularitySelect ? refs.timelineGranularitySelect.value : "daily";
+    const grouped = groupRecordsByPeriod(state.records, granularity);
+    const labels = Object.keys(grouped).sort();
+    const values = labels.map(function (label) { return grouped[label].length; });
+
+    const departments = {};
+    state.records.forEach(function (record) {
+      const dep = getDepartmentFromRecord(record) || "غير محدد";
+      if (!departments[dep]) departments[dep] = {};
+      const date = new Date(getRecordTimestamp(record));
+      let key = granularity === "monthly"
+        ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`
+        : granularity === "weekly"
+          ? `أسبوع ${asDateKey(new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay()))}`
+          : asDateKey(date);
+      departments[dep][key] = (departments[dep][key] || 0) + 1;
+    });
+    const depDatasets = Object.keys(departments).slice(0, 3).map(function (dep, idx) {
+      const colorSet = ["#19b2a4", "#ff8a34", "#5aa3ff"];
+      return {
+        label: dep,
+        data: labels.map(function (label) { return departments[dep][label] || 0; }),
+        borderColor: colorSet[idx % colorSet.length],
+        backgroundColor: "transparent",
+        tension: 0.3,
+      };
+    });
+    depDatasets.unshift({
+      label: "إجمالي السجلات",
+      data: values,
+      borderColor: "#e8f1f8",
+      backgroundColor: "rgba(232,241,248,0.15)",
+      tension: 0.3,
+      fill: true,
+    });
+
+    createOrUpdateChart("timelineChart", refs.timelineChart, {
+      type: "line",
+      data: { labels, datasets: depDatasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: "#c9d8e4" } },
+          zoom: {
+            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "x" },
+            pan: { enabled: true, mode: "x" },
+          },
+        },
+        scales: {
+          x: { ticks: { color: "#a8bfce" }, grid: { color: "rgba(166,197,221,0.1)" } },
+          y: { ticks: { color: "#a8bfce" }, grid: { color: "rgba(166,197,221,0.1)" }, beginAtZero: true },
+        },
+      },
+    });
+  }
+
+  function renderDemographicCharts() {
+    const ageBuckets = { "0-17": 0, "18-35": 0, "36-60": 0, "60+": 0, "غير محدد": 0 };
+    const genderBuckets = { "ذكر": 0, "أنثى": 0, "غير محدد": 0 };
+    const geoBuckets = {};
+
+    state.records.forEach(function (record) {
+      const patient = record && record.patient ? record.patient : {};
+      const age = parseAge(patient.age);
+      if (age == null) ageBuckets["غير محدد"] += 1;
+      else if (age < 18) ageBuckets["0-17"] += 1;
+      else if (age <= 35) ageBuckets["18-35"] += 1;
+      else if (age <= 60) ageBuckets["36-60"] += 1;
+      else ageBuckets["60+"] += 1;
+
+      const gender = normalizeGenderInput(patient.gender);
+      if (gender === "male") genderBuckets["ذكر"] += 1;
+      else if (gender === "female") genderBuckets["أنثى"] += 1;
+      else genderBuckets["غير محدد"] += 1;
+
+      const city = normalizeRecordCity(record);
+      geoBuckets[city] = (geoBuckets[city] || 0) + 1;
+    });
+
+    createOrUpdateChart("ageDistributionChart", refs.ageDistributionChart, {
+      type: "pie",
+      data: {
+        labels: Object.keys(ageBuckets),
+        datasets: [{ data: Object.values(ageBuckets), backgroundColor: ["#19b2a4", "#5aa3ff", "#ff8a34", "#e35d75", "#7f8fa6"] }],
+      },
+      options: { plugins: { legend: { labels: { color: "#cfe0ec" } } } },
+    });
+
+    createOrUpdateChart("genderDistributionChart", refs.genderDistributionChart, {
+      type: "bar",
+      data: {
+        labels: Object.keys(genderBuckets),
+        datasets: [{ label: "عدد الحالات", data: Object.values(genderBuckets), backgroundColor: ["#5aa3ff", "#ff8a34", "#7f8fa6"] }],
+      },
+      options: {
+        plugins: { legend: { labels: { color: "#cfe0ec" } } },
+        scales: { x: { ticks: { color: "#cfe0ec" } }, y: { ticks: { color: "#cfe0ec" }, beginAtZero: true } },
+      },
+    });
+
+    const geoEntries = Object.keys(geoBuckets).map(function (city) {
+      return { city, value: geoBuckets[city] };
+    }).sort(function (a, b) { return b.value - a.value; }).slice(0, 12);
+    const maxGeo = geoEntries.length ? geoEntries[0].value : 1;
+    createOrUpdateChart("geoHeatmapChart", refs.geoHeatmapChart, {
+      type: "bar",
+      data: {
+        labels: geoEntries.map(function (row) { return row.city; }),
+        datasets: [{
+          label: "الكثافة الجغرافية",
+          data: geoEntries.map(function (row) { return row.value; }),
+          backgroundColor: geoEntries.map(function (row) {
+            const ratio = maxGeo ? row.value / maxGeo : 0;
+            return `rgba(25,178,164,${0.3 + ratio * 0.7})`;
+          }),
+        }],
+      },
+      options: {
+        indexAxis: "y",
+        plugins: { legend: { labels: { color: "#cfe0ec" } } },
+        scales: { x: { ticks: { color: "#cfe0ec" }, beginAtZero: true }, y: { ticks: { color: "#cfe0ec" } } },
+      },
+    });
+  }
+
+  function renderTopDiagnosisChart() {
+    const countMap = {};
+    state.records.forEach(function (record) {
+      normalizeTextList(record.diagnoses).forEach(function (diag) {
+        const key = diag || "غير محدد";
+        countMap[key] = (countMap[key] || 0) + 1;
+      });
+    });
+    const sorted = Object.keys(countMap).map(function (name) {
+      return { name, count: countMap[name] };
+    }).sort(function (a, b) { return b.count - a.count; }).slice(0, 10);
+
+    const mid = Math.max(1, Math.floor(state.records.length / 2));
+    const previousRecords = state.records.slice(0, mid);
+    const prevMap = {};
+    previousRecords.forEach(function (record) {
+      normalizeTextList(record.diagnoses).forEach(function (diag) {
+        const key = diag || "غير محدد";
+        prevMap[key] = (prevMap[key] || 0) + 1;
+      });
+    });
+
+    createOrUpdateChart("topDiagnosesChart", refs.topDiagnosesChart, {
+      type: "bar",
+      data: {
+        labels: sorted.map(function (row) { return row.name; }),
+        datasets: [
+          { label: "الفترة الحالية", data: sorted.map(function (row) { return row.count; }), backgroundColor: "#19b2a4" },
+          { label: "الفترة السابقة", data: sorted.map(function (row) { return prevMap[row.name] || 0; }), backgroundColor: "#ff8a34" },
+        ],
+      },
+      options: {
+        plugins: { legend: { labels: { color: "#cfe0ec" } } },
+        scales: { x: { ticks: { color: "#cfe0ec" } }, y: { ticks: { color: "#cfe0ec" }, beginAtZero: true } },
+      },
+    });
+  }
+
+  function detectDrugInteractions(records) {
+    const rules = [
+      { a: "warfarin", b: "tamoxifen", level: "high", note: "قد يزيد خطر النزف" },
+      { a: "insulin", b: "metformin", level: "medium", note: "راقب هبوط السكر مع تعديل الجرعات" },
+      { a: "aspirin", b: "clopidogrel", level: "medium", note: "مضاعفة تأثير مميعات الدم" },
+      { a: "furosemide", b: "digoxin", level: "high", note: "احتمال اضطراب النظم مع نقص البوتاسيوم" },
+    ];
+
+    const interactions = [];
+    records.forEach(function (record) {
+      const meds = normalizeMedicationList(record.medications).map(function (med) { return normalizeSearchText(med.name); });
+      rules.forEach(function (rule) {
+        if (meds.some(function (name) { return name.includes(rule.a); }) && meds.some(function (name) { return name.includes(rule.b); })) {
+          interactions.push({
+            recordId: record.recordId || "rec",
+            level: rule.level,
+            note: rule.note,
+            pair: `${rule.a} + ${rule.b}`,
+          });
+        }
+      });
+    });
+    return interactions;
+  }
+
+  function renderMedicationWidget() {
+    const medMap = {};
+    state.records.forEach(function (record) {
+      normalizeMedicationList(record.medications).forEach(function (med) {
+        const name = med.name || "غير محدد";
+        medMap[name] = (medMap[name] || 0) + 1;
+      });
+    });
+    const top = Object.keys(medMap).map(function (name) {
+      return { name, count: medMap[name] };
+    }).sort(function (a, b) { return b.count - a.count; }).slice(0, 10);
+
+    createOrUpdateChart("topMedicationsChart", refs.topMedicationsChart, {
+      type: "bar",
+      data: {
+        labels: top.map(function (item) { return item.name; }),
+        datasets: [{ label: "عدد الوصفات", data: top.map(function (item) { return item.count; }), backgroundColor: "#5aa3ff" }],
+      },
+      options: {
+        plugins: { legend: { labels: { color: "#cfe0ec" } } },
+        scales: { x: { ticks: { color: "#cfe0ec" } }, y: { ticks: { color: "#cfe0ec" }, beginAtZero: true } },
+      },
+    });
+
+    if (refs.medicationListInteractive) {
+      refs.medicationListInteractive.innerHTML = top.length
+        ? top.map(function (item) { return `<div class="record-item"><strong>${escapeHtml(item.name)}</strong><div class="meta">عدد الوصفات: ${escapeHtml(String(item.count))}</div></div>`; }).join("")
+        : "<p class=\"meta\">لا توجد بيانات أدوية كافية.</p>";
+    }
+
+    const interactions = detectDrugInteractions(state.records);
+    if (refs.drugInteractionList) {
+      refs.drugInteractionList.innerHTML = interactions.length
+        ? interactions.slice(0, 10).map(function (row) {
+            return `<div class="record-item"><strong>${escapeHtml(row.level.toUpperCase())}</strong><div class="meta">${escapeHtml(row.pair)} - ${escapeHtml(row.note)} - ${escapeHtml(row.recordId)}</div></div>`;
+          }).join("")
+        : "<p class=\"meta\">لم يتم رصد تفاعلات دوائية بارزة في البيانات الحالية.</p>";
+    }
+  }
+
+  function renderActivityCharts() {
+    const userMap = {};
+    const hourMap = Array.from({ length: 24 }, function () { return 0; });
+    const dayMap = {};
+
+    state.dashboardEvents.forEach(function (event) {
+      const actor = event.actor || "مستخدم النظام";
+      userMap[actor] = (userMap[actor] || 0) + 1;
+      const date = new Date(event.ts || Date.now());
+      hourMap[date.getHours()] += 1;
+      const key = asDateKey(date);
+      dayMap[key] = (dayMap[key] || 0) + 1;
+    });
+
+    const topUsers = Object.keys(userMap).map(function (name) {
+      return { name, count: userMap[name] };
+    }).sort(function (a, b) { return b.count - a.count; }).slice(0, 8);
+
+    const dayKeys = Object.keys(dayMap).sort().slice(-14);
+    const productivity = dayKeys.map(function (day) { return dayMap[day] || 0; });
+
+    createOrUpdateChart("userActivityChart", refs.userActivityChart, {
+      type: "bar",
+      data: {
+        labels: topUsers.map(function (row) { return row.name; }),
+        datasets: [{ label: "عدد العمليات", data: topUsers.map(function (row) { return row.count; }), backgroundColor: "#19b2a4" }],
+      },
+      options: { plugins: { legend: { labels: { color: "#cfe0ec" } } }, scales: { x: { ticks: { color: "#cfe0ec" } }, y: { ticks: { color: "#cfe0ec" }, beginAtZero: true } } },
+    });
+
+    createOrUpdateChart("peakHoursChart", refs.peakHoursChart, {
+      type: "line",
+      data: {
+        labels: hourMap.map(function (_, idx) { return `${idx}:00`; }),
+        datasets: [{ label: "أوقات الذروة", data: hourMap, borderColor: "#ff8a34", backgroundColor: "rgba(255,138,52,0.2)", tension: 0.3, fill: true }],
+      },
+      options: { plugins: { legend: { labels: { color: "#cfe0ec" } } }, scales: { x: { ticks: { color: "#cfe0ec" } }, y: { ticks: { color: "#cfe0ec" }, beginAtZero: true } } },
+    });
+
+    createOrUpdateChart("productivityChart", refs.productivityChart, {
+      type: "bar",
+      data: { labels: dayKeys, datasets: [{ label: "إنتاجية الاستخدام اليومية", data: productivity, backgroundColor: "#5aa3ff" }] },
+      options: { plugins: { legend: { labels: { color: "#cfe0ec" } } }, scales: { x: { ticks: { color: "#cfe0ec" } }, y: { ticks: { color: "#cfe0ec" }, beginAtZero: true } } },
+    });
+  }
+
+  function renderAlertLists() {
+    const urgent = [];
+    const medExpiry = [];
+    const followups = [];
+    const anomalies = [];
+
+    state.records.forEach(function (record) {
+      const patientName = (record && record.patient && record.patient.name) || "مريض غير معروف";
+      const recId = record.recordId || "rec";
+
+      normalizeTextList(record.alerts).forEach(function (alert) {
+        const norm = normalizeSearchText(alert);
+        if (norm.includes("خطر") || norm.includes("critical") || norm.includes("high")) {
+          urgent.push(`${recId} - ${patientName}: ${alert}`);
+        }
+      });
+
+      normalizeMedicationList(record.medications).forEach(function (med) {
+        const durationText = String(med.duration || "");
+        const daysMatch = durationText.match(/(\d+)/);
+        const days = daysMatch ? Number(daysMatch[1]) : null;
+        if (days != null && days <= 7) {
+          medExpiry.push(`${recId} - ${med.name}: المدة المتبقية قصيرة (${days} أيام)`);
+        }
+      });
+
+      const summary = record.summary && typeof record.summary === "object" ? record.summary : {};
+      if (summary.nextStep && normalizeSearchText(summary.nextStep).includes("متاب")) {
+        followups.push(`${recId} - ${patientName}: ${summary.nextStep}`);
+      }
+
+      const riskCount = normalizeTextList(record.alerts).length;
+      if (riskCount >= 4) {
+        anomalies.push(`${recId} - ${patientName}: عدد تنبيهات غير اعتيادي (${riskCount})`);
+      }
+    });
+
+    const dailyCounts = {};
+    state.records.forEach(function (record) {
+      const key = asDateKey(new Date(getRecordTimestamp(record)));
+      dailyCounts[key] = (dailyCounts[key] || 0) + 1;
+    });
+    const values = Object.values(dailyCounts);
+    if (values.length >= 5) {
+      const avg = values.reduce(function (s, v) { return s + v; }, 0) / values.length;
+      const variance = values.reduce(function (s, v) { return s + Math.pow(v - avg, 2); }, 0) / values.length;
+      const stdev = Math.sqrt(variance);
+      Object.keys(dailyCounts).forEach(function (day) {
+        if (stdev > 0 && (dailyCounts[day] - avg) / stdev > 2) {
+          anomalies.push(`ارتفاع غير طبيعي في عدد السجلات بتاريخ ${day}`);
+        }
+      });
+    }
+
+    const renderList = function (ref, rows, emptyText) {
+      if (!ref) return;
+      ref.innerHTML = rows.length
+        ? rows.slice(0, 8).map(function (text) { return `<div class="record-item"><div class="meta">${escapeHtml(text)}</div></div>`; }).join("")
+        : `<p class="meta">${escapeHtml(emptyText)}</p>`;
+    };
+
+    renderList(refs.urgentAlertsList, urgent, "لا توجد حالات عاجلة حالياً.");
+    renderList(refs.medExpiryAlertsList, medExpiry, "لا توجد أدوية قريبة الانتهاء.");
+    renderList(refs.followupAlertsList, followups, "لا توجد مواعيد متابعة قادمة.");
+    renderList(refs.anomalyAlertsList, anomalies, "لم يتم رصد حالات شاذة حالياً.");
+  }
+
+  function renderLiveNotifications() {
+    if (!refs.liveNotificationsList) return;
+    refs.liveNotificationsList.innerHTML = state.dashboardNotifications.length
+      ? state.dashboardNotifications.slice().reverse().slice(0, 18).map(function (row) {
+          return `<div class="record-item"><div class="top"><span class="id">${escapeHtml(row.level || "live")}</span><span class="meta">${escapeHtml(new Date(row.ts).toLocaleTimeString("ar-SA"))}</span></div><div class="meta">${escapeHtml(row.message || "")}</div></div>`;
+        }).join("")
+      : "<p class=\"meta\">لا توجد إشعارات حية حتى الآن.</p>";
+  }
+
+  function pushLiveNotification(level, message) {
+    state.dashboardNotifications.push({ level, message, ts: Date.now() });
+    if (state.dashboardNotifications.length > 100) {
+      state.dashboardNotifications = state.dashboardNotifications.slice(-100);
+    }
+    renderLiveNotifications();
+  }
+
+  function updateLiveSocketStatus(message, type) {
+    setStatus(refs.liveSocketStatus, message, type);
+  }
+
+  function disconnectLiveSocket() {
+    if (state.liveSocketRetryTimer) {
+      clearTimeout(state.liveSocketRetryTimer);
+      state.liveSocketRetryTimer = null;
+    }
+    if (state.liveSocket) {
+      try { state.liveSocket.close(); } catch (error) { /* ignore */ }
+      state.liveSocket = null;
+    }
+    state.liveSocketConnected = false;
+  }
+
+  function getLiveSocketCandidates() {
+    const bases = buildApiBaseCandidates();
+    return bases.map(function (base) {
+      const normalized = String(base || "").replace(/\/+$/, "");
+      if (normalized.startsWith("https://")) return normalized.replace(/^https:\/\//, "wss://");
+      if (normalized.startsWith("http://")) return normalized.replace(/^http:\/\//, "ws://");
+      return normalized;
+    });
+  }
+
+  function connectDashboardLiveSocket(forceReconnect) {
+    if (forceReconnect) {
+      disconnectLiveSocket();
+    }
+    if (state.liveSocketConnected || state.liveSocket) return;
+    const candidates = getLiveSocketCandidates();
+    let index = 0;
+
+    const tryConnect = function () {
+      if (index >= candidates.length) {
+        updateLiveSocketStatus("تعذر الاتصال بـ WebSocket حالياً، سيتم إعادة المحاولة تلقائياً.", "error");
+        state.liveSocketRetryTimer = setTimeout(function () {
+          state.liveSocketRetryTimer = null;
+          connectDashboardLiveSocket(true);
+        }, 6000);
+        return;
+      }
+
+      const base = candidates[index];
+      index += 1;
+      const url = `${base}/ws/live`;
+      let socket;
+      try {
+        socket = new WebSocket(url);
+      } catch (error) {
+        tryConnect();
+        return;
+      }
+
+      let opened = false;
+      const openTimer = setTimeout(function () {
+        if (!opened) {
+          try { socket.close(); } catch (error) { /* ignore */ }
+          tryConnect();
+        }
+      }, 3500);
+
+      socket.onopen = function () {
+        opened = true;
+        clearTimeout(openTimer);
+        state.liveSocket = socket;
+        state.liveSocketConnected = true;
+        updateLiveSocketStatus(`متصل بالتحديثات الفورية عبر WebSocket: ${url}`, "success");
+      };
+
+      socket.onmessage = function (event) {
+        try {
+          const payload = JSON.parse(event.data || "{}");
+          const level = payload.level || payload.type || "live";
+          const message = payload.message || "تحديث فوري جديد.";
+          pushLiveNotification(level, message);
+          if (payload.type === "metrics_update") {
+            trackDashboardEvent("live_metrics", { success: true, source: "ws" });
+          }
+        } catch (error) {
+          pushLiveNotification("live", "تم استلام تحديث فوري جديد.");
+        }
+      };
+
+      socket.onerror = function () {
+        clearTimeout(openTimer);
+      };
+
+      socket.onclose = function () {
+        clearTimeout(openTimer);
+        state.liveSocketConnected = false;
+        state.liveSocket = null;
+        updateLiveSocketStatus("انقطع اتصال WebSocket. إعادة الاتصال جارية...", "error");
+        state.liveSocketRetryTimer = setTimeout(function () {
+          state.liveSocketRetryTimer = null;
+          connectDashboardLiveSocket(true);
+        }, 5000);
+      };
+    };
+
+    updateLiveSocketStatus("جاري محاولة الاتصال بالتحديثات الفورية...", "");
+    tryConnect();
+  }
+
+  function notifyDashboardStatus(message, type) {
+    setStatus(refs.dashboardStatus, message, type);
+  }
+
+  function applyWidgetVisibility() {
+    if (!refs.dashboardWidgets) return;
+    const widgets = Array.from(refs.dashboardWidgets.querySelectorAll("[data-widget-id]"));
+    widgets.forEach(function (widget) {
+      const id = widget.getAttribute("data-widget-id");
+      widget.style.display = state.dashboardHiddenWidgets.has(id) ? "none" : "";
+    });
+    if (refs.widgetToggles && refs.widgetToggles.length) {
+      refs.widgetToggles.forEach(function (checkbox) {
+        const id = checkbox.getAttribute("data-widget-toggle");
+        checkbox.checked = !state.dashboardHiddenWidgets.has(id);
+      });
+    }
+  }
+
+  function applyWidgetOrder() {
+    if (!refs.dashboardWidgets) return;
+    state.dashboardWidgetOrder.forEach(function (id) {
+      const node = refs.dashboardWidgets.querySelector(`[data-widget-id="${id}"]`);
+      if (node) refs.dashboardWidgets.appendChild(node);
+    });
+  }
+
+  function saveDashboardLayout() {
+    const payload = {
+      order: state.dashboardWidgetOrder.slice(),
+      hidden: Array.from(state.dashboardHiddenWidgets),
+    };
+    safeStorageSet(STORAGE_DASHBOARD_LAYOUT_KEY, JSON.stringify(payload));
+    safeStorageSet(STORAGE_DASHBOARD_ROLE_KEY, state.dashboardRole || "director");
+  }
+
+  function setWidgetVisibility(widgetId, visible) {
+    if (!widgetId) return;
+    if (visible) state.dashboardHiddenWidgets.delete(widgetId);
+    else state.dashboardHiddenWidgets.add(widgetId);
+    applyWidgetVisibility();
+    saveDashboardLayout();
+    scheduleDashboardRefresh("تم تحديث عرض الودجت.");
+  }
+
+  function applyRoleTemplate(role) {
+    if (!DASHBOARD_ROLE_TEMPLATES[role]) return;
+    state.dashboardRole = role;
+    const visible = new Set(DASHBOARD_ROLE_TEMPLATES[role]);
+    state.dashboardHiddenWidgets = new Set(
+      DASHBOARD_DEFAULT_WIDGET_ORDER.filter(function (id) { return !visible.has(id); })
+    );
+    state.dashboardWidgetOrder = DASHBOARD_DEFAULT_WIDGET_ORDER.slice();
+    if (refs.dashboardRoleSelect) refs.dashboardRoleSelect.value = role;
+    applyWidgetOrder();
+    applyWidgetVisibility();
+    saveDashboardLayout();
+    scheduleDashboardRefresh(`تم تطبيق قالب ${role} بنجاح.`);
+  }
+
+  function resetDashboardLayout() {
+    state.dashboardWidgetOrder = DASHBOARD_DEFAULT_WIDGET_ORDER.slice();
+    state.dashboardHiddenWidgets = new Set();
+    applyWidgetOrder();
+    applyWidgetVisibility();
+    saveDashboardLayout();
+    scheduleDashboardRefresh("تمت إعادة تعيين التخطيط الافتراضي.");
+  }
+
+  function syncDashboardWidgetOrderFromDom() {
+    if (!refs.dashboardWidgets) return;
+    const ids = Array.from(refs.dashboardWidgets.querySelectorAll("[data-widget-id]"))
+      .map(function (node) { return node.getAttribute("data-widget-id"); })
+      .filter(Boolean);
+    if (ids.length) {
+      state.dashboardWidgetOrder = ids;
+    }
+  }
+
+  function bindDashboardDragAndDrop() {
+    if (!refs.dashboardWidgets) return;
+    const widgets = Array.from(refs.dashboardWidgets.querySelectorAll("[data-widget-id]"));
+    widgets.forEach(function (widget) {
+      widget.addEventListener("dragstart", function () {
+        state.widgetDragSourceId = widget.getAttribute("data-widget-id") || "";
+        widget.classList.add("dragging");
+      });
+      widget.addEventListener("dragend", function () {
+        widget.classList.remove("dragging");
+        state.widgetDragSourceId = "";
+        syncDashboardWidgetOrderFromDom();
+        saveDashboardLayout();
+      });
+      widget.addEventListener("dragover", function (event) {
+        event.preventDefault();
+      });
+      widget.addEventListener("drop", function (event) {
+        event.preventDefault();
+        const targetId = widget.getAttribute("data-widget-id");
+        const sourceId = state.widgetDragSourceId;
+        if (!sourceId || !targetId || sourceId === targetId) return;
+        const sourceNode = refs.dashboardWidgets.querySelector(`[data-widget-id="${sourceId}"]`);
+        const targetNode = refs.dashboardWidgets.querySelector(`[data-widget-id="${targetId}"]`);
+        if (sourceNode && targetNode) {
+          refs.dashboardWidgets.insertBefore(sourceNode, targetNode);
+          syncDashboardWidgetOrderFromDom();
+          saveDashboardLayout();
+          scheduleDashboardRefresh("تم تحديث ترتيب الودجت.");
+        }
+      });
+    });
+  }
+
+  function updateDashboardAll() {
+    const metrics = computeDashboardMetrics();
+    renderDashboardOverview(metrics);
+    getDashboardHistorySnapshot(metrics);
+    renderTimelineChart();
+    renderDemographicCharts();
+    renderTopDiagnosisChart();
+    renderMedicationWidget();
+    renderActivityCharts();
+    renderAlertLists();
+    renderLiveNotifications();
+    notifyDashboardStatus(
+      `تم تحديث لوحة التحكم بنجاح. إجمالي السجلات: ${metrics.totalRecords} | الحالات الحرجة: ${metrics.criticalCases} | متوسط الاستجابة: ${metrics.responseMs}ms`,
+      "success"
+    );
+  }
+
+  function scheduleDashboardRefresh(message) {
+    if (state.dashboardRefreshTimer) return;
+    state.dashboardRefreshTimer = setTimeout(function () {
+      state.dashboardRefreshTimer = null;
+      updateDashboardAll();
+      if (message) notifyDashboardStatus(message, "success");
+    }, 180);
+  }
+
   function renderInsightsResult(result) {
     if (!refs.insightsResult) return;
     if (!result || typeof result !== "object") {
@@ -2632,6 +3436,22 @@
     if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
       window.pdfjsLib.GlobalWorkerOptions.workerSrc =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+  }
+
+  function registerChartPlugins() {
+    if (!window.Chart || typeof window.Chart.register !== "function") return;
+    const zoomPlugin =
+      window.ChartZoom ||
+      window.zoomPlugin ||
+      window["chartjs-plugin-zoom"] ||
+      (window.ChartZoomPlugin ? window.ChartZoomPlugin : null);
+    if (!zoomPlugin || !zoomPlugin.id) return;
+    const exists = window.Chart.registry && window.Chart.registry.plugins && window.Chart.registry.plugins.get
+      ? window.Chart.registry.plugins.get(zoomPlugin.id)
+      : null;
+    if (!exists) {
+      window.Chart.register(zoomPlugin);
     }
   }
 
@@ -3020,6 +3840,7 @@
     state.stopQueueRequested = false;
     state.queueProcessing = true;
     notifyQueueMessage("بدأت المعالجة الدُفعية مع تشغيل متوازي للملفات.", "");
+    const startAt = performance.now();
 
     try {
       const workers = [];
@@ -3028,8 +3849,17 @@
       }
       await Promise.all(workers);
       notifyQueueMessage("انتهت المعالجة الدُفعية الحالية.", "success");
+      trackDashboardEvent("batch_process", {
+        success: true,
+        durationMs: Math.round(performance.now() - startAt),
+      });
     } catch (error) {
       notifyQueueMessage(toFriendlyError(error, "حدث خلل أثناء معالجة الدفعة."), "error");
+      trackDashboardEvent("batch_process", {
+        success: false,
+        durationMs: Math.round(performance.now() - startAt),
+        reason: String(error && error.message ? error.message : "error"),
+      });
     } finally {
       state.queueProcessing = false;
       renderFileQueue();
@@ -3091,6 +3921,7 @@
 
     setButtonLoading(refs.analyzeBatchBtn, true, "جاري التحليل عبر Groq...");
     setStatus(refs.batchStatus, `تحليل ${candidates.length} ملف جاهز عبر Groq...`, "");
+    const startAt = performance.now();
 
     let pointer = 0;
     let success = 0;
@@ -3129,6 +3960,12 @@
       }
       await Promise.all(workers);
       setStatus(refs.batchStatus, `اكتمل تحليل الدفعة. نجاح: ${success} | فشل: ${fail}`, fail ? "error" : "success");
+      trackDashboardEvent("batch_analyze", {
+        success: fail === 0,
+        durationMs: Math.round(performance.now() - startAt),
+        successCount: success,
+        failCount: fail,
+      });
     } finally {
       setButtonLoading(refs.analyzeBatchBtn, false);
       renderFileQueue();
@@ -3339,6 +4176,7 @@
 
     setButtonLoading(refs.uploadStorageBtn, true, "جاري الرفع...");
     setStatus(refs.storageStatus, `بدء رفع ${ready.length} ملف إلى التخزين السحابي...`, "");
+    const startAt = performance.now();
 
     let success = 0;
     let fail = 0;
@@ -3361,6 +4199,13 @@
     );
     setButtonLoading(refs.uploadStorageBtn, false);
     renderFileQueue();
+    trackDashboardEvent("storage_upload", {
+      success: fail === 0,
+      durationMs: Math.round(performance.now() - startAt),
+      successCount: success,
+      failCount: fail,
+      provider: state.storageProvider,
+    });
   }
 
   function renderAgentResult(result) {
@@ -3447,6 +4292,7 @@
 
     setButtonLoading(refs.agentBtn, true, "جاري تشغيل الوكيل...");
     setStatus(refs.agentStatus, "يجري تحليل السؤال عبر Gemini Flash...", "");
+    const startAt = performance.now();
 
     try {
       const data = await postBackendJson(API_AGENT_PATH, {
@@ -3461,8 +4307,18 @@
         `تم توليد توصيات الوكيل الذكي بنجاح عبر ${data.model || "Gemini Flash"}.`,
         "success"
       );
+      trackDashboardEvent("agent", {
+        success: true,
+        durationMs: Math.round(performance.now() - startAt),
+        model: data.model || "Gemini",
+      });
     } catch (error) {
       setStatus(refs.agentStatus, toFriendlyError(error, "تعذر تشغيل الوكيل الذكي حالياً."), "error");
+      trackDashboardEvent("agent", {
+        success: false,
+        durationMs: Math.round(performance.now() - startAt),
+        reason: String(error && error.message ? error.message : "error"),
+      });
     } finally {
       setButtonLoading(refs.agentBtn, false);
     }
@@ -3837,6 +4693,7 @@
     const link = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(link, "_blank", "noopener,noreferrer");
     setStatus(refs.leadStatus, "تم فتح واتساب وإعداد رسالة طلب التجربة للمستشفى.", "success");
+    trackDashboardEvent("lead", { success: true, hospital });
   }
 
   function updateConnectionSummary(message, type) {
@@ -3903,6 +4760,68 @@
 
     if (refs.searchBtn) {
       refs.searchBtn.addEventListener("click", handleSearch);
+    }
+
+    if (refs.refreshDashboardBtn) {
+      refs.refreshDashboardBtn.addEventListener("click", function () {
+        updateDashboardAll();
+      });
+    }
+
+    if (refs.timelineGranularitySelect) {
+      refs.timelineGranularitySelect.addEventListener("change", function () {
+        scheduleDashboardRefresh("تم تحديث الخط الزمني وفق النطاق المختار.");
+      });
+    }
+
+    if (refs.dashboardRoleSelect) {
+      refs.dashboardRoleSelect.addEventListener("change", function () {
+        state.dashboardRole = refs.dashboardRoleSelect.value || "director";
+        safeStorageSet(STORAGE_DASHBOARD_ROLE_KEY, state.dashboardRole);
+      });
+    }
+
+    if (refs.applyRoleTemplateBtn) {
+      refs.applyRoleTemplateBtn.addEventListener("click", function () {
+        applyRoleTemplate(refs.dashboardRoleSelect ? refs.dashboardRoleSelect.value : "director");
+      });
+    }
+
+    if (refs.saveDashboardLayoutBtn) {
+      refs.saveDashboardLayoutBtn.addEventListener("click", function () {
+        syncDashboardWidgetOrderFromDom();
+        saveDashboardLayout();
+        notifyDashboardStatus("تم حفظ تخطيط اللوحة لهذا المستخدم.", "success");
+      });
+    }
+
+    if (refs.resetDashboardLayoutBtn) {
+      refs.resetDashboardLayoutBtn.addEventListener("click", resetDashboardLayout);
+    }
+
+    if (refs.liveReconnectBtn) {
+      refs.liveReconnectBtn.addEventListener("click", function () {
+        connectDashboardLiveSocket(true);
+      });
+    }
+
+    if (refs.widgetToggles && refs.widgetToggles.length) {
+      refs.widgetToggles.forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          const widgetId = checkbox.getAttribute("data-widget-toggle");
+          setWidgetVisibility(widgetId, checkbox.checked);
+        });
+      });
+    }
+
+    if (refs.dashboardWidgets) {
+      refs.dashboardWidgets.addEventListener("click", function (event) {
+        const target = event.target;
+        if (!target || !target.getAttribute) return;
+        const widgetId = target.getAttribute("data-widget-hide");
+        if (!widgetId) return;
+        setWidgetVisibility(widgetId, false);
+      });
     }
 
     if (refs.searchQuery) {
@@ -4100,12 +5019,20 @@
         loadSample(sample);
       });
     });
+
+    window.addEventListener("beforeunload", function () {
+      disconnectLiveSocket();
+    });
   }
 
   function init() {
     configurePdfWorker();
+    registerChartPlugins();
     applySavedConnectionConfig();
     bindEvents();
+    bindDashboardDragAndDrop();
+    applyWidgetOrder();
+    applyWidgetVisibility();
     renderExtractResult(null);
     renderSavedRecords();
     renderFileQueue();
@@ -4115,6 +5042,7 @@
     renderSearchStats(null);
     renderSearchClusters([], {});
     renderSavedSearchOptions();
+    renderLiveNotifications();
     updateCounters();
     loadSample("diabetes");
 
@@ -4147,6 +5075,13 @@
     if (refs.searchEngineAppId && state.searchAppId) {
       refs.searchEngineAppId.value = state.searchAppId;
     }
+
+    if (refs.dashboardRoleSelect) {
+      refs.dashboardRoleSelect.value = state.dashboardRole || "director";
+    }
+
+    scheduleDashboardRefresh("تم تحميل لوحة التحكم التفاعلية.");
+    connectDashboardLiveSocket(false);
 
     preflightApiConnection().then(function (status) {
       if (status.mode === "backend") {
