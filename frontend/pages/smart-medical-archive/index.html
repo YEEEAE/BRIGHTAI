@@ -14,9 +14,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>نظام الأرشيف الطبي الذكي للمستشفيات في السعودية | تجربة Bright AI</title>
   <meta name="description"
-    content="نظام تجريبي خارق للمستشفيات السعودية: رفع ملفات تقارير طبية فعلية، استخراج بيانات صحية تلقائياً، بحث لغة طبيعية في السجلات، وتصدير تكاملي إلى FHIR وHL7 وCSV." />
+    content="نظام تجريبي خارق للمستشفيات السعودية: رفع ملفات طبية فعلية، OCR وتحويل صوت لنص، محرك بحث ذكي متعدد المستويات (سريع/متقدم/دلالي/صوتي/صوري)، وتصدير تكاملي إلى FHIR وHL7 وCSV وExcel." />
   <meta name="keywords"
-    content="نظام أرشيف طبي ذكي السعودية, تجربة نظام للمستشفيات, بحث لغة طبيعية في السجلات الطبية, استخراج بيانات صحية تلقائي, تكامل FHIR HL7, منصة ذكاء اصطناعي للمستشفيات السعودية" />
+    content="نظام أرشيف طبي ذكي السعودية, محرك بحث طبي ذكي متعدد المستويات, بحث دلالي في السجلات الطبية, بحث صوتي طبي, بحث بالصورة للأشعة, تكامل FHIR HL7, منصة ذكاء اصطناعي للمستشفيات السعودية" />
   <meta name="author" content="Bright AI" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="language" content="Arabic" />
@@ -141,6 +141,13 @@
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "نعم، التجربة توفر تصديراً بصيغ FHIR JSON وHL7 وCSV لتسهيل الإدخال والتكامل مع أنظمة EHR."}
+          },
+          {
+            "@type": "Question",
+            "name": "ما أنواع البحث الذكي المتاحة داخل النظام؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "المحرك يدعم البحث السريع أثناء الكتابة، البحث المتقدم بالفلاتر، البحث الدلالي بالمرادفات، البحث الصوتي، والبحث بالصورة مع ترتيب وتصدير النتائج."}
           },
           {
             "@type": "Question",
@@ -516,12 +523,76 @@
       <div class="console-grid">
         <article class="console-panel">
           <h3>الخطوة 3: بحث طبي باللغة الطبيعية</h3>
-          <p class="panel-sub">مثال: "مرضى السكري فوق 60 سنة مع ضغط مرتفع وأدوية إنسولين".</p>
-          <input id="searchQuery" type="text" placeholder="اكتب سؤال البحث الطبي هنا..." />
+          <p class="panel-sub">محرك متعدد المستويات: سريع أثناء الكتابة + متقدم + دلالي + صوتي + بحث بالصورة.</p>
+          <div class="search-quick-box">
+            <div class="search-input-wrap">
+              <input id="searchQuery" type="text" placeholder="اكتب سؤال البحث الطبي هنا..." autocomplete="off" />
+              <div id="searchSuggestions" class="search-suggestions"></div>
+            </div>
+            <div class="action-row">
+              <button class="btn-outline" id="voiceSearchBtn" type="button">بحث صوتي مباشر</button>
+              <button class="btn-outline" id="voiceFileBtn" type="button">رفع صوت للبحث</button>
+              <input id="voiceFileInput" type="file" accept=".mp3,.wav,.m4a,audio/*" hidden />
+              <button class="btn-outline" id="imageSearchBtn" type="button">بحث بالصورة</button>
+              <input id="imageSearchInput" type="file" accept=".jpg,.jpeg,.png,.webp,image/*" hidden />
+            </div>
+            <div id="searchQuickStatus" class="status">اكتب للبحث الفوري، أو استخدم الصوت/الصورة.</div>
+          </div>
+
+          <div class="search-advanced-box">
+            <h4>بحث متقدم</h4>
+            <div class="search-filters-grid">
+              <input id="filterAgeMin" type="number" min="0" placeholder="العمر من" />
+              <input id="filterAgeMax" type="number" min="0" placeholder="العمر إلى" />
+              <select id="filterGender">
+                <option value="">الجنس (الكل)</option>
+                <option value="male">ذكر</option>
+                <option value="female">أنثى</option>
+                <option value="unknown">غير محدد</option>
+              </select>
+              <input id="filterDateFrom" type="date" />
+              <input id="filterDateTo" type="date" />
+              <input id="filterDepartment" type="text" placeholder="القسم (مثال: القلب)" />
+              <input id="filterExclude" type="text" placeholder="استبعاد كلمات (افصل بـ ،)" />
+              <input id="filterNearCity" type="text" placeholder="المدينة القريبة (مثال: الرياض)" />
+              <input id="filterRadiusKm" type="number" min="1" value="150" placeholder="نطاق المسافة كم" />
+              <select id="semanticMode">
+                <option value="on">بحث دلالي مفعل</option>
+                <option value="off">بحث كلمات فقط</option>
+              </select>
+              <select id="searchEngineProvider">
+                <option value="local">محرك محلي فوري (افتراضي)</option>
+                <option value="elasticsearch">Elasticsearch</option>
+                <option value="algolia">Algolia</option>
+              </select>
+              <input id="searchEngineEndpoint" type="url" placeholder="رابط المحرك الخارجي (اختياري)" />
+              <input id="searchEngineIndex" type="text" placeholder="اسم الفهرس (اختياري)" />
+              <input id="searchEngineApiKey" type="password" placeholder="مفتاح API (اختياري)" />
+              <input id="searchEngineAppId" type="text" placeholder="Algolia App ID (اختياري)" />
+            </div>
+            <div class="action-row">
+              <button class="btn-outline" id="applyFiltersBtn" type="button">تطبيق الفلاتر</button>
+              <button class="btn-outline" id="saveSearchBtn" type="button">حفظ البحث الحالي</button>
+              <select id="savedSearchesSelect">
+                <option value="">استعلامات محفوظة</option>
+              </select>
+              <button class="btn-outline" id="loadSavedSearchBtn" type="button">استرجاع</button>
+            </div>
+          </div>
+
           <div class="action-row">
             <button class="btn-sub" id="searchBtn" type="button">تشغيل البحث الذكي</button>
+            <button class="btn-outline" id="searchPrevPageBtn" type="button">السابق</button>
+            <button class="btn-outline" id="searchNextPageBtn" type="button">التالي</button>
           </div>
           <div id="searchStatus" class="status">بعد حفظ السجلات، يمكنك تشغيل البحث الفوري.</div>
+          <div id="searchStats" class="status">إحصائيات البحث ستظهر هنا.</div>
+          <div id="searchClusters" class="result-box" style="margin-top: 10px;"></div>
+          <div class="export-grid" style="margin-top: 10px;">
+            <button class="btn-outline" id="exportSearchCsvBtn" type="button">تصدير نتائج البحث CSV</button>
+            <button class="btn-outline" id="exportSearchExcelBtn" type="button">تصدير نتائج البحث Excel</button>
+            <button class="btn-outline" id="exportSearchPdfBtn" type="button">تصدير نتائج البحث PDF</button>
+          </div>
           <div id="searchResult" class="result-box" style="margin-top: 10px;"></div>
         </article>
 
@@ -577,6 +648,195 @@
             <li>متابعة مرضى السكري والأمراض المزمنة وتقليل التباين في الإدخال الطبي.</li>
             <li>تجهيز بيانات بحثية منظمة للفرق الطبية والإدارية بسرعة أعلى.</li>
           </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="dashboardStudio">
+      <div class="section-title">
+        <h2>لوحة التحكم التفاعلية الشاملة</h2>
+        <p>مؤشرات لحظية + رسوم متقدمة + تنبيهات ذكية + تخصيص الودجت + تحديثات فورية.</p>
+      </div>
+
+      <div class="dashboard-toolbar">
+        <div class="dashboard-toolbar-grid">
+          <select id="timelineGranularitySelect">
+            <option value="daily">الخط الزمني اليومي</option>
+            <option value="weekly">الخط الزمني الأسبوعي</option>
+            <option value="monthly">الخط الزمني الشهري</option>
+          </select>
+          <select id="dashboardRoleSelect">
+            <option value="doctor">قالب الطبيب</option>
+            <option value="admin">قالب الإداري</option>
+            <option value="director">قالب المدير</option>
+          </select>
+          <button class="btn-outline" id="applyRoleTemplateBtn" type="button">تطبيق القالب حسب الدور</button>
+          <button class="btn-outline" id="saveDashboardLayoutBtn" type="button">حفظ ترتيب الودجت</button>
+          <button class="btn-outline" id="resetDashboardLayoutBtn" type="button">استرجاع التخطيط الافتراضي</button>
+          <button class="btn-sub" id="refreshDashboardBtn" type="button">تحديث اللوحة الآن</button>
+        </div>
+        <div id="dashboardStatus" class="status">اللوحة جاهزة وتُحدث تلقائياً حسب البيانات المتاحة.</div>
+      </div>
+
+      <div class="dashboard-overview-grid">
+        <article class="kpi-card">
+          <div class="label">إجمالي السجلات</div>
+          <div class="value" id="overviewTotalRecords">0</div>
+          <div class="meta" id="overviewTotalGrowth">0%</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">السجلات الجديدة اليوم / الأسبوع</div>
+          <div class="value" id="overviewNewRecords">0 / 0</div>
+          <div class="meta">نمو نشاط الإدخال</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">الحالات الحرجة النشطة</div>
+          <div class="value" id="overviewCriticalCases">0</div>
+          <div class="meta">تتطلب متابعة عاجلة</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">معدل الاستخدام اليومي</div>
+          <div class="value" id="overviewDailyUsage">0</div>
+          <div class="meta">عمليات استخدام في اليوم</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">متوسط وقت المعالجة</div>
+          <div class="value" id="overviewAvgProcessing">0ث</div>
+          <div class="meta">من الرفع حتى التحليل</div>
+        </article>
+      </div>
+
+      <div class="dashboard-kpi-grid">
+        <article class="kpi-card">
+          <div class="label">وقت الاستجابة المتوسط</div>
+          <div class="value" id="kpiResponseTime">0ms</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">دقة الاستخراج</div>
+          <div class="value" id="kpiExtractionAccuracy">0%</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">معدل نجاح التحليل</div>
+          <div class="value" id="kpiAnalysisSuccess">0%</div>
+        </article>
+        <article class="kpi-card">
+          <div class="label">رضا المستخدمين</div>
+          <div class="value" id="kpiUserSatisfaction">0%</div>
+        </article>
+      </div>
+
+      <div class="widget-library">
+        <strong>تخصيص الودجت:</strong>
+        <label><input type="checkbox" data-widget-toggle="timelineWidget" checked /> الخط الزمني</label>
+        <label><input type="checkbox" data-widget-toggle="demographicWidget" checked /> التوزيع الديموغرافي</label>
+        <label><input type="checkbox" data-widget-toggle="diagnosisWidget" checked /> التشخيصات الشائعة</label>
+        <label><input type="checkbox" data-widget-toggle="medicationWidget" checked /> الأدوية والتفاعلات</label>
+        <label><input type="checkbox" data-widget-toggle="activityWidget" checked /> نشاط المستخدمين</label>
+        <label><input type="checkbox" data-widget-toggle="alertsWidget" checked /> التنبيهات الذكية</label>
+        <label><input type="checkbox" data-widget-toggle="liveWidget" checked /> التحديثات الفورية</label>
+      </div>
+
+      <div id="dashboardWidgets" class="dashboard-widgets">
+        <article class="dashboard-widget" data-widget-id="timelineWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>الخط الزمني للسجلات ومقارنة الأقسام</h3>
+            <button class="queue-action" data-widget-hide="timelineWidget" type="button">إخفاء</button>
+          </div>
+          <canvas id="timelineChart" height="110"></canvas>
+        </article>
+
+        <article class="dashboard-widget" data-widget-id="demographicWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>التوزيع الديموغرافي والجغرافي</h3>
+            <button class="queue-action" data-widget-hide="demographicWidget" type="button">إخفاء</button>
+          </div>
+          <div class="dashboard-widget-grid">
+            <div><canvas id="ageDistributionChart" height="130"></canvas></div>
+            <div><canvas id="genderDistributionChart" height="130"></canvas></div>
+            <div style="grid-column: 1 / -1;"><canvas id="geoHeatmapChart" height="130"></canvas></div>
+          </div>
+        </article>
+
+        <article class="dashboard-widget" data-widget-id="diagnosisWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>أكثر التشخيصات شيوعاً وتحليل الاتجاه</h3>
+            <button class="queue-action" data-widget-hide="diagnosisWidget" type="button">إخفاء</button>
+          </div>
+          <canvas id="topDiagnosesChart" height="130"></canvas>
+        </article>
+
+        <article class="dashboard-widget" data-widget-id="medicationWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>الأدوية الأكثر وصفاً وتحليل التفاعلات</h3>
+            <button class="queue-action" data-widget-hide="medicationWidget" type="button">إخفاء</button>
+          </div>
+          <canvas id="topMedicationsChart" height="120"></canvas>
+          <div class="dashboard-widget-grid" style="margin-top: 10px;">
+            <div class="result-item">
+              <strong>قائمة تفاعلية للأدوية</strong>
+              <div id="medicationListInteractive" class="record-list"></div>
+            </div>
+            <div class="result-item">
+              <strong>تحليل التفاعلات الدوائية</strong>
+              <div id="drugInteractionList" class="record-list"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="dashboard-widget" data-widget-id="activityWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>نشاط المستخدمين وأوقات الذروة والإنتاجية</h3>
+            <button class="queue-action" data-widget-hide="activityWidget" type="button">إخفاء</button>
+          </div>
+          <div class="dashboard-widget-grid">
+            <div><canvas id="userActivityChart" height="120"></canvas></div>
+            <div><canvas id="peakHoursChart" height="120"></canvas></div>
+            <div style="grid-column: 1 / -1;"><canvas id="productivityChart" height="110"></canvas></div>
+          </div>
+        </article>
+
+        <article class="dashboard-widget" data-widget-id="alertsWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>التنبيهات الذكية</h3>
+            <button class="queue-action" data-widget-hide="alertsWidget" type="button">إخفاء</button>
+          </div>
+          <div class="dashboard-widget-grid">
+            <div class="result-item">
+              <strong>حالات تتطلب متابعة عاجلة</strong>
+              <div id="urgentAlertsList" class="record-list"></div>
+            </div>
+            <div class="result-item">
+              <strong>أدوية قاربت على الانتهاء</strong>
+              <div id="medExpiryAlertsList" class="record-list"></div>
+            </div>
+            <div class="result-item">
+              <strong>مواعيد متابعة قادمة</strong>
+              <div id="followupAlertsList" class="record-list"></div>
+            </div>
+            <div class="result-item">
+              <strong>حالات مشتبه بها (Anomaly Detection)</strong>
+              <div id="anomalyAlertsList" class="record-list"></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="dashboard-widget" data-widget-id="liveWidget" draggable="true">
+          <div class="dashboard-widget-head">
+            <span class="drag-handle">⋮⋮</span>
+            <h3>التحديثات الفورية والإشعارات الحية</h3>
+            <button class="queue-action" data-widget-hide="liveWidget" type="button">إخفاء</button>
+          </div>
+          <div id="liveSocketStatus" class="status">جاري تهيئة اتصال WebSocket...</div>
+          <div class="action-row">
+            <button class="btn-outline" id="liveReconnectBtn" type="button">إعادة الاتصال الفوري</button>
+          </div>
+          <div id="liveNotificationsList" class="record-list"></div>
         </article>
       </div>
     </section>
@@ -642,9 +902,13 @@
   </main>
 
   <script defer src="../../js/navigation.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script defer src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script defer src="./system-unified.js"></script>
 </body>
 

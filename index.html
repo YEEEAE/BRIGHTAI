@@ -1134,9 +1134,13 @@
 
         /* === LAZY RENDERING (Performance) === */
         .lazy-section {
-            content-visibility: auto;
-            contain-intrinsic-size: 1px 800px;
-            /* Estimate height to minimize scroll jump */
+            content-visibility: visible;
+            contain-intrinsic-size: auto;
+            min-height: auto;
+            contain: layout style;
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
         }
 
         /* Force h1 to be LCP candidate */

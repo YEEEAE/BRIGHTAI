@@ -14,11 +14,33 @@
   const STORAGE_PROVIDER_KEY = "brightai.medicalArchive.storageProvider";
   const STORAGE_ENDPOINT_KEY = "brightai.medicalArchive.storageEndpoint";
   const STORAGE_TOKEN_KEY = "brightai.medicalArchive.storageToken";
+  const STORAGE_SAVED_SEARCHES_KEY = "brightai.medicalArchive.savedSearches";
+  const STORAGE_SEARCH_PROVIDER_KEY = "brightai.medicalArchive.searchProvider";
+  const STORAGE_SEARCH_ENDPOINT_KEY = "brightai.medicalArchive.searchEndpoint";
+  const STORAGE_SEARCH_INDEX_KEY = "brightai.medicalArchive.searchIndex";
+  const STORAGE_SEARCH_API_KEY = "brightai.medicalArchive.searchApiKey";
+  const STORAGE_SEARCH_APP_ID_KEY = "brightai.medicalArchive.searchAppId";
+  const STORAGE_DASHBOARD_LAYOUT_KEY = "brightai.medicalArchive.dashboardLayout";
+  const STORAGE_DASHBOARD_ROLE_KEY = "brightai.medicalArchive.dashboardRole";
+  const STORAGE_DASHBOARD_HISTORY_KEY = "brightai.medicalArchive.dashboardHistory";
+  const STORAGE_DASHBOARD_EVENTS_KEY = "brightai.medicalArchive.dashboardEvents";
 
   const MAX_SINGLE_FILE_BYTES = 25 * 1024 * 1024;
   const MAX_BATCH_FILES = 300;
   const BATCH_CONCURRENCY = 3;
   const BATCH_ANALYZE_CONCURRENCY = 2;
+  const SEARCH_CACHE_TTL_MS = 5 * 60 * 1000;
+  const SEARCH_PAGE_SIZE = 8;
+  const QUICK_SEARCH_DEBOUNCE_MS = 170;
+  const DASHBOARD_DEFAULT_WIDGET_ORDER = [
+    "timelineWidget",
+    "demographicWidget",
+    "diagnosisWidget",
+    "medicationWidget",
+    "activityWidget",
+    "alertsWidget",
+    "liveWidget",
+  ];
 
   const SUPPORTED_EXTENSIONS = [
     "pdf",
@@ -49,6 +71,36 @@
   const AUDIO_EXTENSIONS = ["mp3", "wav", "m4a"];
   const EXCEL_EXTENSIONS = ["xls", "xlsx"];
 
+  const SEMANTIC_SYNONYMS = {
+    "السكري": ["مرض السكري", "سكر", "Diabetes", "DM", "Hyperglycemia"],
+    "ارتفاع الضغط": ["ضغط", "ضغط الدم", "Hypertension", "HTN"],
+    "أمراض القلب": ["قلب", "ذبحة", "فشل قلبي", "Cardiac", "Heart disease"],
+    "سرطان الثدي": ["ورم الثدي", "Breast cancer", "oncology breast"],
+    "قصور الكلى": ["فشل كلوي", "Kidney failure", "Renal"],
+    "التهاب رئوي": ["ذات الرئة", "Pneumonia", "عدوى رئوية"],
+  };
+
+  const SAUDI_CITY_COORDINATES = {
+    "الرياض": { lat: 24.7136, lng: 46.6753 },
+    "جدة": { lat: 21.5433, lng: 39.1728 },
+    "مكة": { lat: 21.3891, lng: 39.8579 },
+    "المدينة": { lat: 24.5247, lng: 39.5692 },
+    "الدمام": { lat: 26.4207, lng: 50.0888 },
+    "الخبر": { lat: 26.2172, lng: 50.1971 },
+    "الطائف": { lat: 21.4373, lng: 40.5127 },
+    "أبها": { lat: 18.2465, lng: 42.5117 },
+    "تبوك": { lat: 28.3838, lng: 36.5550 },
+    "جازان": { lat: 16.8892, lng: 42.5511 },
+    "حائل": { lat: 27.5114, lng: 41.7208 },
+    "بريدة": { lat: 26.3592, lng: 43.9818 },
+  };
+
+  const DASHBOARD_ROLE_TEMPLATES = {
+    doctor: ["timelineWidget", "diagnosisWidget", "medicationWidget", "alertsWidget", "liveWidget"],
+    admin: ["timelineWidget", "demographicWidget", "activityWidget", "alertsWidget", "liveWidget"],
+    director: ["timelineWidget", "demographicWidget", "diagnosisWidget", "activityWidget", "alertsWidget", "liveWidget"],
+  };
+
   const SAMPLE_REPORTS = {
     diabetes:
       "تقرير عيادة السكري - مستشفى الملك فهد\nالمريض: أحمد محمد سالم\nالعمر: 58 سنة\nالمدينة: جدة\nرقم الملف: MRN-22918\nالتاريخ: 2026-02-11\nالتشخيص: داء سكري نوع ثاني غير منضبط مع اعتلال أعصاب طرفية مبكر.\nالعلامات الحيوية: ضغط 150/92، نبض 87، وزن 92 كجم.\nنتائج المختبر: HbA1c = 9.1% (مرتفع)، كرياتينين 1.1 mg/dL، كوليسترول LDL = 142 mg/dL.\nالأدوية الحالية: Metformin 1000mg مرتين يومياً، Insulin glargine 18 وحدة مساءً، Atorvastatin 20mg ليلاً.\nالخطة العلاجية: تعديل جرعة الإنسولين إلى 22 وحدة مساءً، تثقيف غذائي، متابعة العيون خلال شهر، إعادة HbA1c بعد 12 أسبوع.",
@@ -71,6 +123,32 @@
     storageProvider: "none",
     storageEndpoint: "",
     storageToken: "",
+    searchCache: new Map(),
+    searchLastKey: "",
+    searchCurrentPage: 1,
+    searchLastAllResults: [],
+    searchLastPagedResults: [],
+    searchSaved: [],
+    searchProvider: "local",
+    searchEndpoint: "",
+    searchIndex: "",
+    searchApiKey: "",
+    searchAppId: "",
+    searchTypingTimer: null,
+    voiceRecognition: null,
+    voiceRecognitionActive: false,
+    dashboardCharts: {},
+    dashboardWidgetOrder: DASHBOARD_DEFAULT_WIDGET_ORDER.slice(),
+    dashboardHiddenWidgets: new Set(),
+    dashboardRole: "director",
+    dashboardHistory: [],
+    dashboardEvents: [],
+    dashboardNotifications: [],
+    dashboardRefreshTimer: null,
+    liveSocket: null,
+    liveSocketRetryTimer: null,
+    liveSocketConnected: false,
+    widgetDragSourceId: "",
   };
 
   const refs = {
@@ -111,6 +189,76 @@
     searchBtn: document.getElementById("searchBtn"),
     searchStatus: document.getElementById("searchStatus"),
     searchResult: document.getElementById("searchResult"),
+    searchSuggestions: document.getElementById("searchSuggestions"),
+    searchQuickStatus: document.getElementById("searchQuickStatus"),
+    searchStats: document.getElementById("searchStats"),
+    searchClusters: document.getElementById("searchClusters"),
+    voiceSearchBtn: document.getElementById("voiceSearchBtn"),
+    voiceFileBtn: document.getElementById("voiceFileBtn"),
+    voiceFileInput: document.getElementById("voiceFileInput"),
+    imageSearchBtn: document.getElementById("imageSearchBtn"),
+    imageSearchInput: document.getElementById("imageSearchInput"),
+    filterAgeMin: document.getElementById("filterAgeMin"),
+    filterAgeMax: document.getElementById("filterAgeMax"),
+    filterGender: document.getElementById("filterGender"),
+    filterDateFrom: document.getElementById("filterDateFrom"),
+    filterDateTo: document.getElementById("filterDateTo"),
+    filterDepartment: document.getElementById("filterDepartment"),
+    filterExclude: document.getElementById("filterExclude"),
+    filterNearCity: document.getElementById("filterNearCity"),
+    filterRadiusKm: document.getElementById("filterRadiusKm"),
+    semanticMode: document.getElementById("semanticMode"),
+    searchEngineProvider: document.getElementById("searchEngineProvider"),
+    searchEngineEndpoint: document.getElementById("searchEngineEndpoint"),
+    searchEngineIndex: document.getElementById("searchEngineIndex"),
+    searchEngineApiKey: document.getElementById("searchEngineApiKey"),
+    searchEngineAppId: document.getElementById("searchEngineAppId"),
+    applyFiltersBtn: document.getElementById("applyFiltersBtn"),
+    saveSearchBtn: document.getElementById("saveSearchBtn"),
+    savedSearchesSelect: document.getElementById("savedSearchesSelect"),
+    loadSavedSearchBtn: document.getElementById("loadSavedSearchBtn"),
+    searchPrevPageBtn: document.getElementById("searchPrevPageBtn"),
+    searchNextPageBtn: document.getElementById("searchNextPageBtn"),
+    exportSearchCsvBtn: document.getElementById("exportSearchCsvBtn"),
+    exportSearchExcelBtn: document.getElementById("exportSearchExcelBtn"),
+    exportSearchPdfBtn: document.getElementById("exportSearchPdfBtn"),
+    timelineGranularitySelect: document.getElementById("timelineGranularitySelect"),
+    dashboardRoleSelect: document.getElementById("dashboardRoleSelect"),
+    applyRoleTemplateBtn: document.getElementById("applyRoleTemplateBtn"),
+    saveDashboardLayoutBtn: document.getElementById("saveDashboardLayoutBtn"),
+    resetDashboardLayoutBtn: document.getElementById("resetDashboardLayoutBtn"),
+    refreshDashboardBtn: document.getElementById("refreshDashboardBtn"),
+    dashboardStatus: document.getElementById("dashboardStatus"),
+    dashboardWidgets: document.getElementById("dashboardWidgets"),
+    widgetToggles: Array.from(document.querySelectorAll("[data-widget-toggle]")),
+    overviewTotalRecords: document.getElementById("overviewTotalRecords"),
+    overviewTotalGrowth: document.getElementById("overviewTotalGrowth"),
+    overviewNewRecords: document.getElementById("overviewNewRecords"),
+    overviewCriticalCases: document.getElementById("overviewCriticalCases"),
+    overviewDailyUsage: document.getElementById("overviewDailyUsage"),
+    overviewAvgProcessing: document.getElementById("overviewAvgProcessing"),
+    kpiResponseTime: document.getElementById("kpiResponseTime"),
+    kpiExtractionAccuracy: document.getElementById("kpiExtractionAccuracy"),
+    kpiAnalysisSuccess: document.getElementById("kpiAnalysisSuccess"),
+    kpiUserSatisfaction: document.getElementById("kpiUserSatisfaction"),
+    timelineChart: document.getElementById("timelineChart"),
+    ageDistributionChart: document.getElementById("ageDistributionChart"),
+    genderDistributionChart: document.getElementById("genderDistributionChart"),
+    geoHeatmapChart: document.getElementById("geoHeatmapChart"),
+    topDiagnosesChart: document.getElementById("topDiagnosesChart"),
+    topMedicationsChart: document.getElementById("topMedicationsChart"),
+    userActivityChart: document.getElementById("userActivityChart"),
+    peakHoursChart: document.getElementById("peakHoursChart"),
+    productivityChart: document.getElementById("productivityChart"),
+    medicationListInteractive: document.getElementById("medicationListInteractive"),
+    drugInteractionList: document.getElementById("drugInteractionList"),
+    urgentAlertsList: document.getElementById("urgentAlertsList"),
+    medExpiryAlertsList: document.getElementById("medExpiryAlertsList"),
+    followupAlertsList: document.getElementById("followupAlertsList"),
+    anomalyAlertsList: document.getElementById("anomalyAlertsList"),
+    liveSocketStatus: document.getElementById("liveSocketStatus"),
+    liveReconnectBtn: document.getElementById("liveReconnectBtn"),
+    liveNotificationsList: document.getElementById("liveNotificationsList"),
     insightsBtn: document.getElementById("insightsBtn"),
     insightsStatus: document.getElementById("insightsStatus"),
     insightsResult: document.getElementById("insightsResult"),
@@ -257,6 +405,97 @@
       state.storageToken = savedStorageToken;
       if (refs.storageToken) refs.storageToken.value = savedStorageToken;
     }
+
+    const savedSearchProvider = safeStorageGet(STORAGE_SEARCH_PROVIDER_KEY).trim();
+    const savedSearchEndpoint = safeStorageGet(STORAGE_SEARCH_ENDPOINT_KEY).trim();
+    const savedSearchIndex = safeStorageGet(STORAGE_SEARCH_INDEX_KEY).trim();
+    const savedSearchApiKey = safeStorageGet(STORAGE_SEARCH_API_KEY).trim();
+    const savedSearchAppId = safeStorageGet(STORAGE_SEARCH_APP_ID_KEY).trim();
+    const savedSearchesRaw = safeStorageGet(STORAGE_SAVED_SEARCHES_KEY).trim();
+
+    if (savedSearchProvider) {
+      state.searchProvider = savedSearchProvider;
+      if (refs.searchEngineProvider) refs.searchEngineProvider.value = savedSearchProvider;
+    }
+    if (savedSearchEndpoint) {
+      state.searchEndpoint = savedSearchEndpoint;
+      if (refs.searchEngineEndpoint) refs.searchEngineEndpoint.value = savedSearchEndpoint;
+    }
+    if (savedSearchIndex) {
+      state.searchIndex = savedSearchIndex;
+      if (refs.searchEngineIndex) refs.searchEngineIndex.value = savedSearchIndex;
+    }
+    if (savedSearchApiKey) {
+      state.searchApiKey = savedSearchApiKey;
+      if (refs.searchEngineApiKey) refs.searchEngineApiKey.value = savedSearchApiKey;
+    }
+    if (savedSearchAppId) {
+      state.searchAppId = savedSearchAppId;
+      if (refs.searchEngineAppId) refs.searchEngineAppId.value = savedSearchAppId;
+    }
+    if (savedSearchesRaw) {
+      try {
+        const parsed = JSON.parse(savedSearchesRaw);
+        if (Array.isArray(parsed)) {
+          state.searchSaved = parsed.filter(function (entry) {
+            return entry && typeof entry === "object" && typeof entry.query === "string";
+          }).slice(0, 50);
+        }
+      } catch (error) {
+        state.searchSaved = [];
+      }
+    }
+
+    const savedDashboardRole = safeStorageGet(STORAGE_DASHBOARD_ROLE_KEY).trim();
+    const savedDashboardLayoutRaw = safeStorageGet(STORAGE_DASHBOARD_LAYOUT_KEY).trim();
+    const savedDashboardHistoryRaw = safeStorageGet(STORAGE_DASHBOARD_HISTORY_KEY).trim();
+    const savedDashboardEventsRaw = safeStorageGet(STORAGE_DASHBOARD_EVENTS_KEY).trim();
+
+    if (savedDashboardRole && DASHBOARD_ROLE_TEMPLATES[savedDashboardRole]) {
+      state.dashboardRole = savedDashboardRole;
+      if (refs.dashboardRoleSelect) refs.dashboardRoleSelect.value = savedDashboardRole;
+    }
+
+    if (savedDashboardLayoutRaw) {
+      try {
+        const parsed = JSON.parse(savedDashboardLayoutRaw);
+        if (parsed && Array.isArray(parsed.order) && Array.isArray(parsed.hidden)) {
+          const safeOrder = parsed.order.filter(function (id) {
+            return DASHBOARD_DEFAULT_WIDGET_ORDER.includes(id);
+          });
+          state.dashboardWidgetOrder = safeOrder.length ? safeOrder : DASHBOARD_DEFAULT_WIDGET_ORDER.slice();
+          state.dashboardHiddenWidgets = new Set(
+            parsed.hidden.filter(function (id) {
+              return DASHBOARD_DEFAULT_WIDGET_ORDER.includes(id);
+            })
+          );
+        }
+      } catch (error) {
+        state.dashboardWidgetOrder = DASHBOARD_DEFAULT_WIDGET_ORDER.slice();
+      }
+    }
+
+    if (savedDashboardHistoryRaw) {
+      try {
+        const parsed = JSON.parse(savedDashboardHistoryRaw);
+        if (Array.isArray(parsed)) {
+          state.dashboardHistory = parsed.slice(-180);
+        }
+      } catch (error) {
+        state.dashboardHistory = [];
+      }
+    }
+
+    if (savedDashboardEventsRaw) {
+      try {
+        const parsed = JSON.parse(savedDashboardEventsRaw);
+        if (Array.isArray(parsed)) {
+          state.dashboardEvents = parsed.slice(-1000);
+        }
+      } catch (error) {
+        state.dashboardEvents = [];
+      }
+    }
   }
 
   function saveConnectionConfig() {
@@ -287,6 +526,30 @@
     safeStorageSet(STORAGE_TOKEN_KEY, state.storageToken);
   }
 
+  function saveSearchEngineConfig() {
+    const provider = refs.searchEngineProvider ? refs.searchEngineProvider.value.trim() : "local";
+    const endpoint = refs.searchEngineEndpoint ? refs.searchEngineEndpoint.value.trim() : "";
+    const indexName = refs.searchEngineIndex ? refs.searchEngineIndex.value.trim() : "";
+    const apiKey = refs.searchEngineApiKey ? refs.searchEngineApiKey.value.trim() : "";
+    const appId = refs.searchEngineAppId ? refs.searchEngineAppId.value.trim() : "";
+
+    state.searchProvider = provider || "local";
+    state.searchEndpoint = endpoint;
+    state.searchIndex = indexName;
+    state.searchApiKey = apiKey;
+    state.searchAppId = appId;
+
+    safeStorageSet(STORAGE_SEARCH_PROVIDER_KEY, state.searchProvider);
+    safeStorageSet(STORAGE_SEARCH_ENDPOINT_KEY, state.searchEndpoint);
+    safeStorageSet(STORAGE_SEARCH_INDEX_KEY, state.searchIndex);
+    safeStorageSet(STORAGE_SEARCH_API_KEY, state.searchApiKey);
+    safeStorageSet(STORAGE_SEARCH_APP_ID_KEY, state.searchAppId);
+  }
+
+  function saveSavedSearches() {
+    safeStorageSet(STORAGE_SAVED_SEARCHES_KEY, JSON.stringify(state.searchSaved || []));
+  }
+
   function syncConnectionFromInputs() {
     const typedApiBase = normalizeBaseUrl(refs.apiBaseInput ? refs.apiBaseInput.value : "");
     const typedGroqKey = refs.groqApiKeyInput ? refs.groqApiKeyInput.value.trim() : "";
@@ -304,6 +567,22 @@
     }
     if (refs.storageToken && refs.storageToken.value) {
       state.storageToken = refs.storageToken.value.trim();
+    }
+
+    if (refs.searchEngineProvider && refs.searchEngineProvider.value) {
+      state.searchProvider = refs.searchEngineProvider.value.trim();
+    }
+    if (refs.searchEngineEndpoint && refs.searchEngineEndpoint.value) {
+      state.searchEndpoint = refs.searchEngineEndpoint.value.trim();
+    }
+    if (refs.searchEngineIndex && refs.searchEngineIndex.value) {
+      state.searchIndex = refs.searchEngineIndex.value.trim();
+    }
+    if (refs.searchEngineApiKey && refs.searchEngineApiKey.value) {
+      state.searchApiKey = refs.searchEngineApiKey.value.trim();
+    }
+    if (refs.searchEngineAppId && refs.searchEngineAppId.value) {
+      state.searchAppId = refs.searchEngineAppId.value.trim();
     }
   }
 
@@ -1090,75 +1369,1165 @@
       .join("");
   }
 
-  function renderSearchResult(result) {
-    if (!refs.searchResult) return;
-    if (!result || typeof result !== "object") {
-      refs.searchResult.innerHTML = "<p>لا توجد نتيجة للبحث.</p>";
+  function normalizeSearchText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[\u064B-\u065F\u0670]/g, "")
+      .replace(/[أإآ]/g, "ا")
+      .replace(/ة/g, "ه")
+      .replace(/ى/g, "ي")
+      .replace(/[^\p{L}\p{N}\s]/gu, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function tokenizeSearchText(value) {
+    return normalizeSearchText(value)
+      .split(" ")
+      .map(function (token) { return token.trim(); })
+      .filter(function (token) { return token.length >= 2; });
+  }
+
+  function levenshteinDistance(a, b) {
+    const s = String(a || "");
+    const t = String(b || "");
+    const rows = s.length + 1;
+    const cols = t.length + 1;
+    const table = Array.from({ length: rows }, function () {
+      return new Array(cols).fill(0);
+    });
+
+    for (let i = 0; i < rows; i += 1) table[i][0] = i;
+    for (let j = 0; j < cols; j += 1) table[0][j] = j;
+
+    for (let i = 1; i < rows; i += 1) {
+      for (let j = 1; j < cols; j += 1) {
+        const cost = s[i - 1] === t[j - 1] ? 0 : 1;
+        table[i][j] = Math.min(
+          table[i - 1][j] + 1,
+          table[i][j - 1] + 1,
+          table[i - 1][j - 1] + cost
+        );
+      }
+    }
+    return table[rows - 1][cols - 1];
+  }
+
+  function parseAge(value) {
+    const age = Number(value);
+    if (!Number.isFinite(age) || age < 0 || age > 130) return null;
+    return age;
+  }
+
+  function parseTime(value) {
+    if (!value) return null;
+    const date = new Date(value);
+    const ts = date.getTime();
+    return Number.isFinite(ts) ? ts : null;
+  }
+
+  function parseFilters() {
+    const ageMin = parseAge(refs.filterAgeMin ? refs.filterAgeMin.value : "");
+    const ageMax = parseAge(refs.filterAgeMax ? refs.filterAgeMax.value : "");
+    const gender = refs.filterGender ? refs.filterGender.value.trim() : "";
+    const dateFrom = parseTime(refs.filterDateFrom ? refs.filterDateFrom.value : "");
+    const dateTo = parseTime(refs.filterDateTo ? refs.filterDateTo.value : "");
+    const department = refs.filterDepartment ? refs.filterDepartment.value.trim() : "";
+    const excludeTerms = refs.filterExclude
+      ? refs.filterExclude.value
+          .split(/[،,]/)
+          .map(function (token) { return normalizeSearchText(token); })
+          .filter(Boolean)
+      : [];
+    const nearCity = refs.filterNearCity ? refs.filterNearCity.value.trim() : "";
+    const radiusKm = Number(refs.filterRadiusKm ? refs.filterRadiusKm.value : 0) || 0;
+    const semanticMode = refs.semanticMode ? refs.semanticMode.value : "on";
+    return {
+      ageMin,
+      ageMax,
+      gender,
+      dateFrom,
+      dateTo,
+      department,
+      excludeTerms,
+      nearCity,
+      radiusKm,
+      semanticMode,
+    };
+  }
+
+  function expandSemanticTerms(tokens) {
+    const expanded = new Set(tokens);
+    if (!tokens.length) return expanded;
+    Object.keys(SEMANTIC_SYNONYMS).forEach(function (groupKey) {
+      const group = [groupKey].concat(asArray(SEMANTIC_SYNONYMS[groupKey]));
+      const normalizedGroup = group.map(normalizeSearchText);
+      const matched = tokens.some(function (token) {
+        return normalizedGroup.some(function (candidate) {
+          return candidate.includes(token) || token.includes(candidate);
+        });
+      });
+      if (matched) {
+        normalizedGroup.forEach(function (term) {
+          tokenizeSearchText(term).forEach(function (token) { expanded.add(token); });
+        });
+      }
+    });
+    return expanded;
+  }
+
+  function buildSearchVocabulary(records) {
+    const bag = new Set();
+    asArray(records).forEach(function (record) {
+      tokenizeSearchText(extractRecordSearchText(record)).forEach(function (token) {
+        bag.add(token);
+      });
+    });
+    Object.keys(SEMANTIC_SYNONYMS).forEach(function (groupKey) {
+      tokenizeSearchText(groupKey).forEach(function (token) { bag.add(token); });
+      asArray(SEMANTIC_SYNONYMS[groupKey]).forEach(function (term) {
+        tokenizeSearchText(term).forEach(function (token) { bag.add(token); });
+      });
+    });
+    return Array.from(bag);
+  }
+
+  function correctQuerySpelling(query, records) {
+    const tokens = tokenizeSearchText(query);
+    if (!tokens.length) return { corrected: query, changed: false };
+    const vocabulary = buildSearchVocabulary(records);
+    const correctedTokens = tokens.map(function (token) {
+      if (vocabulary.includes(token)) return token;
+      let best = token;
+      let bestDistance = 99;
+      vocabulary.forEach(function (candidate) {
+        if (Math.abs(candidate.length - token.length) > 2) return;
+        const distance = levenshteinDistance(token, candidate);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = candidate;
+        }
+      });
+      return bestDistance <= 2 ? best : token;
+    });
+    const corrected = correctedTokens.join(" ").trim();
+    return { corrected, changed: normalizeSearchText(corrected) !== normalizeSearchText(query) };
+  }
+
+  function extractRecordSearchText(record) {
+    const rec = record && typeof record === "object" ? record : {};
+    const patient = rec.patient && typeof rec.patient === "object" ? rec.patient : {};
+    const summary = rec.summary && typeof rec.summary === "object" ? rec.summary : {};
+    const pieces = [
+      rec.recordId || "",
+      rec.sourceFile || "",
+      rec.sourceHospital || "",
+      patient.name || "",
+      patient.gender || "",
+      patient.city || "",
+      patient.hospital || "",
+      rec.encounter && rec.encounter.department ? rec.encounter.department : "",
+      normalizeTextList(rec.diagnoses).join(" "),
+      normalizeMedicationList(rec.medications).map(function (med) {
+        return [med.name, med.dose, med.frequency].filter(Boolean).join(" ");
+      }).join(" "),
+      normalizeTextList(rec.alerts).join(" "),
+      normalizeLabs(rec.labs).map(function (lab) {
+        return [lab.name, lab.value, lab.unit, lab.status].filter(Boolean).join(" ");
+      }).join(" "),
+      summary.problem || "",
+      summary.plan || "",
+      summary.nextStep || "",
+      rec.savedAt || "",
+      rec.capturedAt || "",
+    ];
+    return pieces.join(" ").trim();
+  }
+
+  function haversineDistanceKm(lat1, lng1, lat2, lng2) {
+    const toRad = function (deg) { return deg * (Math.PI / 180); };
+    const earthKm = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLng = toRad(lng2 - lng1);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return earthKm * c;
+  }
+
+  function getCityCoordinatesByName(cityName) {
+    const norm = normalizeSearchText(cityName);
+    if (!norm) return null;
+    const aliases = {
+      riyadh: "الرياض",
+      jeddah: "جدة",
+      mecca: "مكة",
+      makkah: "مكة",
+      madinah: "المدينة",
+      medina: "المدينة",
+      dammam: "الدمام",
+      khobar: "الخبر",
+      taif: "الطائف",
+      abha: "أبها",
+      tabuk: "تبوك",
+      jazan: "جازان",
+      hail: "حائل",
+      buraydah: "بريدة",
+      buraidah: "بريدة",
+    };
+    if (aliases[norm] && SAUDI_CITY_COORDINATES[aliases[norm]]) {
+      return SAUDI_CITY_COORDINATES[aliases[norm]];
+    }
+    const foundKey = Object.keys(SAUDI_CITY_COORDINATES).find(function (key) {
+      const keyNorm = normalizeSearchText(key);
+      return keyNorm === norm || keyNorm.includes(norm) || norm.includes(keyNorm);
+    });
+    return foundKey ? SAUDI_CITY_COORDINATES[foundKey] : null;
+  }
+
+  function withinGeoRange(record, filters) {
+    if (!filters.nearCity || !filters.radiusKm) return { ok: true, distanceKm: null };
+    const target = getCityCoordinatesByName(filters.nearCity);
+    if (!target) return { ok: true, distanceKm: null };
+    const recCity = normalizeSearchText(
+      (record && record.patient && record.patient.city) || record.sourceHospital || ""
+    );
+    let nearest = null;
+    Object.keys(SAUDI_CITY_COORDINATES).forEach(function (cityName) {
+      if (!recCity.includes(normalizeSearchText(cityName))) return;
+      const point = SAUDI_CITY_COORDINATES[cityName];
+      const distance = haversineDistanceKm(target.lat, target.lng, point.lat, point.lng);
+      if (nearest == null || distance < nearest) {
+        nearest = distance;
+      }
+    });
+    if (nearest == null) return { ok: false, distanceKm: null };
+    return { ok: nearest <= filters.radiusKm, distanceKm: nearest };
+  }
+
+  function buildSearchCacheKey(query, filters, page) {
+    const snapshot = {
+      query: normalizeSearchText(query),
+      filters,
+      page,
+      recordsVersion: state.records.length ? state.records[state.records.length - 1].recordId : "0",
+      provider: state.searchProvider || "local",
+      endpoint: state.searchEndpoint || "",
+      index: state.searchIndex || "",
+    };
+    return JSON.stringify(snapshot);
+  }
+
+  function getCachedSearch(key) {
+    const cached = state.searchCache.get(key);
+    if (!cached) return null;
+    if (Date.now() - cached.timestamp > SEARCH_CACHE_TTL_MS) {
+      state.searchCache.delete(key);
+      return null;
+    }
+    return cached.value;
+  }
+
+  function setCachedSearch(key, value) {
+    state.searchCache.set(key, {
+      timestamp: Date.now(),
+      value,
+    });
+  }
+
+  function getDepartmentFromRecord(record) {
+    return String(
+      (record && record.encounter && record.encounter.department) ||
+      (record && record.sourceDepartment) ||
+      ""
+    ).trim();
+  }
+
+  function normalizeGenderInput(value) {
+    const v = normalizeSearchText(value);
+    if (!v) return "";
+    if (v.includes("male") || v.includes("ذكر")) return "male";
+    if (v.includes("female") || v.includes("انث") || v.includes("أنث")) return "female";
+    return "unknown";
+  }
+
+  function evaluateRecordAgainstFilters(record, filters) {
+    const patient = record && record.patient && typeof record.patient === "object" ? record.patient : {};
+    const age = parseAge(patient.age);
+    if (filters.ageMin != null && (age == null || age < filters.ageMin)) return false;
+    if (filters.ageMax != null && (age == null || age > filters.ageMax)) return false;
+
+    if (filters.gender) {
+      const recordGender = normalizeGenderInput(patient.gender);
+      if (recordGender !== normalizeGenderInput(filters.gender)) return false;
+    }
+
+    const candidateDate = parseTime(
+      (record && record.encounter && record.encounter.date) ||
+      record.capturedAt ||
+      record.savedAt
+    );
+    if (filters.dateFrom != null && (candidateDate == null || candidateDate < filters.dateFrom)) return false;
+    if (filters.dateTo != null && (candidateDate == null || candidateDate > filters.dateTo + 86400000)) return false;
+
+    const dep = normalizeSearchText(getDepartmentFromRecord(record));
+    if (filters.department) {
+      const needed = normalizeSearchText(filters.department);
+      if (!dep.includes(needed)) return false;
+    }
+
+    const fullText = normalizeSearchText(extractRecordSearchText(record));
+    if (filters.excludeTerms.length) {
+      const hasExcluded = filters.excludeTerms.some(function (term) {
+        return term && fullText.includes(term);
+      });
+      if (hasExcluded) return false;
+    }
+
+    const geo = withinGeoRange(record, filters);
+    if (!geo.ok) return false;
+
+    return true;
+  }
+
+  function scoreRecordRelevance(record, query, tokens, expandedTokens, filters) {
+    if (!evaluateRecordAgainstFilters(record, filters)) return null;
+
+    const text = normalizeSearchText(extractRecordSearchText(record));
+    const reasons = [];
+    let score = 0;
+
+    if (query && text.includes(normalizeSearchText(query))) {
+      score += 35;
+      reasons.push("تطابق نص الاستعلام بالكامل");
+    }
+
+    tokens.forEach(function (token) {
+      if (text.includes(token)) {
+        score += 14;
+        reasons.push(`تطابق مباشر: ${token}`);
+      }
+    });
+
+    expandedTokens.forEach(function (token) {
+      if (!tokens.includes(token) && text.includes(token)) {
+        score += 8;
+        reasons.push(`تطابق دلالي: ${token}`);
+      }
+    });
+
+    const diagnoses = normalizeTextList(record.diagnoses).join(" ");
+    const meds = normalizeMedicationList(record.medications).map(function (m) { return m.name; }).join(" ");
+    const diagNorm = normalizeSearchText(diagnoses);
+    const medNorm = normalizeSearchText(meds);
+    if (tokens.some(function (token) { return diagNorm.includes(token); })) {
+      score += 12;
+      reasons.push("تطابق داخل التشخيصات");
+    }
+    if (tokens.some(function (token) { return medNorm.includes(token); })) {
+      score += 9;
+      reasons.push("تطابق داخل الأدوية");
+    }
+
+    const riskCount = normalizeTextList(record.alerts).filter(function (alert) {
+      const norm = normalizeSearchText(alert);
+      return norm.includes("خطر") || norm.includes("critical") || norm.includes("high");
+    }).length;
+    if (riskCount) {
+      score += Math.min(16, riskCount * 4);
+    }
+
+    if (!score) return null;
+
+    return {
+      record,
+      score: Math.min(100, Math.round(score)),
+      reasons: reasons.slice(0, 5),
+    };
+  }
+
+  function detectClusterKey(resultRow) {
+    const diagList = normalizeTextList(resultRow && resultRow.record ? resultRow.record.diagnoses : []);
+    const first = diagList[0] || "حالات متنوعة";
+    const normalizedFirst = normalizeSearchText(first);
+    if (normalizedFirst.includes("سكري") || normalizedFirst.includes("diab")) return "مجموعة السكري";
+    if (normalizedFirst.includes("قلب") || normalizedFirst.includes("card")) return "مجموعة القلب";
+    if (normalizedFirst.includes("سرطان") || normalizedFirst.includes("oncology")) return "مجموعة الأورام";
+    if (normalizedFirst.includes("ضغط")) return "مجموعة الضغط";
+    return first;
+  }
+
+  function clusterSearchResults(rows) {
+    const clusters = {};
+    rows.forEach(function (row) {
+      const key = detectClusterKey(row);
+      if (!clusters[key]) {
+        clusters[key] = [];
+      }
+      clusters[key].push(row);
+    });
+    return Object.keys(clusters).map(function (key) {
+      return {
+        name: key,
+        count: clusters[key].length,
+        avgScore: Math.round(
+          clusters[key].reduce(function (sum, row) { return sum + row.score; }, 0) / clusters[key].length
+        ),
+      };
+    }).sort(function (a, b) { return b.count - a.count; });
+  }
+
+  function paginateRows(rows, page, pageSize) {
+    const total = rows.length;
+    const pages = Math.max(1, Math.ceil(total / pageSize));
+    const safePage = Math.min(Math.max(1, page), pages);
+    const start = (safePage - 1) * pageSize;
+    const end = start + pageSize;
+    return {
+      page: safePage,
+      pages,
+      rows: rows.slice(start, end),
+      total,
+    };
+  }
+
+  function mapExternalHitToRecord(hit, rank) {
+    const source = hit && typeof hit === "object" ? (hit._source || hit) : {};
+    return {
+      record: {
+        recordId: source.recordId || source.id || source.objectID || `external-${Date.now()}-${rank}`,
+        patient: source.patient || {
+          name: source.patientName || source.name || null,
+          age: source.age || null,
+          gender: source.gender || null,
+          city: source.city || null,
+          hospital: source.hospital || null,
+        },
+        encounter: source.encounter || {
+          date: source.date || null,
+          department: source.department || null,
+        },
+        diagnoses: source.diagnoses || source.conditions || [],
+        medications: source.medications || [],
+        alerts: source.alerts || [],
+        summary: source.summary || { problem: source.problem || "", plan: source.plan || "" },
+        sourceHospital: source.hospital || source.hospitalName || null,
+        savedAt: source.savedAt || source.updatedAt || null,
+      },
+      score: Math.min(100, Math.round(Number(hit._score || hit.relevanceScore || 50))),
+      reasons: ["نتيجة مسترجعة من محرك البحث الخارجي"],
+    };
+  }
+
+  async function searchWithElasticsearch(query, filters, page) {
+    if (!state.searchEndpoint || !state.searchIndex) {
+      throw new Error("إعداد Elasticsearch غير مكتمل.");
+    }
+
+    const base = String(state.searchEndpoint).replace(/\/+$/, "");
+    const url = `${base}/${encodeURIComponent(state.searchIndex)}/_search`;
+    const body = {
+      from: (page - 1) * SEARCH_PAGE_SIZE,
+      size: SEARCH_PAGE_SIZE * 3,
+      query: {
+        bool: {
+          must: [
+            {
+              multi_match: {
+                query,
+                fields: ["summary^3", "diagnoses^2", "patient.name^2", "medications.name", "alerts.message"],
+              },
+            },
+          ],
+        },
+      },
+    };
+    const headers = { "Content-Type": "application/json" };
+    if (state.searchApiKey) {
+      headers.Authorization = state.searchApiKey.startsWith("ApiKey ")
+        ? state.searchApiKey
+        : `ApiKey ${state.searchApiKey}`;
+    }
+
+    const response = await fetchWithTimeout(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    }, API_TIMEOUT_MS);
+    if (!response.ok) {
+      throw new Error("فشل استعلام Elasticsearch.");
+    }
+    const data = await response.json().catch(function () { return {}; });
+    const hits = asArray(data && data.hits && data.hits.hits);
+    const mapped = hits.map(function (hit, idx) { return mapExternalHitToRecord(hit, idx + 1); });
+    return mapped.filter(function (row) {
+      return evaluateRecordAgainstFilters(row.record, filters);
+    });
+  }
+
+  async function searchWithAlgolia(query, filters, page) {
+    if (!state.searchEndpoint || !state.searchIndex || !state.searchApiKey || !state.searchAppId) {
+      throw new Error("إعداد Algolia غير مكتمل.");
+    }
+
+    const base = String(state.searchEndpoint).replace(/\/+$/, "");
+    const url = `${base}/1/indexes/${encodeURIComponent(state.searchIndex)}/query`;
+    const headers = {
+      "Content-Type": "application/json",
+      "X-Algolia-API-Key": state.searchApiKey,
+      "X-Algolia-Application-Id": state.searchAppId,
+    };
+    const body = {
+      query,
+      hitsPerPage: SEARCH_PAGE_SIZE * 3,
+      page: Math.max(0, page - 1),
+      analytics: false,
+      getRankingInfo: true,
+    };
+
+    const response = await fetchWithTimeout(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    }, API_TIMEOUT_MS);
+    if (!response.ok) {
+      throw new Error("فشل استعلام Algolia.");
+    }
+    const data = await response.json().catch(function () { return {}; });
+    const hits = asArray(data && data.hits);
+    const mapped = hits.map(function (hit, idx) { return mapExternalHitToRecord(hit, idx + 1); });
+    return mapped.filter(function (row) {
+      return evaluateRecordAgainstFilters(row.record, filters);
+    });
+  }
+
+  function buildTopAggregates(rows) {
+    const diagnosisMap = {};
+    const medicationMap = {};
+
+    rows.forEach(function (row) {
+      normalizeTextList(row.record && row.record.diagnoses).forEach(function (diag) {
+        const key = String(diag || "").trim();
+        if (!key) return;
+        diagnosisMap[key] = (diagnosisMap[key] || 0) + 1;
+      });
+
+      normalizeMedicationList(row.record && row.record.medications).forEach(function (med) {
+        const key = String(med && med.name ? med.name : "").trim();
+        if (!key) return;
+        medicationMap[key] = (medicationMap[key] || 0) + 1;
+      });
+    });
+
+    const toTop = function (bag) {
+      return Object.keys(bag)
+        .map(function (name) { return { name, count: bag[name] }; })
+        .sort(function (a, b) { return b.count - a.count; })
+        .slice(0, 8);
+    };
+
+    return {
+      topDiagnoses: toTop(diagnosisMap),
+      topMedications: toTop(medicationMap),
+    };
+  }
+
+  async function executeSearchEngine(query, options) {
+    const filters = options.filters || parseFilters();
+    const page = options.page || 1;
+
+    const spelling = correctQuerySpelling(query, state.records);
+    const effectiveQuery = spelling.corrected || query;
+    const queryTokens = tokenizeSearchText(effectiveQuery);
+    const expandedTokens = filters.semanticMode === "off"
+      ? new Set(queryTokens)
+      : expandSemanticTerms(queryTokens);
+
+    const cacheKey = buildSearchCacheKey(effectiveQuery, filters, page);
+    const cached = getCachedSearch(cacheKey);
+    if (cached) {
+      return Object.assign({}, cached, { fromCache: true });
+    }
+
+    const started = performance.now();
+    let allRows = [];
+    let provider = state.searchProvider || "local";
+
+    try {
+      if (provider === "elasticsearch") {
+        allRows = await searchWithElasticsearch(effectiveQuery, filters, page);
+      } else if (provider === "algolia") {
+        allRows = await searchWithAlgolia(effectiveQuery, filters, page);
+      } else {
+        provider = "local";
+      }
+    } catch (error) {
+      provider = "local";
+      setStatus(refs.searchStatus, `فشل المحرك الخارجي، تم التحويل للمحرك المحلي. ${toFriendlyError(error)}`, "error");
+    }
+
+    if (provider === "local") {
+      allRows = state.records
+        .map(function (record) {
+          return scoreRecordRelevance(
+            record,
+            effectiveQuery,
+            queryTokens,
+            Array.from(expandedTokens),
+            filters
+          );
+        })
+        .filter(Boolean)
+        .sort(function (a, b) {
+          if (b.score !== a.score) return b.score - a.score;
+          const ta = parseTime((a.record && (a.record.savedAt || a.record.capturedAt)) || 0) || 0;
+          const tb = parseTime((b.record && (b.record.savedAt || b.record.capturedAt)) || 0) || 0;
+          return tb - ta;
+        });
+    }
+
+    const clusters = clusterSearchResults(allRows);
+    const paged = paginateRows(allRows, page, SEARCH_PAGE_SIZE);
+    const aggregates = buildTopAggregates(allRows);
+    const elapsedMs = Math.round(performance.now() - started);
+
+    const result = {
+      provider,
+      elapsedMs,
+      query: effectiveQuery,
+      corrected: spelling.changed ? effectiveQuery : "",
+      totalMatches: paged.total,
+      page: paged.page,
+      pages: paged.pages,
+      allRows,
+      rows: paged.rows,
+      clusters,
+      aggregates,
+      fromCache: false,
+    };
+
+    setCachedSearch(cacheKey, result);
+    return result;
+  }
+
+  function renderSearchSuggestions(suggestions) {
+    if (!refs.searchSuggestions) return;
+    if (!suggestions.length) {
+      refs.searchSuggestions.classList.remove("active");
+      refs.searchSuggestions.innerHTML = "";
       return;
     }
 
-    const matchedIds = asArray(result.matchedRecordIds);
-    const total = result.totalMatches != null ? result.totalMatches : matchedIds.length;
-    const answer = result.answer || "لا توجد إجابة نصية من النموذج.";
-    const aggregates = result.aggregates && typeof result.aggregates === "object" ? result.aggregates : {};
+    refs.searchSuggestions.classList.add("active");
+    refs.searchSuggestions.innerHTML = suggestions
+      .map(function (item) {
+        return `<button class="search-suggestion-item" type="button" data-suggest="${escapeHtml(item)}">${escapeHtml(item)}</button>`;
+      })
+      .join("");
+  }
 
-    refs.searchResult.innerHTML = `
-      <div class="result-item">
-        <strong>إجابة البحث</strong>
-        <div>${escapeHtml(answer)}</div>
-      </div>
-      <div class="result-item" style="margin-top:10px;">
-        <strong>عدد النتائج المطابقة</strong>
-        <div style="font-size:1.4rem;font-weight:700;">${escapeHtml(String(total))}</div>
-        <div class="meta">${escapeHtml(matchedIds.join("، ") || "لا توجد معرّفات مطابقة")}</div>
-      </div>
-      <div class="result-item" style="margin-top:10px;">
-        <strong>سبب المطابقة</strong>
-        <ul class="mini-list">${buildWhyMatched(result)}</ul>
-      </div>
-      <div class="result-grid" style="margin-top:10px;">
+  function collectQuickSuggestions(query) {
+    const normalized = normalizeSearchText(query);
+    if (!normalized || normalized.length < 2) return [];
+
+    const bag = new Set();
+    state.searchSaved.forEach(function (entry) {
+      if (entry && typeof entry.query === "string" && normalizeSearchText(entry.query).includes(normalized)) {
+        bag.add(entry.query);
+      }
+    });
+    state.records.forEach(function (record) {
+      const patient = record && record.patient ? record.patient : {};
+      const values = [
+        patient.name || "",
+        patient.city || "",
+        getDepartmentFromRecord(record),
+      ].concat(normalizeTextList(record.diagnoses)).concat(normalizeMedicationList(record.medications).map(function (m) { return m.name; }));
+      values.forEach(function (value) {
+        const raw = String(value || "").trim();
+        if (!raw) return;
+        if (normalizeSearchText(raw).includes(normalized)) {
+          bag.add(raw);
+        }
+      });
+    });
+    return Array.from(bag).slice(0, 8);
+  }
+
+  function renderSearchStats(result) {
+    if (!refs.searchStats) return;
+    if (!result) {
+      setStatus(refs.searchStats, "إحصائيات البحث ستظهر هنا.", "");
+      return;
+    }
+    const avgScore = result.rows.length
+      ? Math.round(result.rows.reduce(function (sum, row) { return sum + row.score; }, 0) / result.rows.length)
+      : 0;
+    const speedLabel = result.elapsedMs <= 100 ? "أقل من 100ms" : `${result.elapsedMs}ms`;
+    setStatus(
+      refs.searchStats,
+      `النتائج: ${result.totalMatches} | الصفحة: ${result.page}/${result.pages} | متوسط الصلة: ${avgScore}% | المحرك: ${result.provider} | السرعة: ${speedLabel}${result.fromCache ? " | من الكاش" : ""}`,
+      result.elapsedMs <= 100 ? "success" : ""
+    );
+  }
+
+  function renderSearchClusters(clusters, aggregates) {
+    if (!refs.searchClusters) return;
+    const clusterRows = asArray(clusters);
+    const clusterHtml = clusterRows.length
+      ? clusterRows
+          .map(function (cluster) {
+            return `<li>${escapeHtml(cluster.name)} - ${escapeHtml(String(cluster.count))} حالة - متوسط صلة ${escapeHtml(String(cluster.avgScore))}%</li>`;
+          })
+          .join("")
+      : "<li>لا توجد مجموعات حالياً.</li>";
+    const topDiag = buildTopList(aggregates && aggregates.topDiagnoses);
+    const topMed = buildTopList(aggregates && aggregates.topMedications);
+
+    refs.searchClusters.innerHTML = `
+      <div class="search-cluster-grid">
         <div class="result-item">
-          <strong>أكثر التشخيصات تكراراً</strong>
-          <ul class="mini-list">${buildTopList(aggregates.topDiagnoses)}</ul>
+          <strong>تجميع النتائج</strong>
+          <ul class="mini-list">${clusterHtml}</ul>
         </div>
         <div class="result-item">
-          <strong>أكثر الأدوية تكراراً</strong>
-          <ul class="mini-list">${buildTopList(aggregates.topMedications)}</ul>
+          <strong>إحصائيات فورية</strong>
+          <ul class="mini-list">${topDiag}</ul>
         </div>
+      </div>
+      <div class="result-item" style="margin-top:10px;">
+        <strong>أكثر الأدوية في النتائج</strong>
+        <ul class="mini-list">${topMed}</ul>
       </div>
     `;
   }
 
-  async function handleSearch() {
-    const query = refs.searchQuery ? refs.searchQuery.value.trim() : "";
+  function renderSearchResult(result) {
+    if (!refs.searchResult) return;
+    if (!result || !Array.isArray(result.rows)) {
+      refs.searchResult.innerHTML = "<p>لا توجد نتيجة للبحث.</p>";
+      renderSearchStats(null);
+      renderSearchClusters([], {});
+      return;
+    }
 
+    if (!result.rows.length) {
+      refs.searchResult.innerHTML = "<p>لا توجد نتائج مطابقة للشروط الحالية.</p>";
+      renderSearchStats(result);
+      renderSearchClusters(result.clusters, result.aggregates);
+      return;
+    }
+
+    const rowsHtml = result.rows.map(function (row) {
+      const record = row.record || {};
+      const patient = record.patient && typeof record.patient === "object" ? record.patient : {};
+      const diagnosis = normalizeTextList(record.diagnoses)[0] || "بدون تشخيص واضح";
+      const reasonsHtml = asArray(row.reasons).slice(0, 3).map(function (reason) {
+        return `<li>${escapeHtml(String(reason))}</li>`;
+      }).join("");
+      return `
+        <div class="result-item" style="margin-top:10px;">
+          <strong>${escapeHtml(record.recordId || "سجل")} - درجة الصلة: ${escapeHtml(String(row.score))}%</strong>
+          <div>${escapeHtml(patient.name || "مريض غير معروف")} | ${escapeHtml(String(patient.age || "العمر غير متوفر"))} | ${escapeHtml(patient.city || "بدون مدينة")}</div>
+          <div>التشخيص: ${escapeHtml(diagnosis)}</div>
+          <div>المستشفى: ${escapeHtml(record.sourceHospital || patient.hospital || "غير محدد")}</div>
+          <ul class="mini-list" style="margin-top:6px;">${reasonsHtml || "<li>مطابقة دلالية</li>"}</ul>
+        </div>
+      `;
+    }).join("");
+
+    refs.searchResult.innerHTML = `
+      <div class="result-item">
+        <strong>ملخص البحث</strong>
+        <div>إجمالي النتائج المطابقة: ${escapeHtml(String(result.totalMatches))}</div>
+        <div>الصفحة الحالية: ${escapeHtml(String(result.page))} من ${escapeHtml(String(result.pages))}</div>
+        ${result.corrected ? `<div>تصحيح إملائي مقترح: ${escapeHtml(result.corrected)}</div>` : ""}
+      </div>
+      ${rowsHtml}
+    `;
+
+    renderSearchStats(result);
+    renderSearchClusters(result.clusters, result.aggregates);
+  }
+
+  async function executeAndRenderSearch(options) {
+    const query = refs.searchQuery ? refs.searchQuery.value.trim() : "";
     if (!state.records.length) {
       setStatus(refs.searchStatus, "احفظ سجلاً واحداً على الأقل قبل البحث.", "error");
       return;
     }
-
-    if (!query || query.length < 3) {
-      setStatus(refs.searchStatus, "أدخل سؤال بحث واضح (3 أحرف على الأقل).", "error");
+    if (!query || query.length < 2) {
+      setStatus(refs.searchStatus, "أدخل سؤال بحث واضح (حرفان على الأقل).", "error");
       return;
     }
 
-    setButtonLoading(refs.searchBtn, true, "جاري تنفيذ البحث...");
-    setStatus(refs.searchStatus, "يجري فهم السؤال الطبي واسترجاع السجلات المطابقة...", "");
+    saveSearchEngineConfig();
+    const page = options && options.page ? options.page : state.searchCurrentPage;
+    setStatus(refs.searchStatus, "جاري تنفيذ البحث متعدد المستويات...", "");
 
+    const result = await executeSearchEngine(query, {
+      page,
+      filters: parseFilters(),
+    });
+
+    state.searchCurrentPage = result.page;
+    state.searchLastKey = buildSearchCacheKey(result.query, parseFilters(), result.page);
+    state.searchLastAllResults = asArray(result.allRows);
+    state.searchLastPagedResults = asArray(result.rows);
+    renderSearchResult(result);
+    setStatus(
+      refs.searchStatus,
+      `تم تنفيذ البحث بنجاح عبر محرك ${result.provider}.`,
+      "success"
+    );
+  }
+
+  async function handleSearch() {
+    setButtonLoading(refs.searchBtn, true, "جاري البحث...");
     try {
-      const data = await postMedicalArchive({
-        action: "search",
-        query,
-        records: state.records,
-        hospitalProfile: getHospitalProfile(),
-      });
-
-      renderSearchResult(data.result || {});
-      setStatus(refs.searchStatus, "تم تنفيذ البحث الذكي بنجاح.", "success");
+      state.searchCurrentPage = 1;
+      await executeAndRenderSearch({ page: 1 });
     } catch (error) {
       setStatus(refs.searchStatus, toFriendlyError(error, "تعذر تنفيذ البحث حالياً."), "error");
     } finally {
       setButtonLoading(refs.searchBtn, false);
+    }
+  }
+
+  function handleQuickTypingSearch() {
+    const query = refs.searchQuery ? refs.searchQuery.value.trim() : "";
+    const suggestions = collectQuickSuggestions(query);
+    renderSearchSuggestions(suggestions);
+
+    if (!state.records.length) {
+      setStatus(refs.searchQuickStatus, "احفظ سجلاً واحداً على الأقل لتفعيل البحث الفوري.", "");
+      return;
+    }
+
+    if (!query || query.length < 2) {
+      setStatus(refs.searchQuickStatus, "اكتب حرفين على الأقل لتفعيل البحث الفوري.", "");
+      return;
+    }
+
+    if (state.searchTypingTimer) {
+      clearTimeout(state.searchTypingTimer);
+    }
+
+    state.searchTypingTimer = setTimeout(function () {
+      state.searchCurrentPage = 1;
+      executeAndRenderSearch({ page: 1 }).then(function () {
+        setStatus(refs.searchQuickStatus, "تم تحديث نتائج البحث الفوري أثناء الكتابة.", "success");
+      }).catch(function (error) {
+        setStatus(refs.searchQuickStatus, toFriendlyError(error, "تعذر تنفيذ البحث الفوري."), "error");
+      });
+    }, QUICK_SEARCH_DEBOUNCE_MS);
+  }
+
+  function handleSuggestionClick(event) {
+    const target = event.target;
+    if (!target || !target.getAttribute) return;
+    const suggested = target.getAttribute("data-suggest");
+    if (!suggested || !refs.searchQuery) return;
+    refs.searchQuery.value = suggested;
+    renderSearchSuggestions([]);
+    handleSearch();
+  }
+
+  function renderSavedSearchOptions() {
+    if (!refs.savedSearchesSelect) return;
+    const options = state.searchSaved
+      .slice()
+      .reverse()
+      .slice(0, 40)
+      .map(function (entry, index) {
+        const label = `${entry.query} - ${entry.label || "بحث محفوظ"} (${entry.savedAt || ""})`;
+        return `<option value="${escapeHtml(String(index))}">${escapeHtml(label)}</option>`;
+      })
+      .join("");
+    refs.savedSearchesSelect.innerHTML = `<option value="">استعلامات محفوظة</option>${options}`;
+  }
+
+  function handleSaveCurrentSearch() {
+    const query = refs.searchQuery ? refs.searchQuery.value.trim() : "";
+    if (!query) {
+      setStatus(refs.searchStatus, "أدخل استعلاماً أولاً ثم احفظه.", "error");
+      return;
+    }
+
+    const filters = parseFilters();
+    const payload = {
+      label: `استعلام ${state.searchSaved.length + 1}`,
+      query,
+      filters,
+      provider: state.searchProvider,
+      savedAt: new Date().toLocaleString("ar-SA"),
+    };
+    state.searchSaved.push(payload);
+    if (state.searchSaved.length > 50) {
+      state.searchSaved = state.searchSaved.slice(-50);
+    }
+    saveSavedSearches();
+    renderSavedSearchOptions();
+    setStatus(refs.searchStatus, "تم حفظ الاستعلام بنجاح.", "success");
+  }
+
+  function applyFilterValues(filters) {
+    if (!filters || typeof filters !== "object") return;
+    if (refs.filterAgeMin) refs.filterAgeMin.value = filters.ageMin != null ? String(filters.ageMin) : "";
+    if (refs.filterAgeMax) refs.filterAgeMax.value = filters.ageMax != null ? String(filters.ageMax) : "";
+    if (refs.filterGender) refs.filterGender.value = filters.gender || "";
+    if (refs.filterDateFrom) refs.filterDateFrom.value = filters.dateFrom ? new Date(filters.dateFrom).toISOString().slice(0, 10) : "";
+    if (refs.filterDateTo) refs.filterDateTo.value = filters.dateTo ? new Date(filters.dateTo).toISOString().slice(0, 10) : "";
+    if (refs.filterDepartment) refs.filterDepartment.value = filters.department || "";
+    if (refs.filterExclude) refs.filterExclude.value = asArray(filters.excludeTerms).join("، ");
+    if (refs.filterNearCity) refs.filterNearCity.value = filters.nearCity || "";
+    if (refs.filterRadiusKm) refs.filterRadiusKm.value = filters.radiusKm ? String(filters.radiusKm) : "";
+    if (refs.semanticMode) refs.semanticMode.value = filters.semanticMode || "on";
+  }
+
+  function handleLoadSavedSearch() {
+    const value = refs.savedSearchesSelect ? refs.savedSearchesSelect.value : "";
+    if (value === "") {
+      setStatus(refs.searchStatus, "اختر استعلاماً محفوظاً أولاً.", "error");
+      return;
+    }
+    const reversed = state.searchSaved.slice().reverse().slice(0, 40);
+    const selected = reversed[Number(value)];
+    if (!selected) {
+      setStatus(refs.searchStatus, "تعذر تحميل الاستعلام المحدد.", "error");
+      return;
+    }
+    if (refs.searchQuery) refs.searchQuery.value = selected.query || "";
+    applyFilterValues(selected.filters || {});
+    if (refs.searchEngineProvider && selected.provider) {
+      refs.searchEngineProvider.value = selected.provider;
+    }
+    state.searchCurrentPage = 1;
+    handleSearch();
+  }
+
+  function handleSearchPrevPage() {
+    if (state.searchCurrentPage <= 1) return;
+    state.searchCurrentPage -= 1;
+    executeAndRenderSearch({ page: state.searchCurrentPage }).catch(function (error) {
+      setStatus(refs.searchStatus, toFriendlyError(error, "تعذر الانتقال للصفحة السابقة."), "error");
+    });
+  }
+
+  function handleSearchNextPage() {
+    state.searchCurrentPage += 1;
+    executeAndRenderSearch({ page: state.searchCurrentPage }).catch(function (error) {
+      state.searchCurrentPage = Math.max(1, state.searchCurrentPage - 1);
+      setStatus(refs.searchStatus, toFriendlyError(error, "تعذر الانتقال للصفحة التالية."), "error");
+    });
+  }
+
+  function handleApplyFilters() {
+    state.searchCurrentPage = 1;
+    executeAndRenderSearch({ page: 1 }).catch(function (error) {
+      setStatus(refs.searchStatus, toFriendlyError(error, "تعذر تطبيق الفلاتر حالياً."), "error");
+    });
+  }
+
+  function buildSearchCsv(rows) {
+    const headers = ["record_id", "patient_name", "age", "gender", "city", "hospital", "diagnosis", "relevance_score"];
+    const body = asArray(rows).map(function (row) {
+      const record = row.record || {};
+      const patient = record.patient || {};
+      const diag = normalizeTextList(record.diagnoses)[0] || "";
+      return [
+        record.recordId || "",
+        patient.name || "",
+        patient.age != null ? String(patient.age) : "",
+        patient.gender || "",
+        patient.city || "",
+        record.sourceHospital || patient.hospital || "",
+        diag,
+        row.score != null ? String(row.score) : "",
+      ].map(csvEscape).join(",");
+    });
+    return `${headers.join(",")}\n${body.join("\n")}`;
+  }
+
+  function handleExportSearchCsv() {
+    if (!state.searchLastAllResults.length) {
+      setStatus(refs.searchStatus, "لا توجد نتائج بحث لتصديرها.", "error");
+      return;
+    }
+    const csv = buildSearchCsv(state.searchLastAllResults);
+    downloadTextFile("medical-search-results.csv", "text/csv;charset=utf-8", csv);
+    setStatus(refs.searchStatus, "تم تصدير نتائج البحث CSV.", "success");
+  }
+
+  function handleExportSearchExcel() {
+    if (!state.searchLastAllResults.length) {
+      setStatus(refs.searchStatus, "لا توجد نتائج بحث لتصديرها.", "error");
+      return;
+    }
+    if (!window.XLSX) {
+      setStatus(refs.searchStatus, "مكتبة Excel غير جاهزة حالياً.", "error");
+      return;
+    }
+
+    const rows = state.searchLastAllResults.map(function (row) {
+      const record = row.record || {};
+      const patient = record.patient || {};
+      return {
+        "معرف السجل": record.recordId || "",
+        "اسم المريض": patient.name || "",
+        "العمر": patient.age != null ? patient.age : "",
+        "الجنس": patient.gender || "",
+        "المدينة": patient.city || "",
+        "المستشفى": record.sourceHospital || patient.hospital || "",
+        "التشخيص": normalizeTextList(record.diagnoses)[0] || "",
+        "درجة الصلة": row.score || 0,
+      };
+    });
+
+    const sheet = window.XLSX.utils.json_to_sheet(rows);
+    const book = window.XLSX.utils.book_new();
+    window.XLSX.utils.book_append_sheet(book, sheet, "SearchResults");
+    window.XLSX.writeFile(book, "medical-search-results.xlsx");
+    setStatus(refs.searchStatus, "تم تصدير نتائج البحث Excel.", "success");
+  }
+
+  function handleExportSearchPdf() {
+    if (!state.searchLastAllResults.length) {
+      setStatus(refs.searchStatus, "لا توجد نتائج بحث لتصديرها.", "error");
+      return;
+    }
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      setStatus(refs.searchStatus, "مكتبة PDF غير جاهزة حالياً.", "error");
+      return;
+    }
+
+    const jsPDF = window.jspdf.jsPDF;
+    const doc = new jsPDF({ unit: "pt", format: "a4" });
+    let y = 40;
+    doc.setFontSize(14);
+    doc.text("نتائج البحث الطبي الذكي", 40, y);
+    y += 24;
+    doc.setFontSize(10);
+    state.searchLastAllResults.forEach(function (row, index) {
+      const record = row.record || {};
+      const patient = record.patient || {};
+      const line = `${index + 1}) ${record.recordId || ""} | ${patient.name || ""} | ${normalizeTextList(record.diagnoses)[0] || ""} | ${row.score || 0}%`;
+      doc.text(line.slice(0, 110), 40, y);
+      y += 16;
+      if (y > 760) {
+        doc.addPage();
+        y = 40;
+      }
+    });
+    doc.save("medical-search-results.pdf");
+    setStatus(refs.searchStatus, "تم تصدير نتائج البحث PDF.", "success");
+  }
+
+  async function handleVoiceSearchDirect() {
+    const RecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!RecognitionClass) {
+      setStatus(refs.searchQuickStatus, "المتصفح لا يدعم الإدخال الصوتي المباشر. استخدم رفع ملف صوتي.", "error");
+      return;
+    }
+
+    if (state.voiceRecognitionActive && state.voiceRecognition) {
+      state.voiceRecognition.stop();
+      return;
+    }
+
+    const recognition = new RecognitionClass();
+    recognition.lang = "ar-SA";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    state.voiceRecognition = recognition;
+    state.voiceRecognitionActive = true;
+    setStatus(refs.searchQuickStatus, "الاستماع جارٍ... تحدث الآن.", "");
+
+    recognition.onresult = function (event) {
+      const transcript = event && event.results && event.results[0] && event.results[0][0]
+        ? String(event.results[0][0].transcript || "").trim()
+        : "";
+      if (transcript && refs.searchQuery) {
+        refs.searchQuery.value = transcript;
+        setStatus(refs.searchQuickStatus, `تم تحويل الصوت إلى نص: ${transcript}`, "success");
+        handleSearch();
+      }
+    };
+
+    recognition.onerror = function () {
+      state.voiceRecognitionActive = false;
+      setStatus(refs.searchQuickStatus, "تعذر قراءة الصوت المباشر. استخدم رفع ملف صوتي.", "error");
+    };
+
+    recognition.onend = function () {
+      state.voiceRecognitionActive = false;
+      if (refs.voiceSearchBtn) {
+        refs.voiceSearchBtn.textContent = "بحث صوتي مباشر";
+      }
+    };
+
+    if (refs.voiceSearchBtn) {
+      refs.voiceSearchBtn.textContent = "إيقاف البحث الصوتي";
+    }
+    recognition.start();
+  }
+
+  function triggerVoiceFilePicker() {
+    if (refs.voiceFileInput) refs.voiceFileInput.click();
+  }
+
+  async function handleVoiceFileInputChange(event) {
+    const file = event && event.target && event.target.files ? event.target.files[0] : null;
+    if (!file) return;
+    setStatus(refs.searchQuickStatus, "جاري تحويل الملف الصوتي إلى نص...", "");
+    try {
+      const base64 = await blobToBase64(file);
+      const data = await postBackendJson(API_TRANSCRIBE_PATH, {
+        fileBase64: base64,
+        mimeType: file.type || "audio/wav",
+        fileName: file.name,
+      }, Math.max(API_TIMEOUT_MS, 90000));
+      const transcript = String(data && data.text ? data.text : "").trim();
+      if (!transcript) {
+        throw new Error("النص الناتج من الصوت فارغ.");
+      }
+      if (refs.searchQuery) refs.searchQuery.value = transcript;
+      setStatus(refs.searchQuickStatus, "تم تحويل الصوت إلى نص بنجاح وتشغيل البحث.", "success");
+      await handleSearch();
+    } catch (error) {
+      setStatus(refs.searchQuickStatus, toFriendlyError(error, "تعذر تنفيذ البحث الصوتي."), "error");
+    } finally {
+      if (event && event.target) event.target.value = "";
+    }
+  }
+
+  function triggerImageSearchPicker() {
+    if (refs.imageSearchInput) refs.imageSearchInput.click();
+  }
+
+  async function handleImageSearchInputChange(event) {
+    const file = event && event.target && event.target.files ? event.target.files[0] : null;
+    if (!file) return;
+    setStatus(refs.searchQuickStatus, "جاري تحليل الصورة للبحث عن حالات مشابهة...", "");
+    try {
+      const base64 = await blobToBase64(file);
+      const data = await postBackendJson(API_OCR_TEXT_PATH, {
+        fileBase64: base64,
+        mimeType: file.type || "image/jpeg",
+        fileName: file.name,
+      }, Math.max(API_TIMEOUT_MS, 60000));
+      const extracted = limitReportText(data && data.text ? data.text : "");
+      if (!extracted || extracted.length < 8) {
+        throw new Error("لم يتم استخراج نص كافٍ من الصورة.");
+      }
+      if (refs.searchQuery) refs.searchQuery.value = extracted.slice(0, 180);
+      setStatus(refs.searchQuickStatus, "تم استخراج النص من الصورة وتشغيل البحث الدلالي.", "success");
+      await handleSearch();
+    } catch (error) {
+      setStatus(refs.searchQuickStatus, toFriendlyError(error, "تعذر تنفيذ البحث بالصورة."), "error");
+    } finally {
+      if (event && event.target) event.target.value = "";
     }
   }
 
@@ -2536,6 +3905,85 @@
       refs.searchBtn.addEventListener("click", handleSearch);
     }
 
+    if (refs.searchQuery) {
+      refs.searchQuery.addEventListener("input", handleQuickTypingSearch);
+      refs.searchQuery.addEventListener("focus", function () {
+        const suggestions = collectQuickSuggestions(refs.searchQuery.value || "");
+        renderSearchSuggestions(suggestions);
+      });
+      refs.searchQuery.addEventListener("blur", function () {
+        setTimeout(function () { renderSearchSuggestions([]); }, 120);
+      });
+    }
+
+    if (refs.searchSuggestions) {
+      refs.searchSuggestions.addEventListener("click", handleSuggestionClick);
+    }
+
+    if (refs.voiceSearchBtn) {
+      refs.voiceSearchBtn.addEventListener("click", handleVoiceSearchDirect);
+    }
+
+    if (refs.voiceFileBtn) {
+      refs.voiceFileBtn.addEventListener("click", triggerVoiceFilePicker);
+    }
+
+    if (refs.voiceFileInput) {
+      refs.voiceFileInput.addEventListener("change", handleVoiceFileInputChange);
+    }
+
+    if (refs.imageSearchBtn) {
+      refs.imageSearchBtn.addEventListener("click", triggerImageSearchPicker);
+    }
+
+    if (refs.imageSearchInput) {
+      refs.imageSearchInput.addEventListener("change", handleImageSearchInputChange);
+    }
+
+    if (refs.applyFiltersBtn) {
+      refs.applyFiltersBtn.addEventListener("click", handleApplyFilters);
+    }
+
+    if (refs.saveSearchBtn) {
+      refs.saveSearchBtn.addEventListener("click", handleSaveCurrentSearch);
+    }
+
+    if (refs.loadSavedSearchBtn) {
+      refs.loadSavedSearchBtn.addEventListener("click", handleLoadSavedSearch);
+    }
+
+    if (refs.searchPrevPageBtn) {
+      refs.searchPrevPageBtn.addEventListener("click", handleSearchPrevPage);
+    }
+
+    if (refs.searchNextPageBtn) {
+      refs.searchNextPageBtn.addEventListener("click", handleSearchNextPage);
+    }
+
+    if (refs.exportSearchCsvBtn) {
+      refs.exportSearchCsvBtn.addEventListener("click", handleExportSearchCsv);
+    }
+
+    if (refs.exportSearchExcelBtn) {
+      refs.exportSearchExcelBtn.addEventListener("click", handleExportSearchExcel);
+    }
+
+    if (refs.exportSearchPdfBtn) {
+      refs.exportSearchPdfBtn.addEventListener("click", handleExportSearchPdf);
+    }
+
+    [
+      refs.searchEngineProvider,
+      refs.searchEngineEndpoint,
+      refs.searchEngineIndex,
+      refs.searchEngineApiKey,
+      refs.searchEngineAppId,
+    ].forEach(function (input) {
+      if (!input) return;
+      input.addEventListener("change", saveSearchEngineConfig);
+      input.addEventListener("blur", saveSearchEngineConfig);
+    });
+
     if (refs.insightsBtn) {
       refs.insightsBtn.addEventListener("click", handleInsights);
     }
@@ -2663,6 +4111,10 @@
     renderFileQueue();
     renderQueueReport();
     renderBatchSummary();
+    renderSearchSuggestions([]);
+    renderSearchStats(null);
+    renderSearchClusters([], {});
+    renderSavedSearchOptions();
     updateCounters();
     loadSample("diabetes");
 
@@ -2678,6 +4130,22 @@
 
     if ((state.storageProvider || "none") !== "none") {
       setStatus(refs.storageStatus, `إعداد التخزين المحفوظ: ${state.storageProvider}`, "success");
+    }
+
+    if (refs.searchEngineProvider && state.searchProvider) {
+      refs.searchEngineProvider.value = state.searchProvider;
+    }
+    if (refs.searchEngineEndpoint && state.searchEndpoint) {
+      refs.searchEngineEndpoint.value = state.searchEndpoint;
+    }
+    if (refs.searchEngineIndex && state.searchIndex) {
+      refs.searchEngineIndex.value = state.searchIndex;
+    }
+    if (refs.searchEngineApiKey && state.searchApiKey) {
+      refs.searchEngineApiKey.value = state.searchApiKey;
+    }
+    if (refs.searchEngineAppId && state.searchAppId) {
+      refs.searchEngineAppId.value = state.searchAppId;
     }
 
     preflightApiConnection().then(function (status) {
