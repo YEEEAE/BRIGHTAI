@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@sentry/react": "^10.38.0",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "aos": "^2.3.4",

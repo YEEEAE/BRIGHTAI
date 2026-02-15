@@ -307,7 +307,7 @@ function startServer() {
     console.log('  POST /api/groq/ocr    - OCR JSON extraction');
     console.log('  POST /api/groq/extract-text - Extract plain text from file');
     console.log('  POST /api/groq/transcribe   - Audio to text');
-    console.log('  POST /api/groq/medical-agent - Gemini Flash smart agent');
+    console.log('  POST /api/groq/medical-agent - Groq smart medical agent');
     console.log('  POST /api/groq/faq    - FAQ generation');
     console.log('  POST /api/groq/medical-archive - Smart medical archive demo');
     console.log('  GET  /api/health     - Health check');

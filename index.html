@@ -547,19 +547,19 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <!-- Preload Scheherazade: Critical for LCP + CLS -->
-    <link rel="preload" as="font" type="font/woff2" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2"
-        crossorigin fetchpriority="high" />
-    <!-- Google Fonts: Consolidated into single request with display=swap to improve visibility -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <!-- Fonts: Premium Enterprise Stack (IBM Plex Sans Arabic + Tajawal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;family=IBM+Plex+Sans+Arabic:wght@400;600;700;800;900&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap">
-    </noscript>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Immediate Font Override */
+        body,
+        html {
+            font-family: 'Tajawal', sans-serif;
+        }
+    </style>
     <!-- Sitemap Reference -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <!-- Critical CSS: Hero & Layout Stability (Fixes CLS/LCP) -->
@@ -1168,10 +1168,98 @@
     <!-- Scripts: Deferred for TBT -->
     <!-- Scripts removed from head to fix TBT. Handled by optimization.js and footer scripts. -->
 </head>
+<style id="theme-overrides">
+    /* --- Enterprise Design System 2026 --- */
+    :root {
+        /* Core Palette: Deep Navy & Ethereal Indigo */
+        --bg-deep: #020408;
+        --bg-glass: rgba(255, 255, 255, 0.03);
+        --primary: #4f46e5;
+        /* Indigo 600 */
+        --secondary: #06b6d4;
+        /* Cyan 500 */
+        --accent: #f59e0b;
+        /* Amber 500 */
+
+        /* Typography */
+        --font-heading: 'IBM Plex Sans Arabic', sans-serif;
+        --font-body: 'Tajawal', sans-serif;
+
+        /* Glassmorphism */
+        --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+        --glass-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Global Overrides */
+    body {
+        font-family: var(--font-body) !important;
+        background-color: var(--bg-deep) !important;
+        background-image:
+            radial-gradient(circle at 15% 0%, rgba(79, 70, 229, 0.15), transparent 40%),
+            radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.1), transparent 40%) !important;
+        color: #f8fafc !important;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .title,
+    .nav-link,
+    .btn {
+        font-family: var(--font-heading) !important;
+    }
+
+    /* Navigation Modernization */
+    .unified-nav {
+        background: rgba(2, 4, 8, 0.8) !important;
+        backdrop-filter: blur(12px) !important;
+        border-bottom: var(--glass-border) !important;
+    }
+
+    /* Hero Mesh */
+    .hero.section {
+        background: transparent !important;
+        overflow: hidden;
+    }
+
+    .code-wall,
+    .matrix {
+        display: none !important;
+    }
+
+    /* Buttons: Enterprise Tactile */
+    .btn.primary {
+        background: #fff !important;
+        color: #000 !important;
+        border: none !important;
+        font-weight: 600 !important;
+        border-radius: 99px !important;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.4) !important;
+    }
+
+    /* Glass Cards */
+    .hero-card,
+    .tech-card,
+    .bento,
+    .post {
+        background: var(--bg-glass) !important;
+        border: var(--glass-border) !important;
+        backdrop-filter: blur(10px) !important;
+        box-shadow: var(--glass-shadow) !important;
+        border-radius: 24px !important;
+    }
+</style>
+</head>
 
 <body>
     <!-- Loading Screen (CLS-Safe: starts visible, hidden by JS) -->
-    <div class="loading" id="loading" aria-hidden="true">
+    <div class="loading" id="loading" aria-hidden="true" style="display:none !important">
         <div>
             <div style="display:flex;align-items:center;gap:12px;justify-content:center">
                 <div aria-hidden="true" class="https://brightai.site/frontend/assets/images/Gemini.png"></div>
@@ -1548,104 +1636,117 @@
     </nav>
     <!-- Main Content -->
     <main id="main" itemscope itemtype="https://schema.org/WebPage">
-        <!-- HERO / APIs Section background -->
-        <div class="hero section tight" id="top">
-            <!-- Optimization: Added background color to prevent flash and layout shift -->
-            <div aria-hidden="true" class="code-wall" style="background-color: #020617;">
-                <!-- Optimization: Content-visibility to auto for performance -->
-                <pre class="matrix" id="matrixBackground" style="content-visibility: auto; contain: paint;">    <!-- Matrix Background: Inlined for LCP -->
-GET /api/v1/nlp/sentiment 200 78ms
-POST /api/v1/nlp/ner 200 64ms
-GET /api/v1/vision/object-detection 200 145ms
-SYSTEM_STATUS: ONLINE
-OPTIMIZING_NEURAL_NETWORKS... 98%
-LOADING_SAUDI_DATASETS... 100%
-CONNECTING_TO_RIYADH_SERVER... CONNECTED
-ENCRYPTING_DATA_STREAM... DONE
-</pre>
+        <!-- New Enterprise Hero Section -->
+        <div class="hero section tight" id="top"
+            style="position: relative; min-height: 90vh; display: flex; align-items: center;">
+
+            <!-- Ambient Background Mesh -->
+            <div style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
+                <div
+                    style="position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(79,70,229,0.15), transparent 70%); filter: blur(60px);">
+                </div>
+                <div
+                    style="position: absolute; bottom: -10%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(6,182,212,0.1), transparent 70%); filter: blur(80px);">
+                </div>
             </div>
-            <div class="container">
-                <div class="hero-grid">
-                    <!-- Left: API Overview -->
-                    <div class="hero-card">
-                        <div aria-hidden="true" class="glow"></div>
-                        <div class="inner">
-                            <div class="badge"><iconify-icon icon="lucide:code-2"></iconify-icon> RESTful APIs +
-                                ذكاء يصير جزء من فريقك.</div>
-                            <!-- Optimization: fetchpriority="high" for LCP Candidate -->
-                            <h1 class="title" fetchpriority="high">حوّل فكرتك لحل ذكي قابل للتنفيذ.</h1>
-                            <p class="subtitle">تبغى نتائج فعلية؟ نبدأ معك خطوة بخطوة. بدون تعقيد، بدون مخاطرة، بخطة
-                                واضحة
-                                أتمتة، تحليل، دعم — كلّه سهل وواضح
-                            </p>
-                            <div class="api-pills" id="apis">
-                                <span class="pill"><iconify-icon icon="lucide:message-square"></iconify-icon> نظام توظيف
-                                    ذكي
-                                    بالذكاء
-                                    الاصطناعي</span>
-                                <span class="pill"><iconify-icon icon="lucide:zap"></iconify-icon>الأرشيف الطبي
-                                    الذكي</span>
-                                <span class="pill"><iconify-icon icon="lucide:mic"></iconify-icon> ذكاء الأعمال BI
-                                </span>
-                                <span class="pill"><iconify-icon icon="lucide:wifi"></iconify-icon>تحليل بيانات ضخمة
-                                </span>
-                                <span class="pill"><iconify-icon icon="lucide:shield"></iconify-icon>أتمتة العمليات
-                                    بالذكاء
-                                    الاصطناعي</span>
-                            </div>
-                            <div class="hero-actions flex flex-col gap-6">
-                                <div class="flex flex-wrap gap-4">
-                                    <button
-                                        class="btn primary !py-4 !px-8 text-lg hover:scale-105 transition-transform">
-                                        <iconify-icon icon="lucide:book-open"></iconify-icon>
-                                        حلول ذكاء اصطناعي للشركات السعودية
-                                    </button>
-                                </div>
-                                <div class="cta-whatsapp-wrapper pt-2">
-                                    <a class="group relative flex items-center justify-center gap-3 bg-emerald-600/30 backdrop-blur-md border border-emerald-500/20 hover:bg-emerald-600/50 text-white px-10 py-5 rounded-2xl font-black text-xl shadow-2xl shadow-emerald-500/10 transition-all duration-500 hover:-translate-y-1 w-full sm:w-fit"
-                                        href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
-                                        aria-label="تواصل مع فريق Bright AI عبر واتساب للاستشارة المجانية"
-                                        title="احجز استشارة مجانية عبر واتساب">
-                                        <div
-                                            class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity">
-                                        </div>
-                                        <iconify-icon class="text-3xl animate-pulse text-emerald-400"
-                                            icon="ic:baseline-whatsapp"></iconify-icon>
-                                        تواصل معنا عبر واتساب الآن
-                                        <iconify-icon class="text-xl group-hover:-translate-x-2 transition-transform"
-                                            icon="lucide:arrow-left"></iconify-icon>
-                                    </a>
-                                    <p
-                                        class="text-slate-500 text-xs mt-3 font-bold uppercase tracking-widest mr-2 flex items-center gap-2">
-                                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
-                                        فريقنا جاهز للرد على استفساراتكم فوراً
-                                    </p>
+
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="hero-grid" style="align-items: center; gap: 4rem;">
+
+                    <!-- Left: Strategic Content -->
+                    <div class="hero-content">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-6">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                            الجيل الجديد من الذكاء المؤسسي
+                        </div>
+
+                        <h1 class="title"
+                            style="font-size: clamp(2.5rem, 5vw, 3.8rem); line-height: 1.2; margin-bottom: 1.5rem;">
+                            الذكاء الاصطناعي.. <br>
+                            بمنظور <span style="color: var(--brand-secondary, #06b6d4); position: relative;">استراتيجي
+                                <svg style="position: absolute; bottom: -5px; left: 0; width: 100%; height: 8px; opacity: 0.6;"
+                                    viewBox="0 0 100 10" preserveAspectRatio="none">
+                                    <path d="M0 5 Q 50 10 100 5" stroke="#06b6d4" stroke-width="2" fill="none" />
+                                </svg>
+                            </span>
+                        </h1>
+
+                        <p class="subtitle"
+                            style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 2.5rem; max-width: 600px;">
+                            نمكن الشركات السعودية الكبرى من استثمار قوة البيانات والأتمتة لبناء منظومات عمل فائقة
+                            الذكاء. حلول سيادية، استضافة محلية، ورؤية تتجاوز التوقعات.
+                        </p>
+
+                        <div class="hero-actions flex flex-wrap gap-4">
+                            <a href="#services" class="btn primary" style="padding: 1rem 2.5rem;">
+                                ابدأ رحلة التحول
+                            </a>
+                            <a href="frontend/pages/try/index.html" class="btn"
+                                style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 1rem 2.5rem; border-radius: 99px;">
+                                <iconify-icon icon="lucide:play-circle"
+                                    style="vertical-align: middle; margin-left: 8px;"></iconify-icon>
+                                جرب النظام مجاناً
+                            </a>
+                        </div>
+
+                        <!-- Trust Markers -->
+                        <div
+                            class="mt-12 flex items-center gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-bold tracking-widest uppercase text-slate-500">متوافق مع
+                                    معايير</span>
+                                <div class="flex gap-4 text-sm font-bold text-slate-300 font-mono">
+                                    <span>NCA</span> • <span>SDAIA</span> • <span>NDMO</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Right: Terminal with auto typing -->
-                    <div class="hero-card">
-                        <div aria-hidden="true" class="glow"></div>
-                        <div class="inner">
-                            <div class="terminal">
-                                <div class="terminal-head">
-                                    <div style="display:flex;align-items:center;gap:10px">
-                                        <div aria-hidden="true" class="dots">
-                                            <span class="dot red"></span><span class="dot yellow"></span><span
-                                                class="dot green"></span>
-                                        </div>
-                                        <span>brightai<span>@</span>terminal — demo</span>
-                                    </div>
-                                    <span style="font-family:var(--mono);opacity:.8">matrix-mode</span>
+
+                    <!-- Right: Visual Glass Stack -->
+                    <div class="hero-visual relative hidden lg:block" style="height: 500px;">
+                        <!-- Floating Glass Card 1: Analytics -->
+                        <div class="glass-card absolute top-0 right-0 w-80 p-6 animate-float-slow"
+                            style="z-index: 2; transform: rotate(-3deg);">
+                            <div class="flex justify-between items-center mb-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                                    <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
                                 </div>
-                                <div class="terminal-body" id="terminalTyping"></div>
+                                <span class="text-xs text-emerald-400 font-mono">+24.5% نمو</span>
                             </div>
-                            <div style="margin-top:12px;color:rgba(255,255,255,.62);font-weight:900;line-height:1.9">
-                                حيث تُشرق الأفكار ويلتقي الذكاء بالخيال.
+                            <div class="h-2 w-full bg-slate-700/50 rounded-full overflow-hidden">
+                                <div class="h-full bg-indigo-500 w-3/4"></div>
+                            </div>
+                            <div class="mt-4 flex justify-between text-sm text-slate-300">
+                                <span>كفاءة التشغيل</span>
+                                <span>98.2%</span>
                             </div>
                         </div>
+
+                        <!-- Floating Glass Card 2: AI Assitant -->
+                        <div class="glass-card absolute bottom-10 right-20 w-72 p-5 animate-float-delayed"
+                            style="z-index: 3; backdrop-filter: blur(20px); background: rgba(20, 20, 30, 0.6);">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-500"></div>
+                                <div class="h-2 w-20 bg-slate-700 rounded"></div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="h-2 w-full bg-slate-700/50 rounded"></div>
+                                <div class="h-2 w-2/3 bg-slate-700/50 rounded"></div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-white/5 text-xs text-slate-400">
+                                <iconify-icon icon="lucide:zap" class="text-yellow-500"></iconify-icon> تم تحليل
+                                البيانات بنجاح
+                            </div>
+                        </div>
+
+                        <!-- Abstract Glow Behind -->
+                        <div
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(79,70,229,0.3), transparent 70%); filter: blur(50px); z-index: 1;">
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
