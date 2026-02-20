@@ -555,8 +555,6 @@
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <!-- Fonts: Premium Enterprise Stack (IBM Plex Sans Arabic + Tajawal) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -680,7 +678,8 @@
         .tab,
         .btn,
         .iconbtn {
-            transition-property: transform, opacity, background-color, box-shadow !important;
+            transition-property: transform, opacity, box-shadow !important;
+            will-change: transform, opacity;
         }
 
         /* === BASE STYLES === */
