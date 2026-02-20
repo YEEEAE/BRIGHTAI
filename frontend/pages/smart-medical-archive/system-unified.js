@@ -9,8 +9,6 @@
   const MAX_REPORT_CHARS = 12000;
   const API_TIMEOUT_MS = 30000;
   const STORAGE_API_BASE_KEY = "brightai.medicalArchive.apiBase";
-  const STORAGE_GROQ_KEY = "brightai.medicalArchive.groqApiKey";
-  const STORAGE_GROQ_MODEL_KEY = "brightai.medicalArchive.groqModel";
   const STORAGE_PROVIDER_KEY = "brightai.medicalArchive.storageProvider";
   const STORAGE_ENDPOINT_KEY = "brightai.medicalArchive.storageEndpoint";
   const STORAGE_TOKEN_KEY = "brightai.medicalArchive.storageToken";
@@ -115,8 +113,6 @@
     lastExtract: null,
     lastFileMeta: null,
     apiBase: null,
-    directGroqApiKey: "",
-    directGroqModel: "llama-3.1-8b-instant",
     uploadQueue: [],
     queueProcessing: false,
     stopQueueRequested: false,
@@ -268,8 +264,6 @@
     exportArchiveFhirBtn: document.getElementById("exportArchiveFhirBtn"),
     exportStatus: document.getElementById("exportStatus"),
     apiBaseInput: document.getElementById("apiBaseInput"),
-    groqApiKeyInput: document.getElementById("groqApiKeyInput"),
-    groqModelInput: document.getElementById("groqModelInput"),
     saveConnectionBtn: document.getElementById("saveConnectionBtn"),
     testConnectionBtn: document.getElementById("testConnectionBtn"),
     connectionStatus: document.getElementById("connectionStatus"),
@@ -343,7 +337,7 @@
       /load failed|failed to fetch|network|fetch|timeout|aborted|cors|connection|internet/i.test(message);
 
     if (networkLike) {
-      return "تعذر الاتصال بالخادم. شغّل خادم BrightAI على المنفذ 3000 أو حدّث API Base من إعداد الاتصال، ويمكنك تفعيل المفتاح المباشر لـ Groq كحل احتياطي.";
+      return "تعذر الاتصال بخادم BrightAI. شغّل الخادم على المنفذ 3000 أو حدّث API Base من إعداد الاتصال.";
     }
 
     return message || fallbackMessage || "حدث خطأ غير متوقع.";
@@ -371,22 +365,10 @@
 
   function applySavedConnectionConfig() {
     const savedApiBase = normalizeBaseUrl(safeStorageGet(STORAGE_API_BASE_KEY));
-    const savedGroqKey = safeStorageGet(STORAGE_GROQ_KEY).trim();
-    const savedGroqModel = safeStorageGet(STORAGE_GROQ_MODEL_KEY).trim();
 
     if (savedApiBase) {
       state.apiBase = savedApiBase;
       if (refs.apiBaseInput) refs.apiBaseInput.value = savedApiBase;
-    }
-
-    if (savedGroqKey) {
-      state.directGroqApiKey = savedGroqKey;
-      if (refs.groqApiKeyInput) refs.groqApiKeyInput.value = savedGroqKey;
-    }
-
-    if (savedGroqModel) {
-      state.directGroqModel = savedGroqModel;
-      if (refs.groqModelInput) refs.groqModelInput.value = savedGroqModel;
     }
 
     const savedStorageProvider = safeStorageGet(STORAGE_PROVIDER_KEY).trim();
@@ -500,16 +482,10 @@
 
   function saveConnectionConfig() {
     const apiBase = normalizeBaseUrl(refs.apiBaseInput ? refs.apiBaseInput.value : "");
-    const groqKey = refs.groqApiKeyInput ? refs.groqApiKeyInput.value.trim() : "";
-    const groqModel = refs.groqModelInput ? refs.groqModelInput.value.trim() : "";
 
     state.apiBase = apiBase || null;
-    state.directGroqApiKey = groqKey || "";
-    state.directGroqModel = groqModel || "llama-3.1-8b-instant";
 
     safeStorageSet(STORAGE_API_BASE_KEY, state.apiBase || "");
-    safeStorageSet(STORAGE_GROQ_KEY, state.directGroqApiKey || "");
-    safeStorageSet(STORAGE_GROQ_MODEL_KEY, state.directGroqModel || "");
   }
 
   function saveStorageConfig() {
@@ -552,12 +528,8 @@
 
   function syncConnectionFromInputs() {
     const typedApiBase = normalizeBaseUrl(refs.apiBaseInput ? refs.apiBaseInput.value : "");
-    const typedGroqKey = refs.groqApiKeyInput ? refs.groqApiKeyInput.value.trim() : "";
-    const typedGroqModel = refs.groqModelInput ? refs.groqModelInput.value.trim() : "";
 
     if (typedApiBase) state.apiBase = typedApiBase;
-    if (typedGroqKey) state.directGroqApiKey = typedGroqKey;
-    if (typedGroqModel) state.directGroqModel = typedGroqModel;
 
     if (refs.storageProvider && refs.storageProvider.value) {
       state.storageProvider = refs.storageProvider.value.trim();
@@ -586,10 +558,6 @@
     }
   }
 
-  function hasDirectGroqConfig() {
-    return !!(state.directGroqApiKey && state.directGroqApiKey.startsWith("gsk_"));
-  }
-
   function parseJsonFromText(text) {
     if (!text || typeof text !== "string") return null;
     try {
@@ -616,112 +584,6 @@
       }
     }
     return null;
-  }
-
-  function buildDirectSystemPrompt() {
-    return [
-      "أنت محرك أرشيف طبي ذكي تجريبي للمستشفيات السعودية.",
-      "أعد JSON فقط بدون أي شرح أو Markdown.",
-      "عند نقص البيانات استخدم null أو مصفوفة فارغة.",
-      "لا تكتب أي نص خارج JSON.",
-    ].join("\n");
-  }
-
-  function buildDirectUserPrompt(payload) {
-    const action = String(payload && payload.action ? payload.action : "extract").toLowerCase();
-    if (action === "extract") {
-      return [
-        "المهمة: استخراج بيانات صحية منظمة من تقرير طبي.",
-        `المنشأة: ${JSON.stringify(payload.hospitalProfile || {})}`,
-        "أعد JSON بهذا الشكل:",
-        "{\"recordId\":\"...\",\"patient\":{\"name\":null,\"age\":null,\"gender\":null,\"city\":null,\"hospital\":null,\"medicalRecordNumber\":null},\"encounter\":{\"date\":null,\"department\":null,\"physician\":null},\"diagnoses\":[{\"name\":\"...\",\"status\":\"active|history|suspected\",\"certainty\":\"confirmed|suspected|unknown\"}],\"medications\":[{\"name\":\"...\",\"dose\":null,\"frequency\":null,\"route\":null,\"duration\":null}],\"labs\":[{\"name\":\"...\",\"value\":null,\"unit\":null,\"status\":\"high|low|normal|unknown\"}],\"procedures\":[{\"name\":\"...\",\"date\":null}],\"alerts\":[{\"type\":\"risk|allergy|drug_interaction|followup\",\"message\":\"...\"}],\"summary\":{\"problem\":\"...\",\"plan\":\"...\",\"nextStep\":\"...\"},\"confidence\":0.0}",
-        "النص الطبي:",
-        String(payload.reportText || ""),
-      ].join("\n");
-    }
-
-    if (action === "search") {
-      return [
-        "المهمة: تنفيذ بحث لغة طبيعية داخل السجلات الطبية.",
-        `الاستعلام: ${String(payload.query || "")}`,
-        `السجلات: ${JSON.stringify(payload.records || [])}`,
-        "أعد JSON بهذا الشكل:",
-        "{\"matchedRecordIds\":[],\"totalMatches\":0,\"whyMatched\":[{\"recordId\":\"...\",\"reasons\":[\"...\"]}],\"aggregates\":{\"topDiagnoses\":[{\"name\":\"...\",\"count\":0}],\"topMedications\":[{\"name\":\"...\",\"count\":0}]},\"answer\":\"...\"}",
-      ].join("\n");
-    }
-
-    return [
-      "المهمة: توليد تحليلات تشغيلية من السجلات الطبية.",
-      `السجلات: ${JSON.stringify(payload.records || [])}`,
-      `المنشأة: ${JSON.stringify(payload.hospitalProfile || {})}`,
-      "أعد JSON بهذا الشكل:",
-      "{\"kpis\":{\"recordsAnalyzed\":0,\"highRiskCases\":0,\"activeDiagnosisCount\":0},\"topDiagnoses\":[{\"name\":\"...\",\"count\":0}],\"topMedications\":[{\"name\":\"...\",\"count\":0}],\"alerts\":[{\"level\":\"critical|high|medium|low\",\"message\":\"...\"}],\"recommendations\":[{\"priority\":\"critical|high|medium|low\",\"action\":\"...\"}]}",
-    ].join("\n");
-  }
-
-  async function callDirectGroqMedicalArchive(payload) {
-    if (!hasDirectGroqConfig()) {
-      throw new Error(
-        "تعذر الوصول لخادم BrightAI ولا يوجد مفتاح Groq مباشر. أضف مفتاح Groq في إعداد الاتصال أو شغل الخادم المحلي."
-      );
-    }
-
-    const response = await fetchWithTimeout(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${state.directGroqApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: state.directGroqModel || "llama-3.1-8b-instant",
-          temperature: 0.2,
-          max_tokens: 1800,
-          messages: [
-            { role: "system", content: buildDirectSystemPrompt() },
-            { role: "user", content: buildDirectUserPrompt(payload) },
-          ],
-        }),
-      },
-      API_TIMEOUT_MS
-    );
-
-    const data = await response.json().catch(function () {
-      return {};
-    });
-
-    if (!response.ok) {
-      const rawMessage = String(
-        (data && data.error && data.error.message) || (data && data.error) || ""
-      ).toLowerCase();
-
-      if (rawMessage.includes("api key") || rawMessage.includes("authentication")) {
-        throw new Error("مفتاح Groq غير صحيح أو منتهي. حدّث المفتاح من إعداد الاتصال.");
-      }
-      if (rawMessage.includes("rate") || rawMessage.includes("quota") || rawMessage.includes("limit")) {
-        throw new Error("تم تجاوز حد الطلبات على Groq حالياً. انتظر قليلاً ثم أعد المحاولة.");
-      }
-      if (rawMessage.includes("model")) {
-        throw new Error("اسم نموذج Groq غير صحيح. حدّث اسم النموذج من إعداد الاتصال.");
-      }
-
-      throw new Error("تعذر الاتصال المباشر مع Groq حالياً.");
-    }
-
-    const text = data && data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : "";
-    const parsed = parseJsonFromText(String(text || ""));
-    if (!parsed || typeof parsed !== "object") {
-      throw new Error("تعذر تفسير استجابة Groq المباشرة كـ JSON.");
-    }
-
-    return {
-      mode: String(payload.action || "extract"),
-      result: parsed,
-      model: state.directGroqModel || "llama-3.1-8b-instant",
-      generatedAt: new Date().toISOString(),
-      source: "direct-groq",
-    };
   }
 
   function escapeHtml(value) {
