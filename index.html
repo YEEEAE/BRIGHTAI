@@ -560,14 +560,34 @@
     <!-- Fonts: Premium Enterprise Stack (IBM Plex Sans Arabic + Tajawal) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap">
     <link
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap"
+            rel="stylesheet">
+    </noscript>
     <style>
         /* Immediate Font Override */
         body,
         html {
             font-family: 'Tajawal', sans-serif;
+        }
+
+        /* Iconify CLS Prevention */
+        iconify-icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.125em;
+        }
+
+        iconify-icon[width="18"] {
+            width: 18px;
+            height: 18px;
         }
     </style>
     <!-- Sitemap Reference -->
@@ -660,7 +680,7 @@
         .tab,
         .btn,
         .iconbtn {
-            transition-property: transform, opacity, color, background-color, border-color, box-shadow !important;
+            transition-property: transform, opacity, background-color, box-shadow !important;
         }
 
         /* === BASE STYLES === */
@@ -840,12 +860,9 @@
     <!-- Defer Non-Critical CSS -->
     <link rel="stylesheet" href="frontend/css/tailwind.local.min.css" media="print" onload="this.media='all'" />
     <link rel="stylesheet" href="frontend/css/index-theme.min.css" media="print" onload="this.media='all'" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" media="print"
-        onload="this.media='all'" />
     <noscript>
         <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
         <link rel="stylesheet" href="frontend/css/index-theme.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     </noscript>
     <!-- Critical CSS: Hero & Layout Stability (Fixes CLS/LCP) -->
     <link rel="preload" as="style" href="frontend/css/main.bundle.min.css"
@@ -1159,22 +1176,6 @@
             content-visibility: visible;
         }
     </style>
-    <!-- Deferred CSS Loading -->
-    <link rel="preload" as="style" href="frontend/css/main.bundle.min.css"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="frontend/css/main.bundle.min.css">
-    </noscript>
-
-    <link rel="stylesheet" href="frontend/css/index-theme.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="frontend/css/index-theme.min.css">
-    </noscript>
-
-    <link rel="stylesheet" href="frontend/css/tailwind.local.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="frontend/css/tailwind.local.min.css">
-    </noscript>
     <!-- Scripts: Deferred for TBT -->
     <!-- Scripts removed from head to fix TBT. Handled by optimization.js and footer scripts. -->
 </head>

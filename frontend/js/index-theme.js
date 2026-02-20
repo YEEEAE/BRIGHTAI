@@ -94,19 +94,21 @@
         ];
         let tLine = 0;
         let tChar = 0;
+        let output = "";
 
         function typeTick() {
             const current = lines[tLine] ?? "";
-            terminal.textContent = terminal.textContent.replace(/\s*$/, "");
-            terminal.textContent = terminal.textContent + current.slice(tChar, tChar + 1);
+            output += current.slice(tChar, tChar + 1);
             tChar++;
+            
             if (tChar > current.length) {
-                terminal.textContent += "\n";
+                output += "\n";
                 tLine++;
                 tChar = 0;
                 if (tLine >= lines.length) {
-                    terminal.innerHTML = terminal.textContent + '<span class="cursor"></span>';
+                    terminal.innerHTML = output + '<span class="cursor"></span>';
                     setTimeout(() => {
+                        output = "";
                         terminal.textContent = "";
                         tLine = 0;
                         tChar = 0;
@@ -117,7 +119,7 @@
                 setTimeout(typeTick, 260);
                 return;
             }
-            terminal.innerHTML = terminal.textContent + '<span class="cursor"></span>';
+            terminal.innerHTML = output + '<span class="cursor"></span>';
             setTimeout(typeTick, 18 + Math.random() * 22);
         }
 
