@@ -330,5 +330,15 @@ Redirect 301 /terms.html /terms-and-conditions.html
 # Simplified to prevent redirect loops
 
 # ============================================
+# TRAFFIC FILTERING & BAD BOTS PREVENTION
+# ============================================
+# حجب روبوتات الكشط من مراكز البيانات الأجنبية للحفاظ على طاقة المعالجة
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} (SemrushBot|AhrefsBot|DotBot|PetalBot|Bytespider|YandexBot|MJ12bot) [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} (DataForSeoBot|Crawl|Scraper|Python|curl|wget|Go-http-client|Java) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# ============================================
 # END OF FILE
 # ============================================
