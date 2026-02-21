@@ -88,40 +88,7 @@ function loadAnalytics() {
     }, 200);
 }
 
-// ─── 3. AOS (Animate On Scroll — deferred, disabled on mobile) ──────────────
-function loadAOS() {
-    // Skip AOS entirely on mobile/low-power/reduced-motion — saves ~30KB + TBT
-    if (_isMobile || _isLowPower || _prefersReducedMotion) return;
 
-    if (window._aosLoaded) return;
-    window._aosLoaded = true;
-
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css';
-    document.head.appendChild(link);
-
-    const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js';
-    s.onload = () => {
-        requestAnimationFrame(() => {
-            AOS.init({
-                duration: 600,
-                once: true,
-                offset: 50,
-                disable: false,
-                // CLS FIX: prevent AOS from adding class to body
-                initClassName: false
-            });
-            // CLS FIX: Remove body-level data attributes that AOS adds
-            // These cause global style recalculation = CLS 0.577 on desktop
-            document.body.removeAttribute('data-aos-easing');
-            document.body.removeAttribute('data-aos-duration');
-            document.body.removeAttribute('data-aos-delay');
-        });
-    };
-    document.body.appendChild(s);
-}
 
 // ─── 4. ICONIFY (deferred) ────────────────────────────────────────────────────
 function loadIconify() {
@@ -200,8 +167,7 @@ async function initOptimization() {
         loadIconify();
         await yieldToMain();
 
-        loadAOS();
-        await yieldToMain();
+
 
         // Analytics last — lowest priority, highest cost
         loadAnalytics();
