@@ -4,19 +4,26 @@
  * STRATEGY:
  * 1. Fonts: Load Google Fonts AFTER interaction (eliminates 620ms–2800ms FCP block)
  * 2. Analytics: GTM loaded on first interaction only
- * 3. AOS: Lazy-loaded after interaction
+ * 3. AOS: Lazy-loaded after interaction (disabled on mobile)
  * 4. Iconify: Lazy-loaded after interaction
  * 5. TBT: Long tasks chunked via scheduler.yield() / setTimeout(0)
  * 6. Cloudflare beacon: Deferred to after load + idle
+ * 7. Mobile: Heavy DOM elements removed, animations disabled
  *
  * Lighthouse issues fixed:
  * - "Render-blocking resources" → Google Fonts removed from critical path
  * - "Unused JavaScript 65KiB" → GTM Analytics deferred
  * - "Long main-thread tasks 4x" → tasks broken into chunks
  * - "Third-party code impact" → all 3rd party JS deferred
+ * - "CLS 1.749" → absolute positioned elements removed on mobile
  */
 
 'use strict';
+
+// ─── DEVICE DETECTION (early, synchronous) ──────────────────────────────────
+const _isMobile = window.matchMedia('(max-width: 768px)').matches;
+const _isLowPower = !!(navigator.connection && navigator.connection.saveData);
+const _prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ─── SCHEDULER: Yield to main thread between tasks (fixes TBT) ──────────────
 function yieldToMain() {
@@ -50,7 +57,10 @@ function loadFonts() {
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
     fontLink.media = 'all';
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=optional';
+    // On mobile: load fewer weights to reduce bandwidth
+    fontLink.href = _isMobile
+        ? 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&family=Tajawal:wght@400;700&display=optional'
+        : 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=optional';
     document.head.appendChild(fontLink);
 }
 
@@ -78,8 +88,11 @@ function loadAnalytics() {
     }, 200);
 }
 
-// ─── 3. AOS (Animate On Scroll — deferred) ────────────────────────────────────
+// ─── 3. AOS (Animate On Scroll — deferred, disabled on mobile) ──────────────
 function loadAOS() {
+    // Skip AOS entirely on mobile/low-power/reduced-motion — saves ~30KB + TBT
+    if (_isMobile || _isLowPower || _prefersReducedMotion) return;
+
     if (window._aosLoaded) return;
     window._aosLoaded = true;
 
@@ -96,7 +109,7 @@ function loadAOS() {
                 duration: 600,
                 once: true,
                 offset: 50,
-                disable: window.matchMedia('(max-width: 768px)').matches ? true : false
+                disable: false
             });
         });
     };
@@ -115,13 +128,39 @@ function loadIconify() {
 
 // ─── CLOUDFLARE BEACON: Already loaded, extend TTL hint ──────────────────────
 function extendCloudflareCache() {
-    // Cloudflare beacon is loaded by Cloudflare CDN automatically
-    // We just ensure it runs after page is idle to not block main thread
     if ('requestIdleCallback' in window) {
         requestIdleCallback(() => {
             // beacon.min.js is already injected by CF — nothing to do
         }, { timeout: 5000 });
     }
+}
+
+// ─── MOBILE CLS FIX: Remove heavy DOM elements on mobile ────────────────────
+function mobileOptimize() {
+    if (!_isMobile && !_isLowPower) return;
+
+    // Remove heavy decorative elements that cause CLS and waste memory
+    const heavySelectors = [
+        '#neural-canvas',
+        '.floating-orbs',
+        '#stars',
+        '#particles',
+        '.code-wall',
+        '.matrix',
+        '#matrixBackground',
+        '.gradient-bg',
+        '.glow-effect',
+        '.glow-effect-2'
+    ];
+
+    heavySelectors.forEach(sel => {
+        const els = document.querySelectorAll(sel);
+        els.forEach(el => { if (el) el.remove(); });
+    });
+
+    // Make all sections visible immediately on mobile (no AOS delay)
+    const bentos = document.querySelectorAll('.bento');
+    bentos.forEach(b => b.classList.add('show'));
 }
 
 // ─── MAIN: Fire all deferred loads on first interaction ──────────────────────
@@ -136,8 +175,13 @@ async function initOptimization() {
         // Remove all listeners immediately
         events.forEach(e => window.removeEventListener(e, loadAll));
 
-        // Mark body as interactive
-        document.body.classList.add('interaction-active');
+        // CLS FIX: Don't add interaction-active until after paint completes
+        // Double rAF ensures we're in the next paint frame, preventing CLS
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                document.body.classList.add('interaction-active');
+            });
+        });
 
         // Chunk loads to avoid long tasks (TBT fix)
         loadFonts();
@@ -158,9 +202,12 @@ async function initOptimization() {
 
     events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
 
-    // Fallback: load after 5 seconds if no interaction (was 4s — give more room)
-    // This ensures analytics fires for "bounce" visitors who don't interact
-    setTimeout(loadAll, 5000);
+    // Mobile optimization runs immediately on DOM ready — don't wait for interaction
+    mobileOptimize();
+
+    // Fallback: load after 4 seconds on mobile (faster), 5s desktop
+    const fallbackDelay = _isMobile ? 4000 : 5000;
+    setTimeout(loadAll, fallbackDelay);
 }
 
 // ─── BOOT ─────────────────────────────────────────────────────────────────────

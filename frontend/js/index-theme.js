@@ -100,7 +100,7 @@
             const current = lines[tLine] ?? "";
             output += current.slice(tChar, tChar + 1);
             tChar++;
-            
+
             if (tChar > current.length) {
                 output += "\n";
                 tLine++;
@@ -126,13 +126,12 @@
         whenIdle(() => setTimeout(typeTick, 600), 1500);
     }
 
-    // Bento random reveal
+    // Bento reveal — CLS FIX: show immediately (no staggered delay)
+    // Original code used random delays that caused CLS = 1.000
     const bento = [...document.querySelectorAll('[data-order]')];
     if (bento.length) {
-        whenIdle(() => {
-            bento.sort(() => Math.random() - 0.5);
-            bento.forEach((el, idx) => setTimeout(() => el.classList.add('show'), 120 + idx * 110));
-        }, 1200);
+        // Show all bentos immediately to prevent CLS
+        bento.forEach(el => el.classList.add('show'));
     }
 
     // Scroll progress + toTop button

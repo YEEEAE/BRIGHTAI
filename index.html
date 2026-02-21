@@ -926,18 +926,24 @@
             will-change: transform, opacity;
         }
 
-        /* === HERO SECTION: Eliminate position:absolute overflow CLS === */
-        /* The Lighthouse report shows hero container scroll causing CLS 0.975 on mobile */
+        /* === HERO SECTION: CLS 1.749 FIX === */
+        /* ROOT CAUSE: position:absolute divs inside #top shift during load */
+        /* SOLUTION: Use CSS background instead of DOM elements */
         #top,
         .hero.section {
-            contain: layout;
+            contain: layout style;
             overflow: hidden;
+            /* Replace absolute positioned gradient divs with CSS background */
+            background:
+                radial-gradient(ellipse 50% 50% at -10% -20%, rgba(79, 70, 229, 0.15), transparent 70%),
+                radial-gradient(ellipse 60% 60% at 110% 110%, rgba(6, 182, 212, 0.1), transparent 70%),
+                transparent !important;
         }
 
-        /* The absolute positioned div inside hero causing CLS 0.975 */
-        #top>div[style*="position: absolute"] {
-            pointer-events: none;
-            will-change: auto;
+        /* CRITICAL: Hide all absolute positioned children that cause CLS */
+        #top>div[style*="position: absolute"],
+        .hero-ambient-bg {
+            display: none !important;
         }
 
         /* === MOBILE MENU: pre-sized to prevent CLS when opened === */
@@ -946,7 +952,6 @@
         }
 
         /* === FONT METRIC OVERRIDE (zero CLS from font swap) === */
-        /* Override Tajawal metrics to match system-ui fallback exactly — eliminates CLS on font-swap */
         @font-face {
             font-family: 'Tajawal';
             src: local('Tajawal');
@@ -995,10 +1000,6 @@
             border-bottom: var(--glass-border) !important;
         }
 
-        .hero.section {
-            background: transparent !important;
-        }
-
         .code-wall,
         .matrix {
             display: none !important;
@@ -1023,16 +1024,13 @@
             border-radius: 24px !important;
         }
 
-        /* STEP animation in flow section — replace dash animation (non-composited) */
+        /* STEP animation — replace non-composited dash animation */
         div.flow>div.steps>div.step> ::after {
-            /* Remove background-position-x animation (non-composited) */
             animation: none !important;
             background: linear-gradient(90deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
         }
 
         /* === DOM SIZE OPTIMIZATION: content-visibility:auto for off-screen sections === */
-        /* Reduces rendering cost of 1,460 DOM nodes on initial paint */
-        /* Hero (#top) excluded — it's always visible */
         section:not(#top):not(.hero),
         #services,
         #workflows,
@@ -1055,6 +1053,58 @@
             contain-intrinsic-size: auto 600px;
         }
 
+        /* === CLS FIX: Prevent .bento hidden→visible shift === */
+        /* index-theme.min.css sets .bento to opacity:0 transform:translateY(18px) */
+        /* Then JS adds .show class, causing CLS = 1.000 on desktop */
+        /* SOLUTION: Override in critical CSS so bentos are always visible */
+        .bento,
+        .bento.show {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .bento:hover {
+            transform: translateY(-2px) scale(1.01) !important;
+        }
+
+        /* === CLS FIX: Prevent body.interaction-active layout shift === */
+        /* AOS adds data-aos-* attributes to body which triggers style recalc */
+        body[data-aos-easing] {
+            /* Prevent body-level layout shift from AOS attributes */
+            contain: style;
+        }
+
+        /* === CLS FIX: btn.primary box-shadow non-composited animation === */
+        /* Lighthouse flagged: .btn.primary box-shadow transition is non-composited */
+        .btn.primary,
+        a.btn.primary {
+            transition: transform 0.2s ease, opacity 0.2s ease !important;
+            /* Remove box-shadow from transition — non-composited = causes CLS */
+        }
+
+        /* === ACCESSIBILITY: Fix contrast ratio failures === */
+        /* Lighthouse: .value .row contrast too low */
+        .value .row {
+            color: rgba(255, 255, 255, 0.95) !important;
+        }
+
+        .value {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .value p {
+            color: rgba(255, 255, 255, 0.75) !important;
+        }
+
+        /* Lighthouse: #blog .btn contrast too low */
+        section#blog .btn.primary,
+        section#blog a.btn {
+            background: #4f46e5 !important;
+            color: #ffffff !important;
+            border: 1px solid #6366f1 !important;
+        }
+
         /* === REMOVE ANIMATION JANK from floating orbs on mobile === */
         @media (max-width: 768px) {
 
@@ -1066,6 +1116,302 @@
             .glow-effect-2 {
                 display: none !important;
             }
+
+            /* === MOBILE HERO OPTIMIZATION === */
+            .hero.section,
+            #top {
+                min-height: 70vh !important;
+                min-height: 70dvh !important;
+                padding-top: 90px !important;
+                padding-bottom: 40px !important;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+
+            /* Hide hero visual cards on mobile — decorative only */
+            .hero-visual {
+                display: none !important;
+            }
+
+            .hero-content .title,
+            #top h1 {
+                font-size: clamp(1.75rem, 6vw, 2.5rem) !important;
+                line-height: 1.3 !important;
+                margin-bottom: 1rem !important;
+            }
+
+            .hero-content .subtitle {
+                font-size: 1rem !important;
+                line-height: 1.7 !important;
+                margin-bottom: 1.5rem !important;
+            }
+
+            .hero-actions {
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+                width: 100% !important;
+            }
+
+            .hero-actions .btn {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 0.875rem 1.5rem !important;
+                font-size: 1rem !important;
+            }
+
+            /* Trust markers stack on mobile */
+            .hero-content .mt-12 {
+                margin-top: 2rem !important;
+            }
+
+            /* === MOBILE SECTIONS OPTIMIZATION === */
+            .section {
+                padding: 48px 0 !important;
+            }
+
+            .section.tight {
+                padding: 32px 0 !important;
+            }
+
+            .container {
+                padding-right: 1rem !important;
+                padding-left: 1rem !important;
+            }
+
+            .title {
+                font-size: clamp(1.5rem, 5vw, 2rem) !important;
+            }
+
+            .subtitle {
+                font-size: 0.9375rem !important;
+            }
+
+            /* Grid layouts: 1 column on mobile */
+            .grid-bento,
+            .cards-4,
+            .pricing,
+            .robotics,
+            .tri,
+            .engines,
+            .projects,
+            .blog,
+            .align,
+            .kpi-grid,
+            .values,
+            .vm {
+                grid-template-columns: 1fr !important;
+            }
+
+            .bento.big {
+                grid-column: span 1 !important;
+            }
+
+            /* Steps: vertical layout */
+            .steps {
+                grid-template-columns: 1fr !important;
+            }
+
+            .step:not(:last-child)::after {
+                display: none !important;
+            }
+
+            /* Bots: 2 columns */
+            .bots {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            /* Dashboard: single column */
+            .dash-body {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* 3D Screen: reduce perspective for mobile */
+            .screen3d {
+                transform: none !important;
+                min-height: 220px !important;
+            }
+
+            /* Footer mobile */
+            .foot {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+
+            /* Glass cards — reduce padding */
+            .glass-card {
+                padding: 1rem !important;
+            }
+
+            /* Navigation mobile fix */
+            .nav-container {
+                padding: 0 1rem !important;
+            }
+
+            /* Chat widget mobile */
+            .chat {
+                width: calc(100% - 2rem) !important;
+                left: 1rem !important;
+                right: 1rem !important;
+                bottom: 5rem !important;
+                height: 70vh !important;
+                max-height: 500px !important;
+            }
+
+            /* Sliders — single column */
+            .sliders {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Filters — scroll horizontal */
+            .filters {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+                padding-bottom: 0.5rem !important;
+            }
+
+            .filters::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            /* Compare table scroll */
+            .compare-wrap {
+                overflow-x: auto !important;
+            }
+
+            /* Tabs scroll */
+            .tabs {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                scrollbar-width: none !important;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none !important;
+            }
+
+            /* Breadcrumb mobile */
+            .breadcrumb-nav {
+                margin-top: 70px !important;
+                padding: 8px 1rem !important;
+            }
+
+            /* Touch targets minimum 44px */
+            .btn,
+            .nav-link,
+            .tab,
+            .filter,
+            .qbtn,
+            .iconbtn,
+            a.mobile-nav-link {
+                min-height: 44px !important;
+                min-width: 44px !important;
+            }
+
+            /* Cookie banner mobile */
+            .cookies {
+                left: 0.5rem !important;
+                right: 0.5rem !important;
+                bottom: 0.5rem !important;
+            }
+        }
+
+        /* === TABLET OPTIMIZATION (768px - 1024px) === */
+        @media (min-width: 769px) and (max-width: 1024px) {
+
+            .hero.section,
+            #top {
+                min-height: 80vh !important;
+            }
+
+            .hero-content .title,
+            #top h1 {
+                font-size: clamp(2rem, 4vw, 3rem) !important;
+            }
+
+            .grid-bento,
+            .cards-4,
+            .blog,
+            .projects {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            .bento.big {
+                grid-column: span 2 !important;
+            }
+        }
+
+        /* === LCP OPTIMIZATION: Prioritize h1 rendering === */
+        #top h1,
+        .hero-content .title {
+            font-display: swap;
+            contain: none;
+        }
+
+        /* === Hero Visual: Glow via CSS (CLS-safe) === */
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.3), transparent 70%);
+            filter: blur(50px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glass card base style */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Float animations for hero cards — compositor-only */
+        @keyframes float-slow {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotate(-3deg);
+            }
+        }
+
+        @keyframes float-delayed {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .animate-float-slow {
+            animation: float-slow 6s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+            animation: float-delayed 5s ease-in-out 1s infinite;
         }
     </style>
     <!-- Scripts: Deferred for TBT -->
@@ -1454,16 +1800,8 @@
         <!-- New Enterprise Hero Section -->
         <div class="hero section tight" id="top"
             style="position: relative; min-height: 90vh; display: flex; align-items: center;">
-
-            <!-- Ambient Background Mesh -->
-            <div style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;">
-                <div
-                    style="position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(79,70,229,0.15), transparent 70%); filter: blur(60px);">
-                </div>
-                <div
-                    style="position: absolute; bottom: -10%; right: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(6,182,212,0.1), transparent 70%); filter: blur(80px);">
-                </div>
-            </div>
+            <!-- CLS FIX: Ambient background moved to CSS (see #top background in critical CSS) -->
+            <!-- Original absolute positioned divs removed — they caused CLS 1.749 -->
 
             <div class="container" style="position: relative; z-index: 2;">
                 <div class="hero-grid" style="align-items: center; gap: 4rem;">
@@ -1558,10 +1896,7 @@
                             </div>
                         </div>
 
-                        <!-- Abstract Glow Behind -->
-                        <div
-                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(79,70,229,0.3), transparent 70%); filter: blur(50px); z-index: 1;">
-                        </div>
+                        <!-- CLS FIX: Glow moved to CSS pseudo-element to avoid layout shift -->
                     </div>
 
                 </div>
