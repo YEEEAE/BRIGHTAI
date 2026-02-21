@@ -3,6 +3,13 @@
 # https://brightai.site
 # ======================================================
 
+# Crawl-delay مخفّض لـ Google
+User-agent: Googlebot
+Crawl-delay: 0
+
+# إشارة واضحة لكل sitemaps
+Sitemap: https://brightai.site/sitemap.xml
+
 User-agent: *
 Allow: /
 
@@ -13,6 +20,25 @@ Allow: /frontend/assets/
 Allow: /frontend/pages/
 Allow: /sitemap.xml
 Allow: /manifest.json
+
+# السماح بالوصول لكل الصفحات المهمة بشكل صريح
+Allow: /frontend/pages/smart-automation/
+Allow: /frontend/pages/data-analysis/
+Allow: /frontend/pages/ai-agent/
+Allow: /frontend/pages/smart-medical-archive/
+Allow: /frontend/pages/ai-workflows/
+Allow: /frontend/pages/consultation/
+Allow: /frontend/pages/ai-bots/
+Allow: /frontend/pages/about-us/
+Allow: /frontend/pages/contact/
+Allow: /frontend/pages/blog/
+Allow: /frontend/pages/blogger/
+Allow: /frontend/pages/sectors/
+Allow: /frontend/pages/our-products/
+Allow: /frontend/pages/tools/
+Allow: /frontend/pages/try/
+Allow: /frontend/pages/demo/
+Allow: /frontend/pages/docs/
 
 # حجب بوتات التدريب على الذكاء الاصطناعي بدلا من التوجيهات غير الصالحة
 User-agent: GPTBot
@@ -78,5 +104,3 @@ Disallow: /*.zip$
 Disallow: /*?*utm_
 Disallow: /*?*gclid=
 Disallow: /*?*fbclid=
-
-Sitemap: https://brightai.site/sitemap.xml

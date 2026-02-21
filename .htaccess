@@ -53,20 +53,18 @@ RewriteRule ^(.*)$ https://brightai.site/$1 [L,R=301]
 # ============================================
 
 # ============================================
-# ملاحظة: تم تعطيل تحويل index.html و .html
-# لأن الـ sitemap والـ canonical تستخدم المسار الكامل
+# قواعد تحويل index.html و .html للمسارات الأصلية
+# (تم التفعيل لتجنب Duplicate Content)
 # ============================================
 
 # Redirect */index.html to directory canonical URL
-# DISABLED: conflicts with sitemap/canonical using index.html
-# RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
-# RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
 
 # Redirect .html URLs to clean URLs (prevents duplicate content)
-# DISABLED: conflicts with sitemap/canonical using .html
-# RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
-# RewriteCond %{REQUEST_URI} !^/404\.html$
-# RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
+RewriteCond %{REQUEST_URI} !^/404\.html$
+RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
 
 # Internally serve .html files for clean URLs
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -180,9 +178,10 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
         Header set Cache-Control "max-age=31536000, public, immutable"
     </FilesMatch>
     
-    # HTML: short cache with revalidation
+    # HTML: custom cache with max-age 86400 and X-Robots-Tag
     <FilesMatch "\.(html|htm)$">
-        Header set Cache-Control "max-age=300, public, must-revalidate"
+        Header set Cache-Control "max-age=86400, public, must-revalidate"
+        Header set X-Robots-Tag "index,follow"
     </FilesMatch>
     
     # Remove ETag (better cache performance)
