@@ -1,459 +1,366 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth">
 
+<html class="scroll-smooth" dir="rtl" lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ما هو الذكاء الاصطناعي؟ | Bright AI - دليلك الشامل</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ما هو الذكاء الاصطناعي؟ | Bright AI - دليلك الشامل</title>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'G-8LLESL207Q');
     </script>
-
-    <meta name="description"
-        content="دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، تطبيقاته في الحياة اليومية والأعمال، وكيف سيغير مستقبلنا. مقدم من Bright AI.">
-    <meta name="keywords"
-        content="ما هو الذكاء الاصطناعي, تعريف AI, تعلم الآلة, الشبكات العصبية, مستقبل الذكاء الاصطناعي">
-    <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي">
-    <link rel="canonical" href="https://brightai.site/frontend/pages/what-is-ai/index.html">
-    <link rel="icon" type="image/png" href="../../assets/images/Gemini.png">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي">
-    <meta property="og:title" content="ما هو الذكاء الاصطناعي؟ دليل المبتدئين الشامل - Bright AI">
-    <meta property="og:description" content="كل ما تحتاج معرفته عن ثورة الذكاء الاصطناعي وكيف تؤثر على عالمنا.">
-    <meta property="og:url" content="https://brightai.site/frontend/pages/what-is-ai/index.html">
-    <meta property="og:image" content="https://brightai.site/Gemini.png">
-    <meta property="og:image:alt" content="ما هو الذكاء الاصطناعي - Bright AI">
-    <meta property="og:locale" content="ar_SA">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@BrightAI_SA">
-    <meta name="twitter:title" content="ما هو الذكاء الاصطناعي؟ دليل شامل - Bright AI">
-    <meta name="twitter:description" content="دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، وتطبيقاته في الأعمال.">
-    <meta name="twitter:image" content="https://brightai.site/Gemini.png">
-
-    <!-- Geo Tags -->
-    <meta name="geo.region" content="SA" />
-    <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
-    <meta name="geo.position" content="24.7136;46.6753" />
-    <meta name="ICBM" content="24.7136, 46.6753" />
-    <meta name="language" content="Arabic" />
-    <meta http-equiv="content-language" content="ar-SA" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-
-    <!-- Hreflang Tags -->
-    <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/what-is-ai/index.html" />
-    <link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/what-is-ai/index.html" />
-
-    <!-- Structured Data: BreadcrumbList -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/" },
-        { "@type": "ListItem", "position": 2, "name": "ما هو الذكاء الاصطناعي؟", "item": "https://brightai.site/frontend/pages/what-is-ai/index.html" }
-      ]
-    }
-    </script>
-
-    <!-- Structured Data: Article -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "ما هو الذكاء الاصطناعي؟ دليل شامل",
-      "author": { "@type": "Organization", "name": "Bright AI" },
-      "publisher": { "@type": "Organization", "name": "Bright AI", "url": "https://brightai.site" },
-      "inLanguage": "ar-SA",
-      "url": "https://brightai.site/frontend/pages/what-is-ai/index.html"
-    }
-    </script>
-
-    <!-- CSS & Fonts -->
-    <link rel="stylesheet" href="../../css/bundle-critical.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- Deferred Loader -->
-    <script>
-        (function () {
-            'use strict';
-            function loadCSS(href) {
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = href;
-                document.head.appendChild(link);
-            }
-            function loadScript(src, callback) {
-                var script = document.createElement('script');
-                script.src = src;
-                script.async = true;
-                if (callback) script.onload = callback;
-                document.body.appendChild(script);
-            }
-            function loadDeferredResources() {
-                loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
-                loadCSS('../css/brightai-core.css');
-                loadCSS('/frontend/css/vendor/aos.css');
-            }
-            function loadAnimations() {
-                loadScript('/frontend/js/vendor/gsap.min.js');
-                loadScript('/frontend/js/vendor/aos.js', function () {
-                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
-                });
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function () {
-                    setTimeout(loadDeferredResources, 50);
-                    setTimeout(loadAnimations, 300);
-                });
-            } else {
-                loadDeferredResources();
-                setTimeout(loadAnimations, 300);
-            }
-        })();
-    </script>
-    <script src="../../js/navigation.js" defer></script>
-    <link rel="stylesheet" href="../../../frontend/css/main.bundle.css?v=20260206" />
-
-    <!-- BrightAI Global Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
-    <link rel="stylesheet" href="../../css/index-theme.css" />
-
-
-    <link rel="stylesheet" href="../../css/tailwind.local.min.css">
-    <script defer src="../../js/iconify-preload.js"></script>
-    <script defer src="../../js/vendor/iconify.min.js"></script>
-    <script defer src="../../js/vendor/iconify-icon.min.js"></script>
-</head>
-
+<meta content="دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، تطبيقاته في الحياة اليومية والأعمال، وكيف سيغير مستقبلنا. مقدم من Bright AI." name="description"/>
+<meta content="ما هو الذكاء الاصطناعي, تعريف AI, تعلم الآلة, الشبكات العصبية, مستقبل الذكاء الاصطناعي" name="keywords"/>
+<meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
+<link href="https://brightai.site/frontend/pages/what-is-ai/index.html" rel="canonical"/>
+<link href="../../assets/images/Gemini.png" rel="icon" type="image/png"/>
+<!-- Open Graph -->
+<meta content="article" property="og:type"/>
+<meta content="Bright AI - مُشرقة للذكاء الاصطناعي" property="og:site_name"/>
+<meta content="ما هو الذكاء الاصطناعي؟ دليل المبتدئين الشامل - Bright AI" property="og:title"/>
+<meta content="كل ما تحتاج معرفته عن ثورة الذكاء الاصطناعي وكيف تؤثر على عالمنا." property="og:description"/>
+<meta content="https://brightai.site/frontend/pages/what-is-ai/index.html" property="og:url"/>
+<meta content="https://brightai.site/Gemini.png" property="og:image"/>
+<meta content="ما هو الذكاء الاصطناعي - Bright AI" property="og:image:alt"/>
+<meta content="ar_SA" property="og:locale"/>
+<!-- Twitter Card -->
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@BrightAI_SA" name="twitter:site"/>
+<meta content="ما هو الذكاء الاصطناعي؟ دليل شامل - Bright AI" name="twitter:title"/>
+<meta content="دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، وتطبيقاته في الأعمال." name="twitter:description"/>
+<meta content="https://brightai.site/Gemini.png" name="twitter:image"/>
+<!-- Geo Tags -->
+<meta content="SA" name="geo.region"/>
+<meta content="Riyadh, Saudi Arabia" name="geo.placename"/>
+<meta content="24.7136;46.6753" name="geo.position"/>
+<meta content="24.7136, 46.6753" name="ICBM"/>
+<meta content="Arabic" name="language"/>
+<meta content="ar-SA" http-equiv="content-language"/>
+<meta content="index, follow, max-image-preview:large, max-snippet:-1" name="robots"/>
+<!-- Hreflang Tags -->
+<link href="/sitemap.xml" rel="sitemap" type="application/xml"/><link href="https://brightai.site/frontend/pages/what-is-ai/index.html" hreflang="ar-SA" rel="alternate"/><link href="https://brightai.site/frontend/pages/what-is-ai/index.html" hreflang="x-default" rel="alternate"/><script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/" },
+                { "@type": "ListItem", "position": 2, "name": "الخدمات", "item": "https://brightai.site/frontend/pages/our-products/index.html" },
+                { "@type": "ListItem", "position": 3, "name": "ما هو الذكاء الاصطناعي؟", "item": "https://brightai.site/frontend/pages/what-is-ai/index.html" }
+            ]
+        }
+        </script></head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight bg-[#020617] text-white">
-
-
-    <!-- UNIFIED HEADER (REBUILT) -->
-    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-        <div class="nav-container">
-
-            <!-- Mobile Toggle -->
-            <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-
-            <!-- Logo -->
-            <a href="../../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
-                <span>Bright AI</span>
-            </a>
-
-            <!-- Desktop Navigation -->
-            <ul class="nav-links">
-                <li class="nav-item">
-                    <a href="../../.." class="nav-link">
+<!-- UNIFIED HEADER (REBUILT) -->
+<nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
+<div class="nav-container">
+<!-- Mobile Toggle -->
+<button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+<span class="bar"></span>
+<span class="bar"></span>
+<span class="bar"></span>
+</button>
+<!-- Logo -->
+<a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../..">
+<img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
+<span>Bright AI</span>
+</a>
+<!-- Desktop Navigation -->
+<ul class="nav-links">
+<li class="nav-item">
+<a class="nav-link" href="../../..">
                         الرئيسية
                     </a>
-                </li>
-
-                <!-- Products & Services -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+</li>
+<!-- Products & Services -->
+<li class="nav-item">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link" href="#">
                         المنتجات والخدمات
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../smart-automation/" class="dropdown-item">
-                            <iconify-icon icon="lucide:zap"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأتمتة الذكية</span>
-                                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
-                            </div>
-                        </a>
-                        <a href="../our-products/" class="dropdown-item">
-                            <iconify-icon icon="lucide:package"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
-                            </div>
-                        </a>
-                        <a href="../data-analysis/" class="dropdown-item">
-                            <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">تحليل البيانات</span>
-                                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
-                            </div>
-                        </a>
-                        <a href="../consultation/" class="dropdown-item">
-                            <iconify-icon icon="lucide:message-square"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">استشارات تقنية</span>
-                                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-
-                <!-- Solutions & Experience Models -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+                        <iconify-icon class="chevron-down" icon="lucide:chevron-down" width="14"></iconify-icon>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="../smart-automation/">
+<iconify-icon icon="lucide:zap"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">الأتمتة الذكية</span>
+<span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
+</div>
+</a>
+<a class="dropdown-item" href="../our-products/">
+<iconify-icon icon="lucide:package"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">المنتجات والاشتراكات</span>
+<span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
+</div>
+</a>
+<a class="dropdown-item" href="../data-analysis/">
+<iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">تحليل البيانات</span>
+<span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
+</div>
+</a>
+<a class="dropdown-item" href="../consultation/">
+<iconify-icon icon="lucide:message-square"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">استشارات تقنية</span>
+<span class="dropdown-desc">خبراء في استراتيجيات AI</span>
+</div>
+</a>
+</div>
+</li>
+<!-- Solutions & Experience Models -->
+<li class="nav-item">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link" href="#">
                         الحلول و نماذج التجربة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../ai-agent/" class="dropdown-item">
-                            <iconify-icon icon="lucide:bot"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-                            </div>
-                        </a>
-                        <a href="../try/" class="dropdown-item">
-                            <iconify-icon icon="lucide:database"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">ذكاء البيانات</span>
-                                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
-                            </div>
-                        </a>
-                        <a href="../tools/" class="dropdown-item">
-                            <iconify-icon icon="lucide:wrench"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">أدوات مجانية</span>
-                                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
-                            </div>
-                        </a>
-                        <a href="../smart-medical-archive/" class="dropdown-item">
-                            <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
-                                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
-                            </div>
-                        </a>
-                        <a href="../interview/" class="dropdown-item">
-                            <iconify-icon icon="lucide:users"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">التوظيف الذكي</span>
-                                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-
-                <!-- Company -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
+                        <iconify-icon class="chevron-down" icon="lucide:chevron-down" width="14"></iconify-icon>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="../ai-agent/">
+<iconify-icon icon="lucide:bot"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">AI (AIaaS) للمنشآت</span>
+<span class="dropdown-desc">حلول AIaaS المرنة</span>
+</div>
+</a>
+<a class="dropdown-item" href="../try/">
+<iconify-icon icon="lucide:database"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">ذكاء البيانات</span>
+<span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
+</div>
+</a>
+<a class="dropdown-item" href="../tools/">
+<iconify-icon icon="lucide:wrench"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">أدوات مجانية</span>
+<span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
+</div>
+</a>
+<a class="dropdown-item" href="../smart-medical-archive/">
+<iconify-icon icon="lucide:heart-pulse"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">الأرشيف الطبي الذكي</span>
+<span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
+</div>
+</a>
+<a class="dropdown-item" href="../interview/">
+<iconify-icon icon="lucide:users"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">التوظيف الذكي</span>
+<span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
+</div>
+</a>
+</div>
+</li>
+<!-- Company -->
+<li class="nav-item">
+<a aria-expanded="false" aria-haspopup="true" class="nav-link" href="#">
                         الشركة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="../about-us/" class="dropdown-item">
-                            <iconify-icon icon="lucide:info"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">من نحن</span>
-                                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
-                            </div>
-                        </a>
-                        <a href="../blog/" class="dropdown-item">
-                            <iconify-icon icon="lucide:book-open"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المكتبة الذكية</span>
-                                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
-                            </div>
-                        </a>
-                        <a href="../../../docs.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:file-text"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المستندات</span>
-                                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-
-            <!-- CTA Button -->
-            <div class="hidden lg:block">
-                <a href="https://wa.me/966538229013" class="nav-btn">
+                        <iconify-icon class="chevron-down" icon="lucide:chevron-down" width="14"></iconify-icon>
+</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="../about-us/">
+<iconify-icon icon="lucide:info"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">من نحن</span>
+<span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
+</div>
+</a>
+<a class="dropdown-item" href="../blog/">
+<iconify-icon icon="lucide:book-open"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">المكتبة الذكية</span>
+<span class="dropdown-desc">مقالات وأخبار التقنية</span>
+</div>
+</a>
+<a class="dropdown-item" href="../../../docs.html">
+<iconify-icon icon="lucide:file-text"></iconify-icon>
+<div class="dropdown-item-content">
+<span class="dropdown-title">المستندات</span>
+<span class="dropdown-desc">التوثيق التقني والأدلة</span>
+</div>
+</a>
+</div>
+</li>
+</ul>
+<!-- CTA Button -->
+<div class="hidden lg:block">
+<a class="nav-btn" href="https://wa.me/966538229013">
                     اتصل بنا
                 </a>
-            </div>
-
-        </div>
-    </nav>
-
-    <!-- Mobile Menu Drawer -->
-    <div class="mobile-menu-drawer">
-        <ul class="mobile-nav-list">
-            <li><a href="../../.." class="mobile-nav-link">الرئيسية</a></li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+</div>
+</div>
+</nav>
+<!-- Mobile Menu Drawer -->
+<div class="mobile-menu-drawer">
+<ul class="mobile-nav-list">
+<li><a class="mobile-nav-link" href="../../..">الرئيسية</a></li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link" href="#">
                     المنتجات والخدمات
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                    <a href="../smart-automation/" class="dropdown-item">الأتمتة الذكية</a>
-                    <a href="../our-products/" class="dropdown-item">المنتجات والاشتراكات</a>
-                    <a href="../data-analysis/" class="dropdown-item">تحليل البيانات</a>
-                    <a href="../consultation/" class="dropdown-item">استشارات تقنية</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+</a>
+<div class="mobile-dropdown">
+<a class="dropdown-item" href="../smart-automation/">الأتمتة الذكية</a>
+<a class="dropdown-item" href="../our-products/">المنتجات والاشتراكات</a>
+<a class="dropdown-item" href="../data-analysis/">تحليل البيانات</a>
+<a class="dropdown-item" href="../consultation/">استشارات تقنية</a>
+</div>
+</li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link" href="#">
                     الحلول و نماذج التجربة
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                    <a href="../ai-agent/" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                    <a href="../try/" class="dropdown-item">ذكاء البيانات</a>
-                    <a href="../tools/" class="dropdown-item">أدوات مجانية</a>
-                    <a href="../smart-medical-archive/" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                    <a href="../interview/" class="dropdown-item">التوظيف الذكي</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
+</a>
+<div class="mobile-dropdown">
+<a class="dropdown-item" href="../ai-agent/">AI (AIaaS) للمنشآت</a>
+<a class="dropdown-item" href="../try/">ذكاء البيانات</a>
+<a class="dropdown-item" href="../tools/">أدوات مجانية</a>
+<a class="dropdown-item" href="../smart-medical-archive/">الأرشيف الطبي الذكي</a>
+<a class="dropdown-item" href="../interview/">التوظيف الذكي</a>
+</div>
+</li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link" href="#">
                     الشركة
                     <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                    <a href="../about-us/" class="dropdown-item">من نحن</a>
-                    <a href="../blog/" class="dropdown-item">المكتبة الذكية</a>
-                    <a href="../../../docs.html" class="dropdown-item">المستندات</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
+</a>
+<div class="mobile-dropdown">
+<a class="dropdown-item" href="../about-us/">من نحن</a>
+<a class="dropdown-item" href="../blog/">المكتبة الذكية</a>
+<a class="dropdown-item" href="../../../docs.html">المستندات</a>
+</div>
+</li>
+<li>
+<a class="mobile-nav-link" href="https://wa.me/966538229013" style="color: var(--accent-color);">
                     اتصل بنا
                 </a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- Backdrop -->
-    <div class="backdrop-overlay"></div>
-
-
-
-    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full opacity-30"></canvas>
-
-
-
-
-
-    <!-- HERO SECTION -->
-    <header class="hero-section relative min-h-[50vh] flex items-center pt-32 pb-16 px-6 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-[#020617] pointer-events-none"></div>
-        <div class="max-w-4xl mx-auto w-full relative z-10 text-center">
-            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-indigo-500/30 mb-8 mx-auto"
-                data-aos="fade-down">
-                <span class="text-indigo-300 text-sm font-medium tracking-wide">أكاديمية Bright AI</span>
-            </div>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-8" data-aos="fade-up">
+</li>
+</ul>
+</div>
+<!-- Backdrop -->
+<div class="backdrop-overlay"></div>
+<canvas class="fixed inset-0 z-0 pointer-events-none w-full h-full opacity-30" id="neural-canvas"></canvas>
+<!-- HERO SECTION -->
+<header class="hero-section relative min-h-[50vh] flex items-center pt-32 pb-16 px-6 overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-[#020617] pointer-events-none"></div>
+<div class="max-w-4xl mx-auto w-full relative z-10 text-center">
+<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-indigo-500/30 mb-8 mx-auto" data-aos="fade-down">
+<span class="text-indigo-300 text-sm font-medium tracking-wide">أكاديمية Bright AI</span>
+</div>
+<h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-8" data-aos="fade-up">
                 ما هو الذكاء الاصطناعي؟
             </h1>
-            <p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto" data-aos="fade-up"
-                data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
                 رحلة استكشافية لفهم التقنية التي تعيد تشكيل عالمنا اليوم، من المساعدات الصوتية إلى السيارات ذاتية
                 القيادة.
             </p>
-        </div>
-    </header>
-
-    <!-- CONTENT -->
-    <section class="py-20 px-6 relative">
-        <div class="max-w-4xl mx-auto">
-            <article class="glass-card p-8 md:p-12" data-aos="fade-up">
-                <div class="prose prose-invert max-w-none text-slate-300 leading-loose">
-                    <h2 class="text-2xl font-bold text-white mt-0 mb-6 flex items-center gap-3">
-                        <iconify-icon icon="lucide:cpu" class="text-indigo-400"></iconify-icon>
+</div>
+</header>
+<!-- CONTENT -->
+<section class="py-20 px-6 relative">
+<div class="max-w-4xl mx-auto">
+<article class="glass-card p-8 md:p-12" data-aos="fade-up">
+<div class="prose prose-invert max-w-none text-slate-300 leading-loose">
+<h2 class="text-2xl font-bold text-white mt-0 mb-6 flex items-center gap-3">
+<iconify-icon class="text-indigo-400" icon="lucide:cpu"></iconify-icon>
                         تعريف الذكاء الاصطناعي (AI)
                     </h2>
-                    <p>
+<p>
                         الذكاء الاصطناعي هو فرع من علوم الحاسوب يهدف إلى إنشاء أنظمة قادرة على محاكاة الذكاء البشري. لا
                         يقتصر الأمر على الروبوتات المادية، بل يشمل البرمجيات التي يمكنها التعلم، الاستنتاج، حل المشكلات،
                         وإدراك البيئة المحيطة.
                     </p>
-
-                    <h2 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-3">
-                        <iconify-icon icon="lucide:layers" class="text-purple-400"></iconify-icon>
+<h2 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-3">
+<iconify-icon class="text-purple-400" icon="lucide:layers"></iconify-icon>
                         أنواع الذكاء الاصطناعي
                     </h2>
-                    <ul class="space-y-4 list-none pl-0">
-                        <li class="flex gap-4 items-start bg-white/5 p-4 rounded-xl">
-                            <iconify-icon icon="lucide:check-circle" class="text-green-400 mt-1 flex-shrink-0"
-                                width="20"></iconify-icon>
-                            <div>
-                                <strong class="text-white block mb-1">الذكاء الاصطناعي الضيق (ANI):</strong>
+<ul class="space-y-4 list-none pl-0">
+<li class="flex gap-4 items-start bg-white/5 p-4 rounded-xl">
+<iconify-icon class="text-green-400 mt-1 flex-shrink-0" icon="lucide:check-circle" width="20"></iconify-icon>
+<div>
+<strong class="text-white block mb-1">الذكاء الاصطناعي الضيق (ANI):</strong>
                                 هو الذكاء المتخصص في مهمة واحدة محددة، مثل لعب الشطرنج أو التعرف على الوجوه. هذا هو
                                 النوع السائد حالياً.
                             </div>
-                        </li>
-                        <li class="flex gap-4 items-start bg-white/5 p-4 rounded-xl">
-                            <iconify-icon icon="lucide:check-circle" class="text-yellow-400 mt-1 flex-shrink-0"
-                                width="20"></iconify-icon>
-                            <div>
-                                <strong class="text-white block mb-1">الذكاء الاصطناعي العام (AGI):</strong>
+</li>
+<li class="flex gap-4 items-start bg-white/5 p-4 rounded-xl">
+<iconify-icon class="text-yellow-400 mt-1 flex-shrink-0" icon="lucide:check-circle" width="20"></iconify-icon>
+<div>
+<strong class="text-white block mb-1">الذكاء الاصطناعي العام (AGI):</strong>
                                 هو نظام ذكي يمتلك القدرة على فهم وتعلم أي مهمة فكرية يستطيع الإنسان القيام بها. لا يزال
                                 هذا النوع نظرياً وقيد البحث.
                             </div>
-                        </li>
-                    </ul>
-
-                    <h2 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-3">
-                        <iconify-icon icon="lucide:zap" class="text-amber-400"></iconify-icon>
+</li>
+</ul>
+<h2 class="text-2xl font-bold text-white mt-12 mb-6 flex items-center gap-3">
+<iconify-icon class="text-amber-400" icon="lucide:zap"></iconify-icon>
                         كيف يعمل؟
                     </h2>
-                    <p>
+<p>
                         يعتمد الذكاء الاصطناعي الحديث بشكل كبير على <strong>البيانات</strong>. من خلال تعريض الخوارزميات
                         (خاصة في مجال التعلم الآلي والتعلم العميق) لكميات هائلة من البيانات، يمكن لهذه الخوارزميات
                         اكتشاف الأنماط والقواعد بنفسها بدلاً من برمجتها يدوياً لكل احتمال.
                     </p>
-                </div>
-
-                <div class="mt-12 pt-8 border-t border-white/10 text-center">
-                    <p class="text-slate-400 mb-6">هل تريد معرفة كيف يمكن للذكاء الاصطناعي أن يخدم مشروك؟</p>
-                    <a href="../consultation/" class="btn-primary inline-flex items-center gap-2">
+</div>
+<div class="mt-12 pt-8 border-t border-white/10 text-center">
+<p class="text-slate-400 mb-6">هل تريد معرفة كيف يمكن للذكاء الاصطناعي أن يخدم مشروك؟</p>
+<a class="btn-primary inline-flex items-center gap-2" href="../consultation/">
                         احجز استشارة مجانية
                         <iconify-icon icon="lucide:arrow-left" width="20"></iconify-icon>
-                    </a>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- UNIFIED FOOTER -->
-    <footer class="footer bg-[#020617] border-t border-white/10 pt-20 pb-10">
-        <div class="container mx-auto px-6">
-            <div class="text-center md:text-right text-slate-400 text-sm">
-                &copy; 2026 Bright AI. جميع الحقوق محفوظة.
+</a>
+</div>
+</article>
+</div>
+</section>
+<!-- UNIFIED FOOTER -->
+<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10">
+<div class="max-w-4xl mx-auto px-6 mb-16 text-slate-300 leading-relaxed text-lg seo-article">
+<h3 class="text-3xl font-bold text-white mb-6">الدليل الشامل لفهم تكنولوجيا الذكاء الاصطناعي في قطاع الأعمال السعودي</h3>
+<p class="mb-6">
+                يُعرّف الذكاء الاصطناعي (AI) بأنه محاكاة لقدرات ووجوه الذكاء البشري بواسطة الآلات والأنظمة الحاسوبية، لتشمل تقنيات فائقة مثل التعلم الآلي (Machine Learning)، معالجة اللغات الطبيعية (NLP)، والرؤية الحاسوبية (Computer Vision). في سياق الاقتصاد السعودي الحديث المرتبط بتطلعات رؤية المملكة، لم يعد الذكاء الاصطناعي مجرد فرع تكنولوجي نظري، بل تحول ليصبح القلب النابض الاستراتيجي الذي يضمن مضاعفة مؤشرات الكفاءة التشغيلية، والابتكار، ويعزز من جودة الحياة للعديد من القطاعات المدنية والاقتصادية الرائدة.
+            </p>
+<p class="mb-6">
+                إن تطور شبكات الأعصاب العميقة (Deep Learning) وقدرتها على استيعاب تريليونات البيانات ومعالجتها في وقت لحظي جعل من الذكاء الاصطناعي الحل الأمثل لمعالجة التحديات الصعبة كمشاكل سلاسل الاستيراد والإمداد، وإدارة المخاطر في التمويل والمصارف، بالإضافة لتحسين كفاءات المصانع الذكية وإنترنت الأشياء (IoT). من خلال تبني أفضل الخوارزميات وتوظيف النماذج التوليدية الضخمة الكفؤة محلياً، يمكن للأنظمة التقنية في السعودية أن تخلق استنتاجات وإبداعات فريدة تفوق السرعة البشرية بآلاف الأضعاف بفعالية متناهية وبدون التضحية بمعايير الأمن والسرية والموثوقية.
+            </p>
+<h4 class="text-2xl font-bold text-indigo-400 mb-4 mt-8">تطبيقات وتأثيرات الذكاء الاصطناعي على الاقتصاد الحديث</h4>
+<ul class="list-disc pl-6 pr-6 space-y-3 mb-8">
+<li><strong>نماذج الذكاء التوليدية والمخرجات النصية (GenAI):</strong> تمكين الموظفين والفرق من إنتاج المحتويات التوضيحية وتوليد أكواد البرمجة بمعدل ابتكار عالي وكفاءة دقيقة في التصميم والأداء الإبداعي للخطط التوسعية للشركات.</li>
+<li><strong>التخصيص الشخصاني ورفع كفاءة الجمهور:</strong> عبر خوارزميات الاقتراح الذكية وتغذية التوصيات التسويقية المترابطة باهتمامات المستهلك السعودي لتصعيد وتيرة المبيعات الإجمالية والتأثير على رضا العميل وتجربته الشرائية وتكرارها.</li>
+<li><strong>ذكاء الآلة واتخاذ القرارات (Decisional AI):</strong> تبني تقنيات الذكاء التي تُسير ذاتياً كمركبات الشحن والملاحة الآلية وأدوات كشف الإشارات الخطيرة لتحقيق معايير الأمان وتحييد الأخطاء الروتينية لدرجة منعدمة وتطوير الصناعات الثقيلة بالمملكة.</li>
+</ul>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-16 pb-12">
+<h4 class="text-3xl font-bold text-white mb-8 text-center">خدمات تقنية ذات صلة تفيدك</h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/frontend/pages/consultation/index.html"><h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">استشارات AI القيادية <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h5></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/frontend/pages/tools/index.html"><h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">تطبيقات الذكاء الحديثة <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h5></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/frontend/pages/our-products/index.html"><h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">منتجات الأنظمة المتقدمة <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h5></a>
+</div>
+</div>
+</section><footer class="footer bg-[#020617] border-t border-white/10 pt-20 pb-10">
+<div class="container mx-auto px-6">
+<div class="text-center md:text-right text-slate-400 text-sm">
+                © 2026 Bright AI. جميع الحقوق محفوظة.
             </div>
-        </div>
-    </footer>
+</div>
 
-    <!-- Core Scripts -->
-
-    <!-- JavaScript Bundles (Consolidated) -->
-    <script src="../../js/main.bundle.js" defer></script>
-
-
-
-
-
-
-    <script src="../../js/index-theme.js" defer></script>
+<div class="custom-seo-links-universal" style="margin-top:20px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); width:100%; text-align:center;">
+<h4 style="color:#fff; font-weight:600; margin-bottom:12px;">روابط سريعة والخدمات المميزة</h4>
+<ul style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; list-style:none; padding:0; margin:0; font-size:14px; color:#94a3b8;">
+<li><a href="../../../index.html" style="color:#94a3b8; text-decoration:none;">الصفحة الرئيسية</a></li>
+<li><a href="/frontend/pages/our-products/index.html" style="color:#94a3b8; text-decoration:none;">صفحات الخدمات الأخرى</a></li>
+<li><a href="/frontend/pages/blog/index.html" style="color:#94a3b8; text-decoration:none;">صفحة المدونة</a></li>
+<li><a href="/frontend/pages/about-us/index.html" style="color:#94a3b8; text-decoration:none;">صفحة من نحن</a></li>
+<li><a href="/frontend/pages/contact/index.html" style="color:#94a3b8; text-decoration:none;">صفحة اتصل بنا</a></li>
+</ul>
+</div>
+</footer>
+<!-- Core Scripts -->
+<!-- JavaScript Bundles (Consolidated) -->
+<script defer="" src="../../js/main.bundle.js"></script>
+<script defer="" src="../../js/index-theme.js"></script>
 </body>
-
 </html>

@@ -1,929 +1,763 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
 
+<html dir="rtl" lang="ar">
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-  <script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-8LLESL207Q');
   </script>
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>نظام الأرشيف الطبي الذكي للمستشفيات في السعودية | تجربة Bright AI</title>
-  <meta name="description"
-    content="نظام تجريبي خارق للمستشفيات السعودية: رفع ملفات طبية فعلية، OCR وتحويل صوت لنص، محرك بحث ذكي متعدد المستويات (سريع/متقدم/دلالي/صوتي/صوري)، وتصدير تكاملي إلى FHIR وHL7 وCSV وExcel." />
-  <meta name="keywords"
-    content="نظام أرشيف طبي ذكي السعودية, محرك بحث طبي ذكي متعدد المستويات, بحث دلالي في السجلات الطبية, بحث صوتي طبي, بحث بالصورة للأشعة, تكامل FHIR HL7, منصة ذكاء اصطناعي للمستشفيات السعودية" />
-  <meta name="author" content="Bright AI" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <meta name="language" content="Arabic" />
-  <meta http-equiv="content-language" content="ar-SA" />
-  <meta name="geo.region" content="SA" />
-  <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
-  <meta name="geo.position" content="24.7136;46.6753" />
-  <meta name="ICBM" content="24.7136, 46.6753" />
-
-  <link rel="canonical" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
-  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
-  <link rel="alternate" hreflang="x-default"
-    href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Bright AI" />
-  <meta property="og:locale" content="ar_SA" />
-  <meta property="og:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" />
-  <meta property="og:description"
-    content="ارفع ملف التقرير الطبي مباشرة، استخرج السجل الصحي تلقائياً، نفذ بحثاً طبياً باللغة الطبيعية، ثم صدّر البيانات بصيغ تكامل EHR." />
-  <meta property="og:url" content="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
-  <meta property="og:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" />
-
-  <meta name="theme-color" content="#122d45" />
-  <meta name="twitter:description"
-    content="تجربة تشغيلية كاملة للمستشفيات: إدخال ملفات فعلية + استخراج ذكي + بحث طبي + تصدير FHIR/HL7/CSV." />
-  <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
-
-  <link rel="icon" type="image/png" href="../../assets/images/Gemini.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="./system-unified.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Cairo:wght@400;600;700;800&display=swap"
-    rel="stylesheet" />
-
-  <link rel="stylesheet" href="../../css/bundle-critical.css" />
-  <link rel="stylesheet" href="../../css/main.bundle.css" />
-  <link rel="stylesheet" href="../../css/index-theme.css" />
-  <link rel="stylesheet" href="../../css/tailwind.local.min.css" />
-  <link rel="stylesheet" href="./system-unified.css" />
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "name": "Bright AI",
-        "alternateName": ["مُشرقة AI", "Bright AI Saudi Arabia"],
-        "url": "https://brightai.site/",
-        "logo": "https://brightai.site/frontend/assets/images/Gemini.png",
-        "sameAs": [
-          "https://wa.me/966538229013",
-          "https://www.linkedin.com/company/brightai-sa",
-          "https://x.com/brightai_sa"
-        ]
-      },
-      {
-        "@type": "WebPage",
-        "name": "نظام الأرشيف الطبي الذكي للمستشفيات في السعودية",
-        "url": "https://brightai.site/frontend/pages/smart-medical-archive/index.html",
-        "inLanguage": "ar-SA",
-        "isPartOf": {
-          "@type": "WebSite",
-          "name": "Bright AI",
-          "url": "https://brightai.site/"
-        },
-        "about": {
-          "@type": "Service",
-          "name": "الأرشيف الطبي الذكي"
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>نظام الأرشيف الطبي الذكي للمستشفيات في السعودية | تجربة Bright AI</title>
+<meta content="نظام تجريبي خارق للمستشفيات السعودية: رفع ملفات طبية فعلية، OCR وتحويل صوت لنص، محرك بحث ذكي متعدد المستويات (سريع/متقدم/دلالي/صوتي/صوري)، وتصدير تكاملي إلى FHIR وHL7 وCSV وExcel." name="description"/>
+<meta content="نظام أرشيف طبي ذكي السعودية, محرك بحث طبي ذكي متعدد المستويات, بحث دلالي في السجلات الطبية, بحث صوتي طبي, بحث بالصورة للأشعة, تكامل FHIR HL7, منصة ذكاء اصطناعي للمستشفيات السعودية" name="keywords"/>
+<meta content="Bright AI" name="author"/>
+<meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
+<meta content="Arabic" name="language"/>
+<meta content="ar-SA" http-equiv="content-language"/>
+<meta content="SA" name="geo.region"/>
+<meta content="Riyadh, Saudi Arabia" name="geo.placename"/>
+<meta content="24.7136;46.6753" name="geo.position"/>
+<meta content="24.7136, 46.6753" name="ICBM"/>
+<link href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Bright AI" property="og:site_name"/>
+<meta content="ar_SA" property="og:locale"/>
+<meta content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" property="og:title"/>
+<meta content="ارفع ملف التقرير الطبي مباشرة، استخرج السجل الصحي تلقائياً، نفذ بحثاً طبياً باللغة الطبيعية، ثم صدّر البيانات بصيغ تكامل EHR." property="og:description"/>
+<meta content="https://brightai.site/frontend/pages/smart-medical-archive/index.html" property="og:url"/>
+<meta content="https://brightai.site/frontend/assets/images/Gemini.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" name="twitter:title"/>
+<meta content="#122d45" name="theme-color"/>
+<meta content="تجربة تشغيلية كاملة للمستشفيات: إدخال ملفات فعلية + استخراج ذكي + بحث طبي + تصدير FHIR/HL7/CSV." name="twitter:description"/>
+<meta content="https://brightai.site/frontend/assets/images/Gemini.png" name="twitter:image"/>
+<link href="../../assets/images/Gemini.png" rel="icon" type="image/png"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link as="style" href="./system-unified.css" rel="preload"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../css/bundle-critical.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/index-theme.css" rel="stylesheet"/>
+<link href="../../css/tailwind.local.min.css" rel="stylesheet"/>
+<link href="./system-unified.css" rel="stylesheet"/>
+<script defer="" src="../../js/iconify-preload.js"></script>
+<script defer="" src="../../js/vendor/iconify.min.js"></script>
+<script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
+<link href="/sitemap.xml" rel="sitemap" type="application/xml"/><link href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" hreflang="ar-SA" rel="alternate"/><link href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" hreflang="x-default" rel="alternate"/><script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/" },
+                { "@type": "ListItem", "position": 2, "name": "الخدمات", "item": "https://brightai.site/frontend/pages/our-products/index.html" },
+                { "@type": "ListItem", "position": 3, "name": "الأرشيف الطبي الذكي", "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html" }
+            ]
         }
-      },
-      {
-        "@type": "Service",
-        "name": "الأرشيف الطبي الذكي للمستشفيات",
-        "serviceType": "Medical AI Archive System",
-        "description": "نظام تشغيل طبي ذكي للمستشفيات السعودية: استيعاب التقارير، استخراج تلقائي للبيانات، بحث لغة طبيعية، وتصدير تكاملي مع أنظمة السجلات الطبية.",
-        "provider": {
-          "@type": "Organization",
-          "name": "Bright AI"
-        },
-        "areaServed": {
-          "@type": "Country",
-          "name": "Saudi Arabia"
-        },
-        "offers": {
-          "@type": "Offer",
-          "availability": "https://schema.org/InStock",
-          "priceCurrency": "SAR"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "الرئيسية",
-            "item": "https://brightai.site/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "الأرشيف الطبي الذكي",
-            "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "ما الصيغ المدعومة لرفع التقارير الطبية؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "يدعم النظام ملفات PDF وDOCX وDOC وDICOM وJPG وPNG وMP3 وWAV وExcel إضافة إلى الملفات النصية، مع OCR وتحويل صوت إلى نص قبل التحليل."}
-          },
-          {
-            "@type": "Question",
-            "name": "هل يدعم التكامل مع السجلات الطبية الإلكترونية؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "نعم، التجربة توفر تصديراً بصيغ FHIR JSON وHL7 وCSV لتسهيل الإدخال والتكامل مع أنظمة EHR."}
-          },
-          {
-            "@type": "Question",
-            "name": "ما أنواع البحث الذكي المتاحة داخل النظام؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "المحرك يدعم البحث السريع أثناء الكتابة، البحث المتقدم بالفلاتر، البحث الدلالي بالمرادفات، البحث الصوتي، والبحث بالصورة مع ترتيب وتصدير النتائج."}
-          },
-          {
-            "@type": "Question",
-            "name": "ما الفائدة التشغيلية للمستشفى؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "تقليل زمن إدخال البيانات، تحسين الوصول للحالات المشابهة، وتمكين إدارة المستشفى من مؤشرات مخاطر وتشغيل لحظية."}
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-
-  <script defer src="../../js/iconify-preload.js"></script>
-  <script defer src="../../js/vendor/iconify.min.js"></script>
-  <script defer src="../../js/vendor/iconify-icon.min.js"></script>
-</head>
-
+        </script></head>
 <body>
-  <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
-
-  <header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header"
-    role="banner">
-    <div class="nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex-shrink-0 flex items-center gap-3">
-        <a class="nav-logo flex items-center gap-3 group" href="/" aria-label="Bright AI — الصفحة الرئيسية"
-          title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
-          <div
-            class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
-            <span class="text-white font-black text-xl tracking-tighter">AI</span>
-          </div>
-          <div class="flex flex-col leading-none">
-            <span
-              class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
-                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
-            <span class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5">Saudi</span>
-          </div>
-        </a>
-      </div>
-
-      <nav class="hidden lg:flex items-center gap-1" style="contain: layout;">
-        <ul class="nav-links flex items-center gap-1">
-          <li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
-
-          <li class="nav-item group/dropdown relative">
-            <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+<a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
+<header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header" role="banner">
+<div class="nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex-shrink-0 flex items-center gap-3">
+<a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo flex items-center gap-3 group" href="/" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+<div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+<span class="text-white font-black text-xl tracking-tighter">AI</span>
+</div>
+<div class="flex flex-col leading-none">
+<span class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+<span class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5">Saudi</span>
+</div>
+</a>
+</div>
+<nav class="hidden lg:flex items-center gap-1" style="contain: layout;">
+<ul class="nav-links flex items-center gap-1">
+<li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
+<li class="nav-item group/dropdown relative">
+<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
               الحلول الذكية
               <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
-            </button>
-            <div
-              class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-              <div class="p-2 space-y-1">
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/brightai-platform/build/">منصة Bright AI Agents</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/smart-automation/">الأتمتة الذكية</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/ai-agent/">الذكاء الاصطناعي كخدمة</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/data-analysis/">تحليل البيانات</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/contact/">استشارات</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="nav-item group/dropdown relative">
-            <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+</button>
+<div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+<div class="p-2 space-y-1">
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/brightai-platform/build/">منصة Bright AI Agents</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/smart-automation/">الأتمتة الذكية</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/ai-agent/">الذكاء الاصطناعي كخدمة</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/data-analysis/">تحليل البيانات</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/contact/">استشارات</a>
+</div>
+</div>
+</li>
+<li class="nav-item group/dropdown relative">
+<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
               النماذج الذكية
               <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
-            </button>
-            <div
-              class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-              <div class="p-2 space-y-1">
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/health-bright/">حلول AI الطبية المتقدمة</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/job.MAISco/">منصة التوظيف الذكي</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/ai-scolecs/">المنصة التعليمية الذكية</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="nav-item group/dropdown relative">
-            <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+</button>
+<div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+<div class="p-2 space-y-1">
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/health-bright/">حلول AI الطبية المتقدمة</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/job.MAISco/">منصة التوظيف الذكي</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/ai-scolecs/">المنصة التعليمية الذكية</a>
+</div>
+</div>
+</li>
+<li class="nav-item group/dropdown relative">
+<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
               عن برايت
               <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
-            </button>
-            <div
-              class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-              <div class="p-2 space-y-1">
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/about-us/">من نحن</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/docs.html">المستندات</a>
-                <a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors"
-                  href="/frontend/pages/blog/">المدونة</a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="flex items-center gap-4">
-        <a class="nav-btn hidden md:flex items-center gap-2" href="/frontend/pages/try/"
-          aria-label="ابدأ تجربة أدوات الذكاء الاصطناعي مجاناً" title="جرّب أدوات الذكاء الاصطناعي مجاناً">
-          <iconify-icon icon="lucide:sparkles"></iconify-icon>
+</button>
+<div class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+<div class="p-2 space-y-1">
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/about-us/">من نحن</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/docs.html">المستندات</a>
+<a class="dropdown-item block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors" href="/frontend/pages/blog/">المدونة</a>
+</div>
+</div>
+</li>
+</ul>
+</nav>
+<div class="flex items-center gap-4">
+<a aria-label="ابدأ تجربة أدوات الذكاء الاصطناعي مجاناً" class="nav-btn hidden md:flex items-center gap-2" href="/frontend/pages/try/" title="جرّب أدوات الذكاء الاصطناعي مجاناً">
+<iconify-icon icon="lucide:sparkles"></iconify-icon>
           ابدأ الآن مجاناً
         </a>
-        <button aria-expanded="false" aria-label="فتح القائمة"
-          class="mobile-toggle lg:hidden flex flex-col gap-1.5 p-2 bg-white/5 rounded-lg border border-white/10">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <div
-    class="mobile-menu-drawer fixed inset-y-0 right-0 w-80 z-[60] transform translate-x-full transition-transform duration-500 ease-out rtl:left-0 rtl:right-auto rtl:-translate-x-full">
-    <div class="flex flex-col h-full bg-[#020617] border-l border-white/5 p-8">
-      <div class="flex items-center justify-between mb-12">
-        <div class="text-xl font-bold text-white">القائمة الرئيسية</div>
-        <button aria-label="إغلاق القائمة" class="mobile-toggle p-2 hover:bg-white/5 rounded-full">
-          <iconify-icon class="text-white text-2xl" icon="lucide:x"></iconify-icon>
-        </button>
-      </div>
-      <ul class="mobile-nav-list space-y-2">
-        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/">الرئيسية</a></li>
-        <li>
-          <a aria-expanded="false" aria-haspopup="true"
-            class="mobile-nav-link flex items-center justify-between text-lg py-4 border-b border-white/5" href="#">
+<button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle lg:hidden flex flex-col gap-1.5 p-2 bg-white/5 rounded-lg border border-white/10">
+<span class="bar"></span>
+<span class="bar"></span>
+<span class="bar"></span>
+</button>
+</div>
+</div>
+</header>
+<div class="mobile-menu-drawer fixed inset-y-0 right-0 w-80 z-[60] transform translate-x-full transition-transform duration-500 ease-out rtl:left-0 rtl:right-auto rtl:-translate-x-full">
+<div class="flex flex-col h-full bg-[#020617] border-l border-white/5 p-8">
+<div class="flex items-center justify-between mb-12">
+<div class="text-xl font-bold text-white">القائمة الرئيسية</div>
+<button aria-label="إغلاق القائمة" class="mobile-toggle p-2 hover:bg-white/5 rounded-full">
+<iconify-icon class="text-white text-2xl" icon="lucide:x"></iconify-icon>
+</button>
+</div>
+<ul class="mobile-nav-list space-y-2">
+<li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/">الرئيسية</a></li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between text-lg py-4 border-b border-white/5" href="#">
             الحلول والخدمات
             <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-          </a>
-          <div class="mobile-dropdown space-y-2 mt-2 px-4">
-            <a class="block py-2 text-slate-400 hover:text-white transition-colors"
-              href="/frontend/pages/sectors/healthcare.html">حلول القطاع الصحي</a>
-            <a class="block py-2 text-slate-400 hover:text-white transition-colors"
-              href="/frontend/pages/data-analysis/">تحليل البيانات</a>
-            <a class="block py-2 text-slate-400 hover:text-white transition-colors"
-              href="/frontend/pages/ai-agent/">AIaaS</a>
-          </div>
-        </li>
-        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
-            href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a></li>
-        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/frontend/pages/blog/">المدونة</a>
-        </li>
-        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5 text-indigo-400"
-            href="/frontend/pages/contact/">تواصل معنا</a></li>
-      </ul>
-      <div class="mt-auto">
-        <a class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2"
-          href="/frontend/pages/consultation/">
-          <iconify-icon icon="lucide:zap"></iconify-icon>
+</a>
+<div class="mobile-dropdown space-y-2 mt-2 px-4">
+<a class="block py-2 text-slate-400 hover:text-white transition-colors" href="/frontend/pages/sectors/healthcare.html">حلول القطاع الصحي</a>
+<a class="block py-2 text-slate-400 hover:text-white transition-colors" href="/frontend/pages/data-analysis/">تحليل البيانات</a>
+<a class="block py-2 text-slate-400 hover:text-white transition-colors" href="/frontend/pages/ai-agent/">AIaaS</a>
+</div>
+</li>
+<li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a></li>
+<li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/frontend/pages/blog/">المدونة</a>
+</li>
+<li><a class="mobile-nav-link text-lg py-4 border-b border-white/5 text-indigo-400" href="/frontend/pages/contact/">تواصل معنا</a></li>
+</ul>
+<div class="mt-auto">
+<a class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2" href="/frontend/pages/consultation/">
+<iconify-icon icon="lucide:zap"></iconify-icon>
           احجز استشارة تنفيذية
         </a>
-      </div>
-    </div>
-  </div>
-  <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
-
-  <nav class="breadcrumb-nav" aria-label="مسار التنقل">
-    <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
-      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a href="/" itemprop="item"><span itemprop="name">الرئيسية</span></a>
-        <meta itemprop="position" content="1" />
-      </li>
-      <li aria-hidden="true">/</li>
-      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a href="/frontend/pages/smart-medical-archive/index.html" itemprop="item"><span itemprop="name">الأرشيف الطبي
+</div>
+</div>
+</div>
+<div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+<nav aria-label="مسار التنقل" class="breadcrumb-nav">
+<ol class="breadcrumb-list" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+<li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+<a href="/" itemprop="item"><span itemprop="name">الرئيسية</span></a>
+<meta content="1" itemprop="position"/>
+</li>
+<li aria-hidden="true">/</li>
+<li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+<a href="/frontend/pages/smart-medical-archive/index.html" itemprop="item"><span itemprop="name">الأرشيف الطبي
             الذكي</span></a>
-        <meta itemprop="position" content="2" />
-      </li>
-    </ol>
-  </nav>
-
-  <main class="site-wrap" id="main">
-    <header class="hero" id="top">
-      <span class="hero-badge">منصة تجريبية تشغيلية للمستشفيات السعودية</span>
-      <div class="hero-grid">
-        <div>
-          <h1>نظام الأرشيف الطبي الذكي: من التقرير الخام إلى قرار سريري وإداري في نفس الواجهة</h1>
-          <p>
+<meta content="2" itemprop="position"/>
+</li>
+</ol>
+</nav>
+<main class="site-wrap" id="main">
+<header class="hero" id="top">
+<span class="hero-badge">منصة تجريبية تشغيلية للمستشفيات السعودية</span>
+<div class="hero-grid">
+<div>
+<h1>نظام الأرشيف الطبي الذكي: من التقرير الخام إلى قرار سريري وإداري في نفس الواجهة</h1>
+<p>
             جرّب سير العمل الكامل للمستشفى: ارفع ملف التقرير الطبي الفعلي، استخرج البيانات الصحية آلياً، نفّذ بحثاً
             باللغة
             الطبيعية داخل السجلات، ثم صدّر النتائج بصيغ تكامل مناسبة لأنظمة السجلات الطبية الإلكترونية.
           </p>
-          <div class="hero-actions">
-            <a class="btn-main" href="#trialConsole">ابدأ التجربة الآن</a>
-            <a class="btn-sub" href="#leadForm">فعّل تجربة المستشفى</a>
-            <a class="btn-outline" href="/frontend/pages/contact/">تحدث مع فريق الحلول الصحية</a>
-          </div>
-        </div>
-        <aside class="kpi-stack" aria-label="مؤشرات التجربة">
-          <article class="kpi-card">
-            <div class="label">السجلات المؤرشفة داخل التجربة</div>
-            <div class="value" id="recordsCount">0</div>
-          </article>
-          <article class="kpi-card">
-            <div class="label">نتيجة استخراج نشطة</div>
-            <div class="value" id="extractedCount">0</div>
-          </article>
-          <article class="kpi-card">
-            <div class="label">حالات عالية الخطورة مكتشفة</div>
-            <div class="value" id="riskCount">0</div>
-          </article>
-        </aside>
-      </div>
-    </header>
-
-    <section>
-      <div class="section-title">
-        <h2>لماذا هذا النظام مهم للمستشفيات السعودية؟</h2>
-        <p>تركيز مباشر على أثر تشغيلي قابل للقياس في بيئة صحية عالية الضغط.</p>
-      </div>
-      <div class="problem-grid">
-        <article class="problem-card">
-          <h3>المشكلة</h3>
-          <p>تكدس تقارير غير مهيكلة يستهلك وقت الأطباء والكوادر الإدارية ويبطئ الوصول لمعلومة الحالة الصحيحة.</p>
-        </article>
-        <article class="problem-card">
-          <h3>الحل</h3>
-          <p>تحويل التقرير إلى سجل منظم تلقائياً، وربط التشخيصات والأدوية والتنبيهات بمحرك بحث طبي باللغة الطبيعية.</p>
-        </article>
-        <article class="problem-card">
-          <h3>الدليل التشغيلي</h3>
-          <p>قياس واضح: زمن إدخال أقل، دقة أعلى في السجل، واسترجاع أسرع للحالات المشابهة خلال القرار السريري.</p>
-        </article>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-title">
-        <h2>نطاق التجربة التشغيلية</h2>
-        <p>مصمم لمسار المستشفى الكامل: تقرير طبي → سجل منظم → بحث سريري → تحليلات إدارية → تصدير تكاملي.</p>
-      </div>
-      <div class="capabilities">
-        <article class="capability-card">
-          <h3>1) استيعاب رقمي للتقارير الطبية</h3>
-          <p>رفع ملفات فعلية من التقارير ثم تحويل النص غير المهيكل إلى عناصر صحية منظمة يمكن الرجوع لها فوراً.</p>
-        </article>
-        <article class="capability-card">
-          <h3>2) بحث لغة طبيعية داخل السجلات</h3>
-          <p>الطبيب أو المدير يكتب سؤاله بالعربية، والنظام يرجع النتائج المطابقة مع تفسير واضح لأسباب التطابق.</p>
-        </article>
-        <article class="capability-card">
-          <h3>3) استخراج تلقائي للبيانات الصحية</h3>
-          <p>تقليل الإدخال اليدوي وتحديث عناصر السجل تلقائياً لرفع الدقة وتحسين سرعة اتخاذ القرار.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- حقول اتصال مخفية للتوافق مع النظام -->
-    <input id="apiBaseInput" type="hidden" value="" />
-    <input id="groqApiKeyInput" type="hidden" value="" />
-    <input id="groqModelInput" type="hidden" value="llama3-70b-8192" />
-    <button id="saveConnectionBtn" type="button" hidden></button>
-    <button id="testConnectionBtn" type="button" hidden></button>
-    <div id="connectionStatus" hidden></div>
-
-    <section id="trialConsole">
-      <div class="section-title">
-        <h2>وحدة التجربة للمستشفيات</h2>
-        <p>رفع ملف أو لصق تقرير، تحليل فوري، حفظ سجل، بحث، تحليلات، ثم تصدير متوافق مع EHR.</p>
-      </div>
-
-      <div class="console-grid">
-        <article class="console-panel">
-          <h3>الخطوة 1: تهيئة المنشأة + إدخال التقرير</h3>
-          <p class="panel-sub">حدد سياق المستشفى والقسم، وارفع ملف التقرير الطبي أو الصق النص مباشرة قبل التحليل.</p>
-
-          <div class="form-grid">
-            <input id="hospitalName" type="text" value="مستشفى الملك فهد" placeholder="اسم المستشفى" />
-            <input id="hospitalCity" type="text" value="الرياض" placeholder="المدينة" />
-            <select id="hospitalDepartment">
-              <option value="الطوارئ">قسم الطوارئ</option>
-              <option value="القلب">قسم القلب</option>
-              <option value="الأورام">قسم الأورام</option>
-              <option value="السكري">عيادة السكري</option>
-              <option value="العناية المركزة">العناية المركزة</option>
-            </select>
-          </div>
-
-          <div class="file-box">
-            <input id="reportFile" type="file" multiple
-              accept=".pdf,.docx,.doc,.dcm,.dicom,.jpg,.jpeg,.png,.webp,.mp3,.wav,.m4a,.xls,.xlsx,.txt,.md,.json,.csv,.xml,.html,.htm,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/dicom,image/jpeg,image/png,image/webp,audio/mpeg,audio/wav,audio/x-wav,audio/mp4,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,text/csv,application/json,text/xml,application/xml,text/html"
-              hidden />
-            <input id="reportFolder" type="file" webkitdirectory directory multiple hidden />
-
-            <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="منطقة السحب والإفلات">
-              <div class="drop-title">اسحب وأفلت الملفات الطبية هنا</div>
-              <div class="drop-sub">أو اختر ملفات منفردة أو مجلد كامل للدفعة</div>
-              <div class="drop-actions">
-                <button class="btn-outline" id="pickFilesBtn" type="button">اختيار ملفات</button>
-                <button class="btn-outline" id="pickFolderBtn" type="button">اختيار مجلد كامل</button>
-              </div>
-            </div>
-
-            <div class="file-row">
-              <button class="btn-outline" id="extractFileBtn" type="button">استخراج النص من أول ملف</button>
-              <button class="btn-sub" id="processBatchBtn" type="button">معالجة دفعة الملفات</button>
-              <button class="btn-outline" id="cancelBatchBtn" type="button">إلغاء المعالجة الجارية</button>
-              <button class="btn-outline" id="resumeBatchBtn" type="button">استئناف الملفات المتوقفة</button>
-              <button class="btn-main" id="analyzeBatchBtn" type="button">تحليل الملفات الجاهزة عبر Groq</button>
-            </div>
-
-            <p class="file-note">الصيغ المدعومة: PDF, DOCX, DOC, DICOM, JPG, PNG, MP3, WAV, Excel, TXT, CSV, JSON, XML,
+<div class="hero-actions">
+<a class="btn-main" href="#trialConsole">ابدأ التجربة الآن</a>
+<a class="btn-sub" href="#leadForm">فعّل تجربة المستشفى</a>
+<a class="btn-outline" href="/frontend/pages/contact/">تحدث مع فريق الحلول الصحية</a>
+</div>
+</div>
+<aside aria-label="مؤشرات التجربة" class="kpi-stack">
+<article class="kpi-card">
+<div class="label">السجلات المؤرشفة داخل التجربة</div>
+<div class="value" id="recordsCount">0</div>
+</article>
+<article class="kpi-card">
+<div class="label">نتيجة استخراج نشطة</div>
+<div class="value" id="extractedCount">0</div>
+</article>
+<article class="kpi-card">
+<div class="label">حالات عالية الخطورة مكتشفة</div>
+<div class="value" id="riskCount">0</div>
+</article>
+</aside>
+</div>
+</header>
+<section>
+<div class="section-title">
+<h2>لماذا هذا النظام مهم للمستشفيات السعودية؟</h2>
+<p>تركيز مباشر على أثر تشغيلي قابل للقياس في بيئة صحية عالية الضغط.</p>
+</div>
+<div class="problem-grid">
+<article class="problem-card">
+<h3>المشكلة</h3>
+<p>تكدس تقارير غير مهيكلة يستهلك وقت الأطباء والكوادر الإدارية ويبطئ الوصول لمعلومة الحالة الصحيحة.</p>
+</article>
+<article class="problem-card">
+<h3>الحل</h3>
+<p>تحويل التقرير إلى سجل منظم تلقائياً، وربط التشخيصات والأدوية والتنبيهات بمحرك بحث طبي باللغة الطبيعية.</p>
+</article>
+<article class="problem-card">
+<h3>الدليل التشغيلي</h3>
+<p>قياس واضح: زمن إدخال أقل، دقة أعلى في السجل، واسترجاع أسرع للحالات المشابهة خلال القرار السريري.</p>
+</article>
+</div>
+</section>
+<section>
+<div class="section-title">
+<h2>نطاق التجربة التشغيلية</h2>
+<p>مصمم لمسار المستشفى الكامل: تقرير طبي → سجل منظم → بحث سريري → تحليلات إدارية → تصدير تكاملي.</p>
+</div>
+<div class="capabilities">
+<article class="capability-card">
+<h3>1) استيعاب رقمي للتقارير الطبية</h3>
+<p>رفع ملفات فعلية من التقارير ثم تحويل النص غير المهيكل إلى عناصر صحية منظمة يمكن الرجوع لها فوراً.</p>
+</article>
+<article class="capability-card">
+<h3>2) بحث لغة طبيعية داخل السجلات</h3>
+<p>الطبيب أو المدير يكتب سؤاله بالعربية، والنظام يرجع النتائج المطابقة مع تفسير واضح لأسباب التطابق.</p>
+</article>
+<article class="capability-card">
+<h3>3) استخراج تلقائي للبيانات الصحية</h3>
+<p>تقليل الإدخال اليدوي وتحديث عناصر السجل تلقائياً لرفع الدقة وتحسين سرعة اتخاذ القرار.</p>
+</article>
+</div>
+</section>
+<!-- حقول اتصال مخفية للتوافق مع النظام -->
+<input id="apiBaseInput" type="hidden" value=""/>
+<input id="groqApiKeyInput" type="hidden" value=""/>
+<input id="groqModelInput" type="hidden" value="llama3-70b-8192"/>
+<button hidden="" id="saveConnectionBtn" type="button"></button>
+<button hidden="" id="testConnectionBtn" type="button"></button>
+<div hidden="" id="connectionStatus"></div>
+<section id="trialConsole">
+<div class="section-title">
+<h2>وحدة التجربة للمستشفيات</h2>
+<p>رفع ملف أو لصق تقرير، تحليل فوري، حفظ سجل، بحث، تحليلات، ثم تصدير متوافق مع EHR.</p>
+</div>
+<div class="console-grid">
+<article class="console-panel">
+<h3>الخطوة 1: تهيئة المنشأة + إدخال التقرير</h3>
+<p class="panel-sub">حدد سياق المستشفى والقسم، وارفع ملف التقرير الطبي أو الصق النص مباشرة قبل التحليل.</p>
+<div class="form-grid">
+<input id="hospitalName" placeholder="اسم المستشفى" type="text" value="مستشفى الملك فهد"/>
+<input id="hospitalCity" placeholder="المدينة" type="text" value="الرياض"/>
+<select id="hospitalDepartment">
+<option value="الطوارئ">قسم الطوارئ</option>
+<option value="القلب">قسم القلب</option>
+<option value="الأورام">قسم الأورام</option>
+<option value="السكري">عيادة السكري</option>
+<option value="العناية المركزة">العناية المركزة</option>
+</select>
+</div>
+<div class="file-box">
+<input accept=".pdf,.docx,.doc,.dcm,.dicom,.jpg,.jpeg,.png,.webp,.mp3,.wav,.m4a,.xls,.xlsx,.txt,.md,.json,.csv,.xml,.html,.htm,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/dicom,image/jpeg,image/png,image/webp,audio/mpeg,audio/wav,audio/x-wav,audio/mp4,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,text/csv,application/json,text/xml,application/xml,text/html" hidden="" id="reportFile" multiple="" type="file"/>
+<input directory="" hidden="" id="reportFolder" multiple="" type="file" webkitdirectory=""/>
+<div aria-label="منطقة السحب والإفلات" class="drop-zone" id="dropZone" role="button" tabindex="0">
+<div class="drop-title">اسحب وأفلت الملفات الطبية هنا</div>
+<div class="drop-sub">أو اختر ملفات منفردة أو مجلد كامل للدفعة</div>
+<div class="drop-actions">
+<button class="btn-outline" id="pickFilesBtn" type="button">اختيار ملفات</button>
+<button class="btn-outline" id="pickFolderBtn" type="button">اختيار مجلد كامل</button>
+</div>
+</div>
+<div class="file-row">
+<button class="btn-outline" id="extractFileBtn" type="button">استخراج النص من أول ملف</button>
+<button class="btn-sub" id="processBatchBtn" type="button">معالجة دفعة الملفات</button>
+<button class="btn-outline" id="cancelBatchBtn" type="button">إلغاء المعالجة الجارية</button>
+<button class="btn-outline" id="resumeBatchBtn" type="button">استئناف الملفات المتوقفة</button>
+<button class="btn-main" id="analyzeBatchBtn" type="button">تحليل الملفات الجاهزة عبر Groq</button>
+</div>
+<p class="file-note">الصيغ المدعومة: PDF, DOCX, DOC, DICOM, JPG, PNG, MP3, WAV, Excel, TXT, CSV, JSON, XML,
               HTML</p>
-            <div id="fileStatus" class="status">ارفع ملفات أو اسحبها للمنطقة أعلاه لبدء المعالجة الذكية.</div>
-            <div id="batchStatus" class="status">المعالجة الدُفعية متاحة مع تتبع تقدم وإلغاء/استئناف لكل ملف.</div>
-            <div id="batchSummary" class="status">لم تبدأ أي دفعة بعد.</div>
-            <div id="fileQueue" class="file-queue"></div>
-          </div>
-
-          <div class="storage-box">
-            <h4>تكامل التخزين السحابي (AWS S3 أو Firebase)</h4>
-            <div class="storage-grid">
-              <select id="storageProvider">
-                <option value="none">بدون تخزين سحابي</option>
-                <option value="s3">AWS S3</option>
-                <option value="firebase">Firebase Storage</option>
-              </select>
-              <input id="storageEndpoint" type="url"
-                placeholder="رابط الرفع (S3 Presigned أو Firebase REST Endpoint)" />
-              <input id="storageToken" type="password" placeholder="رمز وصول اختياري" />
-            </div>
-            <div class="file-row">
-              <button class="btn-outline" id="saveStorageBtn" type="button">حفظ إعدادات التخزين</button>
-              <button class="btn-outline" id="uploadStorageBtn" type="button">رفع الملفات المكتملة للسحابة</button>
-            </div>
-            <div id="storageStatus" class="status">اختر مزود التخزين ثم نفذ رفع الملفات المعالجة.</div>
-          </div>
-
-          <textarea id="reportInput" placeholder="أو الصق هنا التقرير الطبي المراد تحليله..."></textarea>
-
-          <div class="sample-bar">
-            <button class="sample-btn" type="button" data-sample="diabetes">عينة: سكري</button>
-            <button class="sample-btn" type="button" data-sample="oncology">عينة: أورام</button>
-            <button class="sample-btn" type="button" data-sample="emergency">عينة: طوارئ</button>
-          </div>
-
-          <div class="action-row">
-            <button class="btn-main" id="analyzeBtn" type="button">تحليل التقرير عبر Groq</button>
-            <button class="btn-outline" id="saveRecordBtn" type="button" disabled>حفظ في الأرشيف التجريبي</button>
-          </div>
-
-          <div id="extractStatus" class="status">ابدأ بتحليل تقرير طبي لتوليد سجل منظم.</div>
-        </article>
-
-        <article class="console-panel">
-          <h3>الخطوة 2: نتيجة الاستخراج المنظم</h3>
-          <p class="panel-sub">النتيجة التالية تمثل التحويل من تقرير نصي أو ملف مرفوع إلى سجل طبي قابل للبحث والتحليل.
+<div class="status" id="fileStatus">ارفع ملفات أو اسحبها للمنطقة أعلاه لبدء المعالجة الذكية.</div>
+<div class="status" id="batchStatus">المعالجة الدُفعية متاحة مع تتبع تقدم وإلغاء/استئناف لكل ملف.</div>
+<div class="status" id="batchSummary">لم تبدأ أي دفعة بعد.</div>
+<div class="file-queue" id="fileQueue"></div>
+</div>
+<div class="storage-box">
+<h4>تكامل التخزين السحابي (AWS S3 أو Firebase)</h4>
+<div class="storage-grid">
+<select id="storageProvider">
+<option value="none">بدون تخزين سحابي</option>
+<option value="s3">AWS S3</option>
+<option value="firebase">Firebase Storage</option>
+</select>
+<input id="storageEndpoint" placeholder="رابط الرفع (S3 Presigned أو Firebase REST Endpoint)" type="url"/>
+<input id="storageToken" placeholder="رمز وصول اختياري" type="password"/>
+</div>
+<div class="file-row">
+<button class="btn-outline" id="saveStorageBtn" type="button">حفظ إعدادات التخزين</button>
+<button class="btn-outline" id="uploadStorageBtn" type="button">رفع الملفات المكتملة للسحابة</button>
+</div>
+<div class="status" id="storageStatus">اختر مزود التخزين ثم نفذ رفع الملفات المعالجة.</div>
+</div>
+<textarea id="reportInput" placeholder="أو الصق هنا التقرير الطبي المراد تحليله..."></textarea>
+<div class="sample-bar">
+<button class="sample-btn" data-sample="diabetes" type="button">عينة: سكري</button>
+<button class="sample-btn" data-sample="oncology" type="button">عينة: أورام</button>
+<button class="sample-btn" data-sample="emergency" type="button">عينة: طوارئ</button>
+</div>
+<div class="action-row">
+<button class="btn-main" id="analyzeBtn" type="button">تحليل التقرير عبر Groq</button>
+<button class="btn-outline" disabled="" id="saveRecordBtn" type="button">حفظ في الأرشيف التجريبي</button>
+</div>
+<div class="status" id="extractStatus">ابدأ بتحليل تقرير طبي لتوليد سجل منظم.</div>
+</article>
+<article class="console-panel">
+<h3>الخطوة 2: نتيجة الاستخراج المنظم</h3>
+<p class="panel-sub">النتيجة التالية تمثل التحويل من تقرير نصي أو ملف مرفوع إلى سجل طبي قابل للبحث والتحليل.
           </p>
-          <div id="extractResult" class="result-box"></div>
-
-          <h3 style="margin-top: 14px;">السجلات المحفوظة في التجربة</h3>
-          <div id="recordsList" class="record-list"></div>
-        </article>
-      </div>
-
-      <div class="console-grid">
-        <article class="console-panel">
-          <h3>الخطوة 3: بحث طبي باللغة الطبيعية</h3>
-          <p class="panel-sub">محرك متعدد المستويات: سريع أثناء الكتابة + متقدم + دلالي + صوتي + بحث بالصورة.</p>
-          <div class="search-quick-box">
-            <div class="search-input-wrap">
-              <input id="searchQuery" type="text" placeholder="اكتب سؤال البحث الطبي هنا..." autocomplete="off" />
-              <div id="searchSuggestions" class="search-suggestions"></div>
-            </div>
-            <div class="action-row">
-              <button class="btn-outline" id="voiceSearchBtn" type="button">بحث صوتي مباشر</button>
-              <button class="btn-outline" id="voiceFileBtn" type="button">رفع صوت للبحث</button>
-              <input id="voiceFileInput" type="file" accept=".mp3,.wav,.m4a,audio/*" hidden />
-              <button class="btn-outline" id="imageSearchBtn" type="button">بحث بالصورة</button>
-              <input id="imageSearchInput" type="file" accept=".jpg,.jpeg,.png,.webp,image/*" hidden />
-            </div>
-            <div id="searchQuickStatus" class="status">اكتب للبحث الفوري، أو استخدم الصوت/الصورة.</div>
-          </div>
-
-          <div class="search-advanced-box">
-            <h4>بحث متقدم</h4>
-            <div class="search-filters-grid">
-              <input id="filterAgeMin" type="number" min="0" placeholder="العمر من" />
-              <input id="filterAgeMax" type="number" min="0" placeholder="العمر إلى" />
-              <select id="filterGender">
-                <option value="">الجنس (الكل)</option>
-                <option value="male">ذكر</option>
-                <option value="female">أنثى</option>
-                <option value="unknown">غير محدد</option>
-              </select>
-              <input id="filterDateFrom" type="date" />
-              <input id="filterDateTo" type="date" />
-              <input id="filterDepartment" type="text" placeholder="القسم (مثال: القلب)" />
-              <input id="filterExclude" type="text" placeholder="استبعاد كلمات (افصل بـ ،)" />
-              <input id="filterNearCity" type="text" placeholder="المدينة القريبة (مثال: الرياض)" />
-              <input id="filterRadiusKm" type="number" min="1" value="150" placeholder="نطاق المسافة كم" />
-              <select id="semanticMode">
-                <option value="on">بحث دلالي مفعل</option>
-                <option value="off">بحث كلمات فقط</option>
-              </select>
-              <select id="searchEngineProvider">
-                <option value="local">محرك محلي فوري (افتراضي)</option>
-                <option value="elasticsearch">Elasticsearch</option>
-                <option value="algolia">Algolia</option>
-              </select>
-              <input id="searchEngineEndpoint" type="url" placeholder="رابط المحرك الخارجي (اختياري)" />
-              <input id="searchEngineIndex" type="text" placeholder="اسم الفهرس (اختياري)" />
-              <input id="searchEngineApiKey" type="password" placeholder="مفتاح API (اختياري)" />
-              <input id="searchEngineAppId" type="text" placeholder="Algolia App ID (اختياري)" />
-            </div>
-            <div class="action-row">
-              <button class="btn-outline" id="applyFiltersBtn" type="button">تطبيق الفلاتر</button>
-              <button class="btn-outline" id="saveSearchBtn" type="button">حفظ البحث الحالي</button>
-              <select id="savedSearchesSelect">
-                <option value="">استعلامات محفوظة</option>
-              </select>
-              <button class="btn-outline" id="loadSavedSearchBtn" type="button">استرجاع</button>
-            </div>
-          </div>
-
-          <div class="action-row">
-            <button class="btn-sub" id="searchBtn" type="button">تشغيل البحث الذكي</button>
-            <button class="btn-outline" id="searchPrevPageBtn" type="button">السابق</button>
-            <button class="btn-outline" id="searchNextPageBtn" type="button">التالي</button>
-          </div>
-          <div id="searchStatus" class="status">بعد حفظ السجلات، يمكنك تشغيل البحث الفوري.</div>
-          <div id="searchStats" class="status">إحصائيات البحث ستظهر هنا.</div>
-          <div id="searchClusters" class="result-box" style="margin-top: 10px;"></div>
-          <div class="export-grid" style="margin-top: 10px;">
-            <button class="btn-outline" id="exportSearchCsvBtn" type="button">تصدير نتائج البحث CSV</button>
-            <button class="btn-outline" id="exportSearchExcelBtn" type="button">تصدير نتائج البحث Excel</button>
-            <button class="btn-outline" id="exportSearchPdfBtn" type="button">تصدير نتائج البحث PDF</button>
-          </div>
-          <div id="searchResult" class="result-box" style="margin-top: 10px;"></div>
-        </article>
-
-        <article class="console-panel">
-          <h3>الخطوة 4: تحليلات تشغيلية فورية</h3>
-          <p class="panel-sub">مؤشرات مخاطر وتوصيات تنفيذية تدعم إدارة المستشفى والقيادة الطبية.</p>
-          <div class="action-row">
-            <button class="btn-main" id="insightsBtn" type="button">توليد التحليلات</button>
-          </div>
-          <div id="insightsStatus" class="status">هذه الوحدة تبني ملخصاً تنفيذياً من السجلات المحفوظة.</div>
-          <div id="insightsResult" class="result-box" style="margin-top: 10px;"></div>
-        </article>
-      </div>
-
-      <div class="console-grid">
-        <article class="console-panel">
-          <h3>الوكيل الذكي (Gemini Flash)</h3>
-          <p class="panel-sub">مستشار تشغيلي ذكي للمستشفى: توصيات تنفيذية من السجلات المعالجة والدفعات الحالية.</p>
-          <input id="agentQuestion" type="text"
-            placeholder="مثال: ما خطة تحسين تقليل زمن فرز الحالات الحرجة خلال 30 يوماً؟" />
-          <div class="action-row">
-            <button class="btn-sub" id="agentBtn" type="button">تشغيل الوكيل الذكي</button>
-          </div>
-          <div id="agentStatus" class="status">بعد إنشاء سجلات أو معالجة دفعات يمكنك تشغيل الوكيل.</div>
-          <div id="agentResult" class="result-box" style="margin-top: 10px;"></div>
-        </article>
-
-        <article class="console-panel">
-          <h3>تقرير الدفعة بعد المعالجة</h3>
-          <p class="panel-sub">تقرير فوري عن النجاح/الفشل، الملفات الجاهزة للتحليل، ونتيجة الفحص والتحقق.</p>
-          <div id="batchReport" class="result-box"></div>
-        </article>
-      </div>
-
-      <div class="console-grid">
-        <article class="console-panel">
-          <h3>الخطوة 5: تصدير تكاملي لأنظمة السجلات الطبية</h3>
-          <p class="panel-sub">تصدير البيانات المستخرجة بصيغ مناسبة للتكامل مع EHR.</p>
-          <div class="export-grid">
-            <button class="btn-outline" id="exportFhirBtn" type="button">تصدير FHIR JSON</button>
-            <button class="btn-outline" id="exportCsvBtn" type="button">تصدير CSV</button>
-            <button class="btn-outline" id="exportHl7Btn" type="button">تصدير HL7</button>
-            <button class="btn-outline" id="exportArchiveFhirBtn" type="button">تصدير كل السجلات NDJSON</button>
-          </div>
-          <div id="exportStatus" class="status">اختر صيغة التصدير بعد التحليل أو بعد حفظ السجلات.</div>
-        </article>
-
-        <article class="console-panel">
-          <h3>حالات استخدام سعودية جاهزة</h3>
-          <ul class="mini-list">
-            <li>فرز تنبيهات الحالات الحرجة في أقسام الطوارئ أثناء مواسم الضغط.</li>
-            <li>تجميع حالات الأورام ومقارنة بروتوكولات العلاج عبر المراكز.</li>
-            <li>متابعة مرضى السكري والأمراض المزمنة وتقليل التباين في الإدخال الطبي.</li>
-            <li>تجهيز بيانات بحثية منظمة للفرق الطبية والإدارية بسرعة أعلى.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="dashboardStudio">
-      <div class="section-title">
-        <h2>لوحة التحكم التفاعلية الشاملة</h2>
-        <p>مؤشرات لحظية + رسوم متقدمة + تنبيهات ذكية + تخصيص الودجت + تحديثات فورية.</p>
-      </div>
-
-      <div class="dashboard-toolbar">
-        <div class="dashboard-toolbar-grid">
-          <select id="timelineGranularitySelect">
-            <option value="daily">الخط الزمني اليومي</option>
-            <option value="weekly">الخط الزمني الأسبوعي</option>
-            <option value="monthly">الخط الزمني الشهري</option>
-          </select>
-          <select id="dashboardRoleSelect">
-            <option value="doctor">قالب الطبيب</option>
-            <option value="admin">قالب الإداري</option>
-            <option value="director">قالب المدير</option>
-          </select>
-          <button class="btn-outline" id="applyRoleTemplateBtn" type="button">تطبيق القالب حسب الدور</button>
-          <button class="btn-outline" id="saveDashboardLayoutBtn" type="button">حفظ ترتيب الودجت</button>
-          <button class="btn-outline" id="resetDashboardLayoutBtn" type="button">استرجاع التخطيط الافتراضي</button>
-          <button class="btn-sub" id="refreshDashboardBtn" type="button">تحديث اللوحة الآن</button>
+<div class="result-box" id="extractResult"></div>
+<h3 style="margin-top: 14px;">السجلات المحفوظة في التجربة</h3>
+<div class="record-list" id="recordsList"></div>
+</article>
+</div>
+<div class="console-grid">
+<article class="console-panel">
+<h3>الخطوة 3: بحث طبي باللغة الطبيعية</h3>
+<p class="panel-sub">محرك متعدد المستويات: سريع أثناء الكتابة + متقدم + دلالي + صوتي + بحث بالصورة.</p>
+<div class="search-quick-box">
+<div class="search-input-wrap">
+<input autocomplete="off" id="searchQuery" placeholder="اكتب سؤال البحث الطبي هنا..." type="text"/>
+<div class="search-suggestions" id="searchSuggestions"></div>
+</div>
+<div class="action-row">
+<button class="btn-outline" id="voiceSearchBtn" type="button">بحث صوتي مباشر</button>
+<button class="btn-outline" id="voiceFileBtn" type="button">رفع صوت للبحث</button>
+<input accept=".mp3,.wav,.m4a,audio/*" hidden="" id="voiceFileInput" type="file"/>
+<button class="btn-outline" id="imageSearchBtn" type="button">بحث بالصورة</button>
+<input accept=".jpg,.jpeg,.png,.webp,image/*" hidden="" id="imageSearchInput" type="file"/>
+</div>
+<div class="status" id="searchQuickStatus">اكتب للبحث الفوري، أو استخدم الصوت/الصورة.</div>
+</div>
+<div class="search-advanced-box">
+<h4>بحث متقدم</h4>
+<div class="search-filters-grid">
+<input id="filterAgeMin" min="0" placeholder="العمر من" type="number"/>
+<input id="filterAgeMax" min="0" placeholder="العمر إلى" type="number"/>
+<select id="filterGender">
+<option value="">الجنس (الكل)</option>
+<option value="male">ذكر</option>
+<option value="female">أنثى</option>
+<option value="unknown">غير محدد</option>
+</select>
+<input id="filterDateFrom" type="date"/>
+<input id="filterDateTo" type="date"/>
+<input id="filterDepartment" placeholder="القسم (مثال: القلب)" type="text"/>
+<input id="filterExclude" placeholder="استبعاد كلمات (افصل بـ ،)" type="text"/>
+<input id="filterNearCity" placeholder="المدينة القريبة (مثال: الرياض)" type="text"/>
+<input id="filterRadiusKm" min="1" placeholder="نطاق المسافة كم" type="number" value="150"/>
+<select id="semanticMode">
+<option value="on">بحث دلالي مفعل</option>
+<option value="off">بحث كلمات فقط</option>
+</select>
+<select id="searchEngineProvider">
+<option value="local">محرك محلي فوري (افتراضي)</option>
+<option value="elasticsearch">Elasticsearch</option>
+<option value="algolia">Algolia</option>
+</select>
+<input id="searchEngineEndpoint" placeholder="رابط المحرك الخارجي (اختياري)" type="url"/>
+<input id="searchEngineIndex" placeholder="اسم الفهرس (اختياري)" type="text"/>
+<input id="searchEngineApiKey" placeholder="مفتاح API (اختياري)" type="password"/>
+<input id="searchEngineAppId" placeholder="Algolia App ID (اختياري)" type="text"/>
+</div>
+<div class="action-row">
+<button class="btn-outline" id="applyFiltersBtn" type="button">تطبيق الفلاتر</button>
+<button class="btn-outline" id="saveSearchBtn" type="button">حفظ البحث الحالي</button>
+<select id="savedSearchesSelect">
+<option value="">استعلامات محفوظة</option>
+</select>
+<button class="btn-outline" id="loadSavedSearchBtn" type="button">استرجاع</button>
+</div>
+</div>
+<div class="action-row">
+<button class="btn-sub" id="searchBtn" type="button">تشغيل البحث الذكي</button>
+<button class="btn-outline" id="searchPrevPageBtn" type="button">السابق</button>
+<button class="btn-outline" id="searchNextPageBtn" type="button">التالي</button>
+</div>
+<div class="status" id="searchStatus">بعد حفظ السجلات، يمكنك تشغيل البحث الفوري.</div>
+<div class="status" id="searchStats">إحصائيات البحث ستظهر هنا.</div>
+<div class="result-box" id="searchClusters" style="margin-top: 10px;"></div>
+<div class="export-grid" style="margin-top: 10px;">
+<button class="btn-outline" id="exportSearchCsvBtn" type="button">تصدير نتائج البحث CSV</button>
+<button class="btn-outline" id="exportSearchExcelBtn" type="button">تصدير نتائج البحث Excel</button>
+<button class="btn-outline" id="exportSearchPdfBtn" type="button">تصدير نتائج البحث PDF</button>
+</div>
+<div class="result-box" id="searchResult" style="margin-top: 10px;"></div>
+</article>
+<article class="console-panel">
+<h3>الخطوة 4: تحليلات تشغيلية فورية</h3>
+<p class="panel-sub">مؤشرات مخاطر وتوصيات تنفيذية تدعم إدارة المستشفى والقيادة الطبية.</p>
+<div class="action-row">
+<button class="btn-main" id="insightsBtn" type="button">توليد التحليلات</button>
+</div>
+<div class="status" id="insightsStatus">هذه الوحدة تبني ملخصاً تنفيذياً من السجلات المحفوظة.</div>
+<div class="result-box" id="insightsResult" style="margin-top: 10px;"></div>
+</article>
+</div>
+<div class="console-grid">
+<article class="console-panel">
+<h3>الوكيل الذكي (Gemini Flash)</h3>
+<p class="panel-sub">مستشار تشغيلي ذكي للمستشفى: توصيات تنفيذية من السجلات المعالجة والدفعات الحالية.</p>
+<input id="agentQuestion" placeholder="مثال: ما خطة تحسين تقليل زمن فرز الحالات الحرجة خلال 30 يوماً؟" type="text"/>
+<div class="action-row">
+<button class="btn-sub" id="agentBtn" type="button">تشغيل الوكيل الذكي</button>
+</div>
+<div class="status" id="agentStatus">بعد إنشاء سجلات أو معالجة دفعات يمكنك تشغيل الوكيل.</div>
+<div class="result-box" id="agentResult" style="margin-top: 10px;"></div>
+</article>
+<article class="console-panel">
+<h3>تقرير الدفعة بعد المعالجة</h3>
+<p class="panel-sub">تقرير فوري عن النجاح/الفشل، الملفات الجاهزة للتحليل، ونتيجة الفحص والتحقق.</p>
+<div class="result-box" id="batchReport"></div>
+</article>
+</div>
+<div class="console-grid">
+<article class="console-panel">
+<h3>الخطوة 5: تصدير تكاملي لأنظمة السجلات الطبية</h3>
+<p class="panel-sub">تصدير البيانات المستخرجة بصيغ مناسبة للتكامل مع EHR.</p>
+<div class="export-grid">
+<button class="btn-outline" id="exportFhirBtn" type="button">تصدير FHIR JSON</button>
+<button class="btn-outline" id="exportCsvBtn" type="button">تصدير CSV</button>
+<button class="btn-outline" id="exportHl7Btn" type="button">تصدير HL7</button>
+<button class="btn-outline" id="exportArchiveFhirBtn" type="button">تصدير كل السجلات NDJSON</button>
+</div>
+<div class="status" id="exportStatus">اختر صيغة التصدير بعد التحليل أو بعد حفظ السجلات.</div>
+</article>
+<article class="console-panel">
+<h3>حالات استخدام سعودية جاهزة</h3>
+<ul class="mini-list">
+<li>فرز تنبيهات الحالات الحرجة في أقسام الطوارئ أثناء مواسم الضغط.</li>
+<li>تجميع حالات الأورام ومقارنة بروتوكولات العلاج عبر المراكز.</li>
+<li>متابعة مرضى السكري والأمراض المزمنة وتقليل التباين في الإدخال الطبي.</li>
+<li>تجهيز بيانات بحثية منظمة للفرق الطبية والإدارية بسرعة أعلى.</li>
+</ul>
+</article>
+</div>
+</section>
+<section id="dashboardStudio">
+<div class="section-title">
+<h2>لوحة التحكم التفاعلية الشاملة</h2>
+<p>مؤشرات لحظية + رسوم متقدمة + تنبيهات ذكية + تخصيص الودجت + تحديثات فورية.</p>
+</div>
+<div class="dashboard-toolbar">
+<div class="dashboard-toolbar-grid">
+<select id="timelineGranularitySelect">
+<option value="daily">الخط الزمني اليومي</option>
+<option value="weekly">الخط الزمني الأسبوعي</option>
+<option value="monthly">الخط الزمني الشهري</option>
+</select>
+<select id="dashboardRoleSelect">
+<option value="doctor">قالب الطبيب</option>
+<option value="admin">قالب الإداري</option>
+<option value="director">قالب المدير</option>
+</select>
+<button class="btn-outline" id="applyRoleTemplateBtn" type="button">تطبيق القالب حسب الدور</button>
+<button class="btn-outline" id="saveDashboardLayoutBtn" type="button">حفظ ترتيب الودجت</button>
+<button class="btn-outline" id="resetDashboardLayoutBtn" type="button">استرجاع التخطيط الافتراضي</button>
+<button class="btn-sub" id="refreshDashboardBtn" type="button">تحديث اللوحة الآن</button>
+</div>
+<div class="status" id="dashboardStatus">اللوحة جاهزة وتُحدث تلقائياً حسب البيانات المتاحة.</div>
+</div>
+<div class="dashboard-overview-grid">
+<article class="kpi-card">
+<div class="label">إجمالي السجلات</div>
+<div class="value" id="overviewTotalRecords">0</div>
+<div class="meta" id="overviewTotalGrowth">0%</div>
+</article>
+<article class="kpi-card">
+<div class="label">السجلات الجديدة اليوم / الأسبوع</div>
+<div class="value" id="overviewNewRecords">0 / 0</div>
+<div class="meta">نمو نشاط الإدخال</div>
+</article>
+<article class="kpi-card">
+<div class="label">الحالات الحرجة النشطة</div>
+<div class="value" id="overviewCriticalCases">0</div>
+<div class="meta">تتطلب متابعة عاجلة</div>
+</article>
+<article class="kpi-card">
+<div class="label">معدل الاستخدام اليومي</div>
+<div class="value" id="overviewDailyUsage">0</div>
+<div class="meta">عمليات استخدام في اليوم</div>
+</article>
+<article class="kpi-card">
+<div class="label">متوسط وقت المعالجة</div>
+<div class="value" id="overviewAvgProcessing">0ث</div>
+<div class="meta">من الرفع حتى التحليل</div>
+</article>
+</div>
+<div class="dashboard-kpi-grid">
+<article class="kpi-card">
+<div class="label">وقت الاستجابة المتوسط</div>
+<div class="value" id="kpiResponseTime">0ms</div>
+</article>
+<article class="kpi-card">
+<div class="label">دقة الاستخراج</div>
+<div class="value" id="kpiExtractionAccuracy">0%</div>
+</article>
+<article class="kpi-card">
+<div class="label">معدل نجاح التحليل</div>
+<div class="value" id="kpiAnalysisSuccess">0%</div>
+</article>
+<article class="kpi-card">
+<div class="label">رضا المستخدمين</div>
+<div class="value" id="kpiUserSatisfaction">0%</div>
+</article>
+</div>
+<div class="widget-library">
+<strong>تخصيص الودجت:</strong>
+<label><input checked="" data-widget-toggle="timelineWidget" type="checkbox"/> الخط الزمني</label>
+<label><input checked="" data-widget-toggle="demographicWidget" type="checkbox"/> التوزيع الديموغرافي</label>
+<label><input checked="" data-widget-toggle="diagnosisWidget" type="checkbox"/> التشخيصات الشائعة</label>
+<label><input checked="" data-widget-toggle="medicationWidget" type="checkbox"/> الأدوية والتفاعلات</label>
+<label><input checked="" data-widget-toggle="activityWidget" type="checkbox"/> نشاط المستخدمين</label>
+<label><input checked="" data-widget-toggle="alertsWidget" type="checkbox"/> التنبيهات الذكية</label>
+<label><input checked="" data-widget-toggle="liveWidget" type="checkbox"/> التحديثات الفورية</label>
+</div>
+<div class="dashboard-widgets" id="dashboardWidgets">
+<article class="dashboard-widget" data-widget-id="timelineWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>الخط الزمني للسجلات ومقارنة الأقسام</h3>
+<button class="queue-action" data-widget-hide="timelineWidget" type="button">إخفاء</button>
+</div>
+<canvas height="110" id="timelineChart"></canvas>
+</article>
+<article class="dashboard-widget" data-widget-id="demographicWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>التوزيع الديموغرافي والجغرافي</h3>
+<button class="queue-action" data-widget-hide="demographicWidget" type="button">إخفاء</button>
+</div>
+<div class="dashboard-widget-grid">
+<div><canvas height="130" id="ageDistributionChart"></canvas></div>
+<div><canvas height="130" id="genderDistributionChart"></canvas></div>
+<div style="grid-column: 1 / -1;"><canvas height="130" id="geoHeatmapChart"></canvas></div>
+</div>
+</article>
+<article class="dashboard-widget" data-widget-id="diagnosisWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>أكثر التشخيصات شيوعاً وتحليل الاتجاه</h3>
+<button class="queue-action" data-widget-hide="diagnosisWidget" type="button">إخفاء</button>
+</div>
+<canvas height="130" id="topDiagnosesChart"></canvas>
+</article>
+<article class="dashboard-widget" data-widget-id="medicationWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>الأدوية الأكثر وصفاً وتحليل التفاعلات</h3>
+<button class="queue-action" data-widget-hide="medicationWidget" type="button">إخفاء</button>
+</div>
+<canvas height="120" id="topMedicationsChart"></canvas>
+<div class="dashboard-widget-grid" style="margin-top: 10px;">
+<div class="result-item">
+<strong>قائمة تفاعلية للأدوية</strong>
+<div class="record-list" id="medicationListInteractive"></div>
+</div>
+<div class="result-item">
+<strong>تحليل التفاعلات الدوائية</strong>
+<div class="record-list" id="drugInteractionList"></div>
+</div>
+</div>
+</article>
+<article class="dashboard-widget" data-widget-id="activityWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>نشاط المستخدمين وأوقات الذروة والإنتاجية</h3>
+<button class="queue-action" data-widget-hide="activityWidget" type="button">إخفاء</button>
+</div>
+<div class="dashboard-widget-grid">
+<div><canvas height="120" id="userActivityChart"></canvas></div>
+<div><canvas height="120" id="peakHoursChart"></canvas></div>
+<div style="grid-column: 1 / -1;"><canvas height="110" id="productivityChart"></canvas></div>
+</div>
+</article>
+<article class="dashboard-widget" data-widget-id="alertsWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>التنبيهات الذكية</h3>
+<button class="queue-action" data-widget-hide="alertsWidget" type="button">إخفاء</button>
+</div>
+<div class="dashboard-widget-grid">
+<div class="result-item">
+<strong>حالات تتطلب متابعة عاجلة</strong>
+<div class="record-list" id="urgentAlertsList"></div>
+</div>
+<div class="result-item">
+<strong>أدوية قاربت على الانتهاء</strong>
+<div class="record-list" id="medExpiryAlertsList"></div>
+</div>
+<div class="result-item">
+<strong>مواعيد متابعة قادمة</strong>
+<div class="record-list" id="followupAlertsList"></div>
+</div>
+<div class="result-item">
+<strong>حالات مشتبه بها (Anomaly Detection)</strong>
+<div class="record-list" id="anomalyAlertsList"></div>
+</div>
+</div>
+</article>
+<article class="dashboard-widget" data-widget-id="liveWidget" draggable="true">
+<div class="dashboard-widget-head">
+<span class="drag-handle">⋮⋮</span>
+<h3>التحديثات الفورية والإشعارات الحية</h3>
+<button class="queue-action" data-widget-hide="liveWidget" type="button">إخفاء</button>
+</div>
+<div class="status" id="liveSocketStatus">جاري تهيئة اتصال WebSocket...</div>
+<div class="action-row">
+<button class="btn-outline" id="liveReconnectBtn" type="button">إعادة الاتصال الفوري</button>
+</div>
+<div class="record-list" id="liveNotificationsList"></div>
+</article>
+</div>
+</section>
+<section class="lead-strip" id="leadForm">
+<div class="section-title" style="margin: 0 0 10px;">
+<h2>تفعيل التجربة المؤسسية للمستشفى</h2>
+<p>أرسل طلب التفعيل لفريق Bright AI مع بيانات المسؤول التشغيلي.</p>
+</div>
+<div class="lead-grid">
+<input id="leadHospital" placeholder="اسم المستشفى" type="text"/>
+<input id="leadName" placeholder="اسم المسؤول" type="text"/>
+<input id="leadPhone" placeholder="رقم الجوال" type="tel"/>
+<button class="btn-main" id="leadBtn" type="button">إرسال طلب التجربة</button>
+</div>
+<div class="status" id="leadStatus" style="margin-top: 10px;">سيتم إرسال الطلب عبر واتساب إلى فريق التفعيل.</div>
+</section>
+<section>
+<div class="section-title">
+<h2>ربط داخلي لخدمات مرتبطة</h2>
+<p>هيكلة روابط داخلية محسنة لتحسين الزحف والفهرسة لمسار القطاع الصحي.</p>
+</div>
+<div class="internal-links">
+<a href="/frontend/pages/sectors/healthcare.html">حلول الذكاء الاصطناعي للقطاع الصحي السعودي</a>
+<a href="/frontend/pages/health-bright/">حلول AI الطبية المتقدمة للحالات السريرية</a>
+<a href="/frontend/pages/data-analysis/">تحليل البيانات الصحية ولوحات المتابعة</a>
+<a href="/frontend/pages/consultation/">حجز استشارة تنفيذية للتحول الصحي</a>
+<a href="/frontend/pages/ai-agent/">تكامل الوكلاء الذكية مع أنظمة المستشفى</a>
+<a href="/frontend/pages/blogger/digital-health-smart-archive.html">دراسة موسعة عن الأرشيف الطبي الذكي</a>
+</div>
+</section>
+<section>
+<div class="section-title">
+<h2>أسئلة تشغيلية متكررة</h2>
+<p>إجابات عملية للفريق الطبي والإداري قبل تفعيل النظام على بيئة المستشفى الفعلية.</p>
+</div>
+<div class="faq-grid" id="faq">
+<article class="faq-item">
+<h4>هل يمكن تشغيل التجربة على تقارير عربية وإنجليزية؟</h4>
+<p>نعم، النظام يتعامل مع تقارير ثنائية اللغة ويعيدها في بنية موحدة قابلة للبحث والتحليل.</p>
+</article>
+<article class="faq-item">
+<h4>ما أول مؤشر نجاح يجب قياسه؟</h4>
+<p>زمن تحويل التقرير إلى سجل قابل للبحث، ثم زمن وصول الطبيب إلى حالة مشابهة أثناء التشخيص.</p>
+</article>
+<article class="faq-item">
+<h4>هل يدعم الربط مع نظام السجل الصحي الإلكتروني؟</h4>
+<p>نعم، يمكن البدء بالتصدير بصيغ FHIR وHL7 وCSV، ثم اعتماد تكامل مباشر عبر واجهات برمجة مخصصة.</p>
+</article>
+<article class="faq-item">
+<h4>هل يصلح لمواسم الضغط مثل الحج والعمرة؟</h4>
+<p>نعم، لأنه يقلل زمن قراءة التقارير ويُظهر التنبيهات الحرجة بسرعة أعلى في أقسام الطوارئ والفرز.</p>
+</article>
+</div>
+</section>
+<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10">
+<div class="max-w-4xl mx-auto px-6 mb-16 text-slate-300 leading-relaxed text-lg seo-article">
+<h3 class="text-3xl font-bold text-white mb-6">نظام الأرشيف الطبي الذكي المتوافق مع اللوائح الصحية السعودية</h3>
+<p class="mb-6">
+                مع تزايد الرقمنة في القطاع الصحي انسجاماً مع أهداف برنامج التحول الصحي ورؤية 2030، يواجه مقدمو الرعاية الصحية تحديات كبيرة في تنظيم وإدارة ملايين السجلات الطبية. الأرشيف الطبي الذكي من Bright AI يقدم حلاً ثورياً للمستشفيات والعيادات الطبية في المملكة، حيث يحوّل السجلات الورقية والملفات الطبية غير المنتظمة إلى قاعدة معرفية منظمة وقابلة للبحث الآني باستخدام تقنيات التعرف البصري على الحروف (OCR) والتصنيف الدلالي المتقدم.
+            </p>
+<p class="mb-6">
+                يتميز نظام الأرشيف لدينا بالتزامه الصارم بتعليمات مجلس الضمان الصحي (CCHI) وأنظمة حماية البيانات الشخصية والخصوصية الصحية (HIPAA-compliant, NDMO). حيث يمكّن الأطباء من الوصول السريع، والآمن لملفات المرضى باستخدام الاستعلام باللغة الطبيعية (Natural Language Query)، مما يتيح للأطباء في الرياض والدمام وجدة ومختلف المستشفيات توفير وقتهم الثمين للتشخيص والرعاية، بدلاً من البحث في الملفات المعقدة المكدسة.
+            </p>
+<h4 class="text-2xl font-bold text-indigo-400 mb-4 mt-8">أبعاد التفوق في نظام الأرشيف الطبي الذكي</h4>
+<ul class="list-disc pl-6 pr-6 space-y-3 mb-8">
+<li><strong>الفهرسة الذكية والتنقيب في البيانات (Data Mining):</strong> تصنيف تلقائي للأمراض، واستخراج البيانات الدوائية والتاريخ الجراحي بدقة مطلقة لضمان الرعاية الصحية المثلى.</li>
+<li><strong>التكامل والمزامنة السلسة (HL7 &amp; FHIR):</strong> نظامنا مجهز للتكامل المباشر مع أنظمة معلومات المستشفيات (HIS) ليتيح تداول البيانات بسرعة وأمان شديد التشفير.</li>
+<li><strong>الدعم الكامل للمصطلحات الطبية العربية:</strong> محركات ذكاء اصطناعي مدربة لفهم السياق الطبي الفريد والمذكرات السريرية المكتوبة بخط اليد محلياً وباللغتين العربية والإنجليزية.</li>
+</ul>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-16 pb-12">
+<h4 class="text-3xl font-bold text-white mb-8 text-center">خدمات تقنية ذات صلة تفيدك</h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/frontend/pages/data-analysis/index.html"><h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">تحليل البيانات <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h5></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/frontend/pages/consultation/index.html"><h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">الاستشارات التقنية <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h5></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/frontend/pages/smart-automation/index.html"><h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">الأتمتة الطبية الذكية <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h5></a>
+</div>
+</div>
+</section><footer class="footer">
+<div class="footer-content">
+<div class="footer-brand">
+<strong>Bright AI</strong> — نظام الأرشيف الطبي الذكي للمستشفيات في السعودية
         </div>
-        <div id="dashboardStatus" class="status">اللوحة جاهزة وتُحدث تلقائياً حسب البيانات المتاحة.</div>
-      </div>
+<div class="footer-links">
+<a href="/">الرئيسية</a>
+<span>•</span>
+<a href="/frontend/pages/contact/">تواصل معنا</a>
+<span>•</span>
+<a href="/frontend/pages/about-us/">من نحن</a>
+<span>•</span>
+<a href="https://wa.me/966538229013" rel="noopener" target="_blank">واتساب</a>
+</div>
+<div class="footer-copy">© 2026 Bright AI. جميع الحقوق محفوظة.</div>
+</div>
 
-      <div class="dashboard-overview-grid">
-        <article class="kpi-card">
-          <div class="label">إجمالي السجلات</div>
-          <div class="value" id="overviewTotalRecords">0</div>
-          <div class="meta" id="overviewTotalGrowth">0%</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">السجلات الجديدة اليوم / الأسبوع</div>
-          <div class="value" id="overviewNewRecords">0 / 0</div>
-          <div class="meta">نمو نشاط الإدخال</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">الحالات الحرجة النشطة</div>
-          <div class="value" id="overviewCriticalCases">0</div>
-          <div class="meta">تتطلب متابعة عاجلة</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">معدل الاستخدام اليومي</div>
-          <div class="value" id="overviewDailyUsage">0</div>
-          <div class="meta">عمليات استخدام في اليوم</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">متوسط وقت المعالجة</div>
-          <div class="value" id="overviewAvgProcessing">0ث</div>
-          <div class="meta">من الرفع حتى التحليل</div>
-        </article>
-      </div>
-
-      <div class="dashboard-kpi-grid">
-        <article class="kpi-card">
-          <div class="label">وقت الاستجابة المتوسط</div>
-          <div class="value" id="kpiResponseTime">0ms</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">دقة الاستخراج</div>
-          <div class="value" id="kpiExtractionAccuracy">0%</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">معدل نجاح التحليل</div>
-          <div class="value" id="kpiAnalysisSuccess">0%</div>
-        </article>
-        <article class="kpi-card">
-          <div class="label">رضا المستخدمين</div>
-          <div class="value" id="kpiUserSatisfaction">0%</div>
-        </article>
-      </div>
-
-      <div class="widget-library">
-        <strong>تخصيص الودجت:</strong>
-        <label><input type="checkbox" data-widget-toggle="timelineWidget" checked /> الخط الزمني</label>
-        <label><input type="checkbox" data-widget-toggle="demographicWidget" checked /> التوزيع الديموغرافي</label>
-        <label><input type="checkbox" data-widget-toggle="diagnosisWidget" checked /> التشخيصات الشائعة</label>
-        <label><input type="checkbox" data-widget-toggle="medicationWidget" checked /> الأدوية والتفاعلات</label>
-        <label><input type="checkbox" data-widget-toggle="activityWidget" checked /> نشاط المستخدمين</label>
-        <label><input type="checkbox" data-widget-toggle="alertsWidget" checked /> التنبيهات الذكية</label>
-        <label><input type="checkbox" data-widget-toggle="liveWidget" checked /> التحديثات الفورية</label>
-      </div>
-
-      <div id="dashboardWidgets" class="dashboard-widgets">
-        <article class="dashboard-widget" data-widget-id="timelineWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>الخط الزمني للسجلات ومقارنة الأقسام</h3>
-            <button class="queue-action" data-widget-hide="timelineWidget" type="button">إخفاء</button>
-          </div>
-          <canvas id="timelineChart" height="110"></canvas>
-        </article>
-
-        <article class="dashboard-widget" data-widget-id="demographicWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>التوزيع الديموغرافي والجغرافي</h3>
-            <button class="queue-action" data-widget-hide="demographicWidget" type="button">إخفاء</button>
-          </div>
-          <div class="dashboard-widget-grid">
-            <div><canvas id="ageDistributionChart" height="130"></canvas></div>
-            <div><canvas id="genderDistributionChart" height="130"></canvas></div>
-            <div style="grid-column: 1 / -1;"><canvas id="geoHeatmapChart" height="130"></canvas></div>
-          </div>
-        </article>
-
-        <article class="dashboard-widget" data-widget-id="diagnosisWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>أكثر التشخيصات شيوعاً وتحليل الاتجاه</h3>
-            <button class="queue-action" data-widget-hide="diagnosisWidget" type="button">إخفاء</button>
-          </div>
-          <canvas id="topDiagnosesChart" height="130"></canvas>
-        </article>
-
-        <article class="dashboard-widget" data-widget-id="medicationWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>الأدوية الأكثر وصفاً وتحليل التفاعلات</h3>
-            <button class="queue-action" data-widget-hide="medicationWidget" type="button">إخفاء</button>
-          </div>
-          <canvas id="topMedicationsChart" height="120"></canvas>
-          <div class="dashboard-widget-grid" style="margin-top: 10px;">
-            <div class="result-item">
-              <strong>قائمة تفاعلية للأدوية</strong>
-              <div id="medicationListInteractive" class="record-list"></div>
-            </div>
-            <div class="result-item">
-              <strong>تحليل التفاعلات الدوائية</strong>
-              <div id="drugInteractionList" class="record-list"></div>
-            </div>
-          </div>
-        </article>
-
-        <article class="dashboard-widget" data-widget-id="activityWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>نشاط المستخدمين وأوقات الذروة والإنتاجية</h3>
-            <button class="queue-action" data-widget-hide="activityWidget" type="button">إخفاء</button>
-          </div>
-          <div class="dashboard-widget-grid">
-            <div><canvas id="userActivityChart" height="120"></canvas></div>
-            <div><canvas id="peakHoursChart" height="120"></canvas></div>
-            <div style="grid-column: 1 / -1;"><canvas id="productivityChart" height="110"></canvas></div>
-          </div>
-        </article>
-
-        <article class="dashboard-widget" data-widget-id="alertsWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>التنبيهات الذكية</h3>
-            <button class="queue-action" data-widget-hide="alertsWidget" type="button">إخفاء</button>
-          </div>
-          <div class="dashboard-widget-grid">
-            <div class="result-item">
-              <strong>حالات تتطلب متابعة عاجلة</strong>
-              <div id="urgentAlertsList" class="record-list"></div>
-            </div>
-            <div class="result-item">
-              <strong>أدوية قاربت على الانتهاء</strong>
-              <div id="medExpiryAlertsList" class="record-list"></div>
-            </div>
-            <div class="result-item">
-              <strong>مواعيد متابعة قادمة</strong>
-              <div id="followupAlertsList" class="record-list"></div>
-            </div>
-            <div class="result-item">
-              <strong>حالات مشتبه بها (Anomaly Detection)</strong>
-              <div id="anomalyAlertsList" class="record-list"></div>
-            </div>
-          </div>
-        </article>
-
-        <article class="dashboard-widget" data-widget-id="liveWidget" draggable="true">
-          <div class="dashboard-widget-head">
-            <span class="drag-handle">⋮⋮</span>
-            <h3>التحديثات الفورية والإشعارات الحية</h3>
-            <button class="queue-action" data-widget-hide="liveWidget" type="button">إخفاء</button>
-          </div>
-          <div id="liveSocketStatus" class="status">جاري تهيئة اتصال WebSocket...</div>
-          <div class="action-row">
-            <button class="btn-outline" id="liveReconnectBtn" type="button">إعادة الاتصال الفوري</button>
-          </div>
-          <div id="liveNotificationsList" class="record-list"></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="lead-strip" id="leadForm">
-      <div class="section-title" style="margin: 0 0 10px;">
-        <h2>تفعيل التجربة المؤسسية للمستشفى</h2>
-        <p>أرسل طلب التفعيل لفريق Bright AI مع بيانات المسؤول التشغيلي.</p>
-      </div>
-
-      <div class="lead-grid">
-        <input id="leadHospital" type="text" placeholder="اسم المستشفى" />
-        <input id="leadName" type="text" placeholder="اسم المسؤول" />
-        <input id="leadPhone" type="tel" placeholder="رقم الجوال" />
-        <button class="btn-main" id="leadBtn" type="button">إرسال طلب التجربة</button>
-      </div>
-      <div id="leadStatus" class="status" style="margin-top: 10px;">سيتم إرسال الطلب عبر واتساب إلى فريق التفعيل.</div>
-    </section>
-
-    <section>
-      <div class="section-title">
-        <h2>ربط داخلي لخدمات مرتبطة</h2>
-        <p>هيكلة روابط داخلية محسنة لتحسين الزحف والفهرسة لمسار القطاع الصحي.</p>
-      </div>
-      <div class="internal-links">
-        <a href="/frontend/pages/sectors/healthcare.html">حلول الذكاء الاصطناعي للقطاع الصحي السعودي</a>
-        <a href="/frontend/pages/health-bright/">حلول AI الطبية المتقدمة للحالات السريرية</a>
-        <a href="/frontend/pages/data-analysis/">تحليل البيانات الصحية ولوحات المتابعة</a>
-        <a href="/frontend/pages/consultation/">حجز استشارة تنفيذية للتحول الصحي</a>
-        <a href="/frontend/pages/ai-agent/">تكامل الوكلاء الذكية مع أنظمة المستشفى</a>
-        <a href="/frontend/pages/blogger/digital-health-smart-archive.html">دراسة موسعة عن الأرشيف الطبي الذكي</a>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-title">
-        <h2>أسئلة تشغيلية متكررة</h2>
-        <p>إجابات عملية للفريق الطبي والإداري قبل تفعيل النظام على بيئة المستشفى الفعلية.</p>
-      </div>
-      <div class="faq-grid" id="faq">
-        <article class="faq-item">
-          <h4>هل يمكن تشغيل التجربة على تقارير عربية وإنجليزية؟</h4>
-          <p>نعم، النظام يتعامل مع تقارير ثنائية اللغة ويعيدها في بنية موحدة قابلة للبحث والتحليل.</p>
-        </article>
-        <article class="faq-item">
-          <h4>ما أول مؤشر نجاح يجب قياسه؟</h4>
-          <p>زمن تحويل التقرير إلى سجل قابل للبحث، ثم زمن وصول الطبيب إلى حالة مشابهة أثناء التشخيص.</p>
-        </article>
-        <article class="faq-item">
-          <h4>هل يدعم الربط مع نظام السجل الصحي الإلكتروني؟</h4>
-          <p>نعم، يمكن البدء بالتصدير بصيغ FHIR وHL7 وCSV، ثم اعتماد تكامل مباشر عبر واجهات برمجة مخصصة.</p>
-        </article>
-        <article class="faq-item">
-          <h4>هل يصلح لمواسم الضغط مثل الحج والعمرة؟</h4>
-          <p>نعم، لأنه يقلل زمن قراءة التقارير ويُظهر التنبيهات الحرجة بسرعة أعلى في أقسام الطوارئ والفرز.</p>
-        </article>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <strong>Bright AI</strong> — نظام الأرشيف الطبي الذكي للمستشفيات في السعودية
-        </div>
-        <div class="footer-links">
-          <a href="/">الرئيسية</a>
-          <span>•</span>
-          <a href="/frontend/pages/contact/">تواصل معنا</a>
-          <span>•</span>
-          <a href="/frontend/pages/about-us/">من نحن</a>
-          <span>•</span>
-          <a href="https://wa.me/966538229013" target="_blank" rel="noopener">واتساب</a>
-        </div>
-        <div class="footer-copy">© 2026 Bright AI. جميع الحقوق محفوظة.</div>
-      </div>
-    </footer>
-  </main>
-
-  <script defer src="../../js/navigation.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script defer src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script src="../../env.js"></script>
-  <script type="module" src="./smart-ai-logic.js"></script>
-  <script defer src="./system-unified.js"></script>
+<div class="custom-seo-links-universal" style="margin-top:20px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.1); width:100%; text-align:center;">
+<h4 style="color:#fff; font-weight:600; margin-bottom:12px;">روابط سريعة والخدمات المميزة</h4>
+<ul style="display:flex; flex-wrap:wrap; gap:16px; justify-content:center; list-style:none; padding:0; margin:0; font-size:14px; color:#94a3b8;">
+<li><a href="../../../index.html" style="color:#94a3b8; text-decoration:none;">الصفحة الرئيسية</a></li>
+<li><a href="/frontend/pages/our-products/index.html" style="color:#94a3b8; text-decoration:none;">صفحات الخدمات الأخرى</a></li>
+<li><a href="/frontend/pages/blog/index.html" style="color:#94a3b8; text-decoration:none;">صفحة المدونة</a></li>
+<li><a href="/frontend/pages/about-us/index.html" style="color:#94a3b8; text-decoration:none;">صفحة من نحن</a></li>
+<li><a href="/frontend/pages/contact/index.html" style="color:#94a3b8; text-decoration:none;">صفحة اتصل بنا</a></li>
+</ul>
+</div>
+</footer>
+</main>
+<script defer="" src="../../js/navigation.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+<script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script defer="" src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="../../env.js"></script>
+<script src="./smart-ai-logic.js" type="module"></script>
+<script defer="" src="./system-unified.js"></script>
 </body>
-
 </html>
