@@ -620,15 +620,17 @@
         /* === DESIGN TOKENS === */
         :root {
             /* Navigation */
-            --nav-height: 80px;
-            --nav-bg: rgba(2, 6, 23, 0.7);
-            --nav-backdrop-blur: 20px;
-            --nav-border: 1px solid rgba(255, 255, 255, 0.08);
-            --nav-text-color: #e2e8f0;
+            --nav-height: 72px;
+            --nav-bg: rgba(2, 6, 23, 0.65);
+            --nav-bg-scrolled: rgba(2, 6, 23, 0.92);
+            --nav-backdrop-blur: 24px;
+            --nav-border: 1px solid rgba(255, 255, 255, 0.06);
+            --nav-border-scrolled: 1px solid rgba(255, 255, 255, 0.1);
+            --nav-text-color: #cbd5e1;
             --nav-hover-color: #ffffff;
-            --dropdown-bg: rgba(15, 23, 42, 0.9);
-            --dropdown-border: 1px solid rgba(255, 255, 255, 0.1);
-            --dropdown-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.7);
+            --dropdown-bg: rgba(10, 15, 30, 0.96);
+            --dropdown-border: 1px solid rgba(255, 255, 255, 0.08);
+            --dropdown-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.8);
             --bg-dark: #020617;
             --accent-gold: #D4AF37;
             --accent-indigo: #6366F1;
@@ -641,6 +643,12 @@
             --radius-full: 9999px;
             --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        @media (max-width: 1023px) {
+            :root {
+                --nav-height: 64px;
+            }
         }
 
         /* High Contrast Fixes */
@@ -774,7 +782,7 @@
             pointer-events: none;
         }
 
-        /* === NAVIGATION === */
+        /* === NAVIGATION (Premium Glassmorphism) === */
         .unified-nav {
             position: fixed;
             top: 0;
@@ -786,8 +794,20 @@
             backdrop-filter: blur(var(--nav-backdrop-blur));
             -webkit-backdrop-filter: blur(var(--nav-backdrop-blur));
             border-bottom: var(--nav-border);
-            transition: transform 0.3s ease, background 0.3s ease;
-            will-change: transform, background;
+            transition: transform 0.35s ease, background 0.4s ease, border-bottom 0.4s ease, box-shadow 0.4s ease;
+            will-change: transform;
+        }
+
+        /* Scrolled state — darker, more solid */
+        .unified-nav.nav-scrolled {
+            background: var(--nav-bg-scrolled);
+            border-bottom: var(--nav-border-scrolled);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Hidden on scroll down */
+        .unified-nav.nav-hidden {
+            transform: translateY(-100%);
         }
 
         .nav-container {
@@ -797,15 +817,24 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 1.5rem;
+            padding: 0 1.25rem;
+            gap: 0.75rem;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-container {
+                padding: 0 2rem;
+                gap: 1.5rem;
+            }
         }
 
         .nav-logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.625rem;
             text-decoration: none;
             z-index: 1002;
+            flex-shrink: 0;
         }
 
         .nav-links {
@@ -813,7 +842,7 @@
             list-style: none;
             margin: 0;
             padding: 0;
-            gap: 0.5rem;
+            gap: 0.25rem;
         }
 
         @media (min-width: 1024px) {
@@ -831,13 +860,20 @@
             display: flex;
             align-items: center;
             gap: 0.375rem;
-            padding: 0.625rem 1rem;
+            padding: 0.5rem 0.875rem;
             color: var(--nav-text-color);
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
             font-weight: 500;
             text-decoration: none;
             border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
+            transition: color 0.2s ease, background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-link[aria-expanded="true"] {
+            color: var(--nav-hover-color);
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .dropdown-menu {
@@ -850,12 +886,12 @@
             background: var(--dropdown-bg);
             border: var(--dropdown-border);
             border-radius: var(--radius-md);
-            padding: 0.75rem;
+            padding: 0.5rem;
             box-shadow: var(--dropdown-shadow);
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translateY(10px);
+            transform: translateY(8px);
             transition: all 0.25s var(--transition-smooth);
             z-index: 9999;
         }
@@ -867,16 +903,158 @@
             transform: translateY(0);
         }
 
+        /* === NAV CTA BUTTON === */
+        .nav-cta {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45);
+        }
+
+        /* Desktop CTA visible on lg+ */
+        @media (min-width: 1024px) {
+            .nav-cta-desktop {
+                display: inline-flex;
+            }
+        }
+
+        /* === NAV DESKTOP / MOBILE VISIBILITY === */
+        .nav-desktop {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-desktop {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+        }
+
+        /* Search Desktop */
+        .search-desktop {
+            display: none;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.5rem 0.875rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            color: var(--nav-text-color);
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .search-desktop:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: #fff;
+        }
+
+        @media (min-width: 1024px) {
+            .search-desktop {
+                display: flex;
+            }
+        }
+
+        .search-desktop span {
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+
+        .search-kbd {
+            display: none;
+            font-size: 10px;
+            font-family: ui-monospace, monospace;
+            opacity: 0.6;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.125rem 0.375rem;
+            border-radius: 6px;
+            color: #64748b;
+        }
+
+        @media (min-width: 1280px) {
+            .search-kbd {
+                display: inline;
+            }
+        }
+
+        /* Search Mobile */
+        .search-mobile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            color: var(--nav-text-color);
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .search-mobile:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: #fff;
+        }
+
+        @media (min-width: 1024px) {
+            .search-mobile {
+                display: none;
+            }
+        }
+
+        /* === NAV ACTIONS CONTAINER === */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .nav-actions {
+                gap: 0.75rem;
+            }
+        }
+
+        /* === MOBILE TOGGLE === */
         .mobile-toggle {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 6px;
-            background: none;
-            border: none;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
             cursor: pointer;
             z-index: 1002;
-            padding: 0.75rem;
+            padding: 10px;
+            width: 42px;
+            height: 42px;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         @media (min-width: 1024px) {
@@ -886,10 +1064,57 @@
         }
 
         .bar {
-            width: 24px;
+            width: 20px;
             height: 2px;
-            background: #fff;
+            background: #e2e8f0;
             border-radius: 2px;
+            transition: transform 0.3s var(--transition-smooth), opacity 0.2s ease;
+        }
+
+        .mobile-toggle[aria-expanded="true"] .bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .mobile-toggle[aria-expanded="true"] .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-toggle[aria-expanded="true"] .bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* === MOBILE DRAWER (Premium) === */
+        .mobile-menu-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(85vw, 360px);
+            z-index: 1050;
+            background: rgba(2, 6, 23, 0.98);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-left: 1px solid rgba(255, 255, 255, 0.06);
+            transform: translateX(100%);
+            transition: transform 0.45s var(--transition-smooth);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+
+        [dir="rtl"] .mobile-menu-drawer {
+            right: auto;
+            left: 0;
+            border-left: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            transform: translateX(-100%);
+        }
+
+        .mobile-menu-drawer.active {
+            transform: translateX(0);
+        }
+
+        [dir="rtl"] .mobile-menu-drawer.active {
+            transform: translateX(0);
         }
 
         /* Layout & Container — CLS FIX: removed contain:layout (was causing 0.040 CLS shift) */
@@ -915,6 +1140,38 @@
     <noscript>
         <link rel="stylesheet" href="frontend/css/main.bundle.min.css">
     </noscript>
+    <!-- NAV OVERRIDE: Ensure inline nav tokens win over main.bundle.min.css async load -->
+    <style id="nav-override">
+        :root {
+            --nav-height: 72px;
+            --nav-bg: rgba(2, 6, 23, 0.65);
+            --nav-backdrop-blur: 24px;
+            --nav-border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        @media (max-width: 1023px) {
+            :root {
+                --nav-height: 64px;
+            }
+        }
+
+        /* Kill old inline-style scroll handlers from legacy JS */
+        .unified-nav[style*="background"] {
+            background: var(--nav-bg) !important;
+        }
+
+        .unified-nav.nav-scrolled[style*="background"] {
+            background: var(--nav-bg-scrolled) !important;
+        }
+
+        .unified-nav[style*="box-shadow"] {
+            box-shadow: none !important;
+        }
+
+        .unified-nav.nav-scrolled[style*="box-shadow"] {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35) !important;
+        }
+    </style>
     <!-- Sitemap Reference -->
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <!-- DUPLICATE critical-css REMOVED — single instance above at line ~594 is authoritative -->
@@ -922,30 +1179,21 @@
     <!-- CLS FIX: Global animation constraint — only composite properties (transform, opacity) animate -->
     <!-- This eliminates the 91 non-composited animation warnings for color/border-color -->
     <style id="cls-animation-fix">
-        /* === CLS CRITICAL FIX: Force compositor-only transitions === */
-        /* Lighthouse flagged 91 elements using non-composited color/border-color animations */
-        /* Solution: replace transition:all with explicit compositor-safe properties */
-        a,
-        button,
-        .nav-link,
+        /* === CLS FIX: Compositor-only transitions (excludes nav elements) === */
+        /* Nav components EXCLUDED so color/bg transitions work properly */
         .filter,
         .tab,
-        .btn,
         .iconbtn,
-        .mobile-nav-link,
         .skip-link,
-        .qbtn,
-        [class*="transition"] {
+        .qbtn {
             transition-property: transform, opacity !important;
             will-change: transform;
         }
 
-        /* Exceptions: elements that need color transitions - use CSS custom properties trick */
-        /* Colors set via CSS vars don't trigger layout/paint — only composited layer update */
+        /* CTA buttons: allow box-shadow transitions too */
         .btn.cta,
         .btn.ghost,
-        a.btn,
-        .nav-btn {
+        a.btn {
             transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease !important;
             will-change: transform, opacity;
         }
@@ -1483,32 +1731,27 @@
     <a class="skip-link" href="#faq">انتقل إلى الأسئلة الشائعة</a>
     <a class="skip-link" href="#contact-section">انتقل إلى التواصل</a>
     <!-- Header / Navbar -->
-    <header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header"
-        role="banner">
-        <div class="nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
             <!-- Branding -->
-            <div class="flex-shrink-0 flex items-center gap-3">
-                <a class="nav-logo flex items-center gap-3 group" href="/" aria-label="Bright AI — الصفحة الرئيسية"
+            <div class="flex-shrink-0">
+                <a class="nav-logo group" href="/" aria-label="Bright AI — الصفحة الرئيسية"
                     title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
                     <div
-                        class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
-                        <span class="text-white font-black text-xl tracking-tighter">AI</span>
-                        <div
-                            class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
                     </div>
                     <div class="flex flex-col leading-none">
                         <span
-                            class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
                                 class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
-                        <span class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5">Saudi
-                        </span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
                     </div>
                 </a>
             </div>
             <!-- Main Navigation -->
-            <nav class="hidden lg:flex items-center gap-1" style="contain: layout;">
-                <ul class="nav-links flex items-center gap-1">
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
                     <li class="nav-item">
                         <a class="nav-link" href="/">الرئيسية</a>
                     </li>
@@ -1692,7 +1935,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="docs.html">
+                                    href="frontend/pages/docs/docs.html">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
@@ -1721,27 +1964,30 @@
                 </ul>
             </nav>
             <!-- Secondary Actions -->
-            <div class="flex items-center gap-4">
-                <button aria-label="البحث في الموقع"
-                    class="group flex items-center justify-between gap-3 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/50 rounded-full text-slate-400 hover:text-white transition-all w-auto lg:w-48 overflow-hidden"
-                    id="openSearch">
-                    <div class="flex items-center gap-2">
-                        <iconify-icon class="text-sm group-hover:text-indigo-400 transition-colors"
-                            icon="lucide:search"></iconify-icon>
-                        <span class="hidden lg:inline text-xs font-medium">بحث في الموقع...</span>
-                    </div>
-                    <span
-                        class="hidden xl:inline text-[10px] font-bold opacity-60 bg-white/10 px-1.5 py-0.5 rounded">Ctrl
-                        K</span>
+            <div class="nav-actions">
+                <!-- Desktop Search -->
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
                 </button>
-                <a class="nav-btn hidden md:flex items-center gap-2" href="frontend/pages/try/"
-                    aria-label="ابدأ تجربة أدوات الذكاء الاصطناعي مجاناً" title="جرّب أدوات الذكاء الاصطناعي مجاناً">
-                    <iconify-icon icon="lucide:sparkles"></iconify-icon>
-                    ابدأ الآن مجاناً
+
+                <!-- Mobile Search -->
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+
+                <!-- Desktop CTA -->
+                <a class="nav-cta nav-cta-desktop" href="https://wa.me/966538229013" target="_blank"
+                    rel="noopener noreferrer" aria-label="ابدأ رحلة التحول عبر الواتساب"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
                 </a>
+
                 <!-- Mobile Toggle -->
-                <button aria-expanded="false" aria-label="فتح القائمة"
-                    class="mobile-toggle lg:hidden flex flex-col gap-1.5 p-2 bg-white/5 rounded-lg border border-white/10">
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
                     <span class="bar"></span>
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -1750,47 +1996,162 @@
         </div>
     </header>
     <!-- Mobile Drawer -->
-    <div
-        class="mobile-menu-drawer fixed inset-y-0 right-0 w-80 z-[60] transform translate-x-full transition-transform duration-500 ease-out rtl:left-0 rtl:right-auto rtl:-translate-x-full">
-        <div class="flex flex-col h-full bg-[#020617] border-l border-white/5 p-8">
-            <div class="flex items-center justify-between mb-12">
-                <div class="text-xl font-bold text-white">القائمة الرئيسية</div>
-                <button aria-label="إغلاق القائمة" class="mobile-toggle p-2 hover:bg-white/5 rounded-full">
-                    <iconify-icon class="text-white text-2xl" icon="lucide:x"></iconify-icon>
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full" style="padding: calc(var(--nav-height) + 1.5rem) 1.75rem 2rem;">
+            <!-- Drawer Header -->
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
                 </button>
             </div>
-            <ul class="mobile-nav-list space-y-2">
-                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/">الرئيسية</a></li>
+
+            <!-- Nav Links -->
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/">
+                        <iconify-icon icon="lucide:home" width="18" class="text-slate-500"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
                 <li>
                     <a aria-expanded="false" aria-haspopup="true"
-                        class="mobile-nav-link flex items-center justify-between text-lg py-4 border-b border-white/5"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
                         href="#">
-                        الحلول والخدمات
-                        <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+                        <span class="flex items-center gap-3">
+                            <iconify-icon icon="lucide:layers" width="18" class="text-slate-500"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon icon="lucide:chevron-down" class="text-slate-600 text-sm"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown space-y-2 mt-2 px-4">
-                        <a class="block py-2 text-slate-400 hover:text-white transition-colors" href="#workflows">أتمتة
-                            العمليات</a>
-                        <a class="block py-2 text-slate-400 hover:text-white transition-colors" href="#bi">ذكاء الأعمال
-                            BI</a>
-                        <a class="block py-2 text-slate-400 hover:text-white transition-colors"
-                            href="#robotics">الروبوتات الذكية</a>
-                        <a class="block py-2 text-slate-400 hover:text-white transition-colors" href="#library">المكتبة
-                            الذكية</a>
+                    <div class="mobile-dropdown mt-1 mr-6"
+                        style="padding-right: 1rem; border-right: 2px solid rgba(99,102,241,0.2);">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/brightai-platform/">
+                            <iconify-icon icon="lucide:cpu" width="15" class="text-slate-600"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="frontend/pages/smart-automation/">
+                            <iconify-icon icon="lucide:workflow" width="15" class="text-slate-600"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="frontend/pages/ai-agent/">
+                            <iconify-icon icon="lucide:bot" width="15" class="text-slate-600"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="frontend/pages/data-analysis/">
+                            <iconify-icon icon="lucide:bar-chart-3" width="15" class="text-slate-600"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="frontend/pages/contact/">
+                            <iconify-icon icon="lucide:users" width="15" class="text-slate-600"></iconify-icon>
+                            استشارات
+                        </a>
                     </div>
                 </li>
-                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="frontend/pages/blog/">المدونة
-                        التقنية</a></li>
-                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="frontend/pages/about-us/">من
-                        نحن</a></li>
-                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5 text-indigo-400"
-                        href="frontend/pages/contact/">تواصل معنا</a></li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon icon="lucide:sparkles" width="18" class="text-slate-500"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon icon="lucide:chevron-down" class="text-slate-600 text-sm"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6"
+                        style="padding-right: 1rem; border-right: 2px solid rgba(16,185,129,0.2);">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="frontend/pages/smart-medical-archive/">
+                            <iconify-icon icon="lucide:hospital" width="15" class="text-slate-600"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="frontend/pages/job.MAISco/">
+                            <iconify-icon icon="lucide:briefcase" width="15" class="text-slate-600"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="frontend/pages/ai-scolecs/">
+                            <iconify-icon icon="lucide:graduation-cap" width="15" class="text-slate-600"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="frontend/pages/health-bright/">
+                            <iconify-icon icon="lucide:heart-pulse" width="15" class="text-slate-600"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="frontend/pages/blog/">
+                        <iconify-icon icon="lucide:book-open" width="18" class="text-slate-500"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <a aria-expanded="false" aria-haspopup="true"
+                    class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                    href="#">
+                    <span class="flex items-center gap-3">
+                        <iconify-icon icon="lucide:info" width="18" class="text-slate-500"></iconify-icon>
+                        عن برايت
+                    </span>
+                    <iconify-icon icon="lucide:chevron-down" class="text-slate-600 text-sm"></iconify-icon>
+                </a>
+                <div class="mobile-dropdown mt-1 mr-6"
+                    style="padding-right: 1rem; border-right: 2px solid rgba(59,130,246,0.2);">
+                    <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                        href="frontend/pages/about-us/">
+                        <iconify-icon icon="lucide:info" width="15" class="text-slate-600"></iconify-icon>
+                        من نحن
+                    </a>
+                    <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                        href="frontend/pages/docs/docs.html">
+                        <iconify-icon icon="lucide:file-text" width="15" class="text-slate-600"></iconify-icon>
+                        المستندات
+                    </a>
+                    <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                        href="#library">
+                        <iconify-icon icon="lucide:library" width="15" class="text-slate-600"></iconify-icon>
+                        المكتبة الذكية
+                    </a>
+                </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="frontend/pages/contact/">
+                        <iconify-icon icon="lucide:phone" width="18" class="text-indigo-500"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
             </ul>
-            <div class="mt-auto">
-                <a class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2"
+
+            <!-- Mobile CTA -->
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl text-white font-bold text-sm transition-all"
+                    href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+                    style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); box-shadow: 0 4px 20px rgba(99,102,241,0.3);">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-3 mt-2.5 rounded-xl text-slate-400 font-medium text-sm hover:text-white hover:bg-white/[0.04] transition-all"
                     href="frontend/pages/try/">
-                    <iconify-icon icon="lucide:zap"></iconify-icon>
-                    تجربة فورية للذكاء الاصطناعي
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
                 </a>
             </div>
         </div>
@@ -1890,7 +2251,8 @@
                         </div>
 
                         <div class="hero-actions flex flex-wrap gap-4">
-                            <a href="#services" class="btn primary" style="padding: 1rem 2.5rem;">
+                            <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+                                class="btn primary" style="padding: 1rem 2.5rem;">
                                 ابدأ رحلة التحول
                             </a>
                             <a href="frontend/pages/try/" class="btn"
@@ -3808,42 +4170,7 @@
             </button>
         </div>
     </div>
-    <!-- Extras: Search Modal -->
-    <div class="modal fixed inset-0 z-[70] hidden items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300"
-        id="searchModal">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
-        <div
-            class="modal-card relative w-full max-w-2xl bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300">
-            <div class="modal-top p-6 border-b border-white/5 flex items-center gap-4">
-                <iconify-icon class="text-indigo-400 text-xl" icon="lucide:search"></iconify-icon>
-                <input
-                    class="flex-1 bg-transparent border-none text-white text-lg focus:ring-0 placeholder:text-slate-400"
-                    id="searchInput" placeholder="ابحث في جميع أنحاء الموقع (اضغط Enter للبحث)..." />
-                <div
-                    class="esc px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-                    ESC</div>
-            </div>
-            <div class="modal-body p-6">
-                <div
-                    class="hint-row flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">
-                    <iconify-icon class="text-indigo-400" icon="lucide:trending-up"></iconify-icon>
-                    الأكثر بحثاً
-                </div>
-                <div class="list space-y-2" id="searchList">
-                    <div class="res group flex items-center justify-between p-3 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10 cursor-pointer transition-all"
-                        data-jump="#workflows">
-                        <div class="flex items-center gap-3">
-                            <iconify-icon class="text-slate-400 group-hover:text-indigo-400 transition-colors"
-                                icon="lucide:zap"></iconify-icon>
-                            <span class="text-slate-300 group-hover:text-white transition-colors text-sm">أتمتة العمليات
-                                الذكية</span>
-                        </div>
-                        <span class="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Service</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Search Modal logic is handled smoothly and cleanly by frontend/js/search.js -->
     <!-- Cookies notice -->
     <div class="cookies fixed bottom-8 left-8 right-8 md:left-auto md:w-[480px] z-[80] bg-[#0f172a]/95 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-2xl transform translate-y-[200%] transition-transform duration-700"
         id="cookies">
@@ -3864,7 +4191,11 @@
     </div>
     <!-- optimization.js must load FIRST: sets up deferred loading for all 3rd party resources -->
     <script defer src="frontend/js/optimization.js"></script>
-    <!-- index-theme.min.js: page interactions (tabs, chat, search, ROI calc) -->
+    <!-- Navigation: scroll effects, mobile drawer, dropdowns -->
+    <script defer src="frontend/js/navigation.js"></script>
+    <!-- Search logic loaded dynamically -->
+    <script defer src="frontend/js/search.js"></script>
+    <!-- index-theme.min.js: page interactions (tabs, chat, ROI calc) -->
     <!-- type="module" defers execution to after HTML parsing & enables ES module optimizations -->
     <script defer src="frontend/js/index-theme.min.js"></script>
 </body>
