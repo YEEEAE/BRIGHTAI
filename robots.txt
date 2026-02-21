@@ -12,8 +12,6 @@ Allow: /frontend/css/
 Allow: /frontend/js/
 Allow: /frontend/assets/
 Allow: /frontend/pages/
-Allow: /frontend/pages/blog/
-Allow: /frontend/pages/docs/
 Allow: /sitemap.xml
 Allow: /robots.txt
 Allow: /manifest.json
@@ -39,6 +37,35 @@ Disallow: /build/
 Disallow: /src/
 Disallow: /api/auth/
 Disallow: /api/internal/
+Disallow: /backend/
+Disallow: /server/
+Disallow: /supabase/
+Disallow: /scripts/
+
+# صفحات داخلية يجب عدم فهرستها
+Disallow: /frontend/pages/interview/pages/admin
+Disallow: /frontend/pages/interview/pages/dashboard/
+Disallow: /frontend/pages/interview/pages/appointment/
+Disallow: /frontend/pages/interview/pages/Visitor-registration/
+Disallow: /frontend/pages/interview/pages/support-ai
+Disallow: /frontend/pages/interview/pages/supportAI
+Disallow: /frontend/pages/interview/g
+
+# منع فهرسة ملفات المقالات المكررة (النسخ بمسافات)
+Disallow: /frontend/pages/blogger/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20
+Disallow: /frontend/pages/blogger/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20
+Disallow: /frontend/pages/blogger/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20
+Disallow: /frontend/pages/blogger/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20
+Disallow: /frontend/pages/blogger/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20
+Disallow: /frontend/pages/blogger/Generative%20
+Disallow: /frontend/pages/blogger/%20production-line
+Disallow: /frontend/pages/blogger/generative-artificial-intelligence-2
+Disallow: /frontend/pages/blogger/production-line-2
+Disallow: /frontend/pages/blogger/cloude-opus-4.6
+Disallow: /frontend/pages/blogger/astr.doc
+Disallow: /frontend/pages/blogger/atou.doc
+Disallow: /frontend/pages/blogger/agint-bblog
+Disallow: /frontend/pages/blogger/atou-job
 
 # مسارات التطبيقات المنشورة
 Allow: /brightai-platform/
