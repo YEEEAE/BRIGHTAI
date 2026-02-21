@@ -410,24 +410,13 @@
       </div>
     </section>
 
-    <section>
-      <div class="section-title">
-        <h2>إعداد الاتصال (حل مشكلة Load failed)</h2>
-        <p>يمكنك تشغيل النظام عبر خادم BrightAI أو مباشرة عبر Groq كمسار احتياطي.</p>
-      </div>
-      <div class="connection-box">
-        <div class="connection-grid">
-          <input id="apiBaseInput" type="url" placeholder="عنوان API (مثال: http://localhost:3000)" />
-          <input id="groqApiKeyInput" type="password" placeholder="مفتاح Groq API (اختياري كمسار احتياطي)" />
-          <input id="groqModelInput" type="text" value="llama-3.1-8b-instant" placeholder="نموذج Groq" />
-        </div>
-        <div class="action-row">
-          <button class="btn-outline" id="saveConnectionBtn" type="button">حفظ إعدادات الاتصال</button>
-          <button class="btn-outline" id="testConnectionBtn" type="button">اختبار الاتصال الآن</button>
-        </div>
-        <div id="connectionStatus" class="status">استخدم الإعدادات الافتراضية أو حدّثها حسب بيئة التشغيل لديك.</div>
-      </div>
-    </section>
+    <!-- حقول اتصال مخفية للتوافق مع النظام -->
+    <input id="apiBaseInput" type="hidden" value="" />
+    <input id="groqApiKeyInput" type="hidden" value="" />
+    <input id="groqModelInput" type="hidden" value="llama3-70b-8192" />
+    <button id="saveConnectionBtn" type="button" hidden></button>
+    <button id="testConnectionBtn" type="button" hidden></button>
+    <div id="connectionStatus" hidden></div>
 
     <section id="trialConsole">
       <div class="section-title">
@@ -932,6 +921,7 @@
   <script defer src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="../../env.js"></script>
   <script type="module" src="./smart-ai-logic.js"></script>
   <script defer src="./system-unified.js"></script>
 </body>

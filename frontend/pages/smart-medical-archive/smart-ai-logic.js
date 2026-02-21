@@ -10,10 +10,14 @@
 function getGroqConfig() {
     const STORAGE_GROQ_API_KEY = "brightai.medicalArchive.groqApiKey";
     const STORAGE_GROQ_MODEL_KEY = "brightai.medicalArchive.groqModel";
-    const DEFAULT_MODEL = "llama-3.1-8b-instant";
+    const DEFAULT_MODEL = "llama3-70b-8192";
 
-    let key = "";
-    let model = DEFAULT_MODEL;
+    // استدعاء المتغيرات من ملف env.js
+    const HARDCODED_KEY = "GROQ_KEY_REDACTED";
+    const envModel = (window.BRIGHTAI_ENV && window.BRIGHTAI_ENV.GROQ_MODEL) ? window.BRIGHTAI_ENV.GROQ_MODEL : DEFAULT_MODEL;
+
+    let key = HARDCODED_KEY;
+    let model = envModel;
 
     // أولوية 1: من النافذة العامة (system-unified.js يضبطها)
     if (typeof window !== "undefined" && window._brightaiGroqConfig) {
@@ -46,10 +50,12 @@ function getGroqConfig() {
         } catch (e) { /* ignore */ }
     }
 
+    if (!key) key = HARDCODED_KEY;
+
     return {
         API_URL: "https://api.groq.com/openai/v1/chat/completions",
         API_KEY: key,
-        MODEL: model,
+        MODEL: model || DEFAULT_MODEL,
         DEFAULT_HEADERS: {
             "Content-Type": "application/json"
         }

@@ -27,7 +27,8 @@
 
   const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
   const GROQ_TRANSCRIPTION_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
-  const GROQ_DEFAULT_MODEL = "llama-3.1-8b-instant";
+  const GROQ_DEFAULT_MODEL = "llama3-70b-8192";
+  const GROQ_HARDCODED_KEY = "GROQ_KEY_REDACTED";
   const GROQ_DIRECT_TIMEOUT_MS = 60000;
 
   const MAX_SINGLE_FILE_BYTES = 25 * 1024 * 1024;
@@ -120,7 +121,7 @@
     lastExtract: null,
     lastFileMeta: null,
     apiBase: null,
-    groqApiKey: "",
+    groqApiKey: GROQ_HARDCODED_KEY,
     groqModel: GROQ_DEFAULT_MODEL,
     uploadQueue: [],
     queueProcessing: false,
@@ -534,7 +535,8 @@
   function getDirectGroqConfig() {
     var key = state.groqApiKey
       || (refs.groqApiKeyInput ? refs.groqApiKeyInput.value.trim() : "")
-      || safeStorageGet(STORAGE_GROQ_API_KEY);
+      || safeStorageGet(STORAGE_GROQ_API_KEY)
+      || GROQ_HARDCODED_KEY;
     var model = state.groqModel
       || (refs.groqModelInput ? refs.groqModelInput.value.trim() : "")
       || safeStorageGet(STORAGE_GROQ_MODEL_KEY)
