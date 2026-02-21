@@ -22,6 +22,13 @@
   const STORAGE_DASHBOARD_ROLE_KEY = "brightai.medicalArchive.dashboardRole";
   const STORAGE_DASHBOARD_HISTORY_KEY = "brightai.medicalArchive.dashboardHistory";
   const STORAGE_DASHBOARD_EVENTS_KEY = "brightai.medicalArchive.dashboardEvents";
+  const STORAGE_GROQ_API_KEY = "brightai.medicalArchive.groqApiKey";
+  const STORAGE_GROQ_MODEL_KEY = "brightai.medicalArchive.groqModel";
+
+  const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+  const GROQ_TRANSCRIPTION_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
+  const GROQ_DEFAULT_MODEL = "llama-3.1-8b-instant";
+  const GROQ_DIRECT_TIMEOUT_MS = 60000;
 
   const MAX_SINGLE_FILE_BYTES = 25 * 1024 * 1024;
   const MAX_BATCH_FILES = 300;
@@ -113,6 +120,8 @@
     lastExtract: null,
     lastFileMeta: null,
     apiBase: null,
+    groqApiKey: "",
+    groqModel: GROQ_DEFAULT_MODEL,
     uploadQueue: [],
     queueProcessing: false,
     stopQueueRequested: false,
@@ -264,6 +273,8 @@
     exportArchiveFhirBtn: document.getElementById("exportArchiveFhirBtn"),
     exportStatus: document.getElementById("exportStatus"),
     apiBaseInput: document.getElementById("apiBaseInput"),
+    groqApiKeyInput: document.getElementById("groqApiKeyInput"),
+    groqModelInput: document.getElementById("groqModelInput"),
     saveConnectionBtn: document.getElementById("saveConnectionBtn"),
     testConnectionBtn: document.getElementById("testConnectionBtn"),
     connectionStatus: document.getElementById("connectionStatus"),
@@ -369,6 +380,18 @@
     if (savedApiBase) {
       state.apiBase = savedApiBase;
       if (refs.apiBaseInput) refs.apiBaseInput.value = savedApiBase;
+    }
+
+    const savedGroqApiKey = safeStorageGet(STORAGE_GROQ_API_KEY).trim();
+    const savedGroqModel = safeStorageGet(STORAGE_GROQ_MODEL_KEY).trim();
+
+    if (savedGroqApiKey) {
+      state.groqApiKey = savedGroqApiKey;
+      if (refs.groqApiKeyInput) refs.groqApiKeyInput.value = savedGroqApiKey;
+    }
+    if (savedGroqModel) {
+      state.groqModel = savedGroqModel;
+      if (refs.groqModelInput) refs.groqModelInput.value = savedGroqModel;
     }
 
     const savedStorageProvider = safeStorageGet(STORAGE_PROVIDER_KEY).trim();
@@ -482,10 +505,339 @@
 
   function saveConnectionConfig() {
     const apiBase = normalizeBaseUrl(refs.apiBaseInput ? refs.apiBaseInput.value : "");
+    const groqKey = refs.groqApiKeyInput ? refs.groqApiKeyInput.value.trim() : "";
+    const groqModel = refs.groqModelInput ? refs.groqModelInput.value.trim() : "";
 
     state.apiBase = apiBase || null;
+    state.groqApiKey = groqKey;
+    state.groqModel = groqModel || GROQ_DEFAULT_MODEL;
 
     safeStorageSet(STORAGE_API_BASE_KEY, state.apiBase || "");
+    safeStorageSet(STORAGE_GROQ_API_KEY, state.groqApiKey);
+    safeStorageSet(STORAGE_GROQ_MODEL_KEY, state.groqModel);
+  }
+
+  /**
+   * هل يوجد إعداد مباشر لـ Groq API؟
+   * يتحقق من وجود مفتاح API إما من الحقل أو من الحالة المحفوظة.
+   */
+  function hasDirectGroqConfig() {
+    if (state.groqApiKey) return true;
+    if (refs.groqApiKeyInput && refs.groqApiKeyInput.value.trim()) return true;
+    var stored = safeStorageGet(STORAGE_GROQ_API_KEY);
+    return !!stored;
+  }
+
+  /**
+   * جلب إعدادات Groq المباشرة الحالية
+   */
+  function getDirectGroqConfig() {
+    var key = state.groqApiKey
+      || (refs.groqApiKeyInput ? refs.groqApiKeyInput.value.trim() : "")
+      || safeStorageGet(STORAGE_GROQ_API_KEY);
+    var model = state.groqModel
+      || (refs.groqModelInput ? refs.groqModelInput.value.trim() : "")
+      || safeStorageGet(STORAGE_GROQ_MODEL_KEY)
+      || GROQ_DEFAULT_MODEL;
+    return { key: key, model: model };
+  }
+
+  /**
+   * استدعاء Groq API المباشر لتحليل التقرير الطبي — بدون خادم محلي
+   * يُستخدم كـ fallback عند عدم توفر خادم BrightAI
+   */
+  async function callDirectGroqMedicalArchive(payload) {
+    var config = getDirectGroqConfig();
+    if (!config.key) {
+      throw new Error("مفتاح Groq API غير متوفر. أدخل المفتاح في إعدادات الاتصال.");
+    }
+
+    var action = payload && payload.action ? payload.action : "extract";
+    var reportText = payload && payload.reportText ? payload.reportText : "";
+    var hospitalProfile = payload && payload.hospitalProfile ? payload.hospitalProfile : {};
+
+    var systemPrompt = "";
+    var userContent = "";
+
+    if (action === "extract") {
+      systemPrompt = "أنت طبيب استشاري سعودي وخبير في تحليل البيانات الطبية (Clinical Data Extractor).\n"
+        + "مهمتك: قراءة التقرير الطبي المرفق واستخراج البيانات منه بدقة مطلقة لدمجها في نظام EHR.\n"
+        + "يجب أن يكون المخرج حصراً بصيغة JSON (Structured Data)، دون أي مقدمات أو نصوص إضافية.\n"
+        + "الهيكل المطلوب:\n"
+        + '{"patient":{"name":"...","age":"...","gender":"ذكر/أنثى/غير محدد","city":"..."},'
+        + '"diagnoses":["تشخيص 1","تشخيص 2"],'
+        + '"symptoms":["عرض 1","عرض 2"],'
+        + '"medications":[{"name":"الدواء","dose":"الجرعة","frequency":"التكرار"}],'
+        + '"labs":[{"test":"الفحص","result":"النتيجة","unit":"الوحدة","status":"طبيعي/مرتفع/منخفض"}],'
+        + '"recommendations":"التوصيات الطبية",'
+        + '"severity":"منخفض/متوسط/مرتفع/حرج",'
+        + '"alerts":[{"type":"risk/interaction/critical","message":"الرسالة"}],'
+        + '"hospital_department":"القسم الطبي المناسب"}';
+      userContent = "التقرير الطبي المطلوب تحليله:\n\n" + reportText;
+      if (hospitalProfile.hospitalName) {
+        userContent += "\n\nالمنشأة: " + hospitalProfile.hospitalName + " - " + (hospitalProfile.city || "") + " - قسم: " + (hospitalProfile.department || "");
+      }
+    } else if (action === "search") {
+      var query = payload && payload.query ? payload.query : "";
+      var records = payload && payload.records ? payload.records : [];
+      systemPrompt = "أنت مساعد بحث طبي ذكي. حلل سؤال الطبيب وأرجع نتائج البحث على شكل JSON.\n"
+        + "المخرج JSON فقط بالهيكل:\n"
+        + '{"matchedRecordIds":["id1","id2"],"whyMatched":[{"recordId":"id1","reasons":["السبب"]}],"topDiagnoses":[{"name":"تشخيص","count":1}],"topMedications":[{"name":"دواء","count":1}]}';
+      userContent = "السجلات المتاحة:\n" + JSON.stringify(records.map(function (r) {
+        return { recordId: r.recordId, patient: r.patient, diagnoses: r.diagnoses, medications: r.medications, severity: r.severity };
+      })) + "\n\nسؤال البحث: " + query;
+    } else {
+      systemPrompt = "أنت مستشار طبي ذكي. أجب بالعربية بناءً على البيانات المقدمة فقط.";
+      userContent = reportText || JSON.stringify(payload);
+    }
+
+    var requestBody = {
+      model: config.model,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userContent }
+      ],
+      temperature: action === "extract" ? 0.1 : 0.3,
+      max_tokens: 4096
+    };
+
+    if (action === "extract" || action === "search") {
+      requestBody.response_format = { type: "json_object" };
+    }
+
+    var response;
+    try {
+      response = await fetchWithTimeout(
+        GROQ_API_URL,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + config.key
+          },
+          body: JSON.stringify(requestBody)
+        },
+        GROQ_DIRECT_TIMEOUT_MS
+      );
+    } catch (fetchError) {
+      if (fetchError && fetchError.name === "AbortError") {
+        throw new Error("انتهت مهلة الاتصال بـ Groq. تحقق من اتصال الإنترنت وحاول مرة أخرى.");
+      }
+      throw new Error("تعذر الاتصال بـ Groq API: " + (fetchError.message || "خطأ شبكة"));
+    }
+
+    if (!response.ok) {
+      var errBody = {};
+      try { errBody = await response.json(); } catch (e) { /* ignore */ }
+      var errMsg = (errBody && errBody.error && errBody.error.message) || "";
+
+      if (response.status === 401) {
+        throw new Error("مفتاح Groq API غير صالح. تحقق من المفتاح في إعدادات الاتصال.");
+      }
+      if (response.status === 429) {
+        throw new Error("تم تجاوز حد الطلبات المسموح من Groq. انتظر قليلاً ثم حاول مرة أخرى.");
+      }
+      if (response.status === 413) {
+        throw new Error("النص طويل جداً لمعالجة Groq. قلّل حجم التقرير وحاول مجدداً.");
+      }
+      if (response.status >= 500) {
+        throw new Error("خلل مؤقت في خوادم Groq (" + response.status + "). حاول بعد قليل.");
+      }
+      throw new Error(errMsg || "خطأ من Groq API (حالة: " + response.status + ")");
+    }
+
+    var data;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      throw new Error("تعذر قراءة استجابة Groq. حاول مرة أخرى.");
+    }
+
+    if (!data || !data.choices || !data.choices.length || !data.choices[0].message) {
+      throw new Error("استجابة Groq فارغة أو غير صالحة.");
+    }
+
+    var rawContent = data.choices[0].message.content || "";
+    var usedModel = data.model || config.model;
+
+    if (action === "extract") {
+      var parsed = parseJsonFromText(rawContent);
+      if (!parsed) {
+        throw new Error("فشل في تحليل JSON المُرجع من Groq. حاول بنص أوضح.");
+      }
+      return {
+        result: parsed,
+        model: usedModel,
+        usage: data.usage || null
+      };
+    }
+
+    if (action === "search") {
+      var searchParsed = parseJsonFromText(rawContent);
+      return {
+        result: searchParsed || { matchedRecordIds: [], whyMatched: [], topDiagnoses: [], topMedications: [] },
+        model: usedModel,
+        usage: data.usage || null
+      };
+    }
+
+    return {
+      result: rawContent,
+      model: usedModel,
+      usage: data.usage || null
+    };
+  }
+
+  /**
+   * استدعاء Groq المباشر للوكيل الذكي (Agent)
+   */
+  async function callDirectGroqAgent(payload) {
+    var config = getDirectGroqConfig();
+    if (!config.key) {
+      throw new Error("مفتاح Groq API غير متوفر للوكيل الذكي.");
+    }
+
+    var question = payload && payload.question ? payload.question : "";
+    var records = payload && payload.records ? payload.records : [];
+    var hospitalProfile = payload && payload.hospitalProfile ? payload.hospitalProfile : {};
+
+    var systemPrompt = "أنت مستشار تشغيلي ذكي للمستشفيات السعودية مدمج في نظام الأرشيف الطبي.\n"
+      + "قدّم توصيات تنفيذية عملية بناءً على السجلات الطبية المتاحة والسياق المؤسسي.\n"
+      + "لا تخترع بيانات غير موجودة في السجلات.\n"
+      + "استخدم مصطلحات طبية مهنية عربية دقيقة.\n"
+      + "نسّق الإجابة بنقاط واضحة مع أرقام.";
+
+    var recordsSummary = records.slice(0, 20).map(function (r) {
+      return {
+        recordId: r.recordId,
+        patient: r.patient,
+        diagnoses: r.diagnoses,
+        medications: r.medications,
+        severity: r.severity,
+        alerts: r.alerts
+      };
+    });
+
+    var userContent = "السجلات الطبية المتاحة (" + records.length + " سجل):\n"
+      + JSON.stringify(recordsSummary, null, 1)
+      + "\n\nالمنشأة: " + (hospitalProfile.hospitalName || "غير محدد")
+      + " - " + (hospitalProfile.city || "")
+      + "\n\nسؤال الإدارة:\n" + question;
+
+    var response = await fetchWithTimeout(
+      GROQ_API_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + config.key
+        },
+        body: JSON.stringify({
+          model: config.model,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userContent }
+          ],
+          temperature: 0.4,
+          max_tokens: 4096
+        })
+      },
+      GROQ_DIRECT_TIMEOUT_MS
+    );
+
+    if (!response.ok) {
+      var errBody = {};
+      try { errBody = await response.json(); } catch (e) { /* ignore */ }
+      var errMsg = (errBody && errBody.error && errBody.error.message) || "";
+      if (response.status === 401) throw new Error("مفتاح Groq غير صالح.");
+      if (response.status === 429) throw new Error("تم تجاوز حد الطلبات. انتظر قليلاً.");
+      throw new Error(errMsg || "خطأ من Groq API (" + response.status + ")");
+    }
+
+    var data = await response.json();
+    if (!data || !data.choices || !data.choices.length) {
+      throw new Error("استجابة فارغة من الوكيل الذكي.");
+    }
+
+    return {
+      result: data.choices[0].message.content || "",
+      model: data.model || config.model,
+      usage: data.usage || null
+    };
+  }
+
+  /**
+   * استدعاء Groq المباشر لتوليد التحليلات التشغيلية
+   */
+  async function callDirectGroqInsights(payload) {
+    var config = getDirectGroqConfig();
+    if (!config.key) {
+      throw new Error("مفتاح Groq API غير متوفر لتوليد التحليلات.");
+    }
+
+    var records = payload && payload.records ? payload.records : [];
+    var hospitalProfile = payload && payload.hospitalProfile ? payload.hospitalProfile : {};
+
+    var systemPrompt = "أنت محلل بيانات طبية ذكي متخصص بالمستشفيات السعودية.\n"
+      + "حلل السجلات الطبية المقدمة وأنتج تقريراً تشغيلياً يتضمن:\n"
+      + "1. مؤشرات المخاطر الرئيسية\n"
+      + "2. أنماط التشخيصات والأدوية الشائعة\n"
+      + "3. توصيات تنفيذية للإدارة الطبية\n"
+      + "4. نقاط تحسين تشغيلية قابلة للقياس\n"
+      + "استخدم لغة عربية مهنية واضحة.";
+
+    var recordsSummary = records.slice(0, 30).map(function (r) {
+      return {
+        recordId: r.recordId,
+        patient: r.patient,
+        diagnoses: r.diagnoses,
+        medications: r.medications,
+        severity: r.severity,
+        alerts: r.alerts,
+        hospital_department: r.hospital_department
+      };
+    });
+
+    var response = await fetchWithTimeout(
+      GROQ_API_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + config.key
+        },
+        body: JSON.stringify({
+          model: config.model,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: "السجلات (" + records.length + " سجل):\n" + JSON.stringify(recordsSummary, null, 1) + "\n\nالمنشأة: " + (hospitalProfile.hospitalName || "غير محدد") }
+          ],
+          temperature: 0.3,
+          max_tokens: 4096
+        })
+      },
+      GROQ_DIRECT_TIMEOUT_MS
+    );
+
+    if (!response.ok) {
+      var errBody = {};
+      try { errBody = await response.json(); } catch (e) { /* ignore */ }
+      var errMsg = (errBody && errBody.error && errBody.error.message) || "";
+      if (response.status === 401) throw new Error("مفتاح Groq غير صالح.");
+      if (response.status === 429) throw new Error("تم تجاوز حد الطلبات. انتظر قليلاً.");
+      throw new Error(errMsg || "خطأ من Groq API (" + response.status + ")");
+    }
+
+    var data = await response.json();
+    if (!data || !data.choices || !data.choices.length) {
+      throw new Error("استجابة فارغة من محرك التحليلات.");
+    }
+
+    return {
+      result: data.choices[0].message.content || "",
+      model: data.model || config.model,
+      usage: data.usage || null
+    };
   }
 
   function saveStorageConfig() {
@@ -530,6 +882,13 @@
     const typedApiBase = normalizeBaseUrl(refs.apiBaseInput ? refs.apiBaseInput.value : "");
 
     if (typedApiBase) state.apiBase = typedApiBase;
+
+    if (refs.groqApiKeyInput && refs.groqApiKeyInput.value.trim()) {
+      state.groqApiKey = refs.groqApiKeyInput.value.trim();
+    }
+    if (refs.groqModelInput && refs.groqModelInput.value.trim()) {
+      state.groqModel = refs.groqModelInput.value.trim();
+    }
 
     if (refs.storageProvider && refs.storageProvider.value) {
       state.storageProvider = refs.storageProvider.value.trim();
@@ -761,12 +1120,12 @@
         const statusLabel = item.status === "queued"
           ? "بانتظار"
           : item.status === "processing"
-          ? "قيد المعالجة"
-          : item.status === "done"
-          ? "مكتمل"
-          : item.status === "cancelled"
-          ? "ملغي"
-          : "خطأ";
+            ? "قيد المعالجة"
+            : item.status === "done"
+              ? "مكتمل"
+              : item.status === "cancelled"
+                ? "ملغي"
+                : "خطأ";
 
         const preview = item.previewUrl
           ? item.kind === "audio"
@@ -1057,23 +1416,23 @@
 
     const medsHtml = medications.length
       ? medications
-          .map(function (med) {
-            const dose = med.dose ? ` - الجرعة: ${escapeHtml(med.dose)}` : "";
-            const freq = med.frequency ? ` - التكرار: ${escapeHtml(med.frequency)}` : "";
-            return `<li>${escapeHtml(med.name)}${dose}${freq}</li>`;
-          })
-          .join("")
+        .map(function (med) {
+          const dose = med.dose ? ` - الجرعة: ${escapeHtml(med.dose)}` : "";
+          const freq = med.frequency ? ` - التكرار: ${escapeHtml(med.frequency)}` : "";
+          return `<li>${escapeHtml(med.name)}${dose}${freq}</li>`;
+        })
+        .join("")
       : "<li>لا توجد أدوية مستخرجة</li>";
 
     const labsHtml = labs.length
       ? labs
-          .map(function (lab) {
-            const value = lab.value ? ` ${escapeHtml(String(lab.value))}` : "";
-            const unit = lab.unit ? ` ${escapeHtml(String(lab.unit))}` : "";
-            const status = lab.status ? ` (${escapeHtml(String(lab.status))})` : "";
-            return `<li>${escapeHtml(lab.name)}:${value}${unit} ${status}</li>`;
-          })
-          .join("")
+        .map(function (lab) {
+          const value = lab.value ? ` ${escapeHtml(String(lab.value))}` : "";
+          const unit = lab.unit ? ` ${escapeHtml(String(lab.unit))}` : "";
+          const status = lab.status ? ` (${escapeHtml(String(lab.status))})` : "";
+          return `<li>${escapeHtml(lab.name)}:${value}${unit} ${status}</li>`;
+        })
+        .join("")
       : "<li>لا توجد نتائج مختبر مستخرجة</li>";
 
     refs.extractResult.innerHTML = `
@@ -1310,9 +1669,9 @@
     const department = refs.filterDepartment ? refs.filterDepartment.value.trim() : "";
     const excludeTerms = refs.filterExclude
       ? refs.filterExclude.value
-          .split(/[،,]/)
-          .map(function (token) { return normalizeSearchText(token); })
-          .filter(Boolean)
+        .split(/[،,]/)
+        .map(function (token) { return normalizeSearchText(token); })
+        .filter(Boolean)
       : [];
     const nearCity = refs.filterNearCity ? refs.filterNearCity.value.trim() : "";
     const radiusKm = Number(refs.filterRadiusKm ? refs.filterRadiusKm.value : 0) || 0;
@@ -1952,10 +2311,10 @@
     const clusterRows = asArray(clusters);
     const clusterHtml = clusterRows.length
       ? clusterRows
-          .map(function (cluster) {
-            return `<li>${escapeHtml(cluster.name)} - ${escapeHtml(String(cluster.count))} حالة - متوسط صلة ${escapeHtml(String(cluster.avgScore))}%</li>`;
-          })
-          .join("")
+        .map(function (cluster) {
+          return `<li>${escapeHtml(cluster.name)} - ${escapeHtml(String(cluster.count))} حالة - متوسط صلة ${escapeHtml(String(cluster.avgScore))}%</li>`;
+        })
+        .join("")
       : "<li>لا توجد مجموعات حالياً.</li>";
     const topDiag = buildTopList(aggregates && aggregates.topDiagnoses);
     const topMed = buildTopList(aggregates && aggregates.topMedications);
@@ -2817,8 +3176,8 @@
     if (refs.drugInteractionList) {
       refs.drugInteractionList.innerHTML = interactions.length
         ? interactions.slice(0, 10).map(function (row) {
-            return `<div class="record-item"><strong>${escapeHtml(row.level.toUpperCase())}</strong><div class="meta">${escapeHtml(row.pair)} - ${escapeHtml(row.note)} - ${escapeHtml(row.recordId)}</div></div>`;
-          }).join("")
+          return `<div class="record-item"><strong>${escapeHtml(row.level.toUpperCase())}</strong><div class="meta">${escapeHtml(row.pair)} - ${escapeHtml(row.note)} - ${escapeHtml(row.recordId)}</div></div>`;
+        }).join("")
         : "<p class=\"meta\">لم يتم رصد تفاعلات دوائية بارزة في البيانات الحالية.</p>";
     }
   }
@@ -2940,8 +3299,8 @@
     if (!refs.liveNotificationsList) return;
     refs.liveNotificationsList.innerHTML = state.dashboardNotifications.length
       ? state.dashboardNotifications.slice().reverse().slice(0, 18).map(function (row) {
-          return `<div class="record-item"><div class="top"><span class="id">${escapeHtml(row.level || "live")}</span><span class="meta">${escapeHtml(new Date(row.ts).toLocaleTimeString("ar-SA"))}</span></div><div class="meta">${escapeHtml(row.message || "")}</div></div>`;
-        }).join("")
+        return `<div class="record-item"><div class="top"><span class="id">${escapeHtml(row.level || "live")}</span><span class="meta">${escapeHtml(new Date(row.ts).toLocaleTimeString("ar-SA"))}</span></div><div class="meta">${escapeHtml(row.message || "")}</div></div>`;
+      }).join("")
       : "<p class=\"meta\">لا توجد إشعارات حية حتى الآن.</p>";
   }
 
@@ -3210,24 +3569,24 @@
 
     const alertList = alerts.length
       ? alerts
-          .slice(0, 6)
-          .map(function (item) {
-            const level = item && typeof item === "object" ? item.level : "";
-            const message = item && typeof item === "object" ? item.message : item;
-            return `<li><strong>${escapeHtml(level || "تنبيه")}</strong> - ${escapeHtml(String(message || ""))}</li>`;
-          })
-          .join("")
+        .slice(0, 6)
+        .map(function (item) {
+          const level = item && typeof item === "object" ? item.level : "";
+          const message = item && typeof item === "object" ? item.message : item;
+          return `<li><strong>${escapeHtml(level || "تنبيه")}</strong> - ${escapeHtml(String(message || ""))}</li>`;
+        })
+        .join("")
       : "<li>لا توجد تنبيهات تشغيلية حالياً.</li>";
 
     const recommendationList = recommendations.length
       ? recommendations
-          .slice(0, 6)
-          .map(function (item) {
-            const priority = item && typeof item === "object" ? item.priority : "";
-            const action = item && typeof item === "object" ? item.action : item;
-            return `<li><strong>${escapeHtml(priority || "أولوية")}</strong> - ${escapeHtml(String(action || ""))}</li>`;
-          })
-          .join("")
+        .slice(0, 6)
+        .map(function (item) {
+          const priority = item && typeof item === "object" ? item.priority : "";
+          const action = item && typeof item === "object" ? item.action : item;
+          return `<li><strong>${escapeHtml(priority || "أولوية")}</strong> - ${escapeHtml(String(action || ""))}</li>`;
+        })
+        .join("")
       : "<li>لا توجد توصيات كافية حالياً.</li>";
 
     refs.insightsResult.innerHTML = `
@@ -3272,14 +3631,28 @@
     setStatus(refs.insightsStatus, "يجري تحليل الاتجاهات الطبية والتشغيلية...", "");
 
     try {
-      const data = await postMedicalArchive({
-        action: "insights",
-        records: state.records,
-        hospitalProfile: getHospitalProfile(),
-      });
+      let data;
+      try {
+        data = await postMedicalArchive({
+          action: "insights",
+          records: state.records,
+          hospitalProfile: getHospitalProfile(),
+        });
+      } catch (backendError) {
+        // fallback: Groq مباشر
+        if (hasDirectGroqConfig()) {
+          setStatus(refs.insightsStatus, "الخادم غير متاح، يتم التحليل عبر Groq المباشر...", "");
+          data = await callDirectGroqInsights({
+            records: state.records,
+            hospitalProfile: getHospitalProfile(),
+          });
+        } else {
+          throw backendError;
+        }
+      }
 
       renderInsightsResult(data.result || {});
-      setStatus(refs.insightsStatus, "تم توليد التحليلات التشغيلية بنجاح.", "success");
+      setStatus(refs.insightsStatus, `تم توليد التحليلات التشغيلية بنجاح عبر ${data.model || "Groq"}.`, "success");
     } catch (error) {
       setStatus(refs.insightsStatus, toFriendlyError(error, "تعذر توليد التحليلات حالياً."), "error");
     } finally {
@@ -4089,50 +4462,47 @@
       <div class="result-item" style="margin-top:10px;">
         <strong>إجراءات موصى بها</strong>
         <ul class="mini-list">
-          ${
-            actions.length
-              ? actions
-                  .slice(0, 8)
-                  .map(function (row) {
-                    if (typeof row === "string") return `<li>${escapeHtml(row)}</li>`;
-                    return `<li><strong>${escapeHtml(String(row.priority || "أولوية"))}</strong> - ${escapeHtml(String(row.action || row.text || ""))}</li>`;
-                  })
-                  .join("")
-              : "<li>لا توجد إجراءات كافية حالياً.</li>"
-          }
+          ${actions.length
+        ? actions
+          .slice(0, 8)
+          .map(function (row) {
+            if (typeof row === "string") return `<li>${escapeHtml(row)}</li>`;
+            return `<li><strong>${escapeHtml(String(row.priority || "أولوية"))}</strong> - ${escapeHtml(String(row.action || row.text || ""))}</li>`;
+          })
+          .join("")
+        : "<li>لا توجد إجراءات كافية حالياً.</li>"
+      }
         </ul>
       </div>
       <div class="result-grid" style="margin-top:10px;">
         <div class="result-item">
           <strong>المخاطر</strong>
           <ul class="mini-list">
-            ${
-              risks.length
-                ? risks
-                    .slice(0, 6)
-                    .map(function (risk) {
-                      if (typeof risk === "string") return `<li>${escapeHtml(risk)}</li>`;
-                      return `<li>${escapeHtml(String(risk.message || risk.text || ""))}</li>`;
-                    })
-                    .join("")
-                : "<li>لا توجد مخاطر مذكورة.</li>"
-            }
+            ${risks.length
+        ? risks
+          .slice(0, 6)
+          .map(function (risk) {
+            if (typeof risk === "string") return `<li>${escapeHtml(risk)}</li>`;
+            return `<li>${escapeHtml(String(risk.message || risk.text || ""))}</li>`;
+          })
+          .join("")
+        : "<li>لا توجد مخاطر مذكورة.</li>"
+      }
           </ul>
         </div>
         <div class="result-item">
           <strong>مؤشرات الأداء</strong>
           <ul class="mini-list">
-            ${
-              kpis.length
-                ? kpis
-                    .slice(0, 6)
-                    .map(function (kpi) {
-                      if (typeof kpi === "string") return `<li>${escapeHtml(kpi)}</li>`;
-                      return `<li>${escapeHtml(String(kpi.name || "مؤشر"))}: ${escapeHtml(String(kpi.value || ""))}</li>`;
-                    })
-                    .join("")
-                : "<li>لا توجد مؤشرات إضافية.</li>"
-            }
+            ${kpis.length
+        ? kpis
+          .slice(0, 6)
+          .map(function (kpi) {
+            if (typeof kpi === "string") return `<li>${escapeHtml(kpi)}</li>`;
+            return `<li>${escapeHtml(String(kpi.name || "مؤشر"))}: ${escapeHtml(String(kpi.value || ""))}</li>`;
+          })
+          .join("")
+        : "<li>لا توجد مؤشرات إضافية.</li>"
+      }
           </ul>
         </div>
       </div>
@@ -4157,22 +4527,37 @@
     const startAt = performance.now();
 
     try {
-      const data = await postBackendJson(API_AGENT_PATH, {
-        question,
-        records: state.records,
-        hospitalProfile: getHospitalProfile(),
-        batchReport: batchSummary,
-      });
+      let data;
+      try {
+        data = await postBackendJson(API_AGENT_PATH, {
+          question,
+          records: state.records,
+          hospitalProfile: getHospitalProfile(),
+          batchReport: batchSummary,
+        });
+      } catch (backendError) {
+        // fallback: استخدام Groq مباشرة
+        if (hasDirectGroqConfig()) {
+          setStatus(refs.agentStatus, "الخادم غير متاح، يتم التحليل عبر Groq المباشر...", "");
+          data = await callDirectGroqAgent({
+            question,
+            records: state.records,
+            hospitalProfile: getHospitalProfile(),
+          });
+        } else {
+          throw backendError;
+        }
+      }
       renderAgentResult(data.result || {});
       setStatus(
         refs.agentStatus,
-        `تم توليد توصيات الوكيل الذكي بنجاح عبر ${data.model || "Gemini Flash"}.`,
+        `تم توليد توصيات الوكيل الذكي بنجاح عبر ${data.model || "Groq"}.`,
         "success"
       );
       trackDashboardEvent("agent", {
         success: true,
         durationMs: Math.round(performance.now() - startAt),
-        model: data.model || "Gemini",
+        model: data.model || "Groq",
       });
     } catch (error) {
       setStatus(refs.agentStatus, toFriendlyError(error, "تعذر تشغيل الوكيل الذكي حالياً."), "error");
@@ -4321,10 +4706,10 @@
         valueString: [lab.value, lab.unit].filter(Boolean).join(" ") || "غير متوفر",
         interpretation: lab.status
           ? [
-              {
-                text: lab.status,
-              },
-            ]
+            {
+              text: lab.status,
+            },
+          ]
           : undefined,
       });
     });
@@ -4425,14 +4810,14 @@
 
     const dg1Lines = diagnoses.length
       ? diagnoses.map(function (diag, i) {
-          return `DG1|${i + 1}||${diag}||||A`;
-        })
+        return `DG1|${i + 1}||${diag}||||A`;
+      })
       : ["DG1|1||NO_DIAGNOSIS||||A"];
 
     const rxeLines = medications.length
       ? medications.map(function (med, i) {
-          return `RXE|${i + 1}|${med.name}|${med.dose || ""}|${med.frequency || ""}`;
-        })
+        return `RXE|${i + 1}|${med.name}|${med.dose || ""}|${med.frequency || ""}`;
+      })
       : ["RXE|1|NO_MEDICATION||"];
 
     const note = `NTE|1||${(summary.problem || "")} ${(summary.plan || "")}`.trim();
