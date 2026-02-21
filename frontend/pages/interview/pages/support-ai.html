@@ -1189,7 +1189,7 @@
                 cleanText = cleanText.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
                 // Links [text](url)
-                cleanText = cleanText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="chat-link">$1</a>');
+                cleanText = cleanText.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="/frontend/pages/interview/index.html" target="_blank" class="chat-link">$1</a>');
 
                 // Bullet points
                 cleanText = cleanText.replace(/^\- (.*$)/gim, '• $1');
