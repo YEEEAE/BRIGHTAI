@@ -1018,9 +1018,11 @@
         }
 
         .unified-nav {
-            background: rgba(2, 4, 8, 0.8) !important;
-            backdrop-filter: blur(12px) !important;
-            border-bottom: var(--glass-border) !important;
+            background: rgba(15, 23, 42, 0.70) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
         }
 
         .code-wall,
@@ -1720,11 +1722,17 @@
             </nav>
             <!-- Secondary Actions -->
             <div class="flex items-center gap-4">
-                <button aria-label="البحث"
-                    class="p-2 text-slate-400 hover:text-white transition-colors flex items-center gap-2"
+                <button aria-label="البحث في الموقع"
+                    class="group flex items-center justify-between gap-3 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-500/50 rounded-full text-slate-400 hover:text-white transition-all w-auto lg:w-48 overflow-hidden"
                     id="openSearch">
-                    <iconify-icon icon="lucide:search"></iconify-icon>
-                    <span class="hidden xl:inline text-xs font-medium opacity-60">CTRL + K</span>
+                    <div class="flex items-center gap-2">
+                        <iconify-icon class="text-sm group-hover:text-indigo-400 transition-colors"
+                            icon="lucide:search"></iconify-icon>
+                        <span class="hidden lg:inline text-xs font-medium">بحث في الموقع...</span>
+                    </div>
+                    <span
+                        class="hidden xl:inline text-[10px] font-bold opacity-60 bg-white/10 px-1.5 py-0.5 rounded">Ctrl
+                        K</span>
                 </button>
                 <a class="nav-btn hidden md:flex items-center gap-2" href="frontend/pages/try/"
                     aria-label="ابدأ تجربة أدوات الذكاء الاصطناعي مجاناً" title="جرّب أدوات الذكاء الاصطناعي مجاناً">
@@ -3809,8 +3817,8 @@
             <div class="modal-top p-6 border-b border-white/5 flex items-center gap-4">
                 <iconify-icon class="text-indigo-400 text-xl" icon="lucide:search"></iconify-icon>
                 <input
-                    class="flex-1 bg-transparent border-none text-white text-lg focus:ring-0 placeholder:text-slate-500"
-                    id="searchInput" placeholder="ابحث عن الحلول، الخدمات، أو المقالات..." />
+                    class="flex-1 bg-transparent border-none text-white text-lg focus:ring-0 placeholder:text-slate-400"
+                    id="searchInput" placeholder="ابحث في جميع أنحاء الموقع (اضغط Enter للبحث)..." />
                 <div
                     class="esc px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] text-slate-500 font-bold uppercase tracking-widest">
                     ESC</div>
