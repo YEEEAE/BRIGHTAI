@@ -15,23 +15,36 @@ def fix_responsive():
         modified = False
         
         # 1. Breadcrumbs
-        breadcrumbs = soup.find_all('ol', class_=lambda c: c and 'space-x-2' in c)
-        for bc in breadcrumbs:
-            classes = bc.get('class', [])
-            if 'space-x-2' in classes:
-                classes.remove('space-x-2')
-            if 'space-x-reverse' in classes:
-                classes.remove('space-x-reverse')
-            if 'flex-wrap' not in classes:
-                classes.append('flex-wrap')
-            if 'gap-x-2' not in classes:
-                classes.append('gap-x-2')
-            if 'gap-y-1' not in classes:
-                classes.append('gap-y-1')
-            if 'items-center' not in classes:
-                classes.append('items-center')
-            bc['class'] = classes
-            modified = True
+        breadcrumbs_nav = soup.find_all('nav', attrs={'aria-label': 'breadcrumb'})
+        if not breadcrumbs_nav:
+            breadcrumbs_nav = soup.find_all('nav', class_=lambda c: c and 'breadcrumb' in c)
+            
+        for nav in breadcrumbs_nav:
+            bc = nav.find('ol')
+            if bc:
+                classes = bc.get('class', [])
+                changed_bc = False
+                if 'space-x-2' in classes:
+                    classes.remove('space-x-2')
+                    changed_bc = True
+                if 'space-x-reverse' in classes:
+                    classes.remove('space-x-reverse')
+                    changed_bc = True
+                if 'flex-wrap' not in classes:
+                    classes.append('flex-wrap')
+                    changed_bc = True
+                if 'gap-x-2' not in classes:
+                    classes.append('gap-x-2')
+                    changed_bc = True
+                if 'gap-y-1' not in classes:
+                    classes.append('gap-y-1')
+                    changed_bc = True
+                if 'items-center' not in classes:
+                    classes.append('items-center')
+                    changed_bc = True
+                if changed_bc:
+                    bc['class'] = classes
+                    modified = True
             
         # 2. CTAs
         ctas = soup.find_all('div', class_='article-cta')
