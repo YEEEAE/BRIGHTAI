@@ -16,6 +16,7 @@
   "scripts": {
     "build": "npm run performance:budget",
     "performance:budget": "node scripts/check-performance-budget.js",
+    "sitemap:all": "node scripts/generate-sitemap-all-pages.mjs",
     "test": "vitest --run",
     "test:watch": "vitest",
     "server": "node backend/server.js",

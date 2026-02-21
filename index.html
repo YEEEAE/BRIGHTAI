@@ -1074,11 +1074,16 @@
             transform: translateY(-2px) scale(1.01) !important;
         }
 
-        /* === CLS FIX: Prevent body.interaction-active layout shift === */
-        /* AOS adds data-aos-* attributes to body which triggers style recalc */
-        body[data-aos-easing] {
-            /* Prevent body-level layout shift from AOS attributes */
-            contain: style;
+        /* === CLS FIX: Prevent body-level layout shift from AOS/interaction === */
+        /* AOS adds data-aos-* attributes + class to body = global style recalc */
+        /* JS removes them, but this CSS is a safety net */
+        body[data-aos-easing],
+        body[data-aos-duration],
+        body[data-aos-delay],
+        body.interaction-active,
+        body.aos-init {
+            /* contain: style prevents inherited style recalc from cascading */
+            contain: style !important;
         }
 
         /* === CLS FIX: btn.primary box-shadow non-composited animation === */

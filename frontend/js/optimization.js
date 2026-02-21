@@ -109,8 +109,15 @@ function loadAOS() {
                 duration: 600,
                 once: true,
                 offset: 50,
-                disable: false
+                disable: false,
+                // CLS FIX: prevent AOS from adding class to body
+                initClassName: false
             });
+            // CLS FIX: Remove body-level data attributes that AOS adds
+            // These cause global style recalculation = CLS 0.577 on desktop
+            document.body.removeAttribute('data-aos-easing');
+            document.body.removeAttribute('data-aos-duration');
+            document.body.removeAttribute('data-aos-delay');
         });
     };
     document.body.appendChild(s);
@@ -183,13 +190,8 @@ async function initOptimization() {
         // Remove all listeners immediately
         events.forEach(e => window.removeEventListener(e, loadAll));
 
-        // CLS FIX: Don't add interaction-active until after paint completes
-        // Double rAF ensures we're in the next paint frame, preventing CLS
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                document.body.classList.add('interaction-active');
-            });
-        });
+        // interaction-active class REMOVED — was causing CLS 0.577 on desktop
+        // AOS data attributes on body trigger global style recalc when this class is added
 
         // Chunk loads to avoid long tasks (TBT fix)
         loadFonts();

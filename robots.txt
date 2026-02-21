@@ -40,10 +40,8 @@ Disallow: /src/
 Disallow: /api/auth/
 Disallow: /api/internal/
 
-# مسارات تجريبية/قديمة منخفضة الجودة
-Disallow: /frontend/pages/interview/
-Disallow: /frontend/pages/blogger/
-Disallow: /brightai-platform/
+# مسارات التطبيقات المنشورة
+Allow: /brightai-platform/
 
 # ملفات غير مناسبة للفهرسة
 Disallow: /*.map$
