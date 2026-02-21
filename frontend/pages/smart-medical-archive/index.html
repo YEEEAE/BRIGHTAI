@@ -28,7 +28,8 @@
 
   <link rel="canonical" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
-  <link rel="alternate" hreflang="x-default" href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
+  <link rel="alternate" hreflang="x-default"
+    href="https://brightai.site/frontend/pages/smart-medical-archive/index.html" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Bright AI" />
@@ -41,6 +42,8 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="الأرشيف الطبي الذكي للمستشفيات السعودية | Bright AI" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#122d45" />
   <meta name="twitter:description"
     content="تجربة تشغيلية كاملة للمستشفيات: إدخال ملفات فعلية + استخراج ذكي + بحث طبي + تصدير FHIR/HL7/CSV." />
   <meta name="twitter:image" content="https://brightai.site/frontend/assets/images/Gemini.png" />
@@ -170,7 +173,8 @@
 <body>
   <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
 
-  <header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header" role="banner">
+  <header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header"
+    role="banner">
     <div class="nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex-shrink-0 flex items-center gap-3">
         <a class="nav-logo flex items-center gap-3 group" href="/" aria-label="Bright AI — الصفحة الرئيسية"
@@ -180,7 +184,8 @@
             <span class="text-white font-black text-xl tracking-tighter">AI</span>
           </div>
           <div class="flex flex-col leading-none">
-            <span class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+            <span
+              class="text-xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
                 class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
             <span class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-0.5">Saudi</span>
           </div>
@@ -297,14 +302,13 @@
         </li>
         <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
             href="/frontend/pages/smart-medical-archive/index.html">الأرشيف الطبي الذكي</a></li>
-        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
-            href="/frontend/pages/blog/">المدونة</a></li>
+        <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="/frontend/pages/blog/">المدونة</a>
+        </li>
         <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5 text-indigo-400"
             href="/frontend/pages/contact/">تواصل معنا</a></li>
       </ul>
       <div class="mt-auto">
-        <a
-          class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2"
+        <a class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2"
           href="/frontend/pages/consultation/">
           <iconify-icon icon="lucide:zap"></iconify-icon>
           احجز استشارة تنفيذية
@@ -336,7 +340,8 @@
         <div>
           <h1>نظام الأرشيف الطبي الذكي: من التقرير الخام إلى قرار سريري وإداري في نفس الواجهة</h1>
           <p>
-            جرّب سير العمل الكامل للمستشفى: ارفع ملف التقرير الطبي الفعلي، استخرج البيانات الصحية آلياً، نفّذ بحثاً باللغة
+            جرّب سير العمل الكامل للمستشفى: ارفع ملف التقرير الطبي الفعلي، استخرج البيانات الصحية آلياً، نفّذ بحثاً
+            باللغة
             الطبيعية داخل السجلات، ثم صدّر النتائج بصيغ تكامل مناسبة لأنظمة السجلات الطبية الإلكترونية.
           </p>
           <div class="hero-actions">
@@ -448,7 +453,8 @@
 
           <div class="file-box">
             <input id="reportFile" type="file" multiple
-              accept=".pdf,.docx,.doc,.dcm,.dicom,.jpg,.jpeg,.png,.webp,.mp3,.wav,.m4a,.xls,.xlsx,.txt,.md,.json,.csv,.xml,.html,.htm,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/dicom,image/jpeg,image/png,image/webp,audio/mpeg,audio/wav,audio/x-wav,audio/mp4,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,text/csv,application/json,text/xml,application/xml,text/html" hidden />
+              accept=".pdf,.docx,.doc,.dcm,.dicom,.jpg,.jpeg,.png,.webp,.mp3,.wav,.m4a,.xls,.xlsx,.txt,.md,.json,.csv,.xml,.html,.htm,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/dicom,image/jpeg,image/png,image/webp,audio/mpeg,audio/wav,audio/x-wav,audio/mp4,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,text/csv,application/json,text/xml,application/xml,text/html"
+              hidden />
             <input id="reportFolder" type="file" webkitdirectory directory multiple hidden />
 
             <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="منطقة السحب والإفلات">
@@ -468,7 +474,8 @@
               <button class="btn-main" id="analyzeBatchBtn" type="button">تحليل الملفات الجاهزة عبر Groq</button>
             </div>
 
-            <p class="file-note">الصيغ المدعومة: PDF, DOCX, DOC, DICOM, JPG, PNG, MP3, WAV, Excel, TXT, CSV, JSON, XML, HTML</p>
+            <p class="file-note">الصيغ المدعومة: PDF, DOCX, DOC, DICOM, JPG, PNG, MP3, WAV, Excel, TXT, CSV, JSON, XML,
+              HTML</p>
             <div id="fileStatus" class="status">ارفع ملفات أو اسحبها للمنطقة أعلاه لبدء المعالجة الذكية.</div>
             <div id="batchStatus" class="status">المعالجة الدُفعية متاحة مع تتبع تقدم وإلغاء/استئناف لكل ملف.</div>
             <div id="batchSummary" class="status">لم تبدأ أي دفعة بعد.</div>
@@ -512,7 +519,8 @@
 
         <article class="console-panel">
           <h3>الخطوة 2: نتيجة الاستخراج المنظم</h3>
-          <p class="panel-sub">النتيجة التالية تمثل التحويل من تقرير نصي أو ملف مرفوع إلى سجل طبي قابل للبحث والتحليل.</p>
+          <p class="panel-sub">النتيجة التالية تمثل التحويل من تقرير نصي أو ملف مرفوع إلى سجل طبي قابل للبحث والتحليل.
+          </p>
           <div id="extractResult" class="result-box"></div>
 
           <h3 style="margin-top: 14px;">السجلات المحفوظة في التجربة</h3>
@@ -909,6 +917,7 @@
   <script defer src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script type="module" src="./smart-ai-logic.js"></script>
   <script defer src="./system-unified.js"></script>
 </body>
 
