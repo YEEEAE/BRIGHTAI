@@ -11,6 +11,8 @@
         name="description" lang="ar" />
     <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
     <!-- Favicon & App Icons -->
+    <link rel="preload" href="frontend/assets/fonts/ScheherazadeNew-Regular.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
     <link rel="icon" type="image/png" sizes="32x32" href="frontend/assets/images/Gemini.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="frontend/assets/images/Gemini.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="frontend/assets/images/Gemini.png" />
@@ -641,6 +643,24 @@
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
+        /* High Contrast Fixes */
+        .kpi-card .unit {
+            color: rgba(255, 255, 255, 0.95) !important;
+            font-weight: 700 !important;
+        }
+
+        .kpi-card.grad-gray {
+            background: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        a.btn.cta {
+            background: #4f46e5 !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            border: 1px solid #6366f1 !important;
+        }
+
         /* === MATRIX BACKGROUND === */
         #matrixBackground {
             min-height: 100vh;
@@ -1111,7 +1131,8 @@
 
         /* Lighthouse: #blog .btn contrast too low */
         section#blog .btn.primary,
-        section#blog a.btn {
+        section#blog a.btn,
+        .kpi-card a.btn.cta {
             background: #4f46e5 !important;
             color: #ffffff !important;
             border: 1px solid #6366f1 !important;
@@ -1809,10 +1830,10 @@
         </ol>
     </nav>
     <!-- Main Content -->
-    <main id="main" itemscope itemtype="https://schema.org/WebPage">
+    <main id="main" itemscope itemtype="https://schema.org/WebPage" style="contain: paint;">
         <!-- New Enterprise Hero Section -->
         <div class="hero section tight" id="top"
-            style="position: relative; min-height: 90vh; min-height: 90dvh; display: flex; align-items: center;">
+            style="position: relative; min-height: 90vh; min-height: 90dvh; display: flex; align-items: center; contain: paint;">
             <!-- CLS FIX: Ambient background moved to CSS (see #top background in critical CSS) -->
             <!-- Original absolute positioned divs removed — they caused CLS 1.749 -->
 
