@@ -10,6 +10,11 @@
         content="نصمم وننفذ حلول أتمتة وتحليل بيانات ووكلاء ذكية للشركات السعودية مع استضافة محلية وحوكمة كاملة. احجز جلسة تقييم."
         name="description" lang="ar" />
     <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="frontend/assets/images/Gemini.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="frontend/assets/images/Gemini.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="frontend/assets/images/Gemini.png" />
+    <meta name="theme-color" content="#020617" />
     <!-- Enterprise SEO Meta Tags -->
     <!-- Enterprise Keywords - Updated for Saudi Market -->
     <meta
@@ -414,7 +419,7 @@
     "operatingSystem": "Web",
     "applicationCategory": "BusinessApplication",
     "applicationSubCategory": "Artificial Intelligence Platform",
-    "url": "https://brightai.site/brightai-platform/build/index.html",
+    "url": "https://brightai.site/brightai-platform/",
     "inLanguage": ["ar", "en"],
     "offers": {
         "@type": "Offer",
@@ -495,56 +500,56 @@
         "position": 1,
         "name": "منصة Bright AI Agents",
         "description": "بناء وإدارة وكلاء ذكاء اصطناعي مخصصين لأعمالك",
-        "url": "https://brightai.site/brightai-platform/build/index.html"
+        "url": "https://brightai.site/brightai-platform/"
         },
         {
         "@type": "ListItem",
         "position": 2,
         "name": "الأتمتة الذكية وسير العمل",
         "description": "أتمتة العمليات المتكررة باستخدام RPA والذكاء الاصطناعي لتوفير الوقت وتقليل الأخطاء",
-        "url": "https://brightai.site/frontend/pages/smart-automation/index.html"
+        "url": "https://brightai.site/frontend/pages/smart-automation/"
         },
         {
         "@type": "ListItem",
         "position": 3,
         "name": "الذكاء الاصطناعي كخدمة AIaaS",
         "description": "APIs ونماذج AI جاهزة للاستخدام مع استضافة سيادية سعودية",
-        "url": "https://brightai.site/frontend/pages/ai-agent/index.html"
+        "url": "https://brightai.site/frontend/pages/ai-agent/"
         },
         {
         "@type": "ListItem",
         "position": 4,
         "name": "تحليل البيانات وذكاء الأعمال",
         "description": "لوحات تحكم Power BI وTableau مخصصة للسوق السعودي مع رؤى تنبؤية",
-        "url": "https://brightai.site/frontend/pages/data-analysis/index.html"
+        "url": "https://brightai.site/frontend/pages/data-analysis/"
         },
         {
         "@type": "ListItem",
         "position": 5,
         "name": "الأرشيف الطبي الذكي",
         "description": "نظام إدارة السجلات الطبية بالذكاء الاصطناعي متوافق مع معايير وزارة الصحة السعودية",
-        "url": "https://brightai.site/frontend/pages/smart-medical-archive/index.html"
+        "url": "https://brightai.site/frontend/pages/smart-medical-archive/"
         },
         {
         "@type": "ListItem",
         "position": 6,
         "name": "منصة التوظيف الذكي",
         "description": "نظام توظيف ذكي يستخدم AI لفرز وتقييم المرشحين تلقائياً حسب متطلبات سوق العمل السعودي",
-        "url": "https://brightai.site/frontend/pages/job.MAISco/index.html"
+        "url": "https://brightai.site/frontend/pages/job.MAISco/"
         },
         {
         "@type": "ListItem",
         "position": 7,
         "name": "المنصة التعليمية الذكية",
         "description": "منصة تعليمية تفاعلية مدعومة بالذكاء الاصطناعي لتخصيص مسارات التعلم",
-        "url": "https://brightai.site/frontend/pages/ai-scolecs/index.html"
+        "url": "https://brightai.site/frontend/pages/ai-scolecs/"
         },
         {
         "@type": "ListItem",
         "position": 8,
         "name": "استشارات التحول الرقمي",
         "description": "استشارات متخصصة لتوجيه رحلة التحول الرقمي والذكاء الاصطناعي لشركتك",
-        "url": "https://brightai.site/frontend/pages/contact/index.html"
+        "url": "https://brightai.site/frontend/pages/contact/"
         }
     ]
     }
@@ -867,7 +872,7 @@
             border-radius: 2px;
         }
 
-        /* Layout & Container — contain: layout prevents font CLS */
+        /* Layout & Container — CLS FIX: removed contain:layout (was causing 0.040 CLS shift) */
         .container {
             width: 100%;
             margin-right: auto;
@@ -875,7 +880,6 @@
             padding-right: 1rem;
             padding-left: 1rem;
             max-width: 1280px;
-            contain: layout style;
         }
     </style>
     <!-- Defer Non-Critical CSS -->
@@ -926,12 +930,11 @@
             will-change: transform, opacity;
         }
 
-        /* === HERO SECTION: CLS 1.749 FIX === */
-        /* ROOT CAUSE: position:absolute divs inside #top shift during load */
-        /* SOLUTION: Use CSS background instead of DOM elements */
+        /* === HERO SECTION: CLS FIX === */
+        /* ROOT CAUSE: content-visibility + contain causes main/container CLS */
+        /* SOLUTION: Stable dimensions, no contain on hero's parent containers */
         #top,
         .hero.section {
-            contain: layout style;
             overflow: hidden;
             /* Replace absolute positioned gradient divs with CSS background */
             background:
@@ -1030,27 +1033,31 @@
             background: linear-gradient(90deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
         }
 
-        /* === DOM SIZE OPTIMIZATION: content-visibility:auto for off-screen sections === */
-        section:not(#top):not(.hero),
-        #services,
-        #workflows,
+        /* === DOM SIZE OPTIMIZATION: content-visibility:auto ONLY for far-off-screen sections === */
+        /* CLS FIX: removed #services, #try-tools (too close to hero → CLS 0.906 + 0.342) */
+        /* Only sections that are 3+ scrolls away get content-visibility:auto */
         #interactive,
-        #bi,
         #robotics,
-        #aiaas,
         #results,
         #clients,
         #library,
         #health,
         #hr,
-        #try-tools,
         #cases,
         #blog-section,
         #faq,
         #contact-section,
         footer.site-footer {
             content-visibility: auto;
-            contain-intrinsic-size: auto 600px;
+            contain-intrinsic-size: auto 500px;
+        }
+
+        /* Medium-distance sections: less aggressive optimization */
+        #bi,
+        #aiaas,
+        #workflows {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 700px;
         }
 
         /* === CLS FIX: Prevent .bento hidden→visible shift === */
@@ -1453,8 +1460,8 @@
         <div class="nav-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Branding -->
             <div class="flex-shrink-0 flex items-center gap-3">
-                <a class="nav-logo flex items-center gap-3 group" href="index.html"
-                    aria-label="Bright AI — الصفحة الرئيسية" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                <a class="nav-logo flex items-center gap-3 group" href="/" aria-label="Bright AI — الصفحة الرئيسية"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
                     <div
                         class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
                         <span class="text-white font-black text-xl tracking-tighter">AI</span>
@@ -1475,7 +1482,7 @@
             <nav class="hidden lg:flex items-center gap-1" style="contain: layout;">
                 <ul class="nav-links flex items-center gap-1">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">الرئيسية</a>
+                        <a class="nav-link" href="/">الرئيسية</a>
                     </li>
                     <!-- Smart Solutions Dropdown -->
                     <li class="nav-item group/dropdown relative">
@@ -1488,7 +1495,7 @@
                             class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="brightai-platform/build/index.html">
+                                    href="/brightai-platform/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
@@ -1503,7 +1510,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/smart-automation/index.html">
+                                    href="frontend/pages/smart-automation/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
@@ -1518,7 +1525,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/ai-agent/index.html">
+                                    href="frontend/pages/ai-agent/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
@@ -1533,7 +1540,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/contact/index.html">
+                                    href="frontend/pages/contact/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
@@ -1548,7 +1555,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/data-analysis/index.html">
+                                    href="frontend/pages/data-analysis/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
@@ -1576,7 +1583,7 @@
                             class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/smart-medical-archive/index.html">
+                                    href="frontend/pages/smart-medical-archive/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
@@ -1590,7 +1597,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/job.MAISco/index.html">
+                                    href="frontend/pages/job.MAISco/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
@@ -1604,7 +1611,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/ai-scolecs/index.html">
+                                    href="frontend/pages/ai-scolecs/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
@@ -1618,7 +1625,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/health-bright/index.html">
+                                    href="frontend/pages/health-bright/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
@@ -1645,7 +1652,7 @@
                             class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="frontend/pages/about-us/index.html">
+                                    href="frontend/pages/about-us/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
@@ -1693,7 +1700,7 @@
                     <iconify-icon icon="lucide:search"></iconify-icon>
                     <span class="hidden xl:inline text-xs font-medium opacity-60">CTRL + K</span>
                 </button>
-                <a class="nav-btn hidden md:flex items-center gap-2" href="frontend/pages/try/index.html"
+                <a class="nav-btn hidden md:flex items-center gap-2" href="frontend/pages/try/"
                     aria-label="ابدأ تجربة أدوات الذكاء الاصطناعي مجاناً" title="جرّب أدوات الذكاء الاصطناعي مجاناً">
                     <iconify-icon icon="lucide:sparkles"></iconify-icon>
                     ابدأ الآن مجاناً
@@ -1738,16 +1745,16 @@
                             الذكية</a>
                     </div>
                 </li>
-                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
-                        href="frontend/pages/blog/index.html">المدونة التقنية</a></li>
-                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5"
-                        href="frontend/pages/about-us/index.html">من نحن</a></li>
+                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="frontend/pages/blog/">المدونة
+                        التقنية</a></li>
+                <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5" href="frontend/pages/about-us/">من
+                        نحن</a></li>
                 <li><a class="mobile-nav-link text-lg py-4 border-b border-white/5 text-indigo-400"
-                        href="frontend/pages/contact/index.html">تواصل معنا</a></li>
+                        href="frontend/pages/contact/">تواصل معنا</a></li>
             </ul>
             <div class="mt-auto">
                 <a class="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-white font-bold text-center flex items-center justify-center gap-2"
-                    href="frontend/pages/try/index.html">
+                    href="frontend/pages/try/">
                     <iconify-icon icon="lucide:zap"></iconify-icon>
                     تجربة فورية للذكاء الاصطناعي
                 </a>
@@ -1776,6 +1783,7 @@
         <h2>جدول محتويات الصفحة</h2>
         <ol>
             <li><a href="#top">المقدمة — حلول ذكاء اصطناعي للشركات السعودية</a></li>
+            <li><a href="#saudi-use-cases">حالات استخدام سعودية حسب القطاع</a></li>
             <li><a href="#services">خدمات الذكاء الاصطناعي للشركات السعودية</a></li>
             <li><a href="#try-tools">جرّب أنظمتنا الذكية — نماذج عمل حقيقية</a></li>
             <li><a href="#bi">ذكاء الأعمال وتحليل البيانات</a></li>
@@ -1799,7 +1807,7 @@
     <main id="main" itemscope itemtype="https://schema.org/WebPage">
         <!-- New Enterprise Hero Section -->
         <div class="hero section tight" id="top"
-            style="position: relative; min-height: 90vh; display: flex; align-items: center;">
+            style="position: relative; min-height: 90vh; min-height: 90dvh; display: flex; align-items: center;">
             <!-- CLS FIX: Ambient background moved to CSS (see #top background in critical CSS) -->
             <!-- Original absolute positioned divs removed — they caused CLS 1.749 -->
 
@@ -1832,12 +1840,26 @@
                             (RPA) وتحليل البيانات الضخمة، بمعايير استضافة محلية تتطابق بالكامل مع ضوابط الأمن السيبراني
                             (NCA).
                         </p>
+                        <div class="flex flex-wrap gap-3 mb-8" aria-label="مسارات تحويل رئيسية">
+                            <a href="frontend/pages/consultation/" class="btn"
+                                style="background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.35); color: #e2e8f0; padding: .7rem 1.1rem; border-radius: 999px;">
+                                استشارة ذكاء اصطناعي للشركات السعودية
+                            </a>
+                            <a href="frontend/pages/data-analysis/" class="btn"
+                                style="background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); color: #e2e8f0; padding: .7rem 1.1rem; border-radius: 999px;">
+                                تحليل بيانات واتخاذ قرار أسرع
+                            </a>
+                            <a href="frontend/pages/smart-automation/" class="btn"
+                                style="background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.35); color: #e2e8f0; padding: .7rem 1.1rem; border-radius: 999px;">
+                                أتمتة العمليات وخفض التكاليف التشغيلية
+                            </a>
+                        </div>
 
                         <div class="hero-actions flex flex-wrap gap-4">
                             <a href="#services" class="btn primary" style="padding: 1rem 2.5rem;">
                                 ابدأ رحلة التحول
                             </a>
-                            <a href="frontend/pages/try/index.html" class="btn"
+                            <a href="frontend/pages/try/" class="btn"
                                 style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 1rem 2.5rem; border-radius: 99px;">
                                 <iconify-icon icon="lucide:play-circle"
                                     style="vertical-align: middle; margin-left: 8px;"></iconify-icon>
@@ -1902,6 +1924,40 @@
                 </div>
             </div>
         </div>
+        <section class="section pt-8" id="saudi-use-cases">
+            <div class="container">
+                <div class="badge"><iconify-icon icon="lucide:target"></iconify-icon> حالات استخدام سعودية جاهزة</div>
+                <h2 class="title">ابدأ من القطاع الأقرب لرحلتك التشغيلية</h2>
+                <p class="subtitle">مسارات تنفيذ عملية للشركات في السعودية: مشكلة واضحة، حل تقني، ومؤشر أداء قابل
+                    للقياس.</p>
+                <div class="grid-bento mt-8">
+                    <a class="bento grad-blue" href="frontend/pages/sectors/finance"
+                        aria-label="حلول الذكاء الاصطناعي للقطاع المالي في السعودية">
+                        <div class="icon"><iconify-icon icon="lucide:shield"></iconify-icon></div>
+                        <h3>القطاع المالي</h3>
+                        <p>كشف الاحتيال، تصنيف المخاطر، وتسريع إجراءات الامتثال.</p>
+                    </a>
+                    <a class="bento grad-green" href="frontend/pages/sectors/logistics"
+                        aria-label="حلول الذكاء الاصطناعي للقطاع اللوجستي في السعودية">
+                        <div class="icon"><iconify-icon icon="lucide:truck"></iconify-icon></div>
+                        <h3>اللوجستيات</h3>
+                        <p>تحسين المسارات، خفض تكلفة النقل، ورفع دقة التنبؤ بالطلب.</p>
+                    </a>
+                    <a class="bento grad-purple" href="frontend/pages/sectors/healthcare"
+                        aria-label="حلول الذكاء الاصطناعي للقطاع الصحي في السعودية">
+                        <div class="icon"><iconify-icon icon="lucide:heart-pulse"></iconify-icon></div>
+                        <h3>الرعاية الصحية</h3>
+                        <p>أرشفة طبية ذكية، بحث سريري أسرع، وتقليل زمن الوصول للبيانات.</p>
+                    </a>
+                    <a class="bento grad-gold" href="frontend/pages/consultation/"
+                        aria-label="حجز استشارة تنفيذية لمشروع ذكاء اصطناعي">
+                        <div class="icon"><iconify-icon icon="lucide:calendar-check"></iconify-icon></div>
+                        <h3>خطة تنفيذ خلال 30 يومًا</h3>
+                        <p>جلسة تشخيص + أولويات تنفيذ + خارطة طريق واضحة للنتائج.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
         <!-- Section 10: Services Bento Grid -->
         <section class="section" id="services">
             <div class="container">
@@ -2002,8 +2058,7 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🧠 LLMs</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-rose-600 to-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-rose-500/20"
-                            href="brightai-platform/build/index.html"
-                            aria-label="جرب منصة Bright AI Agents لبناء وكلاء ذكاء اصطناعي"
+                            href="/brightai-platform/" aria-label="جرب منصة Bright AI Agents لبناء وكلاء ذكاء اصطناعي"
                             title="منصة Bright AI Agents">
                             جرب المنصة <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
@@ -2039,7 +2094,7 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🏥 إدارة</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-cyan-500/20"
-                            href="frontend/pages/health-bright/index.html"
+                            href="frontend/pages/health-bright/"
                             aria-label="اكتشف حلول الذكاء الاصطناعي الطبية المتقدمة" title="حلول AI الطبية">
                             اكتشف الحلول <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
@@ -2074,8 +2129,8 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🏥 EHR</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-teal-600 to-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-teal-500/20"
-                            href="frontend/pages/smart-medical-archive/index.html"
-                            aria-label="اكتشف نظام الأرشيف الطبي الذكي" title="الأرشيف الطبي الذكي">
+                            href="frontend/pages/smart-medical-archive/" aria-label="اكتشف نظام الأرشيف الطبي الذكي"
+                            title="الأرشيف الطبي الذكي">
                             اكتشف النظام <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
                     </div>
@@ -2110,8 +2165,8 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">📊 تقييم</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-lime-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-green-500/20"
-                            href="frontend/pages/job.MAISco/index.html"
-                            aria-label="ابدأ التوظيف الذكي بالذكاء الاصطناعي" title="منصة التوظيف الذكي">
+                            href="frontend/pages/job.MAISco/" aria-label="ابدأ التوظيف الذكي بالذكاء الاصطناعي"
+                            title="منصة التوظيف الذكي">
                             ابدأ التوظيف <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
                     </div>
@@ -2145,8 +2200,8 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">✅ تصحيح</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-violet-500/20"
-                            href="frontend/pages/ai-scolecs/index.html"
-                            aria-label="ابدأ التعلم بالمنصة التعليمية الذكية" title="المنصة التعليمية الذكية">
+                            href="frontend/pages/ai-scolecs/" aria-label="ابدأ التعلم بالمنصة التعليمية الذكية"
+                            title="المنصة التعليمية الذكية">
                             ابدأ التعلم <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
                     </div>
@@ -2184,7 +2239,7 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">💡 رؤى AI</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-purple-500/20"
-                            href="frontend/pages/try/data-analyzer/index.html">
+                            href="frontend/pages/try/data-analyzer/">
                             جرب الآن <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
                     </div>
@@ -2216,7 +2271,7 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">📋 تقرير</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20"
-                            href="frontend/pages/try/data-quality/index.html">
+                            href="frontend/pages/try/data-quality/">
                             جرب الآن <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
                     </div>
@@ -2246,7 +2301,7 @@
                             <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">😊 مشاعر</span>
                         </div>
                         <a class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-red-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-amber-500/20"
-                            href="frontend/pages/try/text-analysis/index.html">
+                            href="frontend/pages/try/text-analysis/">
                             جرب الآن <iconify-icon class="w-4 h-4" icon="lucide:arrow-left"></iconify-icon>
                         </a>
                     </div>
@@ -2254,7 +2309,7 @@
                 <!-- CTA -->
                 <div class="text-center mt-12">
                     <a class="inline-flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white px-8 py-4 rounded-2xl font-bold transition-all group"
-                        href="frontend/pages/try/index.html" aria-label="عرض جميع أدوات الذكاء الاصطناعي المجانية"
+                        href="frontend/pages/try/" aria-label="عرض جميع أدوات الذكاء الاصطناعي المجانية"
                         title="جميع الأدوات الذكية">
                         <iconify-icon class="w-5 h-5" icon="lucide:layout-grid"></iconify-icon>
                         عرض جميع الأدوات
@@ -2464,7 +2519,7 @@
                             <li><span class="check">✓</span> دعم Email</li>
                             <li><span class="check">✓</span> 99% Uptime SLA</li>
                         </ul>
-                        <a class="btn primary cta" href="frontend/pages/try/index.html"><iconify-icon
+                        <a class="btn primary cta" href="frontend/pages/try/"><iconify-icon
                                 icon="lucide:gift"></iconify-icon> ابدأ تجربة
                             مجانية</a>
                     </div>
@@ -2688,8 +2743,8 @@
                             <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="pred">Predictive
                                 Analysis</div>
                         </div>
-                        <a class="btn primary" style="padding:10px 12px"
-                            href="frontend/pages/try/index.html"><iconify-icon icon="lucide:sparkles"></iconify-icon>
+                        <a class="btn primary" style="padding:10px 12px" href="frontend/pages/try/"><iconify-icon
+                                icon="lucide:sparkles"></iconify-icon>
                             Try it
                             yourself</a>
                     </div>
@@ -3199,7 +3254,7 @@
                             </div>
                             <h3>مستقبل الذكاء الاصطناعي في السعودية 2030</h3>
                             <p>كيف سيشكل AI مستقبل المملكة في ضوء رؤية 2030...</p>
-                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                            <a class="btn cta" href="frontend/pages/blog/"><iconify-icon
                                     icon="lucide:arrow-left"></iconify-icon> اقرأ
                                 المزيد</a>
                         </div>
@@ -3210,7 +3265,7 @@
                             <div class="meta"><span class="tag">تقنية</span><span>12 فبراير 2026 · 8 دقائق</span></div>
                             <h3>كيف تختار نموذج الذكاء الاصطناعي المناسب؟</h3>
                             <p>دليل شامل لاختيار أفضل نموذج ML لمشروعك...</p>
-                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                            <a class="btn cta" href="frontend/pages/blog/"><iconify-icon
                                     icon="lucide:arrow-left"></iconify-icon> اقرأ
                                 المزيد</a>
                         </div>
@@ -3223,7 +3278,7 @@
                             </div>
                             <h3>حماية بياناتك في عصر الذكاء الاصطناعي</h3>
                             <p>أفضل ممارسات أمن البيانات عند استخدام AI...</p>
-                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                            <a class="btn cta" href="frontend/pages/blog/"><iconify-icon
                                     icon="lucide:arrow-left"></iconify-icon> اقرأ
                                 المزيد</a>
                         </div>
@@ -3235,7 +3290,7 @@
                             </div>
                             <h3>كيف وفرت إحدى الجهات 3 ملايين ريال بـ RPA</h3>
                             <p>قصة نجاح أتمتة ذكية في القطاع الحكومي...</p>
-                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                            <a class="btn cta" href="frontend/pages/blog/"><iconify-icon
                                     icon="lucide:arrow-left"></iconify-icon> اقرأ
                                 المزيد</a>
                         </div>
@@ -3246,7 +3301,7 @@
                             <div class="meta"><span class="tag">تعليمي</span><span>5 فبراير 2026 · 12 دقيقة</span></div>
                             <h3>مقدمة في معالجة اللغة الطبيعية (NLP)</h3>
                             <p>تعلم أساسيات NLP وكيف يفهم الذكاء الاصطناعي اللغة...</p>
-                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                            <a class="btn cta" href="frontend/pages/blog/"><iconify-icon
                                     icon="lucide:arrow-left"></iconify-icon> اقرأ
                                 المزيد</a>
                         </div>
@@ -3257,14 +3312,14 @@
                             <div class="meta"><span class="tag">اتجاهات</span><span>1 فبراير 2026 · 7 دقائق</span></div>
                             <h3>أبرز اتجاهات AI في 2026</h3>
                             <p>تعرف على التقنيات التي ستغير اللعبة هذا العام...</p>
-                            <a class="btn cta" href="frontend/pages/blog/index.html"><iconify-icon
+                            <a class="btn cta" href="frontend/pages/blog/"><iconify-icon
                                     icon="lucide:arrow-left"></iconify-icon> اقرأ
                                 المزيد</a>
                         </div>
                     </article>
                 </div>
                 <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-                    <a class="btn primary" href="frontend/pages/blog/index.html"><iconify-icon
+                    <a class="btn primary" href="frontend/pages/blog/"><iconify-icon
                             icon="lucide:grid-3x3"></iconify-icon> عرض جميع
                         المقالات</a>
                     <a class="btn"
@@ -3576,13 +3631,13 @@
                     </h3>
                     <ul class="space-y-4">
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors"
-                                href="frontend/pages/blog/index.html">المدونة التقنية</a></li>
+                                href="frontend/pages/blog/">المدونة التقنية</a></li>
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors"
-                                href="frontend/pages/about-us/index.html">قصة نجاحنا</a></li>
+                                href="frontend/pages/about-us/">قصة نجاحنا</a></li>
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors"
-                                href="frontend/pages/contact/index.html">العمل معنا</a></li>
+                                href="frontend/pages/contact/">العمل معنا</a></li>
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors"
-                                href="frontend/pages/docs/index.html">وثائق المطورين</a></li>
+                                href="frontend/pages/docs/docs">وثائق المطورين</a></li>
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="#faq">الأسئلة
                                 الشائعة</a></li>
                     </ul>
@@ -3635,11 +3690,11 @@
                 </div>
                 <div class="flex items-center gap-8">
                     <a class="text-slate-500 hover:text-white text-sm transition-colors"
-                        href="frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a>
+                        href="frontend/pages/privacy-cookies/">سياسة الخصوصية</a>
                     <a class="text-slate-500 hover:text-white text-sm transition-colors"
-                        href="frontend/pages/privacy-cookies/index.html">شروط الاستخدام</a>
+                        href="frontend/pages/docs/terms-and-conditions">شروط الاستخدام</a>
                     <a class="text-slate-500 hover:text-white text-sm transition-colors"
-                        href="frontend/pages/privacy-cookies/index.html">الكوكيز</a>
+                        href="frontend/pages/privacy-cookies/#cookies">الكوكيز</a>
                 </div>
                 <div class="flex items-center gap-2 text-slate-600 text-[10px] font-bold uppercase tracking-widest">
                     <iconify-icon class="text-emerald-500" icon="lucide:shield-check"></iconify-icon>

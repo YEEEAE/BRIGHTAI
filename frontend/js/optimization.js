@@ -150,7 +150,8 @@ function mobileOptimize() {
         '#matrixBackground',
         '.gradient-bg',
         '.glow-effect',
-        '.glow-effect-2'
+        '.glow-effect-2',
+        '.hero-visual' // Hidden on mobile anyway, remove from DOM to save memory
     ];
 
     heavySelectors.forEach(sel => {
@@ -161,6 +162,13 @@ function mobileOptimize() {
     // Make all sections visible immediately on mobile (no AOS delay)
     const bentos = document.querySelectorAll('.bento');
     bentos.forEach(b => b.classList.add('show'));
+
+    // CLS FIX: Force explicit dimensions on hero to prevent layout shift
+    const hero = document.getElementById('top');
+    if (hero) {
+        hero.style.minHeight = '70vh';
+        hero.style.minHeight = '70dvh';
+    }
 }
 
 // ─── MAIN: Fire all deferred loads on first interaction ──────────────────────

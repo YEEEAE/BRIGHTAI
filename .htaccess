@@ -52,6 +52,10 @@ RewriteRule ^(.*)$ https://brightai.site/$1 [L,R=301]
 # URL STRUCTURE - PREVENT DUPLICATE CONTENT
 # ============================================
 
+# Redirect */index.html to directory canonical URL
+RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
+
 # Redirect .html URLs to clean URLs (prevents duplicate content)
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
 RewriteCond %{REQUEST_URI} !^/404\.html$

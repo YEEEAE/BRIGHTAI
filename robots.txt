@@ -1,24 +1,24 @@
 # ======================================================
 # BrightAI - Robots.txt
 # https://brightai.site
-# آخر تحديث: 2026-02-14
+# آخر تحديث: 2026-02-21
 # ======================================================
 
-# --- القواعد الافتراضية لكل الزواحف ---
 User-agent: *
 Allow: /
 
-# المسارات المسموحة صراحةً (موارد العرض)
+# المسارات المهمة للفهرسة والعرض
 Allow: /frontend/css/
 Allow: /frontend/js/
 Allow: /frontend/assets/
 Allow: /frontend/pages/
-Allow: /demo/
+Allow: /frontend/pages/blog/
+Allow: /frontend/pages/docs/
 Allow: /sitemap.xml
 Allow: /robots.txt
 Allow: /manifest.json
 
-# المسارات المحجوبة (حساسة / تقنية)
+# مسارات إدارية/داخلية يجب حجبها
 Disallow: /admin/
 Disallow: /private/
 Disallow: /config/
@@ -37,27 +37,24 @@ Disallow: /.nuxt/
 Disallow: /dist/
 Disallow: /build/
 Disallow: /src/
-Disallow: /brightai-platform/
 Disallow: /api/auth/
 Disallow: /api/internal/
 
-# حجب ملفات التطوير
+# مسارات تجريبية/قديمة منخفضة الجودة
+Disallow: /frontend/pages/interview/
+Disallow: /frontend/pages/blogger/
+Disallow: /brightai-platform/
+
+# ملفات غير مناسبة للفهرسة
 Disallow: /*.map$
 Disallow: /*.log$
 Disallow: /*.sql$
 Disallow: /*.zip$
 
-# حجب الصفحات المكررة بالأسماء العربية غير المنسقة
-Disallow: /frontend/pages/blogger/Generative artificial intelligence
-Disallow: /frontend/pages/blogger/أتمتة الذكاء الاصطناعي*
-Disallow: /frontend/pages/blogger/أتمتة العمليات باستخدام*
-Disallow: /frontend/pages/blogger/استشارات الذكاء الاصطناعي*
-Disallow: /frontend/pages/blogger/الأتمتة الصناعية*
-Disallow: /frontend/pages/blogger/الأتمتة المالية*
-Disallow: /frontend/pages/blogger/التحول الرقمي وأتمتة*
-Disallow: /frontend/pages/blogger/التعلم الآلي والرؤية*
-
-
+# تقليل تكرار الفهرسة بسبب معلمات التتبع
+Disallow: /*?*utm_
+Disallow: /*?*gclid=
+Disallow: /*?*fbclid=
 
 # --- حجب بوتات التدريب على الذكاء الاصطناعي ---
 User-agent: GPTBot
@@ -84,9 +81,8 @@ Disallow: /
 User-agent: Amazonbot
 Disallow: /
 
-# --- السماح لـ Google AI (للظهور في AI Overviews) ---
+# السماح لـ Google-Extended للظهور في AI Overviews
 User-agent: Google-Extended
 Allow: /
 
-# --- خريطة الموقع ---
 Sitemap: https://brightai.site/sitemap.xml
