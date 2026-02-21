@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>دراسة حالة شاملة: الذكاء الاصطناعي في الطاقة المتجددة السعودية | كفاءة الصحراء</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="تقرير معمق: كيف تستخدم محطات الطاقة الشمسية والرياح في السعودية (مثل سكاكا ودومة الجندل) الذكاء الاصطناعي والروبوتات لرفع الكفاءة 15% ومحاربة تحديات الغبار والحرارة." name="description"/>
 <meta content="طاقة متجددة السعودية، طاقة شمسية، صيانة تنبؤية، ذكاء اصطناعي، رؤية 2030، طاقة الرياح، تنظيف الألواح الشمسية، الروبوتات، كفاءة الطاقة" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -45,7 +39,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="../../css/bundle-components.css" rel="stylesheet"/>
 <!-- Performance Loader -->
 <script>
@@ -300,7 +294,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/iconify-preload.js"></script>
 <script defer="" src="../../js/vendor/iconify.min.js"></script>
 <script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta></head>
+</meta></meta></meta></meta>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #0c4a6e 100%);">
 <!-- UNIFIED HEADER -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -313,7 +339,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../index.html">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -382,11 +408,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <iconify-icon class="text-sky-400" icon="lucide:sun" width="20"></iconify-icon>
 <span class="text-sky-300 text-sm font-medium tracking-wide">الطاقة المتجددة (Renewable Energy)</span>
 </div>
-<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white leading-tight" data-aos="fade-up">
+<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white leading-tight" >
                 محطة شمسية سعودية ترفع كفاءتها <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-500">15%</span> بالذكاء
                 الاصطناعي
             </h1>
-<p class="text-slate-300 text-lg md:text-xl font-light max-w-3xl leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-300 text-lg md:text-xl font-light max-w-3xl leading-relaxed"  >
                 كيف تغلبت خوارزميات التعلم الآلي على تحديات غبار الصحراء ورفعت إنتاجية أكبر مشاريع الطاقة النظيفة في
                 المملكة.
              <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/try/index.html">(جرّب تحليل بياناتك بنفسك الآن مجاناً)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-automation/index.html">(أتمت أعمالك مع حلول BrightAI)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-medical-archive/index.html">(اكتشف الأرشيف الطبي الذكي)</a></p>
@@ -405,7 +431,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <main>
 <article>
 <!-- EXECUTIVE SUMMARY -->
-<section class="bg-slate-800/50 p-8 rounded-2xl border border-sky-500/20 mb-12" id="executive-summary">
+<section class="bg-slate-800/50 p-8 rounded-2xl border border-sky-500/20 mb-12" id="executive-summary" style="content-visibility: auto;">
 <h3 class="text-sky-400 !mt-0 mb-4 flex items-center gap-2">
 <iconify-icon icon="lucide:clipboard-check"></iconify-icon>
                     الملخص التنفيذي
@@ -417,14 +443,14 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     (Predictive Maintenance) وإدارة الأحمال إلى تحسين موثوقية المحطات وتقليل تكاليف التشغيل بنسبة 25%.
                 </p>
 </section>
-<section id="introduction">
+<section id="introduction" style="content-visibility: auto;">
 <h2>1. السياق: طموح 2030 تحت الشمس</h2>
 <p>تمتلك السعودية واحدة من أعلى معدلات الإشعاع الشمسي عالمياً. مشاريع عملاقة مثل محطة سكاكا للطاقة
                     الشمسية ومحطة دومة الجندل لطاقة الرياح ليست مجرد مشاريع، بل هي ركائز لرؤية 2030. الهدف هو تقليل
                     الاعتماد على الوقود السائل في توليد الكهرباء والحفاظ عليه للتصدير أو الصناعات التحويلية.</p>
 <p>ولكن، إدارة أصول بمليارات الدولارات في قلب الصحراء تتطلب أكثر من مجرد "تركيب الألواح ثم الرحيل".</p>
 </section>
-<section id="challenge">
+<section id="challenge" style="content-visibility: auto;">
 <h2>2. التحدي: معركة ضد الطبيعة</h2>
 <p>تواجه محطات الطاقة المتجددة في البيئات الصحراوية تحديات فريدة:</p>
 <ul>
@@ -435,7 +461,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         الكهربائية، مما يتطلب موازنة دقيقة.</li>
 </ul>
 </section>
-<section id="technical-solution">
+<section id="technical-solution" style="content-visibility: auto;">
 <h2>3. الحل التقني: الصيانة التنبؤية (AI-Driven O&amp;M)</h2>
 <p>لتحويل التحدي إلى فرصة، تم دمج حلول الذكاء الاصطناعي في صلب عمليات التشغيل والصيانة (O&amp;M):</p>
 <div class="tech-box">
@@ -452,7 +478,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         برمجياً قبل تطبيقها واقعياً.</p>
 </div>
 </section>
-<section id="implementation">
+<section id="implementation" style="content-visibility: auto;">
 <h2>4. التطبيق: تكامل التكنولوجيا</h2>
 <ol>
 <li><strong>جمع البيانات:</strong> آلاف الحساسات (Sensors) على التوربينات والمحولات ترسل بيانات
@@ -465,7 +491,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         حدوث العطل فعلياً.</li>
 </ol>
 </section>
-<section id="results">
+<section id="results" style="content-visibility: auto;">
 <h2>5. النتائج: أرقام تتحدث عن الكفاءة</h2>
 <p>بعد تطبيق النظام الذكي لمدة عام، كانت النتائج مذهلة:</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -491,20 +517,20 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </div>
 </section>
-<section id="grid-management">
+<section id="grid-management" style="content-visibility: auto;">
 <h2>6. استقرار الشبكة: الذكاء في الدمج</h2>
 <p>أحد أكبر تحديات الطاقة المتجددة هو عدم استقرارها. هنا يأتي دور خوارزميات "التنبؤ بالطقس الدقيق"
                     (Hyper-local Weather Forecasting). النظام يحلل صور الأقمار الصناعية وحركة السحب ليتنبأ بدقة بالثانية
                     متى ستمر سحابة فوق المحطة وكم سينخفض الإنتاج، مما يسمح لأنظمة البطاريات أو المحطات الغازية بالتعويض
                     فورياً دون انقطاع التيار.</p>
 </section>
-<section id="future">
+<section id="future" style="content-visibility: auto;">
 <h2>7. المستقبل: محطات ذاتية القيادة</h2>
 <p>الطموح المستقبلي هو الوصول لمرحلة "المحطة ذاتية القيادة" (Autonomous Plant)، حيث تدير المحطة نفسها
                     بالكامل، من تنظيف الألواح، إلى إصلاح الأعطال البسيطة، وحتى بيع الطاقة في السوق الفورية (Spot Market)
                     بأفضل سعر ممكن باستخدام خوارزميات التداول الآلي.</p>
 </section>
-<section id="faq">
+<section id="faq" style="content-visibility: auto;">
 <h2>8. الأسئلة الشائعة (FAQ)</h2>
 <div class="space-y-4">
 <div class="bg-slate-800/50 p-4 rounded-lg">
@@ -540,7 +566,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     </a>
 </div>
 </div>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6">
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
 <li><a href="/frontend/pages/blogger/saudi-smart-city-traffic">دراسة حالة شاملة: الرياض تقلل الازدحام 30% بإشارات المرور الذكية | Bright AI</a></li><li><a href="/frontend/pages/blogger/saudi-sports-analytics-ai">دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية | تحليل الأداء</a></li><li><a href="/frontend/pages/blogger/saudi-tourism-ai-guide">دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية | تجربة زائر عالمية</a></li><li><a href="/frontend/pages/blogger/saudi-waste-management-ai">دراسة حالة شاملة: إدارة النفايات بالذكاء الاصطناعي في السعودية | نحو صفر مرادم</a></li>

@@ -23,7 +23,7 @@
 
     <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../css/main.bundle.css" /></noscript>
     <link rel="stylesheet" href="../../css/bundle-pages.css" />
     <link rel="stylesheet" href="../../css/docs.css" />
 
@@ -40,6 +40,14 @@
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body
@@ -49,7 +57,7 @@
     <!-- Navigation -->
     <nav class="unified-nav" role="navigation">
         <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
-                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img
+                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img loading="lazy"
                     src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
                     AI</span></a>
             <ul class="nav-links">
@@ -108,7 +116,7 @@
         <div class="doc-content space-y-12">
 
             <!-- Context -->
-            <section class="glass-card p-10 relative overflow-hidden">
+            <section class="glass-card p-10 relative overflow-hidden" style="content-visibility: auto;">
                 <div class="absolute -top-20 -right-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
                 <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
                     <iconify-icon icon="solar:magic-stick-3-bold-duotone" class="text-indigo-400"></iconify-icon>
@@ -128,7 +136,7 @@
             </section>
 
             <!-- LIVE DEMOS SECTION -->
-            <section id="demos" class="py-12">
+            <section id="demos" class="py-12" style="content-visibility: auto;">
                 <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
                     <div class="bg-[#0f172a] rounded-[22px] overflow-hidden">
 
@@ -207,7 +215,7 @@
             </section>
 
             <!-- Channels Grid -->
-            <section>
+            <section style="content-visibility: auto;">
                 <h3 class="text-3xl font-bold mb-10 text-center text-white">Where Do Bots Live?</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div
@@ -234,7 +242,7 @@
             </section>
 
             <!-- FAQ Section -->
-            <section>
+            <section style="content-visibility: auto;">
                 <h3 class="text-2xl font-bold text-white mb-6">FAQ</h3>
                 <div class="space-y-4">
                     <div class="faq-item glass-card rounded-xl border-none">

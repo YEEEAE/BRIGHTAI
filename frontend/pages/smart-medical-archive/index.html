@@ -2,13 +2,7 @@
 
 <html dir="rtl" lang="ar">
 <head>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-8LLESL207Q');
-  </script>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>نظام الأرشيف الطبي الذكي للمستشفيات في السعودية | تجربة Bright AI</title>
@@ -41,8 +35,8 @@
 <link as="style" href="./system-unified.css" rel="preload"/>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
-<link href="../../css/index-theme.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
+<link href="../../css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/index-theme.css" rel="stylesheet"/></noscript>
 <link href="../../css/tailwind.local.min.css" rel="stylesheet"/>
 <link href="./system-unified.css" rel="stylesheet"/>
 <script defer="" src="../../js/iconify-preload.js"></script>
@@ -58,7 +52,39 @@
                 { "@type": "ListItem", "position": 3, "name": "الأرشيف الطبي الذكي", "item": "https://brightai.site/frontend/pages/smart-medical-archive/index.html" }
             ]
         }
-        </script></head>
+        </script>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body>
 <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
 <header class="unified-nav fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header" role="banner">
@@ -216,7 +242,7 @@
 </aside>
 </div>
 </header>
-<section>
+<section style="content-visibility: auto;">
 <div class="section-title">
 <h2>لماذا هذا النظام مهم للمستشفيات السعودية؟</h2>
 <p>تركيز مباشر على أثر تشغيلي قابل للقياس في بيئة صحية عالية الضغط.</p>
@@ -236,7 +262,7 @@
 </article>
 </div>
 </section>
-<section>
+<section style="content-visibility: auto;">
 <div class="section-title">
 <h2>نطاق التجربة التشغيلية</h2>
 <p>مصمم لمسار المستشفى الكامل: تقرير طبي → سجل منظم → بحث سريري → تحليلات إدارية → تصدير تكاملي.</p>
@@ -263,7 +289,7 @@
 <button hidden="" id="saveConnectionBtn" type="button"></button>
 <button hidden="" id="testConnectionBtn" type="button"></button>
 <div hidden="" id="connectionStatus"></div>
-<section id="trialConsole">
+<section id="trialConsole" style="content-visibility: auto;">
 <div class="section-title">
 <h2>وحدة التجربة للمستشفيات</h2>
 <p>رفع ملف أو لصق تقرير، تحليل فوري، حفظ سجل، بحث، تحليلات، ثم تصدير متوافق مع EHR.</p>
@@ -469,7 +495,7 @@
 </article>
 </div>
 </section>
-<section id="dashboardStudio">
+<section id="dashboardStudio" style="content-visibility: auto;">
 <div class="section-title">
 <h2>لوحة التحكم التفاعلية الشاملة</h2>
 <p>مؤشرات لحظية + رسوم متقدمة + تنبيهات ذكية + تخصيص الودجت + تحديثات فورية.</p>
@@ -646,7 +672,7 @@
 </article>
 </div>
 </section>
-<section class="lead-strip" id="leadForm">
+<section class="lead-strip" id="leadForm" style="content-visibility: auto;">
 <div class="section-title" style="margin: 0 0 10px;">
 <h2>تفعيل التجربة المؤسسية للمستشفى</h2>
 <p>أرسل طلب التفعيل لفريق Bright AI مع بيانات المسؤول التشغيلي.</p>
@@ -659,7 +685,7 @@
 </div>
 <div class="status" id="leadStatus" style="margin-top: 10px;">سيتم إرسال الطلب عبر واتساب إلى فريق التفعيل.</div>
 </section>
-<section>
+<section style="content-visibility: auto;">
 <div class="section-title">
 <h2>ربط داخلي لخدمات مرتبطة</h2>
 <p>هيكلة روابط داخلية محسنة لتحسين الزحف والفهرسة لمسار القطاع الصحي.</p>
@@ -673,7 +699,7 @@
 <a href="/frontend/pages/blogger/digital-health-smart-archive.html">دراسة موسعة عن الأرشيف الطبي الذكي</a>
 </div>
 </section>
-<section>
+<section style="content-visibility: auto;">
 <div class="section-title">
 <h2>أسئلة تشغيلية متكررة</h2>
 <p>إجابات عملية للفريق الطبي والإداري قبل تفعيل النظام على بيئة المستشفى الفعلية.</p>
@@ -697,7 +723,7 @@
 </article>
 </div>
 </section>
-<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10">
+<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10" style="content-visibility: auto;">
 <div class="max-w-4xl mx-auto px-6 mb-16 text-slate-300 leading-relaxed text-lg seo-article">
 <h3 class="text-3xl font-bold text-white mb-6">نظام الأرشيف الطبي الذكي المتوافق مع اللوائح الصحية السعودية</h3>
 <p class="mb-6">

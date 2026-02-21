@@ -6,8 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>معالجة المستندات الذكية (OCR) | Bright AI</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-8LLESL207Q');</script>
+
 <meta content="حول مستنداتك الورقية إلى بيانات رقمية قابلة للبحث باستخدام تقنية OCR العربية المتقدمة من Bright AI. دقة عالية في قراءة النصوص والفواتير." name="description"/>
 <link href="https://brightai.site/frontend/pages/docs/solutions-ocr.html" rel="canonical"/>
 <link href="https://brightai.site/frontend/pages/docs/solutions-ocr.html" hreflang="ar-SA" rel="alternate">
@@ -25,11 +24,43 @@
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 <body class="antialiased selection:bg-rose-500/30 selection:text-rose-400 tracking-tight doc-page bg-slate-950 text-slate-300">
 <!-- Navigation -->
 <nav class="unified-nav" role="navigation">
-<div class="nav-container"><button aria-label="فتح القائمة" class="mobile-toggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button><a class="nav-logo" href="https://brightai.site/index.html"><img alt="Bright AI" height="40" src="../../assets/images/Gemini.png" width="40"/><span>Bright
+<div class="nav-container"><button aria-label="فتح القائمة" class="mobile-toggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button><a class="nav-logo" href="https://brightai.site/index.html"><img loading="lazy" alt="Bright AI" height="40" src="../../assets/images/Gemini.png" width="40"/><span>Bright
                     AI</span></a>
 <ul class="nav-links">
 <li class="nav-item"><a class="nav-link" href="https://brightai.site/index.html">الرئيسية</a></li>
@@ -73,7 +104,7 @@
 </div>
 </header>
 <div class="doc-content space-y-20">
-<section class="glass-card p-10 relative overflow-hidden">
+<section class="glass-card p-10 relative overflow-hidden" style="content-visibility: auto;">
 <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-rose-500 to-pink-500"></div>
 <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
 <iconify-icon class="text-rose-400" icon="solar:document-text-bold-duotone"></iconify-icon>
@@ -90,7 +121,7 @@
                     </p>
 </div>
 </section>
-<section>
+<section style="content-visibility: auto;">
 <h3 class="text-3xl font-bold mb-10 text-center">سيناريوهات الاستخدام</h3>
 <div class="grid md:grid-cols-2 gap-8">
 <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-rose-500">
@@ -116,7 +147,7 @@
 </div>
 </section>
 <!-- Demo Section Placeholder -->
-<section class="py-12" id="demo">
+<section class="py-12" id="demo" style="content-visibility: auto;">
 <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
 <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row items-center justify-center p-12 text-center">
 <div class="max-w-2xl">
@@ -136,7 +167,7 @@
 </section>
 </div>
 <!-- BrightAI Command CTA: https://brightai.site/demo/ocr-demo/ -->
-<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
 <p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">حمّل مستندك وشاهد الحقول المستخرجة فوراً.</p>
 <a href="/demo/ocr-demo/" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#fff; text-decoration:none; font-weight:700;">
             جرّب OCR الآن على ملفك

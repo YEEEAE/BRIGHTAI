@@ -84,19 +84,27 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
         content="حلول التعلم الآلي المتقدمة | تحليل البيانات واتخاذ قرارات مستنيرة - مُشرقة AI">
     <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
     <script src="../../js/navigation.js" defer></script>
-    <link rel="stylesheet" href="../../../frontend/css/main.bundle.css?v=20260206" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../frontend/css/main.bundle.css?v=20260206" /><noscript><link rel="stylesheet" href="../../../frontend/css/main.bundle.css?v=20260206" /></noscript>
 
     <!-- BrightAI Global Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
-    <link rel="stylesheet" href="../../css/index-theme.css" />
+    
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../css/main.bundle.css" /></noscript>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/index-theme.css" /><noscript><link rel="stylesheet" href="../../css/index-theme.css" /></noscript>
 
 
 <link rel="stylesheet" href="../../css/tailwind.local.min.css">
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -115,7 +123,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 
             <!-- Logo -->
             <a href="../../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <img loading="lazy" src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -325,7 +333,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 
             <!-- Logo -->
             <a href="../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <img loading="lazy" src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -511,7 +519,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 
 
     <!-- Hero Section -->
-    <section class="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <section class="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16 overflow-hidden" style="content-visibility: auto;">
         <div class="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/95 to-slate-950"></div>
         <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl"></div>
         <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
@@ -551,7 +559,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </section>
 
     <!-- About Section -->
-    <section class="py-20 px-6 relative">
+    <section class="py-20 px-6 relative" style="content-visibility: auto;">
         <div class="max-w-6xl mx-auto">
             <div class="glass-card p-8 md:p-12" data-aos="fade-up">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -598,7 +606,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </section>
 
     <!-- Solutions Section -->
-    <section id="solutions" class="py-20 px-6 relative">
+    <section id="solutions" class="py-20 px-6 relative" style="content-visibility: auto;">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">حلولنا</h2>
@@ -648,7 +656,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 px-6 relative">
+    <section class="py-20 px-6 relative" style="content-visibility: auto;">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">مميزاتنا</h2>
@@ -698,7 +706,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-20 px-6 relative">
+    <section class="py-20 px-6 relative" style="content-visibility: auto;">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16" data-aos="fade-up">
                 <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">آراء العملاء</h2>
@@ -747,7 +755,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 px-6 relative">
+    <section class="py-20 px-6 relative" style="content-visibility: auto;">
         <div class="max-w-4xl mx-auto">
             <div class="glass-card p-12 text-center relative overflow-hidden" data-aos="fade-up">
                 <div

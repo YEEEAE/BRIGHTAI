@@ -42,7 +42,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link rel="stylesheet" href="../../css/bundle-critical.css">
-    <link rel="stylesheet" href="../../css/main.bundle.css">
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css"><noscript><link rel="stylesheet" href="../../css/main.bundle.css"></noscript>
     <link rel="stylesheet" href="../../css/bundle-components.css">
 
     <script>
@@ -101,15 +101,23 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </style>
 
     <!-- BrightAI Global Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/index-theme.css" />
+    
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/index-theme.css" /><noscript><link rel="stylesheet" href="../../css/index-theme.css" /></noscript>
 
 
 <link rel="stylesheet" href="../../css/tailwind.local.min.css">
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased tracking-tight text-white">
@@ -121,7 +129,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
             <span class="bar"></span>
         </button>
         <a href="../../../index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-            <img src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40">
+            <img loading="lazy" src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40">
             <span>Bright AI</span>
         </a>
         <ul class="nav-links">
@@ -174,8 +182,8 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full hero-badge mb-6" data-aos="fade-down">
             <span class="text-sm font-medium">قطاع الصحة</span>
         </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-4" data-aos="fade-up">حلول الذكاء الاصطناعي لقطاع الرعاية الصحية في السعودية</h1>
-        <p class="text-slate-300 text-lg max-w-3xl" data-aos="fade-up" data-aos-delay="100">حلول ذكاء اصطناعي للرعاية الصحية: تشخيص أدق، جدولة ذكية، وتحسين تجربة المريض في المستشفيات السعودية.</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4" >حلول الذكاء الاصطناعي لقطاع الرعاية الصحية في السعودية</h1>
+        <p class="text-slate-300 text-lg max-w-3xl"  >حلول ذكاء اصطناعي للرعاية الصحية: تشخيص أدق، جدولة ذكية، وتحسين تجربة المريض في المستشفيات السعودية.</p>
         <div class="flex flex-wrap gap-3 mt-6" data-aos="fade-up" data-aos-delay="150">
             <span class="chip px-3 py-1.5 rounded-full text-xs">رؤية 2030</span>
             <span class="chip px-3 py-1.5 rounded-full text-xs">تحول رقمي</span>
@@ -184,7 +192,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-6 mt-12">
+    <section class="max-w-7xl mx-auto px-6 mt-12" style="content-visibility: auto;">
         <div class="grid md:grid-cols-3 gap-6" data-aos="fade-up"><div class="p-5 rounded-2xl bg-white/5 border border-white/10 text-center">
   <div class="text-3xl font-extrabold text-white">60%</div>
   <div class="text-xs text-slate-400 mt-2">تقليل وقت الانتظار</div>
@@ -197,7 +205,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div></div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 mt-14">
+    <section class="max-w-7xl mx-auto px-6 mt-14" style="content-visibility: auto;">
         <h2 class="text-2xl font-bold mb-6">أهم حالات الاستخدام</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5" data-aos="fade-up"><div class="glass-card p-5 rounded-2xl border border-white/10">
   <h3 class="text-lg font-bold text-white mb-2">التشخيص المساعد</h3>
@@ -214,7 +222,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div></div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 mt-14">
+    <section class="max-w-7xl mx-auto px-6 mt-14" style="content-visibility: auto;">
         <h2 class="text-2xl font-bold mb-6">دراسات حالة ومقالات متخصصة</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up"><a href="/frontend/pages/blogger/ai-healthcare-saudi" class="glass-card p-5 rounded-2xl border border-white/10 hover:bg-white/5 transition">
   <h3 class="text-base font-bold text-white mb-2">الذكاء الاصطناعي في القطاع الصحي السعودي</h3>
@@ -231,7 +239,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </a></div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 mt-14">
+    <section class="max-w-7xl mx-auto px-6 mt-14" style="content-visibility: auto;">
         <h2 class="text-2xl font-bold mb-6">حلول Bright AI ذات الصلة</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5" data-aos="fade-up">
             <a href="../smart-automation/index.html" class="glass-card p-5 rounded-2xl border border-white/10 hover:bg-white/5 transition">
@@ -249,7 +257,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
         </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 mt-14">
+    <section class="max-w-7xl mx-auto px-6 mt-14" style="content-visibility: auto;">
         <div class="p-6 rounded-2xl border border-white/10 bg-white/5" data-aos="fade-up">
             <h2 class="text-2xl font-bold mb-3">جاهز لبدء التحول؟</h2>
             <p class="text-slate-300 mb-5">تواصل معنا لتصميم خارطة طريق ذكاء اصطناعي خاصة بقطاعك خلال 14 يومًا.</p>

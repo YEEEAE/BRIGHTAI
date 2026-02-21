@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Cloud Opus 4.6: الجيل الجديد من الذكاء الاصطناعي السحابي وكيف تستخدمه BrightAI في السعودية</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="شرح كامل لـ Cloud Opus 4.6 — مميزاته التقنية، أدواته للمهام الطويلة، كيف تدمجه BrightAI لخدمات سحابية آمنة وفعّالة في السعودية." name="description"/>
 <meta content="Cloud Opus 4.6, Claude Opus 4.6, Anthropic, BrightAI, الذكاء الاصطناعي السحابي, السعودية, AI السحابي, agents, context window" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -45,7 +39,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="../../css/bundle-components.css" rel="stylesheet"/>
 <!-- Performance Loader -->
 <script>
@@ -291,7 +285,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/iconify-preload.js"></script>
 <script defer="" src="../../js/vendor/iconify.min.js"></script>
 <script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta></head>
+</meta></meta></meta></meta>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
 <!-- UNIFIED HEADER -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -304,7 +330,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../index.html">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -502,11 +528,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <iconify-icon class="text-indigo-400" icon="lucide:cloud" width="20"></iconify-icon>
 <span class="text-indigo-300 text-sm font-medium tracking-wide">الجيل الجديد من الذكاء الاصطناعي</span>
 </div>
-<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" data-aos="fade-up">
+<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" >
                 Cloud Opus 4.6: <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">الجيل الجديد من
                     الذكاء الاصطناعي السحابي</span>
 </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl"  >
                 كيف تستخدم BrightAI تقنيات Opus 4.6 لتقديم خدمات سحابية آمنة وفعّالة للشركات والمؤسسات في السعودية
              <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-automation/index.html">(أتمت أعمالك مع حلول BrightAI)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-medical-archive/index.html">(اكتشف الأرشيف الطبي الذكي)</a></p>
 <div class="flex flex-wrap gap-4 mt-8" data-aos="fade-up" data-aos-delay="200">
@@ -523,7 +549,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </header>
 <main>
 <article>
-<section id="intro">
+<section id="intro" style="content-visibility: auto;">
 <h2>مقدمة سريعة — لماذا يهمك Opus 4.6 الآن؟</h2>
 <p>في هذا الدليل المتكامل نشرح ما هو <strong>Cloud Opus 4.6</strong> (المعروف تجارياً باسم Claude Opus
                     4.6 من Anthropic)، ما الذي يجعله مميزًا، وكيف تستفيد BrightAI من إمكانياته لتقديم خدمات سحابية آمنة
@@ -533,7 +559,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     العروض التقديمية، كما يقدم ميزات متقدمة للـ agents وسياقات عمل أكبر (context windows). الإطلاق متاح
                     عبر واجهة Claude الرسمية وعلى منصات سحابية كبرى.</p>
 </section>
-<section id="what-is">
+<section id="what-is" style="content-visibility: auto;">
 <h2>1. ما هو Cloud Opus 4.6 بالضبط؟</h2>
 <p>Cloud Opus 4.6 (Claude Opus 4.6) هو إصدار متقدّم من سلسلة نماذج Opus التي طورتها شركة Anthropic. يركز
                     الإصدار 4.6 على:</p>
@@ -548,7 +574,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>إجمالاً، تم تصميم Opus 4.6 ليصبح أقرب إلى "عامل معرفي" يمكن تفويضه بمشروعات طويلة المدى مع قدر أقل من
                     المراجعات اليدوية، مما يجعله مثالياً لبيئات العمل المؤسسية التي تتطلب دقة وموثوقية.</p>
 </section>
-<section id="why-important">
+<section id="why-important" style="content-visibility: auto;">
 <h2>2. لماذا يعد هذا الإصدار مهمًا لسوق السعودية؟</h2>
 <p>توجد أسباب مباشرة لارتباط Opus 4.6 بالسوق السعودي واحتياجاته المتنامية:</p>
 <ol>
@@ -560,7 +586,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         أمر بالغ الأهمية لسياسات توطين البيانات والامتثال في المملكة.</li>
 </ol>
 </section>
-<section id="features">
+<section id="features" style="content-visibility: auto;">
 <h2>3. الميزات التقنية الأساسية في Opus 4.6</h2>
 <ul>
 <li><strong>تحسينات في الترميز (Coding):</strong> قدرة على متابعة مشاريع برمجية طويلة وتوزيع المهام
@@ -575,7 +601,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         سلامة المخرجات وملاءمتها للاستخدام المؤسسي.</li>
 </ul>
 </section>
-<section id="brightai-integration">
+<section id="brightai-integration" style="content-visibility: auto;">
 <h2>4. كيف تدمج BrightAI تقنية Cloud Opus 4.6 داخل منصتها؟</h2>
 <p>في BrightAI، نعتمد نموذج تكاملي عملي للاستفادة القصوى من قدرات Opus 4.6:</p>
 <ol>
@@ -592,7 +618,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     والامتثال.</p>
 <a class="cta" href="https://brightai.site/index.html">جرّب BrightAI مع Opus 4.6 الآن</a>
 </section>
-<section id="use-cases">
+<section id="use-cases" style="content-visibility: auto;">
 <h2>5. أمثلة عملية (حالات استخدام) في السعودية</h2>
 <h3>أ) القطاع الحكومي</h3>
 <p>تحليل ملفات تشريعية معقدة، إعداد موجزات سياسية دقيقة، وتجهيز تقارير أداء مؤسسية عبر مستندات متعددة
@@ -604,7 +630,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>تحليل البيانات المالية الضخمة، إعداد ملخّصات تنفيذية موجزة، ومحاكاة سيناريوهات مالية معقدة مع أتمتة
                     تقارير Excel و PowerPoint، مما يدعم اتخاذ القرارات الاستثمارية السريعة والدقيقة.</p>
 </section>
-<section id="security">
+<section id="security" style="content-visibility: auto;">
 <h2>6. هل Opus 4.6 آمن؟ (الأمن والامتثال)</h2>
 <p>صرحت Anthropic بأنها أجرت اختبارات سلامة مكثفة على Opus 4.6، شملت سيناريوهات إساءة الاستخدام
                     والاختبار السيبراني لتقليل المخاطر. ومع ذلك، فإن توفير الأمان الكامل يعتمد بشكل كبير على الطريقة
@@ -617,7 +643,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <li>تشغيل اختبارات محاكاة إساءة الاستخدام بشكل دوري قبل النشر.</li>
 </ul>
 </section>
-<section id="pricing-availability">
+<section id="pricing-availability" style="content-visibility: auto;">
 <h2>7. التوفر والتسعير</h2>
 <p>أعلنت Anthropic أن Opus 4.6 متاح اليوم عبر واجهة Claude.ai وعلى منصات سحابية كبرى. بالنسبة لعملاء
                     BrightAI، يتم دمج تكلفة استخدام النموذج ضمن باقات الخدمات المدارة، مما يوفر تكلفة موحدة وشفافة تشمل
@@ -625,7 +651,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>لا يزال التسعير العام مشابهًا للإصدارات السابقة في نطاقات API العلنية، مما يجعله خياراً تنافسياً
                     بالنظر إلى القفزة النوعية في الأداء والقدرات.</p>
 </section>
-<section id="faq">
+<section id="faq" style="content-visibility: auto;">
 <h2>8. الأسئلة الشائعة (FAQ)</h2>
 <h3>س: ما الفرق بين Opus 4.6 والإصدارات السابقة؟</h3>
 <p>ج: Opus 4.6 يُحسّن بشكل كبير من قدرات المعالجة الطويلة، ويقدم نظام "فرق الوكلاء" (agent teams)، ويجلب
@@ -637,7 +663,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>ج: توظف BrightAI النموذج كخدمة مُدارة ضمن نظام متكامل للبنية التحتية، مع تركيز شديد على الأمن،
                     والالتزام التنظيمي، وإعدادات الوكلاء (Agents) المُخصّصة لاحتياجاتك.</p>
 </section>
-<section id="conclusion">
+<section id="conclusion" style="content-visibility: auto;">
 <h2>خاتمة</h2>
 <p>يمثل Cloud Opus 4.6 خطوة كبيرة إلى الأمام في عالم الذكاء الاصطناعي المؤسسي، خاصة مع قدراته المتقدمة
                     في التعامل مع المهام الطويلة والمعقدة. من خلال شراكتك مع BrightAI، يمكنك الاستفادة من هذه التقنية
@@ -645,7 +671,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>لمعرفة المزيد أو لطلب عرض توضيحي مخصّص، <a href="https://brightai.site/index.html">زوروا موقعنا
                         BrightAI.site</a> أو تواصلوا معنا مباشرة.</p>
 </section>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6">
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
 <li><a href="/frontend/pages/blogger/commerce-ministry-chatbot">دراسة حالة: وزارة التجارة | شات بوت ذكي يخدم 50,000 تاجر يومياً</a></li><li><a href="/frontend/pages/blogger/digital">الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي</a></li><li><a href="/frontend/pages/blogger/digital-banking-saudi">الخدمات المصرفية الرقمية في السعودية | Bright AI</a></li><li><a href="/frontend/pages/blogger/digital-health-smart-archive">تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في السعودية | Bright AI</a></li>

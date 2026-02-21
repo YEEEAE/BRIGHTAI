@@ -7,13 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>مكتبة الذكاء الاصطناعي في السعودية | Bright AI</title>
     <!-- Google Analytics -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+    
     <!-- Enterprise SEO Meta Tags -->
     <meta
         content="أحدث المقالات والأدلة الشاملة حول الذكاء الاصطناعي، التعلم الآلي، الأتمتة الذكية، وتحليل البيانات للشركات السعودية. رؤى خبراء Bright AI حول التحول الرقمي ورؤية 2030."
@@ -60,7 +54,7 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
     <!-- Critical CSS -->
     <link href="../../css/bundle-critical.css" rel="stylesheet" />
-    <link href="../../css/main.bundle.css" rel="stylesheet" />
+    <link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" /><noscript><link href="../../css/main.bundle.css" rel="stylesheet" /></noscript>
     <!-- Performance Loader -->
     <script>
         (function () {
@@ -123,11 +117,9 @@
     </script>
     <script defer="" src="../../js/navigation.js"></script>
     <!-- BrightAI Global Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap"
-        rel="stylesheet" />
-    <link href="../../css/index-theme.css" rel="stylesheet">
+    
+    
+    <link href="../../css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="../../css/index-theme.css" rel="stylesheet"></noscript>
     </link>
     </link>
     </link>
@@ -147,6 +139,38 @@
         "url": "https://brightai.site/frontend/pages/blog/index.html"
     }
     </script>
+
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -161,7 +185,7 @@
             </button>
             <!-- Logo -->
             <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../..">
-                <img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40" />
+                <img loading="lazy" alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40" />
                 <span>Bright AI</span>
             </a>
             <!-- Desktop Navigation -->
@@ -354,7 +378,7 @@
             </button>
             <!-- Logo -->
             <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../..">
-                <img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40" />
+                <img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40" />
                 <span>Bright AI</span>
             </a>
             <!-- Desktop Navigation -->
@@ -535,18 +559,18 @@
                 data-aos="fade-down">
                 <span class="text-indigo-300 text-sm font-medium tracking-wide">+30 مقال متخصص</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" >
                 المكتبة <span
                     class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">الذكية</span>
             </h1>
-            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto" data-aos="fade-up"
-                data-aos-delay="100">
+            <p class="text-slate-400 text-lg md:text-xl font-light max-w-2xl mx-auto" 
+                >
                 أحدث المقالات والأدلة الشاملة حول الذكاء الاصطناعي، التعلم الآلي، والتحول الرقمي للشركات السعودية
             </p>
         </div>
     </header>
     <!-- FEATURED ARTICLES -->
-    <section class="py-16 px-6 bg-gradient-to-b from-[#020617] to-black/40">
+    <section class="py-16 px-6 bg-gradient-to-b from-[#020617] to-black/40" style="content-visibility: auto;">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl font-bold text-white mb-8">📌 مقالات مميزة</h2>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -622,7 +646,7 @@
         </div>
     </section>
     <!-- SECTORS HUBS -->
-    <section class="py-12 px-6 bg-[#020617]">
+    <section class="py-12 px-6 bg-[#020617]" style="content-visibility: auto;">
         <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-2xl font-bold text-white">محاور القطاعات</h2>
@@ -676,7 +700,7 @@
             </div>
         </div>
     </section>
-    <section id="blog-index" class="py-16 px-6 bg-[#020617]">
+    <section id="blog-index" class="py-16 px-6 bg-[#020617]" style="content-visibility: auto;">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold text-white mb-12 text-center border-b border-white/10 pb-4">فهرس المكتبة
                 الذكية مرتب حسب الفئات</h2>
@@ -1752,7 +1776,7 @@
     <script defer="" src="../../js/index-theme.js"></script>
     <!-- BrightAI Command CTA: https://brightai.site/demo/resources/report-ai-saudi-2026/ -->
     <section class="brightai-command-cta"
-        style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+        style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
         <p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">تقرير مجاني يوضح أين تتجه الاستثمارات والفرص.</p>
         <a href="/demo/resources/report-ai-saudi-2026/"
             style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#fff; text-decoration:none; font-weight:700;">
@@ -1761,7 +1785,7 @@
     </section>
     <!-- BrightAI Orphan Links: /blog/ -->
     <section class="brightai-orphan-links"
-        style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+        style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
         <h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">روابط ذات صلة</h3>
         <p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">روابط داخل النص: <a href="/docs/consultation-en.html"
                 style="color:#38bdf8;text-decoration:none;font-weight:600;">اقرأ عن StrategicConsultation</a>، <a

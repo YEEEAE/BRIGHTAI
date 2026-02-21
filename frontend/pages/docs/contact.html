@@ -15,13 +15,21 @@
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
     <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
     <nav class="unified-nav" role="navigation">
         <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
-                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img
+                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img loading="lazy"
                     src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
                     AI</span></a>
             <ul class="nav-links">
@@ -59,7 +67,7 @@
                 سوا - تواصل معنا وبنرد عليك بأسرع وقت 🚀</p>
         </header>
 
-        <section class="grid md:grid-cols-2 gap-8 mb-12">
+        <section class="grid md:grid-cols-2 gap-8 mb-12" style="content-visibility: auto;">
 
             <!-- Contact Methods -->
             <div class="space-y-6">
@@ -174,7 +182,7 @@
         </section>
 
         <!-- Quick Stats -->
-        <section class="glass-card p-8 rounded-2xl mb-12">
+        <section class="glass-card p-8 rounded-2xl mb-12" style="content-visibility: auto;">
             <h2 class="text-2xl font-bold text-white mb-6 text-center">ليش تتواصل معنا؟</h2>
             <div class="grid grid-cols-3 gap-6 text-center">
                 <div>
@@ -194,7 +202,7 @@
 
         <!-- CTA -->
         <section class="glass-card p-8 rounded-2xl text-center"
-            style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid rgba(16, 185, 129, 0.3);">
+            style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid rgba(16, 185, 129, 0.3);; content-visibility: auto;">
             <h2 class="text-2xl font-bold text-white mb-4">جاهز تبدأ مشروعك؟ 🎯</h2>
             <p class="text-slate-300 mb-6">احصل على استشارة مجانية الحين!</p>
             <a href="https://wa.me/966538229013"

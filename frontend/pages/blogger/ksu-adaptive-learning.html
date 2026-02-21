@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>دراسة حالة: جامعة الملك سعود | منصة تعلم تكيفي ترفع معدلات النجاح 25%</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="كيف رفعت جامعة الملك سعود معدلات النجاح بنسبة 25% باستخدام منصة تعلم تكيفي ذكية تخصص المحتوى لكل طالب." name="description"/>
 <meta content="التعلم التكيفي، الجامعات السعودية، تقنيات التعليم العالي، جامعة الملك سعود، التعليم الإلكتروني، الذكاء الاصطناعي في التعليم" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -45,7 +39,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="../../css/bundle-components.css" rel="stylesheet"/>
 <!-- Performance Loader -->
 <script>
@@ -260,7 +254,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/iconify-preload.js"></script>
 <script defer="" src="../../js/vendor/iconify.min.js"></script>
 <script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta></head>
+</meta></meta></meta></meta>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #2e1065 100%);">
 <!-- UNIFIED HEADER -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -273,7 +299,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../index.html">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -340,11 +366,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <iconify-icon class="text-violet-400" icon="lucide:graduation-cap" width="20"></iconify-icon>
 <span class="text-violet-300 text-sm font-medium tracking-wide">التعليم الجامعي الذكي</span>
 </div>
-<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" data-aos="fade-up">
+<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" >
                 جامعة الملك سعود: <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-purple-500">منصة تعلم تكيفي
                     رفعت معدلات النجاح 25%</span>
 </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl"  >
                 كيف تحول التعليم الجامعي من نموذج "مقاس واحد للجميع" إلى تجربة شخصية مصممة لكل طالب بفضل الذكاء
                 الاصطناعي.
              <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-automation/index.html">(أتمت أعمالك مع حلول BrightAI)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-medical-archive/index.html">(اكتشف الأرشيف الطبي الذكي)</a></p>
@@ -358,7 +384,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </header>
 <main>
 <article>
-<section id="introduction">
+<section id="introduction" style="content-visibility: auto;">
 <h2>المقدمة: تحديات التعليم التقليدي في العصر الرقمي</h2>
 <p>تواجه الجامعات الكبرى تحدياً أزلياً يتمثل في كيفية تقديم تعليم ذو جودة عالية لأعداد كبيرة من الطلبة،
                     مع مراعاة الفروق الفردية الهائلة بينهم في الخلفيات المعرفية، وسرعة التعلم، وأنماط الاستيعاب. في
@@ -368,7 +394,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     الاستثمار الجريء في تقنيات التعلم التكيفي (Adaptive Learning)، بهدف تحقيق العدالة التعليمية وتمكين
                     كل طالب من الوصول لأقصى إمكاناته.</p>
 </section>
-<section id="challenge">
+<section id="challenge" style="content-visibility: auto;">
 <h2>التحدي: المعدلات العالية للتعثر في السنة الأولى</h2>
 <p>ركزت الدراسة على "السنة المشتركة" (السنة التحضيرية سابقاً)، حيث يواجه الطلاب القادمون من المدارس
                     الثانوية صدمة الانتقال للنظام الجامعي، خاصة في المقررات العلمية الأساسية مثل الرياضيات والفيزياء
@@ -380,7 +406,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         المناسب.</li>
 </ul>
 </section>
-<section id="solution">
+<section id="solution" style="content-visibility: auto;">
 <h2>الحل: منصة ذكية تتكيف مع عقل الطالب</h2>
 <p>أطلقت الجامعة منصة تعلم تكيفي مدعومة بالذكاء الاصطناعي للمقررات العلمية. لا تقوم المنصة فقط بعرض
                     المحتوى، بل "تفهم" الطالب:</p>
@@ -396,7 +422,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>لوحة التحكم الخاصة بالأستاذ ترسل تنبيهات مبكرة: "الطالبة سارة تواجه صعوبة في الفصل الثالث، وقد قضت 3
                     ساعات دون تقدم يذكر". هذا يسمح للأستاذ بالتدخل الشخصي وتقديم المساعدة قبل موعد الاختبار النهائي.</p>
 </section>
-<section id="results">
+<section id="results" style="content-visibility: auto;">
 <h2>النتائج: قفزة نوعية في الأداء</h2>
 <p>بعد تطبيق النظام لمدة عامين دراسيين، كانت النتائج مذهلة:</p>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
@@ -416,13 +442,13 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>الأهم من الأرقام، هو تغير نفسية الطلاب. شعر الطلاب المتعثرون سابقاً أنهم يمتلكون أداة تساعدهم بصبر
                     وتدرج، مما أعاد لهم الثقة بأنفسهم.</p>
 </section>
-<section id="future">
+<section id="future" style="content-visibility: auto;">
 <h2>مستقبل التعليم الجامعي</h2>
 <p>تخطط الجامعة لتوسيع التجربة لتشمل الكليات الإنسانية والصحية وتطوير "معلم افتراضي" (AI Tutor) يمكنه
                     إجراء محادثات صوتية مع الطلاب لشرح المفاهيم المعقدة باللهجة السعودية، مما يجعل التعليم أكثر قرباً
                     وتفاعلية.</p>
 </section>
-<section id="conclusion">
+<section id="conclusion" style="content-visibility: auto;">
 <h2>الخاتمة</h2>
 <p>أثبتت تجربة جامعة الملك سعود أن التكنولوجيا ليست بديلاً عن المعلم، بل هي "مُضاعِف للقوة" يمكنه تحرير
                     المعلم من المهام الروتينية ليركز على الإرشاد والإلهام. إن التعليم التكيفي هو المستقبل الذي يجعل
@@ -438,7 +464,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     <iconify-icon icon="lucide:arrow-left"></iconify-icon>
 </a>
 </div>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6">
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
 <li><a href="/frontend/pages/blogger/nca-compliance">الامتثال لمعايير الأمن السيبراني (NCA) في السعودية | الدليل الشامل 2026</a></li><li><a href="/frontend/pages/blogger/private-hospital-scheduling-optimization">دراسة حالة: مجموعة صحية خاصة | تقليل أوقات الانتظار بنسبة 60%</a></li><li><a href="/frontend/pages/blogger/process-automation">أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة بالكامل</a></li><li><a href="/frontend/pages/blogger/production-line">كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟ - Bright AI</a></li>

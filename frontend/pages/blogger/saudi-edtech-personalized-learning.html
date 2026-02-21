@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>دراسة حالة: منصة تعليمية سعودية | تخصيص مسارات التعلم لـ 100,000 طالب</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="قصة نجاح شركة EdTech سعودية طورت محرك توصيات ذكي يخصص المحتوى التعليمي، مما ساعد 100,000 طالب على تحسين تحصيلهم الدراسي." name="description"/>
 <meta content="تخصيص التعلم، EdTech السعودية، التعليم المخصص، الذكاء الاصطناعي في التعليم، منصات التعليم الإلكتروني" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -45,7 +39,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="../../css/bundle-components.css" rel="stylesheet"/>
 <!-- Performance Loader -->
 <script>
@@ -260,7 +254,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/iconify-preload.js"></script>
 <script defer="" src="../../js/vendor/iconify.min.js"></script>
 <script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta></head>
+</meta></meta></meta></meta>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #3b0764 100%);">
 <!-- UNIFIED HEADER -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -273,7 +299,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../index.html">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -339,11 +365,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <iconify-icon class="text-purple-400" icon="lucide:lightbulb" width="20"></iconify-icon>
 <span class="text-purple-300 text-sm font-medium tracking-wide">التعليم الرقمي المبتكر</span>
 </div>
-<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" data-aos="fade-up">
+<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" >
                 منصة تعليمية سعودية تخصص مسارات تعلم <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500">لـ 100,000
                     طالب</span>
 </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl"  >
                 كيف ساعدت الخوارزميات شركة سعودية ناشئة في تحسين الأداء الدراسي للطلاب عبر تخصيص المحتوى.
              <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-automation/index.html">(أتمت أعمالك مع حلول BrightAI)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-medical-archive/index.html">(اكتشف الأرشيف الطبي الذكي)</a></p>
 <div class="flex flex-wrap gap-4 mt-8" data-aos="fade-up" data-aos-delay="200">
@@ -356,19 +382,19 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </header>
 <main>
 <article>
-<section id="introduction">
+<section id="introduction" style="content-visibility: auto;">
 <h2>المقدمة: ثورة التعليم ما بعد المدرسة</h2>
 <p>يشهد قطاع تكنولوجيا التعليم (EdTech) في المملكة نمواً هائلاً، مدفوعاً برؤية 2030 ورغبة الأسر في تحسين
                     مستوى أبنائهم. شركة ناشئة سعودية، أدركت أن المشكلة ليست في "توفر" المحتوى (فاليوتيوب مليء بالدروس)،
                     بل في "توجيه" الطالب للمحتوى المناسب لمستواه الحالي.</p>
 </section>
-<section id="challenge">
+<section id="challenge" style="content-visibility: auto;">
 <h2>التحدي: الطالب التائه في بحر المعلومات</h2>
 <p>لاحظت الشركة من خلال بيانات الاستخدام أن الطالب يقضي وقتاً طويلاً في البحث عن درس مناسب، وغالباً ما
                     ينتهي به المطاف بمشاهدة فيديو إما "صعب جداً" يُشعره بالإحباط، أو "سهل جداً" يسبب له الملل. غياب
                     التوجيه الشخصي كان السبب الرئيسي لانسحاب المشتركين.</p>
 </section>
-<section id="solution">
+<section id="solution" style="content-visibility: auto;">
 <h2>الحل: "نتفليكس" للتعليم</h2>
 <p>قامت الشركة ببناء "محرك توصيات" (Recommendation Engine) مشابه لذلك المستخدم في نتفليكس أو يوتيوب،
                     لكنه مصمم لأغراض تربوية:</p>
@@ -380,7 +406,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     الاختبار بنسبة 50% فقط، فإن النظام لا يقترح عليه الدرس التالي، بل يقترح "درس مراجعة للجزيئات
                     والذرات" (أساسيات سابقة) لردم الفجوة المعرفية أولاً.</p>
 </section>
-<section id="impact">
+<section id="impact" style="content-visibility: auto;">
 <h2>النتائج: تحسن ملموس في الدرجات</h2>
 <p>بعد تطبيق النظام على شريحة تضم 100,000 طالب في مراحل التعليم العام:</p>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
@@ -400,12 +426,12 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>أصبح الطلاب يقضون وقتاً أكثر فاعلية في التعلم بدلاً من البحث، مما زاد من ثقة أولياء الأمور في المنصة.
                 </p>
 </section>
-<section id="future">
+<section id="future" style="content-visibility: auto;">
 <h2>مستقبل التعليم المخصص</h2>
 <p>تستخدم الشركة الآن هذه البيانات الضخمة لتطوير مناهج دراسية جديدة تركز على "المهارات المفقودة" التي
                     اكتشف النظام ضعف الطلاب فيها بشكل عام، مما يساهم في سد الفجوات على مستوى وطني.</p>
 </section>
-<section id="conclusion">
+<section id="conclusion" style="content-visibility: auto;">
 <h2>الخاتمة</h2>
 <p>هذه الحالة تثبت أن الذكاء الاصطناعي يمكن أن يلعب دور "المعلم الخصوصي" المتاح للجميع بتكلفة زهيدة، مما
                     يحقق دمقرطة التعليم المتميز ويساعد الجيل الجديد على التفوق.</p>
@@ -420,7 +446,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     <iconify-icon icon="lucide:arrow-left"></iconify-icon>
 </a>
 </div>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6">
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
 <li><a href="/frontend/pages/blogger/saudi-energy-predictive-maintenance">دراسة حالة: شركة طاقة سعودية | توفير 40 مليون ريال سنوياً عبر الصيانة التنبؤية</a></li><li><a href="/frontend/pages/blogger/saudi-factory-ai-productivity">دراسة حالة: مصنع سعودي | رفع الإنتاجية 30% بتحليلات الذكاء الاصطناعي</a></li><li><a href="/frontend/pages/blogger/saudi-hospitality-dynamic-pricing">دراسة حالة: مجموعة فنادق سعودية | زيادة الإشغال 20% بالتسعير الديناميكي</a></li><li><a href="/frontend/pages/blogger/saudi-insurance-claims-ai">دراسة حالة شاملة: الذكاء الاصطناعي في التأمين السعودي | كشف الاحتيال 99%</a></li>

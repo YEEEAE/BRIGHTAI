@@ -16,8 +16,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap"
-        rel="stylesheet">
+    
     <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.min.js"></script>
 
@@ -1063,20 +1062,28 @@
   <meta name="twitter:title" content="لوحة تحكم المسؤول - بوابة التوظيف Mais Co">
   <meta name="twitter:description" content="لوحة تحكم المسؤول - بوابة التوظيف Mais Co - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
   <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
-      <link rel="stylesheet" href="../../../../frontend/css/main.bundle.css?v=20260206" />
+      <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../../frontend/css/main.bundle.css?v=20260206" /><noscript><link rel="stylesheet" href="../../../../frontend/css/main.bundle.css?v=20260206" /></noscript>
     <script src="../../../../frontend/js/navigation.js" defer></script>
 
     <!-- BrightAI Global Theme -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../../css/main.bundle.css" />
-    <link rel="stylesheet" href="../../../css/index-theme.css" />
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../../css/main.bundle.css" /></noscript>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../css/index-theme.css" /><noscript><link rel="stylesheet" href="../../../css/index-theme.css" /></noscript>
 
 <link rel="stylesheet" href="../../../css/tailwind.local.min.css">
 <script defer src="../../../js/iconify-preload.js"></script>
 <script defer src="../../../js/vendor/iconify.min.js"></script>
 <script defer src="../../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body>
@@ -1095,7 +1102,7 @@
 
             <!-- Logo -->
             <a href="../../../../" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <img loading="lazy" src="../../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -1322,10 +1329,10 @@
 
         <main>
             <!-- ================== STATS ================== -->
-            <section class="stats-grid" id="statsGrid"></section>
+            <section class="stats-grid" id="statsGrid" style="content-visibility: auto;"></section>
 
             <!-- ================== CONTROLS ================== -->
-            <section class="controls">
+            <section class="controls" style="content-visibility: auto;">
                 <div class="form-group">
                     <label for="searchInput">بحث بالاسم</label>
                     <input type="search" id="searchInput" placeholder="ابحث عن متقدم...">
@@ -1366,13 +1373,13 @@
 
             <!-- ================== TAB CONTENTS ================== -->
             <div id="active" class="tab-content active" role="tabpanel" aria-labelledby="tab-active" tabindex="0">
-                <section class="applicants-grid" id="activeApplicantsList"></section>
+                <section class="applicants-grid" id="activeApplicantsList" style="content-visibility: auto;"></section>
             </div>
             <div id="archived" class="tab-content" role="tabpanel" aria-labelledby="tab-archived" tabindex="0">
-                <section class="applicants-grid" id="archivedApplicantsList"></section>
+                <section class="applicants-grid" id="archivedApplicantsList" style="content-visibility: auto;"></section>
             </div>
             <div id="interviews" class="tab-content" role="tabpanel" aria-labelledby="tab-interviews" tabindex="0">
-                <section class="applicants-grid" id="interviewsApplicantsList"></section>
+                <section class="applicants-grid" id="interviewsApplicantsList" style="content-visibility: auto;"></section>
             </div>
 
             <div id="vacancies" class="tab-content">
@@ -1435,7 +1442,7 @@
                 </div>
 
                 <h3 class="section-subtitle"><i class="fas fa-list"></i> الشواغر الحالية</h3>
-                <section class="vacancies-grid" id="vacanciesList"></section>
+                <section class="vacancies-grid" id="vacanciesList" style="content-visibility: auto;"></section>
             </div>
 
             <!-- ================== CHARTS ================== -->

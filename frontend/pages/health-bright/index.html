@@ -880,7 +880,7 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:site_name" content="مُشرقة AI">
-  <link rel="stylesheet" href="../../css/main.bundle.css">
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css"><noscript><link rel="stylesheet" href="../../css/main.bundle.css"></noscript>
 
   <!-- Deferred Resource Loading for Animations -->
   <script>
@@ -915,22 +915,30 @@
       }
     })();
   </script>
-    <link rel="stylesheet" href="../../../frontend/css/main.bundle.css?v=20260206" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../frontend/css/main.bundle.css?v=20260206" /><noscript><link rel="stylesheet" href="../../../frontend/css/main.bundle.css?v=20260206" /></noscript>
     <script src="../../../frontend/js/navigation.js" defer></script>
 
     <!-- BrightAI Global Theme -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/index-theme.css" />
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/index-theme.css" /><noscript><link rel="stylesheet" href="../../css/index-theme.css" /></noscript>
 
 
 <link rel="stylesheet" href="../../css/tailwind.local.min.css">
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body>
@@ -949,7 +957,7 @@
 
             <!-- Logo -->
             <a href="../../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <img loading="lazy" src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -1149,7 +1157,7 @@
   <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
     <div class="nav-container">
       <a href="../../.." class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-        <img src="../../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
+        <img loading="lazy" src="../../assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
       </a>
       <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
         <span class="hamburger-line"></span>
@@ -1225,7 +1233,7 @@
 
   <main id="home" class="container">
     <!-- Hero Section -->
-    <section class="hero" data-aos="fade-up">
+    <section class="hero" data-aos="fade-up" style="content-visibility: auto;">
       <div class="card" data-aos="fade-right">
         <div class="badge">🏥 ثورة الذكاء الاصطناعي في الرعاية الصحية السعودية</div>
         <h1 class="title">حلول طبية متقدمة لتحسين التشخيص والعناية بالمرضى في المملكة</h1>
@@ -1260,7 +1268,7 @@
     </section>
 
     <!-- Statistics Section (NEW) -->
-    <section id="stats" class="section" data-aos="fade-up">
+    <section id="stats" class="section" data-aos="fade-up" style="content-visibility: auto;">
       <h2>📊 أرقامنا تتحدث عن نفسها</h2>
       <div class="stats-grid">
         <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
@@ -1291,7 +1299,7 @@
     </section>
 
     <!-- Services Section (Enhanced) -->
-    <section id="services" class="section">
+    <section id="services" class="section" style="content-visibility: auto;">
       <h2>🎯 خدماتنا المتميزة في الذكاء الاصطناعي الطبي</h2>
       <p class="muted" style="margin-bottom:28px">نوفر مجموعة شاملة من الحلول الطبية المدعومة بالذكاء الاصطناعي، مصممة
         خصيصاً لتلبية احتياجات القطاع الصحي في المملكة العربية السعودية.</p>
@@ -1356,7 +1364,7 @@
     </section>
 
     <!-- Try Systems Section (Enhanced) -->
-    <section id="try" class="section">
+    <section id="try" class="section" style="content-visibility: auto;">
       <h2>🧪 تجربة حية للأنظمة الطبية الذكية</h2>
       <p class="muted" style="margin-bottom:24px">جرّب أنظمتنا بنفسك واكتشف قوة الذكاء الاصطناعي في تحليل البيانات
         الطبية. جميع النتائج مبنية على نماذج BRI MED المتقدمة ومدرّبة على ملايين الحالات الطبية.</p>
@@ -1370,7 +1378,7 @@
       </div>
 
       <!-- Medical Image Analysis (Working System) -->
-      <section id="image-ai" class="card" aria-live="polite">
+      <section id="image-ai" class="card" aria-live="polite" style="content-visibility: auto;">
         <h3>🔬 تحليل الصور الطبية بالذكاء الاصطناعي</h3>
         <p class="muted" style="margin-bottom:20px">ارفع صورة طبية (أشعة سينية، رنين مغناطيسي، أشعة مقطعية، أو موجات فوق
           صوتية) واحصل على تحليل شامل فوري يتضمن الكشف عن الأمراض، تصنيف الخطورة، والتوصيات الطبية.</p>
@@ -1426,7 +1434,7 @@
       </section>
 
       <!-- Remote Monitoring (Demo) -->
-      <section id="remote" class="card" hidden aria-live="polite">
+      <section id="remote" class="card" hidden aria-live="polite" style="content-visibility: auto;">
         <h3>📱 المراقبة الصحية عن بُعد</h3>
         <p class="muted" style="margin-bottom:20px">أدخل القراءات الحيوية للمريض للحصول على تقييم فوري وتنبيهات ذكية حول
           الحالة الصحية.</p>
@@ -1486,7 +1494,7 @@
       </section>
 
       <!-- Hospital Management (Demo) -->
-      <section id="hms" class="card" hidden aria-live="polite">
+      <section id="hms" class="card" hidden aria-live="polite" style="content-visibility: auto;">
         <h3>🏥 نظام إدارة المستشفيات الذكية</h3>
         <p class="muted" style="margin-bottom:20px">أدخل بيانات الحالة للحصول على توصيات ذكية للفرز، الجدولة، والموارد
           المطلوبة.</p>
@@ -1552,7 +1560,7 @@
       </section>
 
       <!-- Med-Gemini (Demo) -->
-      <section id="med-gemini" class="card" hidden aria-live="polite">
+      <section id="med-gemini" class="card" hidden aria-live="polite" style="content-visibility: auto;">
         <h3>🤖 تطبيقات Med-Gemini الطبية</h3>
         <p class="muted" style="margin-bottom:20px">اطرح استفساراً طبياً أو ارفع تقريراً طبياً للحصول على تحليل شامل
           وإجابات دقيقة.</p>
@@ -1610,7 +1618,7 @@
     </section>
 
     <!-- Testimonials Section (NEW) -->
-    <section id="testimonials" class="section">
+    <section id="testimonials" class="section" style="content-visibility: auto;">
       <h2>💬 آراء عملائنا من المستشفيات والمراكز الطبية</h2>
       <p class="muted" style="margin-bottom:28px">استمع لتجارب المؤسسات الصحية التي اعتمدت حلولنا وحققت نتائج استثنائية.
       </p>
@@ -1675,7 +1683,7 @@
     </section>
 
     <!-- Why Choose Us (Enhanced) -->
-    <section id="why" class="section">
+    <section id="why" class="section" style="content-visibility: auto;">
       <h2>🌟 لماذا تختار Bright AI كشريكك في التحول الرقمي الصحي؟</h2>
       <p class="muted" style="margin-bottom:28px">نقدم حلولاً متكاملة مبنية على أحدث تقنيات الذكاء الاصطناعي، مصممة
         خصيصاً للقطاع الصحي السعودي.</p>
@@ -1727,7 +1735,7 @@
     </section>
 
     <!-- FAQ Section (NEW) -->
-    <section id="faq" class="section">
+    <section id="faq" class="section" style="content-visibility: auto;">
       <h2>❓ الأسئلة الشائعة حول حلول الذكاء الاصطناعي الطبية</h2>
       <p class="muted" style="margin-bottom:28px">إجابات على أكثر الأسئلة شيوعاً حول أنظمتنا وخدماتنا.</p>
 
@@ -1790,7 +1798,7 @@
     </section>
 
     <!-- Contact Section (Enhanced) -->
-    <section id="contact" class="section card">
+    <section id="contact" class="section card" style="content-visibility: auto;">
       <h3>📞 تواصل معنا لبدء رحلة التحول الرقمي</h3>
       <p class="muted" style="margin-bottom:24px">فريقنا جاهز لمساعدتك في اختيار الحل المناسب لمنشأتك الصحية. احجز
         استشارة مجانية الآن واكتشف كيف يمكن للذكاء الاصطناعي تحسين جودة الرعاية الصحية لديك.</p>
@@ -1832,7 +1840,7 @@
 
     <!-- قسم الخدمات ذات الصلة -->
     <section class="related-services section"
-      style="background: linear-gradient(135deg, #0A192F 0%, #112240 100%); padding: 4rem 2rem; border-radius: var(--radius);">
+      style="background: linear-gradient(135deg, #0A192F 0%, #112240 100%); padding: 4rem 2rem; border-radius: var(--radius);; content-visibility: auto;">
       <div class="container" style="max-width: 1200px; margin: 0 auto;">
         <h2 style="color: var(--accent); text-align: center; margin-bottom: 1rem; font-size: 1.8rem;">خدمات ذات صلة</h2>
         <p

@@ -12,13 +12,21 @@
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
     <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
     <nav class="unified-nav" role="navigation">
         <div class="nav-container"><button class="mobile-toggle" aria-label="Open menu"><span class="bar"></span><span
-                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img
+                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img loading="lazy"
                     src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
                     AI</span></a>
             <ul class="nav-links">
@@ -58,7 +66,7 @@
 
         <article class="doc-content prose prose-invert max-w-none space-y-8">
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:eye" class="text-gold-400"></iconify-icon> TL;DR 👀
                 </h2>
@@ -70,7 +78,7 @@
                 </p>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:database" class="text-indigo-400"></iconify-icon> What We Collect
                 </h2>
@@ -98,7 +106,7 @@
                 </ul>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:target" class="text-emerald-400"></iconify-icon> How We Use It
                 </h2>
@@ -122,7 +130,7 @@
                 </ul>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:lock" class="text-rose-400"></iconify-icon> How We Protect It 🔐
                 </h2>
@@ -152,7 +160,7 @@
                 </div>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:share-2" class="text-violet-400"></iconify-icon> We Don't Sell Your Data
                 </h2>
@@ -176,7 +184,7 @@
                 </ul>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:cookie" class="text-amber-400"></iconify-icon> Cookies 🍪
                 </h2>
@@ -187,7 +195,7 @@
                 </p>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:user-check" class="text-sky-400"></iconify-icon> Your Rights
                 </h2>
@@ -212,7 +220,7 @@
                 </ul>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:scale" class="text-blue-400"></iconify-icon> Compliance
                 </h2>
@@ -223,7 +231,7 @@
             </section>
 
             <section class="glass-card p-8 rounded-2xl"
-                style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(14, 165, 233, 0.1)); border: 1px solid rgba(6, 182, 212, 0.3);">
+                style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(14, 165, 233, 0.1)); border: 1px solid rgba(6, 182, 212, 0.3);; content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                     <iconify-icon icon="lucide:help-circle" class="text-cyan-400"></iconify-icon> Questions?
                 </h2>

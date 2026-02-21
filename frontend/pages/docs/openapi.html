@@ -223,6 +223,14 @@
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 <body>
 
@@ -247,7 +255,7 @@
         </nav>
 
         <!-- Overview Section -->
-        <section id="overview" class="section">
+        <section id="overview" class="section" style="content-visibility: auto;">
             <h2>نظرة عامة</h2>
             <p>BrightAI API توفر مجموعة من خدمات الذكاء الاصطناعي المصممة خصيصاً للسوق السعودي. جميع الخدمات تدعم اللغة العربية بشكل كامل وتتماشى مع رؤية المملكة 2030.</p>
             
@@ -268,14 +276,14 @@
         </section>
 
         <!-- Authentication Section -->
-        <section id="authentication" class="section">
+        <section id="authentication" class="section" style="content-visibility: auto;">
             <h2>المصادقة</h2>
             <p>حالياً، API لا يتطلب مصادقة للاستخدام العام. ومع ذلك، يتم تطبيق حدود معدل الطلبات (Rate Limiting) بناءً على عنوان IP.</p>
             <p style="margin-top: 10px;"><strong>ملاحظة:</strong> في الإصدارات المستقبلية، سيتم إضافة نظام مصادقة باستخدام API Keys.</p>
         </section>
 
         <!-- Chat Endpoint -->
-        <section id="chat" class="section">
+        <section id="chat" class="section" style="content-visibility: auto;">
             <h2>محادثة ذكية (Chat)</h2>
             
             <div class="endpoint">
@@ -360,7 +368,7 @@
 
 
         <!-- Search Endpoint -->
-        <section id="search" class="section">
+        <section id="search" class="section" style="content-visibility: auto;">
             <h2>بحث ذكي (Search)</h2>
             
             <div class="endpoint">
@@ -432,7 +440,7 @@
 
 
         <!-- Medical Endpoint -->
-        <section id="medical" class="section">
+        <section id="medical" class="section" style="content-visibility: auto;">
             <h2>تحليل طبي (Medical)</h2>
             
             <div class="endpoint">
@@ -534,7 +542,7 @@
 
 
         <!-- Summary Endpoint -->
-        <section id="summary" class="section">
+        <section id="summary" class="section" style="content-visibility: auto;">
             <h2>تلخيص نصوص (Summary)</h2>
             
             <div class="endpoint">
@@ -602,7 +610,7 @@
 
 
         <!-- Error Codes Section -->
-        <section id="errors" class="section">
+        <section id="errors" class="section" style="content-visibility: auto;">
             <h2>أكواد الأخطاء</h2>
             <p>جميع الأخطاء تُرجع بتنسيق موحد يحتوي على:</p>
             <div class="code-block">
@@ -673,7 +681,7 @@
         </section>
 
         <!-- Rate Limits Section -->
-        <section id="rate-limits" class="section">
+        <section id="rate-limits" class="section" style="content-visibility: auto;">
             <h2>حدود الاستخدام (Rate Limits)</h2>
             <p>لضمان جودة الخدمة لجميع المستخدمين، يتم تطبيق حدود معدل الطلبات التالية:</p>
             
@@ -705,7 +713,7 @@
 
 
         <!-- Request/Response Schemas Section -->
-        <section id="schemas" class="section">
+        <section id="schemas" class="section" style="content-visibility: auto;">
             <h2>Request/Response Schemas</h2>
             
             <h3>ChatRequest Schema</h3>
@@ -806,7 +814,7 @@
         </section>
 
         <!-- Examples Section -->
-        <section id="examples" class="section">
+        <section id="examples" class="section" style="content-visibility: auto;">
             <h2>أمثلة cURL</h2>
             
             <h3>Chat Endpoint</h3>
@@ -848,7 +856,7 @@ curl -X POST http://localhost:3000/api/ai/summary \
         </section>
 
         <!-- Best Practices Section -->
-        <section id="best-practices" class="section">
+        <section id="best-practices" class="section" style="content-visibility: auto;">
             <h2>أفضل الممارسات</h2>
             
             <h3>1. معالجة الأخطاء</h3>
@@ -884,7 +892,7 @@ curl -X POST http://localhost:3000/api/ai/summary \
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="section">
+        <section id="contact" class="section" style="content-visibility: auto;">
             <h2>الدعم والتواصل</h2>
             <p>للحصول على دعم فني أو استفسارات حول API:</p>
             <ul style="margin-right: 20px; margin-top: 10px;">

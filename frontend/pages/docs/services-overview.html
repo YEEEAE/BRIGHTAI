@@ -25,7 +25,7 @@
     <meta property="og:title" content="خدمات Bright AI | حلول ذكاء اصطناعي متكاملة" />
     <meta property="og:description" content="اكتشف خدمات Bright AI المتكاملة: من الأتمتة للتحليلات الذكية." />
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../css/main.bundle.css" /></noscript>
     <link rel="stylesheet" href="../../css/bundle-pages.css" />
     <link rel="stylesheet" href="../../css/docs.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,6 +50,14 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -58,7 +66,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
         <div class="nav-container">
             <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false"><span class="bar"></span><span
                     class="bar"></span><span class="bar"></span></button>
-            <a href="https://brightai.site/index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية"><img
+            <a href="https://brightai.site/index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية"><img loading="lazy"
                     src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" /><span>Bright
                     AI</span></a>
             <ul class="nav-links">
@@ -102,7 +110,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
         </header>
 
         <article class="doc-content prose prose-invert max-w-none">
-            <section class="doc-section glass-card p-8 rounded-2xl mb-8">
+            <section class="doc-section glass-card p-8 rounded-2xl mb-8" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-3"><iconify-icon icon="lucide:info"
                         class="text-gold-400"></iconify-icon> مقدمة</h2>
                 <p class="text-slate-300 leading-relaxed text-lg">يا هلا فيك! 👋 هذي الوثيقة تعطيك صورة كاملة عن كل
@@ -114,7 +122,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                         خبير</strong> متخصصين في الذكاء الاصطناعي وتحليل البيانات.</p>
             </section>
 
-            <section class="doc-section glass-card p-8 rounded-2xl mb-8">
+            <section class="doc-section glass-card p-8 rounded-2xl mb-8" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                     <iconify-icon icon="lucide:network" class="text-indigo-400"></iconify-icon>
                     سلات الصفحات التجارية
@@ -153,7 +161,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                 </p>
             </section>
 
-            <section class="doc-section mb-12">
+            <section class="doc-section mb-12" style="content-visibility: auto;">
                 <h2 class="text-3xl font-bold text-white mb-8 flex items-center gap-3"><iconify-icon
                         icon="lucide:grid-3x3" class="text-indigo-400"></iconify-icon> خدماتنا الأساسية</h2>
                 <div class="grid md:grid-cols-2 gap-6">
@@ -263,7 +271,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                 </div>
             </section>
 
-            <section class="doc-section glass-card p-8 rounded-2xl mb-8">
+            <section class="doc-section glass-card p-8 rounded-2xl mb-8" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3"><iconify-icon
                         icon="lucide:git-branch" class="text-purple-400"></iconify-icon> كيف نشتغل معاك؟</h2>
                 <div class="space-y-6">
@@ -320,7 +328,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
             </section>
 
             <section class="doc-section glass-card p-8 rounded-2xl text-center"
-                style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3);">
+                style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3);; content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-4">جاهز تبدأ رحلتك الرقمية؟</h2>
                 <p class="text-slate-300 mb-6">تواصل معنا اليوم واحصل على استشارة مجانية من خبراءنا</p>
                 <div class="flex flex-wrap justify-center gap-4">

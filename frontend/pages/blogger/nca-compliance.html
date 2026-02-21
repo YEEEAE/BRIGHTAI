@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>الامتثال لمعايير الأمن السيبراني (NCA) في السعودية | الدليل الشامل 2026</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="الدليل الشامل للامتثال لضوابط الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية (NDMO). خارطة طريق للجهات الحكومية والشركات لتحقيق الامتثال والسيادة الرقمية." name="description"/>
 <meta content="الأمن السيبراني السعودية, NCA, ECC-1:2018, NDMO, حماية البيانات الشخصية, السيادة الرقمية, الامتثال السيبراني, ضوابط الأمن السيبراني, الهيئة الوطنية للأمن السيبراني" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -45,7 +39,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="../../css/bundle-components.css" rel="stylesheet"/>
 <!-- Performance Loader -->
 <script>
@@ -334,7 +328,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/iconify-preload.js"></script>
 <script defer="" src="../../js/vendor/iconify.min.js"></script>
 <script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta></head>
+</meta></meta></meta></meta>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
 <!-- UNIFIED HEADER -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -347,7 +373,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../index.html">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -545,12 +571,12 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <iconify-icon class="text-indigo-400" icon="lucide:shield-check" width="20"></iconify-icon>
 <span class="text-indigo-300 text-sm font-medium tracking-wide">الامتثال والحوكمة</span>
 </div>
-<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" data-aos="fade-up">
+<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" >
                 الدليل الشامل للامتثال لمعايير <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-500">الأمن السيبراني
                     (NCA)</span> و <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">حماية
                     البيانات</span> في السعودية
             </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl"  >
                 خارطة طريق تنفيذية للجهات الحكومية والخاصة لتحقيق الامتثال لضوابط NCA و NDMO وضمان السيادة الرقمية في
                 عصر الذكاء الاصطناعي.
              <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-automation/index.html">(أتمت أعمالك مع حلول BrightAI)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-medical-archive/index.html">(اكتشف الأرشيف الطبي الذكي)</a></p>
@@ -568,7 +594,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </header>
 <main>
 <article>
-<section id="introduction">
+<section id="introduction" style="content-visibility: auto;">
 <h2>مقدمة: الأمن السيبراني ركيزة التحول الوطني</h2>
 <p>في عصر التحول الرقمي المتسارع الذي تشهده المملكة العربية السعودية، لم يعد الأمن السيبراني مجرد خيار
                     تقني لحماية الأنظمة، بل أصبح ركيزة أساسية للأمن الوطني وممكناً رئيسياً لتحقيق رؤية 2030. مع تزايد
@@ -587,7 +613,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         الفضاء السيبراني وحرصها على تطبيق أعلى المعايير الدولية.</p>
 </div>
 </section>
-<section id="nca-overview">
+<section id="nca-overview" style="content-visibility: auto;">
 <h2>الهيئة الوطنية للأمن السيبراني (NCA): الحصن الرقمي للمملكة</h2>
 <p>الهيئة الوطنية للأمن السيبراني هي الجهة المختصة بالأمن السيبراني في المملكة، والمرجع الوطني في شؤونه.
                     أُنشئت في عام 2017 بهدف تعزيز الأمن السيبراني للدولة، وحماية مصالحها الحيوية، وأمنها الوطني، وبناها
@@ -606,7 +632,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         المتخصصة.</li>
 </ul>
 </section>
-<section id="ecc">
+<section id="ecc" style="content-visibility: auto;">
 <h2>الضوابط الأساسية للأمن السيبراني (ECC-1:2018)</h2>
 <p>تُعد الضوابط الأساسية للأمن السيبراني (Essential Cybersecurity Controls - ECC) حجر الزاوية في منظومة
                     الالتزام السيبراني في المملكة. صُممت هذه الضوابط لتكون الحد الأدنى من متطلبات الأمن السيبراني التي
@@ -644,7 +670,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         نظراً لطبيعتها الحساسة وارتباطها بالسلامة المادية.</p>
 </div>
 </section>
-<section id="cscc">
+<section id="cscc" style="content-visibility: auto;">
 <h2>ضوابط الأمن السيبراني للأنظمة الحساسة (CSCC-1:2019)</h2>
 <p>إدراكاً من الهيئة بأن بعض الأنظمة تتطلب مستوى أعلى من الحماية نظراً لحساسيتها وأثرها المباشر على
                     الأمن الوطني أو الاقتصادي أو الاجتماعي، أصدرت "ضوابط الأمن السيبراني للأنظمة الحساسة" (Critical
@@ -668,7 +694,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <li>إجراءات صارمة للتدقيق والمراقبة المستمرة (24/7) للسجلات وامتيازات الوصول.</li>
 </ul>
 </section>
-<section id="dcc">
+<section id="dcc" style="content-visibility: auto;">
 <h2>ضوابط الأمن السيبراني للبيانات (DCC-1:2022)</h2>
 <p>مع تزايد أهمية البيانات كأصل استراتيجي، أصدرت الهيئة "ضوابط الأمن السيبراني للبيانات" (Data
                     Cybersecurity Controls - DCC) لضمان حماية البيانات طوال دورة حياتها. هذه الضوابط تُكمل الـ ECC وتركز
@@ -688,7 +714,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                         Wiping) عند انتهاء الحاجة إليها.</li>
 </ol>
 </section>
-<section id="ndmo">
+<section id="ndmo" style="content-visibility: auto;">
 <h2>مكتب إدارة البيانات الوطنية (NDMO) والتصنيف</h2>
 <p>يعمل مكتب إدارة البيانات الوطنية (NDMO) كذراع تنظيمي للبيانات في المملكة، ويرتبط بالهيئة السعودية
                     للبيانات والذكاء الاصطناعي (سدايا). يهدف المكتب إلى تنظيم البيانات الوطنية وحوكمتها وحمايتها. أحد
@@ -727,7 +753,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </tbody>
 </table>
 </section>
-<section id="compliance-journey">
+<section id="compliance-journey" style="content-visibility: auto;">
 <h2>رحلة الامتثال: خارطة طريق للتنفيذ</h2>
 <p>تحقيق الامتثال ليس مشروعاً لمرة واحدة، بل هو رحلة مستمرة تتطلب منهجية واضحة. نقترح الخطوات التالية
                     لتحقيق الامتثال الفعال:</p>
@@ -748,7 +774,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>الامتثال حالة مستمرة. يجب تفعيل أنظمة المراقبة (SOC) لمتابعة التهديدات، وإجراء مراجعات دورية لضمان
                     استمرارية الالتزام بالتحديثات التنظيمية والتعامل مع المخاطر المستجدة.</p>
 </section>
-<section id="ai-role">
+<section id="ai-role" style="content-visibility: auto;">
 <h2>دور الذكاء الاصطناعي في تعزيز الامتثال</h2>
 <p>يمكن للذكاء الاصطناعي أن يكون حليفاً قوياً في رحلة الامتثال، حيث يوفر أدوات لأتمتة العمليات وتحسين
                     الدقة.</p>
@@ -766,7 +792,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>تحويل سياسات الامتثال إلى قواعد برمجية يتم التحقق منها تلقائياً في بيئات التطوير والسحابة، مما يمنع
                     نشر أي نظام غير ممتثل ويضمن الالتزام المستمر.</p>
 </section>
-<section id="faq">
+<section id="faq" style="content-visibility: auto;">
 <h2>الأسئلة الشائعة حول الامتثال السيبراني</h2>
 <h3>هل الامتثال لضوابط NCA إلزامي للقطاع الخاص؟</h3>
 <p>نعم، الامتثال إلزامي للشركات التي تقدم خدمات للبنى التحتية الحساسة الوطنية، أو التي تتعاقد مع جهات
@@ -784,14 +810,14 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     يكون مقدم الخدمة السحابية مسجلاً ومؤهلاً لدى الهيئة الوطنية للأمن السيبراني ويحقق متطلبات السيادة.
                 </p>
 </section>
-<section id="conclusion">
+<section id="conclusion" style="content-visibility: auto;">
 <h2>الخاتمة: الاستثمار في الأمن هو استثمار في المستقبل</h2>
 <p>إن تحقيق الامتثال لضوابط NCA و NDMO ليس مجرد عبء تنظيمي، بل هو استثمار استراتيجي في استدامة الأعمال
                     وحماية السمعة وبناء الثقة مع العملاء والشركاء. في Bright AI، نحن ملتزمون بتمكين شركائنا من تحقيق
                     الامتثال السلس والفعال من خلال حلول ذكية تجمع بين الخبرة الاستشارية والتقنيات المتقدمة. ندعوكم للبدء
                     اليوم في تحصين مؤسستكم وبناء مستقبل رقمي آمن ومزدهر.</p>
 </section>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6">
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
 <li><a href="/frontend/pages/blogger/private-hospital-scheduling-optimization">دراسة حالة: مجموعة صحية خاصة | تقليل أوقات الانتظار بنسبة 60%</a></li><li><a href="/frontend/pages/blogger/process-automation">أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة بالكامل</a></li><li><a href="/frontend/pages/blogger/production-line">كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟ - Bright AI</a></li><li><a href="/frontend/pages/blogger/riyadh-municipality-ai-license">دراسة حالة: كيف خفّضت بلدية الرياض وقت التراخيص 70% بالذكاء الاصطناعي</a></li>

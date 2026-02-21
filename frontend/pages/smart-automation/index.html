@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>الأتمتة الذكية وسير عمل AI | Bright AI السعودية</title>
 <!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <!-- Enterprise SEO Meta Tags -->
 <meta content="خدمات الأتمتة الذكية وسير عمل الذكاء الاصطناعي للشركات السعودية. تجاوز RPA التقليدية إلى حلول تعلم آلي تتخذ قرارات مستقلة. وفر 60% من التكاليف و80% زيادة في الإنتاجية." name="description"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -40,7 +34,39 @@
                 { "@type": "ListItem", "position": 3, "name": "الأتمتة الذكية (Smart Automation)", "item": "https://brightai.site/frontend/pages/smart-automation/index.html" }
             ]
         }
-        </script></head>
+        </script>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 <!-- Background -->
 <canvas class="fixed inset-0 z-0 pointer-events-none w-full h-full" id="neural-canvas"></canvas>
@@ -55,7 +81,7 @@
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../..">
-<img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -299,7 +325,7 @@
 </div>
 </header>
 <!-- FEATURES -->
-<section class="py-24 px-6 bg-[#020617] relative">
+<section class="py-24 px-6 bg-[#020617] relative" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto relative z-10">
 <h2 class="text-3xl md:text-4xl font-bold text-white mb-16 text-center">أكثر من مجرد أتمتة تقليدية</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -347,7 +373,7 @@
 </div>
 </section>
 <!-- BENEFITS STATS -->
-<section class="py-20 bg-indigo-900/10 border-y border-white/5">
+<section class="py-20 bg-indigo-900/10 border-y border-white/5" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto px-6">
 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 <div data-aos="zoom-in">
@@ -370,7 +396,7 @@
 </div>
 </section>
 <!-- APPLICATIONS -->
-<section class="py-24 px-6 relative">
+<section class="py-24 px-6 relative" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto">
 <h2 class="text-3xl font-bold text-white mb-12 text-center">تطبيقات عملية في السوق السعودي</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
@@ -504,7 +530,7 @@
 </div>
 </section>
 <!-- CTA -->
-<section class="py-24 relative overflow-hidden">
+<section class="py-24 relative overflow-hidden" style="content-visibility: auto;">
 <div class="absolute inset-0 bg-indigo-600/10"></div>
 <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
 <h2 class="text-4xl font-bold text-white mb-8">جاهز لأتمتة أعمالك بذكاء؟</h2>
@@ -515,7 +541,7 @@
 </div>
 </section>
 <!-- UNIFIED FOOTER -->
-<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10">
+<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10" style="content-visibility: auto;">
 <div class="max-w-4xl mx-auto px-6 mb-16 text-slate-300 leading-relaxed text-lg seo-article">
 <h3 class="text-3xl font-bold text-white mb-6">مستقبل الأتمتة الذكية للشركات في المملكة العربية السعودية</h3>
 <p class="mb-6">

@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>الذكاء الاصطناعي كخدمة (AIaaS) للشركات السعودية | Bright AI</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <!-- Enterprise SEO Meta Tags -->
 <meta content="خدمات الذكاء الاصطناعي السحابية (AIaaS) للمؤسسات السعودية. نماذج لغوية كبيرة، معالجة لغة طبيعية عربية، وحلول AI مخصصة مع استضافة بيانات محلية متوافقة مع NCA.\" name="description"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -57,7 +51,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <!-- Performance Loader -->
 <script>
         (function () {
@@ -120,9 +114,9 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </script>
 <script defer="" src="../../js/navigation.js"></script>
 <!-- BrightAI Global Theme -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
-<link href="../../css/index-theme.css" rel="stylesheet"/>
+
+
+<link href="../../css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/index-theme.css" rel="stylesheet"/></noscript>
 </link></link></meta>
 <link href="../../css/tailwind.local.min.css" rel="stylesheet"/>
 <script defer="" src="../../js/iconify-preload.js"></script>
@@ -138,7 +132,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                 { "@type": "ListItem", "position": 3, "name": "وكلاء الذكاء الاصطناعي (AI Agent)", "item": "https://brightai.site/frontend/pages/ai-agent/index.html" }
             ]
         }
-        </script></head>
+        </script>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 <!-- UNIFIED HEADER (REBUILT) -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -151,7 +177,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../..">
-<img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -344,10 +370,10 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-blue-500/30 mb-8" data-aos="fade-down">
 <span class="text-blue-300 text-sm font-medium tracking-wide">AI as a Service</span>
 </div>
-<h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" data-aos="fade-up">
+<h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" >
                 الذكاء الاصطناعي <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">كخدمة</span>
 </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl mx-auto mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl mx-auto mb-10 leading-relaxed"  >
                 منصة سحابية متكاملة تمنح مؤسستك الوصول إلى أحدث نماذج الذكاء الاصطناعي (LLMs) ومعالجة اللغة الطبيعية
                 العربية دون الحاجة لبناء بنية تحتية مكلفة.
             </p>
@@ -363,7 +389,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </header>
 <!-- STATS SECTION -->
-<section class="py-16 border-y border-white/5 bg-black/20">
+<section class="py-16 border-y border-white/5 bg-black/20" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto px-6">
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
 <div data-aos="zoom-in">
@@ -386,11 +412,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- FEATURES SECTION -->
-<section class="py-24 px-6 bg-[#020617] relative" id="features">
+<section class="py-24 px-6 bg-[#020617] relative" id="features" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto relative z-10">
 <div class="text-center mb-16">
 <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-aos="fade-up">لماذا AIaaS لمؤسستك؟</h2>
-<p class="text-slate-400 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">نقدم لك حلول ذكاء
+<p class="text-slate-400 max-w-2xl mx-auto"  >نقدم لك حلول ذكاء
                     اصطناعي متقدمة تتوافق مع متطلبات السوق السعودي ورؤية 2030</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -445,7 +471,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- ARCHITECTURE SECTION (NEW) -->
-<section class="py-24 px-6 relative">
+<section class="py-24 px-6 relative" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto">
 <div class="grid lg:grid-cols-2 gap-16 items-center">
 <div data-aos="fade-right">
@@ -502,11 +528,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- USE CASES SECTION -->
-<section class="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-black/0 to-black/40">
+<section class="py-24 px-6 relative overflow-hidden bg-gradient-to-b from-black/0 to-black/40" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto relative z-10">
 <div class="text-center mb-16">
 <h2 class="text-3xl md:text-4xl font-bold text-white mb-6" data-aos="fade-up">حالات الاستخدام</h2>
-<p class="text-slate-400 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">اكتشف كيف تستفيد
+<p class="text-slate-400 max-w-2xl mx-auto"  >اكتشف كيف تستفيد
                     الشركات السعودية من خدماتنا</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -540,7 +566,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- ARABIC LANGUAGE SECTION (NEW) -->
-<section class="py-24 px-6 border-y border-white/5 bg-black/20">
+<section class="py-24 px-6 border-y border-white/5 bg-black/20" style="content-visibility: auto;">
 <div class="max-w-4xl mx-auto text-center">
 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/10 border border-gold-500/20 mb-6" data-aos="zoom-in">
 <iconify-icon class="text-gold-400" icon="lucide:languages"></iconify-icon>
@@ -570,7 +596,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- COMPLIANCE SECTION -->
-<section class="py-24 px-6 bg-[#0B1120]">
+<section class="py-24 px-6 bg-[#0B1120]" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto">
 <div class="grid lg:grid-cols-2 gap-16 items-center">
 <div data-aos="fade-left">
@@ -621,7 +647,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- FAQ SECTION (NEW) -->
-<section class="py-24 px-6 relative">
+<section class="py-24 px-6 relative" style="content-visibility: auto;">
 <div class="max-w-3xl mx-auto">
 <h2 class="text-3xl font-bold text-white mb-10 text-center">الأسئلة الشائعة</h2>
 <div class="space-y-4">
@@ -660,7 +686,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- CTA SECTION -->
-<section class="py-24 relative overflow-hidden">
+<section class="py-24 relative overflow-hidden" style="content-visibility: auto;">
 <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
 <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
 <h2 class="text-4xl font-bold text-white mb-8" data-aos="fade-up">جاهز لتبني الذكاء الاصطناعي؟</h2>
@@ -678,7 +704,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- RELATED ARTICLES -->
-<section class="py-16 px-6 bg-black/20 border-t border-white/5">
+<section class="py-16 px-6 bg-black/20 border-t border-white/5" style="content-visibility: auto;">
 <div class="max-w-7xl mx-auto">
 <h3 class="text-2xl font-bold text-white mb-8 text-center">مقالات ذات صلة</h3>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -701,7 +727,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </section>
 <!-- UNIFIED FOOTER -->
-<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10">
+<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10" style="content-visibility: auto;">
 <div class="max-w-4xl mx-auto px-6 mb-16 text-slate-300 leading-relaxed text-lg seo-article">
 <h3 class="text-3xl font-bold text-white mb-6">وكلاء الذكاء الاصطناعي للمؤسسات والشركات الكبرى</h3>
 <p class="mb-6">
@@ -803,14 +829,14 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/main.bundle.js"></script>
 <script defer="" src="../../js/index-theme.js"></script>
 <!-- BrightAI Command CTA: https://brightai.site/demo/ -->
-<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
 <p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">شوف كيف الوكيل الذكي ينجز الطلب في لحظات.</p>
 <a href="/demo/" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#fff; text-decoration:none; font-weight:700;">
             جرّب الوكيل الذكي مباشرة
         </a>
 </section>
 <!-- BrightAI Orphan Links: /ai-agent/ -->
-<section class="brightai-orphan-links" style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+<section class="brightai-orphan-links" style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
 <h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">روابط ذات صلة</h3>
 <p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">روابط داخل النص: <a href="/ai-bots/BrightProject/" style="color:#38bdf8;text-decoration:none;font-weight:600;">تعرّف على Project روبوت إدارة المشاريع الذكي</a>، <a href="/docs/smart-automation-en.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">اقرأ عن ProcessAutomation</a>، <a href="/docs/solutions-supply-chain-en.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">اقرأ عن Supply Chain ThatNever Stops</a>، <a href="/services/recruitment-system.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">تعرّف على وظّف أفضل الكفاءاتفي دقائقوليس أسابيع</a></p>
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;"><a href="/ai-bots/BrightMath/" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب Math مساعد الرياضيات الذكي الآن</a><a href="/docs/docs.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">تفاصيل تم نقل المستندات بالسوق السعودي</a><a href="/docs/solutions-retail.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">تفاصيل تجارة تجزئةذكية بالسوق السعودي</a><a href="/services/_template.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب تم نقل الصفحة الآن</a></div>

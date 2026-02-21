@@ -2,13 +2,7 @@
 
 <html dir="rtl" lang="ar">
 <head>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta charset="utf-8"/>
 <link href="https://brightai.site/try/" rel="canonical"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -26,7 +20,7 @@
 <meta content="ar_SA" property="og:locale"/>
 <!-- CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
 <style>
         body {
@@ -221,13 +215,45 @@
     </style>
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="../../css/index-theme.css" rel="stylesheet"/>
+
+<link href="../../css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/index-theme.css" rel="stylesheet"/></noscript>
 
 <link rel="stylesheet" href="../../css/tailwind.local.min.css">
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 <body>
 <!-- Navigation -->
@@ -239,7 +265,7 @@
 <span class="bar"></span>
 </button>
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../..">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <ul class="nav-links">
@@ -254,7 +280,7 @@
 </nav>
 <main class="page-container">
 <!-- Hero Section -->
-<section class="text-center mb-16">
+<section class="text-center mb-16" style="content-visibility: auto;">
 <div class="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 px-4 py-2 rounded-full text-sm mb-6">
 <i class="fa-solid fa-flask"></i>
 <span>مختبر الذكاء الاصطناعي</span>
@@ -269,7 +295,7 @@
             </p>
 </section>
 <!-- Tools Grid -->
-<section class="tools-grid">
+<section class="tools-grid" style="content-visibility: auto;">
 <!-- Tool 1: Data Analyzer -->
 <div class="tool-card card-data">
 <div class="tool-icon" style="background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2));">
@@ -360,7 +386,7 @@
 </div>
 </div>
 <!-- CTA Section -->
-<section class="text-center mt-16">
+<section class="text-center mt-16" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">تحتاج حلول مخصصة لشركتك؟</h2>
 <p class="text-gray-400 mb-8">تواصل معنا للحصول على حلول ذكاء اصطناعي مصممة خصيصاً لاحتياجاتك</p>
 <a class="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-xl font-bold transition-all hover:scale-105 hover:shadow-lg hover:shadow-green-500/30" href="https://wa.me/966538229013">
@@ -369,14 +395,14 @@
             </a>
 </section>
 <!-- BrightAI Command CTA: https://brightai.site/demo/ -->
-<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+<section class="brightai-command-cta" style="margin:24px auto; text-align:center; max-width:1000px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
 <p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">نقلك خطوة للأمام مع ديمو شامل ومباشر.</p>
 <a href="/demo/" style="display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px; background:linear-gradient(135deg,#10b981,#06b6d4); color:#fff; text-decoration:none; font-weight:700;">
             اكمل التجربة على الديمو الكامل
         </a>
 </section>
 <!-- BrightAI Orphan Links: /try/ -->
-<section class="brightai-orphan-links" style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);">
+<section class="brightai-orphan-links" style="margin:24px auto; max-width:1100px; padding:18px; border-radius:16px; border:1px solid rgba(148,163,184,.2); background:rgba(15,23,42,.35);; content-visibility: auto;">
 <h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">روابط ذات صلة</h3>
 <p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">روابط داخل النص: <a href="/docs/ai-agent-en.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">اقرأ عن CloudAIaaS</a>، <a href="/docs/solutions-interview-en.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">اقرأ عن Hiring onAutopilot</a>، <a href="/interview/pages/support-ai.html" style="color:#38bdf8;text-decoration:none;font-weight:600;">تعرّف على نافذة الدعم الفني الذكي</a></p>
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;"><a href="/botAI/BrightSupport.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب تم نقل الصفحة الآن</a><a href="/docs/solutions-hr.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">تفاصيل إدارة موظفينأسهل بالسوق السعودي</a><a href="/interview/pages/dashboard/" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب نظرة عامة الآن</a></div>
@@ -388,7 +414,7 @@
 <div class="max-w-7xl mx-auto px-6 py-12">
 <div class="flex flex-col md:flex-row items-center justify-between gap-6">
 <div class="flex items-center gap-3">
-<img alt="Bright AI" height="32" src="../../assets/images/Gemini.png" width="32"/>
+<img loading="lazy" alt="Bright AI" height="32" src="../../assets/images/Gemini.png" width="32"/>
 <span class="text-white font-bold">Bright AI</span>
 </div>
 <div class="flex gap-6 text-sm text-gray-400">

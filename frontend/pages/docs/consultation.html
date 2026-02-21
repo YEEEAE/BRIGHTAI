@@ -29,7 +29,7 @@
 
     <!-- CSS Bundles -->
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../css/main.bundle.css" /></noscript>
     <link rel="stylesheet" href="../../css/bundle-pages.css" />
     <link rel="stylesheet" href="../../css/docs.css" />
 
@@ -46,6 +46,14 @@
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-teal-500/30 selection:text-teal-400 tracking-tight doc-page">
@@ -54,7 +62,7 @@
     <!-- Navigation -->
     <nav class="unified-nav" role="navigation">
         <div class="nav-container"><button class="mobile-toggle" aria-label="فتح القائمة"><span class="bar"></span><span
-                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img
+                    class="bar"></span><span class="bar"></span></button><a href="https://brightai.site/index.html" class="nav-logo"><img loading="lazy"
                     src="../../assets/images/Gemini.png" alt="Bright AI" width="40" height="40" /><span>Bright
                     AI</span></a>
             <ul class="nav-links">
@@ -109,7 +117,7 @@
         <div class="doc-content space-y-12">
 
             <!-- Problem Statement -->
-            <section class="glass-card p-10 relative overflow-hidden">
+            <section class="glass-card p-10 relative overflow-hidden" style="content-visibility: auto;">
                 <div class="absolute -top-20 -right-20 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl"></div>
                 <h2 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
                     <iconify-icon icon="solar:danger-circle-bold-duotone" class="text-teal-400"></iconify-icon> لا تصرف
@@ -129,7 +137,7 @@
             </section>
 
             <!-- Services Grid -->
-            <section>
+            <section style="content-visibility: auto;">
                 <h3 class="text-3xl font-bold mb-10 text-center">خدماتنا الاستشارية</h3>
                 <div class="grid md:grid-cols-2 gap-8">
                     <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-teal-500">
@@ -168,7 +176,7 @@
             </section>
 
             <!-- FAQ Section -->
-            <section>
+            <section style="content-visibility: auto;">
                 <h3 class="text-2xl font-bold text-white mb-6">الأسئلة الشائعة</h3>
                 <div class="space-y-4">
                     <div class="faq-item glass-card rounded-xl border-none">
@@ -184,7 +192,7 @@
                 </div>
             </section>
 
-            <section class="glass-card p-8 rounded-2xl">
+            <section class="glass-card p-8 rounded-2xl" style="content-visibility: auto;">
                 <h3 class="text-2xl font-bold text-white mb-4">مسار ما قبل التعاقد</h3>
                 <p class="text-slate-400 mb-4">اختر صفحة الهبوط حسب مرحلة الشراء لديك:</p>
                 <ul class="space-y-2 text-slate-300">

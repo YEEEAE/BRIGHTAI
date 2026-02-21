@@ -7,13 +7,7 @@
     <title>كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة | Bright AI</title>
 
     <!-- Google Analytics -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+    
 
     <!-- SEO Meta Tags -->
     <meta
@@ -51,8 +45,8 @@
 
     <!-- CSS -->
     <link href="../../../css/bundle-critical.css" rel="stylesheet" />
-    <link href="../../../css/main.bundle.css" rel="stylesheet" />
-    <link href="../../../css/index-theme.css" rel="stylesheet" />
+    <link href="../../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" /><noscript><link href="../../../css/main.bundle.css" rel="stylesheet" /></noscript>
+    <link href="../../../css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" /><noscript><link href="../../../css/index-theme.css" rel="stylesheet" /></noscript>
     <link href="../../../css/tailwind.local.min.css" rel="stylesheet" />
 
     <!-- Performance Scripts -->
@@ -117,6 +111,38 @@
         }
     }
     </script>
+
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight bg-slate-50 text-slate-900">
@@ -133,7 +159,7 @@
 
             <!-- Logo -->
             <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../../index.html">
-                <img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40" />
+                <img loading="lazy" alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -329,7 +355,7 @@
             <div class="grid md:grid-cols-4 gap-8">
                 <div class="col-span-1 md:col-span-2">
                     <a href="../../../../index.html" class="flex items-center gap-2 mb-4">
-                        <img src="../../../frontend/assets/images/Gemini.png" alt="Logo"
+                        <img loading="lazy" src="../../../frontend/assets/images/Gemini.png" alt="Logo"
                             class="w-8 h-8 grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all">
                         <span class="text-xl font-bold text-white">Bright AI</span>
                     </a>

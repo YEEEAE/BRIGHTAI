@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>دراسة حالة: مصنع سعودي | رفع الإنتاجية 30% بتحليلات الذكاء الاصطناعي</title>
 <!-- Google Analytics -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="تجربة مصنع في المدينة الصناعية بالجبيل في استخدام الذكاء الاصطناعي لتحسين خطوط الإنتاج وتقليل الهدر ورفع الكفاءة التشغيلية بنسبة 30%." name="description"/>
 <meta content="الصناعة 4.0 السعودية، تحسين الإنتاج، المصانع الذكية، الهيئة الملكية للجبيل وينبع، إنترنت الأشياء الصناعي" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -45,7 +39,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <!-- Critical CSS -->
 <link href="../../css/bundle-critical.css" rel="stylesheet"/>
-<link href="../../css/main.bundle.css" rel="stylesheet"/>
+<link href="../../css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="../../css/main.bundle.css" rel="stylesheet"/></noscript>
 <link href="../../css/bundle-components.css" rel="stylesheet"/>
 <!-- Performance Loader -->
 <script>
@@ -260,7 +254,39 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="../../js/iconify-preload.js"></script>
 <script defer="" src="../../js/vendor/iconify.min.js"></script>
 <script defer="" src="../../js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta></head>
+</meta></meta></meta></meta>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #422006 100%);">
 <!-- UNIFIED HEADER -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -273,7 +299,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../../index.html">
-<img alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -339,11 +365,11 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <iconify-icon class="text-yellow-400" icon="lucide:boxes" width="20"></iconify-icon>
 <span class="text-yellow-300 text-sm font-medium tracking-wide">الصناعة 4.0</span>
 </div>
-<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" data-aos="fade-up">
+<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-white" >
                 مصنع سعودي يرفع الإنتاجية <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">30%</span>
                 بتحليلات الذكاء الاصطناعي
             </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl"  >
                 من خطوط الإنتاج التقليدية إلى بيئة تصنيع ذكية تتخذ القرارات ذاتياً لتقليل الهدر وزيادة الربحية.
              <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-automation/index.html">(أتمت أعمالك مع حلول BrightAI)</a> <a class="text-indigo-500 font-bold hover:underline" data-auto-link="true" href="/frontend/pages/smart-medical-archive/index.html">(اكتشف الأرشيف الطبي الذكي)</a></p>
 <div class="flex flex-wrap gap-4 mt-8" data-aos="fade-up" data-aos-delay="200">
@@ -356,13 +382,13 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </header>
 <main>
 <article>
-<section id="introduction">
+<section id="introduction" style="content-visibility: auto;">
 <h2>المقدمة: تحدي الكفاءة في قلب الجبيل</h2>
 <p>في قلب المدينة الصناعية بالجبيل، يواجه أحد المصانع المتخصصة في البلاستيك تحدياً عالمياً: كيف ننتج
                     المزيد بنفس الموارد؟ مع ارتفاع أسعار المواد الخام والطاقة، أصبح "التحسين الهامشي" (Marginal
                     Improvement) غير كافٍ. المطلوب هو قفزة نوعية في طريقة إدارة العملية الإنتاجية.</p>
 </section>
-<section id="challenge">
+<section id="challenge" style="content-visibility: auto;">
 <h2>التحدي: الصندوق الأسود</h2>
 <p>كان المصنع يعمل بكفاءة ظاهرية جيدة، لكن البيانات الدقيقة كانت غائبة:</p>
 <ul>
@@ -372,7 +398,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </ul>
 <p>كانت القرارات تُتخذ بناءً على حدس المشرفين وخبرتهم، وليس بناءً على حقائق دقيقة ولحظية.</p>
 </section>
-<section id="solution">
+<section id="solution" style="content-visibility: auto;">
 <h2>الحل: رقمنة المصنع بالكامل</h2>
 <p>قام المصنع بتركيب شبكة من حساسات إنترنت الأشياء (IIoT) وربطها بنظام تحليلات مركزي:</p>
 <h3>1. التوأم الرقمي (Digital Twin)</h3>
@@ -383,7 +409,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     الكاميرا خدشاً دقيقاً، لا تكتفي برفض القطعة، بل ترسل إشارة فورية للماكينة لتعديل حرارتها أو ضغطها
                     لمنع تكرار الخطأ.</p>
 </section>
-<section id="results">
+<section id="results" style="content-visibility: auto;">
 <h2>النتائج: أرقام تتحدث</h2>
 <p>بعد 8 أشهر من التحول الذكي:</p>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
@@ -403,12 +429,12 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p>تحول المصنع من رد الفعل (Reacting) إلى الاستباقية (Proacting)، وأصبحت الاجتماعات الصباحية تناقش
                     استراتيجيات التحسين بدلاً من "إطفاء الحرائق".</p>
 </section>
-<section id="future">
+<section id="future" style="content-visibility: auto;">
 <h2>مستقبل الصناعة السعودية</h2>
 <p>هذا المصنع أصبح نموذجاً يحتذى به في برنامج "ندلب" (NDLP)، ويثبت أن الصناعة السعودية قادرة على
                     المنافسة عالمياً ليس فقط بوفرة الموارد، بل بالذكاء التكنولوجي.</p>
 </section>
-<section id="conclusion">
+<section id="conclusion" style="content-visibility: auto;">
 <h2>الخاتمة</h2>
 <p>الذكاء الاصطناعي في المصانع ليس مجرد "روبوتات" تحل محل البشر، بل هو "عيون وآذان" إضافية تمنح البشر
                     قدرة خارقة على رؤية وفهم وتحسين كل تفاصيل العملية الإنتاجية.</p>
@@ -423,7 +449,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     <iconify-icon icon="lucide:arrow-left"></iconify-icon>
 </a>
 </div>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6">
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
 <li><a href="/frontend/pages/blogger/saudi-hospitality-dynamic-pricing">دراسة حالة: مجموعة فنادق سعودية | زيادة الإشغال 20% بالتسعير الديناميكي</a></li><li><a href="/frontend/pages/blogger/saudi-insurance-claims-ai">دراسة حالة شاملة: الذكاء الاصطناعي في التأمين السعودي | كشف الاحتيال 99%</a></li><li><a href="/frontend/pages/blogger/saudi-logistics-route-optimization">دراسة حالة شاملة: الذكاء الاصطناعي في اللوجستيات السعودية | توصيل أسرع 40%</a></li><li><a href="/frontend/pages/blogger/saudi-manufacturing-predictive-maintenance">دراسة حالة شاملة: الذكاء الاصطناعي في الصناعة السعودية | المصانع الذكية</a></li>

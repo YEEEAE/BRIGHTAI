@@ -6,13 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>ما هو الذكاء الاصطناعي؟ | Bright AI - دليلك الشامل</title>
 <!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
-    </script>
+
 <meta content="دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، تطبيقاته في الحياة اليومية والأعمال، وكيف سيغير مستقبلنا. مقدم من Bright AI." name="description"/>
 <meta content="ما هو الذكاء الاصطناعي, تعريف AI, تعلم الآلة, الشبكات العصبية, مستقبل الذكاء الاصطناعي" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -52,7 +46,39 @@
                 { "@type": "ListItem", "position": 3, "name": "ما هو الذكاء الاصطناعي؟", "item": "https://brightai.site/frontend/pages/what-is-ai/index.html" }
             ]
         }
-        </script></head>
+        </script>
+    <!-- Deferred Google Analytics -->
+    <script>
+        (function() {
+            function loadAnalytics() {
+                if (window._gaLoaded) return;
+                window._gaLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
+                var s = document.createElement('script');
+                s.async = true;
+                s.defer = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
+                document.head.appendChild(s);
+            }
+            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
+            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
+            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
+            setTimeout(loadAnalytics, 5000);
+        })();
+    </script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+</head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight bg-[#020617] text-white">
 <!-- UNIFIED HEADER (REBUILT) -->
 <nav aria-label="التنقل الرئيسي" class="unified-nav" role="navigation">
@@ -65,7 +91,7 @@
 </button>
 <!-- Logo -->
 <a aria-label="Bright AI - الصفحة الرئيسية" class="nav-logo" href="../../..">
-<img alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
+<img loading="lazy" alt="Bright AI Logo" height="40" src="../../../frontend/assets/images/Gemini.png" width="40"/>
 <span>Bright AI</span>
 </a>
 <!-- Desktop Navigation -->
@@ -252,17 +278,17 @@
 <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-premium border border-indigo-500/30 mb-8 mx-auto" data-aos="fade-down">
 <span class="text-indigo-300 text-sm font-medium tracking-wide">أكاديمية Bright AI</span>
 </div>
-<h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-8" data-aos="fade-up">
+<h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-8" >
                 ما هو الذكاء الاصطناعي؟
             </h1>
-<p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+<p class="text-slate-400 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto"  >
                 رحلة استكشافية لفهم التقنية التي تعيد تشكيل عالمنا اليوم، من المساعدات الصوتية إلى السيارات ذاتية
                 القيادة.
             </p>
 </div>
 </header>
 <!-- CONTENT -->
-<section class="py-20 px-6 relative">
+<section class="py-20 px-6 relative" style="content-visibility: auto;">
 <div class="max-w-4xl mx-auto">
 <article class="glass-card p-8 md:p-12" data-aos="fade-up">
 <div class="prose prose-invert max-w-none text-slate-300 leading-loose">
@@ -318,7 +344,7 @@
 </div>
 </section>
 <!-- UNIFIED FOOTER -->
-<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10">
+<section class="py-24 bg-[#050B14] border-y border-white/5 relative z-10" style="content-visibility: auto;">
 <div class="max-w-4xl mx-auto px-6 mb-16 text-slate-300 leading-relaxed text-lg seo-article">
 <h3 class="text-3xl font-bold text-white mb-6">الدليل الشامل لفهم تكنولوجيا الذكاء الاصطناعي في قطاع الأعمال السعودي</h3>
 <p class="mb-6">

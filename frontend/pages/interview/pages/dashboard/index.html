@@ -159,15 +159,23 @@
     <!-- BrightAI Global Theme -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../../../css/main.bundle.css" />
-    <link rel="stylesheet" href="../../../../css/index-theme.css" />
+    
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../../../css/main.bundle.css" /></noscript>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../../../css/index-theme.css" /><noscript><link rel="stylesheet" href="../../../../css/index-theme.css" /></noscript>
 
 <link rel="stylesheet" href="../../../../css/tailwind.local.min.css">
 <script defer src="../../../../js/iconify-preload.js"></script>
 <script defer src="../../../../js/vendor/iconify.min.js"></script>
 <script defer src="../../../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -187,7 +195,7 @@
         </aside>
 
         <main class="main-content">
-            <section id="overview-section" class="dashboard-section active">
+            <section id="overview-section" class="dashboard-section active" style="content-visibility: auto;">
                 <div class="page-header">
                     <h1>نظرة عامة</h1>
                     <button class="btn btn-danger" onclick="clearAllData()"><i class="fas fa-trash-alt"></i> مسح جميع البيانات (للتجربة)</button>
@@ -230,7 +238,7 @@
                 </div>
             </section>
 
-            <section id="applicants-section" class="dashboard-section hidden">
+            <section id="applicants-section" class="dashboard-section hidden" style="content-visibility: auto;">
                 <div class="page-header">
                     <h2>قائمة المتقدمين</h2>
                 </div>
@@ -271,7 +279,7 @@
                 </div>
             </section>
 
-             <section id="job-postings-section" class="dashboard-section hidden">
+             <section id="job-postings-section" class="dashboard-section hidden" style="content-visibility: auto;">
                 <div class="page-header">
                     <h2>إدارة الوظائف الشاغرة</h2>
                     <button class="btn btn-primary" onclick="openAddJobModal()"><i class="fas fa-plus"></i> إضافة وظيفة جديدة</button>
@@ -284,7 +292,7 @@
                 </div>
             </section>
 
-            <section id="analytics-section" class="dashboard-section hidden">
+            <section id="analytics-section" class="dashboard-section hidden" style="content-visibility: auto;">
                 <div class="page-header">
                     <h2>الإحصائيات والتحليلات</h2>
                 </div>
@@ -304,7 +312,7 @@
                 </div>
             </section>
 
-            <section id="settings-section" class="dashboard-section hidden">
+            <section id="settings-section" class="dashboard-section hidden" style="content-visibility: auto;">
                 <div class="page-header">
                     <h2>الإعدادات</h2>
                 </div>

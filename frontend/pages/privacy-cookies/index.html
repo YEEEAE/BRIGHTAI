@@ -21,7 +21,7 @@
     <link rel="icon" type="image/png" href="../../assets/images/Gemini.png">
 
     <link rel="stylesheet" href="../../css/bundle-critical.css" />
-    <link rel="stylesheet" href="../../css/main.bundle.css" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/main.bundle.css" /><noscript><link rel="stylesheet" href="../../css/main.bundle.css" /></noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -60,15 +60,23 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     <script src="../../js/navigation.js" defer></script>
 
     <!-- BrightAI Global Theme -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/index-theme.css" />
+    
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="../../css/index-theme.css" /><noscript><link rel="stylesheet" href="../../css/index-theme.css" /></noscript>
 
 
 <link rel="stylesheet" href="../../css/tailwind.local.min.css">
 <script defer src="../../js/iconify-preload.js"></script>
 <script defer src="../../js/vendor/iconify.min.js"></script>
 <script defer src="../../js/vendor/iconify-icon.min.js"></script>
+
+<!-- Critical CSS for Core Web Vitals -->
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -87,7 +95,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 
             <!-- Logo -->
             <a href="../../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <img loading="lazy" src="../../../frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -297,7 +305,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 
             <!-- Logo -->
             <a href="../.." class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
+                <img loading="lazy" src="../../assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
                 <span>Bright AI</span>
             </a>
 
@@ -498,7 +506,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     </header>
 
     <!-- CONTENT SECTION -->
-    <section class="py-24 px-6 bg-[#020617] relative">
+    <section class="py-24 px-6 bg-[#020617] relative" style="content-visibility: auto;">
         <div class="max-w-4xl mx-auto relative z-10">
             <div class="glass-card p-8 md:p-12" data-aos="fade-up">
                 <div class="prose prose-invert max-w-none text-slate-300 leading-relaxed">
@@ -507,7 +515,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     <p class="text-sm text-slate-500 mb-8">آخر تحديث: 1 مارس 2024</p>
 
                     <div class="space-y-8">
-                        <section>
+                        <section style="content-visibility: auto;">
                             <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
                                 <iconify-icon icon="lucide:info" class="text-indigo-400"></iconify-icon>
                                 ما هي ملفات تعريف الارتباط؟
@@ -517,7 +525,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                                 لموقعنا.</p>
                         </section>
 
-                        <section>
+                        <section style="content-visibility: auto;">
                             <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
                                 <iconify-icon icon="lucide:list" class="text-indigo-400"></iconify-icon>
                                 أنواع ملفات تعريف الارتباط التي نستخدمها
@@ -531,7 +539,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                             </ul>
                         </section>
 
-                        <section>
+                        <section style="content-visibility: auto;">
                             <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
                                 <iconify-icon icon="lucide:settings" class="text-indigo-400"></iconify-icon>
                                 إدارة ملفات تعريف الارتباط
@@ -540,7 +548,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                                 ولكن قد يؤثر ذلك على بعض وظائف الموقع.</p>
                         </section>
 
-                        <section>
+                        <section style="content-visibility: auto;">
                             <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
                                 <iconify-icon icon="lucide:mail" class="text-indigo-400"></iconify-icon>
                                 تواصل معنا
