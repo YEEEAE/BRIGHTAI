@@ -52,14 +52,21 @@ RewriteRule ^(.*)$ https://brightai.site/$1 [L,R=301]
 # URL STRUCTURE - PREVENT DUPLICATE CONTENT
 # ============================================
 
+# ============================================
+# ملاحظة: تم تعطيل تحويل index.html و .html
+# لأن الـ sitemap والـ canonical تستخدم المسار الكامل
+# ============================================
+
 # Redirect */index.html to directory canonical URL
-RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
-RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
+# DISABLED: conflicts with sitemap/canonical using index.html
+# RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+# RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L]
 
 # Redirect .html URLs to clean URLs (prevents duplicate content)
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
-RewriteCond %{REQUEST_URI} !^/404\.html$
-RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+# DISABLED: conflicts with sitemap/canonical using .html
+# RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
+# RewriteCond %{REQUEST_URI} !^/404\.html$
+# RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
 
 # Internally serve .html files for clean URLs
 RewriteCond %{REQUEST_FILENAME} !-d
