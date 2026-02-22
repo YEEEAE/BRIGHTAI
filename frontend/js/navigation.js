@@ -58,8 +58,16 @@ function ensureDependencies() {
   }
 }
 
-/* ── Build Navigation HTML (mirrors index.html exactly) ── */
-function buildUnifiedNavigationMarkup() {
+/* ── Build Navigation HTML (index.html is source of truth) ── */
+const INDEX_NAV_FETCH_PATH = "/index.html";
+const INDEX_NAV_SELECTORS = {
+  header: "#main-header",
+  drawer: "#mobileDrawer",
+  backdrop: ".backdrop-overlay"
+};
+let cachedUnifiedNavigationMarkup = null;
+
+function buildUnifiedNavigationMarkupFallback() {
   return `
     <!-- Header / Navbar (Unified - mirrors index.html) -->
     <header class="unified-nav" id="main-header" role="banner">
@@ -488,6 +496,56 @@ function buildUnifiedNavigationMarkup() {
   `;
 }
 
+function extractUnifiedNavigationMarkupFromDocument(sourceDocument) {
+  if (!sourceDocument) return null;
+
+  const header = sourceDocument.querySelector(INDEX_NAV_SELECTORS.header);
+  const drawer = sourceDocument.querySelector(INDEX_NAV_SELECTORS.drawer);
+  if (!header || !drawer) return null;
+
+  const backdropCandidates = [
+    drawer.nextElementSibling,
+    sourceDocument.querySelector(".backdrop-overlay.fixed.inset-0.z-50.bg-black\\/60.backdrop-blur-sm.hidden"),
+    sourceDocument.querySelector(INDEX_NAV_SELECTORS.backdrop)
+  ];
+  const backdrop = backdropCandidates.find((candidate) => candidate && candidate.classList?.contains("backdrop-overlay"));
+  if (!backdrop) return null;
+
+  return `${header.outerHTML}\n${drawer.outerHTML}\n${backdrop.outerHTML}`;
+}
+
+async function buildUnifiedNavigationMarkup() {
+  if (cachedUnifiedNavigationMarkup) {
+    return cachedUnifiedNavigationMarkup;
+  }
+
+  try {
+    const response = await fetch(INDEX_NAV_FETCH_PATH, {
+      credentials: "same-origin",
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error(`Navigation source fetch failed: ${response.status}`);
+    }
+
+    const sourceHtml = await response.text();
+    const parser = new DOMParser();
+    const sourceDocument = parser.parseFromString(sourceHtml, "text/html");
+    const extractedMarkup = extractUnifiedNavigationMarkupFromDocument(sourceDocument);
+
+    if (extractedMarkup) {
+      cachedUnifiedNavigationMarkup = extractedMarkup;
+      return extractedMarkup;
+    }
+  } catch (error) {
+    console.warn("[BrightAI Nav] Using fallback navigation markup.", error);
+  }
+
+  cachedUnifiedNavigationMarkup = buildUnifiedNavigationMarkupFallback();
+  return cachedUnifiedNavigationMarkup;
+}
+
 /* ── Shared Design System Loader ── */
 function ensureStylesheet(href, id) {
   if (document.getElementById(id) || document.querySelector(`link[href="${href}"]`)) return;
@@ -569,7 +627,7 @@ function isLikelyLegacyTopNavigation(node) {
 }
 
 /* ── Mount Unified Navigation ── */
-function mountUnifiedNavigation() {
+async function mountUnifiedNavigation() {
   ensureUnifiedDesignSystem();
   ensureDependencies();
 
@@ -585,7 +643,7 @@ function mountUnifiedNavigation() {
 
   const root = document.createElement("div");
   root.id = "bright-unified-nav-root";
-  root.innerHTML = buildUnifiedNavigationMarkup();
+  root.innerHTML = await buildUnifiedNavigationMarkup();
 
   // Insert at top of body
   const firstChild = document.body.firstElementChild;
@@ -624,15 +682,18 @@ function ensureSearchScript() {
 
 /* ── Init Navigation ── */
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initNavigation);
+  document.addEventListener("DOMContentLoaded", () => {
+    void initNavigation();
+  });
 } else {
   // DOM is already ready
-  initNavigation();
+  void initNavigation();
 }
 
-function initNavigation() {
+async function initNavigation() {
   if (isTargetServicePage()) {
-    mountUnifiedNavigation();
+    ensureUnifiedDesignSystem();
+    ensureDependencies();
     ensureSearchScript();
   }
 

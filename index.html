@@ -1127,7 +1127,6 @@
     <link href="/frontend/css/tailwind.local.min.css" media="print" onload="this.media='all'" rel="stylesheet" />
     <link href="/frontend/css/index-theme.min.css" media="print" onload="this.media='all'" rel="stylesheet" />
     <noscript>
-        <link href="/frontend/css/tailwind.local.min.css" rel="stylesheet" />
         <link href="/frontend/css/index-theme.min.css" rel="stylesheet" />
     </noscript>
     <!-- main.bundle: non-critical, loaded async -->
@@ -1749,38 +1748,13 @@
     <link href="/frontend/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/frontend/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
     <link href="/frontend/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+<script defer="" src="/frontend/js/vendor/iconify.min.js"></script>
+<script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
 </head>
 
 <body>
-    <!-- Loading Screen (CLS-Safe: starts visible, hidden by JS) -->
-    <div aria-hidden="true" class="loading" id="loading" style="display:none !important">
-        <div>
-            <div style="display:flex;align-items:center;gap:12px;justify-content:center">
-                <div aria-hidden="true" class="https://brightai.site/frontend/assets/images/Gemini.png"></div>
-                <div style="font-weight:1000;font-size:18px;letter-spacing:.2px">Bright AI</div>
-            </div>
-            <div aria-hidden="true" class="spinner"></div>
-            <div class="txt">جاري تحميل التجربة…</div>
-        </div>
-    </div>
-    <noscript>
-        <style>
-            .loading {
-                display: none !important;
-            }
-        </style>
-    </noscript>
-    <!-- Top progress -->
-    <div aria-hidden="true" class="progress-wrap">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <!-- Skip Navigation Links -->
-    <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
-    <a class="skip-link" href="#services">انتقل إلى الخدمات</a>
-    <a class="skip-link" href="#try-tools">انتقل إلى الأدوات الذكية</a>
-    <a class="skip-link" href="#faq">انتقل إلى الأسئلة الشائعة</a>
-    <a class="skip-link" href="#contact-section">انتقل إلى التواصل</a>
-    <!-- Header / Navbar -->
+<!-- Header / Navbar -->
     <header class="unified-nav" id="main-header" role="banner">
         <div class="nav-container">
             <!-- Branding -->
@@ -2203,6 +2177,37 @@
         </div>
     </div>
     <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+    <!-- Loading Screen (CLS-Safe: starts visible, hidden by JS) -->
+    <div aria-hidden="true" class="loading" id="loading" style="display:none !important">
+        <div>
+            <div style="display:flex;align-items:center;gap:12px;justify-content:center">
+                <div aria-hidden="true" class="https://brightai.site/frontend/assets/images/Gemini.png"></div>
+                <div style="font-weight:1000;font-size:18px;letter-spacing:.2px">Bright AI</div>
+            </div>
+            <div aria-hidden="true" class="spinner"></div>
+            <div class="txt">جاري تحميل التجربة…</div>
+        </div>
+    </div>
+    <noscript>
+        <style>
+            .loading {
+                display: none !important;
+            }
+        </style>
+    </noscript>
+    <!-- Top progress -->
+    <div aria-hidden="true" class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <!-- Skip Navigation Links -->
+    <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
+    <a class="skip-link" href="#services">انتقل إلى الخدمات</a>
+    <a class="skip-link" href="#try-tools">انتقل إلى الأدوات الذكية</a>
+    <a class="skip-link" href="#faq">انتقل إلى الأسئلة الشائعة</a>
+    <a class="skip-link" href="#contact-section">انتقل إلى التواصل</a>
+    <!-- Mobile Drawer -->
+    
     <!-- Breadcrumb مرئي -->
     <nav aria-label="مسار التنقل" class="breadcrumb-nav" style="max-width:80rem;margin:80px auto 0;padding:12px 24px;">
         <ol class="flex items-center gap-2 text-sm text-slate-400" itemscope=""

@@ -941,270 +941,443 @@
     <link href="/frontend/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/frontend/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
     <link href="/frontend/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
 </head>
 
 <body>
-
-    
-    <!-- UNIFIED HEADER (REBUILT) -->
-    <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
+<!-- Header / Navbar -->
+    <header class="unified-nav" id="main-header" role="banner">
         <div class="nav-container">
-            
-            <!-- Mobile Toggle -->
-            <button class="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-
-            <!-- Logo -->
-            <a href="/index.html" class="nav-logo" aria-label="Bright AI - الصفحة الرئيسية">
-                <img loading="lazy" src="/frontend/assets/images/Gemini.png" alt="Bright AI Logo" width="40" height="40" />
-                <span>Bright AI</span>
-            </a>
-
-            <!-- Desktop Navigation -->
-            <ul class="nav-links">
-                <li class="nav-item">
-                    <a href="/index.html" class="nav-link">
+            <!-- Branding -->
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+            <!-- Main Navigation -->
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
+                    </li>
+                    <!-- Smart Solutions Dropdown -->
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/our-products/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/smart-automation/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/ai-agent/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/contact/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/data-analysis/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- Smart Models Dropdown -->
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/smart-medical-archive/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/job.MAISco/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/ai-scolecs/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/health-bright/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- About Bright Dropdown -->
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/about-us/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/docs/docs.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/frontend/pages/blog/index.html">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- Secondary Actions -->
+            <div class="nav-actions">
+                <!-- Desktop Search -->
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+                <!-- Mobile Search -->
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+                <!-- Desktop CTA -->
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <!-- Mobile Toggle -->
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Mobile Drawer -->
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full" style="padding: calc(var(--nav-height) + 1.5rem) 1.75rem 2rem;">
+            <!-- Drawer Header -->
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+            <!-- Nav Links -->
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
                         الرئيسية
                     </a>
                 </li>
-
-                <!-- Products & Services -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        المنتجات والخدمات
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="dropdown-menu">
-                        <a href="/frontend/pages/smart-automation/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:zap"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأتمتة الذكية</span>
-                                <span class="dropdown-desc">تحسين كفاءة العمليات التشغيلية</span>
-                            </div>
+                    <div class="mobile-dropdown mt-1 mr-6"
+                        style="padding-right: 1rem; border-right: 2px solid rgba(99,102,241,0.2);">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/frontend/pages/our-products/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
                         </a>
-                        <a href="/frontend/pages/our-products/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:package"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">المنتجات والاشتراكات</span>
-                <span class="dropdown-desc">استكشف منتجاتنا وخطط الاشتراك</span>
-              </div>
-            </a>
-                        <a href="/frontend/pages/data-analysis/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:bar-chart-2"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">تحليل البيانات</span>
-                                <span class="dropdown-desc">رؤى دقيقة لاتخاذ القرارات</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/frontend/pages/smart-automation/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
                         </a>
-                        <a href="/frontend/pages/consultation/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:message-square"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">استشارات تقنية</span>
-                                <span class="dropdown-desc">خبراء في استراتيجيات AI</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/frontend/pages/ai-agent/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/frontend/pages/data-analysis/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/frontend/pages/contact/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
                         </a>
                     </div>
                 </li>
-
-                <!-- Solutions & Experience Models -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        الحلول و نماذج التجربة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="dropdown-menu">
-            <a href="/frontend/pages/ai-agent/index.html" class="dropdown-item">
-              <iconify-icon icon="lucide:bot"></iconify-icon>
-              <div class="dropdown-item-content">
-                <span class="dropdown-title">AI (AIaaS) للمنشآت</span>
-                <span class="dropdown-desc">حلول AIaaS المرنة</span>
-              </div>
-            </a>
-                        <a href="/frontend/pages/try/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:database"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">ذكاء البيانات</span>
-                                <span class="dropdown-desc">منصة معالجة البيانات المتقدمة</span>
-                            </div>
+                    <div class="mobile-dropdown mt-1 mr-6"
+                        style="padding-right: 1rem; border-right: 2px solid rgba(16,185,129,0.2);">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/frontend/pages/smart-medical-archive/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
                         </a>
-                        <a href="/frontend/pages/tools/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:wrench"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">أدوات مجانية</span>
-                                <span class="dropdown-desc">جرب تقنياتنا مجاناً</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/frontend/pages/job.MAISco/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
                         </a>
-                        <a href="/frontend/pages/smart-medical-archive/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:heart-pulse"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">الأرشيف الطبي الذكي</span>
-                                <span class="dropdown-desc">للقطاع الصحي والمستشفيات</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/frontend/pages/ai-scolecs/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
                         </a>
-                        <a href="/frontend/pages/interview/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:users"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">التوظيف الذكي</span>
-                                <span class="dropdown-desc">أتمتة عمليات الموارد البشرية</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/frontend/pages/health-bright/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
                         </a>
                     </div>
                 </li>
-
-                <!-- Company -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link" aria-haspopup="true" aria-expanded="false">
-                        الشركة
-                        <iconify-icon icon="lucide:chevron-down" width="14" class="chevron-down"></iconify-icon>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/frontend/pages/blog/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
                     </a>
-                    <div class="dropdown-menu">
-                        <a href="/frontend/pages/about-us/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:info"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">من نحن</span>
-                                <span class="dropdown-desc">تعرف على رؤيتنا وفريقنا</span>
-                            </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6"
+                        style="padding-right: 1rem; border-right: 2px solid rgba(59,130,246,0.2);">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/frontend/pages/about-us/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
                         </a>
-                        <a href="/frontend/pages/blog/index.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:book-open"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المكتبة الذكية</span>
-                                <span class="dropdown-desc">مقالات وأخبار التقنية</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/frontend/pages/docs/docs.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
                         </a>
-                        <a href="/docs.html" class="dropdown-item">
-                            <iconify-icon icon="lucide:file-text"></iconify-icon>
-                            <div class="dropdown-item-content">
-                                <span class="dropdown-title">المستندات</span>
-                                <span class="dropdown-desc">التوثيق التقني والأدلة</span>
-                            </div>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/frontend/pages/blog/index.html">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
                         </a>
                     </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/frontend/pages/contact/index.html">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
                 </li>
             </ul>
-
-            <!-- CTA Button -->
-            <div class="hidden lg:block">
-                <a href="https://wa.me/966538229013" class="nav-btn">
-                    اتصل بنا
+            <!-- Mobile CTA -->
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer"
+                    style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);" target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/frontend/pages/try/index.html">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
                 </a>
             </div>
-
         </div>
-    </nav>
-
-    <!-- Mobile Menu Drawer -->
-    <div class="mobile-menu-drawer">
-        <ul class="mobile-nav-list">
-            <li><a href="/index.html" class="mobile-nav-link">الرئيسية</a></li>
-            
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    المنتجات والخدمات
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="/frontend/pages/smart-automation/index.html" class="dropdown-item">الأتمتة الذكية</a>
-                   <a href="/frontend/pages/our-products/index.html" class="dropdown-item">المنتجات والاشتراكات</a>
-                   <a href="/frontend/pages/data-analysis/index.html" class="dropdown-item">تحليل البيانات</a>
-                   <a href="/frontend/pages/consultation/index.html" class="dropdown-item">استشارات تقنية</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    الحلول و نماذج التجربة
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-          <a href="/frontend/pages/ai-agent/index.html" class="dropdown-item">AI (AIaaS) للمنشآت</a>
-                   <a href="/frontend/pages/try/index.html" class="dropdown-item">ذكاء البيانات</a>
-                   <a href="/frontend/pages/tools/index.html" class="dropdown-item">أدوات مجانية</a>
-                   <a href="/frontend/pages/smart-medical-archive/index.html" class="dropdown-item">الأرشيف الطبي الذكي</a>
-                   <a href="/frontend/pages/interview/index.html" class="dropdown-item">التوظيف الذكي</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="#" class="mobile-nav-link" aria-haspopup="true" aria-expanded="false">
-                    الشركة
-                    <iconify-icon icon="lucide:chevron-down"></iconify-icon>
-                </a>
-                <div class="mobile-dropdown">
-                   <a href="/frontend/pages/about-us/index.html" class="dropdown-item">من نحن</a>
-                   <a href="/frontend/pages/blog/index.html" class="dropdown-item">المكتبة الذكية</a>
-                   <a href="/docs.html" class="dropdown-item">المستندات</a>
-                </div>
-            </li>
-
-            <li>
-                <a href="https://wa.me/966538229013" class="mobile-nav-link" style="color: var(--accent-color);">
-                    اتصل بنا
-                </a>
-            </li>
-        </ul>
     </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+
+    
+    <!-- Mobile Menu Drawer -->
+    
 
     <!-- Backdrop -->
-    <div class="backdrop-overlay"></div>
-
-
-
-  <!-- Unified Navigation JS -->
+    <!-- Unified Navigation JS -->
 
   <!-- التنقل الموحد -->
-  <nav class="unified-nav" role="navigation" aria-label="التنقل الرئيسي">
-    <div class="nav-container">
-      <a href="/index.html" class="nav-logo" aria-label="الصفحة الرئيسية - Bright AI">
-        <img loading="lazy" src="/frontend/assets/images/Gemini.png" alt="Bright AI - شركة ذكاء اصطناعي سعودية" width="42" height="42">
-      </a>
-      <button type="button" class="hamburger-btn" aria-label="فتح القائمة" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
-      <ul class="nav-links" id="nav-links-list" role="menubar">
-        <li role="none"><a role="menuitem" href="/index.html">الرئيسية</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/our-products/index.html">خدمات الذكاء الاصطناعي</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/consultation/index.html">استشارات الذكاء الاصطناعي</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/smart-automation/index.html">الأتمتة الذكية</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/blog/index.html">المكتبة الذكية</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/about-us/index.html">عن شركة مُشرقة AI</a></li>
-        <li role="none"><a role="menuitem" href="/frontend/pages/ai-agent/index.html">الوكلاء</a></li>
-        <li role="none"><a role="menuitem" href="/docs.html">DOCS</a></li>
-        <li class="nav-dropdown" role="none">
-          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-            أنظمة ذكية بالكامل لأقسام شركتك
-            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
-            </svg>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li role="none"><a role="menuitem" href="/frontend/pages/interview/index.html">نظام توظيف ذكي متكامل</a></li>
-            <li role="none"><a role="menuitem" href="/frontend/pages/health-bright/index.html" class="active">ثورة الذكاء الاصطناعي في الرعاية
-                الصحية</a></li>
-          </ul>
-        </li>
-        <li class="nav-dropdown" role="none">
-          <button type="button" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-            أدوات ذكية مجانية
-            <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12">
-              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" fill="none" />
-            </svg>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li role="none"><a role="menuitem" href="/frontend/pages/tools/index.html">أدوات ذكية مجانية</a></li>
-            <li role="none"><a role="menuitem" href="/frontend/pages/interview/index.html">نماذج AI تجريبية</a></li>
-            <li role="none"><a role="menuitem" href="/frontend/pages/ai-bots/index.html">شات بوت</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </nav>
   <div class="nav-overlay" aria-hidden="true"></div>
 
   <!-- Breadcrumb Navigation -->
