@@ -187,13 +187,7 @@ class BrightSearch {
     const style = document.createElement("style");
     style.id = "bright-search-inline-style";
     style.textContent = `
-      .nav-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.625rem;
-      }
-
-      .search-trigger {
+      .search-trigger:not(.search-desktop) {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
@@ -207,7 +201,7 @@ class BrightSearch {
         cursor: pointer;
       }
 
-      .search-trigger:hover {
+      .search-trigger:not(.search-desktop):hover {
         background: rgba(30, 41, 59, 0.92);
         color: #f8fafc;
       }
@@ -221,7 +215,7 @@ class BrightSearch {
         color: #94a3b8;
       }
 
-      .mobile-search-btn {
+      .mobile-search-btn:not(.search-mobile) {
         display: none;
         align-items: center;
         justify-content: center;
@@ -235,7 +229,7 @@ class BrightSearch {
         font-size: 1.05rem;
       }
 
-      .mobile-search-btn:hover {
+      .mobile-search-btn:not(.search-mobile):hover {
         background: rgba(30, 41, 59, 0.92);
       }
 
@@ -465,11 +459,11 @@ class BrightSearch {
       }
 
       @media (max-width: 1023px) {
-        .search-trigger {
+        .search-trigger:not(.search-desktop) {
           display: none;
         }
 
-        .mobile-search-btn {
+        .mobile-search-btn:not(.search-mobile) {
           display: inline-flex;
         }
 

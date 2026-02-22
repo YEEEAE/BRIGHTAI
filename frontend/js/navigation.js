@@ -1,32 +1,18 @@
 /**
  * Bright AI - Unified Navigation Controller
- * Injects the exact same header + search bar from index.html into all service pages.
+ * Injects the exact same header + search bar from index.html into all project HTML pages.
  * Handles scroll behavior, mobile drawer, dropdowns, and search integration.
  */
 
-/* ── Target Pages ── */
-const TARGET_SERVICE_PAGES = new Set([
-  "/frontend/pages/smart-automation/index.html",
-  "/frontend/pages/data-analysis/index.html",
-  "/frontend/pages/ai-agent/index.html",
-  "/frontend/pages/smart-medical-archive/index.html",
-  "/frontend/pages/ai-workflows/index.html",
-  "/frontend/pages/consultation/index.html",
-  "/frontend/pages/ai-bots/index.html",
-  "/frontend/pages/about-us/index.html",
-  "/frontend/pages/contact/index.html",
-  "/frontend/pages/our-products/index.html",
-  "/frontend/pages/what-is-ai/index.html",
-  "/frontend/pages/tools/index.html",
-  "/frontend/pages/job.MAISco/index.html",
-  "/frontend/pages/ai-scolecs/index.html",
-  "/frontend/pages/health-bright/index.html",
-  "/frontend/pages/blog/index.html",
-  "/frontend/pages/try/index.html",
-  "/frontend/pages/machine/index.html",
-  "/frontend/pages/privacy-cookies/index.html",
-  "/frontend/pages/demo/index.html"
-]);
+/* ── Scope & Path Utilities ── */
+const EXCLUDED_PATH_PREFIXES = [
+  "/dashboard",
+  "/agents",
+  "/templates",
+  "/analytics",
+  "/settings",
+  "/marketplace"
+];
 
 /* ── Path Utilities ── */
 function normalizePathname(pathname) {
@@ -34,27 +20,22 @@ function normalizePathname(pathname) {
   return pathname.replace(/\/+/g, "/").replace(/\/$/, "") || "/";
 }
 
-function buildTargetVariants(targetPath) {
-  const normalized = normalizePathname(targetPath);
-  const variants = new Set([normalized]);
-  if (normalized.endsWith("/index.html")) {
-    variants.add(normalized.replace(/\/index\.html$/, ""));
-    variants.add(normalized.replace(/\/index\.html$/, "/"));
-  } else {
-    variants.add(`${normalized}/index.html`);
-    variants.add(`${normalized}/`);
-  }
-  return variants;
-}
-
 function isTargetServicePage(pathname = window.location.pathname) {
+  if (document.documentElement?.getAttribute("data-unified-nav") === "off") return false;
+  if (document.body?.hasAttribute("data-unified-nav-off")) return false;
+
   const currentPath = normalizePathname(pathname);
-  // Match any page under /frontend/pages/ or local file paths
-  if (currentPath.includes("/frontend/pages/")) return true;
-  for (const target of TARGET_SERVICE_PAGES) {
-    const variants = buildTargetVariants(target);
-    if (variants.has(currentPath)) return true;
+  if (EXCLUDED_PATH_PREFIXES.some((prefix) => currentPath === prefix || currentPath.startsWith(`${prefix}/`))) {
+    return false;
   }
+
+  const hasSpaRootOnly = Boolean(document.getElementById("root")) && !document.querySelector("main, article, section, [role='main']");
+  if (hasSpaRootOnly && !currentPath.includes("/frontend/pages/")) return false;
+
+  if (currentPath.includes("/frontend/pages/")) return true;
+  if (currentPath === "/" || currentPath.endsWith(".html")) return true;
+  if (currentPath.includes("404") || currentPath.includes("500")) return true;
+
   return false;
 }
 
@@ -507,382 +488,19 @@ function buildUnifiedNavigationMarkup() {
   `;
 }
 
-/* ── CSS Styles (mirrors index.html critical-css exactly) ── */
-function ensureUnifiedNavStyles() {
-  if (document.getElementById("bright-unified-nav-style")) return;
+/* ── Shared Design System Loader ── */
+function ensureStylesheet(href, id) {
+  if (document.getElementById(id) || document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement("link");
+  link.id = id;
+  link.rel = "stylesheet";
+  link.href = href;
+  document.head.appendChild(link);
+}
 
-  const style = document.createElement("style");
-  style.id = "bright-unified-nav-style";
-  style.textContent = `
-    /* === NAVIGATION TOKENS (from index.html) === */
-    :root {
-      --nav-height: 72px;
-      --nav-bg: rgba(2, 6, 23, 0.65);
-      --nav-bg-scrolled: rgba(2, 6, 23, 0.92);
-      --nav-backdrop-blur: 24px;
-      --nav-border: 1px solid rgba(255, 255, 255, 0.06);
-      --nav-border-scrolled: 1px solid rgba(255, 255, 255, 0.1);
-      --nav-text-color: #cbd5e1;
-      --nav-hover-color: #ffffff;
-      --dropdown-bg: rgba(10, 15, 30, 0.96);
-      --dropdown-border: 1px solid rgba(255, 255, 255, 0.08);
-      --dropdown-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.8);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-full: 9999px;
-      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @media (max-width: 1023px) {
-      :root { --nav-height: 64px; }
-    }
-
-    /* === UNIFIED NAV (Premium Glassmorphism) === */
-    .unified-nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--nav-height);
-      z-index: 1000;
-      background: var(--nav-bg);
-      backdrop-filter: blur(var(--nav-backdrop-blur));
-      -webkit-backdrop-filter: blur(var(--nav-backdrop-blur));
-      border-bottom: var(--nav-border);
-      transition: transform 0.35s ease, background 0.4s ease, border-bottom 0.4s ease, box-shadow 0.4s ease;
-      will-change: transform;
-    }
-
-    .unified-nav.nav-scrolled {
-      background: var(--nav-bg-scrolled);
-      border-bottom: var(--nav-border-scrolled);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
-    }
-
-    .unified-nav.nav-hidden {
-      transform: translateY(-100%);
-    }
-
-    /* Enterprise override */
-    .unified-nav {
-      background: rgba(15, 23, 42, 0.70) !important;
-      backdrop-filter: blur(20px) saturate(180%) !important;
-      -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-    }
-
-    .unified-nav.nav-scrolled {
-      background: rgba(2, 6, 23, 0.94) !important;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35) !important;
-    }
-
-    /* === NAV CONTAINER === */
-    .nav-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.25rem;
-      gap: 0.75rem;
-    }
-
-    @media (min-width: 1024px) {
-      .nav-container { padding: 0 2rem; gap: 1.5rem; }
-    }
-
-    /* === LOGO === */
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      text-decoration: none;
-      z-index: 1002;
-      flex-shrink: 0;
-    }
-
-    /* === NAV LINKS === */
-    .nav-links {
-      display: none;
-      list-style: none;
-      margin: 0; padding: 0;
-      gap: 0.25rem;
-    }
-
-    @media (min-width: 1024px) {
-      .nav-links { display: flex; align-items: center; }
-    }
-
-    .nav-item { position: relative; }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      padding: 0.5rem 0.875rem;
-      color: var(--nav-text-color);
-      font-size: 0.875rem;
-      font-weight: 500;
-      text-decoration: none;
-      border-radius: var(--radius-sm);
-      transition: color 0.2s ease, background 0.2s ease;
-      white-space: nowrap;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .nav-link:hover,
-    .nav-link[aria-expanded="true"] {
-      color: var(--nav-hover-color);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* === DROPDOWN MENU === */
-    .dropdown-menu {
-      position: absolute;
-      top: calc(100% + 0.5rem);
-      right: 0; left: auto;
-      width: max-content;
-      min-width: 260px;
-      background: var(--dropdown-bg);
-      border: var(--dropdown-border);
-      border-radius: var(--radius-md);
-      padding: 0.5rem;
-      box-shadow: var(--dropdown-shadow);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(8px);
-      transition: all 0.25s var(--transition-smooth);
-      z-index: 9999;
-    }
-
-    .nav-item:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    /* === NAV CTA BUTTON === */
-    .nav-cta {
-      display: none;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.25rem;
-      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.8125rem;
-      border-radius: var(--radius-full);
-      text-decoration: none;
-      white-space: nowrap;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45);
-    }
-
-    @media (min-width: 1024px) {
-      .nav-cta-desktop { display: inline-flex; }
-    }
-
-    /* === DESKTOP/MOBILE VISIBILITY === */
-    .nav-desktop { display: none; }
-
-    @media (min-width: 1024px) {
-      .nav-desktop { display: flex; align-items: center; gap: 0.25rem; }
-    }
-
-    /* === SEARCH DESKTOP === */
-    .search-desktop {
-      display: none;
-      align-items: center;
-      gap: 0.625rem;
-      padding: 0.5rem 0.875rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      color: var(--nav-text-color);
-      cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease;
-      font-family: inherit;
-    }
-
-    .search-desktop:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(99, 102, 241, 0.3);
-      color: #fff;
-    }
-
-    @media (min-width: 1024px) {
-      .search-desktop { display: flex; }
-    }
-
-    .search-desktop span {
-      font-size: 0.8125rem;
-      font-weight: 500;
-    }
-
-    .search-kbd {
-      display: none;
-      font-size: 10px;
-      font-family: ui-monospace, monospace;
-      opacity: 0.6;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0.125rem 0.375rem;
-      border-radius: 6px;
-      color: #64748b;
-    }
-
-    @media (min-width: 1280px) {
-      .search-kbd { display: inline; }
-    }
-
-    /* === SEARCH MOBILE === */
-    .search-mobile {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px; height: 40px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-md);
-      color: var(--nav-text-color);
-      cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .search-mobile:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(99, 102, 241, 0.3);
-      color: #fff;
-    }
-
-    @media (min-width: 1024px) {
-      .search-mobile { display: none; }
-    }
-
-    /* === NAV ACTIONS CONTAINER === */
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    @media (min-width: 1024px) {
-      .nav-actions { gap: 0.75rem; }
-    }
-
-    /* === MOBILE TOGGLE === */
-    .mobile-toggle {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      cursor: pointer;
-      z-index: 1002;
-      padding: 10px;
-      width: 42px; height: 42px;
-      transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .mobile-toggle:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(99, 102, 241, 0.3);
-    }
-
-    @media (min-width: 1024px) {
-      .mobile-toggle { display: none; }
-    }
-
-    .bar {
-      width: 20px; height: 2px;
-      background: #e2e8f0;
-      border-radius: 2px;
-      transition: transform 0.3s var(--transition-smooth), opacity 0.2s ease;
-    }
-
-    .mobile-toggle[aria-expanded="true"] .bar:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-    .mobile-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
-    .mobile-toggle[aria-expanded="true"] .bar:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
-
-    /* === MOBILE DRAWER (Premium) === */
-    .mobile-menu-drawer {
-      position: fixed;
-      top: 0; right: 0; bottom: 0;
-      width: min(85vw, 360px);
-      z-index: 1050;
-      background: rgba(2, 6, 23, 0.98);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-left: 1px solid rgba(255, 255, 255, 0.06);
-      transform: translateX(100%);
-      transition: transform 0.45s var(--transition-smooth);
-      overflow-y: auto;
-      overscroll-behavior: contain;
-    }
-
-    [dir="rtl"] .mobile-menu-drawer {
-      right: auto; left: 0;
-      border-left: none;
-      border-right: 1px solid rgba(255, 255, 255, 0.06);
-      transform: translateX(-100%);
-    }
-
-    .mobile-menu-drawer.active { transform: translateX(0); }
-    [dir="rtl"] .mobile-menu-drawer.active { transform: translateX(0); }
-
-    /* === MOBILE DROPDOWN === */
-    .mobile-dropdown {
-      display: none;
-      margin: 0.3rem 0 0.5rem;
-      padding: 0.4rem;
-      border-radius: 0.8rem;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .mobile-dropdown.open { display: block; }
-
-    /* === BACKDROP === */
-    .backdrop-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 1001;
-      background: rgba(0, 0, 0, 0.58);
-      backdrop-filter: blur(2px);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s ease, visibility 0.2s ease;
-    }
-
-    .backdrop-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* === ACTIVE LINK === */
-    .nav-link.active {
-      color: #fff;
-      background: rgba(99, 102, 241, 0.12);
-    }
-  `;
-
-  document.head.appendChild(style);
+function ensureUnifiedDesignSystem() {
+  ensureStylesheet("/frontend/css/index-theme.css", "bright-index-theme");
+  ensureStylesheet("/frontend/css/unified-nav-search.css", "bright-unified-nav-style");
 }
 
 /* ── Mark Active Links ── */
@@ -903,20 +521,66 @@ function markActiveLinks() {
   });
 }
 
+function isLikelyLegacyTopNavigation(node) {
+  if (!(node instanceof HTMLElement)) return false;
+  if (node.closest("#bright-unified-nav-root")) return false;
+  if (node.classList.contains("hero-section")) return false;
+
+  if (
+    node.matches(
+      ".unified-nav, #main-header, nav.unified-nav, .mobile-menu-drawer, #mobileDrawer, .backdrop-overlay, .nav-overlay"
+    )
+  ) {
+    return true;
+  }
+
+  const tag = node.tagName.toLowerCase();
+  if (tag !== "header" && tag !== "nav") return false;
+
+  const role = (node.getAttribute("role") || "").toLowerCase();
+  const identity = `${node.className || ""} ${node.id || ""}`.toLowerCase();
+  const classHint = /(nav|navbar|menu|topbar|appbar|header|site-nav|site-header|mobile-menu|drawer)/.test(identity);
+  const hasNavInternals = Boolean(
+    node.querySelector(
+      ".mobile-toggle, .nav-links, .nav-actions, .menu-toggle, .hamburger, .sidebar-nav, .nav-tabs, [aria-label*='القائمة'], [aria-label*='menu']"
+    )
+  );
+  const isLandmark = role === "banner" || role === "navigation";
+
+  const styles = window.getComputedStyle(node);
+  const position = styles.position;
+  const topValue = Number.parseFloat(styles.top || "0");
+  const nearTopByStyle = Number.isFinite(topValue) ? topValue <= 120 : true;
+  const nearTopByRect = node.getBoundingClientRect().top <= 120;
+
+  if ((position === "fixed" || position === "sticky") && nearTopByStyle && (isLandmark || classHint || hasNavInternals)) {
+    return true;
+  }
+
+  if ((isLandmark || classHint) && hasNavInternals && nearTopByRect) {
+    return true;
+  }
+
+  if (classHint && nearTopByRect && node.querySelector("a[href]")) {
+    return true;
+  }
+
+  return false;
+}
+
 /* ── Mount Unified Navigation ── */
 function mountUnifiedNavigation() {
-  ensureUnifiedNavStyles();
+  ensureUnifiedDesignSystem();
   ensureDependencies();
 
   // Remove any existing nav elements
   document.getElementById("bright-unified-nav-root")?.remove();
   document.querySelectorAll(
-    ".unified-nav, header.sticky, header.fixed, header.absolute:not(.hero-section), .mobile-menu-drawer, .backdrop-overlay, .nav-overlay, #main-header, nav.unified-nav, header[role='banner']:not(#main-header)"
+    "header, nav, .unified-nav, #main-header, .mobile-menu-drawer, #mobileDrawer, .backdrop-overlay, .nav-overlay"
   ).forEach((node) => {
-    // Don't remove if it's part of our injected root
-    if (node.closest("#bright-unified-nav-root")) return;
-    if (node.classList.contains("hero-section")) return;
-    node.remove();
+    if (isLikelyLegacyTopNavigation(node)) {
+      node.remove();
+    }
   });
 
   const root = document.createElement("div");
