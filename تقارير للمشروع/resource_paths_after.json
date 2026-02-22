@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-02-22T20:58:19.334Z",
+  "root": "/Users/yzydalshmry/Desktop/BrightAI",
+  "filesScanned": 182,
+  "resourcesScanned": 2142,
+  "localResources": 1900,
+  "brokenResources": 0,
+  "fixableBrokenResources": 0,
+  "duplicateResources": 0,
+  "normalizationCandidates": 0,
+  "topBrokenFiles": [],
+  "topDuplicateFiles": [],
+  "brokenRows": [],
+  "duplicateRows": []
+}

@@ -1,0 +1,253 @@
+{
+  "generatedAt": "2026-02-22T20:58:19.245Z",
+  "root": "/Users/yzydalshmry/Desktop/BrightAI",
+  "filesScanned": 182,
+  "resourcesScanned": 2176,
+  "localResources": 1934,
+  "brokenResources": 0,
+  "fixableBrokenResources": 0,
+  "duplicateResources": 21,
+  "normalizationCandidates": 0,
+  "topBrokenFiles": [],
+  "topDuplicateFiles": [
+    {
+      "file": "frontend/pages/blogger/cloude-opus-4.6.html",
+      "count": 2
+    },
+    {
+      "file": "frontend/pages/blogger/gov.html",
+      "count": 2
+    },
+    {
+      "file": "frontend/pages/blogger/nca-compliance.html",
+      "count": 2
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+      "count": 2
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightMath/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightProject/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSales/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSupport/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-workflows/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/blogger/ai-agent.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/health-bright/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/interview/g.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/job.MAISco/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/machine/index.html",
+      "count": 1
+    }
+  ],
+  "brokenRows": [],
+  "duplicateRows": [
+    {
+      "file": "frontend/pages/ai-bots/BrightMath/index.html",
+      "line": 253,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 249,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightProject/index.html",
+      "line": 218,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 214,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+      "line": 199,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 195,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSales/index.html",
+      "line": 212,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 208,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSupport/index.html",
+      "line": 226,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 222,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/ai-bots/index.html",
+      "line": 30,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 121,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/ai-workflows/index.html",
+      "line": 22,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 70,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/blogger/ai-agent.html",
+      "line": 686,
+      "kind": "script",
+      "reference": "/frontend/js/iconify-preload.js",
+      "duplicateOfLine": 70,
+      "duplicateOfReference": "/frontend/js/iconify-preload.js"
+    },
+    {
+      "file": "frontend/pages/blogger/cloude-opus-4.6.html",
+      "line": 1049,
+      "kind": "script",
+      "reference": "/frontend/js/main.bundle.js",
+      "duplicateOfLine": 1048,
+      "duplicateOfReference": "/frontend/js/main.bundle.js"
+    },
+    {
+      "file": "frontend/pages/blogger/cloude-opus-4.6.html",
+      "line": 1050,
+      "kind": "script",
+      "reference": "/frontend/js/main.bundle.js",
+      "duplicateOfLine": 1048,
+      "duplicateOfReference": "/frontend/js/main.bundle.js"
+    },
+    {
+      "file": "frontend/pages/blogger/gov.html",
+      "line": 1190,
+      "kind": "script",
+      "reference": "/frontend/js/main.bundle.js",
+      "duplicateOfLine": 1189,
+      "duplicateOfReference": "/frontend/js/main.bundle.js"
+    },
+    {
+      "file": "frontend/pages/blogger/gov.html",
+      "line": 1191,
+      "kind": "script",
+      "reference": "/frontend/js/main.bundle.js",
+      "duplicateOfLine": 1189,
+      "duplicateOfReference": "/frontend/js/main.bundle.js"
+    },
+    {
+      "file": "frontend/pages/blogger/nca-compliance.html",
+      "line": 1211,
+      "kind": "script",
+      "reference": "/frontend/js/main.bundle.js",
+      "duplicateOfLine": 1210,
+      "duplicateOfReference": "/frontend/js/main.bundle.js"
+    },
+    {
+      "file": "frontend/pages/blogger/nca-compliance.html",
+      "line": 1212,
+      "kind": "script",
+      "reference": "/frontend/js/main.bundle.js",
+      "duplicateOfLine": 1210,
+      "duplicateOfReference": "/frontend/js/main.bundle.js"
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+      "line": 27,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 644,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+      "line": 645,
+      "kind": "script",
+      "reference": "/frontend/js/iconify-preload.js",
+      "duplicateOfLine": 66,
+      "duplicateOfReference": "/frontend/js/iconify-preload.js"
+    },
+    {
+      "file": "frontend/pages/health-bright/index.html",
+      "line": 881,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 916,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/interview/g.html",
+      "line": 656,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 649,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 1070,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 1063,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/job.MAISco/index.html",
+      "line": 1037,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 1030,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    },
+    {
+      "file": "frontend/pages/machine/index.html",
+      "line": 90,
+      "kind": "style-preload",
+      "reference": "/frontend/css/main.bundle.css",
+      "duplicateOfLine": 85,
+      "duplicateOfReference": "/frontend/css/main.bundle.css?v=20260206"
+    }
+  ]
+}
