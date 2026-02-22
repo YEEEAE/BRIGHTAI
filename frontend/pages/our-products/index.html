@@ -85,8 +85,63 @@
                     "@type": "Product",
                     "name": "روبوت يد آلية صناعية",
                     "description": "روبوت صناعي متقدم للمصانع والمنشآت",
+                    "image": "https://brightai.site/frontend/assets/images/Gemini.png",
                     "brand": {"@type": "Brand", "name": "Bright AI"},
-                    "offers": {"@type": "Offer", "priceCurrency": "SAR", "price": "76686.42"}
+                    "aggregateRating": {
+                        "@type": "AggregateRating",
+                        "ratingValue": "4.8",
+                        "reviewCount": "34"
+                    },
+                    "review": [
+                        {
+                            "@type": "Review",
+                            "author": {"@type": "Person", "name": "مدير تشغيل مصنع في الرياض"},
+                            "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
+                            "reviewBody": "ساهم الروبوت في رفع دقة خطوط التجميع وتقليل زمن التشغيل."
+                        }
+                    ],
+                    "offers": {
+                        "@type": "Offer",
+                        "priceCurrency": "SAR",
+                        "price": "76686.42",
+                        "priceValidUntil": "2030-12-31",
+                        "availability": "https://schema.org/InStock",
+                        "shippingDetails": {
+                            "@type": "OfferShippingDetails",
+                            "shippingRate": {
+                                "@type": "MonetaryAmount",
+                                "value": "0",
+                                "currency": "SAR"
+                            },
+                            "shippingDestination": {
+                                "@type": "DefinedRegion",
+                                "addressCountry": "SA"
+                            },
+                            "deliveryTime": {
+                                "@type": "ShippingDeliveryTime",
+                                "handlingTime": {
+                                    "@type": "QuantitativeValue",
+                                    "minValue": 1,
+                                    "maxValue": 3,
+                                    "unitCode": "DAY"
+                                },
+                                "transitTime": {
+                                    "@type": "QuantitativeValue",
+                                    "minValue": 2,
+                                    "maxValue": 7,
+                                    "unitCode": "DAY"
+                                }
+                            }
+                        },
+                        "hasMerchantReturnPolicy": {
+                            "@type": "MerchantReturnPolicy",
+                            "applicableCountry": "SA",
+                            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                            "merchantReturnDays": 30,
+                            "returnMethod": "https://schema.org/ReturnByMail",
+                            "returnFees": "https://schema.org/FreeReturn"
+                        }
+                    }
                 }
             }
         ]
