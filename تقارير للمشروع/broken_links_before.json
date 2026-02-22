@@ -1,0 +1,1025 @@
+{
+  "generatedAt": "2026-02-22T18:13:15.449Z",
+  "root": "/Users/yzydalshmry/Desktop/BrightAI",
+  "filesScanned": 220,
+  "referencesScanned": 8291,
+  "internalReferences": 5749,
+  "brokenReferences": 107,
+  "fixableBrokenReferences": 85,
+  "normalizationCandidates": 4362,
+  "topBrokenFiles": [
+    {
+      "file": "new_index_part.html",
+      "count": 78
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "count": 7
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "count": 7
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "count": 5
+    },
+    {
+      "file": "frontend/css/bundle-pages.css",
+      "count": 2
+    },
+    {
+      "file": "frontend/js/chat-widget.js",
+      "count": 2
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightMath/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightProject/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSales/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSupport/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/pages/blogger/digital-health-smart-archive.html",
+      "count": 1
+    }
+  ],
+  "brokenRows": [
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 77,
+      "patternType": "attr",
+      "reference": "css/design-tokens-enterprise.min.css",
+      "normalizedReferencePath": "css/design-tokens-enterprise.min.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 78,
+      "patternType": "attr",
+      "reference": "css/homepage-enterprise.min.css",
+      "normalizedReferencePath": "css/homepage-enterprise.min.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 83,
+      "patternType": "attr",
+      "reference": "../../js/dist/core.bundle.js",
+      "normalizedReferencePath": "../../js/dist/core.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 84,
+      "patternType": "attr",
+      "reference": "../../js/dist/ui.bundle.js",
+      "normalizedReferencePath": "../../js/dist/ui.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 85,
+      "patternType": "attr",
+      "reference": "../../js/dist/app.bundle.js",
+      "normalizedReferencePath": "../../js/dist/app.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 86,
+      "patternType": "attr",
+      "reference": "../../js/dist/features.bundle.js",
+      "normalizedReferencePath": "../../js/dist/features.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 87,
+      "patternType": "attr",
+      "reference": "../../js/dist/pages.bundle.js",
+      "normalizedReferencePath": "../../js/dist/pages.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/css/bundle-pages.css",
+      "line": 1,
+      "patternType": "css-url",
+      "reference": "css/design-tokens.css",
+      "normalizedReferencePath": "css/design-tokens.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/css/bundle-pages.css",
+      "line": 2,
+      "patternType": "css-url",
+      "reference": "css/unified-gradient.css",
+      "normalizedReferencePath": "css/unified-gradient.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/chat-widget.js",
+      "line": 1,
+      "patternType": "attr",
+      "reference": "frontend/assets/images/Gemini.webp.png",
+      "normalizedReferencePath": "frontend/assets/images/Gemini.webp.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/frontend/assets/images/Gemini.webp.png"
+    },
+    {
+      "file": "frontend/js/chat-widget.js",
+      "line": 13,
+      "patternType": "attr",
+      "reference": "frontend/assets/images/Gemini.webp.png",
+      "normalizedReferencePath": "frontend/assets/images/Gemini.webp.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/frontend/assets/images/Gemini.webp.png"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightMath/index.html",
+      "line": 250,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/navigation.js",
+      "normalizedReferencePath": "../../../../../frontend/js/navigation.js",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/js/navigation.js"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightProject/index.html",
+      "line": 215,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/navigation.js",
+      "normalizedReferencePath": "../../../../../frontend/js/navigation.js",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/js/navigation.js"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+      "line": 196,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/navigation.js",
+      "normalizedReferencePath": "../../../../../frontend/js/navigation.js",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/js/navigation.js"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSales/index.html",
+      "line": 209,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/navigation.js",
+      "normalizedReferencePath": "../../../../../frontend/js/navigation.js",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/js/navigation.js"
+    },
+    {
+      "file": "frontend/pages/ai-bots/BrightSupport/index.html",
+      "line": 223,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/navigation.js",
+      "normalizedReferencePath": "../../../../../frontend/js/navigation.js",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/js/navigation.js"
+    },
+    {
+      "file": "frontend/pages/blogger/digital-health-smart-archive.html",
+      "line": 449,
+      "patternType": "attr",
+      "reference": "../Smart-Medical-Archive/",
+      "normalizedReferencePath": "../Smart-Medical-Archive/",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 1223,
+      "patternType": "attr",
+      "reference": "../../../../Docs",
+      "normalizedReferencePath": "../../../../Docs",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 1284,
+      "patternType": "attr",
+      "reference": "../../../../Docs",
+      "normalizedReferencePath": "../../../../Docs",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3021,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/core.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/core.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3022,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/ui.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/ui.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3023,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/app.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/app.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3024,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/features.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/features.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3025,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/pages.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/pages.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 489,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/core.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/core.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 490,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/ui.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/ui.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 491,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/app.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/app.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 492,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/features.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/features.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 493,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/pages.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/pages.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 9,
+      "patternType": "attr",
+      "reference": "../blogger/تحليل-البيانات.html",
+      "normalizedReferencePath": "../blogger/تحليل-البيانات.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/تحليل-البيانات.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 18,
+      "patternType": "attr",
+      "reference": "../blogger/تعلم-الآلة-و-الأعمال.html",
+      "normalizedReferencePath": "../blogger/تعلم-الآلة-و-الأعمال.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 27,
+      "patternType": "attr",
+      "reference": "../blogger/مقال-تحليل.html",
+      "normalizedReferencePath": "../blogger/مقال-تحليل.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/مقال-تحليل.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "../blogger/future-of-intelligent-data-analysis-finance-sector.html",
+      "normalizedReferencePath": "../blogger/future-of-intelligent-data-analysis-finance-sector.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 45,
+      "patternType": "attr",
+      "reference": "../blogger/smart-automation-benefits.html",
+      "normalizedReferencePath": "../blogger/smart-automation-benefits.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/smart-automation-benefits.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 54,
+      "patternType": "attr",
+      "reference": "../blogger/ai-generative-content-industry-saudi-arabia.html",
+      "normalizedReferencePath": "../blogger/ai-generative-content-industry-saudi-arabia.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai-generative-content-industry-saudi-arabia.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 63,
+      "patternType": "attr",
+      "reference": "../blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
+      "normalizedReferencePath": "../blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 72,
+      "patternType": "attr",
+      "reference": "../blogger/smart-inventory-management.html",
+      "normalizedReferencePath": "../blogger/smart-inventory-management.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/smart-inventory-management.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 81,
+      "patternType": "attr",
+      "reference": "../blogger/ai-transformation.html",
+      "normalizedReferencePath": "../blogger/ai-transformation.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai-transformation.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 90,
+      "patternType": "attr",
+      "reference": "../blogger/agint-bblog.html",
+      "normalizedReferencePath": "../blogger/agint-bblog.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/agint-bblog.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 99,
+      "patternType": "attr",
+      "reference": "../blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+      "normalizedReferencePath": "../blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 108,
+      "patternType": "attr",
+      "reference": "../blogger/digital.html",
+      "normalizedReferencePath": "../blogger/digital.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/digital.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 117,
+      "patternType": "attr",
+      "reference": "../blogger/smart-crm-system.html",
+      "normalizedReferencePath": "../blogger/smart-crm-system.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/smart-crm-system.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 126,
+      "patternType": "attr",
+      "reference": "../blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
+      "normalizedReferencePath": "../blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "../blogger/auto.html",
+      "normalizedReferencePath": "../blogger/auto.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/auto.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 144,
+      "patternType": "attr",
+      "reference": "../blogger/transport-logistics-solutions.html",
+      "normalizedReferencePath": "../blogger/transport-logistics-solutions.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/transport-logistics-solutions.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 153,
+      "patternType": "attr",
+      "reference": "../blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+      "normalizedReferencePath": "../blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 162,
+      "patternType": "attr",
+      "reference": "../blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+      "normalizedReferencePath": "../blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 171,
+      "patternType": "attr",
+      "reference": "../blogger/intelligent-data-analysis.html",
+      "normalizedReferencePath": "../blogger/intelligent-data-analysis.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/intelligent-data-analysis.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 180,
+      "patternType": "attr",
+      "reference": "../blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
+      "normalizedReferencePath": "../blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 189,
+      "patternType": "attr",
+      "reference": "../blogger/big-data-analysis.html",
+      "normalizedReferencePath": "../blogger/big-data-analysis.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/big-data-analysis.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 198,
+      "patternType": "attr",
+      "reference": "../blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+      "normalizedReferencePath": "../blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 207,
+      "patternType": "attr",
+      "reference": "../blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+      "normalizedReferencePath": "../blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "../blogger/ai-agent.html",
+      "normalizedReferencePath": "../blogger/ai-agent.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai-agent.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 225,
+      "patternType": "attr",
+      "reference": "../blogger/production-line.html",
+      "normalizedReferencePath": "../blogger/production-line.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/production-line.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 234,
+      "patternType": "attr",
+      "reference": "../blogger/atou.doc.html",
+      "normalizedReferencePath": "../blogger/atou.doc.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/atou.doc.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 243,
+      "patternType": "attr",
+      "reference": "../blogger/business-intelligence-saudi.html",
+      "normalizedReferencePath": "../blogger/business-intelligence-saudi.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/business-intelligence-saudi.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 253,
+      "patternType": "attr",
+      "reference": "../blogger/digital-health-smart-archive.html",
+      "normalizedReferencePath": "../blogger/digital-health-smart-archive.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/digital-health-smart-archive.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 263,
+      "patternType": "attr",
+      "reference": "../blogger/smart-document-processing.html",
+      "normalizedReferencePath": "../blogger/smart-document-processing.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/smart-document-processing.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 272,
+      "patternType": "attr",
+      "reference": "../blogger/digital-banking-saudi.html",
+      "normalizedReferencePath": "../blogger/digital-banking-saudi.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/digital-banking-saudi.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 282,
+      "patternType": "attr",
+      "reference": "../blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
+      "normalizedReferencePath": "../blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 291,
+      "patternType": "attr",
+      "reference": "../blogger/process-automation.html",
+      "normalizedReferencePath": "../blogger/process-automation.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/process-automation.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 300,
+      "patternType": "attr",
+      "reference": "../blogger/ai.html",
+      "normalizedReferencePath": "../blogger/ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 309,
+      "patternType": "attr",
+      "reference": "../blogger/atou-job.html",
+      "normalizedReferencePath": "../blogger/atou-job.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/atou-job.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 318,
+      "patternType": "attr",
+      "reference": "../blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
+      "normalizedReferencePath": "../blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "../blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+      "normalizedReferencePath": "../blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 336,
+      "patternType": "attr",
+      "reference": "../blogger/الذكاء-الاصطناعي-و-التسويق.html",
+      "normalizedReferencePath": "../blogger/الذكاء-الاصطناعي-و-التسويق.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 350,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-factory-ai-productivity.html",
+      "normalizedReferencePath": "../blogger/saudi-factory-ai-productivity.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-factory-ai-productivity.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 359,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-sports-analytics-ai.html",
+      "normalizedReferencePath": "../blogger/saudi-sports-analytics-ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-sports-analytics-ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 368,
+      "patternType": "attr",
+      "reference": "../blogger/Generative-artificial-intelligence.html",
+      "normalizedReferencePath": "../blogger/Generative-artificial-intelligence.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/Generative-artificial-intelligence.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 377,
+      "patternType": "attr",
+      "reference": "../blogger/analysy.html",
+      "normalizedReferencePath": "../blogger/analysy.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/analysy.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 391,
+      "patternType": "attr",
+      "reference": "../blogger/generative-artificial-intelligence-2.html",
+      "normalizedReferencePath": "../blogger/generative-artificial-intelligence-2.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/generative-artificial-intelligence-2.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 400,
+      "patternType": "attr",
+      "reference": "../blogger/astr.doc.html",
+      "normalizedReferencePath": "../blogger/astr.doc.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/astr.doc.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 409,
+      "patternType": "attr",
+      "reference": "../blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html",
+      "normalizedReferencePath": "../blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 418,
+      "patternType": "attr",
+      "reference": "../blogger/Generative artificial intelligence.html",
+      "normalizedReferencePath": "../blogger/Generative artificial intelligence.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/Generative artificial intelligence.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 427,
+      "patternType": "attr",
+      "reference": "../blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html",
+      "normalizedReferencePath": "../blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 436,
+      "patternType": "attr",
+      "reference": "../blogger/ production-line.html",
+      "normalizedReferencePath": "../blogger/ production-line.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ production-line.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 445,
+      "patternType": "attr",
+      "reference": "../blogger/production-line-2.html",
+      "normalizedReferencePath": "../blogger/production-line-2.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/production-line-2.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 459,
+      "patternType": "attr",
+      "reference": "../blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
+      "normalizedReferencePath": "../blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 468,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-logistics-route-optimization.html",
+      "normalizedReferencePath": "../blogger/saudi-logistics-route-optimization.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-logistics-route-optimization.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 477,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-manufacturing-predictive-maintenance.html",
+      "normalizedReferencePath": "../blogger/saudi-manufacturing-predictive-maintenance.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-manufacturing-predictive-maintenance.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 486,
+      "patternType": "attr",
+      "reference": "../blogger/kfshrc-breast-cancer-ai.html",
+      "normalizedReferencePath": "../blogger/kfshrc-breast-cancer-ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/kfshrc-breast-cancer-ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 495,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-renewable-energy-ai.html",
+      "normalizedReferencePath": "../blogger/saudi-renewable-energy-ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-renewable-energy-ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 504,
+      "patternType": "attr",
+      "reference": "../blogger/ai-energy-saudi.html",
+      "normalizedReferencePath": "../blogger/ai-energy-saudi.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai-energy-saudi.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 513,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-energy-predictive-maintenance.html",
+      "normalizedReferencePath": "../blogger/saudi-energy-predictive-maintenance.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-energy-predictive-maintenance.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 522,
+      "patternType": "attr",
+      "reference": "../blogger/ai-finance-saudi.html",
+      "normalizedReferencePath": "../blogger/ai-finance-saudi.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai-finance-saudi.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 531,
+      "patternType": "attr",
+      "reference": "../blogger/ai-healthcare-saudi.html",
+      "normalizedReferencePath": "../blogger/ai-healthcare-saudi.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ai-healthcare-saudi.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 540,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-insurance-claims-ai.html",
+      "normalizedReferencePath": "../blogger/saudi-insurance-claims-ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-insurance-claims-ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 549,
+      "patternType": "attr",
+      "reference": "../blogger/gov.html",
+      "normalizedReferencePath": "../blogger/gov.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/gov.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 563,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-ecommerce-ai-growth.html",
+      "normalizedReferencePath": "../blogger/saudi-ecommerce-ai-growth.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-ecommerce-ai-growth.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 572,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-edtech-personalized-learning.html",
+      "normalizedReferencePath": "../blogger/saudi-edtech-personalized-learning.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-edtech-personalized-learning.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 581,
+      "patternType": "attr",
+      "reference": "../blogger/private-hospital-scheduling-optimization.html",
+      "normalizedReferencePath": "../blogger/private-hospital-scheduling-optimization.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/private-hospital-scheduling-optimization.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 590,
+      "patternType": "attr",
+      "reference": "../blogger/nca-compliance.html",
+      "normalizedReferencePath": "../blogger/nca-compliance.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/nca-compliance.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 599,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-real-estate-ai-valuation.html",
+      "normalizedReferencePath": "../blogger/saudi-real-estate-ai-valuation.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-real-estate-ai-valuation.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 608,
+      "patternType": "attr",
+      "reference": "../blogger/riyadh-municipality-ai-license.html",
+      "normalizedReferencePath": "../blogger/riyadh-municipality-ai-license.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/riyadh-municipality-ai-license.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 617,
+      "patternType": "attr",
+      "reference": "../blogger/ksu-adaptive-learning.html",
+      "normalizedReferencePath": "../blogger/ksu-adaptive-learning.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/ksu-adaptive-learning.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 626,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-smart-city-traffic.html",
+      "normalizedReferencePath": "../blogger/saudi-smart-city-traffic.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-smart-city-traffic.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 635,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-bank-fraud-detection.html",
+      "normalizedReferencePath": "../blogger/saudi-bank-fraud-detection.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-bank-fraud-detection.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 644,
+      "patternType": "attr",
+      "reference": "../blogger/case-study-saudi-companies-ai-agents-customer-service.html",
+      "normalizedReferencePath": "../blogger/case-study-saudi-companies-ai-agents-customer-service.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 653,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-waste-management-ai.html",
+      "normalizedReferencePath": "../blogger/saudi-waste-management-ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-waste-management-ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 662,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-hospitality-dynamic-pricing.html",
+      "normalizedReferencePath": "../blogger/saudi-hospitality-dynamic-pricing.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-hospitality-dynamic-pricing.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 671,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-mining-ai-exploration.html",
+      "normalizedReferencePath": "../blogger/saudi-mining-ai-exploration.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-mining-ai-exploration.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 680,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-petrochemical-ai-safety.html",
+      "normalizedReferencePath": "../blogger/saudi-petrochemical-ai-safety.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-petrochemical-ai-safety.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 689,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-agritech-smart-farming.html",
+      "normalizedReferencePath": "../blogger/saudi-agritech-smart-farming.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-agritech-smart-farming.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 698,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-dates-quality-ai.html",
+      "normalizedReferencePath": "../blogger/saudi-dates-quality-ai.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-dates-quality-ai.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 707,
+      "patternType": "attr",
+      "reference": "../blogger/commerce-ministry-chatbot.html",
+      "normalizedReferencePath": "../blogger/commerce-ministry-chatbot.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/commerce-ministry-chatbot.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 716,
+      "patternType": "attr",
+      "reference": "../blogger/cloude-opus-4.6.html",
+      "normalizedReferencePath": "../blogger/cloude-opus-4.6.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/cloude-opus-4.6.html"
+    },
+    {
+      "file": "new_index_part.html",
+      "line": 725,
+      "patternType": "attr",
+      "reference": "../blogger/saudi-tourism-ai-guide.html",
+      "normalizedReferencePath": "../blogger/saudi-tourism-ai-guide.html",
+      "reason": "المسار يشير إلى خارج جذر المشروع",
+      "suggestion": "/frontend/pages/blogger/saudi-tourism-ai-guide.html"
+    }
+  ]
+}

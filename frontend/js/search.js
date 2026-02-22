@@ -151,7 +151,7 @@ class BrightSearch {
         title: "الصفحة الرئيسية",
         description: "بوابة Bright AI الرئيسية",
         keywords: ["رئيسية", "Bright AI", "حلول", "ذكاء اصطناعي"],
-        url: "/",
+        url: "/index.html",
         category: "الشركة"
       }
     ];

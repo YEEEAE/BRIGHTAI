@@ -1,0 +1,232 @@
+{
+  "generatedAt": "2026-02-22T18:13:15.739Z",
+  "root": "/Users/yzydalshmry/Desktop/BrightAI",
+  "filesScanned": 220,
+  "referencesScanned": 8291,
+  "internalReferences": 5749,
+  "brokenReferences": 22,
+  "fixableBrokenReferences": 0,
+  "normalizationCandidates": 2,
+  "topBrokenFiles": [
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "count": 7
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "count": 7
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "count": 5
+    },
+    {
+      "file": "frontend/css/bundle-pages.css",
+      "count": 2
+    },
+    {
+      "file": "frontend/pages/blogger/digital-health-smart-archive.html",
+      "count": 1
+    }
+  ],
+  "brokenRows": [
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 77,
+      "patternType": "attr",
+      "reference": "css/design-tokens-enterprise.min.css",
+      "normalizedReferencePath": "css/design-tokens-enterprise.min.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 78,
+      "patternType": "attr",
+      "reference": "css/homepage-enterprise.min.css",
+      "normalizedReferencePath": "css/homepage-enterprise.min.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 83,
+      "patternType": "attr",
+      "reference": "../../js/dist/core.bundle.js",
+      "normalizedReferencePath": "../../js/dist/core.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 84,
+      "patternType": "attr",
+      "reference": "../../js/dist/ui.bundle.js",
+      "normalizedReferencePath": "../../js/dist/ui.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 85,
+      "patternType": "attr",
+      "reference": "../../js/dist/app.bundle.js",
+      "normalizedReferencePath": "../../js/dist/app.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 86,
+      "patternType": "attr",
+      "reference": "../../js/dist/features.bundle.js",
+      "normalizedReferencePath": "../../js/dist/features.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/assets/fonts/enterprise-hero.html",
+      "line": 87,
+      "patternType": "attr",
+      "reference": "../../js/dist/pages.bundle.js",
+      "normalizedReferencePath": "../../js/dist/pages.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/css/bundle-pages.css",
+      "line": 1,
+      "patternType": "css-url",
+      "reference": "css/design-tokens.css",
+      "normalizedReferencePath": "css/design-tokens.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/css/bundle-pages.css",
+      "line": 2,
+      "patternType": "css-url",
+      "reference": "css/unified-gradient.css",
+      "normalizedReferencePath": "css/unified-gradient.css",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/blogger/digital-health-smart-archive.html",
+      "line": 449,
+      "patternType": "attr",
+      "reference": "../Smart-Medical-Archive/",
+      "normalizedReferencePath": "../Smart-Medical-Archive/",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 1223,
+      "patternType": "attr",
+      "reference": "../../../../Docs",
+      "normalizedReferencePath": "../../../../Docs",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 1284,
+      "patternType": "attr",
+      "reference": "../../../../Docs",
+      "normalizedReferencePath": "../../../../Docs",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3021,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/core.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/core.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3022,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/ui.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/ui.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3023,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/app.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/app.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3024,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/features.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/features.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "line": 3025,
+      "patternType": "attr",
+      "reference": "../../../../frontend/js/dist/pages.bundle.js",
+      "normalizedReferencePath": "../../../../frontend/js/dist/pages.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 489,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/core.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/core.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 490,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/ui.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/ui.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 491,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/app.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/app.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 492,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/features.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/features.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "line": 493,
+      "patternType": "attr",
+      "reference": "../../../../../frontend/js/dist/pages.bundle.js",
+      "normalizedReferencePath": "../../../../../frontend/js/dist/pages.bundle.js",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    }
+  ]
+}

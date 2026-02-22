@@ -85,7 +85,7 @@ function buildUnifiedNavigationMarkup() {
         <div class="nav-container">
             <!-- Branding -->
             <div class="flex-shrink-0">
-                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/"
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
                     title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
                     <div
                         class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
@@ -103,7 +103,7 @@ function buildUnifiedNavigationMarkup() {
             <nav class="nav-desktop" style="contain: layout;">
                 <ul class="nav-links">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">الرئيسية</a>
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
                     </li>
                     <!-- Smart Solutions Dropdown -->
                     <li class="nav-item group/dropdown relative">
@@ -364,7 +364,7 @@ function buildUnifiedNavigationMarkup() {
             <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
                 <li>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
-                        href="/">
+                        href="/index.html">
                         <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
                         الرئيسية
                     </a>
