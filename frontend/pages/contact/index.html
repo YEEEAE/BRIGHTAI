@@ -2,11 +2,19 @@
 
 <html class="scroll-smooth" dir="rtl" lang="ar">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>تواصل معنا | Bright AI - استشارات الذكاء الاصطناعي في السعودية</title>
-<!-- Google tag (gtag.js) -->
-
 <!-- Enterprise SEO Meta Tags -->
 <meta name="description" content="تواصل مع خبراء الذكاء الاصطناعي في الرياض. احجز استشارة مجانية لحلول AI المؤسسية، تحليل البيانات، والأتمتة الذكية للشركات السعودية."/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
@@ -188,7 +196,6 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="/frontend/js/navigation.js"></script>
 <!-- BrightAI Global Theme -->
 
-
 <link href="/frontend/css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="/frontend/css/index-theme.css" rel="stylesheet"/></noscript>
 <link href="/frontend/css/tailwind.local.min.css" rel="stylesheet">
 <script defer="" src="/frontend/js/iconify-preload.js"></script>
@@ -206,28 +213,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
         }
         </script>
     <!-- Deferred Google Analytics -->
-    <script>
-        (function() {
-            function loadAnalytics() {
-                if (window._gaLoaded) return;
-                window._gaLoaded = true;
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-                window.gtag = gtag;
-                gtag('js', new Date());
-                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
-                var s = document.createElement('script');
-                s.async = true;
-                s.defer = true;
-                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
-                document.head.appendChild(s);
-            }
-            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
-            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
-            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
-            setTimeout(loadAnalytics, 5000);
-        })();
-    </script>
+    
 
 <!-- Critical CSS for Core Web Vitals -->
 <style id="critical-css">

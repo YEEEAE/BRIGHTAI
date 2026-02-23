@@ -2,6 +2,16 @@
 
 <html class="scroll-smooth" dir="rtl" lang="ar">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>معالجة المستندات الذكية (OCR) | Bright AI</title>
@@ -26,28 +36,7 @@
 <script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
 
     <!-- Deferred Google Analytics -->
-    <script>
-        (function() {
-            function loadAnalytics() {
-                if (window._gaLoaded) return;
-                window._gaLoaded = true;
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-                window.gtag = gtag;
-                gtag('js', new Date());
-                gtag('config', 'G-8LLESL207Q', { send_page_view: true, transport_type: 'beacon' });
-                var s = document.createElement('script');
-                s.async = true;
-                s.defer = true;
-                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q';
-                document.head.appendChild(s);
-            }
-            const events = ['scroll', 'click', 'touchstart', 'mousemove'];
-            const loadAll = () => { events.forEach(e => window.removeEventListener(e, loadAll)); setTimeout(loadAnalytics, 100); };
-            events.forEach(e => window.addEventListener(e, loadAll, { once: true, passive: true }));
-            setTimeout(loadAnalytics, 5000);
-        })();
-    </script>
+    
 
 <!-- Critical CSS for Core Web Vitals -->
 <style id="critical-css">
@@ -603,7 +592,6 @@
         <a href="/frontend/pages/sectors/logistics.html" class="glass-card p-5 rounded-2xl border border-white/10 hover:bg-white/5 transition"><h3 class="text-lg font-bold text-white mb-2">قطاع اللوجستيات</h3><p class="text-sm text-slate-300">سلاسل توريد ذكية وتحسين عمليات التسليم.</p></a>
       </div>
     </section>
-
 
     <!-- FAQ-SERVICE-DOCS -->
     <section class="max-w-7xl mx-auto px-6 mt-12" style="content-visibility: auto;">
