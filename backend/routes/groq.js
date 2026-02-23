@@ -16,6 +16,10 @@ const MAX_MEDICAL_QUERY_CHARS = 500;
 const MAX_MEDICAL_AGENT_QUESTION_CHARS = 1200;
 const MAX_EXTRACT_FILE_BYTES = 8 * 1024 * 1024;
 const MAX_TRANSCRIBE_FILE_BYTES = 25 * 1024 * 1024;
+const GROQ_STREAM_TIMEOUT_MS = Math.max(
+  1000,
+  Number(config.groq.streamTimeoutMs) || 30000
+);
 
 const DEMO_SYSTEM_PROMPT = `
 أنت مستشار أعمال سعودي لشركة Bright AI. هدفك تقديم مخرجات عملية ومختصرة لصناع القرار.
@@ -348,31 +352,152 @@ ${JSON.stringify(records)}
 `;
 }
 
-async function callGroq({ messages, temperature = 0.4, maxTokens = 900, stream = false, signal }) {
-  const response = await fetch(config.groq.endpoint, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${config.groq.apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: config.groq.model,
-      messages,
-      temperature,
-      max_tokens: maxTokens,
-      stream
-    }),
-    signal
-  });
+function createUpstreamRequestSignal(externalSignal, timeoutMs) {
+  const controller = new AbortController();
+  let timeoutId = null;
+  let externalAbortHandler = null;
 
-  if (!response.ok) {
-    const errText = await response.text().catch(() => response.statusText);
-    const error = new Error(errText || 'Groq API Error');
-    error.statusCode = response.status;
-    throw error;
+  if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
+    timeoutId = setTimeout(() => {
+      const timeoutError = new Error('GROQ_TIMEOUT');
+      timeoutError.code = 'GROQ_TIMEOUT';
+      controller.abort(timeoutError);
+    }, timeoutMs);
+
+    if (timeoutId.unref) {
+      timeoutId.unref();
+    }
   }
 
-  return response;
+  if (externalSignal) {
+    externalAbortHandler = () => {
+      const abortReason = externalSignal.reason || new Error('CLIENT_ABORTED');
+      if (abortReason && typeof abortReason === 'object' && !abortReason.code) {
+        abortReason.code = 'CLIENT_ABORTED';
+      }
+      controller.abort(abortReason);
+    };
+
+    if (externalSignal.aborted) {
+      externalAbortHandler();
+    } else {
+      externalSignal.addEventListener('abort', externalAbortHandler, { once: true });
+    }
+  }
+
+  return {
+    signal: controller.signal,
+    cleanup() {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (externalSignal && externalAbortHandler) {
+        externalSignal.removeEventListener('abort', externalAbortHandler);
+      }
+    }
+  };
+}
+
+function buildStreamErrorPayload(error) {
+  const statusCode = error?.statusCode || 500;
+  const upstreamErrorCode = error?.code || '';
+
+  if (statusCode === 429 || upstreamErrorCode === 'RATE_LIMIT_EXCEEDED') {
+    return {
+      error: 'تم تجاوز حد المعدل، حاول مرة ثانية بعد دقيقة.',
+      errorCode: 'RATE_LIMIT_EXCEEDED',
+      retryable: true
+    };
+  }
+
+  if (statusCode === 408 || upstreamErrorCode === 'GROQ_TIMEOUT') {
+    return {
+      error: 'انتهت مهلة الرد من الخدمة، حاول مرة ثانية.',
+      errorCode: 'STREAM_TIMEOUT',
+      retryable: true
+    };
+  }
+
+  if (statusCode === 503) {
+    return {
+      error: 'الخدمة غير متاحة حالياً.',
+      errorCode: 'GROQ_UNAVAILABLE',
+      retryable: true
+    };
+  }
+
+  if (statusCode === 401 || statusCode === 403) {
+    return {
+      error: 'تعذر التحقق من صلاحية الاتصال بالخدمة.',
+      errorCode: 'GROQ_AUTH_ERROR',
+      retryable: false
+    };
+  }
+
+  return {
+    error: 'حدث خطأ أثناء البث.',
+    errorCode: 'GROQ_STREAM_ERROR',
+    retryable: true
+  };
+}
+
+async function callGroq({
+  messages,
+  temperature = 0.4,
+  maxTokens = 900,
+  stream = false,
+  signal,
+  timeoutMs = GROQ_STREAM_TIMEOUT_MS
+}) {
+  const { signal: requestSignal, cleanup } = createUpstreamRequestSignal(signal, timeoutMs);
+
+  try {
+    const response = await fetch(config.groq.endpoint, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${config.groq.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: config.groq.model,
+        messages,
+        temperature,
+        max_tokens: maxTokens,
+        stream
+      }),
+      signal: requestSignal
+    });
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => response.statusText);
+      const error = new Error(errText || 'Groq API Error');
+      error.statusCode = response.status;
+      error.code = response.status === 429 ? 'RATE_LIMIT_EXCEEDED' : 'GROQ_API_ERROR';
+      throw error;
+    }
+
+    return response;
+  } catch (error) {
+    const isAbortError = error?.name === 'AbortError' || error?.code === 'ABORT_ERR';
+    const reason = requestSignal.reason || null;
+    const reasonCode = reason?.code || '';
+
+    if (isAbortError && reasonCode === 'GROQ_TIMEOUT') {
+      const timeoutError = new Error('GROQ_TIMEOUT');
+      timeoutError.statusCode = 408;
+      timeoutError.code = 'GROQ_TIMEOUT';
+      throw timeoutError;
+    }
+
+    if (isAbortError && reasonCode === 'CLIENT_ABORTED') {
+      const clientAbortError = new Error('CLIENT_ABORTED');
+      clientAbortError.statusCode = 499;
+      clientAbortError.code = 'CLIENT_ABORTED';
+      throw clientAbortError;
+    }
+
+    throw error;
+  } finally {
+    cleanup();
+  }
 }
 
 async function extractTextWithGemini({ base64Data, mimeType }) {
@@ -517,7 +642,9 @@ async function groqStreamHandler(req, res, rawRes) {
 
   const controller = new AbortController();
   req.on('close', () => {
-    controller.abort();
+    const closeError = new Error('CLIENT_ABORTED');
+    closeError.code = 'CLIENT_ABORTED';
+    controller.abort(closeError);
   });
 
   let assistantText = '';
@@ -568,12 +695,19 @@ async function groqStreamHandler(req, res, rawRes) {
       addToSession(activeSessionId, 'assistant', assistantText.trim());
     }
   } catch (error) {
-    const message = error.statusCode === 503
-      ? 'الخدمة غير متاحة حالياً'
-      : 'حدث خطأ أثناء البث';
-    streamRes.write(`data: ${JSON.stringify({ error: message })}\n\n`);
+    if (error?.code === 'CLIENT_ABORTED') {
+      return;
+    }
+
+    const payload = buildStreamErrorPayload(error);
+    streamRes.write(`data: ${JSON.stringify(payload)}\n\n`);
+    streamRes.write('data: [DONE]\n\n');
   } finally {
-    streamRes.end();
+    try {
+      streamRes.end();
+    } catch (endError) {
+      // Ignore closed-connection end errors
+    }
   }
 }
 
