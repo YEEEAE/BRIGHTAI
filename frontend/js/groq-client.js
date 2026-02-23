@@ -7,6 +7,7 @@ class GroqStreamManager {
     constructor(config = {}) {
         this.endpoint = config.endpoint || '/api/groq/stream';
         this.outputType = config.outputType || 'تحليل بيانات';
+        this.sessionId = null;
         this.sessionHistory = [];
     }
 
@@ -26,7 +27,8 @@ class GroqStreamManager {
                 },
                 body: JSON.stringify({
                     message: prompt,
-                    outputType: this.outputType
+                    outputType: this.outputType,
+                    sessionId: this.sessionId
                 })
             });
 
@@ -59,6 +61,9 @@ class GroqStreamManager {
 
                     try {
                         const parsed = JSON.parse(message);
+                        if (parsed?.sessionId) {
+                            this.sessionId = parsed.sessionId;
+                        }
                         const content = parsed?.token || parsed?.choices?.[0]?.delta?.content || '';
                         if (content) onChunk(content);
                     } catch (e) { /* تجاهل */ }
@@ -73,6 +78,10 @@ class GroqStreamManager {
     }
 
     async mockAnalysis(context, onChunk, onComplete) {
+        if (!this.sessionId) {
+            this.sessionId = `mock_${Date.now()}`;
+        }
+
         const { analysis } = context || {};
         let insights = [];
 

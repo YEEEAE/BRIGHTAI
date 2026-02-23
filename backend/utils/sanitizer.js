@@ -60,6 +60,34 @@ function sanitizeUserInput(input) {
 }
 
 /**
+ * Sanitize input for AI model consumption (no HTML escaping)
+ * - Removes null bytes
+ * - Removes control characters except newline (\n), carriage return (\r), and tab (\t)
+ * - Trims whitespace
+ *
+ * @param {string} input - Raw text to send to AI model
+ * @returns {string} - Cleaned text without HTML entity encoding
+ */
+function sanitizeForAI(input) {
+  if (typeof input !== 'string') {
+    return '';
+  }
+
+  let sanitized = input;
+
+  // Remove null bytes
+  sanitized = sanitized.replace(/\0/g, '');
+
+  // Remove control characters except newline (\n), carriage return (\r), and tab (\t)
+  sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+
+  // Trim whitespace
+  sanitized = sanitized.trim();
+
+  return sanitized;
+}
+
+/**
  * Filter AI response to prevent executable code in DOM
  * - Removes script tags and their content
  * - Removes event handler attributes (onclick, onerror, etc.)
@@ -138,6 +166,7 @@ function validateInputSafety(input) {
 
 module.exports = {
   escapeHTML,
+  sanitizeForAI,
   sanitizeUserInput,
   filterAIResponse,
   validateInputSafety
