@@ -719,6 +719,35 @@ function injectBlogReadingTime() {
   title.insertAdjacentElement("afterend", badge);
 }
 
+/* ── Core Web Vitals Helpers ── */
+function optimizeImagesForCWV() {
+  const images = Array.from(document.querySelectorAll("img"));
+  if (!images.length) return;
+
+  images.forEach((img, index) => {
+    if (!img.hasAttribute("decoding")) img.decoding = "async";
+    if (!img.hasAttribute("loading") && index > 0) img.loading = "lazy";
+    if (!img.hasAttribute("fetchpriority")) {
+      img.setAttribute("fetchpriority", index === 0 ? "high" : "auto");
+    }
+
+    const setIntrinsicSize = () => {
+      if (!img.hasAttribute("width") && img.naturalWidth) {
+        img.setAttribute("width", String(img.naturalWidth));
+      }
+      if (!img.hasAttribute("height") && img.naturalHeight) {
+        img.setAttribute("height", String(img.naturalHeight));
+      }
+    };
+
+    if (img.complete) {
+      setIntrinsicSize();
+    } else {
+      img.addEventListener("load", setIntrinsicSize, { once: true });
+    }
+  });
+}
+
 /* ── Init Navigation ── */
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
@@ -898,4 +927,5 @@ async function initNavigation() {
   }
 
   injectBlogReadingTime();
+  optimizeImagesForCWV();
 }
