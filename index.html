@@ -4496,7 +4496,7 @@
     </button>
     <!-- Extras: Chat Widget -->
     <div class="chat-fab-container fixed bottom-8 right-8 z-40 group">
-        <div class="chat-fab w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 cursor-pointer hover:scale-110 transition-transform duration-300 relative"
+        <div class="chat-fab chat-widget-toggle w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 cursor-pointer hover:scale-110 transition-transform duration-300 relative"
             id="chatFab">
             <iconify-icon class="text-2xl group-hover:rotate-12 transition-transform"
                 icon="lucide:message-circle"></iconify-icon>
@@ -4504,7 +4504,7 @@
                 id="chatBadge">1</div>
         </div>
     </div>
-    <div class="chat-window fixed bottom-24 right-8 w-96 z-50 bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden transform scale-90 opacity-0 pointer-events-none transition-all duration-300 origin-bottom-right"
+    <div class="chat-window fixed bottom-24 right-8 left-auto w-96 z-50 bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300 origin-bottom-right"
         id="chatWindow">
         <div
             class="chat-head bg-gradient-to-r from-indigo-900 to-slate-900 p-4 border-b border-white/5 flex items-center justify-between">
@@ -4525,11 +4525,11 @@
             <div class="flex items-center gap-2">
                 <button class="iconbtn p-1.5 text-slate-400 hover:text-white transition-colors"
                     id="chatMin"><iconify-icon icon="lucide:minus"></iconify-icon></button>
-                <button class="iconbtn p-1.5 text-slate-400 hover:text-white transition-colors"
+                <button class="iconbtn chat-close p-1.5 text-slate-400 hover:text-white transition-colors"
                     id="chatClose"><iconify-icon icon="lucide:x"></iconify-icon></button>
             </div>
         </div>
-        <div class="chat-body h-96 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10" id="chatBody" aria-live="polite" aria-atomic="false">
+        <div class="chat-body chat-messages h-96 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10" id="chatBody" aria-live="polite" aria-atomic="false">
             <div
                 class="msg bot bg-white/5 p-3 rounded-2xl rounded-tr-none border border-white/5 text-slate-300 text-sm max-w-[85%]">
                 مرحباً بك في برايت AI! أنا مساعدك الذكي، كيف يمكنني مساعدتك في رحلة التحول الرقمي اليوم؟
@@ -4549,11 +4549,11 @@
                     class="animate-bounce [animation-delay:0.4s]">.</span>
             </div>
         </div>
-        <div class="chat-input p-4 border-t border-white/5 bg-white/5 flex items-center gap-2">
-            <input class="flex-1 bg-transparent border-none text-white text-sm focus:ring-0 placeholder:text-slate-600"
+        <div class="chat-input-area p-4 border-t border-white/5 bg-white/5 flex items-center gap-2">
+            <input class="chat-input flex-1 bg-transparent border-none text-white text-sm focus:ring-0 placeholder:text-slate-600"
                 id="chatInput" placeholder="اكتب استفسارك هنا..." type="text" />
             <button
-                class="w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20"
+                class="chat-send w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20"
                 id="chatSend">
                 <iconify-icon icon="lucide:send"></iconify-icon>
             </button>
@@ -4584,7 +4584,9 @@
     <script defer="" src="/frontend/js/navigation.js"></script>
     <!-- Search logic loaded dynamically -->
     <script defer="" src="/frontend/js/search.js"></script>
-    <!-- index-theme.min.js: page interactions (tabs, chat, ROI calc) -->
+    <!-- main.bundle.js: page interactions (chat widget, components) -->
+    <script defer src="/frontend/js/main.bundle.js"></script>
+    <!-- index-theme.min.js: page interactions (tabs, chat tracking, ROI calc) -->
     <!-- type="module" defers execution to after HTML parsing & enables ES module optimizations -->
     <script defer="" src="/frontend/js/index-theme.js"></script>
 </body>

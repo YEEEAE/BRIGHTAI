@@ -22,13 +22,14 @@ const {
   groqTranscribeHandler,
   groqMedicalAgentHandler,
   groqFaqHandler,
-  groqMedicalArchiveHandler
+  groqMedicalArchiveHandler,
+  groqHealthHandler
 } = require('./routes/groq');
 
 // CORS headers for API responses
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, X-BrightAI-Analytics-Key, Authorization',
   'Content-Type': 'application/json'
 };
@@ -305,6 +306,8 @@ async function handleRequest(req, res) {
       await groqFaqHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/groq/medical-archive') {
       await groqMedicalArchiveHandler(ctx.req, ctx.res);
+    } else if (method === 'GET' && url === '/api/health/groq') {
+      await groqHealthHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/analytics/ga4/conversion') {
       await ga4ConversionHandler(ctx.req, ctx.res);
     } else if (method === 'GET' && url === '/api/docs') {
@@ -390,6 +393,7 @@ function startServer() {
     console.log('  POST /api/groq/medical-agent - Groq medical smart agent');
     console.log('  POST /api/groq/faq    - FAQ generation');
     console.log('  POST /api/groq/medical-archive - Smart medical archive demo');
+    console.log('  GET  /api/health/groq - Groq provider health check');
     console.log('  POST /api/analytics/ga4/conversion - Forward conversion events to GA4');
     console.log('  GET  /api/docs       - API Documentation (Swagger UI)');
     console.log('  GET  /api/health     - Health check');

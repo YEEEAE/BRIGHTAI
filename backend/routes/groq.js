@@ -517,6 +517,111 @@ function buildStreamErrorPayload(error) {
   };
 }
 
+function isStreamingRequested(body) {
+  if (!body || typeof body !== 'object') return false;
+  if (body.stream === true) return true;
+  if (typeof body.stream === 'string') {
+    const normalized = body.stream.trim().toLowerCase();
+    return normalized === '1' || normalized === 'true' || normalized === 'yes';
+  }
+  return false;
+}
+
+async function streamGroqCompletion({
+  req,
+  res,
+  messages,
+  apiKey,
+  model,
+  temperature,
+  maxTokens,
+  metaPayload = null,
+  onCompleted = null
+}) {
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream; charset=utf-8',
+    'Cache-Control': 'no-cache, no-transform',
+    Connection: 'keep-alive',
+    'Access-Control-Allow-Origin': '*'
+  });
+
+  if (metaPayload && typeof metaPayload === 'object') {
+    res.write(`data: ${JSON.stringify(metaPayload)}\n\n`);
+  }
+
+  const controller = new AbortController();
+  req.on('close', () => {
+    const closeError = new Error('CLIENT_ABORTED');
+    closeError.code = 'CLIENT_ABORTED';
+    controller.abort(closeError);
+  });
+
+  let assistantText = '';
+
+  try {
+    const groqResponse = await callGroq({
+      messages,
+      temperature,
+      maxTokens,
+      apiKey,
+      model,
+      stream: true,
+      signal: controller.signal
+    });
+
+    const reader = groqResponse.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const payload = trimmed.replace(/^data:\s*/, '');
+        if (!payload || payload === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(payload);
+          const delta = parsed?.choices?.[0]?.delta?.content;
+          if (delta) {
+            assistantText += delta;
+            res.write(`data: ${JSON.stringify({ token: delta })}\n\n`);
+          }
+        } catch (_error) {
+          continue;
+        }
+      }
+    }
+
+    if (onCompleted) {
+      const finalPayload = await onCompleted(assistantText.trim());
+      if (finalPayload && typeof finalPayload === 'object') {
+        res.write(`data: ${JSON.stringify(finalPayload)}\n\n`);
+      }
+    }
+
+    res.write('data: [DONE]\n\n');
+  } catch (error) {
+    if (error?.code === 'CLIENT_ABORTED') {
+      return;
+    }
+    const payload = buildStreamErrorPayload(error);
+    res.write(`data: ${JSON.stringify(payload)}\n\n`);
+    res.write('data: [DONE]\n\n');
+  } finally {
+    try {
+      res.end();
+    } catch (_endError) {
+      // Ignore closed-connection end errors
+    }
+  }
+}
+
 async function callGroq({
   messages,
   temperature = 0.4,
@@ -524,6 +629,8 @@ async function callGroq({
   stream = false,
   apiKey = '',
   model = '',
+  tools = null,
+  toolChoice = null,
   signal,
   timeoutMs = GROQ_STREAM_TIMEOUT_MS
 }) {
@@ -537,23 +644,35 @@ async function callGroq({
 
   const activeModel = String(model || config.groq.model || '').trim() || 'llama3-70b-8192';
   const { signal: requestSignal, cleanup } = createUpstreamRequestSignal(signal, timeoutMs);
+  const startedAt = Date.now();
+  const promptChars = Array.isArray(messages)
+    ? messages.reduce((sum, item) => sum + String(item?.content || '').length, 0)
+    : 0;
 
   try {
     const response = await retryWithBackoff(
       async () => {
+        const payload = {
+          model: activeModel,
+          messages,
+          temperature,
+          max_tokens: maxTokens,
+          stream
+        };
+        if (Array.isArray(tools) && tools.length) {
+          payload.tools = tools;
+        }
+        if (toolChoice) {
+          payload.tool_choice = toolChoice;
+        }
+
         const upstreamResponse = await fetch(config.groq.endpoint, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${activeApiKey}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
-            model: activeModel,
-            messages,
-            temperature,
-            max_tokens: maxTokens,
-            stream
-          }),
+          body: JSON.stringify(payload),
           signal: requestSignal
         });
 
@@ -577,6 +696,13 @@ async function callGroq({
       }
     );
 
+    const durationMs = Date.now() - startedAt;
+    const remainingTokens = response.headers.get('x-ratelimit-remaining-tokens') || 'n/a';
+    const requestId = response.headers.get('x-groq-id') || response.headers.get('x-request-id') || 'n/a';
+    console.log(
+      `[Groq] model=${activeModel} stream=${stream ? 1 : 0} duration_ms=${durationMs} prompt_chars=${promptChars} tokens_left=${remainingTokens} req_id=${requestId}`
+    );
+
     return response;
   } catch (error) {
     const isAbortError = error?.name === 'AbortError' || error?.code === 'ABORT_ERR';
@@ -596,6 +722,12 @@ async function callGroq({
       clientAbortError.code = 'CLIENT_ABORTED';
       throw clientAbortError;
     }
+
+    const durationMs = Date.now() - startedAt;
+    const statusCode = error?.statusCode || error?.status || 'n/a';
+    console.error(
+      `[Groq] request_failed model=${activeModel} stream=${stream ? 1 : 0} duration_ms=${durationMs} prompt_chars=${promptChars} status=${statusCode} error=${error?.message || 'unknown'}`
+    );
 
     throw error;
   } finally {
@@ -641,6 +773,31 @@ async function extractTextWithGemini({ base64Data, mimeType }) {
   const data = await response.json();
   const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join('\n') || '';
   return text.trim();
+}
+
+async function extractTextWithGroqVision({ base64Data, mimeType, apiKey = '' }) {
+  const visionPrompt = 'استخرج النص الكامل من الملف التالي. أعد النص فقط بدون أي شرح.';
+  const imageUrl = `data:${mimeType};base64,${base64Data}`;
+  const response = await callGroq({
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: visionPrompt },
+          { type: 'image_url', image_url: { url: imageUrl } }
+        ]
+      }
+    ],
+    temperature: 0.1,
+    maxTokens: 2200,
+    apiKey,
+    model: config.groq.visionModel,
+    stream: false
+  });
+
+  const data = await response.json();
+  const text = data?.choices?.[0]?.message?.content?.trim() || '';
+  return text;
 }
 
 async function callGeminiText({ prompt, maxOutputTokens = 1800, temperature = 0.2 }) {
@@ -855,10 +1012,18 @@ async function groqOcrHandler(req, res) {
           errorCode: 'OCR_FILE_TOO_LARGE'
         });
       }
-      extractedText = await extractTextWithGemini({
-        base64Data: cleanedBase64,
-        mimeType: mimeType || 'image/png'
-      });
+      if (isApiKeyConfigured()) {
+        extractedText = await extractTextWithGemini({
+          base64Data: cleanedBase64,
+          mimeType: mimeType || 'image/png'
+        });
+      } else {
+        extractedText = await extractTextWithGroqVision({
+          base64Data: cleanedBase64,
+          mimeType: mimeType || 'image/png',
+          apiKey: groqApiKey
+        });
+      }
     }
 
     if (extractedText.length > MAX_OCR_TEXT_CHARS) {
@@ -936,6 +1101,32 @@ async function groqFaqHandler(req, res) {
       userMessage: userPrompt
     });
 
+    if (isStreamingRequested(req.body)) {
+      return streamGroqCompletion({
+        req,
+        res,
+        messages,
+        apiKey: groqApiKey,
+        model: groqModel,
+        temperature: 0.3,
+        maxTokens: 700,
+        metaPayload: { mode: 'faq', model: groqModel },
+        onCompleted: (assistantText) => {
+          const parsed = parseJsonFromText(assistantText);
+          if (!Array.isArray(parsed)) {
+            return {
+              error: 'تعذر توليد FAQ بصيغة صحيحة',
+              errorCode: 'INVALID_FAQ_OUTPUT'
+            };
+          }
+          const faqs = parsed
+            .filter(item => item && typeof item.question === 'string' && typeof item.answer === 'string')
+            .slice(0, 5);
+          return { faqs };
+        }
+      });
+    }
+
     const response = await callGroq({
       messages,
       temperature: 0.3,
@@ -971,6 +1162,7 @@ async function groqFaqHandler(req, res) {
 }
 
 async function groqExtractTextHandler(req, res) {
+  const groqApiKey = resolveGroqApiKey(req);
   const { fileBase64, mimeType, fileName } = req.body || {};
   if (!fileBase64 || typeof fileBase64 !== 'string') {
     return res.status(400).json({
@@ -988,18 +1180,25 @@ async function groqExtractTextHandler(req, res) {
     });
   }
 
-  if (!isApiKeyConfigured()) {
+  if (!isApiKeyConfigured() && !groqApiKey) {
     return res.status(503).json({
-      error: 'يتطلب هذا المسار إعداد GEMINI_API_KEY لاستخراج النص',
-      errorCode: 'GEMINI_REQUIRED'
+      error: 'يتطلب هذا المسار إعداد GEMINI_API_KEY أو GROQ_API_KEY لاستخراج النص',
+      errorCode: 'OCR_PROVIDER_REQUIRED'
     });
   }
 
   try {
-    const text = await extractTextWithGemini({
-      base64Data: cleanedBase64,
-      mimeType: asSafeString(mimeType || 'application/octet-stream', 80)
-    });
+    const safeMimeType = asSafeString(mimeType || 'application/octet-stream', 80);
+    const text = isApiKeyConfigured()
+      ? await extractTextWithGemini({
+          base64Data: cleanedBase64,
+          mimeType: safeMimeType
+        })
+      : await extractTextWithGroqVision({
+          base64Data: cleanedBase64,
+          mimeType: safeMimeType,
+          apiKey: groqApiKey
+        });
 
     const normalized = sanitizeForAI(text || '').slice(0, MAX_MEDICAL_REPORT_CHARS * 2);
     if (!normalized) {
@@ -1012,7 +1211,7 @@ async function groqExtractTextHandler(req, res) {
     return res.status(200).json({
       text: normalized,
       fileName: asSafeString(fileName || '', 120) || null,
-      method: 'gemini-flash-ocr',
+      method: isApiKeyConfigured() ? 'gemini-flash-ocr' : 'groq-vision-ocr',
       generatedAt: new Date().toISOString()
     });
   } catch (error) {
@@ -1155,6 +1354,34 @@ async function groqMedicalAgentHandler(req, res) {
       history: [],
       userMessage: prompt
     });
+
+    if (isStreamingRequested(req.body)) {
+      return streamGroqCompletion({
+        req,
+        res,
+        messages,
+        apiKey: groqApiKey,
+        model: groqModel,
+        temperature: 0.2,
+        maxTokens: 1200,
+        metaPayload: { mode: 'medical-agent', model: groqModel },
+        onCompleted: (assistantText) => {
+          const parsed = parseJsonFromText(assistantText);
+          if (!parsed || typeof parsed !== 'object') {
+            return {
+              error: 'تعذر تفسير مخرجات الوكيل الذكي',
+              errorCode: 'INVALID_AGENT_OUTPUT'
+            };
+          }
+          return {
+            result: parsed,
+            model: groqModel,
+            generatedAt: new Date().toISOString()
+          };
+        }
+      });
+    }
+
     const response = await callGroq({
       messages,
       temperature: 0.2,
@@ -1266,6 +1493,34 @@ async function groqMedicalArchiveHandler(req, res) {
       userMessage
     });
 
+    if (isStreamingRequested(req.body)) {
+      return streamGroqCompletion({
+        req,
+        res,
+        messages,
+        apiKey: groqApiKey,
+        model: groqModel,
+        temperature,
+        maxTokens,
+        metaPayload: { mode, model: groqModel },
+        onCompleted: (assistantText) => {
+          const parsed = parseJsonFromText(assistantText);
+          if (!parsed || typeof parsed !== 'object') {
+            return {
+              error: 'تعذر تفسير مخرجات النموذج',
+              errorCode: 'INVALID_MEDICAL_OUTPUT'
+            };
+          }
+          return {
+            mode,
+            result: parsed,
+            model: groqModel,
+            generatedAt: new Date().toISOString()
+          };
+        }
+      });
+    }
+
     const response = await callGroq({
       messages,
       temperature,
@@ -1301,6 +1556,46 @@ async function groqMedicalArchiveHandler(req, res) {
   }
 }
 
+async function groqHealthHandler(_req, res) {
+  const apiKey = normalizeGroqApiKey(config.groq.apiKey);
+  if (!apiKey) {
+    return res.status(503).json({
+      status: 'down',
+      provider: 'groq',
+      errorCode: 'GROQ_NOT_CONFIGURED',
+      checkedAt: new Date().toISOString()
+    });
+  }
+
+  try {
+    await callGroq({
+      messages: [{ role: 'user', content: 'ping' }],
+      temperature: 0,
+      maxTokens: 1,
+      apiKey,
+      model: config.groq.model,
+      stream: false,
+      timeoutMs: 8000
+    });
+
+    return res.status(200).json({
+      status: 'up',
+      provider: 'groq',
+      model: config.groq.model,
+      checkedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    const statusCode = error.statusCode || 503;
+    return res.status(statusCode).json({
+      status: 'down',
+      provider: 'groq',
+      errorCode: error.code || 'GROQ_HEALTH_FAILED',
+      message: error.message || 'health check failed',
+      checkedAt: new Date().toISOString()
+    });
+  }
+}
+
 module.exports = {
   groqStreamHandler,
   groqOcrHandler,
@@ -1308,5 +1603,6 @@ module.exports = {
   groqTranscribeHandler,
   groqMedicalAgentHandler,
   groqFaqHandler,
-  groqMedicalArchiveHandler
+  groqMedicalArchiveHandler,
+  groqHealthHandler
 };
