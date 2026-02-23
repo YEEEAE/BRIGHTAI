@@ -10,9 +10,6 @@ class BrightSearch {
     this.resultsContainer = null;
     this.isOpen = false;
     this.selectedIndex = -1;
-    this.apiEndpoint = "/api/ai/search";
-    this.requestController = null;
-    this.lastSearchToken = 0;
     this.searchData = this.getSearchIndex();
     this.debounceTimer = null;
     this.boundGlobalKeydown = this.handleGlobalKeydown.bind(this);
@@ -165,10 +162,6 @@ class BrightSearch {
   normalizeUrl(url) {
     if (!url) {
       return "/";
-    }
-
-    if (/^https?:\/\//i.test(url)) {
-      return url;
     }
 
     if (url.startsWith("/")) {
@@ -324,87 +317,6 @@ class BrightSearch {
         max-height: min(62vh, 500px);
         overflow-y: auto;
         padding: 1rem;
-      }
-
-      .search-loading {
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-        color: #cbd5e1;
-        font-size: 0.84rem;
-        margin-bottom: 0.9rem;
-      }
-
-      .search-loading-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 999px;
-        background: #60a5fa;
-        animation: bright-search-pulse 1s infinite ease-in-out;
-      }
-
-      .search-ai-card {
-        border: 1px solid rgba(96, 165, 250, 0.28);
-        background: linear-gradient(140deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92));
-        border-radius: 0.9rem;
-        padding: 0.95rem 1rem;
-        margin-bottom: 0.95rem;
-      }
-
-      .search-ai-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        font-size: 0.73rem;
-        color: #93c5fd;
-        margin-bottom: 0.55rem;
-      }
-
-      .search-ai-answer {
-        color: #e2e8f0;
-        font-size: 0.9rem;
-        line-height: 1.75;
-      }
-
-      .search-ai-sources {
-        margin-top: 0.8rem;
-        display: grid;
-        gap: 0.5rem;
-      }
-
-      .search-source-item {
-        display: block;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        background: rgba(15, 23, 42, 0.64);
-        border-radius: 0.75rem;
-        text-decoration: none;
-        padding: 0.58rem 0.7rem;
-      }
-
-      .search-source-item:hover {
-        border-color: rgba(96, 165, 250, 0.5);
-      }
-
-      .search-source-title {
-        color: #dbeafe;
-        font-size: 0.82rem;
-        margin-bottom: 0.2rem;
-      }
-
-      .search-source-quote {
-        color: #94a3b8;
-        font-size: 0.76rem;
-      }
-
-      .search-api-note {
-        color: #64748b;
-        font-size: 0.72rem;
-        margin-bottom: 0.8rem;
-      }
-
-      @keyframes bright-search-pulse {
-        0%, 100% { transform: scale(0.8); opacity: 0.6; }
-        50% { transform: scale(1.2); opacity: 1; }
       }
 
       .search-quick-title,
@@ -610,7 +522,7 @@ class BrightSearch {
       <div class="search-modal-content" role="dialog" aria-modal="true" aria-label="بحث في الموقع">
         <div class="search-input-wrapper">
           <span class="search-icon" aria-hidden="true">⌕</span>
-          <input type="text" class="search-input" id="searchInput" placeholder="اسأل مثلاً: ما حلول الأتمتة للمستشفيات؟" autocomplete="off" />
+          <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن خدمة، منتج، أو صفحة..." autocomplete="off" />
           <button class="search-close-btn" data-search-close="true" type="button" aria-label="إغلاق البحث">ESC</button>
         </div>
 
@@ -622,7 +534,7 @@ class BrightSearch {
             <span><kbd>↵</kbd> للفتح</span>
             <span><kbd>ESC</kbd> للإغلاق</span>
           </div>
-          <div class="search-footer-powered">Bright AI RAG Search</div>
+          <div class="search-footer-powered">بحث موحد من Bright AI</div>
         </div>
       </div>
     `;
@@ -763,11 +675,6 @@ class BrightSearch {
       return;
     }
 
-    if (this.requestController) {
-      this.requestController.abort();
-      this.requestController = null;
-    }
-
     this.isOpen = false;
     this.modal.classList.remove("active");
     this.modal.setAttribute("aria-hidden", "true");
@@ -785,10 +692,10 @@ class BrightSearch {
     window.clearTimeout(this.debounceTimer);
     this.debounceTimer = window.setTimeout(() => {
       this.search(query);
-    }, 220);
+    }, 130);
   }
 
-  async search(query) {
+  search(query) {
     const normalized = query.trim().toLowerCase();
 
     if (!normalized) {
@@ -797,163 +704,21 @@ class BrightSearch {
     }
 
     const words = normalized.split(/\s+/).filter(Boolean);
-    const scoredResults = this.getLocalResults(words, normalized);
-    this.renderLoadingState();
 
-    const searchToken = Date.now();
-    this.lastSearchToken = searchToken;
+    const scoredResults = this.searchData
+      .map((item) => ({ item, score: this.calculateScore(item, words, normalized) }))
+      .filter((result) => result.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((result) => result.item);
 
-    let apiPayload = null;
-    if (normalized.length >= 3) {
-      apiPayload = await this.fetchAiSearch(normalized).catch(() => null);
-    }
-
-    if (this.lastSearchToken !== searchToken || !this.isOpen) {
-      return;
-    }
-
-    if (apiPayload && (apiPayload.answer || apiPayload.sources?.length || apiPayload.results?.length)) {
-      this.renderAiResults(apiPayload, words, scoredResults);
-    } else {
-      this.renderResults(scoredResults, words);
-    }
+    this.renderResults(scoredResults, words);
 
     if (typeof window.gtag === "function") {
       window.gtag("event", "search", {
         search_term: normalized,
-        results_count: Array.isArray(apiPayload?.results) ? apiPayload.results.length : scoredResults.length
+        results_count: scoredResults.length
       });
     }
-  }
-
-  getLocalResults(words, normalizedQuery) {
-    return this.searchData
-      .map((item) => ({ item, score: this.calculateScore(item, words, normalizedQuery) }))
-      .filter((result) => result.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .map((result) => result.item);
-  }
-
-  async fetchAiSearch(normalizedQuery) {
-    if (!this.apiEndpoint || typeof fetch !== "function") {
-      return null;
-    }
-
-    if (this.requestController) {
-      this.requestController.abort();
-    }
-
-    const controller = new AbortController();
-    this.requestController = controller;
-
-    try {
-      const response = await fetch(this.apiEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ query: normalizedQuery }),
-        signal: controller.signal
-      });
-
-      if (!response.ok) {
-        return null;
-      }
-
-      const payload = await response.json();
-      if (!payload || typeof payload !== "object") {
-        return null;
-      }
-
-      return payload;
-    } catch (error) {
-      if (error?.name === "AbortError") {
-        return null;
-      }
-      return null;
-    } finally {
-      if (this.requestController === controller) {
-        this.requestController = null;
-      }
-    }
-  }
-
-  renderLoadingState() {
-    if (!this.resultsContainer) {
-      return;
-    }
-
-    this.resultsContainer.innerHTML = `
-      <div class="search-loading">
-        <span class="search-loading-dot" aria-hidden="true"></span>
-        <span>جاري تحليل السؤال واسترجاع أفضل مصادر الموقع...</span>
-      </div>
-    `;
-    this.selectedIndex = -1;
-  }
-
-  renderAiResults(payload, words, fallbackResults) {
-    if (!this.resultsContainer) {
-      return;
-    }
-
-    const answer = String(payload.answer || "").trim();
-    const sources = Array.isArray(payload.sources) ? payload.sources.slice(0, 5) : [];
-    const apiResults = Array.isArray(payload.results) ? payload.results.slice(0, 6) : [];
-
-    const related = apiResults
-      .map((item, index) => ({
-        id: `ai-related-${index + 1}`,
-        type: "page",
-        title: item.title || "صفحة ذات صلة",
-        description: item.description || "تفاصيل أكثر داخل الصفحة.",
-        url: this.normalizeUrl(item.url || "/"),
-        category: "نتائج مقترحة"
-      }));
-
-    const finalRelated = related.length ? related : fallbackResults.slice(0, 6);
-    let html = "";
-
-    html += `
-      <div class="search-ai-card">
-        <div class="search-ai-badge">✨ إجابة ذكية مدعومة بالمحتوى الداخلي</div>
-        <div class="search-ai-answer">${this.highlight(answer || "تم العثور على نتائج مرتبطة بالسؤال.", words)}</div>
-      </div>
-    `;
-
-    if (sources.length) {
-      html += `
-        <div class="search-api-note">المصادر المسترجعة من صفحات Bright AI:</div>
-        <div class="search-ai-sources">
-          ${sources.map((item) => this.renderSourceItem(item, words)).join("")}
-        </div>
-      `;
-    }
-
-    if (finalRelated.length) {
-      html += `
-        <div class="search-category">
-          <div class="search-category-title">روابط مرتبطة</div>
-          ${finalRelated.map((item) => this.renderResultItem(item, words)).join("")}
-        </div>
-      `;
-    }
-
-    this.resultsContainer.innerHTML = html;
-    this.selectedIndex = -1;
-  }
-
-  renderSourceItem(item, words) {
-    const title = this.highlight(String(item.title || "مصدر"), words);
-    const quote = this.highlight(String(item.quote || "عرض الصفحة للتفاصيل الكاملة."), words);
-    const url = this.escapeAttribute(this.normalizeUrl(item.url || "/"));
-
-    return `
-      <a class="search-source-item" href="${url}">
-        <div class="search-source-title">${title}</div>
-        <div class="search-source-quote">${quote}</div>
-      </a>
-    `;
   }
 
   calculateScore(item, words, fullQuery) {
@@ -1066,7 +831,7 @@ class BrightSearch {
 
     this.resultsContainer.innerHTML = `
       <div class="search-quick-actions" id="quickActions">
-        <div class="search-quick-title">اكتب سؤالك وسنرجع لك إجابة مع مصادر</div>
+        <div class="search-quick-title">عمليات بحث شائعة</div>
         <div class="search-quick-links">
           ${quickLinks
             .map(

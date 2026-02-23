@@ -1,15 +1,15 @@
-# Execution Decision — GA4 Conversion Tracking + Looker Studio Integration
+# Execution Decision — RAG Internal Search with Groq
 **Date:** 2026-02-23
 **Decision:** ✅ APPROVED
 
 ## Phase Results
 | Phase | Status | Notes |
 |-------|--------|-------|
-| Phase 1 — Audit | ✅ | لا يوجد `CRITICAL` في نطاق التغيير، مع ملاحظات Modularity يجب متابعتها. |
-| Phase 2 — Business | ✅ | التغيير مرتبط مباشرة برفع جودة الـ Leads وتحسين قرار الإنفاق الإعلاني. |
-| Phase 3 — Simulation | ✅ | لا إضافة لأي طرف ثالث جديد، ومحاكاة pre-flight تؤكد عدم تعديل مسار CSS الحرج أو كسر RTL. |
-| Phase 4 — Measurement | ✅ | خطة القياس مكتملة ومحددة في `measurement-plan.md` مع KPI/Event واضح. |
-| Phase 5 — Modularity | ✅ | منطق التتبع معزول في سكربتات الواجهة المشتركة دون تعديل routing أو auth. |
+| Phase 1 — Audit | ✅ | لا يوجد `CRITICAL`، مع ملاحظات أداء cold start موثقة في `audit-report.md`. |
+| Phase 2 — Business | ✅ | التغيير يخدم نية المستخدم مباشرة داخل القمع (Consideration → Decision) ويرفع جودة التحويل من البحث. |
+| Phase 3 — Simulation | ✅ | لا تعديل على routing الأساسي ولا third-party scripts جديدة؛ التأثير محصور في مسار `/api/ai/search` ومودال البحث. |
+| Phase 4 — Measurement | ✅ | خطة القياس مكتملة في `measurement-plan.md` مع KPI وEvents وRollback واضحة. |
+| Phase 5 — Modularity | ✅ | التنفيذ معزول في خدمة مستقلة `backend/services/ragSearch.js` مع fallback واضح واختبار وظيفي. |
 
 ## Rejection Reason (if applicable)
 - غير مطبق.

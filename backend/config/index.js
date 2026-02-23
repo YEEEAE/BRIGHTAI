@@ -35,6 +35,14 @@ const config = {
     endpoint: process.env.GROQ_ENDPOINT || 'https://api.groq.com/openai/v1/chat/completions',
     streamTimeoutMs: parseInt(process.env.GROQ_STREAM_TIMEOUT_MS, 10) || 30000
   },
+
+  // GA4 Measurement Protocol (optional)
+  analytics: {
+    ga4MeasurementId: process.env.GA4_MEASUREMENT_ID || '',
+    ga4ApiSecret: process.env.GA4_API_SECRET || '',
+    webhookKey: process.env.ANALYTICS_WEBHOOK_KEY || '',
+    mpDebug: process.env.GA4_MP_DEBUG === '1'
+  },
   
   // Server Configuration
   server: {
@@ -97,9 +105,18 @@ function isGroqConfigured() {
   return !!config.groq.apiKey && config.groq.apiKey !== 'YOUR_KEY_HERE';
 }
 
+/**
+ * Check if GA4 Measurement Protocol is configured
+ * @returns {boolean}
+ */
+function isGa4MpConfigured() {
+  return !!config.analytics.ga4MeasurementId && !!config.analytics.ga4ApiSecret;
+}
+
 module.exports = {
   config,
   validateConfig,
   isApiKeyConfigured,
-  isGroqConfigured
+  isGroqConfigured,
+  isGa4MpConfigured
 };

@@ -135,6 +135,36 @@
                 interaction_type: 'chat_start',
                 chat_profile: profile,
             });
+            trackEvent('qualify_lead', {
+                lead_channel: 'chat',
+                qualification_stage: 'mql',
+                qualification_source: source,
+                chat_profile: profile,
+            });
+        }
+
+        function trackLeadClosed(detail = {}) {
+            trackEvent('close_convert_lead', {
+                lead_channel: detail.lead_channel || 'crm',
+                lead_id: detail.lead_id,
+                deal_id: detail.deal_id,
+                value: detail.value,
+                currency: detail.currency || 'SAR',
+                close_reason: detail.close_reason || 'won',
+            });
+        }
+
+        function trackPurchase(detail = {}) {
+            trackEvent('purchase', {
+                transaction_id: detail.transaction_id || detail.order_id || `tx_${Date.now()}`,
+                value: detail.value,
+                currency: detail.currency || 'SAR',
+                payment_method: detail.payment_method,
+                coupon: detail.coupon,
+                tax: detail.tax,
+                shipping: detail.shipping,
+                affiliation: detail.affiliation || 'BrightAI',
+            });
         }
 
         function trackTechnicalPerformance() {
@@ -179,6 +209,13 @@
                 form_type: formType,
                 form_id: formId,
             });
+            trackEvent('qualify_lead', {
+                lead_channel: 'form',
+                qualification_stage: 'mql',
+                qualification_source: 'form_submit',
+                form_type: formType,
+                form_id: formId,
+            });
         }, true);
 
         document.addEventListener('click', (event) => {
@@ -192,6 +229,11 @@
                     trackEvent('generate_lead', {
                         lead_channel: 'whatsapp',
                         interaction_type: 'click',
+                    });
+                    trackEvent('qualify_lead', {
+                        lead_channel: 'whatsapp',
+                        qualification_stage: 'mql',
+                        qualification_source: 'whatsapp_click',
                     });
                 } else if (href.startsWith('mailto:')) {
                     trackEvent('contact_email_click', {
@@ -239,6 +281,25 @@
             if (!target.value.trim()) return;
             trackChatStart('message_send_enter', target);
         }, true);
+
+        window.addEventListener('brightai:lead_status', (event) => {
+            const detail = event && event.detail && typeof event.detail === 'object' ? event.detail : {};
+            const stage = String(detail.stage || '').toLowerCase();
+            if (stage === 'qualified') {
+                trackEvent('qualify_lead', {
+                    lead_channel: detail.lead_channel || 'crm',
+                    qualification_stage: 'sql',
+                    qualification_source: detail.source || 'crm_update',
+                    lead_id: detail.lead_id,
+                    value: detail.value,
+                    currency: detail.currency || 'SAR',
+                });
+            } else if (stage === 'closed') {
+                trackLeadClosed(detail);
+            } else if (stage === 'purchase') {
+                trackPurchase(detail);
+            }
+        });
 
         if ('PerformanceObserver' in window) {
             try {
@@ -290,7 +351,245 @@
         window.addEventListener('focus', flushPendingEvents);
     }
 
+    function initializeGa4GovernanceLayer() {
+        if (window.__brightAiGa4GovernanceInitialized) return;
+        window.__brightAiGa4GovernanceInitialized = true;
+
+        const measurementId = 'G-8LLESL207Q';
+        const pagePath = window.location.pathname || '/';
+        const commandQueue = [];
+        const storageKeys = {
+            userId: 'brightai_user_id_v1',
+            attribution: 'brightai_attribution_v1',
+        };
+        let queueFlushTimer = null;
+
+        function safeGet(storage, key) {
+            try {
+                return storage.getItem(key);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function safeSet(storage, key, value) {
+            try {
+                storage.setItem(key, value);
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function generateAnonId() {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return `ba_${window.crypto.randomUUID().replace(/-/g, '').slice(0, 24)}`;
+            }
+            return `ba_${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+        }
+
+        function getAnonymousUserId() {
+            const existing = safeGet(window.localStorage, storageKeys.userId);
+            if (existing) return existing;
+
+            const created = generateAnonId();
+            if (!safeSet(window.localStorage, storageKeys.userId, created)) {
+                safeSet(window.sessionStorage, storageKeys.userId, created);
+            }
+            return created;
+        }
+
+        function parseAttribution(search) {
+            const params = new URLSearchParams(search || '');
+            const fields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'gbraid', 'wbraid'];
+            const result = {};
+            fields.forEach((field) => {
+                const value = (params.get(field) || '').trim();
+                if (value) result[field] = value.slice(0, 120);
+            });
+            return result;
+        }
+
+        function readStoredAttribution() {
+            const raw = safeGet(window.sessionStorage, storageKeys.attribution);
+            if (!raw) return {};
+            try {
+                const parsed = JSON.parse(raw);
+                return parsed && typeof parsed === 'object' ? parsed : {};
+            } catch (error) {
+                return {};
+            }
+        }
+
+        function captureAttribution() {
+            const previous = readStoredAttribution();
+            const current = parseAttribution(window.location.search);
+            const hasNewAttribution = Object.keys(current).length > 0;
+            const merged = hasNewAttribution
+                ? {
+                    ...previous,
+                    ...current,
+                    landing_page: pagePath,
+                    captured_at: new Date().toISOString(),
+                }
+                : previous;
+
+            if (Object.keys(merged).length > 0) {
+                safeSet(window.sessionStorage, storageKeys.attribution, JSON.stringify(merged));
+            }
+            return merged;
+        }
+
+        function buildAttributionPayload(attribution) {
+            return {
+                captured_utm_source: attribution.utm_source,
+                captured_utm_medium: attribution.utm_medium,
+                captured_utm_campaign: attribution.utm_campaign,
+                captured_utm_term: attribution.utm_term,
+                captured_utm_content: attribution.utm_content,
+                captured_gclid: attribution.gclid,
+                captured_gbraid: attribution.gbraid,
+                captured_wbraid: attribution.wbraid,
+                attribution_landing_page: attribution.landing_page,
+            };
+        }
+
+        function hasCookieConsent() {
+            return safeGet(window.localStorage, 'cookies_ok') === '1';
+        }
+
+        function trySendCommand(args) {
+            applyEventDefaultsWrapper();
+            if (typeof window.gtag === 'function') {
+                window.gtag.apply(window, args);
+                return true;
+            }
+            return false;
+        }
+
+        function flushQueue() {
+            applyEventDefaultsWrapper();
+            if (typeof window.gtag !== 'function' || commandQueue.length === 0) return;
+            while (commandQueue.length) {
+                const args = commandQueue.shift();
+                window.gtag.apply(window, args);
+            }
+            if (queueFlushTimer) {
+                clearInterval(queueFlushTimer);
+                queueFlushTimer = null;
+            }
+        }
+
+        function scheduleQueueFlush() {
+            if (queueFlushTimer) return;
+            queueFlushTimer = setInterval(() => {
+                applyEventDefaultsWrapper();
+                if (typeof window.gtag === 'function') flushQueue();
+            }, 250);
+            setTimeout(() => {
+                if (queueFlushTimer) {
+                    clearInterval(queueFlushTimer);
+                    queueFlushTimer = null;
+                }
+            }, 20000);
+        }
+
+        function sendCommand() {
+            const args = Array.from(arguments);
+            if (!trySendCommand(args)) {
+                commandQueue.push(args);
+                scheduleQueueFlush();
+            }
+        }
+
+        function updateConsent(granted, source) {
+            sendCommand('consent', 'update', {
+                analytics_storage: granted ? 'granted' : 'denied',
+                ad_storage: granted ? 'granted' : 'denied',
+                ad_user_data: granted ? 'granted' : 'denied',
+                ad_personalization: granted ? 'granted' : 'denied',
+            });
+            sendCommand('event', 'consent_state_update', {
+                consent_analytics: granted ? 'granted' : 'denied',
+                consent_source: source || 'unknown',
+                page_path: pagePath,
+            });
+        }
+
+        const anonymousUserId = getAnonymousUserId();
+        const attribution = captureAttribution();
+        const attributionPayload = buildAttributionPayload(attribution);
+        const consentGranted = hasCookieConsent();
+        const defaultEventPayload = {
+            anonymous_user_id: anonymousUserId,
+            ...attributionPayload,
+        };
+
+        function applyEventDefaultsWrapper() {
+            if (typeof window.gtag !== 'function') return;
+            if (window.gtag.__brightAiEventDefaultsWrapped) return;
+
+            const originalGtag = window.gtag;
+            const wrappedGtag = function () {
+                const args = Array.from(arguments);
+                if (args[0] === 'event' && typeof args[1] === 'string') {
+                    const originalPayload = args[2] && typeof args[2] === 'object' ? args[2] : {};
+                    args[2] = {
+                        ...defaultEventPayload,
+                        ...originalPayload,
+                    };
+                }
+                return originalGtag.apply(window, args);
+            };
+            wrappedGtag.__brightAiEventDefaultsWrapped = true;
+            window.gtag = wrappedGtag;
+        }
+
+        sendCommand('consent', 'default', {
+            analytics_storage: 'denied',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            functionality_storage: 'granted',
+            security_storage: 'granted',
+            wait_for_update: 500,
+        });
+
+        if (consentGranted) {
+            updateConsent(true, 'stored_preference');
+        }
+
+        sendCommand('config', measurementId, {
+            send_page_view: false,
+            user_id: anonymousUserId,
+        });
+
+        sendCommand('set', 'user_properties', {
+            tracking_consent: consentGranted ? 'granted' : 'denied',
+            user_type: 'anonymous',
+        });
+
+        if (Object.keys(attribution).length > 0) {
+            sendCommand('event', 'utm_attribution_capture', {
+                ...attributionPayload,
+                attribution_scope: 'session',
+                page_path: pagePath,
+            });
+        }
+
+        const cookieOk = document.getElementById('cookieOk');
+        if (cookieOk) {
+            cookieOk.addEventListener('click', () => {
+                updateConsent(true, 'cookie_banner_accept');
+            });
+        }
+
+        window.addEventListener('online', flushQueue);
+        window.addEventListener('focus', flushQueue);
+    }
+
     initializeGa4ConversionTracking();
+    initializeGa4GovernanceLayer();
 
     // Iconify handles icons without runtime setup
 

@@ -14,6 +14,7 @@ const { chatHandler } = require('./routes/chat');
 const { searchHandler } = require('./routes/search');
 const { medicalHandler } = require('./routes/medical');
 const { summaryHandler } = require('./routes/summary');
+const { ga4ConversionHandler } = require('./routes/analytics');
 const {
   groqStreamHandler,
   groqOcrHandler,
@@ -296,6 +297,8 @@ async function handleRequest(req, res) {
       await groqFaqHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/groq/medical-archive') {
       await groqMedicalArchiveHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/analytics/ga4/conversion') {
+      await ga4ConversionHandler(ctx.req, ctx.res);
     } else if (method === 'GET' && url === '/api/docs') {
       // Serve Swagger UI
       const swaggerHtml = generateSwaggerUI();
@@ -379,6 +382,7 @@ function startServer() {
     console.log('  POST /api/groq/medical-agent - Gemini Flash smart agent');
     console.log('  POST /api/groq/faq    - FAQ generation');
     console.log('  POST /api/groq/medical-archive - Smart medical archive demo');
+    console.log('  POST /api/analytics/ga4/conversion - Forward conversion events to GA4');
     console.log('  GET  /api/docs       - API Documentation (Swagger UI)');
     console.log('  GET  /api/health     - Health check');
     console.log('  WS   /ws/live        - Real-time dashboard updates');

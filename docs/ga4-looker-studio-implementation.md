@@ -24,6 +24,11 @@
 | `contact_phone_click` | Custom | عند الضغط على `tel:` | `lead_channel`, `page_path` |
 | `technical_performance` | Custom | عند إغلاق الصفحة/اختفاء التبويب/بعد التحميل | `page_load_ms`, `dom_content_loaded_ms`, `ttfb_ms`, `fcp_ms`, `lcp_ms`, `cls_milli` |
 | `generate_lead` | Recommended | مع تحويلات form/chat/whatsapp | `lead_channel`, `interaction_type`, `form_type`, `chat_profile` |
+| `qualify_lead` | Recommended | عند تأهيل Lead (MQL/SQL) | `lead_channel`, `qualification_stage`, `lead_id`, `value`, `currency` |
+| `close_convert_lead` | Recommended | عند إغلاق الصفقة (won) | `lead_id`, `deal_id`, `value`, `currency`, `close_reason` |
+| `purchase` | Recommended | عند تأكيد شراء/اشتراك مدفوع | `transaction_id`, `value`, `currency`, `payment_method` |
+| `utm_attribution_capture` | Custom | عند أول دخول بحملات UTM أو وجود Attribution Session | `captured_utm_source`, `captured_utm_medium`, `captured_utm_campaign`, `captured_gclid` |
+| `consent_state_update` | Custom | عند تحديث حالة الموافقة | `consent_analytics`, `consent_source` |
 
 ## KPIs المستهدفة
 | KPI | التعريف | مصدر القياس |
@@ -43,6 +48,9 @@
 - `lead_form_submit`
 - `chat_start`
 - `whatsapp_click`
+- `qualify_lead`
+- `close_convert_lead`
+- `purchase`
 5. من `Admin > Custom definitions` أضف Event-scoped dimensions:
 - `form_type`
 - `form_id`
@@ -51,6 +59,14 @@
 - `chat_profile`
 - `trigger_source`
 - `navigation_type`
+- `captured_utm_source`
+- `captured_utm_medium`
+- `captured_utm_campaign`
+- `captured_utm_term`
+- `captured_utm_content`
+- `anonymous_user_id`
+- `consent_analytics`
+- `consent_source`
 6. من `Admin > Custom definitions` أضف Custom metrics (Event parameter):
 - `input_count`
 - `page_load_ms`
@@ -68,6 +84,31 @@
 - `chat_start`
 - `lead_form_submit`
 - `whatsapp_click`
+- `purchase`
+- `close_convert_lead`
+
+## ربط CRM/Payment بالأحداث النهائية
+- Endpoint جاهز في الخادم:
+`POST /api/analytics/ga4/conversion`
+- الأحداث المدعومة:
+`purchase`, `qualify_lead`, `close_convert_lead`
+- الحماية:
+Header اختياري `x-brightai-analytics-key` (مربوط على `ANALYTICS_WEBHOOK_KEY`).
+
+مثال payload:
+```json
+{
+  "eventName": "purchase",
+  "clientId": "123456789.1700000000",
+  "userId": "ba_anon_001",
+  "params": {
+    "transaction_id": "INV-2026-0091",
+    "value": 2500,
+    "currency": "SAR",
+    "payment_method": "mada"
+  }
+}
+```
 
 ## تصميم لوحة Looker Studio
 ## صفحة 1: Executive KPI
@@ -107,6 +148,8 @@ CASE WHEN Sessions = 0 THEN 0 ELSE SUM(chat_start) / Sessions END
 - لا يتم إرسال أي PII داخل Events (لا اسم، لا إيميل، لا هاتف).
 - التتبع يلتزم بمبدأ الحد الأدنى للبيانات بما يتوافق مع متطلبات PDPL.
 - أي ربط CRM لاحق يجب أن يعتمد ID مجهول أو Hash غير عكسي.
+- تم تفعيل `Consent Mode v2` بنمط افتراضي مقيّد (denied) حتى قبول المستخدم.
+- تم تفعيل `User-ID` بصيغة pseudonymous (`anonymous_user_id`) بدون أي تعريف شخصي مباشر.
 
 ## التحقق بعد الإطلاق
 1. افتح GA4 DebugView ونفّذ سيناريوهات:

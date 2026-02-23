@@ -1,28 +1,27 @@
-# Measurement Plan — GA4 Conversion & Behavior Tracking
+# Measurement Plan — RAG Smart Search (Groq)
 **Deploy Date:** 2026-02-23
 
 ## KPI Target
-- KPI: `lead_conversion_rate`
-- Baseline: يُقاس من GA4 آخر 28 يوم قبل الإطلاق
-- Goal: رفع المعدل بنسبة +20% خلال 45 يوم
+- KPI: `search_to_lead_rate`
+- Baseline: متوسط آخر 28 يوم قبل الإطلاق من `search` إلى `generate_lead`
+- Goal: رفع المعدل بنسبة +18% خلال 45 يوم
 
 ## Tracking Event
-- Event Name: `generate_lead`
-- Trigger: عند `lead_form_submit` أو `chat_start` أو `whatsapp_click`
-- Payload: `lead_channel`, `interaction_type`, `form_type`, `chat_profile`, `page_path`
+- Event Name: `rag_search_answer_served`
+- Trigger: عند استلام استجابة ناجحة من `/api/ai/search` وتحتوي `answer` + `sources`
+- Payload: `query_length`, `mode`, `retrieval_count`, `sources_count`, `results_count`, `page_path`
 
 ## Success Criteria
-- Minimum Improvement: +15% في `generate_lead` مع ثبات جودة الجلسة
+- Minimum Improvement: خفض `search_exit_rate` بنسبة 12% على الأقل مع رفع `search_to_lead_rate` بنسبة 10%+ كحد أدنى
 - Evaluation Window: 45 يوم
-- Rollback Trigger: هبوط `generate_lead` أكثر من 20% لمدة 7 أيام متصلة
+- Rollback Trigger: زيادة `search_error_rate` فوق 8% لمدة 3 أيام متتالية أو هبوط `search_to_lead_rate` أكثر من 15%
 
 ## Supporting Events
-- `lead_form_submit`: قياس إرسال النماذج
-- `chat_start`: قياس أول تفاعل شات فعلي
-- `chat_widget_open`: قياس فتح الودجت
-- `technical_performance`: قياس `LCP/FCP/CLS/TTFB`
+- `rag_source_click`: نقر المستخدم على مصدر داخل نتائج RAG
+- `rag_search_fallback`: تشغيل وضع fallback (`retrieval_only` أو `retrieval_fallback`)
+- `search_no_matches`: عدم وجود نتائج قابلة للاسترجاع
 
 ## Validation Method
-- Platforms: GA4 + Google Ads + Looker Studio
-- Validation: مطابقة أعداد `generate_lead` بين Realtime وReports ثم مع لوحة Looker خلال 24 ساعة
-- Data Quality: استبعاد traffic الداخلي وتأكيد عدم إرسال أي PII
+- Platforms: GA4 + Looker Studio + server logs
+- Validation: مطابقة عدد أحداث `rag_search_answer_served` بين GA4 والسجلات الخلفية يومياً
+- Data Quality: عدم إرسال أي PII في query payload (تخزين طول النص فقط + mode/metering)
