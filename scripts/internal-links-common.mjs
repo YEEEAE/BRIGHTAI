@@ -18,7 +18,6 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/.git/**",
   "**/node_modules/**",
   "backend/**",
-  "server/**",
   "scripts/**",
   "brightai_orchestrator_output/**"
 ];
@@ -49,7 +48,7 @@ const SKIP_PREFIXES = [
   "about:"
 ];
 
-const API_PREFIXES = ["/api/", "api/", "/backend/", "backend/", "/server/", "server/"];
+const API_PREFIXES = ["/api/", "api/", "/backend/", "backend/"];
 
 const HTML_FILE_REGEX = /\.(?:html?|xhtml)$/i;
 const JS_FILE_REGEX = /\.(?:m?js)$/i;

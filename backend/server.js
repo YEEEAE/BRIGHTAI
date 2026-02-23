@@ -6,6 +6,8 @@
 
 const http = require('http');
 const { WebSocketServer } = require('ws');
+const fs = require('fs');
+const path = require('path');
 const { config, validateConfig } = require('./config');
 const { rateLimiterMiddleware } = require('./middleware/rateLimiter');
 const { chatHandler } = require('./routes/chat');
@@ -181,6 +183,54 @@ function createContext(req, res) {
 }
 
 /**
+ * Generate Swagger UI HTML
+ */
+function generateSwaggerUI() {
+  return `
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrightAI API Documentation</title>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .swagger-ui .topbar {
+      background-color: #667eea;
+    }
+  </style>
+</head>
+<body>
+  <div id="swagger-ui"></div>
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-standalone-preset.js"></script>
+  <script>
+    window.onload = function() {
+      SwaggerUIBundle({
+        url: '/api/docs/openapi.yaml',
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout"
+      });
+    };
+  </script>
+</body>
+</html>
+  `;
+}
+
+/**
  * Main request handler
  */
 async function handleRequest(req, res) {
@@ -212,15 +262,10 @@ async function handleRequest(req, res) {
       ctx.req.body = await parseBody(req, maxSize);
     }
 
-    // Apply rate limiting - use a promise to handle async middleware
-    const rateLimitPassed = await new Promise((resolve) => {
-      rateLimiterMiddleware(ctx.req, ctx.res, () => {
-        resolve(true);
-      });
-      // If middleware sent response (429), resolve false
-      if (ctx.res.statusCode === 429) {
-        resolve(false);
-      }
+    // Apply rate limiting
+    let rateLimitPassed = false;
+    await rateLimiterMiddleware(ctx.req, ctx.res, () => {
+      rateLimitPassed = true;
     });
 
     // If rate limited, response already sent
@@ -251,6 +296,30 @@ async function handleRequest(req, res) {
       await groqFaqHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/groq/medical-archive') {
       await groqMedicalArchiveHandler(ctx.req, ctx.res);
+    } else if (method === 'GET' && url === '/api/docs') {
+      // Serve Swagger UI
+      const swaggerHtml = generateSwaggerUI();
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(swaggerHtml);
+      return;
+    } else if (method === 'GET' && url === '/api/docs/openapi.yaml') {
+      // Serve OpenAPI YAML file
+      try {
+        const yamlPath = path.join(__dirname, '../docs/openapi.yaml');
+        const yamlContent = fs.readFileSync(yamlPath, 'utf8');
+        res.writeHead(200, { 
+          'Content-Type': 'text/yaml; charset=utf-8',
+          'Access-Control-Allow-Origin': '*'
+        });
+        res.end(yamlContent);
+        return;
+      } catch (error) {
+        console.error('Error reading OpenAPI YAML:', error);
+        ctx.res.status(500).json({
+          error: 'فشل تحميل وثائق API',
+          errorCode: 'DOCS_ERROR'
+        });
+      }
     } else if (url === '/api/health') {
       ctx.res.status(200).json({ status: 'ok', timestamp: Date.now() });
     } else {
@@ -302,14 +371,15 @@ function startServer() {
     console.log('  POST /api/ai/chat    - Chatbot conversations');
     console.log('  POST /api/ai/search  - Smart search');
     console.log('  POST /api/ai/medical - Medical image analysis');
-    console.log('  POST /api/ai/summary - Content summary');
+    console.log('  POST /api/ai/summary - Text summarization');
     console.log('  POST /api/groq/stream - Groq streaming demo');
     console.log('  POST /api/groq/ocr    - OCR JSON extraction');
     console.log('  POST /api/groq/extract-text - Extract plain text from file');
     console.log('  POST /api/groq/transcribe   - Audio to text');
-    console.log('  POST /api/groq/medical-agent - Groq smart medical agent');
+    console.log('  POST /api/groq/medical-agent - Gemini Flash smart agent');
     console.log('  POST /api/groq/faq    - FAQ generation');
     console.log('  POST /api/groq/medical-archive - Smart medical archive demo');
+    console.log('  GET  /api/docs       - API Documentation (Swagger UI)');
     console.log('  GET  /api/health     - Health check');
     console.log('  WS   /ws/live        - Real-time dashboard updates');
   });
@@ -322,7 +392,8 @@ module.exports = {
   handleRequest,
   startServer,
   parseBody,
-  createContext
+  createContext,
+  generateSwaggerUI
 };
 
 // Start server if run directly
