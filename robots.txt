@@ -35,6 +35,8 @@ Disallow: /*.map$
 Disallow: /*.log$
 Disallow: /*.sql$
 Disallow: /*.zip$
+Disallow: /index.html
 Disallow: /*?*utm_
 Disallow: /*?*gclid=
 Disallow: /*?*fbclid=
+Disallow: /*?*
