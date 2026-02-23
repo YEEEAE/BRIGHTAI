@@ -1017,15 +1017,15 @@
         applyResponsiveQuickReplies();
 
         function toggleChat() {
-            chatWindow.classList.toggle('show');
-            if (chatWindow.classList.contains('show')) {
+            chatWindow.classList.toggle('active');
+            if (chatWindow.classList.contains('active')) {
                 chatBadge.style.display = 'none';
                 setTimeout(() => chatInput.focus(), 80);
             }
         }
         chatFab.addEventListener('click', toggleChat);
-        chatClose.addEventListener('click', () => chatWindow.classList.remove('show'));
-        chatMin.addEventListener('click', () => chatWindow.classList.remove('show'));
+        chatClose.addEventListener('click', () => chatWindow.classList.remove('active'));
+        chatMin.addEventListener('click', () => chatWindow.classList.remove('active'));
 
         function addMsg(text, who = 'user') {
             const div = document.createElement('div');

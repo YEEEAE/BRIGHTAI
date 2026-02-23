@@ -416,8 +416,6 @@ ${JSON.stringify(records)}
 
 function buildMedicalAgentPrompt({ question, records, hospitalProfile, batchReport }) {
   return `
-${MEDICAL_AGENT_SYSTEM_PROMPT}
-
 سؤال الإدارة الصحية:
 ${question}
 
