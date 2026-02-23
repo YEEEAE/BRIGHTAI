@@ -978,9 +978,12 @@
     const chatInput = document.getElementById('chatInput');
     const chatSend = document.getElementById('chatSend');
     const typing = document.getElementById('typing');
+    const chatApiEndpoint = '/api/groq/stream';
 
-    if (chatFab && chatWindow && chatClose && chatMin && chatBadge && chatBody && chatInput && chatSend && typing) {
+    if (chatFab && chatWindow) {
         const CHAT_FAB_DELAY_MS = 3000;
+        let chatSessionId = null;
+        let isSending = false;
 
         chatFab.style.visibility = 'hidden';
         chatFab.style.opacity = '0';
@@ -992,8 +995,10 @@
             chatFab.style.pointerEvents = '';
         }, CHAT_FAB_DELAY_MS);
 
-        chatBody.setAttribute('aria-live', 'polite');
-        chatBody.setAttribute('aria-atomic', 'false');
+        if (chatBody) {
+            chatBody.setAttribute('aria-live', 'polite');
+            chatBody.setAttribute('aria-atomic', 'false');
+        }
 
         function getShortQuickReply(label) {
             const compact = (label || '').replace(/[؟?!.,،]/g, '').trim();
@@ -1019,49 +1024,134 @@
         function toggleChat() {
             chatWindow.classList.toggle('active');
             if (chatWindow.classList.contains('active')) {
-                chatBadge.style.display = 'none';
-                setTimeout(() => chatInput.focus(), 80);
+                if (chatBadge) chatBadge.style.display = 'none';
+                if (chatInput) setTimeout(() => chatInput.focus(), 80);
             }
         }
         chatFab.addEventListener('click', toggleChat);
-        chatClose.addEventListener('click', () => chatWindow.classList.remove('active'));
-        chatMin.addEventListener('click', () => chatWindow.classList.remove('active'));
+        chatClose?.addEventListener('click', () => chatWindow.classList.remove('active'));
+        chatMin?.addEventListener('click', () => chatWindow.classList.remove('active'));
 
         function addMsg(text, who = 'user') {
+            if (!chatBody || !typing) return null;
             const div = document.createElement('div');
             div.className = 'msg ' + who;
             div.textContent = text;
             chatBody.insertBefore(div, typing);
             chatBody.scrollTop = chatBody.scrollHeight;
-        }
-        function botReply(q) {
-            typing.style.display = 'flex';
-            chatBody.scrollTop = chatBody.scrollHeight;
-            setTimeout(() => {
-                typing.style.display = 'none';
-                let ans = "تمام. اكتبلي احتياجك بالتفصيل وأنا أرشدك لأفضل حل.";
-                if (q.includes("خدماتكم")) ans = "بنقدم: APIs جاهزة (NLP/Prediction/Speech) + BI & Dashboards + AIaaS + أتمتة سير العمل + حلول روبوتات + أنظمة معرفة زي المكتبة الذكية.";
-                if (q.includes("أتواصل")) ans = "تقدر تتواصل عبر البريد info@brightai.site أو الهاتف +966 53 822 9013، وكمان تقدر تحجز عرض توضيحي من أزرار الصفحة.";
-                if (q.includes("استشارة")) ans = "أكيد. قولي القطاع (حكومي/صحي/تجزئة/صناعة/اتصالات/HR) وهدفك (تنبؤ/أتمتة/Chatbot/BI) عشان أحدد المسار الأنسب.";
-                addMsg(ans, 'bot');
-            }, 900);
+            return div;
         }
 
-        chatSend.addEventListener('click', () => {
+        function fallbackReply(q) {
+            let ans = "تمام. اكتبلي احتياجك بالتفصيل وأنا أرشدك لأفضل حل.";
+            if (q.includes("خدماتكم")) ans = "بنقدم: APIs جاهزة (NLP/Prediction/Speech) + BI & Dashboards + AIaaS + أتمتة سير العمل + حلول روبوتات + أنظمة معرفة زي المكتبة الذكية.";
+            if (q.includes("أتواصل")) ans = "تقدر تتواصل عبر البريد info@brightai.site أو الهاتف +966 53 822 9013، وكمان تقدر تحجز عرض توضيحي من أزرار الصفحة.";
+            if (q.includes("استشارة")) ans = "أكيد. قولي القطاع (حكومي/صحي/تجزئة/صناعة/اتصالات/HR) وهدفك (تنبؤ/أتمتة/Chatbot/BI) عشان أحدد المسار الأنسب.";
+            addMsg(ans, 'bot');
+        }
+
+        async function streamGroqReply(question) {
+            if (!chatBody || !typing || !chatSend) {
+                fallbackReply(question);
+                return;
+            }
+            typing.style.display = 'flex';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            try {
+                const response = await fetch(chatApiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: question,
+                        outputType: 'دعم العملاء',
+                        sessionId: chatSessionId
+                    })
+                });
+
+                if (!response.ok || !response.body) {
+                    throw new Error(`Groq stream failed: ${response.status}`);
+                }
+
+                const botMsg = addMsg('', 'bot');
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                let buffer = '';
+                let gotToken = false;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
+
+                    for (const line of lines) {
+                        const payload = line.replace(/^data:\s*/, '').trim();
+                        if (!payload) continue;
+                        if (payload === '[DONE]') continue;
+
+                        try {
+                            const parsed = JSON.parse(payload);
+                            if (parsed?.sessionId) {
+                                chatSessionId = parsed.sessionId;
+                            }
+                            if (parsed?.error) {
+                                throw new Error(parsed.error);
+                            }
+
+                            const token = parsed?.token || parsed?.choices?.[0]?.delta?.content || '';
+                            if (token) {
+                                gotToken = true;
+                                botMsg.textContent += token;
+                                chatBody.scrollTop = chatBody.scrollHeight;
+                            }
+                        } catch (parseError) {
+                            continue;
+                        }
+                    }
+                }
+
+                if (botMsg && !gotToken && !botMsg.textContent.trim()) {
+                    botMsg.textContent = 'تم استلام الطلب بدون محتوى قابل للعرض.';
+                }
+            } catch (error) {
+                console.error('Groq support stream error:', error);
+                fallbackReply(question);
+            } finally {
+                typing.style.display = 'none';
+            }
+        }
+
+        chatSend?.addEventListener('click', async () => {
+            if (!chatInput) return;
+            if (isSending) return;
             const v = chatInput.value.trim();
             if (!v) return;
             addMsg(v, 'user');
             chatInput.value = '';
-            botReply(v);
+            isSending = true;
+            chatSend.disabled = true;
+            await streamGroqReply(v);
+            isSending = false;
+            chatSend.disabled = false;
         });
-        chatInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') chatSend.click();
+        chatInput?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') chatSend?.click();
         });
         document.querySelectorAll('.qbtn').forEach(b => {
-            b.addEventListener('click', () => {
+            b.addEventListener('click', async () => {
+                if (isSending) return;
                 const q = b.dataset.q;
                 addMsg(q, 'user');
-                botReply(q);
+                isSending = true;
+                if (chatSend) chatSend.disabled = true;
+                await streamGroqReply(q);
+                isSending = false;
+                if (chatSend) chatSend.disabled = false;
             });
         });
 
