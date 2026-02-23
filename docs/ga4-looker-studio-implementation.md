@@ -29,6 +29,11 @@
 | `purchase` | Recommended | عند تأكيد شراء/اشتراك مدفوع | `transaction_id`, `value`, `currency`, `payment_method` |
 | `utm_attribution_capture` | Custom | عند أول دخول بحملات UTM أو وجود Attribution Session | `captured_utm_source`, `captured_utm_medium`, `captured_utm_campaign`, `captured_gclid` |
 | `consent_state_update` | Custom | عند تحديث حالة الموافقة | `consent_analytics`, `consent_source` |
+| `scroll_depth_milestone` | Custom | عند بلوغ 25/50/75/90% من الصفحة | `scroll_percent`, `device_category` |
+| `engagement_time_milestone` | Custom | عند بلوغ 10/30/60/120 ثانية نشاط | `engagement_seconds`, `device_category` |
+| `content_engaged` | Custom | عند تحقق baseline engagement | `active_time_seconds`, `max_scroll_percent`, `interaction_count` |
+| `content_engagement_summary` | Custom | عند إغلاق الجلسة | `active_time_seconds`, `engagement_quality`, `key_event_reliability` |
+| `lead_intent_click` | Custom | عند الضغط على CTA عالي النية | `cta_label`, `cta_target`, `device_category` |
 
 ## KPIs المستهدفة
 | KPI | التعريف | مصدر القياس |
@@ -67,6 +72,12 @@
 - `anonymous_user_id`
 - `consent_analytics`
 - `consent_source`
+- `scroll_percent`
+- `engagement_seconds`
+- `engagement_quality`
+- `key_event_reliability`
+- `cta_label`
+- `cta_target`
 6. من `Admin > Custom definitions` أضف Custom metrics (Event parameter):
 - `input_count`
 - `page_load_ms`
@@ -123,12 +134,15 @@ Header اختياري `x-brightai-analytics-key` (مربوط على `ANALYTICS_W
 - Table: `Landing page + Sessions + Engaged sessions + Avg engagement time + Bounce rate`
 - Funnel chart: `page_view -> chat_widget_open -> chat_start -> generate_lead`
 - Table: `Page path + lead_form_submit + chat_start`
+- Table: `Device category + avg(active_time_seconds) + avg(max_scroll_percent) + count(content_engaged)`
 
 ## صفحة 3: الأداء التقني
 - Time Series: `Avg lcp_ms` يوميًا
 - Time Series: `Avg cls_milli` يوميًا
 - Time Series: `Avg fcp_ms` و `Avg ttfb_ms`
 - Table: `page_path + avg(page_load_ms) + avg(dom_content_loaded_ms)`
+- Time Series: `engagement_time_milestone by device_category`
+- Bar: `scroll_depth_milestone by device_category`
 
 ## الحقول المحسوبة في Looker Studio
 - `Lead Conversion Rate`:

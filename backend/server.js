@@ -29,7 +29,7 @@ const {
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, X-BrightAI-Analytics-Key, Authorization',
   'Content-Type': 'application/json'
 };
 
@@ -235,7 +235,15 @@ function generateSwaggerUI() {
  * Main request handler
  */
 async function handleRequest(req, res) {
-  const { method, url } = req;
+  const { method } = req;
+  const rawUrl = req.url || '/';
+  let url = rawUrl;
+  try {
+    const host = req.headers?.host || `127.0.0.1:${config.server.port}`;
+    url = new URL(rawUrl, `http://${host}`).pathname;
+  } catch (error) {
+    url = rawUrl.split('?')[0] || rawUrl;
+  }
 
   // Handle CORS preflight
   if (method === 'OPTIONS') {
@@ -361,7 +369,7 @@ function startServer() {
   // Validate configuration
   if (!validateConfig()) {
     console.warn('Warning: Server starting with incomplete configuration');
-    console.warn('AI features will return 503 until GEMINI_API_KEY and GROQ_API_KEY are configured');
+    console.warn('AI features may return 503 until at least one provider key is configured (GROQ_API_KEY or GEMINI_API_KEY)');
   }
 
   const server = http.createServer(handleRequest);

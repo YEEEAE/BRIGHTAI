@@ -5,7 +5,7 @@
  * - FAQ generation for report page
  */
 
-const { config, isGroqConfigured, isApiKeyConfigured } = require('../config');
+const { config, isApiKeyConfigured } = require('../config');
 const { sanitizeUserInput } = require('../utils/sanitizer');
 const { createSessionId, getOrCreateSession, addToSession } = require('../utils/sessionStore');
 
@@ -83,6 +83,56 @@ const MEDICAL_AGENT_SYSTEM_PROMPT = `
   ]
 }
 `;
+
+function normalizeGroqApiKey(value) {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (!trimmed) return '';
+  if (trimmed === 'YOUR_KEY_HERE') return '';
+  if (!trimmed.startsWith('gsk_')) return '';
+  return trimmed;
+}
+
+function resolveHeaderValue(headers, key) {
+  if (!headers || typeof headers !== 'object') return '';
+  if (typeof headers[key] === 'string') return headers[key];
+  if (typeof headers[key.toLowerCase()] === 'string') return headers[key.toLowerCase()];
+  if (typeof headers[key.toUpperCase()] === 'string') return headers[key.toUpperCase()];
+  return '';
+}
+
+function resolveGroqApiKey(req) {
+  const body = req && req.body && typeof req.body === 'object' ? req.body : {};
+  const headers = req && req.headers && typeof req.headers === 'object' ? req.headers : {};
+
+  const fromBody = normalizeGroqApiKey(
+    body.groqApiKey || body.groq_api_key || body.apiKey || body.api_key || ''
+  );
+  if (fromBody) return fromBody;
+
+  const fromHeaderDirect = normalizeGroqApiKey(
+    resolveHeaderValue(headers, 'x-groq-api-key') ||
+    resolveHeaderValue(headers, 'x-groq-key') ||
+    resolveHeaderValue(headers, 'x-api-key') ||
+    ''
+  );
+  if (fromHeaderDirect) return fromHeaderDirect;
+
+  const authHeader = resolveHeaderValue(headers, 'authorization') || '';
+  if (typeof authHeader === 'string' && authHeader.toLowerCase().startsWith('bearer ')) {
+    const bearerKey = normalizeGroqApiKey(authHeader.slice(7));
+    if (bearerKey) return bearerKey;
+  }
+
+  return normalizeGroqApiKey(config.groq.apiKey);
+}
+
+function resolveGroqModel(req) {
+  const body = req && req.body && typeof req.body === 'object' ? req.body : {};
+  const candidate = String(body.groqModel || body.model || '').trim();
+  if (!candidate) return config.groq.model;
+  return candidate.slice(0, 120);
+}
 
 function buildGroqMessages({ systemPrompt, history = [], userMessage }) {
   const messages = [
@@ -444,20 +494,31 @@ async function callGroq({
   temperature = 0.4,
   maxTokens = 900,
   stream = false,
+  apiKey = '',
+  model = '',
   signal,
   timeoutMs = GROQ_STREAM_TIMEOUT_MS
 }) {
+  const activeApiKey = normalizeGroqApiKey(apiKey) || normalizeGroqApiKey(config.groq.apiKey);
+  if (!activeApiKey) {
+    const error = new Error('GROQ_NOT_CONFIGURED');
+    error.statusCode = 503;
+    error.code = 'GROQ_NOT_CONFIGURED';
+    throw error;
+  }
+
+  const activeModel = String(model || config.groq.model || '').trim() || 'llama3-70b-8192';
   const { signal: requestSignal, cleanup } = createUpstreamRequestSignal(signal, timeoutMs);
 
   try {
     const response = await fetch(config.groq.endpoint, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${config.groq.apiKey}`,
+        Authorization: `Bearer ${activeApiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: config.groq.model,
+        model: activeModel,
         messages,
         temperature,
         max_tokens: maxTokens,
@@ -594,8 +655,10 @@ function stripDataPrefix(base64Data = '') {
 async function groqStreamHandler(req, res, rawRes) {
   const jsonRes = res;
   const streamRes = rawRes || res;
+  const groqApiKey = resolveGroqApiKey(req);
+  const groqModel = resolveGroqModel(req);
 
-  if (!isGroqConfigured()) {
+  if (!groqApiKey) {
     return jsonRes.status(503).json({
       error: 'خدمة Groq غير متاحة حالياً',
       errorCode: 'GROQ_NOT_CONFIGURED'
@@ -654,6 +717,8 @@ async function groqStreamHandler(req, res, rawRes) {
       messages,
       temperature: 0.6,
       maxTokens: 900,
+      apiKey: groqApiKey,
+      model: groqModel,
       stream: true,
       signal: controller.signal
     });
@@ -712,7 +777,10 @@ async function groqStreamHandler(req, res, rawRes) {
 }
 
 async function groqOcrHandler(req, res) {
-  if (!isGroqConfigured()) {
+  const groqApiKey = resolveGroqApiKey(req);
+  const groqModel = resolveGroqModel(req);
+
+  if (!groqApiKey) {
     return res.status(503).json({
       error: 'خدمة Groq غير متاحة حالياً',
       errorCode: 'GROQ_NOT_CONFIGURED'
@@ -773,6 +841,8 @@ async function groqOcrHandler(req, res) {
       messages,
       temperature: 0.2,
       maxTokens: 700,
+      apiKey: groqApiKey,
+      model: groqModel,
       stream: false
     });
 
@@ -804,7 +874,10 @@ async function groqOcrHandler(req, res) {
 }
 
 async function groqFaqHandler(req, res) {
-  if (!isGroqConfigured()) {
+  const groqApiKey = resolveGroqApiKey(req);
+  const groqModel = resolveGroqModel(req);
+
+  if (!groqApiKey) {
     return res.status(503).json({
       error: 'خدمة Groq غير متاحة حالياً',
       errorCode: 'GROQ_NOT_CONFIGURED'
@@ -834,6 +907,8 @@ async function groqFaqHandler(req, res) {
       messages,
       temperature: 0.3,
       maxTokens: 700,
+      apiKey: groqApiKey,
+      model: groqModel,
       stream: false
     });
 
@@ -912,7 +987,9 @@ async function groqExtractTextHandler(req, res) {
 }
 
 async function groqTranscribeHandler(req, res) {
-  if (!isGroqConfigured()) {
+  const groqApiKey = resolveGroqApiKey(req);
+
+  if (!groqApiKey) {
     return res.status(503).json({
       error: 'خدمة Groq غير متاحة حالياً',
       errorCode: 'GROQ_NOT_CONFIGURED'
@@ -947,7 +1024,7 @@ async function groqTranscribeHandler(req, res) {
     const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${config.groq.apiKey}`
+        Authorization: `Bearer ${groqApiKey}`
       },
       body: form
     });
@@ -988,6 +1065,8 @@ async function groqTranscribeHandler(req, res) {
 
 async function groqMedicalAgentHandler(req, res) {
   const { question, records, hospitalProfile, batchReport } = req.body || {};
+  const groqApiKey = resolveGroqApiKey(req);
+  const groqModel = resolveGroqModel(req);
   const safeQuestion = asSafeString(question || '', MAX_MEDICAL_AGENT_QUESTION_CHARS);
 
   if (!safeQuestion || safeQuestion.length < 8) {
@@ -1040,7 +1119,7 @@ async function groqMedicalAgentHandler(req, res) {
         maxOutputTokens: 1900
       });
       modelName = config.gemini.model;
-    } else if (isGroqConfigured()) {
+    } else if (groqApiKey) {
       const messages = buildGroqMessages({
         systemPrompt: MEDICAL_AGENT_SYSTEM_PROMPT,
         history: [],
@@ -1050,11 +1129,13 @@ async function groqMedicalAgentHandler(req, res) {
         messages,
         temperature: 0.2,
         maxTokens: 1200,
+        apiKey: groqApiKey,
+        model: groqModel,
         stream: false
       });
       const data = await response.json();
       rawText = data?.choices?.[0]?.message?.content?.trim() || '';
-      modelName = config.groq.model;
+      modelName = groqModel;
     } else {
       return res.status(503).json({
         error: 'خدمة الوكيل غير متاحة حالياً',
@@ -1087,7 +1168,10 @@ async function groqMedicalAgentHandler(req, res) {
 }
 
 async function groqMedicalArchiveHandler(req, res) {
-  if (!isGroqConfigured()) {
+  const groqApiKey = resolveGroqApiKey(req);
+  const groqModel = resolveGroqModel(req);
+
+  if (!groqApiKey) {
     return res.status(503).json({
       error: 'خدمة Groq غير متاحة حالياً',
       errorCode: 'GROQ_NOT_CONFIGURED'
@@ -1166,6 +1250,8 @@ async function groqMedicalArchiveHandler(req, res) {
       messages,
       temperature,
       maxTokens,
+      apiKey: groqApiKey,
+      model: groqModel,
       stream: false
     });
 
@@ -1183,7 +1269,7 @@ async function groqMedicalArchiveHandler(req, res) {
     return res.status(200).json({
       mode,
       result: parsed,
-      model: config.groq.model,
+      model: groqModel,
       generatedAt: new Date().toISOString()
     });
   } catch (error) {

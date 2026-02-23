@@ -30,8 +30,13 @@ const config = {
 
   // Groq AI Configuration
   groq: {
-    apiKey: process.env.GROQ_API_KEY,
-    model: process.env.GROQ_MODEL || 'llama3-70b-8192',
+    apiKey:
+      process.env.GROQ_API_KEY ||
+      process.env.GROQ_KEY ||
+      process.env.GROQ_TOKEN ||
+      process.env.NEXT_PUBLIC_GROQ_API_KEY ||
+      '',
+    model: process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama3-70b-8192',
     endpoint: process.env.GROQ_ENDPOINT || 'https://api.groq.com/openai/v1/chat/completions',
     streamTimeoutMs: parseInt(process.env.GROQ_STREAM_TIMEOUT_MS, 10) || 30000
   },
@@ -73,12 +78,8 @@ const config = {
 function validateConfig() {
   const errors = [];
   
-  if (!config.gemini.apiKey) {
-    errors.push('GEMINI_API_KEY is required');
-  }
-
-  if (!config.groq.apiKey) {
-    errors.push('GROQ_API_KEY is required');
+  if (!config.gemini.apiKey && !config.groq.apiKey) {
+    errors.push('At least one provider key is required (GROQ_API_KEY or GEMINI_API_KEY)');
   }
   
   if (errors.length > 0) {

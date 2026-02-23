@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { config, isGroqConfigured } = require('../config');
+const { config } = require('../config');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 
 const SITE_ROOT = path.resolve(__dirname, '../..');
@@ -52,6 +52,14 @@ let indexCache = {
   entries: [],
   idf: new Map()
 };
+
+function normalizeGroqApiKey(value) {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (!trimmed || trimmed === 'YOUR_KEY_HERE') return '';
+  if (!trimmed.startsWith('gsk_')) return '';
+  return trimmed;
+}
 
 function clampNumber(rawValue, defaultValue, min, max) {
   const value = Number(rawValue);
@@ -562,15 +570,23 @@ function buildGenerationPrompt(query, matches) {
   return `سؤال المستخدم:\n${query}\n\nمقاطع السياق:\n${context}\n\nأعد JSON فقط حسب القواعد.`;
 }
 
-async function generateAnswerWithGroq(query, matches) {
+async function generateAnswerWithGroq(query, matches, options = {}) {
+  const activeApiKey = normalizeGroqApiKey(options.apiKey) || normalizeGroqApiKey(config.groq.apiKey);
+  if (!activeApiKey) {
+    const error = new Error('GROQ_NOT_CONFIGURED');
+    error.statusCode = 503;
+    throw error;
+  }
+
+  const activeModel = String(options.model || config.groq.model || '').trim() || 'llama3-70b-8192';
   const response = await fetch(config.groq.endpoint, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${config.groq.apiKey}`,
+      Authorization: `Bearer ${activeApiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: config.groq.model,
+      model: activeModel,
       messages: [
         { role: 'system', content: SEARCH_SYSTEM_PROMPT },
         { role: 'user', content: buildGenerationPrompt(query, matches) }
@@ -595,6 +611,8 @@ async function generateAnswerWithGroq(query, matches) {
 
 async function searchSiteWithRag(query, options = {}) {
   const safeQuery = sanitizeUserInput(query || '').slice(0, 700);
+  const activeGroqApiKey = normalizeGroqApiKey(options.apiKey) || normalizeGroqApiKey(config.groq.apiKey);
+  const activeGroqModel = String(options.model || config.groq.model || '').trim() || 'llama3-70b-8192';
   const retrievalLimit = clampNumber(
     options.retrievalLimit,
     Math.max(DEFAULT_RETRIEVAL_LIMIT, options.maxSources || 5),
@@ -614,7 +632,7 @@ async function searchSiteWithRag(query, options = {}) {
     };
   }
 
-  if (!isGroqConfigured()) {
+  if (!activeGroqApiKey) {
     return {
       answer: fallbackAnswer(safeQuery, matches),
       sources: matches.slice(0, 4).map(item => ({
@@ -630,7 +648,10 @@ async function searchSiteWithRag(query, options = {}) {
   }
 
   try {
-    const generated = await generateAnswerWithGroq(safeQuery, matches);
+    const generated = await generateAnswerWithGroq(safeQuery, matches, {
+      apiKey: activeGroqApiKey,
+      model: activeGroqModel
+    });
     const normalized = sanitizeGeneratedPayload(generated, matches, safeQuery);
     return {
       ...normalized,

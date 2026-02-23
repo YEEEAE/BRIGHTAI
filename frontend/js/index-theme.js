@@ -1051,3 +1051,290 @@
         });
     }
 })();
+
+(function () {
+    'use strict';
+
+    if (window.__brightAiDeviceEngagementInitialized) return;
+    window.__brightAiDeviceEngagementInitialized = true;
+
+    const pagePath = window.location.pathname || '/';
+    const scrollMilestones = [25, 50, 75, 90];
+    const timeMilestones = [10, 30, 60, 120];
+    const firedScrollMilestones = new Set();
+    const firedTimeMilestones = new Set();
+    const viewedSections = new Set();
+    const pendingEvents = [];
+
+    let queueFlushTimer = null;
+    let heartbeatTimer = null;
+    let maxScrollPercent = 0;
+    let interactionCount = 0;
+    let engagedSignalSent = false;
+    let activeMs = 0;
+    const sessionStartMs = Date.now();
+    let visibleSince = document.visibilityState === 'visible' ? Date.now() : null;
+
+    function detectDeviceCategory() {
+        const width = Math.max(window.innerWidth || 0, window.screen ? window.screen.width || 0 : 0);
+        if (width <= 767) return 'mobile';
+        if (width <= 1024) return 'tablet';
+        return 'desktop';
+    }
+
+    const deviceCategory = detectDeviceCategory();
+
+    function sanitizeText(value, maxLength = 120) {
+        if (!value) return '';
+        return String(value).replace(/\s+/g, ' ').trim().slice(0, maxLength);
+    }
+
+    function flushPendingEvents() {
+        if (typeof window.gtag !== 'function' || pendingEvents.length === 0) return;
+        while (pendingEvents.length) {
+            const payload = pendingEvents.shift();
+            window.gtag('event', payload.name, payload.params);
+        }
+        if (queueFlushTimer) {
+            clearInterval(queueFlushTimer);
+            queueFlushTimer = null;
+        }
+    }
+
+    function scheduleQueueFlush() {
+        if (queueFlushTimer) return;
+        queueFlushTimer = setInterval(() => {
+            if (typeof window.gtag === 'function') flushPendingEvents();
+        }, 250);
+        setTimeout(() => {
+            if (queueFlushTimer) {
+                clearInterval(queueFlushTimer);
+                queueFlushTimer = null;
+            }
+        }, 20000);
+    }
+
+    function sendEvent(name, params = {}) {
+        const payload = {
+            page_path: pagePath,
+            device_category: deviceCategory,
+            ...params,
+        };
+        if (typeof window.gtag === 'function') {
+            window.gtag('event', name, payload);
+        } else {
+            pendingEvents.push({ name, params: payload });
+            scheduleQueueFlush();
+        }
+    }
+
+    function updateActiveClock() {
+        if (visibleSince) {
+            activeMs += Math.max(0, Date.now() - visibleSince);
+            visibleSince = Date.now();
+        }
+    }
+
+    function getActiveSeconds() {
+        if (!visibleSince) return Math.round(activeMs / 1000);
+        return Math.round((activeMs + (Date.now() - visibleSince)) / 1000);
+    }
+
+    function getScrollPercent() {
+        const doc = document.documentElement;
+        const total = doc.scrollHeight - doc.clientHeight;
+        if (total <= 0) return 0;
+        return Math.max(0, Math.min(100, Math.round((doc.scrollTop / total) * 100)));
+    }
+
+    function handleScrollMilestones() {
+        const current = getScrollPercent();
+        if (current > maxScrollPercent) maxScrollPercent = current;
+
+        scrollMilestones.forEach((milestone) => {
+            if (current >= milestone && !firedScrollMilestones.has(milestone)) {
+                firedScrollMilestones.add(milestone);
+                sendEvent('scroll_depth_milestone', {
+                    scroll_percent: milestone,
+                    interaction_count: interactionCount,
+                });
+            }
+        });
+    }
+
+    function maybeSendEngagedSignal(activeSeconds) {
+        if (engagedSignalSent) return;
+        const qualifies = activeSeconds >= 15 && maxScrollPercent >= 35 && interactionCount >= 1;
+        if (!qualifies) return;
+        engagedSignalSent = true;
+
+        sendEvent('content_engaged', {
+            active_time_seconds: activeSeconds,
+            max_scroll_percent: Math.round(maxScrollPercent),
+            interaction_count: interactionCount,
+        });
+        sendEvent('key_event_reliability_signal', {
+            reliability_state: 'baseline_met',
+            active_time_seconds: activeSeconds,
+            max_scroll_percent: Math.round(maxScrollPercent),
+            interaction_count: interactionCount,
+        });
+    }
+
+    function startHeartbeat() {
+        if (heartbeatTimer) return;
+        heartbeatTimer = setInterval(() => {
+            const activeSeconds = getActiveSeconds();
+
+            timeMilestones.forEach((milestone) => {
+                if (activeSeconds >= milestone && !firedTimeMilestones.has(milestone)) {
+                    firedTimeMilestones.add(milestone);
+                    sendEvent('engagement_time_milestone', {
+                        engagement_seconds: milestone,
+                        max_scroll_percent: Math.round(maxScrollPercent),
+                        interaction_count: interactionCount,
+                    });
+                    sendEvent('engagement_time', {
+                        engagement_seconds: milestone,
+                    });
+                }
+            });
+
+            maybeSendEngagedSignal(activeSeconds);
+        }, 1000);
+    }
+
+    function setupSectionTracking() {
+        if (!('IntersectionObserver' in window)) return;
+        const sections = [...document.querySelectorAll('section, article, [data-section]')].slice(0, 25);
+        if (sections.length === 0) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting || entry.intersectionRatio < 0.5) return;
+                const element = entry.target;
+                const index = sections.indexOf(element);
+                const sectionId = sanitizeText(
+                    element.id
+                    || element.getAttribute('data-section')
+                    || element.getAttribute('aria-label')
+                    || `section_${index + 1}`,
+                    80
+                );
+
+                if (!sectionId || viewedSections.has(sectionId)) return;
+                viewedSections.add(sectionId);
+                sendEvent('content_section_view', {
+                    section_id: sectionId,
+                    section_order: index + 1,
+                });
+            });
+        }, { threshold: [0.5] });
+
+        sections.forEach((section) => observer.observe(section));
+    }
+
+    function handleInteraction(event) {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const interactiveElement = target.closest('a, button, input, select, textarea, [role="button"]');
+        if (!interactiveElement) return;
+        interactionCount += 1;
+
+        const actionElement = target.closest('a[href], button, [role="button"]');
+        if (!actionElement) return;
+
+        const href = sanitizeText(actionElement.getAttribute('href') || '', 140);
+        const label = sanitizeText(
+            actionElement.getAttribute('aria-label')
+            || actionElement.textContent
+            || actionElement.id
+            || 'cta'
+        );
+
+        const isLeadIntent = /wa\.me|whatsapp|mailto:|tel:|\/contact\/|\/consultation\//i.test(href)
+            || /(تواصل|استشارة|احجز|ابدأ|contact|consult|book|demo)/i.test(label);
+
+        if (!isLeadIntent) return;
+
+        sendEvent('lead_intent_click', {
+            cta_label: label,
+            cta_target: href || 'button',
+            interaction_count: interactionCount,
+        });
+
+        if (!window.__brightAiLeadIntentQualified) {
+            window.__brightAiLeadIntentQualified = true;
+            sendEvent('qualify_lead', {
+                lead_channel: 'cta_intent',
+                qualification_stage: 'mql',
+                qualification_source: 'lead_intent_click',
+                cta_label: label,
+                cta_target: href || 'button',
+            });
+        }
+    }
+
+    function finalizeEngagement() {
+        if (heartbeatTimer) {
+            clearInterval(heartbeatTimer);
+            heartbeatTimer = null;
+        }
+
+        updateActiveClock();
+        const activeSeconds = getActiveSeconds();
+        const sessionSeconds = Math.max(1, Math.round((Date.now() - sessionStartMs) / 1000));
+        const quality = activeSeconds >= 45 && maxScrollPercent >= 60
+            ? 'high'
+            : (activeSeconds >= 20 && maxScrollPercent >= 30 ? 'medium' : 'low');
+
+        sendEvent('content_engagement_summary', {
+            active_time_seconds: activeSeconds,
+            session_duration_seconds: sessionSeconds,
+            max_scroll_percent: Math.round(maxScrollPercent),
+            interaction_count: interactionCount,
+            engagement_quality: quality,
+            key_event_reliability: engagedSignalSent ? 'baseline_met' : 'needs_attention',
+        });
+
+        if (!engagedSignalSent && (activeSeconds >= 15 || maxScrollPercent >= 25 || interactionCount >= 1)) {
+            sendEvent('key_event_reliability_signal', {
+                reliability_state: 'weak_signal',
+                active_time_seconds: activeSeconds,
+                max_scroll_percent: Math.round(maxScrollPercent),
+                interaction_count: interactionCount,
+            });
+        }
+
+        flushPendingEvents();
+    }
+
+    sendEvent('device_engagement_init', {
+        viewport_width: window.innerWidth || 0,
+        viewport_height: window.innerHeight || 0,
+    });
+
+    window.addEventListener('scroll', handleScrollMilestones, { passive: true });
+    document.addEventListener('click', handleInteraction, true);
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            visibleSince = Date.now();
+        } else {
+            updateActiveClock();
+            visibleSince = null;
+        }
+    });
+    window.addEventListener('resize', () => {
+        sendEvent('viewport_resize', {
+            viewport_width: window.innerWidth || 0,
+            viewport_height: window.innerHeight || 0,
+        });
+    });
+    window.addEventListener('online', flushPendingEvents);
+    window.addEventListener('focus', flushPendingEvents);
+    window.addEventListener('pagehide', finalizeEngagement, { once: true });
+
+    setupSectionTracking();
+    startHeartbeat();
+})();

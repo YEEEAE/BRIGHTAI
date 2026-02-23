@@ -151,6 +151,54 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     }
   });
 
+  it('success: accepts runtime groqApiKey from request body when env key is missing', async () => {
+    global.fetch = vi.fn(async (_url, options = {}) => {
+      const payload = JSON.parse(options.body || '{}');
+      const authHeader = options.headers?.Authorization || options.headers?.authorization || '';
+
+      expect(authHeader).toContain('gsk_runtime_test_key');
+      expect(payload.model).toBe('llama3-70b-8192');
+
+      return new Response(
+        [
+          'data: {"choices":[{"delta":{"content":"تم"}}]}\n\n',
+          'data: {"choices":[{"delta":{"content":" التشغيل"}}]}\n\n',
+          'data: [DONE]\n\n'
+        ].join(''),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'text/event-stream; charset=utf-8' }
+        }
+      );
+    });
+
+    const runtime = await loadHandleRequest({
+      GROQ_API_KEY: '',
+      GROQ_STREAM_TIMEOUT_MS: 400,
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 20
+    });
+
+    try {
+      const result = await invokeHandleRequest(runtime.handleRequest, {
+        method: 'POST',
+        url: '/api/groq/stream',
+        body: {
+          message: 'اختبار تمرير المفتاح من جسم الطلب',
+          outputType: 'دعم العملاء',
+          groqApiKey: 'gsk_runtime_test_key'
+        }
+      });
+
+      expect(result.status).toBe(200);
+      expect(result.body).toContain('"token":"تم"');
+      expect(result.body).toContain('"token":" التشغيل"');
+      expect(result.body).toContain('data: [DONE]');
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+    } finally {
+      runtime.restoreEnv();
+    }
+  });
+
   it('error: returns stream error payload when upstream fails', async () => {
     global.fetch = vi.fn(async () => {
       return new Response('upstream failed', {
