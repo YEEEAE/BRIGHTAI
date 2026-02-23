@@ -26,10 +26,12 @@
     <script src="/frontend/js/navigation.js" defer></script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-        {"@type":"Question","name":"كم تكلفة خدمات Bright AI؟","acceptedAnswer":{"@type":"Answer","text":"الأسعار تختلف حسب نوع الخدمة وحجم المشروع. نقدم استشارة مجانية لتقييم احتياجاتك وتقديم عرض سعر مخصص يناسب ميزانيتك."}},
-        {"@type":"Question","name":"كم يستغرق تنفيذ المشروع؟","acceptedAnswer":{"@type":"Answer","text":"يعتمد على حجم وتعقيد المشروع. المشاريع البسيطة قد تستغرق 2-4 أسابيع، بينما المشاريع المعقدة قد تحتاج 2-3 أشهر."}},
-        {"@type":"Question","name":"هل بياناتي آمنة معكم؟","acceptedAnswer":{"@type":"Answer","text":"نعم، جميع البيانات مستضافة محلياً في السعودية مع تشفير متقدم ومتوافقة مع معايير NCA وNDMO."}},
-        {"@type":"Question","name":"هل تقدمون دعم فني؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نوفر دعم فني مستمر على مدار الساعة باللغة العربية عبر واتساب والبريد الإلكتروني."}}
+        {"@type":"Question","name":"ما الفرق بين AIaaS والسحابة التقليدية؟","acceptedAnswer":{"@type":"Answer","text":"AIaaS يوفر نماذج ذكاء اصطناعي جاهزة وخدمات تشغيل ومراقبة للنماذج، بينما السحابة التقليدية توفر بنية تحتية عامة تحتاج بناء طبقة الذكاء فوقها."}},
+        {"@type":"Question","name":"هل تدعمون التكامل مع ERP وCRM؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نوفر تكامل API مع أنظمة ERP وCRM ومنصات الدعم والتذاكر مع حوكمة صلاحيات واضحة."}},
+        {"@type":"Question","name":"كم تكلفة تطبيق AI؟","acceptedAnswer":{"@type":"Answer","text":"تعتمد تكلفة تطبيق AI على نطاق الحالة، حجم البيانات، وعدد التكاملات. نبدأ بتقييم مجاني ثم نقدم عرض سعر واضح على مراحل."}},
+        {"@type":"Question","name":"هل بياناتي آمنة؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نعتمد تشفيراً أثناء النقل والتخزين، وضبط وصول حسب الدور، واستضافة داخل السعودية حسب متطلبات العميل والامتثال."}},
+        {"@type":"Question","name":"كم وقت التطبيق؟","acceptedAnswer":{"@type":"Answer","text":"غالباً يبدأ التنفيذ من 4 إلى 12 أسبوعاً حسب التعقيد والتكاملات، مع خطة مراحل واضحة من التحليل إلى الإطلاق."}},
+        {"@type":"Question","name":"هل تقدمون دعم فني بعد الإطلاق؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نوفر باقات دعم وتشغيل ومراقبة وتحديثات دورية حسب اتفاقية مستوى الخدمة."}}
     ]}
     </script>
     <style>
@@ -530,10 +532,10 @@
         </header>
 
         <article class="doc-content">
-            <!-- FAQ Category 1: General -->
+            <!-- FAQ Category 1: Technical -->
             <section class="mb-10" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:info" class="text-gold-400"></iconify-icon> أسئلة عامة
+                    <iconify-icon icon="lucide:cpu" class="text-gold-400"></iconify-icon> التقنية
                 </h2>
                 <div class="space-y-4">
                     <div class="faq-item glass-card rounded-xl">
@@ -570,13 +572,31 @@
                                 الافتراضية، وإذا احتجنا حضور ميداني نوفره بكل سهولة.</p>
                         </div>
                     </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">ما الفرق بين AIaaS والسحابة التقليدية؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20" class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>AIaaS يقدم لك طبقة ذكاء اصطناعي جاهزة تشمل النماذج، التشغيل، المراقبة، والتحديثات. السحابة التقليدية توفر البنية التحتية فقط، وتحتاج فريق يبني طبقة الذكاء من الصفر.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تدعمون التكامل مع ERP وCRM والأنظمة الحالية؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20" class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نعم، عندنا خبرة بالتكامل مع أنظمة ERP وCRM وواجهات API الداخلية، مع ضبط الصلاحيات وسجل تدقيق كامل.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- FAQ Category 2: Services -->
+            <!-- FAQ Category 2: Implementation -->
             <section class="mb-10" style="content-visibility: auto;">
                 <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                    <iconify-icon icon="lucide:layers" class="text-indigo-400"></iconify-icon> الخدمات
+                    <iconify-icon icon="lucide:workflow" class="text-indigo-400"></iconify-icon> التنفيذ
                 </h2>
                 <div class="space-y-4">
                     <div class="faq-item glass-card rounded-xl">
@@ -609,6 +629,15 @@
                                 حل يناسب متطلباتك بالضبط.</p>
                         </div>
                     </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كم وقت التطبيق؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20" class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>المدة المعتادة من 4 إلى 12 أسبوعاً حسب نطاق المشروع، جودة البيانات، وعدد التكاملات المطلوبة.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -618,6 +647,16 @@
                     <iconify-icon icon="lucide:credit-card" class="text-emerald-400"></iconify-icon> الأسعار والتكاليف
                 </h2>
                 <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كم تكلفة تطبيق AI؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>تكلفة تطبيق AI تعتمد على حالة الاستخدام، حجم البيانات، والبنية الحالية. نوفر تقييم مجاني ثم عرض سعر مرحلي واضح قبل البدء.</p>
+                        </div>
+                    </div>
                     <div class="faq-item glass-card rounded-xl">
                         <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
                             <h3 class="text-lg font-semibold text-white">كم تكلفة خدماتكم؟</h3>
@@ -649,6 +688,16 @@
                     <iconify-icon icon="lucide:shield" class="text-cyan-400"></iconify-icon> الأمان والخصوصية
                 </h2>
                 <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل بياناتي آمنة؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نعم. نستخدم تشفيراً متقدماً، صلاحيات حسب الدور، ومراقبة مستمرة. ويمكن تفعيل استضافة محلية داخل السعودية حسب متطلبات الامتثال.</p>
+                        </div>
+                    </div>
                     <div class="faq-item glass-card rounded-xl">
                         <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
                             <h3 class="text-lg font-semibold text-white">هل بياناتي آمنة معكم؟</h3>
