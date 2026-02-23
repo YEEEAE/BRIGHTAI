@@ -281,6 +281,46 @@ ErrorDocument 500 /500.html
 # Fix common URL variations
 Redirect 301 /terms.html /terms-and-conditions.html
 
+# Arabic blog URLs to English slugs (SEO cleanup)
+RewriteRule ^frontend/pages/blogger/%20production-line(?:\.html)?$ /frontend/pages/blogger/production-line [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/Generative%20artificial%20intelligence(?:\.html)?$ /frontend/pages/blogger/generative-artificial-intelligence-2 [R=301,L,NE]
+
+# Legacy /blog slugs -> canonical blogger paths
+RewriteRule ^blog/ai-guide-saudi-business(?:\.html)?$ /frontend/pages/blogger/ai-guide-saudi-business.html [R=301,L,NE]
+RewriteRule ^blog/choose-ai-company-saudi(?:\.html)?$ /frontend/pages/blogger/choose-ai-company-saudi.html [R=301,L,NE]
+RewriteRule ^blog/vision-2030-ai-opportunities(?:\.html)?$ /frontend/pages/blogger/vision-2030-ai-opportunities.html [R=301,L,NE]
+RewriteRule ^blog/top-ai-tools-saudi-2025(?:\.html)?$ /frontend/pages/blogger/top-ai-tools-saudi-2025.html [R=301,L,NE]
+RewriteRule ^blog/ai-implementation-cost-guide(?:\.html)?$ /frontend/pages/blogger/ai-implementation-cost-guide.html [R=301,L,NE]
+RewriteRule ^blog/hr-automation-case-study(?:\.html)?$ /frontend/pages/blogger/hr-automation-case-study.html [R=301,L,NE]
+RewriteRule ^blog/chatgpt-vs-claude-vs-gemini-arabic(?:\.html)?$ /frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html [R=301,L,NE]
+RewriteRule ^blog/nca-ai-compliance-saudi(?:\.html)?$ /frontend/pages/blogger/nca-ai-compliance-saudi.html [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية(?:\.html)?$ /frontend/pages/blogger/process-automation [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية(?:\.html)?$ /frontend/pages/blogger/process-automation [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1(?:\.html)?$ /frontend/pages/blogger/ai-transformation [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث \(1\)(?:\.html)?$ /frontend/pages/blogger/ai-transformation [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات(?:\.html)?$ /frontend/pages/blogger/choose-ai-company-saudi.html [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات(?:\.html)?$ /frontend/pages/blogger/choose-ai-company-saudi.html [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية(?:\.html)?$ /frontend/pages/blogger/production-line [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية(?:\.html)?$ /frontend/pages/blogger/production-line [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية(?:\.html)?$ /frontend/pages/blogger/hr-automation-case-study.html [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية(?:\.html)?$ /frontend/pages/blogger/hr-automation-case-study.html [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار(?:\.html)?$ /frontend/pages/blogger/ai-transformation [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار(?:\.html)?$ /frontend/pages/blogger/ai-transformation [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور(?:\.html)?$ /frontend/pages/blogger/intelligent-data-analysis [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور(?:\.html)?$ /frontend/pages/blogger/intelligent-data-analysis [R=301,L,NE]
+
+RewriteRule ^frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق(?:\.html)?$ /frontend/pages/blogger/ai-generative-content-industry-saudi-arabia [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/تحليل-البيانات(?:\.html)?$ /frontend/pages/blogger/big-data-analysis [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/تعلم-الآلة-و-الأعمال(?:\.html)?$ /frontend/pages/blogger/ai-guide-saudi-business.html [R=301,L,NE]
+RewriteRule ^frontend/pages/blogger/مقال-تحليل(?:\.html)?$ /frontend/pages/blogger/intelligent-data-analysis [R=301,L,NE]
+
 # Fix URL encoding issues (if needed)
 # Redirect 301 /Company performance monitoring tool.html /Company%20performance%20monitoring%20tool.html
 

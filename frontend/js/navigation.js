@@ -680,6 +680,45 @@ function ensureSearchScript() {
   document.head.appendChild(script);
 }
 
+/* ── Blog Reading Time ── */
+function injectBlogReadingTime() {
+  const path = normalizePathname(window.location.pathname);
+  const isRootBlogArticle = path.startsWith("/blog/") && path !== "/blog/index" && path !== "/blog/index.html";
+  const isFrontendBloggerArticle = path.startsWith("/frontend/pages/blogger/");
+  const isFrontendBlogArticle =
+    path.startsWith("/frontend/pages/blog/") &&
+    path !== "/frontend/pages/blog/index" &&
+    path !== "/frontend/pages/blog/index.html";
+  const isBlogArticlePath = isRootBlogArticle || isFrontendBloggerArticle || isFrontendBlogArticle;
+
+  if (!isBlogArticlePath) return;
+
+  const articleEl = document.querySelector("article");
+  if (!articleEl) return;
+
+  const text = (articleEl.innerText || "").replace(/\s+/g, " ").trim();
+  if (!text) return;
+
+  const words = text.split(" ").length;
+  const minutes = Math.max(1, Math.ceil(words / 220));
+  const label = `وقت القراءة: ${minutes} دقائق`;
+
+  const existingSlot = document.querySelector("[data-reading-time-slot]");
+  if (existingSlot) {
+    existingSlot.textContent = label;
+    return;
+  }
+
+  const title = document.querySelector("h1");
+  if (!title) return;
+
+  const badge = document.createElement("div");
+  badge.className = "mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/20 bg-white/5 text-slate-300 text-sm";
+  badge.setAttribute("data-reading-time-slot", "true");
+  badge.innerHTML = `<iconify-icon icon="lucide:clock-3" width="15"></iconify-icon><span>${label}</span>`;
+  title.insertAdjacentElement("afterend", badge);
+}
+
 /* ── Init Navigation ── */
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
@@ -857,4 +896,6 @@ async function initNavigation() {
       link.addEventListener("click", () => { setTimeout(closeMobileMenu, 150); });
     });
   }
+
+  injectBlogReadingTime();
 }
