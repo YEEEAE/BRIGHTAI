@@ -36,7 +36,7 @@ const config = {
       process.env.GROQ_TOKEN ||
       process.env.NEXT_PUBLIC_GROQ_API_KEY ||
       '',
-    model: process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama3-70b-8192',
+    model: process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama-3.3-70b-versatile',
     endpoint: process.env.GROQ_ENDPOINT || 'https://api.groq.com/openai/v1/chat/completions',
     streamTimeoutMs: parseInt(process.env.GROQ_STREAM_TIMEOUT_MS, 10) || 30000
   },

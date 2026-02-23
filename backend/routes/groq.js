@@ -955,6 +955,13 @@ async function groqExtractTextHandler(req, res) {
     });
   }
 
+  if (!isApiKeyConfigured()) {
+    return res.status(503).json({
+      error: 'يتطلب هذا المسار إعداد GEMINI_API_KEY لاستخراج النص',
+      errorCode: 'GEMINI_REQUIRED'
+    });
+  }
+
   try {
     const text = await extractTextWithGemini({
       base64Data: cleanedBase64,

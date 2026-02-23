@@ -157,7 +157,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
       const authHeader = options.headers?.Authorization || options.headers?.authorization || '';
 
       expect(authHeader).toContain('gsk_runtime_test_key');
-      expect(payload.model).toBe('llama3-70b-8192');
+      expect(payload.model).toBe('llama-3.3-70b-versatile');
 
       return new Response(
         [
