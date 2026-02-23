@@ -492,6 +492,12 @@
             this.sendBtn = document.querySelector('.chat-send');
             this.messagesContainer = document.querySelector('.chat-messages');
 
+            const externallyManaged = (
+                this.toggle?.dataset?.chatController === 'index-theme'
+                || this.window?.dataset?.chatController === 'index-theme'
+            );
+            if (externallyManaged) return;
+
             if (this.toggle && this.window) this.init();
         }
 
@@ -1416,4 +1422,3 @@
         init();
     }
 })();
-

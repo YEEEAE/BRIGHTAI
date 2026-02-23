@@ -743,6 +743,22 @@
             will-change: transform;
         }
 
+        /* Chat visibility fallback: works with both .active and .show states */
+        #chatWindow {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        #chatWindow.active,
+        #chatWindow.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
         /* === BASE STYLES === */
         *,
         *::before,
@@ -4496,16 +4512,17 @@
     </button>
     <!-- Extras: Chat Widget -->
     <div class="chat-fab-container fixed bottom-8 right-8 z-40 group">
-        <div class="chat-fab chat-widget-toggle w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 cursor-pointer hover:scale-110 transition-transform duration-300 relative"
-            id="chatFab">
+        <button aria-controls="chatWindow" aria-expanded="false" aria-label="فتح محادثة الدعم الفني"
+            class="chat-fab chat-widget-toggle w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 cursor-pointer hover:scale-110 transition-transform duration-300 relative border-none"
+            data-chat-controller="index-theme" id="chatFab" type="button">
             <iconify-icon class="text-2xl group-hover:rotate-12 transition-transform"
                 icon="lucide:message-circle"></iconify-icon>
             <div class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-[#020617] rounded-full text-[10px] font-bold flex items-center justify-center"
                 id="chatBadge">1</div>
-        </div>
+        </button>
     </div>
     <div class="chat-window fixed bottom-24 right-8 left-auto w-96 z-50 bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300 origin-bottom-right"
-        id="chatWindow">
+        aria-hidden="true" data-chat-controller="index-theme" id="chatWindow">
         <div
             class="chat-head bg-gradient-to-r from-indigo-900 to-slate-900 p-4 border-b border-white/5 flex items-center justify-between">
             <div class="flex items-center gap-3">

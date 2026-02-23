@@ -1022,15 +1022,38 @@
         applyResponsiveQuickReplies();
 
         function toggleChat() {
-            chatWindow.classList.toggle('active');
-            if (chatWindow.classList.contains('active')) {
+            const willOpen = !chatWindow.classList.contains('active') && !chatWindow.classList.contains('show');
+            chatWindow.classList.toggle('active', willOpen);
+            chatWindow.classList.toggle('show', willOpen);
+            chatFab.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            chatWindow.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
+            if (willOpen) {
                 if (chatBadge) chatBadge.style.display = 'none';
                 if (chatInput) setTimeout(() => chatInput.focus(), 80);
             }
         }
         chatFab.addEventListener('click', toggleChat);
-        chatClose?.addEventListener('click', () => chatWindow.classList.remove('active'));
-        chatMin?.addEventListener('click', () => chatWindow.classList.remove('active'));
+        chatClose?.addEventListener('click', () => {
+            chatWindow.classList.remove('active', 'show');
+            chatFab.setAttribute('aria-expanded', 'false');
+            chatWindow.setAttribute('aria-hidden', 'true');
+        });
+        chatMin?.addEventListener('click', () => {
+            chatWindow.classList.remove('active', 'show');
+            chatFab.setAttribute('aria-expanded', 'false');
+            chatWindow.setAttribute('aria-hidden', 'true');
+        });
+
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const isOpen = chatWindow.classList.contains('active') || chatWindow.classList.contains('show');
+            if (!isOpen) return;
+            if (chatWindow.contains(target) || chatFab.contains(target)) return;
+            chatWindow.classList.remove('active', 'show');
+            chatFab.setAttribute('aria-expanded', 'false');
+            chatWindow.setAttribute('aria-hidden', 'true');
+        });
 
         function addMsg(text, who = 'user') {
             if (!chatBody || !typing) return null;
