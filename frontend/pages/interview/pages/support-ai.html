@@ -1378,7 +1378,7 @@
         </header>
 
         <!-- Messages Area -->
-        <div class="chat-messages" id="chatMessages">
+        <div class="chat-messages" id="chatMessages" aria-live="polite" aria-atomic="false">
             <!-- Welcome Message -->
             <div class="welcome-message">
                 <div class="welcome-icon">
@@ -1449,6 +1449,24 @@
             // === API Configuration ===
             const API_KEY = 'GEMINI_KEY_REDACTED';
             const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+            const CHAT_TOGGLE_DELAY_MS = 3000;
+
+            if (chatToggle) {
+                chatToggle.style.visibility = 'hidden';
+                chatToggle.style.opacity = '0';
+                chatToggle.style.pointerEvents = 'none';
+
+                setTimeout(() => {
+                    chatToggle.style.visibility = '';
+                    chatToggle.style.opacity = '';
+                    chatToggle.style.pointerEvents = '';
+                }, CHAT_TOGGLE_DELAY_MS);
+            }
+
+            if (chatMessages) {
+                chatMessages.setAttribute('aria-live', 'polite');
+                chatMessages.setAttribute('aria-atomic', 'false');
+            }
 
             // === Chat Toggle Functions ===
             function toggleChat() {
@@ -1534,6 +1552,29 @@
                     sendMessage();
                 }
             });
+
+            function getShortQuickActionLabel(label) {
+                const compact = (label || '').replace(/[؟?!.,،]/g, '').trim();
+                const words = compact.split(/\s+/).filter(Boolean);
+
+                if (window.innerWidth > 768 || words.length <= 3) {
+                    return label;
+                }
+
+                return words.slice(0, 3).join(' ');
+            }
+
+            function applyResponsiveQuickActionLabels() {
+                if (!quickActions) return;
+
+                quickActions.querySelectorAll('.quick-action-btn').forEach((btn) => {
+                    const fullLabel = btn.dataset.fullLabel || btn.dataset.message || btn.textContent.trim();
+                    btn.dataset.fullLabel = fullLabel;
+                    btn.textContent = getShortQuickActionLabel(fullLabel);
+                });
+            }
+
+            applyResponsiveQuickActionLabels();
 
             // === Speech Recognition ===
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1874,6 +1915,8 @@
 
             // === Handle window resize ===
             window.addEventListener('resize', () => {
+                applyResponsiveQuickActionLabels();
+
                 if (window.innerWidth > 480) {
                     chatOverlay.classList.remove('show');
                     document.body.style.overflow = '';

@@ -980,6 +980,42 @@
     const typing = document.getElementById('typing');
 
     if (chatFab && chatWindow && chatClose && chatMin && chatBadge && chatBody && chatInput && chatSend && typing) {
+        const CHAT_FAB_DELAY_MS = 3000;
+
+        chatFab.style.visibility = 'hidden';
+        chatFab.style.opacity = '0';
+        chatFab.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            chatFab.style.visibility = '';
+            chatFab.style.opacity = '';
+            chatFab.style.pointerEvents = '';
+        }, CHAT_FAB_DELAY_MS);
+
+        chatBody.setAttribute('aria-live', 'polite');
+        chatBody.setAttribute('aria-atomic', 'false');
+
+        function getShortQuickReply(label) {
+            const compact = (label || '').replace(/[؟?!.,،]/g, '').trim();
+            const words = compact.split(/\s+/).filter(Boolean);
+
+            if (window.innerWidth > 768 || words.length <= 3) {
+                return label;
+            }
+
+            return words.slice(0, 3).join(' ');
+        }
+
+        function applyResponsiveQuickReplies() {
+            document.querySelectorAll('.qbtn').forEach((btn) => {
+                const fullText = btn.dataset.fullText || btn.dataset.q || btn.textContent.trim();
+                btn.dataset.fullText = fullText;
+                btn.textContent = getShortQuickReply(fullText);
+            });
+        }
+
+        applyResponsiveQuickReplies();
+
         function toggleChat() {
             chatWindow.classList.toggle('show');
             if (chatWindow.classList.contains('show')) {
@@ -1028,6 +1064,8 @@
                 botReply(q);
             });
         });
+
+        window.addEventListener('resize', applyResponsiveQuickReplies);
     }
 
     // Cookies notice (optional)
