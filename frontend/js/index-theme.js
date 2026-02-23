@@ -14,6 +14,284 @@
         }
     };
 
+    function initializeGa4ConversionTracking() {
+        if (window.__brightAiGa4TrackingInitialized) return;
+        window.__brightAiGa4TrackingInitialized = true;
+
+        const trackerVersion = '2026-02-23';
+        const pagePath = window.location.pathname || '/';
+        let chatStartTracked = false;
+        let chatWidgetOpenTracked = false;
+        let technicalPerformanceSent = false;
+        let pendingFlushTimer = null;
+        const pendingEvents = [];
+        const performanceState = {
+            fcp: null,
+            lcp: null,
+            cls: 0,
+        };
+
+        function sanitizePayload(payload) {
+            const clean = {};
+            Object.keys(payload || {}).forEach((key) => {
+                const value = payload[key];
+                if (value !== undefined && value !== null && value !== '') clean[key] = value;
+            });
+            return clean;
+        }
+
+        function flushPendingEvents() {
+            if (typeof window.gtag !== 'function' || pendingEvents.length === 0) return;
+            while (pendingEvents.length) {
+                const queued = pendingEvents.shift();
+                window.gtag('event', queued.eventName, queued.payload);
+            }
+            if (pendingFlushTimer) {
+                clearInterval(pendingFlushTimer);
+                pendingFlushTimer = null;
+            }
+        }
+
+        function schedulePendingFlush() {
+            if (pendingFlushTimer) return;
+            pendingFlushTimer = setInterval(() => {
+                if (typeof window.gtag === 'function') flushPendingEvents();
+            }, 250);
+            setTimeout(() => {
+                if (pendingFlushTimer) {
+                    clearInterval(pendingFlushTimer);
+                    pendingFlushTimer = null;
+                }
+            }, 20000);
+        }
+
+        function trackEvent(eventName, payload) {
+            const eventPayload = sanitizePayload({
+                page_path: pagePath,
+                tracker_version: trackerVersion,
+                ...payload,
+            });
+            try {
+                if (typeof window.gtag === 'function') {
+                    window.gtag('event', eventName, eventPayload);
+                } else {
+                    pendingEvents.push({ eventName, payload: eventPayload });
+                    schedulePendingFlush();
+                }
+            } catch (error) {
+                console.warn('[GA4] Failed to track event:', eventName, error);
+            }
+        }
+
+        function inferFormType(form) {
+            const explicitType = (form.getAttribute('data-form-type') || '').trim().toLowerCase();
+            if (explicitType) return explicitType;
+
+            const hint = [
+                form.id,
+                form.getAttribute('name'),
+                form.getAttribute('class'),
+                form.getAttribute('action'),
+                pagePath,
+            ].join(' ').toLowerCase();
+
+            if (hint.includes('search')) return null;
+            if (hint.includes('contact') || pagePath.includes('/contact/')) return 'contact';
+            if (hint.includes('consult') || pagePath.includes('/consultation/')) return 'consultation';
+            if (hint.includes('demo')) return 'demo';
+            return 'general';
+        }
+
+        function inferChatProfile(target) {
+            const container = target && target.closest
+                ? target.closest('.chat-container, #chatWindow, #chatWidget, .chat-window, .chat-widget')
+                : null;
+            const profile = container && container.dataset ? container.dataset.chatbotProfile : '';
+            if (profile) return profile;
+            if (pagePath.includes('/ai-bots/')) return 'ai-bot-page';
+            return 'default';
+        }
+
+        function findChatInput(target) {
+            const container = target && target.closest
+                ? target.closest('.chat-container, #chatWindow, #chatWidget, .chat-window, .chat-widget')
+                : null;
+            if (container) {
+                return container.querySelector('#chatInput, #userInput, textarea, input[type="text"], input:not([type])');
+            }
+            return document.querySelector('#chatInput, #userInput');
+        }
+
+        function trackChatStart(source, target) {
+            if (chatStartTracked) return;
+            chatStartTracked = true;
+            const profile = inferChatProfile(target || document.body);
+            trackEvent('chat_start', {
+                trigger_source: source,
+                chat_profile: profile,
+            });
+            trackEvent('generate_lead', {
+                lead_channel: 'chat',
+                interaction_type: 'chat_start',
+                chat_profile: profile,
+            });
+        }
+
+        function trackTechnicalPerformance() {
+            if (technicalPerformanceSent) return;
+            technicalPerformanceSent = true;
+
+            const navigation = performance.getEntriesByType('navigation')[0];
+            const payload = {
+                navigation_type: navigation ? navigation.type : 'unknown',
+            };
+
+            if (navigation) {
+                if (navigation.loadEventEnd > 0) payload.page_load_ms = Math.round(navigation.loadEventEnd);
+                if (navigation.domContentLoadedEventEnd > 0) payload.dom_content_loaded_ms = Math.round(navigation.domContentLoadedEventEnd);
+                if (navigation.responseStart > 0) payload.ttfb_ms = Math.round(navigation.responseStart);
+            }
+            if (typeof performanceState.fcp === 'number') payload.fcp_ms = Math.round(performanceState.fcp);
+            if (typeof performanceState.lcp === 'number') payload.lcp_ms = Math.round(performanceState.lcp);
+            if (typeof performanceState.cls === 'number') payload.cls_milli = Math.round(performanceState.cls * 1000);
+
+            trackEvent('technical_performance', payload);
+        }
+
+        document.addEventListener('submit', (event) => {
+            const form = event.target;
+            if (!(form instanceof HTMLFormElement)) return;
+            const formType = inferFormType(form);
+            if (!formType) return;
+
+            const formAction = form.getAttribute('action') || 'inline';
+            const formId = form.id || form.getAttribute('name') || 'anonymous_form';
+            const inputCount = form.querySelectorAll('input, textarea, select').length;
+
+            trackEvent('lead_form_submit', {
+                form_type: formType,
+                form_id: formId,
+                form_action: formAction.slice(0, 120),
+                input_count: inputCount,
+            });
+            trackEvent('generate_lead', {
+                lead_channel: 'form',
+                form_type: formType,
+                form_id: formId,
+            });
+        }, true);
+
+        document.addEventListener('click', (event) => {
+            const link = event.target && event.target.closest ? event.target.closest('a[href]') : null;
+            if (link) {
+                const href = (link.getAttribute('href') || '').trim();
+                if (/wa\.me|whatsapp\.com/i.test(href)) {
+                    trackEvent('whatsapp_click', {
+                        destination_host: 'whatsapp',
+                    });
+                    trackEvent('generate_lead', {
+                        lead_channel: 'whatsapp',
+                        interaction_type: 'click',
+                    });
+                } else if (href.startsWith('mailto:')) {
+                    trackEvent('contact_email_click', {
+                        lead_channel: 'email',
+                    });
+                } else if (href.startsWith('tel:')) {
+                    trackEvent('contact_phone_click', {
+                        lead_channel: 'phone',
+                    });
+                }
+            }
+
+            const chatToggle = event.target && event.target.closest
+                ? event.target.closest('#chatFab, #chatToggle, .chat-fab, [data-chat-open="true"]')
+                : null;
+            if (chatToggle && !chatWidgetOpenTracked) {
+                chatWidgetOpenTracked = true;
+                trackEvent('chat_widget_open', {
+                    chat_profile: inferChatProfile(chatToggle),
+                });
+            }
+
+            const quickAction = event.target && event.target.closest
+                ? event.target.closest('.qbtn, .quick-action-btn, .option-button')
+                : null;
+            if (quickAction) {
+                trackChatStart('quick_action', quickAction);
+            }
+
+            const chatSendTrigger = event.target && event.target.closest
+                ? event.target.closest('#chatSend, #sendButton, .chat-container button[type="submit"], [data-chat-send]')
+                : null;
+            if (chatSendTrigger) {
+                const input = findChatInput(chatSendTrigger);
+                const hasText = input && typeof input.value === 'string' && input.value.trim().length > 0;
+                if (hasText) trackChatStart('message_send_click', chatSendTrigger);
+            }
+        }, true);
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            const target = event.target;
+            if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
+            if (!target.matches('#chatInput, #userInput, .chat-container input, .chat-container textarea')) return;
+            if (!target.value.trim()) return;
+            trackChatStart('message_send_enter', target);
+        }, true);
+
+        if ('PerformanceObserver' in window) {
+            try {
+                const paintObserver = new PerformanceObserver((entryList) => {
+                    entryList.getEntries().forEach((entry) => {
+                        if (entry.name === 'first-contentful-paint') {
+                            performanceState.fcp = entry.startTime;
+                        }
+                    });
+                });
+                paintObserver.observe({ type: 'paint', buffered: true });
+            } catch (error) {
+                console.warn('[GA4] Paint observer unavailable:', error);
+            }
+
+            try {
+                const lcpObserver = new PerformanceObserver((entryList) => {
+                    const entries = entryList.getEntries();
+                    const last = entries[entries.length - 1];
+                    if (last) performanceState.lcp = last.startTime;
+                });
+                lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+            } catch (error) {
+                console.warn('[GA4] LCP observer unavailable:', error);
+            }
+
+            try {
+                const clsObserver = new PerformanceObserver((entryList) => {
+                    entryList.getEntries().forEach((entry) => {
+                        if (!entry.hadRecentInput) {
+                            performanceState.cls += entry.value;
+                        }
+                    });
+                });
+                clsObserver.observe({ type: 'layout-shift', buffered: true });
+            } catch (error) {
+                console.warn('[GA4] CLS observer unavailable:', error);
+            }
+        }
+
+        window.addEventListener('pagehide', trackTechnicalPerformance, { once: true });
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') trackTechnicalPerformance();
+        });
+        window.addEventListener('load', () => {
+            setTimeout(trackTechnicalPerformance, 6000);
+        }, { once: true });
+        window.addEventListener('online', flushPendingEvents);
+        window.addEventListener('focus', flushPendingEvents);
+    }
+
+    initializeGa4ConversionTracking();
+
     // Iconify handles icons without runtime setup
 
     // Loading screen — CLS-Safe approach:

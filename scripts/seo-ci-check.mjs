@@ -1,0 +1,500 @@
+#!/usr/bin/env node
+import { promises as fs } from "fs";
+import path from "path";
+
+const BASE_URL = "https://brightai.site";
+const ROOT = process.cwd();
+const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
+const OG_IMAGE_URL = `${BASE_URL}/frontend/assets/images/Gemini.png`;
+
+const SERVICE_PAGES = [
+  {
+    file: "frontend/pages/smart-automation/index.html",
+    canonical: `${BASE_URL}/frontend/pages/smart-automation/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/smart-automation/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/smart-automation/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/data-analysis/index.html",
+    canonical: `${BASE_URL}/frontend/pages/data-analysis/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/data-analysis/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/data-analysis/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/ai-agent/index.html",
+    canonical: `${BASE_URL}/frontend/pages/ai-agent/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/ai-agent/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/ai-agent/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/smart-medical-archive/index.html",
+    canonical: `${BASE_URL}/frontend/pages/smart-medical-archive/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/smart-medical-archive/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/smart-medical-archive/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/ai-workflows/index.html",
+    canonical: `${BASE_URL}/frontend/pages/ai-workflows/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/ai-workflows/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/ai-workflows/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/consultation/index.html",
+    canonical: `${BASE_URL}/frontend/pages/consultation/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/consultation/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/consultation/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/machine/index.html",
+    canonical: `${BASE_URL}/frontend/pages/machine/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/machine/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/machine/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/ai-scolecs/index.html",
+    canonical: `${BASE_URL}/frontend/pages/ai-scolecs/index.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/ai-scolecs/index.html`,
+      "x-default": `${BASE_URL}/frontend/pages/ai-scolecs/index.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/services-overview.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/services-overview-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/services-overview-en.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/services-overview-en.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/services-overview-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/consultation.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/consultation.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/consultation.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/consultation-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/consultation.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/consultation-en.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/consultation-en.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/consultation.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/consultation-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/consultation.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/ai-agent.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/ai-agent-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/ai-agent-en.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/ai-agent-en.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/ai-agent-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/smart-automation.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/smart-automation-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/smart-automation-en.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/smart-automation-en.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/smart-automation-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/data-analysis.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/data-analysis-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+    },
+  },
+  {
+    file: "frontend/pages/docs/data-analysis-en.html",
+    canonical: `${BASE_URL}/frontend/pages/docs/data-analysis-en.html`,
+    hreflang: {
+      "ar-SA": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+      "en-SA": `${BASE_URL}/frontend/pages/docs/data-analysis-en.html`,
+      "x-default": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+    },
+  },
+];
+
+const SITEMAP_BANNED_PATTERNS = [
+  /\/frontend\/pages\/interview\//,
+  /\/frontend\/pages\/botAI\//,
+  /\.doc\.html$/,
+  /%20/,
+  /_/,
+];
+
+function countMatches(input, regex) {
+  const matches = input.match(regex);
+  return matches ? matches.length : 0;
+}
+
+function extractLinksByRel(html, rel) {
+  const links = [];
+  const regex = /<link\b[^>]*>/gi;
+  let match;
+  while ((match = regex.exec(html))) {
+    const tag = match[0];
+    const relMatch = tag.match(/\brel\s*=\s*["']([^"']+)["']/i);
+    if (!relMatch) continue;
+    if (relMatch[1].toLowerCase() !== rel.toLowerCase()) continue;
+    const hrefMatch = tag.match(/\bhref\s*=\s*["']([^"']+)["']/i);
+    if (!hrefMatch) continue;
+    const hreflangMatch = tag.match(/\bhreflang\s*=\s*["']([^"']+)["']/i);
+    links.push({ href: hrefMatch[1], hreflang: hreflangMatch ? hreflangMatch[1] : null, tag });
+  }
+  return links;
+}
+
+function extractMetaValues(html, key, attr = "name") {
+  const values = [];
+  const regex = /<meta\b[^>]*>/gi;
+  let match;
+  while ((match = regex.exec(html))) {
+    const tag = match[0];
+    const keyMatch = tag.match(new RegExp(`\\b${attr}\\s*=\\s*["']([^"']+)["']`, "i"));
+    if (!keyMatch) continue;
+    if (keyMatch[1].toLowerCase() !== key.toLowerCase()) continue;
+    const contentMatch = tag.match(/\bcontent\s*=\s*["']([^"']*)["']/i);
+    values.push(contentMatch ? contentMatch[1] : "");
+  }
+  return values;
+}
+
+function extractJsonLdBlocks(html) {
+  const blocks = [];
+  const regex = /<script\b[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = regex.exec(html))) {
+    blocks.push(match[1].trim());
+  }
+  return blocks;
+}
+
+function collectTypesFromJsonLd(node, out = new Set()) {
+  if (Array.isArray(node)) {
+    for (const item of node) collectTypesFromJsonLd(item, out);
+    return out;
+  }
+
+  if (node && typeof node === "object") {
+    if (Object.hasOwn(node, "@type")) {
+      const t = node["@type"];
+      if (Array.isArray(t)) {
+        for (const item of t) {
+          if (typeof item === "string") out.add(item);
+        }
+      } else if (typeof t === "string") {
+        out.add(t);
+      }
+    }
+
+    for (const value of Object.values(node)) {
+      collectTypesFromJsonLd(value, out);
+    }
+  }
+
+  return out;
+}
+
+function decodePathFromLoc(loc) {
+  try {
+    const url = new URL(loc);
+    return decodeURIComponent(url.pathname);
+  } catch {
+    return null;
+  }
+}
+
+async function readFileSafe(file) {
+  try {
+    const content = await fs.readFile(path.join(ROOT, file), "utf8");
+    return { ok: true, content };
+  } catch (error) {
+    return { ok: false, error };
+  }
+}
+
+async function checkServicePage(page) {
+  const result = {
+    file: page.file,
+    errors: [],
+    warnings: [],
+  };
+
+  const fileRead = await readFileSafe(page.file);
+  if (!fileRead.ok) {
+    result.errors.push("File is missing or unreadable.");
+    return result;
+  }
+
+  const html = fileRead.content;
+
+  const canonicalLinks = extractLinksByRel(html, "canonical");
+  if (canonicalLinks.length !== 1) {
+    result.errors.push(`Expected 1 canonical link, found ${canonicalLinks.length}.`);
+  } else if (canonicalLinks[0].href !== page.canonical) {
+    result.errors.push(
+      `Canonical mismatch. Expected '${page.canonical}', found '${canonicalLinks[0].href}'.`
+    );
+  }
+
+  const alternateLinks = extractLinksByRel(html, "alternate").filter((x) => x.hreflang);
+  const expectedHreflangs = page.hreflang;
+  const expectedKeys = Object.keys(expectedHreflangs);
+
+  if (alternateLinks.length !== expectedKeys.length) {
+    result.errors.push(
+      `Expected ${expectedKeys.length} hreflang links, found ${alternateLinks.length}.`
+    );
+  }
+
+  for (const key of expectedKeys) {
+    const hit = alternateLinks.filter((x) => x.hreflang === key);
+    if (hit.length !== 1) {
+      result.errors.push(`Expected exactly one hreflang '${key}', found ${hit.length}.`);
+      continue;
+    }
+    if (hit[0].href !== expectedHreflangs[key]) {
+      result.errors.push(
+        `hreflang '${key}' mismatch. Expected '${expectedHreflangs[key]}', found '${hit[0].href}'.`
+      );
+    }
+  }
+
+  const extraHreflangs = alternateLinks
+    .map((x) => x.hreflang)
+    .filter((x) => !Object.hasOwn(expectedHreflangs, x));
+  if (extraHreflangs.length > 0) {
+    result.errors.push(`Unexpected hreflang values: ${extraHreflangs.join(", ")}.`);
+  }
+
+  const ogImageValues = extractMetaValues(html, "og:image", "property");
+  if (ogImageValues.length !== 1) {
+    result.errors.push(`Expected 1 og:image meta, found ${ogImageValues.length}.`);
+  } else if (ogImageValues[0] !== OG_IMAGE_URL) {
+    result.errors.push(
+      `og:image mismatch. Expected '${OG_IMAGE_URL}', found '${ogImageValues[0]}'.`
+    );
+  }
+
+  const ogImageAltValues = extractMetaValues(html, "og:image:alt", "property");
+  if (ogImageAltValues.length !== 1) {
+    result.errors.push(`Expected 1 og:image:alt meta, found ${ogImageAltValues.length}.`);
+  } else if (!ogImageAltValues[0].trim()) {
+    result.errors.push("og:image:alt is empty.");
+  }
+
+  const twitterImageValues = extractMetaValues(html, "twitter:image", "name");
+  if (twitterImageValues.length !== 1) {
+    result.errors.push(`Expected 1 twitter:image meta, found ${twitterImageValues.length}.`);
+  } else if (twitterImageValues[0] !== OG_IMAGE_URL) {
+    result.errors.push(
+      `twitter:image mismatch. Expected '${OG_IMAGE_URL}', found '${twitterImageValues[0]}'.`
+    );
+  }
+
+  const twitterImageAltValues = extractMetaValues(html, "twitter:image:alt", "name");
+  if (twitterImageAltValues.length !== 1) {
+    result.errors.push(
+      `Expected 1 twitter:image:alt meta, found ${twitterImageAltValues.length}.`
+    );
+  } else if (!twitterImageAltValues[0].trim()) {
+    result.errors.push("twitter:image:alt is empty.");
+  }
+
+  const jsonLdBlocks = extractJsonLdBlocks(html);
+  if (jsonLdBlocks.length === 0) {
+    result.errors.push("No JSON-LD blocks found.");
+  }
+
+  const allTypes = new Set();
+  for (const [index, block] of jsonLdBlocks.entries()) {
+    try {
+      const parsed = JSON.parse(block);
+      collectTypesFromJsonLd(parsed, allTypes);
+    } catch (error) {
+      result.errors.push(`Invalid JSON-LD block at index ${index}: ${error.message}`);
+    }
+  }
+
+  if (!allTypes.has("BreadcrumbList")) {
+    result.errors.push("Missing BreadcrumbList schema.");
+  }
+
+  if (!allTypes.has("LocalBusiness")) {
+    result.errors.push("Missing LocalBusiness schema.");
+  }
+
+  return result;
+}
+
+async function checkSitemap() {
+  const result = {
+    errors: [],
+    warnings: [],
+    summary: {
+      urls: 0,
+    },
+  };
+
+  let xml;
+  try {
+    xml = await fs.readFile(SITEMAP_PATH, "utf8");
+  } catch (error) {
+    result.errors.push(`sitemap.xml is missing or unreadable: ${error.message}`);
+    return result;
+  }
+
+  const locMatches = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1].trim());
+  result.summary.urls = locMatches.length;
+
+  if (locMatches.length === 0) {
+    result.errors.push("sitemap.xml contains no <loc> entries.");
+    return result;
+  }
+
+  const seen = new Set();
+  for (const loc of locMatches) {
+    if (!loc.startsWith(`${BASE_URL}/`) && loc !== BASE_URL + "/") {
+      result.errors.push(`Sitemap URL has unexpected host/base: ${loc}`);
+      continue;
+    }
+
+    if (seen.has(loc)) {
+      result.errors.push(`Duplicate URL in sitemap: ${loc}`);
+      continue;
+    }
+    seen.add(loc);
+
+    for (const pattern of SITEMAP_BANNED_PATTERNS) {
+      if (pattern.test(loc)) {
+        result.errors.push(`Banned URL pattern in sitemap: ${loc}`);
+        break;
+      }
+    }
+
+    const decodedPath = decodePathFromLoc(loc);
+    if (!decodedPath) {
+      result.errors.push(`Invalid URL in sitemap: ${loc}`);
+      continue;
+    }
+
+    if (decodedPath === "/") {
+      continue;
+    }
+
+    const localPath = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
+    try {
+      await fs.access(path.join(ROOT, localPath));
+    } catch {
+      result.errors.push(`Sitemap points to a missing file: ${loc} -> ${localPath}`);
+    }
+  }
+
+  for (const page of SERVICE_PAGES) {
+    if (!seen.has(page.canonical)) {
+      result.errors.push(`Missing service page in sitemap: ${page.canonical}`);
+    }
+  }
+
+  return result;
+}
+
+async function main() {
+  const pageResults = [];
+  for (const page of SERVICE_PAGES) {
+    pageResults.push(await checkServicePage(page));
+  }
+
+  const sitemapResult = await checkSitemap();
+
+  const pageErrors = pageResults.flatMap((r) =>
+    r.errors.map((message) => `[${r.file}] ${message}`)
+  );
+  const pageWarnings = pageResults.flatMap((r) =>
+    r.warnings.map((message) => `[${r.file}] ${message}`)
+  );
+
+  const errors = [...pageErrors, ...sitemapResult.errors.map((x) => `[sitemap] ${x}`)];
+  const warnings = [...pageWarnings, ...sitemapResult.warnings.map((x) => `[sitemap] ${x}`)];
+
+  const passedPages = pageResults.filter((r) => r.errors.length === 0).length;
+
+  console.log(`SEO CI CHECK`);
+  console.log(`- Pages checked: ${pageResults.length}`);
+  console.log(`- Pages passed: ${passedPages}`);
+  console.log(`- Sitemap URLs: ${sitemapResult.summary.urls}`);
+  console.log(`- Errors: ${errors.length}`);
+  console.log(`- Warnings: ${warnings.length}`);
+
+  if (warnings.length > 0) {
+    console.log("\nWarnings:");
+    for (const warning of warnings) {
+      console.log(`  - ${warning}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    console.error("\nErrors:");
+    for (const error of errors) {
+      console.error(`  - ${error}`);
+    }
+    process.exit(1);
+  }
+
+  console.log("\nSEO CI check passed.");
+}
+
+main().catch((error) => {
+  console.error(`Fatal error: ${error?.stack || error}`);
+  process.exit(1);
+});

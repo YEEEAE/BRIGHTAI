@@ -17,6 +17,7 @@
     "build": "npm run performance:budget",
     "performance:budget": "node scripts/check-performance-budget.js",
     "sitemap:all": "node scripts/generate-sitemap-all-pages.mjs",
+    "seo:check": "node scripts/seo-ci-check.mjs",
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",

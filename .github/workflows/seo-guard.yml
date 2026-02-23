@@ -1,0 +1,44 @@
+name: SEO Guard
+
+on:
+  pull_request:
+    paths:
+      - "frontend/pages/**/*.html"
+      - "sitemap.xml"
+      - "scripts/generate-sitemap-all-pages.mjs"
+      - "scripts/seo-ci-check.mjs"
+      - "package.json"
+      - "package-lock.json"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "frontend/pages/**/*.html"
+      - "sitemap.xml"
+      - "scripts/generate-sitemap-all-pages.mjs"
+      - "scripts/seo-ci-check.mjs"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  seo-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate sitemap
+        run: npm run sitemap:all
+
+      - name: Run SEO guard checks
+        run: npm run seo:check
