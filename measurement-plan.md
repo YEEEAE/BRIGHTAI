@@ -1,27 +1,27 @@
-# Measurement Plan — Production Chatbot via Groq Gateway
+# Measurement Plan — Service SEO Local Market Upgrade
 **Deploy Date:** 2026-02-23
 
 ## KPI Target
-- KPI: `chatbot_stream_success_rate`
-- Baseline: غير موثّق حالياً (يُجمع خلال أول 7 أيام تشغيل)
-- Goal: >= 98% إكمال جلسات البث بدون خطأ
+- KPI: `service_pages_organic_click_through_rate`
+- Baseline: يُسحب من Google Search Console لآخر 28 يوم قبل النشر
+- Goal: +15% خلال 30 يوم على الصفحات الخدمية المستهدفة
 
 ## Tracking Event
-- Event Name: `chatbot_stream_completed`
-- Trigger: اكتمال SSE مع `[DONE]` بدون `errorCode`
-- Payload: `sessionId`, `botProfile`, `outputType`, `latencyMs`, `tokenCountApprox`, `retryUsed`
+- Event Name: `service_page_engagement`
+- Trigger: عند وصول المستخدم إلى 75% Scroll أو الضغط على CTA أساسي (طلب استشارة/تواصل)
+- Payload: `page_path`, `page_locale`, `source_medium`, `cta_type`, `scroll_depth`, `session_id_hash`
 
 ## Success Criteria
-- Minimum Improvement: خفض معدل فشل الطلبات >= 60% مقابل الإصدار السابق (الذي كان يعتمد مفاتيح مكشوفة/اتصال مباشر)
-- Evaluation Window: 14 يوم
-- Rollback Trigger: انخفاض `chatbot_stream_success_rate` أقل من 95% لمدة 24 ساعة أو ارتفاع `STREAM_TIMEOUT` فوق 8%
+- Minimum Improvement: +10% Organic Clicks و +8% Leads من الصفحات الخدمية
+- Evaluation Window: 30 يوم
+- Rollback Trigger: هبوط Organic Clicks أكثر من 12% على صفحتين خدميتين رئيسيتين لمدة 14 يوم متواصل
 
-## Additional Events
-- `chatbot_stream_failed`: عند ظهور `errorCode` (مثل `STREAM_TIMEOUT` أو `RATE_LIMIT_EXCEEDED`)
-- `chatbot_retry_clicked`: عند ضغط المستخدم على زر إعادة المحاولة
-- `chatbot_request_started`: بداية طلب جديد مع profile ونوع المخرجات
+## Additional Measurement
+- `service_page_contact_submit`: قياس تحويل الزيارات العضوية إلى طلبات تواصل
+- `service_page_schema_valid`: نتيجة فحص صلاحية schema بعد كل نشر
+- `sitemap_indexed_urls_delta`: نسبة فهرسة روابط sitemap المستهدفة أسبوعيًا
 
 ## Validation Method
-- المنصة: GA4 أو endpoint analytics داخلي
-- تحقق البيانات: مقارنة daily event totals مع server logs على نفس الفترة
-- جودة البيانات: مطابقة `sessionId` المجهول (بدون محتوى محادثة) للتحقق من الاتساق فقط
+- Platforms: Google Search Console + GA4
+- Validation: مطابقة اتجاهات `page_path` بين GSC وGA4 أسبوعيًا
+- Data Quality: استبعاد traffic الداخلي وقياس القيم على قناة `organic` فقط

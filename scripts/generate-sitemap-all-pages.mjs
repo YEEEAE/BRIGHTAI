@@ -9,11 +9,38 @@ const OUTPUT = path.join(ROOT, "sitemap.xml");
 const STATIC_FILES = [
   "index.html",
   "docs.html",
-  "brightai-platform/build/index.html",
 ];
 
 const HTML_SCAN_DIRS = ["frontend/pages"];
 const EXCLUDE_FILES = new Set(["404.html", "500.html"]);
+const LOW_QUALITY_BLOGGER_FILES = new Set([
+  "agint-bblog.html",
+  "ai.html",
+  "analysy.html",
+  "auto.html",
+  "digital.html",
+  "gov.html",
+  "atou-job.html",
+  "cloude-opus-4.6.html",
+  "production-line-2.html",
+]);
+
+function isLowQualityPath(relPath) {
+  const normalized = relPath.replace(/\\/g, "/");
+
+  if (normalized.startsWith("frontend/pages/interview/")) return true;
+  if (normalized.startsWith("frontend/pages/botAI/")) return true;
+
+  if (normalized.startsWith("frontend/pages/blogger/")) {
+    const base = path.basename(normalized);
+    if (/\s/.test(base)) return true;
+    if (base.includes("_")) return true;
+    if (/\.doc\.html$/i.test(base)) return true;
+    if (LOW_QUALITY_BLOGGER_FILES.has(base)) return true;
+  }
+
+  return false;
+}
 
 function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
@@ -38,18 +65,7 @@ function fileToUrlPath(filePath) {
   const normalized = filePath.replace(/\\/g, "/");
 
   if (normalized === "index.html") return "/";
-  if (normalized === "docs.html") return "/docs";
-  if (normalized === "brightai-platform/build/index.html") {
-    return "/brightai-platform/";
-  }
-
-  if (normalized.endsWith("/index.html")) {
-    return `/${normalized.slice(0, -"/index.html".length)}/`;
-  }
-
-  if (normalized.endsWith(".html")) {
-    return `/${normalized.slice(0, -".html".length)}`;
-  }
+  if (normalized.endsWith(".html")) return `/${normalized}`;
 
   return null;
 }
@@ -108,6 +124,7 @@ async function buildEntries() {
   for (const fullPath of files) {
     const relPath = path.relative(ROOT, fullPath).replace(/\\/g, "/");
     if (EXCLUDE_FILES.has(path.basename(relPath))) continue;
+    if (isLowQualityPath(relPath)) continue;
 
     const rawPath = fileToUrlPath(relPath);
     if (!rawPath) continue;

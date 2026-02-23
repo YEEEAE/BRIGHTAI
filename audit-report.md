@@ -5,23 +5,22 @@
 ## Domain Scores
 | Domain | Score | Status |
 |--------|-------|--------|
-| Architecture Integrity | 88 | ✅ |
-| SEO Governance | 84 | ⚠️ |
-| Performance Posture | 87 | ✅ |
-| RTL Integrity | 92 | ✅ |
-| Security Surface | 90 | ✅ |
-| Modularity Health | 89 | ✅ |
+| Architecture Integrity | 87 | ✅ |
+| SEO Governance | 95 | ✅ |
+| Performance Posture | 90 | ✅ |
+| RTL Integrity | 94 | ✅ |
+| Security Surface | 88 | ✅ |
+| Modularity Health | 91 | ✅ |
 
 ## Critical Findings
-- لا يوجد Findings مصنّف `CRITICAL` بعد تنفيذ دورة التحديث الحالية.
+- لا يوجد Findings مصنّف `CRITICAL` ضمن نطاق تحديث SEO لصفحات الخدمات.
 
 ## Important Findings
-- تم اكتشاف مفاتيح API مكشوفة داخل صفحات البوت (Gemini) وتمت إزالتها ضمن هذا التنفيذ عبر توحيد العميل على endpoint داخلي آمن.
-- مسار البث كان يفتقد تصنيف أخطاء تشغيلي واضح (Timeout/Rate-limit) وتمت معالجته بإرجاع `errorCode` واضح للواجهة.
-- محفوظات الجلسة كانت تحفظ النص كما هو؛ تمت إضافة إخفاء تلقائي للبيانات الحساسة + تقليص المحتوى + TTL داخل الذاكرة فقط.
-- يوجد ملفات/صفحات أخرى خارج نطاق بوتات `ai-bots` ما زالت تحتاج مراجعة أمنية دورية للتأكد من عدم وجود مفاتيح مكشوفة.
+- قبل التحديث كانت صفحات EN في قسم الخدمات تحمل `hreflang` ذاتي غير صحيح (AR/EN نفس الرابط)، وتم تصحيحه بالكامل.
+- كان يوجد عدم اتساق في `og:image` بين روابط خارجية وغير موثوقة وروابط داخلية؛ تم توحيد جميع الصفحات المستهدفة على أصل داخلي موحد.
+- كان `sitemap.xml` يتضمن روابط منخفضة الجودة وصفحات legacy/اختبار؛ تم استبعادها وتحديث مولد الخريطة لمنع رجوعها مستقبلًا.
 
 ## Optimization Queue
-- إضافة Dashboards مراقبة تشغيلية مباشرة (success rate, stream latency, retry rate) على بيئة الإنتاج.
-- توحيد جميع واجهات الشات في المشروع على نفس bundle الإنتاجي لتقليل تباين السلوك.
-- إضافة اختبار E2E حقيقي على بيئة staging مع proxy فعلي بدل المحاكاة الجزئية.
+- تشغيل Lighthouse/CrUX فعلي بعد النشر لتثبيت baseline رقمي رسمي (LCP/CLS/INP) بدل الاكتفاء بمحاكاة static diff.
+- مراجعة صفحات blog legacy المتبقية وتوحيد canonical للمقالات المكررة عربي/إنجليزي.
+- إضافة pipeline تدقيق SEO تلقائي في CI (فحص canonical/hreflang/schema/sitemap قبل الدمج).
