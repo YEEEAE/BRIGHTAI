@@ -978,7 +978,7 @@
     const chatInput = document.getElementById('chatInput');
     const chatSend = document.getElementById('chatSend');
     const typing = document.getElementById('typing');
-    const chatApiEndpoint = '/api/groq/stream';
+    const chatApiEndpoint = '/api/ai/chat';
 
     if (chatFab && chatWindow) {
         const CHAT_FAB_DELAY_MS = 3000;
@@ -1073,7 +1073,7 @@
             addMsg(ans, 'bot');
         }
 
-        async function streamGroqReply(question) {
+        async function fetchGeminiReply(question) {
             if (!chatBody || !typing || !chatSend) {
                 fallbackReply(question);
                 return;
@@ -1089,60 +1089,27 @@
                     },
                     body: JSON.stringify({
                         message: question,
-                        outputType: 'دعم العملاء',
                         sessionId: chatSessionId
                     })
                 });
 
-                if (!response.ok || !response.body) {
-                    throw new Error(`Groq stream failed: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`Gemini request failed: ${response.status}`);
                 }
 
-                const botMsg = addMsg('', 'bot');
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder('utf-8');
-                let buffer = '';
-                let gotToken = false;
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split('\n');
-                    buffer = lines.pop() || '';
-
-                    for (const line of lines) {
-                        const payload = line.replace(/^data:\s*/, '').trim();
-                        if (!payload) continue;
-                        if (payload === '[DONE]') continue;
-
-                        try {
-                            const parsed = JSON.parse(payload);
-                            if (parsed?.sessionId) {
-                                chatSessionId = parsed.sessionId;
-                            }
-                            if (parsed?.error) {
-                                throw new Error(parsed.error);
-                            }
-
-                            const token = parsed?.token || parsed?.choices?.[0]?.delta?.content || '';
-                            if (token) {
-                                gotToken = true;
-                                botMsg.textContent += token;
-                                chatBody.scrollTop = chatBody.scrollHeight;
-                            }
-                        } catch (parseError) {
-                            continue;
-                        }
-                    }
+                const payload = await response.json();
+                if (payload?.sessionId) {
+                    chatSessionId = payload.sessionId;
                 }
 
-                if (botMsg && !gotToken && !botMsg.textContent.trim()) {
-                    botMsg.textContent = 'تم استلام الطلب بدون محتوى قابل للعرض.';
+                const reply = typeof payload?.reply === 'string' ? payload.reply.trim() : '';
+                if (!reply) {
+                    throw new Error('Gemini response is empty');
                 }
+
+                addMsg(reply, 'bot');
             } catch (error) {
-                console.error('Groq support stream error:', error);
+                console.error('Gemini support request error:', error);
                 fallbackReply(question);
             } finally {
                 typing.style.display = 'none';
@@ -1158,7 +1125,7 @@
             chatInput.value = '';
             isSending = true;
             chatSend.disabled = true;
-            await streamGroqReply(v);
+            await fetchGeminiReply(v);
             isSending = false;
             chatSend.disabled = false;
         });
@@ -1172,7 +1139,7 @@
                 addMsg(q, 'user');
                 isSending = true;
                 if (chatSend) chatSend.disabled = true;
-                await streamGroqReply(q);
+                await fetchGeminiReply(q);
                 isSending = false;
                 if (chatSend) chatSend.disabled = false;
             });
