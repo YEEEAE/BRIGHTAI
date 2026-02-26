@@ -15,7 +15,7 @@ npm run sitemap:all
 npm run seo:check
 
 
-
+ 
 سكربت فحص SEO CI:
 
 seo-ci-check.mjs (line 1)
