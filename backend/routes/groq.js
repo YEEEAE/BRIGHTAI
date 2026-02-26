@@ -854,10 +854,12 @@ function stripDataPrefix(base64Data = '') {
 async function groqStreamHandler(req, res, rawRes) {
   const jsonRes = res;
   const streamRes = rawRes || res;
-  const groqApiKey = requireGroqApiKey(req, jsonRes);
+  const groqApiKey = resolveGroqApiKey(req);
   const groqModel = resolveGroqModel(req);
+  const useGeminiStream = isApiKeyConfigured();
 
-  if (!groqApiKey) {
+  if (!useGeminiStream && !groqApiKey) {
+    requireGroqApiKey(req, jsonRes);
     return;
   }
 
@@ -909,45 +911,68 @@ async function groqStreamHandler(req, res, rawRes) {
   let assistantText = '';
 
   try {
-    const groqResponse = await callGroq({
-      messages,
-      temperature: 0.6,
-      maxTokens: 900,
-      apiKey: groqApiKey,
-      model: groqModel,
-      stream: true,
-      signal: controller.signal
-    });
+    if (useGeminiStream) {
+      const prompt = messages
+        .map((item) => {
+          const role = item?.role || 'user';
+          const content = Array.isArray(item?.content)
+            ? JSON.stringify(item.content)
+            : String(item?.content || '');
+          return `${role.toUpperCase()}:\n${content}`;
+        })
+        .join('\n\n');
 
-    const reader = groqResponse.body.getReader();
-    const decoder = new TextDecoder('utf-8');
-    let buffer = '';
+      assistantText = await callGeminiText({
+        prompt,
+        maxOutputTokens: 900,
+        temperature: 0.6
+      });
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
+      if (assistantText) {
+        streamRes.write(`data: ${JSON.stringify({ token: assistantText })}\n\n`);
+      }
+      streamRes.write('data: [DONE]\n\n');
+    } else {
+      const groqResponse = await callGroq({
+        messages,
+        temperature: 0.6,
+        maxTokens: 900,
+        apiKey: groqApiKey,
+        model: groqModel,
+        stream: true,
+        signal: controller.signal
+      });
 
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed.startsWith('data:')) continue;
-        const payload = trimmed.replace(/^data:\s*/, '');
-        if (payload === '[DONE]') {
-          streamRes.write('data: [DONE]\n\n');
-          break;
-        }
-        if (!payload) continue;
-        try {
-          const parsed = JSON.parse(payload);
-          const delta = parsed?.choices?.[0]?.delta?.content;
-          if (delta) {
-            assistantText += delta;
-            streamRes.write(`data: ${JSON.stringify({ token: delta })}\n\n`);
+      const reader = groqResponse.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith('data:')) continue;
+          const payload = trimmed.replace(/^data:\s*/, '');
+          if (payload === '[DONE]') {
+            streamRes.write('data: [DONE]\n\n');
+            break;
           }
-        } catch (error) {
-          continue;
+          if (!payload) continue;
+          try {
+            const parsed = JSON.parse(payload);
+            const delta = parsed?.choices?.[0]?.delta?.content;
+            if (delta) {
+              assistantText += delta;
+              streamRes.write(`data: ${JSON.stringify({ token: delta })}\n\n`);
+            }
+          } catch (error) {
+            continue;
+          }
         }
       }
     }
