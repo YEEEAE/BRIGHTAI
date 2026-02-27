@@ -8,3 +8,9 @@ node_bundler = "esbuild"
 
 [context.production.environment]
 NODE_ENV = "production"
+
+[[redirects]]
+from = "/api/*"
+to = "/.netlify/functions/[...all]"
+status = 200
+force = true
