@@ -35,6 +35,7 @@ exports.handler = async (event) => {
       headers: {}
     };
     let done = false;
+    let chunks = '';
 
     const res = {
       headersSent: false,
@@ -46,12 +47,18 @@ exports.handler = async (event) => {
       setHeader(name, value) {
         statusAndHeaders.headers[name] = value;
       },
+      write(payload = '') {
+        if (done) return;
+        const chunk = Buffer.isBuffer(payload) ? payload.toString('utf8') : String(payload || '');
+        chunks += chunk;
+      },
       end(payload = '') {
         if (done) return;
         done = true;
-        const body = Buffer.isBuffer(payload)
+        const tail = Buffer.isBuffer(payload)
           ? payload.toString('utf8')
           : String(payload || '');
+        const body = chunks + tail;
         resolve({
           statusCode: statusAndHeaders.statusCode,
           headers: statusAndHeaders.headers,

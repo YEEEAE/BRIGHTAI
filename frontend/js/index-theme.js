@@ -980,6 +980,7 @@
     const chatSend = document.getElementById('chatSend');
     const typing = document.getElementById('typing');
     const chatApiEndpoint = '/api/gemini/chat';
+    const chatStreamApiEndpoint = '/api/gemini/chat/stream';
     const CHAT_REQUEST_TIMEOUT_MS = 12000;
     const CHAT_HISTORY_STORAGE_KEY = 'brightai.chat.history.v1';
     const CHAT_SESSION_STORAGE_KEY = 'brightai.chat.session.v1';
@@ -1321,6 +1322,220 @@
             return 'تعذر إكمال الطلب حالياً. نقدر نخدمك مباشرة عبر واتساب أو صفحة التواصل.';
         }
 
+        function createStreamingBotBubble() {
+            if (!chatBody || !typing) return null;
+            const bubble = document.createElement('div');
+            bubble.className = 'msg bot';
+            bubble.textContent = '';
+            chatBody.insertBefore(bubble, typing);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            return bubble;
+        }
+
+        async function requestStreamedReply(normalized) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS);
+            let response;
+
+            try {
+                response = await fetch(chatStreamApiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: normalized,
+                        sessionId: chatSessionId
+                    }),
+                    signal: controller.signal
+                });
+            } finally {
+                clearTimeout(timeoutId);
+            }
+
+            if (!response.ok) {
+                let payload = {};
+                try {
+                    payload = await response.json();
+                } catch (_error) {
+                    payload = {};
+                }
+                const requestError = new Error(payload?.error || `HTTP ${response.status}`);
+                requestError.statusCode = response.status;
+                requestError.errorCode = payload?.errorCode;
+                throw requestError;
+            }
+
+            const reader = response.body?.getReader?.();
+            if (!reader) {
+                const unsupportedError = new Error('stream_reader_not_supported');
+                unsupportedError.statusCode = 502;
+                throw unsupportedError;
+            }
+
+            const decoder = new TextDecoder('utf-8');
+            let buffer = '';
+            let finished = false;
+            let finalSuggestions = [];
+            let replyText = '';
+            let bubble = null;
+            const withPartialReply = (error) => {
+                if (!error) return error;
+                const partial = String(replyText || '').trim();
+                if (partial) error.partialReply = partial;
+                return error;
+            };
+
+            const ensureBubble = () => {
+                if (bubble) return bubble;
+                bubble = createStreamingBotBubble();
+                return bubble;
+            };
+
+            const processSseChunk = (chunk) => {
+                const lines = chunk.split('\n');
+                for (const rawLine of lines) {
+                    const line = rawLine.trim();
+                    if (!line.startsWith('data:')) continue;
+                    const payload = line.replace(/^data:\s*/, '');
+                    if (!payload) continue;
+                    if (payload === '[DONE]') {
+                        finished = true;
+                        continue;
+                    }
+
+                    let parsed;
+                    try {
+                        parsed = JSON.parse(payload);
+                    } catch (_error) {
+                        continue;
+                    }
+
+                    if (parsed?.type === 'session' && parsed?.sessionId) {
+                        chatSessionId = String(parsed.sessionId);
+                        continue;
+                    }
+
+                    if (parsed?.type === 'token') {
+                        const token = String(parsed?.token || '');
+                        if (!token) continue;
+                        const node = ensureBubble();
+                        if (!node) continue;
+                        hideTyping();
+                        replyText += token;
+                        node.textContent = replyText;
+                        chatBody.scrollTop = chatBody.scrollHeight;
+                        continue;
+                    }
+
+                    if (parsed?.type === 'done') {
+                        if (parsed?.sessionId) chatSessionId = String(parsed.sessionId);
+                        if (Array.isArray(parsed?.suggestions)) {
+                            finalSuggestions = parsed.suggestions;
+                        }
+                        const finalReply = String(parsed?.reply || '').trim();
+                        if (finalReply && !replyText.trim()) {
+                            const node = ensureBubble();
+                            if (node) {
+                                hideTyping();
+                                replyText = finalReply;
+                                node.textContent = replyText;
+                            }
+                        }
+                        finished = true;
+                        continue;
+                    }
+
+                    if (parsed?.type === 'error' || parsed?.error) {
+                        const streamError = new Error(String(parsed?.error || 'stream_error'));
+                        streamError.statusCode = Number(parsed?.statusCode || 500);
+                        streamError.errorCode = parsed?.errorCode || 'STREAM_ERROR';
+                        throw withPartialReply(streamError);
+                    }
+                }
+            };
+
+            while (!finished) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const chunks = buffer.split('\n\n');
+                buffer = chunks.pop() || '';
+                chunks.forEach(processSseChunk);
+            }
+
+            if (buffer.trim()) {
+                processSseChunk(buffer);
+            }
+
+            const normalizedReply = String(replyText || '').trim();
+            if (!normalizedReply) {
+                const emptyReplyError = new Error('empty_reply');
+                emptyReplyError.statusCode = 502;
+                throw withPartialReply(emptyReplyError);
+            }
+
+            recordHistory(normalizedReply, 'bot');
+            saveChatState();
+
+            return {
+                reply: normalizedReply,
+                suggestions: finalSuggestions
+            };
+        }
+
+        async function requestClassicReply(normalized) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS);
+            let response;
+
+            try {
+                response = await fetch(chatApiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: normalized,
+                        sessionId: chatSessionId
+                    }),
+                    signal: controller.signal
+                });
+            } finally {
+                clearTimeout(timeoutId);
+            }
+
+            let payload = {};
+            try {
+                payload = await response.json();
+            } catch (_error) {
+                payload = {};
+            }
+
+            if (!response.ok) {
+                const requestError = new Error(payload?.error || `HTTP ${response.status}`);
+                requestError.statusCode = response.status;
+                requestError.errorCode = payload?.errorCode;
+                throw requestError;
+            }
+
+            if (payload?.sessionId) {
+                chatSessionId = payload.sessionId;
+            }
+
+            const reply = String(payload?.reply || '').trim();
+            if (!reply) {
+                const emptyReplyError = new Error('empty_reply');
+                emptyReplyError.statusCode = 502;
+                throw emptyReplyError;
+            }
+
+            return {
+                reply,
+                suggestions: payload?.suggestions
+            };
+        }
+
         async function sendChatMessage(question, options = {}) {
             const normalized = String(question || '').trim();
             if (!normalized || isSending) return;
@@ -1341,54 +1556,20 @@
             showTyping();
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS);
-                let response;
-
                 try {
-                    response = await fetch(chatApiEndpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: normalized,
-                            sessionId: chatSessionId
-                        }),
-                        signal: controller.signal
-                    });
-                } finally {
-                    clearTimeout(timeoutId);
+                    const streamResult = await requestStreamedReply(normalized);
+                    renderSuggestions(streamResult?.suggestions);
+                } catch (streamError) {
+                    if (String(streamError?.partialReply || '').trim()) {
+                        recordHistory(streamError.partialReply, 'bot');
+                        saveChatState();
+                        throw streamError;
+                    }
+                    const classicResult = await requestClassicReply(normalized);
+                    await streamBotReply(classicResult.reply);
+                    renderSuggestions(classicResult.suggestions);
+                    saveChatState();
                 }
-
-                let payload = {};
-                try {
-                    payload = await response.json();
-                } catch (_error) {
-                    payload = {};
-                }
-
-                if (!response.ok) {
-                    const requestError = new Error(payload?.error || `HTTP ${response.status}`);
-                    requestError.statusCode = response.status;
-                    requestError.errorCode = payload?.errorCode;
-                    throw requestError;
-                }
-
-                if (payload?.sessionId) {
-                    chatSessionId = payload.sessionId;
-                }
-
-                const reply = String(payload?.reply || '').trim();
-                if (!reply) {
-                    const emptyReplyError = new Error('empty_reply');
-                    emptyReplyError.statusCode = 502;
-                    throw emptyReplyError;
-                }
-
-                await streamBotReply(reply);
-                renderSuggestions(payload?.suggestions);
-                saveChatState();
             } catch (error) {
                 console.error('Gemini support request error:', error);
                 addErrorMessageWithActions(mapErrorMessage(error), normalized);

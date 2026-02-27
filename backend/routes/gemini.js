@@ -67,10 +67,23 @@ const GEMINI_SYSTEM_PROMPT = `
 - بعد الإجابة أضف هذا الفاصل حرفياً: ---SUGGESTIONS---
 - بعد الفاصل أضف 3 أسئلة متابعة قصيرة (كل سؤال في سطر مستقل، بدون ترقيم)
 `;
+const STREAM_SYSTEM_PROMPT_MARKER = '## تنسيق إضافي مطلوب:';
+const GEMINI_STREAM_SYSTEM_PROMPT = (() => {
+  const markerIndex = GEMINI_SYSTEM_PROMPT.indexOf(STREAM_SYSTEM_PROMPT_MARKER);
+  if (markerIndex < 0) return GEMINI_SYSTEM_PROMPT;
+  return `${GEMINI_SYSTEM_PROMPT.slice(0, markerIndex)}${STREAM_SYSTEM_PROMPT_MARKER}
+- قدم الإجابة مباشرة بدون فواصل خاصة أو قوائم اقتراحات.
+- لا تضف عبارة ---SUGGESTIONS--- مطلقاً.`;
+})();
 
 function buildGeminiUrl() {
   const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
   return `${config.gemini.endpoint}/${model}:generateContent?key=${config.gemini.apiKey}`;
+}
+
+function buildGeminiStreamUrl() {
+  const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
+  return `${config.gemini.endpoint}/${model}:streamGenerateContent?alt=sse&key=${config.gemini.apiKey}`;
 }
 
 function mapSessionRole(role) {
@@ -78,11 +91,11 @@ function mapSessionRole(role) {
   return 'user';
 }
 
-function buildContents(history, message) {
+function buildContents(history, message, systemPrompt = GEMINI_SYSTEM_PROMPT) {
   const contents = [
     {
       role: 'user',
-      parts: [{ text: GEMINI_SYSTEM_PROMPT }]
+      parts: [{ text: systemPrompt }]
     },
     {
       role: 'model',
@@ -144,6 +157,193 @@ function splitReplyAndSuggestions(rawText) {
   };
 }
 
+function normalizeStatusCode(error) {
+  let statusCode = Number(error?.statusCode) || 0;
+  if (statusCode) return statusCode;
+  const errCode = String(error?.code || '').toUpperCase();
+  const errMessage = String(error?.message || '').toLowerCase();
+  if (errCode === 'ETIMEDOUT' || errMessage.includes('timeout')) return 408;
+  if (
+    errCode === 'ECONNRESET' ||
+    errCode === 'ECONNREFUSED' ||
+    errCode === 'ENOTFOUND' ||
+    errCode === 'ENETUNREACH'
+  ) {
+    return 503;
+  }
+  return 500;
+}
+
+function createInputError(statusCode, message, errorCode) {
+  const error = new Error(message);
+  error.statusCode = statusCode;
+  error.code = errorCode;
+  error.userMessage = message;
+  return error;
+}
+
+function parseIncomingChatRequest(req) {
+  if (!isApiKeyConfigured()) {
+    throw createInputError(503, 'خدمة الذكاء الاصطناعي غير متاحة حالياً', 'GEMINI_NOT_CONFIGURED');
+  }
+
+  if (!req.body || typeof req.body.message !== 'string') {
+    throw createInputError(400, 'طلب غير صالح', 'INVALID_REQUEST');
+  }
+
+  const rawMessage = req.body.message;
+  const sanitizedMessage = sanitizeUserInput(rawMessage);
+  if (!sanitizedMessage) {
+    throw createInputError(400, 'يرجى إدخال رسالة', 'NO_MESSAGE');
+  }
+
+  if (sanitizedMessage.length > config.validation.maxInputLength) {
+    throw createInputError(
+      400,
+      `الرسالة طويلة جداً. الحد الأقصى ${config.validation.maxInputLength} حرف`,
+      'MESSAGE_TOO_LONG'
+    );
+  }
+
+  const providedSessionId = typeof req.body.sessionId === 'string'
+    ? sanitizeUserInput(req.body.sessionId).slice(0, 120)
+    : '';
+  const session = getOrCreateSession(providedSessionId || createSessionId());
+  const activeSessionId = session.id;
+  const history = Array.isArray(session.history) ? session.history.slice(-12) : [];
+
+  return {
+    sanitizedMessage,
+    activeSessionId,
+    history
+  };
+}
+
+function writeSse(streamRes, payload) {
+  streamRes.write(`data: ${JSON.stringify(payload)}\n\n`);
+}
+
+function extractStreamPayloadText(parsedPayload, fallbackAccumulator = '') {
+  const text = parseGeminiText(parsedPayload);
+  if (!text) return '';
+  if (fallbackAccumulator && text.startsWith(fallbackAccumulator)) {
+    return text.slice(fallbackAccumulator.length);
+  }
+  return text;
+}
+
+async function callGeminiStream(contents, { signal, onToken } = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort(new Error('TIMEOUT'));
+  }, REQUEST_TIMEOUT_MS);
+
+  if (signal) {
+    if (signal.aborted) {
+      controller.abort(signal.reason || new Error('ABORTED'));
+    } else {
+      signal.addEventListener(
+        'abort',
+        () => controller.abort(signal.reason || new Error('ABORTED')),
+        { once: true }
+      );
+    }
+  }
+
+  let accumulated = '';
+
+  try {
+    const response = await fetch(buildGeminiStreamUrl(), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents,
+        generationConfig: {
+          temperature: 0.55,
+          maxOutputTokens: 900
+        }
+      }),
+      signal: controller.signal
+    });
+
+    if (!response.ok) {
+      const bodyText = await response.text().catch(() => '');
+      const apiError = new Error(bodyText || `GEMINI_API_${response.status}`);
+      apiError.statusCode = response.status;
+      apiError.code = `GEMINI_API_${response.status}`;
+      throw apiError;
+    }
+
+    const reader = response.body?.getReader?.();
+    if (!reader) {
+      const bodyText = await response.text().catch(() => '');
+      if (!bodyText.trim()) {
+        const emptyError = new Error('EMPTY_GEMINI_REPLY');
+        emptyError.statusCode = 502;
+        emptyError.code = 'EMPTY_GEMINI_REPLY';
+        throw emptyError;
+      }
+      accumulated = bodyText.trim();
+      if (onToken) onToken(accumulated);
+      return accumulated;
+    }
+
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+
+    const processChunk = (rawChunk) => {
+      const lines = rawChunk.split('\n');
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!line.startsWith('data:')) continue;
+        const payload = line.replace(/^data:\s*/, '');
+        if (!payload || payload === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(payload);
+          const delta = extractStreamPayloadText(parsed, accumulated);
+          if (!delta) continue;
+          accumulated += delta;
+          if (onToken) onToken(delta);
+        } catch (_error) {
+          continue;
+        }
+      }
+    };
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const chunks = buffer.split('\n\n');
+      buffer = chunks.pop() || '';
+      chunks.forEach(processChunk);
+    }
+
+    if (buffer.trim()) {
+      processChunk(buffer);
+    }
+
+    if (!accumulated.trim()) {
+      const emptyError = new Error('EMPTY_GEMINI_REPLY');
+      emptyError.statusCode = 502;
+      emptyError.code = 'EMPTY_GEMINI_REPLY';
+      throw emptyError;
+    }
+
+    return accumulated;
+  } catch (error) {
+    if (error && (error.name === 'AbortError' || error.message === 'TIMEOUT')) {
+      const timeoutError = new Error('TIMEOUT');
+      timeoutError.statusCode = 408;
+      timeoutError.code = 'REQUEST_TIMEOUT';
+      throw timeoutError;
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function callGemini(contents) {
   return retryWithBackoff(async () => {
     const controller = new AbortController();
@@ -198,44 +398,8 @@ async function callGemini(contents) {
 }
 
 async function geminiChatHandler(req, res) {
-  if (!isApiKeyConfigured()) {
-    return res.status(503).json({
-      error: 'خدمة الذكاء الاصطناعي غير متاحة حالياً',
-      errorCode: 'GEMINI_NOT_CONFIGURED'
-    });
-  }
-
-  if (!req.body || typeof req.body.message !== 'string') {
-    return res.status(400).json({
-      error: 'طلب غير صالح',
-      errorCode: 'INVALID_REQUEST'
-    });
-  }
-
-  const rawMessage = req.body.message;
-  const sanitizedMessage = sanitizeUserInput(rawMessage);
-  if (!sanitizedMessage) {
-    return res.status(400).json({
-      error: 'يرجى إدخال رسالة',
-      errorCode: 'NO_MESSAGE'
-    });
-  }
-
-  if (sanitizedMessage.length > config.validation.maxInputLength) {
-    return res.status(400).json({
-      error: `الرسالة طويلة جداً. الحد الأقصى ${config.validation.maxInputLength} حرف`,
-      errorCode: 'MESSAGE_TOO_LONG'
-    });
-  }
-
-  const providedSessionId = typeof req.body.sessionId === 'string'
-    ? sanitizeUserInput(req.body.sessionId).slice(0, 120)
-    : '';
-  const session = getOrCreateSession(providedSessionId || createSessionId());
-  const activeSessionId = session.id;
-  const history = Array.isArray(session.history) ? session.history.slice(-12) : [];
-
   try {
+    const { sanitizedMessage, activeSessionId, history } = parseIncomingChatRequest(req);
     const contents = buildContents(history, sanitizedMessage);
     const rawReply = await callGemini(contents);
     const { reply, suggestions } = splitReplyAndSuggestions(rawReply);
@@ -249,34 +413,99 @@ async function geminiChatHandler(req, res) {
       suggestions
     });
   } catch (error) {
-    let statusCode = Number(error?.statusCode) || 0;
-    if (!statusCode) {
-      const errCode = String(error?.code || '').toUpperCase();
-      const errMessage = String(error?.message || '').toLowerCase();
-      if (errCode === 'ETIMEDOUT' || errMessage.includes('timeout')) {
-        statusCode = 408;
-      } else if (
-        errCode === 'ECONNRESET' ||
-        errCode === 'ECONNREFUSED' ||
-        errCode === 'ENOTFOUND' ||
-        errCode === 'ENETUNREACH'
-      ) {
-        statusCode = 503;
-      } else {
-        statusCode = 500;
-      }
-    }
+    const statusCode = normalizeStatusCode(error);
 
     return res.status(statusCode).json({
-      error: getArabicErrorMessage(error, statusCode),
+      error: error?.userMessage || getArabicErrorMessage(error, statusCode),
       errorCode: error?.code || 'GEMINI_CHAT_ERROR'
     });
   }
 }
 
+async function geminiChatStreamHandler(req, res, rawRes) {
+  const streamRes = rawRes || res;
+
+  let chatContext;
+  try {
+    chatContext = parseIncomingChatRequest(req);
+  } catch (error) {
+    const statusCode = normalizeStatusCode(error);
+    return res.status(statusCode).json({
+      error: error?.userMessage || getArabicErrorMessage(error, statusCode),
+      errorCode: error?.code || 'GEMINI_CHAT_ERROR'
+    });
+  }
+
+  const { sanitizedMessage, activeSessionId, history } = chatContext;
+
+  streamRes.writeHead(200, {
+    'Content-Type': 'text/event-stream; charset=utf-8',
+    'Cache-Control': 'no-cache, no-transform',
+    Connection: 'keep-alive',
+    'Access-Control-Allow-Origin': '*'
+  });
+  writeSse(streamRes, { type: 'session', sessionId: activeSessionId });
+
+  const controller = new AbortController();
+  req.on('close', () => {
+    const closeError = new Error('CLIENT_ABORTED');
+    closeError.code = 'CLIENT_ABORTED';
+    controller.abort(closeError);
+  });
+
+  let assistantText = '';
+
+  try {
+    const contents = buildContents(history, sanitizedMessage, GEMINI_STREAM_SYSTEM_PROMPT);
+    addToSession(activeSessionId, 'user', sanitizedMessage);
+
+    assistantText = await callGeminiStream(contents, {
+      signal: controller.signal,
+      onToken: (delta) => {
+        if (!delta) return;
+        writeSse(streamRes, { type: 'token', token: delta });
+      }
+    });
+
+    const { reply, suggestions } = splitReplyAndSuggestions(assistantText);
+    const safeReply = reply || 'أهلاً بك، كيف أقدر أخدمك اليوم؟';
+
+    addToSession(activeSessionId, 'assistant', safeReply);
+    writeSse(streamRes, {
+      type: 'done',
+      reply: safeReply,
+      sessionId: activeSessionId,
+      suggestions
+    });
+    streamRes.write('data: [DONE]\n\n');
+  } catch (error) {
+    if (error?.code === 'CLIENT_ABORTED') {
+      try { streamRes.end(); } catch (_endError) { /* ignore */ }
+      return;
+    }
+    const statusCode = normalizeStatusCode(error);
+    writeSse(streamRes, {
+      type: 'error',
+      error: error?.userMessage || getArabicErrorMessage(error, statusCode),
+      errorCode: error?.code || 'GEMINI_CHAT_STREAM_ERROR',
+      statusCode
+    });
+    streamRes.write('data: [DONE]\n\n');
+  } finally {
+    try {
+      streamRes.end();
+    } catch (_endError) {
+      // Ignore closed connection errors.
+    }
+  }
+}
+
 module.exports = {
   geminiChatHandler,
+  geminiChatStreamHandler,
   GEMINI_SYSTEM_PROMPT,
+  GEMINI_STREAM_SYSTEM_PROMPT,
   buildGeminiUrl,
+  buildGeminiStreamUrl,
   splitReplyAndSuggestions
 };
