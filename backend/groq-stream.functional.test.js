@@ -207,6 +207,54 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     }
   });
 
+  it('runtime key: accepts request-level key without breaking stream flow', async () => {
+    let capturedPayload = null;
+
+    global.fetch = vi.fn(async (_url, options = {}) => {
+      capturedPayload = JSON.parse(options.body || '{}');
+
+      return new Response(JSON.stringify({
+        candidates: [
+          {
+            content: {
+              parts: [{ text: 'تمت الاستجابة بمفتاح وقت التشغيل' }]
+            }
+          }
+        ]
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      });
+    });
+
+    const runtime = await loadHandleRequest({
+      GEMINI_API_KEY: 'gemini_test_key',
+      GROQ_API_KEY: '',
+      GROQ_STREAM_TIMEOUT_MS: 400,
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 20
+    });
+
+    try {
+      const result = await invokeHandleRequest(runtime.handleRequest, {
+        method: 'POST',
+        url: '/api/ai/stream',
+        body: {
+          message: 'اختبار مفتاح وقت التشغيل',
+          outputType: 'دعم العملاء',
+          apiKey: 'gsk_runtime_key_1234567890'
+        }
+      });
+
+      expect(result.status).toBe(200);
+      expect(result.body).toContain('"token":"تمت الاستجابة بمفتاح وقت التشغيل"');
+      expect(result.body).toContain('data: [DONE]');
+      expect(Array.isArray(capturedPayload?.contents)).toBe(true);
+      expect(global.fetch).toHaveBeenCalledTimes(1);
+    } finally {
+      runtime.restoreEnv();
+    }
+  });
+
   it('error: returns stream error payload when upstream fails', async () => {
     global.fetch = vi.fn(async () => {
       return new Response('upstream failed', {
@@ -288,6 +336,57 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
       expect(result.body).toContain('\"errorCode\":\"RATE_LIMIT_EXCEEDED\"');
       expect(result.body).toContain('data: [DONE]');
       expect(global.fetch).toHaveBeenCalledTimes(1);
+    } finally {
+      runtime.restoreEnv();
+    }
+  });
+
+  it('regression: keeps /api/groq/stream alias compatible with /api/ai/stream', async () => {
+    global.fetch = vi.fn(async () => {
+      return new Response(JSON.stringify({
+        candidates: [
+          {
+            content: {
+              parts: [{ text: 'توافق ثابت' }]
+            }
+          }
+        ]
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      });
+    });
+
+    const runtime = await loadHandleRequest({
+      GROQ_STREAM_TIMEOUT_MS: 400,
+      RATE_LIMIT_REQUESTS_PER_MINUTE: 20
+    });
+
+    try {
+      const officialRouteResult = await invokeHandleRequest(runtime.handleRequest, {
+        method: 'POST',
+        url: '/api/ai/stream',
+        body: { message: 'اختبار المسار الرسمي', outputType: 'دعم العملاء' }
+      });
+
+      const legacyRouteResult = await invokeHandleRequest(runtime.handleRequest, {
+        method: 'POST',
+        url: '/api/groq/stream',
+        body: { message: 'اختبار المسار القديم', outputType: 'دعم العملاء' }
+      });
+
+      expect(officialRouteResult.status).toBe(200);
+      expect(legacyRouteResult.status).toBe(200);
+
+      expect(officialRouteResult.body).toContain('"sessionId"');
+      expect(legacyRouteResult.body).toContain('"sessionId"');
+
+      expect(officialRouteResult.body).toContain('"token":"توافق ثابت"');
+      expect(legacyRouteResult.body).toContain('"token":"توافق ثابت"');
+
+      expect(officialRouteResult.body).toContain('data: [DONE]');
+      expect(legacyRouteResult.body).toContain('data: [DONE]');
+      expect(global.fetch).toHaveBeenCalledTimes(2);
     } finally {
       runtime.restoreEnv();
     }
