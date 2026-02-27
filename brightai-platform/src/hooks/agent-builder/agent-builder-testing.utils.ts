@@ -5,25 +5,9 @@ import {
   تقديرالرموز,
 } from "../../lib/agent-builder.utils";
 import { GroqService } from "../../services/groq.service";
-import apiKeyService from "../../services/apikey.service";
 import type { حالةالنموذج, مقطعمعرفةاختبار } from "../../types/agent-builder.types";
 
-export const resolveGroqClient = async () => {
-  if (process.env.REACT_APP_GROQ_API_KEY) {
-    return new GroqService(process.env.REACT_APP_GROQ_API_KEY);
-  }
-
-  try {
-    const key = await apiKeyService.getApiKey("groq");
-    if (key) {
-      return new GroqService(key);
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-};
+export const resolveGroqClient = async () => new GroqService();
 
 export const buildFallbackReply = (form: حالةالنموذج, message: string) => {
   const resolvedCategory =
@@ -114,7 +98,7 @@ export const estimateExecutionCostSar = (model: string, prompt: string) => {
   const tokens = تقديرالرموز(prompt);
   const usdCost = (() => {
     try {
-      const client = new GroqService(process.env.REACT_APP_GROQ_API_KEY || "");
+      const client = new GroqService();
       return client.calculateCost(model, tokens);
     } catch {
       return tokens * 0.00024;

@@ -294,7 +294,7 @@ export class ApiKeyService {
       };
     }
 
-    const request = this.buildProviderRequest(normalizedProvider, key);
+    const request = await this.buildProviderRequest(normalizedProvider, key);
 
     try {
       const response = await this.fetchWithTimeout(
@@ -363,16 +363,21 @@ export class ApiKeyService {
     }
   }
 
-  private buildProviderRequest(
+  private async buildProviderRequest(
     provider: ApiProvider,
     key: string
-  ): { url: string; options: RequestInit } {
+  ): Promise<{ url: string; options: RequestInit }> {
     switch (provider) {
       case "groq":
         {
           const headers: Record<string, string> = {
-            Authorization: `Bearer ${key}`,
+            "X-User-Api-Key": key,
           };
+          const { data } = await supabase.auth.getSession();
+          const token = data.session?.access_token || "";
+          if (token) {
+            headers.Authorization = `Bearer ${token}`;
+          }
           return {
             url: "/api/ai/models",
             options: {

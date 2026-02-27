@@ -9,7 +9,6 @@ import {
   type SyntheticEvent,
 } from "react";
 import { GroqService } from "../services/groq.service";
-import apiKeyService from "../services/apikey.service";
 import {
   الامتداداتالمسموحة,
   الحدالأقصىللحجم,
@@ -244,22 +243,7 @@ const useAgentPersonalityEditor = ({ value, onChange }: خصائصمحررالش
     [update, value.الموجهالنظامي, variableStart]
   );
 
-  const resolveGroqClient = useCallback(async () => {
-    if (process.env.REACT_APP_GROQ_API_KEY) {
-      return new GroqService(process.env.REACT_APP_GROQ_API_KEY);
-    }
-
-    try {
-      const key = await apiKeyService.getApiKey("groq");
-      if (key) {
-        return new GroqService(key);
-      }
-    } catch {
-      return null;
-    }
-
-    return null;
-  }, []);
+  const resolveGroqClient = useCallback(async () => new GroqService(), []);
 
   const generatePrompt = useCallback(
     async (mode: وضعالتوليد) => {
@@ -276,18 +260,6 @@ const useAgentPersonalityEditor = ({ value, onChange }: خصائصمحررالش
 
       try {
         const client = await resolveGroqClient();
-        if (!client) {
-          const fallback = [
-            "أنت وكيل ذكاء اصطناعي محترف لمنصة برايت.",
-            `مهمتك الرئيسية: ${value.وصفتوليد || "تقديم دعم أعمال عملي"}.`,
-            `نبرة الوكيل: ${value.اللهجة}.`,
-            `لغة الاستجابة: ${value.لغةالرد}.`,
-            "التزم بإجابات واضحة، مباشرة، وقابلة للتنفيذ ضمن سياق الأعمال.",
-            "إذا كانت المعطيات ناقصة، اسأل سؤالًا توضيحيًا قبل إعطاء قرار نهائي.",
-          ].join("\n");
-          update({ الموجهالنظامي: fallback });
-          return;
-        }
 
         const response = await client.chat({
           model: value.model || "llama-3.1-70b-versatile",

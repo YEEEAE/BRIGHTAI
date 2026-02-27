@@ -1,3 +1,5 @@
+import supabase from "../lib/supabase";
+
 export type GroqMessage = {
   role: "system" | "user" | "assistant";
   content: string;
@@ -73,7 +75,7 @@ type TokenTotals = {
 
 const DEFAULT_TIMEOUT_MS = 30000;
 const DEFAULT_RETRIES = 3;
-const BASE_URL = "/api/ai";
+const BASE_URL = process.env.REACT_APP_AI_PROXY_BASE_URL || "/api/ai";
 
 const MODEL_CATALOG: ModelInfo[] = [
   {
@@ -150,7 +152,7 @@ export class GroqService {
     timeoutMs: number = DEFAULT_TIMEOUT_MS,
     retries: number = DEFAULT_RETRIES
   ) {
-    this.apiKey = apiKey || process.env.REACT_APP_GROQ_API_KEY || "";
+    this.apiKey = apiKey || "";
     this.timeoutMs = timeoutMs;
     this.retries = retries;
   }
@@ -281,10 +283,6 @@ export class GroqService {
     overrideApiKey?: string,
     method: "POST" | "GET" = "POST"
   ): Promise<T> {
-    if (!this.apiKey && !overrideApiKey) {
-      throw new GroqError("مفتاح Groq غير متوفر.", "INVALID_API_KEY");
-    }
-
     const attemptRequest = async (attempt: number): Promise<T> => {
       const controller = new AbortController();
       const timeoutId = globalThis.setTimeout(
@@ -293,13 +291,24 @@ export class GroqService {
       );
 
       try {
+        const accessToken = await this.getAccessToken();
+        const headers: Record<string, string> = {
+          "Content-Type": "application/json",
+          "X-Request-Id": this.generateRequestId(),
+        };
+
+        if (accessToken) {
+          headers.Authorization = `Bearer ${accessToken}`;
+        }
+
+        const forwardedKey = overrideApiKey || this.apiKey;
+        if (forwardedKey) {
+          headers["X-User-Api-Key"] = forwardedKey;
+        }
+
         const response = await fetch(`${BASE_URL}${path}`, {
           method,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${overrideApiKey || this.apiKey}`,
-            "X-Request-Id": this.generateRequestId(),
-          },
+          headers,
           body: payload && method === "POST" ? JSON.stringify(payload) : undefined,
           signal: controller.signal,
         });
@@ -333,14 +342,30 @@ export class GroqService {
     return attemptRequest(0);
   }
 
+  private async getAccessToken(): Promise<string> {
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        return "";
+      }
+      return data.session?.access_token || "";
+    } catch {
+      return "";
+    }
+  }
+
   private async handleErrorResponse(response: Response, attempt: number) {
     const status = response.status;
     const errorBody = await this.safeParseJson(response);
-    const message =
-      errorBody?.error?.message || "حدث خطأ غير متوقع أثناء طلب Groq.";
+    const message = (
+      errorBody?.error?.message ||
+      errorBody?.error ||
+      errorBody?.details?.error?.message ||
+      "حدث خطأ غير متوقع أثناء طلب خدمة الذكاء."
+    ) as string;
 
     if (status === 401 || status === 403) {
-      throw new GroqError("مفتاح Groq غير صالح.", "INVALID_API_KEY", status);
+      throw new GroqError("الجلسة غير صالحة أو غير مصرح بالوصول.", "INVALID_API_KEY", status);
     }
     if (status === 429) {
       if (attempt < this.retries) {

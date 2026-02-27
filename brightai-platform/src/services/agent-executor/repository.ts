@@ -22,11 +22,9 @@ export class AgentExecutorRepository {
     const useUserKey = Boolean(input.context?.useUserKey) || Boolean(agent.settings?.useUserKey);
 
     if (!useUserKey) {
-      const platformKey = process.env.REACT_APP_GROQ_API_KEY;
-      if (!platformKey) {
-        throw new AgentExecutorError("مفتاح Groq غير متوفر.", "MISSING_API_KEY");
-      }
-      return platformKey;
+      // التشغيل الافتراضي يعتمد على مفتاح سري في الخادم (Netlify Function)
+      // ولا يحتاج مفتاحًا مكشوفًا في واجهة المستخدم.
+      return "";
     }
 
     if (!input.context?.userId) {

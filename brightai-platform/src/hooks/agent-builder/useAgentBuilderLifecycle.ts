@@ -157,11 +157,12 @@ const useAgentBuilderLifecycle = ({
 
           const apiResult = results[2];
           const apiCount = apiResult && apiResult.status === "fulfilled" ? Number(apiResult.value || 0) : 0;
-          const hasEnvGroqKey = Boolean(process.env.REACT_APP_GROQ_API_KEY);
+          const hasManagedAiProxy =
+            String(process.env.REACT_APP_AI_PROXY_ENABLED || "true").toLowerCase() !== "false";
 
           setSystemState((prev) => ({
             ...prev,
-            apiConnected: hasEnvGroqKey || apiCount > 0,
+            apiConnected: hasManagedAiProxy || apiCount > 0,
           }));
         })();
       } catch {
