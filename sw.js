@@ -9,6 +9,8 @@ const STATIC_ASSETS = [
   '/frontend/css/bundle-critical.css?v=20260206',
   '/frontend/css/main.bundle.css?v=20260206',
   '/frontend/js/main.bundle.js?v=20260206',
+  '/frontend/js/navigation.js',
+  '/frontend/js/article-ux-enhancements.js',
   '/frontend/js/schema-loader.js?v=20260206',
   '/frontend/js/search.js?v=20260206',
   '/frontend/js/chat-widget.js?v=20260206',
