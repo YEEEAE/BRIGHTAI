@@ -1,3 +1,34 @@
+# دفع التغيرات على github 
+
+
+استخدم هذا التسلسل كل مرة (ولا تدفع على main مباشرة):
+
+تحديث main:
+git switch main
+git pull --ff-only origin main
+فتح فرع جديد باسم فعلي (بدون < >):
+git switch -c codex/my-change
+حفظ التعديلات:
+git add .
+git commit -m "feat: describe change"
+رفع الفرع:
+git push -u origin codex/my-change
+فتح Pull Request:
+gh pr create --base main --head codex/my-change --fill
+بعد الدمج، مزامنة وتنظيف:
+git switch main
+git pull --ff-only origin main
+git branch -d codex/my-change
+إذا غلطت وكمّت على main:
+
+git switch -c codex/rescue-main-commit
+git push -u origin codex/rescue-main-commit
+gh pr create --base main --head codex/rescue-main-commit --fill
+لا يوجد خطوات أخرى، وتم توضيح الطريقة بالكامل.
+
+
+
+
 # BrightAI Platform — دليل التشغيل الفعلي
 
 هذا الملف هو مرجع تشغيل `brightai-platform` في التطوير والإنتاج.  
@@ -12,13 +43,14 @@
 | تنفيذ الوكلاء و AI | `src/services/agent-executor` + `src/services/groq.service.ts` | تشغيل الوكلاء وربط نماذج الذكاء |
 | الأدوات الخارجية | `src/services/agent.tools.ts` | ربط web search / scrape / email / calendar |
 | القياس والمراقبة | `src/lib/analytics.ts` | GA4 + Sentry |
+| التدقيق التشغيلي | `src/lib/audit.ts` + `netlify/functions/audit.js` | Audit شامل لطلبات النظام |
 | النشر والبنية | `Dockerfile` + `docker-compose.yml` + `netlify.toml` | بناء وتشغيل الإنتاج |
 
 ## 2) المتطلبات
 
 - `Node.js 20.x` (مطابق لإعداد `netlify.toml`)
 - `npm 10+`
-- مشروع Supabase جاهز (URL + anon key)
+- مشروع Supabase جاهز (اختياري لكن موصى به في الإنتاج الكامل)
 - حسابات الخدمات الاختيارية: GA4 / Sentry / Groq
 
 ## 3) تشغيل سريع (Local)
@@ -114,6 +146,7 @@ npm start
 - Functions directory: `netlify/functions`
 - Node version: `20`
 - Redirect: `/api/ai/*` → `/.netlify/functions/ai/:splat`
+- Redirect: `/api/audit` → `/.netlify/functions/audit`
 
 متغيرات Netlify المطلوبة لخدمة الذكاء:
 - `GROQ_API_KEY` أو `GEMINI_API_KEY`
@@ -121,6 +154,18 @@ npm start
 - `AI_RATE_LIMIT_PER_MINUTE` (اختياري)
 - `AI_RATE_LIMIT_WINDOW_MS` (اختياري)
 - `AI_PROXY_ALLOW_UNAUTHENTICATED=false` للإنتاج
+- `AUDIT_LOGGING_ENABLED=true`
+- `AUDIT_RATE_LIMIT_PER_MINUTE`
+- `AUDIT_RATE_LIMIT_WINDOW_MS`
+- `AUDIT_ALLOW_UNAUTHENTICATED=false` للإنتاج
+- `AUDIT_VIEWER_ROLES=super_admin,company_admin`
+- `AUDIT_LOCAL_ADMIN_ENABLED=true` (fallback auth عند غياب Supabase)
+- `AUDIT_LOCAL_ADMIN_TOKEN` (افتراضي: `local-admin-access-token`)
+- `AUDIT_LOCAL_ADMIN_USER_ID` (UUID ثابت)
+
+التخزين الفعلي لسجلات audit:
+- المسار الأساسي: `SUPABASE_SERVICE_ROLE_KEY` + `SUPABASE_URL`
+- fallback تلقائي: `NETLIFY_DATABASE_URL` (Netlify Postgres) عند غياب/فشل Supabase
 
 #### Docker + Nginx
 
@@ -238,3 +283,30 @@ npm run smoke:flow
 - دليل النشر التفصيلي الحالي: `docs/دليل-تثبيت-الإنتاج-والإطلاق.md`
 - فحص بيئة الإنتاج: `scripts/verify-production.mjs`
 - اختبار smoke: `scripts/smoke-supabase-flow.mjs`
+
+## 10) Audit شامل (Client + Server)
+
+التغطية الحالية:
+- `HTTP Client`: تسجيل endpoint + method + status + latency من `src/services/http.ts`.
+- `AI Proxy`: تسجيل كل طلب `/api/ai/*` من Function مع userId + status + latency + model.
+- `Auth Events`: تسجيل login/logout/fail/timeout من `src/hooks/useAuth.ts`.
+- `Security Events`: تسجيل أحداث الأمان من `src/lib/security.ts`.
+- `Execution Events`: تسجيل أحداث تنفيذ الوكلاء من `src/services/agent.monitoring.ts`.
+- `Audit Viewer`: شاشة `/audit-logs` مع فلاتر `user/action/date/endpoint` عبر endpoint مخصص.
+
+مسار التخزين:
+- الواجهة ترسل إلى `/api/audit`.
+- Function `audit.js` تتحقق من الجلسة + rate limit.
+- التخزين النهائي يكون كالتالي:
+  - أولاً في جدول `public.security_audit_logs` عبر `SUPABASE_SERVICE_ROLE_KEY` إذا متاح.
+  - وإلا fallback تلقائيًا إلى `security_audit_logs` داخل Netlify Postgres (`NETLIFY_DATABASE_URL`).
+- عرض السجلات يتم من `/api/audit/logs` عبر Function `audit-logs.js`:
+  - أدوار `AUDIT_VIEWER_ROLES` ترى جميع السجلات.
+  - باقي المستخدمين يرون سجلاتهم فقط.
+
+ملاحظات تشغيلية:
+- إذا Supabase غير مهيأ، يستمر النظام على Netlify Postgres بدون كسر endpoint.
+- شاشة `/audit-logs` تدعم fallback جلسة local-admin عبر:
+  - `REACT_APP_ENABLE_LOCAL_ADMIN=true`
+  - `REACT_APP_AUDIT_LOCAL_ADMIN_TOKEN` (مطابق لـ `AUDIT_LOCAL_ADMIN_TOKEN`)
+- يفضّل إبقاء `REACT_APP_AUDIT_SAMPLE_RATE=1` في الإنتاج التشغيلي الكامل، وتخفيضها عند ارتفاع الأحمال.

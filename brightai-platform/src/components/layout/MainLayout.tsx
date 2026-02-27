@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Menu,
   Settings,
+  ShieldCheck,
   ShoppingBag,
   Wand2,
   X,
@@ -41,6 +42,7 @@ const MainLayout = () => {
     { to: "/templates", label: t("nav.templates"), icon: Boxes },
     { to: "/marketplace", label: t("nav.marketplace"), icon: ShoppingBag },
     { to: "/analytics", label: t("nav.analytics"), icon: BarChart3 },
+    { to: "/audit-logs", label: "سجل التدقيق", icon: ShieldCheck },
     { to: "/ai-native-expansion", label: "الوكلاء الأصليون", icon: BrainCircuit },
     { to: "/settings", label: t("nav.settings"), icon: Settings },
   ];

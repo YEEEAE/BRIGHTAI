@@ -1,9 +1,20 @@
 "use strict";
 
+const { writeSecurityAuditLog } = require("./_shared/audit-store");
+
 const DEFAULT_MODEL = process.env.GEMINI_MODEL || "gemini-flash-latest";
 const RATE_LIMIT_PER_MINUTE = Number(process.env.AI_RATE_LIMIT_PER_MINUTE || "30");
 const RATE_LIMIT_WINDOW_MS = Number(process.env.AI_RATE_LIMIT_WINDOW_MS || "60000");
 const ALLOW_UNAUTH = String(process.env.AI_PROXY_ALLOW_UNAUTHENTICATED || "false").toLowerCase() === "true";
+const AUDIT_LOGGING_ENABLED = String(process.env.AUDIT_LOGGING_ENABLED || "true").toLowerCase() !== "false";
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const LOCAL_ADMIN_ENABLED = String(process.env.AUDIT_LOCAL_ADMIN_ENABLED || "true").toLowerCase() === "true";
+const LOCAL_ADMIN_TOKEN = String(
+  process.env.AUDIT_LOCAL_ADMIN_TOKEN || process.env.LOCAL_ADMIN_ACCESS_TOKEN || "local-admin-access-token"
+).trim();
+const LOCAL_ADMIN_USER_ID = String(
+  process.env.AUDIT_LOCAL_ADMIN_USER_ID || "11111111-1111-4111-8111-111111111111"
+).trim();
 
 const rateStore = new Map();
 
@@ -182,6 +193,80 @@ const verifySupabaseToken = async (token) => {
   }
 };
 
+const verifyLocalAdminToken = (token) => {
+  if (!LOCAL_ADMIN_ENABLED) {
+    return null;
+  }
+  if (!token || token !== LOCAL_ADMIN_TOKEN) {
+    return null;
+  }
+  return LOCAL_ADMIN_USER_ID;
+};
+
+const verifyRequestToken = async (token) => {
+  const supabaseId = await verifySupabaseToken(token);
+  if (supabaseId) {
+    return supabaseId;
+  }
+  return verifyLocalAdminToken(token);
+};
+
+const toUuidOrNull = (value) => {
+  const text = String(value || "").trim();
+  if (!text) {
+    return null;
+  }
+  return UUID_REGEX.test(text) ? text : null;
+};
+
+const writeAiAudit = async ({
+  userId,
+  method,
+  path,
+  statusCode,
+  latencyMs,
+  model,
+  stream,
+  ip,
+  requestId,
+  userAgent,
+  error,
+}) => {
+  if (!AUDIT_LOGGING_ENABLED) {
+    return;
+  }
+
+  const result = await writeSecurityAuditLog({
+    userId: toUuidOrNull(userId),
+    action: "AI_REQUEST",
+    tableName: "ai_proxy",
+    payload: {
+      method,
+      path,
+      statusCode,
+      latencyMs,
+      model: model || null,
+      stream: Boolean(stream),
+      sourceIp: ip,
+      requestId: requestId || null,
+      userAgent: userAgent || null,
+      error: error || null,
+      release: process.env.REACT_APP_RELEASE || "",
+      environment: process.env.NODE_ENV || "production",
+    },
+  });
+
+  if (!result.ok) {
+    console.warn("AI_AUDIT_FALLBACK", {
+      userId,
+      path,
+      method,
+      statusCode,
+      reason: result.reason,
+    });
+  }
+};
+
 const handleModels = async (event) => {
   const apiKey = getGeminiKey(event.headers);
   if (!apiKey) {
@@ -320,11 +405,36 @@ const handleChatCompletions = async (event) => {
 };
 
 exports.handler = async (event) => {
+  const startedAt = Date.now();
   const method = String(event?.httpMethod || "GET").toUpperCase();
   const path = normalizePath(event?.path);
+  const requestId = getHeader(event?.headers, "x-request-id");
+  const userAgent = getHeader(event?.headers, "user-agent");
+  const ip = getClientIp(event);
+  const rawBody = parseEventBody(event);
+  const model = resolveModel(rawBody?.model);
+  const stream = Boolean(rawBody?.stream);
+
+  const finalize = async (response, subject = "", errorMessage = "") => {
+    const statusCode = Number(response?.statusCode || 500);
+    await writeAiAudit({
+      userId: toUuidOrNull(subject),
+      method,
+      path,
+      statusCode,
+      latencyMs: Date.now() - startedAt,
+      model,
+      stream,
+      ip,
+      requestId,
+      userAgent,
+      error: errorMessage || undefined,
+    });
+    return response;
+  };
 
   if (method === "OPTIONS") {
-    return {
+    return finalize({
       statusCode: 204,
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -332,7 +442,7 @@ exports.handler = async (event) => {
         "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
       },
       body: "",
-    };
+    });
   }
 
   const token = getBearerToken(event?.headers);
@@ -340,21 +450,21 @@ exports.handler = async (event) => {
 
   if (!ALLOW_UNAUTH) {
     if (!token) {
-      return json(401, { error: "غير مصرح. يلزم توكن جلسة صالح." });
+      return finalize(json(401, { error: "غير مصرح. يلزم توكن جلسة صالح." }));
     }
-    subject = (await verifySupabaseToken(token)) || "";
+    subject = (await verifyRequestToken(token)) || "";
     if (!subject) {
-      return json(401, { error: "فشل التحقق من الجلسة." });
+      return finalize(json(401, { error: "فشل التحقق من الجلسة." }));
     }
   } else {
     subject = token || "dev-anon";
   }
 
-  const ip = getClientIp(event);
   const limiterKey = `${subject}:${ip}`;
   const limitState = enforceRateLimit(limiterKey);
   if (!limitState.allowed) {
-    return json(
+    return finalize(
+      json(
       429,
       {
         error: "تم تجاوز الحد المسموح مؤقتًا، حاول لاحقًا.",
@@ -362,18 +472,34 @@ exports.handler = async (event) => {
       {
         "Retry-After": String(limitState.retryAfterSeconds),
       }
+      ),
+      subject
     );
   }
 
-  if (method === "GET" && path === "/models") {
-    return handleModels(event);
+  try {
+    if (method === "GET" && path === "/models") {
+      return finalize(await handleModels(event), subject);
+    }
+
+    if (method === "POST" && path === "/chat/completions") {
+      return finalize(await handleChatCompletions(event), subject);
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "unexpected_error";
+    return finalize(
+      json(500, {
+        error: "فشل داخلي أثناء تنفيذ طلب الذكاء.",
+      }),
+      subject,
+      message
+    );
   }
 
-  if (method === "POST" && path === "/chat/completions") {
-    return handleChatCompletions(event);
-  }
-
-  return json(404, {
-    error: `المسار غير مدعوم: ${method} ${path}`,
-  });
+  return finalize(
+    json(404, {
+      error: `المسار غير مدعوم: ${method} ${path}`,
+    }),
+    subject
+  );
 };

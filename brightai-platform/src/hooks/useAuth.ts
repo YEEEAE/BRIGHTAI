@@ -14,6 +14,7 @@ import supabase from "../lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import { logSecurityEvent } from "../lib/security";
 import { setUserContext, setUserProperties } from "../lib/analytics";
+import { queueAuthAuditEvent } from "../lib/audit";
 import {
   clearLocalAdminSession,
   getLocalAdminUser,
@@ -227,6 +228,11 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
         type: "auth-blocked",
         message: "تم رفض محاولة تسجيل الدخول بسبب القفل المؤقت.",
       });
+      queueAuthAuditEvent({
+        event: "login_blocked",
+        success: false,
+        meta: { reason: "locked" },
+      });
       return false;
     }
 
@@ -240,6 +246,11 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
       }
       setSessionExpired(false);
       clearLoginState();
+      queueAuthAuditEvent({
+        event: "login_local_admin",
+        success: true,
+        meta: { userId: localUser?.id || "local-admin-user" },
+      });
       return true;
     }
 
@@ -251,8 +262,18 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
         message: "فشل تسجيل الدخول.",
         meta: { reason: error.message },
       });
+      queueAuthAuditEvent({
+        event: "login_failed",
+        success: false,
+        meta: { reason: error.message },
+      });
       return false;
     }
+    queueAuthAuditEvent({
+      event: "login_success",
+      success: true,
+      meta: { email },
+    });
     clearLoginState();
     return true;
   }, [persistUser]);
@@ -267,8 +288,18 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
       },
     });
     if (error) {
+      queueAuthAuditEvent({
+        event: "signup_failed",
+        success: false,
+        meta: { reason: error.message },
+      });
       return false;
     }
+    queueAuthAuditEvent({
+      event: "signup_success",
+      success: true,
+      meta: { email, fullName },
+    });
     return true;
   }, []);
 
@@ -277,6 +308,10 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
     await supabase.auth.signOut();
     const storage = getSessionStorage();
     storage?.removeItem(LAST_ACTIVITY_KEY);
+    queueAuthAuditEvent({
+      event: "logout",
+      success: true,
+    });
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
@@ -368,6 +403,10 @@ export const AuthProvider = ({ children, redirectOnLogout }: AuthProviderProps) 
         logSecurityEvent({
           type: "session-timeout",
           message: "انتهت الجلسة بسبب عدم النشاط.",
+        });
+        queueAuthAuditEvent({
+          event: "session_timeout",
+          success: false,
         });
       }, IDLE_TIMEOUT_MS);
     };
