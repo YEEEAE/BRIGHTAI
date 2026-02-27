@@ -11,6 +11,6 @@ NODE_ENV = "production"
 
 [[redirects]]
 from = "/api/*"
-to = "/.netlify/functions/[...all]"
+to = "/.netlify/functions/all"
 status = 200
 force = true
