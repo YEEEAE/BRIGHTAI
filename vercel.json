@@ -2,10 +2,7 @@
   "framework": null,
   "installCommand": "npm install",
   "buildCommand": "npm run build",
-  "outputDirectory": ".",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/[...all].js" },
-
     { "source": "/brightai-platform/static/:path*", "destination": "/brightai-platform/build/static/:path*" },
     { "source": "/brightai-platform/favicon.ico", "destination": "/brightai-platform/build/favicon.ico" },
     { "source": "/brightai-platform/asset-manifest.json", "destination": "/brightai-platform/build/asset-manifest.json" },
