@@ -1,36 +1,15 @@
 {
-    "rewrites": [
-        {
-            "source": "/brightai-platform/static/:path*",
-            "destination": "/brightai-platform/build/static/:path*"
-        },
-        {
-            "source": "/brightai-platform/favicon.ico",
-            "destination": "/brightai-platform/build/favicon.ico"
-        },
-        {
-            "source": "/brightai-platform/asset-manifest.json",
-            "destination": "/brightai-platform/build/asset-manifest.json"
-        },
-        {
-            "source": "/brightai-platform/manifest.json",
-            "destination": "/brightai-platform/build/manifest.json"
-        },
-        {
-            "source": "/brightai-platform/robots.txt",
-            "destination": "/brightai-platform/build/robots.txt"
-        },
-        {
-            "source": "/brightai-platform/logo192.png",
-            "destination": "/brightai-platform/build/logo192.png"
-        },
-        {
-            "source": "/brightai-platform/logo512.png",
-            "destination": "/brightai-platform/build/logo512.png"
-        },
-        {
-            "source": "/brightai-platform/:path*",
-            "destination": "/brightai-platform/build/index.html"
-        }
-    ]
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/brightai-platform/static/:path*", "destination": "/brightai-platform/build/static/:path*" },
+    { "source": "/brightai-platform/favicon.ico", "destination": "/brightai-platform/build/favicon.ico" },
+    { "source": "/brightai-platform/asset-manifest.json", "destination": "/brightai-platform/build/asset-manifest.json" },
+    { "source": "/brightai-platform/manifest.json", "destination": "/brightai-platform/build/manifest.json" },
+    { "source": "/brightai-platform/robots.txt", "destination": "/brightai-platform/build/robots.txt" },
+    { "source": "/brightai-platform/logo192.png", "destination": "/brightai-platform/build/logo192.png" },
+    { "source": "/brightai-platform/logo512.png", "destination": "/brightai-platform/build/logo512.png" },
+    { "source": "/brightai-platform/:path*", "destination": "/brightai-platform/build/index.html" }
+  ]
 }
