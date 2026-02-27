@@ -11,6 +11,7 @@ const path = require('path');
 const { config, validateConfig } = require('./config');
 const { rateLimiterMiddleware } = require('./middleware/rateLimiter');
 const { chatHandler } = require('./routes/chat');
+const { geminiChatHandler } = require('./routes/gemini');
 const { searchHandler } = require('./routes/search');
 const { medicalHandler } = require('./routes/medical');
 const { summaryHandler } = require('./routes/summary');
@@ -289,7 +290,9 @@ async function handleRequest(req, res) {
     }
 
     // Route requests
-    if (method === 'POST' && url === '/api/ai/chat') {
+    if (method === 'POST' && url === '/api/gemini/chat') {
+      await geminiChatHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/ai/chat') {
       await chatHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/search') {
       await searchHandler(ctx.req, ctx.res);
@@ -401,6 +404,7 @@ function startServer() {
     console.log(`BrightAI Server running on port ${config.server.port}`);
     console.log(`Environment: ${config.server.nodeEnv}`);
     console.log('Endpoints:');
+    console.log('  POST /api/gemini/chat - Gemini chat gateway (session + suggestions)');
     console.log('  POST /api/ai/chat    - Chatbot conversations');
     console.log('  POST /api/ai/search  - Smart search');
     console.log('  POST /api/ai/medical - Medical image analysis');

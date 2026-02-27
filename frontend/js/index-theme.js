@@ -978,14 +978,13 @@
     const chatInput = document.getElementById('chatInput');
     const chatSend = document.getElementById('chatSend');
     const typing = document.getElementById('typing');
-    const chatApiEndpoint = '/api/ai/chat';
-    const chatSearchEndpoint = '/api/ai/search';
+    const chatApiEndpoint = '/api/gemini/chat';
+    const CHAT_REQUEST_TIMEOUT_MS = 12000;
 
     if (chatFab && chatWindow) {
         const CHAT_FAB_DELAY_MS = 3000;
         let chatSessionId = null;
         let isSending = false;
-        const chatHistory = [];
 
         chatFab.style.visibility = 'hidden';
         chatFab.style.opacity = '0';
@@ -1005,11 +1004,9 @@
         function getShortQuickReply(label) {
             const compact = (label || '').replace(/[؟?!.,،]/g, '').trim();
             const words = compact.split(/\s+/).filter(Boolean);
-
             if (window.innerWidth > 768 || words.length <= 3) {
                 return label;
             }
-
             return words.slice(0, 3).join(' ');
         }
 
@@ -1019,6 +1016,200 @@
                 btn.dataset.fullText = fullText;
                 btn.textContent = getShortQuickReply(fullText);
             });
+        }
+
+        function setSendingState(sending) {
+            isSending = sending;
+            if (chatSend) chatSend.disabled = sending;
+            if (chatInput) chatInput.disabled = sending;
+        }
+
+        function showTyping() {
+            if (!chatBody || !typing) return;
+            typing.style.display = 'flex';
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function hideTyping() {
+            if (typing) typing.style.display = 'none';
+        }
+
+        function addMsg(text, who = 'user') {
+            if (!chatBody || !typing) return null;
+            const div = document.createElement('div');
+            div.className = 'msg ' + who;
+            div.textContent = text;
+            chatBody.insertBefore(div, typing);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            return div;
+        }
+
+        function createQuickReplyButton(text, isRetry = false) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors';
+            button.dataset.q = text;
+            button.dataset.fullText = text;
+            if (isRetry) button.dataset.retry = '1';
+            button.textContent = getShortQuickReply(text);
+            return button;
+        }
+
+        function addErrorMessageWithActions(message, retryMessage) {
+            if (!chatBody || !typing) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg bot';
+            wrapper.textContent = message;
+
+            const actions = document.createElement('div');
+            actions.className = 'quick-replies flex flex-wrap gap-2 mt-3';
+            const retryButton = createQuickReplyButton('حاول مجدداً', true);
+            if (retryMessage) {
+                retryButton.dataset.q = retryMessage;
+            }
+            actions.appendChild(retryButton);
+
+            const whatsappLink = document.createElement('a');
+            whatsappLink.className = 'qbtn px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-xs text-emerald-300 hover:bg-emerald-500/20 transition-colors';
+            whatsappLink.href = 'https://wa.me/966538229013';
+            whatsappLink.target = '_blank';
+            whatsappLink.rel = 'noopener noreferrer';
+            whatsappLink.textContent = 'واتساب مباشر';
+            actions.appendChild(whatsappLink);
+
+            const contactLink = document.createElement('a');
+            contactLink.className = 'qbtn px-3 py-1.5 bg-slate-500/10 border border-slate-500/20 rounded-lg text-xs text-slate-300 hover:bg-slate-500/20 transition-colors';
+            contactLink.href = '/frontend/pages/contact/index.html';
+            contactLink.textContent = 'صفحة التواصل';
+            actions.appendChild(contactLink);
+
+            wrapper.appendChild(actions);
+            chatBody.insertBefore(wrapper, typing);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            applyResponsiveQuickReplies();
+        }
+
+        function renderSuggestions(suggestions) {
+            if (!chatBody || !typing || !Array.isArray(suggestions)) return;
+
+            const cleanSuggestions = suggestions
+                .map((item) => String(item || '').trim())
+                .filter(Boolean)
+                .slice(0, 3);
+
+            if (!cleanSuggestions.length) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg bot';
+
+            const intro = document.createElement('div');
+            intro.textContent = 'تقدر تكمل معي بأي سؤال من هذي الخيارات:';
+            wrapper.appendChild(intro);
+
+            const replies = document.createElement('div');
+            replies.className = 'quick-replies flex flex-wrap gap-2 mt-3';
+            cleanSuggestions.forEach((suggestion) => {
+                replies.appendChild(createQuickReplyButton(suggestion));
+            });
+
+            wrapper.appendChild(replies);
+            chatBody.insertBefore(wrapper, typing);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            applyResponsiveQuickReplies();
+        }
+
+        function mapErrorMessage(error) {
+            const statusCode = Number(error?.statusCode || error?.status || 0);
+            const errorCode = String(error?.errorCode || '').toUpperCase();
+            const message = String(error?.message || '').toLowerCase();
+
+            if (statusCode === 429 || errorCode.includes('RATE_LIMIT')) {
+                return 'ضغط عالي على الخدمة حالياً. انتظر لحظة ثم جرّب مجدداً.';
+            }
+            if (statusCode === 408 || message.includes('timeout') || error?.name === 'AbortError') {
+                return 'الرد تأخر أكثر من المتوقع. تقدر تعيد المحاولة الآن.';
+            }
+            if (message.includes('network') || message.includes('fetch')) {
+                return 'صار انقطاع في الاتصال بالشبكة. تأكد من الإنترنت ثم حاول مرة ثانية.';
+            }
+            return 'تعذر إكمال الطلب حالياً. نقدر نخدمك مباشرة عبر واتساب أو صفحة التواصل.';
+        }
+
+        async function sendChatMessage(question, options = {}) {
+            const normalized = String(question || '').trim();
+            if (!normalized || isSending) return;
+
+            if (options.echoUser !== false) {
+                addMsg(normalized, 'user');
+            }
+
+            if (!chatBody || !typing || !chatSend) {
+                addErrorMessageWithActions(
+                    'الخدمة غير جاهزة حالياً. تواصل معنا مباشرة عبر واتساب.',
+                    normalized
+                );
+                return;
+            }
+
+            setSendingState(true);
+            showTyping();
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS);
+                let response;
+
+                try {
+                    response = await fetch(chatApiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: normalized,
+                            sessionId: chatSessionId
+                        }),
+                        signal: controller.signal
+                    });
+                } finally {
+                    clearTimeout(timeoutId);
+                }
+
+                let payload = {};
+                try {
+                    payload = await response.json();
+                } catch (_error) {
+                    payload = {};
+                }
+
+                if (!response.ok) {
+                    const requestError = new Error(payload?.error || `HTTP ${response.status}`);
+                    requestError.statusCode = response.status;
+                    requestError.errorCode = payload?.errorCode;
+                    throw requestError;
+                }
+
+                if (payload?.sessionId) {
+                    chatSessionId = payload.sessionId;
+                }
+
+                const reply = String(payload?.reply || '').trim();
+                if (!reply) {
+                    const emptyReplyError = new Error('empty_reply');
+                    emptyReplyError.statusCode = 502;
+                    throw emptyReplyError;
+                }
+
+                addMsg(reply, 'bot');
+                renderSuggestions(payload?.suggestions);
+            } catch (error) {
+                console.error('Gemini support request error:', error);
+                addErrorMessageWithActions(mapErrorMessage(error), normalized);
+            } finally {
+                hideTyping();
+                setSendingState(false);
+            }
         }
 
         applyResponsiveQuickReplies();
@@ -1034,6 +1225,7 @@
                 if (chatInput) setTimeout(() => chatInput.focus(), 80);
             }
         }
+
         chatFab.addEventListener('click', toggleChat);
         chatClose?.addEventListener('click', () => {
             chatWindow.classList.remove('active', 'show');
@@ -1057,176 +1249,30 @@
             chatWindow.setAttribute('aria-hidden', 'true');
         });
 
-        function addMsg(text, who = 'user') {
-            if (!chatBody || !typing) return null;
-            const div = document.createElement('div');
-            div.className = 'msg ' + who;
-            div.textContent = text;
-            chatBody.insertBefore(div, typing);
-            chatBody.scrollTop = chatBody.scrollHeight;
-            return div;
-        }
-
-        function pushChatHistory(sender, text) {
-            const normalized = String(text || '').trim();
-            if (!normalized) return;
-            chatHistory.push({ sender, text: normalized });
-            if (chatHistory.length > 12) {
-                chatHistory.splice(0, chatHistory.length - 12);
-            }
-        }
-
-        function normalizeIntentText(value) {
-            return String(value || '')
-                .toLowerCase()
-                .replace(/[؟?!.,،]/g, ' ')
-                .replace(/\s+/g, ' ')
-                .trim();
-        }
-
-        function buildSmartIntentReply(question) {
-            const q = normalizeIntentText(question);
-            const links = {
-                services: '/frontend/pages/our-products/index.html',
-                automation: '/frontend/pages/smart-automation/index.html',
-                data: '/frontend/pages/data-analysis/index.html',
-                aiagent: '/frontend/pages/ai-agent/index.html',
-                consultation: '/frontend/pages/consultation/index.html',
-                contact: '/frontend/pages/contact/index.html'
-            };
-
-            if (/(خدم|خدمات|وش تقدمون|ما تقدمون|حلولكم)/.test(q)) {
-                return `أكيد. خدماتنا الأساسية:\n1) AIaaS وحلول مخصصة للمؤسسات\n2) أتمتة العمليات الذكية\n3) تحليل البيانات ولوحات KPI\n4) وكلاء ذكاء اصطناعي للدعم والتشغيل\nالتفاصيل: ${links.services}`;
-            }
-
-            if (/(استشار|استشاره|استشارة|حجز|موعد|جلسه|جلسة)/.test(q)) {
-                return `ممتاز. نقدر نبدأ بجلسة استشارية سريعة لتحديد:\n- القطاع\n- التحدي التشغيلي\n- مؤشرات النجاح\nاحجز من هنا: ${links.consultation}\nأو تواصل مباشر: https://wa.me/966538229013`;
-            }
-
-            if (/(سعر|تكلف|باقه|باقة|عرض سعر|عرض)/.test(q)) {
-                return `التكلفة تعتمد على نطاق المشروع والتكامل المطلوب. نوصي بجلسة تقييم قصيرة ثم نرفع تصور تنفيذي واضح. ابدأ من: ${links.consultation}`;
-            }
-
-            if (/(اتمت|أتمت|workflow|سير عمل|تشغيل|rpa)/.test(q)) {
-                return `لو هدفك تقليل الجهد اليدوي ورفع الإنتاجية، مسار الأتمتة هو الأنسب. نبدأ بتحليل العمليات ثم نحدد حالات الاستخدام ذات العائد الأعلى. التفاصيل: ${links.automation}`;
-            }
-
-            if (/(بيان|kpi|dashboard|لوحه|لوحة|تحليل)/.test(q)) {
-                return `ممتاز. نقدر نبني لك مسار بيانات من المصدر إلى لوحة تنفيذية واضحة تساعد الإدارة بالقرار. اطلع على الحل: ${links.data}`;
-            }
-
-            if (/(وكيل|chatbot|شات بوت|دعم فني|مساعد)/.test(q)) {
-                return `نقدر نوفر وكيل ذكي للدعم الفني يجاوب العملاء، يصنف الطلبات، ويرفع التذاكر لفريقك تلقائياً. نظرة عامة: ${links.aiagent}`;
-            }
-
-            if (/(تواصل|رقم|ايميل|بريد|واتساب|whatsapp)/.test(q)) {
-                return `تواصل معنا عبر صفحة الاتصال: ${links.contact}\nواتساب مباشر: https://wa.me/966538229013\nالهاتف: +966 53 822 9013`;
-            }
-
-            return 'فهمت عليك. اكتب لي القطاع (مثل: صحي/تجزئة/صناعة) والهدف (مثل: خفض التكاليف/أتمتة/تحسين خدمة العملاء) وبعطيك خطة مناسبة مباشرة.';
-        }
-
-        async function trySearchFallback(question) {
-            try {
-                const response = await fetch(chatSearchEndpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: question })
-                });
-                if (!response.ok) return '';
-                const payload = await response.json();
-                const answer = typeof payload?.answer === 'string' ? payload.answer.trim() : '';
-                if (!answer) return '';
-
-                const topSource = Array.isArray(payload.sources) && payload.sources.length
-                    ? payload.sources[0]
-                    : null;
-                if (topSource?.url) {
-                    return `${answer}\n\nمرجع مفيد: ${topSource.url}`;
-                }
-                return answer;
-            } catch (_error) {
-                return '';
-            }
-        }
-
-        async function fetchGeminiReply(question) {
-            if (!chatBody || !typing || !chatSend) {
-                addMsg(buildSmartIntentReply(question), 'bot');
-                return;
-            }
-            typing.style.display = 'flex';
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            try {
-                const response = await fetch(chatApiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: question,
-                        sessionId: chatSessionId,
-                        history: chatHistory.slice(-8)
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Gemini request failed: ${response.status}`);
-                }
-
-                const payload = await response.json();
-                if (payload?.sessionId) {
-                    chatSessionId = payload.sessionId;
-                }
-
-                const reply = typeof payload?.reply === 'string' ? payload.reply.trim() : '';
-                if (!reply) {
-                    throw new Error('Gemini response is empty');
-                }
-
-                addMsg(reply, 'bot');
-                pushChatHistory('user', question);
-                pushChatHistory('ai', reply);
-            } catch (error) {
-                console.error('Gemini support request error:', error);
-                const searchFallback = await trySearchFallback(question);
-                const fallback = searchFallback || buildSmartIntentReply(question);
-                addMsg(fallback, 'bot');
-                pushChatHistory('user', question);
-                pushChatHistory('ai', fallback);
-            } finally {
-                typing.style.display = 'none';
-            }
-        }
-
         chatSend?.addEventListener('click', async () => {
-            if (!chatInput) return;
-            if (isSending) return;
-            const v = chatInput.value.trim();
-            if (!v) return;
-            addMsg(v, 'user');
+            if (!chatInput || isSending) return;
+            const value = chatInput.value.trim();
+            if (!value) return;
             chatInput.value = '';
-            isSending = true;
-            chatSend.disabled = true;
-            await fetchGeminiReply(v);
-            isSending = false;
-            chatSend.disabled = false;
+            await sendChatMessage(value, { echoUser: true });
         });
-        chatInput?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') chatSend?.click();
+
+        chatInput?.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            event.preventDefault();
+            if (!chatInput || !chatInput.value.trim()) return;
+            chatSend?.click();
         });
-        document.querySelectorAll('.qbtn').forEach(b => {
-            b.addEventListener('click', async () => {
-                if (isSending) return;
-                const q = b.dataset.q;
-                addMsg(q, 'user');
-                isSending = true;
-                if (chatSend) chatSend.disabled = true;
-                await fetchGeminiReply(q);
-                isSending = false;
-                if (chatSend) chatSend.disabled = false;
-            });
+
+        chatBody?.addEventListener('click', async (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const quickButton = target.closest('button.qbtn[data-q]');
+            if (!quickButton || isSending) return;
+            const question = String(quickButton.dataset.q || '').trim();
+            if (!question) return;
+            const isRetry = quickButton.dataset.retry === '1';
+            await sendChatMessage(question, { echoUser: !isRetry });
         });
 
         window.addEventListener('resize', applyResponsiveQuickReplies);
