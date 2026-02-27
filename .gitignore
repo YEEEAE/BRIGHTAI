@@ -56,3 +56,25 @@ backups/
 
 # Local Netlify folder
 .netlify
+
+# === ملفات البيئة - يجب عدم رفعها ===
+
+.env
+
+.env.local
+
+.env.*.local
+
+.env.production
+
+.env.staging
+
+.env.example.local
+
+brightai-platform/.env.production
+
+brightai-platform/.env.local
+
+frontend/env.js
+
+env.js

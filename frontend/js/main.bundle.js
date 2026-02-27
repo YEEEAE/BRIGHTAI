@@ -491,6 +491,8 @@
             this.input = document.querySelector('.chat-input');
             this.sendBtn = document.querySelector('.chat-send');
             this.messagesContainer = document.querySelector('.chat-messages');
+            this.sessionId = null;
+            this.isSending = false;
 
             const externallyManaged = (
                 this.toggle?.dataset?.chatController === 'index-theme'
@@ -532,25 +534,29 @@
             this.window.classList.remove('active');
         }
 
-        sendMessage() {
+        async sendMessage() {
             const message = this.input?.value.trim();
-            if (!message) return;
+            if (!message || this.isSending) return;
 
-            // Add user message
             this.addMessage(message, 'user');
             this.input.value = '';
 
-            // Auto reply (demo-only, explicit opt-in)
-            setTimeout(() => {
-                const replies = [
-                    'شكراً لتواصلك! سيقوم فريقنا بالرد قريباً.',
-                    'مرحباً! كيف يمكننا مساعدتك اليوم؟',
-                    'نحن هنا لمساعدتك. يمكنك أيضاً التواصل معنا عبر واتساب.',
-                    'ممتاز! سنتواصل معك في أقرب وقت.'
-                ];
-                const reply = replies[Math.floor(Math.random() * replies.length)];
-                this.addMessage(reply, 'bot');
-            }, 1000);
+            this.isSending = true;
+
+            try {
+                const res = await fetch('/api/gemini/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, sessionId: this.sessionId })
+                });
+                const data = await res.json();
+                if (data.sessionId) this.sessionId = data.sessionId;
+                this.addMessage(data.reply || 'عذراً، حدث خطأ', 'bot');
+            } catch {
+                this.addMessage('تعذر الاتصال حالياً.', 'bot');
+            } finally {
+                this.isSending = false;
+            }
         }
 
         addMessage(text, type) {
@@ -1057,6 +1063,8 @@
             this.sendBtn = document.getElementById('sendButton');
             this.messages = document.getElementById('chatMessages');
             this.quickActions = document.querySelectorAll('.quick-action-btn');
+            this.sessionId = null;
+            this.isSending = false;
 
             if (this.toggle && this.widget) this.init();
         }
@@ -1125,30 +1133,41 @@
             this.overlay?.classList.remove('active');
         }
 
-        sendMessage() {
+        async sendMessage() {
             const text = this.input?.value.trim();
-            if (!text) return;
+            if (!text || this.isSending) return;
 
             // Add user message
             this.addMessage(text, 'user');
             this.input.value = '';
+            this.isSending = true;
             if (this.sendBtn) this.sendBtn.disabled = true;
 
             // Add typing indicator
             this.showTyping();
 
-            // Simulate AI response
-            setTimeout(() => {
+            try {
+                const response = await fetch('/api/gemini/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        sessionId: this.sessionId
+                    })
+                });
+                const data = await response.json().catch(() => ({}));
+                if (data.sessionId) this.sessionId = data.sessionId;
+                this.addMessage(data.reply || 'عذراً، حدث خطأ', 'bot');
+            } catch {
+                this.addMessage('تعذر الاتصال حالياً.', 'bot');
+            } finally {
                 this.hideTyping();
-                const responses = [
-                    'شكراً لتواصلك! مساعدك الذكي Yazeed AI جاهز لمساعدتك.',
-                    'سأقوم بتحليل طلبك والرد عليك. كيف يمكنني مساعدتك أكثر؟',
-                    'ممتاز! يمكنني مساعدتك في خدمات الذكاء الاصطناعي وتحليل البيانات.',
-                    'لمزيد من المعلومات، يمكنك التواصل معنا عبر واتساب على الرقم: +966538229013'
-                ];
-                const response = responses[Math.floor(Math.random() * responses.length)];
-                this.addMessage(response, 'bot');
-            }, 1500);
+                this.isSending = false;
+                if (this.sendBtn) {
+                    this.sendBtn.disabled = !this.input?.value.trim();
+                }
+                this.input?.focus();
+            }
         }
 
         addMessage(text, type) {
@@ -1165,16 +1184,19 @@
         }
 
         showTyping() {
+            if (!this.messages) return;
+            const existingTyping = this.messages.querySelector('.typing-indicator[data-full-chat-typing="1"]');
+            if (existingTyping) return;
             const typing = document.createElement('div');
             typing.className = 'typing-indicator';
-            typing.id = 'typingIndicator';
+            typing.dataset.fullChatTyping = '1';
             typing.innerHTML = '<span></span><span></span><span></span>';
-            this.messages?.appendChild(typing);
+            this.messages.appendChild(typing);
             this.messages.scrollTop = this.messages.scrollHeight;
         }
 
         hideTyping() {
-            document.getElementById('typingIndicator')?.remove();
+            this.messages?.querySelector('.typing-indicator[data-full-chat-typing="1"]')?.remove();
         }
     }
 
