@@ -14,8 +14,10 @@
 }
 
 body {
-    background-color: var(--gradient-fallback, #8B5CF6);
-    background: var(--main-gradient, linear-gradient(135deg, #EC4899, #8B5CF6, #6366F1));
+    background-color: var(--page-bg-fallback, #020617);
+    background: var(--page-bg-gradient,
+            radial-gradient(1200px 700px at 75% -10%, rgba(56, 189, 248, .18), transparent 60%),
+            linear-gradient(180deg, #020617 0%, #0b1120 100%));
     background-attachment: fixed;
     background-size: cover;
     color: var(--text-primary);
