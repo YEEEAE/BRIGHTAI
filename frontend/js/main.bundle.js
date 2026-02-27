@@ -498,6 +498,17 @@
             );
             if (externallyManaged) return;
 
+            const explicitlyDemoEnabled = (
+                this.toggle?.dataset?.chatMode === 'demo'
+                || this.window?.dataset?.chatMode === 'demo'
+            );
+            if (!explicitlyDemoEnabled) {
+                if (this.toggle && this.window) {
+                    console.warn('[ChatWidget] Demo mode is disabled by default. Use data-chat-controller="index-theme" for Gemini, or set data-chat-mode="demo" to opt in.');
+                }
+                return;
+            }
+
             if (this.toggle && this.window) this.init();
         }
 
@@ -529,7 +540,7 @@
             this.addMessage(message, 'user');
             this.input.value = '';
 
-            // Auto reply (demo)
+            // Auto reply (demo-only, explicit opt-in)
             setTimeout(() => {
                 const replies = [
                     'شكراً لتواصلك! سيقوم فريقنا بالرد قريباً.',

@@ -1,14 +1,10 @@
-[[redirects]]
-  from = "/brightai-platform/static/*"
-  to = "/brightai-platform/build/static/:splat"
-  status = 200
+[build]
+command = "npm install --prefix backend"
+publish = "."
 
-[[redirects]]
-  from = "/brightai-platform/*"
-  to = "/brightai-platform/build/:splat"
-  status = 200
+[functions]
+directory = "api"
+node_bundler = "esbuild"
 
-[[redirects]]
-  from = "/brightai-platform/*"
-  to = "/brightai-platform/build/index.html"
-  status = 200
+[context.production.environment]
+NODE_ENV = "production"
