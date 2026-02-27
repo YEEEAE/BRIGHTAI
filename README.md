@@ -145,7 +145,7 @@ git pull --rebase origin main
 **Description:**  
 تعريب ملف `docs/pr/netlify-source-of-truth.md` ثم كتابة هذا السجل داخل `README.md` بحيث يكون مرجع تنفيذي واضح داخل المشروع.
 
-**Terminal Commands:**
+**Terminal Commands:** 
 ```bash
 nl -ba docs/pr/netlify-source-of-truth.md | sed -n '1,260p'
 ```
