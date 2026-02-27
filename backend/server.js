@@ -297,8 +297,16 @@ async function handleRequest(req, res) {
       await medicalHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/summary') {
       await summaryHandler(ctx.req, ctx.res);
-    } else if (method === 'POST' && url === '/api/ai/openai-chat') {
+    } else if (method === 'POST' && (url === '/api/ai/openai-chat' || url === '/api/ai/chat/completions')) {
       await groqOpenAiCompatHandler(ctx.req, ctx.res);
+    } else if (method === 'GET' && url === '/api/ai/models') {
+      ctx.res.status(200).json({
+        object: 'list',
+        data: [
+          { id: 'gemini-2.5-flash', object: 'model', owned_by: 'google' },
+          { id: 'gemini-1.5-pro', object: 'model', owned_by: 'google' }
+        ]
+      });
     } else if (method === 'POST' && url === '/api/ai/stream') {
       await groqStreamHandler(ctx.req, ctx.res, res);
     } else if (method === 'POST' && url === '/api/ai/ocr') {
@@ -398,6 +406,8 @@ function startServer() {
     console.log('  POST /api/ai/medical - Medical image analysis');
     console.log('  POST /api/ai/summary - Text summarization');
     console.log('  POST /api/ai/openai-chat - OpenAI-compatible chat payload');
+    console.log('  POST /api/ai/chat/completions - OpenAI-compatible alias');
+    console.log('  GET  /api/ai/models - Model catalog');
     console.log('  POST /api/ai/stream   - Streaming AI responses');
     console.log('  POST /api/ai/ocr      - OCR JSON extraction');
     console.log('  POST /api/ai/extract-text - Extract plain text from file');

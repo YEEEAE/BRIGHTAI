@@ -254,6 +254,38 @@ function decodePathFromLoc(loc) {
   }
 }
 
+function normalizeFsPath(candidate) {
+  return candidate.replace(/\\/g, "/").replace(/\/+/g, "/").replace(/^\.\//, "");
+}
+
+function addCandidate(candidates, candidate) {
+  const normalized = normalizeFsPath(candidate);
+  if (!normalized || normalized === ".") return;
+  candidates.add(normalized);
+}
+
+function buildLocalFileCandidates(decodedPath) {
+  const localPath = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
+  const candidates = new Set();
+
+  addCandidate(candidates, localPath);
+
+  if (!path.extname(localPath)) {
+    addCandidate(candidates, `${localPath}.html`);
+    addCandidate(candidates, path.join(localPath, "index.html"));
+  }
+
+  if (!localPath.startsWith("frontend/pages/")) {
+    addCandidate(candidates, path.join("frontend/pages", localPath));
+    if (!path.extname(localPath)) {
+      addCandidate(candidates, path.join("frontend/pages", `${localPath}.html`));
+      addCandidate(candidates, path.join("frontend/pages", localPath, "index.html"));
+    }
+  }
+
+  return Array.from(candidates);
+}
+
 async function readFileSafe(file) {
   try {
     const content = await fs.readFile(path.join(ROOT, file), "utf8");
@@ -432,11 +464,21 @@ async function checkSitemap() {
       continue;
     }
 
-    const localPath = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
-    try {
-      await fs.access(path.join(ROOT, localPath));
-    } catch {
-      result.errors.push(`Sitemap points to a missing file: ${loc} -> ${localPath}`);
+    const localCandidates = buildLocalFileCandidates(decodedPath);
+    let resolved = false;
+    for (const candidate of localCandidates) {
+      try {
+        await fs.access(path.join(ROOT, candidate));
+        resolved = true;
+        break;
+      } catch {
+        // Try next candidate.
+      }
+    }
+
+    if (!resolved) {
+      const primary = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
+      result.errors.push(`Sitemap points to a missing file: ${loc} -> ${primary}`);
     }
   }
 

@@ -7,6 +7,7 @@
 const { config, isApiKeyConfigured } = require('../config');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 const { retryWithBackoff, getArabicErrorMessage } = require('../utils/errorHandler');
+const { searchSiteWithRag } = require('../services/ragSearch');
 
 // Arabic error messages
 const ERROR_MESSAGES = {
@@ -78,7 +79,28 @@ wa.me/966538229013
 // Legacy system prompt (kept for backward compatibility)
 const SYSTEM_PROMPT = ENTERPRISE_SYSTEM_PROMPT;
 
-function buildLocalSupportReply(message) {
+async function buildLocalSupportReply(message) {
+  try {
+    const rag = await searchSiteWithRag(message, {
+      maxSources: 4,
+      retrievalLimit: 8,
+      disableGeneration: true
+    });
+
+    if (rag && typeof rag.answer === 'string' && rag.answer.trim()) {
+      const topSources = Array.isArray(rag.sources) ? rag.sources.slice(0, 2) : [];
+      if (topSources.length > 0) {
+        const links = topSources
+          .map(source => `${source.title || 'مرجع'}: ${source.url || ''}`)
+          .join('\n');
+        return `${rag.answer}\n\nمراجع مقترحة:\n${links}`;
+      }
+      return rag.answer;
+    }
+  } catch (error) {
+    // Fall back to static support message below.
+  }
+
   const q = String(message || '').toLowerCase();
 
   if (q.includes('خدمات') || q.includes('service')) {
@@ -253,7 +275,7 @@ async function chatHandler(req, res) {
     
     // Keep support bot available even when provider is temporarily unavailable.
     if ([401, 403, 429, 500, 502, 503].includes(statusCode)) {
-      const fallbackReply = buildLocalSupportReply(req?.body?.message || '');
+      const fallbackReply = await buildLocalSupportReply(req?.body?.message || '');
       return res.status(200).json({
         reply: fallbackReply,
         sessionId: req?.body?.sessionId || generateSessionId(),

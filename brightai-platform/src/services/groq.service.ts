@@ -73,7 +73,7 @@ type TokenTotals = {
 
 const DEFAULT_TIMEOUT_MS = 30000;
 const DEFAULT_RETRIES = 3;
-const BASE_URL = "https://api.groq.com/openai/v1";
+const BASE_URL = "/api/ai";
 
 const MODEL_CATALOG: ModelInfo[] = [
   {

@@ -1737,6 +1737,27 @@ async function groqOpenAiCompatHandler(req, res) {
     return res.status(200).json(data);
   } catch (error) {
     const statusCode = error.statusCode || 500;
+    if ([401, 403, 429, 500, 502, 503].includes(statusCode)) {
+      const message = Array.isArray(req?.body?.messages) && req.body.messages.length
+        ? String(req.body.messages[req.body.messages.length - 1]?.content || '')
+        : String(req?.body?.prompt || '');
+      const fallbackText = message && message.trim()
+        ? `تم استلام سؤالك: "${message.slice(0, 220)}". حالياً نعمل بوضع خدمة احتياطي، وسنقدّم ملخصاً تنفيذياً فور تحديث الاتصال.`
+        : 'تم تفعيل وضع الخدمة الاحتياطي. شاركني السؤال وسأقدّم لك ملخصاً عملياً.';
+
+      return res.status(200).json({
+        choices: [
+          {
+            message: {
+              role: 'assistant',
+              content: fallbackText
+            },
+            finish_reason: 'stop'
+          }
+        ]
+      });
+    }
+
     return res.status(statusCode).json({
       error: 'حدث خطأ أثناء تنفيذ الطلب الذكي',
       errorCode: error.code || 'AI_COMPAT_ERROR'

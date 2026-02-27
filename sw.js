@@ -1,5 +1,5 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-02-06-1';
+const CACHE_VERSION = '2026-02-27-2';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
 

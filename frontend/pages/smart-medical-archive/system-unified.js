@@ -28,7 +28,7 @@
   const GROQ_API_URL = "/api/ai/openai-chat";
   const GROQ_TRANSCRIPTION_URL = "/api/ai/transcribe";
   const GROQ_DEFAULT_MODEL = "llama3-70b-8192";
-  const GROQ_HARDCODED_KEY = "GROQ_KEY_REDACTED";
+  const GROQ_HARDCODED_KEY = "";
   const GROQ_DIRECT_TIMEOUT_MS = 60000;
 
   const MAX_SINGLE_FILE_BYTES = 25 * 1024 * 1024;

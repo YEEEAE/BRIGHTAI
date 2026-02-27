@@ -374,7 +374,7 @@ export class ApiKeyService {
             Authorization: `Bearer ${key}`,
           };
           return {
-            url: "https://api.groq.com/openai/v1/models",
+            url: "/api/ai/models",
             options: {
               method: "GET",
               headers,

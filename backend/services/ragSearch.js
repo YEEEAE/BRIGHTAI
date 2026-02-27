@@ -634,7 +634,7 @@ async function searchSiteWithRag(query, options = {}) {
     };
   }
 
-  if (!isGeminiConfigured()) {
+  if (options.disableGeneration === true || !isGeminiConfigured()) {
     return {
       answer: fallbackAnswer(safeQuery, matches),
       sources: matches.slice(0, 4).map(item => ({

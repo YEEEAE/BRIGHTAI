@@ -4512,9 +4512,10 @@
 
             // --- CONFIG ---
             this.config = {
-                groqApiKey: 'GROQ_KEY_REDACTED',
-                groqModel: 'llama-3.3-70b-versatile',
-                steps: [
+                groqApiKey: '',
+                
+                useProxyApi: true,
+steps: [
                     { id: 1, title: 'البيانات', icon: 'fa-user-plus' },
                     { id: 2, title: 'السيرة الذاتية', icon: 'fa-file-upload' },
                     { id: 3, title: 'التحليل', icon: 'fa-brain' },
@@ -4549,7 +4550,7 @@
                 this.dom.interviewModal = document.getElementById('interviewModal');
                 this.dom.interviewModalContent = document.getElementById('interviewModalContent');
 
-                if (!this.config.groqApiKey || !this.config.groqApiKey.startsWith('gsk_')) {
+                if (!this.config.useProxyApi && (!this.config.groqApiKey || !this.config.groqApiKey.startsWith('gsk_'))) {
                     this.showNotification('تنبيه: مفتاح Groq API غير صحيح. لن تعمل ميزات الذكاء الاصطناعي.', 'error');
                 }
 
@@ -4617,7 +4618,7 @@
             };
 
             this.callGroqAPI = async (prompt) => {
-                if (!this.config.groqApiKey || !this.config.groqApiKey.startsWith('gsk_')) {
+                if (!this.config.useProxyApi && (!this.config.groqApiKey || !this.config.groqApiKey.startsWith('gsk_'))) {
                     throw new Error("Groq API key is not configured correctly.");
                 }
                 const url = '/api/ai/openai-chat';
