@@ -1,10 +1,10 @@
 (function () {
   "use strict";
 
-  const API_PATH = "/api/groq/medical-archive";
-  const API_OCR_TEXT_PATH = "/api/groq/extract-text";
-  const API_TRANSCRIBE_PATH = "/api/groq/transcribe";
-  const API_AGENT_PATH = "/api/groq/medical-agent";
+  const API_PATH = "/api/ai/medical-archive";
+  const API_OCR_TEXT_PATH = "/api/ai/extract-text";
+  const API_TRANSCRIBE_PATH = "/api/ai/transcribe";
+  const API_AGENT_PATH = "/api/ai/medical-agent";
   const WHATSAPP_NUMBER = "966538229013";
   const MAX_REPORT_CHARS = 12000;
   const API_TIMEOUT_MS = 30000;
@@ -25,8 +25,8 @@
   const STORAGE_GROQ_API_KEY = "brightai.medicalArchive.groqApiKey";
   const STORAGE_GROQ_MODEL_KEY = "brightai.medicalArchive.groqModel";
 
-  const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-  const GROQ_TRANSCRIPTION_URL = "https://api.groq.com/openai/v1/audio/transcriptions";
+  const GROQ_API_URL = "/api/ai/openai-chat";
+  const GROQ_TRANSCRIPTION_URL = "/api/ai/transcribe";
   const GROQ_DEFAULT_MODEL = "llama3-70b-8192";
   const GROQ_HARDCODED_KEY = "GROQ_KEY_REDACTED";
   const GROQ_DIRECT_TIMEOUT_MS = 60000;
@@ -1294,7 +1294,7 @@
     }
 
     if (hasDirectGroqConfig()) {
-      return { mode: "direct", base: "https://api.groq.com" };
+      return { mode: "direct", base: "/api/ai" };
     }
 
     return { mode: "none", base: "" };

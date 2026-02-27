@@ -21,13 +21,6 @@ const GROQ_STREAM_TIMEOUT_MS = Math.max(
   1000,
   Number(config.groq.streamTimeoutMs) || 30000
 );
-const ALLOWED_GROQ_MODELS = new Set([
-  'llama-3.3-70b-versatile',
-  'llama3-70b-8192',
-  'llama3-8b-8192',
-  'mixtral-8x7b-32768',
-  'gemma2-9b-it'
-]);
 
 const DEMO_SYSTEM_PROMPT = `
 أنت مستشار أعمال سعودي لشركة Bright AI. هدفك تقديم مخرجات عملية ومختصرة لصناع القرار.
@@ -137,18 +130,17 @@ function resolveGroqApiKey(req) {
 
 function resolveGroqModel(req) {
   const body = req && req.body && typeof req.body === 'object' ? req.body : {};
-  const candidate = String(body.groqModel || body.model || '').trim();
-  const configModel = String(config.groq.model || '').trim();
-  const fallbackModel = ALLOWED_GROQ_MODELS.has(configModel)
-    ? configModel
-    : 'llama-3.3-70b-versatile';
-
+  const candidate = String(body.geminiModel || body.model || body.groqModel || '').trim();
+  const fallbackModel = String(config.gemini.model || 'gemini-2.5-flash').trim();
   if (!candidate) return fallbackModel;
-  if (!ALLOWED_GROQ_MODELS.has(candidate)) return fallbackModel;
-  return candidate;
+  return candidate.slice(0, 120);
 }
 
 function requireGroqApiKey(req, res) {
+  if (isApiKeyConfigured()) {
+    return '__gemini__';
+  }
+
   const groqApiKey = resolveGroqApiKey(req);
   if (groqApiKey) {
     return groqApiKey;
@@ -158,9 +150,9 @@ function requireGroqApiKey(req, res) {
   const configuredInEnv = isGroqConfigured();
   return res.status(503).json({
     error: configuredInEnv
-      ? 'مفتاح Groq غير صالح أو غير مدعوم حالياً'
-      : 'خدمة Groq غير متاحة حالياً',
-    errorCode: 'GROQ_NOT_CONFIGURED'
+      ? 'مفتاح خدمة الذكاء غير صالح أو غير مدعوم حالياً'
+      : 'خدمة Gemini غير متاحة حالياً',
+    errorCode: 'GEMINI_NOT_CONFIGURED'
   }), null;
 }
 
@@ -497,7 +489,7 @@ function buildStreamErrorPayload(error) {
   if (statusCode === 503) {
     return {
       error: 'الخدمة غير متاحة حالياً.',
-      errorCode: 'GROQ_UNAVAILABLE',
+      errorCode: 'AI_UNAVAILABLE',
       retryable: true
     };
   }
@@ -505,14 +497,14 @@ function buildStreamErrorPayload(error) {
   if (statusCode === 401 || statusCode === 403) {
     return {
       error: 'تعذر التحقق من صلاحية الاتصال بالخدمة.',
-      errorCode: 'GROQ_AUTH_ERROR',
+      errorCode: 'AI_AUTH_ERROR',
       retryable: false
     };
   }
 
   return {
     error: 'حدث خطأ أثناء البث.',
-    errorCode: 'GROQ_STREAM_ERROR',
+    errorCode: 'AI_STREAM_ERROR',
     retryable: true
   };
 }
@@ -622,6 +614,103 @@ async function streamGroqCompletion({
   }
 }
 
+function mapGeminiRole(role) {
+  return role === 'assistant' || role === 'model' ? 'model' : 'user';
+}
+
+function normalizeGeminiParts(content) {
+  if (Array.isArray(content)) {
+    const parts = [];
+    for (const item of content) {
+      if (!item || typeof item !== 'object') continue;
+      if (item.type === 'text' && typeof item.text === 'string') {
+        parts.push({ text: item.text });
+        continue;
+      }
+      if (item.type === 'image_url' && item.image_url && typeof item.image_url.url === 'string') {
+        const rawUrl = item.image_url.url.trim();
+        const matched = rawUrl.match(/^data:([^;]+);base64,(.+)$/);
+        if (matched) {
+          parts.push({
+            inlineData: {
+              mimeType: matched[1],
+              data: matched[2]
+            }
+          });
+        }
+      }
+    }
+    return parts;
+  }
+
+  const text = String(content || '');
+  if (!text.trim()) return [];
+  return [{ text }];
+}
+
+function toGeminiContents(messages) {
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return [{ role: 'user', parts: [{ text: '' }] }];
+  }
+
+  const contents = [];
+  for (const message of messages) {
+    if (!message || typeof message !== 'object') continue;
+    const parts = normalizeGeminiParts(message.content);
+    if (!parts.length) continue;
+    contents.push({
+      role: mapGeminiRole(message.role),
+      parts
+    });
+  }
+
+  return contents.length ? contents : [{ role: 'user', parts: [{ text: '' }] }];
+}
+
+function toOpenAiLikeJsonResponse(text) {
+  const payload = {
+    choices: [
+      {
+        message: { content: String(text || '') },
+        finish_reason: 'stop'
+      }
+    ]
+  };
+  return new Response(JSON.stringify(payload), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  });
+}
+
+function chunkForSse(text, chunkSize = 80) {
+  const value = String(text || '');
+  const chunks = [];
+  for (let i = 0; i < value.length; i += chunkSize) {
+    chunks.push(value.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+
+function toOpenAiLikeStreamResponse(text) {
+  const encoder = new TextEncoder();
+  const chunks = chunkForSse(text, 80);
+  const body = new ReadableStream({
+    start(controller) {
+      for (const chunk of chunks) {
+        const line = `data: ${JSON.stringify({ choices: [{ delta: { content: chunk } }] })}\n\n`;
+        controller.enqueue(encoder.encode(line));
+      }
+      controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+      controller.close();
+    }
+  });
+
+  return new Response(body, {
+    status: 200,
+    headers: { 'Content-Type': 'text/event-stream; charset=utf-8' }
+  });
+}
+
 async function callGroq({
   messages,
   temperature = 0.4,
@@ -634,57 +723,57 @@ async function callGroq({
   signal,
   timeoutMs = GROQ_STREAM_TIMEOUT_MS
 }) {
-  const activeApiKey = normalizeGroqApiKey(apiKey) || normalizeGroqApiKey(config.groq.apiKey);
-  if (!activeApiKey) {
-    const error = new Error('GROQ_NOT_CONFIGURED');
+  if (!isApiKeyConfigured()) {
+    const error = new Error('GEMINI_NOT_CONFIGURED');
     error.statusCode = 503;
-    error.code = 'GROQ_NOT_CONFIGURED';
+    error.code = 'GEMINI_NOT_CONFIGURED';
     throw error;
   }
 
-  const activeModel = String(model || config.groq.model || '').trim() || 'llama3-70b-8192';
+  const activeModel = String(model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
   const { signal: requestSignal, cleanup } = createUpstreamRequestSignal(signal, timeoutMs);
   const startedAt = Date.now();
   const promptChars = Array.isArray(messages)
-    ? messages.reduce((sum, item) => sum + String(item?.content || '').length, 0)
+    ? messages.reduce((sum, item) => sum + JSON.stringify(item?.content || '').length, 0)
     : 0;
 
   try {
     const response = await retryWithBackoff(
       async () => {
-        const payload = {
-          model: activeModel,
-          messages,
-          temperature,
-          max_tokens: maxTokens,
-          stream
-        };
-        if (Array.isArray(tools) && tools.length) {
-          payload.tools = tools;
-        }
-        if (toolChoice) {
-          payload.tool_choice = toolChoice;
-        }
-
-        const upstreamResponse = await fetch(config.groq.endpoint, {
+        const upstreamResponse = await fetch(
+          `${config.gemini.endpoint}/${activeModel}:generateContent?key=${config.gemini.apiKey}`,
+          {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${activeApiKey}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            contents: toGeminiContents(messages),
+            generationConfig: {
+              temperature,
+              maxOutputTokens: maxTokens
+            }
+          }),
           signal: requestSignal
         });
 
         if (!upstreamResponse.ok) {
           const errText = await upstreamResponse.text().catch(() => upstreamResponse.statusText);
-          const error = new Error(errText || 'Groq API Error');
+          const error = new Error(errText || 'Gemini API Error');
           error.statusCode = upstreamResponse.status;
-          error.code = upstreamResponse.status === 429 ? 'RATE_LIMIT_EXCEEDED' : 'GROQ_API_ERROR';
+          error.code = upstreamResponse.status === 429 ? 'RATE_LIMIT_EXCEEDED' : 'GEMINI_API_ERROR';
           throw error;
         }
 
-        return upstreamResponse;
+        const data = await upstreamResponse.json();
+        const text = data?.candidates?.[0]?.content?.parts
+          ?.map(part => String(part?.text || ''))
+          .join('\n')
+          .trim() || '';
+
+        return stream
+          ? toOpenAiLikeStreamResponse(text)
+          : toOpenAiLikeJsonResponse(text);
       },
       {
         maxRetries: 2,
@@ -697,10 +786,8 @@ async function callGroq({
     );
 
     const durationMs = Date.now() - startedAt;
-    const remainingTokens = response.headers.get('x-ratelimit-remaining-tokens') || 'n/a';
-    const requestId = response.headers.get('x-groq-id') || response.headers.get('x-request-id') || 'n/a';
     console.log(
-      `[Groq] model=${activeModel} stream=${stream ? 1 : 0} duration_ms=${durationMs} prompt_chars=${promptChars} tokens_left=${remainingTokens} req_id=${requestId}`
+      `[GeminiAdapter] model=${activeModel} stream=${stream ? 1 : 0} duration_ms=${durationMs} prompt_chars=${promptChars}`
     );
 
     return response;
@@ -726,7 +813,7 @@ async function callGroq({
     const durationMs = Date.now() - startedAt;
     const statusCode = error?.statusCode || error?.status || 'n/a';
     console.error(
-      `[Groq] request_failed model=${activeModel} stream=${stream ? 1 : 0} duration_ms=${durationMs} prompt_chars=${promptChars} status=${statusCode} error=${error?.message || 'unknown'}`
+      `[GeminiAdapter] request_failed model=${activeModel} stream=${stream ? 1 : 0} duration_ms=${durationMs} prompt_chars=${promptChars} status=${statusCode} error=${error?.message || 'unknown'}`
     );
 
     throw error;
@@ -776,28 +863,8 @@ async function extractTextWithGemini({ base64Data, mimeType }) {
 }
 
 async function extractTextWithGroqVision({ base64Data, mimeType, apiKey = '' }) {
-  const visionPrompt = 'استخرج النص الكامل من الملف التالي. أعد النص فقط بدون أي شرح.';
-  const imageUrl = `data:${mimeType};base64,${base64Data}`;
-  const response = await callGroq({
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: visionPrompt },
-          { type: 'image_url', image_url: { url: imageUrl } }
-        ]
-      }
-    ],
-    temperature: 0.1,
-    maxTokens: 2200,
-    apiKey,
-    model: config.groq.visionModel,
-    stream: false
-  });
-
-  const data = await response.json();
-  const text = data?.choices?.[0]?.message?.content?.trim() || '';
-  return text;
+  // Kept for backward compatibility in callers; now routed to Gemini OCR.
+  return extractTextWithGemini({ base64Data, mimeType });
 }
 
 async function callGeminiText({ prompt, maxOutputTokens = 1800, temperature = 0.2 }) {
@@ -835,6 +902,49 @@ async function callGeminiText({ prompt, maxOutputTokens = 1800, temperature = 0.
   const data = await response.json();
   const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join('\n') || '';
   return text.trim();
+}
+
+async function transcribeAudioWithGemini({ base64Data, mimeType }) {
+  if (!isApiKeyConfigured()) {
+    const error = new Error('GEMINI_NOT_CONFIGURED');
+    error.statusCode = 503;
+    throw error;
+  }
+
+  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: 'حوّل الملف الصوتي التالي إلى نص عربي واضح. أعد النص فقط بدون أي شرح أو تنسيق إضافي.' },
+            { inlineData: { mimeType: mimeType || 'audio/wav', data: base64Data } }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 2200
+      }
+    })
+  });
+
+  if (!response.ok) {
+    const errText = await response.text().catch(() => response.statusText);
+    const error = new Error(errText || 'GEMINI_TRANSCRIBE_ERROR');
+    error.statusCode = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+  const text = data?.candidates?.[0]?.content?.parts
+    ?.map(part => String(part?.text || ''))
+    .join('\n')
+    .trim() || '';
+  return text;
 }
 
 function safeFileName(fileName) {
@@ -1187,7 +1297,6 @@ async function groqFaqHandler(req, res) {
 }
 
 async function groqExtractTextHandler(req, res) {
-  const groqApiKey = resolveGroqApiKey(req);
   const { fileBase64, mimeType, fileName } = req.body || {};
   if (!fileBase64 || typeof fileBase64 !== 'string') {
     return res.status(400).json({
@@ -1205,25 +1314,19 @@ async function groqExtractTextHandler(req, res) {
     });
   }
 
-  if (!isApiKeyConfigured() && !groqApiKey) {
+  if (!isApiKeyConfigured()) {
     return res.status(503).json({
-      error: 'يتطلب هذا المسار إعداد GEMINI_API_KEY أو GROQ_API_KEY لاستخراج النص',
-      errorCode: 'OCR_PROVIDER_REQUIRED'
+      error: 'يتطلب هذا المسار إعداد GEMINI_API_KEY لاستخراج النص',
+      errorCode: 'GEMINI_NOT_CONFIGURED'
     });
   }
 
   try {
     const safeMimeType = asSafeString(mimeType || 'application/octet-stream', 80);
-    const text = isApiKeyConfigured()
-      ? await extractTextWithGemini({
-          base64Data: cleanedBase64,
-          mimeType: safeMimeType
-        })
-      : await extractTextWithGroqVision({
-          base64Data: cleanedBase64,
-          mimeType: safeMimeType,
-          apiKey: groqApiKey
-        });
+    const text = await extractTextWithGemini({
+      base64Data: cleanedBase64,
+      mimeType: safeMimeType
+    });
 
     const normalized = sanitizeForAI(text || '').slice(0, MAX_MEDICAL_REPORT_CHARS * 2);
     if (!normalized) {
@@ -1236,7 +1339,7 @@ async function groqExtractTextHandler(req, res) {
     return res.status(200).json({
       text: normalized,
       fileName: asSafeString(fileName || '', 120) || null,
-      method: isApiKeyConfigured() ? 'gemini-flash-ocr' : 'groq-vision-ocr',
+      method: 'gemini-flash-ocr',
       generatedAt: new Date().toISOString()
     });
   } catch (error) {
@@ -1251,10 +1354,11 @@ async function groqExtractTextHandler(req, res) {
 }
 
 async function groqTranscribeHandler(req, res) {
-  const groqApiKey = requireGroqApiKey(req, res);
-
-  if (!groqApiKey) {
-    return;
+  if (!isApiKeyConfigured()) {
+    return res.status(503).json({
+      error: 'خدمة تحويل الصوت إلى نص غير متاحة حالياً',
+      errorCode: 'GEMINI_NOT_CONFIGURED'
+    });
   }
 
   const { fileBase64, mimeType, fileName } = req.body || {};
@@ -1275,30 +1379,13 @@ async function groqTranscribeHandler(req, res) {
       });
     }
 
-    const form = new FormData();
-    const audioBlob = new Blob([audioBuffer], { type: mimeType || 'audio/wav' });
-    form.append('file', audioBlob, safeFileName(fileName || 'medical-audio.wav'));
-    form.append('model', config.groq.transcribeModel);
-    form.append('language', 'ar');
-    form.append('response_format', 'verbose_json');
-
-    const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${groqApiKey}`
-      },
-      body: form
-    });
-
-    if (!response.ok) {
-      const errText = await response.text().catch(() => response.statusText);
-      const error = new Error(errText || 'GROQ_TRANSCRIBE_ERROR');
-      error.statusCode = response.status;
-      throw error;
-    }
-
-    const data = await response.json();
-    const text = asSafeString(data?.text || '', MAX_MEDICAL_REPORT_CHARS * 2);
+    const text = asSafeString(
+      await transcribeAudioWithGemini({
+        base64Data: cleanedBase64,
+        mimeType: mimeType || 'audio/wav'
+      }),
+      MAX_MEDICAL_REPORT_CHARS * 2
+    );
     if (!text) {
       return res.status(422).json({
         error: 'لم يتم استخراج نص من الملف الصوتي',
@@ -1308,9 +1395,10 @@ async function groqTranscribeHandler(req, res) {
 
     return res.status(200).json({
       text,
-      duration: data?.duration ?? null,
-      language: data?.language || 'ar',
-      model: config.groq.transcribeModel,
+      duration: null,
+      language: 'ar',
+      model: config.gemini.model || 'gemini-2.5-flash',
+      fileName: asSafeString(fileName || '', 120) || safeFileName('medical-audio.wav'),
       generatedAt: new Date().toISOString()
     });
   } catch (error) {
@@ -1582,41 +1670,76 @@ async function groqMedicalArchiveHandler(req, res) {
 }
 
 async function groqHealthHandler(_req, res) {
-  const apiKey = normalizeGroqApiKey(config.groq.apiKey);
-  if (!apiKey) {
+  if (!isApiKeyConfigured()) {
     return res.status(503).json({
       status: 'down',
-      provider: 'groq',
-      errorCode: 'GROQ_NOT_CONFIGURED',
+      provider: 'gemini',
+      errorCode: 'GEMINI_NOT_CONFIGURED',
       checkedAt: new Date().toISOString()
     });
   }
 
   try {
-    await callGroq({
-      messages: [{ role: 'user', content: 'ping' }],
+    await callGeminiText({
+      prompt: 'ping',
       temperature: 0,
-      maxTokens: 1,
-      apiKey,
-      model: config.groq.model,
-      stream: false,
-      timeoutMs: 8000
+      maxOutputTokens: 8
     });
 
     return res.status(200).json({
       status: 'up',
-      provider: 'groq',
-      model: config.groq.model,
+      provider: 'gemini',
+      model: config.gemini.model || 'gemini-2.5-flash',
       checkedAt: new Date().toISOString()
     });
   } catch (error) {
     const statusCode = error.statusCode || 503;
     return res.status(statusCode).json({
       status: 'down',
-      provider: 'groq',
-      errorCode: error.code || 'GROQ_HEALTH_FAILED',
+      provider: 'gemini',
+      errorCode: error.code || 'GEMINI_HEALTH_FAILED',
       message: error.message || 'health check failed',
       checkedAt: new Date().toISOString()
+    });
+  }
+}
+
+async function groqOpenAiCompatHandler(req, res) {
+  try {
+    const body = req && req.body && typeof req.body === 'object' ? req.body : {};
+    const model = resolveGroqModel(req);
+    const temperature = Number.isFinite(Number(body.temperature)) ? Number(body.temperature) : 0.4;
+    const maxTokens = Number.isFinite(Number(body.max_tokens || body.maxTokens))
+      ? Number(body.max_tokens || body.maxTokens)
+      : 900;
+
+    const messages = Array.isArray(body.messages)
+      ? body.messages
+      : (typeof body.prompt === 'string' && body.prompt.trim()
+          ? [{ role: 'user', content: body.prompt }]
+          : []);
+
+    if (!messages.length) {
+      return res.status(400).json({
+        error: 'يرجى إرسال messages أو prompt',
+        errorCode: 'INVALID_MESSAGES'
+      });
+    }
+
+    const response = await callGroq({
+      messages,
+      temperature,
+      maxTokens,
+      model,
+      stream: false
+    });
+    const data = await response.json();
+    return res.status(200).json(data);
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    return res.status(statusCode).json({
+      error: 'حدث خطأ أثناء تنفيذ الطلب الذكي',
+      errorCode: error.code || 'AI_COMPAT_ERROR'
     });
   }
 }
@@ -1629,5 +1752,6 @@ module.exports = {
   groqMedicalAgentHandler,
   groqFaqHandler,
   groqMedicalArchiveHandler,
-  groqHealthHandler
+  groqHealthHandler,
+  groqOpenAiCompatHandler
 };

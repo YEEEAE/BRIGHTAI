@@ -53,7 +53,7 @@ function getGroqConfig() {
     if (!key) key = HARDCODED_KEY;
 
     return {
-        API_URL: "https://api.groq.com/openai/v1/chat/completions",
+        API_URL: "/api/ai/openai-chat",
         API_KEY: key,
         MODEL: model || DEFAULT_MODEL,
         DEFAULT_HEADERS: {

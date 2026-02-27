@@ -1,6 +1,6 @@
 /**
  * AI Search Endpoint (RAG)
- * POST /api/ai/search - Retrieval-Augmented Generation using Groq + local vector index
+ * POST /api/ai/search - Retrieval-Augmented Generation using Gemini + local vector index
  */
 
 const { config } = require('../config');
@@ -16,51 +16,10 @@ const ERROR_MESSAGES = {
   API_ERROR: 'عذراً، حدث خطأ في البحث. حاول مرة ثانية'
 };
 
-function normalizeGroqApiKey(value) {
-  if (typeof value !== 'string') return '';
-  const trimmed = value.trim();
-  if (!trimmed || trimmed === 'YOUR_KEY_HERE') return '';
-  if (!trimmed.startsWith('gsk_')) return '';
-  return trimmed;
-}
-
-function resolveHeaderValue(headers, key) {
-  if (!headers || typeof headers !== 'object') return '';
-  if (typeof headers[key] === 'string') return headers[key];
-  if (typeof headers[key.toLowerCase()] === 'string') return headers[key.toLowerCase()];
-  return '';
-}
-
-function resolveGroqApiKey(req) {
+function resolveGeminiModel(req) {
   const body = req && req.body && typeof req.body === 'object' ? req.body : {};
-  const headers = req && req.headers && typeof req.headers === 'object' ? req.headers : {};
-
-  const bodyKey = normalizeGroqApiKey(
-    body.groqApiKey || body.groq_api_key || body.apiKey || body.api_key || ''
-  );
-  if (bodyKey) return bodyKey;
-
-  const directHeaderKey = normalizeGroqApiKey(
-    resolveHeaderValue(headers, 'x-groq-api-key') ||
-    resolveHeaderValue(headers, 'x-groq-key') ||
-    resolveHeaderValue(headers, 'x-api-key') ||
-    ''
-  );
-  if (directHeaderKey) return directHeaderKey;
-
-  const authHeader = resolveHeaderValue(headers, 'authorization') || '';
-  if (authHeader.toLowerCase().startsWith('bearer ')) {
-    const bearer = normalizeGroqApiKey(authHeader.slice(7));
-    if (bearer) return bearer;
-  }
-
-  return normalizeGroqApiKey(config.groq.apiKey);
-}
-
-function resolveGroqModel(req) {
-  const body = req && req.body && typeof req.body === 'object' ? req.body : {};
-  const candidate = String(body.groqModel || body.model || '').trim();
-  if (!candidate) return config.groq.model;
+  const candidate = String(body.geminiModel || body.model || '').trim();
+  if (!candidate) return config.gemini.model;
   return candidate.slice(0, 120);
 }
 
@@ -104,13 +63,11 @@ async function searchHandler(req, res) {
     }
 
     const query = sanitizeUserInput(rawQuery);
-    const groqApiKey = resolveGroqApiKey(req);
-    const groqModel = resolveGroqModel(req);
+    const geminiModel = resolveGeminiModel(req);
     const ragResult = await searchSiteWithRag(query, {
       maxSources: 5,
       retrievalLimit: 10,
-      apiKey: groqApiKey,
-      model: groqModel
+      model: geminiModel
     });
 
     return res.status(200).json({

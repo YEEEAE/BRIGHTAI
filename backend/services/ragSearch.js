@@ -53,12 +53,8 @@ let indexCache = {
   idf: new Map()
 };
 
-function normalizeGroqApiKey(value) {
-  if (typeof value !== 'string') return '';
-  const trimmed = value.trim();
-  if (!trimmed || trimmed === 'YOUR_KEY_HERE') return '';
-  if (!trimmed.startsWith('gsk_')) return '';
-  return trimmed;
+function isGeminiConfigured() {
+  return !!config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE';
 }
 
 function clampNumber(rawValue, defaultValue, min, max) {
@@ -570,49 +566,55 @@ function buildGenerationPrompt(query, matches) {
   return `سؤال المستخدم:\n${query}\n\nمقاطع السياق:\n${context}\n\nأعد JSON فقط حسب القواعد.`;
 }
 
-async function generateAnswerWithGroq(query, matches, options = {}) {
-  const activeApiKey = normalizeGroqApiKey(options.apiKey) || normalizeGroqApiKey(config.groq.apiKey);
-  if (!activeApiKey) {
-    const error = new Error('GROQ_NOT_CONFIGURED');
+async function generateAnswerWithGemini(query, matches, options = {}) {
+  if (!isGeminiConfigured()) {
+    const error = new Error('GEMINI_NOT_CONFIGURED');
     error.statusCode = 503;
     throw error;
   }
 
-  const activeModel = String(options.model || config.groq.model || '').trim() || 'llama3-70b-8192';
-  const response = await fetch(config.groq.endpoint, {
+  const activeModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
+  const response = await fetch(`${config.gemini.endpoint}/${activeModel}:generateContent?key=${config.gemini.apiKey}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${activeApiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: activeModel,
-      messages: [
-        { role: 'system', content: SEARCH_SYSTEM_PROMPT },
-        { role: 'user', content: buildGenerationPrompt(query, matches) }
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: `${SEARCH_SYSTEM_PROMPT}\n\n${buildGenerationPrompt(query, matches)}`
+            }
+          ]
+        }
       ],
-      temperature: 0.2,
-      max_tokens: 950,
-      stream: false
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 950
+      }
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text().catch(() => response.statusText);
-    const error = new Error(errorText || 'GROQ_RAG_ERROR');
+    const error = new Error(errorText || 'GEMINI_RAG_ERROR');
     error.statusCode = response.status;
     throw error;
   }
 
   const data = await response.json();
-  const output = data?.choices?.[0]?.message?.content?.trim() || '';
+  const output = data?.candidates?.[0]?.content?.parts
+    ?.map(part => String(part?.text || ''))
+    .join('\n')
+    .trim() || '';
   return parseJsonFromText(output);
 }
 
 async function searchSiteWithRag(query, options = {}) {
   const safeQuery = sanitizeUserInput(query || '').slice(0, 700);
-  const activeGroqApiKey = normalizeGroqApiKey(options.apiKey) || normalizeGroqApiKey(config.groq.apiKey);
-  const activeGroqModel = String(options.model || config.groq.model || '').trim() || 'llama3-70b-8192';
+  const activeGeminiModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
   const retrievalLimit = clampNumber(
     options.retrievalLimit,
     Math.max(DEFAULT_RETRIEVAL_LIMIT, options.maxSources || 5),
@@ -632,7 +634,7 @@ async function searchSiteWithRag(query, options = {}) {
     };
   }
 
-  if (!activeGroqApiKey) {
+  if (!isGeminiConfigured()) {
     return {
       answer: fallbackAnswer(safeQuery, matches),
       sources: matches.slice(0, 4).map(item => ({
@@ -648,14 +650,13 @@ async function searchSiteWithRag(query, options = {}) {
   }
 
   try {
-    const generated = await generateAnswerWithGroq(safeQuery, matches, {
-      apiKey: activeGroqApiKey,
-      model: activeGroqModel
+    const generated = await generateAnswerWithGemini(safeQuery, matches, {
+      model: activeGeminiModel
     });
     const normalized = sanitizeGeneratedPayload(generated, matches, safeQuery);
     return {
       ...normalized,
-      mode: 'rag_groq',
+      mode: 'rag_gemini',
       retrievalCount: matches.length
     };
   } catch (error) {

@@ -1900,7 +1900,7 @@ const App = function() {
         if (!this.config.groqApiKey || !this.config.groqApiKey.startsWith('gsk_')) {
             throw new Error("Groq API key is not configured correctly.");
         }
-        const url = 'https://api.groq.com/openai/v1/chat/completions';
+        const url = '/api/ai/openai-chat';
         const body = {
             messages: [{ role: "user", content: prompt }],
             model: this.config.groqModel,

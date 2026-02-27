@@ -887,7 +887,7 @@
             try {
                 const base64 = await fileToBase64(file);
                 const apiBase = resolveApiBase();
-                const response = await fetch(`${apiBase}/api/groq/ocr`, {
+                const response = await fetch(`${apiBase}/api/ai/ocr`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

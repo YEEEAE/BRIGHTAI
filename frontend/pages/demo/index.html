@@ -878,7 +878,7 @@
 
             try {
                 const apiBase = resolveApiBase();
-                const response = await fetch(`${apiBase}/api/groq/stream`, {
+                const response = await fetch(`${apiBase}/api/ai/stream`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

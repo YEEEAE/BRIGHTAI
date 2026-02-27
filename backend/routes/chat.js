@@ -6,7 +6,7 @@
 
 const { config, isApiKeyConfigured } = require('../config');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
-const { retryWithBackoff, createErrorResponse, getArabicErrorMessage } = require('../utils/errorHandler');
+const { retryWithBackoff, getArabicErrorMessage } = require('../utils/errorHandler');
 
 // Arabic error messages
 const ERROR_MESSAGES = {
@@ -77,6 +77,24 @@ wa.me/966538229013
 
 // Legacy system prompt (kept for backward compatibility)
 const SYSTEM_PROMPT = ENTERPRISE_SYSTEM_PROMPT;
+
+function buildLocalSupportReply(message) {
+  const q = String(message || '').toLowerCase();
+
+  if (q.includes('خدمات') || q.includes('service')) {
+    return 'نقدم في Bright AI حلول مؤسسية تشمل: AIaaS، أتمتة العمليات، التحليلات المتقدمة، وحلول القطاع الصحي. نقدر نحدد لكم المسار الأنسب حسب قطاعكم خلال جلسة استشارية تنفيذية.';
+  }
+
+  if (q.includes('استشارة') || q.includes('حجز') || q.includes('تواصل')) {
+    return 'لحجز استشارة تنفيذية مباشرة مع فريقنا: https://wa.me/966538229013. إذا رغبت، اكتب لي القطاع والهدف التشغيلي وسأجهز لك نقاط الاجتماع المقترحة قبل التواصل.';
+  }
+
+  if (q.includes('سعر') || q.includes('تكلفة') || q.includes('باقة')) {
+    return 'التكلفة تعتمد على نطاق المشروع، تكامل الأنظمة، ومتطلبات الامتثال. الأفضل عمل جلسة تقييم قصيرة ثم نرفع لكم تصور تنفيذي وتسعير مناسب.';
+  }
+
+  return 'أهلًا بك. نقدر نخدمكم في التحول الرقمي المؤسسي عبر حلول ذكاء اصطناعي عملية ومتوافقة مع متطلبات السوق السعودي. شاركني هدفكم التشغيلي الحالي وسأقترح لكم أفضل خطوة تالية.';
+}
 
 /**
  * Build Gemini API URL
@@ -233,6 +251,16 @@ async function chatHandler(req, res) {
     // Determine appropriate status code
     const statusCode = error.statusCode || 500;
     
+    // Keep support bot available even when provider is temporarily unavailable.
+    if ([401, 403, 429, 500, 502, 503].includes(statusCode)) {
+      const fallbackReply = buildLocalSupportReply(req?.body?.message || '');
+      return res.status(200).json({
+        reply: fallbackReply,
+        sessionId: req?.body?.sessionId || generateSessionId(),
+        fallback: true
+      });
+    }
+
     // Get Arabic error message
     const arabicMessage = getArabicErrorMessage(error, statusCode);
     

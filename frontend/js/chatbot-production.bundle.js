@@ -6,6 +6,9 @@
   const RETRYABLE_ERROR_CODES = new Set([
     'RATE_LIMIT_EXCEEDED',
     'STREAM_TIMEOUT',
+    'AI_UNAVAILABLE',
+    'AI_STREAM_ERROR',
+    'AI_AUTH_ERROR',
     'GROQ_UNAVAILABLE',
     'GROQ_STREAM_ERROR',
     'CLIENT_TIMEOUT',
@@ -123,7 +126,7 @@
 
   class GroqStreamClient {
     constructor(endpoint) {
-      this.endpoint = endpoint || '/api/groq/stream';
+      this.endpoint = endpoint || '/api/ai/stream';
     }
 
     async readErrorPayload(response) {
@@ -202,7 +205,7 @@
             if (parsed.error) {
               throw new StreamRequestError(parsed.error, {
                 status: 500,
-                errorCode: parsed.errorCode || 'GROQ_STREAM_ERROR',
+                errorCode: parsed.errorCode || 'AI_STREAM_ERROR',
                 retryable: parsed.retryable !== false
               });
             }
@@ -241,7 +244,7 @@
       this.container = container;
       this.profileId = detectProfileId(container);
       this.profile = BOT_PROFILES[this.profileId] || BOT_PROFILES.support;
-      this.endpoint = container.dataset.chatEndpoint || '/api/groq/stream';
+      this.endpoint = container.dataset.chatEndpoint || '/api/ai/stream';
       this.sessionKey = `brightai_chat_session_${this.profileId}`;
 
       this.chatMessages = document.getElementById('chatMessages');
@@ -615,14 +618,14 @@
         };
       }
 
-      if (errorCode === 'GROQ_UNAVAILABLE') {
+      if (errorCode === 'AI_UNAVAILABLE' || errorCode === 'GROQ_UNAVAILABLE') {
         return {
           message: 'الخدمة مشغولة حالياً. جرّب بعد لحظات.',
           retryable: true
         };
       }
 
-      if (errorCode === 'GROQ_AUTH_ERROR') {
+      if (errorCode === 'AI_AUTH_ERROR' || errorCode === 'GROQ_AUTH_ERROR') {
         return {
           message: 'الخدمة غير متاحة حالياً من جهة الإعدادات.',
           retryable: false

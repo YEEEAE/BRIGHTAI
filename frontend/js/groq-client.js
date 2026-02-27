@@ -5,7 +5,7 @@
 
 class GroqStreamManager {
     constructor(config = {}) {
-        this.endpoint = config.endpoint || '/api/groq/stream';
+        this.endpoint = config.endpoint || '/api/ai/stream';
         this.outputType = config.outputType || 'تحليل بيانات';
         this.sessionId = null;
         this.sessionHistory = [];

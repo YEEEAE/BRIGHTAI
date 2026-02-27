@@ -38,7 +38,7 @@ const config = {
       '',
     model: process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama-3.3-70b-versatile',
     visionModel: process.env.GROQ_VISION_MODEL || 'llama-3.2-11b-vision-preview',
-    endpoint: process.env.GROQ_ENDPOINT || 'https://api.groq.com/openai/v1/chat/completions',
+    endpoint: process.env.GROQ_ENDPOINT || '/api/ai/openai-chat',
     transcribeModel: process.env.GROQ_TRANSCRIBE_MODEL || 'whisper-large-v3-turbo',
     streamTimeoutMs: parseInt(process.env.GROQ_STREAM_TIMEOUT_MS, 10) || 30000
   },
@@ -81,7 +81,7 @@ function validateConfig() {
   const errors = [];
   
   if (!config.gemini.apiKey && !config.groq.apiKey) {
-    errors.push('At least one provider key is required (GROQ_API_KEY or GEMINI_API_KEY)');
+    errors.push('At least one provider key is required (GEMINI_API_KEY preferred)');
   }
   
   if (errors.length > 0) {
