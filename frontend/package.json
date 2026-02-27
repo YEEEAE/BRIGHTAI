@@ -1,0 +1,10 @@
+{
+  "name": "brightai-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/dev-server.mjs",
+    "test": "node --test \"tests/**/*.test.mjs\""
+  }
+}

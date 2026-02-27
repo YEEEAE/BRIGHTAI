@@ -1,42 +1,68 @@
-- Run with " npm run server " . API keys are read from environment only, never exposed to client.
+# BrightAI Monorepo
 
-- comands Git hub : 
+هذا المستودع الآن مُدار كـ `npm workspaces` بثلاث وحدات مستقلة:
 
+- `frontend` (واجهات static)
+- `backend` (Node API + functional tests)
+- `brightai-platform` (React platform)
 
-git add . 
-git commit -m "message"
-git push -u origin main --force
+## هيكل الوحدات
 
+| الوحدة | المسار | التشغيل | الاختبار |
+|---|---|---|---|
+| Frontend | `frontend/` | `npm run dev:frontend` | `npm run test:frontend` |
+| Backend | `backend/` | `npm run dev:backend` | `npm run test:backend` |
+| BrightAI Platform | `brightai-platform/` | `npm run dev:platform` | `npm run test:platform` |
 
--   نت
+## استراتيجية التشغيل (بعزل)
 
+- كل وحدة لها `package.json` خاص فيها.
+- التشغيل يتم من الجذر عبر workspace محدد، بدون مشاركة runtime command بين الوحدات.
+- أوامر الجذر:
+  - `npm run dev:frontend`
+  - `npm run dev:backend`
+  - `npm run dev:platform`
 
-الخطوات:
-npm ci
-npm run sitemap:all 
-npm run seo:check
+## استراتيجية الاختبار (بعزل)
 
+- `frontend`: اختبارات smoke عبر Node test runner داخل `frontend/tests` فقط.
+- `backend`: اختبارات Vitest عبر `backend/vitest.config.mjs` وبنطاق `*.functional.test.js` داخل الوحدة فقط.
+- `brightai-platform`: اختبارات `react-scripts test` داخل الوحدة فقط.
 
- 
-سكربت فحص SEO CI:
+## منع تداخل الاختبارات
 
-seo-ci-check.mjs (line 1)
-يفشل بـ exit 1 إذا صار أي كسر في:
-canonical
-hreflang (مطابقة AR/EN/x-default حسب الصفحة)
-schema (BreadcrumbList + LocalBusiness + صلاحية JSON-LD)
-og:image + og:image:alt + twitter:image + twitter:image:alt
-sitemap.xml (روابط مفقودة، مكررة، أو روابط محظورة منخفضة الجودة)
-ربط السكربت في npm scripts:
+- لا يوجد أمر عام يعتمد على glob شامل لكل المشروع.
+- كل وحدة تُختبر بأمرها المحلي عبر workspace.
+- أمر `npm test` في الجذر يشغّل `scripts/run-monorepo-tests.mjs`، وينفّذ الاختبارات للوحدات الثلاث بالتسلسل مع ملخص نهائي منفصل لكل وحدة.
 
-package.json (line 20)
-تمت إضافة:
-seo-ci-check.mjs"
-GitHub Actions workflow:
+## أمر الاختبار الواحد
 
-seo-guard.yml (line 1)
-يشتغل على pull_request و push على main عند تغييرات SEO ذات صلة.
-الخطوات:
-npm ci
-npm run sitemap:all
-npm run seo:check
+```bash
+npm test
+```
+
+النتيجة المتوقعة:
+- إذا نجحت كل الوحدات: يخرج بنجاح.
+- إذا فشلت وحدة: يعرض سبب الفشل الخاص بها (مثال: نقص dependencies أو فشل اختبارات)، ثم ينهي بخروج غير صفري.
+
+## تثبيت الحزم
+
+من الجذر:
+
+```bash
+npm install
+```
+
+أو تثبيت لوحدة محددة:
+
+```bash
+npm install --workspace frontend
+npm install --workspace backend
+npm install --workspace brightai-platform
+```
+
+## أوامر إضافية في الجذر
+
+- `npm run sitemap:all`
+- `npm run seo:check`
+- `npm run performance:budget`

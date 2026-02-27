@@ -136,7 +136,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     try {
       const result = await invokeHandleRequest(runtime.handleRequest, {
         method: 'POST',
-        url: '/api/groq/stream',
+        url: '/api/ai/stream',
         body: { message: 'اختبار سيناريو النجاح', outputType: 'دعم العملاء' }
       });
 
@@ -181,7 +181,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     try {
       const result = await invokeHandleRequest(runtime.handleRequest, {
         method: 'POST',
-        url: '/api/groq/stream',
+        url: '/api/ai/stream',
         body: {
           message: 'اختبار تمرير المفتاح من جسم الطلب',
           outputType: 'دعم العملاء',
@@ -215,7 +215,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     try {
       const result = await invokeHandleRequest(runtime.handleRequest, {
         method: 'POST',
-        url: '/api/groq/stream',
+        url: '/api/ai/stream',
         body: { message: 'اختبار سيناريو الخطأ' }
       });
 
@@ -262,7 +262,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     try {
       const result = await invokeHandleRequest(runtime.handleRequest, {
         method: 'POST',
-        url: '/api/groq/stream',
+        url: '/api/ai/stream',
         body: { message: 'اختبار سيناريو المهلة' }
       });
 
@@ -291,7 +291,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     try {
       const result = await invokeHandleRequest(runtime.handleRequest, {
         method: 'POST',
-        url: '/api/groq/stream',
+        url: '/api/ai/stream',
         body: { message: 'اختبار سيناريو حد المعدل' }
       });
 

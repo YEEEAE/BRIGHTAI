@@ -1,4 +1,11 @@
 {
+  "name": "brightai-monorepo",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "brightai-platform"
+  ],
   "dependencies": {
     "@sentry/react": "^10.38.0",
     "dotenv": "^16.5.0",
@@ -15,15 +22,21 @@
   },
   "scripts": {
     "build": "npm run performance:budget",
+    "dev:frontend": "npm run start --workspace frontend",
+    "dev:backend": "npm run start --workspace backend",
+    "dev:platform": "npm run start --workspace brightai-platform",
+    "test:all": "node scripts/run-monorepo-tests.mjs",
+    "test:frontend": "npm run test --workspace frontend",
+    "test:backend": "npm run test --workspace backend",
+    "test:platform": "npm run test --workspace brightai-platform",
     "performance:budget": "node scripts/check-performance-budget.js",
     "sitemap:all": "node scripts/generate-sitemap-all-pages.mjs",
     "seo:check": "node scripts/seo-ci-check.mjs",
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",
-    "test": "vitest --run",
-    "test:watch": "vitest",
-    "server": "node backend/server.js",
-    "server:dev": "node --watch backend/server.js"
+    "test": "node scripts/run-monorepo-tests.mjs",
+    "server": "npm run dev:backend",
+    "server:dev": "npm run dev:backend"
   }
 }
