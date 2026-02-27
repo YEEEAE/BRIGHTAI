@@ -551,11 +551,43 @@
                 });
                 const data = await res.json();
                 if (data.sessionId) this.sessionId = data.sessionId;
-                this.addMessage(data.reply || 'عذراً، حدث خطأ', 'bot');
+                await this.streamBotReply(data.reply || 'عذراً، حدث خطأ');
             } catch {
                 this.addMessage('تعذر الاتصال حالياً.', 'bot');
             } finally {
                 this.isSending = false;
+            }
+        }
+
+        async streamBotReply(text) {
+            const replyText = String(text || '').trim();
+            if (!replyText || !this.messagesContainer) return;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-message bot';
+            bubble.textContent = '';
+            this.messagesContainer.appendChild(bubble);
+            this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) {
+                bubble.textContent = replyText;
+                return;
+            }
+
+            const tokens = replyText.split(/(\s+)/).filter((token) => token.length > 0);
+            const visibleWords = tokens.filter((token) => !/^\s+$/.test(token)).length || 1;
+            const baseDelay = Math.max(16, Math.min(38, Math.round(1500 / visibleWords)));
+            let rendered = '';
+
+            for (const token of tokens) {
+                rendered += token;
+                bubble.textContent = rendered;
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+                if (/^\s+$/.test(token)) continue;
+                const extraPause = /[.!?؟،:]$/.test(token) ? 85 : 0;
+                const jitter = Math.floor(Math.random() * 12);
+                await new Promise((resolve) => setTimeout(resolve, baseDelay + extraPause + jitter));
             }
         }
 
@@ -1157,7 +1189,7 @@
                 });
                 const data = await response.json().catch(() => ({}));
                 if (data.sessionId) this.sessionId = data.sessionId;
-                this.addMessage(data.reply || 'عذراً، حدث خطأ', 'bot');
+                await this.streamBotReply(data.reply || 'عذراً، حدث خطأ');
             } catch {
                 this.addMessage('تعذر الاتصال حالياً.', 'bot');
             } finally {
@@ -1181,6 +1213,46 @@
             `;
             this.messages?.appendChild(msgDiv);
             this.messages.scrollTop = this.messages.scrollHeight;
+        }
+
+        async streamBotReply(text) {
+            const replyText = String(text || '').trim();
+            if (!replyText || !this.messages) return;
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message bot-message';
+            msgDiv.innerHTML = `
+                <div class="message-content">
+                    <p></p>
+                    <span class="message-time">${new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+            `;
+            this.messages.appendChild(msgDiv);
+            this.messages.scrollTop = this.messages.scrollHeight;
+
+            const paragraph = msgDiv.querySelector('p');
+            if (!paragraph) return;
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) {
+                paragraph.textContent = replyText;
+                return;
+            }
+
+            const tokens = replyText.split(/(\s+)/).filter((token) => token.length > 0);
+            const visibleWords = tokens.filter((token) => !/^\s+$/.test(token)).length || 1;
+            const baseDelay = Math.max(16, Math.min(38, Math.round(1500 / visibleWords)));
+            let rendered = '';
+
+            for (const token of tokens) {
+                rendered += token;
+                paragraph.textContent = rendered;
+                this.messages.scrollTop = this.messages.scrollHeight;
+                if (/^\s+$/.test(token)) continue;
+                const extraPause = /[.!?؟،:]$/.test(token) ? 85 : 0;
+                const jitter = Math.floor(Math.random() * 12);
+                await new Promise((resolve) => setTimeout(resolve, baseDelay + extraPause + jitter));
+            }
         }
 
         showTyping() {

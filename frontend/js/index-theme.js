@@ -973,6 +973,7 @@
     const chatWindow = document.getElementById('chatWindow');
     const chatClose = document.getElementById('chatClose');
     const chatMin = document.getElementById('chatMin');
+    const chatClear = document.getElementById('chatClear');
     const chatBadge = document.getElementById('chatBadge');
     const chatBody = document.getElementById('chatBody');
     const chatInput = document.getElementById('chatInput');
@@ -980,11 +981,22 @@
     const typing = document.getElementById('typing');
     const chatApiEndpoint = '/api/gemini/chat';
     const CHAT_REQUEST_TIMEOUT_MS = 12000;
+    const CHAT_HISTORY_STORAGE_KEY = 'brightai.chat.history.v1';
+    const CHAT_SESSION_STORAGE_KEY = 'brightai.chat.session.v1';
+    const CHAT_CHIME_PLAYED_STORAGE_KEY = 'brightai.chat.chime_played.v1';
+    const CHAT_HISTORY_MAX_ITEMS = 30;
 
     if (chatFab && chatWindow) {
         const CHAT_FAB_DELAY_MS = 3000;
         let chatSessionId = null;
         let isSending = false;
+        let chatHistory = [];
+        let hasPlayedOpenChime = false;
+        const defaultChatNodes = (
+            chatBody && typing
+                ? Array.from(chatBody.children).filter((child) => child !== typing).map((child) => child.cloneNode(true))
+                : []
+        );
 
         chatFab.style.visibility = 'hidden';
         chatFab.style.opacity = '0';
@@ -1024,6 +1036,124 @@
             if (chatInput) chatInput.disabled = sending;
         }
 
+        function saveChatState() {
+            try {
+                localStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify(chatHistory.slice(-CHAT_HISTORY_MAX_ITEMS)));
+                if (chatSessionId) {
+                    localStorage.setItem(CHAT_SESSION_STORAGE_KEY, chatSessionId);
+                } else {
+                    localStorage.removeItem(CHAT_SESSION_STORAGE_KEY);
+                }
+            } catch (_error) {
+                // Ignore storage errors (private mode, quota, etc.)
+            }
+        }
+
+        function clearRenderedMessages() {
+            if (!chatBody || !typing) return;
+            Array.from(chatBody.children).forEach((child) => {
+                if (child === typing) return;
+                child.remove();
+            });
+        }
+
+        function restoreDefaultMessages() {
+            if (!chatBody || !typing) return;
+            clearRenderedMessages();
+            defaultChatNodes.forEach((node) => {
+                chatBody.insertBefore(node.cloneNode(true), typing);
+            });
+            chatBody.scrollTop = chatBody.scrollHeight;
+            applyResponsiveQuickReplies();
+        }
+
+        function recordHistory(text, who) {
+            const normalizedText = String(text || '').trim();
+            if (!normalizedText) return;
+            const role = who === 'bot' ? 'bot' : 'user';
+            chatHistory.push({ text: normalizedText, who: role });
+            if (chatHistory.length > CHAT_HISTORY_MAX_ITEMS) {
+                chatHistory = chatHistory.slice(-CHAT_HISTORY_MAX_ITEMS);
+            }
+            saveChatState();
+        }
+
+        function restoreChatState() {
+            if (!chatBody || !typing) return;
+
+            try {
+                const storedSessionId = localStorage.getItem(CHAT_SESSION_STORAGE_KEY);
+                if (storedSessionId) chatSessionId = storedSessionId;
+                hasPlayedOpenChime = localStorage.getItem(CHAT_CHIME_PLAYED_STORAGE_KEY) === '1';
+            } catch (_error) {
+                // Ignore storage errors
+            }
+
+            let storedHistory = [];
+            try {
+                const parsed = JSON.parse(localStorage.getItem(CHAT_HISTORY_STORAGE_KEY) || '[]');
+                if (Array.isArray(parsed)) storedHistory = parsed;
+            } catch (_error) {
+                storedHistory = [];
+            }
+
+            chatHistory = [];
+            if (!storedHistory.length) return;
+
+            clearRenderedMessages();
+            storedHistory.forEach((item) => {
+                if (!item || typeof item.text !== 'string') return;
+                const who = item.who === 'bot' ? 'bot' : 'user';
+                addMsg(item.text, who, { persist: false });
+                chatHistory.push({ text: item.text, who });
+            });
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function playOpenChimeOnce() {
+            if (hasPlayedOpenChime) return;
+            try {
+                const AudioCtor = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtor) return;
+                const audioContext = new AudioCtor();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(740, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(920, audioContext.currentTime + 0.12);
+                gainNode.gain.setValueAtTime(0.0001, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.05, audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.18);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.18);
+                setTimeout(() => {
+                    audioContext.close().catch(() => {});
+                }, 260);
+            } catch (_error) {
+                // Ignore audio errors and continue UX flow.
+            }
+            hasPlayedOpenChime = true;
+            try {
+                localStorage.setItem(CHAT_CHIME_PLAYED_STORAGE_KEY, '1');
+            } catch (_error) {
+                // Ignore storage errors.
+            }
+        }
+
+        function clearConversation() {
+            chatSessionId = null;
+            chatHistory = [];
+            try {
+                localStorage.removeItem(CHAT_HISTORY_STORAGE_KEY);
+                localStorage.removeItem(CHAT_SESSION_STORAGE_KEY);
+            } catch (_error) {
+                // Ignore storage errors
+            }
+            restoreDefaultMessages();
+        }
+
         function showTyping() {
             if (!chatBody || !typing) return;
             typing.style.display = 'flex';
@@ -1034,14 +1164,54 @@
             if (typing) typing.style.display = 'none';
         }
 
-        function addMsg(text, who = 'user') {
+        function addMsg(text, who = 'user', options = {}) {
             if (!chatBody || !typing) return null;
             const div = document.createElement('div');
             div.className = 'msg ' + who;
             div.textContent = text;
             chatBody.insertBefore(div, typing);
             chatBody.scrollTop = chatBody.scrollHeight;
+            if (options.persist !== false) {
+                recordHistory(text, who);
+            }
             return div;
+        }
+
+        async function streamBotReply(text) {
+            if (!chatBody || !typing) return;
+            const replyText = String(text || '').trim();
+            if (!replyText) return;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'msg bot';
+            bubble.textContent = '';
+            chatBody.insertBefore(bubble, typing);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReducedMotion) {
+                bubble.textContent = replyText;
+                recordHistory(replyText, 'bot');
+                return;
+            }
+
+            const tokens = replyText.split(/(\s+)/).filter((token) => token.length > 0);
+            const visibleWords = tokens.filter((token) => !/^\s+$/.test(token)).length || 1;
+            const baseDelay = Math.max(16, Math.min(38, Math.round(1500 / visibleWords)));
+            let rendered = '';
+
+            for (const token of tokens) {
+                rendered += token;
+                bubble.textContent = rendered;
+                chatBody.scrollTop = chatBody.scrollHeight;
+
+                if (/^\s+$/.test(token)) continue;
+                const extraPause = /[.!?؟،:]$/.test(token) ? 85 : 0;
+                const jitter = Math.floor(Math.random() * 12);
+                await new Promise((resolve) => setTimeout(resolve, baseDelay + extraPause + jitter));
+            }
+
+            recordHistory(replyText, 'bot');
         }
 
         function createQuickReplyButton(text, isRetry = false) {
@@ -1088,6 +1258,7 @@
             chatBody.insertBefore(wrapper, typing);
             chatBody.scrollTop = chatBody.scrollHeight;
             applyResponsiveQuickReplies();
+            recordHistory(message, 'bot');
         }
 
         function renderSuggestions(suggestions) {
@@ -1215,8 +1386,9 @@
                     throw emptyReplyError;
                 }
 
-                addMsg(reply, 'bot');
+                await streamBotReply(reply);
                 renderSuggestions(payload?.suggestions);
+                saveChatState();
             } catch (error) {
                 console.error('Gemini support request error:', error);
                 addErrorMessageWithActions(mapErrorMessage(error), normalized);
@@ -1226,6 +1398,7 @@
             }
         }
 
+        restoreChatState();
         applyResponsiveQuickReplies();
 
         function toggleChat() {
@@ -1235,6 +1408,7 @@
             chatFab.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
             chatWindow.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
             if (willOpen) {
+                playOpenChimeOnce();
                 if (chatBadge) chatBadge.style.display = 'none';
                 if (chatInput) setTimeout(() => chatInput.focus(), 80);
             }
@@ -1250,6 +1424,10 @@
             chatWindow.classList.remove('active', 'show');
             chatFab.setAttribute('aria-expanded', 'false');
             chatWindow.setAttribute('aria-hidden', 'true');
+        });
+        chatClear?.addEventListener('click', () => {
+            clearConversation();
+            if (chatInput) chatInput.focus();
         });
 
         document.addEventListener('click', (event) => {
