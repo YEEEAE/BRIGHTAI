@@ -160,6 +160,7 @@ function buildUnifiedNavigationMarkupFallback() {
             <li><a class="nav-link" href="/index.html">الرئيسية</a></li>
             <li><a class="nav-link" href="/frontend/pages/our-products/index.html">الحلول</a></li>
             <li><a class="nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
+            <li><a class="nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
             <li><a class="nav-link" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
           </ul>
         </nav>
@@ -175,6 +176,7 @@ function buildUnifiedNavigationMarkupFallback() {
         <li><a class="mobile-nav-link" href="/index.html">الرئيسية</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/our-products/index.html">الحلول</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
+        <li><a class="mobile-nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
       </ul>
     </div>
