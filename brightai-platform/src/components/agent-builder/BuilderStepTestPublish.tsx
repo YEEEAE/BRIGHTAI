@@ -196,8 +196,8 @@ const BuilderStepTestPublish = ({
             )}
             <span className="text-slate-200">
               {systemState.apiConnected
-                ? "الاتصال بمفتاح API متاح."
-                : "لم يتم العثور على مفتاح API نشط لـ Groq."}
+                ? "الاتصال بخدمة الذكاء الداخلية متاح."
+                : "خدمة الذكاء الداخلية غير متاحة حالياً."}
             </span>
           </div>
 

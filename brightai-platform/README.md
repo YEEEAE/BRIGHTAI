@@ -70,15 +70,21 @@ npm start
 
 ### 4.3 وحدة الذكاء وتنفيذ الوكلاء (AI Runtime)
 
-1. إذا بتشغّل Groq من الواجهة، عيّن:
-   - `REACT_APP_GROQ_API_KEY`
-2. لتسعير النماذج داخل الواجهة (اختياري):
+1. التكامل يعمل عبر endpoint داخلي:
+   - الواجهة تستدعي `/api/ai/*`
+   - Netlify Function تتصل بـ Gemini
+2. احفظ المفتاح كسِرّ في Netlify (ولا تضعه في `REACT_APP_*`):
+   - `GROQ_API_KEY` (حسب سياسة المشروع الحالية)
+   - أو `GEMINI_API_KEY` كبديل
+3. عيّن نموذج Gemini الافتراضي على مستوى الخادم:
+   - `GEMINI_MODEL=gemini-flash-latest`
+4. لتسعير النماذج داخل الواجهة (اختياري):
    - `REACT_APP_GROQ_PRICE_405B`
    - `REACT_APP_GROQ_PRICE_70B`
    - `REACT_APP_GROQ_PRICE_8B`
    - `REACT_APP_GROQ_PRICE_MIXTRAL`
    - `REACT_APP_GROQ_PRICE_GEMMA2`
-3. لو بتستخدم الأدوات الخارجية من `AgentTools` فعّل endpoints:
+5. لو بتستخدم الأدوات الخارجية من `AgentTools` فعّل endpoints:
    - `REACT_APP_TOOL_WEBSEARCH_URL`
    - `REACT_APP_TOOL_SCRAPE_URL`
    - `REACT_APP_TOOL_EMAIL_URL`
@@ -105,7 +111,16 @@ npm start
 إعدادات البناء الفعلية موجودة في `netlify.toml`:
 - Build command: `npm run build:prod`
 - Publish directory: `build`
+- Functions directory: `netlify/functions`
 - Node version: `20`
+- Redirect: `/api/ai/*` → `/.netlify/functions/ai/:splat`
+
+متغيرات Netlify المطلوبة لخدمة الذكاء:
+- `GROQ_API_KEY` أو `GEMINI_API_KEY`
+- `GEMINI_MODEL` (اختياري)
+- `AI_RATE_LIMIT_PER_MINUTE` (اختياري)
+- `AI_RATE_LIMIT_WINDOW_MS` (اختياري)
+- `AI_PROXY_ALLOW_UNAUTHENTICATED=false` للإنتاج
 
 #### Docker + Nginx
 
@@ -127,6 +142,7 @@ docker compose up -d --build
 التوزيع التشغيلي:
 - تطوير محلي: `.env.local`
 - إنتاج: `.env.production`
+- أسرار Netlify Functions: من لوحة Netlify (Environment variables)
 
 أقل متغيرات إلزامية للتشغيل:
 - `REACT_APP_SUPABASE_URL`
