@@ -33,6 +33,7 @@
       .bright-share-controls { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .9rem; }
       .bright-share-btn { display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .75rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); background: rgba(15,23,42,.7); color: #cbd5e1; text-decoration: none; font-size: .82rem; cursor: pointer; transition: .2s ease; }
       .bright-share-btn:hover { color: #fff; border-color: rgba(99,102,241,.7); background: rgba(99,102,241,.12); }
+      .bright-share-btn.is-active { background: rgba(34,197,94,.2); border-color: rgba(34,197,94,.55); color: #dcfce7; }
       .bright-author-card { margin-top: 1rem; padding: .85rem 1rem; border-radius: .85rem; border: 1px solid rgba(255,255,255,.14); background: rgba(15,23,42,.58); display: flex; align-items: center; gap: .65rem; color: #cbd5e1; }
       .bright-author-card strong { color: #fff; font-size: .92rem; }
       .bright-author-meta { color: #94a3b8; font-size: .83rem; margin-top: .12rem; }
@@ -48,9 +49,16 @@
       .bright-article-toc ul { margin: 0; padding-inline-start: 1rem; list-style: none; display: grid; gap: .45rem; }
       .bright-article-toc a { color: #cbd5e1; text-decoration: none; font-size: .9rem; }
       .bright-article-toc a:hover { color: #22d3ee; }
+      .bright-article-toc a.active { color: #22d3ee; font-weight: 700; }
       .bright-article-sidebar { position: fixed; top: 108px; left: 1.2rem; width: 260px; max-height: calc(100vh - 140px); overflow: auto; padding: .95rem; border-radius: .9rem; border: 1px solid rgba(255,255,255,.14); background: rgba(2,6,23,.9); backdrop-filter: blur(8px); z-index: 45; }
       .bright-article-sidebar .bright-article-toc { margin: 0; padding: 0; border: 0; background: transparent; }
       .bright-article-sidebar .bright-article-toc h2 { font-size: .95rem; margin-bottom: .7rem; }
+      .bright-article-newsletter { margin-top: 1.2rem; padding: 1rem; border-radius: .9rem; border: 1px solid rgba(34,211,238,.35); background: rgba(6,182,212,.08); }
+      .bright-article-newsletter h3 { margin: 0 0 .35rem; color: #fff; font-size: 1rem; }
+      .bright-article-newsletter p { margin: 0 0 .6rem; color: #cbd5e1; font-size: .9rem !important; line-height: 1.7 !important; }
+      .bright-newsletter-form { display: flex; gap: .5rem; flex-wrap: wrap; }
+      .bright-newsletter-form input { flex: 1; min-width: 220px; border: 1px solid rgba(255,255,255,.2); border-radius: .65rem; background: rgba(15,23,42,.45); color: #fff; padding: .5rem .65rem; }
+      .bright-newsletter-form button { border: 0; border-radius: .65rem; background: #06b6d4; color: #082f49; font-weight: 700; padding: .5rem .85rem; cursor: pointer; }
       .bright-related { margin-top: 2rem; padding: 1.2rem; border-radius: 1rem; border: 1px solid rgba(255,255,255,.12); background: rgba(15,23,42,.5); }
       .bright-related h2 { margin: 0 0 .9rem; color: #fff; font-size: 1.12rem; }
       .bright-related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .7rem; }
@@ -165,18 +173,26 @@
 
   function buildShareControlsMarkup(encodedTitle, encodedUrl) {
     return `
+      <button type="button" class="bright-share-btn" data-share-action="bookmark">
+        <iconify-icon icon="lucide:bookmark-plus" width="14"></iconify-icon>
+        حفظ المقال
+      </button>
       <button type="button" class="bright-share-btn" data-share-action="copy">
         <iconify-icon icon="lucide:link-2" width="14"></iconify-icon>
         نسخ الرابط
       </button>
-      <a class="bright-share-btn" href="https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}" target="_blank" rel="noopener noreferrer">
+      <a class="bright-share-btn" data-share-action="x" href="https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}" target="_blank" rel="noopener noreferrer">
         <iconify-icon icon="lucide:twitter" width="14"></iconify-icon>
         مشاركة X
       </a>
-      <a class="bright-share-btn" href="https://wa.me/?text=${encodedTitle}%20${encodedUrl}" target="_blank" rel="noopener noreferrer">
+      <a class="bright-share-btn" data-share-action="wa" href="https://wa.me/?text=${encodedTitle}%20${encodedUrl}" target="_blank" rel="noopener noreferrer">
         <iconify-icon icon="logos:whatsapp-icon" width="14"></iconify-icon>
         واتساب
       </a>
+      <button type="button" class="bright-share-btn" data-share-action="native">
+        <iconify-icon icon="lucide:share-2" width="14"></iconify-icon>
+        مشاركة سريعة
+      </button>
       <button type="button" class="bright-share-btn" data-share-action="print">
         <iconify-icon icon="lucide:printer" width="14"></iconify-icon>
         طباعة / PDF
@@ -184,8 +200,97 @@
     `;
   }
 
-  function bindShareControlsEvents(row, url) {
+  function getSavedArticles() {
+    try {
+      const raw = localStorage.getItem("bright_saved_articles");
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveSavedArticles(items) {
+    try {
+      localStorage.setItem("bright_saved_articles", JSON.stringify(items));
+    } catch (_) {
+      // Ignore storage write errors.
+    }
+  }
+
+  function isArticleSaved(pathname) {
+    return getSavedArticles().some((item) => item && item.pathname === pathname);
+  }
+
+  function toggleSavedArticle(payload) {
+    const current = getSavedArticles();
+    const exists = current.some((item) => item && item.pathname === payload.pathname);
+    if (exists) {
+      const filtered = current.filter((item) => item && item.pathname !== payload.pathname);
+      saveSavedArticles(filtered);
+      return false;
+    }
+
+    const next = [payload, ...current.filter((item) => item && item.pathname !== payload.pathname)].slice(0, 50);
+    saveSavedArticles(next);
+    return true;
+  }
+
+  function updateBookmarkButton(button, saved) {
+    if (!button) return;
+    button.classList.toggle("is-active", saved);
+    button.innerHTML = saved
+      ? '<iconify-icon icon="lucide:bookmark-check" width="14"></iconify-icon>محفوظ'
+      : '<iconify-icon icon="lucide:bookmark-plus" width="14"></iconify-icon>حفظ المقال';
+  }
+
+  function syncAllBookmarkButtons(saved) {
+    document.querySelectorAll('[data-share-action="bookmark"]').forEach((button) => {
+      updateBookmarkButton(button, saved);
+    });
+  }
+
+  function bindShareControlsEvents(row, url, titleText) {
     if (!row) return;
+    const pathname = normalizePathname(window.location.pathname);
+    const shareNativeButton = row.querySelector('[data-share-action="native"]');
+    const shareXButton = row.querySelector('[data-share-action="x"]');
+    const shareWaButton = row.querySelector('[data-share-action="wa"]');
+    const bookmarkButton = row.querySelector('[data-share-action="bookmark"]');
+
+    const canUseNativeShare =
+      typeof navigator.share === "function" &&
+      window.matchMedia &&
+      window.matchMedia("(max-width: 768px)").matches;
+    if (shareNativeButton) {
+      shareNativeButton.style.display = canUseNativeShare ? "inline-flex" : "none";
+    }
+    if (canUseNativeShare) {
+      if (shareXButton) shareXButton.style.display = "none";
+      if (shareWaButton) shareWaButton.style.display = "none";
+    }
+
+    if (bookmarkButton) {
+      updateBookmarkButton(bookmarkButton, isArticleSaved(pathname));
+      bookmarkButton.addEventListener("click", () => {
+        const saved = toggleSavedArticle({
+          pathname,
+          title: titleText,
+          url,
+          savedAt: new Date().toISOString()
+        });
+        syncAllBookmarkButtons(saved);
+      });
+    }
+
+    shareNativeButton?.addEventListener("click", async () => {
+      try {
+        await navigator.share({ title: titleText, text: titleText, url });
+      } catch (_) {
+        // Ignore canceled native share.
+      }
+    });
 
     row.querySelector('[data-share-action="copy"]')?.addEventListener("click", async function () {
       const button = row.querySelector('[data-share-action="copy"]');
@@ -221,7 +326,8 @@
 
     const url = window.location.href;
     const encodedUrl = encodeURIComponent(url);
-    const encodedTitle = encodeURIComponent((title.textContent || "").trim());
+    const titleText = (title.textContent || "").trim();
+    const encodedTitle = encodeURIComponent(titleText);
 
     if (!document.getElementById("bright-share-controls")) {
       const row = document.createElement("div");
@@ -229,7 +335,7 @@
       row.className = "bright-share-controls";
       row.innerHTML = buildShareControlsMarkup(encodedTitle, encodedUrl);
       title.insertAdjacentElement("afterend", row);
-      bindShareControlsEvents(row, url);
+      bindShareControlsEvents(row, url, titleText);
     }
 
     if (!document.getElementById("bright-share-controls-bottom")) {
@@ -243,7 +349,7 @@
       } else {
         article.appendChild(bottomRow);
       }
-      bindShareControlsEvents(bottomRow, url);
+      bindShareControlsEvents(bottomRow, url, titleText);
     }
   }
 
@@ -315,6 +421,58 @@
     return toc;
   }
 
+  function setActiveTocLink(activeId) {
+    const links = document.querySelectorAll('.bright-article-toc a[href^="#"]');
+    links.forEach((link) => {
+      const href = link.getAttribute("href") || "";
+      const targetId = href.slice(1);
+      link.classList.toggle("active", Boolean(activeId) && targetId === activeId);
+    });
+  }
+
+  function setupTocActiveState(headings) {
+    if (!headings || !headings.length || !("IntersectionObserver" in window)) return;
+    let activeId = headings[0].id || "";
+    const visibleHeadings = new Set();
+    setActiveTocLink(activeId);
+
+    const updateActiveFromVisible = () => {
+      if (visibleHeadings.size > 0) {
+        const sorted = Array.from(visibleHeadings).sort((a, b) => {
+          return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
+        });
+        activeId = sorted[0]?.id || activeId;
+      } else {
+        const closest = headings
+          .filter((heading) => heading.getBoundingClientRect().top <= window.innerHeight * 0.35)
+          .pop();
+        if (closest?.id) activeId = closest.id;
+      }
+      setActiveTocLink(activeId);
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const target = entry.target;
+        if (entry.isIntersecting) {
+          visibleHeadings.add(target);
+        } else {
+          visibleHeadings.delete(target);
+        }
+      });
+      updateActiveFromVisible();
+    }, { rootMargin: "-20% 0px -65% 0px", threshold: [0, 1] });
+
+    headings.forEach((heading) => io.observe(heading));
+
+    document.querySelectorAll('.bright-article-toc a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", () => {
+        const targetId = (link.getAttribute("href") || "").slice(1);
+        if (targetId) setActiveTocLink(targetId);
+      });
+    });
+  }
+
   function injectAutoTableOfContents() {
     if (!isArticleLikePage()) return;
     if (document.getElementById("bright-inline-toc")) return;
@@ -340,6 +498,66 @@
       sidebar.appendChild(buildTocMarkup(headings));
       document.body.appendChild(sidebar);
     }
+
+    setupTocActiveState(headings);
+  }
+
+  function extractArticleKeywords(article) {
+    const h1 = (article.querySelector("h1")?.textContent || "").toLowerCase();
+    const body = (article.innerText || "").toLowerCase().slice(0, 2800);
+    const merged = `${h1} ${body}`.replace(/[^\u0600-\u06FFa-z0-9\s]/g, " ");
+    const words = merged
+      .split(/\s+/)
+      .filter((word) => word.length >= 3)
+      .filter((word) => !/^(this|that|with|from|على|الى|من|في|عن|الى|هذا|هذه|شركة|فريق|bright)$/i.test(word));
+
+    const unique = [];
+    for (const word of words) {
+      if (unique.includes(word)) continue;
+      unique.push(word);
+      if (unique.length >= 14) break;
+    }
+    return unique;
+  }
+
+  function deriveRelatedArticlesFromSearchIndex(article, path, isDocsPath) {
+    const searchIndex = Array.isArray(window.brightSearch?.searchData) ? window.brightSearch.searchData : [];
+    if (!searchIndex.length) return [];
+
+    const currentPath = normalizePathname(path);
+    const keywords = extractArticleKeywords(article);
+    const preferredType = isDocsPath ? "docs" : "blog";
+
+    const isCandidate = (url) => {
+      const normalized = normalizePathname(url);
+      if (normalized === currentPath) return false;
+      if (preferredType === "docs") {
+        return normalized.startsWith("/frontend/pages/docs/");
+      }
+      return normalized.startsWith("/frontend/pages/blogger/") || normalized.startsWith("/frontend/pages/blog/");
+    };
+
+    const scored = searchIndex
+      .filter((entry) => entry && typeof entry.url === "string" && isCandidate(entry.url))
+      .map((entry) => {
+        const haystack = `${entry.title || ""} ${entry.description || ""} ${(entry.keywords || []).join(" ")}`.toLowerCase();
+        let score = 0;
+        keywords.forEach((word) => {
+          if (haystack.includes(word)) score += 3;
+        });
+        if ((entry.category || "").includes("الخدمات")) score += 1;
+        return {
+          href: entry.url,
+          title: entry.title || "محتوى ذو صلة",
+          hint: entry.description || "اقرأ المزيد",
+          score
+        };
+      })
+      .sort((a, b) => b.score - a.score)
+      .filter((entry) => entry.score > 0)
+      .slice(0, 3);
+
+    return scored;
   }
 
   function injectRelatedArticles() {
@@ -357,17 +575,20 @@
     });
     if (hasRelatedHeader) return;
 
-    const relatedSet = isBlogPath
-      ? [
-          { href: "/frontend/pages/blogger/nca-compliance.html", title: "حوكمة NCA للشركات السعودية", hint: "امتثال وتشغيل" },
-          { href: "/frontend/pages/blogger/vision-2030-ai-opportunities.html", title: "فرص الذكاء الاصطناعي ضمن رؤية 2030", hint: "اتجاهات السوق" },
-          { href: "/frontend/pages/blogger/ai-implementation-cost-guide.html", title: "دليل تكلفة تطبيق الذكاء الاصطناعي", hint: "قرار الاستثمار" }
-        ]
-      : [
-          { href: "/frontend/pages/docs/solutions-hr.html", title: "حلول الموارد البشرية الذكية", hint: "حالة استخدام عملية" },
-          { href: "/frontend/pages/docs/solutions-crm.html", title: "حلول CRM والواتساب", hint: "رفع التحويلات" },
-          { href: "/frontend/pages/docs/consultation.html", title: "استشارة تنفيذ مخصصة", hint: "جلسة تشخيص" }
-        ];
+    let relatedSet = deriveRelatedArticlesFromSearchIndex(article, path, isDocsPath);
+    if (!relatedSet.length) {
+      relatedSet = isDocsPath
+        ? [
+            { href: "/frontend/pages/docs/solutions-hr.html", title: "حلول الموارد البشرية الذكية", hint: "حالة استخدام عملية" },
+            { href: "/frontend/pages/docs/solutions-crm.html", title: "حلول CRM والواتساب", hint: "رفع التحويلات" },
+            { href: "/frontend/pages/docs/consultation.html", title: "استشارة تنفيذ مخصصة", hint: "جلسة تشخيص" }
+          ]
+        : [
+            { href: "/frontend/pages/blogger/nca-compliance.html", title: "حوكمة NCA للشركات السعودية", hint: "امتثال وتشغيل" },
+            { href: "/frontend/pages/blogger/vision-2030-ai-opportunities.html", title: "فرص الذكاء الاصطناعي ضمن رؤية 2030", hint: "اتجاهات السوق" },
+            { href: "/frontend/pages/blogger/ai-implementation-cost-guide.html", title: "دليل تكلفة تطبيق الذكاء الاصطناعي", hint: "قرار الاستثمار" }
+          ];
+    }
 
     const section = document.createElement("section");
     section.id = "bright-related-articles";
@@ -523,6 +744,41 @@
     }
   }
 
+  function injectArticleNewsletter() {
+    if (!isArticleLikePage()) return;
+    if (document.getElementById("bright-article-newsletter")) return;
+
+    const article = getPrimaryArticleContainer();
+    if (!article) return;
+
+    const section = document.createElement("section");
+    section.id = "bright-article-newsletter";
+    section.className = "bright-article-newsletter";
+    section.innerHTML = `
+      <h3>اشترك في نشرة Bright AI</h3>
+      <p>ملخصات تطبيقية أسبوعية عن الأتمتة والذكاء الاصطناعي في السوق السعودي.</p>
+      <form class="bright-newsletter-form" id="bright-article-newsletter-form">
+        <input type="email" required placeholder="البريد الإلكتروني" />
+        <button type="submit">اشترك</button>
+      </form>
+    `;
+
+    const paragraphs = Array.from(article.querySelectorAll("p"));
+    const middleParagraph = paragraphs[Math.floor(paragraphs.length / 2)];
+    if (middleParagraph) {
+      middleParagraph.insertAdjacentElement("afterend", section);
+    } else {
+      article.appendChild(section);
+    }
+
+    section.querySelector("#bright-article-newsletter-form")?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = section.querySelector("input[type='email']")?.value?.trim() || "";
+      if (!email) return;
+      window.location.href = `mailto:yazeed1job@gmail.com?subject=${encodeURIComponent("Article Newsletter Subscription")}&body=${encodeURIComponent(email)}`;
+    });
+  }
+
   function injectBackToTopButton() {
     const path = normalizePathname(window.location.pathname);
     const isRootPath = path === "/" || path === "/index" || path === "/index.html";
@@ -657,6 +913,7 @@
     injectShareControls();
     injectAuthorCardFallback();
     injectAutoTableOfContents();
+    injectArticleNewsletter();
     injectRelatedArticles();
     injectHelpfulnessFeedback();
     injectBackToTopButton();

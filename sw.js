@@ -1,7 +1,9 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-02-27-4';
+const CACHE_VERSION = '2026-02-27-5';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
+const RECENT_ARTICLES_CACHE = `brightai-recent-articles-${CACHE_VERSION}`;
+const MAX_RECENT_ARTICLES = 30;
 
 const STATIC_ASSETS = [
   '/',
@@ -11,6 +13,7 @@ const STATIC_ASSETS = [
   '/frontend/js/main.bundle.js?v=20260206',
   '/frontend/js/navigation.js',
   '/frontend/js/article-ux-enhancements.js',
+  '/frontend/js/page-enhancements.js',
   '/frontend/js/schema-loader.js?v=20260206',
   '/frontend/js/search.js?v=20260206',
   '/frontend/js/chat-widget.js?v=20260206',
@@ -35,7 +38,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys
-          .filter((key) => key.startsWith('brightai-') && ![STATIC_CACHE, RUNTIME_CACHE].includes(key))
+          .filter((key) => key.startsWith('brightai-') && ![STATIC_CACHE, RUNTIME_CACHE, RECENT_ARTICLES_CACHE].includes(key))
           .map((key) => caches.delete(key))
       );
     }).then(() => self.clients.claim())
@@ -51,6 +54,10 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/api/')) return;
 
   if (req.mode === 'navigate' || req.destination === 'document') {
+    if (isArticleDocument(url.pathname)) {
+      event.respondWith(networkFirstArticle(req));
+      return;
+    }
     event.respondWith(networkFirst(req));
     return;
   }
@@ -84,6 +91,39 @@ async function networkFirst(req) {
     return res;
   } catch (err) {
     const cached = await caches.match(req);
+    const offlineFallback = await caches.match('/frontend/pages/offline/index.html');
+    return cached || offlineFallback || caches.match('/index.html');
+  }
+}
+
+function isArticleDocument(pathname) {
+  return (
+    pathname.startsWith('/frontend/pages/blogger/') ||
+    (pathname.startsWith('/frontend/pages/blog/') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index')) ||
+    (pathname.startsWith('/frontend/pages/docs/') && !pathname.endsWith('/docs.html')) ||
+    (pathname.startsWith('/blog/') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index'))
+  );
+}
+
+async function trimRecentArticlesCache(cache) {
+  const keys = await cache.keys();
+  if (keys.length <= MAX_RECENT_ARTICLES) return;
+  const redundant = keys.slice(0, keys.length - MAX_RECENT_ARTICLES);
+  await Promise.all(redundant.map((key) => cache.delete(key)));
+}
+
+async function networkFirstArticle(req) {
+  try {
+    const res = await fetch(req);
+    if (res && res.ok && res.type === 'basic') {
+      const recentCache = await caches.open(RECENT_ARTICLES_CACHE);
+      await recentCache.put(req, res.clone());
+      await trimRecentArticlesCache(recentCache);
+    }
+    return res;
+  } catch (err) {
+    const recent = await caches.open(RECENT_ARTICLES_CACHE);
+    const cached = await recent.match(req);
     const offlineFallback = await caches.match('/frontend/pages/offline/index.html');
     return cached || offlineFallback || caches.match('/index.html');
   }

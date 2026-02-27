@@ -398,6 +398,57 @@ function ensureSearchScript() {
   document.head.appendChild(script);
 }
 
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  const register = () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  };
+
+  if (document.readyState === "complete") {
+    register();
+  } else {
+    window.addEventListener("load", register, { once: true });
+  }
+}
+
+const prefetchedLinks = new Set();
+
+function prefetchLink(href) {
+  if (!href || prefetchedLinks.has(href)) return;
+  prefetchedLinks.add(href);
+
+  const prefetch = document.createElement("link");
+  prefetch.rel = "prefetch";
+  prefetch.as = "document";
+  prefetch.href = href;
+  prefetch.crossOrigin = "anonymous";
+  document.head.appendChild(prefetch);
+}
+
+function setupNavigationPrefetch() {
+  const shouldSkipPrefetch = window.matchMedia && window.matchMedia("(prefers-reduced-data: reduce)").matches;
+  if (shouldSkipPrefetch) return;
+
+  const prefetchFromAnchor = (anchor) => {
+    if (!anchor) return;
+    const href = anchor.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+    if (anchor.hasAttribute("download") || anchor.target === "_blank") return;
+
+    const resolved = new URL(href, window.location.origin);
+    if (resolved.origin !== window.location.origin) return;
+    prefetchLink(resolved.pathname + resolved.search);
+  };
+
+  const onPointer = (event) => {
+    const anchor = event.target?.closest?.("a[href]");
+    prefetchFromAnchor(anchor);
+  };
+
+  document.addEventListener("mouseover", onPointer, { passive: true });
+  document.addEventListener("focusin", onPointer);
+}
+
 function isFooterStandardizationTarget(pathname = window.location.pathname) {
   const currentPath = normalizePathname(pathname);
   return FOOTER_STANDARDIZATION_PATH_PREFIXES.some((prefix) => {
@@ -607,6 +658,9 @@ if (document.readyState === "loading") {
 }
 
 async function initNavigation() {
+  registerServiceWorker();
+  setupNavigationPrefetch();
+
   if (isTargetServicePage()) {
     ensureUnifiedDesignSystem();
     ensureDependencies();

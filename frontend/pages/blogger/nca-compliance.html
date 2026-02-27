@@ -259,6 +259,58 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
             margin-top: 0;
         }
 
+        .reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(148, 163, 184, 0.12);
+            z-index: 1200;
+        }
+
+        .reading-progress-bar {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #22d3ee);
+            transition: width 0.1s linear;
+        }
+
+        .share-toolbar {
+            max-width: 900px;
+            margin: 1rem auto 0;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .share-toolbar-title {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .share-btn {
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            background: rgba(15, 23, 42, 0.6);
+            color: #e2e8f0;
+            border-radius: 999px;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .share-btn:hover {
+            border-color: rgba(99, 102, 241, 0.7);
+            background: rgba(99, 102, 241, 0.2);
+            color: #fff;
+        }
+
         /* Quick Navigation Sidebar */
         .quick-nav {
             position: fixed;
@@ -289,10 +341,13 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
             list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .quick-nav li {
-            margin-bottom: 0.75rem;
+            margin: 0;
         }
 
         .quick-nav a {
@@ -339,7 +394,6 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <script defer="" src="/frontend/js/iconify-preload.js"></script>
 <script defer="" src="/frontend/js/vendor/iconify.min.js"></script>
 <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
-</meta></meta></meta></meta>
 <!-- Deferred Google Analytics -->
 
 <!-- Critical CSS for Core Web Vitals -->
@@ -407,7 +461,8 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
     <link href="/frontend/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
 <link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
 </head>
-<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight" style="background: #020617;">
+<div aria-hidden="true" class="reading-progress"><div class="reading-progress-bar" id="reading-progress-bar"></div></div>
 <!-- Header / Navbar -->
     <header class="unified-nav" id="main-header" role="banner">
         <div class="nav-container">
@@ -838,18 +893,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <!-- Quick Navigation Sidebar -->
 <aside aria-label="التنقل السريع" class="quick-nav">
 <h4>محتويات الدليل</h4>
-<ul>
-<li><a href="#introduction">المقدمة</a></li>
-<li><a href="#nca-overview">الهيئة الوطنية للأمن السيبراني</a></li>
-<li><a href="#ecc">الضوابط الأساسية (ECC)</a></li>
-<li><a href="#cscc">الأنظمة الحساسة (CSCC)</a></li>
-<li><a href="#dcc">ضوابط البيانات (DCC)</a></li>
-<li><a href="#ndmo">مكتب إدارة البيانات (NDMO)</a></li>
-<li><a href="#compliance-journey">رحلة الامتثال</a></li>
-<li><a href="#ai-role">دور الذكاء الاصطناعي</a></li>
-<li><a href="#faq">الأسئلة الشائعة</a></li>
-<li><a href="#conclusion">الخاتمة</a></li>
-</ul>
+<ul id="auto-toc-list"></ul>
 </aside>
 <!-- HERO SECTION -->
 <header class="hero-section relative min-h-[40vh] flex items-center pt-32 pb-16 px-6 overflow-hidden" style="background: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 100%);">
@@ -880,6 +924,12 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 </div>
 </div>
 </header>
+<section aria-label="مشاركة المقال" class="share-toolbar">
+<span class="share-toolbar-title">مشاركة الدليل:</span>
+<a class="share-btn" href="https://wa.me/?text=%D8%A7%D9%84%D8%AF%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%B4%D8%A7%D9%85%D9%84%20%D9%84%D9%84%D8%A7%D9%85%D8%AA%D8%AB%D8%A7%D9%84%20NCA%20https%3A%2F%2Fbrightai.site%2Ffrontend%2Fpages%2Fblogger%2Fnca-compliance.html" rel="noopener noreferrer" target="_blank">WhatsApp</a>
+<a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbrightai.site%2Ffrontend%2Fpages%2Fblogger%2Fnca-compliance.html" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+<button class="share-btn" id="copy-share-link" type="button">نسخ الرابط</button>
+</section>
 <main>
 <article>
 <section id="introduction" style="content-visibility: auto;">

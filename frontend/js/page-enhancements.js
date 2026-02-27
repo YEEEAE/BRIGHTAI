@@ -465,6 +465,12 @@
 
     const cards = Array.from(blogSection.querySelectorAll("article"));
     if (!cards.length) return;
+    const cardImages = Array.from(blogSection.querySelectorAll("img"));
+    cardImages.forEach((image, index) => {
+      if (!image.hasAttribute("loading")) image.loading = index === 0 ? "eager" : "lazy";
+      if (!image.hasAttribute("decoding")) image.decoding = "async";
+      if (!image.hasAttribute("fetchpriority")) image.setAttribute("fetchpriority", index === 0 ? "high" : "auto");
+    });
 
     if (!document.getElementById("bright-blog-featured")) {
       const firstLink = cards[0].querySelector("a[href]");
@@ -558,6 +564,12 @@
           window.location.href = `/frontend/pages/blog/index.html?q=${encodeURIComponent(query)}`;
         }
       });
+
+      const initialQuery = new URLSearchParams(window.location.search).get("q");
+      if (initialQuery) {
+        searchInput.value = initialQuery;
+        applyFilter();
+      }
     }
 
     if (!document.getElementById("bright-blog-newsletter")) {
@@ -695,11 +707,44 @@
     }
   }
 
+  function injectFooterNewsletter() {
+    if (document.getElementById("bright-footer-newsletter")) return;
+    const footer = document.querySelector("#main-footer, footer");
+    if (!footer) return;
+
+    const block = document.createElement("section");
+    block.id = "bright-footer-newsletter";
+    block.className = "mt-8 p-4 rounded-xl border border-cyan-400/25 bg-cyan-500/10";
+    block.innerHTML = `
+      <h3 class="text-white font-bold mb-2">اشترك في النشرة</h3>
+      <p class="text-slate-300 text-sm mb-3">محتوى تنفيذي أسبوعي حول تطبيقات الذكاء الاصطناعي محلياً.</p>
+      <form id="bright-footer-newsletter-form" class="flex flex-col md:flex-row gap-2">
+        <input type="email" required placeholder="البريد الإلكتروني" class="flex-1 rounded-lg border border-white/20 bg-black/20 text-white px-3 py-2" />
+        <button type="submit" class="px-4 py-2 rounded-lg bg-cyan-500 text-slate-900 font-bold">اشترك</button>
+      </form>
+    `;
+
+    const wrapper = footer.querySelector(".max-w-7xl, .max-w-6xl, .max-w-5xl");
+    if (wrapper) {
+      wrapper.appendChild(block);
+    } else {
+      footer.appendChild(block);
+    }
+
+    block.querySelector("#bright-footer-newsletter-form")?.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = block.querySelector("input[type='email']")?.value?.trim() || "";
+      if (!email) return;
+      window.location.href = `mailto:yazeed1job@gmail.com?subject=${encodeURIComponent("Footer Newsletter Subscription")}&body=${encodeURIComponent(email)}`;
+    });
+  }
+
   function apply(options) {
     normalizePathname = typeof options?.normalizePathname === "function" ? options.normalizePathname : normalizePathname;
     applyServiceEnhancements();
     applyBlogIndexEnhancements();
     applyContactEnhancements();
+    injectFooterNewsletter();
   }
 
   window.BrightPageEnhancer = { apply };

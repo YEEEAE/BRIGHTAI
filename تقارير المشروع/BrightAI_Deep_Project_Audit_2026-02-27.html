@@ -198,8 +198,33 @@
     </p>
   </div>
 
+  <div class="prompt">
+    <h3>Prompt 10 — إصلاح أعطال الاختبارات القديمة غير المرتبطة بالميزات الحالية</h3>
+    <p>
+      عالج مشاكل CI/test legacy الموجودة حاليًا حتى لو كانت خارج نطاق الميزة الحالية:
+      1) ثبّت اعتماديات الاختبار المفقودة لكل وحدة (<code>backend</code> و<code>brightai-platform</code>) عبر setup واضح ومعزول،
+      2) أصلح مشكلة اختبارات backend التي ترجع <code>404</code> بسبب عدم تطابق المسارات (مثل <code>/api/groq/stream</code> مقابل <code>/api/ai/stream</code>) بإضافة alias متوافق أو تحديث الاختبارات مع الحفاظ على backward compatibility،
+      3) حدّث ملفات إعداد الاختبار لتجنب تداخل مشاريع monorepo في نفس runner،
+      4) نفّذ اختبار end-to-end minimal يثبت أن مسارات البث الرئيسية ترجع <code>200</code> في سيناريو النجاح،
+      5) سلّم تقريرًا نهائيًا يفرق بين: أعطال مرتبطة بالميزة الحالية وأعطال legacy تم إصلاحها الآن.
+    </p>
+  </div>
+
+  <div class="prompt">
+    <h3>Prompt 11 — إصلاح ربط Gemini على الرابط الفعلي وقت النشر</h3>
+    <p>
+      أصلح مشكلة اتصال Gemini في بيئة الإنتاج عبر توحيد طبقة API Gateway بين الواجهة والخادم:
+      1) اعتمد متغيرًا موحدًا لقاعدة الـ API مثل <code>BRIGHTAI_API_BASE</code> (مع fallback آمن إلى نفس الأصل فقط عند توفر backend فعلي)،
+      2) اجعل جميع نداءات الواجهة التي تستخدم <code>/api/gemini/chat</code> و<code>/api/gemini/chat/stream</code> تمر عبر دالة مركزية تبني URL الإنتاج الصحيح بدل hardcoded paths،
+      3) وحّد استراتيجية النشر: إذا الإنتاج على Netlify ففعّل redirect <code>/api/* -> /.netlify/functions/all</code> كمسار رسمي، وإذا الإنتاج على Apache/Cloudflare فأنشئ proxy/rewrite مكافئ أو endpoint backend منفصل واضح (مثل <code>https://api.brightai.sa</code>) مع CORS مضبوط،
+      4) أضف فحص preflight عند بدء التطبيق على الإنتاج يستدعي <code>/api/health</code> أو endpoint health مكافئ ويعرض رسالة تشخيص واضحة إذا فشل الربط (بدل فشل صامت)،
+      5) تحقق من متغيرات البيئة في النشر (<code>GEMINI_API_KEY</code>, <code>GEMINI_MODEL</code>) وتأكد أن 503 بسبب key missing يظهر برسالة تشغيلية مفهومة،
+      6) سلّم smoke test على رابط الإنتاج الفعلي يثبت نجاح: <code>POST /api/gemini/chat</code> و<code>POST /api/gemini/chat/stream</code> من المتصفح بدون 404/500.
+    </p>
+  </div>
+
   <p class="small">
-    ملاحظة تنفيذية: الترتيب الموصى به هو من Prompt 1 إلى Prompt 9 بالتسلسل. لا تبدأ الحذف النهائي قبل تثبيت الاختبارات والمرجعيات.
+    ملاحظة تنفيذية: الترتيب الموصى به هو من Prompt 1 إلى Prompt 11 بالتسلسل. لا تبدأ الحذف النهائي قبل تثبيت الاختبارات والمرجعيات.
   </p>
 
 </body>
