@@ -1,3 +1,5 @@
+import { queueSecurityAuditEvent } from "./audit";
+
 type SecurityEvent = {
   type: string;
   message: string;
@@ -100,6 +102,12 @@ export const signRequest = async (payload: string) => {
 };
 
 export const logSecurityEvent = (event: SecurityEvent) => {
+  queueSecurityAuditEvent({
+    type: event.type,
+    message: event.message,
+    meta: event.meta,
+  });
+
   const storage = getSessionStorage();
   if (!storage) {
     return;

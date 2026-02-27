@@ -1,3 +1,5 @@
+import { queueExecutionAuditEvent } from "../lib/audit";
+
 export type MonitoringLevel = "info" | "warn" | "error" | "debug";
 
 export type ExecutionLogEntry = {
@@ -36,6 +38,15 @@ export class AgentMonitoring {
       id: crypto.randomUUID ? crypto.randomUUID() : `log_${Date.now()}_${Math.random()}`,
       timestamp: new Date().toISOString(),
     };
+
+    queueExecutionAuditEvent({
+      executionId: stored.executionId,
+      agentId: stored.agentId,
+      nodeId: stored.nodeId,
+      level: stored.level,
+      message: stored.message,
+      data: stored.data,
+    });
 
     if (typeof window !== "undefined") {
       const key = buildKey(entry.executionId);

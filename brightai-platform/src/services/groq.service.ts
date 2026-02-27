@@ -1,4 +1,5 @@
 import supabase from "../lib/supabase";
+import { queueAiAuditEvent } from "../lib/audit";
 
 export type GroqMessage = {
   role: "system" | "user" | "assistant";
@@ -289,12 +290,14 @@ export class GroqService {
         () => controller.abort(),
         this.timeoutMs
       );
+      const startedAt = performance.now();
+      const requestId = this.generateRequestId();
 
       try {
         const accessToken = await this.getAccessToken();
         const headers: Record<string, string> = {
           "Content-Type": "application/json",
-          "X-Request-Id": this.generateRequestId(),
+          "X-Request-Id": requestId,
         };
 
         if (accessToken) {
@@ -313,6 +316,15 @@ export class GroqService {
           signal: controller.signal,
         });
 
+        queueAiAuditEvent({
+          endpoint: `${BASE_URL}${path}`,
+          model: payload?.model,
+          statusCode: response.status,
+          latencyMs: Math.round(performance.now() - startedAt),
+          requestId,
+          success: response.ok,
+        });
+
         if (!response.ok) {
           await this.handleErrorResponse(response, attempt);
         }
@@ -323,6 +335,14 @@ export class GroqService {
 
         return (await response.json()) as T;
       } catch (error) {
+        queueAiAuditEvent({
+          endpoint: `${BASE_URL}${path}`,
+          model: payload?.model,
+          latencyMs: Math.round(performance.now() - startedAt),
+          requestId,
+          success: false,
+          error: error instanceof Error ? error.message : "unknown_error",
+        });
         if (error instanceof GroqError) {
           throw error;
         }

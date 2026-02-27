@@ -2,6 +2,7 @@ import axios, { AxiosHeaders, type AxiosRequestConfig, type AxiosResponse } from
 import { APP_DEFAULT_LOCALE } from "../constants/app";
 import { getCsrfToken, getRequestId, logSecurityEvent, signRequest } from "../lib/security";
 import { trackApiResponseTime, trackErrorEvent } from "../lib/analytics";
+import { queueHttpAuditEvent } from "../lib/audit";
 
 type CacheEntry = {
   timestamp: number;
@@ -10,6 +11,19 @@ type CacheEntry = {
 
 const CACHE_TTL_MS = 30000;
 const responseCache = new Map<string, CacheEntry>();
+
+const normalizeHeaderValue = (value: unknown): string => {
+  if (typeof value === "string") {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.join(",");
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  return "";
+};
 
 const buildCacheKey = (config: AxiosRequestConfig) => {
   const base = config.baseURL || "";
@@ -81,14 +95,27 @@ http.interceptors.request.use(async (config) => {
 http.interceptors.response.use((response) => {
   const method = (response.config.method || "get").toLowerCase();
   const metadata = (response.config as AxiosRequestConfig & { metadata?: { startTime: number } }).metadata;
+  const requestId =
+    normalizeHeaderValue(AxiosHeaders.from(response.config.headers).get("X-Request-Id")) ||
+    normalizeHeaderValue(AxiosHeaders.from(response.config.headers).get("x-request-id"));
+  const durationMs = metadata?.startTime ? performance.now() - metadata.startTime : 0;
   if (metadata?.startTime) {
     trackApiResponseTime(
       response.config.url || "",
       method,
-      performance.now() - metadata.startTime,
+      durationMs,
       response.status
     );
   }
+  queueHttpAuditEvent({
+    endpoint: response.config.url || "",
+    method,
+    statusCode: response.status,
+    latencyMs: Math.round(durationMs),
+    requestId,
+    success: true,
+    source: "http.interceptor.response",
+  });
   if (method !== "get") {
     return response;
   }
@@ -99,14 +126,28 @@ http.interceptors.response.use((response) => {
   if (error?.config) {
     const config = error.config as AxiosRequestConfig & { metadata?: { startTime: number } };
     const metadata = config.metadata;
+    const requestHeaders = AxiosHeaders.from((config.headers || {}) as unknown as AxiosHeaders);
+    const requestId =
+      normalizeHeaderValue(requestHeaders.get("X-Request-Id")) ||
+      normalizeHeaderValue(requestHeaders.get("x-request-id"));
+    const durationMs = metadata?.startTime ? performance.now() - metadata.startTime : 0;
     if (metadata?.startTime) {
       trackApiResponseTime(
         config.url || "",
         (config.method || "get").toLowerCase(),
-        performance.now() - metadata.startTime,
+        durationMs,
         error?.response?.status
       );
     }
+    queueHttpAuditEvent({
+      endpoint: config.url || "",
+      method: (config.method || "get").toLowerCase(),
+      statusCode: error?.response?.status,
+      latencyMs: Math.round(durationMs),
+      requestId,
+      success: false,
+      source: "http.interceptor.error",
+    });
   }
   trackErrorEvent(error, "http");
   return Promise.reject(error);

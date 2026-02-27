@@ -10,6 +10,18 @@
   force = true
 
 [[redirects]]
+  from = "/api/audit/logs"
+  to = "/.netlify/functions/audit-logs"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/audit"
+  to = "/.netlify/functions/audit"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
