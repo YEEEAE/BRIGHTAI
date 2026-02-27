@@ -1,8 +1,20 @@
-# Environment variables
+# === ملفات البيئة ===
 .env
 .env.local
 .env.*.local
+.env.production
+.env.staging
+.env.test
+
+# === ملفات بيئة المنصة ===
+brightai-platform/.env
+brightai-platform/.env.local
+brightai-platform/.env.production
+brightai-platform/.env.*.local
+
+# === ملفات env الواجهة الأمامية ===
 frontend/env.js
+frontend/env.local.js
 env.js
 
 # Node modules
@@ -56,25 +68,3 @@ backups/
 
 # Local Netlify folder
 .netlify
-
-# === ملفات البيئة - يجب عدم رفعها ===
-
-.env
-
-.env.local
-
-.env.*.local
-
-.env.production
-
-.env.staging
-
-.env.example.local
-
-brightai-platform/.env.production
-
-brightai-platform/.env.local
-
-frontend/env.js
-
-env.js
