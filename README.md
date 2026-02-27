@@ -66,3 +66,4 @@ npm install --workspace brightai-platform
 - `npm run sitemap:all`
 - `npm run seo:check`
 - `npm run performance:budget`
+- `npm run deploy:source-of-truth:check`

@@ -9,6 +9,53 @@ node_bundler = "esbuild"
 [context.production.environment]
 NODE_ENV = "production"
 
+# Netlify is the only production source of truth for:
+# - Routing and redirects
+# - Security headers
+# - Caching policy
+
+# -------------------------------------------------
+# Canonical domain redirects
+# -------------------------------------------------
+[[redirects]]
+from = "https://www.brightai.site/*"
+to = "https://brightai.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "http://www.brightai.site/*"
+to = "https://brightai.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://brightaii.com/*"
+to = "https://brightai.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "http://brightaii.com/*"
+to = "https://brightai.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "https://www.brightaii.com/*"
+to = "https://brightai.site/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "http://www.brightaii.com/*"
+to = "https://brightai.site/:splat"
+status = 301
+force = true
+
+# -------------------------------------------------
+# Static legacy routes
+# -------------------------------------------------
 [[redirects]]
 from = "/sitemap.html"
 to = "/frontend/pages/sitemap/index.html"
@@ -27,6 +74,15 @@ to = "/frontend/pages/offline/index.html"
 status = 301
 force = true
 
+[[redirects]]
+from = "/index.html"
+to = "/"
+status = 301
+force = true
+
+# -------------------------------------------------
+# Blogger legacy redirects
+# -------------------------------------------------
 [[redirects]]
 from = "/frontend/pages/blogger/%20production-line.html"
 to = "/frontend/pages/blogger/production-line.html"
@@ -112,7 +168,174 @@ status = 301
 force = true
 
 [[redirects]]
+from = "/blog/ai-guide-saudi-business"
+to = "/frontend/pages/blogger/ai-guide-saudi-business.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/ai-guide-saudi-business.html"
+to = "/frontend/pages/blogger/ai-guide-saudi-business.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/choose-ai-company-saudi"
+to = "/frontend/pages/blogger/choose-ai-company-saudi.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/choose-ai-company-saudi.html"
+to = "/frontend/pages/blogger/choose-ai-company-saudi.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/vision-2030-ai-opportunities"
+to = "/frontend/pages/blogger/vision-2030-ai-opportunities.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/vision-2030-ai-opportunities.html"
+to = "/frontend/pages/blogger/vision-2030-ai-opportunities.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/top-ai-tools-saudi-2025"
+to = "/frontend/pages/blogger/top-ai-tools-saudi-2025.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/top-ai-tools-saudi-2025.html"
+to = "/frontend/pages/blogger/top-ai-tools-saudi-2025.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/ai-implementation-cost-guide"
+to = "/frontend/pages/blogger/ai-implementation-cost-guide.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/ai-implementation-cost-guide.html"
+to = "/frontend/pages/blogger/ai-implementation-cost-guide.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/hr-automation-case-study"
+to = "/frontend/pages/blogger/hr-automation-case-study.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/hr-automation-case-study.html"
+to = "/frontend/pages/blogger/hr-automation-case-study.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/chatgpt-vs-claude-vs-gemini-arabic"
+to = "/frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/chatgpt-vs-claude-vs-gemini-arabic.html"
+to = "/frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/nca-ai-compliance-saudi"
+to = "/frontend/pages/blogger/nca-ai-compliance-saudi.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/nca-ai-compliance-saudi.html"
+to = "/frontend/pages/blogger/nca-ai-compliance-saudi.html"
+status = 301
+force = true
+
+[[redirects]]
 from = "/api/*"
 to = "/.netlify/functions/all"
 status = 200
 force = true
+
+# -------------------------------------------------
+# Security headers
+# -------------------------------------------------
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+X-Frame-Options = "SAMEORIGIN"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+X-XSS-Protection = "1; mode=block"
+Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+Content-Security-Policy = "default-src 'self' https: data: blob:; script-src 'self' https: 'unsafe-inline'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com data:; connect-src 'self' https: wss:; frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self';"
+
+# -------------------------------------------------
+# Caching headers
+# -------------------------------------------------
+[[headers]]
+for = "/"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+for = "/index.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+for = "/*.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/frontend/css/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/frontend/js/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/frontend/assets/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/frontend/assets/fonts/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+Access-Control-Allow-Origin = "*"
+
+[[headers]]
+for = "/*.woff2"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+Access-Control-Allow-Origin = "*"
+
+[[headers]]
+for = "/sw.js"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+Service-Worker-Allowed = "/"
+
+[[headers]]
+for = "/manifest.json"
+[headers.values]
+Cache-Control = "public, max-age=3600"

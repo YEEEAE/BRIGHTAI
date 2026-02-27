@@ -1,0 +1,41 @@
+name: Netlify Source of Truth
+
+on:
+  pull_request:
+    paths:
+      - "netlify.toml"
+      - ".htaccess"
+      - "_headers"
+      - "scripts/verify-netlify-source-of-truth.mjs"
+      - "package.json"
+      - "docs/deployment-archive/**"
+      - ".github/workflows/netlify-source-of-truth.yml"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "netlify.toml"
+      - ".htaccess"
+      - "_headers"
+      - "scripts/verify-netlify-source-of-truth.mjs"
+      - "package.json"
+      - "docs/deployment-archive/**"
+      - ".github/workflows/netlify-source-of-truth.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Netlify Source of Truth
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run source-of-truth validation
+        run: npm run deploy:source-of-truth:check

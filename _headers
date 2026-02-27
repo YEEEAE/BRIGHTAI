@@ -1,49 +1,10 @@
-# Cloudflare Pages Custom Headers
-# https://developers.cloudflare.com/pages/configuration/headers/
-
-# Global Security Headers
-/*
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-
-# HTML pages: always revalidate
-/
-  Cache-Control: public, max-age=0, must-revalidate
-
-/index.html
-  Cache-Control: public, max-age=0, must-revalidate
-
-/*.html
-  Cache-Control: public, max-age=0, must-revalidate
-
-# CSS files: immutable cache (1 year)
-/frontend/css/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# JS files: immutable cache (1 year)
-/frontend/js/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Images and assets: immutable cache (1 year)
-/frontend/assets/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Fonts: 1 year with CORS
-/frontend/assets/fonts/*
-  Cache-Control: public, max-age=31536000, immutable
-  Access-Control-Allow-Origin: *
-
-# woff2 files specifically
-/*.woff2
-  Cache-Control: public, max-age=31536000, immutable
-  Access-Control-Allow-Origin: *
-
-# Service worker: always fresh
-/sw.js
-  Cache-Control: public, max-age=0, must-revalidate
-
-# Manifest: short cache
-/manifest.json
-  Cache-Control: public, max-age=3600
+# ARCHIVED FILE (NOT USED IN PRODUCTION)
+#
+# Production provider is Netlify.
+# Source of truth for routing/security/caching:
+#   /netlify.toml
+#
+# Legacy Netlify _headers content was moved to:
+#   /docs/deployment-archive/_headers.legacy
+#
+# This file is kept for documentation history only.
