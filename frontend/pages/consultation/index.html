@@ -238,6 +238,43 @@
 </div>
 </div>
 </section>
+<!-- CALENDAR BOOKING -->
+<section class="py-20 px-6 bg-[#020617]" id="calendar-booking" style="content-visibility: auto;">
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+<div class="glass-card p-8 border border-white/10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-300 text-sm mb-5">
+<iconify-icon icon="lucide:calendar-check" width="16"></iconify-icon>
+<span>حجز موعد استشاري</span>
+</div>
+<h2 class="text-3xl font-bold text-white mb-4">اختر الوقت المناسب لفريقك</h2>
+<p class="text-slate-300 leading-8 mb-6">
+                    حدّد موعد الجلسة الاستكشافية خلال 30 دقيقة مع مستشار Bright AI، ونشاركك خطة عمل أولية متوافقة مع
+                    أهداف التحول الرقمي والامتثال.
+                </p>
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 text-slate-900 font-bold hover:bg-cyan-400 transition" href="https://calendly.com/yazeed1job/bright-ai-consultation" rel="noopener noreferrer" target="_blank">
+<iconify-icon icon="lucide:external-link" width="18"></iconify-icon>
+                    فتح Calendly
+                </a>
+</div>
+<form class="glass-card p-8 border border-white/10 space-y-4" data-form-type="booking" id="calendar-booking-form">
+<h3 class="text-xl font-bold text-white">طلب حجز سريع</h3>
+<p class="text-slate-400 text-sm">إذا تفضّل، ارسل الوقت المناسب ونرجع لك بتأكيد الموعد.</p>
+<input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500" name="name" placeholder="الاسم الكامل" required type="text"/>
+<input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500" name="email" placeholder="البريد الإلكتروني" required type="email"/>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500" name="date" required type="date"/>
+<select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500" name="timeslot" required>
+<option class="text-slate-900" value="">اختر الفترة</option>
+<option class="text-slate-900" value="morning">9 ص - 12 م</option>
+<option class="text-slate-900" value="afternoon">12 م - 4 م</option>
+<option class="text-slate-900" value="evening">4 م - 8 م</option>
+</select>
+</div>
+<textarea class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white min-h-[110px] focus:outline-none focus:border-cyan-500" name="notes" placeholder="ملخص سريع عن التحدي أو الهدف"></textarea>
+<button class="btn-primary w-full justify-center" type="submit">إرسال طلب الحجز</button>
+</form>
+</div>
+</section>
 <!-- CONTACT MODAL -->
 <div class="fixed inset-0 z-50 hidden" id="contact-modal">
 <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="document.getElementById('contact-modal').style.display='none'"></div>
@@ -383,6 +420,6 @@
 <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;"><a href="/frontend/pages/ai-workflows/index.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب AI Workflows سير عمل الذكاء الاصطناعي الآن</a><a href="/frontend/pages/docs/solutions-bi-en.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">تفاصيل Clearer Vision for YourDecisions بالسوق السعودي</a><a href="/frontend/pages/docs/terms-and-conditions-en.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">تفاصيل Terms &amp;Conditions بالسوق السعودي</a><a href="/frontend/pages/consultation/index.html" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700;">جرّب العنوان الرئيسي للخدمة الآن</a></div>
 <ul style="margin:0;padding:0 18px;line-height:1.9;color:#cbd5f5;"><li><a href="/frontend/pages/ai-bots/BrightProject/index.html" style="color:#e2e8f0;text-decoration:none;">حلول Project روبوت إدارة المشاريع الذكي للشركات السعودية</a></li><li><a href="/frontend/pages/docs/smart-automation-en.html" style="color:#e2e8f0;text-decoration:none;">ملخص سريع عن ProcessAutomation</a></li><li><a href="/frontend/pages/docs/solutions-supply-chain-en.html" style="color:#e2e8f0;text-decoration:none;">ملخص سريع عن Supply Chain ThatNever Stops</a></li><li><a href="/frontend/pages/interview/index.html" style="color:#e2e8f0;text-decoration:none;">حلول وظّف أفضل الكفاءاتفي دقائقوليس أسابيع للشركات السعودية</a></li></ul>
 </section>
-<script defer="" src="/frontend/js/navigation.js"></script>
+<script defer src="/frontend/js/navigation.js"></script>
 </body>
 </html>
