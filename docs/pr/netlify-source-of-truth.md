@@ -1,34 +1,34 @@
-# PR: Enforce Netlify as Single Source of Truth
+# PR: توحيد Netlify كمصدر حقيقة وحيد
 
-## Summary
-This PR resolves configuration drift between `netlify.toml`, `.htaccess`, and `_headers` by making Netlify the only production source of truth for:
-- Routing and redirects
-- Security headers
-- Caching policies
+## الملخص
+هذا الـ PR يعالج تضارب إعدادات النشر بين `netlify.toml` و`.htaccess` و`_headers` عبر اعتماد Netlify كمصدر الحقيقة الوحيد في الإنتاج لـ:
+- التوجيه والتحويلات (Routing/Redirects)
+- رؤوس الأمان (Security Headers)
+- سياسات التخزين المؤقت (Caching Policies)
 
-## What Changed
-- Centralized production redirects/headers/caching in `netlify.toml`
-- Archived root `.htaccess` and `_headers` as documentation-only files
-- Preserved legacy config snapshots in `docs/deployment-archive/`
-- Added automated validation script:
+## ما الذي تغيّر
+- توحيد قواعد الإنتاج الخاصة بـ redirects/headers/caching داخل `netlify.toml`
+- تحويل `.htaccess` و`_headers` في الجذر إلى ملفات توثيقية/أرشيفية فقط
+- الاحتفاظ بنسخ الإعدادات القديمة داخل `docs/deployment-archive/`
+- إضافة سكربت تحقق آلي:
   - `scripts/verify-netlify-source-of-truth.mjs`
   - `npm run deploy:source-of-truth:check`
-- Added CI workflow gate:
+- إضافة بوابة تحقق في CI:
   - `.github/workflows/netlify-source-of-truth.yml`
 
-## Why
-Multiple active configuration sources caused drift risk, conflicting redirect behavior, and unclear ownership for production routing/security/cache policy.
+## السبب
+وجود أكثر من مصدر إعداد فعّال كان يسبب خطر الانحراف بين البيئات، وتعارضًا في سلوك التحويلات، وعدم وضوح ملكية إعدادات التوجيه/الأمان/التخزين المؤقت في الإنتاج.
 
-## Validation
-- Local validation command:
+## التحقق
+- أمر التحقق المحلي:
   - `npm run deploy:source-of-truth:check`
-- Result:
+- النتيجة:
   - `Source-of-truth validation passed (25 checks).`
 
-## Risk / Impact
-- Low runtime risk on Netlify (rules are centralized and validated).
-- Apache/legacy files are intentionally non-active and retained for traceability.
+## المخاطر / الأثر
+- مخاطر تشغيلية منخفضة على Netlify (القواعد مركزية ومتحقق منها).
+- ملفات Apache/الملفات القديمة أصبحت غير فعّالة عمدًا، وتم الإبقاء عليها لأغراض التتبع والرجوع التاريخي.
 
-## Rollback
-- Revert commit `1c9f97f9` if needed.
-- Legacy config snapshots remain available under `docs/deployment-archive/`.
+## التراجع (Rollback)
+- عند الحاجة، يمكن عمل revert للكوميت `1c9f97f9`.
+- النسخ الأرشيفية من الإعدادات ما زالت متاحة داخل `docs/deployment-archive/`.
