@@ -979,11 +979,13 @@
     const chatSend = document.getElementById('chatSend');
     const typing = document.getElementById('typing');
     const chatApiEndpoint = '/api/ai/chat';
+    const chatSearchEndpoint = '/api/ai/search';
 
     if (chatFab && chatWindow) {
         const CHAT_FAB_DELAY_MS = 3000;
         let chatSessionId = null;
         let isSending = false;
+        const chatHistory = [];
 
         chatFab.style.visibility = 'hidden';
         chatFab.style.opacity = '0';
@@ -1065,17 +1067,92 @@
             return div;
         }
 
-        function fallbackReply(q) {
-            let ans = "تمام. اكتبلي احتياجك بالتفصيل وأنا أرشدك لأفضل حل.";
-            if (q.includes("خدماتكم")) ans = "بنقدم: APIs جاهزة (NLP/Prediction/Speech) + BI & Dashboards + AIaaS + أتمتة سير العمل + حلول روبوتات + أنظمة معرفة زي المكتبة الذكية.";
-            if (q.includes("أتواصل")) ans = "تقدر تتواصل عبر البريد info@brightai.site أو الهاتف +966 53 822 9013، وكمان تقدر تحجز عرض توضيحي من أزرار الصفحة.";
-            if (q.includes("استشارة")) ans = "أكيد. قولي القطاع (حكومي/صحي/تجزئة/صناعة/اتصالات/HR) وهدفك (تنبؤ/أتمتة/Chatbot/BI) عشان أحدد المسار الأنسب.";
-            addMsg(ans, 'bot');
+        function pushChatHistory(sender, text) {
+            const normalized = String(text || '').trim();
+            if (!normalized) return;
+            chatHistory.push({ sender, text: normalized });
+            if (chatHistory.length > 12) {
+                chatHistory.splice(0, chatHistory.length - 12);
+            }
+        }
+
+        function normalizeIntentText(value) {
+            return String(value || '')
+                .toLowerCase()
+                .replace(/[؟?!.,،]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function buildSmartIntentReply(question) {
+            const q = normalizeIntentText(question);
+            const links = {
+                services: '/frontend/pages/our-products/index.html',
+                automation: '/frontend/pages/smart-automation/index.html',
+                data: '/frontend/pages/data-analysis/index.html',
+                aiagent: '/frontend/pages/ai-agent/index.html',
+                consultation: '/frontend/pages/consultation/index.html',
+                contact: '/frontend/pages/contact/index.html'
+            };
+
+            if (/(خدم|خدمات|وش تقدمون|ما تقدمون|حلولكم)/.test(q)) {
+                return `أكيد. خدماتنا الأساسية:\n1) AIaaS وحلول مخصصة للمؤسسات\n2) أتمتة العمليات الذكية\n3) تحليل البيانات ولوحات KPI\n4) وكلاء ذكاء اصطناعي للدعم والتشغيل\nالتفاصيل: ${links.services}`;
+            }
+
+            if (/(استشار|استشاره|استشارة|حجز|موعد|جلسه|جلسة)/.test(q)) {
+                return `ممتاز. نقدر نبدأ بجلسة استشارية سريعة لتحديد:\n- القطاع\n- التحدي التشغيلي\n- مؤشرات النجاح\nاحجز من هنا: ${links.consultation}\nأو تواصل مباشر: https://wa.me/966538229013`;
+            }
+
+            if (/(سعر|تكلف|باقه|باقة|عرض سعر|عرض)/.test(q)) {
+                return `التكلفة تعتمد على نطاق المشروع والتكامل المطلوب. نوصي بجلسة تقييم قصيرة ثم نرفع تصور تنفيذي واضح. ابدأ من: ${links.consultation}`;
+            }
+
+            if (/(اتمت|أتمت|workflow|سير عمل|تشغيل|rpa)/.test(q)) {
+                return `لو هدفك تقليل الجهد اليدوي ورفع الإنتاجية، مسار الأتمتة هو الأنسب. نبدأ بتحليل العمليات ثم نحدد حالات الاستخدام ذات العائد الأعلى. التفاصيل: ${links.automation}`;
+            }
+
+            if (/(بيان|kpi|dashboard|لوحه|لوحة|تحليل)/.test(q)) {
+                return `ممتاز. نقدر نبني لك مسار بيانات من المصدر إلى لوحة تنفيذية واضحة تساعد الإدارة بالقرار. اطلع على الحل: ${links.data}`;
+            }
+
+            if (/(وكيل|chatbot|شات بوت|دعم فني|مساعد)/.test(q)) {
+                return `نقدر نوفر وكيل ذكي للدعم الفني يجاوب العملاء، يصنف الطلبات، ويرفع التذاكر لفريقك تلقائياً. نظرة عامة: ${links.aiagent}`;
+            }
+
+            if (/(تواصل|رقم|ايميل|بريد|واتساب|whatsapp)/.test(q)) {
+                return `تواصل معنا عبر صفحة الاتصال: ${links.contact}\nواتساب مباشر: https://wa.me/966538229013\nالهاتف: +966 53 822 9013`;
+            }
+
+            return 'فهمت عليك. اكتب لي القطاع (مثل: صحي/تجزئة/صناعة) والهدف (مثل: خفض التكاليف/أتمتة/تحسين خدمة العملاء) وبعطيك خطة مناسبة مباشرة.';
+        }
+
+        async function trySearchFallback(question) {
+            try {
+                const response = await fetch(chatSearchEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: question })
+                });
+                if (!response.ok) return '';
+                const payload = await response.json();
+                const answer = typeof payload?.answer === 'string' ? payload.answer.trim() : '';
+                if (!answer) return '';
+
+                const topSource = Array.isArray(payload.sources) && payload.sources.length
+                    ? payload.sources[0]
+                    : null;
+                if (topSource?.url) {
+                    return `${answer}\n\nمرجع مفيد: ${topSource.url}`;
+                }
+                return answer;
+            } catch (_error) {
+                return '';
+            }
         }
 
         async function fetchGeminiReply(question) {
             if (!chatBody || !typing || !chatSend) {
-                fallbackReply(question);
+                addMsg(buildSmartIntentReply(question), 'bot');
                 return;
             }
             typing.style.display = 'flex';
@@ -1089,7 +1166,8 @@
                     },
                     body: JSON.stringify({
                         message: question,
-                        sessionId: chatSessionId
+                        sessionId: chatSessionId,
+                        history: chatHistory.slice(-8)
                     })
                 });
 
@@ -1108,9 +1186,15 @@
                 }
 
                 addMsg(reply, 'bot');
+                pushChatHistory('user', question);
+                pushChatHistory('ai', reply);
             } catch (error) {
                 console.error('Gemini support request error:', error);
-                fallbackReply(question);
+                const searchFallback = await trySearchFallback(question);
+                const fallback = searchFallback || buildSmartIntentReply(question);
+                addMsg(fallback, 'bot');
+                pushChatHistory('user', question);
+                pushChatHistory('ai', fallback);
             } finally {
                 typing.style.display = 'none';
             }
