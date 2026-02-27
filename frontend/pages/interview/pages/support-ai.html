@@ -1445,10 +1445,10 @@
             let isOpen = false;
             let isSoundEnabled = true;
             let isFirstOpen = true;
+            let chatSessionId = null;
 
             // === API Configuration ===
-            const API_KEY = 'GEMINI_KEY_REDACTED';
-            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+            const API_URL = '/api/gemini/chat';
             const CHAT_TOGGLE_DELAY_MS = 3000;
 
             if (chatToggle) {
@@ -1762,122 +1762,27 @@
 
             // === Gemini API Call ===
             async function callGeminiAPI(text) {
-                const systemPrompt = `أنت Yazeed AI، المساعد الذكي الرسمي للدعم الفني من شركة Bright AI السعودية - الشركة الرائدة في حلول الذكاء الاصطناعي بالمملكة العربية السعودية.
-
-## من نحن - Bright AI
-منصة سعودية رائدة متخصصة في تقديم حلول الذكاء الاصطناعي المبتكرة لدعم التحول الرقمي في المؤسسات والمنشآت. نهدف إلى تمكين الشركات السعودية من تبني أحدث تقنيات AI لتحسين الكفاءة وزيادة الإنتاجية وتعزيز القدرة التنافسية.
-
-## خدماتنا الرئيسية:
-
-### 1. الذكاء الاصطناعي كخدمة (AIaaS) للمنشآت
-- حلول "المصنع الذكي" و"المتجر المتصل" للمنشآت الصغيرة والمتوسطة
-- تحديثات مستمرة للخوارزميات بناءً على البيانات المحلية
-- التعلم المستمر لتحسين الأداء
-🔗 [التفاصيل الكاملة](https://brightai.site/frontend/pages/ai-agent)
-
-### 2. سير عمل الذكاء الاصطناعي (AI Workflows)
-- تنظيم ذكي للمهام وتنفيذ تلقائي
-- تحقيق نتائج أسرع بتكلفة أقل
-
-### 3. الأتمتة الذكية (RPA)
-- تحويل المهام اليدوية المتكررة إلى عمليات آلية دقيقة
-🔗 [تفاصيل الأتمتة](https://brightai.site/frontend/pages/smart-automation)
-
-### 4. تحليل البيانات الضخمة (Big Data)
-- استخراج رؤى استراتيجية من البيانات
-- دعم اتخاذ القرار بناءً على البيانات
-🔗 [خدمات التحليل](https://brightai.site/frontend/pages/data-analysis)
-
-### 5. الذكاء الاصطناعي التوليدي (Generative AI)
-- إنشاء محتوى ذكي وحلول مبتكرة
-- نماذج ذكية مخصصة
-
-### 6. معالجة اللغة الطبيعية (NLP)
-- فهم اللهجات المحلية السعودية
-- تفاعل نصي دقيق باللغة العربية
-
-### 7. شات بوت عربي ذكي
-- دعم اللغة العربية واللهجات السعودية
-- تفاعل تلقائي مع العملاء على مدار الساعة
-
-### 8. الاستشارات التقنية
-- استراتيجيات مخصصة للتحول الرقمي
-- خبراء متخصصون في AI
-🔗 [احجز استشارة](https://brightai.site/frontend/pages/consultation)
-
-### 9. الحلول الطبية
-- تحليل الصور الطبية
-- المراقبة الصحية عن بُعد
-- دعم المستشفيات الذكية 
-
-### 10. التكامل مع الأنظمة المؤسسية
-- التكامل مع ERP و CRM
-- تسهيل تطبيق الحلول ضمن البنى التحتية القائمة
-
-### 11. مكتبة ذكية ومحتوى تدريبي
-- موارد تعليمية بالعربية
-- بناء الكفاءات المحلية في AI
-
-## مهامك كـ Yazeed AI:
-✅ الإجابة على الاستفسارات التقنية والدعم الفني
-✅ تقديم معلومات مفصلة عن خدمات Bright AI
-✅ المساعدة في اختيار الحل المناسب للعميل
-✅ حل المشكلات التقنية وتقديم الدعم
-✅ توجيه العملاء للصفحات والموارد المناسبة
-
-## أسلوب التواصل:
-- احترافي وودود ومرحب
-- إجابات واضحة ومختصرة ومفيدة
-- استخدام العربية الفصحى مع مراعاة البساطة
-- تقديم روابط مباشرة للصفحات ذات الصلة
-- عدم الخروج عن دورك كمساعد تقني
-
-## روابط هامة:
-📍 الصفحة الرئيسية: https://brightai.site/
-📧 التواصل: yazeed1job@gmail.com
-📱 واتساب: https://wa.me/966538229013
-📞 هاتف: +966 53 822 9013
-📍 الموقع: الرياض، المملكة العربية السعودية
-
-## صفحات الخدمات:
-- الأتمتة الذكية: /frontend/pages/smart-automation.html
-- AIaaS للمنشآت: /frontend/pages/ai-agent.html
-- تحليل البيانات: /frontend/pages/data-analysis.html
-- الاستشارات: /frontend/pages/consultation.html
-- المدونة: /blog
-- الوثائق: /Docs
-- من نحن: /about-us
-- تواصل معنا: /contact
-
-## ملاحظات مهمة:
-⚡ عند الإجابة، قدّم رابط الصفحة المناسبة للحصول على تفاصيل أكثر
-⚡ شجّع العملاء على حجز استشارة مجانية للحصول على حل مخصص
-⚡ أكّد على التزامنا بالأمان والخصوصية والامتثال للمعايير السعودية
-⚡ ركّز على قيمة التحول الرقمي ودوره في تحقيق رؤية 2030
-
-تذكر: أنت ممثل Bright AI الرقمي، كن مفيداً ومحترفاً دائماً! 🚀`;
-
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{
-                            parts: [
-                                { text: systemPrompt },
-                                { text: text }
-                            ]
-                        }]
+                        message: text,
+                        sessionId: chatSessionId
                     })
                 });
 
+                const data = await response.json().catch(() => ({}));
+
                 if (!response.ok) {
-                    throw new Error(`Request failed: ${response.status}`);
+                    throw new Error(data?.error || `Request failed: ${response.status}`);
                 }
 
-                const data = await response.json();
+                if (data.sessionId) {
+                    chatSessionId = data.sessionId;
+                }
 
-                if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                    return data.candidates[0].content.parts[0].text;
+                if (typeof data.reply === 'string' && data.reply.trim()) {
+                    return data.reply.trim();
                 }
 
                 return "لم أتمكن من معالجة طلبك. هل يمكنك إعادة صياغة السؤال؟";
