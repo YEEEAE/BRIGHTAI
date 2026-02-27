@@ -827,6 +827,35 @@
             </div>
         </div>
     </section>
+    <section class="py-14 px-6 bg-[#020617] border-y border-white/10" style="content-visibility: auto;">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="glass-card p-6 border border-white/10 lg:col-span-2">
+                    <h2 class="text-2xl font-bold text-white mb-2">ابحث وفلتر المقالات</h2>
+                    <p class="text-slate-400 mb-5">فلترة فورية داخل فهرس المكتبة الذكية حسب الفئة أو الكلمة المفتاحية.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <input id="blog-search-input" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500" type="search" placeholder="ابحث بعنوان المقال..." />
+                        <select id="blog-category-select" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                            <option class="text-slate-900" value="">كل الفئات</option>
+                        </select>
+                    </div>
+                    <p class="text-sm text-slate-300 mt-4">عدد النتائج الحالية: <span class="font-bold text-white" id="blog-results-count">--</span></p>
+                </div>
+                <div class="glass-card p-6 border border-white/10">
+                    <h3 class="text-xl font-bold text-white mb-4">أحدث المقالات</h3>
+                    <div class="space-y-3 text-sm">
+                        <a class="block p-3 rounded-lg border border-white/10 hover:border-indigo-400/60 transition text-slate-200" href="/frontend/pages/blogger/nca-ai-compliance-saudi.html">الامتثال لـ NCA ومتطلبات AI في السعودية</a>
+                        <a class="block p-3 rounded-lg border border-white/10 hover:border-indigo-400/60 transition text-slate-200" href="/frontend/pages/blogger/nca-compliance.html">الدليل الشامل للامتثال لمعايير NCA وNDMO</a>
+                        <a class="block p-3 rounded-lg border border-white/10 hover:border-indigo-400/60 transition text-slate-200" href="/frontend/pages/blogger/saudi-tourism-ai-guide.html">دراسة حالة: الذكاء الاصطناعي في السياحة السعودية</a>
+                        <a class="block p-3 rounded-lg border border-white/10 hover:border-indigo-400/60 transition text-slate-200" href="/frontend/pages/blogger/commerce-ministry-chatbot.html">وزارة التجارة: شات بوت يخدم 50,000 تاجر يومياً</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 hidden text-center text-slate-300 border border-white/10 rounded-xl p-4" id="blog-empty-state">
+                لا توجد نتائج مطابقة. غيّر الفئة أو كلمة البحث.
+            </div>
+        </div>
+    </section>
     <section id="blog-index" class="py-16 px-6 bg-[#020617]" style="content-visibility: auto;">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold text-white mb-12 text-center border-b border-white/10 pb-4">فهرس المكتبة
@@ -1979,6 +2008,72 @@
                     الفني الذكي للشركات السعودية</a></li>
         </ul>
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const indexSection = document.getElementById('blog-index');
+            const searchInput = document.getElementById('blog-search-input');
+            const categorySelect = document.getElementById('blog-category-select');
+            const resultsCount = document.getElementById('blog-results-count');
+            const emptyState = document.getElementById('blog-empty-state');
+            if (!indexSection || !searchInput || !categorySelect || !resultsCount || !emptyState) return;
+
+            const indexContainer = indexSection.querySelector('.max-w-7xl');
+            const groups = indexContainer ? Array.from(indexContainer.querySelectorAll('.mb-12')) : [];
+            const cards = [];
+            const categorySet = new Set();
+
+            groups.forEach(function (group) {
+                const heading = group.querySelector('h3');
+                const categoryName = heading ? heading.textContent.replace(/\s+/g, ' ').trim() : 'عام';
+                categorySet.add(categoryName);
+
+                const groupCards = Array.from(group.querySelectorAll('article'));
+                groupCards.forEach(function (card) {
+                    const titleNode = card.querySelector('h4');
+                    const linkNode = card.querySelector('a');
+                    const title = titleNode ? titleNode.textContent.replace(/\s+/g, ' ').trim() : '';
+                    const href = linkNode ? (linkNode.getAttribute('href') || '') : '';
+                    cards.push({ card: card, title: title, category: categoryName, href: href, group: group });
+                });
+            });
+
+            Array.from(categorySet).sort().forEach(function (category) {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                option.className = 'text-slate-900';
+                categorySelect.appendChild(option);
+            });
+
+            function applyFilters() {
+                const keyword = searchInput.value.trim().toLowerCase();
+                const category = categorySelect.value;
+                let visibleCount = 0;
+
+                cards.forEach(function (item) {
+                    const matchesKeyword = !keyword || item.title.toLowerCase().includes(keyword) || item.href.toLowerCase().includes(keyword);
+                    const matchesCategory = !category || item.category === category;
+                    const visible = matchesKeyword && matchesCategory;
+                    item.card.classList.toggle('hidden', !visible);
+                    if (visible) visibleCount += 1;
+                });
+
+                groups.forEach(function (group) {
+                    const hasVisible = Array.from(group.querySelectorAll('article')).some(function (card) {
+                        return !card.classList.contains('hidden');
+                    });
+                    group.classList.toggle('hidden', !hasVisible);
+                });
+
+                resultsCount.textContent = String(visibleCount);
+                emptyState.classList.toggle('hidden', visibleCount !== 0);
+            }
+
+            searchInput.addEventListener('input', applyFilters);
+            categorySelect.addEventListener('change', applyFilters);
+            applyFilters();
+        });
+    </script>
 </body>
 
 </html>
