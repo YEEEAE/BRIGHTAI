@@ -1,0 +1,369 @@
+# HTML SEO Repair Report
+**Date:** 2026-02-27
+
+## Before vs After
+
+| Metric | Before | After |
+|---|---:|---:|
+| Scanned HTML files | 197 | 197 |
+| Eligible pages | 195 | 195 |
+| Pages with issues | 157 | 0 |
+| Missing title | 0 | 0 |
+| Missing meta description | 25 | 0 |
+| Missing canonical | 8 | 0 |
+| Missing H1 | 14 | 0 |
+| Missing/mismatched hreflang | 153 | 0 |
+
+## Files Updated (157)
+
+- `404.html` (hreflang)
+- `500.html` (hreflang)
+- `brightai-platform/public/404.html` (description, canonical, h1, hreflang)
+- `brightai-platform/public/index.html` (canonical, h1, hreflang)
+- `frontend/pages/ai-bots/BrightMath/index.html` (hreflang)
+- `frontend/pages/ai-bots/BrightProject/index.html` (hreflang)
+- `frontend/pages/ai-bots/BrightRecruiter/index.html` (hreflang)
+- `frontend/pages/ai-bots/BrightSales/index.html` (hreflang)
+- `frontend/pages/ai-bots/BrightSupport/index.html` (hreflang)
+- `frontend/pages/blog/automation/hr-automation-saudi.html` (hreflang)
+- `frontend/pages/blog/data-analytics/kpi-dashboard-guide.html` (hreflang)
+- `frontend/pages/blog/data-analytics/power-bi-saudi-guide.html` (hreflang)
+- `frontend/pages/blog/index.html` (hreflang)
+- `frontend/pages/blogger/ production-line.html` (description, h1, hreflang)
+- `frontend/pages/blogger/agint-bblog.html` (hreflang)
+- `frontend/pages/blogger/ai-agent.html` (hreflang)
+- `frontend/pages/blogger/ai-energy-saudi.html` (hreflang)
+- `frontend/pages/blogger/ai-finance-saudi.html` (hreflang)
+- `frontend/pages/blogger/ai-generative-content-industry-saudi-arabia.html` (hreflang)
+- `frontend/pages/blogger/ai-guide-saudi-business.html` (hreflang)
+- `frontend/pages/blogger/ai-healthcare-saudi.html` (hreflang)
+- `frontend/pages/blogger/ai-implementation-cost-guide.html` (hreflang)
+- `frontend/pages/blogger/ai-transformation.html` (hreflang)
+- `frontend/pages/blogger/ai.html` (hreflang)
+- `frontend/pages/blogger/analysy.html` (hreflang)
+- `frontend/pages/blogger/astr.doc.html` (description, hreflang)
+- `frontend/pages/blogger/atou-job.html` (hreflang)
+- `frontend/pages/blogger/atou.doc.html` (hreflang)
+- `frontend/pages/blogger/auto.html` (hreflang)
+- `frontend/pages/blogger/big-data-analysis.html` (hreflang)
+- `frontend/pages/blogger/business-intelligence-saudi.html` (hreflang)
+- `frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html` (hreflang)
+- `frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html` (hreflang)
+- `frontend/pages/blogger/choose-ai-company-saudi.html` (hreflang)
+- `frontend/pages/blogger/cloude-opus-4.6.html` (hreflang)
+- `frontend/pages/blogger/commerce-ministry-chatbot.html` (hreflang)
+- `frontend/pages/blogger/digital-banking-saudi.html` (hreflang)
+- `frontend/pages/blogger/digital-health-smart-archive.html` (hreflang)
+- `frontend/pages/blogger/digital.html` (hreflang)
+- `frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html` (hreflang)
+- `frontend/pages/blogger/Generative artificial intelligence.html` (description, h1, hreflang)
+- `frontend/pages/blogger/generative-artificial-intelligence-2.html` (description, h1, hreflang)
+- `frontend/pages/blogger/Generative-artificial-intelligence.html` (hreflang)
+- `frontend/pages/blogger/gov.html` (hreflang)
+- `frontend/pages/blogger/hr-automation-case-study.html` (hreflang)
+- `frontend/pages/blogger/intelligent-data-analysis.html` (hreflang)
+- `frontend/pages/blogger/kfshrc-breast-cancer-ai.html` (hreflang)
+- `frontend/pages/blogger/ksu-adaptive-learning.html` (hreflang)
+- `frontend/pages/blogger/nca-ai-compliance-saudi.html` (hreflang)
+- `frontend/pages/blogger/nca-compliance.html` (hreflang)
+- `frontend/pages/blogger/private-hospital-scheduling-optimization.html` (hreflang)
+- `frontend/pages/blogger/process-automation.html` (hreflang)
+- `frontend/pages/blogger/production-line-2.html` (description, h1, hreflang)
+- `frontend/pages/blogger/production-line.html` (hreflang)
+- `frontend/pages/blogger/riyadh-municipality-ai-license.html` (hreflang)
+- `frontend/pages/blogger/saudi-agritech-smart-farming.html` (hreflang)
+- `frontend/pages/blogger/saudi-bank-fraud-detection.html` (hreflang)
+- `frontend/pages/blogger/saudi-dates-quality-ai.html` (hreflang)
+- `frontend/pages/blogger/saudi-ecommerce-ai-growth.html` (hreflang)
+- `frontend/pages/blogger/saudi-edtech-personalized-learning.html` (hreflang)
+- `frontend/pages/blogger/saudi-energy-predictive-maintenance.html` (hreflang)
+- `frontend/pages/blogger/saudi-factory-ai-productivity.html` (hreflang)
+- `frontend/pages/blogger/saudi-hospitality-dynamic-pricing.html` (hreflang)
+- `frontend/pages/blogger/saudi-insurance-claims-ai.html` (hreflang)
+- `frontend/pages/blogger/saudi-logistics-route-optimization.html` (hreflang)
+- `frontend/pages/blogger/saudi-manufacturing-predictive-maintenance.html` (hreflang)
+- `frontend/pages/blogger/saudi-mining-ai-exploration.html` (hreflang)
+- `frontend/pages/blogger/saudi-petrochemical-ai-safety.html` (hreflang)
+- `frontend/pages/blogger/saudi-real-estate-ai-valuation.html` (hreflang)
+- `frontend/pages/blogger/saudi-renewable-energy-ai.html` (hreflang)
+- `frontend/pages/blogger/saudi-smart-city-traffic.html` (hreflang)
+- `frontend/pages/blogger/saudi-sports-analytics-ai.html` (hreflang)
+- `frontend/pages/blogger/saudi-tourism-ai-guide.html` (hreflang)
+- `frontend/pages/blogger/saudi-waste-management-ai.html` (hreflang)
+- `frontend/pages/blogger/smart-automation-benefits.html` (hreflang)
+- `frontend/pages/blogger/smart-crm-system.html` (hreflang)
+- `frontend/pages/blogger/smart-document-processing.html` (hreflang)
+- `frontend/pages/blogger/smart-inventory-management.html` (hreflang)
+- `frontend/pages/blogger/top-ai-tools-saudi-2025.html` (hreflang)
+- `frontend/pages/blogger/transport-logistics-solutions.html` (hreflang)
+- `frontend/pages/blogger/vision-2030-ai-opportunities.html` (hreflang)
+- `frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html` (description, h1, hreflang)
+- `frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html` (description, h1, hreflang)
+- `frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html` (hreflang)
+- `frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html` (hreflang)
+- `frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html` (description, h1, hreflang)
+- `frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html` (description, hreflang)
+- `frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html` (description, h1, hreflang)
+- `frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html` (description, h1, hreflang)
+- `frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html` (hreflang)
+- `frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html` (hreflang)
+- `frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html` (description, h1, hreflang)
+- `frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html` (hreflang)
+- `frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html` (description, h1, hreflang)
+- `frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html` (hreflang)
+- `frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html` (hreflang)
+- `frontend/pages/blogger/تحليل-البيانات.html` (hreflang)
+- `frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html` (hreflang)
+- `frontend/pages/blogger/مقال-تحليل.html` (hreflang)
+- `frontend/pages/botAI/BrightMath.html` (hreflang)
+- `frontend/pages/botAI/BrightProject.html` (hreflang)
+- `frontend/pages/botAI/BrightRecruiter.html` (hreflang)
+- `frontend/pages/botAI/BrightSales.html` (hreflang)
+- `frontend/pages/botAI/BrightSupport.html` (hreflang)
+- `frontend/pages/case-studies/index.html` (hreflang)
+- `frontend/pages/demo/index.html` (hreflang)
+- `frontend/pages/demo/ocr-demo/index.html` (hreflang)
+- `frontend/pages/demo/pricing/index.html` (hreflang)
+- `frontend/pages/demo/resources/report-ai-saudi-2026/index.html` (hreflang)
+- `frontend/pages/docs/ai-bots-en.html` (hreflang)
+- `frontend/pages/docs/contact-en.html` (description, canonical, hreflang)
+- `frontend/pages/docs/contact.html` (description, canonical, hreflang)
+- `frontend/pages/docs/docs.html` (hreflang)
+- `frontend/pages/docs/faq-en.html` (description, canonical, hreflang)
+- `frontend/pages/docs/openapi.html` (hreflang)
+- `frontend/pages/docs/privacy-policy-en.html` (description)
+- `frontend/pages/docs/privacy-policy.html` (description)
+- `frontend/pages/docs/solutions-bi-en.html` (hreflang)
+- `frontend/pages/docs/solutions-crm-en.html` (hreflang)
+- `frontend/pages/docs/solutions-finance-en.html` (hreflang)
+- `frontend/pages/docs/solutions-healthcare-en.html` (hreflang)
+- `frontend/pages/docs/solutions-hr-en.html` (hreflang)
+- `frontend/pages/docs/solutions-interview-en.html` (hreflang)
+- `frontend/pages/docs/solutions-logistics-en.html` (hreflang)
+- `frontend/pages/docs/solutions-ocr-en.html` (hreflang)
+- `frontend/pages/docs/solutions-retail-en.html` (hreflang)
+- `frontend/pages/docs/solutions-supply-chain-en.html` (hreflang)
+- `frontend/pages/docs/terms-and-conditions-en.html` (description)
+- `frontend/pages/docs/terms-and-conditions.html` (description)
+- `frontend/pages/health-bright/index.html` (hreflang)
+- `frontend/pages/interview/g.html` (hreflang)
+- `frontend/pages/interview/index.html` (hreflang)
+- `frontend/pages/interview/pages/admin.html` (hreflang)
+- `frontend/pages/interview/pages/appointment/index.html` (hreflang)
+- `frontend/pages/interview/pages/dashboard/index.html` (hreflang)
+- `frontend/pages/interview/pages/support-ai.html` (hreflang)
+- `frontend/pages/interview/pages/supportAI.html` (hreflang)
+- `frontend/pages/interview/pages/Visitor-registration/index.html` (hreflang)
+- `frontend/pages/interview/Presentation.html` (hreflang)
+- `frontend/pages/job.MAISco/index.html` (hreflang)
+- `frontend/pages/offline/index.html` (description, canonical, hreflang)
+- `frontend/pages/partners/index.html` (hreflang)
+- `frontend/pages/privacy-cookies/index.html` (hreflang)
+- `frontend/pages/sectors/ecommerce.html` (hreflang)
+- `frontend/pages/sectors/energy.html` (hreflang)
+- `frontend/pages/sectors/finance.html` (hreflang)
+- `frontend/pages/sectors/healthcare.html` (hreflang)
+- `frontend/pages/sectors/logistics.html` (hreflang)
+- `frontend/pages/sectors/manufacturing.html` (hreflang)
+- `frontend/pages/sitemap/index.html` (hreflang)
+- `frontend/pages/terms/index.html` (description, h1, hreflang)
+- `frontend/pages/try/data-analyzer/index.html` (hreflang)
+- `frontend/pages/try/data-quality/index.html` (hreflang)
+- `frontend/pages/try/index.html` (hreflang)
+- `frontend/pages/try/text-analysis/index.html` (hreflang)
+- `الاهم/1.html` (description, canonical, hreflang)
+- `الاهم/4.HTML` (description, canonical, hreflang)
+
+## Before Audit Details
+
+- ملفات HTML المفحوصة: 197
+- صفحات HTML القابلة للتدقيق: 195
+- ملفات مستثناة (ليست صفحة HTML كاملة): 2
+- صفحات تحتاج معالجة: 157
+- نقص title: 0
+- نقص meta description: 25
+- نقص canonical: 8
+- نقص H1: 14
+- نقص/خلل hreflang: 153
+
+### صفحات بها مشاكل
+
+- `404.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `500.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `brightai-platform/public/404.html`: Missing meta description | Missing canonical | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `brightai-platform/public/index.html`: Missing canonical | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/ai-bots/BrightMath/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/ai-bots/BrightProject/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/ai-bots/BrightRecruiter/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/ai-bots/BrightSales/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/ai-bots/BrightSupport/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blog/automation/hr-automation-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blog/data-analytics/kpi-dashboard-guide.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blog/data-analytics/power-bi-saudi-guide.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blog/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ production-line.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/agint-bblog.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-agent.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-energy-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-finance-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-generative-content-industry-saudi-arabia.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-guide-saudi-business.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-healthcare-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-implementation-cost-guide.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai-transformation.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/analysy.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/astr.doc.html`: Missing meta description | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/atou-job.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/atou.doc.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/auto.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/big-data-analysis.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/business-intelligence-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/choose-ai-company-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/cloude-opus-4.6.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/commerce-ministry-chatbot.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/digital-banking-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/digital-health-smart-archive.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/digital.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/Generative artificial intelligence.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/generative-artificial-intelligence-2.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/Generative-artificial-intelligence.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/gov.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/hr-automation-case-study.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/intelligent-data-analysis.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/kfshrc-breast-cancer-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/ksu-adaptive-learning.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/nca-ai-compliance-saudi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/nca-compliance.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/private-hospital-scheduling-optimization.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/process-automation.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/production-line-2.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/production-line.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/riyadh-municipality-ai-license.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-agritech-smart-farming.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-bank-fraud-detection.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-dates-quality-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-ecommerce-ai-growth.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-edtech-personalized-learning.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-energy-predictive-maintenance.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-factory-ai-productivity.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-hospitality-dynamic-pricing.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-insurance-claims-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-logistics-route-optimization.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-manufacturing-predictive-maintenance.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-mining-ai-exploration.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-petrochemical-ai-safety.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-real-estate-ai-valuation.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-renewable-energy-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-smart-city-traffic.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-sports-analytics-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-tourism-ai-guide.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/saudi-waste-management-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/smart-automation-benefits.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/smart-crm-system.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/smart-document-processing.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/smart-inventory-management.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/top-ai-tools-saudi-2025.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/transport-logistics-solutions.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/vision-2030-ai-opportunities.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html`: Missing meta description | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/تحليل-البيانات.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/blogger/مقال-تحليل.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/botAI/BrightMath.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/botAI/BrightProject.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/botAI/BrightRecruiter.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/botAI/BrightSales.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/botAI/BrightSupport.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/case-studies/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/demo/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/demo/ocr-demo/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/demo/pricing/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/demo/resources/report-ai-saudi-2026/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/docs/ai-bots-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/ai-bots-en.html' instead of 'https://brightai.site/frontend/pages/docs/ai-bots.html'
+- `frontend/pages/docs/contact-en.html`: Missing meta description | Missing canonical | Missing hreflang ar-SA | Missing hreflang en-SA | Missing hreflang x-default
+- `frontend/pages/docs/contact.html`: Missing meta description | Missing canonical | Missing hreflang ar-SA | Missing hreflang en-SA | Missing hreflang x-default
+- `frontend/pages/docs/docs.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/docs/faq-en.html`: Missing meta description | Missing canonical | Missing hreflang ar-SA | Missing hreflang en-SA | Missing hreflang x-default
+- `frontend/pages/docs/openapi.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/docs/privacy-policy-en.html`: Missing meta description
+- `frontend/pages/docs/privacy-policy.html`: Missing meta description
+- `frontend/pages/docs/solutions-bi-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-bi-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-bi.html'
+- `frontend/pages/docs/solutions-crm-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-crm-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-crm.html'
+- `frontend/pages/docs/solutions-finance-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-finance-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-finance.html'
+- `frontend/pages/docs/solutions-healthcare-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-healthcare-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-healthcare.html'
+- `frontend/pages/docs/solutions-hr-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-hr-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-hr.html'
+- `frontend/pages/docs/solutions-interview-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-interview-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-interview.html'
+- `frontend/pages/docs/solutions-logistics-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-logistics-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-logistics.html'
+- `frontend/pages/docs/solutions-ocr-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-ocr-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-ocr.html'
+- `frontend/pages/docs/solutions-retail-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-retail-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-retail.html'
+- `frontend/pages/docs/solutions-supply-chain-en.html`: hreflang x-default points to 'https://brightai.site/frontend/pages/docs/solutions-supply-chain-en.html' instead of 'https://brightai.site/frontend/pages/docs/solutions-supply-chain.html'
+- `frontend/pages/docs/terms-and-conditions-en.html`: Missing meta description
+- `frontend/pages/docs/terms-and-conditions.html`: Missing meta description
+- `frontend/pages/health-bright/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/g.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/pages/admin.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/pages/appointment/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/pages/dashboard/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/pages/support-ai.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/pages/supportAI.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/pages/Visitor-registration/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/interview/Presentation.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/job.MAISco/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/offline/index.html`: Missing meta description | Missing canonical | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/partners/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/privacy-cookies/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sectors/ecommerce.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sectors/energy.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sectors/finance.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sectors/healthcare.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sectors/logistics.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sectors/manufacturing.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/sitemap/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/terms/index.html`: Missing meta description | Missing H1 | Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/try/data-analyzer/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/try/data-quality/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/try/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `frontend/pages/try/text-analysis/index.html`: Missing hreflang ar-SA | Missing hreflang x-default
+- `الاهم/1.html`: Missing meta description | Missing canonical | Missing hreflang ar-SA | Missing hreflang x-default
+- `الاهم/4.HTML`: Missing meta description | Missing canonical | Missing hreflang ar-SA | Missing hreflang x-default
+
+### ملفات مستثناة
+
+- `frontend/assets/fonts/enterprise-hero.html`
+- `new_index_part.html`
+
+## After Audit Details
+
+- ملفات HTML المفحوصة: 197
+- صفحات HTML القابلة للتدقيق: 195
+- ملفات مستثناة (ليست صفحة HTML كاملة): 2
+- صفحات تحتاج معالجة: 0
+- نقص title: 0
+- نقص meta description: 0
+- نقص canonical: 0
+- نقص H1: 0
+- نقص/خلل hreflang: 0
+
+### ملفات مستثناة
+
+- `frontend/assets/fonts/enterprise-hero.html`
+- `new_index_part.html`
