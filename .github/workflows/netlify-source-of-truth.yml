@@ -2,26 +2,10 @@ name: Netlify Source of Truth
 
 on:
   pull_request:
-    paths:
-      - "netlify.toml"
-      - ".htaccess"
-      - "_headers"
-      - "scripts/verify-netlify-source-of-truth.mjs"
-      - "package.json"
-      - "docs/deployment-archive/**"
-      - ".github/workflows/netlify-source-of-truth.yml"
   push:
     branches:
       - main
       - master
-    paths:
-      - "netlify.toml"
-      - ".htaccess"
-      - "_headers"
-      - "scripts/verify-netlify-source-of-truth.mjs"
-      - "package.json"
-      - "docs/deployment-archive/**"
-      - ".github/workflows/netlify-source-of-truth.yml"
   workflow_dispatch:
 
 jobs:

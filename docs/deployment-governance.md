@@ -1,46 +1,45 @@
-# Deployment Governance Runbook
+# دليل حوكمة النشر
 
-## Production Provider
-- Official production provider: **Netlify**
-- Official source of truth for routing/security headers/caching: **`/netlify.toml`**
+## مزود الإنتاج
+- مزود الإنتاج الرسمي: **Netlify**
+- مصدر الحقيقة الوحيد للتوجيه ورؤوس الأمان وسياسات التخزين المؤقت: **`/netlify.toml`**
 
-## Active vs Archived Config Files
-| File | Status | Purpose |
+## ملفات التهيئة: فعّالة مقابل مؤرشفة
+| الملف | الحالة | الغرض |
 |---|---|---|
-| `netlify.toml` | Active | All production redirects, headers, and caching policy |
-| `.htaccess` | Archived | Documentation pointer only (no active directives) |
-| `_headers` | Archived | Documentation pointer only (no active directives) |
-| `docs/deployment-archive/.htaccess.legacy` | Archive snapshot | Historical Apache rules |
-| `docs/deployment-archive/_headers.legacy` | Archive snapshot | Historical headers rules |
+| `netlify.toml` | فعّال | جميع قواعد الإنتاج الخاصة بالتحويلات (redirects) والرؤوس (headers) والتخزين المؤقت (caching) |
+| `.htaccess` | مؤرشف | مرجع توثيقي فقط (بدون أي توجيهات فعّالة) |
+| `_headers` | مؤرشف | مرجع توثيقي فقط (بدون أي توجيهات فعّالة) |
+| `docs/deployment-archive/.htaccess.legacy` | لقطة أرشيفية | قواعد Apache التاريخية |
+| `docs/deployment-archive/_headers.legacy` | لقطة أرشيفية | قواعد headers التاريخية |
 
-## Change Policy
-1. Any production routing/header/cache change must be done in `netlify.toml` only.
-2. `.htaccess` and `_headers` must remain non-active archived files.
-3. Every change must pass:
-   - `npm run deploy:source-of-truth:check`
-4. PR must include a short note describing:
-   - Redirects changed
-   - Security headers changed
-   - Cache policy changed
+## سياسة التغيير
+1. أي تغيير إنتاجي متعلق بالتوجيه أو الرؤوس أو التخزين المؤقت يجب أن يكون في `netlify.toml` فقط.
+2. يجب أن تبقى `.htaccess` و`_headers` ملفات مؤرشفة وغير فعّالة.
+3. كل تغيير يجب أن يجتاز الفحص: `npm run deploy:source-of-truth:check`.
+4. أي PR يجب أن يتضمن ملاحظة مختصرة توضح ما تغيّر في:
+   - التحويلات (Redirects)
+   - رؤوس الأمان (Security Headers)
+   - سياسة التخزين المؤقت (Cache Policy)
 
-## CI Enforcement
-- Workflow: `.github/workflows/netlify-source-of-truth.yml`
-- Required check name: **`Validate Netlify Source of Truth`**
+## فرض الالتزام عبر CI
+- ملف الـ Workflow: `.github/workflows/netlify-source-of-truth.yml`
+- اسم الفحص الإلزامي: **`Validate Netlify Source of Truth`**
 
-## Branch Protection (GitHub)
-Configure branch protection for `main` and require:
-1. Status check: `Validate Netlify Source of Truth`
-2. Require pull request before merge
-3. Dismiss stale approvals when new commits are pushed
-4. Restrict direct pushes to `main` (recommended)
+## حماية الفرع (GitHub)
+اضبط حماية فرع `main` بحيث تتطلب:
+1. فحص الحالة: `Validate Netlify Source of Truth`
+2. عدم الدمج المباشر بدون Pull Request
+3. إلغاء الموافقات القديمة عند دفع commits جديدة
+4. منع الدفع المباشر إلى `main` (موصى به)
 
-## Local Validation Command
+## أمر التحقق المحلي
 ```bash
 npm run deploy:source-of-truth:check
 ```
 
-## Incident / Rollback
-If redirect/header/caching regression is detected:
-1. Revert the latest deployment-governance commit(s).
-2. Re-run `npm run deploy:source-of-truth:check`.
-3. Redeploy from a known-good commit.
+## التعامل مع الحوادث / التراجع
+عند ظهور تراجع (Regression) في التحويلات أو الرؤوس أو التخزين المؤقت:
+1. اعمل revert لآخر commit/commits خاصة بحوكمة النشر.
+2. أعد تشغيل `npm run deploy:source-of-truth:check`.
+3. أعد النشر من commit موثّق ومستقر.
