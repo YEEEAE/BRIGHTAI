@@ -472,7 +472,6 @@
 - `docker-compose.yml` → 1.2 KB
 - `nginx.conf` → 2 KB
 - `netlify.toml` → 942 bytes
-- `vercel.json` → 1.2 KB
 - `.github/` → مجلد واحد
 
 المطلوب:
@@ -483,7 +482,7 @@
      * Build
      * Bundle Size Check (فشل إذا تجاوز 200KB gzip)
    - `.github/workflows/deploy.yml`:
-     * Deploy to Vercel (staging on PR, production on main)
+     * Deploy to the selected production platform (staging on PR, production on main)
 
 2. **Dockerfile محسّن:**
    - Multi-stage build
