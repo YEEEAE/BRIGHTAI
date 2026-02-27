@@ -238,7 +238,24 @@ async function geminiChatHandler(req, res) {
       suggestions
     });
   } catch (error) {
-    const statusCode = Number(error?.statusCode) || 500;
+    let statusCode = Number(error?.statusCode) || 0;
+    if (!statusCode) {
+      const errCode = String(error?.code || '').toUpperCase();
+      const errMessage = String(error?.message || '').toLowerCase();
+      if (errCode === 'ETIMEDOUT' || errMessage.includes('timeout')) {
+        statusCode = 408;
+      } else if (
+        errCode === 'ECONNRESET' ||
+        errCode === 'ECONNREFUSED' ||
+        errCode === 'ENOTFOUND' ||
+        errCode === 'ENETUNREACH'
+      ) {
+        statusCode = 503;
+      } else {
+        statusCode = 500;
+      }
+    }
+
     return res.status(statusCode).json({
       error: getArabicErrorMessage(error, statusCode),
       errorCode: error?.code || 'GEMINI_CHAT_ERROR'

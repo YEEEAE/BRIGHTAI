@@ -1124,13 +1124,27 @@
             const errorCode = String(error?.errorCode || '').toUpperCase();
             const message = String(error?.message || '').toLowerCase();
 
-            if (statusCode === 429 || errorCode.includes('RATE_LIMIT')) {
+            if (
+                statusCode === 429 ||
+                errorCode.includes('RATE_LIMIT') ||
+                message.includes('الحد المسموح')
+            ) {
                 return 'ضغط عالي على الخدمة حالياً. انتظر لحظة ثم جرّب مجدداً.';
             }
-            if (statusCode === 408 || message.includes('timeout') || error?.name === 'AbortError') {
+            if (
+                statusCode === 408 ||
+                message.includes('timeout') ||
+                message.includes('المهلة') ||
+                error?.name === 'AbortError'
+            ) {
                 return 'الرد تأخر أكثر من المتوقع. تقدر تعيد المحاولة الآن.';
             }
-            if (message.includes('network') || message.includes('fetch')) {
+            if (
+                message.includes('network') ||
+                message.includes('fetch') ||
+                message.includes('الشبكة') ||
+                message.includes('الاتصال')
+            ) {
                 return 'صار انقطاع في الاتصال بالشبكة. تأكد من الإنترنت ثم حاول مرة ثانية.';
             }
             return 'تعذر إكمال الطلب حالياً. نقدر نخدمك مباشرة عبر واتساب أو صفحة التواصل.';
