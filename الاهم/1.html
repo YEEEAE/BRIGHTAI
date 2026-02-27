@@ -2,230 +2,610 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <title>تقرير تحليل مشروع BrightAI - 2026-02-27</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحليل BrightAI | تقرير ذكي</title>
+  
+  <!-- خط Cairo الاحترافي من جوجل -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
-    body { font-family: "Arial", "Tahoma", sans-serif; line-height: 1.7; margin: 28px; color: #111; }
-    h1, h2, h3 { color: #0f172a; margin: 0 0 10px; }
-    h1 { font-size: 28px; }
-    h2 { font-size: 22px; margin-top: 28px; }
-    h3 { font-size: 18px; margin-top: 20px; }
-    p { margin: 8px 0; }
-    ul, ol { margin: 8px 0 8px 0; padding-right: 22px; }
-    li { margin: 5px 0; }
-    table { border-collapse: collapse; width: 100%; margin: 12px 0 18px; }
-    th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: right; vertical-align: top; }
-    th { background: #f8fafc; }
-    code { background: #f1f5f9; padding: 2px 5px; border-radius: 4px; }
-    .meta { color: #334155; font-size: 13px; }
-    .critical { color: #b91c1c; font-weight: bold; }
-    .important { color: #b45309; font-weight: bold; }
-    .opt { color: #1d4ed8; font-weight: bold; }
-    .prompt { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; margin: 10px 0; }
-    .small { font-size: 13px; color: #475569; }
+    /* المتغيرات الأساسية (الوضع النهاري) */
+    :root {
+      --bg-color: #f8fafc;
+      --grid-pattern: rgba(148, 163, 184, 0.15);
+      --card-bg: #ffffff;
+      --card-border: rgba(226, 232, 240, 0.8);
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-dark: #1e3a8a;
+      --primary-light: #eff6ff;
+      --secondary: #64748b;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --info: #0ea5e9;
+      --info-light: #f0f9ff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --glass-bg: rgba(255, 255, 255, 0.8);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* المتغيرات (الوضع الليلي) */[data-theme="dark"] {
+      --bg-color: #0f172a;
+      --grid-pattern: rgba(255, 255, 255, 0.03);
+      --card-bg: #1e293b;
+      --card-border: rgba(51, 65, 85, 0.8);
+      --primary: #60a5fa;
+      --primary-hover: #3b82f6;
+      --primary-dark: #93c5fd;
+      --primary-light: rgba(59, 130, 246, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --danger-light: rgba(239, 68, 68, 0.1);
+      --warning-light: rgba(245, 158, 11, 0.1);
+      --success-light: rgba(16, 185, 129, 0.1);
+      --info-light: rgba(14, 165, 233, 0.1);
+      --glass-bg: rgba(30, 41, 59, 0.8);
+      --shadow-glow: 0 0 20px rgba(96, 165, 250, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { 
+      font-family: 'Cairo', sans-serif; 
+      background-color: var(--bg-color); 
+      color: var(--text-main); 
+      line-height: 1.8;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      /* خلفية شبكية حديثة */
+      background-image: linear-gradient(var(--grid-pattern) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--grid-pattern) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    /* Progress Bar */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+      width: 0%; z-index: 1000;
+      transition: width 0.1s ease;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky; top: 0; left: 0; right: 0;
+      background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
+      z-index: 999; box-shadow: var(--shadow-sm);
+    }
+    .navbar-brand { font-size: 20px; font-weight: 800; background: linear-gradient(90deg, var(--primary), #8b5cf6); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 10px;}
+    .theme-toggle {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      color: var(--text-main); padding: 8px 15px; border-radius: 30px;
+      cursor: pointer; font-family: inherit; font-weight: 600; font-size: 14px;
+      display: flex; align-items: center; gap: 8px; transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .theme-toggle:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+
+    .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; animation: fadeIn 0.8s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Header Styling */
+    .report-header {
+      text-align: center; margin-bottom: 50px; padding: 50px 30px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: white; border-radius: var(--radius-lg);
+      box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.3);
+      position: relative; overflow: hidden;
+    }
+    .report-header::after {
+      content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none"/></svg>') repeat;
+      opacity: 0.4; pointer-events: none;
+    }
+    .report-header h1 { font-size: 40px; font-weight: 900; margin-bottom: 15px; position: relative; z-index: 2; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .report-header .meta { font-size: 16px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; position: relative; z-index: 2; }
+    .report-header code { background: rgba(0,0,0,0.2); color: #fff; padding: 6px 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.1); }
+
+    /* Typography & Sections */
+    .section-title {
+      font-size: 28px; font-weight: 800; color: var(--text-main);
+      margin: 60px 0 30px 0; display: flex; align-items: center; gap: 15px;
+    }
+    .section-title::before {
+      content: ''; display: block; width: 8px; height: 35px;
+      background: linear-gradient(to bottom, var(--primary), #8b5cf6); border-radius: 4px;
+    }
+
+    /* General Cards */
+    .card {
+      background: var(--card-bg); border-radius: var(--radius-lg); padding: 35px; margin-bottom: 30px;
+      box-shadow: var(--shadow-md); border: 1px solid var(--card-border);
+      transition: var(--transition);
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-glow); border-color: rgba(59, 130, 246, 0.3); }
+    .card h3 { color: var(--text-main); font-size: 22px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .card h3 svg { color: var(--primary); width: 24px; height: 24px; }
+
+    /* Text & Badges */
+    p { margin-bottom: 15px; font-size: 16px; color: var(--text-muted); }
+    code { 
+      background: var(--primary-light); color: var(--primary-hover);
+      padding: 3px 8px; border-radius: 6px; font-family: monospace; font-size: 14px; border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    ul, ol { margin: 0 0 20px 30px; padding-right: 20px; }
+    li { margin-bottom: 12px; color: var(--text-muted); }
+    strong, b { color: var(--text-main); font-weight: 800; }
+    
+    .badge { padding: 6px 14px; border-radius: 30px; font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; }
+    .status-warning { background: var(--warning-light); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-error { background: var(--danger-light); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-success { background: var(--success-light); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+    
+    .critical { color: var(--danger); font-weight: 800; background: var(--danger-light); padding: 3px 8px; border-radius: 6px; }
+    .important { color: var(--warning); font-weight: 800; }
+    .opt { color: var(--info); font-weight: 800; }
+
+    /* Tables */
+    .table-wrapper { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--card-border); margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; background: var(--card-bg); text-align: right; }
+    th { background: var(--primary-light); padding: 18px 20px; font-size: 16px; font-weight: 800; color: var(--primary-dark); border-bottom: 2px solid var(--card-border); white-space: nowrap; }
+    td { padding: 18px 20px; border-bottom: 1px solid var(--card-border); color: var(--text-muted); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background-color: rgba(59, 130, 246, 0.02); }
+
+    /* --- Smart Prompt Cards --- */
+    .prompt-card {
+      background: var(--card-bg); border-right: 6px solid var(--primary);
+      border-radius: var(--radius-lg); margin-bottom: 30px; box-shadow: var(--shadow-sm);
+      border-top: 1px solid var(--card-border); border-left: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border);
+      overflow: hidden; transition: var(--transition);
+    }
+    .prompt-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+    
+    .prompt-header {
+      background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--card-border);
+      padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
+    }
+    [data-theme="dark"] .prompt-header { background: rgba(255,255,255,0.02); }
+    .prompt-header h3 { margin: 0; font-size: 19px; color: var(--text-main); font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    
+    /* Copy Button */
+    .copy-btn {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      color: var(--text-main); padding: 8px 16px; border-radius: 8px;
+      font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 8px; transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .copy-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+    .copy-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    
+    .prompt-body { padding: 25px; color: var(--text-muted); line-height: 1.9; font-size: 16px; }
+    .prompt-body ol ul { margin-top: 10px; margin-bottom: 15px; list-style-type: circle; }
+
+    /* Custom Colors for Specific Prompts */
+    .prompt-card.purple-theme { border-right-color: #8b5cf6; }
+    .prompt-card.purple-theme .prompt-header h3 { color: #8b5cf6; }
+    .prompt-card.green-theme { border-right-color: #10b981; }
+    .prompt-card.green-theme .prompt-header h3 { color: #10b981; }
+
+    /* Alert Note */
+    .alert-note {
+      background: var(--info-light); border: 1px solid rgba(14, 165, 233, 0.3); border-right: 6px solid var(--info);
+      padding: 25px; border-radius: var(--radius-lg); margin-top: 50px; display: flex; gap: 15px;
+    }
+    .alert-note svg { width: 30px; height: 30px; color: var(--info); flex-shrink: 0; }
+    .alert-note div { color: var(--text-main); font-size: 16px; font-weight: 600; }
+
+    /* Toast Notification */
+    .toast-container { position: fixed; bottom: 30px; left: 30px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      background: var(--success); color: white; padding: 12px 24px; border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 15px; opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-color); }
+    ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
   </style>
 </head>
 <body>
-  <h1>تقرير التحليل العميق لمشروع BrightAI</h1>
-  <p class="meta">تاريخ التحليل: 27 فبراير 2026 | المسار: <code>/Users/yzydalshmry/Desktop/BrightAI</code></p>
 
-  <h2>القسم الأول: التحليل التفصيلي الشّرحي</h2>
+  <!-- شريط تقدم القراءة -->
+  <div id="progress-bar"></div>
 
-  <h3>1) الملخص التنفيذي</h3>
-  <p>
-    المشروع غني وظيفيًا وفيه عمل كبير على SEO والمحتوى العربي، لكن حالته الحالية <b>ليست جاهزة كنسخة نهائية خالية من العيوب</b>.
-    السبب: تداخل أكثر من منتج داخل نفس المستودع، بيئة اختبار غير مستقرة، ملفات مكررة/يتيمة، وتضارب واضح في مسارات النشر والحوكمة.
-  </p>
+  <!-- شريط التنقل العلوي -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      لوحة BrightAI
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+      <svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <span>الوضع الليلي</span>
+    </button>
+  </nav>
 
-  <h3>2) نتيجة التدقيق العام (Governance Snapshot)</h3>
-  <table>
-    <tr><th>المجال</th><th>الدرجة (100)</th><th>الحالة</th><th>ملاحظة مركزة</th></tr>
-    <tr><td>سلامة المعمارية</td><td>56</td><td>⚠️</td><td>3 مسارات (frontend/backend/brightai-platform) داخل نفس الريبو بدون حدود تشغيل موحّدة.</td></tr>
-    <tr><td>حوكمة SEO</td><td>82</td><td>✅/⚠️</td><td>فحص SEO الحالي ناجح، لكن ما زال هناك نقص metadata في جزء من الصفحات.</td></tr>
-    <tr><td>الأداء</td><td>61</td><td>⚠️</td><td>صفحات/ملفات ضخمة جدًا (مثل index.html بحجم 270KB) مع DOM ومحتوى متشعب.</td></tr>
-    <tr><td>سلامة RTL</td><td>74</td><td>⚠️</td><td>التجربة العربية جيدة غالبًا، لكن يوجد صفحات تحتاج توحيد صريح للاتجاه.</td></tr>
-    <tr><td>السطح الأمني</td><td>58</td><td>⚠️</td><td>CORS عام + قبول مفاتيح API من جسم الطلب + نقاط إدخال HTML ديناميكية كثيرة.</td></tr>
-    <tr><td>الصحة المعيارية/الموديولية</td><td>47</td><td>❌</td><td>ملفات مكررة/غير مرجعية وغياب فصل واضح بين بيئات التنفيذ.</td></tr>
-  </table>
+  <!-- حاوية الإشعارات -->
+  <div class="toast-container" id="toastContainer"></div>
 
-  <h3>3) الأدلة التقنية المختصرة (من الفحص المباشر)</h3>
-  <ul>
-    <li>الاختبارات على الجذر فشلت: <code>5</code> حالات Groq + <code>2</code> Suites غير قادرة على التحميل.</li>
-    <li>سبب فشل Groq الأساسي: الاختبار يستدعي <code>/api/groq/stream</code> بينما السيرفر يدعم <code>/api/ai/stream</code>.</li>
-    <li>أوامر <code>brightai-platform</code> فشلت بسبب عدم توفر <code>react-scripts</code> (اعتماديات غير منصبة في هذا المسار).</li>
-    <li>فحص SEO الحالي نجح: <code>18/18</code> صفحات، وفحص الروابط/الموارد أعطى <code>0</code> أعطال.</li>
-    <li>عدد صفحات HTML المفحوصة: <code>190</code>، والنواقص: وصف ميتا مفقود في <code>23</code>، canonical مفقود في <code>4</code>، H1 مفقود في <code>12</code>.</li>
-    <li>ملفات مكررة (تطابق hash فعلي) موجودة في backend/frontend/assets.</li>
-  </ul>
+  <div class="container">
+    
+    <!-- رأس التقرير -->
+    <header class="report-header">
+      <h1>تقرير التحليل العميق لمشروع BrightAI</h1>
+      <div class="meta">
+        <span>📅 27 فبراير 2026</span>
+        <span>📂 <code>/Users/yzydalshmry/Desktop/BrightAI</code></span>
+        <span>🛡️ حالة المراجعة: <b style="color:#fde047">تتطلب تدخلات حاسمة</b></span>
+      </div>
+    </header>
 
-  <h3>4) المشاكل الحرجة (تمنع اعتبار المشروع «نهائي»)</h3>
-  <ol>
-    <li><span class="critical">تعطّل مسار الاختبارات</span>: test setup الحالي يخلط بين مشاريع متعددة داخل الريبو بدون عزل.</li>
-    <li><span class="critical">اختبار/مسار API غير متطابق</span>: <code>backend/groq-stream.functional.test.js</code> مقابل <code>backend/server.js</code>.</li>
-    <li><span class="critical">ازدواجية تشغيلية</span>: وجود نسخ غير مستخدمة مثل <code>backend/routes/search 2.js</code> و<code>search 3.js</code> و<code>frontend/js/search 2.js</code>.</li>
-    <li><span class="critical">تضارب بيئة النشر</span>: وجود <code>netlify.toml</code> + <code>.htaccess</code> + <code>_headers</code> (Cloudflare style) في نفس الوقت بدون policy موحّدة.</li>
-    <li><span class="critical">توثيق غير مطابق للواقع</span>: README يشير إلى workflow غير موجود فعليًا في <code>.github/workflows</code>.</li>
-  </ol>
+    <h2 class="section-title">القسم الأول: التحليل التفصيلي الشّرحي</h2>
 
-  <h3>5) المشاكل المهمة (يجب إصلاحها في الدورة الحالية)</h3>
-  <ol>
-    <li><span class="important">فجوات SEO جزئية</span>: canonical/description/H1 ناقصة في مجموعة صفحات (خصوصًا docs/offline وبعض blogger).</li>
-    <li><span class="important">قبول مفتاح API من Body/Header</span> في بعض مسارات Groq يحتاج policy صريحة (BYOK) مع تقييد ومراقبة.</li>
-    <li><span class="important">استخدام واسع لـ innerHTML</span> في صفحات تفاعلية كثيرة؛ يلزم توحيد sanitization قبل الحقن.</li>
-    <li><span class="important">ملف <code>sw.js</code> غير مسجل</span> في واجهة static الحالية (يتطلب قرار: تفعيل فعلي أو إزالة).</li>
-    <li><span class="important">لا يوجد <code>brightai-platform/.env.example</code></span> رغم الحاجة التشغيلية.</li>
-  </ol>
+    <div class="card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        1) الملخص التنفيذي
+      </h3>
+      <p>
+        المشروع غني وظيفيًا وفيه عمل كبير على SEO والمحتوى العربي، لكن حالته الحالية <span class="critical">ليست جاهزة كنسخة نهائية خالية من العيوب</span>.
+        السبب: تداخل أكثر من منتج داخل نفس المستودع، بيئة اختبار غير مستقرة، ملفات مكررة/يتيمة، وتضارب واضح في مسارات النشر والحوكمة.
+      </p>
+    </div>
 
-  <h3>6) فرص التحسين (Optimization Queue)</h3>
-  <ul>
-    <li><span class="opt">تقليل ضخامة الصفحات</span>: صفحات كثيرة >100KB HTML، وهذا يضغط LCP/TTFB/التصيير على الأجهزة الضعيفة.</li>
-    <li><span class="opt">توحيد الأصول المكررة</span> (fonts/icons) لتقليل العبء وإزالة الالتباس.</li>
-    <li><span class="opt">رفع حوكمة CI</span> بإضافة pipeline إلزامي: test + SEO + budget + duplicate/orphan scan.</li>
-  </ul>
+    <div class="card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+        2) نتيجة التدقيق العام (Governance Snapshot)
+      </h3>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>المجال</th><th>الدرجة (100)</th><th>الحالة</th><th>ملاحظة مركزة</th></tr>
+          <tr><td>سلامة المعمارية</td><td><span class="badge status-warning">56</span></td><td>⚠️</td><td>3 مسارات (frontend/backend/platform) داخل نفس الريبو بدون حدود.</td></tr>
+          <tr><td>حوكمة SEO</td><td><span class="badge status-success">82</span></td><td>✅</td><td>فحص SEO الحالي ناجح، لكن ما زال هناك نقص metadata جزئي.</td></tr>
+          <tr><td>الأداء</td><td><span class="badge status-warning">61</span></td><td>⚠️</td><td>صفحات/ملفات ضخمة جدًا (مثل index.html بحجم 270KB).</td></tr>
+          <tr><td>سلامة RTL</td><td><span class="badge status-success">74</span></td><td>✅</td><td>التجربة العربية جيدة غالبًا، تحتاج توحيد صريح للاتجاه.</td></tr>
+          <tr><td>السطح الأمني</td><td><span class="badge status-warning">58</span></td><td>⚠️</td><td>CORS عام + قبول مفاتيح API من الجسم + إدخال HTML ديناميكي.</td></tr>
+          <tr><td>الصحة المعيارية</td><td><span class="badge status-error">47</span></td><td>❌</td><td>ملفات مكررة/غير مرجعية وغياب فصل واضح بين بيئات التنفيذ.</td></tr>
+        </table>
+      </div>
+    </div>
 
-  <h3>7) قائمة الملفات المكررة أو غير المفيدة (مرشحة للحذف أو الدمج)</h3>
-  <table>
-    <tr><th>الملف</th><th>الوضع</th><th>الإجراء المقترح</th></tr>
-    <tr><td><code>backend/routes/search 2.js</code></td><td>غير مُشار له + نسخة قديمة</td><td>حذف بعد تثبيت <code>backend/routes/search.js</code> كمرجع وحيد.</td></tr>
-    <tr><td><code>backend/routes/search 3.js</code></td><td>غير مُشار له + مطابق hash</td><td>حذف.</td></tr>
-    <tr><td><code>backend/utils/cache 2.js</code></td><td>غير مُشار له + مطابق hash</td><td>حذف.</td></tr>
-    <tr><td><code>frontend/js/search 2.js</code></td><td>غير مُشار له</td><td>حذف.</td></tr>
-    <tr><td><code>backend/data/search-index 2.json</code></td><td>غير مستخدم</td><td>حذف أو نقله للأرشيف خارج الإنتاج.</td></tr>
-    <tr><td><code>new_index_part.html</code></td><td>مرجعية مؤقتة واحدة فقط</td><td>إما دمجه في docs داخل <code>docs/</code> أو حذفه.</td></tr>
-    <tr><td><code>frontend/pages/interview/ت.txt</code>, <code>show.txt</code></td><td>ملفات عمل مؤقتة</td><td>حذف أو نقل إلى <code>docs/archive/</code>.</td></tr>
-    <tr><td>نسخ blogger المكررة (مثل <code>production-line-2.html</code>, <code>astr.doc.html</code>)</td><td>مكررة/منخفضة الجودة</td><td>الإبقاء على canonical واحد + 301 + حذف النسخ.</td></tr>
-    <tr><td><code>backend/ScheherazadeNew-Regular.ttf</code></td><td>مكرر عن frontend</td><td>حذف نسخة backend والاكتفاء بمسار frontend.</td></tr>
-    <tr><td>أيقونات مكررة بين <code>assets/3d-icons</code> و<code>frontend/assets/3d-icons</code></td><td>ازدواجية أصل</td><td>توحيد المصدر لمسار واحد وتحديث الروابط.</td></tr>
-  </table>
+    <div class="card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        3) الأدلة التقنية المختصرة (من الفحص المباشر)
+      </h3>
+      <ul>
+        <li>الاختبارات على الجذر فشلت: <code>5</code> حالات Groq + <code>2</code> Suites غير قادرة على التحميل.</li>
+        <li>سبب فشل Groq الأساسي: الاختبار يستدعي <code>/api/groq/stream</code> بينما السيرفر يدعم <code>/api/ai/stream</code>.</li>
+        <li>أوامر <code>brightai-platform</code> فشلت بسبب عدم توفر <code>react-scripts</code>.</li>
+        <li>فحص SEO الحالي نجح: <code>18/18</code> صفحات، وفحص الروابط/الموارد أعطى <code>0</code> أعطال.</li>
+        <li>صفحات HTML المفحوصة: <code>190</code>، النواقص: وصف مفقود بـ <code>23</code>، canonical مفقود بـ <code>4</code>، H1 مفقود بـ <code>12</code>.</li>
+        <li>ملفات مكررة (تطابق hash فعلي) موجودة في مسارات متعددة.</li>
+      </ul>
+    </div>
 
-  <h3>8) الخلاصة التنفيذية</h3>
-  <p>
-    المشروع قوي من ناحية المحتوى وتغطية الصفحات، لكن قبل اعتباره إصدارًا نهائيًا يجب تنفيذ دورة تنظيف وضبط حوكمة كاملة.
-    أولوية التنفيذ: تثبيت الاختبارات، إزالة التكرارات/الملفات اليتيمة، توحيد سياسة النشر، ثم إقفال فجوات الأمن والـSEO الجزئية.
-  </p>
+    <div class="card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        4) المشاكل الحرجة & 5) المهمة
+      </h3>
+      <ol>
+        <li><span class="critical">تعطّل مسار الاختبارات:</span> خلط بين مشاريع متعددة بدون عزل.</li>
+        <li><span class="critical">اختبار/مسار API غير متطابق:</span> <code>groq-stream.functional.test.js</code> مقابل <code>server.js</code>.</li>
+        <li><span class="critical">تضارب بيئة النشر:</span> وجود <code>netlify.toml</code> + <code>.htaccess</code> + <code>_headers</code> بنفس الوقت.</li>
+        <li><span class="important">فجوات SEO جزئية:</span> metadata مفقودة في مسارات docs/offline.</li>
+        <li><span class="important">قبول مفتاح API:</span> يحتاج policy صريحة للـ BYOK.</li>
+      </ol>
+    </div>
 
-  <h2>القسم الثاني: Prompts جاهزة لـ Codex (تنفيذ مباشر)</h2>
+    <div class="card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        6) قائمة الملفات المكررة (المرشحة للحذف/الدمج)
+      </h3>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>الملف</th><th>الوضع</th><th>الإجراء المقترح</th></tr>
+          <tr><td><code>backend/routes/search 2.js</code></td><td>نسخة قديمة</td><td>حذف وتثبيت الأساسي.</td></tr>
+          <tr><td><code>backend/routes/search 3.js</code></td><td>مطابق</td><td>حذف.</td></tr>
+          <tr><td><code>new_index_part.html</code></td><td>مؤقت</td><td>دمجه في docs أو حذفه.</td></tr>
+          <tr><td>نسخ blogger المكررة</td><td>مكررة</td><td>توحيد canonical + 301.</td></tr>
+        </table>
+      </div>
+    </div>
 
-  <div class="prompt">
-    <h3>Prompt 1 — تثبيت البنية الأساسية للمونوريبو</h3>
-    <p>
-      افحص المشروع كـ monorepo من 3 وحدات (<code>frontend</code>, <code>backend</code>, <code>brightai-platform</code>)، ثم:
-      1) أنشئ strategy واضحة للتشغيل والاختبار لكل وحدة، 2) عدل scripts الجذر لتشغّل الوحدات بعزل، 3) امنع تداخل الاختبارات بين الوحدات.
-      المطلوب النهائي: <b>README موحّد</b> + <b>scripts موثوقة</b> + <b>أمر test واحد ناجح أو موضح سبب الفشل لكل وحدة</b>.
-    </p>
+    <!-- ================= PROMPTS SECTION ================= -->
+    <h2 class="section-title" id="prompts-section">القسم الثاني: Prompts جاهزة لـ Codex (مع النسخ الذكي)</h2>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 1 — تثبيت البنية الأساسية للمونوريبو</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">افحص المشروع كـ monorepo من 3 وحدات (frontend, backend, brightai-platform)، ثم: 1) أنشئ strategy واضحة للتشغيل والاختبار لكل وحدة، 2) عدل scripts الجذر لتشغّل الوحدات بعزل، 3) امنع تداخل الاختبارات بين الوحدات. المطلوب النهائي: README موحّد + scripts موثوقة + أمر test واحد ناجح أو موضح سبب الفشل لكل وحدة.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 2 — إصلاح فشل اختبارات Groq</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">أصلح عدم التوافق بين الاختبارات والسيرفر لمسار البث: إما دعم alias /api/groq/stream في backend/server.js أو تحديث الاختبارات إلى المسار الرسمي /api/ai/stream. ثم شغّل الاختبارات وتأكد أن حالات: success, runtime key, upstream error, timeout, rate-limit كلها Passing. أضف اختبار regression يمنع كسر هذا التوافق مستقبلًا.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 3 — تنظيف النسخ المكررة</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">احذف النسخ غير المستخدمة التالية بعد التحقق من عدم وجود imports/refs: backend/routes/search 2.js, backend/routes/search 3.js, backend/utils/cache 2.js, frontend/js/search 2.js, backend/data/search-index 2.json. ثم نفّذ scan يثبت عدم وجود مراجع مكسورة. أخيرًا حدّث أي docs تشير للملفات القديمة.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 4 — توحيد النشر والسياسات</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">راجع التضارب بين netlify.toml و.htaccess و_headers، وحدد Provider رسمي واحد للإنتاج. إذا Netlify هو الرسمي: انقل كل قواعد redirect/headers المهمة إلى netlify فقط، واجعل الملفات الأخرى للأرشفة/التوثيق. الهدف: source of truth واحد للـ routing/security headers/caching.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 5 — إقفال فجوات SEO</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">أنشئ سكربت إصلاحي + تحقق تلقائي لكل صفحات HTML للتأكد من: title + meta description + canonical + H1 + hreflang الملائم. عالج الصفحات الناقصة تلقائيًا (خصوصًا docs/offline/blogger المخصصة)، ثم أعد تشغيل npm run sitemap:all و npm run seo:check مع تقرير قبل/بعد.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 6 — تقوية الأمن (Hardening)</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">طبّق سياسة أمنية موحدة: 1) تقييد CORS بقائمة domains بيئية، 2) فصل وضع BYOK لمفاتيح Groq عن وضع server-managed مع feature flag وتدقيق request logging آمن، 3) إضافة sanitization layer موحدة لكل نقاط innerHTML الديناميكية، 4) رفع CSP أكثر صرامة تدريجيًا مع مراقبة كسر الواجهة. سلّم قائمة مخاطر قبل/بعد.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 7 — تحسين الأداء البنيوي</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">فكك الصفحات الثقيلة جدًا (خاصة index.html وصفحات interview/blog الكبيرة): انقل السكربتات inline إلى ملفات modular، قلل DOM المبدئي، واعتمد lazy-loading للأقسام الثقيلة. حدّث performance-budget ليقيس metrics واقعية إضافية.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 8 — توثيق وتشغيل الفريق</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">أنشئ توثيق تشغيل فعلي بدل النصوص العامة: كيفية setup لكل وحدة، env vars المطلوبة، أوامر الاختبار/البناء، وسياسة release/rollback. حدّث brightai-platform/README.md من قالب CRA إلى وثيقة منتج حقيقية. أضف brightai-platform/.env.example مع شرح القيم.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>✨ Prompt 9 — التنظيف النهائي</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">نفّذ عملية تنظيف نهائية آمنة على مرحلتين: (أ) حذف كل ملف غير مستخدم/مكرر مثبت بالمسح المرجعي والـhash، (ب) دمج الأصول المكررة (fonts/icons/blog variants) إلى مصدر واحد canonical مع redirects/refs محدثة. الشروط الإلزامية قبل التسليم: 1) لا كسر روابط داخلية، 2) اجتياز اختبارات backend وفحص SEO، 3) تقرير before/after.</div>
+    </div>
+
+    <!-- الإضافات الخارقة - 10 و 11 -->
+    <div class="prompt-card purple-theme">
+      <div class="prompt-header">
+        <h3>🚀 Prompt 10 — إصلاح الاختبارات القديمة</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">عالج مشاكل CI/test legacy الموجودة حاليًا حتى لو كانت خارج نطاق الميزة الحالية:
+
+1) ثبّت اعتماديات الاختبار المفقودة لكل وحدة (backend و brightai-platform) عبر setup واضح ومعزول.
+2) أصلح مشكلة اختبارات backend التي ترجع 404 بسبب عدم تطابق المسارات (مثل /api/groq/stream مقابل /api/ai/stream) بإضافة alias متوافق أو تحديث الاختبارات مع الحفاظ على backward compatibility.
+3) حدّث ملفات إعداد الاختبار لتجنب تداخل مشاريع monorepo في نفس runner.
+4) نفّذ اختبار end-to-end minimal يثبت أن مسارات البث الرئيسية ترجع 200 في سيناريو النجاح.
+5) سلّم تقريرًا نهائيًا يفرق بين: أعطال مرتبطة بالميزة الحالية وأعطال legacy تم إصلاحها الآن.</div>
+    </div>
+
+    <div class="prompt-card green-theme">
+      <div class="prompt-header">
+        <h3>🚀 Prompt 11 — ربط Gemini الفعلي بالنشر</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">أصلح مشكلة اتصال Gemini في بيئة الإنتاج عبر توحيد طبقة API Gateway بين الواجهة والخادم:
+
+1) اعتمد متغيرًا موحدًا لقاعدة الـ API مثل BRIGHTAI_API_BASE (مع fallback آمن إلى نفس الأصل فقط عند توفر backend فعلي).
+2) اجعل جميع نداءات الواجهة التي تستخدم /api/gemini/chat و /api/gemini/chat/stream تمر عبر دالة مركزية تبني URL الإنتاج الصحيح بدل hardcoded paths.
+3) وحّد استراتيجية النشر:
+- إذا الإنتاج على Netlify: فعّل redirect /api/* -> /.netlify/functions/all كمسار رسمي.
+- إذا الإنتاج على Apache/Cloudflare: أنشئ proxy/rewrite مكافئ أو endpoint backend منفصل واضح (مثل https://api.brightai.sa) مع CORS مضبوط.
+4) أضف فحص preflight عند بدء التطبيق على الإنتاج يستدعي /api/health أو endpoint health مكافئ ويعرض رسالة تشخيص واضحة إذا فشل الربط (بدل فشل صامت).
+5) تحقق من متغيرات البيئة في النشر (GEMINI_API_KEY, GEMINI_MODEL) وتأكد أن 503 بسبب key missing يظهر برسالة تشغيلية مفهومة.
+6) سلّم smoke test على رابط الإنتاج الفعلي يثبت نجاح: POST /api/gemini/chat و POST /api/gemini/chat/stream من المتصفح بدون 404/500.</div>
+    </div>
+
+    <!-- ================= EXTRA CODEX COMMANDS ================= -->
+    <h2 class="section-title">أوامر تحسين إضافية (Prompts إضافية جاهزة للنسخ)</h2>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>💡 حذف التبعيات وتنظيف المستودع</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">استخدم Codex لإزالة جميع مجلدات node_modules من المشروع وتحديث ملف .gitignore لاستبعادها. كذلك، احذف مجلد __MACOSX وأي ملفات تقارير أو وثائق داخلية (مثل .docx أو .md) غير ضرورية لتشغيل الموقع لتقليص حجم المستودع.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>💡 تحديث هيكل النشر (Netlify) وتحديث الروابط</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">اضبط إعدادات Netlify (في netlify.toml) لجعل مجلد "frontend" هو الجذر المُنشر بدل الجذر الحالي. ثم استخدم Codex لفحص جميع الروابط الداخلية (anchor وCSS) وتعديل مسارات /frontend/... لتصبح نسبية وصحيحة على البنية الجديدة بدون كسر أي مورد.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-header">
+        <h3>💡 دمج ملفات CSS وإزالة التكرار</h3>
+        <button class="copy-btn" onclick="copyPromptText(this)">
+          <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
+        </button>
+      </div>
+      <div class="prompt-body">حدد واطلب دمج الملفات style.css المكررة أو غير المرغوب فيها في ملفات CSS رئيسية (مثل دمج main.bundle.css مع bundle-pages.css إذا أمكن) لتقليل التكرار. تَحقَّق من أن استيراد الخطوط والأنماط الأساسي يتم في ملفات عامة بدلاً من نسخ متشابهة.</div>
+    </div>
+
+    <!-- ملاحظة ختامية -->
+    <div class="alert-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+      <div>
+        <b>ملاحظة تنفيذية حاسمة:</b> الترتيب الموصى به هو من Prompt 1 إلى Prompt 11 بالتسلسل. لا تبدأ بمهام الحذف النهائي قبل إرساء الاختبارات والمرجعيات. بعد التنفيذ، اختبر الـ API والـ Console في بيئة النشر للتأكد من خلو النظام من أي أخطاء (404/500).
+      </div>
+    </div>
+
   </div>
 
-  <div class="prompt">
-    <h3>Prompt 2 — إصلاح فشل اختبارات Groq وتوافق المسارات</h3>
-    <p>
-      أصلح عدم التوافق بين الاختبارات والسيرفر لمسار البث:
-      إما دعم alias <code>/api/groq/stream</code> في <code>backend/server.js</code> أو تحديث الاختبارات إلى المسار الرسمي <code>/api/ai/stream</code>.
-      ثم شغّل الاختبارات وتأكد أن حالات: success, runtime key, upstream error, timeout, rate-limit كلها Passing.
-      أضف اختبار regression يمنع كسر هذا التوافق مستقبلًا.
-    </p>
-  </div>
+  <!-- JavaScript Modules -->
+  <script>
+    // --- 1. Theme Toggle Logic ---
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const htmlEl = document.documentElement;
+    
+    // Check local storage for theme
+    if (localStorage.getItem('theme') === 'dark') {
+      htmlEl.setAttribute('data-theme', 'dark');
+      updateThemeIcon(true);
+    }
 
-  <div class="prompt">
-    <h3>Prompt 3 — تنظيف النسخ المكررة في backend/frontend</h3>
-    <p>
-      احذف النسخ غير المستخدمة التالية بعد التحقق من عدم وجود imports/refs:
-      <code>backend/routes/search 2.js</code>, <code>backend/routes/search 3.js</code>, <code>backend/utils/cache 2.js</code>,
-      <code>frontend/js/search 2.js</code>, <code>backend/data/search-index 2.json</code>.
-      ثم نفّذ scan يثبت عدم وجود مراجع مكسورة.
-      أخيرًا حدّث أي docs تشير للملفات القديمة.
-    </p>
-  </div>
+    function toggleTheme() {
+      const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        htmlEl.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+        updateThemeIcon(false);
+      } else {
+        htmlEl.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        updateThemeIcon(true);
+      }
+    }
 
-  <div class="prompt">
-    <h3>Prompt 4 — توحيد النشر والسياسات (Netlify/Apache/Headers)</h3>
-    <p>
-      راجع التضارب بين <code>netlify.toml</code> و<code>.htaccess</code> و<code>_headers</code>، وحدد Provider رسمي واحد للإنتاج.
-      إذا Netlify هو الرسمي: انقل كل قواعد redirect/headers المهمة إلى netlify فقط، واجعل الملفات الأخرى للأرشفة/التوثيق.
-      الهدف: source of truth واحد للـ routing/security headers/caching.
-    </p>
-  </div>
+    function updateThemeIcon(isDark) {
+      if (isDark) {
+        // Moon Icon
+        themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        themeBtn.querySelector('span').innerText = 'الوضع النهاري';
+      } else {
+        // Sun Icon
+        themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+        themeBtn.querySelector('span').innerText = 'الوضع الليلي';
+      }
+    }
 
-  <div class="prompt">
-    <h3>Prompt 5 — إقفال فجوات SEO الجزئية</h3>
-    <p>
-      أنشئ سكربت إصلاحي + تحقق تلقائي لكل صفحات HTML للتأكد من:
-      title + meta description + canonical + H1 + hreflang الملائم.
-      عالج الصفحات الناقصة تلقائيًا (خصوصًا docs/offline/blogger المخصصة)،
-      ثم أعد تشغيل <code>npm run sitemap:all</code> و<code>npm run seo:check</code> مع تقرير قبل/بعد.
-    </p>
-  </div>
+    // --- 2. Scroll Progress Bar ---
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progress-bar").style.width = scrolled + "%";
+    });
 
-  <div class="prompt">
-    <h3>Prompt 6 — تقوية الأمن (Hardening)</h3>
-    <p>
-      طبّق سياسة أمنية موحدة:
-      1) تقييد CORS بقائمة domains بيئية،
-      2) فصل وضع BYOK لمفاتيح Groq عن وضع server-managed مع feature flag وتدقيق request logging آمن،
-      3) إضافة sanitization layer موحدة لكل نقاط innerHTML الديناميكية،
-      4) رفع CSP أكثر صرامة تدريجيًا مع مراقبة كسر الواجهة.
-      سلّم قائمة مخاطر قبل/بعد.
-    </p>
-  </div>
+    // --- 3. Smart Copy Logic ---
+    function copyPromptText(button) {
+      // Find the prompt body relative to the clicked button
+      const card = button.closest('.prompt-card');
+      const textElement = card.querySelector('.prompt-body');
+      
+      // innerText preserves newlines perfectly
+      const textToCopy = textElement.innerText;
 
-  <div class="prompt">
-    <h3>Prompt 7 — تحسين الأداء البنيوي</h3>
-    <p>
-      فكك الصفحات الثقيلة جدًا (خاصة <code>index.html</code> وصفحات interview/blog الكبيرة):
-      انقل السكربتات inline إلى ملفات modular، قلل DOM المبدئي، واعتمد lazy-loading للأقسام الثقيلة.
-      حدّث performance-budget ليقيس metrics واقعية إضافية (HTML max size, critical path JS/CSS, large page alerts).
-    </p>
-  </div>
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        // Visual Feedback on Button
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> تم النسخ!';
+        button.style.backgroundColor = 'var(--success)';
+        button.style.color = 'white';
+        button.style.borderColor = 'var(--success)';
+        
+        // Show Toast Notification
+        showToast('✅ تم نسخ البرومبت بنجاح إلى الحافظة!');
 
-  <div class="prompt">
-    <h3>Prompt 8 — توثيق وتشغيل الفريق</h3>
-    <p>
-      أنشئ توثيق تشغيل فعلي بدل النصوص العامة: كيفية setup لكل وحدة، env vars المطلوبة، أوامر الاختبار/البناء،
-      وسياسة release/rollback.
-      حدّث <code>brightai-platform/README.md</code> من قالب CRA إلى وثيقة منتج حقيقية.
-      أضف <code>brightai-platform/.env.example</code> مع شرح القيم.
-    </p>
-  </div>
+        // Revert button after 2.5 seconds
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.style = '';
+        }, 2500);
+      }).catch(err => {
+        showToast('❌ فشل النسخ، يرجى المحاولة يدوياً.', true);
+      });
+    }
 
-  <div class="prompt">
-    <h3>Prompt 9 (الأخير) — حذف الملفات غير المفيدة + دمج المكررات بدون تأثير</h3>
-    <p>
-      نفّذ عملية تنظيف نهائية آمنة على مرحلتين:
-      (أ) <b>حذف</b> كل ملف غير مستخدم/مكرر مثبت بالمسح المرجعي والـhash،
-      (ب) <b>دمج</b> الأصول المكررة (fonts/icons/blog variants) إلى مصدر واحد canonical مع redirects/refs محدثة.
-      الشروط الإلزامية قبل التسليم:
-      1) لا كسر روابط داخلية أو موارد،
-      2) اجتياز اختبارات backend + فحص SEO + budget,
-      3) تقرير before/after يثبت عدد الملفات المحذوفة، ما دُمج، وما الأثر على الحجم والجودة.
-    </p>
-  </div>
+    // --- 4. Toast Notification System ---
+    function showToast(message, isError = false) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      if (isError) toast.style.backgroundColor = 'var(--danger)';
+      
+      toast.innerText = message;
+      container.appendChild(toast);
 
-  <div class="prompt">
-    <h3>Prompt 10 — إصلاح أعطال الاختبارات القديمة غير المرتبطة بالميزات الحالية</h3>
-    <p>
-      عالج مشاكل CI/test legacy الموجودة حاليًا حتى لو كانت خارج نطاق الميزة الحالية:
-      1) ثبّت اعتماديات الاختبار المفقودة لكل وحدة (<code>backend</code> و<code>brightai-platform</code>) عبر setup واضح ومعزول،
-      2) أصلح مشكلة اختبارات backend التي ترجع <code>404</code> بسبب عدم تطابق المسارات (مثل <code>/api/groq/stream</code> مقابل <code>/api/ai/stream</code>) بإضافة alias متوافق أو تحديث الاختبارات مع الحفاظ على backward compatibility،
-      3) حدّث ملفات إعداد الاختبار لتجنب تداخل مشاريع monorepo في نفس runner،
-      4) نفّذ اختبار end-to-end minimal يثبت أن مسارات البث الرئيسية ترجع <code>200</code> في سيناريو النجاح،
-      5) سلّم تقريرًا نهائيًا يفرق بين: أعطال مرتبطة بالميزة الحالية وأعطال legacy تم إصلاحها الآن.
-    </p>
-  </div>
+      // Trigger animation
+      setTimeout(() => toast.classList.add('show'), 10);
 
-  <div class="prompt">
-    <h3>Prompt 11 — إصلاح ربط Gemini على الرابط الفعلي وقت النشر</h3>
-    <p>
-      أصلح مشكلة اتصال Gemini في بيئة الإنتاج عبر توحيد طبقة API Gateway بين الواجهة والخادم:
-      1) اعتمد متغيرًا موحدًا لقاعدة الـ API مثل <code>BRIGHTAI_API_BASE</code> (مع fallback آمن إلى نفس الأصل فقط عند توفر backend فعلي)،
-      2) اجعل جميع نداءات الواجهة التي تستخدم <code>/api/gemini/chat</code> و<code>/api/gemini/chat/stream</code> تمر عبر دالة مركزية تبني URL الإنتاج الصحيح بدل hardcoded paths،
-      3) وحّد استراتيجية النشر: إذا الإنتاج على Netlify ففعّل redirect <code>/api/* -> /.netlify/functions/all</code> كمسار رسمي، وإذا الإنتاج على Apache/Cloudflare فأنشئ proxy/rewrite مكافئ أو endpoint backend منفصل واضح (مثل <code>https://api.brightai.sa</code>) مع CORS مضبوط،
-      4) أضف فحص preflight عند بدء التطبيق على الإنتاج يستدعي <code>/api/health</code> أو endpoint health مكافئ ويعرض رسالة تشخيص واضحة إذا فشل الربط (بدل فشل صامت)،
-      5) تحقق من متغيرات البيئة في النشر (<code>GEMINI_API_KEY</code>, <code>GEMINI_MODEL</code>) وتأكد أن 503 بسبب key missing يظهر برسالة تشغيلية مفهومة،
-      6) سلّم smoke test على رابط الإنتاج الفعلي يثبت نجاح: <code>POST /api/gemini/chat</code> و<code>POST /api/gemini/chat/stream</code> من المتصفح بدون 404/500.
-    </p>
-  </div>
-
-  <p class="small">
-    ملاحظة تنفيذية: الترتيب الموصى به هو من Prompt 1 إلى Prompt 11 بالتسلسل. لا تبدأ الحذف النهائي قبل تثبيت الاختبارات والمرجعيات.
-  </p>
+      // Remove after 3.5 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400); // Wait for transition out
+      }, 3500);
+    }
+  </script>
 
 </body>
 </html>

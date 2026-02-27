@@ -312,7 +312,7 @@ async function handleRequest(req, res) {
           { id: 'gemini-1.5-pro', object: 'model', owned_by: 'google' }
         ]
       });
-    } else if (method === 'POST' && url === '/api/ai/stream') {
+    } else if (method === 'POST' && (url === '/api/ai/stream' || url === '/api/groq/stream')) {
       await groqStreamHandler(ctx.req, ctx.res, res);
     } else if (method === 'POST' && url === '/api/ai/ocr') {
       await groqOcrHandler(ctx.req, ctx.res);

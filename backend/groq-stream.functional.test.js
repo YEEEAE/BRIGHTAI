@@ -6,6 +6,8 @@ const originalFetch = global.fetch;
 async function loadHandleRequest(envOverrides = {}) {
   const trackedKeys = [
     'NODE_ENV',
+    'GEMINI_API_KEY',
+    'GEMINI_MODEL',
     'GROQ_API_KEY',
     'GROQ_STREAM_TIMEOUT_MS',
     'RATE_LIMIT_REQUESTS_PER_MINUTE',
@@ -18,10 +20,12 @@ async function loadHandleRequest(envOverrides = {}) {
   }
 
   process.env.NODE_ENV = 'test';
-  process.env.GROQ_API_KEY = envOverrides.GROQ_API_KEY || 'gsk_test_key';
-  process.env.GROQ_STREAM_TIMEOUT_MS = String(envOverrides.GROQ_STREAM_TIMEOUT_MS || 150);
+  process.env.GEMINI_API_KEY = envOverrides.GEMINI_API_KEY ?? 'gemini_test_key';
+  process.env.GEMINI_MODEL = envOverrides.GEMINI_MODEL ?? 'gemini-2.5-flash';
+  process.env.GROQ_API_KEY = envOverrides.GROQ_API_KEY ?? 'gsk_test_key';
+  process.env.GROQ_STREAM_TIMEOUT_MS = String(envOverrides.GROQ_STREAM_TIMEOUT_MS ?? 150);
   process.env.RATE_LIMIT_REQUESTS_PER_MINUTE = String(
-    envOverrides.RATE_LIMIT_REQUESTS_PER_MINUTE || 30
+    envOverrides.RATE_LIMIT_REQUESTS_PER_MINUTE ?? 30
   );
   process.env.RATE_LIMIT_STORAGE = 'memory';
 
@@ -115,17 +119,18 @@ afterEach(() => {
 describe('Groq Stream Endpoint - Functional Scenarios', () => {
   it('success: streams tokens and closes with DONE marker', async () => {
     global.fetch = vi.fn(async () => {
-      return new Response(
-        [
-          'data: {"choices":[{"delta":{"content":"أهلاً"}}]}\n\n',
-          'data: {"choices":[{"delta":{"content":" وسهلاً"}}]}\n\n',
-          'data: [DONE]\n\n'
-        ].join(''),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'text/event-stream; charset=utf-8' }
-        }
-      );
+      return new Response(JSON.stringify({
+        candidates: [
+          {
+            content: {
+              parts: [{ text: 'أهلاً وسهلاً' }]
+            }
+          }
+        ]
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      });
     });
 
     const runtime = await loadHandleRequest({
@@ -142,8 +147,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
 
       expect(result.status).toBe(200);
       expect(result.body).toContain('"sessionId"');
-      expect(result.body).toContain('"token":"أهلاً"');
-      expect(result.body).toContain('"token":" وسهلاً"');
+      expect(result.body).toContain('"token":"أهلاً وسهلاً"');
       expect(result.body).toContain('data: [DONE]');
       expect(global.fetch).toHaveBeenCalledTimes(1);
     } finally {
@@ -151,29 +155,30 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
     }
   });
 
-  it('success: accepts runtime groqApiKey from request body when env key is missing', async () => {
-    global.fetch = vi.fn(async (_url, options = {}) => {
-      const payload = JSON.parse(options.body || '{}');
-      const authHeader = options.headers?.Authorization || options.headers?.authorization || '';
+  it('success: streams using configured Gemini model', async () => {
+    let capturedUrl = '';
+    let capturedPayload = null;
 
-      expect(authHeader).toContain('gsk_runtime_test_key');
-      expect(payload.model).toBe('llama-3.3-70b-versatile');
+    global.fetch = vi.fn(async (url, options = {}) => {
+      capturedUrl = String(url);
+      capturedPayload = JSON.parse(options.body || '{}');
 
-      return new Response(
-        [
-          'data: {"choices":[{"delta":{"content":"تم"}}]}\n\n',
-          'data: {"choices":[{"delta":{"content":" التشغيل"}}]}\n\n',
-          'data: [DONE]\n\n'
-        ].join(''),
-        {
-          status: 200,
-          headers: { 'Content-Type': 'text/event-stream; charset=utf-8' }
-        }
-      );
+      return new Response(JSON.stringify({
+        candidates: [
+          {
+            content: {
+              parts: [{ text: 'تم التشغيل' }]
+            }
+          }
+        ]
+      }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      });
     });
 
     const runtime = await loadHandleRequest({
-      GROQ_API_KEY: '',
+      GEMINI_API_KEY: 'gemini_test_key',
       GROQ_STREAM_TIMEOUT_MS: 400,
       RATE_LIMIT_REQUESTS_PER_MINUTE: 20
     });
@@ -183,15 +188,18 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
         method: 'POST',
         url: '/api/ai/stream',
         body: {
-          message: 'اختبار تمرير المفتاح من جسم الطلب',
+          message: 'اختبار مسار Gemini الافتراضي',
           outputType: 'دعم العملاء',
-          groqApiKey: 'gsk_runtime_test_key'
+          geminiModel: 'gemini-1.5-pro'
         }
       });
 
       expect(result.status).toBe(200);
-      expect(result.body).toContain('"token":"تم"');
-      expect(result.body).toContain('"token":" التشغيل"');
+      expect(capturedUrl).toContain('/gemini-2.5-flash:generateContent');
+      expect(capturedUrl).toContain('key=gemini_test_key');
+      expect(Array.isArray(capturedPayload?.contents)).toBe(true);
+      expect(capturedPayload.contents.length).toBeGreaterThan(0);
+      expect(result.body).toContain('"token":"تم التشغيل"');
       expect(result.body).toContain('data: [DONE]');
       expect(global.fetch).toHaveBeenCalledTimes(1);
     } finally {
@@ -220,7 +228,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
       });
 
       expect(result.status).toBe(200);
-      expect(result.body).toContain('"errorCode":"GROQ_STREAM_ERROR"');
+      expect(result.body).toContain('"errorCode":"AI_STREAM_ERROR"');
       expect(result.body).toContain('data: [DONE]');
       expect(global.fetch).toHaveBeenCalledTimes(1);
     } finally {
@@ -229,29 +237,10 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
   });
 
   it('timeout: emits timeout error when upstream exceeds configured timeout', async () => {
-    global.fetch = vi.fn((_, options = {}) => {
-      return new Promise((resolve, reject) => {
-        const signal = options.signal;
-        if (!signal) {
-          resolve(
-            new Response('missing abort signal', {
-              status: 500,
-              headers: { 'Content-Type': 'text/plain' }
-            })
-          );
-          return;
-        }
-
-        signal.addEventListener(
-          'abort',
-          () => {
-            const abortError = new Error('This operation was aborted');
-            abortError.name = 'AbortError';
-            reject(abortError);
-          },
-          { once: true }
-        );
-      });
+    global.fetch = vi.fn(async () => {
+      const timeoutError = new Error('upstream timeout');
+      timeoutError.statusCode = 408;
+      throw timeoutError;
     });
 
     const runtime = await loadHandleRequest({
