@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>أنت غير متصل حالياً | Bright AI</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1.2rem;
+      font-family: "Tajawal", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #172554, #020617 60%);
+      color: #e2e8f0;
+    }
+    .card {
+      width: min(94vw, 540px);
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 1rem;
+      padding: 1.4rem;
+      box-shadow: 0 14px 38px rgba(2, 6, 23, 0.5);
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    p {
+      margin: 0;
+      line-height: 1.8;
+      color: #cbd5e1;
+    }
+    .actions {
+      margin-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 0.7rem;
+      padding: 0.55rem 0.9rem;
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <h1>الاتصال بالإنترنت غير متاح</h1>
+    <p>
+      يالغالي، يبدو أنك حالياً بدون اتصال. بعض الصفحات المحفوظة تقدر تشتغل، لكن المحتوى الجديد يحتاج إنترنت.
+      جرّب إعادة التحميل أو ارجع للرئيسية بعد رجوع الشبكة.
+    </p>
+    <div class="actions">
+      <button class="btn primary" type="button" onclick="window.location.reload()">إعادة المحاولة</button>
+      <a class="btn" href="/index.html">الصفحة الرئيسية</a>
+      <a class="btn" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">دعم واتساب</a>
+    </div>
+  </main>
+</body>
+</html>

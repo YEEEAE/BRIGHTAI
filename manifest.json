@@ -2,7 +2,8 @@
   "name": "شركة مُشرقة AI | الذكاء الاصطناعي السعودية - الرياض جدة الدمام",
   "short_name": "مُشرقة AI",
   "description": "مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي بالرياض. حلول التعلم العميق، أتمتة العمليات، روبوتات المحادثة العربية للشركات السعودية",
-  "start_url": "/?utm_source=pwa",
+  "start_url": "/index.html?utm_source=pwa",
+  "id": "/index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0A192F",
@@ -63,7 +64,7 @@
       "name": "خدماتنا",
       "short_name": "الخدمات",
       "description": "استعرض خدمات الذكاء الاصطناعي من مُشرقة AI",
-      "url": "/our-products.html",
+      "url": "/frontend/pages/our-products/index.html",
       "icons": [
         {
           "src": "frontend/assets/images/Gemini.webp.png",
@@ -75,7 +76,7 @@
       "name": "استشارة مجانية",
       "short_name": "استشارة",
       "description": "احصل على استشارة مجانية في الذكاء الاصطناعي",
-      "url": "/consultation.html",
+      "url": "/frontend/pages/consultation/index.html",
       "icons": [
         {
           "src": "frontend/assets/images/Gemini.webp.png",
@@ -87,7 +88,7 @@
       "name": "روبوتات AI",
       "short_name": "الروبوتات",
       "description": "جرب روبوتات الذكاء الاصطناعي العربية",
-      "url": "/ai-bots.html",
+      "url": "/frontend/pages/ai-bots/index.html",
       "icons": [
         {
           "src": "frontend/assets/images/Gemini.webp.png",
@@ -99,7 +100,7 @@
       "name": "تواصل معنا",
       "short_name": "التواصل",
       "description": "تواصل مع فريق مُشرقة AI",
-      "url": "/contact.html",
+      "url": "/frontend/pages/contact/index.html",
       "icons": [
         {
           "src": "frontend/assets/images/Gemini.webp.png",

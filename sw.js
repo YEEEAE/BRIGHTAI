@@ -1,5 +1,5 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-02-27-2';
+const CACHE_VERSION = '2026-02-27-4';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
 
@@ -15,6 +15,7 @@ const STATIC_ASSETS = [
   '/frontend/assets/images/Gemini.webp.png',
   '/frontend/assets/images/hero-brain.svg',
   '/manifest.json',
+  '/frontend/pages/offline/index.html',
   '/robots.txt',
   '/sitemap.xml'
 ];
@@ -81,7 +82,8 @@ async function networkFirst(req) {
     return res;
   } catch (err) {
     const cached = await caches.match(req);
-    return cached || caches.match('/index.html');
+    const offlineFallback = await caches.match('/frontend/pages/offline/index.html');
+    return cached || offlineFallback || caches.match('/index.html');
   }
 }
 

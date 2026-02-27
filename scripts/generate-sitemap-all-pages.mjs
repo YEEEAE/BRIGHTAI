@@ -30,6 +30,8 @@ function isLowQualityPath(relPath) {
 
   if (normalized.startsWith("frontend/pages/interview/")) return true;
   if (normalized.startsWith("frontend/pages/botAI/")) return true;
+  if (normalized.startsWith("frontend/pages/offline/")) return true;
+  if (normalized.startsWith("frontend/pages/terms/")) return true;
 
   if (normalized.startsWith("frontend/pages/blogger/")) {
     const base = path.basename(normalized);

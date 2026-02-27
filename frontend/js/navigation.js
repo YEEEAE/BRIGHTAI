@@ -113,6 +113,8 @@ const UNIFIED_FOOTER_MARKUP = `
         <h4 class="text-white font-medium mb-6">الشركة</h4>
         <ul class="space-y-3 text-sm text-slate-400">
           <li><a class="hover:text-gold-400 transition" href="/frontend/pages/about-us/index.html">عن Bright AI</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/case-studies/index.html">قصص النجاح</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/partners/index.html">الشركاء والموزعين</a></li>
           <li><a class="hover:text-gold-400 transition" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
           <li><a class="hover:text-gold-400 transition" href="/frontend/pages/blog/index.html">المدونة</a></li>
         </ul>
@@ -130,6 +132,8 @@ const UNIFIED_FOOTER_MARKUP = `
         <h4 class="text-white font-medium mb-6">الموارد</h4>
         <ul class="space-y-3 text-sm text-slate-400">
           <li><a class="hover:text-gold-400 transition" href="/docs.html">الوثائق</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/sitemap/index.html">خريطة الموقع</a></li>
           <li><a class="hover:text-gold-400 transition" href="/frontend/pages/tools/index.html">أدوات مجانية</a></li>
           <li><a class="hover:text-gold-400 transition" href="/frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a></li>
         </ul>
@@ -847,6 +851,97 @@ function ensureUxEnhancementStyles() {
   const style = document.createElement("style");
   style.id = "bright-ux-enhancement-style";
   style.textContent = `
+    html {
+      font-size: calc(16px * var(--bright-font-scale, 1));
+    }
+    .bright-access-controls {
+      position: fixed;
+      left: 1rem;
+      bottom: 4.3rem;
+      z-index: 62;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem;
+      border-radius: 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(6px);
+    }
+    .bright-access-btn {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 0.55rem;
+      background: rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      font-size: 0.74rem;
+      line-height: 1;
+      min-width: 34px;
+      height: 32px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bright-access-btn:hover {
+      background: rgba(99, 102, 241, 0.25);
+      border-color: rgba(99, 102, 241, 0.55);
+      color: #fff;
+    }
+    html.bright-light-mode body {
+      background: #f8fafc !important;
+      color: #0f172a !important;
+    }
+    html.bright-light-mode .unified-nav {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-bottom-color: rgba(15, 23, 42, 0.15) !important;
+    }
+    html.bright-light-mode .unified-nav .nav-link,
+    html.bright-light-mode .unified-nav .mobile-search-btn,
+    html.bright-light-mode .unified-nav .search-trigger {
+      color: #0f172a !important;
+    }
+    html.bright-light-mode .glass-card,
+    html.bright-light-mode .doc-content section,
+    html.bright-light-mode article {
+      background: rgba(255, 255, 255, 0.9) !important;
+      color: #0f172a !important;
+      border-color: rgba(15, 23, 42, 0.15) !important;
+    }
+    html.bright-light-mode .bright-article-toc,
+    html.bright-light-mode .bright-article-sidebar,
+    html.bright-light-mode .bright-related {
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-color: rgba(15, 23, 42, 0.2) !important;
+    }
+    html.bright-light-mode .bright-share-btn,
+    html.bright-light-mode .bright-back-top,
+    html.bright-light-mode .bright-access-controls {
+      background: rgba(255, 255, 255, 0.95) !important;
+      color: #0f172a !important;
+      border-color: rgba(15, 23, 42, 0.2) !important;
+    }
+    html.bright-light-mode .bright-chat-panel {
+      background: #f8fafc !important;
+      border-color: rgba(15, 23, 42, 0.18) !important;
+    }
+    html.bright-light-mode .bright-chat-msg.user {
+      background: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    html.bright-light-mode .bright-chat-msg.bot {
+      background: #e2e8f0 !important;
+      color: #0f172a !important;
+      border-color: rgba(15, 23, 42, 0.18) !important;
+    }
+    html.bright-light-mode .bright-chat-input {
+      background: #fff !important;
+      border-top-color: rgba(15, 23, 42, 0.15) !important;
+    }
+    html.bright-light-mode .bright-chat-input input {
+      background: #fff !important;
+      color: #0f172a !important;
+      border-color: rgba(15, 23, 42, 0.2) !important;
+    }
     .bright-skip-link {
       position: fixed;
       top: -120px;
@@ -1115,6 +1210,11 @@ function ensureUxEnhancementStyles() {
         display: none;
       }
     }
+    @media (max-width: 768px) {
+      .bright-access-controls {
+        bottom: 4.9rem;
+      }
+    }
   `;
   document.head.appendChild(style);
 }
@@ -1212,6 +1312,10 @@ function injectShareControls() {
       <iconify-icon icon="logos:whatsapp-icon" width="14"></iconify-icon>
       واتساب
     </a>
+    <button type="button" class="bright-share-btn" data-share-action="print">
+      <iconify-icon icon="lucide:printer" width="14"></iconify-icon>
+      طباعة / PDF
+    </button>
   `;
   title.insertAdjacentElement("afterend", row);
 
@@ -1233,6 +1337,64 @@ function injectShareControls() {
     window.setTimeout(() => {
       button.innerHTML = `<iconify-icon icon="lucide:link-2" width="14"></iconify-icon>نسخ الرابط`;
     }, 1400);
+  });
+
+  row.querySelector('[data-share-action="print"]')?.addEventListener("click", () => {
+    window.print();
+  });
+}
+
+function injectAccessibilityControls() {
+  if (document.getElementById("bright-access-controls")) return;
+  const storageKeyTheme = "bright_theme_pref";
+  const storageKeyScale = "bright_font_scale";
+
+  const root = document.documentElement;
+  const defaultScale = 1;
+
+  const applyTheme = (mode) => {
+    root.classList.toggle("bright-light-mode", mode === "light");
+  };
+  const applyScale = (scale) => {
+    const safeScale = Math.max(0.9, Math.min(1.2, Number(scale) || defaultScale));
+    root.style.setProperty("--bright-font-scale", String(safeScale));
+    return safeScale;
+  };
+
+  const savedTheme = localStorage.getItem(storageKeyTheme) || "dark";
+  const savedScale = applyScale(localStorage.getItem(storageKeyScale) || defaultScale);
+  applyTheme(savedTheme);
+
+  const controls = document.createElement("div");
+  controls.id = "bright-access-controls";
+  controls.className = "bright-access-controls";
+  controls.innerHTML = `
+    <button type="button" class="bright-access-btn" data-a11y-theme title="تبديل المظهر">🌓</button>
+    <button type="button" class="bright-access-btn" data-a11y-dec title="تصغير الخط">A-</button>
+    <button type="button" class="bright-access-btn" data-a11y-reset title="إعادة الخط">A</button>
+    <button type="button" class="bright-access-btn" data-a11y-inc title="تكبير الخط">A+</button>
+  `;
+  document.body.appendChild(controls);
+
+  controls.querySelector("[data-a11y-theme]")?.addEventListener("click", () => {
+    const mode = root.classList.contains("bright-light-mode") ? "dark" : "light";
+    applyTheme(mode);
+    localStorage.setItem(storageKeyTheme, mode);
+  });
+
+  controls.querySelector("[data-a11y-dec]")?.addEventListener("click", () => {
+    const updated = applyScale((Number(root.style.getPropertyValue("--bright-font-scale")) || savedScale) - 0.04);
+    localStorage.setItem(storageKeyScale, String(updated));
+  });
+
+  controls.querySelector("[data-a11y-inc]")?.addEventListener("click", () => {
+    const updated = applyScale((Number(root.style.getPropertyValue("--bright-font-scale")) || savedScale) + 0.04);
+    localStorage.setItem(storageKeyScale, String(updated));
+  });
+
+  controls.querySelector("[data-a11y-reset]")?.addEventListener("click", () => {
+    const updated = applyScale(defaultScale);
+    localStorage.setItem(storageKeyScale, String(updated));
   });
 }
 
@@ -1442,6 +1604,7 @@ function injectFloatingChatbot() {
 function applyArticleUxEnhancements() {
   ensureUxEnhancementStyles();
   ensureSkipToMain();
+  injectAccessibilityControls();
   injectBlogReadingTime();
   injectReadingProgressBar();
   injectShareControls();

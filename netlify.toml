@@ -10,6 +10,24 @@ node_bundler = "esbuild"
 NODE_ENV = "production"
 
 [[redirects]]
+from = "/sitemap.html"
+to = "/frontend/pages/sitemap/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/terms.html"
+to = "/frontend/pages/terms/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/offline.html"
+to = "/frontend/pages/offline/index.html"
+status = 301
+force = true
+
+[[redirects]]
 from = "/frontend/pages/blogger/%20production-line.html"
 to = "/frontend/pages/blogger/production-line.html"
 status = 301
