@@ -67,3 +67,9 @@ npm install --workspace brightai-platform
 - `npm run seo:check`
 - `npm run performance:budget`
 - `npm run deploy:source-of-truth:check`
+
+## حوكمة النشر
+
+- Netlify هو المزود الرسمي للإنتاج.
+- مصدر الحقيقة الوحيد لـ redirects/security headers/caching هو `netlify.toml`.
+- الدليل التشغيلي: `docs/deployment-governance.md`
