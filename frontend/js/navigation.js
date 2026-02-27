@@ -158,6 +158,27 @@ function buildUnifiedNavigationMarkupFallback() {
         <nav class="nav-desktop">
           <ul class="nav-links">
             <li><a class="nav-link" href="/index.html">الرئيسية</a></li>
+            <li class="nav-item">
+              <button aria-expanded="false" aria-haspopup="true" class="nav-link">الخدمات <span aria-hidden="true">▾</span></button>
+              <div class="dropdown-menu">
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/ai-agent/index.html">
+                  <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:cpu" width="14"></iconify-icon> AI Agent</strong>
+                  <span class="block text-slate-400 text-xs mt-1">وكلاء ذكية لتشغيل الأعمال</span>
+                </a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/smart-automation/index.html">
+                  <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:workflow" width="14"></iconify-icon> الأتمتة الذكية</strong>
+                  <span class="block text-slate-400 text-xs mt-1">خفض التكاليف وتسريع سير العمل</span>
+                </a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/data-analysis/index.html">
+                  <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:line-chart" width="14"></iconify-icon> تحليل البيانات</strong>
+                  <span class="block text-slate-400 text-xs mt-1">لوحات KPI ورؤى تشغيلية</span>
+                </a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/consultation/index.html">
+                  <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:briefcase-business" width="14"></iconify-icon> الاستشارات</strong>
+                  <span class="block text-slate-400 text-xs mt-1">خارطة تنفيذ مخصصة للمؤسسة</span>
+                </a>
+              </div>
+            </li>
             <li><a class="nav-link" href="/frontend/pages/our-products/index.html">الحلول</a></li>
             <li><a class="nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
             <li><a class="nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
@@ -174,6 +195,15 @@ function buildUnifiedNavigationMarkupFallback() {
     <div class="mobile-menu-drawer" id="mobileDrawer" aria-hidden="true">
       <ul class="mobile-nav-list" style="list-style:none; padding:1.25rem; margin:0;">
         <li><a class="mobile-nav-link" href="/index.html">الرئيسية</a></li>
+        <li>
+          <button class="mobile-nav-link" aria-haspopup="true" aria-expanded="false" type="button" style="width:100%;text-align:right;background:none;border:0;padding:.65rem 0;color:#cbd5e1;cursor:pointer;">الخدمات</button>
+          <ul class="mobile-dropdown" style="list-style:none; margin:0; padding:0.35rem;">
+            <li><a class="mobile-nav-link" href="/frontend/pages/ai-agent/index.html">AI Agent</a></li>
+            <li><a class="mobile-nav-link" href="/frontend/pages/smart-automation/index.html">الأتمتة الذكية</a></li>
+            <li><a class="mobile-nav-link" href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a></li>
+            <li><a class="mobile-nav-link" href="/frontend/pages/consultation/index.html">الاستشارات</a></li>
+          </ul>
+        </li>
         <li><a class="mobile-nav-link" href="/frontend/pages/our-products/index.html">الحلول</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
@@ -453,6 +483,8 @@ function injectBlogReadingTime() {
 
 let uxEnhancerLoadPromise = null;
 const UX_ENHANCER_SCRIPT_PATH = "/frontend/js/article-ux-enhancements.js";
+let pageEnhancerLoadPromise = null;
+const PAGE_ENHANCER_SCRIPT_PATH = "/frontend/js/page-enhancements.js";
 
 function loadUxEnhancerScript() {
   if (window.BrightUXEnhancer) return Promise.resolve(window.BrightUXEnhancer);
@@ -478,6 +510,39 @@ function loadUxEnhancerScript() {
   return uxEnhancerLoadPromise;
 }
 
+function loadPageEnhancerScript() {
+  if (window.BrightPageEnhancer) return Promise.resolve(window.BrightPageEnhancer);
+  if (pageEnhancerLoadPromise) return pageEnhancerLoadPromise;
+
+  pageEnhancerLoadPromise = new Promise((resolve) => {
+    const existing = document.querySelector(`script[src="${PAGE_ENHANCER_SCRIPT_PATH}"]`);
+    if (existing) {
+      existing.addEventListener("load", () => resolve(window.BrightPageEnhancer || null), { once: true });
+      existing.addEventListener("error", () => resolve(null), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = PAGE_ENHANCER_SCRIPT_PATH;
+    script.defer = true;
+    script.dataset.brightPageEnhancer = "true";
+    script.addEventListener("load", () => resolve(window.BrightPageEnhancer || null), { once: true });
+    script.addEventListener("error", () => resolve(null), { once: true });
+    document.head.appendChild(script);
+  });
+
+  return pageEnhancerLoadPromise;
+}
+
+async function applyPageEnhancements() {
+  const enhancer = window.BrightPageEnhancer || await loadPageEnhancerScript();
+  if (!enhancer || typeof enhancer.apply !== "function") return;
+
+  enhancer.apply({
+    normalizePathname
+  });
+}
+
 async function applyArticleUxEnhancements() {
   injectBlogReadingTime();
   optimizeImagesForCWV();
@@ -488,6 +553,18 @@ async function applyArticleUxEnhancements() {
   enhancer.apply({
     normalizePathname
   });
+}
+
+function ensureNavScrollProgress(navElement) {
+  if (!navElement) return null;
+  let indicator = navElement.querySelector(".nav-scroll-progress");
+  if (!indicator) {
+    indicator = document.createElement("div");
+    indicator.className = "nav-scroll-progress";
+    indicator.setAttribute("aria-hidden", "true");
+    navElement.appendChild(indicator);
+  }
+  return indicator;
 }
 
 /* ── Core Web Vitals Helpers ── */
@@ -543,6 +620,7 @@ async function initNavigation() {
   const nav = document.querySelector(".unified-nav, #main-header");
   if (!nav) {
     void applyArticleUxEnhancements();
+    void applyPageEnhancements();
     return;
   }
 
@@ -550,6 +628,7 @@ async function initNavigation() {
   const mobileDrawer = document.querySelector(".mobile-menu-drawer, #mobileDrawer");
   const backdrop = document.querySelector(".backdrop-overlay");
   const dropdownToggles = document.querySelectorAll('.nav-link[aria-haspopup="true"], button.nav-link[aria-haspopup="true"]');
+  const navProgressIndicator = ensureNavScrollProgress(nav);
 
   let lastScrollY = 0;
   let ticking = false;
@@ -569,6 +648,13 @@ async function initNavigation() {
     } else if (currentY < lastScrollY - 5 || currentY <= SCROLL_THRESHOLD) {
       nav.classList.remove("nav-hidden");
     }
+
+    if (navProgressIndicator) {
+      const maxScrollable = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = Math.max(0, Math.min(100, (currentY / maxScrollable) * 100));
+      navProgressIndicator.style.width = `${progress}%`;
+    }
+
     lastScrollY = currentY;
     ticking = false;
   }
@@ -705,4 +791,5 @@ async function initNavigation() {
   }
 
   void applyArticleUxEnhancements();
+  void applyPageEnhancements();
 }

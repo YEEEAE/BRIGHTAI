@@ -33,6 +33,16 @@
       .bright-share-controls { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .9rem; }
       .bright-share-btn { display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .75rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); background: rgba(15,23,42,.7); color: #cbd5e1; text-decoration: none; font-size: .82rem; cursor: pointer; transition: .2s ease; }
       .bright-share-btn:hover { color: #fff; border-color: rgba(99,102,241,.7); background: rgba(99,102,241,.12); }
+      .bright-author-card { margin-top: 1rem; padding: .85rem 1rem; border-radius: .85rem; border: 1px solid rgba(255,255,255,.14); background: rgba(15,23,42,.58); display: flex; align-items: center; gap: .65rem; color: #cbd5e1; }
+      .bright-author-card strong { color: #fff; font-size: .92rem; }
+      .bright-author-meta { color: #94a3b8; font-size: .83rem; margin-top: .12rem; }
+      .bright-article-feedback { margin-top: 1rem; padding: .95rem 1rem; border-radius: .9rem; border: 1px solid rgba(255,255,255,.14); background: rgba(15,23,42,.45); }
+      .bright-article-feedback h3 { margin: 0 0 .6rem; color: #fff; font-size: .95rem; }
+      .bright-feedback-actions { display: flex; gap: .55rem; flex-wrap: wrap; }
+      .bright-feedback-btn { border: 1px solid rgba(255,255,255,.2); border-radius: .7rem; background: rgba(255,255,255,.03); color: #cbd5e1; font-size: .86rem; padding: .45rem .75rem; cursor: pointer; }
+      .bright-feedback-btn.active { background: rgba(99,102,241,.22); border-color: rgba(129,140,248,.7); color: #fff; }
+      .bright-feedback-note { color: #94a3b8; font-size: .79rem; margin-top: .55rem; min-height: 1rem; }
+      .bright-article-page article p, .bright-article-page article li, .bright-article-page .doc-content p, .bright-article-page .doc-content li, .bright-article-page .prose p, .bright-article-page .prose li { font-size: 1.125rem !important; line-height: 1.9 !important; }
       .bright-article-toc { margin: 1rem 0 1.5rem; padding: 1rem; border-radius: .9rem; border: 1px solid rgba(255,255,255,.12); background: rgba(15,23,42,.55); }
       .bright-article-toc h2 { margin: 0 0 .8rem; font-size: 1rem; color: #fff; }
       .bright-article-toc ul { margin: 0; padding-inline-start: 1rem; list-style: none; display: grid; gap: .45rem; }
@@ -61,7 +71,10 @@
       .bright-chat-input input { flex: 1; border: 1px solid rgba(255,255,255,.14); border-radius: .65rem; background: rgba(255,255,255,.03); color: #fff; padding: .5rem .65rem; }
       .bright-chat-input button { border: 0; border-radius: .65rem; background: #0ea5e9; color: #fff; padding: .5rem .8rem; cursor: pointer; font-weight: 600; }
       @media (max-width: 1200px) { .bright-article-sidebar { display: none; } }
-      @media (max-width: 768px) { .bright-access-controls { bottom: 4.9rem; } }
+      @media (max-width: 768px) {
+        .bright-access-controls { bottom: 4.9rem; }
+        .bright-article-page article p, .bright-article-page article li, .bright-article-page .doc-content p, .bright-article-page .doc-content li, .bright-article-page .prose p, .bright-article-page .prose li { font-size: 1.02rem !important; }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -127,6 +140,7 @@
   function injectReadingProgressBar() {
     if (!isArticleLikePage()) return;
     if (document.getElementById("bright-reading-progress")) return;
+    if (document.getElementById("readingProgress") || document.querySelector(".reading-progress-bar")) return;
     const article = getPrimaryArticleContainer();
     if (!article) return;
 
@@ -149,22 +163,8 @@
     update();
   }
 
-  function injectShareControls() {
-    if (!isArticleLikePage()) return;
-    if (document.getElementById("bright-share-controls")) return;
-    const article = getPrimaryArticleContainer();
-    if (!article) return;
-    const title = article.querySelector("h1") || document.querySelector("main h1");
-    if (!title) return;
-
-    const url = window.location.href;
-    const encodedUrl = encodeURIComponent(url);
-    const encodedTitle = encodeURIComponent((title.textContent || "").trim());
-
-    const row = document.createElement("div");
-    row.id = "bright-share-controls";
-    row.className = "bright-share-controls";
-    row.innerHTML = `
+  function buildShareControlsMarkup(encodedTitle, encodedUrl) {
+    return `
       <button type="button" class="bright-share-btn" data-share-action="copy">
         <iconify-icon icon="lucide:link-2" width="14"></iconify-icon>
         نسخ الرابط
@@ -182,7 +182,10 @@
         طباعة / PDF
       </button>
     `;
-    title.insertAdjacentElement("afterend", row);
+  }
+
+  function bindShareControlsEvents(row, url) {
+    if (!row) return;
 
     row.querySelector('[data-share-action="copy"]')?.addEventListener("click", async function () {
       const button = row.querySelector('[data-share-action="copy"]');
@@ -207,6 +210,41 @@
     row.querySelector('[data-share-action="print"]')?.addEventListener("click", function () {
       window.print();
     });
+  }
+
+  function injectShareControls() {
+    if (!isArticleLikePage()) return;
+    const article = getPrimaryArticleContainer();
+    if (!article) return;
+    const title = article.querySelector("h1") || document.querySelector("main h1");
+    if (!title) return;
+
+    const url = window.location.href;
+    const encodedUrl = encodeURIComponent(url);
+    const encodedTitle = encodeURIComponent((title.textContent || "").trim());
+
+    if (!document.getElementById("bright-share-controls")) {
+      const row = document.createElement("div");
+      row.id = "bright-share-controls";
+      row.className = "bright-share-controls";
+      row.innerHTML = buildShareControlsMarkup(encodedTitle, encodedUrl);
+      title.insertAdjacentElement("afterend", row);
+      bindShareControlsEvents(row, url);
+    }
+
+    if (!document.getElementById("bright-share-controls-bottom")) {
+      const bottomRow = document.createElement("div");
+      bottomRow.id = "bright-share-controls-bottom";
+      bottomRow.className = "bright-share-controls";
+      bottomRow.innerHTML = buildShareControlsMarkup(encodedTitle, encodedUrl);
+      const related = article.querySelector("#bright-related-articles, .related-articles");
+      if (related) {
+        related.insertAdjacentElement("beforebegin", bottomRow);
+      } else {
+        article.appendChild(bottomRow);
+      }
+      bindShareControlsEvents(bottomRow, url);
+    }
   }
 
   function injectAccessibilityControls() {
@@ -283,7 +321,7 @@
     const article = getPrimaryArticleContainer();
     if (!article) return;
     const headings = getArticleHeadings(article);
-    if (headings.length < 4) return;
+    if (headings.length < 2) return;
 
     const toc = buildTocMarkup(headings);
     toc.id = "bright-inline-toc";
@@ -295,7 +333,7 @@
       article.prepend(toc);
     }
 
-    if (!document.getElementById("bright-article-sidebar") && headings.length >= 6) {
+    if (!document.getElementById("bright-article-sidebar") && headings.length >= 5) {
       const sidebar = document.createElement("aside");
       sidebar.id = "bright-article-sidebar";
       sidebar.className = "bright-article-sidebar";
@@ -340,6 +378,149 @@
       })
       .join("")}</div>`;
     article.appendChild(section);
+  }
+
+  function readMetaContent(selector) {
+    return document.querySelector(selector)?.getAttribute("content")?.trim() || "";
+  }
+
+  function extractAuthorName() {
+    const explicit = readMetaContent('meta[name="author"]');
+    if (explicit) return explicit;
+
+    const scriptTags = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
+    for (const tag of scriptTags) {
+      try {
+        const payload = JSON.parse(tag.textContent || "{}");
+        const author = payload?.author;
+        if (typeof author === "string" && author.trim()) return author.trim();
+        if (author && typeof author === "object" && typeof author.name === "string" && author.name.trim()) {
+          return author.name.trim();
+        }
+      } catch (_) {
+        // Ignore malformed JSON-LD blocks.
+      }
+    }
+
+    return "فريق Bright AI";
+  }
+
+  function extractPublishedDate() {
+    const directDate =
+      readMetaContent('meta[property="article:published_time"]') ||
+      readMetaContent('meta[name="publish_date"]') ||
+      readMetaContent('meta[name="date"]') ||
+      readMetaContent('meta[itemprop="datePublished"]');
+
+    if (directDate) {
+      return directDate.split("T")[0];
+    }
+
+    const dateNode = document.querySelector(".date, time, .post-date, .blog-meta-item span");
+    const dateText = (dateNode?.textContent || "").trim();
+    const match =
+      dateText.match(/\d{1,2}[/-]\d{1,2}[/-]\d{2,4}/) ||
+      dateText.match(/\d{4}[/-]\d{1,2}[/-]\d{1,2}/);
+    return match ? match[0] : "";
+  }
+
+  function extractReadingTimeLabel(article) {
+    const badge = document.querySelector("[data-reading-time-slot]");
+    const badgeText = (badge?.textContent || "").trim();
+    if (badgeText) return badgeText;
+
+    if (!article) return "وقت القراءة: -- دقائق";
+    const plainText = (article.innerText || "").replace(/\s+/g, " ").trim();
+    if (!plainText) return "وقت القراءة: -- دقائق";
+    const words = plainText.split(" ").length;
+    const minutes = Math.max(1, Math.ceil(words / 220));
+    return `وقت القراءة: ${minutes} دقائق`;
+  }
+
+  function injectAuthorCardFallback() {
+    if (!isArticleLikePage()) return;
+    const article = getPrimaryArticleContainer();
+    if (!article) return;
+    if (document.getElementById("bright-author-card")) return;
+
+    const authorName = extractAuthorName() || "فريق Bright AI";
+    const publishedDate = extractPublishedDate() || "تاريخ النشر غير متوفر";
+    const readingTime = extractReadingTimeLabel(article);
+
+    const card = document.createElement("section");
+    card.id = "bright-author-card";
+    card.className = "bright-author-card";
+    card.innerHTML = `
+      <iconify-icon icon="lucide:user-square-2" width="20"></iconify-icon>
+      <div>
+        <strong>كتبه ${authorName} | ${publishedDate} | ${readingTime}</strong>
+        <div class="bright-author-meta">المحتوى من فريق Bright AI — نسخة محدثة.</div>
+      </div>
+    `;
+
+    const shareTop = document.getElementById("bright-share-controls");
+    const title = article.querySelector("h1") || document.querySelector("main h1");
+    if (shareTop) {
+      shareTop.insertAdjacentElement("afterend", card);
+      return;
+    }
+    if (title) {
+      title.insertAdjacentElement("afterend", card);
+      return;
+    }
+
+    article.prepend(card);
+  }
+
+  function injectHelpfulnessFeedback() {
+    if (!isArticleLikePage()) return;
+    if (document.getElementById("bright-article-feedback")) return;
+
+    const article = getPrimaryArticleContainer();
+    if (!article) return;
+
+    const feedbackKey = `bright_article_feedback_${normalizePathname(window.location.pathname)}`;
+    const section = document.createElement("section");
+    section.id = "bright-article-feedback";
+    section.className = "bright-article-feedback";
+    section.innerHTML = `
+      <h3>هل كان هذا المقال مفيداً؟</h3>
+      <div class="bright-feedback-actions">
+        <button type="button" class="bright-feedback-btn" data-feedback-value="up">👍 نعم</button>
+        <button type="button" class="bright-feedback-btn" data-feedback-value="down">👎 يحتاج تحسين</button>
+      </div>
+      <p class="bright-feedback-note" data-feedback-note></p>
+    `;
+
+    const note = section.querySelector("[data-feedback-note]");
+    const buttons = section.querySelectorAll("[data-feedback-value]");
+
+    const setState = function (value) {
+      buttons.forEach((button) => {
+        button.classList.toggle("active", button.getAttribute("data-feedback-value") === value);
+      });
+      if (note) {
+        note.textContent = value ? "شكراً، تم تسجيل ملاحظتك." : "";
+      }
+    };
+
+    const current = localStorage.getItem(feedbackKey) || "";
+    setState(current);
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const value = button.getAttribute("data-feedback-value") || "";
+        localStorage.setItem(feedbackKey, value);
+        setState(value);
+      });
+    });
+
+    const related = article.querySelector("#bright-related-articles, .related-articles");
+    if (related) {
+      related.insertAdjacentElement("beforebegin", section);
+    } else {
+      article.appendChild(section);
+    }
   }
 
   function injectBackToTopButton() {
@@ -467,12 +648,17 @@
   function apply(options) {
     normalizePathname = typeof options?.normalizePathname === "function" ? options.normalizePathname : normalizePathname;
     ensureUxEnhancementStyles();
+    if (isArticleLikePage()) {
+      document.body.classList.add("bright-article-page");
+    }
     ensureSkipToMain();
     injectAccessibilityControls();
     injectReadingProgressBar();
     injectShareControls();
+    injectAuthorCardFallback();
     injectAutoTableOfContents();
     injectRelatedArticles();
+    injectHelpfulnessFeedback();
     injectBackToTopButton();
     injectFloatingChatbot();
   }

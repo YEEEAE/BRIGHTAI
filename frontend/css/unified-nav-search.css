@@ -120,6 +120,7 @@
       background: transparent;
       cursor: pointer;
       font-family: inherit;
+      position: relative;
     }
 
     .nav-link:hover,
@@ -368,4 +369,29 @@
     .nav-link.active {
       color: #fff;
       background: rgba(99, 102, 241, 0.12);
+    }
+
+    .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 2px;
+      background: #6366f1;
+      border-radius: 1px;
+    }
+
+    .nav-scroll-progress {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, #22d3ee, #6366f1, #8b5cf6);
+      border-radius: 99px;
+      transition: width 0.1s linear;
+      pointer-events: none;
+      z-index: 1;
     }
