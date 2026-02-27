@@ -53,3 +53,6 @@ Docfile/
 backups/
 *.zip
 .env*.local
+
+# Local Netlify folder
+.netlify
