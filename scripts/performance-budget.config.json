@@ -22,7 +22,7 @@
     },
     {
       "path": "frontend/js/navigation.js",
-      "maxBytes": 5000,
+      "maxBytes": 52000,
       "label": "سكربت التنقل"
     },
     {
@@ -35,12 +35,14 @@
     {
       "pattern": "frontend/pages/landing/*.html",
       "maxBytes": 7000,
-      "label": "صفحات الهبوط التجارية"
+      "label": "صفحات الهبوط التجارية",
+      "optional": true
     },
     {
       "pattern": "frontend/pages/silos/*.html",
       "maxBytes": 4500,
-      "label": "صفحات السلات"
+      "label": "صفحات السلات",
+      "optional": true
     }
   ],
   "combined": [

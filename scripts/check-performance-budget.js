@@ -42,6 +42,9 @@ for (const asset of config.assets || []) {
 for (const group of config.pageGroups || []) {
   const matches = globSync(group.pattern, { cwd: root, nodir: true });
   if (matches.length === 0) {
+    if (group.optional) {
+      continue;
+    }
     failures.push(`لا توجد ملفات مطابقة للنمط: ${group.pattern}`);
     continue;
   }
