@@ -11,7 +11,7 @@ git push -u origin main --force
 
 الخطوات:
 npm ci
-npm run sitemap:all
+npm run sitemap:all 
 npm run seo:check
 
 
