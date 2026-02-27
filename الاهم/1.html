@@ -330,8 +330,8 @@
       <div class="table-wrapper">
         <table>
           <tr><th>الملف</th><th>الوضع</th><th>الإجراء المقترح</th></tr>
-          <tr><td><code>backend/routes/search 2.js</code></td><td>نسخة قديمة</td><td>حذف وتثبيت الأساسي.</td></tr>
-          <tr><td><code>backend/routes/search 3.js</code></td><td>مطابق</td><td>حذف.</td></tr>
+          <tr><td><code>backend/routes/search.js</code></td><td>النسخة المعتمدة</td><td>الإبقاء فقط على النسخة الأساسية.</td></tr>
+          <tr><td><code>backend/utils/cache.js</code></td><td>النسخة المعتمدة</td><td>الإبقاء فقط على النسخة الأساسية.</td></tr>
           <tr><td><code>new_index_part.html</code></td><td>مؤقت</td><td>دمجه في docs أو حذفه.</td></tr>
           <tr><td>نسخ blogger المكررة</td><td>مكررة</td><td>توحيد canonical + 301.</td></tr>
         </table>
@@ -368,7 +368,7 @@
           <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> نسخ البرومبت
         </button>
       </div>
-      <div class="prompt-body">احذف النسخ غير المستخدمة التالية بعد التحقق من عدم وجود imports/refs: backend/routes/search 2.js, backend/routes/search 3.js, backend/utils/cache 2.js, frontend/js/search 2.js, backend/data/search-index 2.json. ثم نفّذ scan يثبت عدم وجود مراجع مكسورة. أخيرًا حدّث أي docs تشير للملفات القديمة.</div>
+      <div class="prompt-body">تحقّق دوريًا من وجود أي نسخ مكررة في المسارات الحساسة (routes/utils/frontend/data)، ثم احذف أي نسخة غير معتمدة بعد التأكد من عدم وجود imports/refs، ونفّذ scan يثبت سلامة المراجع بعد التنظيف.</div>
     </div>
 
     <div class="prompt-card">
