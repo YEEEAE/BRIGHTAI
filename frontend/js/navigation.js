@@ -67,6 +67,84 @@ const INDEX_NAV_SELECTORS = {
 };
 let cachedUnifiedNavigationMarkup = null;
 
+const FOOTER_STANDARDIZATION_PATH_PREFIXES = [
+  "/frontend/pages/about-us",
+  "/frontend/pages/ai-agent",
+  "/frontend/pages/ai-bots",
+  "/frontend/pages/smart-automation",
+  "/frontend/pages/ai-workflows",
+  "/frontend/pages/data-analysis",
+  "/frontend/pages/consultation",
+  "/frontend/pages/contact",
+  "/frontend/pages/blog",
+  "/frontend/pages/privacy-cookies",
+  "/frontend/pages/what-is-ai",
+  "/frontend/pages/blogger"
+];
+
+const UNIFIED_FOOTER_MARKUP = `
+<footer class="border-t border-white/10 bg-black/40 pt-16 pb-8 px-6" id="main-footer">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center">
+            <span class="text-white text-sm font-black">AI</span>
+          </div>
+          <span class="text-white font-semibold">Bright AI</span>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed mb-5">
+          حلول ذكاء اصطناعي مخصصة للسوق السعودي، تركيزنا على القيمة التشغيلية والامتثال.
+        </p>
+        <div class="flex gap-4">
+          <a aria-label="واتساب" class="text-slate-400 hover:text-white transition" href="https://wa.me/966538229013">
+            <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+          </a>
+          <a aria-label="البريد" class="text-slate-400 hover:text-white transition" href="mailto:yazeed1job@gmail.com">
+            <iconify-icon icon="lucide:mail" width="20"></iconify-icon>
+          </a>
+          <a aria-label="تويتر" class="text-slate-400 hover:text-white transition" href="https://x.com/BrightAIII">
+            <iconify-icon icon="lucide:twitter" width="20"></iconify-icon>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-white font-medium mb-6">الشركة</h4>
+        <ul class="space-y-3 text-sm text-slate-400">
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/about-us/index.html">عن Bright AI</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/blog/index.html">المدونة</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-medium mb-6">خدماتنا</h4>
+        <ul class="space-y-3 text-sm text-slate-400">
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/ai-agent/index.html">AIaaS</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/smart-automation/index.html">الأتمتة الذكية</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/consultation/index.html">الاستشارات</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-medium mb-6">الموارد</h4>
+        <ul class="space-y-3 text-sm text-slate-400">
+          <li><a class="hover:text-gold-400 transition" href="/docs.html">الوثائق</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/tools/index.html">أدوات مجانية</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
+      <p>© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+      <div class="flex gap-6">
+        <a class="hover:text-slate-400 transition" href="/frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a>
+        <a class="hover:text-slate-400 transition" href="/frontend/pages/docs/terms-and-conditions.html">الشروط والأحكام</a>
+      </div>
+    </div>
+  </div>
+</footer>
+`;
+
 function buildUnifiedNavigationMarkupFallback() {
   return `
     <!-- Header / Navbar (Unified - mirrors index.html) -->
@@ -680,6 +758,45 @@ function ensureSearchScript() {
   document.head.appendChild(script);
 }
 
+function isFooterStandardizationTarget(pathname = window.location.pathname) {
+  const currentPath = normalizePathname(pathname);
+  return FOOTER_STANDARDIZATION_PATH_PREFIXES.some((prefix) => {
+    return currentPath === prefix || currentPath.startsWith(`${prefix}/`) || currentPath.startsWith(`${prefix}.html`);
+  });
+}
+
+function mountUnifiedFooter() {
+  if (!isFooterStandardizationTarget()) return;
+  if (document.getElementById("bright-unified-footer-root")) return;
+
+  const root = document.createElement("div");
+  root.id = "bright-unified-footer-root";
+  root.innerHTML = UNIFIED_FOOTER_MARKUP;
+
+  const legacyFooters = Array.from(document.querySelectorAll("footer")).filter(
+    (node) => !node.closest("#bright-unified-footer-root")
+  );
+
+  if (legacyFooters.length) {
+    const anchorFooter = legacyFooters[0];
+    const parent = anchorFooter.parentNode;
+    const nextNode = anchorFooter.nextSibling;
+    legacyFooters.forEach((footerNode) => footerNode.remove());
+    if (parent) {
+      parent.insertBefore(root, nextNode);
+      return;
+    }
+  }
+
+  const insertionAnchor = Array.from(document.body.children).find((node) => node.tagName === "SCRIPT");
+  if (insertionAnchor) {
+    document.body.insertBefore(root, insertionAnchor);
+    return;
+  }
+
+  document.body.appendChild(root);
+}
+
 /* ── Blog Reading Time ── */
 function injectBlogReadingTime() {
   const path = normalizePathname(window.location.pathname);
@@ -763,10 +880,18 @@ async function initNavigation() {
     ensureUnifiedDesignSystem();
     ensureDependencies();
     ensureSearchScript();
+    if (!document.querySelector(".unified-nav, #main-header")) {
+      await mountUnifiedNavigation();
+    }
+    mountUnifiedFooter();
   }
 
   const nav = document.querySelector(".unified-nav, #main-header");
-  if (!nav) return;
+  if (!nav) {
+    injectBlogReadingTime();
+    optimizeImagesForCWV();
+    return;
+  }
 
   const mobileToggles = document.querySelectorAll(".mobile-toggle");
   const mobileDrawer = document.querySelector(".mobile-menu-drawer, #mobileDrawer");
