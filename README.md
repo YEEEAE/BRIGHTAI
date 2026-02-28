@@ -14,6 +14,10 @@ git commit -m "feat: actual message"
 git push -u origin codex/actual-name
 gh pr create --base main --head codex/actual-name --fill
 
+
+لاختبار جودة وعمل api :
+npm run smoke-test:prod
+
 # BrightAI Monorepo
 
 هذا المستودع الآن مُدار كـ `npm workspaces` بثلاث وحدات مستقلة:
