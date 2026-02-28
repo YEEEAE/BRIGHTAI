@@ -14,13 +14,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/about-us/index.html</loc>
+    <loc>https://brightai.site/about</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/ai-agent/index.html</loc>
+    <loc>https://brightai.site/ai-agent</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -56,7 +56,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots/index.html</loc>
+    <loc>https://brightai.site/ai-bots</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -92,7 +92,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blog/index.html</loc>
+    <loc>https://brightai.site/blog</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -494,25 +494,25 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/case-studies/index.html</loc>
+    <loc>https://brightai.site/case-studies</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/consultation/index.html</loc>
+    <loc>https://brightai.site/consultation</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/contact/index.html</loc>
+    <loc>https://brightai.site/contact</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/data-analysis/index.html</loc>
+    <loc>https://brightai.site/data-analysis</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -794,7 +794,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/health-bright/index.html</loc>
+    <loc>https://brightai.site/health</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -806,19 +806,19 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/machine/index.html</loc>
+    <loc>https://brightai.site/machine-learning</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/our-products/index.html</loc>
+    <loc>https://brightai.site/services</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/partners/index.html</loc>
+    <loc>https://brightai.site/partners</loc>
     <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -872,7 +872,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/smart-automation/index.html</loc>
+    <loc>https://brightai.site/smart-automation</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -884,7 +884,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/tools/index.html</loc>
+    <loc>https://brightai.site/tools</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -914,7 +914,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/what-is-ai/index.html</loc>
+    <loc>https://brightai.site/what-is-ai</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

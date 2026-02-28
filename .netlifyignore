@@ -1,0 +1,9 @@
+# Exclude local/dev artifacts from deploy uploads
+.git/
+.netlify/
+node_modules/
+**/node_modules/
+**/.DS_Store
+
+# Ignore filenames invalid for Netlify deploy packaging
+**/*#*
