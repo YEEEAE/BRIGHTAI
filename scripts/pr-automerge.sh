@@ -31,7 +31,7 @@ What it does:
   3) Stages and commits current changes (if any).
   4) Pushes branch and creates (or reuses) PR.
   5) Waits for required checks.
-  6) Merges PR and returns local repo to updated base branch.
+  6) Merges PR, syncs/pushes base branch, deletes temp local branch, and prunes remotes.
 USAGE
 }
 
@@ -46,6 +46,7 @@ PR_TITLE=""
 PR_BODY=""
 WAIT_FOR_CHECKS=1
 DO_MERGE=1
+BRANCH_WAS_CREATED=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -123,10 +124,12 @@ if [[ "$current_branch" == "$BASE_BRANCH" && "$ahead_on_base" -gt 0 ]]; then
   branch_for_pr="${BRANCH_NAME:-codex/rescue-$(date +%Y%m%d-%H%M%S)}"
   log "Detected ${ahead_on_base} local commit(s) on ${BASE_BRANCH}; creating rescue branch: ${branch_for_pr}"
   git switch -c "$branch_for_pr" >/dev/null
+  BRANCH_WAS_CREATED=1
 elif [[ "$current_branch" == "$BASE_BRANCH" ]]; then
   branch_for_pr="${BRANCH_NAME:-codex/update-$(date +%Y%m%d-%H%M%S)}"
   log "Creating feature branch from ${BASE_BRANCH}: ${branch_for_pr}"
   git switch -c "$branch_for_pr" >/dev/null
+  BRANCH_WAS_CREATED=1
 else
   branch_for_pr="$current_branch"
   log "Using current branch: ${branch_for_pr}"
@@ -185,6 +188,15 @@ fi
 log "Switching back to ${BASE_BRANCH} and syncing"
 git switch "$BASE_BRANCH" >/dev/null
 git pull --ff-only origin "$BASE_BRANCH" >/dev/null
+log "Pushing ${BASE_BRANCH} (no-op if already up to date)"
+git push origin "$BASE_BRANCH" >/dev/null
+
+if [[ "$BRANCH_WAS_CREATED" -eq 1 ]] && git show-ref --verify --quiet "refs/heads/${branch_for_pr}"; then
+  log "Cleaning local branch: ${branch_for_pr}"
+  git branch -D "$branch_for_pr" >/dev/null
+fi
+
 git fetch --prune origin >/dev/null
+git remote prune origin >/dev/null || true
 
 log "Done"
