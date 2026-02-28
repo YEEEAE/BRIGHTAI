@@ -7,25 +7,6 @@
 
 
 
-لتنظيف الفروع البعيدة القديمة (المندمجة على main) من نمط codex/*:
-
-# معاينة أول (بدون حذف)
-git branch -r --merged origin/main | sed 's/^[ *]*//' | grep '^origin/codex/' | sed 's#^origin/##'
-# حذف فعلي
-for b in $(git branch -r --merged origin/main | sed 's/^[ *]*//' | grep '^origin/codex/' | sed 's#^origin/##'); do
-  git push origin --delete "$b"
-done
-هذا يحذف فقط origin/codex/* المندمجة، وما يلمس main.
-
- # الاوامر 
-git switch main
-git pull --ff-only origin main
-git switch -c codex/actual-name
-git add .
-git commit -m "feat: actual message"
-git push -u origin codex/actual-name
-gh pr create --base main --head codex/actual-name --fill
-
 
 لاختبار جودة وعمل api :
 npm run smoke-test:prod
