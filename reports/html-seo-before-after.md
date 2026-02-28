@@ -32,7 +32,7 @@
 
 ### ملفات مستثناة
 
-- `frontend/assets/fonts/enterprise-hero.html`
+- `assets/fonts/enterprise-hero.html`
 - `new_index_part.html`
 
 ## After Audit Details
@@ -49,5 +49,5 @@
 
 ### ملفات مستثناة
 
-- `frontend/assets/fonts/enterprise-hero.html`
+- `assets/fonts/enterprise-hero.html`
 - `new_index_part.html`

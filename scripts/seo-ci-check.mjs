@@ -5,7 +5,7 @@ import path from "path";
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
-const OG_IMAGE_URL = `${BASE_URL}/frontend/assets/images/Gemini.png`;
+const OG_IMAGE_URL = `${BASE_URL}/assets/images/Gemini.png`;
 
 const SERVICE_PAGES = [
   {

@@ -118,7 +118,7 @@ function getHeaderBlock(forPath) {
 
 const securityBlock = getHeaderBlock('/*');
 const htmlBlock = getHeaderBlock('/*.html');
-const assetsBlock = getHeaderBlock('/frontend/assets/*');
+const assetsBlock = getHeaderBlock('/assets/*');
 const swBlock = getHeaderBlock('/sw.js');
 
 check(
@@ -157,7 +157,7 @@ check(
 check(
   assetsBlock.length > 0 && headerHasKey(assetsBlock, 'Cache-Control'),
   'asset cache policy exists',
-  'Missing Cache-Control in /frontend/assets/* headers block'
+  'Missing Cache-Control in /assets/* headers block'
 );
 
 check(

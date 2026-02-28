@@ -4,7 +4,7 @@
     "eligible": 195,
     "skipped": 2,
     "skippedFiles": [
-      "frontend/assets/fonts/enterprise-hero.html",
+      "assets/fonts/enterprise-hero.html",
       "new_index_part.html"
     ],
     "affected": 0,
@@ -22,7 +22,7 @@
     "eligible": 195,
     "skipped": 2,
     "skippedFiles": [
-      "frontend/assets/fonts/enterprise-hero.html",
+      "assets/fonts/enterprise-hero.html",
       "new_index_part.html"
     ],
     "affected": 0,

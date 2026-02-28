@@ -7,7 +7,7 @@ User-agent: *
 Allow: /
 Allow: /frontend/css/
 Allow: /frontend/js/
-Allow: /frontend/assets/
+Allow: /assets/
 Allow: /frontend/pages/
 Allow: /manifest.json
 
