@@ -1274,14 +1274,9 @@
             if (!cleanSuggestions.length) return;
 
             const wrapper = document.createElement('div');
-            wrapper.className = 'msg bot';
-
-            const intro = document.createElement('div');
-            intro.textContent = 'تقدر تكمل معي بأي سؤال من هذي الخيارات:';
-            wrapper.appendChild(intro);
 
             const replies = document.createElement('div');
-            replies.className = 'quick-replies flex flex-wrap gap-2 mt-3';
+            replies.className = 'quick-replies flex flex-wrap gap-2 mt-2';
             cleanSuggestions.forEach((suggestion) => {
                 replies.appendChild(createQuickReplyButton(suggestion));
             });

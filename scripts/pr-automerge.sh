@@ -39,6 +39,28 @@ require_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "Missing required command: $1"
 }
 
+cleanup_old_local_branches() {
+  local base_branch="$1"
+  local protected_branch="$2"
+  local deleted=0
+  local branch=""
+
+  while IFS= read -r branch; do
+    [[ -n "$branch" ]] || continue
+    [[ "$branch" == "$base_branch" ]] && continue
+    [[ "$branch" == "$protected_branch" ]] && continue
+    [[ "$branch" == "master" ]] && continue
+
+    # Keep cleanup conservative: remove only merged codex/* branches.
+    if [[ "$branch" == codex/* ]]; then
+      log "Cleaning old merged local branch: ${branch}"
+      git branch -d "$branch" >/dev/null && deleted=$((deleted + 1))
+    fi
+  done < <(git for-each-ref --format='%(refname:short)' refs/heads)
+
+  log "Old merged local branches cleaned: ${deleted}"
+}
+
 BASE_BRANCH="main"
 BRANCH_NAME=""
 COMMIT_MESSAGE="chore: automated update"
@@ -210,5 +232,6 @@ fi
 
 git fetch --prune origin >/dev/null
 git remote prune origin >/dev/null || true
+cleanup_old_local_branches "$BASE_BRANCH" "$branch_for_pr"
 
 log "Done"
