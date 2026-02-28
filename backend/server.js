@@ -36,6 +36,8 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json'
 };
 
+const STREAM_ROUTE_ALIASES = new Set(['/api/ai/stream', '/api/groq/stream']);
+
 function createLivePayload() {
   const levels = ['info', 'success', 'warning', 'critical'];
   const messages = [
@@ -312,7 +314,7 @@ async function handleRequest(req, res) {
           { id: 'gemini-1.5-pro', object: 'model', owned_by: 'google' }
         ]
       });
-    } else if (method === 'POST' && (url === '/api/ai/stream' || url === '/api/groq/stream')) {
+    } else if (method === 'POST' && STREAM_ROUTE_ALIASES.has(url)) {
       await groqStreamHandler(ctx.req, ctx.res, res);
     } else if (method === 'POST' && url === '/api/ai/ocr') {
       await groqOcrHandler(ctx.req, ctx.res);

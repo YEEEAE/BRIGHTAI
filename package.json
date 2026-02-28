@@ -25,6 +25,8 @@
     "dev:frontend": "npm run start --workspace frontend",
     "dev:backend": "npm run start --workspace backend",
     "dev:platform": "npm run start --workspace brightai-platform",
+    "test:setup:backend": "npm --prefix backend ci --include=dev --no-audit --no-fund",
+    "test:setup:platform": "npm --prefix brightai-platform ci --include=dev --no-audit --no-fund",
     "test:all": "node scripts/run-monorepo-tests.mjs",
     "test:frontend": "npm run test --workspace frontend",
     "test:backend": "npm run test --workspace backend",
