@@ -40,6 +40,8 @@
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",
     "deploy:source-of-truth:check": "node scripts/verify-netlify-source-of-truth.mjs",
+    "smoke-test": "node scripts/smoke-test-api.mjs",
+    "smoke-test:prod": "node scripts/smoke-test-api.mjs https://brightai.site",
     "test": "node scripts/run-monorepo-tests.mjs",
     "server": "npm run dev:backend",
     "server:dev": "npm run dev:backend"
