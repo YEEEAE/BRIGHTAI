@@ -687,17 +687,17 @@ https://brightai.site/frontend/pages/blogger/<span class="str">ai-automation-sol
     <h2 class="section-title"><span class="num">06</span>مسارات URL الطويلة — 151 رابط في Sitemap</h2>
     <div class="alert critical">
       <div class="alert-title">🔴 السبب الأكبر لضعف الـ 2 Impressions فقط</div>
-      <div class="alert-body">محركات البحث تُفضّل <code style="font-family:var(--font-mono)">brightai.site/about</code> على <code style="font-family:var(--font-mono)">brightai.site/frontend/pages/about-us/index.html</code>. الحل: Rewrites في netlify.toml مع تحديث Sitemap وCanonical.</div>
+      <div class="alert-body">محركات البحث تُفضّل <code style="font-family:var(--font-mono)">brightai.site/about</code> على <code style="font-family:var(--font-mono)">brightai.site/about</code>. الحل: Rewrites في netlify.toml مع تحديث Sitemap وCanonical.</div>
     </div>
     <div class="code-block"><span class="cmt"># netlify.toml — Clean URL Rewrites</span>
 [[<span class="kw">redirects</span>]]
 <span class="attr">from</span> = <span class="str">"/about"</span>
-<span class="attr">to</span>   = <span class="str">"/frontend/pages/about-us/index.html"</span>
+<span class="attr">to</span>   = <span class="str">"/about"</span>
 <span class="attr">status</span> = <span class="tag">200</span>  <span class="cmt"># 200 = Rewrite (URL يبقى /about في المتصفح)</span>
 
 [[<span class="kw">redirects</span>]]
 <span class="attr">from</span> = <span class="str">"/services"</span>
-<span class="attr">to</span>   = <span class="str">"/frontend/pages/our-products/index.html"</span>
+<span class="attr">to</span>   = <span class="str">"/services"</span>
 <span class="attr">status</span> = <span class="tag">200</span>
 
 <span class="cmt"># ... نفس النمط للصفحات: /contact /blog /ai-agent /ai-bots
@@ -1098,77 +1098,77 @@ Add after the existing "Static legacy routes" section:
 # Clean URL Rewrites — SEO-friendly paths
 [[redirects]]
 from = "/about"
-to = "/frontend/pages/about-us/index.html"
+to = "/about"
 status = 200
 
 [[redirects]]
 from = "/services"
-to = "/frontend/pages/our-products/index.html"
+to = "/services"
 status = 200
 
 [[redirects]]
 from = "/contact"
-to = "/frontend/pages/contact/index.html"
+to = "/contact"
 status = 200
 
 [[redirects]]
 from = "/blog"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 200
 
 [[redirects]]
 from = "/ai-agent"
-to = "/frontend/pages/ai-agent/index.html"
+to = "/ai-agent"
 status = 200
 
 [[redirects]]
 from = "/ai-bots"
-to = "/frontend/pages/ai-bots/index.html"
+to = "/ai-bots"
 status = 200
 
 [[redirects]]
 from = "/data-analysis"
-to = "/frontend/pages/data-analysis/index.html"
+to = "/data-analysis"
 status = 200
 
 [[redirects]]
 from = "/consultation"
-to = "/frontend/pages/consultation/index.html"
+to = "/consultation"
 status = 200
 
 [[redirects]]
 from = "/smart-automation"
-to = "/frontend/pages/smart-automation/index.html"
+to = "/smart-automation"
 status = 200
 
 [[redirects]]
 from = "/case-studies"
-to = "/frontend/pages/case-studies/index.html"
+to = "/case-studies"
 status = 200
 
 [[redirects]]
 from = "/what-is-ai"
-to = "/frontend/pages/what-is-ai/index.html"
+to = "/what-is-ai"
 status = 200
 
 [[redirects]]
 from = "/partners"
-to = "/frontend/pages/partners/index.html"
+to = "/partners"
 status = 200
 
 [[redirects]]
 from = "/tools"
-to = "/frontend/pages/tools/index.html"
+to = "/tools"
 status = 200
 
 [[redirects]]
 from = "/health"
-to = "/frontend/pages/health-bright/index.html"
+to = "/health"
 status = 200
 
 [[redirects]]
 from = "/machine-learning"
-to = "/frontend/pages/machine/index.html"
+to = "/machine-learning"
 status = 200</div>
       </div>
     </div>
@@ -1192,21 +1192,21 @@ status = 200</div>
    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
 
 2. Replace ALL /frontend/pages/{name}/index.html URLs with clean equivalents:
-   /frontend/pages/about-us/index.html      → /about
-   /frontend/pages/our-products/index.html  → /services
-   /frontend/pages/contact/index.html       → /contact
-   /frontend/pages/blog/index.html          → /blog
-   /frontend/pages/ai-agent/index.html      → /ai-agent
-   /frontend/pages/ai-bots/index.html       → /ai-bots
-   /frontend/pages/data-analysis/index.html → /data-analysis
-   /frontend/pages/consultation/index.html  → /consultation
-   /frontend/pages/smart-automation/index.html → /smart-automation
-   /frontend/pages/case-studies/index.html  → /case-studies
-   /frontend/pages/what-is-ai/index.html    → /what-is-ai
-   /frontend/pages/partners/index.html      → /partners
-   /frontend/pages/tools/index.html         → /tools
-   /frontend/pages/health-bright/index.html → /health
-   /frontend/pages/machine/index.html       → /machine-learning
+   /about      → /about
+   /services  → /services
+   /contact       → /contact
+   /blog          → /blog
+   /ai-agent      → /ai-agent
+   /ai-bots       → /ai-bots
+   /data-analysis → /data-analysis
+   /consultation  → /consultation
+   /smart-automation → /smart-automation
+   /case-studies  → /case-studies
+   /what-is-ai    → /what-is-ai
+   /partners      → /partners
+   /tools         → /tools
+   /health → /health
+   /machine-learning       → /machine-learning
 
 3. Add image:image to the homepage &lt;url&gt; entry:
    &lt;image:image&gt;
