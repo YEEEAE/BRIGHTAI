@@ -24,6 +24,7 @@ type LogsResponse = {
 };
 
 const DEFAULT_LIMIT = 30;
+const EXPORT_LIMIT = 200;
 const LOCAL_ADMIN_AUDIT_TOKEN =
   process.env.REACT_APP_AUDIT_LOCAL_ADMIN_TOKEN || "local-admin-access-token";
 
@@ -77,9 +78,60 @@ const getRequestId = (row: AuditLogRow) => {
   return String(payload.requestId || "-");
 };
 
+type AuditFilters = {
+  action: string;
+  level: string;
+  userId: string;
+  tableName: string;
+  endpoint: string;
+  requestId: string;
+  dateFrom: string;
+  dateTo: string;
+};
+
+const buildLogsQueryString = (filters: AuditFilters, limit: number, offset: number) => {
+  const params = new URLSearchParams();
+  params.set("limit", String(limit));
+  params.set("offset", String(offset));
+  if (filters.action) params.set("action", filters.action);
+  if (filters.level) params.set("level", filters.level);
+  if (filters.userId) params.set("userId", filters.userId);
+  if (filters.tableName) params.set("tableName", filters.tableName);
+  if (filters.endpoint) params.set("endpoint", filters.endpoint);
+  if (filters.requestId) params.set("requestId", filters.requestId);
+  if (filters.dateFrom) params.set("dateFrom", filters.dateFrom);
+  if (filters.dateTo) params.set("dateTo", filters.dateTo);
+  return params.toString();
+};
+
+const toSafeCsvCell = (value: unknown) => {
+  const text = String(value ?? "");
+  const escaped = text.replace(/"/g, "\"\"");
+  return `"${escaped}"`;
+};
+
+const createFileStamp = () =>
+  new Date().toISOString().replace(/:/g, "-").replace(/\..+$/, "");
+
+const downloadBlob = (blob: Blob, fileName: string) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  const url = window.URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = fileName;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.URL.revokeObjectURL(url);
+};
+
 const AuditLogs = () => {
   const [rows, setRows] = useState<AuditLogRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exportingCsv, setExportingCsv] = useState(false);
+  const [exportingPdf, setExportingPdf] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [scope, setScope] = useState<"all" | "own">("own");
   const [hasMore, setHasMore] = useState(false);
@@ -98,28 +150,60 @@ const AuditLogs = () => {
     document.title = "سجلات التدقيق | منصة برايت أي آي";
   }, []);
 
-  const queryString = useMemo(() => {
-    const params = new URLSearchParams();
-    params.set("limit", String(DEFAULT_LIMIT));
-    params.set("offset", String(offset));
-    if (action) params.set("action", action);
-    if (level) params.set("level", level);
-    if (userId.trim()) params.set("userId", userId.trim());
-    if (tableName.trim()) params.set("tableName", tableName.trim());
-    if (endpoint.trim()) params.set("endpoint", endpoint.trim());
-    if (requestId.trim()) params.set("requestId", requestId.trim());
-    if (dateFrom) params.set("dateFrom", dateFrom);
-    if (dateTo) params.set("dateTo", dateTo);
-    return params.toString();
-  }, [action, dateFrom, dateTo, endpoint, level, offset, requestId, tableName, userId]);
+  const filters = useMemo(
+    () => ({
+      action,
+      level,
+      userId: userId.trim(),
+      tableName: tableName.trim(),
+      endpoint: endpoint.trim(),
+      requestId: requestId.trim(),
+      dateFrom,
+      dateTo,
+    }),
+    [action, dateFrom, dateTo, endpoint, level, requestId, tableName, userId]
+  );
+
+  const queryString = useMemo(
+    () => buildLogsQueryString(filters, DEFAULT_LIMIT, offset),
+    [filters, offset]
+  );
+
+  const resolveAuditToken = useCallback(async () => {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const localAdminToken = isLocalAdminSessionActive() ? LOCAL_ADMIN_AUDIT_TOKEN : "";
+    return sessionData.session?.access_token || localAdminToken;
+  }, []);
+
+  const fetchLogsPage = useCallback(
+    async (token: string, limit: number, pageOffset: number) => {
+      const currentQuery = buildLogsQueryString(filters, limit, pageOffset);
+      const response = await fetch(`/api/audit/logs?${currentQuery}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const payload = (await response.json()) as Partial<LogsResponse> & { error?: string };
+      if (!response.ok) {
+        throw new Error(payload.error || "تعذر تحميل سجلات التدقيق.");
+      }
+      return {
+        rows: Array.isArray(payload.rows) ? payload.rows : [],
+        pagination: {
+          hasMore: Boolean(payload.pagination?.hasMore),
+        },
+        scope: payload.scope === "all" ? "all" : "own",
+      };
+    },
+    [filters]
+  );
 
   const loadLogs = useCallback(async () => {
     setLoading(true);
     setErrorMessage("");
 
-    const { data: sessionData } = await supabase.auth.getSession();
-    const localAdminToken = isLocalAdminSessionActive() ? LOCAL_ADMIN_AUDIT_TOKEN : "";
-    const token = sessionData.session?.access_token || localAdminToken;
+    const token = await resolveAuditToken();
     if (!token) {
       setLoading(false);
       setErrorMessage("يلزم تسجيل الدخول للوصول إلى سجلات التدقيق.");
@@ -127,33 +211,150 @@ const AuditLogs = () => {
     }
 
     try {
-      const response = await fetch(`/api/audit/logs?${queryString}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const payload = (await response.json()) as Partial<LogsResponse> & { error?: string };
-      if (!response.ok) {
-        setRows([]);
-        setHasMore(false);
-        setErrorMessage(payload.error || "تعذر تحميل سجلات التدقيق.");
-        setLoading(false);
-        return;
-      }
-
-      setRows(Array.isArray(payload.rows) ? payload.rows : []);
-      setHasMore(Boolean(payload.pagination?.hasMore));
-      setScope(payload.scope === "all" ? "all" : "own");
+      const payload = await fetchLogsPage(token, DEFAULT_LIMIT, offset);
+      setRows(payload.rows);
+      setHasMore(payload.pagination.hasMore);
+      setScope(payload.scope);
       setLoading(false);
-    } catch {
+    } catch (error) {
       setRows([]);
       setHasMore(false);
       setLoading(false);
-      setErrorMessage("تعذر الاتصال بخدمة سجلات التدقيق.");
+      setErrorMessage(error instanceof Error ? error.message : "تعذر الاتصال بخدمة سجلات التدقيق.");
     }
-  }, [queryString]);
+  }, [fetchLogsPage, offset, resolveAuditToken]);
+
+  const loadRowsForExport = useCallback(async () => {
+    const token = await resolveAuditToken();
+    if (!token) {
+      throw new Error("يلزم تسجيل الدخول للوصول إلى سجلات التدقيق.");
+    }
+
+    const allRows: AuditLogRow[] = [];
+    let exportOffset = 0;
+    let pages = 0;
+
+    // حد أمان لمنع الدوران اللانهائي إذا حدث خلل في hasMore.
+    while (pages < 100) {
+      const payload = await fetchLogsPage(token, EXPORT_LIMIT, exportOffset);
+      allRows.push(...payload.rows);
+      if (!payload.pagination.hasMore) {
+        return allRows;
+      }
+      exportOffset += EXPORT_LIMIT;
+      pages += 1;
+    }
+
+    return allRows;
+  }, [fetchLogsPage, resolveAuditToken]);
+
+  const handleExportCsv = useCallback(async () => {
+    setExportingCsv(true);
+    setErrorMessage("");
+    try {
+      const exportRows = await loadRowsForExport();
+      const headers = [
+        "Time",
+        "Action",
+        "User ID",
+        "Table",
+        "Endpoint",
+        "Level",
+        "Request ID",
+        "Payload",
+      ];
+      const lines = [
+        headers.map((cell) => toSafeCsvCell(cell)).join(","),
+        ...exportRows.map((row) => {
+          const payload = getPayload(row);
+          return [
+            toSafeCsvCell(toDateTime(row.created_at)),
+            toSafeCsvCell(row.action),
+            toSafeCsvCell(row.user_id || "-"),
+            toSafeCsvCell(row.table_name),
+            toSafeCsvCell(getEndpoint(row)),
+            toSafeCsvCell(getLevel(row)),
+            toSafeCsvCell(getRequestId(row)),
+            toSafeCsvCell(JSON.stringify(payload)),
+          ].join(",");
+        }),
+      ];
+      const csvContent = `\uFEFF${lines.join("\r\n")}`;
+      downloadBlob(
+        new Blob([csvContent], { type: "text/csv;charset=utf-8" }),
+        `audit-logs-${createFileStamp()}.csv`
+      );
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "تعذر تصدير CSV.");
+    } finally {
+      setExportingCsv(false);
+    }
+  }, [loadRowsForExport]);
+
+  const handleExportPdf = useCallback(async () => {
+    setExportingPdf(true);
+    setErrorMessage("");
+    try {
+      const exportRows = await loadRowsForExport();
+      const [{ jsPDF }, autoTableModule] = await Promise.all([
+        import("jspdf"),
+        import("jspdf-autotable"),
+      ]);
+      const autoTable = autoTableModule.default;
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "pt",
+        format: "a4",
+      });
+
+      pdf.setFontSize(14);
+      pdf.text("Audit Logs Report", 40, 38);
+      pdf.setFontSize(10);
+      pdf.text(`Generated: ${new Date().toISOString()}`, 40, 56);
+      pdf.text(`Rows: ${exportRows.length}`, 40, 72);
+
+      autoTable(pdf, {
+        startY: 84,
+        theme: "grid",
+        headStyles: {
+          fillColor: [15, 23, 42],
+          textColor: [241, 245, 249],
+          fontSize: 9,
+        },
+        styles: {
+          fontSize: 8,
+          cellPadding: 4,
+          valign: "top",
+          overflow: "linebreak",
+        },
+        head: [["Time", "Action", "User ID", "Table", "Endpoint", "Level", "Request ID"]],
+        body: exportRows.map((row) => [
+          toDateTime(row.created_at),
+          row.action,
+          row.user_id || "-",
+          row.table_name,
+          getEndpoint(row),
+          getLevel(row),
+          getRequestId(row),
+        ]),
+        columnStyles: {
+          0: { cellWidth: 105 },
+          1: { cellWidth: 85 },
+          2: { cellWidth: 120 },
+          3: { cellWidth: 85 },
+          4: { cellWidth: 180 },
+          5: { cellWidth: 50 },
+          6: { cellWidth: 110 },
+        },
+      });
+
+      pdf.save(`audit-logs-${createFileStamp()}.pdf`);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "تعذر تصدير PDF.");
+    } finally {
+      setExportingPdf(false);
+    }
+  }, [loadRowsForExport]);
 
   useEffect(() => {
     loadLogs();
@@ -190,6 +391,12 @@ const AuditLogs = () => {
         <div className="flex gap-2">
           <Button variant="secondary" onClick={loadLogs} loading={loading}>
             تحديث
+          </Button>
+          <Button variant="outline" onClick={handleExportCsv} loading={exportingCsv}>
+            تصدير CSV
+          </Button>
+          <Button variant="outline" onClick={handleExportPdf} loading={exportingPdf}>
+            تصدير PDF
           </Button>
         </div>
       </header>

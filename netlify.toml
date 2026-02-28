@@ -95,6 +95,66 @@ to = "/frontend/pages/blog/index.html"
 status = 301
 force = true
 
+# -------------------------------------------------
+# botAI → ai-bots canonical redirect
+# -------------------------------------------------
+[[redirects]]
+from = "/frontend/pages/botAI/*"
+to = "/frontend/pages/ai-bots/:splat"
+status = 301
+force = true
+
+# -------------------------------------------------
+# Deleted stubs → blog index
+# -------------------------------------------------
+[[redirects]]
+from = "/frontend/pages/blogger/agint-bblog.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/analysy.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/atou-job.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/atou.doc.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/auto.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/cloude-opus-4.6.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/digital.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/gov.html"
+to = "/frontend/pages/blog/index.html"
+status = 301
+force = true
+
 [[redirects]]
 from = "/frontend/pages/blogger/Generative%20artificial%20intelligence.html"
 to = "/frontend/pages/blogger/Generative-artificial-intelligence.html"
