@@ -5,9 +5,9 @@ import { fileURLToPath } from 'node:url';
 const repoRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 
 const workspaces = [
-  { name: 'frontend', installHint: 'npm install --workspace frontend' },
-  { name: 'backend', installHint: 'npm install --workspace backend' },
-  { name: 'brightai-platform', installHint: 'npm install --workspace brightai-platform' }
+  { name: 'frontend', path: 'frontend', installHint: 'npm install --workspace frontend', setup: false },
+  { name: 'backend', path: 'backend', installHint: 'npm install --workspace backend', setup: true },
+  { name: 'brightai-platform', path: 'brightai-platform', installHint: 'npm install --workspace brightai-platform', setup: true }
 ];
 
 function explainFailure(output, error, workspace) {
@@ -40,10 +40,38 @@ function explainFailure(output, error, workspace) {
 }
 
 function runWorkspaceTests(workspace) {
-  const result = spawnSync('npm', ['run', 'test', '--workspace', workspace.name], {
-    cwd: repoRoot,
+  const workspaceCwd = path.join(repoRoot, workspace.path);
+  const env = { ...process.env, FORCE_COLOR: '0', CI: 'true' };
+
+  if (workspace.setup) {
+    const setupResult = spawnSync('npm', ['run', 'test:setup'], {
+      cwd: workspaceCwd,
+      encoding: 'utf8',
+      env
+    });
+
+    if (setupResult.stdout?.trim()) {
+      process.stdout.write(setupResult.stdout);
+    }
+    if (setupResult.stderr?.trim()) {
+      process.stderr.write(setupResult.stderr);
+    }
+
+    if (setupResult.status !== 0) {
+      const setupOutput = `${setupResult.stdout || ''}\n${setupResult.stderr || ''}`.trim();
+      return {
+        workspace: workspace.name,
+        passed: false,
+        reason: `Dependency setup failed: ${explainFailure(setupOutput, setupResult.error, workspace)}`,
+        code: typeof setupResult.status === 'number' ? setupResult.status : 1
+      };
+    }
+  }
+
+  const result = spawnSync('npm', ['run', 'test'], {
+    cwd: workspaceCwd,
     encoding: 'utf8',
-    env: { ...process.env, FORCE_COLOR: '0' }
+    env
   });
 
   const stdout = result.stdout || '';

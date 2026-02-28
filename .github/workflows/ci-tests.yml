@@ -1,0 +1,56 @@
+name: CI Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  backend-tests:
+    name: Backend Tests (Isolated)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup backend test dependencies
+        run: npm run test:setup
+
+      - name: Run backend tests
+        env:
+          CI: "true"
+        run: npm run test
+
+  platform-tests:
+    name: BrightAI Platform Tests (Isolated)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: brightai-platform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup platform test dependencies
+        run: npm run test:setup
+
+      - name: Run platform tests
+        env:
+          CI: "true"
+        run: npm run test -- --watchAll=false --runInBand
