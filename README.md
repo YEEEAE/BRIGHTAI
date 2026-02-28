@@ -3,7 +3,19 @@
 * للاختصار سو run لذا السكربت بيسوي كل شيء 
 
 
-./scripts/pr-automerge.sh -m "feat: update files" -t "feat: update files"
+./scripts/pr-automerge.sh
+
+
+
+لتنظيف الفروع البعيدة القديمة (المندمجة على main) من نمط codex/*:
+
+# معاينة أول (بدون حذف)
+git branch -r --merged origin/main | sed 's/^[ *]*//' | grep '^origin/codex/' | sed 's#^origin/##'
+# حذف فعلي
+for b in $(git branch -r --merged origin/main | sed 's/^[ *]*//' | grep '^origin/codex/' | sed 's#^origin/##'); do
+  git push origin --delete "$b"
+done
+هذا يحذف فقط origin/codex/* المندمجة، وما يلمس main.
 
  # الاوامر 
 git switch main
