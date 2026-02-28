@@ -2016,6 +2016,27 @@
             </nav>
             <!-- Secondary Actions -->
             <div class="nav-actions">
+                <!-- Accessibility & Theme Controls -->
+                <div class="hidden lg:flex items-center bg-white/[0.04] border border-white/[0.08] rounded-xl p-0.5 ml-4"
+                    aria-label="أدوات الوصول">
+                    <button id="increaseFontBtn" aria-label="تكبير الخط" title="تكبير الخط"
+                        class="w-8 h-8 flex items-center justify-center text-[15px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors rounded-r-xl">
+                        +A
+                    </button>
+                    <button id="resetFontBtn" aria-label="الخط الافتراضي" title="الخط الافتراضي"
+                        class="w-8 h-8 flex items-center justify-center text-[15px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
+                        A
+                    </button>
+                    <button id="decreaseFontBtn" aria-label="تصغير الخط" title="تصغير الخط"
+                        class="w-8 h-8 flex items-center justify-center text-[15px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors rounded-l-xl">
+                        -A
+                    </button>
+                    <div class="w-[1px] h-4 bg-white/10 mx-1"></div>
+                    <button id="themeToggleBtn" aria-label="تبديل المظهر" title="تبديل المظهر"
+                        class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-amber-300 hover:bg-white/10 transition-colors rounded-xl">
+                        <iconify-icon icon="lucide:moon" class="text-[18px]"></iconify-icon>
+                    </button>
+                </div>
                 <!-- Desktop Search -->
                 <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
                     <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
@@ -5674,13 +5695,18 @@
             <div
                 class="msg bot bg-white/5 p-3 rounded-2xl rounded-tr-none border border-white/5 text-slate-300 text-sm max-w-[85%]">
                 مرحباً بك في برايت AI! أنا مساعدك الذكي، كيف يمكنني مساعدتك في رحلة التحول الرقمي اليوم؟
-                <div class="quick-replies flex flex-wrap gap-2 mt-4">
+            </div>
+            <div class="quick-replies-container">
+                <div class="quick-replies flex flex-wrap gap-2 mt-2">
                     <button
                         class="qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
                         data-q="ما هي خدماتكم؟">ما هي خدماتكم؟</button>
                     <button
                         class="qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
                         data-q="أريد استشارة تقنية">أريد استشارة تقنية</button>
+                    <button
+                        class="qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
+                        data-q="كيف أبدأ معكم؟">كيف أبدأ معكم؟</button>
                 </div>
             </div>
             <div class="typing flex items-center gap-1 text-[10px] text-slate-500 font-bold uppercase tracking-widest hidden"
@@ -5735,6 +5761,8 @@
     <!-- index-theme.min.js: page interactions (tabs, chat tracking, ROI calc) -->
     <!-- type="module" defers execution to after HTML parsing & enables ES module optimizations -->
     <script defer="" src="/frontend/js/index-theme.js"></script>
+    <!-- Script for Accessibility Controls -->
+    <script defer src="/frontend/js/accessibility.js"></script>
 </body>
 
 </html>
