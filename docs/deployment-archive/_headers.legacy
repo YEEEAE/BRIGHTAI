@@ -27,11 +27,11 @@
   Cache-Control: public, max-age=31536000, immutable
 
 # Images and assets: immutable cache (1 year)
-/frontend/assets/*
+/assets/*
   Cache-Control: public, max-age=31536000, immutable
 
 # Fonts: 1 year with CORS
-/frontend/assets/fonts/*
+/assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
 

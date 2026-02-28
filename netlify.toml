@@ -373,12 +373,12 @@ for = "/frontend/js/*"
 Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-for = "/frontend/assets/*"
+for = "/assets/*"
 [headers.values]
 Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-for = "/frontend/assets/fonts/*"
+for = "/assets/fonts/*"
 [headers.values]
 Cache-Control = "public, max-age=31536000, immutable"
 Access-Control-Allow-Origin = "*"

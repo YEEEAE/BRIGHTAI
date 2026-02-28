@@ -30,7 +30,7 @@ What it does:
   2) If you are on base branch and ahead with local commits, it creates rescue branch automatically.
   3) Stages and commits current changes (if any).
   4) Pushes branch and creates (or reuses) PR.
-  5) Waits for required checks.
+  5) Waits for all PR checks to be SUCCESS.
   6) Merges PR, syncs/pushes base branch, deletes temp local branch, and prunes remotes.
 USAGE
 }
@@ -59,6 +59,52 @@ cleanup_old_local_branches() {
   done < <(git for-each-ref --format='%(refname:short)' refs/heads)
 
   log "Old merged local branches cleaned: ${deleted}"
+}
+
+wait_for_all_checks_success() {
+  local pr_number="$1"
+  local max_attempts=90
+  local attempt=1
+
+  while [[ "$attempt" -le "$max_attempts" ]]; do
+    local checks_json=""
+    checks_json="$(gh pr view "$pr_number" --json statusCheckRollup --jq '.statusCheckRollup')"
+
+    # Exclude synthetic/null entries from GitHub rollup.
+    local total=0
+    total="$(jq '[.[] | select(.name != null and .status != null)] | length' <<<"$checks_json")"
+    if [[ "$total" -eq 0 ]]; then
+      log "No checks reported yet for PR #${pr_number} (attempt ${attempt}/${max_attempts})"
+      sleep 8
+      attempt=$((attempt + 1))
+      continue
+    fi
+
+    local completed=0
+    local success=0
+    local failed=0
+    completed="$(jq '[.[] | select(.name != null and .status == "COMPLETED")] | length' <<<"$checks_json")"
+    success="$(jq '[.[] | select(.name != null and .status == "COMPLETED" and .conclusion == "SUCCESS")] | length' <<<"$checks_json")"
+    failed="$(jq '[.[] | select(.name != null and .status == "COMPLETED" and (.conclusion != "SUCCESS"))] | length' <<<"$checks_json")"
+
+    if [[ "$failed" -gt 0 ]]; then
+      log "At least one check failed for PR #${pr_number}:"
+      gh pr view "$pr_number" --json statusCheckRollup --jq '.statusCheckRollup[] | select(.name != null and .status == "COMPLETED" and .conclusion != "SUCCESS") | "\(.name): \(.conclusion)"'
+      return 1
+    fi
+
+    if [[ "$completed" -eq "$total" && "$success" -eq "$total" ]]; then
+      log "All checks are SUCCESS for PR #${pr_number}"
+      return 0
+    fi
+
+    log "Checks still running for PR #${pr_number} (${completed}/${total} completed, attempt ${attempt}/${max_attempts})"
+    sleep 8
+    attempt=$((attempt + 1))
+  done
+
+  log "Timed out waiting for checks on PR #${pr_number}"
+  return 1
 }
 
 BASE_BRANCH="main"
@@ -117,6 +163,7 @@ done
 
 require_cmd git
 require_cmd gh
+require_cmd jq
 
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || die "Not inside a git repository"
 
@@ -197,9 +244,8 @@ else
 fi
 
 if [[ "$WAIT_FOR_CHECKS" -eq 1 ]]; then
-  log "Waiting for required checks on PR #${pr_number}"
-  gh pr checks "$pr_number" --watch --required
-  log "Required checks passed"
+  log "Waiting for all PR checks to reach SUCCESS on PR #${pr_number}"
+  wait_for_all_checks_success "$pr_number" || die "Checks did not reach SUCCESS for PR #${pr_number}"
 fi
 
 if [[ "$DO_MERGE" -eq 1 ]]; then

@@ -31,13 +31,13 @@
   ],
   "icons": [
     {
-      "src": "frontend/assets/images/Gemini.webp.png",
+      "src": "assets/images/Gemini.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "frontend/assets/images/Gemini.webp.png",
+      "src": "assets/images/Gemini.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -45,14 +45,14 @@
   ],
   "screenshots": [
     {
-      "src": "frontend/assets/images/Gemini.webp.png",
+      "src": "assets/images/Gemini.png",
       "sizes": "1280x720",
       "type": "image/png",
       "platform": "wide",
       "label": "الصفحة الرئيسية لشركة مُشرقة AI السعودية"
     },
     {
-      "src": "frontend/assets/images/Gemini.webp.png",
+      "src": "assets/images/Gemini.png",
       "sizes": "750x1334",
       "type": "image/png",
       "platform": "narrow",
@@ -67,7 +67,7 @@
       "url": "/frontend/pages/our-products/index.html",
       "icons": [
         {
-          "src": "frontend/assets/images/Gemini.webp.png",
+          "src": "assets/images/Gemini.png",
           "sizes": "96x96"
         }
       ]
@@ -79,7 +79,7 @@
       "url": "/frontend/pages/consultation/index.html",
       "icons": [
         {
-          "src": "frontend/assets/images/Gemini.webp.png",
+          "src": "assets/images/Gemini.png",
           "sizes": "96x96"
         }
       ]
@@ -91,7 +91,7 @@
       "url": "/frontend/pages/ai-bots/index.html",
       "icons": [
         {
-          "src": "frontend/assets/images/Gemini.webp.png",
+          "src": "assets/images/Gemini.png",
           "sizes": "96x96"
         }
       ]
@@ -103,7 +103,7 @@
       "url": "/frontend/pages/contact/index.html",
       "icons": [
         {
-          "src": "frontend/assets/images/Gemini.webp.png",
+          "src": "assets/images/Gemini.png",
           "sizes": "96x96"
         }
       ]
