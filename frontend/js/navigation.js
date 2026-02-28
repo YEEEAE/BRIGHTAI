@@ -179,7 +179,7 @@ function buildUnifiedNavigationMarkupFallback() {
                 </a>
               </div>
             </li>
-            <li><a class="nav-link" href="/frontend/pages/our-products/index.html">الحلول</a></li>
+            <li><a class="nav-link" href="/services">خدماتنا</a></li>
             <li><a class="nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
             <li><a class="nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
             <li><a class="nav-link" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
@@ -204,7 +204,7 @@ function buildUnifiedNavigationMarkupFallback() {
             <li><a class="mobile-nav-link" href="/frontend/pages/consultation/index.html">الاستشارات</a></li>
           </ul>
         </li>
-        <li><a class="mobile-nav-link" href="/frontend/pages/our-products/index.html">الحلول</a></li>
+        <li><a class="mobile-nav-link" href="/services">خدماتنا</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
         <li><a class="mobile-nav-link" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
@@ -373,7 +373,7 @@ async function mountUnifiedNavigation() {
 
   // Push down content that was behind the old nav
   const currentPath = normalizePathname(window.location.pathname);
-  if (currentPath.includes("/frontend/pages/our-products")) {
+  if (currentPath.includes("/frontend/pages/our-products") || currentPath === "/services") {
     const productsHeader = document.querySelector("body > header.sticky");
     if (productsHeader) {
       productsHeader.style.top = "var(--nav-height)";
