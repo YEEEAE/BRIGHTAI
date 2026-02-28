@@ -1,28 +1,14 @@
 
-استخدم هذا التسلسل كل مرة (ولا تدفع على main مباشرة):
+# githib
 
-تحديث main:
 git switch main
 git pull --ff-only origin main
-فتح فرع جديد باسم فعلي (بدون < >):
-git switch -c codex/my-change
-حفظ التعديلات:
+git switch -c codex/actual-name
 git add .
-git commit -m "feat: describe change"
-رفع الفرع:
-git push -u origin codex/my-change
-فتح Pull Request:
-gh pr create --base main --head codex/my-change --fill
-بعد الدمج، مزامنة وتنظيف:
-git switch main
-git pull --ff-only origin main
-git branch -d codex/my-change
-إذا غلطت وكمّت على main:
+git commit -m "feat: actual message"
+git push -u origin codex/actual-name
+gh pr create --base main --head codex/actual-name --fill
 
-git switch -c codex/rescue-main-commit
-git push -u origin codex/rescue-main-commit
-gh pr create --base main --head codex/rescue-main-commit --fill
-لا يوجد خطوات أخرى، وتم توضيح الطريقة بالكامل.
 # BrightAI Monorepo
 
 هذا المستودع الآن مُدار كـ `npm workspaces` بثلاث وحدات مستقلة:
