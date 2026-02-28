@@ -182,7 +182,19 @@ fi
 
 if [[ "$DO_MERGE" -eq 1 ]]; then
   log "Merging PR #${pr_number}"
-  gh pr merge "$pr_number" --merge --delete-branch
+  merged=0
+  for attempt in {1..12}; do
+    if gh pr merge "$pr_number" --merge --delete-branch; then
+      merged=1
+      break
+    fi
+    log "Merge attempt ${attempt}/12 did not complete yet; waiting 10s then retrying"
+    sleep 10
+  done
+  [[ "$merged" -eq 1 ]] || die "Unable to merge PR #${pr_number} after multiple attempts"
+
+  pr_state="$(gh pr view "$pr_number" --json state --jq .state)"
+  [[ "$pr_state" == "MERGED" ]] || die "PR #${pr_number} is not merged (state: ${pr_state})"
 fi
 
 log "Switching back to ${BASE_BRANCH} and syncing"
