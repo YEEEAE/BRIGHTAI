@@ -979,8 +979,9 @@
     const chatInput = document.getElementById('chatInput');
     const chatSend = document.getElementById('chatSend');
     const typing = document.getElementById('typing');
-    const chatApiEndpoint = '/api/gemini/chat';
-    const chatStreamApiEndpoint = '/api/gemini/chat/stream';
+    const _gwIndex = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+    const chatApiEndpoint = typeof _gwIndex.buildUrl === 'function' ? _gwIndex.buildUrl('/api/gemini/chat') : '/api/gemini/chat';
+    const chatStreamApiEndpoint = typeof _gwIndex.buildUrl === 'function' ? _gwIndex.buildUrl('/api/gemini/chat/stream') : '/api/gemini/chat/stream';
     const CHAT_REQUEST_TIMEOUT_MS = 12000;
     const CHAT_HISTORY_STORAGE_KEY = 'brightai.chat.history.v1';
     const CHAT_SESSION_STORAGE_KEY = 'brightai.chat.session.v1';
@@ -1130,7 +1131,7 @@
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.18);
                 setTimeout(() => {
-                    audioContext.close().catch(() => {});
+                    audioContext.close().catch(() => { });
                 }, 260);
             } catch (_error) {
                 // Ignore audio errors and continue UX flow.

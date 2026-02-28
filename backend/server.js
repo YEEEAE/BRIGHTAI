@@ -343,7 +343,7 @@ async function handleRequest(req, res) {
       try {
         const yamlPath = path.join(__dirname, '../docs/openapi.yaml');
         const yamlContent = fs.readFileSync(yamlPath, 'utf8');
-        res.writeHead(200, { 
+        res.writeHead(200, {
           'Content-Type': 'text/yaml; charset=utf-8',
           'Access-Control-Allow-Origin': '*'
         });
@@ -357,7 +357,24 @@ async function handleRequest(req, res) {
         });
       }
     } else if (url === '/api/health') {
-      ctx.res.status(200).json({ status: 'ok', timestamp: Date.now() });
+      const geminiReady = !!(config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE' && config.gemini.apiKey !== 'YOUR_GEMINI_KEY_HERE');
+      const geminiModel = config.gemini.model || 'not set';
+      const overallOk = geminiReady;
+
+      ctx.res.status(overallOk ? 200 : 503).json({
+        status: overallOk ? 'ok' : 'degraded',
+        timestamp: Date.now(),
+        environment: config.server.nodeEnv,
+        providers: {
+          gemini: {
+            configured: geminiReady,
+            model: geminiModel,
+            message: geminiReady
+              ? 'GEMINI_API_KEY مُعد وجاهز'
+              : 'GEMINI_API_KEY غير مُعد — أضفه في Netlify Environment Variables'
+          }
+        }
+      });
     } else {
       ctx.res.status(404).json({
         error: 'الصفحة غير موجودة',

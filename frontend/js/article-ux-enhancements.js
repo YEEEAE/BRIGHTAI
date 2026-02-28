@@ -579,15 +579,15 @@
     if (!relatedSet.length) {
       relatedSet = isDocsPath
         ? [
-            { href: "/frontend/pages/docs/solutions-hr.html", title: "حلول الموارد البشرية الذكية", hint: "حالة استخدام عملية" },
-            { href: "/frontend/pages/docs/solutions-crm.html", title: "حلول CRM والواتساب", hint: "رفع التحويلات" },
-            { href: "/frontend/pages/docs/consultation.html", title: "استشارة تنفيذ مخصصة", hint: "جلسة تشخيص" }
-          ]
+          { href: "/frontend/pages/docs/solutions-hr.html", title: "حلول الموارد البشرية الذكية", hint: "حالة استخدام عملية" },
+          { href: "/frontend/pages/docs/solutions-crm.html", title: "حلول CRM والواتساب", hint: "رفع التحويلات" },
+          { href: "/frontend/pages/docs/consultation.html", title: "استشارة تنفيذ مخصصة", hint: "جلسة تشخيص" }
+        ]
         : [
-            { href: "/frontend/pages/blogger/nca-compliance.html", title: "حوكمة NCA للشركات السعودية", hint: "امتثال وتشغيل" },
-            { href: "/frontend/pages/blogger/vision-2030-ai-opportunities.html", title: "فرص الذكاء الاصطناعي ضمن رؤية 2030", hint: "اتجاهات السوق" },
-            { href: "/frontend/pages/blogger/ai-implementation-cost-guide.html", title: "دليل تكلفة تطبيق الذكاء الاصطناعي", hint: "قرار الاستثمار" }
-          ];
+          { href: "/frontend/pages/blogger/nca-compliance.html", title: "حوكمة NCA للشركات السعودية", hint: "امتثال وتشغيل" },
+          { href: "/frontend/pages/blogger/vision-2030-ai-opportunities.html", title: "فرص الذكاء الاصطناعي ضمن رؤية 2030", hint: "اتجاهات السوق" },
+          { href: "/frontend/pages/blogger/ai-implementation-cost-guide.html", title: "دليل تكلفة تطبيق الذكاء الاصطناعي", hint: "قرار الاستثمار" }
+        ];
     }
 
     const section = document.createElement("section");
@@ -880,7 +880,11 @@
       sending = true;
 
       try {
-        const response = await fetch("/api/gemini/chat", {
+        var _gw = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+        var _chatUrl = typeof _gw.buildUrl === 'function'
+          ? _gw.buildUrl('/api/gemini/chat')
+          : '/api/gemini/chat';
+        const response = await fetch(_chatUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: question })

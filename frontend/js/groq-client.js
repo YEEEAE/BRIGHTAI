@@ -5,7 +5,11 @@
 
 class GroqStreamManager {
     constructor(config = {}) {
-        this.endpoint = config.endpoint || '/api/ai/stream';
+        const _gw = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+        const _defaultEndpoint = typeof _gw.buildUrl === 'function'
+            ? _gw.buildUrl('/api/ai/stream')
+            : '/api/ai/stream';
+        this.endpoint = config.endpoint || _defaultEndpoint;
         this.outputType = config.outputType || 'تحليل بيانات';
         this.sessionId = null;
         this.sessionHistory = [];

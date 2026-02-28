@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحليل BrightAI | تقرير الأداء المتقدم للنمو في السعودية</title>
+
+    <!-- خط Cairo الاحترافي من جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* المتغيرات الأساسية (الوضع النهاري) */
+        :root {
+            --bg-color: #f8fafc;
+            --grid-pattern: rgba(148, 163, 184, 0.15);
+            --card-bg: #ffffff;
+            --card-border: rgba(226, 232, 240, 0.8);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-dark: #1e3a8a;
+            --primary-light: #eff6ff;
+            --secondary: #64748b;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --info: #0ea5e9;
+            --info-light: #f0f9ff;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* المتغيرات (الوضع الليلي) */
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --grid-pattern: rgba(255, 255, 255, 0.03);
+            --card-bg: #1e293b;
+            --card-border: rgba(51, 65, 85, 0.8);
+            --primary: #60a5fa;
+            --primary-hover: #3b82f6;
+            --primary-dark: #93c5fd;
+            --primary-light: rgba(59, 130, 246, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --danger-light: rgba(239, 68, 68, 0.1);
+            --warning-light: rgba(245, 158, 11, 0.1);
+            --success-light: rgba(16, 185, 129, 0.1);
+            --info-light: rgba(14, 165, 233, 0.1);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            --shadow-glow: 0 0 20px rgba(96, 165, 250, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            background-image: linear-gradient(var(--grid-pattern) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-pattern) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 50px 30px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.05)" stroke-width="2" fill="none"/></svg>') repeat;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .report-header h1 {
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .report-header .meta {
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .report-header code {
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 60px 0 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(to bottom, var(--primary), #8b5cf6);
+            border-radius: 4px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--card-border);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .card h3 {
+            color: var(--text-main);
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 svg {
+            color: var(--primary);
+            width: 24px;
+            height: 24px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        code {
+            background: var(--primary-light);
+            color: var(--primary-hover);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        ul,
+        ol {
+            margin: 0 0 20px 30px;
+            padding-right: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        strong,
+        b {
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-warning {
+            background: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .status-error {
+            background: var(--danger-light);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status-success {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .critical {
+            color: var(--danger);
+            font-weight: 800;
+            background: var(--danger-light);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .important {
+            color: var(--warning);
+            font-weight: 800;
+        }
+
+        .opt {
+            color: var(--info);
+            font-weight: 800;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--card-border);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            text-align: right;
+        }
+
+        th {
+            background: var(--primary-light);
+            padding: 18px 20px;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--card-border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--card-border);
+            color: var(--text-muted);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: rgba(59, 130, 246, 0.02);
+        }
+
+        .prompt-card {
+            background: var(--card-bg);
+            border-right: 6px solid var(--primary);
+            border-radius: var(--radius-lg);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-sm);
+            border-top: 1px solid var(--card-border);
+            border-left: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .prompt-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
+        .prompt-header {
+            background: rgba(0, 0, 0, 0.02);
+            border-bottom: 1px solid var(--card-border);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        [data-theme="dark"] .prompt-header {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .prompt-header h3 {
+            margin: 0;
+            font-size: 19px;
+            color: var(--text-main);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .prompt-body {
+            padding: 25px;
+            color: var(--text-muted);
+            line-height: 1.9;
+            font-size: 16px;
+        }
+
+        .prompt-card.purple-theme {
+            border-right-color: #8b5cf6;
+        }
+
+        .prompt-card.purple-theme .prompt-header h3 {
+            color: #8b5cf6;
+        }
+
+        .prompt-card.green-theme {
+            border-right-color: #10b981;
+        }
+
+        .prompt-card.green-theme .prompt-header h3 {
+            color: #10b981;
+        }
+
+        .alert-note {
+            background: var(--info-light);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-right: 6px solid var(--info);
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            margin-top: 50px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .alert-note svg {
+            width: 30px;
+            height: 30px;
+            color: var(--info);
+            flex-shrink: 0;
+        }
+
+        .alert-note div {
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="progress-bar"></div>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+            لوحة BrightAI للنمو
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+            <svg id="themeIcon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <span>الوضع الليلي</span>
+        </button>
+    </nav>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="container">
+
+        <header class="report-header">
+            <h1>تحليل حركة المرور (Semrush) وخطة النمو الاستراتيجية في السعودية</h1>
+            <div class="meta">
+                <span>📅 28 فبراير 2026</span>
+                <span>الهدف: <b>الهيمنة على السوق السعودي B2B</b></span>
+                <span>🛡️ التقييم التسويقي: <b style="color:#ef4444">احتفاظ عالي جداً، نسبة استحواذ ضعيفة (0 نقرات من
+                        البحث)</b></span>
+            </div>
+        </header>
+
+        <h2 class="section-title">القسم الأول: تحليل بيانات Semrush وتفسير السلوك</h2>
+
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                1) تفاعل مجنون ولكن اختناق في الاستحواذ
+            </h3>
+            <p>
+                <span class="critical">المشكلة:</span> البيانات تظهر قفزة بنسبة <strong>20.7% في إجمالي
+                    الزيارات</strong> و<strong>تفاعل جنوني بزيادة 324.9% (متوسط بقاء 12 دقيقة و21 ثانية!)</strong>
+                وانخفاض معدل الارتداد إلى 45.7%. لكن في المقابل، انخفض الزوار الفريدون بنسبة 38.1% (13 فقط) وزوار جدد
+                بنسبة 36.8% (12 فقط).
+            </p>
+            <p>
+                <strong>التفسير المعماري:</strong> المشروع يعمل بشكل ممتاز في الإبقاء على العملاء، لكنه فشل بشكل ملحوظ
+                في <i>جذب عملاء جدد عبر محركات البحث</i>. عدد الظهور (Impressions) كان <span class="critical">2 فقط!
+                    بصفر نقرات</span>، بالرغم من تحسن متوسط الترتيب (11.5). المحتوى غير محسن للنية البحثية التجارية
+                لعملاء B2B في السعودية (Commercial Intent).
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                2) الاستهداف الجغرافي (الرياض وجدة) والأجهزة
+            </h3>
+            <ul>
+                <li><span class="important">قفزة الهواتف الذكية:</span> نمت الزيارات من الجوال بنسبة 133.3% لتشكل
+                    الغالبية 53.8%. حجم الملف <code>index.html</code> (270KB+) يمثل بلوكر (Blocker) رئيسي لهذه الشريحة
+                    بسبب LCP العالي.</li>
+                <li><span class="important">الرياض وجدة هما السوق:</span> نمو الرياض بـ 6100% في التفاعل وجدة بـ 548.6%.
+                    رغم الأرقام المطلقة الصغيرة، إلا أن المؤشر صريح: <strong>الشركات في هاتين المدينتين يبحثون عن حلولك
+                        بشغف ويقرؤون المحتوى كاملاً.</strong></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                3) نقاط الضعف التقنية المانعة لحصد المرور
+            </h3>
+            <div class="table-wrapper">
+                <table>
+                    <tr>
+                        <th>العنصر</th>
+                        <th>الأثر (SEO / UX)</th>
+                        <th>الحالة التشخيصية</th>
+                    </tr>
+                    <tr>
+                        <td>حجم صفحة الـ Home</td>
+                        <td><span class="badge status-error">عالي الخطورة</span></td>
+                        <td>يمنع أرشفة الجوال (Mobile-First Indexing) بشكل جيد بسبب تأخر LCP.</td>
+                    </tr>
+                    <tr>
+                        <td>الكلمات المفتاحية</td>
+                        <td><span class="badge status-error">عالي الخطورة</span></td>
+                        <td>لا يوجد استهداف لـ "شركات أتمتة AI بالرياض"، الـ H1/Title العام يعطي انطباعا تثقيفيا وليس
+                            تجاريا.</td>
+                    </tr>
+                    <tr>
+                        <td>نسبة النقر (CTR)</td>
+                        <td><span class="badge status-warning">متوسط الخطورة</span></td>
+                        <td>العناوين في SERP غير جذابة ولا تولد الدافع للنقر مع انعدام الـ Schema Service.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <h2 class="section-title" id="prompts-section">القسم الثاني: Prompts إجبارية للمحرك (Codex) لتنفيذ التحسينات
+        </h2>
+
+        <div class="prompt-card purple-theme">
+            <div class="prompt-header">
+                <h3>✨ Prompt 1 — تقطيع صفحة index.html وفصل الأصول (Mobile-First)</h3>
+                <button class="copy-btn" onclick="copyPromptText(this)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg> نسخ البرومبت
+                </button>
+            </div>
+            <div class="prompt-body">صفحة index.html ثقيلة جداً وتؤثر على ترتيب Google Mobile-First Indexing الذي يمثل
+                54% من زياراتنا. استخدم Codex لعمل Refactoring للصفحة:
+                1. استخرج السيرفرات والسكربتات غير الضرورية (مثل الشات بوت والفورم) وضعها في ملفات JS خارجية مع `defer`.
+                2. استخرج تنسيقات CSS الإضافية وضعها في `bundle.css` خارجي مع إبقاء وفقط Critical CSS في الـ
+                `&lt;head&gt;`.
+                3. قم بتطبيق Lazy Loading `loading="lazy"` لكل الصور الموجودة تحت الـ Fold. الهدف هو رفع LCP لأقل من 2.5
+                ثانية للجوال.</div>
+        </div>
+
+        <div class="prompt-card">
+            <div class="prompt-header">
+                <h3>✨ Prompt 2 — بناء هيكلية السياسات التجارية المحلية (Local SEO)</h3>
+                <button class="copy-btn" onclick="copyPromptText(this)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg> نسخ البرومبت
+                </button>
+            </div>
+            <div class="prompt-body">لدينا تفاعل جنوني في الرياض وجدة، لكن الظهور 2 فقط! استخدم Codex لبناء صفحتين هبوط
+                ديناميكية (Landing Pages) مصغرة: `ai-services-riyadh.html` و `ai-services-jeddah.html`.
+                التركيز: استهداف كلمات "حلول الذكاء الاصطناعي للشركات في الرياض/جدة".
+                أضف `LocalBusiness` و `Service` Schema بصيغة JSON-LD تحتوي على موقع الشركة الوهمي (الرياض) لتفعيل الظهور
+                في نتائج Google Map Pack.</div>
+        </div>
+
+        <div class="prompt-card">
+            <div class="prompt-header">
+                <h3>✨ Prompt 3 — رفع CTR (نسبة النقر للظهور)</h3>
+                <button class="copy-btn" onclick="copyPromptText(this)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg> نسخ البرومبت
+                </button>
+            </div>
+            <div class="prompt-body">اكتب سكريبت Python أو Node للبحث عن جميع ملفات HTML وتعديل `<title>` و `
+                    <meta name="description">` لتضمين محفزات النقر (CTR Drivers).
+                    الصيغة المطلوبة:
+                    Title: [الخدمة الرئيسية] في السعودية | [فائدة بـ الأرقام] | BrightAI
+                    Description: ابدأ رحلة الأتمتة لشركتك بأسلوب احترافي. حلول ذكاء اصطناعي للشركات في الرياض والمملكة
+                    لتحسين الإنتاجية بنسبة 300%. احصل على استشارة مجانية.
+                    افحص ونفذ ذلك لجميع الصفحات الرئيسية للشركة.</div>
+        </div>
+
+        <div class="prompt-card green-theme">
+            <div class="prompt-header">
+                <h3>✨ Prompt 4 — تقوية الهيكل الدلالي والروابط الداخلية (Silo Architecture)</h3>
+                <button class="copy-btn" onclick="copyPromptText(this)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg> نسخ البرومبت
+                </button>
+            </div>
+            <div class="prompt-body">الزوار يجلسون 12 دقيقة، مما يعني أنهم يقرأون بعمق! استخدم Codex لتوليد سكريبت يزرع
+                شبكة روابط داخلية ذكية (Internal Linking) بين المدونة (`/blogger/`) والصفحات التجارية الرئيسية
+                (`index.html`).
+                تأكد من استخدام Anchor Texts بمعاني تجارية B2B مثل "أتمتة الشركات السعودية"، "تحليلات البيانات للشركات"،
+                بدلاً من "اضغط هنا" لخلق Authority أعلى لصفحات الشراء.</div>
+        </div>
+
+        <div class="prompt-card">
+            <div class="prompt-header">
+                <h3>✨ Prompt 5 — هندسة الثقة السعودية بالصفحة الرئيسية</h3>
+                <button class="copy-btn" onclick="copyPromptText(this)">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg> نسخ البرومبت
+                </button>
+            </div>
+            <div class="prompt-body">الجمهور السعودي B2B يحتاج لإشارات ثقة قوية (Trust Signals). استخدم Codex لزرع قسم
+                "يتوافق مع معايير PDPL و NDMO" وقسم عرض شهادات العملاء بأرقام إحصائية حقيقية فوراً تحت الجزء الأول (Hero
+                Section) في `index.html`.
+                تأكد من أن الـ Call To Action (الزر الرئيسي) يقول "اطلب تحليل أعمال مخصص" بدلاً من "تواصل معنا" لزيادة
+                معدل التحويل المباشر.</div>
+        </div>
+
+        <div class="alert-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <div>
+                <b>ملاحظة الاستراتيجية:</b> مشكلة BrightAI الحالية ليست منتجًا سيئًا (وإلا لكان الارتداد عالياً)،
+                المشكلة هي انعدام القموع التسويقية (Funnels). الزوار لا يجدونكم، وإذا وجدوكم، فهم يبقون لفترة خيالية.
+                الإصلاح هو تفعيل الـ Local SEO للسعودية وتقليل LCP.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const themeBtn = document.getElementById('themeBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlEl = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            htmlEl.setAttribute('data-theme', 'dark');
+            updateThemeIcon(true);
+        }
+
+        function toggleTheme() {
+            const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                htmlEl.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                updateThemeIcon(false);
+            } else {
+                htmlEl.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                updateThemeIcon(true);
+            }
+        }
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+                themeBtn.querySelector('span').innerText = 'الوضع النهاري';
+            } else {
+                themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+                themeBtn.querySelector('span').innerText = 'الوضع الليلي';
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        });
+
+        function copyPromptText(button) {
+            const card = button.closest('.prompt-card');
+            const textToCopy = card.querySelector('.prompt-body').innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> تم النسخ!';
+                button.style.backgroundColor = 'var(--success)';
+                button.style.color = 'white';
+                button.style.borderColor = 'var(--success)';
+                showToast('✅ تم نسخ البرومبت بنجاح إلى الحافظة!');
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style = '';
+                }, 2500);
+            });
+        }
+
+        function showToast(message, isError = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (isError) toast.style.backgroundColor = 'var(--danger)';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+    </script>
+</body>
+
+</html>

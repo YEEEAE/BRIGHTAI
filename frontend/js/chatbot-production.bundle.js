@@ -126,7 +126,11 @@
 
   class GroqStreamClient {
     constructor(endpoint) {
-      this.endpoint = endpoint || '/api/ai/stream';
+      const _gw = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+      const _defaultEndpoint = typeof _gw.buildUrl === 'function'
+        ? _gw.buildUrl('/api/ai/stream')
+        : '/api/ai/stream';
+      this.endpoint = endpoint || _defaultEndpoint;
     }
 
     async readErrorPayload(response) {
@@ -244,7 +248,11 @@
       this.container = container;
       this.profileId = detectProfileId(container);
       this.profile = BOT_PROFILES[this.profileId] || BOT_PROFILES.support;
-      this.endpoint = container.dataset.chatEndpoint || '/api/ai/stream';
+      const _gw2 = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+      const _defaultStreamEndpoint = typeof _gw2.buildUrl === 'function'
+        ? _gw2.buildUrl('/api/ai/stream')
+        : '/api/ai/stream';
+      this.endpoint = container.dataset.chatEndpoint || _defaultStreamEndpoint;
       this.sessionKey = `brightai_chat_session_${this.profileId}`;
 
       this.chatMessages = document.getElementById('chatMessages');
