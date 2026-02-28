@@ -80,6 +80,82 @@ to = "/"
 status = 301
 force = true
 
+# Clean URL Rewrites — SEO-friendly paths
+[[redirects]]
+from = "/about"
+to = "/frontend/pages/about-us/index.html"
+status = 200
+
+[[redirects]]
+from = "/services"
+to = "/frontend/pages/our-products/index.html"
+status = 200
+
+[[redirects]]
+from = "/contact"
+to = "/frontend/pages/contact/index.html"
+status = 200
+
+[[redirects]]
+from = "/blog"
+to = "/frontend/pages/blog/index.html"
+status = 200
+
+[[redirects]]
+from = "/ai-agent"
+to = "/frontend/pages/ai-agent/index.html"
+status = 200
+
+[[redirects]]
+from = "/ai-bots"
+to = "/frontend/pages/ai-bots/index.html"
+status = 200
+
+[[redirects]]
+from = "/data-analysis"
+to = "/frontend/pages/data-analysis/index.html"
+status = 200
+
+[[redirects]]
+from = "/consultation"
+to = "/frontend/pages/consultation/index.html"
+status = 200
+
+[[redirects]]
+from = "/smart-automation"
+to = "/frontend/pages/smart-automation/index.html"
+status = 200
+
+[[redirects]]
+from = "/case-studies"
+to = "/frontend/pages/case-studies/index.html"
+status = 200
+
+[[redirects]]
+from = "/what-is-ai"
+to = "/frontend/pages/what-is-ai/index.html"
+status = 200
+
+[[redirects]]
+from = "/partners"
+to = "/frontend/pages/partners/index.html"
+status = 200
+
+[[redirects]]
+from = "/tools"
+to = "/frontend/pages/tools/index.html"
+status = 200
+
+[[redirects]]
+from = "/health"
+to = "/frontend/pages/health-bright/index.html"
+status = 200
+
+[[redirects]]
+from = "/machine-learning"
+to = "/frontend/pages/machine/index.html"
+status = 200
+
 # -------------------------------------------------
 # Blogger legacy redirects
 # -------------------------------------------------
