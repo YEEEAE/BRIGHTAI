@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const API_URL = '/api/gemini/chat';
+  const gw = window.BrightAIGateway || {};
+  const API_URL = typeof gw.buildUrl === 'function'
+    ? gw.buildUrl('/api/gemini/chat')
+    : '/api/gemini/chat';
   let sessionId = null;
   let isOpen = false;
   let isSending = false;

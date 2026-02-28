@@ -544,7 +544,9 @@
             this.isSending = true;
 
             try {
-                const res = await fetch('/api/gemini/chat', {
+                const _gw = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+                const _chatUrl = typeof _gw.buildUrl === 'function' ? _gw.buildUrl('/api/gemini/chat') : '/api/gemini/chat';
+                const res = await fetch(_chatUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message, sessionId: this.sessionId })
@@ -1179,7 +1181,9 @@
             this.showTyping();
 
             try {
-                const response = await fetch('/api/gemini/chat', {
+                const _gw2 = (typeof window !== 'undefined' && window.BrightAIGateway) || {};
+                const _chatUrl2 = typeof _gw2.buildUrl === 'function' ? _gw2.buildUrl('/api/gemini/chat') : '/api/gemini/chat';
+                const response = await fetch(_chatUrl2, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

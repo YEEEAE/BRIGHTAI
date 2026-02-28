@@ -20,10 +20,7 @@ const htmlFiles = execSync("rg --files -g '*.html'", { cwd: root, encoding: "utf
   .map((file) => file.trim())
   .filter(Boolean);
 
-const excluded = new Set([
-  "new_index_part.html",
-  "frontend/pages/partials/new_index_part.html",
-]);
+const excluded = new Set();
 
 function findMatchingDivEnd(html, startIndex) {
   const openRe = /<div\b[^>]*>/gi;

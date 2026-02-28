@@ -1,6 +1,11 @@
 
 # githib
+* للاختصار سو run لذا السكربت بيسوي كل شيء 
 
+
+./scripts/pr-automerge.sh -m "feat: update files" -t "feat: update files"
+
+ # الاوامر 
 git switch main
 git pull --ff-only origin main
 git switch -c codex/actual-name
