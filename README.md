@@ -1,10 +1,9 @@
 
 # githib
-* للاختصار سو run لذا السكربت بيسوي كل شيء 
 
-
-./scripts/pr-automerge.sh
-
+git add .
+git commit -m "feat: direct push"
+git push origin main
 
 
 
