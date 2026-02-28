@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقرير SEO النهائي — Bright AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --surface: #0d1420;
+    --surface2: #111827;
+    --border: #1e2d42;
+    --teal: #00e5c3;
+    --teal-dim: #00c4a8;
+    --red: #ff4757;
+    --orange: #ff7043;
+    --yellow: #ffc107;
+    --green: #00e676;
+    --blue: #448aff;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --code-bg: #040810;
+    --font-ar: 'Tajawal', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ar);
+    font-size: 16px;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  .sidebar {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    transform: translateX(0);
+    transition: transform .3s ease;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo .brand { font-size: 18px; font-weight: 800; color: var(--teal); }
+  .sidebar-logo .sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .nav-section { padding: 8px 20px 4px; font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: .12em; text-transform: uppercase; font-family: var(--font-mono); }
+
+  .nav-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px; font-size: 13px; color: var(--text-dim);
+    text-decoration: none; transition: all .15s;
+    border-right: 2px solid transparent;
+  }
+  .nav-link:hover, .nav-link.active {
+    color: var(--teal); background: rgba(0,229,195,.05);
+    border-right-color: var(--teal);
+  }
+  .nav-link .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    background: var(--text-muted);
+  }
+  .nav-link.critical .dot { background: var(--red); }
+  .nav-link.high .dot { background: var(--orange); }
+  .nav-link.medium .dot { background: var(--yellow); }
+  .nav-link.new .dot { background: var(--teal); }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    margin-right: 260px;
+    padding: 40px 48px 80px;
+    max-width: 1000px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero {
+    padding: 60px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,71,87,.1); border: 1px solid rgba(255,71,87,.3);
+    color: var(--red); font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 4px; margin-bottom: 20px;
+    font-family: var(--font-mono); letter-spacing: .05em;
+  }
+  .hero-title {
+    font-size: 44px; font-weight: 900; line-height: 1.2;
+    color: #fff; margin-bottom: 12px;
+  }
+  .hero-title span { color: var(--teal); }
+  .hero-subtitle { font-size: 17px; color: var(--text-dim); margin-bottom: 32px; }
+
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 18px 20px;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; right: 0; left: 0; height: 2px;
+  }
+  .stat-card.teal::before { background: var(--teal); }
+  .stat-card.red::before { background: var(--red); }
+  .stat-card.orange::before { background: var(--orange); }
+  .stat-card.green::before { background: var(--green); }
+  .stat-val { font-size: 30px; font-weight: 900; font-family: var(--font-mono); }
+  .stat-card.teal .stat-val { color: var(--teal); }
+  .stat-card.red .stat-val { color: var(--red); }
+  .stat-card.orange .stat-val { color: var(--orange); }
+  .stat-card.green .stat-val { color: var(--green); }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ── SECTION HEADERS ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 32px; }
+  .section-title {
+    font-size: 26px; font-weight: 800; color: #fff;
+    padding-bottom: 14px; margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title .num {
+    font-family: var(--font-mono); font-size: 13px; color: var(--teal);
+    background: rgba(0,229,195,.1); border: 1px solid rgba(0,229,195,.2);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .subsection-title {
+    font-size: 18px; font-weight: 700; color: var(--text);
+    margin: 28px 0 14px; padding-right: 12px;
+    border-right: 3px solid var(--teal);
+  }
+
+  /* ── ALERT BOXES ── */
+  .alert {
+    border-radius: 8px; padding: 18px 20px; margin: 16px 0;
+    border: 1px solid; position: relative;
+  }
+  .alert-title {
+    font-size: 14px; font-weight: 700; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .alert-body { font-size: 14px; line-height: 1.7; }
+  .alert.critical { background: rgba(255,71,87,.07); border-color: rgba(255,71,87,.25); }
+  .alert.critical .alert-title { color: var(--red); }
+  .alert.high { background: rgba(255,112,67,.07); border-color: rgba(255,112,67,.25); }
+  .alert.high .alert-title { color: var(--orange); }
+  .alert.warning { background: rgba(255,193,7,.06); border-color: rgba(255,193,7,.2); }
+  .alert.warning .alert-title { color: var(--yellow); }
+  .alert.success { background: rgba(0,230,118,.06); border-color: rgba(0,230,118,.2); }
+  .alert.success .alert-title { color: var(--green); }
+  .alert.info { background: rgba(0,229,195,.06); border-color: rgba(0,229,195,.2); }
+  .alert.info .alert-title { color: var(--teal); }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-grid {
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden;
+    margin: 16px 0;
+  }
+  .compare-header {
+    background: var(--surface2); padding: 12px 16px;
+    font-size: 12px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: .08em; font-family: var(--font-mono);
+    text-align: center;
+  }
+  .compare-cell {
+    background: var(--surface); padding: 12px 16px; font-size: 14px;
+  }
+  .compare-cell.label { font-weight: 700; color: var(--text); }
+  .compare-cell.wrong { color: var(--red); background: rgba(255,71,87,.04); }
+  .compare-cell.right { color: var(--green); background: rgba(0,230,118,.04); font-weight: 600; }
+
+  /* ── ISSUES TABLE ── */
+  .issues-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; margin: 16px 0; }
+  .issues-table th {
+    background: var(--surface2); padding: 12px 16px;
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-align: right; letter-spacing: .08em;
+    font-family: var(--font-mono); text-transform: uppercase;
+  }
+  .issues-table td {
+    background: var(--surface); padding: 13px 16px; font-size: 14px;
+    vertical-align: top;
+  }
+  .issues-table tr td:first-child { border-radius: 0 6px 6px 0; }
+  .issues-table tr td:last-child { border-radius: 6px 0 0 6px; }
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; font-family: var(--font-mono);
+    letter-spacing: .04em; white-space: nowrap;
+  }
+  .badge.critical { background: rgba(255,71,87,.15); color: var(--red); border: 1px solid rgba(255,71,87,.3); }
+  .badge.high { background: rgba(255,112,67,.15); color: var(--orange); border: 1px solid rgba(255,112,67,.3); }
+  .badge.medium { background: rgba(255,193,7,.12); color: var(--yellow); border: 1px solid rgba(255,193,7,.25); }
+  .badge.low { background: rgba(0,229,195,.1); color: var(--teal); border: 1px solid rgba(0,229,195,.2); }
+  .badge.new-badge { background: rgba(68,138,255,.12); color: var(--blue); border: 1px solid rgba(68,138,255,.25); }
+  .badge.fixed { background: rgba(0,230,118,.1); color: var(--green); border: 1px solid rgba(0,230,118,.2); }
+
+  .issue-title { font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .issue-detail { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ── PROMPT BLOCKS ── */
+  .prompt-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; margin: 20px 0; overflow: hidden;
+  }
+  .prompt-header {
+    background: var(--surface2); padding: 14px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .prompt-label {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .prompt-num {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    color: var(--teal); background: rgba(0,229,195,.1);
+    border: 1px solid rgba(0,229,195,.2); padding: 2px 8px; border-radius: 4px;
+  }
+  .prompt-title { font-size: 14px; font-weight: 700; color: #fff; }
+  .prompt-tag {
+    font-size: 10px; font-family: var(--font-mono); padding: 2px 8px;
+    border-radius: 3px; font-weight: 600;
+  }
+  .prompt-tag.fix { background: rgba(0,230,118,.1); color: var(--green); border: 1px solid rgba(0,230,118,.2); }
+  .prompt-tag.new { background: rgba(68,138,255,.1); color: var(--blue); border: 1px solid rgba(68,138,255,.2); }
+  .prompt-tag.corrected { background: rgba(255,193,7,.1); color: var(--yellow); border: 1px solid rgba(255,193,7,.2); }
+  .prompt-tag.urgent { background: rgba(255,71,87,.12); color: var(--red); border: 1px solid rgba(255,71,87,.25); }
+
+  .copy-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(0,229,195,.1); border: 1px solid rgba(0,229,195,.25);
+    color: var(--teal); font-size: 12px; font-family: var(--font-mono);
+    padding: 6px 14px; border-radius: 5px; cursor: pointer;
+    transition: all .2s; font-weight: 600; white-space: nowrap;
+  }
+  .copy-btn:hover { background: rgba(0,229,195,.2); border-color: var(--teal); }
+  .copy-btn.copied { background: rgba(0,230,118,.15); border-color: var(--green); color: var(--green); }
+
+  .prompt-body {
+    padding: 0; background: var(--code-bg);
+  }
+  .prompt-code {
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+    color: #a8b9cc; padding: 20px 24px; white-space: pre-wrap;
+    word-break: break-word; direction: ltr; text-align: left;
+    max-height: 400px; overflow-y: auto;
+  }
+  .prompt-code .kw { color: #7ec8e3; }
+  .prompt-code .str { color: #a8ff78; }
+  .prompt-code .cmt { color: #5c6b7a; font-style: italic; }
+  .prompt-code .tag { color: #e1a0f5; }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px 24px; margin: 12px 0;
+    font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+    color: #a8b9cc; white-space: pre-wrap; direction: ltr; text-align: left;
+    overflow-x: auto; position: relative;
+  }
+  .code-block .cmt { color: #4a5568; font-style: italic; }
+  .code-block .kw { color: #7ec8e3; }
+  .code-block .str { color: #a8ff78; }
+  .code-block .tag { color: #e1a0f5; }
+  .code-block .attr { color: #ffd580; }
+
+  /* ── COPY ALL BTN ── */
+  .copy-all-bar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px; margin: 24px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .copy-all-bar p { font-size: 14px; color: var(--text-dim); }
+  .copy-all-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--teal); color: #000; font-weight: 700;
+    font-size: 13px; padding: 10px 20px; border-radius: 6px;
+    border: none; cursor: pointer; font-family: var(--font-ar);
+    transition: all .2s;
+  }
+  .copy-all-btn:hover { background: var(--teal-dim); transform: translateY(-1px); }
+
+  /* ── MISC ── */
+  ul.check-list { list-style: none; padding: 0; }
+  ul.check-list li {
+    padding: 7px 0; padding-right: 22px; position: relative;
+    font-size: 14px; color: var(--text-dim); border-bottom: 1px solid rgba(30,45,66,.5);
+  }
+  ul.check-list li::before {
+    content: '›'; position: absolute; right: 0;
+    color: var(--teal); font-weight: 700;
+  }
+  ul.check-list li:last-child { border-bottom: none; }
+  ul.check-list li strong { color: var(--text); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+
+  .mini-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 18px 20px;
+  }
+  .mini-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .mini-card p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .mini-card.wrong { border-color: rgba(255,71,87,.3); }
+  .mini-card.wrong h4 { color: var(--red); }
+  .mini-card.right { border-color: rgba(0,230,118,.3); }
+  .mini-card.right h4 { color: var(--green); }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .tag { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; font-family: var(--font-mono); }
+  .tag.teal { background: rgba(0,229,195,.1); color: var(--teal); border: 1px solid rgba(0,229,195,.2); }
+  .tag.red { background: rgba(255,71,87,.1); color: var(--red); border: 1px solid rgba(255,71,87,.2); }
+  .tag.orange { background: rgba(255,112,67,.1); color: var(--orange); border: 1px solid rgba(255,112,67,.2); }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+  .semrush-note {
+    background: linear-gradient(135deg, rgba(0,229,195,.06), rgba(68,138,255,.06));
+    border: 1px solid rgba(0,229,195,.2); border-radius: 10px;
+    padding: 20px 24px; margin: 20px 0;
+  }
+  .semrush-note h4 { color: var(--teal); font-size: 15px; margin-bottom: 10px; }
+
+  .priority-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid rgba(30,45,66,.6);
+  }
+  .priority-row:last-child { border-bottom: none; }
+  .priority-week {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    color: var(--teal); background: rgba(0,229,195,.08);
+    border: 1px solid rgba(0,229,195,.15); padding: 3px 8px;
+    border-radius: 4px; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+  }
+  .priority-content h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .priority-content p { font-size: 13px; color: var(--text-dim); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--teal); color: #000; font-weight: 700; font-size: 14px;
+    padding: 12px 24px; border-radius: 8px; opacity: 0;
+    transition: all .3s ease; pointer-events: none; z-index: 9999;
+    font-family: var(--font-ar);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-right: 0; padding: 24px 20px 60px; }
+    .hero-stats { grid-template-columns: repeat(2,1fr); }
+    .hero-title { font-size: 30px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .mobile-menu-btn { display: flex !important; }
+  }
+  .mobile-menu-btn {
+    display: none; position: fixed; bottom: 24px; left: 24px;
+    background: var(--teal); color: #000; border: none;
+    width: 48px; height: 48px; border-radius: 50%;
+    align-items: center; justify-content: center;
+    cursor: pointer; z-index: 200; font-size: 20px;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .sidebar { display: none; }
+    .main { margin-right: 0; }
+    .copy-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">Bright AI</div>
+    <div class="sub">تقرير SEO — فبراير 2026</div>
+  </div>
+
+  <div class="nav-section">نظرة عامة</div>
+  <a href="#overview" class="nav-link"><span class="dot teal"></span>الملخص التنفيذي</a>
+  <a href="#semrush" class="nav-link"><span class="dot teal"></span>بيانات Semrush</a>
+
+  <div class="nav-section">الأخطاء — تصحيح</div>
+  <a href="#corrections" class="nav-link"><span class="dot" style="background:var(--red)"></span>تصويب التقرير الأول</a>
+
+  <div class="nav-section">مشاكل حرجة جديدة</div>
+  <a href="#analysis-leak" class="nav-link critical"><span class="dot"></span>ملف التحليل المكشوف</a>
+  <a href="#gemini-img" class="nav-link critical"><span class="dot"></span>أزمة Gemini.png</a>
+  <a href="#thin-content" class="nav-link high"><span class="dot"></span>محتوى رقيق 42 صفحة</a>
+  <a href="#broken-pages" class="nav-link high"><span class="dot"></span>صفحات مكسورة مفهرسة</a>
+  <a href="#encoded-urls" class="nav-link high"><span class="dot"></span>روابط عربية في Sitemap</a>
+
+  <div class="nav-section">مشاكل مؤكدة</div>
+  <a href="#fetchpriority" class="nav-link critical"><span class="dot"></span>fetchpriority مفقود</a>
+  <a href="#urls" class="nav-link critical"><span class="dot"></span>مسارات URL الطويلة</a>
+  <a href="#schema" class="nav-link high"><span class="dot"></span>Schema ناقص</a>
+  <a href="#og-tags" class="nav-link high"><span class="dot"></span>OG Tags — 13 صفحة</a>
+  <a href="#css-blocking" class="nav-link high"><span class="dot"></span>CSS يعيق الرسم</a>
+  <a href="#headings" class="nav-link medium"><span class="dot"></span>هيكل العناوين</a>
+
+  <div class="nav-section">الإصلاحات</div>
+  <a href="#priority-table" class="nav-link"><span class="dot teal"></span>جدول الأولويات الكامل</a>
+  <a href="#prompts" class="nav-link new"><span class="dot"></span>Prompts Codex</a>
+  <a href="#roadmap" class="nav-link"><span class="dot teal"></span>خطة التنفيذ</a>
+</nav>
+
+<!-- MOBILE MENU -->
+<button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ══════════ HERO ══════════ -->
+  <div class="hero" id="overview">
+    <div class="hero-badge">⚠ تقرير مُصحَّح — بعد النقض الكامل</div>
+    <h1 class="hero-title">تقرير SEO النهائي<br><span>موقع Bright AI</span></h1>
+    <p class="hero-subtitle">نتيجة فحص 174 ملف HTML + netlify.toml + sitemap.xml + CSS/JS — فبراير 2026</p>
+    <div class="hero-stats">
+      <div class="stat-card red">
+        <div class="stat-val">10</div>
+        <div class="stat-label">مشاكل حرجة</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="stat-val">11</div>
+        <div class="stat-label">مشاكل عالية</div>
+      </div>
+      <div class="stat-card teal">
+        <div class="stat-val">174</div>
+        <div class="stat-label">ملف HTML فُحص</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-val">14</div>
+        <div class="stat-label">Prompts Codex جاهزة</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════ SEMRUSH DATA ══════════ -->
+  <div class="section" id="semrush">
+    <h2 class="section-title"><span class="num">00</span>قراءة بيانات Semrush</h2>
+    <div class="semrush-note">
+      <h4>📊 الموقع على بُعد 1.5 مرتبة من الصفحة الأولى</h4>
+      <p style="font-size:14px;color:var(--text-dim);line-height:1.8">متوسط الموضع <strong style="color:var(--teal)">11.5</strong> — تحسّن 55% — لكن الظهور لمرتين فقط في الأسبوع يعني أن الفهرسة محدودة جداً. وقت الجلسة <strong style="color:var(--green)">12:21 دقيقة</strong> ومعدل الارتداد <strong style="color:var(--green)">45.7%</strong> مؤشران قويان على جودة المحتوى. المشكلة ليست المحتوى — بل الهيكل التقني.</p>
+    </div>
+    <div class="grid-2">
+      <div class="mini-card right">
+        <h4>✅ نقاط قوة يجب الحفاظ عليها</h4>
+        <ul class="check-list">
+          <li>وقت الجلسة <strong>12:21 دقيقة</strong> — محتوى ذو قيمة</li>
+          <li>معدل ارتداد <strong>45.7%</strong> وفي تحسن</li>
+          <li>نمو Riyadh <strong>+100% زوار</strong> و+6100% تفاعل</li>
+          <li>نمو Jeddah <strong>+200% زوار</strong> و+548% تفاعل</li>
+          <li>موبايل <strong>53.8%</strong> من الزوار ↑133%</li>
+          <li>HTTPS + HSTS محكم</li>
+          <li><strong>71/72 مقالة</strong> في /blogger/ لديها Schema</li>
+        </ul>
+      </div>
+      <div class="mini-card wrong">
+        <h4>❌ المشاكل التي تحول دون التصدر</h4>
+        <ul class="check-list">
+          <li>ظهور <strong>2 مرة فقط</strong> في أسبوع — فهرسة محدودة</li>
+          <li><strong>صفر نقرة</strong> من البحث — CTR = 0%</li>
+          <li>مسارات URL طويلة في <strong>151 رابط</strong> بالـ Sitemap</li>
+          <li><strong>BRIGHTAI_Analysis.html</strong> مكشوف للعالم!</li>
+          <li>صورة OG الرئيسية <strong>4.3KB</strong> فقط — مشوّهة</li>
+          <li><strong>42 صفحة /docs/</strong> thin content مفهرسة</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════ CORRECTIONS ══════════ -->
+  <div class="section" id="corrections">
+    <h2 class="section-title"><span class="num">01</span>تصويب أخطاء التقرير الأول</h2>
+    <p style="font-size:14px;color:var(--text-dim);margin-bottom:20px">التقرير الأول فحص 26 صفحة فقط وأغفل 148 ملف HTML. هذا سبّب 5 أخطاء تشخيصية مؤثرة.</p>
+
+    <div class="compare-grid">
+      <div class="compare-header">البند</div>
+      <div class="compare-header">❌ التقرير الأول</div>
+      <div class="compare-header">✅ الحقيقة بعد النقض</div>
+
+      <div class="compare-cell label">مقالات المدونة بدون datePublished</div>
+      <div class="compare-cell wrong">78 مقالة مشكلة — Priority: حرجة</div>
+      <div class="compare-cell right">1 مقالة فقط — 71/72 لديها Schema صحيح!</div>
+
+      <div class="compare-cell label">صفحة demo</div>
+      <div class="compare-cell wrong">لا يوجد Schema</div>
+      <div class="compare-cell right">3 أنواع Schema: SoftwareApplication + FAQPage + Breadcrumb</div>
+
+      <div class="compare-cell label">صفحات القطاعات</div>
+      <div class="compare-cell wrong">مفقودة — يجب إنشاؤها من صفر</div>
+      <div class="compare-cell right">6 صفحات موجودة في /sectors/ بـ Schema وOG وH2</div>
+
+      <div class="compare-cell label">صفحات OG المتأثرة</div>
+      <div class="compare-cell wrong">8 صفحات</div>
+      <div class="compare-cell right">13 صفحة — 5 صفحات كانت مخفية</div>
+
+      <div class="compare-cell label">إجمالي صفحات الموقع</div>
+      <div class="compare-cell wrong">26 صفحة</div>
+      <div class="compare-cell right">174 ملف HTML — 90% لم يُفحص!</div>
+
+      <div class="compare-cell label">Prompt إضافة datePublished للمدونة</div>
+      <div class="compare-cell wrong">يُكرر كوداً موجوداً على 71 صفحة</div>
+      <div class="compare-cell right">يجب تطبيقه على blog/index.html فقط (الفهرس)</div>
+    </div>
+
+    <div class="alert warning" style="margin-top:20px">
+      <div class="alert-title">⚠️ تحذير مهم بشأن Prompt 6 من التقرير السابق</div>
+      <div class="alert-body">Prompt "إضافة itemscope وdatePublished لمقالات المدونة" كان سيُضيف كوداً Schema مكرراً على 71 صفحة تمتلكه أصلاً. <strong>لا تنفّذه.</strong> استخدم Prompt A المُصحَّح أدناه بدلاً منه.</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════ NEW CRITICAL ISSUES ══════════ -->
+
+  <!-- ANALYSIS LEAK -->
+  <div class="section" id="analysis-leak">
+    <h2 class="section-title"><span class="num" style="background:rgba(255,71,87,.15);color:var(--red);border-color:rgba(255,71,87,.3)">!</span>خطر أمني: BRIGHTAI_Analysis.html مكشوف</h2>
+    <div class="alert critical">
+      <div class="alert-title">🚨 يجب إصلاح هذا قبل أي شيء آخر</div>
+      <div class="alert-body">يمكن لأي منافس الوصول إلى <code style="background:rgba(255,71,87,.15);padding:2px 6px;border-radius:3px;font-family:var(--font-mono)">https://brightai.site/BRIGHTAI_Analysis.html</code> وقراءة:</div>
+    </div>
+    <div class="grid-2" style="margin-top:12px">
+      <div class="mini-card wrong">
+        <h4>ما يراه أي زائر الآن</h4>
+        <ul class="check-list">
+          <li>هيكل قاعدة البيانات الكاملة <strong>(17 جدول)</strong></li>
+          <li>Stack التقني: <strong>React+TS, Node.js, Supabase, Groq AI</strong></li>
+          <li>عدد ملفات المشروع: <strong>619 ملف</strong></li>
+          <li>تقييمات الجودة الداخلية للمنصة</li>
+          <li>تقسيم المونوريبو ووحداته الثلاث</li>
+        </ul>
+      </div>
+      <div class="mini-card right">
+        <h4>الإصلاح الفوري</h4>
+        <ul class="check-list">
+          <li>حذف الملف من الـ repository</li>
+          <li>إضافة redirect 301 لـ "/" في netlify.toml</li>
+          <li>أو إضافة noindex+nofollow إن كنت تحتاجه</li>
+          <li>إضافة BRIGHTAI_Analysis.html للـ .gitignore</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- GEMINI.PNG -->
+  <div class="section" id="gemini-img">
+    <h2 class="section-title"><span class="num" style="background:rgba(255,71,87,.15);color:var(--red);border-color:rgba(255,71,87,.3)">!</span>أزمة مزدوجة: Gemini.png</h2>
+    <div class="grid-2">
+      <div class="alert critical">
+        <div class="alert-title">🔴 المشكلة الأولى: حجم 4.3KB فقط!</div>
+        <div class="alert-body">الصورة المستخدمة كـ og:image (يجب أن تكون 1200×630px ≈ 150-300KB) هي في الواقع <strong>4.3 كيلوبايت فقط</strong>. أي مشاركة على واتساب أو تويتر أو سناب ستظهر بصورة مشوّهة أو بيضاء.</div>
+      </div>
+      <div class="alert critical">
+        <div class="alert-title">🔴 المشكلة الثانية: اسم منتج Google!</div>
+        <div class="alert-body">الملف مسمى <strong>Gemini.png</strong> — وهو اسم نموذج Google AI المنافس. يُستخدم هذا الملف كشعار الموقع، OG Image، وأيقونة PWA. خطر علامة تجارية وتعارض في الفهرسة.</div>
+      </div>
+    </div>
+    <p style="font-size:14px;color:var(--text-dim);margin:12px 0">هذا الملف الواحد يُستخدم في <strong style="color:var(--orange)">5 أدوار مختلفة</strong> بأبعاد مطلوبة مختلفة:</p>
+    <div class="tag-row">
+      <span class="tag red">og:image → 1200×630px</span>
+      <span class="tag orange">Logo → 512px+</span>
+      <span class="tag orange">PWA Icon 192px</span>
+      <span class="tag orange">PWA Icon 512px</span>
+      <span class="tag red">PWA Screenshot 1280×720</span>
+    </div>
+  </div>
+
+  <!-- THIN CONTENT -->
+  <div class="section" id="thin-content">
+    <h2 class="section-title"><span class="num">02</span>42 صفحة Docs مفهرسة — Thin Content</h2>
+    <div class="alert high">
+      <div class="alert-title">🟠 خطر Thin Content يُضعف سلطة الدومين</div>
+      <div class="alert-body"><code style="font-family:var(--font-mono)">/frontend/pages/docs/</code> تحتوي 42 صفحة (22 عربي + 20 إنجليزي) مفهرسة بالكامل. معظمها نسخ مختصرة من صفحات الخدمات الرئيسية. Google تُعاقب المواقع على Thin Content المكرر بتخفيض التقييم العام للدومين.</div>
+    </div>
+    <ul class="check-list" style="margin-top:12px">
+      <li><strong>docs.html في الجذر</strong> بدون canonical — يتنافس مع /docs/ الداخلية</li>
+      <li><strong>20 صفحة EN</strong> بعض منها بدون hreflang سليم — Duplicate Content محتمل</li>
+      <li>42 صفحة في Sitemap ترفع <strong>Crawl Budget المُهدَر</strong></li>
+      <li>consultation-en.html وعدة ملفات EN بدون وسوم hreflang</li>
+    </ul>
+  </div>
+
+  <!-- BROKEN PAGES -->
+  <div class="section" id="broken-pages">
+    <h2 class="section-title"><span class="num">03</span>صفحات مكسورة مفهرسة</h2>
+    <div class="alert high">
+      <div class="alert-title">🟠 صفحتان مكسورتان تهدران Crawl Budget</div>
+      <div class="alert-body">جوجل يزحف عليهما وينفق Crawl Budget بلا مقابل.</div>
+    </div>
+    <div class="grid-2" style="margin-top:12px">
+      <div class="mini-card">
+        <h4 style="color:var(--orange)">interview/Presentation.html</h4>
+        <p>تقول "تم نقل صفحة العرض التقديمي" لكن robots="index, follow" بدون أي redirect. جوجل يزحف على صفحة نقل لا توجيه فيها.</p>
+      </div>
+      <div class="mini-card">
+        <h4 style="color:var(--orange)">interview/g.html</h4>
+        <p>صفحة بعنوان "نمو" بمحتوى غامض — مفهرسة بالكامل بدون وصف أو هدف واضح. تستنزف Crawl Budget وتُضعف التقييم.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENCODED URLS -->
+  <div class="section" id="encoded-urls">
+    <h2 class="section-title"><span class="num">04</span>11 رابط عربي مُشفّر في Sitemap</h2>
+    <div class="alert high">
+      <div class="alert-title">🟠 روابط مكسورة من منظور محركات البحث</div>
+      <div class="alert-body">11 رابط في sitemap.xml يحتوي على ترميز URL عربي (%D8%...). بعض محركات البحث قد لا تزحف عليها بشكل صحيح.</div>
+    </div>
+    <div class="code-block">https://brightai.site/frontend/pages/blogger/<span class="str">%D8%A3%D8%AA%D9%85%D8%AA%D8%A9...</span>
+<span class="cmt">↑ رابط مكسور — يجب استبداله بـ slug إنجليزي</span>
+
+<span class="kw">الصواب:</span>
+https://brightai.site/frontend/pages/blogger/<span class="str">ai-automation-solutions.html</span></div>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- ══════════ CONFIRMED ISSUES ══════════ -->
+
+  <!-- FETCHPRIORITY -->
+  <div class="section" id="fetchpriority">
+    <h2 class="section-title"><span class="num">05</span>fetchpriority مفقود — يضر Core Web Vitals</h2>
+    <div class="alert critical">
+      <div class="alert-title">🔴 جميع الـ 174 صفحة بدون fetchpriority="high" على صورة LCP</div>
+      <div class="alert-body">المتصفح يُعامل صورة الـ Hero بنفس أولوية الصور الأخرى → LCP يرتفع → Google تُخفض الترتيب. الإصلاح: سطر واحد فقط.</div>
+    </div>
+    <div class="code-block"><span class="cmt">&lt;!-- قبل --&gt;</span>
+&lt;<span class="kw">img</span> <span class="attr">src</span>=<span class="str">"/assets/images/hero-brain.svg"</span> <span class="attr">alt</span>=<span class="str">"..."</span>&gt;
+
+<span class="cmt">&lt;!-- بعد --&gt;</span>
+&lt;<span class="kw">img</span> <span class="attr">src</span>=<span class="str">"/assets/images/hero-brain.svg"</span>
+     <span class="attr">alt</span>=<span class="str">"حلول الذكاء الاصطناعي للشركات السعودية"</span>
+     <span class="attr">fetchpriority</span>=<span class="str">"high"</span>
+     <span class="attr">loading</span>=<span class="str">"eager"</span>
+     <span class="attr">decoding</span>=<span class="str">"async"</span>
+     <span class="attr">width</span>=<span class="str">"800"</span> <span class="attr">height</span>=<span class="str">"600"</span>&gt;</div>
+  </div>
+
+  <!-- URLS -->
+  <div class="section" id="urls">
+    <h2 class="section-title"><span class="num">06</span>مسارات URL الطويلة — 151 رابط في Sitemap</h2>
+    <div class="alert critical">
+      <div class="alert-title">🔴 السبب الأكبر لضعف الـ 2 Impressions فقط</div>
+      <div class="alert-body">محركات البحث تُفضّل <code style="font-family:var(--font-mono)">brightai.site/about</code> على <code style="font-family:var(--font-mono)">brightai.site/frontend/pages/about-us/index.html</code>. الحل: Rewrites في netlify.toml مع تحديث Sitemap وCanonical.</div>
+    </div>
+    <div class="code-block"><span class="cmt"># netlify.toml — Clean URL Rewrites</span>
+[[<span class="kw">redirects</span>]]
+<span class="attr">from</span> = <span class="str">"/about"</span>
+<span class="attr">to</span>   = <span class="str">"/frontend/pages/about-us/index.html"</span>
+<span class="attr">status</span> = <span class="tag">200</span>  <span class="cmt"># 200 = Rewrite (URL يبقى /about في المتصفح)</span>
+
+[[<span class="kw">redirects</span>]]
+<span class="attr">from</span> = <span class="str">"/services"</span>
+<span class="attr">to</span>   = <span class="str">"/frontend/pages/our-products/index.html"</span>
+<span class="attr">status</span> = <span class="tag">200</span>
+
+<span class="cmt"># ... نفس النمط للصفحات: /contact /blog /ai-agent /ai-bots
+# /data-analysis /consultation /smart-automation /case-studies</span></div>
+  </div>
+
+  <!-- SCHEMA -->
+  <div class="section" id="schema">
+    <h2 class="section-title"><span class="num">07</span>Schema ناقص — صفحات بدون بيانات منظمة</h2>
+    <div class="alert high">
+      <div class="alert-title">🟠 5 صفحات مهمة بدون أي Schema (مؤكدة)</div>
+    </div>
+    <table class="issues-table" style="margin-top:8px">
+      <tr>
+        <th width="22%">الصفحة</th>
+        <th width="18%">الحالة</th>
+        <th>المشكلة</th>
+        <th width="30%">الإصلاح</th>
+      </tr>
+      <tr>
+        <td><strong>case-studies</strong></td>
+        <td><span class="badge critical">حرجة</span></td>
+        <td class="issue-detail">أهم صفحة تحويل — لا Schema</td>
+        <td class="issue-detail">إضافة ItemList + Article Schema</td>
+      </tr>
+      <tr>
+        <td><strong>interview</strong></td>
+        <td><span class="badge high">عالية</span></td>
+        <td class="issue-detail">منصة مقابلات بدون SoftwareApplication</td>
+        <td class="issue-detail">إضافة SoftwareApplication Schema</td>
+      </tr>
+      <tr>
+        <td><strong>job.MAISco</strong></td>
+        <td><span class="badge high">عالية</span></td>
+        <td class="issue-detail">بوابة وظائف بدون WebPage Schema</td>
+        <td class="issue-detail">إضافة WebPage + BreadcrumbList</td>
+      </tr>
+      <tr>
+        <td><strong>BrightProject</strong></td>
+        <td><span class="badge high">عالية <span class="badge new-badge" style="margin-right:4px">جديد</span></span></td>
+        <td class="issue-detail">روبوت رئيسي بلا Schema — BrightMath لديها</td>
+        <td class="issue-detail">إضافة SoftwareApplication Schema</td>
+      </tr>
+      <tr>
+        <td><strong>manufacturing.html</strong></td>
+        <td><span class="badge medium">متوسطة <span class="badge new-badge" style="margin-right:4px">جديد</span></span></td>
+        <td class="issue-detail">تبدأ بـ Organization بدلاً من Industry (عكس باقي الـ sectors)</td>
+        <td class="issue-detail">تغيير @type الأول من Organization إلى Industry</td>
+      </tr>
+    </table>
+    <div class="alert info" style="margin-top:16px">
+      <div class="alert-title">ℹ️ تصحيح: AggregateRating</div>
+      <div class="alert-body">index.html يمتلك AggregateRating (4.9/47 تقييم) ✓. ai-bots يمتلكه ✓. الصفحات الناقصة: ai-agent، consultation، data-analysis، smart-automation.</div>
+    </div>
+  </div>
+
+  <!-- OG TAGS -->
+  <div class="section" id="og-tags">
+    <h2 class="section-title"><span class="num">08</span>Open Graph — 13 صفحة بمشاكل (كانت 8)</h2>
+    <table class="issues-table">
+      <tr>
+        <th width="25%">الصفحة</th>
+        <th width="18%">الخطورة</th>
+        <th>العناصر الناقصة</th>
+      </tr>
+      <tr><td><strong>about-us</strong></td><td><span class="badge high">عالية</span></td><td class="issue-detail">og:image + og:title + og:description + twitter:card + twitter:image (كل شيء)</td></tr>
+      <tr><td><strong>case-studies</strong></td><td><span class="badge high">عالية</span></td><td class="issue-detail">og:image + og:title + og:description + twitter:card + twitter:image</td></tr>
+      <tr><td><strong>partners</strong></td><td><span class="badge high">عالية</span></td><td class="issue-detail">كل OG + Twitter مفقودة</td></tr>
+      <tr><td><strong>try</strong></td><td><span class="badge high">عالية</span></td><td class="issue-detail">og:image + twitter:card + twitter:image</td></tr>
+      <tr><td><strong>demo</strong></td><td><span class="badge medium">متوسطة</span></td><td class="issue-detail">og:image + twitter:image فقط</td></tr>
+      <tr><td><strong>smart-automation</strong></td><td><span class="badge medium">متوسطة</span></td><td class="issue-detail">og:description + og:title + twitter:card</td></tr>
+      <tr><td><strong>ai-workflows</strong></td><td><span class="badge medium">متوسطة</span></td><td class="issue-detail">twitter:card فقط</td></tr>
+      <tr><td><strong>ai-scolecs</strong></td><td><span class="badge low">منخفضة <span class="badge new-badge" style="margin-right:4px">جديد</span></span></td><td class="issue-detail">twitter:card فقط</td></tr>
+      <tr><td><strong>health-bright</strong></td><td><span class="badge low">منخفضة <span class="badge new-badge" style="margin-right:4px">جديد</span></span></td><td class="issue-detail">twitter:image فقط</td></tr>
+      <tr><td colspan="3" style="background:rgba(30,45,66,.3);padding:8px 16px;font-size:13px;color:var(--text-muted)">+ offline + privacy-cookies + sitemap + terms (صفحات utility — يكفي noindex لمعظمها)</td></tr>
+    </table>
+  </div>
+
+  <!-- CSS BLOCKING -->
+  <div class="section" id="css-blocking">
+    <h2 class="section-title"><span class="num">09</span>4 ملفات CSS تعيق الرسم</h2>
+    <div class="alert high">
+      <div class="alert-title">🟠 Render-blocking CSS يضر FCP و LCP</div>
+      <div class="alert-body">4 stylesheets تُحمَّل بشكل متزامن في head. الإصلاح: preload + onload للـ CSS غير الحرج، وإضافة preconnect للخدمات الخارجية.</div>
+    </div>
+    <div class="code-block"><span class="cmt">&lt;!-- 1. preconnect — أضف بعد charset مباشرةً --&gt;</span>
+&lt;<span class="kw">link</span> <span class="attr">rel</span>=<span class="str">"preconnect"</span> <span class="attr">href</span>=<span class="str">"https://www.googletagmanager.com"</span>&gt;
+&lt;<span class="kw">link</span> <span class="attr">rel</span>=<span class="str">"preconnect"</span> <span class="attr">href</span>=<span class="str">"https://fonts.googleapis.com"</span> <span class="attr">crossorigin</span>&gt;
+&lt;<span class="kw">link</span> <span class="attr">rel</span>=<span class="str">"dns-prefetch"</span> <span class="attr">href</span>=<span class="str">"https://www.google-analytics.com"</span>&gt;
+
+<span class="cmt">&lt;!-- 2. CSS غير حرج — non-blocking --&gt;</span>
+&lt;<span class="kw">link</span> <span class="attr">rel</span>=<span class="str">"preload"</span> <span class="attr">href</span>=<span class="str">"/frontend/css/main.bundle.min.css"</span>
+      <span class="attr">as</span>=<span class="str">"style"</span> <span class="attr">onload</span>=<span class="str">"this.onload=null;this.rel='stylesheet'"</span>&gt;
+&lt;<span class="kw">noscript</span>&gt;&lt;link rel="stylesheet" href="/frontend/css/main.bundle.min.css"&gt;&lt;/noscript&gt;
+
+<span class="cmt">&lt;!-- 3. bundle-critical.css يبقى synchronous --&gt;</span>
+&lt;<span class="kw">link</span> <span class="attr">href</span>=<span class="str">"/frontend/css/bundle-critical.css"</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span>&gt;</div>
+  </div>
+
+  <!-- HEADINGS -->
+  <div class="section" id="headings">
+    <h2 class="section-title"><span class="num">10</span>هيكل العناوين — 5 صفحات بدون H2</h2>
+    <div class="tag-row">
+      <span class="tag orange">ai-workflows — H1 بدون H2</span>
+      <span class="tag orange">demo — H1 ثم H3 مباشرة</span>
+      <span class="tag orange">terms — رغم طولها</span>
+      <span class="tag orange">tools — أدوات بدون تصنيف</span>
+      <span class="tag red">offline — H1 فقط (noindex ✓)</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- ══════════ PRIORITY TABLE ══════════ -->
+  <div class="section" id="priority-table">
+    <h2 class="section-title"><span class="num">11</span>جدول الأولويات الكامل</h2>
+
+    <table class="issues-table">
+      <tr>
+        <th width="14%">الخطورة</th>
+        <th width="28%">المشكلة</th>
+        <th width="28%">الصفحات المتأثرة</th>
+        <th>الإصلاح</th>
+      </tr>
+      <!-- CRITICAL -->
+      <tr>
+        <td><span class="badge critical">حرجة</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">BRIGHTAI_Analysis.html مكشوف للعالم</td>
+        <td class="issue-detail">الجذر — متاح لأي زائر</td>
+        <td class="issue-detail">احذف الملف أو أضف noindex+redirect فوراً</td>
+      </tr>
+      <tr>
+        <td><span class="badge critical">حرجة</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">Gemini.png: 4.3KB فقط كصورة OG</td>
+        <td class="issue-detail">كل صفحات الموقع</td>
+        <td class="issue-detail">استبدل بصورة حقيقية 1200×630px</td>
+      </tr>
+      <tr>
+        <td><span class="badge critical">حرجة</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">اسم Gemini.png = علامة Google المنافسة</td>
+        <td class="issue-detail">كل الأصول الرئيسية</td>
+        <td class="issue-detail">أعد تسمية لـ brightai-og-image.jpg</td>
+      </tr>
+      <tr>
+        <td><span class="badge critical">حرجة</span></td>
+        <td class="issue-title">fetchpriority مفقود من LCP image</td>
+        <td class="issue-detail">174 صفحة</td>
+        <td class="issue-detail">إضافة fetchpriority="high" للصورة الأولى</td>
+      </tr>
+      <tr>
+        <td><span class="badge critical">حرجة</span></td>
+        <td class="issue-title">GSC Verification مفقود</td>
+        <td class="issue-detail">index.html</td>
+        <td class="issue-detail">إضافة google-site-verification meta</td>
+      </tr>
+      <tr>
+        <td><span class="badge critical">حرجة</span></td>
+        <td class="issue-title">مسارات Sitemap طويلة /frontend/pages/</td>
+        <td class="issue-detail">151 من 153 رابط</td>
+        <td class="issue-detail">Clean URL Rewrites في netlify.toml</td>
+      </tr>
+      <!-- HIGH -->
+      <tr>
+        <td><span class="badge high">عالية</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">42 صفحة docs مفهرسة — Thin Content</td>
+        <td class="issue-detail">frontend/pages/docs/</td>
+        <td class="issue-detail">noindex أو canonical لصفحات الخدمة</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">docs.html جذر بدون canonical</td>
+        <td class="issue-detail">docs.html</td>
+        <td class="issue-detail">إضافة canonical يشير لنفسه</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">Presentation.html مكسورة مفهرسة</td>
+        <td class="issue-detail">interview/Presentation.html</td>
+        <td class="issue-detail">301 redirect لـ /interview/</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">11 URL عربية مُشفّرة في Sitemap</td>
+        <td class="issue-detail">sitemap.xml</td>
+        <td class="issue-detail">rename + redirect + تحديث Sitemap</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">20 صفحة EN docs بدون hreflang</td>
+        <td class="issue-detail">docs/*-en.html</td>
+        <td class="issue-detail">إضافة hreflang بالنمط الصحيح</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span></td>
+        <td class="issue-title">13 صفحة بمشاكل OG/Twitter <span class="badge fixed">تصحيح: كانت 8</span></td>
+        <td class="issue-detail">راجع الجدول في القسم 08</td>
+        <td class="issue-detail">إضافة og:image + twitter:card</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span></td>
+        <td class="issue-title">case-studies بدون Schema</td>
+        <td class="issue-detail">case-studies/index.html</td>
+        <td class="issue-detail">إضافة ItemList + Article Schema</td>
+      </tr>
+      <tr>
+        <td><span class="badge high">عالية</span></td>
+        <td class="issue-title">4 CSS ملفات تعيق الرسم</td>
+        <td class="issue-detail">جميع الصفحات</td>
+        <td class="issue-detail">preload + onload للـ non-critical CSS</td>
+      </tr>
+      <!-- MEDIUM -->
+      <tr>
+        <td><span class="badge medium">متوسطة</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">BrightProject بدون Schema</td>
+        <td class="issue-detail">ai-bots/BrightProject/</td>
+        <td class="issue-detail">إضافة SoftwareApplication Schema</td>
+      </tr>
+      <tr>
+        <td><span class="badge medium">متوسطة</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">manufacturing.html: Organization بدلاً من Industry</td>
+        <td class="issue-detail">sectors/manufacturing.html</td>
+        <td class="issue-detail">تغيير @type الأول</td>
+      </tr>
+      <tr>
+        <td><span class="badge medium">متوسطة</span></td>
+        <td class="issue-title">5 صفحات بدون H2 <span class="badge fixed">تصحيح: كانت 4</span></td>
+        <td class="issue-detail">workflows, demo, terms, tools, offline</td>
+        <td class="issue-detail">إضافة H2 لكل قسم رئيسي</td>
+      </tr>
+      <tr>
+        <td><span class="badge medium">متوسطة</span></td>
+        <td class="issue-title">غياب AggregateRating في صفحات الخدمات</td>
+        <td class="issue-detail">ai-agent, consultation, data-analysis, smart-automation</td>
+        <td class="issue-detail">إضافة aggregateRating داخل Service Schema</td>
+      </tr>
+      <tr>
+        <td><span class="badge medium">متوسطة</span></td>
+        <td class="issue-title">blog/index.html فهرس بدون &lt;time&gt; مرئية <span class="badge fixed">تصحيح لمفهوم خاطئ</span></td>
+        <td class="issue-detail">blog/index.html فقط</td>
+        <td class="issue-detail">إضافة time tag في كروت الفهرس فقط</td>
+      </tr>
+      <!-- LOW -->
+      <tr>
+        <td><span class="badge low">منخفضة</span></td>
+        <td class="issue-title">Bing Webmaster Tools مفقود</td>
+        <td class="issue-detail">index.html</td>
+        <td class="issue-detail">إضافة msvalidate.01 meta</td>
+      </tr>
+      <tr>
+        <td><span class="badge low">منخفضة</span></td>
+        <td class="issue-title">Image Sitemap مفقود</td>
+        <td class="issue-detail">sitemap.xml</td>
+        <td class="issue-detail">إضافة xmlns:image namespace</td>
+      </tr>
+      <tr>
+        <td><span class="badge low">منخفضة</span> <span class="badge new-badge">جديد</span></td>
+        <td class="issue-title">interview/g.html مفهرسة وغامضة</td>
+        <td class="issue-detail">interview/g.html</td>
+        <td class="issue-detail">noindex أو 301 redirect</td>
+      </tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- ══════════ PROMPTS ══════════ -->
+  <div class="section" id="prompts">
+    <h2 class="section-title"><span class="num">12</span>Prompts Codex الكاملة والمُصحَّحة</h2>
+
+    <div class="copy-all-bar">
+      <p>انسخ جميع الـ Prompts دفعة واحدة بترتيب الأولوية</p>
+      <button class="copy-all-btn" onclick="copyAll()">📋 نسخ كل الـ Prompts</button>
+    </div>
+
+    <!-- PROMPT URGENT 1 -->
+    <div class="prompt-block" id="pb-u1">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">URGENT-1</span>
+          <span class="prompt-title">إزالة BRIGHTAI_Analysis.html — أمان فوري</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag urgent">⚡ أولى</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-u1')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">URGENT SECURITY FIX — Do this before anything else:
+
+1. Delete the file BRIGHTAI_Analysis.html from the repository root.
+   This file exposes: full database schema (17 tables), tech stack (React+TS,
+   Node.js, Supabase, Groq AI), file count (619 files), and internal quality assessments.
+
+2. In netlify.toml, add this redirect as the VERY FIRST redirect rule:
+   [[redirects]]
+   from = "/BRIGHTAI_Analysis.html"
+   to = "/"
+   status = 301
+   force = true
+
+3. Add to .gitignore:
+   BRIGHTAI_Analysis.html
+   *_Analysis.html
+   *_analysis.html</div>
+      </div>
+    </div>
+
+    <!-- PROMPT URGENT 2 -->
+    <div class="prompt-block" id="pb-u2">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">URGENT-2</span>
+          <span class="prompt-title">استبدال Gemini.png — صورة حقيقية ومُسمّاة صحيحاً</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag urgent">⚡ عاجل</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-u2')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">BRANDING + PERFORMANCE FIX:
+
+The file assets/images/Gemini.png has two critical problems:
+  1. It is only 4.3KB — far too small for og:image (should be ~200KB at 1200×630px)
+  2. "Gemini" is the name of Google's AI product — a direct competitor
+
+Tasks:
+1. Rename: assets/images/Gemini.png → assets/images/brightai-og-placeholder.png
+
+2. Find ALL references to /assets/images/Gemini.png across every HTML file
+   and replace with /assets/images/brightai-og-placeholder.png
+   Files to update include: index.html, manifest.json, and all frontend/pages/*/index.html
+
+3. In manifest.json, update all "src" fields in icons[] and screenshots[]
+
+4. Add a TODO comment in index.html near the og:image meta tag:
+   &lt;!-- TODO: Replace brightai-og-placeholder.png with a real 1200×630px image (~200KB) --&gt;
+
+NOTE TO DEVELOPER: After this rename, you must create a proper OG image:
+  - brightai-og-image.jpg → 1200×630px, JPEG quality 85, ~150-250KB
+  - brightai-icon-192.png → 192×192px, actual logo
+  - brightai-icon-512.png → 512×512px, actual logo</div>
+      </div>
+    </div>
+
+    <!-- PROMPT A -->
+    <div class="prompt-block" id="pb-a">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">A</span>
+          <span class="prompt-title">إضافة fetchpriority + lazy loading لكل الصفحات</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-a')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">You are an expert SEO engineer. For EVERY index.html in this project
+(root index.html + all frontend/pages/*/index.html):
+
+1. Find the FIRST &lt;img&gt; tag inside &lt;body&gt; (the hero/LCP image).
+   Add these attributes if not present:
+     fetchpriority="high"
+     loading="eager"
+     decoding="async"
+   Make sure width and height attributes exist with correct pixel dimensions.
+
+2. For ALL other &lt;img&gt; tags that are NOT the first image:
+   Add loading="lazy" and decoding="async" if not already present.
+
+3. Do NOT modify any &lt;title&gt;, &lt;meta name="description"&gt;, headings, or text content.
+   Only modify &lt;img&gt; tags.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT B -->
+    <div class="prompt-block" id="pb-b">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">B</span>
+          <span class="prompt-title">إضافة Clean URL Rewrites في netlify.toml</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-b')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Add the following URL rewrite rules to netlify.toml.
+Use status=200 (rewrites) NOT 301 (redirects) — this keeps the clean URL in the browser
+while serving the actual file.
+
+Add after the existing "Static legacy routes" section:
+
+# Clean URL Rewrites — SEO-friendly paths
+[[redirects]]
+from = "/about"
+to = "/frontend/pages/about-us/index.html"
+status = 200
+
+[[redirects]]
+from = "/services"
+to = "/frontend/pages/our-products/index.html"
+status = 200
+
+[[redirects]]
+from = "/contact"
+to = "/frontend/pages/contact/index.html"
+status = 200
+
+[[redirects]]
+from = "/blog"
+to = "/frontend/pages/blog/index.html"
+status = 200
+
+[[redirects]]
+from = "/ai-agent"
+to = "/frontend/pages/ai-agent/index.html"
+status = 200
+
+[[redirects]]
+from = "/ai-bots"
+to = "/frontend/pages/ai-bots/index.html"
+status = 200
+
+[[redirects]]
+from = "/data-analysis"
+to = "/frontend/pages/data-analysis/index.html"
+status = 200
+
+[[redirects]]
+from = "/consultation"
+to = "/frontend/pages/consultation/index.html"
+status = 200
+
+[[redirects]]
+from = "/smart-automation"
+to = "/frontend/pages/smart-automation/index.html"
+status = 200
+
+[[redirects]]
+from = "/case-studies"
+to = "/frontend/pages/case-studies/index.html"
+status = 200
+
+[[redirects]]
+from = "/what-is-ai"
+to = "/frontend/pages/what-is-ai/index.html"
+status = 200
+
+[[redirects]]
+from = "/partners"
+to = "/frontend/pages/partners/index.html"
+status = 200
+
+[[redirects]]
+from = "/tools"
+to = "/frontend/pages/tools/index.html"
+status = 200
+
+[[redirects]]
+from = "/health"
+to = "/frontend/pages/health-bright/index.html"
+status = 200
+
+[[redirects]]
+from = "/machine-learning"
+to = "/frontend/pages/machine/index.html"
+status = 200</div>
+      </div>
+    </div>
+
+    <!-- PROMPT C -->
+    <div class="prompt-block" id="pb-c">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">C</span>
+          <span class="prompt-title">تحديث sitemap.xml بالروابط النظيفة + Image namespace</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-c')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Modify sitemap.xml:
+
+1. Add image namespace to urlset opening tag:
+   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+
+2. Replace ALL /frontend/pages/{name}/index.html URLs with clean equivalents:
+   /frontend/pages/about-us/index.html      → /about
+   /frontend/pages/our-products/index.html  → /services
+   /frontend/pages/contact/index.html       → /contact
+   /frontend/pages/blog/index.html          → /blog
+   /frontend/pages/ai-agent/index.html      → /ai-agent
+   /frontend/pages/ai-bots/index.html       → /ai-bots
+   /frontend/pages/data-analysis/index.html → /data-analysis
+   /frontend/pages/consultation/index.html  → /consultation
+   /frontend/pages/smart-automation/index.html → /smart-automation
+   /frontend/pages/case-studies/index.html  → /case-studies
+   /frontend/pages/what-is-ai/index.html    → /what-is-ai
+   /frontend/pages/partners/index.html      → /partners
+   /frontend/pages/tools/index.html         → /tools
+   /frontend/pages/health-bright/index.html → /health
+   /frontend/pages/machine/index.html       → /machine-learning
+
+3. Add image:image to the homepage &lt;url&gt; entry:
+   &lt;image:image&gt;
+     &lt;image:loc&gt;https://brightai.site/assets/images/brightai-og-placeholder.png&lt;/image:loc&gt;
+     &lt;image:title&gt;حلول الذكاء الاصطناعي للشركات السعودية - Bright AI&lt;/image:title&gt;
+   &lt;/image:image&gt;
+
+4. Remove any URLs containing %D8%, %D9%, or other Arabic percent-encoding.
+   These are Arabic-named files that need to be renamed separately.
+
+5. Do NOT change any &lt;lastmod&gt; dates.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT D -->
+    <div class="prompt-block" id="pb-d">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">D</span>
+          <span class="prompt-title">إضافة OG Tags للـ 13 صفحة الناقصة</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-d')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Add missing Open Graph and Twitter Card meta tags to these pages.
+Do NOT modify &lt;title&gt; or &lt;meta name="description"&gt;. Only ADD missing tags.
+
+For each page, use the existing meta description value for og:description and twitter:description.
+Use the page's existing canonical URL for og:url.
+
+Pages and what's missing:
+- frontend/pages/about-us/index.html      → og:image, og:title, og:description, og:url, twitter:card, twitter:image
+- frontend/pages/case-studies/index.html  → og:image, og:title, og:description, og:url, twitter:card, twitter:image
+- frontend/pages/partners/index.html      → ALL og + twitter tags
+- frontend/pages/try/index.html           → og:image, twitter:card, twitter:image
+- frontend/pages/demo/index.html          → og:image, twitter:image
+- frontend/pages/smart-automation/index.html → og:description, og:title, twitter:card
+- frontend/pages/ai-workflows/index.html  → twitter:card
+- frontend/pages/ai-scolecs/index.html    → twitter:card
+- frontend/pages/health-bright/index.html → twitter:image
+
+Template to add (adapt URL and description per page):
+&lt;meta property="og:type" content="website" /&gt;
+&lt;meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" /&gt;
+&lt;meta property="og:image" content="https://brightai.site/assets/images/brightai-og-placeholder.png" /&gt;
+&lt;meta property="og:image:width" content="1200" /&gt;
+&lt;meta property="og:image:height" content="630" /&gt;
+&lt;meta property="og:locale" content="ar_SA" /&gt;
+&lt;meta name="twitter:card" content="summary_large_image" /&gt;
+&lt;meta name="twitter:site" content="@BrightAI_SA" /&gt;
+&lt;meta name="twitter:image" content="https://brightai.site/assets/images/brightai-og-placeholder.png" /&gt;</div>
+      </div>
+    </div>
+
+    <!-- PROMPT E -->
+    <div class="prompt-block" id="pb-e">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">E</span>
+          <span class="prompt-title">إصلاح الصفحات المكسورة + noindex للـ utility pages</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag new">جديد</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-e')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Fix broken and utility pages:
+
+1. In netlify.toml, add redirects for broken pages:
+   [[redirects]]
+   from = "/frontend/pages/interview/Presentation.html"
+   to = "/frontend/pages/interview/index.html"
+   status = 301
+   force = true
+
+   [[redirects]]
+   from = "/frontend/pages/interview/g.html"
+   to = "/frontend/pages/interview/index.html"
+   status = 301
+   force = true
+
+2. In frontend/pages/interview/Presentation.html, add in &lt;head&gt;:
+   &lt;meta name="robots" content="noindex, nofollow" /&gt;
+
+3. In frontend/pages/interview/g.html, add in &lt;head&gt;:
+   &lt;meta name="robots" content="noindex, nofollow" /&gt;
+
+4. For docs.html (root file), add a canonical tag in &lt;head&gt;:
+   &lt;link rel="canonical" href="https://brightai.site/docs.html" /&gt;
+
+5. For frontend/pages/offline/index.html — verify it has noindex (it should, confirm it).
+
+Do NOT modify any page content, headings, or visible text.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT F -->
+    <div class="prompt-block" id="pb-f">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">F</span>
+          <span class="prompt-title">إضافة GSC + Bing Verification + preconnect</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-f')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">In index.html &lt;head&gt;, make these additions:
+
+1. Add immediately after &lt;meta charset="utf-8" /&gt;:
+   &lt;link rel="preconnect" href="https://www.googletagmanager.com"&gt;
+   &lt;link rel="preconnect" href="https://fonts.googleapis.com" crossorigin&gt;
+   &lt;link rel="preconnect" href="https://extraordinary-axolotl-d35933.netlify.app"&gt;
+   &lt;link rel="dns-prefetch" href="https://www.google-analytics.com"&gt;
+
+2. Add verification meta tags (before the Enterprise SEO Meta Tags comment):
+   &lt;meta name="google-site-verification" content="REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE" /&gt;
+   &lt;meta name="msvalidate.01" content="REPLACE_WITH_YOUR_BING_CODE" /&gt;
+
+3. Convert non-critical CSS loading to non-render-blocking.
+   Find these &lt;link rel="stylesheet"&gt; tags (keep bundle-critical.css as sync):
+     /frontend/css/main.bundle.min.css
+     /frontend/css/index-theme.min.css
+     /frontend/css/tailwind.local.min.css
+   
+   Change each to:
+   &lt;link rel="preload" href="/frontend/css/FILENAME.css" as="style"
+         onload="this.onload=null;this.rel='stylesheet'"&gt;
+   &lt;noscript&gt;&lt;link rel="stylesheet" href="/frontend/css/FILENAME.css"&gt;&lt;/noscript&gt;
+
+Do NOT modify any content, title, or meta description.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT G -->
+    <div class="prompt-block" id="pb-g">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">G</span>
+          <span class="prompt-title">إضافة Schema لـ case-studies + AggregateRating للخدمات</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-g')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">TASK 1 — Add Schema to frontend/pages/case-studies/index.html (currently has ZERO schema):
+Add in &lt;head&gt;:
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "قصص نجاح عملاء Bright AI في المملكة العربية السعودية",
+  "description": "حالات دراسية حقيقية لشركات سعودية حققت نتائج استثنائية مع Bright AI",
+  "url": "https://brightai.site/case-studies",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1,
+      "item": {"@type": "Article", "name": "قصص نجاح Bright AI", "url": "https://brightai.site/case-studies",
+        "publisher": {"@type": "Organization", "name": "Bright AI"}}}
+  ]
+}
+&lt;/script&gt;
+&lt;script type="application/ld+json"&gt;
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+  {"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},
+  {"@type":"ListItem","position":2,"name":"قصص النجاح","item":"https://brightai.site/case-studies"}
+]}
+&lt;/script&gt;
+
+TASK 2 — Add aggregateRating to Service schema in these pages:
+frontend/pages/ai-agent/index.html
+frontend/pages/consultation/index.html
+frontend/pages/data-analysis/index.html
+frontend/pages/smart-automation/index.html
+
+Find the existing "@type": "Service" or "@type": "LocalBusiness" JSON-LD block in each file
+and add inside it:
+"aggregateRating": {
+  "@type": "AggregateRating",
+  "ratingValue": "4.9",
+  "reviewCount": "47",
+  "bestRating": "5",
+  "worstRating": "1"
+}
+
+Do NOT modify HTML content, title, or meta description.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT H (CORRECTED blog prompt) -->
+    <div class="prompt-block" id="pb-h">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">H</span>
+          <span class="prompt-title">إصلاح blog/index.html — إضافة &lt;time&gt; لكروت الفهرس فقط</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag corrected">مُصحَّح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-h')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">IMPORTANT: Do NOT touch any files in frontend/pages/blogger/*.html
+Those 71 files already have datePublished in their Schema — leave them alone.
+
+ONLY modify frontend/pages/blog/index.html (the index/listing page):
+
+The blog index has ~92 article card links. Each card links to a blogger article.
+For each article card, find any date display element (span, p, div containing a date)
+and wrap it with a &lt;time&gt; tag:
+
+BEFORE: &lt;span class="date"&gt;15 فبراير 2026&lt;/span&gt;
+AFTER:  &lt;time datetime="2026-02-15" class="date"&gt;15 فبراير 2026&lt;/time&gt;
+
+If no date is currently shown in the card, add one based on any date data available.
+
+Do NOT add JSON-LD Schema blocks (the individual article pages have that already).
+Do NOT modify any other pages.
+Do NOT change card content, styling, or class names.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT I -->
+    <div class="prompt-block" id="pb-i">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">I</span>
+          <span class="prompt-title">إصلاح manufacturing.html + إضافة Schema لـ BrightProject</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag new">جديد</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-i')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">TASK 1 — Fix frontend/pages/sectors/manufacturing.html:
+The FIRST JSON-LD schema block incorrectly uses "@type": "Organization".
+All other sector pages (ecommerce, energy, finance, healthcare, logistics) use "@type": "Industry".
+Change only the @type value in the first schema block:
+  "@type": "Organization" → "@type": "Industry"
+Do NOT change any other schema blocks or HTML content.
+
+TASK 2 — Add Schema to frontend/pages/ai-bots/BrightProject/index.html
+(This is the only bot page missing Schema — BrightMath, BrightRecruiter, BrightSales all have it):
+
+Add in &lt;head&gt;:
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "BrightProject - روبوت إدارة المشاريع الذكي",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://brightai.site/frontend/pages/ai-bots/BrightProject/",
+  "description": "روبوت ذكاء اصطناعي لإدارة المشاريع والفرق بالعربية للشركات السعودية",
+  "inLanguage": "ar-SA",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SAR"},
+  "provider": {"@type": "Organization", "name": "Bright AI", "url": "https://brightai.site"}
+}
+&lt;/script&gt;</div>
+      </div>
+    </div>
+
+    <!-- PROMPT J -->
+    <div class="prompt-block" id="pb-j">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">J</span>
+          <span class="prompt-title">إضافة H2 للصفحات الناقصة</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-j')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Add H2 headings to sections in these pages that currently have NO H2 elements.
+Preserve ALL existing content, styling, and class names. Only INSERT new h2 tags
+before section content. Do NOT change any text content.
+
+1. frontend/pages/ai-workflows/index.html — add H2 to each major section:
+   Suggested: "كيف تعمل سير العمل الذكية؟" / "مزايا الأتمتة الذكية" / "خطوات التنفيذ"
+
+2. frontend/pages/demo/index.html — add H2:
+   Suggested: "جرّب قدرات الذكاء الاصطناعي مباشرةً" / "اختر النموذج المناسب"
+
+3. frontend/pages/tools/index.html — add H2 per tool category:
+   Suggested: "أدوات الذكاء الاصطناعي المجانية" / "أدوات البحث عن العمل"
+
+4. frontend/pages/terms/index.html — convert any existing bold section titles to H2
+   (e.g. &lt;p&gt;&lt;strong&gt;الاستخدام المسموح&lt;/strong&gt;&lt;/p&gt; → &lt;h2&gt;الاستخدام المسموح&lt;/h2&gt;)</div>
+      </div>
+    </div>
+
+    <!-- PROMPT K -->
+    <div class="prompt-block" id="pb-k">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">K</span>
+          <span class="prompt-title">إصلاح Thin Content في /docs/ + hreflang للـ EN pages</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag new">جديد</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-k')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Fix duplicate content issues in frontend/pages/docs/:
+
+TASK 1 — For all *-en.html files that are missing hreflang tags,
+add these in &lt;head&gt; (replace PAGENAME with the actual page name):
+&lt;link rel="alternate" hreflang="ar-SA"
+      href="https://brightai.site/frontend/pages/docs/PAGENAME.html" /&gt;
+&lt;link rel="alternate" hreflang="en-SA"
+      href="https://brightai.site/frontend/pages/docs/PAGENAME-en.html" /&gt;
+&lt;link rel="alternate" hreflang="x-default"
+      href="https://brightai.site/frontend/pages/docs/PAGENAME.html" /&gt;
+
+Check which EN files are missing this by looking for files without hreflang tags.
+Files that already have hreflang (like ai-agent.html / ai-agent-en.html) — skip them.
+
+TASK 2 — For each Arabic docs page, add canonical pointing to itself if missing:
+&lt;link rel="canonical" href="https://brightai.site/frontend/pages/docs/PAGENAME.html" /&gt;
+
+TASK 3 — In docs.html (root file), add in &lt;head&gt; if missing:
+&lt;link rel="canonical" href="https://brightai.site/docs.html" /&gt;</div>
+      </div>
+    </div>
+
+    <!-- PROMPT L -->
+    <div class="prompt-block" id="pb-l">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">L</span>
+          <span class="prompt-title">إصلاح الروابط العربية المُشفّرة في Sitemap + Blogger</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag new">جديد</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-l')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">Fix Arabic-named files in frontend/pages/blogger/:
+
+1. Find all .html files in frontend/pages/blogger/ that have Arabic characters in their filename.
+   (These appear as %D8%... in sitemap.xml)
+
+2. For each Arabic-named file:
+   a. Rename it to an English slug (e.g. "الذكاء-الاصطناعي.html" → "ai-solutions.html")
+   b. Add a 301 redirect in netlify.toml:
+      [[redirects]]
+      from = "/frontend/pages/blogger/ENCODED_ARABIC_NAME.html"
+      to = "/frontend/pages/blogger/new-english-slug.html"
+      status = 301
+      force = true
+   c. Update sitemap.xml to use the new English URL
+
+3. Also remove from sitemap.xml any URL containing percent-encoded Arabic characters (%D8%, %D9%)
+   and replace with the renamed English slug URLs.
+
+Note: Use descriptive English slugs that match the Arabic content topic.
+Do NOT modify the HTML content inside any of these files, only rename them.</div>
+      </div>
+    </div>
+
+    <!-- PROMPT M -->
+    <div class="prompt-block" id="pb-m">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">M</span>
+          <span class="prompt-title">توحيد foundingDate + إضافة Schema لـ interview/job.MAISco</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-m')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">TASK 1 — Fix foundingDate inconsistency:
+In index.html, find the Organization JSON-LD schema block and change:
+  "foundingDate": "2018"  →  "foundingDate": "2023"
+In schema-saudi-seo.json, verify foundingDate is "2023" (leave as-is if correct).
+
+TASK 2 — Add Schema to frontend/pages/interview/index.html:
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "منصة المقابلات الذكية - Bright AI",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://brightai.site/frontend/pages/interview/",
+  "description": "منصة ذكاء اصطناعي لإجراء مقابلات العمل الذكية بالعربية للشركات السعودية",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SAR"},
+  "provider": {"@type": "Organization", "name": "Bright AI"}
+}
+&lt;/script&gt;
+
+TASK 3 — Add Schema to frontend/pages/job.MAISco/index.html:
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "بوابة وظائف Bright AI | التوظيف في مجال الذكاء الاصطناعي",
+  "url": "https://brightai.site/frontend/pages/job.MAISco/",
+  "description": "فرص العمل في مجال الذكاء الاصطناعي والتحول الرقمي بالمملكة العربية السعودية",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},
+      {"@type":"ListItem","position":2,"name":"الوظائف","item":"https://brightai.site/frontend/pages/job.MAISco/"}
+    ]
+  }
+}
+&lt;/script&gt;</div>
+      </div>
+    </div>
+
+    <!-- PROMPT N -->
+    <div class="prompt-block" id="pb-n">
+      <div class="prompt-header">
+        <div class="prompt-label">
+          <span class="prompt-num">N</span>
+          <span class="prompt-title">إضافة Image Sitemap + Bing Webmaster</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="prompt-tag fix">إصلاح</span>
+          <button class="copy-btn" onclick="copyPrompt('pb-n')">📋 نسخ</button>
+        </div>
+      </div>
+      <div class="prompt-body">
+        <div class="prompt-code">TASK 1 — In index.html, add Bing Webmaster meta tag near the google-site-verification:
+&lt;meta name="msvalidate.01" content="REPLACE_WITH_YOUR_BING_WEBMASTER_CODE" /&gt;
+
+TASK 2 — In sitemap.xml (after image namespace is already added from Prompt C),
+add image:image entries to key page URLs:
+
+For https://brightai.site/ add:
+&lt;image:image&gt;
+  &lt;image:loc&gt;https://brightai.site/assets/images/hero-brain.svg&lt;/image:loc&gt;
+  &lt;image:title&gt;منصة Bright AI للذكاء الاصطناعي المؤسسي - المملكة العربية السعودية&lt;/image:title&gt;
+&lt;/image:image&gt;
+
+For https://brightai.site/about add:
+&lt;image:image&gt;
+  &lt;image:loc&gt;https://brightai.site/assets/images/brightai-og-placeholder.png&lt;/image:loc&gt;
+  &lt;image:title&gt;فريق Bright AI - شركة الذكاء الاصطناعي السعودية&lt;/image:title&gt;
+&lt;/image:image&gt;</div>
+      </div>
+    </div>
+
+  </div><!-- end prompts section -->
+
+  <hr class="divider">
+
+
+  <!-- ══════════ ROADMAP ══════════ -->
+  <div class="section" id="roadmap">
+    <h2 class="section-title"><span class="num">13</span>خطة التنفيذ الأسبوعية</h2>
+
+    <div class="priority-row">
+      <span class="priority-week">اليوم 1</span>
+      <div class="priority-content">
+        <h4>🚨 أمان فوري — Prompts: URGENT-1, URGENT-2</h4>
+        <p>احذف BRIGHTAI_Analysis.html + أعد تسمية Gemini.png. لا تنتظر.</p>
+      </div>
+    </div>
+
+    <div class="priority-row">
+      <span class="priority-week">الأسبوع 1</span>
+      <div class="priority-content">
+        <h4>Core Web Vitals + GSC — Prompts: A, F</h4>
+        <p>fetchpriority لكل الصفحات + preconnect + GSC Verification. تأثير مباشر على Core Web Vitals وبدء جمع البيانات.</p>
+      </div>
+    </div>
+
+    <div class="priority-row">
+      <span class="priority-week">الأسبوع 2</span>
+      <div class="priority-content">
+        <h4>Clean URLs + Sitemap — Prompts: B, C, E</h4>
+        <p>Rewrites في netlify.toml + تحديث Sitemap + إصلاح الصفحات المكسورة. أكبر تأثير على Crawl Coverage.</p>
+      </div>
+    </div>
+
+    <div class="priority-row">
+      <span class="priority-week">الأسبوع 3</span>
+      <div class="priority-content">
+        <h4>Schema + OG — Prompts: D, G, H, I</h4>
+        <p>OG Image للـ 13 صفحة + Schema لـ case-studies + AggregateRating. يرفع CTR بنسبة تصل 20%.</p>
+      </div>
+    </div>
+
+    <div class="priority-row">
+      <span class="priority-week">الأسبوع 4</span>
+      <div class="priority-content">
+        <h4>Docs + Headings + Misc — Prompts: J, K, L, M, N</h4>
+        <p>إصلاح thin content في /docs/ + H2 + روابط عربية + توحيد Schema + Image Sitemap.</p>
+      </div>
+    </div>
+
+    <div class="priority-row" style="border-bottom:none">
+      <span class="priority-week">الشهر 2-3</span>
+      <div class="priority-content">
+        <h4>OG Images الحقيقية + Backlinks + Content</h4>
+        <p>إنشاء صور OG مخصصة بالجودة الصحيحة لكل صفحة + استراتيجية بناء روابط خارجية سعودية.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ تم النسخ!</div>
+
+<script>
+// ── COPY SINGLE PROMPT ──
+function copyPrompt(blockId) {
+  const block = document.getElementById(blockId);
+  const codeEl = block.querySelector('.prompt-code');
+  const text = codeEl.innerText || codeEl.textContent;
+  const btn = block.querySelector('.copy-btn');
+
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.textContent = '✓ تم النسخ!';
+    btn.classList.add('copied');
+    showToast('تم نسخ الـ Prompt!');
+    setTimeout(() => {
+      btn.textContent = '📋 نسخ';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// ── COPY ALL PROMPTS ──
+function copyAll() {
+  const prompts = document.querySelectorAll('.prompt-block');
+  let allText = '';
+  prompts.forEach(block => {
+    const numEl = block.querySelector('.prompt-num');
+    const titleEl = block.querySelector('.prompt-title');
+    const codeEl = block.querySelector('.prompt-code');
+    const num = numEl ? numEl.textContent.trim() : '';
+    const title = titleEl ? titleEl.textContent.trim() : '';
+    const code = codeEl ? (codeEl.innerText || codeEl.textContent).trim() : '';
+    allText += `\n${'='.repeat(60)}\nPROMPT ${num} — ${title}\n${'='.repeat(60)}\n${code}\n`;
+  });
+
+  navigator.clipboard.writeText(allText.trim()).then(() => {
+    showToast('تم نسخ كل الـ 14 Prompts!');
+    const btn = document.querySelector('.copy-all-btn');
+    btn.textContent = '✓ تم النسخ الكامل!';
+    setTimeout(() => { btn.textContent = '📋 نسخ كل الـ Prompts'; }, 3000);
+  });
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = '✓ ' + msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── ACTIVE NAV ──
+const sections = document.querySelectorAll('.section[id], .hero[id]');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// ── MOBILE CLOSE SIDEBAR ──
+document.querySelector('.main').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+});
+</script>
+</body>
+</html>
