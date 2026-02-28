@@ -80,6 +80,18 @@ to = "/"
 status = 301
 force = true
 
+[[redirects]]
+from = "/frontend/pages/interview/Presentation.html"
+to = "/frontend/pages/interview/index.html"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/interview/g.html"
+to = "/frontend/pages/interview/index.html"
+status = 301
+force = true
+
 # Clean URL Rewrites — SEO-friendly paths
 [[redirects]]
 from = "/about"

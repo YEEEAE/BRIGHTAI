@@ -20,6 +20,10 @@
     </script>
 
     <meta charset="utf-8" />
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://extraordinary-axolotl-d35933.netlify.app">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Bright AI | نضيء مستقبل أعمالك مع الذكاء الاصطناعي</title>
     <meta
@@ -29,6 +33,8 @@
     <link as="font" crossorigin="anonymous" href="/assets/fonts/ScheherazadeNew-Regular.woff2" rel="preload"
         type="font/woff2" />
     <meta content="#020617" name="theme-color" />
+    <meta name="google-site-verification" content="REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE" />
+    <meta name="msvalidate.01" content="REPLACE_WITH_YOUR_BING_CODE" />
     <!-- Enterprise SEO Meta Tags -->
     <!-- Enterprise Keywords - Updated for Saudi Market -->
     <meta
@@ -1156,9 +1162,15 @@
         }
     </style>
     <!-- Defer Non-Critical CSS -->
-    <link href="/frontend/css/tailwind.local.min.css" rel="stylesheet" />
-    <link href="/frontend/css/index-theme.min.css" rel="stylesheet" />
-    <link href="/frontend/css/main.bundle.min.css" rel="stylesheet" />
+    <link rel="preload" href="/frontend/css/tailwind.local.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/frontend/css/tailwind.local.min.css"></noscript>
+    <link rel="preload" href="/frontend/css/index-theme.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/frontend/css/index-theme.min.css"></noscript>
+    <link rel="preload" href="/frontend/css/main.bundle.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/frontend/css/main.bundle.min.css"></noscript>
     <!-- NAV OVERRIDE: Ensure inline nav tokens win over main.bundle.min.css async load -->
     <style id="nav-override">
         :root {
