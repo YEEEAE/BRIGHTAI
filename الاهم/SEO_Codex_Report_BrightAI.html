@@ -369,31 +369,29 @@
             (Production-ready).</p>
 
         <div class="prompt-box">
-            <div class="prompt-title">Prompt 1: أتمتة تنظيف Meta Refresh ومعالجة العناوين المتكررة (Canonical & Title
-                Sync)</div>
+            <div class="prompt-title">Prompt 1: أتمتة تنظيف Meta Refresh (Canonical Implementation)</div>
             <p dir="ltr">
                 Role: Senior Node.js System Engineer<br><br>
                 Task: We have 13 HTML pages in the `/frontend/pages/` directory that use deprecated `
-                <meta http-equiv="refresh">` tags and have duplicate `<title>` tags, violating strict SEO
-                    protocols.<br><br>
-                    Action:<br>
-                    Write a complete, runnable Node.js script using `fs`, `path`, and `cheerio` (assume they are
-                    installed) that does the following:<br>
-                    1. Scans exactly `/Users/yzydalshmry/Desktop/BrightAI/frontend/pages/` recursively for `.html`
-                    files.<br>
-                    2. Finds any `
-                    <meta http-equiv="refresh" ...>` tag and completely removes it.<br>
-                    3. Automatically generates the correct canonical URL (e.g., `https://brightai.site/...`) based on
-                    the file path relative to the domain and injects `
-                    <link rel="canonical" href="..." />` in the `
+                &lt;meta http-equiv="refresh"&gt;` tags and have duplicate `&lt;title&gt;` tags, violating strict SEO
+                protocols.<br><br>
+                Action:<br>
+                Write a complete, runnable Node.js script using `fs`, `path`, and `cheerio` (assume they are
+                installed) that does the following:<br>
+                1. Scans exactly `/Users/yzydalshmry/Desktop/BrightAI/frontend/pages/` recursively for `.html`
+                files.<br>
+                2. Finds any `
+                &lt;meta http-equiv="refresh" ...&gt;` tag and completely removes it.<br>
+                3. Automatically generates the correct canonical URL (e.g., `https://brightai.site/...`) based on
+                the file path relative to the domain and injects `
+                &lt;link rel="canonical" href="..." /&gt;` in the `
 
-                    <head>` if not present.<br>
-                        4. Resolves exactly matching `<title>` tags across multiple files by appending a unique
-                            identifier (like the sanitized directory or file name) plus ` | مؤسسة BrightAI للتطوير
-                            بالسعودية` to ensure semantic differentiation.<br>
-                            5. Overwrites the files securely.<br><br>
-                            Output only the raw, runnable JavaScript code without any placeholders or theoretical
-                            advice.
+                &lt;head&gt;` if not present.<br>
+                4. IMPORTANT: DO NOT modify any `&lt;title&gt;` tags under any circumstances. Leave them exactly as they
+                are.<br>
+                5. Overwrites the files securely.<br><br>
+                Output only the raw, runnable JavaScript code without any placeholders or theoretical
+                advice.
             </p>
         </div>
 
@@ -411,12 +409,12 @@
                 original with minified content) to immediately fix the 491 warnings.<br>
                 2. In the same script, write a sitemap cleaner that reads
                 `/Users/yzydalshmry/Desktop/BrightAI/sitemap.xml`, parses the XML natively (using regex or `xml2js`),
-                and strips out any `<url>` block that points to known deleted or 301 paths (specifically matching
-                    `/frontend/pages/blogger/*.doc.html` or files that don't physically exist in the local repo
-                    anymore).<br>
-                    3. Provide the exact JSON to add to `package.json` under `"scripts": { "postbuild": "node
-                    scripts/build-optimizer.js" }`.<br><br>
-                    Output only the `.js` code and the `.json` fragment. No theory.
+                and strips out any `&lt;url&gt;` block that points to known deleted or 301 paths (specifically matching
+                `/frontend/pages/blogger/*.doc.html` or files that don't physically exist in the local repo
+                anymore).<br>
+                3. Provide the exact JSON to add to `package.json` under `"scripts": { "postbuild": "node
+                scripts/build-optimizer.js" }`.<br><br>
+                Output only the `.js` code and the `.json` fragment. No theory.
             </p>
         </div>
 
@@ -429,18 +427,19 @@
                 Write a Node.js script using `cheerio` that processes all main pages (like `index.html`, `about.html`,
                 `services/index.html`):<br>
                 1. Extracts the current `
-            <h1>` text.<br>
-                2. If the `<title>` text exactly matches the `<h1>` text, it modifies the `<title>` to: `[Original Text]
-                            - أتمتة وذكاء اصطناعي | BrightAI الرياض`. leaving `<h1>` unchanged.<br>
-                                3. Injects the following exact structural JSON-LD block just before `</head>` in
-                                `index.html` and central service pages. Substitute the `$PAGE_TYPE` variable with
-                                'Organization' for index, and 'Service' for service pages. <br>
-                                `{ "@context": "https://schema.org", "@type": "$PAGE_TYPE", "name": "BrightAI", "url":
-                                "https://brightai.site/", "address": { "@type": "PostalAddress", "addressLocality":
-                                "Riyadh", "addressCountry": "SA", "description": "مزود حلول الذكاء الاصطناعي ووكلاء
-                                الأتمتة المعتمد للشركات السعودية" } }`<br>
-                                Output the runnable script. No omissions.
-                                </p>
+                &lt;h1&gt;` text.<br>
+                2. If the `&lt;title&gt;` text exactly matches the `&lt;h1&gt;` text, you MUST NOT modify the
+                `&lt;title&gt;` tag. Leave the `&lt;title&gt;` unchanged, and modify the `&lt;h1&gt;` tag instead by
+                appending ` - أتمتة وذكاء اصطناعي` to it.<br>
+                3. Injects the following exact structural JSON-LD block just before `&lt;/head&gt;` in
+                `index.html` and central service pages. Substitute the `$PAGE_TYPE` variable with
+                'Organization' for index, and 'Service' for service pages. <br>
+                `{ "@context": "https://schema.org", "@type": "$PAGE_TYPE", "name": "BrightAI", "url":
+                "https://brightai.site/", "address": { "@type": "PostalAddress", "addressLocality":
+                "Riyadh", "addressCountry": "SA", "description": "مزود حلول الذكاء الاصطناعي ووكلاء
+                الأتمتة المعتمد للشركات السعودية" } }`<br>
+                Output the runnable script. No omissions.
+            </p>
         </div>
 
         <div class="prompt-box">
@@ -502,6 +501,54 @@
                 This guarantees every page gets at least 3 internal links, immediately resolving the 'one incoming link'
                 warning.<br>
                 Output only the raw script implementation.
+            </p>
+        </div>
+
+        <div class="prompt-box">
+            <div class="prompt-title">Prompt 7: تنظيف أوصاف الميتا المتكررة والمختفية (Meta Descriptions) ومشاكل التنسيق
+            </div>
+            <p dir="ltr">
+                Role: Senior SEO Content Engineer<br><br>
+                Task: 3 pages have duplicate meta descriptions, and some pages are missing them or have them too
+                short.<br><br>
+                Action:<br>
+                Write a Node.js script utilizing `fs`, `path`, and `cheerio` that processes all `.html` pages in
+                `/frontend/pages/`.<br>
+                1. Check if `
+                &lt;meta name="description" content="..." /&gt;` exists. If missing, inject it.<br>
+                2. If the `content` length is under 50 characters or duplicates an already processed page, rewrite it
+                dynamically taking the page's `
+                &lt;h1&gt;` or `&lt;title&gt;`, suffixing it with: ` - اكتشف حلول الأتمتة المتقدمة للشركات والجهات
+                الحكومية في السعودية
+                عبر منصة BrightAI.`<br>
+                3. The script must ensure every page has a unique, high-CTR meta description between 120 and 150
+                characters.<br>
+                Output the runnable '.js' code.
+            </p>
+        </div>
+
+        <div class="prompt-box">
+            <div class="prompt-title">Prompt 8: إصلاح غياب العناوين الرئيسية (Missing H1) وهشاشة المحتوى (Low Word
+                Count)</div>
+            <p dir="ltr">
+                Role: Semantic HTML & DOM Architect<br><br>
+                Task: 3 pages are missing an H1 tag entirely, and 4 pages have low word counts.<br><br>
+                Action:<br>
+                Write a Node.js script using `cheerio`.<br>
+                1. Scan all HTML files for the `
+                &lt;h1&gt;` tag. If `&lt;h1` is missing, inject `&lt;h1 class="visually-hidden"&gt;BrightAI - [Extracted
+                Title]&lt;/h1&gt;`
+                directly after the opening `&lt;main&gt;` or `
+
+                &lt;body&gt;` tag.<br>
+                2. Detect pages where the total words of text nodes inside `&lt;main&gt;` or `&lt;article&gt;` are less
+                than 200
+                words.<br>
+                3. For pages with low word count, inject a reusable HTML chunk `&lt;section
+                class="seo-content"&gt;...` at the bottom containing standard, keyword-rich explanatory
+                text about BrightAI's compliance with NCA and AI transformation benefits in Saudi
+                Arabia.<br>
+                Output the precise Node.js implementation explicitly.
             </p>
         </div>
 
