@@ -181,6 +181,12 @@ to = "/machine-learning/index.html"
 status = 200
 
 [[redirects]]
+from = "/nlp"
+to = "/machine-learning"
+status = 301
+force = true
+
+[[redirects]]
 from = "/تعلم-الآلة-و-الأعمال"
 to = "/machine-learning"
 status = 301
@@ -189,6 +195,24 @@ force = true
 [[redirects]]
 from = "/تحليل-البيانات"
 to = "/data-analysis"
+status = 301
+force = true
+
+[[redirects]]
+from = "/pages/admin"
+to = "/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/Company performance monitoring tool"
+to = "/tools"
+status = 301
+force = true
+
+[[redirects]]
+from = "/Company%20performance%20monitoring%20tool"
+to = "/tools"
 status = 301
 force = true
 
