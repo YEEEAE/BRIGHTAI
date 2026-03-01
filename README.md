@@ -7,6 +7,31 @@ git push origin main
 
 
 
+🔍 SEO وتحسين محرك البحث
+
+Ahrefs Webmaster Tools (مجاني) — يحلل backlinks موقعك ويكشف الصفحات الضعيفة
+Semrush Free (10 بحث يومي) — تتبع ترتيبك على الكلمات المستهدفة
+PageSpeed Insights — سرعة موقعك مباشرة من Google، مهم جداً للترتيب
+Screaming Frog (500 صفحة مجاناً) — يكتشف أخطاء SEO التقنية
+
+
+🚀 أداء الموقع
+
+GTmetrix Free — تقارير أداء تفصيلية مع اقتراحات تحسين
+WebPageTest — اختبار السرعة من سيرفرات مختلفة حول العالم
+
+
+🎯 Lead Generation وتحويل الزوار
+
+Tally.so (مجاني) — نماذج ذكية تجمع leads بشكل احترافي
+Crisp (Free) — شات مباشر على الموقع + متابعة الزوار في real time
+
+
+🔔 مراقبة الموقع والتنبيهات
+
+UptimeRobot (مجاني) — يراقب Netlify API الخاص بك ويبلغك لو وقع الموقع
+Google Alerts — تنبيهات عند ذكر BrightAI أو منافسيك في الإنترنت
+
 لاختبار جودة وعمل api :
 npm run smoke-test:prod
 
