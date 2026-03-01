@@ -1803,6 +1803,13 @@
     <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
     <script defer="" src="/frontend/js/vendor/iconify.min.js"></script>
     <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+<style id="internal-linking-cta-style">
+.internal-linking-cta-wrap{margin:18px auto;max-width:1000px;padding:14px;border:1px solid rgba(148,163,184,.25);border-radius:12px;background:rgba(15,23,42,.45)}
+.internal-linking-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;text-decoration:none;font-weight:700}
+.internal-linking-inline{color:#38bdf8;text-decoration:none;font-weight:600}
+.internal-linking-inline:hover,.internal-linking-cta:hover{text-decoration:underline}
+</style>
 </head>
 
 <body>
@@ -2347,6 +2354,9 @@
     <!-- Main Content -->
     <main id="main" itemscope="" itemtype="https://schema.org/WebPage" style="contain: paint;">
         <!-- New Enterprise Hero Section -->
+<!-- internal-link: demo-home -->
+<div class="internal-linking-cta-wrap"><a class="internal-linking-cta" href="demo/?utm_source=internal&utm_medium=seo&utm_campaign=internal-linking-2026">جرّب مجاناً — بدون تسجيل</a></div>
+
         <div class="hero section tight" id="top"
             style="position: relative; min-height: 90vh; min-height: 90dvh; display: flex; align-items: center; contain: paint;">
             <!-- CLS FIX: Ambient background moved to CSS (see #top background in critical CSS) -->
@@ -5695,7 +5705,9 @@
                 </div>
             </div>
         </div>
-    </footer>
+    <!-- internal-link: what-is-ai-home -->
+<div class="internal-linking-cta-wrap"><a class="internal-linking-inline" href="what-is-ai/?utm_source=internal&utm_medium=seo&utm_campaign=internal-linking-2026">تعرف أكثر: ما هو الذكاء الاصطناعي؟</a></div>
+</footer>
     <!-- Extras: Scroll to Top -->
     <button aria-label="العودة إلى الأعلى"
         class="to-top fixed bottom-8 left-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1 border-none"

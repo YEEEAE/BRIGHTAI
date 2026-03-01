@@ -879,12 +879,16 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
                     <iconify-icon icon="lucide:arrow-left"></iconify-icon>
 </a>
 </div>
-<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" style="content-visibility: auto;">
+<!-- auto-related:start -->
+<section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6" data-auto-related="true" style="content-visibility: auto;">
 <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
 <ul class="space-y-3 text-slate-300">
-<li><a href="/blog/saudi-energy-predictive-maintenance">دراسة حالة: شركة طاقة سعودية | توفير 40 مليون ريال سنوياً عبر الصيانة التنبؤية</a></li><li><a href="/blog/saudi-factory-ai-productivity">دراسة حالة: مصنع سعودي | رفع الإنتاجية 30% بتحليلات الذكاء الاصطناعي</a></li><li><a href="/blog/saudi-hospitality-dynamic-pricing">دراسة حالة: مجموعة فنادق سعودية | زيادة الإشغال 20% بالتسعير الديناميكي</a></li><li><a href="/blog/saudi-insurance-claims-ai">دراسة حالة شاملة: الذكاء الاصطناعي في التأمين السعودي | كشف الاحتيال 99%</a></li>
+<li><a class="hover:text-purple-400 transition" href="/blog/ksu-adaptive-learning">دراسة حالة: جامعة الملك سعود | منصة تعلم تكيفي ترفع معدلات النجاح 25%</a></li>
+<li><a class="hover:text-purple-400 transition" href="/blog/saudi-hospitality-dynamic-pricing">دراسة حالة: مجموعة فنادق سعودية | زيادة الإشغال 20% بالتسعير الديناميكي</a></li>
+<li><a class="hover:text-purple-400 transition" href="/blog/commerce-ministry-chatbot">دراسة حالة: وزارة التجارة | شات بوت ذكي يخدم 50,000 تاجر يومياً</a></li>
 </ul>
 </section>
+<!-- auto-related:end -->
 </article>
 </main>
 <!-- FOOTER -->
@@ -893,6 +897,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;
 <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
 </div>
 </footer>
+<script defer src="/frontend/js/article-ux-enhancements.js"></script>
 <script src="/frontend/js/clarity-events.js" defer></script>
 </body>
 </html>
