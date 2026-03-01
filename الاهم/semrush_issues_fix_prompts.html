@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Semrush Report Analysis + Fix Prompts | BrightAI</title>
+  <style>
+    :root { --bg:#0b1220; --panel:#111a2b; --txt:#e8eefc; --muted:#9fb0d1; --border:#243250; --low:#4ade80; --med:#f59e0b; --high:#fb7185; --critical:#ef4444; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--txt); font:14px/1.6 "Tajawal", "Segoe UI", Tahoma, sans-serif; }
+    .wrap { max-width:1600px; margin:0 auto; padding:20px; }
+    h1 { margin:0 0 10px; }
+    .meta { color:var(--muted); margin-bottom:16px; }
+    .cards { display:grid; grid-template-columns:repeat(5,minmax(120px,1fr)); gap:10px; margin:12px 0 20px; }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); }
+    th,td { border:1px solid var(--border); vertical-align:top; padding:8px; text-align:right; }
+    th { position:sticky; top:0; background:#152238; z-index:2; }
+    .count { color:var(--muted); font-size:12px; }
+    .sev { font-weight:700; padding:2px 8px; border-radius:999px; display:inline-block; }
+    .sev-low { background:rgba(74,222,128,.18); color:var(--low); }
+    .sev-medium { background:rgba(245,158,11,.18); color:var(--med); }
+    .sev-high { background:rgba(251,113,133,.18); color:var(--high); }
+    .sev-critical { background:rgba(239,68,68,.2); color:var(--critical); }
+    .muted { color:var(--muted); }
+    textarea { width:100%; min-height:150px; background:#0c1628; color:#dfe8ff; border:1px solid #2a3a5a; border-radius:8px; padding:8px; font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    details ul { margin:8px 0 0; padding:0 18px 0 0; max-height:220px; overflow:auto; }
+    code { color:#93c5fd; word-break:break-all; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>تحليل تقرير Semrush الكامل + Prompts إصلاح كل مشكلة</h1>
+    <div class="meta">المصدر: <code>Semrush-Site_Audit__Full_Report-brightai_site-1st_Mar_2026.pdf</code> | تاريخ التحليل: 2026-03-01 | تغطية الصفحات: 1-63</div>
+    <div class="cards">
+      <div class="card"><strong>إجمالي المشاكل المذكورة</strong><div>75</div></div>
+      <div class="card"><strong>Errors</strong><div>25</div></div>
+      <div class="card"><strong>Warnings</strong><div>25</div></div>
+      <div class="card"><strong>Notices</strong><div>25</div></div>
+      <div class="card"><strong>مشاكل بعدد &gt; 0</strong><div>17</div></div>
+    </div>
+    <p class="muted">يشمل هذا الملف جميع المشاكل المذكورة في التقرير (75 مشكلة): وصف، الصفحات المتأثرة، السبب التقني المحتمل، درجة الخطورة، وPrompt إصلاح تنفيذي.</p>
+    <table>
+      <thead>
+        <tr><th>#</th><th>الفئة</th><th>المشكلة</th><th>الخطورة</th><th>وصف المشكلة</th><th>الصفحات المتأثرة</th><th>السبب التقني المحتمل داخل المشروع</th><th>Prompt الإصلاح</th></tr>
+      </thead>
+      <tbody>
+    <tr>
+      <td>1</td>
+      <td>Error</td>
+      <td><strong>AMP pages have no canonical tag</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: AMP pages have no canonical tag.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;AMP pages have no canonical tag&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>2</td>
+      <td>Error</td>
+      <td><strong>Invalid robots.txt format</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Invalid robots.txt format.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Invalid robots.txt format&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>3</td>
+      <td>Error</td>
+      <td><strong>Viewport not configured</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Viewport not configured.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Viewport not configured&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>4</td>
+      <td>Error</td>
+      <td><strong>hreflang conflicts within page source code</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: hreflang conflicts within page source code.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;hreflang conflicts within page source code&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>5</td>
+      <td>Error</td>
+      <td><strong>incorrect pages found in sitemap.xml</strong><div class="count">Count: 8</div></td>
+      <td><span class="sev sev-critical">Critical</span></td>
+      <td>السيت ماب يحتوي روابط redirect/non-canonical/non-200.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (2)</summary><ul><li><code>https://brightai.site/blog</code></li><li><code>https://brightai.site/about</code></li></ul></details></td>
+      <td>مولد `sitemap.xml` يدرج مسارات انتقالية وقديمة.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;incorrect pages found in sitemap.xml&#x27; (الفئة: Error, العدد: 8). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog; https://brightai.site/about. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>6</td>
+      <td>Error</td>
+      <td><strong>internal images are broken</strong><div class="count">Count: 6</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>صور داخلية 404.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (6)</summary><ul><li><code>https://brightai.site/blog/agint-bblog</code></li><li><code>https://brightai.site/blog/analysy</code></li><li><code>https://brightai.site/blog/atou-job</code></li><li><code>https://brightai.site/blog/atou.doc</code></li><li><code>https://brightai.site/blog/auto</code></li><li><code>https://brightai.site/blog/digital</code></li></ul></details></td>
+      <td>مسارات صور غير محدثة بعد نقل الملفات.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;internal images are broken&#x27; (الفئة: Error, العدد: 6). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/agint-bblog; https://brightai.site/blog/analysy; https://brightai.site/blog/atou-job; https://brightai.site/blog/atou.doc; https://brightai.site/blog/auto; https://brightai.site/blog/digital. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>7</td>
+      <td>Error</td>
+      <td><strong>internal link is broken</strong><div class="count">Count: 1</div></td>
+      <td><span class="sev sev-critical">Critical</span></td>
+      <td>روابط/صفحات داخلية ترجع 4xx وتقطع رحلة المستخدم والزحف.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (1)</summary><ul><li><code>https://brightai.site/blog/-و-ﺔﻟﻶا-ﻢﻠﻌﺗلﺎﻤﻋﻷا</code></li></ul></details></td>
+      <td>روابط hard-coded لمسارات غير موحدة (خصوصًا slugs العربية والروابط القديمة).</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;internal link is broken&#x27; (الفئة: Error, العدد: 1). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/-و-ﺔﻟﻶا-ﻢﻠﻌﺗلﺎﻤﻋﻷا. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>8</td>
+      <td>Error</td>
+      <td><strong>issues with broken internal JavaScript and CSS files</strong><div class="count">Count: 3</div></td>
+      <td><span class="sev sev-high">High</span></td>
+      <td>ملفات JS/CSS داخلية مكسورة 404.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (1)</summary><ul><li><code>https://brightai.site/smart-medical-archive</code></li></ul></details></td>
+      <td>مراجع موارد قديمة لم تعد موجودة بعد إعادة تنظيم الأصول.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with broken internal JavaScript and CSS files&#x27; (الفئة: Error, العدد: 3). الصفحات المتأثرة حسب التقرير: https://brightai.site/smart-medical-archive. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>9</td>
+      <td>Error</td>
+      <td><strong>issues with duplicate title tags</strong><div class="count">Count: 12</div></td>
+      <td><span class="sev sev-high">High</span></td>
+      <td>تطابق `&lt;title&gt;` عبر صفحات متعددة.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (12)</summary><ul><li><code>https://brightai.site/blog/ﺔﺘﻤﺗﻷامﺎﻬﻤﻟاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛ_ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/production-line</code></li><li><code>https://brightai.site/blog/Generativeartificialintelligence</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗأءﺎﻛﺬﻟاماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟا_ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗأﺔﺼﺼﺨﻣلﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻦﻴﺴﺤﺗوﻊﻳرﺎﺸﻤﻟاﻞﻴﻠﺤﺘﻟ(1</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗﻷادراﻮﻤﻟاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟاﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣ_ﺔﻳﺮﺸﺒﻟاﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟ</code></li><li><code>https://brightai.site/blog/ﻢﻠﻌﺘﻟا_ﺔﻴﺑﻮﺳﺎﺤﻟاﺔﻳؤﺮﻟاوﻲﻟﻶاﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻞﺒﻘﺘﺴﻣﺔﻴﻌﻴﺒﻄﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣرﻮﺼﻟاﻰﻠﻋفﺮﻌﺘﻟاو</code></li><li><code>https://brightai.site/blog/production-line-2</code></li><li><code>https://brightai.site/blog/atou-job</code></li><li><code>https://brightai.site/blog/generative-artificial-intelligence-2</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/لﻮﺤﺘﻟاﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟادﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳرﺎﻜﺘﺑﻻا</code></li></ul></details></td>
+      <td>تكرار قوالب وصفحات legacy بنفس العنوان.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with duplicate title tags&#x27; (الفئة: Error, العدد: 12). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/ﺔﺘﻤﺗﻷامﺎﻬﻤﻟاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛ_ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟا; https://brightai.site/blog/production-line; https://brightai.site/blog/Generativeartificialintelligence; https://brightai.site/blog/ﺔﺘﻤﺗأءﺎﻛﺬﻟاماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟا_ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟا; https://brightai.site/blog/ﺔﺘﻤﺗأﺔﺼﺼﺨﻣلﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻦﻴﺴﺤﺗوﻊﻳرﺎﺸﻤﻟاﻞﻴﻠﺤﺘﻟ(1; https://brightai.site/blog/ﺔﺘﻤﺗﻷادراﻮﻤﻟاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟاﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣ_ﺔﻳﺮﺸﺒﻟاﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟ; https://brightai.site/blog/ﻢﻠﻌﺘﻟا_ﺔﻴﺑﻮﺳﺎﺤﻟاﺔﻳؤﺮﻟاوﻲﻟﻶاﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻞﺒﻘﺘﺴﻣﺔﻴﻌﻴﺒﻄﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣرﻮﺼﻟاﻰﻠﻋفﺮﻌﺘﻟاو; https://brightai.site/blog/production-line-2; https://brightai.site/blog/atou-job; https://brightai.site/blog/generative-artificial-intelligence-2; https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا; https://brightai.site/blog/لﻮﺤﺘﻟاﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟادﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳرﺎﻜﺘﺑﻻا. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>10</td>
+      <td>Error</td>
+      <td><strong>issues with hreflang values</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: issues with hreflang values.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with hreflang values&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>11</td>
+      <td>Error</td>
+      <td><strong>issues with incorrect hreflang links</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: issues with incorrect hreflang links.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with incorrect hreflang links&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>12</td>
+      <td>Error</td>
+      <td><strong>non-secure pages</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: non-secure pages.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;non-secure pages&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>13</td>
+      <td>Error</td>
+      <td><strong>page returned a 4XX status code</strong><div class="count">Count: 1</div></td>
+      <td><span class="sev sev-critical">Critical</span></td>
+      <td>روابط/صفحات داخلية ترجع 4xx وتقطع رحلة المستخدم والزحف.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (1)</summary><ul><li><code>https://brightai.site/لﺎﻤﻋﻷا-و-ﺔﻟﻶا-ﻢﻠﻌﺗ</code></li></ul></details></td>
+      <td>روابط hard-coded لمسارات غير موحدة (خصوصًا slugs العربية والروابط القديمة).</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;page returned a 4XX status code&#x27; (الفئة: Error, العدد: 1). الصفحات المتأثرة حسب التقرير: https://brightai.site/لﺎﻤﻋﻷا-و-ﺔﻟﻶا-ﻢﻠﻌﺗ. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>14</td>
+      <td>Error</td>
+      <td><strong>pages couldn&#x27;t be crawled</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages couldn&#x27;t be crawled.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages couldn&#x27;t be crawled&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>15</td>
+      <td>Error</td>
+      <td><strong>pages couldn&#x27;t be crawled (incorrect URL formats)</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages couldn&#x27;t be crawled (incorrect URL formats).</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages couldn&#x27;t be crawled (incorrect URL formats)&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>16</td>
+      <td>Error</td>
+      <td><strong>pages couldn&#x27;t be crawled DNS resolution issues)</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages couldn&#x27;t be crawled DNS resolution issues).</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages couldn&#x27;t be crawled DNS resolution issues)&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>17</td>
+      <td>Error</td>
+      <td><strong>pages don&#x27;t have title tags</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages don&#x27;t have title tags.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages don&#x27;t have title tags&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>18</td>
+      <td>Error</td>
+      <td><strong>pages have a WWW resolve issue</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have a WWW resolve issue.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have a WWW resolve issue&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>19</td>
+      <td>Error</td>
+      <td><strong>pages have a meta refresh tag</strong><div class="count">Count: 11</div></td>
+      <td><span class="sev sev-critical">Critical</span></td>
+      <td>إعادة التوجيه عبر meta refresh بدل 301/308.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (11)</summary><ul><li><code>https://brightai.site/blog/production-line</code></li><li><code>https://brightai.site/blog/Generativeartificialintelligence</code></li><li><code>https://brightai.site/blog/astr.doc</code></li><li><code>https://brightai.site/blog/generative-artificial-intelligence-2</code></li><li><code>https://brightai.site/blog/production-line-2</code></li><li><code>https://brightai.site/blog/ءﺎﻛﺬﻟاﺔﺘﻤﺗألﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاﻞﻴﻠﺤﺘﻟﺔﺼﺼﺨﻣﻦﻴﺴﺤﺗوﻊﻳرﺎﺸﻤﻟا(1</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗأماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟا_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟاﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗﻷاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟا_ةرﺮﻜﺘﻤﻟامﺎﻬﻤﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗﻷاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟا_ﺔﻳﺮﺸﺒﻟادراﻮﻤﻟاﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟ</code></li><li><code>https://brightai.site/blog/ﻲﻤﻗﺮﻟالﻮﺤﺘﻟا_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوءﺎﻛﺬﻠﻟﻦﻜﻤﻳﻒﻴﻛدﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻارﺎﻜﺘﺑﻻا</code></li><li><code>https://brightai.site/blog/ﻲﻟﻶاﻢﻠﻌﺘﻟاﺔﻳؤﺮﻟاوﻞﺒﻘﺘﺴﻣ_ﺔﻴﺑﻮﺳﺎﺤﻟاﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣفﺮﻌﺘﻟاوﺔﻴﻌﻴﺒﻄﻟارﻮﺼﻟاﻰﻠﻋ</code></li></ul></details></td>
+      <td>صفحات تحويل قديمة داخل `frontend/pages/blogger/*` و`frontend/pages/interview/*` تستخدم `meta refresh`.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have a meta refresh tag&#x27; (الفئة: Error, العدد: 11). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/production-line; https://brightai.site/blog/Generativeartificialintelligence; https://brightai.site/blog/astr.doc; https://brightai.site/blog/generative-artificial-intelligence-2; https://brightai.site/blog/production-line-2; https://brightai.site/blog/ءﺎﻛﺬﻟاﺔﺘﻤﺗألﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاﻞﻴﻠﺤﺘﻟﺔﺼﺼﺨﻣﻦﻴﺴﺤﺗوﻊﻳرﺎﺸﻤﻟا(1; https://brightai.site/blog/ﺔﺘﻤﺗأماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟا_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟاﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟا; https://brightai.site/blog/ﺔﺘﻤﺗﻷاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟا_ةرﺮﻜﺘﻤﻟامﺎﻬﻤﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟا; https://brightai.site/blog/ﺔﺘﻤﺗﻷاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟا_ﺔﻳﺮﺸﺒﻟادراﻮﻤﻟاﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟ; https://brightai.site/blog/ﻲﻤﻗﺮﻟالﻮﺤﺘﻟا_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوءﺎﻛﺬﻠﻟﻦﻜﻤﻳﻒﻴﻛدﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻارﺎﻜﺘﺑﻻا; https://brightai.site/blog/ﻲﻟﻶاﻢﻠﻌﺘﻟاﺔﻳؤﺮﻟاوﻞﺒﻘﺘﺴﻣ_ﺔﻴﺑﻮﺳﺎﺤﻟاﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣفﺮﻌﺘﻟاوﺔﻴﻌﻴﺒﻄﻟارﻮﺼﻟاﻰﻠﻋ. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>20</td>
+      <td>Error</td>
+      <td><strong>pages have duplicate content issues</strong><div class="count">Count: 12</div></td>
+      <td><span class="sev sev-critical">Critical</span></td>
+      <td>وجود صفحات بمحتوى متشابه جدًا (&gt;=85%) يسبب تشتت الفهرسة والـranking.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (12)</summary><ul><li><code>https://brightai.site/blog/production-line</code></li><li><code>https://brightai.site/blog/Generativeartificialintelligence</code></li><li><code>https://brightai.site/blog/atou-job</code></li><li><code>https://brightai.site/blog/generative-artificial-intelligence-2</code></li><li><code>https://brightai.site/blog/production-line-2</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗأﺔﺼﺼﺨﻣلﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻦﻴﺴﺤﺗوﻊﻳرﺎﺸﻤﻟاﻞﻴﻠﺤﺘﻟ(1</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗأءﺎﻛﺬﻟاماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟا_ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗﻷامﺎﻬﻤﻟاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛ_ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/ﺔﺘﻤﺗﻷادراﻮﻤﻟاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟاﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣ_ﺔﻳﺮﺸﺒﻟاﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟ</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/لﻮﺤﺘﻟاﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟادﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳرﺎﻜﺘﺑﻻا</code></li><li><code>https://brightai.site/blog/ﻢﻠﻌﺘﻟا_ﺔﻴﺑﻮﺳﺎﺤﻟاﺔﻳؤﺮﻟاوﻲﻟﻶاﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻞﺒﻘﺘﺴﻣﺔﻴﻌﻴﺒﻄﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣرﻮﺼﻟاﻰﻠﻋفﺮﻌﺘﻟاو</code></li></ul></details></td>
+      <td>نسخ متعددة لنفس الصفحة/المقال (legacy/new) مع canonical وredirect غير صارم.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have duplicate content issues&#x27; (الفئة: Error, العدد: 12). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/production-line; https://brightai.site/blog/Generativeartificialintelligence; https://brightai.site/blog/atou-job; https://brightai.site/blog/generative-artificial-intelligence-2; https://brightai.site/blog/production-line-2; https://brightai.site/blog/ﺔﺘﻤﺗأﺔﺼﺼﺨﻣلﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻦﻴﺴﺤﺗوﻊﻳرﺎﺸﻤﻟاﻞﻴﻠﺤﺘﻟ(1; https://brightai.site/blog/ﺔﺘﻤﺗأءﺎﻛﺬﻟاماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟا_ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟا; https://brightai.site/blog/ﺔﺘﻤﺗﻷامﺎﻬﻤﻟاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛ_ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟا; https://brightai.site/blog/ﺔﺘﻤﺗﻷادراﻮﻤﻟاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟاﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣ_ﺔﻳﺮﺸﺒﻟاﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟ; https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا; https://brightai.site/blog/لﻮﺤﺘﻟاﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟادﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳرﺎﻜﺘﺑﻻا; https://brightai.site/blog/ﻢﻠﻌﺘﻟا_ﺔﻴﺑﻮﺳﺎﺤﻟاﺔﻳؤﺮﻟاوﻲﻟﻶاﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﻞﺒﻘﺘﺴﻣﺔﻴﻌﻴﺒﻄﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣرﻮﺼﻟاﻰﻠﻋفﺮﻌﺘﻟاو. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>21</td>
+      <td>Error</td>
+      <td><strong>pages have duplicate meta descriptions</strong><div class="count">Count: 2</div></td>
+      <td><span class="sev sev-high">High</span></td>
+      <td>تكرار meta description يقلل تمييز الصفحات في SERP.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (2)</summary><ul><li><code>https://brightai.site/blog/atou-job</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا</code></li></ul></details></td>
+      <td>توليد وصف موحد لنُسخ متعددة من نفس المحتوى.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have duplicate meta descriptions&#x27; (الفئة: Error, العدد: 2). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/atou-job; https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>22</td>
+      <td>Error</td>
+      <td><strong>pages have too large HTML size</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have too large HTML size.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have too large HTML size&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>23</td>
+      <td>Error</td>
+      <td><strong>pages returned 5XX status code</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages returned 5XX status code.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages returned 5XX status code&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>24</td>
+      <td>Error</td>
+      <td><strong>sitemap.xml files have format errors</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: sitemap.xml files have format errors.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;sitemap.xml files have format errors&#x27; (الفئة: Error, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>25</td>
+      <td>Error</td>
+      <td><strong>structured data items are invalid</strong><div class="count">Count: 6</div></td>
+      <td><span class="sev sev-high">High</span></td>
+      <td>حقول Schema غير مطابقة لمتطلبات Google.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (5)</summary><ul><li><code>https://brightai.site/</code></li><li><code>https://brightai.site/ai-scolecs</code></li><li><code>https://brightai.site/ai-workflows</code></li><li><code>https://brightai.site/demo/pricing</code></li><li><code>https://brightai.site/smart-medical-archive</code></li></ul></details></td>
+      <td>تعريفات Schema غير مكتملة/غير متوافقة في بعض الصفحات.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;structured data items are invalid&#x27; (الفئة: Error, العدد: 6). الصفحات المتأثرة حسب التقرير: https://brightai.site/; https://brightai.site/ai-scolecs; https://brightai.site/ai-workflows; https://brightai.site/demo/pricing; https://brightai.site/smart-medical-archive. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>26</td>
+      <td>Warning</td>
+      <td><strong>Homepage does not use HTTPS encryption</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Homepage does not use HTTPS encryption.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Homepage does not use HTTPS encryption&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>27</td>
+      <td>Warning</td>
+      <td><strong>Sitemap.xml not found</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Sitemap.xml not found.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Sitemap.xml not found&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>28</td>
+      <td>Warning</td>
+      <td><strong>Sitemap.xml not indicated in robots.txt</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Sitemap.xml not indicated in robots.txt.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Sitemap.xml not indicated in robots.txt&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>29</td>
+      <td>Warning</td>
+      <td><strong>URLs with a temporary redirect</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: URLs with a temporary redirect.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;URLs with a temporary redirect&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>30</td>
+      <td>Warning</td>
+      <td><strong>external images are broken</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: external images are broken.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;external images are broken&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>31</td>
+      <td>Warning</td>
+      <td><strong>external links are broken</strong><div class="count">Count: 2</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>روابط خارجية غير مستقرة (مثل 429).</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (1)</summary><ul><li><code>https://brightai.site/</code></li></ul></details></td>
+      <td>روابط خارجية مباشرة بدون بدائل أو تحكم retry/fallback.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;external links are broken&#x27; (الفئة: Warning, العدد: 2). الصفحات المتأثرة حسب التقرير: https://brightai.site/. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>32</td>
+      <td>Warning</td>
+      <td><strong>images don&#x27;t have alt attributes</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: images don&#x27;t have alt attributes.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;images don&#x27;t have alt attributes&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>33</td>
+      <td>Warning</td>
+      <td><strong>issues with unminified JavaScript and CSS files</strong><div class="count">Count: 381</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>استخدام ملفات غير مصغرة يزيد الوزن والأثر على الأداء.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (9)</summary><ul><li><code>https://brightai.site/</code></li><li><code>https://brightai.site/ai-scolecs</code></li><li><code>https://brightai.site/ai-workflows</code></li><li><code>https://brightai.site/blog/Generative-artificial-intelligence</code></li><li><code>https://brightai.site/blog/agint-bblog</code></li><li><code>https://brightai.site/blog/ai</code></li><li><code>https://brightai.site/blog/ai-agent</code></li><li><code>https://brightai.site/blog/ai-energy-saudi</code></li><li><code>https://brightai.site/blog/ai-finance-saudi</code></li></ul></details></td>
+      <td>تحميل موارد vendor/page بصيغ غير minified في صفحات متعددة.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with unminified JavaScript and CSS files&#x27; (الفئة: Warning, العدد: 381). الصفحات المتأثرة حسب التقرير: https://brightai.site/; https://brightai.site/ai-scolecs; https://brightai.site/ai-workflows; https://brightai.site/blog/Generative-artificial-intelligence; https://brightai.site/blog/agint-bblog; https://brightai.site/blog/ai; https://brightai.site/blog/ai-agent; https://brightai.site/blog/ai-energy-saudi; https://brightai.site/blog/ai-finance-saudi. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>34</td>
+      <td>Warning</td>
+      <td><strong>links on HTTPS pages lead to HTTP page</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: links on HTTPS pages lead to HTTP page.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;links on HTTPS pages lead to HTTP page&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>35</td>
+      <td>Warning</td>
+      <td><strong>outgoing internal links contain nofollow attribute</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: outgoing internal links contain nofollow attribute.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;outgoing internal links contain nofollow attribute&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>36</td>
+      <td>Warning</td>
+      <td><strong>pages contain frames</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages contain frames.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages contain frames&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>37</td>
+      <td>Warning</td>
+      <td><strong>pages don&#x27;t have an h1 heading</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages don&#x27;t have an h1 heading.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages don&#x27;t have an h1 heading&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>38</td>
+      <td>Warning</td>
+      <td><strong>pages don&#x27;t have character encoding declared</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages don&#x27;t have character encoding declared.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages don&#x27;t have character encoding declared&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>39</td>
+      <td>Warning</td>
+      <td><strong>pages don&#x27;t have doctype declared</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages don&#x27;t have doctype declared.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages don&#x27;t have doctype declared&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>40</td>
+      <td>Warning</td>
+      <td><strong>pages don&#x27;t have enough text within the title tags</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages don&#x27;t have enough text within the title tags.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages don&#x27;t have enough text within the title tags&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>41</td>
+      <td>Warning</td>
+      <td><strong>pages don&#x27;t have meta descriptions</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages don&#x27;t have meta descriptions.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages don&#x27;t have meta descriptions&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>42</td>
+      <td>Warning</td>
+      <td><strong>pages have a low word count</strong><div class="count">Count: 3</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>عدد كلمات الصفحة أقل من 200.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (3)</summary><ul><li><code>https://brightai.site/ai-workflows</code></li><li><code>https://brightai.site/try/data-analyzer</code></li><li><code>https://brightai.site/try/text-analysis</code></li></ul></details></td>
+      <td>بعض صفحات الأدوات/الخدمات تعتمد مكوّنات UI أكثر من نص مفهرس.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have a low word count&#x27; (الفئة: Warning, العدد: 3). الصفحات المتأثرة حسب التقرير: https://brightai.site/ai-workflows; https://brightai.site/try/data-analyzer; https://brightai.site/try/text-analysis. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>43</td>
+      <td>Warning</td>
+      <td><strong>pages have duplicate H1 and title tags</strong><div class="count">Count: 18</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>H1 يكرر نفس نص العنوان Title.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (18)</summary><ul><li><code>https://brightai.site/blog/ai-agent</code></li><li><code>https://brightai.site/blog/ai-generative-content-industry-saudi-arabia</code></li><li><code>https://brightai.site/blog/ai-transformation</code></li><li><code>https://brightai.site/blog/atou-job</code></li><li><code>https://brightai.site/blog/big-data-analysis</code></li><li><code>https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service</code></li><li><code>https://brightai.site/blog/digital</code></li><li><code>https://brightai.site/blog/intelligent-data-analysis</code></li><li><code>https://brightai.site/blog/process-automation</code></li><li><code>https://brightai.site/blog/smart-automation-benefits</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗأ-ﺔﺼﺼﺨﻣ-لﻮﻠﺣ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﻦﻴﺴﺤﺗو-ﻊﻳرﺎﺸﻤﻟا-ﻞﻴﻠﺤﺘﻟ1-ﺚﺤﺒﻟا-تﺎﻛﺮﺤﻣ</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗأ-ءﺎﻛﺬﻟا-ماﺪﺨﺘﺳﺎﺑ-تﺎﻴﻠﻤﻌﻟا-ﻦﻴﺴﺤﺗ-ﻰﻟإ-ﻖﻳﺮﻄﻟا-ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟا-ةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-دراﻮﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻟﺎﻤﻟا-ﺔﻴﻠﺒﻘﺘﺴﻣ-لﻮﻠﺣ-ﺔﻳﺮﺸﺒﻟاﺔﻴﻛﺬﻟا-تﺎﻛﺮﺸﻠﻟ</code></li><li><code>https://brightai.site/blog/-لﻮﺤﺘﻟا-ﻒﻴﻛ-تﺎﻴﻠﻤﻌﻟا-ﺔﺘﻤﺗأو-ﻲﻤﻗﺮﻟا-نأ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻠﻟ-ﻦﻜﻤﻳرﺎﻜﺘﺑﻻا-دﻮﻘﻳ</code></li><li><code>https://brightai.site/blog/-ﻢﻠﻌﺘﻟا-ﺔﻴﺑﻮﺳﺎﺤﻟا-ﺔﻳؤﺮﻟاو-ﻲﻟﻶا-ﻲﻓ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﻞﺒﻘﺘﺴﻣ-ﺔﻴﻌﻴﺒﻄﻟا-ﺔﻐﻠﻟا-ﺔﺠﻟﺎﻌﻣرﻮﺼﻟا-ﻰﻠﻋ-فﺮﻌﺘﻟاو</code></li><li><code>https://brightai.site/blog/-ﻞﻴﻠﺤﺗتﺎﻧﺎﻴﺒﻟا</code></li><li><code>https://brightai.site/blog/-ﻢﻠﻌﺗلﺎﻤﻋﻷا-و-ﺔﻟﻶا</code></li></ul></details></td>
+      <td>قالب المقال ينسخ النص نفسه لـ`&lt;title&gt;` و`&lt;h1&gt;`.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have duplicate H1 and title tags&#x27; (الفئة: Warning, العدد: 18). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/ai-agent; https://brightai.site/blog/ai-generative-content-industry-saudi-arabia; https://brightai.site/blog/ai-transformation; https://brightai.site/blog/atou-job; https://brightai.site/blog/big-data-analysis; https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service; https://brightai.site/blog/digital; https://brightai.site/blog/intelligent-data-analysis; https://brightai.site/blog/process-automation; https://brightai.site/blog/smart-automation-benefits; https://brightai.site/blog/-ﺔﺘﻤﺗأ-ﺔﺼﺼﺨﻣ-لﻮﻠﺣ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﻦﻴﺴﺤﺗو-ﻊﻳرﺎﺸﻤﻟا-ﻞﻴﻠﺤﺘﻟ1-ﺚﺤﺒﻟا-تﺎﻛﺮﺤﻣ; https://brightai.site/blog/-ﺔﺘﻤﺗأ-ءﺎﻛﺬﻟا-ماﺪﺨﺘﺳﺎﺑ-تﺎﻴﻠﻤﻌﻟا-ﻦﻴﺴﺤﺗ-ﻰﻟإ-ﻖﻳﺮﻄﻟا-ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟا-ةءﺎﻔﻜﻟا; https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا; https://brightai.site/blog/-ﺔﺘﻤﺗﻷا-دراﻮﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻟﺎﻤﻟا-ﺔﻴﻠﺒﻘﺘﺴﻣ-لﻮﻠﺣ-ﺔﻳﺮﺸﺒﻟاﺔﻴﻛﺬﻟا-تﺎﻛﺮﺸﻠﻟ; https://brightai.site/blog/-لﻮﺤﺘﻟا-ﻒﻴﻛ-تﺎﻴﻠﻤﻌﻟا-ﺔﺘﻤﺗأو-ﻲﻤﻗﺮﻟا-نأ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻠﻟ-ﻦﻜﻤﻳرﺎﻜﺘﺑﻻا-دﻮﻘﻳ; https://brightai.site/blog/-ﻢﻠﻌﺘﻟا-ﺔﻴﺑﻮﺳﺎﺤﻟا-ﺔﻳؤﺮﻟاو-ﻲﻟﻶا-ﻲﻓ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﻞﺒﻘﺘﺴﻣ-ﺔﻴﻌﻴﺒﻄﻟا-ﺔﻐﻠﻟا-ﺔﺠﻟﺎﻌﻣرﻮﺼﻟا-ﻰﻠﻋ-فﺮﻌﺘﻟاو; https://brightai.site/blog/-ﻞﻴﻠﺤﺗتﺎﻧﺎﻴﺒﻟا; https://brightai.site/blog/-ﻢﻠﻌﺗلﺎﻤﻋﻷا-و-ﺔﻟﻶا. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>44</td>
+      <td>Warning</td>
+      <td><strong>pages have incompatible plugin content</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have incompatible plugin content.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have incompatible plugin content&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>45</td>
+      <td>Warning</td>
+      <td><strong>pages have low text-HTML ratio</strong><div class="count">Count: 54</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>نسبة النص إلى HTML منخفضة.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (50)</summary><ul><li><code>https://brightai.site/</code></li><li><code>https://brightai.site/ai-scolecs</code></li><li><code>https://brightai.site/ai-workflows</code></li><li><code>https://brightai.site/blog/Generative-artificial-intelligence</code></li><li><code>https://brightai.site/blog/ai-agent</code></li><li><code>https://brightai.site/blog/ai-generative-content-industry-saudi-arabia</code></li><li><code>https://brightai.site/blog/ai-transformation</code></li><li><code>https://brightai.site/blog/atou.doc</code></li><li><code>https://brightai.site/blog/business-intelligence-saudi</code></li><li><code>https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service</code></li><li><code>https://brightai.site/blog/commerce-ministry-chatbot</code></li><li><code>https://brightai.site/blog/digital-banking-saudi</code></li><li><code>https://brightai.site/blog/digital-health-smart-archive</code></li><li><code>https://brightai.site/blog/intelligent-data-analysis</code></li><li><code>https://brightai.site/blog/ksu-adaptive-learning</code></li><li><code>https://brightai.site/blog/private-hospital-scheduling-optimization</code></li><li><code>https://brightai.site/blog/process-automation</code></li><li><code>https://brightai.site/blog/production-line</code></li><li><code>https://brightai.site/blog/saudi-agritech-smart-farming</code></li><li><code>https://brightai.site/blog/saudi-bank-fraud-detection</code></li><li><code>https://brightai.site/blog/saudi-dates-quality-ai</code></li><li><code>https://brightai.site/blog/saudi-ecommerce-ai-growth</code></li><li><code>https://brightai.site/blog/saudi-energy-predictive-maintenance</code></li><li><code>https://brightai.site/blog/saudi-factory-ai-productivity</code></li><li><code>https://brightai.site/blog/saudi-hospitality-dynamic-pricing</code></li><li><code>https://brightai.site/blog/saudi-insurance-claims-ai</code></li><li><code>https://brightai.site/blog/saudi-logistics-route-optimization</code></li><li><code>https://brightai.site/blog/saudi-manufacturing-predictive-maintenance</code></li><li><code>https://brightai.site/blog/saudi-mining-ai-exploration</code></li><li><code>https://brightai.site/blog/saudi-petrochemical-ai-safety</code></li><li><code>https://brightai.site/blog/saudi-real-estate-ai-valuation</code></li><li><code>https://brightai.site/blog/saudi-sports-analytics-ai</code></li><li><code>https://brightai.site/blog/smart-automation-benefits</code></li><li><code>https://brightai.site/blog/smart-crm-system</code></li><li><code>https://brightai.site/blog/smart-document-processing</code></li><li><code>https://brightai.site/blog/smart-inventory-management</code></li><li><code>https://brightai.site/blog/transport-logistics-solutions</code></li><li><code>https://brightai.site/blog/-ﻞﻴﻠﺤﺗتﺎﻧﺎﻴﺒﻟا</code></li><li><code>https://brightai.site/blog/-ﻢﻠﻌﺗلﺎﻤﻋﻷا-و-ﺔﻟﻶا</code></li><li><code>https://brightai.site/demo/pricing</code></li><li><code>https://brightai.site/docs</code></li><li><code>https://brightai.site/docs/terms-and-conditions</code></li><li><code>https://brightai.site/job.MAISco</code></li><li><code>https://brightai.site/privacy-cookies</code></li><li><code>https://brightai.site/sectors/ecommerce</code></li><li><code>https://brightai.site/sectors/energy</code></li><li><code>https://brightai.site/sectors/finance</code></li><li><code>https://brightai.site/sectors/healthcare</code></li><li><code>https://brightai.site/sectors/logistics</code></li><li><code>https://brightai.site/sectors/manufacturing</code></li></ul></details></td>
+      <td>قوالب واجهة كبيرة مقابل نص محتوى قليل في صفحات كثيرة.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have low text-HTML ratio&#x27; (الفئة: Warning, العدد: 54). الصفحات المتأثرة حسب التقرير: https://brightai.site/; https://brightai.site/ai-scolecs; https://brightai.site/ai-workflows; https://brightai.site/blog/Generative-artificial-intelligence; https://brightai.site/blog/ai-agent; https://brightai.site/blog/ai-generative-content-industry-saudi-arabia; https://brightai.site/blog/ai-transformation; https://brightai.site/blog/atou.doc; https://brightai.site/blog/business-intelligence-saudi; https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service; https://brightai.site/blog/commerce-ministry-chatbot; https://brightai.site/blog/digital-banking-saudi; https://brightai.site/blog/digital-health-smart-archive; https://brightai.site/blog/intelligent-data-analysis; https://brightai.site/blog/ksu-adaptive-learning; https://brightai.site/blog/private-hospital-scheduling-optimization; https://brightai.site/blog/process-automation; https://brightai.site/blog/production-line; https://brightai.site/blog/saudi-agritech-smart-farming; https://brightai.site/blog/saudi-bank-fraud-detection; https://brightai.site/blog/saudi-dates-quality-ai; https://brightai.site/blog/saudi-ecommerce-ai-growth; https://brightai.site/blog/saudi-energy-predictive-maintenance; https://brightai.site/blog/saudi-factory-ai-productivity; https://brightai.site/blog/saudi-hospitality-dynamic-pricing; https://brightai.site/blog/saudi-insurance-claims-ai; https://brightai.site/blog/saudi-logistics-route-optimization; https://brightai.site/blog/saudi-manufacturing-predictive-maintenance; https://brightai.site/blog/saudi-mining-ai-exploration; https://brightai.site/blog/saudi-petrochemical-ai-safety; ... (+20 URLs إضافية). نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>46</td>
+      <td>Warning</td>
+      <td><strong>pages have no hreflang and lang attributes</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have no hreflang and lang attributes.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have no hreflang and lang attributes&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>47</td>
+      <td>Warning</td>
+      <td><strong>pages have too many on-page links</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have too many on-page links.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have too many on-page links&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>48</td>
+      <td>Warning</td>
+      <td><strong>pages have too many parameters in their URLs</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have too many parameters in their URLs.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have too many parameters in their URLs&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>49</td>
+      <td>Warning</td>
+      <td><strong>pages have too much text within the title tags</strong><div class="count">Count: 11</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>عناوين أطول من الحد الموصى به للعرض في نتائج البحث.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (11)</summary><ul><li><code>https://brightai.site/blog/agint-bblog</code></li><li><code>https://brightai.site/blog/ai-generative-content-industry-saudi-arabia</code></li><li><code>https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service</code></li><li><code>https://brightai.site/blog/cloude-opus-4.6</code></li><li><code>https://brightai.site/blog/saudi-dates-quality-ai</code></li><li><code>https://brightai.site/blog/saudi-ecommerce-ai-growth</code></li><li><code>https://brightai.site/blog/saudi-energy-predictive-maintenance</code></li><li><code>https://brightai.site/blog/saudi-renewable-energy-ai</code></li><li><code>https://brightai.site/blog/saudi-smart-city-traffic</code></li><li><code>https://brightai.site/blog/-ﺔﺘﻤﺗأ-ءﺎﻛﺬﻟا-ماﺪﺨﺘﺳﺎﺑ-تﺎﻴﻠﻤﻌﻟا-ﻦﻴﺴﺤﺗ-ﻰﻟإ-ﻖﻳﺮﻄﻟا-ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟا-ةءﺎﻔﻜﻟا</code></li><li><code>https://brightai.site/blog/-ﻢﻠﻌﺘﻟا-ﺔﻴﺑﻮﺳﺎﺤﻟا-ﺔﻳؤﺮﻟاو-ﻲﻟﻶا-ﻲﻓ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﻞﺒﻘﺘﺴﻣ-ﺔﻴﻌﻴﺒﻄﻟا-ﺔﻐﻠﻟا-ﺔﺠﻟﺎﻌﻣرﻮﺼﻟا-ﻰﻠﻋ-فﺮﻌﺘﻟاو</code></li></ul></details></td>
+      <td>غياب حد أقصى لطول title أثناء النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have too much text within the title tags&#x27; (الفئة: Warning, العدد: 11). الصفحات المتأثرة حسب التقرير: https://brightai.site/blog/agint-bblog; https://brightai.site/blog/ai-generative-content-industry-saudi-arabia; https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service; https://brightai.site/blog/cloude-opus-4.6; https://brightai.site/blog/saudi-dates-quality-ai; https://brightai.site/blog/saudi-ecommerce-ai-growth; https://brightai.site/blog/saudi-energy-predictive-maintenance; https://brightai.site/blog/saudi-renewable-energy-ai; https://brightai.site/blog/saudi-smart-city-traffic; https://brightai.site/blog/-ﺔﺘﻤﺗأ-ءﺎﻛﺬﻟا-ماﺪﺨﺘﺳﺎﺑ-تﺎﻴﻠﻤﻌﻟا-ﻦﻴﺴﺤﺗ-ﻰﻟإ-ﻖﻳﺮﻄﻟا-ﻲﻋﺎﻨﻄﺻﻻاﺔﻴﻠﻴﻐﺸﺘﻟا-ةءﺎﻔﻜﻟا; https://brightai.site/blog/-ﻢﻠﻌﺘﻟا-ﺔﻴﺑﻮﺳﺎﺤﻟا-ﺔﻳؤﺮﻟاو-ﻲﻟﻶا-ﻲﻓ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﻞﺒﻘﺘﺴﻣ-ﺔﻴﻌﻴﺒﻄﻟا-ﺔﻐﻠﻟا-ﺔﺠﻟﺎﻌﻣرﻮﺼﻟا-ﻰﻠﻋ-فﺮﻌﺘﻟاو. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>50</td>
+      <td>Warning</td>
+      <td><strong>pages have underscores in the URL</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have underscores in the URL.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have underscores in the URL&#x27; (الفئة: Warning, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>51</td>
+      <td>Notice</td>
+      <td><strong>Llms.txt has formatting issues</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Llms.txt has formatting issues.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Llms.txt has formatting issues&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>52</td>
+      <td>Notice</td>
+      <td><strong>Llms.txt not found</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Llms.txt not found.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Llms.txt not found&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>53</td>
+      <td>Notice</td>
+      <td><strong>Robots.txt not found</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Robots.txt not found.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Robots.txt not found&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>54</td>
+      <td>Notice</td>
+      <td><strong>URLs with a permanent redirect</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: URLs with a permanent redirect.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;URLs with a permanent redirect&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>55</td>
+      <td>Notice</td>
+      <td><strong>Unknown issue</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: Unknown issue.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;Unknown issue&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>56</td>
+      <td>Notice</td>
+      <td><strong>issues with blocked external resources in robots.txt</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: issues with blocked external resources in robots.txt.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with blocked external resources in robots.txt&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>57</td>
+      <td>Notice</td>
+      <td><strong>issues with broken external JavaScript and CSS files</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: issues with broken external JavaScript and CSS files.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;issues with broken external JavaScript and CSS files&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>58</td>
+      <td>Notice</td>
+      <td><strong>links have non-descriptive anchor text</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: links have non-descriptive anchor text.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;links have non-descriptive anchor text&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>59</td>
+      <td>Notice</td>
+      <td><strong>links on this page have no anchor text</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: links on this page have no anchor text.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;links on this page have no anchor text&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>60</td>
+      <td>Notice</td>
+      <td><strong>links to external pages or resources returned a 403 HTTP status code</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: links to external pages or resources returned a 403 HTTP status code.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;links to external pages or resources returned a 403 HTTP status code&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>61</td>
+      <td>Notice</td>
+      <td><strong>orphaned pages in Google Analytics</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: orphaned pages in Google Analytics.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;orphaned pages in Google Analytics&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>62</td>
+      <td>Notice</td>
+      <td><strong>orphaned pages in sitemaps</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: orphaned pages in sitemaps.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;orphaned pages in sitemaps&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>63</td>
+      <td>Notice</td>
+      <td><strong>outgoing external links contain nofollow attributes</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: outgoing external links contain nofollow attributes.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;outgoing external links contain nofollow attributes&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>64</td>
+      <td>Notice</td>
+      <td><strong>page URLs are longer than 200 characters</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: page URLs are longer than 200 characters.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;page URLs are longer than 200 characters&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>65</td>
+      <td>Notice</td>
+      <td><strong>pages are blocked from crawling</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages are blocked from crawling.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages are blocked from crawling&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>66</td>
+      <td>Notice</td>
+      <td><strong>pages blocked by XRobots-Tag: noindex HTTP header</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages blocked by XRobots-Tag: noindex HTTP header.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages blocked by XRobots-Tag: noindex HTTP header&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>67</td>
+      <td>Notice</td>
+      <td><strong>pages contain too much content</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages contain too much content.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages contain too much content&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>68</td>
+      <td>Notice</td>
+      <td><strong>pages have hreflang language mismatch issues</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have hreflang language mismatch issues.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have hreflang language mismatch issues&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>69</td>
+      <td>Notice</td>
+      <td><strong>pages have low semantic HTML usage</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have low semantic HTML usage.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have low semantic HTML usage&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>70</td>
+      <td>Notice</td>
+      <td><strong>pages have more than one H1 tag</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have more than one H1 tag.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have more than one H1 tag&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>71</td>
+      <td>Notice</td>
+      <td><strong>pages have only one incoming internal link</strong><div class="count">Count: 32</div></td>
+      <td><span class="sev sev-medium">Medium</span></td>
+      <td>صفحات لديها رابط داخلي واحد فقط.</td>
+      <td><details><summary>عرض الصفحات/الروابط المتأثرة (33)</summary><ul><li><code>https://brightai.site/ai-workflows</code></li><li><code>https://brightai.site/blog/production-line</code></li><li><code>https://brightai.site/blog/Generativeartificialintelligence</code></li><li><code>https://brightai.site/blog/agint-bblog</code></li><li><code>https://brightai.site/blog/ai</code></li><li><code>https://brightai.site/blog/astr.doc</code></li><li><code>https://brightai.site/blog/atou-job</code></li><li><code>https://brightai.site/blog/atou.doc</code></li><li><code>https://brightai.site/blog/auto</code></li><li><code>https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service</code></li><li><code>https://brightai.site/blog/cloude-opus-4.6</code></li><li><code>https://brightai.site/blog/generative-artificial-intelligence-2</code></li><li><code>https://brightai.site/blog/gov</code></li><li><code>https://brightai.site/blog/production-line-2</code></li><li><code>https://brightai.site/blog/ﺔﺼﺼﺨﻣلﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﺔﺘﻤﺗأ(1</code></li><li><code>https://brightai.site/blog/ءﺎﻛﺬﻟاماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟا_ﻲﻋﺎﻨﻄﺻﻻا</code></li><li><code>https://brightai.site/blog/-ﺔﺼﺼﺨﻣ-لﻮﻠﺣ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﺔﺘﻤﺗأ1-ﺚﺤﺒﻟا-تﺎﻛﺮﺤﻣ-ﻦﻴﺴﺤﺗو-ﻊﻳرﺎﺸﻤﻟا-ﻞﻴﻠﺤﺘﻟ</code></li><li><code>https://brightai.site/blog/-ءﺎﻛﺬﻟا-ماﺪﺨﺘﺳﺎﺑ-تﺎﻴﻠﻤﻌﻟا-ﺔﺘﻤﺗأﺔﻴﻠﻴﻐﺸﺘﻟا-ةءﺎﻔﻜﻟا-ﻦﻴﺴﺤﺗ-ﻰﻟإ-ﻖﻳﺮﻄﻟا-ﻲﻋﺎﻨﻄﺻﻻا</code></li><li><code>https://brightai.site/blog/مﺎﻬﻤﻟاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟاﺔﺘﻤﺗﻷاﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛ_ةرﺮﻜﺘﻤﻟا</code></li><li><code>https://brightai.site/blog/دراﻮﻤﻟاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟاﺔﺘﻤﺗﻷاﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣ_ﺔﻳﺮﺸﺒﻟا</code></li><li><code>https://brightai.site/blog/-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﺔﺘﻤﺗﻷاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟا</code></li><li><code>https://brightai.site/blog/-دراﻮﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻟﺎﻤﻟا-ﺔﺘﻤﺗﻷاﺔﻴﻛﺬﻟا-تﺎﻛﺮﺸﻠﻟ-ﺔﻴﻠﺒﻘﺘﺴﻣ-لﻮﻠﺣ-ﺔﻳﺮﺸﺒﻟا</code></li><li><code>https://brightai.site/blog/ﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟالﻮﺤﺘﻟارﺎﻜﺘﺑﻻادﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳ</code></li><li><code>https://brightai.site/blog/نأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟالﻮﺤﺘﻟارﺎﻜﺘﺑﻻادﻮﻘﻳ</code></li><li><code>https://brightai.site/blog/-ﻒﻴﻛ-تﺎﻴﻠﻤﻌﻟا-ﺔﺘﻤﺗأو-ﻲﻤﻗﺮﻟا-لﻮﺤﺘﻟارﺎﻜﺘﺑﻻا-دﻮﻘﻳ-نأ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻠﻟ-ﻦﻜﻤﻳ</code></li><li><code>https://brightai.site/blog/ﻞﺒﻘﺘﺴﻣ_ﺔﻴﺑﻮﺳﺎﺤﻟاﺔﻳؤﺮﻟاوﻲﻟﻶاﻢﻠﻌﺘﻟارﻮﺼﻟاﻰﻠﻋفﺮﻌﺘﻟاوﺔﻴﻌﻴﺒﻄﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟا</code></li><li><code>https://brightai.site/blog/تﺎﻧﺎﻴﺒﻟا-ﻞﻴﻠﺤﺗ</code></li><li><code>https://brightai.site/blog/لﺎﻤﻋﻷا-و-ﺔﻟﻶا-ﻢﻠﻌﺗ</code></li><li><code>https://brightai.site/demo/pricing</code></li><li><code>https://brightai.site/sectors/ecommerce</code></li><li><code>https://brightai.site/sectors/energy</code></li><li><code>https://brightai.site/sectors/logistics</code></li><li><code>https://brightai.site/sectors/manufacturing</code></li></ul></details></td>
+      <td>هيكل الربط الداخلي غير متوازن خصوصًا بالمدونة.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have only one incoming internal link&#x27; (الفئة: Notice, العدد: 32). الصفحات المتأثرة حسب التقرير: https://brightai.site/ai-workflows; https://brightai.site/blog/production-line; https://brightai.site/blog/Generativeartificialintelligence; https://brightai.site/blog/agint-bblog; https://brightai.site/blog/ai; https://brightai.site/blog/astr.doc; https://brightai.site/blog/atou-job; https://brightai.site/blog/atou.doc; https://brightai.site/blog/auto; https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service; https://brightai.site/blog/cloude-opus-4.6; https://brightai.site/blog/generative-artificial-intelligence-2; https://brightai.site/blog/gov; https://brightai.site/blog/production-line-2; https://brightai.site/blog/ﺔﺼﺼﺨﻣلﻮﻠﺣ_ﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟاﺔﺘﻤﺗأ(1; https://brightai.site/blog/ءﺎﻛﺬﻟاماﺪﺨﺘﺳﺎﺑتﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأﺔﻴﻠﻴﻐﺸﺘﻟاةءﺎﻔﻜﻟاﻦﻴﺴﺤﺗﻰﻟإﻖﻳﺮﻄﻟا_ﻲﻋﺎﻨﻄﺻﻻا; https://brightai.site/blog/-ﺔﺼﺼﺨﻣ-لﻮﻠﺣ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻟا-ﺔﺘﻤﺗأ1-ﺚﺤﺒﻟا-تﺎﻛﺮﺤﻣ-ﻦﻴﺴﺤﺗو-ﻊﻳرﺎﺸﻤﻟا-ﻞﻴﻠﺤﺘﻟ; https://brightai.site/blog/-ءﺎﻛﺬﻟا-ماﺪﺨﺘﺳﺎﺑ-تﺎﻴﻠﻤﻌﻟا-ﺔﺘﻤﺗأﺔﻴﻠﻴﻐﺸﺘﻟا-ةءﺎﻔﻜﻟا-ﻦﻴﺴﺤﺗ-ﻰﻟإ-ﻖﻳﺮﻄﻟا-ﻲﻋﺎﻨﻄﺻﻻا; https://brightai.site/blog/مﺎﻬﻤﻟاﺔﺘﻤﺗأوﺔﻴﻋﺎﻨﺼﻟاﺔﺘﻤﺗﻷاﺔﻴﺟﺎﺘﻧﻹاةءﺎﻔﻜﻟاﻦﻴﺴﺤﺗﺔﻴﻔﻴﻛ_ةرﺮﻜﺘﻤﻟا; https://brightai.site/blog/دراﻮﻤﻟاﺔﺘﻤﺗأوﺔﻴﻟﺎﻤﻟاﺔﺘﻤﺗﻷاﺔﻴﻛﺬﻟاتﺎﻛﺮﺸﻠﻟﺔﻴﻠﺒﻘﺘﺴﻣلﻮﻠﺣ_ﺔﻳﺮﺸﺒﻟا; https://brightai.site/blog/-مﺎﻬﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻋﺎﻨﺼﻟا-ﺔﺘﻤﺗﻷاﺔﻴﺟﺎﺘﻧﻹا-ةءﺎﻔﻜﻟا-ﻦﻴﺴﺤﺗ-ﺔﻴﻔﻴﻛ-ةرﺮﻜﺘﻤﻟا; https://brightai.site/blog/-دراﻮﻤﻟا-ﺔﺘﻤﺗأو-ﺔﻴﻟﺎﻤﻟا-ﺔﺘﻤﺗﻷاﺔﻴﻛﺬﻟا-تﺎﻛﺮﺸﻠﻟ-ﺔﻴﻠﺒﻘﺘﺴﻣ-لﻮﻠﺣ-ﺔﻳﺮﺸﺒﻟا; https://brightai.site/blog/ﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟالﻮﺤﺘﻟارﺎﻜﺘﺑﻻادﻮﻘﻳنأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳ; https://brightai.site/blog/نأﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻠﻟﻦﻜﻤﻳﻒﻴﻛ_تﺎﻴﻠﻤﻌﻟاﺔﺘﻤﺗأوﻲﻤﻗﺮﻟالﻮﺤﺘﻟارﺎﻜﺘﺑﻻادﻮﻘﻳ; https://brightai.site/blog/-ﻒﻴﻛ-تﺎﻴﻠﻤﻌﻟا-ﺔﺘﻤﺗأو-ﻲﻤﻗﺮﻟا-لﻮﺤﺘﻟارﺎﻜﺘﺑﻻا-دﻮﻘﻳ-نأ-ﻲﻋﺎﻨﻄﺻﻻا-ءﺎﻛﺬﻠﻟ-ﻦﻜﻤﻳ; https://brightai.site/blog/ﻞﺒﻘﺘﺴﻣ_ﺔﻴﺑﻮﺳﺎﺤﻟاﺔﻳؤﺮﻟاوﻲﻟﻶاﻢﻠﻌﺘﻟارﻮﺼﻟاﻰﻠﻋفﺮﻌﺘﻟاوﺔﻴﻌﻴﺒﻄﻟاﺔﻐﻠﻟاﺔﺠﻟﺎﻌﻣﻲﻓﻲﻋﺎﻨﻄﺻﻻاءﺎﻛﺬﻟا; https://brightai.site/blog/تﺎﻧﺎﻴﺒﻟا-ﻞﻴﻠﺤﺗ; https://brightai.site/blog/لﺎﻤﻋﻷا-و-ﺔﻟﻶا-ﻢﻠﻌﺗ; https://brightai.site/demo/pricing; https://brightai.site/sectors/ecommerce; ... (+3 URLs إضافية). نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>72</td>
+      <td>Notice</td>
+      <td><strong>pages have outdated content</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages have outdated content.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages have outdated content&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>73</td>
+      <td>Notice</td>
+      <td><strong>pages need more than 3 clicks to be reached</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: pages need more than 3 clicks to be reached.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;pages need more than 3 clicks to be reached&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>74</td>
+      <td>Notice</td>
+      <td><strong>resources are formatted as page link</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: resources are formatted as page link.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;resources are formatted as page link&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    
+    <tr>
+      <td>75</td>
+      <td>Notice</td>
+      <td><strong>subdomains don&#x27;t support HSTS</strong><div class="count">Count: 0</div></td>
+      <td><span class="sev sev-low">Low</span></td>
+      <td>تنبيه تقني/SEO باسم: subdomains don&#x27;t support HSTS.</td>
+      <td><span class="muted">لا توجد صفحات متأثرة في التقرير (0)</span></td>
+      <td>قد يظهر عند إضافة صفحات جديدة بدون فحوصات SEO تلقائية قبل النشر.</td>
+      <td><textarea readonly>أنت Senior SEO/Frontend Engineer. أصلح مشكلة &#x27;subdomains don&#x27;t support HSTS&#x27; (الفئة: Notice, العدد: 0). الصفحات المتأثرة حسب التقرير: لا توجد صفحات متأثرة في تقرير 1 مارس 2026 (العدد = 0).. نفّذ إصلاحًا جذريًا داخل مشروع BrightAI مع الحفاظ على RTL وبدون كسر المسارات الحالية. قدّم تغييرات فعلية + قائمة ملفات معدلة + سكربت تحقق محلي + ملخص قبل/بعد يثبت زوال التنبيه من Semrush.</textarea></td>
+    </tr>
+    </tbody>
+    </table>
+  </div>
+</body>
+</html>
