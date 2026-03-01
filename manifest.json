@@ -64,7 +64,7 @@
       "name": "خدماتنا",
       "short_name": "الخدمات",
       "description": "استعرض خدمات الذكاء الاصطناعي من مُشرقة AI",
-      "url": "/frontend/pages/our-products/index.html",
+      "url": "/services",
       "icons": [
         {
           "src": "assets/images/Gemini.png",
@@ -76,7 +76,7 @@
       "name": "استشارة مجانية",
       "short_name": "استشارة",
       "description": "احصل على استشارة مجانية في الذكاء الاصطناعي",
-      "url": "/frontend/pages/consultation/index.html",
+      "url": "/consultation",
       "icons": [
         {
           "src": "assets/images/Gemini.png",
@@ -88,7 +88,7 @@
       "name": "روبوتات AI",
       "short_name": "الروبوتات",
       "description": "جرب روبوتات الذكاء الاصطناعي العربية",
-      "url": "/frontend/pages/ai-bots/index.html",
+      "url": "/ai-bots",
       "icons": [
         {
           "src": "assets/images/Gemini.png",
@@ -100,7 +100,7 @@
       "name": "تواصل معنا",
       "short_name": "التواصل",
       "description": "تواصل مع فريق مُشرقة AI",
-      "url": "/frontend/pages/contact/index.html",
+      "url": "/contact",
       "icons": [
         {
           "src": "assets/images/Gemini.png",

@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const ROOT = process.cwd();
-const BLOG_INDEX = path.join(ROOT, "frontend/pages/blog/index.html");
+const BLOG_INDEX = path.join(ROOT, "blog/index.html");
 const BLOGGER_ROOT = path.join(ROOT, "frontend/pages/blogger");
 
 function stripTags(value) {
@@ -27,15 +27,27 @@ function extractRedirectTargetPath(content) {
 
 function toBloggerFilePath(href) {
   if (!href) return null;
-  if (!href.startsWith("/frontend/pages/blogger/")) return null;
-  const fileName = href.slice("/frontend/pages/blogger/".length);
-  return path.join(BLOGGER_ROOT, fileName);
+  let normalizedHref = href.trim();
+  if (/^https?:\/\//i.test(normalizedHref)) {
+    try {
+      normalizedHref = new URL(normalizedHref).pathname;
+    } catch {
+      return null;
+    }
+  }
+
+  normalizedHref = normalizedHref.split("#")[0].split("?")[0];
+  if (!normalizedHref.startsWith("/blog/")) return null;
+
+  const slug = normalizedHref.slice("/blog/".length).replace(/\.html$/i, "");
+  if (!slug) return null;
+  return path.join(BLOGGER_ROOT, `${slug}.html`);
 }
 
 async function resolveTitleFromHref(rawHref) {
   let href = rawHref;
-  if (!href || href === "/frontend/pages/blog/index.html") {
-    href = "/frontend/pages/blogger/nca-ai-compliance-saudi.html";
+  if (!href || href === "/blog") {
+    href = "/blog/nca-ai-compliance-saudi";
   }
 
   let targetFile = toBloggerFilePath(href);

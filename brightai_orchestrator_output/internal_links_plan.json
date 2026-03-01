@@ -99,7 +99,7 @@
       "groq_action": "faq_schema_gen"
     },
     {
-      "source_page": "/docs.html",
+      "source_page": "/docs",
       "target_page": "/demo/resources/report-ai-saudi-2026/",
       "anchor_text_ar": "تقرير 2026: أين تتجه استثمارات الذكاء الاصطناعي",
       "place_hint": "inline paragraph",

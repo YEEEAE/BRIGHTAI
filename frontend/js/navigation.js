@@ -68,19 +68,19 @@ const INDEX_NAV_SELECTORS = {
 let cachedUnifiedNavigationMarkup = null;
 
 const FOOTER_STANDARDIZATION_PATH_PREFIXES = [
-  "/frontend/pages/about-us",
-  "/frontend/pages/ai-agent",
-  "/frontend/pages/ai-bots",
-  "/frontend/pages/smart-automation",
-  "/frontend/pages/ai-workflows",
-  "/frontend/pages/data-analysis",
-  "/frontend/pages/consultation",
-  "/frontend/pages/contact",
-  "/frontend/pages/blog",
-  "/frontend/pages/docs",
-  "/frontend/pages/privacy-cookies",
-  "/frontend/pages/what-is-ai",
-  "/frontend/pages/blogger"
+  "/about",
+  "/ai-agent",
+  "/ai-bots",
+  "/smart-automation",
+  "/ai-workflows",
+  "/data-analysis",
+  "/consultation",
+  "/contact",
+  "/blog",
+  "/docs",
+  "/privacy-cookies",
+  "/what-is-ai",
+  "/blogger"
 ];
 
 const UNIFIED_FOOTER_MARKUP = `
@@ -112,38 +112,38 @@ const UNIFIED_FOOTER_MARKUP = `
       <div>
         <h4 class="text-white font-medium mb-6">الشركة</h4>
         <ul class="space-y-3 text-sm text-slate-400">
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/about-us/index.html">عن Bright AI</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/case-studies/index.html">قصص النجاح</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/partners/index.html">الشركاء والموزعين</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/blog/index.html">المدونة</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/about">عن Bright AI</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/case-studies">قصص النجاح</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/partners">الشركاء والموزعين</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/contact">اتصل بنا</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/blog">المدونة</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-white font-medium mb-6">خدماتنا</h4>
         <ul class="space-y-3 text-sm text-slate-400">
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/ai-agent/index.html">AIaaS</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/smart-automation/index.html">الأتمتة الذكية</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/consultation/index.html">الاستشارات</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/ai-agent">AIaaS</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/data-analysis">تحليل البيانات</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/smart-automation">الأتمتة الذكية</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/consultation">الاستشارات</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-white font-medium mb-6">الموارد</h4>
         <ul class="space-y-3 text-sm text-slate-400">
-          <li><a class="hover:text-gold-400 transition" href="/docs.html">الوثائق</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/sitemap/index.html">خريطة الموقع</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/tools/index.html">أدوات مجانية</a></li>
-          <li><a class="hover:text-gold-400 transition" href="/frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/docs">الوثائق</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/demo/pricing">الأسعار</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/sitemap">خريطة الموقع</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/tools">أدوات مجانية</a></li>
+          <li><a class="hover:text-gold-400 transition" href="/privacy-cookies">سياسة الخصوصية</a></li>
         </ul>
       </div>
     </div>
     <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600 gap-4">
       <p>© 2026 Bright AI. جميع الحقوق محفوظة.</p>
       <div class="flex gap-6">
-        <a class="hover:text-slate-400 transition" href="/frontend/pages/privacy-cookies/index.html">سياسة الخصوصية</a>
-        <a class="hover:text-slate-400 transition" href="/frontend/pages/docs/terms-and-conditions.html">الشروط والأحكام</a>
+        <a class="hover:text-slate-400 transition" href="/privacy-cookies">سياسة الخصوصية</a>
+        <a class="hover:text-slate-400 transition" href="/docs/terms-and-conditions">الشروط والأحكام</a>
       </div>
     </div>
   </div>
@@ -161,28 +161,28 @@ function buildUnifiedNavigationMarkupFallback() {
             <li class="nav-item">
               <button aria-expanded="false" aria-haspopup="true" class="nav-link">الخدمات <span aria-hidden="true">▾</span></button>
               <div class="dropdown-menu">
-                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/ai-agent/index.html">
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/ai-agent">
                   <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:cpu" width="14"></iconify-icon> AI Agent</strong>
                   <span class="block text-slate-400 text-xs mt-1">وكلاء ذكية لتشغيل الأعمال</span>
                 </a>
-                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/smart-automation/index.html">
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/smart-automation">
                   <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:workflow" width="14"></iconify-icon> الأتمتة الذكية</strong>
                   <span class="block text-slate-400 text-xs mt-1">خفض التكاليف وتسريع سير العمل</span>
                 </a>
-                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/data-analysis/index.html">
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/data-analysis">
                   <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:line-chart" width="14"></iconify-icon> تحليل البيانات</strong>
                   <span class="block text-slate-400 text-xs mt-1">لوحات KPI ورؤى تشغيلية</span>
                 </a>
-                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/frontend/pages/consultation/index.html">
+                <a class="block px-3 py-2 rounded-lg hover:bg-white/5 transition" href="/consultation">
                   <strong class="block text-white text-sm flex items-center gap-2"><iconify-icon icon="lucide:briefcase-business" width="14"></iconify-icon> الاستشارات</strong>
                   <span class="block text-slate-400 text-xs mt-1">خارطة تنفيذ مخصصة للمؤسسة</span>
                 </a>
               </div>
             </li>
             <li><a class="nav-link" href="/services">خدماتنا</a></li>
-            <li><a class="nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
-            <li><a class="nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
-            <li><a class="nav-link" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
+            <li><a class="nav-link" href="/blog">المدونة</a></li>
+            <li><a class="nav-link" href="/demo/pricing">الأسعار</a></li>
+            <li><a class="nav-link" href="/contact">اتصل بنا</a></li>
           </ul>
         </nav>
         <div class="nav-actions">
@@ -198,16 +198,16 @@ function buildUnifiedNavigationMarkupFallback() {
         <li>
           <button class="mobile-nav-link" aria-haspopup="true" aria-expanded="false" type="button" style="width:100%;text-align:right;background:none;border:0;padding:.65rem 0;color:#cbd5e1;cursor:pointer;">الخدمات</button>
           <ul class="mobile-dropdown" style="list-style:none; margin:0; padding:0.35rem;">
-            <li><a class="mobile-nav-link" href="/frontend/pages/ai-agent/index.html">AI Agent</a></li>
-            <li><a class="mobile-nav-link" href="/frontend/pages/smart-automation/index.html">الأتمتة الذكية</a></li>
-            <li><a class="mobile-nav-link" href="/frontend/pages/data-analysis/index.html">تحليل البيانات</a></li>
-            <li><a class="mobile-nav-link" href="/frontend/pages/consultation/index.html">الاستشارات</a></li>
+            <li><a class="mobile-nav-link" href="/ai-agent">AI Agent</a></li>
+            <li><a class="mobile-nav-link" href="/smart-automation">الأتمتة الذكية</a></li>
+            <li><a class="mobile-nav-link" href="/data-analysis">تحليل البيانات</a></li>
+            <li><a class="mobile-nav-link" href="/consultation">الاستشارات</a></li>
           </ul>
         </li>
         <li><a class="mobile-nav-link" href="/services">خدماتنا</a></li>
-        <li><a class="mobile-nav-link" href="/frontend/pages/blog/index.html">المدونة</a></li>
-        <li><a class="mobile-nav-link" href="/frontend/pages/demo/pricing/index.html">الأسعار</a></li>
-        <li><a class="mobile-nav-link" href="/frontend/pages/contact/index.html">اتصل بنا</a></li>
+        <li><a class="mobile-nav-link" href="/blog">المدونة</a></li>
+        <li><a class="mobile-nav-link" href="/demo/pricing">الأسعار</a></li>
+        <li><a class="mobile-nav-link" href="/contact">اتصل بنا</a></li>
       </ul>
     </div>
     <div class="backdrop-overlay"></div>
@@ -373,7 +373,7 @@ async function mountUnifiedNavigation() {
 
   // Push down content that was behind the old nav
   const currentPath = normalizePathname(window.location.pathname);
-  if (currentPath.includes("/frontend/pages/our-products") || currentPath === "/services") {
+  if (currentPath === "/services" || currentPath.startsWith("/services/")) {
     const productsHeader = document.querySelector("body > header.sticky");
     if (productsHeader) {
       productsHeader.style.top = "var(--nav-height)";
@@ -491,18 +491,12 @@ function mountUnifiedFooter() {
 /* ── Blog Reading Time ── */
 function injectBlogReadingTime() {
   const path = normalizePathname(window.location.pathname);
-  const isRootBlogArticle = path.startsWith("/blog/") && path !== "/blog/index" && path !== "/blog/index.html";
-  const isFrontendBloggerArticle = path.startsWith("/frontend/pages/blogger/");
-  const isFrontendBlogArticle =
-    path.startsWith("/frontend/pages/blog/") &&
-    path !== "/frontend/pages/blog/index" &&
-    path !== "/frontend/pages/blog/index.html";
+  const isRootBlogArticle = path.startsWith("/blog/") && path !== "/blog/index";
   const isDocsArticlePath =
-    path.startsWith("/frontend/pages/docs/") &&
-    !path.endsWith("/docs.html") &&
-    !path.endsWith("/contact.html") &&
-    !path.endsWith("/contact-en.html");
-  const isBlogArticlePath = isRootBlogArticle || isFrontendBloggerArticle || isFrontendBlogArticle || isDocsArticlePath;
+    path.startsWith("/docs/") &&
+    path !== "/docs" &&
+    !path.startsWith("/docs/contact");
+  const isBlogArticlePath = isRootBlogArticle || isDocsArticlePath;
 
   if (!isBlogArticlePath) return;
 

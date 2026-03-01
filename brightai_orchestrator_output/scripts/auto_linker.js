@@ -8,23 +8,23 @@ const path = require('path');
  */
 
 const CONFIG = {
-    rootDir: path.join(__dirname, '../../frontend/pages/blogger'),
+    rootDir: path.join(__dirname, '../../blogger'),
     targets: [
         {
             keywords: ['تحليل بيانات', 'Data Analysis', 'بيانات ضخمة'],
-            url: '/frontend/pages/try/index.html',
+            url: '/try',
             anchor: 'جرّب تحليل بياناتك بنفسك الآن مجاناً',
             priority: 1
         },
         {
             keywords: ['أتمتة', 'RPA', 'Automation'],
-            url: '/frontend/pages/smart-automation/index.html',
+            url: '/smart-automation',
             anchor: 'أتمت أعمالك مع حلول BrightAI',
             priority: 2
         },
         {
             keywords: ['طبي', 'مستشفى', 'رعاية صحية'],
-            url: '/frontend/pages/smart-medical-archive/index.html',
+            url: '/smart-medical-archive',
             anchor: 'اكتشف الأرشيف الطبي الذكي',
             priority: 1
         }

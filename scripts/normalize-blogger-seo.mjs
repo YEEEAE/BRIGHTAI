@@ -100,7 +100,7 @@ async function main() {
   for (const relativeFile of bloggerFiles) {
     const absoluteFile = path.join(ROOT, relativeFile);
     const basename = path.basename(relativeFile);
-    const selfPath = `/frontend/pages/blogger/${basename}`;
+    const selfPath = `/blog/${basename}`;
     const selfUrl = `${BASE_URL}${selfPath}`;
 
     const originalContent = await fs.readFile(absoluteFile, "utf8");

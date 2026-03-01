@@ -75,6 +75,12 @@ status = 301
 force = true
 
 [[redirects]]
+from = "/docs.html"
+to = "/docs"
+status = 301
+force = true
+
+[[redirects]]
 from = "/index.html"
 to = "/"
 status = 301
@@ -95,78 +101,297 @@ force = true
 # Clean URL Rewrites — SEO-friendly paths
 [[redirects]]
 from = "/about"
-to = "/frontend/pages/about-us/index.html"
+to = "/about/index.html"
 status = 200
 
 [[redirects]]
 from = "/services"
-to = "/frontend/pages/our-products/index.html"
+to = "/services/index.html"
 status = 200
 
 [[redirects]]
 from = "/contact"
-to = "/frontend/pages/contact/index.html"
+to = "/contact/index.html"
 status = 200
 
 [[redirects]]
 from = "/blog"
-to = "/frontend/pages/blog/index.html"
+to = "/blog/index.html"
 status = 200
 
 [[redirects]]
 from = "/ai-agent"
-to = "/frontend/pages/ai-agent/index.html"
+to = "/ai-agent/index.html"
 status = 200
 
 [[redirects]]
 from = "/ai-bots"
-to = "/frontend/pages/ai-bots/index.html"
+to = "/ai-bots/index.html"
 status = 200
 
 [[redirects]]
 from = "/data-analysis"
-to = "/frontend/pages/data-analysis/index.html"
+to = "/data-analysis/index.html"
 status = 200
 
 [[redirects]]
 from = "/consultation"
-to = "/frontend/pages/consultation/index.html"
+to = "/consultation/index.html"
 status = 200
 
 [[redirects]]
 from = "/smart-automation"
-to = "/frontend/pages/smart-automation/index.html"
+to = "/smart-automation/index.html"
 status = 200
 
 [[redirects]]
 from = "/case-studies"
-to = "/frontend/pages/case-studies/index.html"
+to = "/case-studies/index.html"
 status = 200
 
 [[redirects]]
 from = "/what-is-ai"
-to = "/frontend/pages/what-is-ai/index.html"
+to = "/what-is-ai/index.html"
 status = 200
 
 [[redirects]]
 from = "/partners"
-to = "/frontend/pages/partners/index.html"
+to = "/partners/index.html"
 status = 200
 
 [[redirects]]
 from = "/tools"
-to = "/frontend/pages/tools/index.html"
+to = "/tools/index.html"
 status = 200
 
 [[redirects]]
 from = "/health"
-to = "/frontend/pages/health-bright/index.html"
+to = "/health/index.html"
 status = 200
 
 [[redirects]]
 from = "/machine-learning"
-to = "/frontend/pages/machine/index.html"
+to = "/machine-learning/index.html"
 status = 200
+
+[[redirects]]
+from = "/docs"
+to = "/docs.html"
+status = 200
+
+[[redirects]]
+from = "/docs/:slug"
+to = "/frontend/pages/docs/:slug.html"
+status = 200
+
+[[redirects]]
+from = "/blog/*.html"
+to = "/blog/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/automation/:slug"
+to = "/frontend/pages/blog/automation/:slug.html"
+status = 200
+
+[[redirects]]
+from = "/blog/data-analytics/:slug"
+to = "/frontend/pages/blog/data-analytics/:slug.html"
+status = 200
+
+[[redirects]]
+from = "/blog/:slug"
+to = "/frontend/pages/blogger/:slug.html"
+status = 200
+
+[[redirects]]
+from = "/ai-bots/:slug"
+to = "/frontend/pages/ai-bots/:slug/index.html"
+status = 200
+
+[[redirects]]
+from = "/ai-workflows"
+to = "/frontend/pages/ai-workflows/index.html"
+status = 200
+
+[[redirects]]
+from = "/ai-scolecs"
+to = "/frontend/pages/ai-scolecs/index.html"
+status = 200
+
+[[redirects]]
+from = "/smart-medical-archive"
+to = "/frontend/pages/smart-medical-archive/index.html"
+status = 200
+
+[[redirects]]
+from = "/job.MAISco"
+to = "/frontend/pages/job.MAISco/index.html"
+status = 200
+
+[[redirects]]
+from = "/try"
+to = "/frontend/pages/try/index.html"
+status = 200
+
+[[redirects]]
+from = "/try/:slug"
+to = "/frontend/pages/try/:slug/index.html"
+status = 200
+
+[[redirects]]
+from = "/demo"
+to = "/frontend/pages/demo/index.html"
+status = 200
+
+[[redirects]]
+from = "/demo/resources/:slug"
+to = "/frontend/pages/demo/resources/:slug/index.html"
+status = 200
+
+[[redirects]]
+from = "/demo/:slug"
+to = "/frontend/pages/demo/:slug/index.html"
+status = 200
+
+[[redirects]]
+from = "/interview"
+to = "/frontend/pages/interview/index.html"
+status = 200
+
+[[redirects]]
+from = "/interview/:slug"
+to = "/frontend/pages/interview/:slug.html"
+status = 200
+
+[[redirects]]
+from = "/interview/pages/:slug/:child"
+to = "/frontend/pages/interview/pages/:slug/:child/index.html"
+status = 200
+
+[[redirects]]
+from = "/interview/pages/:slug"
+to = "/frontend/pages/interview/pages/:slug.html"
+status = 200
+
+[[redirects]]
+from = "/privacy-cookies"
+to = "/frontend/pages/privacy-cookies/index.html"
+status = 200
+
+[[redirects]]
+from = "/terms"
+to = "/frontend/pages/terms/index.html"
+status = 200
+
+[[redirects]]
+from = "/sitemap"
+to = "/frontend/pages/sitemap/index.html"
+status = 200
+
+[[redirects]]
+from = "/offline"
+to = "/frontend/pages/offline/index.html"
+status = 200
+
+[[redirects]]
+from = "/sectors/:slug"
+to = "/frontend/pages/sectors/:slug.html"
+status = 200
+
+# -------------------------------------------------
+# Legacy moved pages → clean URLs
+# -------------------------------------------------
+[[redirects]]
+from = "/frontend/pages/about-us/index.html"
+to = "/about"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/our-products/index.html"
+to = "/services"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/contact/index.html"
+to = "/contact"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blog/index.html"
+to = "/blog"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/ai-agent/index.html"
+to = "/ai-agent"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/ai-bots/index.html"
+to = "/ai-bots"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/data-analysis/index.html"
+to = "/data-analysis"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/consultation/index.html"
+to = "/consultation"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/smart-automation/index.html"
+to = "/smart-automation"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/case-studies/index.html"
+to = "/case-studies"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/what-is-ai/index.html"
+to = "/what-is-ai"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/partners/index.html"
+to = "/partners"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/tools/index.html"
+to = "/tools"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/health-bright/index.html"
+to = "/health"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/machine/index.html"
+to = "/machine-learning"
+status = 301
+force = true
 
 # -------------------------------------------------
 # Blogger legacy redirects
@@ -179,7 +404,7 @@ force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/astr.doc.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
@@ -197,49 +422,49 @@ force = true
 # -------------------------------------------------
 [[redirects]]
 from = "/frontend/pages/blogger/agint-bblog.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/analysy.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/atou-job.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/atou.doc.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/auto.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/cloude-opus-4.6.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/digital.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/gov.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
@@ -287,7 +512,7 @@ force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA.html"
-to = "/frontend/pages/blog/index.html"
+to = "/blog"
 status = 301
 force = true
 
@@ -312,102 +537,6 @@ force = true
 [[redirects]]
 from = "/frontend/pages/blogger/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1.html"
 to = "/frontend/pages/blogger/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/ai-guide-saudi-business"
-to = "/frontend/pages/blogger/ai-guide-saudi-business.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/ai-guide-saudi-business.html"
-to = "/frontend/pages/blogger/ai-guide-saudi-business.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/choose-ai-company-saudi"
-to = "/frontend/pages/blogger/choose-ai-company-saudi.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/choose-ai-company-saudi.html"
-to = "/frontend/pages/blogger/choose-ai-company-saudi.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/vision-2030-ai-opportunities"
-to = "/frontend/pages/blogger/vision-2030-ai-opportunities.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/vision-2030-ai-opportunities.html"
-to = "/frontend/pages/blogger/vision-2030-ai-opportunities.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/top-ai-tools-saudi-2025"
-to = "/frontend/pages/blogger/top-ai-tools-saudi-2025.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/top-ai-tools-saudi-2025.html"
-to = "/frontend/pages/blogger/top-ai-tools-saudi-2025.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/ai-implementation-cost-guide"
-to = "/frontend/pages/blogger/ai-implementation-cost-guide.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/ai-implementation-cost-guide.html"
-to = "/frontend/pages/blogger/ai-implementation-cost-guide.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/hr-automation-case-study"
-to = "/frontend/pages/blogger/hr-automation-case-study.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/hr-automation-case-study.html"
-to = "/frontend/pages/blogger/hr-automation-case-study.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/chatgpt-vs-claude-vs-gemini-arabic"
-to = "/frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/chatgpt-vs-claude-vs-gemini-arabic.html"
-to = "/frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/nca-ai-compliance-saudi"
-to = "/frontend/pages/blogger/nca-ai-compliance-saudi.html"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/nca-ai-compliance-saudi.html"
-to = "/frontend/pages/blogger/nca-ai-compliance-saudi.html"
 status = 301
 force = true
 

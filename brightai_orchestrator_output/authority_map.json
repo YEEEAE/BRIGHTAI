@@ -73,7 +73,7 @@
       "has_form": false
     },
     {
-      "page": "/docs.html",
+      "page": "/docs",
       "role": "discovery",
       "title": "مركز المستندات | Bright AI - دليلك الشامل للحلول الذكية",
       "h1": "مركز مستنداتBright AI",
@@ -105,7 +105,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "أدوات ذكية مجانية | Bright AI - مولد السيرة الذاتية، البحث عن وظائف السعودية",
-      "ga_page_path": "/frontend/pages/tools/",
+      "ga_page_path": "/tools",
       "ga_views": 1,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -197,7 +197,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "عن Bright AI | شركة ذكاء اصطناعي سعودية رائدة منذ 2018",
-      "ga_page_path": "/frontend/pages/about-us/",
+      "ga_page_path": "/about-us",
       "ga_views": 1,
       "ga_dau_mau": 0.2,
       "ga_dau_wau": 0.2
@@ -218,7 +218,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "الذكاء الاصطناعي كخدمة (AIaaS) للشركات السعودية | Bright AI",
-      "ga_page_path": "/frontend/pages/ai-agent/",
+      "ga_page_path": "/ai-agent",
       "ga_views": 1,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -295,7 +295,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "BrightSupport - روبوت خدمة العملاء الذكي",
-      "ga_page_path": "/frontend/pages/ai-bots/BrightSupport/",
+      "ga_page_path": "/ai-bots/BrightSupport",
       "ga_views": 2,
       "ga_dau_mau": 0.14285714285714285,
       "ga_dau_wau": 0.14285714285714285
@@ -316,7 +316,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "روبوتات ذكاء اصطناعي متقدمة للشركات السعودية | Bright AI",
-      "ga_page_path": "/frontend/pages/ai-bots/",
+      "ga_page_path": "/ai-bots",
       "ga_views": 1,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -473,7 +473,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "Bright AI | تحليل البيانات بالذكاء الاصطناعي",
-      "ga_page_path": "/frontend/pages/data-analysis/",
+      "ga_page_path": "/data-analysis",
       "ga_views": 1,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -527,7 +527,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "روبوتات المحادثة الذكية | Bright AI - شات بوت عربي",
-      "ga_page_path": "/frontend/pages/docs/ai-bots.html",
+      "ga_page_path": "/docs/ai-bots",
       "ga_views": 1,
       "ga_dau_mau": 1.0,
       "ga_dau_wau": 1.0
@@ -691,7 +691,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "خدمات Bright AI | حلول ذكاء اصطناعي متكاملة للشركات السعودية",
-      "ga_page_path": "/frontend/pages/docs/services-overview.html",
+      "ga_page_path": "/docs/services-overview",
       "ga_views": 2,
       "ga_dau_mau": 0.2222222222222222,
       "ga_dau_wau": 0.25
@@ -745,7 +745,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "ذكاء الأعمال (BI) | Bright AI - لوحات تحكم تفاعلية",
-      "ga_page_path": "/frontend/pages/docs/solutions-bi.html",
+      "ga_page_path": "/docs/solutions-bi",
       "ga_views": 1,
       "ga_dau_mau": 1.0,
       "ga_dau_wau": 1.0
@@ -843,7 +843,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة",
-      "ga_page_path": "/frontend/pages/docs/solutions-hr.html",
+      "ga_page_path": "/docs/solutions-hr",
       "ga_views": 1,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -875,7 +875,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء",
-      "ga_page_path": "/frontend/pages/docs/solutions-interview.html",
+      "ga_page_path": "/docs/solutions-interview",
       "ga_views": 2,
       "ga_dau_mau": 0.2222222222222222,
       "ga_dau_wau": 0.25
@@ -995,7 +995,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "الشروط والأحكام | Bright AI - شروط استخدام خدماتنا",
-      "ga_page_path": "/frontend/pages/docs/terms-and-conditions.html",
+      "ga_page_path": "/docs/terms-and-conditions",
       "ga_views": 1,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -1059,7 +1059,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "mais co .",
-      "ga_page_path": "/frontend/pages/interview/",
+      "ga_page_path": "/interview",
       "ga_views": 1,
       "ga_dau_mau": 1.0,
       "ga_dau_wau": 1.0
@@ -1180,7 +1180,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "منتجات وخدمات الذكاء الاصطناعي | Bright AI السعودية",
-      "ga_page_path": "/frontend/pages/our-products/",
+      "ga_page_path": "/our-products",
       "ga_views": 2,
       "ga_dau_mau": 0.125,
       "ga_dau_wau": 0.14285714285714285
@@ -1278,7 +1278,7 @@
       "ga_key_events": 0,
       "ga_revenue": 0.0,
       "ga_title": "الأتمتة الذكية وسير عمل AI | Bright AI السعودية",
-      "ga_page_path": "/frontend/pages/smart-automation/",
+      "ga_page_path": "/smart-automation",
       "ga_views": 2,
       "ga_dau_mau": 1.0,
       "ga_dau_wau": 1.0

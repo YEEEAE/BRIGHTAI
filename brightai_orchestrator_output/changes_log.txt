@@ -191,12 +191,12 @@
 - تم تحديث analytics_map.json بنتائج المطابقة الجديدة.
 
 تحديث إضافي — المرحلة 1 (صفحات الملك)
-- تم إنشاء صفحة /demo في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
+- تم إنشاء صفحة /demo في المسار: /Users/yzydalshmry/Desktop/BrightAI/demo
   السبب: صفحة تحويل رئيسية للديمو الفوري مع CTA وتجربة تفاعلية مبسطة.
-- تم إنشاء صفحة /ocr-demo في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ocr-demo/index.html
+- تم إنشاء صفحة /ocr-demo في المسار: /Users/yzydalshmry/Desktop/BrightAI/ocr-demo
   السبب: صفحة تحويل مخصصة لتجربة OCR مع رفع ملف ونتائج فورية.
 - تم إنشاء صفحة /resources/report-ai-saudi-2026 في المسار:
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/resources/report-ai-saudi-2026/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/resources/report-ai-saudi-2026
   السبب: صفحة هبوط لتحميل التقرير وربطها بالتحويل نحو الديمو والاستشارة.
 
 تحديث إضافي — المرحلة 5 (تكاملات Groq)
@@ -209,9 +209,9 @@
 - توليد FAQ ديناميكي للتقرير وتحويله إلى JSON-LD داخل الصفحة.
 - تطبيق rate limit للمسارات الجديدة الخاصة بـ Groq.
 - تحديث صفحات الديمو وربطها بالمسارات الجديدة:
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/ocr-demo/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/demo
+  /Users/yzydalshmry/Desktop/BrightAI/demo/ocr-demo
+  /Users/yzydalshmry/Desktop/BrightAI/demo/resources/report-ai-saudi-2026
 - تحسين عناوين الصفحات ووصف الميتا لرفع CTR في صفحات الديمو وOCR والتقرير.
 - تحديث إعدادات config لإضافة GROQ_API_KEY وحدود body للـ OCR.
 - تحديث ملف tasks.md لتعليم إنجاز جميع عناصر المرحلة الخامسة.
@@ -220,9 +220,9 @@
 التاريخ: 2026-02-07 23:17
 
 - إضافة آلية تحديد عنوان API تلقائياً في صفحات الديمو لتفادي فشل الطلبات عند فتح الصفحة محلياً:
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/ocr-demo/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/demo
+  /Users/yzydalshmry/Desktop/BrightAI/demo/ocr-demo
+  /Users/yzydalshmry/Desktop/BrightAI/demo/resources/report-ai-saudi-2026
 - إضافة مسارات Groq في خادم /server لضمان الاستجابة سواء تم تشغيل خادم backend أو server.
 - إضافة تخزين جلسات قصير المدى في خادم /server لمزامنة بث الديمو.
 - تحديث إعدادات /server لإضافة GROQ_API_KEY وحدود حجم الطلبات للـ OCR.
@@ -235,12 +235,12 @@
 - إدراج مخطط التقرير داخل صفحة التقرير.
 - إدراج مخطط الأسعار داخل صفحة الأسعار.
 - تحديث ملف المهام لتعليم إنجاز المرحلة السادسة.
-- تم إنشاء صفحة /pricing في المسار: /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/pricing/index.html
+- تم إنشاء صفحة /pricing في المسار: /Users/yzydalshmry/Desktop/BrightAI/pricing
   السبب: صفحة تسعير واضحة تدعم التحويل والتواصل مع المبيعات.
 - تم تضمين canonical + Open Graph + Twitter meta في الصفحات الأربع.
 
 تحديث إضافي — توحيد الصفحات داخل مجلد demo
-- تم نقل صفحات الملك إلى داخل /frontend/pages/demo/ كطلب المستخدم.
+- تم نقل صفحات الملك إلى داخل /demo كطلب المستخدم.
 - المسارات الجديدة:
   - /demo/ (بدون تغيير)
   - /demo/ocr-demo/
@@ -257,17 +257,17 @@
 - تم تنفيذ 12 رابط عالي الأولوية موجّهة لصفحات الملك.
 - تمت الإضافة داخل الصفحات التالية:
   /Users/yzydalshmry/Desktop/BrightAI/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/try/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ai-agent/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/docs/solutions-ocr.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/tools/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/blog/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/try
+  /Users/yzydalshmry/Desktop/BrightAI/ai-agent
+  /Users/yzydalshmry/Desktop/BrightAI/docs/solutions-ocr
+  /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive
+  /Users/yzydalshmry/Desktop/BrightAI/tools
+  /Users/yzydalshmry/Desktop/BrightAI/blog
   /Users/yzydalshmry/Desktop/BrightAI/docs.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/data-analysis/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/our-products/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/consultation/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ai-bots/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/data-analysis
+  /Users/yzydalshmry/Desktop/BrightAI/services
+  /Users/yzydalshmry/Desktop/BrightAI/consultation
+  /Users/yzydalshmry/Desktop/BrightAI/ai-bots
 
 تحديث إضافي — المرحلة 2 (اليتيم + إعادة القياس)
 - تم إدراج روابط إضافية للصفحات اليتيمة داخل صفحات المصدر المقترحة.
@@ -285,25 +285,25 @@
 - إعادة تحديث crawl_data.json و authority_map.json لتعكس التحسينات الأخيرة.
 
 أهم الملفات المعدلة في المرحلة 3:
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightMath.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightProject.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightRecruiter.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightSales.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/botAI/BrightSupport.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/docs/docs.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/docs/openapi.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/ai-workflows/index.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/health-bright/index.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/interview/index.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/interview/Presentation.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/interview/pages/supportAI.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/job.MAISco/index.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/index.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/analytics-insights.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/Analytics&Insights.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/EHR-Viewer.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/Ingestion.html
-- /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/smart-medical-archive/NLP-Search.html
+- /Users/yzydalshmry/Desktop/BrightAI/ai-bots/BrightMath
+- /Users/yzydalshmry/Desktop/BrightAI/ai-bots/BrightProject
+- /Users/yzydalshmry/Desktop/BrightAI/ai-bots/BrightRecruiter
+- /Users/yzydalshmry/Desktop/BrightAI/ai-bots/BrightSales
+- /Users/yzydalshmry/Desktop/BrightAI/ai-bots/BrightSupport
+- /Users/yzydalshmry/Desktop/BrightAI/docs
+- /Users/yzydalshmry/Desktop/BrightAI/docs/openapi
+- /Users/yzydalshmry/Desktop/BrightAI/ai-workflows
+- /Users/yzydalshmry/Desktop/BrightAI/health
+- /Users/yzydalshmry/Desktop/BrightAI/interview
+- /Users/yzydalshmry/Desktop/BrightAI/interview/Presentation
+- /Users/yzydalshmry/Desktop/BrightAI/interview/pages/supportAI
+- /Users/yzydalshmry/Desktop/BrightAI/job.MAISco
+- /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive
+- /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive/analytics-insights
+- /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive/Analytics&Insights
+- /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive/EHR-Viewer
+- /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive/Ingestion
+- /Users/yzydalshmry/Desktop/BrightAI/smart-medical-archive/NLP-Search
 - /Users/yzydalshmry/Desktop/BrightAI/services/_template.html
 - /Users/yzydalshmry/Desktop/BrightAI/services/template.html
 - /Users/yzydalshmry/Desktop/BrightAI/sitemap.xml
@@ -317,10 +317,10 @@
 - تحديث index.html لاستخدام <picture> مع WebP + fallback JPG وإضافة loading="lazy" و decoding="async" وأبعاد ثابتة للصور الثقيلة.
 - تحسين تحميل الخطوط عبر preload + noscript في:
   /Users/yzydalshmry/Desktop/BrightAI/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/ocr-demo/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/pricing/index.html
-  /Users/yzydalshmry/Desktop/BrightAI/frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+  /Users/yzydalshmry/Desktop/BrightAI/demo
+  /Users/yzydalshmry/Desktop/BrightAI/demo/ocr-demo
+  /Users/yzydalshmry/Desktop/BrightAI/demo/pricing
+  /Users/yzydalshmry/Desktop/BrightAI/demo/resources/report-ai-saudi-2026
 - ملاحظة: لم يتم تشغيل قياس Lighthouse/LCP فعلياً (يتطلب تشغيل محلي عبر المتصفح).
 
 تحديث إضافي — تحسينات أداء على الصفحة الرئيسية (استناداً لتقرير Lighthouse 7 فبراير 2026)

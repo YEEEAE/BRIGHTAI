@@ -1,5 +1,5 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-02-27-5';
+const CACHE_VERSION = '2026-03-01-6';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
 const RECENT_ARTICLES_CACHE = `brightai-recent-articles-${CACHE_VERSION}`;
@@ -20,7 +20,7 @@ const STATIC_ASSETS = [
   '/assets/images/Gemini.png',
   '/assets/images/hero-brain.svg',
   '/manifest.json',
-  '/frontend/pages/offline/index.html',
+  '/offline',
   '/robots.txt',
   '/sitemap.xml'
 ];
@@ -91,16 +91,16 @@ async function networkFirst(req) {
     return res;
   } catch (err) {
     const cached = await caches.match(req);
-    const offlineFallback = await caches.match('/frontend/pages/offline/index.html');
+    const offlineFallback = await caches.match('/offline');
     return cached || offlineFallback || caches.match('/index.html');
   }
 }
 
 function isArticleDocument(pathname) {
   return (
-    pathname.startsWith('/frontend/pages/blogger/') ||
-    (pathname.startsWith('/frontend/pages/blog/') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index')) ||
-    (pathname.startsWith('/frontend/pages/docs/') && !pathname.endsWith('/docs.html')) ||
+    pathname.startsWith('/blog/') ||
+    (pathname.startsWith('/blog') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index')) ||
+    (pathname.startsWith('/docs/') && !pathname.endsWith('/docs')) ||
     (pathname.startsWith('/blog/') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index'))
   );
 }
@@ -124,7 +124,7 @@ async function networkFirstArticle(req) {
   } catch (err) {
     const recent = await caches.open(RECENT_ARTICLES_CACHE);
     const cached = await recent.match(req);
-    const offlineFallback = await caches.match('/frontend/pages/offline/index.html');
+    const offlineFallback = await caches.match('/offline');
     return cached || offlineFallback || caches.match('/index.html');
   }
 }

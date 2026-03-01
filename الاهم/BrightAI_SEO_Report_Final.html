@@ -615,7 +615,7 @@
     <h2 class="section-title"><span class="num">02</span>42 صفحة Docs مفهرسة — Thin Content</h2>
     <div class="alert high">
       <div class="alert-title">🟠 خطر Thin Content يُضعف سلطة الدومين</div>
-      <div class="alert-body"><code style="font-family:var(--font-mono)">/frontend/pages/docs/</code> تحتوي 42 صفحة (22 عربي + 20 إنجليزي) مفهرسة بالكامل. معظمها نسخ مختصرة من صفحات الخدمات الرئيسية. Google تُعاقب المواقع على Thin Content المكرر بتخفيض التقييم العام للدومين.</div>
+      <div class="alert-body"><code style="font-family:var(--font-mono)">/docs/</code> تحتوي 42 صفحة (22 عربي + 20 إنجليزي) مفهرسة بالكامل. معظمها نسخ مختصرة من صفحات الخدمات الرئيسية. Google تُعاقب المواقع على Thin Content المكرر بتخفيض التقييم العام للدومين.</div>
     </div>
     <ul class="check-list" style="margin-top:12px">
       <li><strong>docs.html في الجذر</strong> بدون canonical — يتنافس مع /docs/ الداخلية</li>
@@ -651,11 +651,11 @@
       <div class="alert-title">🟠 روابط مكسورة من منظور محركات البحث</div>
       <div class="alert-body">11 رابط في sitemap.xml يحتوي على ترميز URL عربي (%D8%...). بعض محركات البحث قد لا تزحف عليها بشكل صحيح.</div>
     </div>
-    <div class="code-block">https://brightai.site/frontend/pages/blogger/<span class="str">%D8%A3%D8%AA%D9%85%D8%AA%D8%A9...</span>
+    <div class="code-block">https://brightai.site/blog/<span class="str">%D8%A3%D8%AA%D9%85%D8%AA%D8%A9...</span>
 <span class="cmt">↑ رابط مكسور — يجب استبداله بـ slug إنجليزي</span>
 
 <span class="kw">الصواب:</span>
-https://brightai.site/frontend/pages/blogger/<span class="str">ai-automation-solutions.html</span></div>
+https://brightai.site/blog/<span class="str">ai-automation-solutions.html</span></div>
   </div>
 
   <hr class="divider">
@@ -1191,7 +1191,7 @@ status = 200</div>
 1. Add image namespace to urlset opening tag:
    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
 
-2. Replace ALL /frontend/pages/{name}/index.html URLs with clean equivalents:
+2. Replace ALL /{name} URLs with clean equivalents:
    /about      → /about
    /services  → /services
    /contact       → /contact
@@ -1281,14 +1281,14 @@ Template to add (adapt URL and description per page):
 
 1. In netlify.toml, add redirects for broken pages:
    [[redirects]]
-   from = "/frontend/pages/interview/Presentation.html"
-   to = "/frontend/pages/interview/index.html"
+   from = "/interview/Presentation"
+   to = "/interview"
    status = 301
    force = true
 
    [[redirects]]
-   from = "/frontend/pages/interview/g.html"
-   to = "/frontend/pages/interview/index.html"
+   from = "/interview/g"
+   to = "/interview"
    status = 301
    force = true
 
@@ -1299,7 +1299,7 @@ Template to add (adapt URL and description per page):
    &lt;meta name="robots" content="noindex, nofollow" /&gt;
 
 4. For docs.html (root file), add a canonical tag in &lt;head&gt;:
-   &lt;link rel="canonical" href="https://brightai.site/docs.html" /&gt;
+   &lt;link rel="canonical" href="https://brightai.site/docs" /&gt;
 
 5. For frontend/pages/offline/index.html — verify it has noindex (it should, confirm it).
 
@@ -1419,7 +1419,7 @@ Do NOT modify HTML content, title, or meta description.</div>
         <div class="prompt-code">IMPORTANT: Do NOT touch any files in frontend/pages/blogger/*.html
 Those 71 files already have datePublished in their Schema — leave them alone.
 
-ONLY modify frontend/pages/blog/index.html (the index/listing page):
+ONLY modify frontend/pages/blog (the index/listing page):
 
 The blog index has ~92 article card links. Each card links to a blogger article.
 For each article card, find any date display element (span, p, div containing a date)
@@ -1467,7 +1467,7 @@ Add in &lt;head&gt;:
   "name": "BrightProject - روبوت إدارة المشاريع الذكي",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web Browser",
-  "url": "https://brightai.site/frontend/pages/ai-bots/BrightProject/",
+  "url": "https://brightai.site/ai-bots/BrightProject",
   "description": "روبوت ذكاء اصطناعي لإدارة المشاريع والفرق بالعربية للشركات السعودية",
   "inLanguage": "ar-SA",
   "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SAR"},
@@ -1526,20 +1526,20 @@ before section content. Do NOT change any text content.
 TASK 1 — For all *-en.html files that are missing hreflang tags,
 add these in &lt;head&gt; (replace PAGENAME with the actual page name):
 &lt;link rel="alternate" hreflang="ar-SA"
-      href="https://brightai.site/frontend/pages/docs/PAGENAME.html" /&gt;
+      href="https://brightai.site/docs/PAGENAME" /&gt;
 &lt;link rel="alternate" hreflang="en-SA"
-      href="https://brightai.site/frontend/pages/docs/PAGENAME-en.html" /&gt;
+      href="https://brightai.site/docs/PAGENAME-en" /&gt;
 &lt;link rel="alternate" hreflang="x-default"
-      href="https://brightai.site/frontend/pages/docs/PAGENAME.html" /&gt;
+      href="https://brightai.site/docs/PAGENAME" /&gt;
 
 Check which EN files are missing this by looking for files without hreflang tags.
 Files that already have hreflang (like ai-agent.html / ai-agent-en.html) — skip them.
 
 TASK 2 — For each Arabic docs page, add canonical pointing to itself if missing:
-&lt;link rel="canonical" href="https://brightai.site/frontend/pages/docs/PAGENAME.html" /&gt;
+&lt;link rel="canonical" href="https://brightai.site/docs/PAGENAME" /&gt;
 
 TASK 3 — In docs.html (root file), add in &lt;head&gt; if missing:
-&lt;link rel="canonical" href="https://brightai.site/docs.html" /&gt;</div>
+&lt;link rel="canonical" href="https://brightai.site/docs" /&gt;</div>
       </div>
     </div>
 
@@ -1565,8 +1565,8 @@ TASK 3 — In docs.html (root file), add in &lt;head&gt; if missing:
    a. Rename it to an English slug (e.g. "الذكاء-الاصطناعي.html" → "ai-solutions.html")
    b. Add a 301 redirect in netlify.toml:
       [[redirects]]
-      from = "/frontend/pages/blogger/ENCODED_ARABIC_NAME.html"
-      to = "/frontend/pages/blogger/new-english-slug.html"
+      from = "/blog/ENCODED_ARABIC_NAME"
+      to = "/blog/new-english-slug"
       status = 301
       force = true
    c. Update sitemap.xml to use the new English URL
@@ -1605,7 +1605,7 @@ TASK 2 — Add Schema to frontend/pages/interview/index.html:
   "name": "منصة المقابلات الذكية - Bright AI",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web Browser",
-  "url": "https://brightai.site/frontend/pages/interview/",
+  "url": "https://brightai.site/interview",
   "description": "منصة ذكاء اصطناعي لإجراء مقابلات العمل الذكية بالعربية للشركات السعودية",
   "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SAR"},
   "provider": {"@type": "Organization", "name": "Bright AI"}
@@ -1618,13 +1618,13 @@ TASK 3 — Add Schema to frontend/pages/job.MAISco/index.html:
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "بوابة وظائف Bright AI | التوظيف في مجال الذكاء الاصطناعي",
-  "url": "https://brightai.site/frontend/pages/job.MAISco/",
+  "url": "https://brightai.site/job.MAISco",
   "description": "فرص العمل في مجال الذكاء الاصطناعي والتحول الرقمي بالمملكة العربية السعودية",
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
       {"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},
-      {"@type":"ListItem","position":2,"name":"الوظائف","item":"https://brightai.site/frontend/pages/job.MAISco/"}
+      {"@type":"ListItem","position":2,"name":"الوظائف","item":"https://brightai.site/job.MAISco"}
     ]
   }
 }

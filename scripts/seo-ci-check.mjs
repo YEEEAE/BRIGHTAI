@@ -9,157 +9,157 @@ const OG_IMAGE_URL = `${BASE_URL}/assets/images/Gemini.png`;
 
 const SERVICE_PAGES = [
   {
-    file: "frontend/pages/smart-automation/index.html",
-    canonical: `${BASE_URL}/frontend/pages/smart-automation/index.html`,
+    file: "smart-automation/index.html",
+    canonical: `${BASE_URL}/smart-automation`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/smart-automation/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/smart-automation/index.html`,
+      "ar-SA": `${BASE_URL}/smart-automation`,
+      "x-default": `${BASE_URL}/smart-automation`,
     },
   },
   {
-    file: "frontend/pages/data-analysis/index.html",
-    canonical: `${BASE_URL}/frontend/pages/data-analysis/index.html`,
+    file: "data-analysis/index.html",
+    canonical: `${BASE_URL}/data-analysis`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/data-analysis/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/data-analysis/index.html`,
+      "ar-SA": `${BASE_URL}/data-analysis`,
+      "x-default": `${BASE_URL}/data-analysis`,
     },
   },
   {
-    file: "frontend/pages/ai-agent/index.html",
-    canonical: `${BASE_URL}/frontend/pages/ai-agent/index.html`,
+    file: "ai-agent/index.html",
+    canonical: `${BASE_URL}/ai-agent`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/ai-agent/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/ai-agent/index.html`,
+      "ar-SA": `${BASE_URL}/ai-agent`,
+      "x-default": `${BASE_URL}/ai-agent`,
     },
   },
   {
     file: "frontend/pages/smart-medical-archive/index.html",
-    canonical: `${BASE_URL}/frontend/pages/smart-medical-archive/index.html`,
+    canonical: `${BASE_URL}/smart-medical-archive`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/smart-medical-archive/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/smart-medical-archive/index.html`,
+      "ar-SA": `${BASE_URL}/smart-medical-archive`,
+      "x-default": `${BASE_URL}/smart-medical-archive`,
     },
   },
   {
     file: "frontend/pages/ai-workflows/index.html",
-    canonical: `${BASE_URL}/frontend/pages/ai-workflows/index.html`,
+    canonical: `${BASE_URL}/ai-workflows`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/ai-workflows/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/ai-workflows/index.html`,
+      "ar-SA": `${BASE_URL}/ai-workflows`,
+      "x-default": `${BASE_URL}/ai-workflows`,
     },
   },
   {
-    file: "frontend/pages/consultation/index.html",
-    canonical: `${BASE_URL}/frontend/pages/consultation/index.html`,
+    file: "consultation/index.html",
+    canonical: `${BASE_URL}/consultation`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/consultation/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/consultation/index.html`,
+      "ar-SA": `${BASE_URL}/consultation`,
+      "x-default": `${BASE_URL}/consultation`,
     },
   },
   {
-    file: "frontend/pages/machine/index.html",
-    canonical: `${BASE_URL}/frontend/pages/machine/index.html`,
+    file: "machine-learning/index.html",
+    canonical: `${BASE_URL}/machine-learning`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/machine/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/machine/index.html`,
+      "ar-SA": `${BASE_URL}/machine-learning`,
+      "x-default": `${BASE_URL}/machine-learning`,
     },
   },
   {
     file: "frontend/pages/ai-scolecs/index.html",
-    canonical: `${BASE_URL}/frontend/pages/ai-scolecs/index.html`,
+    canonical: `${BASE_URL}/ai-scolecs`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/ai-scolecs/index.html`,
-      "x-default": `${BASE_URL}/frontend/pages/ai-scolecs/index.html`,
+      "ar-SA": `${BASE_URL}/ai-scolecs`,
+      "x-default": `${BASE_URL}/ai-scolecs`,
     },
   },
   {
     file: "frontend/pages/docs/services-overview.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+    canonical: `${BASE_URL}/docs/services-overview`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/services-overview-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+      "ar-SA": `${BASE_URL}/docs/services-overview`,
+      "en-SA": `${BASE_URL}/docs/services-overview-en`,
+      "x-default": `${BASE_URL}/docs/services-overview`,
     },
   },
   {
     file: "frontend/pages/docs/services-overview-en.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/services-overview-en.html`,
+    canonical: `${BASE_URL}/docs/services-overview-en`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/services-overview-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/services-overview.html`,
+      "ar-SA": `${BASE_URL}/docs/services-overview`,
+      "en-SA": `${BASE_URL}/docs/services-overview-en`,
+      "x-default": `${BASE_URL}/docs/services-overview`,
     },
   },
   {
     file: "frontend/pages/docs/consultation.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/consultation.html`,
+    canonical: `${BASE_URL}/docs/consultation`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/consultation.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/consultation-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/consultation.html`,
+      "ar-SA": `${BASE_URL}/docs/consultation`,
+      "en-SA": `${BASE_URL}/docs/consultation-en`,
+      "x-default": `${BASE_URL}/docs/consultation`,
     },
   },
   {
     file: "frontend/pages/docs/consultation-en.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/consultation-en.html`,
+    canonical: `${BASE_URL}/docs/consultation-en`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/consultation.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/consultation-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/consultation.html`,
+      "ar-SA": `${BASE_URL}/docs/consultation`,
+      "en-SA": `${BASE_URL}/docs/consultation-en`,
+      "x-default": `${BASE_URL}/docs/consultation`,
     },
   },
   {
     file: "frontend/pages/docs/ai-agent.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+    canonical: `${BASE_URL}/docs/ai-agent`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/ai-agent-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+      "ar-SA": `${BASE_URL}/docs/ai-agent`,
+      "en-SA": `${BASE_URL}/docs/ai-agent-en`,
+      "x-default": `${BASE_URL}/docs/ai-agent`,
     },
   },
   {
     file: "frontend/pages/docs/ai-agent-en.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/ai-agent-en.html`,
+    canonical: `${BASE_URL}/docs/ai-agent-en`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/ai-agent-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/ai-agent.html`,
+      "ar-SA": `${BASE_URL}/docs/ai-agent`,
+      "en-SA": `${BASE_URL}/docs/ai-agent-en`,
+      "x-default": `${BASE_URL}/docs/ai-agent`,
     },
   },
   {
     file: "frontend/pages/docs/smart-automation.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+    canonical: `${BASE_URL}/docs/smart-automation`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/smart-automation-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+      "ar-SA": `${BASE_URL}/docs/smart-automation`,
+      "en-SA": `${BASE_URL}/docs/smart-automation-en`,
+      "x-default": `${BASE_URL}/docs/smart-automation`,
     },
   },
   {
     file: "frontend/pages/docs/smart-automation-en.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/smart-automation-en.html`,
+    canonical: `${BASE_URL}/docs/smart-automation-en`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/smart-automation-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/smart-automation.html`,
+      "ar-SA": `${BASE_URL}/docs/smart-automation`,
+      "en-SA": `${BASE_URL}/docs/smart-automation-en`,
+      "x-default": `${BASE_URL}/docs/smart-automation`,
     },
   },
   {
     file: "frontend/pages/docs/data-analysis.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+    canonical: `${BASE_URL}/docs/data-analysis`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/data-analysis-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+      "ar-SA": `${BASE_URL}/docs/data-analysis`,
+      "en-SA": `${BASE_URL}/docs/data-analysis-en`,
+      "x-default": `${BASE_URL}/docs/data-analysis`,
     },
   },
   {
     file: "frontend/pages/docs/data-analysis-en.html",
-    canonical: `${BASE_URL}/frontend/pages/docs/data-analysis-en.html`,
+    canonical: `${BASE_URL}/docs/data-analysis-en`,
     hreflang: {
-      "ar-SA": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
-      "en-SA": `${BASE_URL}/frontend/pages/docs/data-analysis-en.html`,
-      "x-default": `${BASE_URL}/frontend/pages/docs/data-analysis.html`,
+      "ar-SA": `${BASE_URL}/docs/data-analysis`,
+      "en-SA": `${BASE_URL}/docs/data-analysis-en`,
+      "x-default": `${BASE_URL}/docs/data-analysis`,
     },
   },
 ];
@@ -267,6 +267,99 @@ function addCandidate(candidates, candidate) {
 function buildLocalFileCandidates(decodedPath) {
   const localPath = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
   const candidates = new Set();
+
+  if (localPath === "docs") {
+    addCandidate(candidates, "docs.html");
+    addCandidate(candidates, "frontend/pages/docs/docs.html");
+  }
+
+  if (localPath.startsWith("docs/")) {
+    const slug = localPath.slice("docs/".length);
+    addCandidate(candidates, path.join("frontend/pages/docs", `${slug}.html`));
+  }
+
+  if (localPath === "blog") {
+    addCandidate(candidates, "blog/index.html");
+  }
+
+  if (localPath.startsWith("blog/automation/")) {
+    const slug = localPath.slice("blog/automation/".length);
+    addCandidate(candidates, path.join("frontend/pages/blog/automation", `${slug}.html`));
+  }
+
+  if (localPath.startsWith("blog/data-analytics/")) {
+    const slug = localPath.slice("blog/data-analytics/".length);
+    addCandidate(candidates, path.join("frontend/pages/blog/data-analytics", `${slug}.html`));
+  }
+
+  if (localPath.startsWith("blog/")) {
+    const slug = localPath.slice("blog/".length);
+    addCandidate(candidates, path.join("frontend/pages/blogger", `${slug}.html`));
+  }
+
+  if (localPath.startsWith("ai-bots/")) {
+    const slug = localPath.slice("ai-bots/".length);
+    addCandidate(candidates, path.join("frontend/pages/ai-bots", slug, "index.html"));
+  }
+
+  if (localPath.startsWith("try/")) {
+    const slug = localPath.slice("try/".length);
+    addCandidate(candidates, path.join("frontend/pages/try", slug, "index.html"));
+  }
+
+  if (localPath === "try") {
+    addCandidate(candidates, "frontend/pages/try/index.html");
+  }
+
+  if (localPath === "demo") {
+    addCandidate(candidates, "frontend/pages/demo/index.html");
+  }
+
+  if (localPath.startsWith("demo/resources/")) {
+    const slug = localPath.slice("demo/resources/".length);
+    addCandidate(candidates, path.join("frontend/pages/demo/resources", slug, "index.html"));
+  }
+
+  if (localPath.startsWith("demo/")) {
+    const slug = localPath.slice("demo/".length);
+    addCandidate(candidates, path.join("frontend/pages/demo", slug, "index.html"));
+  }
+
+  if (localPath === "interview") {
+    addCandidate(candidates, "frontend/pages/interview/index.html");
+  }
+
+  if (localPath.startsWith("interview/pages/")) {
+    const sub = localPath.slice("interview/pages/".length);
+    addCandidate(candidates, path.join("frontend/pages/interview/pages", `${sub}.html`));
+    addCandidate(candidates, path.join("frontend/pages/interview/pages", sub, "index.html"));
+  }
+
+  if (localPath.startsWith("interview/")) {
+    const slug = localPath.slice("interview/".length);
+    addCandidate(candidates, path.join("frontend/pages/interview", `${slug}.html`));
+    addCandidate(candidates, path.join("frontend/pages/interview", slug, "index.html"));
+  }
+
+  if (localPath.startsWith("sectors/")) {
+    const slug = localPath.slice("sectors/".length);
+    addCandidate(candidates, path.join("frontend/pages/sectors", `${slug}.html`));
+  }
+
+  [
+    "ai-workflows",
+    "ai-scolecs",
+    "smart-medical-archive",
+    "job.MAISco",
+    "privacy-cookies",
+    "terms",
+    "sitemap",
+    "offline",
+  ].forEach((slug) => {
+    if (localPath === slug) {
+      addCandidate(candidates, path.join("frontend/pages", slug, "index.html"));
+    }
+  });
 
   addCandidate(candidates, localPath);
 

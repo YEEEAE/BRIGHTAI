@@ -89,19 +89,13 @@
 
   function isArticleLikePage() {
     const path = normalizePathname(window.location.pathname);
-    const isRootBlogArticle = path.startsWith("/blog/") && path !== "/blog/index" && path !== "/blog/index.html";
-    const isFrontendBloggerArticle = path.startsWith("/frontend/pages/blogger/");
-    const isFrontendBlogArticle =
-      path.startsWith("/frontend/pages/blog/") &&
-      path !== "/frontend/pages/blog/index" &&
-      path !== "/frontend/pages/blog/index.html";
+    const isRootBlogArticle = path.startsWith("/blog/") && path !== "/blog/index";
     const isDocsArticlePath =
-      path.startsWith("/frontend/pages/docs/") &&
-      !path.endsWith("/docs.html") &&
-      !path.endsWith("/contact.html") &&
-      !path.endsWith("/contact-en.html");
+      path.startsWith("/docs/") &&
+      path !== "/docs" &&
+      !path.startsWith("/docs/contact");
 
-    return isRootBlogArticle || isFrontendBloggerArticle || isFrontendBlogArticle || isDocsArticlePath;
+    return isRootBlogArticle || isDocsArticlePath;
   }
 
   function getPrimaryArticleContainer() {
@@ -532,9 +526,9 @@
       const normalized = normalizePathname(url);
       if (normalized === currentPath) return false;
       if (preferredType === "docs") {
-        return normalized.startsWith("/frontend/pages/docs/");
+        return normalized.startsWith("/docs/");
       }
-      return normalized.startsWith("/frontend/pages/blogger/") || normalized.startsWith("/frontend/pages/blog/");
+      return normalized.startsWith("/blog/");
     };
 
     const scored = searchIndex
@@ -566,8 +560,8 @@
     if (!article) return;
 
     const path = normalizePathname(window.location.pathname);
-    const isBlogPath = path.startsWith("/frontend/pages/blogger/") || path.startsWith("/frontend/pages/blog/");
-    const isDocsPath = path.startsWith("/frontend/pages/docs/");
+    const isBlogPath = path.startsWith("/blog/");
+    const isDocsPath = path.startsWith("/docs/") && path !== "/docs";
     if (!isBlogPath && !isDocsPath) return;
 
     const hasRelatedHeader = Array.from(article.querySelectorAll("h2, h3")).some(function (heading) {
@@ -579,14 +573,14 @@
     if (!relatedSet.length) {
       relatedSet = isDocsPath
         ? [
-          { href: "/frontend/pages/docs/solutions-hr.html", title: "حلول الموارد البشرية الذكية", hint: "حالة استخدام عملية" },
-          { href: "/frontend/pages/docs/solutions-crm.html", title: "حلول CRM والواتساب", hint: "رفع التحويلات" },
-          { href: "/frontend/pages/docs/consultation.html", title: "استشارة تنفيذ مخصصة", hint: "جلسة تشخيص" }
+          { href: "/docs/solutions-hr", title: "حلول الموارد البشرية الذكية", hint: "حالة استخدام عملية" },
+          { href: "/docs/solutions-crm", title: "حلول CRM والواتساب", hint: "رفع التحويلات" },
+          { href: "/docs/consultation", title: "استشارة تنفيذ مخصصة", hint: "جلسة تشخيص" }
         ]
         : [
-          { href: "/frontend/pages/blogger/nca-compliance.html", title: "حوكمة NCA للشركات السعودية", hint: "امتثال وتشغيل" },
-          { href: "/frontend/pages/blogger/vision-2030-ai-opportunities.html", title: "فرص الذكاء الاصطناعي ضمن رؤية 2030", hint: "اتجاهات السوق" },
-          { href: "/frontend/pages/blogger/ai-implementation-cost-guide.html", title: "دليل تكلفة تطبيق الذكاء الاصطناعي", hint: "قرار الاستثمار" }
+          { href: "/blog/nca-compliance", title: "حوكمة NCA للشركات السعودية", hint: "امتثال وتشغيل" },
+          { href: "/blog/vision-2030-ai-opportunities", title: "فرص الذكاء الاصطناعي ضمن رؤية 2030", hint: "اتجاهات السوق" },
+          { href: "/blog/ai-implementation-cost-guide", title: "دليل تكلفة تطبيق الذكاء الاصطناعي", hint: "قرار الاستثمار" }
         ];
     }
 

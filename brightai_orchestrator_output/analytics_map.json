@@ -27,7 +27,7 @@
     ],
     [
       "/Docs",
-      "/docs.html"
+      "/docs"
     ],
     [
       "/consultation.html",
@@ -43,10 +43,10 @@
     ],
     [
       "/Docs.html",
-      "/docs.html"
+      "/docs"
     ],
     [
-      "/frontend/pages/blog/",
+      "/blog/",
       "/blog/"
     ],
     [
@@ -54,7 +54,7 @@
       "/ai-bots/"
     ],
     [
-      "/frontend/pages/blog/",
+      "/blog/",
       "/blog/"
     ],
     [
@@ -66,7 +66,7 @@
       "/"
     ],
     [
-      "/frontend/pages/ai-agent/",
+      "/ai-agent",
       "/ai-agent/"
     ],
     [
@@ -82,79 +82,79 @@
       "/"
     ],
     [
-      "/frontend/pages/ai-bots/BrightSupport/",
+      "/ai-bots/BrightSupport",
       "/ai-bots/BrightSupport/"
     ],
     [
-      "/frontend/pages/docs/services-overview.html",
+      "/docs/services-overview",
       "/docs/services-overview.html"
     ],
     [
-      "/frontend/pages/docs/solutions-interview.html",
+      "/docs/solutions-interview",
       "/docs/solutions-interview.html"
     ],
     [
-      "/frontend/pages/interview/",
+      "/interview",
       "/interview/"
     ],
     [
-      "/frontend/pages/our-products/",
+      "/our-products",
       "/our-products/"
     ],
     [
-      "/frontend/pages/smart-automation/",
+      "/smart-automation",
       "/smart-automation/"
     ],
     [
-      "/frontend/pages/smart-automation/",
+      "/smart-automation",
       "/smart-automation/"
     ],
     [
       "/frontend/docs.html",
-      "/docs.html"
+      "/docs"
     ],
     [
-      "/frontend/pages/about-us/",
+      "/about-us",
       "/about-us/"
     ],
     [
-      "/frontend/pages/about-us/",
+      "/about-us",
       "/about-us/"
     ],
     [
-      "/frontend/pages/ai-agent/",
+      "/ai-agent",
       "/ai-agent/"
     ],
     [
-      "/frontend/pages/ai-bots/",
+      "/ai-bots",
       "/ai-bots/"
     ],
     [
-      "/frontend/pages/data-analysis/",
+      "/data-analysis",
       "/data-analysis/"
     ],
     [
-      "/frontend/pages/docs/ai-bots.html",
+      "/docs/ai-bots",
       "/docs/ai-bots.html"
     ],
     [
-      "/frontend/pages/docs/solutions-bi.html",
+      "/docs/solutions-bi",
       "/docs/solutions-bi.html"
     ],
     [
-      "/frontend/pages/docs/solutions-hr.html",
+      "/docs/solutions-hr",
       "/docs/solutions-hr.html"
     ],
     [
-      "/frontend/pages/docs/terms-and-conditions.html",
+      "/docs/terms-and-conditions",
       "/docs/terms-and-conditions.html"
     ],
     [
-      "/frontend/pages/interview/",
+      "/interview",
       "/interview/"
     ],
     [
-      "/frontend/pages/tools/",
+      "/tools",
       "/tools/"
     ],
     [
@@ -164,11 +164,11 @@
   ],
   "unmatched_pages_sample": [
     "/Customer/",
-    "/frontend/pages/our-products.html",
+    "/our-products",
     "/Docfile/About.Bright.AI.html",
     "/smart-automation",
     "/ai-agent",
-    "/frontend/pages/smart-automation.html",
+    "/smart-automation",
     "/pages/ai-agent.html",
     "/frontend/Docs",
     "/pages/data-analysis.html",
@@ -178,14 +178,14 @@
     "/ai-bots",
     "/consultation",
     "/frontend/Docs/",
-    "/frontend/frontend/pages/data-analysis",
-    "/frontend/pages/ai-agent.html",
-    "/frontend/pages/blog.html",
-    "/frontend/pages/blogger/ai-healthcare-saudi.html",
-    "/frontend/pages/blogger/saudi-waste-management-ai.html",
-    "/frontend/pages/consultation.html",
-    "/frontend/pages/smart-automation",
-    "/frontend/pages/tools",
+    "/frontend/data-analysis",
+    "/ai-agent",
+    "/blog",
+    "/blog/ai-healthcare-saudi",
+    "/blog/saudi-waste-management-ai",
+    "/consultation",
+    "/smart-automation",
+    "/tools",
     "/pages/contact.html",
     "/Docfile/Vision.Mission.html",
     "/blog",
@@ -194,20 +194,20 @@
     "/botAI/BrightSales",
     "/botAI/BrightSupport",
     "/frontend/Docs/index",
-    "/frontend/frontend/pages/about-us",
-    "/frontend/frontend/pages/about-us.html",
-    "/frontend/frontend/pages/data-analysis.html",
-    "/frontend/frontend/pages/smart-automation.html",
-    "/frontend/frontend/pages/smart-medical-archive",
-    "/frontend/frontend/pages/smart-medical-archive/index",
-    "/frontend/frontend/pages/smart-medical-archive/",
-    "/frontend/pages/aibot/",
-    "/frontend/pages/aobot/",
-    "/frontend/pages/consultation",
-    "/frontend/pages/contact.html",
-    "/frontend/pages/data-analysis.html",
-    "/frontend/pages/tools.html",
-    "/frontend/pages/try.html",
+    "/frontend/about-us",
+    "/frontend/about-us",
+    "/frontend/data-analysis",
+    "/frontend/smart-automation",
+    "/frontend/smart-medical-archive",
+    "/frontend/smart-medical-archive/index",
+    "/frontend/smart-medical-archive",
+    "/aibot",
+    "/aobot",
+    "/consultation",
+    "/contact",
+    "/data-analysis",
+    "/tools",
+    "/try",
     "/llms.txt",
     "/our-products",
     "/pages/about-us.html",

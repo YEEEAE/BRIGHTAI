@@ -1252,7 +1252,7 @@
 
             const contactLink = document.createElement('a');
             contactLink.className = 'qbtn px-3 py-1.5 bg-slate-500/10 border border-slate-500/20 rounded-lg text-xs text-slate-300 hover:bg-slate-500/20 transition-colors';
-            contactLink.href = '/frontend/pages/contact/index.html';
+            contactLink.href = '/contact';
             contactLink.textContent = 'صفحة التواصل';
             actions.appendChild(contactLink);
 

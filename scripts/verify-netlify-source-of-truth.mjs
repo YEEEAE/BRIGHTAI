@@ -91,12 +91,12 @@ function hasRedirect(from, to, status) {
 
 const requiredRedirects = [
   { from: '/api/*', to: '/.netlify/functions/all', status: 200 },
-  { from: '/sitemap.html', to: '/frontend/pages/sitemap/index.html', status: 301 },
-  { from: '/terms.html', to: '/frontend/pages/terms/index.html', status: 301 },
-  { from: '/offline.html', to: '/frontend/pages/offline/index.html', status: 301 },
+  { from: '/sitemap.html', to: '/sitemap', status: 301 },
+  { from: '/terms.html', to: '/terms', status: 301 },
+  { from: '/offline.html', to: '/offline', status: 301 },
   { from: '/index.html', to: '/', status: 301 },
-  { from: '/blog/ai-guide-saudi-business', to: '/frontend/pages/blogger/ai-guide-saudi-business.html', status: 301 },
-  { from: '/blog/nca-ai-compliance-saudi', to: '/frontend/pages/blogger/nca-ai-compliance-saudi.html', status: 301 },
+  { from: '/blog/ai-guide-saudi-business', to: '/blog/ai-guide-saudi-business', status: 301 },
+  { from: '/blog/nca-ai-compliance-saudi', to: '/blog/nca-ai-compliance-saudi', status: 301 },
 ];
 
 for (const rule of requiredRedirects) {

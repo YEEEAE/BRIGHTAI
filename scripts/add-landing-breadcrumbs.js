@@ -5,16 +5,16 @@ const root = process.cwd();
 const landingDir = path.join(root, 'frontend/pages/landing');
 
 const siloByFile = {
-  'saudi-ai-consulting-riyadh.html': { name: 'سلة التسعير والاستشارة', url: 'https://brightai.site/frontend/pages/silos/pricing-consultation.html' },
-  'saudi-ai-data-compliance-consulting.html': { name: 'سلة التسعير والاستشارة', url: 'https://brightai.site/frontend/pages/silos/pricing-consultation.html' },
-  'saudi-process-automation.html': { name: 'سلة حلول الأعمال', url: 'https://brightai.site/frontend/pages/silos/business-solutions.html' },
-  'saudi-customer-service-ai-agent.html': { name: 'سلة حلول الأعمال', url: 'https://brightai.site/frontend/pages/silos/business-solutions.html' },
-  'saudi-enterprise-data-analytics.html': { name: 'سلة حلول الأعمال', url: 'https://brightai.site/frontend/pages/silos/business-solutions.html' },
-  'saudi-bank-fraud-detection.html': { name: 'سلة القطاعات', url: 'https://brightai.site/frontend/pages/silos/sectors.html' },
-  'saudi-predictive-maintenance-manufacturing.html': { name: 'سلة القطاعات', url: 'https://brightai.site/frontend/pages/silos/sectors.html' },
-  'saudi-smart-medical-archive.html': { name: 'سلة القطاعات', url: 'https://brightai.site/frontend/pages/silos/sectors.html' },
-  'saudi-hospitality-dynamic-pricing.html': { name: 'سلة القطاعات', url: 'https://brightai.site/frontend/pages/silos/sectors.html' },
-  'saudi-logistics-route-optimization.html': { name: 'سلة القطاعات', url: 'https://brightai.site/frontend/pages/silos/sectors.html' }
+  'saudi-ai-consulting-riyadh.html': { name: 'سلة التسعير والاستشارة', url: 'https://brightai.site/silos/pricing-consultation' },
+  'saudi-ai-data-compliance-consulting.html': { name: 'سلة التسعير والاستشارة', url: 'https://brightai.site/silos/pricing-consultation' },
+  'saudi-process-automation.html': { name: 'سلة حلول الأعمال', url: 'https://brightai.site/silos/business-solutions' },
+  'saudi-customer-service-ai-agent.html': { name: 'سلة حلول الأعمال', url: 'https://brightai.site/silos/business-solutions' },
+  'saudi-enterprise-data-analytics.html': { name: 'سلة حلول الأعمال', url: 'https://brightai.site/silos/business-solutions' },
+  'saudi-bank-fraud-detection.html': { name: 'سلة القطاعات', url: 'https://brightai.site/silos/sectors' },
+  'saudi-predictive-maintenance-manufacturing.html': { name: 'سلة القطاعات', url: 'https://brightai.site/silos/sectors' },
+  'saudi-smart-medical-archive.html': { name: 'سلة القطاعات', url: 'https://brightai.site/silos/sectors' },
+  'saudi-hospitality-dynamic-pricing.html': { name: 'سلة القطاعات', url: 'https://brightai.site/silos/sectors' },
+  'saudi-logistics-route-optimization.html': { name: 'سلة القطاعات', url: 'https://brightai.site/silos/sectors' }
 };
 
 const files = fs.readdirSync(landingDir).filter((name) => name.endsWith('.html'));
@@ -32,8 +32,8 @@ for (const file of files) {
   const canonicalMatch = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"\s*\/?\s*>/i);
 
   const pageName = titleMatch ? titleMatch[1].split('|')[0].trim() : file.replace('.html', '');
-  const pageUrl = canonicalMatch ? canonicalMatch[1].trim() : `https://brightai.site/frontend/pages/landing/${file}`;
-  const silo = siloByFile[file] || { name: 'سلة حلول الأعمال', url: 'https://brightai.site/frontend/pages/silos/business-solutions.html' };
+  const pageUrl = canonicalMatch ? canonicalMatch[1].trim() : `https://brightai.site/landing/${file}`;
+  const silo = siloByFile[file] || { name: 'سلة حلول الأعمال', url: 'https://brightai.site/silos/business-solutions' };
 
   const breadcrumbJson = {
     '@context': 'https://schema.org',

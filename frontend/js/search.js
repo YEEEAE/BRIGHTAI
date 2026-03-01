@@ -28,7 +28,7 @@ class BrightSearch {
         title: "الأتمتة الذكية",
         description: "أتمتة العمليات التشغيلية ورفع الكفاءة باستخدام الذكاء الاصطناعي",
         keywords: ["أتمتة", "RPA", "تشغيل", "كفاءة", "عمليات"],
-        url: "/frontend/pages/smart-automation/index.html",
+        url: "/smart-automation",
         category: "الخدمات"
       },
       {
@@ -37,7 +37,7 @@ class BrightSearch {
         title: "تحليل البيانات",
         description: "تحليلات متقدمة ولوحات مؤشرات تدعم القرار التجاري",
         keywords: ["بيانات", "تحليل", "تقارير", "مؤشرات", "ذكاء أعمال"],
-        url: "/frontend/pages/data-analysis/index.html",
+        url: "/data-analysis",
         category: "الخدمات"
       },
       {
@@ -46,7 +46,7 @@ class BrightSearch {
         title: "AI للمنشآت",
         description: "وكلاء ذكاء اصطناعي مخصصون للعمليات اليومية",
         keywords: ["وكيل", "Agent", "منشآت", "تشغيل", "AIaaS"],
-        url: "/frontend/pages/ai-agent/index.html",
+        url: "/ai-agent",
         category: "الخدمات"
       },
       {
@@ -55,7 +55,7 @@ class BrightSearch {
         title: "الأرشيف الطبي الذكي",
         description: "نظام إدارة سجلات طبية ذكي للمستشفيات والمراكز الصحية",
         keywords: ["طبي", "صحي", "مستشفيات", "سجلات", "أرشفة"],
-        url: "/frontend/pages/smart-medical-archive/index.html",
+        url: "/smart-medical-archive",
         category: "الخدمات"
       },
       {
@@ -64,7 +64,7 @@ class BrightSearch {
         title: "سير العمل بالذكاء الاصطناعي",
         description: "بناء تدفقات ذكية تربط الفرق والأنظمة وتقلل زمن التنفيذ",
         keywords: ["workflow", "سير العمل", "تدفق", "إنتاجية"],
-        url: "/frontend/pages/ai-workflows/index.html",
+        url: "/ai-workflows",
         category: "الخدمات"
       },
       {
@@ -73,7 +73,7 @@ class BrightSearch {
         title: "الاستشارات التقنية",
         description: "خطة تحول عملية للذكاء الاصطناعي في السوق السعودي",
         keywords: ["استشارات", "تحول", "خطة", "تنفيذ"],
-        url: "/frontend/pages/consultation/index.html",
+        url: "/consultation",
         category: "الخدمات"
       },
       {
@@ -82,7 +82,7 @@ class BrightSearch {
         title: "روبوتات الذكاء الاصطناعي",
         description: "نماذج بوتات جاهزة لخدمة العملاء والمبيعات والتوظيف",
         keywords: ["بوت", "روبوت", "محادثة", "خدمة العملاء"],
-        url: "/frontend/pages/ai-bots/index.html",
+        url: "/ai-bots",
         category: "الحلول"
       },
       {
@@ -91,7 +91,7 @@ class BrightSearch {
         title: "منتجات وخدمات Bright AI",
         description: "كتالوج حلول الذكاء الاصطناعي للشركات والمنشآت",
         keywords: ["منتجات", "خدمات", "اشتراكات", "حلول"],
-        url: "/frontend/pages/our-products/index.html",
+        url: "/services",
         category: "الحلول"
       },
       {
@@ -100,7 +100,7 @@ class BrightSearch {
         title: "الأدوات الذكية",
         description: "أدوات مجانية وتجريبية للتحليل والتشغيل",
         keywords: ["أدوات", "مجانية", "تحليل", "تجربة"],
-        url: "/frontend/pages/tools/index.html",
+        url: "/tools",
         category: "الحلول"
       },
       {
@@ -109,7 +109,7 @@ class BrightSearch {
         title: "ما هو الذكاء الاصطناعي؟",
         description: "دليل مبسط لفهم المفاهيم والتطبيقات في الأعمال",
         keywords: ["تعريف", "ذكاء اصطناعي", "تعلم الآلة", "AI"],
-        url: "/frontend/pages/what-is-ai/index.html",
+        url: "/what-is-ai",
         category: "المعرفة"
       },
       {
@@ -118,7 +118,7 @@ class BrightSearch {
         title: "من نحن",
         description: "تعرف على Bright AI وفريق العمل والرؤية",
         keywords: ["شركة", "فريق", "رؤية", "Bright AI"],
-        url: "/frontend/pages/about-us/index.html",
+        url: "/about",
         category: "الشركة"
       },
       {
@@ -127,7 +127,7 @@ class BrightSearch {
         title: "تواصل معنا",
         description: "احجز استشارة وتواصل مع فريق Bright AI",
         keywords: ["اتصال", "تواصل", "واتساب", "استشارة"],
-        url: "/frontend/pages/contact/index.html",
+        url: "/contact",
         category: "الشركة"
       },
       {
@@ -136,7 +136,7 @@ class BrightSearch {
         title: "المكتبة الذكية",
         description: "مقالات ودراسات تطبيقية حول الذكاء الاصطناعي",
         keywords: ["مدونة", "مقالات", "دراسات", "محتوى"],
-        url: "/frontend/pages/blog/index.html",
+        url: "/blog",
         category: "المعرفة"
       },
       {
@@ -145,7 +145,7 @@ class BrightSearch {
         title: "المستندات",
         description: "التوثيق الرسمي والواجهات الفنية",
         keywords: ["docs", "توثيق", "دليل", "API"],
-        url: "/docs.html",
+        url: "/docs",
         category: "المعرفة"
       },
       {
@@ -1056,12 +1056,12 @@ class BrightSearch {
     }
 
     const quickLinks = [
-      { title: "الأتمتة الذكية", url: "/frontend/pages/smart-automation/index.html" },
-      { title: "تحليل البيانات", url: "/frontend/pages/data-analysis/index.html" },
-      { title: "AI للمنشآت", url: "/frontend/pages/ai-agent/index.html" },
-      { title: "سير العمل بالذكاء الاصطناعي", url: "/frontend/pages/ai-workflows/index.html" },
-      { title: "الأدوات الذكية", url: "/frontend/pages/tools/index.html" },
-      { title: "تواصل معنا", url: "/frontend/pages/contact/index.html" }
+      { title: "الأتمتة الذكية", url: "/smart-automation" },
+      { title: "تحليل البيانات", url: "/data-analysis" },
+      { title: "AI للمنشآت", url: "/ai-agent" },
+      { title: "سير العمل بالذكاء الاصطناعي", url: "/ai-workflows" },
+      { title: "الأدوات الذكية", url: "/tools" },
+      { title: "تواصل معنا", url: "/contact" }
     ];
 
     this.resultsContainer.innerHTML = `

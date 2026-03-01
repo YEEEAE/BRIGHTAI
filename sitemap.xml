@@ -3,921 +3,962 @@
 
   <url>
     <loc>https://brightai.site/</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://brightai.site/docs.html</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://brightai.site/about</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/ai-agent</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots/BrightMath/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots/BrightProject/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots/BrightRecruiter/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots/BrightSales/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-bots/BrightSupport/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/ai-bots</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-scolecs/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/ai-workflows/index.html</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/blog/automation/hr-automation-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blog/data-analytics/kpi-dashboard-guide.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://brightai.site/ai-bots/BrightMath</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blog/data-analytics/power-bi-saudi-guide.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://brightai.site/ai-bots/BrightProject</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/ai-bots/BrightRecruiter</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/ai-bots/BrightSales</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/ai-bots/BrightSupport</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/ai-scolecs</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/ai-workflows</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/blog</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/agint-bblog</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-agent</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-energy-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-finance-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-generative-content-industry-saudi-arabia</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-guide-saudi-business</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-healthcare-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-implementation-cost-guide</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/blog/ai-transformation</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/analysy</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/atou-job</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/atou.doc</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/auto</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/automation/hr-automation-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/big-data-analysis</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/business-intelligence-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/choose-ai-company-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/cloude-opus-4.6</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-agent.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/commerce-ministry-chatbot</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-energy-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/data-analytics/kpi-dashboard-guide</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-finance-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/data-analytics/power-bi-saudi-guide</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-generative-content-industry-saudi-arabia.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/digital</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-guide-saudi-business.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/digital-banking-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-healthcare-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/digital-health-smart-archive</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-implementation-cost-guide.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ai-transformation.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/Generative-artificial-intelligence</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/big-data-analysis.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/gov</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/business-intelligence-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/hr-automation-case-study</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/intelligent-data-analysis</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/kfshrc-breast-cancer-ai</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/choose-ai-company-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/ksu-adaptive-learning</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/commerce-ministry-chatbot.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/nca-ai-compliance-saudi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/digital-banking-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/nca-compliance</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/digital-health-smart-archive.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/private-hospital-scheduling-optimization</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/process-automation</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/generative-artificial-intelligence-2.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/production-line</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/Generative-artificial-intelligence.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/riyadh-municipality-ai-license</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/hr-automation-case-study.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-agritech-smart-farming</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/intelligent-data-analysis.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-bank-fraud-detection</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/kfshrc-breast-cancer-ai.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-dates-quality-ai</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/ksu-adaptive-learning.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-ecommerce-ai-growth</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/nca-ai-compliance-saudi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-edtech-personalized-learning</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/nca-compliance.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-energy-predictive-maintenance</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/private-hospital-scheduling-optimization.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-factory-ai-productivity</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/process-automation.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-hospitality-dynamic-pricing</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/production-line.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-insurance-claims-ai</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/riyadh-municipality-ai-license.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-logistics-route-optimization</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-agritech-smart-farming.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-manufacturing-predictive-maintenance</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-bank-fraud-detection.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-mining-ai-exploration</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-dates-quality-ai.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-petrochemical-ai-safety</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-ecommerce-ai-growth.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-real-estate-ai-valuation</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-edtech-personalized-learning.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-renewable-energy-ai</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-energy-predictive-maintenance.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-smart-city-traffic</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-factory-ai-productivity.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-sports-analytics-ai</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-hospitality-dynamic-pricing.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-tourism-ai-guide</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-insurance-claims-ai.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/saudi-waste-management-ai</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-logistics-route-optimization.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/smart-automation-benefits</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-manufacturing-predictive-maintenance.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/smart-crm-system</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-mining-ai-exploration.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/smart-document-processing</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-petrochemical-ai-safety.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/smart-inventory-management</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-real-estate-ai-valuation.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/top-ai-tools-saudi-2025</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-renewable-energy-ai.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/transport-logistics-solutions</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-smart-city-traffic.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/vision-2030-ai-opportunities</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-sports-analytics-ai.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-tourism-ai-guide.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/saudi-waste-management-ai.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/smart-automation-benefits.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/smart-crm-system.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/smart-document-processing.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/smart-inventory-management.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/top-ai-tools-saudi-2025.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/transport-logistics-solutions.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/blogger/vision-2030-ai-opportunities.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/case-studies</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/consultation</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/contact</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/data-analysis</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ocr-demo</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/pricing</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/resources/report-ai-saudi-2026</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/demo/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/ai-agent</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/demo/ocr-demo/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/ai-agent-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/demo/pricing/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/ai-bots</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/demo/resources/report-ai-saudi-2026/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/ai-bots-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/ai-agent-en.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/consultation</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/ai-agent.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/consultation-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/ai-bots-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/contact</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/ai-bots.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/contact-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/consultation-en.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/data-analysis</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/consultation.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/data-analysis-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/contact-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/faq</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/contact.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/faq-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/data-analysis-en.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/openapi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/data-analysis.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/privacy-policy</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/docs.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/privacy-policy-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/faq-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/services-overview</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/faq.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/services-overview-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/openapi.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/smart-automation</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/privacy-policy-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/smart-automation-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/privacy-policy.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-bi</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/services-overview-en.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-bi-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/services-overview.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-crm</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/smart-automation-en.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-crm-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/smart-automation.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-finance</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-bi-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-finance-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-bi.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-healthcare</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-crm-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-healthcare-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-crm.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-hr</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-finance-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-hr-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-finance.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-interview</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-healthcare-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-interview-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-healthcare.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-logistics</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-hr-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-logistics-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-hr.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-ocr</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-interview-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-ocr-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-interview.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-retail</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-logistics-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-retail-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-logistics.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/solutions-supply-chain</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-ocr-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/solutions-supply-chain-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-ocr.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/docs/terms-and-conditions</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-retail-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/docs/terms-and-conditions-en</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-retail.html</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-supply-chain-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/docs/solutions-supply-chain.html</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/docs/terms-and-conditions-en.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/frontend/pages/docs/terms-and-conditions.html</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/health</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/job.MAISco/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/interview</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/job.MAISco</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/machine-learning</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services</loc>
-    <lastmod>2026-02-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/partners</loc>
-    <lastmod>2026-02-27</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/privacy-cookies/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/privacy-cookies</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sectors/ecommerce.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/sectors/ecommerce</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sectors/energy.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/sectors/energy</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sectors/finance.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/sectors/finance</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sectors/healthcare.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/sectors/healthcare</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sectors/logistics.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/sectors/logistics</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sectors/manufacturing.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/sectors/manufacturing</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/sitemap/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/services</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/sitemap</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/smart-automation</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/smart-medical-archive/index.html</loc>
-    <lastmod>2026-02-26</lastmod>
+    <loc>https://brightai.site/smart-medical-archive</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/tools</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/try/data-analyzer/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/try</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/try/data-quality/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/try/data-analyzer</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/try/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/try/data-quality</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://brightai.site/frontend/pages/try/text-analysis/index.html</loc>
-    <lastmod>2026-02-27</lastmod>
+    <loc>https://brightai.site/try/text-analysis</loc>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://brightai.site/what-is-ai</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
-
 </urlset>

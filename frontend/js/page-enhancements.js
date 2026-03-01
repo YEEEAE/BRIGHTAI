@@ -9,47 +9,47 @@
   const SERVICE_CONFIG = [
     {
       key: "ai-agent",
-      prefix: "/frontend/pages/ai-agent",
+      prefix: "/ai-agent",
       title: "AI Agent",
       before: "تشغيل يدوي متكرر، بطء في الرد، وتباين في جودة الخدمة.",
       after: "وكلاء ذكية تعمل 24/7، استجابة أسرع، وجودة تشغيل مستقرة.",
-      demoHref: "/frontend/pages/demo/index.html",
+      demoHref: "/demo",
       demoLabel: "جرّب الآن مجاناً"
     },
     {
       key: "smart-automation",
-      prefix: "/frontend/pages/smart-automation",
+      prefix: "/smart-automation",
       title: "الأتمتة الذكية",
       before: "عمليات يدوية وهدر ساعات تشغيل يومي.",
       after: "تدفقات مؤتمتة قابلة للقياس مع خفض التكاليف التشغيلية.",
-      demoHref: "/frontend/pages/demo/ocr-demo/index.html",
+      demoHref: "/demo/ocr-demo",
       demoLabel: "شاهد الديمو المباشر"
     },
     {
       key: "data-analysis",
-      prefix: "/frontend/pages/data-analysis",
+      prefix: "/data-analysis",
       title: "تحليل البيانات",
       before: "تقارير متأخرة بدون رؤية تنفيذية.",
       after: "لوحات تفاعلية وقرارات أسرع مبنية على بيانات لحظية.",
-      demoHref: "/frontend/pages/try/data-analyzer/index.html",
+      demoHref: "/try/data-analyzer",
       demoLabel: "استعرض Dashboard تفاعلي"
     },
     {
       key: "consultation",
-      prefix: "/frontend/pages/consultation",
+      prefix: "/consultation",
       title: "الاستشارات",
       before: "خارطة طريق غير واضحة وقرارات متفرقة.",
       after: "تشخيص واضح + خطة تنفيذ على مراحل بقياسات KPI.",
-      demoHref: "/frontend/pages/contact/index.html",
+      demoHref: "/contact",
       demoLabel: "ابدأ جلسة تشخيص"
     },
     {
       key: "ai-bots",
-      prefix: "/frontend/pages/ai-bots",
+      prefix: "/ai-bots",
       title: "بوتات AI",
       before: "دعم متقطع وتجربة عميل غير متسقة.",
       after: "بوتات متخصصة للمبيعات/الدعم/التوظيف مع تفاعل أعلى.",
-      demoHref: "/frontend/pages/ai-bots/BrightSupport/index.html",
+      demoHref: "/ai-bots/BrightSupport",
       demoLabel: "جرّب بوت حي"
     }
   ];
@@ -231,7 +231,7 @@
         <p class="text-slate-300 leading-8 mb-4">نقطة مهمة جداً: القرار التقني الصح يبدأ من تجربة فعلية، مو عرض نظري فقط.</p>
         <div class="flex flex-wrap gap-3">
           <a href="${config.demoHref}" class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-cyan-500 text-slate-900 font-bold">${config.demoLabel}</a>
-          <a href="/frontend/pages/contact/index.html" class="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-white/25 text-white">تحدث مع فريقنا</a>
+          <a href="/contact" class="inline-flex items-center gap-2 px-5 py-2 rounded-lg border border-white/25 text-white">تحدث مع فريقنا</a>
         </div>
       `
     );
@@ -240,7 +240,7 @@
 
   function injectConsultationCalendar() {
     const path = normalizePathname(window.location.pathname);
-    if (!path.startsWith("/frontend/pages/consultation")) return;
+    if (!path.startsWith("/consultation")) return;
     if (document.getElementById("bright-calendar-booking")) return;
     if (document.querySelector('iframe[src*="calendly"], iframe[src*="cal.com"]')) return;
 
@@ -272,7 +272,7 @@
 
   function injectAutomationRoiCalculator() {
     const path = normalizePathname(window.location.pathname);
-    if (!path.startsWith("/frontend/pages/smart-automation")) return;
+    if (!path.startsWith("/smart-automation")) return;
     if (document.getElementById("roi-employees")) return;
     if (document.getElementById("bright-roi-calculator")) return;
 
@@ -327,7 +327,7 @@
 
   function injectDataDashboardSample() {
     const path = normalizePathname(window.location.pathname);
-    if (!path.startsWith("/frontend/pages/data-analysis")) return;
+    if (!path.startsWith("/data-analysis")) return;
     if (document.querySelector(".dashboard-card, #dashboard-lightbox")) return;
     if (document.getElementById("bright-dashboard-sample")) return;
 
@@ -397,7 +397,7 @@
 
   function injectAiBotsLiveDemos() {
     const path = normalizePathname(window.location.pathname);
-    if (!path.startsWith("/frontend/pages/ai-bots")) return;
+    if (!path.startsWith("/ai-bots")) return;
     if (document.getElementById("bright-ai-bots-live-demos")) return;
 
     const section = createSection(
@@ -407,15 +407,15 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <article class="rounded-xl border border-white/15 overflow-hidden bg-black/20">
             <header class="p-3 text-white font-bold">BrightSupport</header>
-            <iframe src="/frontend/pages/ai-bots/BrightSupport/index.html" title="BrightSupport Demo" style="width:100%;height:260px;border:0;"></iframe>
+            <iframe src="/ai-bots/BrightSupport" title="BrightSupport Demo" style="width:100%;height:260px;border:0;"></iframe>
           </article>
           <article class="rounded-xl border border-white/15 overflow-hidden bg-black/20">
             <header class="p-3 text-white font-bold">BrightSales</header>
-            <iframe src="/frontend/pages/ai-bots/BrightSales/index.html" title="BrightSales Demo" style="width:100%;height:260px;border:0;"></iframe>
+            <iframe src="/ai-bots/BrightSales" title="BrightSales Demo" style="width:100%;height:260px;border:0;"></iframe>
           </article>
           <article class="rounded-xl border border-white/15 overflow-hidden bg-black/20">
             <header class="p-3 text-white font-bold">BrightRecruiter</header>
-            <iframe src="/frontend/pages/ai-bots/BrightRecruiter/index.html" title="BrightRecruiter Demo" style="width:100%;height:260px;border:0;"></iframe>
+            <iframe src="/ai-bots/BrightRecruiter" title="BrightRecruiter Demo" style="width:100%;height:260px;border:0;"></iframe>
           </article>
         </div>
       `
@@ -452,9 +452,8 @@
     const path = normalizePathname(window.location.pathname);
     if (
       !(
-        path === "/frontend/pages/blog" ||
-        path === "/frontend/pages/blog/index" ||
-        path === "/frontend/pages/blog/index.html"
+        path === "/blog" ||
+        path === "/blog/index"
       )
     ) {
       return;
@@ -482,7 +481,7 @@
         <p class="text-xs uppercase tracking-wider text-indigo-300 mb-2">Featured Article</p>
         <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">${firstTitle}</h2>
         <p class="text-slate-300 mb-4">اختيارنا لليوم من مكتبة Bright AI. مناسب للمدراء التنفيذيين وفرق التقنية.</p>
-        <a class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-indigo-500 text-white font-bold" href="${firstLink?.getAttribute("href") || "/frontend/pages/blog/index.html"}">اقرأ المقال</a>
+        <a class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-indigo-500 text-white font-bold" href="${firstLink?.getAttribute("href") || "/blog"}">اقرأ المقال</a>
       `;
       blogSection.parentElement?.insertBefore(featured, blogSection);
     }
@@ -561,7 +560,7 @@
           return;
         }
         if (query) {
-          window.location.href = `/frontend/pages/blog/index.html?q=${encodeURIComponent(query)}`;
+          window.location.href = `/blog?q=${encodeURIComponent(query)}`;
         }
       });
 
@@ -607,7 +606,7 @@
 
   function applyContactEnhancements() {
     const path = normalizePathname(window.location.pathname);
-    if (!path.startsWith("/frontend/pages/contact")) return;
+    if (!path.startsWith("/contact")) return;
 
     if (!document.getElementById("bright-contact-whatsapp-float")) {
       const btn = document.createElement("a");
