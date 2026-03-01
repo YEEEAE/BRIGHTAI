@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير حلول Semrush لمشروع BrightAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
+        .prompt-card { transition: all 0.3s ease; }
+        .prompt-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Header -->
+    <header class="bg-indigo-900 text-white py-12 px-6 shadow-lg mb-10">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-4xl font-extrabold mb-4">تقرير حلول أخطاء Semrush لمشروع BrightAI</h1>
+            <p class="text-xl text-indigo-200">هذا التقرير يضم البرومبتات الجاهزة (Prompts) لمنصات الذكاء الاصطناعي (مثل Cursor / Codex) لإصلاح <strong class="text-white">جميع الأخطاء والمشاكل</strong> التي ظهرت في التقرير دون تفويت أي مشكلة، لضمان أعلى تصدر في السوق السعودي.</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 pb-20">
+        
+        <!-- الأخطاء الحرجة (Errors) -->
+        <section class="mb-14">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-4 h-8 bg-red-600 rounded"></div>
+                <h2 class="text-3xl font-bold text-gray-900">1. الأخطاء الحرجة (Errors)</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- المشكلة 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-red-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">١٣ مشكلة</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">عناوين الصفحات المكررة (Duplicate Title Tags) ومحتوى مكرر</h3>
+                    <p class="text-sm text-gray-600 mb-4">تؤثر على قدرة جوجل في تحديد الصفحة الرئيسية المؤهلة للظهور في النتائج.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-1">
+                        أنت خبير SEO للسوق السعودي. لدي 13 صفحة في مشروع BrightAI تعاني من تكرار في التايتل (Title Tag) ومحتوى مكرر. 
+                        أريدك أن تفحص جميع ملفات الصفحات في المشروع، ثم تقوم بالتالي:
+                        1. تحديث Title Tag لكل صفحة ليكون فريداً، أقل من 60 حرف، ويستهدف كلمات مفتاحية تجارية سعودية (مثل: أتمتة العمليات للشركات السعودية، حلول الذكاء الاصطناعي بالرياض).
+                        2. كتابة Rel="canonical" للصفحات المنسوخة، أو دمجها لتجنب Duplicate Content بنسبة 85%. 
+                        3. أزل أي تكرار برمجي. لا تترك أي صفحة بدون تايتل حصري ومتميز وحث على اتخاذ إجراء (CTR).
+                    </div>
+                    <button onclick="copyToClipboard('prompt-1')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-red-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">١١ مشكلة</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">التحويلات القديمة (Meta Refresh Tags)</h3>
+                    <p class="text-sm text-gray-600 mb-4">يعتبرها جوجل تقنية سيئة وبطيئة ومضرة بتجربة المستخدم وتؤدي لرفع معدل الارتداد.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-2">
+                        كمهندس واجهات متقدم، ابحث في المشروع عن أي كود يستخدم Meta Refresh Redirect (مثل &lt;meta http-equiv="refresh"&gt;).
+                        قم بحذف هذه الوسوم تماماً من 11 صفحة متضررة. واستبدلها بـ 301 Redirects نظيفة في ملف إعدادات السيرفر (مثل next.config.js أو middleware) أو بإعادة توجيه من جانب الخادم (Server-side redirect).
+                        الهدف هو تسريع نقل المستخدم وتجنب أي ضرر بالـ SEO لتتوافق مع معايير محركات البحث لعام 2026.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-2')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 3 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-red-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">٩ مشاكل</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">مشاكل خريطة الموقع (Sitemap.xml)</h3>
+                    <p class="text-sm text-gray-600 mb-4">صفحات خاطئة أو تعيد توجيه وتوجد في الـ Sitemap مما يضيع ميزانية الزحف (Crawl Budget).</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-3">
+                        قم بتوليد خريطة موقع (Sitemap.xml) جديدة وديناميكية لمشروع BrightAI.
+                        لاحظ أن هناك 9 صفحات في الخريطة القديمة تحتوي على إعادة توجيه (Redirects) أو أخطاء (Non-200 Status Code).
+                        تأكد من أن الخريطة الجديدة تحتوي حصراً على الصفحات ذات حالة (200 OK) والتي تتضمن Canonical صحيح.
+                        استخدم أفضل ممارسات الـ Sitemap لتطبيق Next.js أو للبيئة الحالية دون أي روابط مكسورة.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-3')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 4 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-red-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">٧ مشاكل</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">المقاطع البرمجية المهيكلة غير صالحة (Invalid Structured Data)</h3>
+                    <p class="text-sm text-gray-600 mb-4">تحرم الموقع من الظهور كنتائج غنية (Rich Snippets) مما يقلل معدل النقر.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-4">
+                        أنت مبرمج تقني لـ SEO. ابحث عن Schema.org و JSON-LD داخل جميع الصفحات.
+                        هناك 7 عناصر بنيتها البرمجية غير مطابقة لمتطلبات جوجل (Invalid Structured Data).
+                        قم بتصحيحها بناءً على تحديثات جوجل لعام 2026. وتأكد من إضافة Organization Schema و Service Schema لشركة ذكاء اصطناعي سعودية بطريقة صحيحة وخالية من أخطاء الـ Validator للحصول على Rich Snippets.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-4')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 5 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-red-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">أعطال متعددة</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">روابط الـ 4XX ومصادر الصور وملفات JS/CSS المكسورة</h3>
+                    <p class="text-sm text-gray-600 mb-4">تدمر تجربة المستخدم (UX) وقابلية زحف العناكب.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-5">
+                        لديك المهام التالية للبحث والإصلاح داخل الكود:
+                        1. إصلاح 7 صور داخلية مكسورة (Broken Internal Images) عن طريق تصحيح المسار أو استبدالها بصور تعمل.
+                        2. إصلاح 4 ملفات JavaScript/CSS مكسورة تمنع جوجل من تصيير (Render) الصفحة بسلاسة.
+                        3. إصلاح صفحة تظهر خطأ (4xx) وإصلاح الرابط الداخلي المكسور (Broken Internal Link).
+                        راجع مكون الصور والروابط &lt;Link&gt; و &lt;Image&gt; ووثق جميع المسارات بشكل صحيح Absolute & Relative.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-5')" class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- التحذيرات (Warnings) -->
+        <section class="mb-14">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-4 h-8 bg-orange-500 rounded"></div>
+                <h2 class="text-3xl font-bold text-gray-900">2. التحذيرات ومشاكل الأداء (Warnings)</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- المشكلة 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-orange-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full">٤٩١ مشكلة</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">عدم ضغط ملفات JS & CSS (Unminified)</h3>
+                    <p class="text-sm text-gray-600 mb-4">تزيد من وقت التحميل (LCP) وتؤثر على Core Web Vitals.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-6">
+                        كمهندس أداء ويب، المشروع يملك 491 ملف JS و CSS غير مضغوطة.
+                        قم بإعداد أداة بناء المشروع (Webpack, Vite أو Turbo) للتأكد من تشغيل التخفيض والضغط (Minification / Terser / CSSNano) لكل أكواد الـ Production.
+                        طبق آليات الـ Code Splitting والتحميل المؤجل (Lazy Loading) لضمان تخفيض وزن الملفات واستيفاء معايير Core Web Vitals وتحديداً LCP ضمن 2.5 ثانية.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-6')" class="bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-orange-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full">٦٩ صفحة</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">محتوى نصي ضعيف ونسبة النص للكود (Low Text-HTML Ratio)</h3>
+                    <p class="text-sm text-gray-600 mb-4">يعتبر دليل لدى البحث أن الصفحة خفيفة (Thin Content) وضعيفة القيمة.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-7">
+                        أنت كاتب محتوى SEO ومهندس واجهات. 
+                        1. يوجد 65 صفحة تعاني من انخفاض هائل في نسبة النص مقارنة بـ HTML (أقل من 10%). قم بتنظيف كود الـ HTML بهذه الصفحات واستخراج أي CSS/JS لملفات منفصلة.
+                        2. قم بتوسيع المحتوى النصي في 4 صفحات تعاني من ضعف المحتوى (Low Word Count) لتصبح مقالات وصفحات عميقة تتجاوز 500 كلمة، تحل مشاكل قطاع الأعمال في السعودية، وتستخدم Semantic HTML.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-7')" class="bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 3 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-orange-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full">هيكلية العناوين</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">مشاكل وسوم العناوين ومطابقتها للتاتيل (Duplicate H1 & Title, Missing H1)</h3>
+                    <p class="text-sm text-gray-600 mb-4">التحسين المفرط (Over-optimization) أو عشوائية العناوين.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-8">
+                        هيكلة محتوى الموقع غير صحيحة. يرجى تعديل الملفات لتحقيق الآتي:
+                        1. في 19 صفحة؛ الـ H1 مطابق تماماً للـ Meta Title وهو أمر غير مفضل. اجعل Title جذاب بكلمات مفتاحية لمحرك البحث، واجعل H1 يركز أكثر على إقناع زائر الصفحة ومختلف قليلاً.
+                        2. أصلح 11 صفحة التايتل فيها طويل جداً (يتجاوز 60 حرفاً).
+                        3. أضف &lt;h1&gt; متوافق تجارياً لـ 3 صفحات تفتقر إليه.
+                        4. أزل الـ H1 الإضافي من صفحة تمتلك أكثر من واحد.
+                        5. تأكد أن كل صفحة لها &lt;meta description&gt; فريدة بطول 150-160 حرف تشجع على الضغط.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-8')" class="bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+                <!-- المشكلة 4 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-yellow-100 prompt-card relative">
+                    <span class="absolute top-4 left-4 bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">إشعارات</span>
+                    <h3 class="font-bold text-xl mb-2 text-gray-900">مشاكل الروابط الداخلية والإشعارات التقنية (Orphaned Links / Llms.txt)</h3>
+                    <p class="text-sm text-gray-600 mb-4">ربط داخلي ضعيف، وعدم تجهيز الموقع لمحركات الذكاء الاصطناعي المستحدثة.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 font-mono text-sm mb-4" id="prompt-9">
+                        قم بإجراء التحسينات الهيكلية الأخيرة:
+                        1. يوجد 43 صفحة تحتوي على رابط داخلي واحد فقط، قم بإضافة روابط داخلية ذات سياق مفيد (Contextual Internal Links) باستخدام أنكور تيكست وصفي لدعم تناقل البيج رانك.
+                        2. قم بإنشاء وإصلاح ملف llms.txt وتضمينه بشكل سليم وبتنسيق Markdown قياسي ليتمكن محرك الذكاء الاصطناعي الخاص بالزحف من فهم محتوى وأهداف الشركة بسهولة.
+                        3. ضف تعريف الـ Doctype الصحيح (&lt;!DOCTYPE html&gt;) لـ 3 صفحات مفقودة.
+                    </div>
+                    <button onclick="copyToClipboard('prompt-9')" class="bg-yellow-50 text-yellow-600 hover:bg-yellow-600 hover:text-white transition-colors w-full py-2 rounded-lg font-bold flex items-center justify-center gap-2">
+                        <span>نسخ البرومبت</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center">
+        <p>تم إنشاؤه بواسطة خبير الذكاء الاصطناعي - BrightAI 2026</p>
+    </footer>
+
+    <script>
+        function copyToClipboard(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector(`#${id} + button`);
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <span class="text-green-600">تم النسخ بنجاح!</span>`;
+                btn.classList.replace('bg-red-50', 'bg-green-50');
+                btn.classList.replace('text-red-600', 'text-green-600');
+                btn.classList.replace('bg-orange-50', 'bg-green-50');
+                btn.classList.replace('text-orange-600', 'text-green-600');
+                btn.classList.replace('bg-yellow-50', 'bg-green-50');
+                btn.classList.replace('text-yellow-600', 'text-green-600');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-green-50', 'text-green-600');
+                    btn.classList.add(id.includes('prompt-1') || id.includes('prompt-2') || id.includes('prompt-3') || id.includes('prompt-4') || id.includes('prompt-5') ? 'bg-red-50' : (id.includes('prompt-9') ? 'bg-yellow-50' : 'bg-orange-50'));
+                    btn.classList.add(id.includes('prompt-1') || id.includes('prompt-2') || id.includes('prompt-3') || id.includes('prompt-4') || id.includes('prompt-5') ? 'text-red-600' : (id.includes('prompt-9') ? 'text-yellow-600' : 'text-orange-600'));
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
