@@ -58,19 +58,19 @@ force = true
 # -------------------------------------------------
 [[redirects]]
 from = "/sitemap.html"
-to = "/frontend/pages/sitemap/index.html"
+to = "/sitemap"
 status = 301
 force = true
 
 [[redirects]]
 from = "/terms.html"
-to = "/frontend/pages/terms/index.html"
+to = "/terms"
 status = 301
 force = true
 
 [[redirects]]
 from = "/offline.html"
-to = "/frontend/pages/offline/index.html"
+to = "/offline"
 status = 301
 force = true
 
@@ -187,6 +187,18 @@ status = 200
 [[redirects]]
 from = "/blog/*.html"
 to = "/blog/:splat"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/:slug.:ext"
+to = "/blog/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/:section/:slug.:ext"
+to = "/blog/:section/:slug"
 status = 301
 force = true
 

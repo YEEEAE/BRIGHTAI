@@ -95,8 +95,9 @@ const requiredRedirects = [
   { from: '/terms.html', to: '/terms', status: 301 },
   { from: '/offline.html', to: '/offline', status: 301 },
   { from: '/index.html', to: '/', status: 301 },
-  { from: '/blog/ai-guide-saudi-business', to: '/blog/ai-guide-saudi-business', status: 301 },
-  { from: '/blog/nca-ai-compliance-saudi', to: '/blog/nca-ai-compliance-saudi', status: 301 },
+  { from: '/blog/:slug', to: '/frontend/pages/blogger/:slug.html', status: 200 },
+  { from: '/blog/automation/:slug', to: '/frontend/pages/blog/automation/:slug.html', status: 200 },
+  { from: '/blog/data-analytics/:slug', to: '/frontend/pages/blog/data-analytics/:slug.html', status: 200 },
 ];
 
 for (const rule of requiredRedirects) {
