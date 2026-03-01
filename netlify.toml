@@ -185,24 +185,6 @@ to = "/frontend/pages/docs/:slug.html"
 status = 200
 
 [[redirects]]
-from = "/blog/*.html"
-to = "/blog/:splat"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/:slug.:ext"
-to = "/blog/:slug"
-status = 301
-force = true
-
-[[redirects]]
-from = "/blog/:section/:slug.:ext"
-to = "/blog/:section/:slug"
-status = 301
-force = true
-
-[[redirects]]
 from = "/blog/automation/:slug"
 to = "/frontend/pages/blog/automation/:slug.html"
 status = 200

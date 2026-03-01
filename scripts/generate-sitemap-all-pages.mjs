@@ -11,6 +11,24 @@ const STATIC_FILES = [
   "docs.html",
 ];
 
+const ROOT_INDEX_DIRS = [
+  "about",
+  "ai-agent",
+  "ai-bots",
+  "blog",
+  "case-studies",
+  "consultation",
+  "contact",
+  "data-analysis",
+  "health",
+  "machine-learning",
+  "partners",
+  "services",
+  "smart-automation",
+  "tools",
+  "what-is-ai",
+];
+
 const HTML_SCAN_DIRS = ["frontend/pages"];
 const EXCLUDE_FILES = new Set(["404.html", "500.html"]);
 const LOW_QUALITY_BLOGGER_FILES = new Set([
@@ -67,7 +85,51 @@ function fileToUrlPath(filePath) {
   const normalized = filePath.replace(/\\/g, "/");
 
   if (normalized === "index.html") return "/";
-  if (normalized.endsWith(".html")) return `/${normalized}`;
+  if (normalized === "docs.html") return "/docs";
+
+  if (normalized.endsWith("/index.html")) {
+    const dir = normalized.replace(/\/index\.html$/, "");
+
+    if (ROOT_INDEX_DIRS.includes(dir)) return `/${dir}`;
+    if (dir.startsWith("frontend/pages/ai-bots/")) {
+      return `/${dir.replace(/^frontend\/pages\//, "")}`;
+    }
+    if (dir.startsWith("frontend/pages/try/")) {
+      return `/${dir.replace(/^frontend\/pages\//, "")}`;
+    }
+    if (dir.startsWith("frontend/pages/demo/")) {
+      return `/${dir.replace(/^frontend\/pages\//, "")}`;
+    }
+    if (dir === "frontend/pages/ai-workflows") return "/ai-workflows";
+    if (dir === "frontend/pages/ai-scolecs") return "/ai-scolecs";
+    if (dir === "frontend/pages/smart-medical-archive") return "/smart-medical-archive";
+    if (dir === "frontend/pages/privacy-cookies") return "/privacy-cookies";
+    if (dir === "frontend/pages/job.MAISco") return "/job.MAISco";
+    if (dir === "frontend/pages/interview") return "/interview";
+    return null;
+  }
+
+  if (normalized.startsWith("frontend/pages/blogger/") && normalized.endsWith(".html")) {
+    return `/blog/${path.basename(normalized, ".html")}`;
+  }
+
+  if (normalized.startsWith("frontend/pages/blog/automation/") && normalized.endsWith(".html")) {
+    return `/blog/automation/${path.basename(normalized, ".html")}`;
+  }
+
+  if (normalized.startsWith("frontend/pages/blog/data-analytics/") && normalized.endsWith(".html")) {
+    return `/blog/data-analytics/${path.basename(normalized, ".html")}`;
+  }
+
+  if (normalized.startsWith("frontend/pages/docs/") && normalized.endsWith(".html")) {
+    const slug = path.basename(normalized, ".html");
+    if (slug === "docs") return null;
+    return `/docs/${slug}`;
+  }
+
+  if (normalized.startsWith("frontend/pages/sectors/") && normalized.endsWith(".html")) {
+    return `/sectors/${path.basename(normalized, ".html")}`;
+  }
 
   return null;
 }
@@ -101,6 +163,16 @@ async function collectFiles() {
       collected.add(fullPath);
     } catch {
       // Skip missing optional file.
+    }
+  }
+
+  for (const relDir of ROOT_INDEX_DIRS) {
+    const fullPath = path.join(ROOT, relDir, "index.html");
+    try {
+      await fs.access(fullPath);
+      collected.add(fullPath);
+    } catch {
+      // Skip missing optional directory page.
     }
   }
 

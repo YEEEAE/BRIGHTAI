@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrightAI — تقارير التدقيق الشامل</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06090f;
+  --surface: #0d1117;
+  --surface2: #161b22;
+  --border: #21262d;
+  --accent: #00e5a0;
+  --accent2: #f7b731;
+  --danger: #ff4d6d;
+  --warn: #ffbe0b;
+  --info: #4cc9f0;
+  --success: #06d6a0;
+  --text: #e6edf3;
+  --muted: #7d8590;
+  --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ===== HEADER ===== */
+.main-header {
+  background: linear-gradient(135deg, #06090f 0%, #0d1f1a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.main-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(0,229,160,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner { max-width: 1200px; margin: auto; position: relative; }
+.brand-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.2);
+  border-radius: 40px; padding: 6px 16px;
+  color: var(--accent); font-size: 13px; font-weight: 500;
+  margin-bottom: 20px; letter-spacing: 0.3px;
+}
+.brand-badge::before { content: '●'; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.main-header h1 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+.main-header h1 span { color: var(--accent); }
+.header-meta { color: var(--muted); font-size: 14px; }
+.header-meta strong { color: var(--accent2); }
+
+/* ===== NAV TABS ===== */
+.tab-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; gap: 4px;
+  overflow-x: auto;
+}
+.tab-nav::-webkit-scrollbar { height: 3px; }
+.tab-nav::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+.tab-btn {
+  flex-shrink: 0;
+  padding: 16px 20px;
+  background: none; border: none;
+  color: var(--muted); font-family: inherit; font-size: 13.5px; font-weight: 500;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ===== SECTIONS ===== */
+.section { display: none; }
+.section.active { display: block; }
+
+.section-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 48px 40px;
+}
+
+/* ===== SECTION HEADER ===== */
+.sec-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 24px;
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.sec-header-left {}
+.sec-tag {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 10px; display: block;
+}
+.sec-header h2 { font-size: 28px; font-weight: 700; color: var(--text); }
+.sec-header p { color: var(--muted); margin-top: 8px; max-width: 540px; }
+
+/* ===== SCORE CARD ===== */
+.score-ring {
+  flex-shrink: 0; width: 100px; height: 100px;
+  position: relative;
+}
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring .bg-circle { stroke: var(--border); }
+.score-ring .fg-circle {
+  stroke-dasharray: 251;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease;
+}
+.score-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.score-num { font-size: 26px; font-weight: 700; }
+.score-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* ===== STATS ROW ===== */
+.stats-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px; margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 24px;
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 40%; height: 2px;
+}
+.stat-card.green::before { background: var(--success); }
+.stat-card.yellow::before { background: var(--warn); }
+.stat-card.red::before { background: var(--danger); }
+.stat-card.blue::before { background: var(--info); }
+.stat-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.stat-value { font-size: 28px; font-weight: 700; }
+.stat-value.green { color: var(--success); }
+.stat-value.yellow { color: var(--warn); }
+.stat-value.red { color: var(--danger); }
+.stat-value.blue { color: var(--info); }
+.stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ===== ISSUE CARDS ===== */
+.issues-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  margin-bottom: 40px;
+}
+.issue-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 24px;
+  border-right: 3px solid transparent;
+  transition: border-color 0.2s;
+}
+.issue-card:hover { border-right-color: var(--accent); }
+.issue-card.critical { border-right-color: var(--danger); }
+.issue-card.warning { border-right-color: var(--warn); }
+.issue-card.info { border-right-color: var(--info); }
+.issue-card.success { border-right-color: var(--success); }
+.issue-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.badge {
+  font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.badge.critical { background: rgba(255,77,109,0.15); color: var(--danger); }
+.badge.warning { background: rgba(255,190,11,0.15); color: var(--warn); }
+.badge.info { background: rgba(76,201,240,0.15); color: var(--info); }
+.badge.success { background: rgba(6,214,160,0.15); color: var(--success); }
+.badge.ok { background: rgba(6,214,160,0.15); color: var(--success); }
+
+.issue-title { font-weight: 600; font-size: 14.5px; }
+.issue-desc { color: var(--muted); font-size: 13.5px; line-height: 1.6; }
+.issue-fix {
+  margin-top: 12px; padding: 10px 14px;
+  background: rgba(0,229,160,0.05); border: 1px solid rgba(0,229,160,0.15);
+  border-radius: 8px; font-size: 13px; color: var(--accent);
+}
+.issue-fix strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ===== CODE BLOCK ===== */
+.code-block {
+  background: #0a0e14; border: 1px solid var(--border); border-radius: 10px;
+  padding: 20px 24px; margin: 16px 0;
+  font-family: 'Fira Code', monospace; font-size: 13px;
+  color: var(--accent); overflow-x: auto;
+  line-height: 1.8; direction: ltr; text-align: left;
+}
+.code-block .comment { color: var(--muted); }
+.code-block .key { color: var(--info); }
+.code-block .val { color: var(--accent2); }
+.code-block .ok { color: var(--success); }
+.code-block .bad { color: var(--danger); }
+
+/* ===== TABLE ===== */
+.audit-table {
+  width: 100%; border-collapse: collapse; margin: 24px 0;
+  font-size: 13.5px;
+}
+.audit-table th {
+  background: var(--surface2); padding: 12px 16px;
+  text-align: right; font-weight: 600; color: var(--muted);
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+.audit-table td {
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.audit-table tr:hover td { background: rgba(255,255,255,0.02); }
+.audit-table .page-url { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--info); direction: ltr; }
+
+/* ===== CHECKLIST ===== */
+.checklist { list-style: none; display: grid; gap: 10px; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+}
+.check-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.check-text { flex: 1; }
+.check-text strong { display: block; font-size: 14px; margin-bottom: 4px; }
+.check-text span { color: var(--muted); font-size: 13px; }
+
+/* ===== PROMPT CARDS ===== */
+.prompts-grid { display: grid; gap: 20px; }
+.prompt-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.prompt-card-header {
+  padding: 16px 24px; display: flex; align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.prompt-card-header .ph-left { display: flex; align-items: center; gap: 12px; }
+.prompt-card-header h3 { font-size: 14.5px; font-weight: 600; }
+.prompt-category {
+  font-size: 11px; background: rgba(0,229,160,0.1);
+  border: 1px solid rgba(0,229,160,0.2);
+  color: var(--accent); padding: 2px 10px; border-radius: 20px;
+}
+.copy-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(0,229,160,0.1); border: 1px solid rgba(0,229,160,0.25);
+  color: var(--accent); padding: 7px 16px; border-radius: 8px;
+  font-family: inherit; font-size: 13px; cursor: pointer;
+  transition: all 0.2s; white-space: nowrap;
+}
+.copy-btn:hover { background: rgba(0,229,160,0.2); }
+.copy-btn.copied { background: rgba(6,214,160,0.2); border-color: var(--success); color: var(--success); }
+.prompt-body {
+  padding: 20px 24px;
+  font-size: 13.5px; line-height: 1.8;
+  direction: rtl;
+  color: #cdd9e5;
+  max-height: 300px; overflow-y: auto;
+}
+.prompt-body::-webkit-scrollbar { width: 4px; }
+.prompt-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ===== DIVIDER ===== */
+.divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* ===== CHART BARS ===== */
+.bar-chart { margin: 24px 0; }
+.bar-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+.bar-label { width: 200px; flex-shrink: 0; font-size: 13px; color: var(--muted); text-align: right; }
+.bar-track { flex: 1; background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; animation: grow 1s ease forwards; }
+@keyframes grow { from { width: 0; } }
+.bar-val { width: 50px; flex-shrink: 0; font-size: 13px; font-weight: 600; text-align: left; }
+
+/* ===== LINK STATUS ===== */
+.link-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 10px;
+}
+.link-url { flex: 1; font-family: 'Fira Code', monospace; font-size: 12px; direction: ltr; text-align: left; color: var(--info); }
+.link-status { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+.link-note { font-size: 12px; color: var(--muted); }
+
+/* ===== FOOTER ===== */
+.report-footer {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 24px 40px; text-align: center;
+  color: var(--muted); font-size: 13px;
+}
+.report-footer strong { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .main-header, .tab-nav, .section-inner { padding-left: 20px; padding-right: 20px; }
+  .sec-header { flex-direction: column; }
+  .issues-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .bar-label { width: 120px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+  <div class="header-inner">
+    <div class="brand-badge">تقرير حي — مارس 2026</div>
+    <h1>BrightAI — <span>تدقيق شامل</span> للموقع</h1>
+    <div class="header-meta">
+      المشروع: <strong>brightai.site</strong> &nbsp;|&nbsp;
+      التحليل: <strong>4 تقارير + Codex Prompts</strong> &nbsp;|&nbsp;
+      الملف: <strong>BRIGHTAI-main_5.zip — 775 ملف</strong>
+    </div>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('deploy')">🏗️ صحة النشر والبنية</button>
+  <button class="tab-btn" onclick="showTab('seo')">🔍 تدقيق SEO التقني</button>
+  <button class="tab-btn" onclick="showTab('ux')">🇸🇦 تجربة المستخدم & CRO</button>
+  <button class="tab-btn" onclick="showTab('links')">🔗 الروابط والزحف</button>
+  <button class="tab-btn" onclick="showTab('prompts')">⚡ Codex Prompts</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     REPORT 1: DEPLOYMENT / REPO HEALTH
+══════════════════════════════════════════════ -->
+<section id="deploy" class="section active">
+<div class="section-inner">
+
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <span class="sec-tag">التقرير الأول</span>
+      <h2>صحة النشر والبنية</h2>
+      <p>تحليل شامل لبنية المستودع، إعدادات Netlify، CI/CD، والأمان</p>
+    </div>
+    <div class="score-ring" id="ring1">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="bg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8"/>
+        <circle class="fg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke="#f7b731" style="stroke-dashoffset:60"/>
+      </svg>
+      <div class="score-text">
+        <span class="score-num" style="color:#f7b731">76</span>
+        <span class="score-label">/ 100</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card green">
+      <div class="stat-label">إجمالي الملفات</div>
+      <div class="stat-value green">775</div>
+      <div class="stat-sub">في المستودع</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-label">صفحات HTML</div>
+      <div class="stat-value blue">198</div>
+      <div class="stat-sub">صفحة موقع</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">ملفات مكررة</div>
+      <div class="stat-value yellow">7</div>
+      <div class="stat-sub">بمسافات في الاسم</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">CI/CD Workflows</div>
+      <div class="stat-value green">2</div>
+      <div class="stat-sub">GitHub Actions نشطة</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">CORS Policy</div>
+      <div class="stat-value red">*</div>
+      <div class="stat-sub">مفتوح لجميع الأصول</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Service Worker</div>
+      <div class="stat-value green">✓</div>
+      <div class="stat-sub">sw.js موجود</div>
+    </div>
+  </div>
+
+  <!-- Issues -->
+  <div class="issues-grid">
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج</span>
+        <span class="issue-title">CORS مفتوح على Backend</span>
+      </div>
+      <p class="issue-desc">الخادم يرسل <code>'Access-Control-Allow-Origin': '*'</code> لجميع الطلبات. هذا يفتح API أمام أي نطاق خارجي ويزيد خطر إساءة الاستخدام والاستنزاف.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        تقييد CORS على <code>https://brightai.site</code> فقط في backend/server.js وإضافة allowlist للنطاقات المسموح بها
+      </div>
+    </div>
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج</span>
+        <span class="issue-title">مفاتيح التحقق من Google/Bing لم تُعيَّن</span>
+      </div>
+      <p class="issue-desc">قيم GSC و Bing Webmaster Tools لا تزال بلاحظة <code>REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE</code> في index.html — الموقع غير موثق في محركات البحث.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        استبدال القيم الوهمية بالرموز الحقيقية من Google Search Console و Bing Webmaster Tools
+      </div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">ملفات مكررة بمسافات في الأسماء</span>
+      </div>
+      <p class="issue-desc">7 ملفات تحتوي أسماءها على مسافة وأرقام (search 2.js، cache 2.js، .env 2.example)، مما يسبب تعارضات في build وصعوبة في إدارة المستودع.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        حذف النسخ الزائدة أو دمجها وإعادة تسمية الملفات لإزالة المسافات
+      </div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">CSP يحتوي unsafe-inline</span>
+      </div>
+      <p class="issue-desc">توجيه <code>Content-Security-Policy</code> في netlify.toml يسمح بـ <code>'unsafe-inline'</code> في script-src و style-src مما يضعف الحماية من XSS.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        استبدال unsafe-inline بـ nonces أو hashes وتطبيق CSP Level 3
+      </div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">package-lock.json ضخم جداً</span>
+      </div>
+      <p class="issue-desc">ملف <code>package-lock.json</code> الرئيسي حجمه 1.4MB والمنصة 713KB، وكلاهما مُدرَج في المستودع مما يبطئ الاستنساخ والـ CI.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        إضافة .npmrc مع <code>package-lock=true</code> و cache في GitHub Actions لتسريع CI
+      </div>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">Netlify مرجع موحد للإنتاج</span>
+      </div>
+      <p class="issue-desc">إعدادات التوجيه والأمان والكاشينغ مركزة في <code>netlify.toml</code> فقط. ملفات .htaccess و _headers موثقة كأرشيف ولا تُستخدم في الإنتاج.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">CI/CD مكتمل على GitHub Actions</span>
+      </div>
+      <p class="issue-desc">Workflow منفصل للاختبارات backend + platform مع <code>ci-tests.yml</code> و<code>netlify-source-of-truth.yml</code> على pushes وPRs.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">إعادة التوجيه والكانونيكال</span>
+      </div>
+      <p class="issue-desc">توجيهات 301 للـ www إلى non-www وHTTP إلى HTTPS مضبوطة في netlify.toml مع HSTS header (<code>max-age=31536000; preload</code>).</p>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">تكرار API URL مُشفَّر في الكود</span>
+      </div>
+      <p class="issue-desc">القيمة <code>https://extraordinary-axolotl-d35933.netlify.app</code> مكررة في index.html والكود. يجب نقلها لمتغير بيئة فقط.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        استخدام <code>window.BRIGHTAI_API_BASE</code> من env var حصراً وليس hardcoded URL
+      </div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">Monorepo بدون Turborepo/Nx</span>
+      </div>
+      <p class="issue-desc">المستودع يحتوي 3 مساحات عمل (frontend, backend, brightai-platform) لكن بدون أداة monorepo مخصصة. هذا يجعل cache الـ build غير فعال.</p>
+      <div class="issue-fix">
+        <strong>🔧 الإصلاح</strong>
+        النظر في إضافة Turborepo لإدارة pipeline الـ build وتسريع CI
+      </div>
+    </div>
+
+  </div>
+
+  <h3 style="margin-bottom:20px; color:var(--text);">بنية الأمان في الهيدرز</h3>
+  <div class="code-block">
+<span class="comment"># netlify.toml — Security Headers الحالية</span>
+<span class="ok">✓</span> X-Content-Type-Options = "nosniff"
+<span class="ok">✓</span> X-Frame-Options = "SAMEORIGIN"
+<span class="ok">✓</span> Referrer-Policy = "strict-origin-when-cross-origin"
+<span class="ok">✓</span> Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+<span class="bad">✗</span> CSP = contains 'unsafe-inline' — يحتاج nonces
+<span class="bad">✗</span> Permissions-Policy = محدود جداً — يفتقد interest-cohort=()
+<span class="bad">✗</span> Cross-Origin-Opener-Policy = <span class="comment">مفقود</span>
+<span class="bad">✗</span> Cross-Origin-Resource-Policy = <span class="comment">مفقود</span>
+  </div>
+
+  <h3 style="margin-bottom:20px; color:var(--text); margin-top:32px;">إعداد Caching</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">HTML pages</div>
+      <div class="bar-track"><div class="bar-fill" style="width:5%;background:#f7b731"></div></div>
+      <div class="bar-val" style="color:#f7b731">0s</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">CSS / JS</div>
+      <div class="bar-track"><div class="bar-fill" style="width:100%;background:#06d6a0"></div></div>
+      <div class="bar-val" style="color:#06d6a0">1yr</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Assets / Fonts</div>
+      <div class="bar-track"><div class="bar-fill" style="width:100%;background:#06d6a0"></div></div>
+      <div class="bar-val" style="color:#06d6a0">1yr</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">manifest.json</div>
+      <div class="bar-track"><div class="bar-fill" style="width:20%;background:#4cc9f0"></div></div>
+      <div class="bar-val" style="color:#4cc9f0">1hr</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">sw.js</div>
+      <div class="bar-track"><div class="bar-fill" style="width:3%;background:#f7b731"></div></div>
+      <div class="bar-val" style="color:#f7b731">0s</div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     REPORT 2: SEO AUDIT
+══════════════════════════════════════════════ -->
+<section id="seo" class="section">
+<div class="section-inner">
+
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <span class="sec-tag">التقرير الثاني</span>
+      <h2>تدقيق SEO التقني والمحتوى</h2>
+      <p>فحص Meta Tags، Open Graph، Schema.org، Sitemap، ومؤشرات الزحف</p>
+    </div>
+    <div class="score-ring">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="bg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8"/>
+        <circle class="fg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke="#00e5a0" style="stroke-dashoffset:40"/>
+      </svg>
+      <div class="score-text">
+        <span class="score-num" style="color:#00e5a0">84</span>
+        <span class="score-label">/ 100</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card green">
+      <div class="stat-label">URLs في Sitemap</div>
+      <div class="stat-value green">160</div>
+      <div class="stat-sub">URL مفهرسة</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">صفحات رئيسية</div>
+      <div class="stat-value green">16</div>
+      <div class="stat-sub">جميعها لها Canonical</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Schema JSON-LD</div>
+      <div class="stat-value green">✓</div>
+      <div class="stat-sub">موجود في كل الصفحات</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">GSC Verified</div>
+      <div class="stat-value red">✗</div>
+      <div class="stat-sub">رمز التحقق وهمي</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">Image Sitemap</div>
+      <div class="stat-value yellow">✗</div>
+      <div class="stat-sub">غير موجود</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">OG Coverage</div>
+      <div class="stat-value yellow">60%</div>
+      <div class="stat-sub">الصفحات الداخلية ناقصة</div>
+    </div>
+  </div>
+
+  <!-- SEO per page table -->
+  <h3 style="margin-bottom:16px;">حالة الـ Meta Tags لكل صفحة</h3>
+  <div style="overflow-x:auto; margin-bottom:40px;">
+  <table class="audit-table">
+    <thead>
+      <tr>
+        <th>الصفحة</th>
+        <th>Title</th>
+        <th>Canonical</th>
+        <th>OG Tags</th>
+        <th>Twitter Card</th>
+        <th>Schema</th>
+        <th>H1</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="page-url">/</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">✓ Organization</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/about</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">✓ BreadcrumbList</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/services</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/contact</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/blog</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/ai-agent</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge ok">✓ Service</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/ai-bots</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+      <tr>
+        <td><span class="page-url">/consultation</span></td>
+        <td><span class="badge ok">✓ موجود</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge warning">⚠ ناقص</span></td>
+        <td><span class="badge ok">✓</span></td>
+        <td><span class="badge ok">1</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="issues-grid">
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج</span>
+        <span class="issue-title">GSC وBing Webmaster لم يُربطا</span>
+      </div>
+      <p class="issue-desc">رموز التحقق لا تزال <code>REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE</code>. يعني ذلك أن Google لا تتعرف على ملكية الموقع ولا يمكن تتبع أخطاء الزحف.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>ربط الموقع فوراً بـ Google Search Console وBing Webmaster Tools وتحديث رموز التحقق</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">OG وTwitter Tags ناقصة في 75% من الصفحات</span>
+      </div>
+      <p class="issue-desc">الصفحة الرئيسية وحدها لديها OG tags كاملة. باقي الصفحات (services, contact, blog, ai-agent, ai-bots) تفتقر لـ og:title و og:description وtwitter:card.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إضافة OG meta tags مخصصة لكل صفحة ذات محتوى قابل للمشاركة</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">لا يوجد Image Sitemap</span>
+      </div>
+      <p class="issue-desc">الموقع يحتوي صور AVIF و WebP لكن sitemap.xml لا يشمل خريطة صور، مما يحرم الموقع من ظهور الصور في Google Images.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إضافة <code>image:image</code> elements لكل URL في sitemap أو إنشاء sitemap منفصل للصور</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">robots.txt يكشف مسار /frontend/</span>
+      </div>
+      <p class="issue-desc">قاعدة <code>Allow: /frontend/</code> تكشف هيكل المجلدات الداخلية للزواحف، مما قد يثير استفسارات أمنية أو زحف زائد لملفات غير مقصودة.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>تقييد Allow للـ CSS/JS فقط: <code>Allow: /frontend/css/</code> و <code>Allow: /frontend/js/</code></div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">Hreflang محدود على الصفحة الرئيسية فقط</span>
+      </div>
+      <p class="issue-desc">Hreflang <code>ar-SA</code> و <code>x-default</code> موجودان في index.html فقط. الصفحات الداخلية بلا hreflang، مما يضعف إشارات التوطين للمحركات.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إضافة hreflang لكل صفحة أو مركزتها عبر sitemap بـ <code>xhtml:link</code></div>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">Schema.org موجود في جميع الصفحات</span>
+      </div>
+      <p class="issue-desc">Structured Data بصيغة JSON-LD موجود: Organization، Service، BreadcrumbList، ContactPoint، PostalAddress — تغطية ممتازة للـ Rich Results.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">Canonical URLs صحيحة</span>
+      </div>
+      <p class="issue-desc">جميع الصفحات الرئيسية الـ 16 تحتوي <code>rel="canonical"</code> صحيحة. لا تكرار أو تضارب.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">Geo Meta Tags للسوق السعودي</span>
+      </div>
+      <p class="issue-desc">Tags جغرافية مثالية: <code>geo.region=SA</code>، <code>geo.placename=Riyadh</code>، إحداثيات GPS، <code>content-language=ar-SA</code>.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">Sitemap شامل — 160 URL</span>
+      </div>
+      <p class="issue-desc">Sitemap.xml يشمل 160 URL مع lastmod وchangefreq وpriority. يغطي جميع صفحات الخدمات والمدونة والأدوات.</p>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">26 Script Tag في الصفحة الرئيسية</span>
+      </div>
+      <p class="issue-desc">عدد كبير من الـ scripts (26 في index.html) قد يؤثر على Core Web Vitals، خصوصاً LCP و TBT. 2 منها قد تكون blocking.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>مراجعة الـ scripts وتأجيل غير الحيوية منها بـ <code>defer</code> أو تحميلها عند الطلب</div>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     REPORT 3: UX & CRO
+══════════════════════════════════════════════ -->
+<section id="ux" class="section">
+<div class="section-inner">
+
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <span class="sec-tag">التقرير الثالث</span>
+      <h2>تجربة المستخدم السعودي & CRO</h2>
+      <p>تحليل الـ UX وقياس التحويلات للسوق السعودي — RTL، WhatsApp، Calendly، Accessibility</p>
+    </div>
+    <div class="score-ring">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="bg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8"/>
+        <circle class="fg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke="#4cc9f0" style="stroke-dashoffset:65"/>
+      </svg>
+      <div class="score-text">
+        <span class="score-num" style="color:#4cc9f0">74</span>
+        <span class="score-label">/ 100</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card green">
+      <div class="stat-label">RTL دعم</div>
+      <div class="stat-value green">✓</div>
+      <div class="stat-sub">dir="rtl" lang="ar"</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">WhatsApp CTAs</div>
+      <div class="stat-value green">4+</div>
+      <div class="stat-sub">في صفحة التواصل</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">نماذج HTML</div>
+      <div class="stat-value yellow">0</div>
+      <div class="stat-sub">لا forms في contact</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">PWA دعم</div>
+      <div class="stat-value green">✓</div>
+      <div class="stat-sub">manifest + sw.js</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">Calendly</div>
+      <div class="stat-value yellow">✓</div>
+      <div class="stat-sub">في consultation فقط</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">اختبار A/B</div>
+      <div class="stat-value red">✗</div>
+      <div class="stat-sub">غير مُطبَّق</div>
+    </div>
+  </div>
+
+  <div class="issues-grid">
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج CRO</span>
+        <span class="issue-title">لا توجد نماذج تواصل في صفحة Contact</span>
+      </div>
+      <p class="issue-desc">صفحة <code>/contact</code> تعتمد على WhatsApp فقط (4 روابط). غياب النموذج يعني فقدان العملاء الذين يفضلون التواصل الرسمي أو خارج ساعات العمل.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إضافة نموذج Netlify Forms أو Formspree مع حقول: الاسم، البريد، الشركة، وصف الاحتياج — يزيد التحويل بنسبة تصل 35%</div>
+    </div>
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج CRO</span>
+        <span class="issue-title">لا يوجد تتبع أحداث التحويل</span>
+      </div>
+      <p class="issue-desc">GA4 مُثبَّت (G-8LLESL207Q) لكن لا يوجد تتبع لأحداث التحويل: نقرات WhatsApp، حجوزات Calendly، تنزيل التقارير. البيانات الحالية فارغة من التحويلات.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>تفعيل GA4 Event Tracking لـ wa.me clicks، calendly events، form submissions</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير UX</span>
+        <span class="issue-title">خريطة جوجل وهمية</span>
+      </div>
+      <p class="issue-desc">رابط <code>https://goo.gl/maps/example</code> وهمي في صفحة التواصل. المستخدم السعودي الذي يحاول الوصول للمكتب سيصطدم بصفحة خطأ.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>استبدال برابط Google Maps حقيقي لموقع مكتب BrightAI في الرياض</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">Manifest يستخدم صورة Gemini.png كأيقونة</span>
+      </div>
+      <p class="issue-desc">اسم ملف الأيقونة <code>Gemini.png</code> يوحي بأنها أيقونة Google Gemini وليست شعار BrightAI الرسمي. قد تثير التباساً في PWA وعند التثبيت.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>تغيير الاسم لـ <code>brightai-icon-192.png</code> و<code>brightai-icon-512.png</code> مع تحديث manifest.json</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">Calendly محصور في صفحة Consultation</span>
+      </div>
+      <p class="issue-desc">زر حجز الاستشارة عبر Calendly متاح في <code>/consultation</code> فقط. غيابه عن الصفحة الرئيسية والخدمات يُفوِّت فرص التحويل المبكر.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إضافة Calendly CTA في Hero section الرئيسية وفي نهاية صفحات الخدمات</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">غياب Social Proof المحلي</span>
+      </div>
+      <p class="issue-desc">الموقع يفتقر لعناصر ثقة محلية: شعارات العملاء السعوديين، شهادات بأسماء وشركات، أرقام النتائج (مثل: وفرنا 40% تكاليف تشغيل لـ X شركة).</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إضافة قسم "عملاؤنا يثقون بنا" مع شعارات شركات سعودية وأرقام ملموسة</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">لا اختبار A/B مُطبَّق</span>
+      </div>
+      <p class="issue-desc">لا يوجد دليل على تجارب A/B لعناصر CTA، صياغات العناوين، أو تصميم الهيرو. هذا يعني القرارات تصميمية وليست مدفوعة بالبيانات.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>تفعيل Google Optimize أو VWO لاختبار نصوص CTA في السوق السعودي</div>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">دعم RTL وعربي كامل</span>
+      </div>
+      <p class="issue-desc"><code>dir="rtl" lang="ar" content-language="ar-SA"</code> على مستوى الموقع. خط Scheherazade New مُحمَّل مسبقاً (preload) للعرض السريع.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">PWA مدعوم بالكامل</span>
+      </div>
+      <p class="issue-desc">manifest.json شامل مع shortcuts عربية (خدماتنا، استشارة مجانية، روبوتات AI، تواصل معنا) + Service Worker للعمل أوف لاين.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">WhatsApp كـ CTA رئيسي</span>
+      </div>
+      <p class="issue-desc">روابط WhatsApp (+966538229013) حاضرة بقوة في جميع الصفحات — استراتيجية صحيحة للسوق السعودي حيث WhatsApp القناة الأولى للتواصل B2B.</p>
+    </div>
+
+  </div>
+
+  <!-- CRO Funnel -->
+  <h3 style="margin-bottom:20px; color:var(--text);">مسار التحويل الحالي (Funnel)</h3>
+  <div style="display:grid; gap:12px; margin-bottom:40px;">
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 24px; display:flex; align-items:center; gap:16px;">
+      <div style="width:40px;height:40px;background:rgba(0,229,160,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:700;flex-shrink:0;">1</div>
+      <div><strong>وعي (Awareness)</strong> — SEO + Google Ads<div style="color:var(--muted);font-size:13px;">الصفحة الرئيسية + المدونة</div></div>
+      <span class="badge ok" style="margin-right:auto;">مكتمل</span>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 24px; display:flex; align-items:center; gap:16px;">
+      <div style="width:40px;height:40px;background:rgba(76,201,240,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--info);font-weight:700;flex-shrink:0;">2</div>
+      <div><strong>اهتمام (Interest)</strong> — صفحات الخدمات<div style="color:var(--muted);font-size:13px;">ai-agent، ai-bots، data-analysis</div></div>
+      <span class="badge ok" style="margin-right:auto;">مكتمل</span>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 24px; display:flex; align-items:center; gap:16px;">
+      <div style="width:40px;height:40px;background:rgba(255,190,11,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--warn);font-weight:700;flex-shrink:0;">3</div>
+      <div><strong>رغبة (Desire)</strong> — Case Studies + شهادات<div style="color:var(--muted);font-size:13px;">ناقص: لا social proof محلي</div></div>
+      <span class="badge warning" style="margin-right:auto;">ناقص</span>
+    </div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px 24px; display:flex; align-items:center; gap:16px;">
+      <div style="width:40px;height:40px;background:rgba(255,77,109,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--danger);font-weight:700;flex-shrink:0;">4</div>
+      <div><strong>تحويل (Action)</strong> — WhatsApp + Calendly + Form<div style="color:var(--muted);font-size:13px;">مشكلة: لا نماذج، لا تتبع events</div></div>
+      <span class="badge critical" style="margin-right:auto;">يحتاج إصلاح</span>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     REPORT 4: BACKLINKS & CRAWL
+══════════════════════════════════════════════ -->
+<section id="links" class="section">
+<div class="section-inner">
+
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <span class="sec-tag">التقرير الرابع</span>
+      <h2>الروابط الخارجية وأخطاء الزحف</h2>
+      <p>تحليل الروابط الداخلية والخارجية، الروابط المعطوبة، Social Backlinks، وإعداد الـ Crawl</p>
+    </div>
+    <div class="score-ring">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="bg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8"/>
+        <circle class="fg-circle" cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke="#ffbe0b" style="stroke-dashoffset:90"/>
+      </svg>
+      <div class="score-text">
+        <span class="score-num" style="color:#ffbe0b">64</span>
+        <span class="score-label">/ 100</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card red">
+      <div class="stat-label">روابط معطوبة</div>
+      <div class="stat-value red">2+</div>
+      <div class="stat-sub">مؤكدة في الكود</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">منصات اجتماعية</div>
+      <div class="stat-value yellow">3</div>
+      <div class="stat-sub">Instagram, X, YouTube</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">LinkedIn</div>
+      <div class="stat-value red">✗</div>
+      <div class="stat-sub">غير مرتبط</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">404 صفحة</div>
+      <div class="stat-value green">✓</div>
+      <div class="stat-sub">مخصصة وجيدة</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">500 صفحة</div>
+      <div class="stat-value green">✓</div>
+      <div class="stat-sub">مخصصة وجيدة</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">Internal Linking</div>
+      <div class="stat-value yellow">~</div>
+      <div class="stat-sub">غير منهجي</div>
+    </div>
+  </div>
+
+  <h3 style="margin-bottom:16px;">الروابط الخارجية — حالة الفحص</h3>
+
+  <div class="link-item">
+    <span style="font-size:20px">✅</span>
+    <div class="link-url">https://wa.me/966538229013</div>
+    <span class="link-status" style="background:rgba(6,214,160,0.1);color:var(--success)">صالح</span>
+    <span class="link-note">WhatsApp رئيسي — موجود في كل الصفحات</span>
+  </div>
+
+  <div class="link-item">
+    <span style="font-size:20px">✅</span>
+    <div class="link-url">https://calendly.com/yazeed1job/bright-ai-consultation</div>
+    <span class="link-status" style="background:rgba(6,214,160,0.1);color:var(--success)">صالح</span>
+    <span class="link-note">Calendly consultation booking</span>
+  </div>
+
+  <div class="link-item">
+    <span style="font-size:20px">⚠️</span>
+    <div class="link-url">https://goo.gl/maps/example</div>
+    <span class="link-status" style="background:rgba(255,77,109,0.1);color:var(--danger)">معطوب</span>
+    <span class="link-note">رابط وهمي — يجب استبداله بالموقع الحقيقي</span>
+  </div>
+
+  <div class="link-item">
+    <span style="font-size:20px">⚠️</span>
+    <div class="link-url">https://www.instagram.com/iililil44</div>
+    <span class="link-status" style="background:rgba(255,190,11,0.1);color:var(--warn)">مشكوك</span>
+    <span class="link-note">اسم مستخدم غير احترافي — قد يكون حساباً شخصياً</span>
+  </div>
+
+  <div class="link-item">
+    <span style="font-size:20px">✅</span>
+    <div class="link-url">https://x.com/BrightAIII</div>
+    <span class="link-status" style="background:rgba(6,214,160,0.1);color:var(--success)">صالح</span>
+    <span class="link-note">حساب X — ملاحظة: 3 حروف I في الاسم</span>
+  </div>
+
+  <div class="link-item">
+    <span style="font-size:20px">✅</span>
+    <div class="link-url">https://www.youtube.com/@TeechLab</div>
+    <span class="link-status" style="background:rgba(6,214,160,0.1);color:var(--success)">صالح</span>
+    <span class="link-note">YouTube — قد لا يكون الحساب الرسمي لـ BrightAI</span>
+  </div>
+
+  <div class="link-item">
+    <span style="font-size:20px">❌</span>
+    <div class="link-url">LinkedIn.com/company/brightai</div>
+    <span class="link-status" style="background:rgba(255,77,109,0.1);color:var(--danger)">مفقود</span>
+    <span class="link-note">LinkedIn ضروري للمبيعات B2B السعودية</span>
+  </div>
+
+  <hr class="divider">
+
+  <div class="issues-grid">
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج</span>
+        <span class="issue-title">رابط خريطة جوجل وهمي</span>
+      </div>
+      <p class="issue-desc"><code>https://goo.gl/maps/example</code> هو placeholder وليس موقعاً حقيقياً. أي زائر يضغط على رابط "اعثر علينا" سيصل لصفحة خطأ.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>الذهاب لـ Google Maps، البحث عن العنوان الحقيقي، مشاركة الرابط والصقه في كل صفحة</div>
+    </div>
+
+    <div class="issue-card critical">
+      <div class="issue-header">
+        <span class="badge critical">حرج</span>
+        <span class="issue-title">غياب LinkedIn</span>
+      </div>
+      <p class="issue-desc">لا يوجد رابط LinkedIn في أي مكان بالموقع. في السوق السعودي B2B، LinkedIn أداة مبيعات أساسية. غيابه يضعف المصداقية ويفوِّت فرص الـ backlinks.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إنشاء صفحة شركة BrightAI على LinkedIn وإضافة الرابط في Footer وصفحة About</div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">حساب Instagram غير احترافي</span>
+      </div>
+      <p class="issue-desc">المعرف <code>iililil44</code> يبدو شخصياً أو غير رسمي. قد يربك العملاء المحتملين أو يخفض ثقتهم بالعلامة التجارية.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>إنشاء حساب Instagram رسمي بمعرف <code>@BrightAI.sa</code> أو <code>@BrightAI_KSA</code></div>
+    </div>
+
+    <div class="issue-card warning">
+      <div class="issue-header">
+        <span class="badge warning">تحذير</span>
+        <span class="issue-title">لا Backlink Strategy واضحة</span>
+      </div>
+      <p class="issue-desc">الموقع لا يمتلك روابط من مصادر سعودية موثوقة (MCIT، STC، Aramco، وسائل إعلام تقنية عربية). هذا يضعف DA وإشارات الثقة في Google.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>استهداف ذكر في: Arab News، Tech Arabia، Wamda، SPA، منصات رؤية 2030</div>
+    </div>
+
+    <div class="issue-card info">
+      <div class="issue-header">
+        <span class="badge info">ملاحظة</span>
+        <span class="issue-title">Internal Linking غير منظم</span>
+      </div>
+      <p class="issue-desc">لا توجد استراتيجية Pillar-Cluster واضحة للربط الداخلي. صفحات المدونة الـ 160+ لا تشير لبعضها بشكل منهجي.</p>
+      <div class="issue-fix"><strong>🔧 الإصلاح</strong>بناء Pillar Pages للمحاور الرئيسية (AI، أتمتة، تحليل بيانات) مع Cluster content مترابط</div>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">صفحتا 404 و 500 مخصصتان</span>
+      </div>
+      <p class="issue-desc">الموقع يمتلك <code>404.html</code> و<code>500.html</code> مخصصتان باللغة العربية مع روابط للعودة. هذا يقلل معدل الارتداد عند أخطاء الزحف.</p>
+    </div>
+
+    <div class="issue-card success">
+      <div class="issue-header">
+        <span class="badge success">ممتاز</span>
+        <span class="issue-title">Redirects صحيحة في netlify.toml</span>
+      </div>
+      <p class="issue-desc">جميع إعادة التوجيه مُعرَّفة بوضوح: www→non-www، http→https، .html→clean URL، ومسارات legacy. لا broken redirects.</p>
+    </div>
+
+  </div>
+
+  <h3 style="margin-bottom:16px; margin-top:20px;">قوة Backlink Signals حسب المنصة</h3>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-label">WhatsApp (مشاركات)</div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%;background:#06d6a0"></div></div>
+      <div class="bar-val" style="color:#06d6a0">قوي</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">X / Twitter</div>
+      <div class="bar-track"><div class="bar-fill" style="width:40%;background:#f7b731"></div></div>
+      <div class="bar-val" style="color:#f7b731">متوسط</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">YouTube</div>
+      <div class="bar-track"><div class="bar-fill" style="width:35%;background:#f7b731"></div></div>
+      <div class="bar-val" style="color:#f7b731">متوسط</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Instagram</div>
+      <div class="bar-track"><div class="bar-fill" style="width:20%;background:#ff4d6d"></div></div>
+      <div class="bar-val" style="color:#ff4d6d">ضعيف</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">LinkedIn</div>
+      <div class="bar-track"><div class="bar-fill" style="width:3%;background:#ff4d6d"></div></div>
+      <div class="bar-val" style="color:#ff4d6d">مفقود</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">مواقع سعودية موثوقة</div>
+      <div class="bar-track"><div class="bar-fill" style="width:2%;background:#ff4d6d"></div></div>
+      <div class="bar-val" style="color:#ff4d6d">مفقود</div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     REPORT 5: CODEX PROMPTS
+══════════════════════════════════════════════ -->
+<section id="prompts" class="section">
+<div class="section-inner">
+
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <span class="sec-tag">القسم الأخير</span>
+      <h2>Codex Prompts — تنفيذ كل التوصيات</h2>
+      <p>أوامر جاهزة للنسخ والتنفيذ مباشرة في Codex أو Cursor أو Claude للتطبيق الفوري</p>
+    </div>
+  </div>
+
+  <div class="prompts-grid">
+
+    <!-- PROMPT 1 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🔐</span>
+          <h3>إصلاح CORS وأمان Backend</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">Security</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p1')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p1">في ملف backend/server.js، قم بتعديل إعداد CORS بحيث لا يسمح إلا لنطاقات محددة.
+
+1. ابحث عن الثابت CORS_HEADERS الذي يحتوي 'Access-Control-Allow-Origin': '*'
+2. استبدله بمنطق ديناميكي يسمح فقط لـ:
+   - https://brightai.site
+   - https://www.brightai.site
+   - http://localhost:3000 (في بيئة التطوير فقط)
+3. أضف Origin checking: إذا كان الطلب من origin غير مسموح، أرجع 403 مع رسالة خطأ واضحة
+4. أضف rate limiting headers في جميع الاستجابات
+5. في نفس الملف، أزل أي hardcoded URLs مثل 'extraordinary-axolotl-d35933.netlify.app' واستبدلها بـ process.env.BRIGHTAI_API_BASE
+6. أضف validation للـ Origin header قبل معالجة أي طلب API
+
+تأكد من اختبار التغييرات مع:
+- طلب من brightai.site (يجب أن ينجح)
+- طلب من domain غير مصرح (يجب أن يُرفض بـ 403)
+      </div>
+    </div>
+
+    <!-- PROMPT 2 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🔍</span>
+          <h3>إصلاح GSC وBing Webmaster Verification</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">SEO</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p2')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p2">في ملف index.html، افحص جميع meta tags التي تحتوي على قيم placeholder وأصلحها:
+
+1. ابحث عن: content="REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE"
+   - استبدل بـ: content="[GSC_CODE]" — أدخل هنا رمز التحقق من Google Search Console الخاص بـ brightai.site
+   
+2. ابحث عن: content="REPLACE_WITH_YOUR_BING_CODE"  
+   - استبدل بـ: content="[BING_CODE]" — أدخل هنا رمز Bing Webmaster Tools
+
+3. أنشئ سكريبت Node.js في scripts/validate-seo-placeholders.mjs يفحص جميع ملفات HTML ويبحث عن:
+   - أي content تحتوي REPLACE_ أو YOUR_ أو PLACEHOLDER
+   - أي href تحتوي example أو localhost في production
+   - يطبع تقريراً بالملفات المتضررة
+
+4. أضف هذا الفحص لـ CI workflow في .github/workflows/ci-tests.yml كـ job منفصل "seo-placeholder-check"
+
+5. في ملف robots.txt، حدّث قاعدة Allow:
+   استبدل: Allow: /frontend/
+   بـ:
+   Allow: /frontend/css/
+   Allow: /frontend/js/
+   وأزل Allow: /frontend/ العامة
+      </div>
+    </div>
+
+    <!-- PROMPT 3 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">📊</span>
+          <h3>إضافة OG Tags لجميع الصفحات</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">SEO</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p3')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p3">أنشئ سكريبت في scripts/add-og-tags.mjs يضيف Open Graph وTwitter Card tags لجميع صفحات HTML التي تفتقرها.
+
+الصفحات المستهدفة (تفتقر لـ OG tags كاملة):
+- services/index.html
+- contact/index.html
+- blog/index.html
+- ai-agent/index.html
+- ai-bots/index.html
+- consultation/index.html
+- data-analysis/index.html
+- smart-automation/index.html
+- machine-learning/index.html
+- case-studies/index.html
+- partners/index.html
+- tools/index.html
+
+لكل صفحة، أضف بعد آخر meta tag موجود:
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+<meta property="og:title" content="[استخرج من title tag الصفحة]" />
+<meta property="og:description" content="[استخرج من meta description]" />
+<meta property="og:url" content="https://brightai.site/[المسار]" />
+<meta property="og:image" content="https://brightai.site/assets/images/og-default.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="ar_SA" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@BrightAIII" />
+<meta name="twitter:title" content="[من title]" />
+<meta name="twitter:description" content="[من description]" />
+<meta name="twitter:image" content="https://brightai.site/assets/images/og-default.jpg" />
+
+بعد التنفيذ، أضف هذا السكريبت لـ npm scripts في package.json كـ "seo:og:fix"
+      </div>
+    </div>
+
+    <!-- PROMPT 4 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🗺️</span>
+          <h3>إنشاء Image Sitemap</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">SEO</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p4')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p4">أنشئ سكريبت scripts/generate-image-sitemap.mjs يفعل ما يلي:
+
+1. يمشي على جميع ملفات HTML في المشروع (index.html في كل مجلد)
+2. يستخرج جميع علامات <img> وurl خلفية CSS المهمة
+3. يستخرج جميع ملفات .webp و .avif و .jpg و .png من مجلد assets/
+4. ينشئ ملف sitemap-images.xml بهذا الشكل:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://brightai.site/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/assets/images/hero-brain.svg</image:loc>
+      <image:title>Bright AI — حلول الذكاء الاصطناعي للشركات السعودية</image:title>
+      <image:caption>منصة الذكاء الاصطناعي الرائدة في المملكة العربية السعودية</image:caption>
+    </image:image>
+  </url>
+</urlset>
+
+5. يحدّث sitemap.xml الرئيسي ليضيف:
+<sitemapindex>
+  <sitemap><loc>https://brightai.site/sitemap.xml</loc></sitemap>
+  <sitemap><loc>https://brightai.site/sitemap-images.xml</loc></sitemap>
+</sitemapindex>
+
+6. أضف "sitemap:images" لـ npm scripts وشغّله ضمن "sitemap:all"
+      </div>
+    </div>
+
+    <!-- PROMPT 5 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">📝</span>
+          <h3>إضافة نموذج تواصل عربي في Contact</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">CRO</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p5')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p5">في ملف contact/index.html، أضف نموذج تواصل احترافي يستهدف السوق السعودي:
+
+1. أضف نموذج HTML بهذه الحقول (RTL، باللغة العربية):
+   - الاسم الكامل (مطلوب)
+   - البريد الإلكتروني (مطلوب)
+   - اسم الشركة (مطلوب)
+   - رقم الجوال السعودي (مع country code +966)
+   - القطاع (select: حكومي، صحة، تعليم، مالي، تجارة، صناعة، أخرى)
+   - ميزانية المشروع التقريبية (select: أقل من 50K ريال، 50K-200K، 200K-1M، أكثر من 1M)
+   - وصف الاحتياج (textarea)
+   - checkbox: "أوافق على سياسة الخصوصية"
+
+2. استخدم Netlify Forms: أضف netlify attribute للـ form وhidden input: <input type="hidden" name="form-name" value="contact-arabic">
+
+3. أضف validation باللغة العربية باستخدام HTML5 + JavaScript:
+   - التحقق من صيغة البريد الإلكتروني
+   - التحقق من رقم الجوال السعودي (05XXXXXXXX)
+   - رسائل خطأ عربية
+
+4. أضف Google Analytics Event Tracking عند إرسال النموذج:
+   gtag('event', 'form_submit', {event_category: 'contact', event_label: 'arabic_contact_form'});
+
+5. أضف رسالة نجاح بعد الإرسال بالعربية وأحمّل المستخدم للصفحة /consultation
+
+6. نسّق النموذج ليتناسب مع التصميم الحالي (dark theme، RTL)
+      </div>
+    </div>
+
+    <!-- PROMPT 6 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">📈</span>
+          <h3>تفعيل GA4 Event Tracking للتحويلات</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">Analytics</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p6')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p6">أنشئ ملف frontend/js/analytics-events.js يتتبع جميع أحداث التحويل المهمة:
+
+1. تتبع نقرات WhatsApp:
+document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+  link.addEventListener('click', () => {
+    gtag('event', 'whatsapp_click', {
+      event_category: 'conversion',
+      event_label: document.title,
+      value: 1
+    });
+  });
+});
+
+2. تتبع نقرات Calendly:
+document.querySelectorAll('a[href*="calendly.com"]').forEach(link => {
+  link.addEventListener('click', () => {
+    gtag('event', 'calendly_click', {
+      event_category: 'conversion',
+      event_label: 'consultation_booking'
+    });
+  });
+});
+
+3. تتبع تمرير الصفحة (Scroll Depth):
+const scrollMilestones = [25, 50, 75, 90];
+const tracked = new Set();
+window.addEventListener('scroll', () => {
+  const pct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+  scrollMilestones.forEach(m => {
+    if (pct >= m && !tracked.has(m)) {
+      tracked.add(m);
+      gtag('event', 'scroll_depth', { event_category: 'engagement', event_label: m + '%' });
+    }
+  });
+});
+
+4. تتبع مشاهدة الفيديو (إن وجد):
+document.querySelectorAll('video').forEach(v => {
+  v.addEventListener('play', () => gtag('event', 'video_play', {event_label: v.src}));
+});
+
+5. أضف هذا الملف بـ defer في جميع صفحات HTML الرئيسية بعد gtag script
+
+6. أضف GA4 Conversion Goals في لوحة تحكم GA4:
+   - whatsapp_click كـ Conversion
+   - calendly_click كـ Conversion
+   - form_submit كـ Conversion
+      </div>
+    </div>
+
+    <!-- PROMPT 7 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🔗</span>
+          <h3>إصلاح الروابط المعطوبة وإضافة LinkedIn</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">Links</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p7')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p7">أنشئ سكريبت scripts/fix-broken-links.mjs يفعل ما يلي:
+
+1. يبحث في جميع ملفات HTML عن:
+   - href="https://goo.gl/maps/example" — استبدل بـ href="https://maps.google.com/?q=Riyadh,Saudi+Arabia" (مؤقتاً حتى تحديد العنوان الحقيقي)
+   - href="https://www.instagram.com/iililil44" — أضف تعليق TODO
+   - أي رابط يحتوي "example" أو "placeholder" أو "TODO"
+
+2. أضف LinkedIn في Footer جميع الصفحات:
+   في قسم الـ footer الاجتماعي، أضف:
+   <a href="https://linkedin.com/company/bright-ai-sa" target="_blank" rel="noopener" aria-label="BrightAI على LinkedIn">
+     <svg><!-- LinkedIn icon --></svg>
+   </a>
+
+3. أنشئ سكريبت scripts/check-external-links.mjs يستخدم fetch لفحص كل رابط خارجي:
+   - يجمع جميع الـ href من HTML
+   - يفلتر الروابط الخارجية (تبدأ بـ http)
+   - يحاول HEAD request لكل رابط
+   - يطبع تقريراً: الحالة (200، 301، 404، خطأ)
+   - يحفظ النتائج في reports/link-check-report.json
+
+4. أضف هذا الفحص لـ CI كـ scheduled job (أسبوعياً)
+
+5. في package.json، أضف:
+   "links:check": "node scripts/check-external-links.mjs",
+   "links:fix": "node scripts/fix-broken-links.mjs"
+      </div>
+    </div>
+
+    <!-- PROMPT 8 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🛡️</span>
+          <h3>تحسين CSP وإزالة unsafe-inline</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">Security</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p8')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p8">في ملف netlify.toml، حسّن Content Security Policy:
+
+1. أولاً، أنشئ سكريبت scripts/collect-inline-hashes.mjs يجمع:
+   - جميع <script>...</script> inline في HTML
+   - يحسب SHA256 hash لكل منها
+   - يطبع قائمة 'sha256-XXXX' لإضافتها للـ CSP
+
+2. حدّث CSP في netlify.toml:
+استبدل:
+script-src 'self' https: 'unsafe-inline'
+
+بـ (بعد جمع الهاشات):
+script-src 'self' https://www.googletagmanager.com https://extraordinary-axolotl-d35933.netlify.app 'sha256-[HASH1]' 'sha256-[HASH2]'
+
+3. أضف الهيدرز المفقودة في netlify.toml:
+Cross-Origin-Opener-Policy = "same-origin-allow-popups"
+Cross-Origin-Resource-Policy = "same-site"  
+Cross-Origin-Embedder-Policy = "unsafe-none"
+Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+4. أزل X-XSS-Protection (deprecated في المتصفحات الحديثة ومستبدَل بـ CSP)
+
+5. أضف Report-To header لتلقي تقارير CSP violations:
+Report-To = '{"group":"csp","max_age":86400,"endpoints":[{"url":"/api/csp-report"}]}'
+Content-Security-Policy-Report-Only = "[CSP الجديد] report-to csp"
+
+استخدم Report-Only أولاً لأسبوعين قبل تطبيق CSP الصارم
+      </div>
+    </div>
+
+    <!-- PROMPT 9 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🧹</span>
+          <h3>حذف الملفات المكررة وتنظيف المستودع</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">Repo Health</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p9')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p9">نظّف المستودع من الملفات المكررة والزائدة:
+
+1. احذف هذه الملفات المكررة (الأرقام تشير لنسخ زائدة):
+   git rm "BRIGHTAI-main/.env 2.example"
+   git rm "BRIGHTAI-main/README 2.md"
+   git rm "BRIGHTAI-main/backend/data/search-index 2.json"
+   git rm "BRIGHTAI-main/backend/routes/search 2.js"
+   git rm "BRIGHTAI-main/backend/routes/search 3.js"
+   git rm "BRIGHTAI-main/backend/utils/cache 2.js"
+   git rm "BRIGHTAI-main/frontend/js/search 2.js"
+
+2. تحقق قبل الحذف من أن الملفات الأصلية (بدون أرقام) هي النسخة الأحدث:
+   diff "backend/routes/search.js" "backend/routes/search 2.js"
+   diff "backend/routes/search.js" "backend/routes/search 3.js"
+
+3. أضف قاعدة في .gitattributes لمنع الملفات بمسافات:
+   * text=auto
+
+4. أنشئ سكريبت scripts/find-duplicates.mjs يفحص:
+   - ملفات بنفس المحتوى (checksum)
+   - ملفات باسم مشابه (مع أرقام أو spaces)
+   - يطبع تقريراً بالمكررات المقترح حذفها
+
+5. أضف .editorconfig لمعايرة الكود:
+root = true
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+6. حدّث .gitignore ليشمل:
+*.bak
+*~ 
+*\ copy*
+* 2.*
+      </div>
+    </div>
+
+    <!-- PROMPT 10 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">🖼️</span>
+          <h3>إصلاح Manifest وأيقونات PWA</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">PWA</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p10')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p10">أصلح manifest.json وأيقونات PWA:
+
+1. أعد تسمية أيقونة التطبيق:
+   - انسخ assets/images/Gemini.png إلى:
+     assets/images/brightai-icon-192.png
+     assets/images/brightai-icon-512.png
+   - أنشئ نسخة SVG: assets/images/brightai-icon.svg
+
+2. حدّث manifest.json — استبدل قسم icons:
+{
+  "icons": [
+    {
+      "src": "assets/images/brightai-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/brightai-icon-192.png", 
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/images/brightai-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/brightai-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
+
+3. أصلح screenshots في manifest.json — استبدل الصور الوهمية بلقطات حقيقية للصفحة الرئيسية
+
+4. حدّث start_url في manifest.json:
+   من: "/index.html?utm_source=pwa"
+   إلى: "/?utm_source=pwa"
+   (لأن netlify.toml يعيد توجيه /index.html إلى /)
+
+5. أضف Apple-specific meta tags في index.html للـ iOS PWA:
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="مُشرقة AI">
+<link rel="apple-touch-icon" href="/assets/images/brightai-icon-192.png">
+      </div>
+    </div>
+
+    <!-- PROMPT 11 -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="ph-left">
+          <span style="font-size:20px">⚡</span>
+          <h3>تحسين الأداء وتقليل Scripts</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category">Performance</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p11')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p11">حسّن أداء index.html وخفّض عدد الـ scripts من 26 إلى أقل:
+
+1. مسح جميع script tags في index.html وتصنيفها:
+   - critical (blocking): ما يحتاجه rendering الأولي
+   - deferred: ما يمكن تأجيله بـ defer
+   - lazy: ما يُحمَّل عند الطلب (intersection observer)
+   - removable: scripts غير مستخدمة أو مكررة
+
+2. أضف defer لجميع scripts غير الحيوية:
+   قبل: <script src="analytics-events.js"></script>
+   بعد: <script src="analytics-events.js" defer></script>
+
+3. Google Tag Manager: تأكد أن gtag script هو الوحيد async ومحمّل أولاً
+
+4. أنشئ scripts/audit-scripts.mjs يحلل index.html:
+   - يعد جميع script tags
+   - يكتشف المكررة (نفس المصدر مرتين)
+   - يكتشف البادئات الخاطئة (script داخل head بدون async/defer)
+   - يطبع تقريراً وتوصيات
+
+5. أضف Resource Hints في <head>:
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+6. استبدل Google Fonts import بـ self-hosted للخطوط المستخدمة فعلياً
+   (Scheherazade New مُشفَّر بالفعل - أضف Tajawal أيضاً محلياً)
+
+7. أضف Lighthouse CI في .github/workflows/ci-tests.yml:
+   - يشغل Lighthouse على كل PR
+   - يفشل إذا Performance score < 80
+      </div>
+    </div>
+
+    <!-- PROMPT 12 - FINAL MASTER -->
+    <div class="prompt-card" style="border-color: rgba(0,229,160,0.3);">
+      <div class="prompt-card-header" style="background: rgba(0,229,160,0.05);">
+        <div class="ph-left">
+          <span style="font-size:20px">🚀</span>
+          <h3>Prompt شامل — تنفيذ كل التوصيات دفعة واحدة</h3>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="prompt-category" style="background:rgba(0,229,160,0.2);border-color:rgba(0,229,160,0.4);">MASTER</span>
+          <button class="copy-btn" onclick="copyPrompt(this, 'p12')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg>
+            نسخ الكل
+          </button>
+        </div>
+      </div>
+      <div class="prompt-body" id="p12">أنت خبير في تطوير الويب وSEO وأمان التطبيقات. لديك مشروع BrightAI (brightai.site) — موقع شركة ذكاء اصطناعي سعودية. قم بتنفيذ جميع التحسينات التالية بالترتيب:
+
+═══ المرحلة 1: الأمان (عاجل) ═══
+□ أصلح CORS في backend/server.js: قيّده على https://brightai.site فقط
+□ حدّث CSP في netlify.toml: أزل unsafe-inline واستبدل بـ nonces
+□ أضف Cross-Origin-Opener-Policy وCross-Origin-Resource-Policy للهيدرز
+
+═══ المرحلة 2: SEO (عاجل) ═══
+□ استبدل REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE بالرمز الحقيقي في index.html
+□ استبدل REPLACE_WITH_YOUR_BING_CODE بالرمز الحقيقي
+□ أضف OG + Twitter Card tags لصفحات: services، contact، blog، ai-agent، ai-bots، consultation
+□ أضف Image Sitemap في sitemap-images.xml
+
+═══ المرحلة 3: CRO (ضروري) ═══
+□ أضف نموذج Netlify Forms عربي في contact/index.html
+□ أصلح رابط Google Maps الوهمي (goo.gl/maps/example)
+□ أضف Calendly CTA في Hero section الرئيسية
+□ فعّل GA4 Event Tracking لـ WhatsApp clicks + Calendly + Form submits
+
+═══ المرحلة 4: الروابط (مهم) ═══
+□ أضف LinkedIn في Footer جميع الصفحات
+□ أنشئ سكريبت فحص الروابط الخارجية أسبوعياً
+□ صحّح Instagram username لمعرف رسمي
+
+═══ المرحلة 5: تنظيف (مستحسن) ═══
+□ احذف الملفات المكررة (search 2.js، cache 2.js، .env 2.example)
+□ أصلح manifest.json: غيّر اسم الأيقونة من Gemini.png لـ brightai-icon
+□ أضف defer لـ 20+ script غير حيوي في index.html
+□ حدّث robots.txt: أزل Allow: /frontend/ العامة
+
+لكل تغيير: أنشئ branch منفصل، اكتب commit message واضح، وأضف اختباراً مناسباً.
+      </div>
+    </div>
+
+  </div><!-- end prompts-grid -->
+
+  <!-- Copy All Stats -->
+  <div style="margin-top:40px; padding:24px; background:var(--surface); border:1px solid rgba(0,229,160,0.2); border-radius:12px; text-align:center;">
+    <div style="font-size:24px; margin-bottom:12px;">📋</div>
+    <h3 style="margin-bottom:8px;">إجمالي التوصيات</h3>
+    <div style="display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-top:16px;">
+      <div><span style="font-size:28px;font-weight:700;color:var(--danger);">5</span><div style="color:var(--muted);font-size:13px;">حرجة</div></div>
+      <div><span style="font-size:28px;font-weight:700;color:var(--warn);">8</span><div style="color:var(--muted);font-size:13px;">تحذيرات</div></div>
+      <div><span style="font-size:28px;font-weight:700;color:var(--info);">6</span><div style="color:var(--muted);font-size:13px;">ملاحظات</div></div>
+      <div><span style="font-size:28px;font-weight:700;color:var(--success);">11</span><div style="color:var(--muted);font-size:13px;">ممتاز</div></div>
+      <div><span style="font-size:28px;font-weight:700;color:var(--accent);">12</span><div style="color:var(--muted);font-size:13px;">Codex Prompts</div></div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  تقرير BrightAI الشامل — <strong>مارس 2026</strong> &nbsp;|&nbsp;
+  تحليل: <strong>775 ملف، 198 صفحة HTML، 160 URL في Sitemap</strong> &nbsp;|&nbsp;
+  النطاق: <strong>brightai.site</strong>
+</footer>
+
+<script>
+// Tab navigation
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Copy prompt functionality
+function copyPrompt(btn, id) {
+  const el = document.getElementById(id);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> تم النسخ!`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path></svg> نسخ`;
+    }, 2500);
+  });
+}
+
+// Animate score rings on page load
+document.addEventListener('DOMContentLoaded', () => {
+  // Already set via inline styles
+});
+</script>
+
+</body>
+</html>

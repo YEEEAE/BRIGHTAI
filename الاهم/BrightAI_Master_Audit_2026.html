@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightAI — تقرير التدقيق الشامل | مارس 2026</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #0a0e1a;
+            --surface: #111827;
+            --surface2: #1e293b;
+            --border: #334155;
+            --gold: #d4af37;
+            --red: #ef4444;
+            --orange: #f97316;
+            --yellow: #eab308;
+            --green: #22c55e;
+            --cyan: #06b6d4;
+            --indigo: #6366f1;
+            --white: #f1f5f9;
+            --muted: #94a3b8;
+            --radius: 12px
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--white);
+            line-height: 1.7;
+            padding: 0
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid var(--indigo);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px)
+        }
+
+        .top-bar h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--gold), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .top-bar p {
+            color: var(--muted);
+            font-size: .85rem;
+            margin-top: .3rem
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: .5rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 80px;
+            z-index: 99
+        }
+
+        .nav-tabs button {
+            background: var(--surface2);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            padding: .5rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: .8rem;
+            font-weight: 600;
+            transition: .2s
+        }
+
+        .nav-tabs button:hover,
+        .nav-tabs button.active {
+            background: var(--indigo);
+            color: #fff;
+            border-color: var(--indigo)
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn .3s ease
+        }
+
+        .section.active {
+            display: block
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.25rem
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: .5rem
+        }
+
+        .card h3 {
+            font-size: 1rem;
+            color: var(--cyan);
+            margin: 1rem 0 .5rem
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 700;
+            margin-left: .5rem
+        }
+
+        .badge.critical {
+            background: #7f1d1d;
+            color: #fca5a5
+        }
+
+        .badge.high {
+            background: #7c2d12;
+            color: #fdba74
+        }
+
+        .badge.medium {
+            background: #713f12;
+            color: #fde047
+        }
+
+        .badge.low {
+            background: #14532d;
+            color: #86efac
+        }
+
+        .badge.pass {
+            background: #064e3b;
+            color: #6ee7b7
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: .75rem 0;
+            font-size: .82rem
+        }
+
+        th {
+            background: var(--surface2);
+            color: var(--cyan);
+            text-align: right;
+            padding: .6rem .75rem;
+            border: 1px solid var(--border)
+        }
+
+        td {
+            padding: .6rem .75rem;
+            border: 1px solid var(--border);
+            color: var(--muted)
+        }
+
+        tr:hover td {
+            background: rgba(99, 102, 241, .06)
+        }
+
+        ul,
+        ol {
+            padding-right: 1.25rem;
+            color: var(--muted)
+        }
+
+        li {
+            margin-bottom: .4rem;
+            font-size: .85rem
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0
+        }
+
+        .stat {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center
+        }
+
+        .stat .num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .stat .label {
+            font-size: .75rem;
+            color: var(--muted);
+            margin-top: .25rem
+        }
+
+        .prompt-block {
+            background: #0c1222;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1.25rem;
+            overflow: hidden
+        }
+
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .75rem 1rem;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .prompt-header span {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: .85rem
+        }
+
+        .copy-btn {
+            background: var(--indigo);
+            color: #fff;
+            border: none;
+            padding: .35rem .9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: .75rem;
+            font-weight: 600;
+            transition: .2s
+        }
+
+        .copy-btn:hover {
+            background: #818cf8
+        }
+
+        .copy-btn.copied {
+            background: var(--green)
+        }
+
+        .prompt-body {
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: .78rem;
+            color: #a5b4fc;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            max-height: 400px;
+            overflow-y: auto
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--surface2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: .5rem 0
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width .5s
+        }
+
+        .score-row {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            margin: .4rem 0
+        }
+
+        .score-row .lbl {
+            min-width: 140px;
+            font-size: .8rem;
+            color: var(--muted)
+        }
+
+        a {
+            color: var(--cyan);
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        @media(max-width:768px) {
+            .top-bar h1 {
+                font-size: 1.2rem
+            }
+
+            .container {
+                padding: 1rem
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <h1>🔍 BrightAI — تقرير التدقيق الشامل</h1>
+        <p>تاريخ التقرير: 1 مارس 2026 | الموقع: brightai.site | الإصدار: v3.0</p>
+    </div>
+
+    <div class="nav-tabs" id="navTabs">
+        <button class="active" onclick="showSection('sec1',this)">1️⃣ صحة النشر والبنية</button>
+        <button onclick="showSection('sec2',this)">2️⃣ SEO تقني ومحتوى</button>
+        <button onclick="showSection('sec3',this)">3️⃣ تجربة المستخدم UX/CRO</button>
+        <button onclick="showSection('sec4',this)">4️⃣ الروابط والأخطاء</button>
+        <button onclick="showSection('sec5',this)">5️⃣ Codex Prompts</button>
+    </div>
+
+    <div class="container">
+
+        <!-- ======= القسم 1: صحة النشر والبنية ======= -->
+        <div class="section active" id="sec1">
+            <div class="card">
+                <h2>📊 نظرة عامة — صحة النشر والبنية (Deployment & Repo Health)</h2>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="num">613</div>
+                        <div class="label">سطر في netlify.toml</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">5,804</div>
+                        <div class="label">سطر في index.html</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">354 KB</div>
+                        <div class="label">حجم index.html</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">965</div>
+                        <div class="label">سطر في sitemap.xml</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">143</div>
+                        <div class="label">سطر في Service Worker</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">72</div>
+                        <div class="label">قاعدة في .gitignore</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔴 مشاكل حرجة (CRITICAL)</h2>
+                <table>
+                    <tr>
+                        <th>المشكلة</th>
+                        <th>الموقع</th>
+                        <th>الأثر</th>
+                        <th>الحل</th>
+                    </tr>
+                    <tr>
+                        <td><span class="badge critical">CRITICAL</span> حجم index.html ضخم (354KB)</td>
+                        <td>index.html</td>
+                        <td>LCP بطيء، استهلاك بيانات موبايل عالي</td>
+                        <td>تقسيم الملف، استخراج CSS/JS إلى ملفات خارجية، lazy load للأقسام</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge critical">CRITICAL</span> أكواد Google Verification فارغة</td>
+                        <td>index.html سطر 36-37</td>
+                        <td>Google Search Console غير مفعّل = صفر بيانات زحف</td>
+                        <td>استبدال REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE بالكود الحقيقي من GSC</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge critical">CRITICAL</span> تضارب foundingDate</td>
+                        <td>index.html (2018) vs about/ (2024) vs schema-saudi-seo.json (2023)</td>
+                        <td>إشارات متضاربة لـ Google عن الشركة = فقدان ثقة Schema</td>
+                        <td>توحيد التاريخ إلى 2023 في جميع الملفات</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge critical">CRITICAL</span> شعار الموقع على خادم خارجي (0zz0.com)</td>
+                        <td>schema-saudi-seo.json + 42 ملف HTML</td>
+                        <td>مخاطر أمنية + بطء تحميل + فقدان الصورة عند توقف الخادم</td>
+                        <td>استضافة الشعار محلياً في /assets/images/ واستبدال جميع الروابط</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>🟠 مشاكل عالية (HIGH)</h2>
+                <table>
+                    <tr>
+                        <th>المشكلة</th>
+                        <th>الموقع</th>
+                        <th>الأثر</th>
+                        <th>الحل</th>
+                    </tr>
+                    <tr>
+                        <td><span class="badge high">HIGH</span> ملف _headers فارغ (أرشيفي)</td>
+                        <td>_headers</td>
+                        <td>لا أثر حالياً لكن مربك للمطورين</td>
+                        <td>حذف الملف أو نقله إلى docs/archive/</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge high">HIGH</span> ملف .env 2.example بمسافة في الاسم</td>
+                        <td>جذر المشروع</td>
+                        <td>مشاكل محتملة في CI/CD وسكربتات</td>
+                        <td>إعادة تسمية إلى .env.example.backup أو حذفه</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge high">HIGH</span> ملف CNAME يشير لدومين آخر</td>
+                        <td>CNAME</td>
+                        <td>تعارض مع Netlify (يستخدم لـ GitHub Pages)</td>
+                        <td>حذف الملف أو التأكد من عدم التعارض</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge high">HIGH</span> 500.html حجمه 41KB</td>
+                        <td>500.html</td>
+                        <td>ملف خطأ خادم ضخم جداً</td>
+                        <td>تبسيط الصفحة لتكون أقل من 10KB</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge high">HIGH</span> سكربتات متزامنة (api-gateway.js, api-preflight.js)</td>
+                        <td>index.html سطر 5785-5786</td>
+                        <td>حجب العرض (Render Blocking)</td>
+                        <td>إضافة defer أو async لهذه السكربتات</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>🟡 مشاكل متوسطة (MEDIUM)</h2>
+                <ul>
+                    <li><span class="badge medium">MEDIUM</span> <strong>README 2.md</strong> — ملف مكرر بمسافة في
+                        الاسم. الحل: حذفه أو دمجه مع README.md</li>
+                    <li><span class="badge medium">MEDIUM</span> <strong>manifest.json start_url</strong> يشير إلى
+                        /index.html?utm_source=pwa بينما يوجد redirect 301 من /index.html إلى / — تعارض محتمل في PWA
+                    </li>
+                    <li><span class="badge medium">MEDIUM</span> <strong>manifest.json id</strong> = "/index.html" ينبغي
+                        أن يكون "/" ليطابق canonical</li>
+                    <li><span class="badge medium">MEDIUM</span> <strong>.htaccess</strong> موجود لكن المشروع على
+                        Netlify ولا Apache — ملف غير مستخدم</li>
+                    <li><span class="badge medium">MEDIUM</span> <strong>seo-audit-report.json</strong> في جذر المشروع —
+                        يجب نقله إلى /reports/ أو /docs/</li>
+                    <li><span class="badge medium">MEDIUM</span> <strong>ScheherazadeNew-Regular.ttf</strong> موجود في
+                        backend/ — ملف خط في مجلد الخادم</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>✅ النقاط الإيجابية</h2>
+                <ul>
+                    <li><span class="badge pass">PASS</span> Netlify toml مُنظّم باحتراف: canonical redirects + clean
+                        URLs + security headers + caching</li>
+                    <li><span class="badge pass">PASS</span> HSTS مفعّل مع preload و includeSubDomains</li>
+                    <li><span class="badge pass">PASS</span> Content-Security-Policy شامل ومتين</li>
+                    <li><span class="badge pass">PASS</span> Service Worker متقدم مع استراتيجيات caching متعددة</li>
+                    <li><span class="badge pass">PASS</span> .gitignore شامل ويغطي ملفات البيئة والـ IDE والـ Node</li>
+                    <li><span class="badge pass">PASS</span> robots.txt صحيح مع Disallow مناسب</li>
+                    <li><span class="badge pass">PASS</span> Monorepo مُنظّم بـ workspaces (frontend/backend/platform)
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ======= القسم 2: SEO تقني ومحتوى ======= -->
+        <div class="section" id="sec2">
+            <div class="card">
+                <h2>📊 نتيجة SEO التقني</h2>
+                <div class="score-row"><span class="lbl">Meta Tags</span>
+                    <div class="progress-bar" style="flex:1">
+                        <div class="fill" style="width:75%;background:var(--orange)"></div>
+                    </div><span style="color:var(--orange);font-weight:700">75%</span>
+                </div>
+                <div class="score-row"><span class="lbl">Schema Markup</span>
+                    <div class="progress-bar" style="flex:1">
+                        <div class="fill" style="width:90%;background:var(--green)"></div>
+                    </div><span style="color:var(--green);font-weight:700">90%</span>
+                </div>
+                <div class="score-row"><span class="lbl">Sitemap</span>
+                    <div class="progress-bar" style="flex:1">
+                        <div class="fill" style="width:85%;background:var(--green)"></div>
+                    </div><span style="color:var(--green);font-weight:700">85%</span>
+                </div>
+                <div class="score-row"><span class="lbl">Content Quality</span>
+                    <div class="progress-bar" style="flex:1">
+                        <div class="fill" style="width:70%;background:var(--orange)"></div>
+                    </div><span style="color:var(--orange);font-weight:700">70%</span>
+                </div>
+                <div class="score-row"><span class="lbl">Internal Linking</span>
+                    <div class="progress-bar" style="flex:1">
+                        <div class="fill" style="width:60%;background:var(--red)"></div>
+                    </div><span style="color:var(--red);font-weight:700">60%</span>
+                </div>
+                <div class="score-row"><span class="lbl">Core Web Vitals</span>
+                    <div class="progress-bar" style="flex:1">
+                        <div class="fill" style="width:55%;background:var(--red)"></div>
+                    </div><span style="color:var(--red);font-weight:700">55%</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔴 مشاكل SEO حرجة</h2>
+                <table>
+                    <tr>
+                        <th>المشكلة</th>
+                        <th>الخطورة</th>
+                        <th>التأثير على الترتيب</th>
+                        <th>الإصلاح</th>
+                    </tr>
+                    <tr>
+                        <td>GSC Verification مفقود</td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td>لا يوجد بيانات زحف ولا تحكم في الفهرسة</td>
+                        <td>إضافة كود التحقق الحقيقي من Google Search Console</td>
+                    </tr>
+                    <tr>
+                        <td>صفحات محذوفة في Sitemap (analysy, atou-job, auto, digital, gov, cloude-opus-4.6)</td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td>إضاعة ميزانية الزحف + 404 errors</td>
+                        <td>حذفها من sitemap.xml فوراً — هي مُحوّلة بـ 301 إلى /blog</td>
+                    </tr>
+                    <tr>
+                        <td>روابط sitemap بترميز عربي URL-encoded</td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td>روابط مشفرة صعبة القراءة وقد تسبب مشاكل تكرار</td>
+                        <td>تحويل جميع المقالات العربية إلى slugs إنجليزية أو Latin</td>
+                    </tr>
+                    <tr>
+                        <td>كل المقالات بنفس priority 0.7</td>
+                        <td><span class="badge medium">MEDIUM</span></td>
+                        <td>Google يتجاهل Priority لكنها إشارة تنظيمية</td>
+                        <td>تمييز المقالات الرئيسية بـ 0.8 والفرعية بـ 0.5</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>📋 تدقيق Schema Markup</h2>
+                <h3>✅ Schemas موجودة في index.html (ممتاز)</h3>
+                <ul>
+                    <li>Organization — شامل مع contactPoint, sameAs, hasOfferCatalog</li>
+                    <li>WebSite — مع SearchAction</li>
+                    <li>Service — مع areaServed سعودي</li>
+                    <li>FAQPage — 13 سؤال شامل</li>
+                    <li>BreadcrumbList — الصفحة الرئيسية</li>
+                    <li>ProfessionalService (LocalBusiness) — مع AggregateRating و Reviews</li>
+                    <li>SoftwareApplication — منصة Bright AI</li>
+                    <li>HowTo — خطوات البدء</li>
+                    <li>ItemList — قائمة الخدمات (8 عناصر)</li>
+                    <li>AIaaS Offers — خطط الأسعار</li>
+                </ul>
+                <h3>🔴 مشاكل في Schema</h3>
+                <ul>
+                    <li><span class="badge critical">CRITICAL</span> تضارب foundingDate: index.html = "2018" / about/ =
+                        "2024-05-16" / schema-saudi-seo.json = "2023"</li>
+                    <li><span class="badge high">HIGH</span> تضارب في بريد التواصل: index.html = info@brightai.site /
+                        schema-saudi-seo.json = info@brightaii.com</li>
+                    <li><span class="badge high">HIGH</span> تضارب sameAs: index.html يذكر LinkedIn, X, YouTube /
+                        schema-saudi-seo.json يذكر TikTok, Instagram, YouTube بحسابات مختلفة</li>
+                    <li><span class="badge medium">MEDIUM</span> تضارب عنوان بريدي: postalCode مختلف (12345 vs 12211 vs
+                        11564)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>🔑 الكلمات المفتاحية السعودية — تحليل الفجوة</h2>
+                <table>
+                    <tr>
+                        <th>الكلمة المفتاحية</th>
+                        <th>النية البحثية</th>
+                        <th>الصفحة المستهدفة</th>
+                        <th>الحالة</th>
+                    </tr>
+                    <tr>
+                        <td>شركة ذكاء اصطناعي الرياض</td>
+                        <td>تجارية مباشرة</td>
+                        <td>/</td>
+                        <td><span class="badge pass">مُستهدفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>أتمتة العمليات بالذكاء الاصطناعي</td>
+                        <td>تجارية</td>
+                        <td>/smart-automation</td>
+                        <td><span class="badge pass">مُستهدفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>حلول ذكاء اصطناعي للشركات السعودية</td>
+                        <td>تجارية</td>
+                        <td>/services</td>
+                        <td><span class="badge pass">مُستهدفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>تكلفة الذكاء الاصطناعي للشركات</td>
+                        <td>تجارية قرار شراء</td>
+                        <td>/demo/pricing</td>
+                        <td><span class="badge medium">ضعيفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>شات بوت عربي للشركات</td>
+                        <td>تجارية</td>
+                        <td>/ai-bots</td>
+                        <td><span class="badge pass">مُستهدفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>نظام أرشيف طبي ذكي</td>
+                        <td>تجارية متخصصة</td>
+                        <td>/smart-medical-archive</td>
+                        <td><span class="badge pass">مُستهدفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>استشارات تحول رقمي السعودية</td>
+                        <td>تجارية</td>
+                        <td>/consultation</td>
+                        <td><span class="badge medium">تحتاج تحسين</span></td>
+                    </tr>
+                    <tr>
+                        <td>تحليل بيانات ضخمة Power BI</td>
+                        <td>معلوماتية/تجارية</td>
+                        <td>/data-analysis</td>
+                        <td><span class="badge pass">مُستهدفة</span></td>
+                    </tr>
+                    <tr>
+                        <td>RPA أتمتة روبوتية السعودية</td>
+                        <td>تجارية</td>
+                        <td>❌ لا صفحة مستقلة</td>
+                        <td><span class="badge critical">مفقودة</span></td>
+                    </tr>
+                    <tr>
+                        <td>الامتثال NCA للشركات</td>
+                        <td>تجارية/تنظيمية</td>
+                        <td>❌ فقط مدونة</td>
+                        <td><span class="badge high">تحتاج صفحة خدمة</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ======= القسم 3: تجربة المستخدم UX/CRO ======= -->
+        <div class="section" id="sec3">
+            <div class="card">
+                <h2>📊 تجربة المستخدم السعودي — UX & CRO</h2>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="num" style="font-size:1.4rem">354 KB</div>
+                        <div class="label">حجم HTML الخام ⚠️</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num" style="font-size:1.4rem">5,804</div>
+                        <div class="label">سطر في الصفحة الرئيسية</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num" style="font-size:1.4rem">8+</div>
+                        <div class="label">سكربتات JS محمّلة</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num" style="font-size:1.4rem">RTL ✅</div>
+                        <div class="label">اتجاه الصفحة</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔴 مشاكل UX حرجة</h2>
+                <table>
+                    <tr>
+                        <th>المشكلة</th>
+                        <th>الخطورة</th>
+                        <th>أثر التحويل</th>
+                        <th>الإصلاح</th>
+                    </tr>
+                    <tr>
+                        <td>حجم الصفحة 354KB HTML = بطء أول تحميل خاصة على 3G/4G سعودي</td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td>فقدان 40-60% من الزوار خلال 3 ثوان</td>
+                        <td>تقسيم إلى أقسام lazy-load، استخراج inline CSS (800+ سطر) إلى ملف خارجي</td>
+                    </tr>
+                    <tr>
+                        <td>API Gateway + Preflight بدون defer = حجب العرض</td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td>تأخير FCP بـ 200-500ms</td>
+                        <td>إضافة defer لـ api-gateway.js و api-preflight.js</td>
+                    </tr>
+                    <tr>
+                        <td>transition-property: transform, opacity !important على كل العناصر (*)</td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td>قد يمنع بعض animations المخصصة وأنماط hover</td>
+                        <td>إزالة !important من القاعدة العامة واستخدام opt-in</td>
+                    </tr>
+                    <tr>
+                        <td>chat widget يظهر فوراً بدون تأخير</td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td>تشتيت المستخدم قبل رؤية المحتوى الرئيسي</td>
+                        <td>تأخير ظهور Chat بـ 30 ثانية أو بعد scroll 50%</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>🇸🇦 تحليل تجربة المستخدم السعودي</h2>
+                <h3>✅ نقاط قوة</h3>
+                <ul>
+                    <li>RTL كامل مع lang="ar" وdir="rtl" — ممتاز</li>
+                    <li>خط Scheherazade New + Tajawal — اختيار احترافي</li>
+                    <li>محتوى عربي أصلي وليس ترجمة — ميزة تنافسية ممتازة</li>
+                    <li>CTA واتساب مباشر (966538229013) — يتوافق مع سلوك السعوديين</li>
+                    <li>إشارات ثقة: NCA, NDMO, PDPL, رؤية 2030</li>
+                    <li>FAQ شامل بـ 13 سؤال يغطي المخاوف السعودية (أمان البيانات، الاستضافة المحلية)</li>
+                    <li>PWA مع shortcuts عربية ودعم offline</li>
+                </ul>
+                <h3>🔴 نقاط ضعف</h3>
+                <ul>
+                    <li><span class="badge high">HIGH</span> صفحة 404 تستخدم لهجة عامية ("يا طويل العمر") — عدم تناسب مع
+                        الطابع المؤسسي B2B</li>
+                    <li><span class="badge high">HIGH</span> لا يوجد أرقام واتساب مرئية في الـ header أو الـ hero</li>
+                    <li><span class="badge medium">MEDIUM</span> سعر "من 500 ريال/شهر" قد يكون منخفضاً جداً للعملاء
+                        المؤسسيين = ضعف ثقة Enterprise</li>
+                    <li><span class="badge medium">MEDIUM</span> لا يوجد شهادات عملاء مرئية في Above the Fold</li>
+                    <li><span class="badge medium">MEDIUM</span> Cookies Notice يظهر من الأسفل بدون خيار "رفض" — غير
+                        متوافق مع PDPL</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>📈 تحسينات CRO المقترحة</h2>
+                <table>
+                    <tr>
+                        <th>التحسين</th>
+                        <th>الأولوية</th>
+                        <th>التأثير المتوقع</th>
+                    </tr>
+                    <tr>
+                        <td>إضافة Social Proof (شعارات عملاء) فوق الـ fold</td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td>+15-25% معدل تحويل</td>
+                    </tr>
+                    <tr>
+                        <td>إضافة زر واتساب ثابت (Sticky) على الموبايل</td>
+                        <td><span class="badge critical">CRITICAL</span></td>
+                        <td>+30% تواصل مباشر</td>
+                    </tr>
+                    <tr>
+                        <td>تحسين CTA الرئيسي: "احجز استشارة مجانية — خلال 24 ساعة"</td>
+                        <td><span class="badge high">HIGH</span></td>
+                        <td>+10-20% نقرات CTA</td>
+                    </tr>
+                    <tr>
+                        <td>إضافة Exit Intent Popup مع عرض خاص</td>
+                        <td><span class="badge medium">MEDIUM</span></td>
+                        <td>+5-10% استرداد زوار</td>
+                    </tr>
+                    <tr>
+                        <td>A/B Test لنص CTA الرئيسي</td>
+                        <td><span class="badge medium">MEDIUM</span></td>
+                        <td>بيانات قرار مبنية على أرقام</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- ======= القسم 4: الروابط والأخطاء ======= -->
+        <div class="section" id="sec4">
+            <div class="card">
+                <h2>🔗 تحليل الروابط والأخطاء</h2>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="num">~160</div>
+                        <div class="label">رابط في Sitemap</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">55+</div>
+                        <div class="label">تحويلة 301 في netlify.toml</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">17+</div>
+                        <div class="label">صفحة محذوفة مُحوّلة</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">6+</div>
+                        <div class="label">redirect إلى /blog (Dead Pages)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔴 صفحات في Sitemap مُحوّلة بـ 301 (تضيع ميزانية الزحف)</h2>
+                <table>
+                    <tr>
+                        <th>الرابط في Sitemap</th>
+                        <th>يُحوّل إلى</th>
+                        <th>الإجراء</th>
+                    </tr>
+                    <tr>
+                        <td>/blog/analysy</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/atou-job</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/atou.doc</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/auto</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/digital</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/gov</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/cloude-opus-4.6</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                    <tr>
+                        <td>/blog/agint-bblog</td>
+                        <td>301 → /blog</td>
+                        <td><span class="badge critical">إزالة من Sitemap</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>⚠️ مخاطر الروابط الخارجية</h2>
+                <table>
+                    <tr>
+                        <th>الرابط الخارجي</th>
+                        <th>المخاطرة</th>
+                        <th>الحل</th>
+                    </tr>
+                    <tr>
+                        <td>https://www2.0zz0.com/... (شعار الشركة)</td>
+                        <td><span class="badge critical">CRITICAL</span> — خادم صور مجاني غير موثوق</td>
+                        <td>استضافة الشعار محلياً في /assets/images/logo-brightai.png</td>
+                    </tr>
+                    <tr>
+                        <td>https://extraordinary-axolotl-d35933.netlify.app (Backend API)</td>
+                        <td><span class="badge high">HIGH</span> — اسم عشوائي غير احترافي</td>
+                        <td>ربط Custom Domain للـ Backend مثل api.brightai.site</td>
+                    </tr>
+                    <tr>
+                        <td>https://www.googletagmanager.com/gtag/js</td>
+                        <td><span class="badge low">LOW</span> — طبيعي</td>
+                        <td>لا يحتاج تغيير</td>
+                    </tr>
+                    <tr>
+                        <td>https://fonts.googleapis.com</td>
+                        <td><span class="badge low">LOW</span> — مُحمّل بشكل مؤجل</td>
+                        <td>لا يحتاج تغيير</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>🔄 سلاسل التحويل (Redirect Chains)</h2>
+                <ul>
+                    <li><span class="badge high">HIGH</span> /index.html → 301 → / (هذا صحيح لكن manifest.json start_url
+                        يشير لـ /index.html = تحويل عند كل فتح PWA)</li>
+                    <li><span class="badge medium">MEDIUM</span>
+                        /frontend/pages/blogger/Generative%20artificial%20intelligence.html → 301 →
+                        Generative-artificial-intelligence.html (صحيح)</li>
+                    <li><span class="badge medium">MEDIUM</span> روابط عربية مُشفّرة بأكثر من تحويلة (6 حالات)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>✅ نقاط قوة بنية الروابط</h2>
+                <ul>
+                    <li><span class="badge pass">PASS</span> Clean URLs عبر Netlify rewrites (200) لجميع الصفحات
+                        الرئيسية</li>
+                    <li><span class="badge pass">PASS</span> تحويلات Canonical domain صحيحة (www → non-www, http →
+                        https)</li>
+                    <li><span class="badge pass">PASS</span> brightaii.com → brightai.site تحويل 301 مع www variants
+                    </li>
+                    <li><span class="badge pass">PASS</span> Legacy pages مُحوّلة بشكل صحيح (frontend/pages/ → clean
+                        URLs)</li>
+                    <li><span class="badge pass">PASS</span> صفحة 404 مُخصصة مع روابط مفيدة</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ======= القسم 5: Codex Prompts ======= -->
+        <div class="section" id="sec5">
+            <div class="card">
+                <h2>🚀 أوامر التنفيذ — Codex Prompts</h2>
+                <p style="color:var(--muted);font-size:.85rem;margin-bottom:1rem">انسخ كل Prompt وأرسله إلى Codex/Agent
+                    لتنفيذه مباشرة. كل أمر مستقل وقابل للتنفيذ فوراً.</p>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>1️⃣ إصلاح GSC + Bing Verification</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Fix Google Search Console and Bing Webmaster verification codes in
+                    index.html
+
+                    LOCATION: /index.html lines 36-37
+
+                    CURRENT (BROKEN):
+                    &lt;meta name="google-site-verification" content="REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE" /&gt;
+                    &lt;meta name="msvalidate.01" content="REPLACE_WITH_YOUR_BING_CODE" /&gt;
+
+                    ACTION:
+                    1. User must provide actual GSC code from https://search.google.com/search-console
+                    2. User must provide Bing code from https://www.bing.com/webmasters
+                    3. Replace the placeholder values with actual verification codes
+                    4. If codes not available yet, add a comment: &lt;!-- ACTION REQUIRED: Add real verification codes
+                    --&gt;
+
+                    IMPACT: Without GSC verification, zero crawl data, zero index control. This is the #1 SEO blocker.
+                </div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>2️⃣ توحيد foundingDate في جميع الملفات</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Unify foundingDate across all Schema files to "2023"
+
+                    FILES TO EDIT:
+                    1. /index.html — line 98: change "foundingDate": "2018" → "foundingDate": "2023"
+                    2. /about/index.html — line 71: change "foundingDate": "2024-05-16" → "foundingDate": "2023"
+                    3. /schema-saudi-seo.json — verify foundingDate is "2023" (currently correct)
+
+                    Also unify email:
+                    1. /index.html line 329: email is "info@brightai.site" — KEEP THIS (matches domain)
+                    2. /schema-saudi-seo.json line 80: email is "info@brightaii.com" → change to "info@brightai.site"
+
+                    Also unify postalCode to "12211" in all files (index.html, about/, schema-saudi-seo.json)
+
+                    Also unify sameAs arrays to include ALL profiles consistently across all Schema blocks.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>3️⃣ استبدال شعار 0zz0.com بشعار محلي</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Replace all external 0zz0.com logo references with local
+                    /assets/images/Gemini.png
+
+                    SEARCH across entire project for: https://www2.0zz0.com/2025/06/23/22/317775783.png
+                    REPLACE with: https://brightai.site/assets/images/Gemini.png
+
+                    FILES affected (42+ HTML files):
+                    - schema-saudi-seo.json (lines 17, 169, 213)
+                    - All blogger HTML files in /frontend/pages/blogger/
+                    - All ai-bots subpages
+                    - health/index.html
+                    - interview/ pages
+
+                    Run: grep -rl "0zz0.com" --include="*.html" --include="*.json" . | head -50
+                    Then: sed -i ''
+                    's|https://www2.0zz0.com/2025/06/23/22/317775783.png|https://brightai.site/assets/images/Gemini.png|g'
+                    $(grep -rl "0zz0.com" --include="*.html" --include="*.json" .)
+
+                    IMPACT: Eliminates external dependency, improves load speed, prevents broken images.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>4️⃣ إضافة defer للسكربتات المتزامنة</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Add defer attribute to render-blocking scripts in index.html
+
+                    LOCATION: /index.html lines 5785-5786
+
+                    CURRENT:
+                    &lt;script src="/frontend/js/api-gateway.js"&gt;&lt;/script&gt;
+                    &lt;script src="/frontend/js/api-preflight.js"&gt;&lt;/script&gt;
+
+                    CHANGE TO:
+                    &lt;script defer src="/frontend/js/api-gateway.js"&gt;&lt;/script&gt;
+                    &lt;script defer src="/frontend/js/api-preflight.js"&gt;&lt;/script&gt;
+
+                    VERIFY: Ensure api-gateway.js doesn't use document.write() or need synchronous execution.
+                    TEST: Load page and verify API calls still work correctly.
+
+                    IMPACT: Eliminates 200-500ms FCP delay from render-blocking JS.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>5️⃣ تنظيف Sitemap من الصفحات الميتة</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Remove dead/redirected pages from sitemap.xml
+
+                    LOCATION: /sitemap.xml
+
+                    REMOVE these URL blocks (they all 301-redirect to /blog):
+                    1. https://brightai.site/blog/analysy (lines ~137-141)
+                    2. https://brightai.site/blog/atou-job (lines ~143-147)
+                    3. https://brightai.site/blog/atou.doc (lines ~149-153)
+                    4. https://brightai.site/blog/auto (lines ~155-159)
+                    5. https://brightai.site/blog/digital (lines ~221-225)
+                    6. https://brightai.site/blog/gov (lines ~251-255)
+                    7. https://brightai.site/blog/cloude-opus-4.6 (lines ~197-201)
+                    8. https://brightai.site/blog/agint-bblog (lines ~77-81)
+
+                    VERIFY: Run `npm run sitemap:all` if available to regenerate
+                    Count URLs before and after to confirm removals.
+
+                    IMPACT: Saves crawl budget, eliminates 301 loops in sitemap, cleaner index.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>6️⃣ إصلاح manifest.json</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Fix PWA manifest.json issues
+
+                    LOCATION: /manifest.json
+
+                    CHANGES:
+                    1. Line 5: "start_url": "/index.html?utm_source=pwa" → "start_url": "/?utm_source=pwa"
+                    REASON: /index.html 301-redirects to / causing unnecessary redirect on every PWA launch
+
+                    2. Line 6: "id": "/index.html" → "id": "/"
+                    REASON: Must match canonical URL
+
+                    3. Verify icons exist: /assets/images/Gemini.png — confirm file exists and dimensions.
+                    Consider adding dedicated icon sizes (192x192, 512x512) instead of reusing same image.
+
+                    TEST: Open Chrome DevTools → Application → Manifest to verify no errors.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>7️⃣ تنظيف الملفات غير المستخدمة</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Clean up unused/duplicate files from project root
+
+                    FILES TO HANDLE:
+                    1. DELETE: ".env 2.example" (duplicate with space in name)
+                    → Keep .env.example only
+
+                    2. DELETE or MOVE: _headers (archived, not used by Netlify)
+                    → Move to /docs/archive/_headers.legacy
+
+                    3. DELETE or MOVE: .htaccess (not used on Netlify)
+                    → Move to /docs/archive/.htaccess.legacy
+
+                    4. DELETE: "README 2.md" (duplicate with space)
+                    → Keep README.md only
+
+                    5. MOVE: seo-audit-report.json → /reports/seo-audit-report.json
+
+                    6. MOVE: schema-saudi-seo.json → /frontend/data/schema-saudi-seo.json
+                    (if not directly served at root)
+
+                    7. MOVE: backend/ScheherazadeNew-Regular.ttf → /assets/fonts/
+                    (font file shouldn't be in backend/)
+
+                    8. REVIEW: CNAME file — if using Netlify (not GitHub Pages), delete it.
+
+                    VERIFY: Run `git status` after changes to ensure nothing breaks.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>8️⃣ تحسين صفحة 404 للطابع المؤسسي</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Make 404.html professional for B2B Saudi audience
+
+                    LOCATION: /404.html line 24
+
+                    CURRENT (too casual for enterprise):
+                    "يا طويل العمر، الرابط هذا إما تغيّر أو انحذف..."
+
+                    REPLACE WITH:
+                    "عذراً، الصفحة المطلوبة غير متاحة حالياً. ربما تم نقلها أو تحديث الرابط. استخدم الروابط أدناه للوصول
+                    السريع."
+
+                    ALSO ADD:
+                    - Search box linking to site search
+                    - Contact CTA: "هل تحتاج مساعدة؟ تواصل معنا عبر واتساب"
+                    - Google Analytics event tracking for 404 hits
+
+                    IMPACT: Better B2B perception, capture lost visitors.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>9️⃣ إضافة PDPL Compliance لإشعار الكوكيز</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Make cookies notice PDPL-compliant (Saudi Arabia Personal Data Protection
+                    Law)
+
+                    LOCATION: /index.html lines 5767-5783 (cookies div)
+
+                    CURRENT ISSUE: No "reject" button — PDPL requires explicit consent option
+
+                    CHANGES:
+                    1. Add "رفض" button next to "موافق":
+                    &lt;button id="cookieReject" class="px-5 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-300
+                    text-xs font-bold rounded-xl"&gt;رفض&lt;/button&gt;
+
+                    2. Add link to privacy policy:
+                    &lt;a href="/privacy-cookies" class="text-xs text-cyan-400 underline"&gt;سياسة الخصوصية&lt;/a&gt;
+
+                    3. In JS: when "رفض" clicked, disable GA tracking:
+                    window['ga-disable-G-8LLESL207Q'] = true;
+                    localStorage.setItem('cookies_consent', 'rejected');
+
+                    4. On page load: check localStorage before loading GA.
+
+                    IMPACT: PDPL compliance required by law. Non-compliance = legal risk.</div>
+            </div>
+
+            <div class="prompt-block">
+                <div class="prompt-header"><span>🔟 تحسين الأداء — تقسيم index.html</span><button class="copy-btn"
+                        onclick="copyPrompt(this)">📋 نسخ</button></div>
+                <div class="prompt-body">TASK: Performance optimization — split 354KB index.html
+
+                    STRATEGY:
+                    1. EXTRACT inline CSS (lines 587-800+) to /frontend/css/critical-inline.css
+                    - Keep only &lt;link rel="stylesheet"&gt; in head
+                    - Reduces HTML size by ~50KB
+
+                    2. LAZY LOAD sections below fold using IntersectionObserver:
+                    - FAQ section
+                    - Blog section
+                    - Partners section
+                    - Footer mega-links
+
+                    3. DEFER non-critical Schema from &lt;head&gt; to end of &lt;body&gt;:
+                    - HowTo schema
+                    - ItemList schema
+                    - SoftwareApplication schema
+                    Only Organization + WebSite + FAQPage need to be in &lt;head&gt;
+
+                    4. COMPRESS images: Verify all images in /assets/ are WebP format
+                    Convert any remaining PNG/JPG to WebP
+
+                    TARGET: Reduce initial HTML payload from 354KB to under 150KB
+                    METRIC: LCP should improve from est. 3.5s to under 2.5s on 4G</div>
+            </div>
+
+        </div><!-- end sec5 -->
+    </div><!-- end container -->
+
+    <script>
+        function showSection(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function copyPrompt(btn) {
+            const body = btn.closest('.prompt-block').querySelector('.prompt-body');
+            const text = body.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = '✅ تم النسخ!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = '📋 نسخ'; btn.classList.remove('copied') }, 2000);
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
+                btn.textContent = '✅ تم النسخ!'; btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = '📋 نسخ'; btn.classList.remove('copied') }, 2000);
+            });
+        }
+    </script>
+
+</body>
+
+</html>
