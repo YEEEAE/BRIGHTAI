@@ -110,6 +110,12 @@ to = "/services/index.html"
 status = 200
 
 [[redirects]]
+from = "/services/:slug"
+to = "/services"
+status = 301
+force = true
+
+[[redirects]]
 from = "/contact"
 to = "/contact/index.html"
 status = 200
@@ -173,6 +179,18 @@ status = 200
 from = "/machine-learning"
 to = "/machine-learning/index.html"
 status = 200
+
+[[redirects]]
+from = "/تعلم-الآلة-و-الأعمال"
+to = "/machine-learning"
+status = 301
+force = true
+
+[[redirects]]
+from = "/تحليل-البيانات"
+to = "/data-analysis"
+status = 301
+force = true
 
 [[redirects]]
 from = "/docs"
@@ -297,6 +315,18 @@ status = 200
 # -------------------------------------------------
 # Legacy moved pages → clean URLs
 # -------------------------------------------------
+[[redirects]]
+from = "/our-products"
+to = "/services"
+status = 301
+force = true
+
+[[redirects]]
+from = "/our-products/"
+to = "/services"
+status = 301
+force = true
+
 [[redirects]]
 from = "/frontend/pages/about-us/index.html"
 to = "/about"
