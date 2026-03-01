@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import * as Sentry from "@sentry/browser";
 import { HashRouter as Router } from "react-router-dom";
 import "./index.css";
 import "./i18n";
@@ -8,7 +9,12 @@ import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./hooks/useAuth";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { logSecurityEvent } from "./lib/security";
-import { initAnalytics, initSentry, setupGlobalMonitoring, trackPageLoad } from "./lib/analytics";
+import { initAnalytics, setupGlobalMonitoring, trackPageLoad } from "./lib/analytics";
+
+Sentry.init({
+  dsn: "https://6fb19ef8d5c41c0fa0adb86852054394@o4510966719840256.ingest.us.sentry.io/4510966859366400",
+  sendDefaultPii: true,
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,7 +43,6 @@ if (process.env.NODE_ENV === "production") {
 
 const initTracking = () => {
   initAnalytics();
-  void initSentry();
   setupGlobalMonitoring();
 };
 

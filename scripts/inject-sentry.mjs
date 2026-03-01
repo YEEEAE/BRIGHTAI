@@ -14,7 +14,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 // سكريبتات Sentry المراد حقنها
 const SENTRY_SNIPPET = `
 <!-- Sentry Error Tracking -->
-<script src="https://browser.sentry-cdn.com/8.48.0/bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js" crossorigin="anonymous"></script>
 <script src="/frontend/js/sentry-init.js" defer></script>
 `;
 
