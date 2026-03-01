@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrightAI — خطة الروابط الداخلية والخارجية</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Fira+Code:wght@400;500&display=swap');
+
+:root {
+  --bg: #060810;
+  --bg2: #0a0d1a;
+  --bg3: #0e1220;
+  --panel: #111728;
+  --border: rgba(99,130,255,0.14);
+  --border2: rgba(99,130,255,0.28);
+  --a1: #5b7fff;
+  --a2: #00f5c8;
+  --a3: #ff6b35;
+  --a4: #c77dff;
+  --red: #ff4468;
+  --green: #00d97e;
+  --yellow: #ffd166;
+  --text: #dde4f5;
+  --muted: #6b7a9e;
+  --mono: 'Fira Code', monospace;
+  --sans: 'Cairo', sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+
+/* bg pattern */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image: radial-gradient(ellipse 80% 40% at 20% 10%, rgba(91,127,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(199,125,255,0.05) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ===== NAV ===== */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:60px;
+  background:rgba(6,8,16,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 2rem;gap:1.5rem;
+}
+.nav-brand{
+  font-weight:900;font-size:1.05rem;
+  background:linear-gradient(90deg,var(--a1),var(--a2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  white-space:nowrap;
+}
+.nav-tabs{display:flex;gap:4px;margin-right:auto;}
+.nav-tab{
+  padding:6px 16px;border-radius:8px;font-size:0.78rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s;border:1px solid transparent;
+  color:var(--muted);background:transparent;font-family:var(--sans);
+}
+.nav-tab.active,.nav-tab:hover{color:var(--text);background:var(--panel);border-color:var(--border2);}
+.nav-tab.active{color:var(--a2);border-color:rgba(0,245,200,0.3);}
+
+/* ===== MAIN LAYOUT ===== */
+.wrap{max-width:1140px;margin:0 auto;padding:5rem 2rem 6rem;position:relative;z-index:1;}
+
+/* ===== HERO ===== */
+.hero{text-align:center;padding:3rem 0 2.5rem;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(91,127,255,0.1);border:1px solid rgba(91,127,255,0.25);
+  color:var(--a1);font-size:0.72rem;font-weight:700;
+  padding:5px 16px;border-radius:100px;letter-spacing:0.08em;text-transform:uppercase;
+  margin-bottom:1.2rem;
+}
+.hero-title{
+  font-size:clamp(1.9rem,4.5vw,3rem);font-weight:900;letter-spacing:-0.03em;
+  line-height:1.18;margin-bottom:1rem;
+}
+.hero-title span{
+  background:linear-gradient(135deg,var(--a2) 0%,var(--a1) 50%,var(--a4) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{color:var(--muted);font-size:0.95rem;max-width:540px;margin:0 auto 2.5rem;}
+
+/* site map quick stats */
+.site-stats{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:3rem;
+}
+.ss-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:100px;padding:7px 16px;font-size:0.78rem;
+}
+.ss-chip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.d-red{background:var(--red);}
+.d-green{background:var(--green);}
+.d-yellow{background:var(--yellow);}
+.d-blue{background:var(--a1);}
+.d-cyan{background:var(--a2);}
+
+/* ===== TABS CONTENT ===== */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ===== SECTION TITLES ===== */
+.sec{margin-bottom:3rem;}
+.sec-label{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:1.5rem;padding-bottom:1rem;
+  border-bottom:1px solid var(--border);
+}
+.sec-label h2{font-size:1.2rem;font-weight:800;letter-spacing:-0.02em;}
+.sec-num{
+  font-family:var(--mono);font-size:0.65rem;color:var(--a1);
+  background:rgba(91,127,255,0.1);border:1px solid rgba(91,127,255,0.2);
+  padding:3px 8px;border-radius:6px;
+}
+.sec-tag{
+  font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:100px;
+  letter-spacing:0.05em;text-transform:uppercase;margin-right:auto;
+}
+.tag-internal{background:rgba(0,245,200,0.1);color:var(--a2);border:1px solid rgba(0,245,200,0.25);}
+.tag-external{background:rgba(255,107,53,0.1);color:var(--a3);border:1px solid rgba(255,107,53,0.25);}
+
+/* ===== CLUSTER MAP ===== */
+.cluster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+.cluster-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  padding:1.2rem;transition:border-color 0.2s;
+}
+.cluster-card:hover{border-color:var(--border2);}
+.cluster-head{
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;
+}
+.cluster-icon{
+  width:36px;height:36px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;flex-shrink:0;border:1px solid var(--border);
+}
+.cluster-card h3{font-size:0.88rem;font-weight:700;line-height:1.4;}
+.cluster-card .hub{
+  font-family:var(--mono);font-size:0.7rem;color:var(--a1);
+  margin-bottom:8px;
+}
+.link-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.link-list li{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:0.78rem;color:var(--muted);line-height:1.5;
+}
+.link-list li::before{
+  content:'→';color:var(--a2);font-size:0.7rem;margin-top:2px;flex-shrink:0;
+}
+.link-list li strong{color:var(--text);}
+
+/* ===== PRIORITY TABLE ===== */
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:0.81rem;}
+th{
+  background:var(--bg3);padding:10px 14px;text-align:right;
+  font-size:0.7rem;font-weight:700;color:var(--muted);
+  letter-spacing:0.05em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(91,127,255,0.03);}
+.pri-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:0.65rem;font-weight:700;padding:2px 8px;
+  border-radius:100px;white-space:nowrap;
+}
+.p-h{background:rgba(255,68,104,0.12);color:var(--red);border:1px solid rgba(255,68,104,0.25);}
+.p-m{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.25);}
+.p-l{background:rgba(107,122,158,0.12);color:var(--muted);border:1px solid rgba(107,122,158,0.2);}
+code,.mono-t{
+  font-family:var(--mono);font-size:0.75em;
+  background:rgba(91,127,255,0.1);border:1px solid rgba(91,127,255,0.18);
+  padding:1px 5px;border-radius:4px;color:var(--a2);
+}
+
+/* ===== PROMPT CARD ===== */
+.prompt-wrap{margin-bottom:28px;}
+.prompt-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+}
+.prompt-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;
+  background:linear-gradient(90deg,rgba(91,127,255,0.08),transparent);
+  border-bottom:1px solid var(--border);
+  flex-wrap:wrap;gap:10px;
+}
+.prompt-title-row{display:flex;align-items:center;gap:10px;}
+.prompt-icon{font-size:1.3rem;}
+.prompt-title-text h3{font-size:1rem;font-weight:800;line-height:1.2;}
+.prompt-title-text p{font-size:0.72rem;color:var(--muted);margin-top:1px;}
+.copy-btn{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(0,245,200,0.1);color:var(--a2);
+  border:1px solid rgba(0,245,200,0.3);
+  padding:8px 20px;border-radius:10px;
+  font-size:0.78rem;font-weight:700;cursor:pointer;
+  transition:all 0.2s;font-family:var(--sans);white-space:nowrap;
+}
+.copy-btn:hover{background:rgba(0,245,200,0.2);transform:translateY(-1px);}
+.copy-btn.ok{background:rgba(0,217,126,0.15);color:var(--green);border-color:rgba(0,217,126,0.3);}
+
+/* prompt meta pills */
+.prompt-meta{
+  display:flex;flex-wrap:wrap;gap:8px;
+  padding:12px 20px;border-bottom:1px solid var(--border);
+  background:rgba(0,0,0,0.2);
+}
+.meta-pill{
+  font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:100px;
+  letter-spacing:0.04em;
+}
+.mp-blue{background:rgba(91,127,255,0.12);color:#8da8ff;border:1px solid rgba(91,127,255,0.2);}
+.mp-cyan{background:rgba(0,245,200,0.08);color:var(--a2);border:1px solid rgba(0,245,200,0.2);}
+.mp-purple{background:rgba(199,125,255,0.1);color:var(--a4);border:1px solid rgba(199,125,255,0.2);}
+.mp-orange{background:rgba(255,107,53,0.1);color:var(--a3);border:1px solid rgba(255,107,53,0.2);}
+.mp-green{background:rgba(0,217,126,0.1);color:var(--green);border:1px solid rgba(0,217,126,0.2);}
+
+/* prompt body */
+.prompt-body{
+  padding:20px;
+  font-family:var(--mono);font-size:0.77rem;
+  line-height:2;color:#c5d5f0;
+  white-space:pre-wrap;word-break:break-word;
+  max-height:500px;overflow-y:auto;
+  position:relative;
+}
+.prompt-body::-webkit-scrollbar{width:4px;}
+.prompt-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+
+/* prompt section headers inside body */
+.prompt-body .ph{color:var(--a2);font-weight:700;}
+.prompt-body .comment{color:var(--muted);}
+
+/* ===== ORPHAN GRID ===== */
+.orphan-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.orphan-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.orphan-card .o-page{font-family:var(--mono);font-size:0.72rem;color:var(--a1);}
+.orphan-card .o-fix{font-size:0.75rem;color:var(--muted);}
+.orphan-card .o-fix strong{color:var(--a2);}
+
+/* ===== NOTICE ===== */
+.notice{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:12px 16px;border-radius:10px;margin-bottom:16px;
+  font-size:0.82rem;
+}
+.n-blue{background:rgba(91,127,255,0.07);border:1px solid rgba(91,127,255,0.2);color:#99b3ff;}
+.n-orange{background:rgba(255,107,53,0.07);border:1px solid rgba(255,107,53,0.2);color:#ffaa7f;}
+.n-green{background:rgba(0,217,126,0.07);border:1px solid rgba(0,217,126,0.2);color:#66e0a8;}
+.n-red{background:rgba(255,68,104,0.07);border:1px solid rgba(255,68,104,0.2);color:#ff8fa3;}
+
+/* ===== BACKLINK TIERS ===== */
+.tier-stack{display:flex;flex-direction:column;gap:14px;}
+.tier-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;
+}
+.tier-head{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+}
+.tier-num{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1rem;flex-shrink:0;
+}
+.t1 .tier-num{background:rgba(255,68,104,0.15);color:var(--red);border:1px solid rgba(255,68,104,0.25);}
+.t2 .tier-num{background:rgba(255,209,102,0.12);color:var(--yellow);border:1px solid rgba(255,209,102,0.25);}
+.t3 .tier-num{background:rgba(91,127,255,0.12);color:var(--a1);border:1px solid rgba(91,127,255,0.25);}
+.tier-head h3{font-size:0.95rem;font-weight:800;}
+.tier-head .tier-sub{font-size:0.73rem;color:var(--muted);margin-top:1px;}
+.tier-impact{
+  font-family:var(--mono);font-size:0.68rem;margin-right:auto;
+  padding:3px 10px;border-radius:100px;
+}
+.t1 .tier-impact{background:rgba(255,68,104,0.1);color:var(--red);}
+.t2 .tier-impact{background:rgba(255,209,102,0.1);color:var(--yellow);}
+.t3 .tier-impact{background:rgba(91,127,255,0.1);color:var(--a1);}
+.tier-body{padding:16px 18px;}
+.tier-rows{display:flex;flex-direction:column;gap:10px;}
+.tier-row{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 14px;
+  background:var(--bg3);border-radius:8px;border:1px solid var(--border);
+}
+.tr-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.tr-info h4{font-size:0.82rem;font-weight:700;margin-bottom:3px;}
+.tr-info p{font-size:0.76rem;color:var(--muted);line-height:1.5;}
+.tr-info .tr-anchor{
+  display:inline-block;margin-top:4px;
+  font-family:var(--mono);font-size:0.68rem;
+  color:var(--a2);background:rgba(0,245,200,0.08);
+  border:1px solid rgba(0,245,200,0.18);padding:1px 7px;border-radius:4px;
+}
+
+/* ===== SCROLL BTN ===== */
+#scrollTop{
+  position:fixed;bottom:2rem;left:2rem;z-index:99;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--panel);border:1px solid var(--border);
+  color:var(--muted);font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;opacity:0;pointer-events:none;
+}
+#scrollTop.show{opacity:1;pointer-events:all;}
+#scrollTop:hover{background:var(--a1);color:#fff;border-color:var(--a1);}
+
+@media(max-width:680px){
+  .cluster-grid{grid-template-columns:1fr;}
+  .nav-tabs{display:none;}
+  .prompt-header{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+  <div class="nav-brand">⚡ BrightAI Link Strategy</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('internal')">🔗 الروابط الداخلية</button>
+    <button class="nav-tab" onclick="switchTab('backlinks')">🌍 Backlinks</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">📊 تحليل 101 صفحة · brightai.site · مارس 2026</div>
+  <h1 class="hero-title">خطة <span>الروابط الداخلية</span><br>واستراتيجية <span>Backlinks</span></h1>
+  <p class="hero-sub">مبنية على بيانات حقيقية من crawl الموقع وخرائط السلطة — مع prompts جاهزة للتنفيذ</p>
+  <div class="site-stats">
+    <div class="ss-chip"><div class="dot d-red"></div>44 صفحة يتيمة</div>
+    <div class="ss-chip"><div class="dot d-green"></div>17 رابط عالي الأولوية</div>
+    <div class="ss-chip"><div class="dot d-blue"></div>72 مقالة بلوج للربط</div>
+    <div class="ss-chip"><div class="dot d-cyan"></div>6 قطاعات معزولة</div>
+    <div class="ss-chip"><div class="dot d-yellow"></div>4 صفحات ملك لرفع سلطتها</div>
+  </div>
+</div>
+
+<!-- ═══════ TAB: INTERNAL LINKS ═══════ -->
+<div id="tab-internal" class="tab-content active">
+
+  <!-- SECTION 1: هيكل الموقع الحالي -->
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">01</span>
+      <h2>تحليل الهيكل الحالي — أين تتركز السلطة؟</h2>
+      <span class="sec-tag tag-internal">Internal Analysis</span>
+    </div>
+
+    <div class="notice n-red">
+      🔴 <span><strong>المشكلة الحرجة:</strong> 43.6% من صفحات الموقع يتيمة (صفر روابط داخلية). صفحات القطاعات كلها بروابط واحدة فقط. صفحات Docs الإنجليزية معزولة تماماً.</span>
+    </div>
+
+    <div class="tbl-wrap" style="margin-bottom:14px;">
+      <table>
+        <thead>
+          <tr><th>الصفحة</th><th>روابط داخلية</th><th>الدور</th><th>الحالة</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/</code> الرئيسية</td><td>38 رابط وارد</td><td>Hub مركزي</td><td><span class="pri-badge p-h">قوي</span></td></tr>
+          <tr><td><code>/about-us/</code></td><td>29</td><td>Persuasion</td><td><span class="pri-badge p-h">قوي</span></td></tr>
+          <tr><td><code>/smart-automation/</code></td><td>29</td><td>Persuasion</td><td><span class="pri-badge p-h">قوي</span></td></tr>
+          <tr><td><code>/blog/</code></td><td>29</td><td>Discovery</td><td><span class="pri-badge p-h">قوي</span></td></tr>
+          <tr><td><code>/ai-agent/</code></td><td>26</td><td>Persuasion</td><td><span class="pri-badge p-m">متوسط</span></td></tr>
+          <tr><td><code>/sectors/ecommerce.html</code></td><td>1</td><td>—</td><td><span class="pri-badge p-l">ضعيف جداً</span></td></tr>
+          <tr><td><code>/sectors/healthcare.html</code></td><td>1</td><td>—</td><td><span class="pri-badge p-l">ضعيف جداً</span></td></tr>
+          <tr><td><code>/ai-workflows/</code></td><td>0 ← يتيم</td><td>—</td><td><span class="pri-badge p-h">⚠️ يتيم</span></td></tr>
+          <tr><td><code>/what-is-ai/</code></td><td>0 ← يتيم</td><td>—</td><td><span class="pri-badge p-h">⚠️ يتيم</span></td></tr>
+          <tr><td><code>/docs/*-en.html</code> (12 صفحة)</td><td>0 جميعها</td><td>—</td><td><span class="pri-badge p-h">⚠️ يتيم</span></td></tr>
+          <tr><td><code>/demo/*</code> (4 صفحات ملك)</td><td>4 صفحات مفقودة أصلاً</td><td>Command</td><td><span class="pri-badge p-h">🚨 أولوية</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 2: خريطة الكتل الموضوعية -->
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">02</span>
+      <h2>خريطة الكتل الموضوعية (Topic Clusters)</h2>
+      <span class="sec-tag tag-internal">Clustering Strategy</span>
+    </div>
+
+    <div class="notice n-blue">
+      💡 <span>كل cluster يحتاج <strong>Hub Page</strong> مركزية تستقطب الروابط من جميع Spoke Pages. المقالات المتشابهة يجب أن ترتبط ببعضها.</span>
+    </div>
+
+    <div class="cluster-grid">
+
+      <div class="cluster-card" style="border-top:2px solid var(--a2)">
+        <div class="cluster-head">
+          <div class="cluster-icon" style="background:rgba(0,245,200,0.1);">🏥</div>
+          <div>
+            <h3>كتلة الرعاية الصحية</h3>
+            <div class="hub">Hub: /sectors/healthcare.html</div>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li><strong>ai-healthcare-saudi</strong> → hub → /smart-medical-archive/</li>
+          <li><strong>kfshrc-breast-cancer-ai</strong> → hub</li>
+          <li><strong>private-hospital-scheduling</strong> → hub → /demo/ocr-demo/</li>
+          <li><strong>digital-health-smart-archive</strong> → /smart-medical-archive/</li>
+          <li>hub → /consultation/ → /demo/</li>
+        </ul>
+      </div>
+
+      <div class="cluster-card" style="border-top:2px solid var(--a1)">
+        <div class="cluster-head">
+          <div class="cluster-icon" style="background:rgba(91,127,255,0.1);">💰</div>
+          <div>
+            <h3>كتلة المالية والبنوك</h3>
+            <div class="hub">Hub: /sectors/finance.html</div>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li><strong>ai-finance-saudi</strong> → hub</li>
+          <li><strong>saudi-bank-fraud-detection</strong> → hub</li>
+          <li><strong>digital-banking-saudi</strong> → hub</li>
+          <li><strong>future-intelligent-data-analysis-finance</strong> → hub</li>
+          <li>hub → /data-analysis/ → /demo/</li>
+        </ul>
+      </div>
+
+      <div class="cluster-card" style="border-top:2px solid var(--a3)">
+        <div class="cluster-head">
+          <div class="cluster-icon" style="background:rgba(255,107,53,0.1);">🏭</div>
+          <div>
+            <h3>كتلة الصناعة والتصنيع</h3>
+            <div class="hub">Hub: /sectors/manufacturing.html</div>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li><strong>saudi-factory-ai-productivity</strong> → hub</li>
+          <li><strong>saudi-manufacturing-predictive-maintenance</strong> → hub</li>
+          <li><strong>production-line</strong> → hub</li>
+          <li><strong>saudi-energy-predictive-maintenance</strong> → hub</li>
+          <li>hub → /smart-automation/ → /demo/</li>
+        </ul>
+      </div>
+
+      <div class="cluster-card" style="border-top:2px solid var(--a4)">
+        <div class="cluster-head">
+          <div class="cluster-icon" style="background:rgba(199,125,255,0.1);">🚚</div>
+          <div>
+            <h3>كتلة اللوجستيات والتجارة</h3>
+            <div class="hub">Hub: /sectors/logistics.html</div>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li><strong>saudi-logistics-route-optimization</strong> → hub</li>
+          <li><strong>transport-logistics-solutions</strong> → hub</li>
+          <li><strong>smart-inventory-management</strong> → hub</li>
+          <li><strong>saudi-ecommerce-ai-growth</strong> → /sectors/ecommerce.html</li>
+          <li>hub → /ai-agent/ → /demo/</li>
+        </ul>
+      </div>
+
+      <div class="cluster-card" style="border-top:2px solid var(--yellow)">
+        <div class="cluster-head">
+          <div class="cluster-icon" style="background:rgba(255,209,102,0.1);">👥</div>
+          <div>
+            <h3>كتلة الموارد البشرية</h3>
+            <div class="hub">Hub: /interview/</div>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li><strong>hr-automation-case-study</strong> → hub</li>
+          <li><strong>atou-job</strong> → hub</li>
+          <li>hub → /ai-bots/BrightRecruiter/</li>
+          <li>hub → /demo/ (HR demo CTA)</li>
+          <li>كل مقال HR → /consultation/</li>
+        </ul>
+      </div>
+
+      <div class="cluster-card" style="border-top:2px solid var(--green)">
+        <div class="cluster-head">
+          <div class="cluster-icon" style="background:rgba(0,217,126,0.1);">⚙️</div>
+          <div>
+            <h3>كتلة الأتمتة الذكية</h3>
+            <div class="hub">Hub: /smart-automation/</div>
+          </div>
+        </div>
+        <ul class="link-list">
+          <li><strong>smart-automation-benefits</strong> → hub</li>
+          <li><strong>process-automation</strong> → hub</li>
+          <li><strong>smart-document-processing</strong> → /demo/ocr-demo/</li>
+          <li><strong>smart-crm-system</strong> → /ai-agent/</li>
+          <li>hub → /ai-workflows/ → /demo/</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: جدول الأولويات -->
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">03</span>
+      <h2>جدول أولويات الروابط — مرتّب بالأثر</h2>
+      <span class="sec-tag tag-internal">Priority Matrix</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>من</th><th>إلى</th><th>Anchor Text</th><th>الموقع</th><th>الأولوية</th><th>الأثر</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/</code></td><td><code>/demo</code></td>
+            <td>جرّب مجاناً بدون تسجيل</td><td>بعد Hero</td>
+            <td><span class="pri-badge p-h">🔴 عاجل</span></td><td>تحويل مباشر</td>
+          </tr>
+          <tr>
+            <td><code>/ai-agent/</code></td><td><code>/demo</code></td>
+            <td>جرّب الوكيل الذكي الآن</td><td>CTA أسفل</td>
+            <td><span class="pri-badge p-h">🔴 عاجل</span></td><td>تحويل</td>
+          </tr>
+          <tr>
+            <td><code>/docs/solutions-ocr.html</code></td><td><code>/demo/ocr-demo/</code></td>
+            <td>جرّب OCR على مستندك</td><td>CTA أعلى</td>
+            <td><span class="pri-badge p-h">🔴 عاجل</span></td><td>تحويل OCR</td>
+          </tr>
+          <tr>
+            <td><code>/blog/</code></td><td><code>/demo/resources/report-2026</code></td>
+            <td>حمّل تقرير AI السعودي 2026</td><td>بانر أعلى</td>
+            <td><span class="pri-badge p-h">🔴 عاجل</span></td><td>Lead gen</td>
+          </tr>
+          <tr>
+            <td><code>/smart-automation/</code></td><td><code>/demo</code></td>
+            <td>جرّب أتمتة ذكية مباشرة</td><td>inline</td>
+            <td><span class="pri-badge p-m">🟡 مهم</span></td><td>demo traffic</td>
+          </tr>
+          <tr>
+            <td>كل مقال صحي (4 مقالات)</td><td><code>/sectors/healthcare.html</code></td>
+            <td>حلول AI للرعاية الصحية</td><td>footer المقالة</td>
+            <td><span class="pri-badge p-m">🟡 مهم</span></td><td>topical authority</td>
+          </tr>
+          <tr>
+            <td>كل مقال مالي (4 مقالات)</td><td><code>/sectors/finance.html</code></td>
+            <td>الذكاء الاصطناعي في القطاع المالي</td><td>footer المقالة</td>
+            <td><span class="pri-badge p-m">🟡 مهم</span></td><td>topical authority</td>
+          </tr>
+          <tr>
+            <td><code>/what-is-ai/</code></td><td><code>/ai-agent/</code></td>
+            <td>تعرف على وكلاء الذكاء الاصطناعي</td><td>inline</td>
+            <td><span class="pri-badge p-m">🟡 مهم</span></td><td>ربط يتيم</td>
+          </tr>
+          <tr>
+            <td><code>/docs</code> (hub)</td><td>كل صفحة docs إنجليزية</td>
+            <td>اقرأ النسخة الإنجليزية</td><td>language switcher</td>
+            <td><span class="pri-badge p-m">🟡 مهم</span></td><td>إصلاح 12 يتيم</td>
+          </tr>
+          <tr>
+            <td><code>/ai-bots/</code></td><td>صفحات BrightMath, BrightProject</td>
+            <td>اكتشف المزيد من الروبوتات</td><td>grid</td>
+            <td><span class="pri-badge p-l">🟢 عادي</span></td><td>ربط يتيم</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 4: الصفحات اليتيمة التي تحتاج ربط عاجل -->
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">04</span>
+      <h2>الصفحات اليتيمة — من يربطها وكيف</h2>
+      <span class="sec-tag tag-internal">Orphan Fix</span>
+    </div>
+    <div class="orphan-grid">
+      <div class="orphan-card">
+        <div class="o-page">/ai-workflows/</div>
+        <div class="o-fix">الحل: اربطها من <strong>/smart-automation/</strong> بـ anchor "سير عمل AI الكاملة"</div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/what-is-ai/</div>
+        <div class="o-fix">الحل: اربطها من <strong>/blog/</strong> header + من مقال ai-guide-saudi-business</div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/ai-bots/BrightMath/</div>
+        <div class="o-fix">الحل: أضف grid في <strong>/ai-bots/</strong> يعرض جميع الروبوتات بروابط</div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/ai-bots/BrightProject/</div>
+        <div class="o-fix">الحل: نفس الحل — grid في <strong>/ai-bots/</strong></div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/docs/*-en.html (12 صفحة)</div>
+        <div class="o-fix">الحل: أضف <strong>Language Switcher</strong> في كل صفحة docs عربية يشير لنسيرتها الإنجليزية</div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/services/recruitment-system.html</div>
+        <div class="o-fix">الحل: اربطها من <strong>/interview/</strong> + مقالات HR</div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/machine/</div>
+        <div class="o-fix">الحل: راجع محتواها — إذا كانت مفيدة اربطها من <strong>/sectors/manufacturing.html</strong></div>
+      </div>
+      <div class="orphan-card">
+        <div class="o-page">/smart-medical-archive/analytics-insights.html</div>
+        <div class="o-fix">الحل: اربطها من <strong>/smart-medical-archive/</strong> index page</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: PROMPT -->
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">05</span>
+      <h2>Prompt خطة الروابط الداخلية الشاملة</h2>
+      <span class="sec-tag tag-internal">Ready Prompt</span>
+    </div>
+
+    <div class="prompt-wrap">
+      <div class="prompt-card">
+        <div class="prompt-header">
+          <div class="prompt-title-row">
+            <div class="prompt-icon">🔗</div>
+            <div class="prompt-title-text">
+              <h3>خطة الروابط الداخلية الكاملة لـ BrightAI</h3>
+              <p>تنفيذ شامل مبني على بيانات crawl حقيقية — 44 يتيم، 6 clusters، 4 صفحات ملك</p>
+            </div>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">📋 نسخ الـ Prompt</button>
+        </div>
+        <div class="prompt-meta">
+          <span class="meta-pill mp-blue">🎯 brightai.site</span>
+          <span class="meta-pill mp-cyan">101 صفحة محللة</span>
+          <span class="meta-pill mp-purple">6 Clusters</span>
+          <span class="meta-pill mp-orange">44 صفحة يتيمة</span>
+          <span class="meta-pill mp-green">17 رابط أولوية عالية</span>
+        </div>
+        <div class="prompt-body">أنت خبير SEO ومطوّر ويب. نفّذ خطة الروابط الداخلية الشاملة لموقع BrightAI (https://brightai.site).
+
+═══════════════════════════════════════════════
+الجزء الأول — إصلاح صفحات الملك (الأولوية القصوى)
+═══════════════════════════════════════════════
+
+المشكلة: الصفحات الأربع التالية لا تتلقى كفاية من الروابط الداخلية وبعضها مفقود:
+- /demo/
+- /demo/ocr-demo/
+- /demo/resources/report-ai-saudi-2026/
+- /demo/pricing/
+
+المطلوب لكل صفحة ملك:
+ابحث في المشروع (مجلد frontend/pages/) عن الصفحات التالية وأضف رابطاً يشير لصفحة الملك المقابلة:
+
+للـ /demo/:
+  - /index.html → أضف زر CTA بعد قسم Hero مباشرة، نص الزر: "جرّب مجاناً — بدون تسجيل"
+  - /ai-agent/index.html → أضف CTA في نهاية قسم "حالات الاستخدام"، نص: "جرّب الوكيل الذكي الآن"
+  - /smart-automation/index.html → أضف inline link، نص: "جرّب أتمتة ذكية مباشرة"
+  - /interview/index.html → أضف CTA أعلى الصفحة، نص: "ديمو نظام التوظيف الذكي"
+  - /try/index.html → أضف رابط بعد وصف الأدوات، نص: "اكمل التجربة على الديمو الكامل"
+  - /what-is-ai/index.html → أضف CTA أسفل الصفحة، نص: "شاهد الذكاء الاصطناعي عملياً"
+  - /about-us/index.html → أضف رابط في Footer section، نص: "شاهد منتجاتنا حية"
+
+للـ /demo/ocr-demo/:
+  - /docs/solutions-ocr.html → أضف CTA أعلى الصفحة، نص: "جرّب OCR على مستندك الآن"
+  - /smart-medical-archive/index.html → أضف inline link، نص: "فعّل OCR للأرشيف الطبي الآن"
+  - /tools/index.html → أضف بطاقة "أداة OCR" جديدة في الـ grid
+  - /data-analysis/index.html → أضف CTA، نص: "جرّب استخراج البيانات بالذكاء الاصطناعي"
+
+للـ /demo/resources/report-ai-saudi-2026/:
+  - /blog/index.html → أضف بانر ثابت أعلى الصفحة، نص: "📥 حمّل تقرير الذكاء الاصطناعي السعودي 2026"
+  - /docs/index.html → أضف رابط في قسم "الموارد"، نص: "تقرير 2026: أين تتجه استثمارات الذكاء الاصطناعي"
+  - /data-analysis/index.html → أضف CTA أسفل قسم النتائج
+  - /what-is-ai/index.html → أضف inline link في فقرة "مستقبل الذكاء الاصطناعي"
+
+للـ /demo/pricing/:
+  - /our-products/index.html → أضف زر "الأسعار والباقات" بجوار CTA الرئيسي
+  - /consultation/index.html → أضف رابط: "اطّلع على الباقات قبل الاستشارة"
+  - /ai-bots/index.html → أضف CTA في نهاية الصفحة
+  - /contact/index.html → أضف رابط: "شاهد الأسعار قبل التواصل"
+
+═══════════════════════════════════════════════
+الجزء الثاني — بناء Topic Clusters (6 clusters)
+═══════════════════════════════════════════════
+
+Cluster 1 — الرعاية الصحية:
+Hub: /sectors/healthcare.html (حالياً يتيمة شبه كلياً)
+المطلوب:
+  - في كل ملف في frontend/pages/blogger/ يحتوي كلمات: healthcare, saudi, medical, hospital, kfshrc
+    → أضف في نهاية المقالة قسم "المزيد في الرعاية الصحية" برابط إلى /sectors/healthcare.html
+  - المقالات المحددة: ai-healthcare-saudi.html, kfshrc-breast-cancer-ai.html, private-hospital-scheduling-optimization.html, digital-health-smart-archive.html
+  - Hub /sectors/healthcare.html → أضف رابط إلى /smart-medical-archive/ و/consultation/
+  
+Cluster 2 — المالية والبنوك:
+Hub: /sectors/finance.html
+  - المقالات: ai-finance-saudi.html, saudi-bank-fraud-detection.html, digital-banking-saudi.html, future-of-intelligent-data-analysis-finance-sector.html
+  - كل مقال → Hub + /data-analysis/ + /demo/
+
+Cluster 3 — الصناعة والتصنيع:
+Hub: /sectors/manufacturing.html
+  - المقالات: saudi-factory-ai-productivity.html, saudi-manufacturing-predictive-maintenance.html, production-line.html, saudi-energy-predictive-maintenance.html
+  - كل مقال → Hub + /smart-automation/ + /demo/
+
+Cluster 4 — اللوجستيات والتجارة الإلكترونية:
+Hub: /sectors/logistics.html
+  - المقالات: saudi-logistics-route-optimization.html, transport-logistics-solutions.html, smart-inventory-management.html
+  - Hub → /ai-agent/ → /demo/
+
+Cluster 5 — الموارد البشرية:
+Hub: /interview/index.html
+  - المقالات: hr-automation-case-study.html, atou-job.html, choose-ai-company-saudi.html (HR section)
+  - Hub → /ai-bots/BrightRecruiter/ → /demo/
+
+Cluster 6 — الأتمتة والذكاء الاصطناعي العام:
+Hub: /smart-automation/index.html
+  - المقالات: smart-automation-benefits.html, process-automation.html, smart-document-processing.html, auto.html
+  - Hub → /ai-workflows/ (يحل مشكلة اليتيم) → /demo/
+
+═══════════════════════════════════════════════
+الجزء الثالث — إصلاح الصفحات اليتيمة الحرجة
+═══════════════════════════════════════════════
+
+هذه صفحات لها محتوى قيّم لكن صفر روابط داخلية. نفّذ الإصلاحات التالية:
+
+1. /ai-workflows/index.html (يتيمة):
+   → في /smart-automation/index.html: أضف قسم "أدوات ذات صلة" يتضمن رابط إلى /ai-workflows/
+   → في /ai-agent/index.html: أضف inline link نص "سير عمل الذكاء الاصطناعي"
+   → في /what-is-ai/index.html: أضف رابط في قسم "تطبيقات الذكاء الاصطناعي"
+
+2. /what-is-ai/index.html (يتيمة):
+   → في /index.html (الرئيسية): أضف رابط في footer أو في قسم "تعلم المزيد"
+   → في /blog/index.html: أضف بطاقة "للمبتدئين" في أعلى الصفحة
+
+3. صفحات /docs/*-en.html (12 صفحة يتيمة):
+   → في كل صفحة docs عربية مقابلة: أضف زر "English Version" يشير للنسخة الإنجليزية
+   → مثال: /docs/ai-agent.html → أضف link إلى /docs/ai-agent-en.html
+   → في /docs/index.html: أضف تبويب "English Docs" يقود لـ /docs/ai-agent-en.html كنقطة دخول
+
+4. /ai-bots/BrightMath/ و /ai-bots/BrightProject/ (يتيمتان):
+   → في /ai-bots/index.html: أضف grid يعرض جميع الروبوتات:
+     BrightMath, BrightProject, BrightRecruiter, BrightSales, BrightSupport
+     كل بطاقة تحتوي: اسم الروبوت + وصف + زر "اكتشف المزيد" يشير لصفحته
+
+5. /services/recruitment-system.html (يتيمة):
+   → في /interview/index.html: أضف رابط نصي "اقرأ المزيد عن نظام التوظيف"
+
+═══════════════════════════════════════════════
+الجزء الرابع — تقاطع المقالات ببعضها (Blog Cross-linking)
+═══════════════════════════════════════════════
+
+في كل مقالة، أضف في النهاية قسم "مقالات ذات صلة" يحتوي 3 روابط لمقالات في نفس الموضوع.
+استخدم script article-ux-enhancements.js الموجود في frontend/js/ — إذا لم يكن مفعّلاً في جميع المقالات، فعّله.
+
+المجموعات المحددة للربط:
+- مجموعة صحية: ai-healthcare-saudi ↔ kfshrc-breast-cancer-ai ↔ private-hospital-scheduling-optimization ↔ digital-health-smart-archive
+- مجموعة مالية: ai-finance-saudi ↔ saudi-bank-fraud-detection ↔ digital-banking-saudi ↔ future-intelligent-data-analysis-finance
+- مجموعة الامتثال: nca-ai-compliance-saudi ↔ nca-compliance ↔ vision-2030-ai-opportunities
+- مجموعة الصناعة: saudi-factory-ai-productivity ↔ saudi-manufacturing-predictive-maintenance ↔ production-line
+
+═══════════════════════════════════════════════
+الجزء الخامس — معايير التنفيذ
+═══════════════════════════════════════════════
+
+لكل رابط تضيفه، التزم بهذه المعايير:
+1. HTML template للـ CTA buttons:
+   <a href="[URL]?utm_source=internal&utm_medium=cta&utm_campaign=[campaign]"
+      class="bright-internal-cta"
+      style="display:inline-flex;align-items:center;gap:8px;
+             background:rgba(0,245,200,0.1);color:#00f5c8;
+             border:1px solid rgba(0,245,200,0.3);
+             padding:10px 20px;border-radius:10px;
+             text-decoration:none;font-weight:700;font-size:0.88rem;">
+     [Anchor Text بالعربية]
+     <span>←</span>
+   </a>
+
+2. HTML template للـ inline links:
+   <a href="[URL]?utm_source=internal&utm_medium=inline&utm_campaign=[campaign]"
+      style="color:#5b7fff;text-decoration:underline;text-decoration-style:dotted;">
+     [Anchor Text]
+   </a>
+
+3. لا تغيّر محتوى الصفحات — فقط أضف الروابط الجديدة
+4. كل رابط يجب أن يحتوي UTM parameters للتتبع
+5. راجع أن الروابط تعمل على المسارات الصحيحة (relative paths)
+
+═══════════════════════════════════════════════
+المخرجات المطلوبة
+═══════════════════════════════════════════════
+
+بعد التنفيذ، قدّم:
+1. قائمة بكل الملفات التي عدّلتها
+2. عدد الروابط المضافة لكل صفحة
+3. نسبة الصفحات اليتيمة المتبقية (الهدف: أقل من 5%)
+4. أي مشاكل واجهتها في المسارات أو الملفات</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- END internal tab -->
+
+<!-- ═══════ TAB: BACKLINKS ═══════ -->
+<div id="tab-backlinks" class="tab-content">
+
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">01</span>
+      <h2>استراتيجية Backlinks — ثلاثة مستويات</h2>
+      <span class="sec-tag tag-external">External Authority</span>
+    </div>
+
+    <div class="notice n-orange">
+      🌍 <span>استراتيجية مخصصة للسوق السعودي. الهدف: بناء Domain Authority للتصدر على "ذكاء اصطناعي السعودية" و"AI solutions Saudi Arabia" خلال 6 أشهر.</span>
+    </div>
+
+    <div class="tier-stack">
+
+      <div class="tier-card t1">
+        <div class="tier-head">
+          <div class="tier-num">1</div>
+          <div>
+            <h3>Tier 1 — روابط السلطة العالية (Quick Wins)</h3>
+            <div class="tier-sub">الهدف: 10-15 رابط خلال الشهر الأول · أعلى تأثير على DA</div>
+          </div>
+          <span class="tier-impact">Impact: 🔴 حرجي</span>
+        </div>
+        <div class="tier-body">
+          <div class="tier-rows">
+            <div class="tier-row">
+              <div class="tr-icon">🏛️</div>
+              <div class="tr-info">
+                <h4>منصات الحكومة السعودية والهيئات</h4>
+                <p>تسجيل BrightAI في: <strong>Monsha'at</strong> (منصة المنشآت)، <strong>SDAIA</strong> (هيئة البيانات والذكاء الاصطناعي)، <strong>NTDP</strong> (برنامج التطوير الوطني للتقنية). الكثير منها يتيح صفحة شريك تحتوي رابطاً مباشراً.</p>
+                <span class="tr-anchor">anchor: "Bright AI - شركة ذكاء اصطناعي سعودية"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">📰</div>
+              <div class="tr-info">
+                <h4>المواقع الإخبارية التقنية السعودية</h4>
+                <p>تواصل مع: <strong>Argaam.com</strong>، <strong>اليوم السابع (SA)</strong>، <strong>Tech Arabia</strong>، <strong>Arab News (Tech section)</strong>. اطرح خبر إطلاق ميزة جديدة أو دراسة حالة عميل ناجح. رابط واحد من Argaam يساوي عشرات الروابط العادية.</p>
+                <span class="tr-anchor">anchor: "حلول الذكاء الاصطناعي للشركات السعودية"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🎓</div>
+              <div class="tr-info">
+                <h4>الجامعات والمراكز البحثية السعودية</h4>
+                <p><strong>KFUPM</strong> (جامعة الملك فهد للبترول)، <strong>KAUST</strong>، <strong>جامعة الملك عبدالعزيز</strong>. أعرض شراكة بحثية أو تبرع بـ API access للطلاب. مقابل ذلك رابط من .edu.sa — من أقوى أنواع الروابط.</p>
+                <span class="tr-anchor">anchor: "برنامج BrightAI الأكاديمي"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🤝</div>
+              <div class="tr-info">
+                <h4>شركاء التقنية الدوليون</h4>
+                <p>اطلب رابطاً من صفحات الشركاء لدى: <strong>Google Cloud (Partner Directory)</strong>، <strong>Microsoft Azure Marketplace</strong>، <strong>AWS Partner Network</strong>. إدراجك كـ "Saudi AI Partner" يجلب روابط من نطاقات DA 90+.</p>
+                <span class="tr-anchor">anchor: "Bright AI — Saudi Arabia AI Solutions Partner"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-card t2">
+        <div class="tier-head">
+          <div class="tier-num">2</div>
+          <div>
+            <h3>Tier 2 — محتوى قابل للربط (Linkable Assets)</h3>
+            <div class="tier-sub">الهدف: 20-30 رابط خلال الشهر 2-3 · مبني على محتوى أنتجتموه</div>
+          </div>
+          <span class="tier-impact">Impact: 🟡 عالي</span>
+        </div>
+        <div class="tier-body">
+          <div class="tier-rows">
+            <div class="tier-row">
+              <div class="tr-icon">📊</div>
+              <div class="tr-info">
+                <h4>تقرير "الذكاء الاصطناعي في السعودية 2026" — الأصل الأقوى</h4>
+                <p>التقرير الموجود في <code>/demo/resources/report-ai-saudi-2026/</code> هو Linkable Asset ممتاز. أرسله لـ: محررو التقنية في الصحف الكبرى، Podcasters التقنية العرب، LinkedIn Influencers في السعودية، ووسّطوه كـ press release. كل من يذكره يجب أن يرتبط بصفحة التحميل.</p>
+                <span class="tr-anchor">target URL: /demo/resources/report-ai-saudi-2026/</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🔬</div>
+              <div class="tr-info">
+                <h4>دراسات حالة قابلة للمشاركة (Case Studies)</h4>
+                <p>المقالات الموجودة مثل <code>case-study-saudi-companies-ai-agents</code> و<code>kfshrc-breast-cancer-ai</code> هي محتوى قوي. حوّلها لـ PDF قابل للتحميل. أرسل لـ: منظمات الرعاية الصحية السعودية، غرف التجارة، مدونو التقنية العرب. هذا النوع من المحتوى يُرتبط تلقائياً.</p>
+                <span class="tr-anchor">anchor: "دراسة حالة: الذكاء الاصطناعي في المستشفيات السعودية"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🛠️</div>
+              <div class="tr-info">
+                <h4>أدوات مجانية كـ Link Magnets</h4>
+                <p>صفحات <code>/tools/</code> و<code>/try/</code> هي "Free Tools" تجذب روابط طبيعية. اطرحها في: Product Hunt (بنسخة عربية)، Hacker News، مجموعات Telegram للتقنية السعودية، مجتمعات Reddit (r/MachineLearning العربي). الأدوات المجانية تكسب روابط بدون طلب.</p>
+                <span class="tr-anchor">anchor: "أدوات ذكاء اصطناعي مجانية للشركات السعودية"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🎙️</div>
+              <div class="tr-info">
+                <h4>البودكاست والمقابلات التقنية</h4>
+                <p>احجز مقابلات في: <strong>بودكاست "مشروع"</strong>، <strong>بودكاست "عرب لوجيك"</strong>، <strong>Tech Talks Arabia</strong>، <strong>Disruptor Podcast (Arabic)</strong>. كل مقابلة تنتج رابطاً من موقع البودكاست + انتشاراً واسعاً على منصات الاستماع.</p>
+                <span class="tr-anchor">anchor: "CEO Bright AI: مستقبل الذكاء الاصطناعي في السعودية"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">📝</div>
+              <div class="tr-info">
+                <h4>Guest Posts في المدونات التقنية السعودية والعربية</h4>
+                <p>اكتب مقالات ضيف في: <strong>مدونة جرير للتقنية</strong>، <strong>مدونة STC</strong>، <strong>Arab Techies</strong>، <strong>Wamda</strong>، <strong>Magnitt</strong>. المقالة يجب أن تكون مميزة (بيانات حصرية أو تحليل عمق) مع رابط واحد طبيعي إلى brightai.site.</p>
+                <span class="tr-anchor">anchor: "كيف طبّقنا الذكاء الاصطناعي في [قطاع]"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tier-card t3">
+        <div class="tier-head">
+          <div class="tier-num">3</div>
+          <div>
+            <h3>Tier 3 — بناء الحضور والسلطة طويل المدى</h3>
+            <div class="tier-sub">الهدف: 50+ رابط خلال 3-6 أشهر · يبني DA مستدام</div>
+          </div>
+          <span class="tier-impact">Impact: 🔵 متراكم</span>
+        </div>
+        <div class="tier-body">
+          <div class="tier-rows">
+            <div class="tier-row">
+              <div class="tr-icon">💼</div>
+              <div class="tr-info">
+                <h4>الدلائل والتسجيلات التجارية</h4>
+                <p>سجّل في: <strong>Clutch.co</strong> (أفضل موقع لـ B2B IT companies)، <strong>G2.com</strong>، <strong>Trustpilot</strong>، <strong>Crunchbase</strong>، <strong>AngelList</strong>، <strong>منصة Investopedia Arabian</strong>. Clutch وحده يمكن أن يرفع DA بشكل ملحوظ + يجلب leads مباشرة.</p>
+                <span class="tr-anchor">anchor: "Bright AI — AI Solutions Saudi Arabia"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🔗</div>
+              <div class="tr-info">
+                <h4>LinkedIn Company Page + Articles</h4>
+                <p>انشر مقالات أسبوعية على LinkedIn (ليس posts فقط — Articles) تحتوي روابط إلى brightai.site. LinkedIn Articles تُفهرس بواسطة Google وتنتج روابط DA عالية. الهدف: 4 مقالات شهرياً تستهدف الـ keywords السعودية.</p>
+                <span class="tr-anchor">كل مقال يحتوي رابط إلى صفحة خدمة مختلفة</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🏆</div>
+              <div class="tr-info">
+                <h4>جوائز ومنافسات التقنية</h4>
+                <p>تقدّم لـ: <strong>Forbes 30 Under 30 Arabia Tech</strong>، <strong>Saudi Business Awards</strong>، <strong>Gitex Innovation Awards</strong>، <strong>Arab Startups Awards</strong>. الفوز أو حتى الترشح يجلب تغطية إعلامية وروابط تلقائية من عشرات المواقع.</p>
+                <span class="tr-anchor">الروابط تأتي تلقائياً مع التغطية</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">🤖</div>
+              <div class="tr-info">
+                <h4>مجتمعات الذكاء الاصطناعي العالمية</h4>
+                <p>ساهم في: <strong>GitHub</strong> (افتح مستودعاً مفتوحاً لأداة AI سعودية) → يجلب روابط من stackoverflow ومدونات المطورين. <strong>Hugging Face</strong> (انشر model أو dataset عربي) → يجلب روابط من المجتمع البحثي العالمي.</p>
+                <span class="tr-anchor">anchor: "Arabic AI Dataset - BrightAI"</span>
+              </div>
+            </div>
+            <div class="tier-row">
+              <div class="tr-icon">📊</div>
+              <div class="tr-info">
+                <h4>تحديث "ذِكر" المنافسين (Competitor Mentions)</h4>
+                <p>ابحث في Google عن مقالات تذكر منافسين مثل: "أفضل شركات AI في السعودية"، "بدائل IBM Watson للسعودية". تواصل مع كتّاب هذه المقالات واطلب إضافة BrightAI. هذه الروابط التحريرية طبيعية 100% وذات قيمة عالية.</p>
+                <span class="tr-anchor">استخدم Ahrefs/Semrush لإيجادها</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BACKLINKS PROMPT -->
+  <div class="sec">
+    <div class="sec-label">
+      <span class="sec-num">02</span>
+      <h2>Prompt استراتيجية Backlinks المفصّلة</h2>
+      <span class="sec-tag tag-external">Ready Prompt</span>
+    </div>
+
+    <div class="prompt-wrap">
+      <div class="prompt-card">
+        <div class="prompt-header">
+          <div class="prompt-title-row">
+            <div class="prompt-icon">🌍</div>
+            <div class="prompt-title-text">
+              <h3>خطة Backlinks الشاملة لـ BrightAI — السوق السعودي</h3>
+              <p>استراتيجية 6 أشهر لرفع Domain Authority والتصدر على الكلمات المفتاحية السعودية</p>
+            </div>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">📋 نسخ الـ Prompt</button>
+        </div>
+        <div class="prompt-meta">
+          <span class="meta-pill mp-orange">🇸🇦 Saudi Market Focus</span>
+          <span class="meta-pill mp-blue">3 Tiers</span>
+          <span class="meta-pill mp-purple">6-Month Roadmap</span>
+          <span class="meta-pill mp-green">Outreach Templates included</span>
+          <span class="meta-pill mp-cyan">White-hat only</span>
+        </div>
+        <div class="prompt-body">أنت خبير SEO متخصص في بناء الروابط الخارجية (Link Building) للسوق السعودي والخليجي.
+المطلوب: بناء استراتيجية Backlinks كاملة لموقع BrightAI (https://brightai.site) خلال 6 أشهر.
+
+معلومات المشروع:
+- BrightAI شركة سعودية في الرياض تقدم حلول ذكاء اصطناعي للشركات الكبرى والجهات الحكومية
+- الخدمات: أتمتة ذكية، تحليل بيانات، وكلاء AI، أرشيف طبي ذكي، نظام توظيف ذكي
+- الجمهور المستهدف: مديرو التقنية (CTO/CIO) والقطاع الحكومي في السعودية
+- أصول المحتوى المتاحة: 72 مقالة تقنية، تقرير AI السعودي 2026، أدوات مجانية، دراسات حالة
+- الامتثال: NCA، NDMO، رؤية 2030
+
+═══════════════════════════════════════════════
+TIER 1 — روابط السلطة الفورية (الشهر الأول)
+═══════════════════════════════════════════════
+
+المهمة: حدد وأنشئ قائمة بـ 15 فرصة رابط عالية الأولوية مع خطوة عملية لكل فرصة.
+
+المصادر المستهدفة:
+
+1. SDAIA (هيئة البيانات والذكاء الاصطناعي السعودية):
+   URL المستهدف: https://sdaia.gov.sa
+   الإجراء: قدّم طلب انضمام لـ "الشركاء التقنيين" أو سجّل في قاعدة بيانات الشركات الوطنية للذكاء الاصطناعي
+   الرابط المستهدف يشير إلى: https://brightai.site
+   Anchor text المقترح: "Bright AI — شريك وطني في الذكاء الاصطناعي"
+   
+2. Monsha'at (منصة المنشآت):
+   URL: https://monshaat.gov.sa
+   الإجراء: سجّل كشركة ناشئة تقنية + أضف ملف الشركة الكامل مع رابط الموقع
+   هدف: رابط من صفحة الشركاء أو دليل الشركات الناشئة
+   
+3. Google Cloud Partner Directory:
+   URL: https://cloud.google.com/find-a-partner
+   الإجراء: تقدّم لـ Google Cloud Partner Program (مجاني للبدء) → احصل على badge + صفحة partner
+   الرابط من: partners.google.com أو cloud.google.com/partners
+
+4. Microsoft AI Partner Network:
+   URL: https://appsource.microsoft.com
+   الإجراء: سجّل BrightAI في Azure Marketplace كـ AI solution provider
+   الهدف: رابط من appsource.microsoft.com وmicrosoft.com/solution-providers
+
+5. Argaam.com (الموقع الاقتصادي الأبرز):
+   الإجراء: أرسل press release عن BrightAI (إطلاق ميزة جديدة، شراكة، عميل بارز)
+   اكتب الـ press release بالعربية، أرسله لـ newsroom@argaam.com
+   الرابط يكون من مقال إخباري يذكر brightai.site
+
+6. Clutch.co:
+   URL: https://clutch.co/sa/it-services
+   الإجراء: أضف ملف BrightAI + اطلب من 3 عملاء كتابة reviews
+   الهدف: رابط DA 70+ + اكتشاف من B2B clients
+
+7. Crunchbase:
+   الإجراء: أنشئ صفحة شركة كاملة على crunchbase.com
+   أضف: وصف الشركة + founding date + location: Riyadh + website link
+
+8. جامعة الملك عبدالله للعلوم والتقنية (KAUST):
+   الإجراء: تواصل مع قسم الشراكات (industry@kaust.edu.sa)
+   اعرض: API access مجاني للباحثين أو ورشة عمل مشتركة
+   مقابل: إدراج في صفحة الشركاء الصناعيين على kaust.edu.sa
+
+═══════════════════════════════════════════════
+TIER 2 — Linkable Assets & Outreach (الشهر 2-3)
+═══════════════════════════════════════════════
+
+المهمة: أنشئ 5 محتوى قابل للربط وضع خطة توزيع لكل منه.
+
+Asset 1 — تقرير الذكاء الاصطناعي السعودي 2026:
+الملف موجود: /demo/resources/report-ai-saudi-2026/
+خطة التوزيع:
+  a. أنشئ صفحة هبوط مخصصة بـ Landing Page جذابة (HTML/CSS احترافي)
+  b. أرسله لـ 50 صحفي ومدوّن تقنية سعودي (قائمة LinkedIn)
+  c. انشره على مجموعات Telegram التقنية السعودية (100k+ member groups)
+  d. أرسله لغرفة تجارة الرياض وجدة للنشر في نشراتهم
+  e. أعلنه في LinkedIn post من CEO/Founder مع رابط التحميل
+  الكلمات التي يستهدفها: "تقرير ذكاء اصطناعي السعودية", "AI Saudi Arabia report 2026"
+
+Asset 2 — دراسات حالة العملاء:
+حوّل هذه المقالات إلى PDF مصقول:
+  - case-study-saudi-companies-ai-agents-customer-service.html
+  - hr-automation-case-study.html
+  - private-hospital-scheduling-optimization.html
+خطة التوزيع:
+  a. أرسل لكل جمعية قطاع مرتبطة (جمعية البنوك، جمعية الرعاية الصحية)
+  b. أرسل للمديرين التنفيذيين في القطاع المرتبط عبر LinkedIn InMail
+  c. اعرضه في مؤتمرات (LEAP، GITEX، Step Conference)
+
+Asset 3 — مقارنة شاملة: "أفضل حلول AI للشركات السعودية":
+أنشئ مقالة جديدة تقارن 7 أدوات AI مع BrightAI كأحد الخيارات
+الهدف: جمع روابط من المقارنات العكسية + استهداف keyword "مقارنة AI السعودية"
+URL المقترح: /blog/best-ai-solutions-saudi-companies/
+
+Asset 4 — Arabic AI Glossary (قاموس الذكاء الاصطناعي بالعربية):
+أنشئ صفحة /blog/ai-glossary-arabic/ تشرح 50 مصطلح AI بالعربية
+هذا النوع يجذب روابط تلقائية من المعلمين والمدونين العرب
+
+Asset 5 — أداة تقييم ROI مجانية:
+صفحة /tools/roi-calculator/ تتيح للشركات حساب عائد الاستثمار من AI
+الأدوات التفاعلية تجذب روابط من مقالات "أدوات مفيدة" و"أفضل حاسبات الأعمال"
+
+═══════════════════════════════════════════════
+TIER 3 — Authority Building (الشهر 4-6)
+═══════════════════════════════════════════════
+
+المهمة: بناء حضور في منصات عالية السلطة.
+
+1. GitHub Open Source Initiative:
+   أنشئ مستودعاً: github.com/brightai-sa/arabic-nlp-toolkit
+   المحتوى: أدوات NLP مفتوحة المصدر باللغة العربية
+   الأثر: روابط من Stack Overflow، Dev.to، Towards Data Science، Papers with Code
+
+2. Hugging Face Model/Dataset:
+   أنشئ نموذجاً أو dataset عربي: huggingface.co/brightai-sa
+   المحتوى: مجموعة بيانات عربية للـ sentiment analysis أو NER
+   الأثر: روابط من المجتمع البحثي العالمي + Papers
+
+3. LinkedIn Articles Strategy (4 مقالات/شهر):
+   عناوين مقترحة باستهداف Keywords:
+   - "كيف طبّقنا الذكاء الاصطناعي في مستشفى سعودي وخفّضنا التكاليف بـ 30%"
+   - "رؤية 2030 والذكاء الاصطناعي: الفرص التي يفوّتها قطاع التجزئة السعودي"
+   - "NCA Compliance: ما الذي تحتاجه الشركات السعودية لتبني AI بأمان"
+   كل مقال يحتوي رابطاً واحداً إلى صفحة خدمة مختلفة في brightai.site
+
+4. Guest Posts — قائمة المواقع المستهدفة:
+   عالي الأولوية (DA > 60):
+   - Wamda.com (startups Arabia)
+   - Magnitt.com (MENA tech)
+   - ArabicBiz.net
+   - TechRepublic (Arabic section)
+   
+   متوسط الأولوية (DA 40-60):
+   - SaudiGeek.com
+   - tech.arabiaweather.com
+   - startupmagazine.sa
+   
+   لكل موقع: اقترح 3 عناوين مقالات مختلفة قبل إرسال الطلب
+
+5. HARO / SourceBottle (للإعلام الدولي):
+   سجّل في HARO (Help a Reporter Out) كـ "AI Expert - Saudi Arabia"
+   عندما يبحث صحفي عن تعليق خبير AI من الشرق الأوسط، أنت الأول
+   كل تعليق = رابط من موقع صحفي عالي DA
+
+═══════════════════════════════════════════════
+OUTREACH TEMPLATES — نماذج التواصل
+═══════════════════════════════════════════════
+
+Template 1 — طلب Guest Post (للمواقع التقنية العربية):
+Subject: مقالة تقنية حصرية — [موضوع محدد بالذكاء الاصطناعي] لـ [اسم الموقع]
+
+السلام عليكم [اسم المحرر]،
+
+أكتب إليكم من BrightAI، شركة سعودية متخصصة في حلول الذكاء الاصطناعي المؤسسية.
+أقترح كتابة مقالة حصرية لـ [اسم الموقع] بعنوان: "[عنوان المقالة]"
+
+المقالة ستغطي: [3 نقاط رئيسية]
+لماذا مناسبة لجمهوركم: [سبب محدد]
+الكلمات التقريبية: 1200-1500 كلمة
+
+لا أطلب مقابلاً مادياً، فقط ذكراً واحداً لشركتنا مع رابط.
+هل يناسبكم الأسبوع القادم لمناقشة الفكرة؟
+
+[التوقيع]
+
+Template 2 — Press Release لـ Argaam/الصحف الاقتصادية:
+للنشر الفوري
+[اسم الشركة] تطلق [وصف الميزة/الشراكة/الإنجاز]
+
+الرياض، [التاريخ] — أعلنت BrightAI، الشركة السعودية الرائدة في حلول الذكاء الاصطناعي المؤسسية، عن [الإعلان] ...
+
+[3 فقرات عن الإعلان]
+[اقتباس من CEO]
+[معلومات الشركة]
+للتواصل: info@brightai.site | +966538229013
+
+Template 3 — طلب شراكة أكاديمية (للجامعات):
+Subject: شراكة بحثية: BrightAI × [اسم الجامعة] في مجال الذكاء الاصطناعي
+
+نقترح على [اسم الجامعة] شراكة تقنية تشمل:
+- توفير وصول مجاني لـ APIs الذكاء الاصطناعي لطلاب الدكتوراه
+- دعم مالي لمشاريع تخرج في الذكاء الاصطناعي العربي
+- ورش عمل عملية من فريق BrightAI
+
+في المقابل نأمل: ذكر BrightAI كشريك صناعي في موقع القسم
+
+═══════════════════════════════════════════════
+KPIs ومؤشرات النجاح
+═══════════════════════════════════════════════
+
+الشهر 1: 10-15 رابط جديد، DR يرتفع من الوضع الحالي بنسبة 5%
+الشهر 3: 30-40 رابط تراكمي، Organic traffic +20%
+الشهر 6: 60+ رابط نوعي، DR يتجاوز 40، تصدر Top 5 لـ "ذكاء اصطناعي السعودية"
+
+أدوات القياس:
+- Ahrefs أو Semrush: لتتبع DR والروابط الجديدة
+- Google Search Console: لقياس تأثير الروابط على الترتيب
+- Google Analytics: لقياس الـ Referral Traffic من كل رابط
+
+القاعدة الذهبية: رابط واحد من موقع DA 70+ يساوي 100 رابط من مواقع DA 20.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- END backlinks tab -->
+
+</div><!-- end wrap -->
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function copyPrompt(btn) {
+  const body = btn.closest('.prompt-card').querySelector('.prompt-body');
+  navigator.clipboard.writeText(body.textContent.trim()).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ تم النسخ!';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('ok'); }, 2500);
+  });
+}
+
+window.addEventListener('scroll', () => {
+  document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 400);
+});
+</script>
+</body>
+</html>
