@@ -37,6 +37,7 @@
     "seo:check": "node scripts/seo-ci-check.mjs",
     "seo:html:check": "node scripts/html-seo-governor.mjs",
     "seo:html:fix": "node scripts/html-seo-governor.mjs --fix",
+    "clarity:check": "node scripts/verify-clarity.mjs",
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",
