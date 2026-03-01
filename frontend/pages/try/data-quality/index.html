@@ -6,7 +6,7 @@
   src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
   crossorigin="anonymous"
 ></script>
-<!-- Microsoft Clarity -->
+
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -15,11 +15,11 @@
     })(window, document, "clarity", "script", "voq2kb6voe");
 </script>
 
-<!-- Sentry Error Tracking -->
+
 <script src="/frontend/js/sentry-init.js" defer></script>
 <link rel="alternate" hreflang="x-default" href="https://brightai.site/try/data-quality" />
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/try/data-quality" />
-<!-- Google tag (gtag.js) -->
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -478,6 +478,18 @@
             color: var(--amber);
         }
 
+        .dq-score-high {
+            color: var(--emerald);
+        }
+
+        .dq-score-medium {
+            color: var(--amber);
+        }
+
+        .dq-score-low {
+            color: var(--red);
+        }
+
         .alert-danger i {
             color: var(--red);
         }
@@ -595,26 +607,27 @@
 <script defer src="/frontend/js/vendor/iconify.min.js"></script>
 <script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
 
-<!-- Critical CSS for Core Web Vitals -->
+
 <style id="critical-css">
     .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
     .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
     .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
 </style>
-    <!-- Favicon & App Icons -->
+    
     <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
     <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
 <script defer="" src="/frontend/js/navigation.js"></script>
 <link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
 </head>
 
 <body>
-<!-- Header / Navbar -->
+
     <header class="unified-nav" id="main-header" role="banner">
         <div class="nav-container">
-            <!-- Branding -->
+            
             <div class="flex-shrink-0">
                 <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
                     title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
@@ -630,13 +643,13 @@
                     </div>
                 </a>
             </div>
-            <!-- Main Navigation -->
+            
             <nav class="nav-desktop" style="contain: layout;">
                 <ul class="nav-links">
                     <li class="nav-item">
                         <a class="nav-link" href="/index.html">الرئيسية</a>
                     </li>
-                    <!-- Smart Solutions Dropdown -->
+                    
                     <li class="nav-item group/dropdown relative">
                         <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
                             الحلول الذكية
@@ -724,7 +737,7 @@
                             </div>
                         </div>
                     </li>
-                    <!-- Smart Models Dropdown -->
+                    
                     <li class="nav-item group/dropdown relative">
                         <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
                             النماذج الذكية
@@ -793,7 +806,7 @@
                             </div>
                         </div>
                     </li>
-                    <!-- About Bright Dropdown -->
+                    
                     <li class="nav-item group/dropdown relative">
                         <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
                             عن برايت
@@ -844,27 +857,27 @@
                     </li>
                 </ul>
             </nav>
-            <!-- Secondary Actions -->
+            
             <div class="nav-actions">
-                <!-- Desktop Search -->
+                
                 <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
                     <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
                         icon="lucide:search"></iconify-icon>
                     <span class="text-[13px] font-medium">بحث...</span>
                     <kbd class="search-kbd">⌘K</kbd>
                 </button>
-                <!-- Mobile Search -->
+                
                 <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
-                <!-- Desktop CTA -->
+                
                 <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
                     href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
                     title="تواصل معنا عبر الواتساب">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
-                <!-- Mobile Toggle -->
+                
                 <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -873,10 +886,10 @@
             </div>
         </div>
     </header>
-    <!-- Mobile Drawer -->
+    
     <div class="mobile-menu-drawer" id="mobileDrawer">
-        <div class="flex flex-col h-full" style="padding: calc(var(--nav-height) + 1.5rem) 1.75rem 2rem;">
-            <!-- Drawer Header -->
+        <div class="flex flex-col h-full bai-inline-0001">
+            
             <div class="flex items-center justify-between mb-8 pb-6"
                 style="border-bottom: 1px solid rgba(255,255,255,0.06);">
                 <div class="flex items-center gap-2.5">
@@ -891,7 +904,7 @@
                     <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
                 </button>
             </div>
-            <!-- Nav Links -->
+            
             <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
                 <li>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
@@ -910,8 +923,8 @@
                         </span>
                         <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown mt-1 mr-6"
-                        style="padding-right: 1rem; border-right: 2px solid rgba(99,102,241,0.2);">
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
+                       >
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
                             href="/services">
                             <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
@@ -949,8 +962,8 @@
                         </span>
                         <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown mt-1 mr-6"
-                        style="padding-right: 1rem; border-right: 2px solid rgba(16,185,129,0.2);">
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
+                       >
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
                             href="/smart-medical-archive">
                             <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
@@ -990,8 +1003,8 @@
                         </span>
                         <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown mt-1 mr-6"
-                        style="padding-right: 1rem; border-right: 2px solid rgba(59,130,246,0.2);">
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
+                       >
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
                             href="/about">
                             <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
@@ -1017,11 +1030,11 @@
                     </a>
                 </li>
             </ul>
-            <!-- Mobile CTA -->
+            
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all"
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
                     href="https://wa.me/966538229013" rel="noopener noreferrer"
-                    style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);" target="_blank">
+                    target="_blank">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -1035,7 +1048,7 @@
     </div>
     <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
 
-    <!-- Navigation -->
+    
     <nav class="nav">
         <div class="nav-inner">
             <a href="/index.html" class="nav-logo"><i class="fa-solid fa-bolt"></i> Bright AI</a>
@@ -1044,7 +1057,7 @@
     </nav>
 
     <div class="container">
-        <!-- Header -->
+        
         <header class="header">
             <div class="badge"><i class="fa-solid fa-shield-check"></i> Enterprise Quality Control</div>
             <h1>نظام مراقبة الجودة الذكي</h1>
@@ -1052,7 +1065,7 @@
             </p>
         </header>
 
-        <!-- Tabs -->
+        
         <div class="tabs">
             <button class="tab active" data-tab="upload"><i class="fa-solid fa-cloud-arrow-up"></i> رفع وتحليل</button>
             <button class="tab" data-tab="features"><i class="fa-solid fa-star"></i> المزايا المتقدمة</button>
@@ -1060,7 +1073,7 @@
             <button class="tab" data-tab="monitoring"><i class="fa-solid fa-chart-line"></i> المراقبة المستمرة</button>
         </div>
 
-        <!-- Panel: Upload -->
+        
         <div class="panel active" id="panel-upload">
             <div class="grid-2" style="margin-bottom: 32px;">
                 <div class="upload-zone" id="upload-area">
@@ -1071,11 +1084,11 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="background: rgba(16,185,129,0.15); color: var(--emerald);"><i
+                        <div class="card-icon bai-inline-0138"><i
                                 class="fa-solid fa-lightbulb"></i></div>
                         <span class="card-title">ماذا نحلل؟</span>
                     </div>
-                    <ul style="color: #9ca3af; line-height: 2; font-size: 14px; list-style: none;">
+                    <ul class="bai-inline-0139">
                         <li><i class="fa-solid fa-check text-emerald-400"
                                 style="color: var(--emerald); margin-left: 8px;"></i> نسبة المنتجات المطابقة للمواصفات
                         </li>
@@ -1093,9 +1106,9 @@
                 </div>
             </div>
 
-            <!-- Results Section -->
+            
             <div class="results" id="results">
-                <!-- Stats -->
+                
                 <div class="grid-4" style="margin-bottom: 24px;">
                     <div class="card stat">
                         <div class="stat-value" id="r-rows">0</div>
@@ -1115,12 +1128,12 @@
                     </div>
                 </div>
 
-                <!-- Quality Score -->
+                
                 <div class="card" style="margin-bottom: 24px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="bai-inline-0125">
                         <span style="color: white; font-weight: 700;"><i class="fa-solid fa-star"
                                 style="color: gold; margin-left: 8px;"></i> مؤشر الجودة الشاملة</span>
-                        <span id="r-score" style="font-size: 2rem; font-weight: 800; color: var(--emerald);">0%</span>
+                        <span id="r-score" class="bai-inline-0140">0%</span>
                     </div>
                     <div class="meter">
                         <div id="r-meter" class="meter-fill meter-excellent" style="width: 0%;"></div>
@@ -1128,10 +1141,10 @@
                     <p id="r-msg" style="color: #9ca3af; margin-top: 12px; font-size: 14px;"></p>
                 </div>
 
-                <!-- Alerts -->
+                
                 <div id="alerts-container"></div>
 
-                <!-- AI Insights -->
+                
                 <div class="ai-box" style="margin-bottom: 24px;">
                     <div class="ai-header">
                         <div class="ai-avatar"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
@@ -1141,7 +1154,7 @@
                     <div class="ai-content" id="ai-insights">جاري تحليل البيانات...</div>
                 </div>
 
-                <!-- Details Table -->
+                
                 <div class="card">
                     <h4 style="color: white; margin-bottom: 16px;"><i class="fa-solid fa-table"
                             style="margin-left: 8px;"></i> تفاصيل الأعمدة</h4>
@@ -1161,8 +1174,8 @@
                     </div>
                 </div>
 
-                <!-- Actions -->
-                <div style="display: flex; gap: 16px; margin-top: 24px; justify-content: center; flex-wrap: wrap;">
+                
+                <div class="bai-inline-0141">
                     <button class="btn btn-secondary" onclick="location.reload()"><i
                             class="fa-solid fa-rotate-right"></i> تحليل جديد</button>
                     <button class="btn btn-primary" id="export-btn"><i class="fa-solid fa-file-export"></i> تصدير
@@ -1171,7 +1184,7 @@
             </div>
         </div>
 
-        <!-- Panel: Features -->
+        
         <div class="panel" id="panel-features">
             <div class="grid-3">
                 <div class="feature">
@@ -1222,13 +1235,13 @@
             </div>
         </div>
 
-        <!-- Panel: Integration -->
+        
         <div class="panel" id="panel-integration">
             <div class="grid-2">
                 <div class="card">
                     <h4 style="color: white; margin-bottom: 16px;"><i class="fa-solid fa-plug"
                             style="color: var(--cyan); margin-left: 8px;"></i> التكامل مع الأنظمة</h4>
-                    <ul style="color: #9ca3af; line-height: 2.2; font-size: 14px; list-style: none;">
+                    <ul class="bai-inline-0142">
                         <li><strong style="color: white;">SAP QM</strong> — تكامل مباشر مع وحدة إدارة الجودة</li>
                         <li><strong style="color: white;">Oracle ERP</strong> — مزامنة بيانات المخزون والإنتاج</li>
                         <li><strong style="color: white;">Microsoft Dynamics</strong> — ربط سلس البيانات</li>
@@ -1240,7 +1253,7 @@
                     <h4 style="color: white; margin-bottom: 16px;"><i class="fa-solid fa-code"
                             style="color: var(--purple); margin-left: 8px;"></i> API للمطورين</h4>
                     <div
-                        style="background: #0d1117; border-radius: 12px; padding: 16px; font-family: monospace; font-size: 13px; color: #7ee787; overflow-x: auto;">
+                        class="bai-inline-0143">
                         POST /api/v1/quality/check<br>
                         {<br>
                         &nbsp;&nbsp;"batch_id": "B2026-0547",<br>
@@ -1249,14 +1262,14 @@
                         }<br><br>
                         Response: { "score": 97.5, "alerts": [] }
                     </div>
-                    <a href="#" class="btn btn-secondary"
-                        style="margin-top: 16px; width: 100%; justify-content: center;"><i class="fa-solid fa-book"></i>
+                    <a href="#" class="btn btn-secondary bai-inline-0144"
+                       ><i class="fa-solid fa-book"></i>
                         التوثيق الكامل</a>
                 </div>
             </div>
         </div>
 
-        <!-- Panel: Monitoring -->
+        
         <div class="panel" id="panel-monitoring">
             <div class="alert alert-success">
                 <i class="fa-solid fa-circle-check"></i>
@@ -1268,7 +1281,7 @@
                 <div class="card">
                     <h4 style="color: white; margin-bottom: 16px;"><i class="fa-solid fa-gauge-high"
                             style="color: var(--emerald); margin-left: 8px;"></i> مؤشرات نراقبها</h4>
-                    <ul style="color: #9ca3af; line-height: 2; font-size: 14px; list-style: none;">
+                    <ul class="bai-inline-0139">
                         <li>✓ نسبة العيوب (Defect Rate)</li>
                         <li>✓ معدل المرتجعات (Return Rate)</li>
                         <li>✓ OEE - كفاءة المعدات</li>
@@ -1280,7 +1293,7 @@
                 <div class="card">
                     <h4 style="color: white; margin-bottom: 16px;"><i class="fa-solid fa-bell"
                             style="color: var(--amber); margin-left: 8px;"></i> أنواع التنبيهات</h4>
-                    <ul style="color: #9ca3af; line-height: 2; font-size: 14px; list-style: none;">
+                    <ul class="bai-inline-0139">
                         <li>🔴 تجاوز حد العيوب المسموح</li>
                         <li>🟠 انحراف عن المواصفات</li>
                         <li>🟡 اقتراب انتهاء الصلاحية</li>
@@ -1297,17 +1310,17 @@
         </div>
     </div>
 
-    <!-- Loading -->
+    
     <div class="loading" id="loading">
         <div class="spinner"></div>
         <h2 style="color: white; margin-bottom: 8px;">جاري تحليل الجودة...</h2>
         <p id="loading-status" style="color: #9ca3af;">فحص البيانات</p>
     </div>
 
-    <!-- Footer -->
+    
     <footer class="footer">© 2026 Bright AI — نظام مراقبة الجودة الذكي للشركات السعودية</footer>
 
-    <!-- Scripts -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
@@ -1406,7 +1419,11 @@
 
             // Table
             const tbody = document.getElementById('cols-table');
-            tbody.innerHTML = colStats.map(c => `<tr><td>${c.name}</td><td><span style="color: ${c.completeness >= 90 ? 'var(--emerald)' : c.completeness >= 70 ? 'var(--amber)' : 'var(--red)'};">${c.completeness}%</span></td><td>${c.unique}</td><td>${c.missing}</td><td>${c.completeness >= 90 ? '✅' : c.completeness >= 70 ? '⚠️' : '❌'}</td></tr>`).join('');
+            tbody.innerHTML = colStats.map(c => {
+                const scoreClass = c.completeness >= 90 ? 'dq-score-high' : c.completeness >= 70 ? 'dq-score-medium' : 'dq-score-low';
+                const icon = c.completeness >= 90 ? '✅' : c.completeness >= 70 ? '⚠️' : '❌';
+                return `<tr><td>${c.name}</td><td><span class="${scoreClass}">${c.completeness}%</span></td><td>${c.unique}</td><td>${c.missing}</td><td>${icon}</td></tr>`;
+            }).join('');
 
             // Show results
             document.getElementById('results').classList.add('active');

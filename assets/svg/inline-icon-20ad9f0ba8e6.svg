@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 w-full h-full pointer-events-none"
+                                style="filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));">
+                                <path d="M50 250 Q 150 200, 200 150 T 350 100" fill="none" stroke="#eab308"
+                                    stroke-width="3" stroke-dasharray="8 4" class="animate-dash" />
+                                <circle cx="50" cy="250" r="6" fill="#ef4444" /> 
+                                <circle cx="350" cy="100" r="6" fill="#22c55e" /> 
+
+                                
+                                <g>
+                                    <circle cx="200" cy="150" r="15" fill="#eab308" opacity="0.2"
+                                        class="animate-ping" />
+                                    <circle cx="200" cy="150" r="6" fill="#eab308" />
+                                </g>
+                            </svg>
