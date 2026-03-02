@@ -5957,7 +5957,7 @@ steps: [
                     if (openVacancies.length === 0) {
                         modalContent.innerHTML = `
                             <div class="modal-header">
-                                <h2><i class="fas fa-briefcase"></i> الوظائف المتاحة</h2>
+                                <h3><i class="fas fa-briefcase"></i> الوظائف المتاحة</h3>
                                 <button class="close-modal" onclick="document.getElementById('jobVacanciesModal').classList.remove('show')">×</button>
                             </div>
                             <div class="modal-body">
@@ -5988,7 +5988,7 @@ steps: [
                     console.error('Error loading job vacancies:', error);
                     modalContent.innerHTML = `
                         <div class="modal-header">
-                            <h2><i class="fas fa-briefcase"></i> الوظائف المتاحة</h2>
+                            <h3><i class="fas fa-briefcase"></i> الوظائف المتاحة</h3>
                             <button class="close-modal" onclick="document.getElementById('jobVacanciesModal').classList.remove('show')">×</button>
                         </div>
                         <div class="modal-body">
