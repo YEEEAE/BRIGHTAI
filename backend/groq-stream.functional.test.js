@@ -158,10 +158,12 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
   it('success: streams using configured Gemini model', async () => {
     let capturedUrl = '';
     let capturedPayload = null;
+    let capturedHeaders = {};
 
     global.fetch = vi.fn(async (url, options = {}) => {
       capturedUrl = String(url);
       capturedPayload = JSON.parse(options.body || '{}');
+      capturedHeaders = options.headers || {};
 
       return new Response(JSON.stringify({
         candidates: [
@@ -196,7 +198,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
 
       expect(result.status).toBe(200);
       expect(capturedUrl).toContain('/gemini-2.5-flash:generateContent');
-      expect(capturedUrl).toContain('key=gemini_test_key');
+      expect(capturedHeaders['x-goog-api-key']).toBe('gemini_test_key');
       expect(Array.isArray(capturedPayload?.contents)).toBe(true);
       expect(capturedPayload.contents.length).toBeGreaterThan(0);
       expect(result.body).toContain('"token":"تم التشغيل"');
