@@ -1,0 +1,1380 @@
+{
+  "before": {
+    "scanned": 196,
+    "eligible": 195,
+    "skipped": 1,
+    "skippedFiles": [
+      "frontend/pages/partials/new_index_part.html"
+    ],
+    "affected": 84,
+    "missingCounts": {
+      "title": 0,
+      "description": 1,
+      "canonical": 35,
+      "h1": 0,
+      "hreflang": 84
+    },
+    "failingFiles": [
+      {
+        "file": "404.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/404.html' should be 'https://brightai.site/404'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "500.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/500.html' should be 'https://brightai.site/500'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "brightai-platform/public/404.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/brightai-platform/public/404.html' should be 'https://brightai.site/brightai-platform/public/404'",
+          "hreflang ar-SA points to 'https://brightai.site/brightai-platform/public/404.html' instead of 'https://brightai.site/brightai-platform/public/404'",
+          "hreflang x-default points to 'https://brightai.site/brightai-platform/public/404.html' instead of 'https://brightai.site/brightai-platform/public/404'"
+        ]
+      },
+      {
+        "file": "brightai-platform/public/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/brightai-platform/public/index.html/' should be 'https://brightai.site/brightai-platform/public'",
+          "hreflang ar-SA points to 'https://brightai.site/brightai-platform/public/index.html' instead of 'https://brightai.site/brightai-platform/public'",
+          "hreflang x-default points to 'https://brightai.site/brightai-platform/public/index.html' instead of 'https://brightai.site/brightai-platform/public'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/ production-line.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/production-line/' should be 'https://brightai.site/blog/%20production-line'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/astr.doc.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/' should be 'https://brightai.site/blog/astr.doc'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/Generative artificial intelligence.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/generative-artificial-intelligence/' should be 'https://brightai.site/blog/Generative%20artificial%20intelligence'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/generative-artificial-intelligence-2.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/generative-artificial-intelligence/' should be 'https://brightai.site/blog/generative-artificial-intelligence-2'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/production-line-2.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/production-line/' should be 'https://brightai.site/blog/production-line-2'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/ai-transformation/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/process-automation/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/' should be 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/' should be 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/choose-ai-company-saudi/' should be 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/' should be 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/production-line/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/hr-automation-case-study/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/ai-transformation/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/تحليل-البيانات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/' should be 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/' instead of 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/' instead of 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/' should be 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/مقال-تحليل.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/' should be 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/' instead of 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/' instead of 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84'"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightMath.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightMath/' should be 'https://brightai.site/botAI/BrightMath'",
+          "hreflang ar-SA points to 'https://brightai.site/ai-bots/BrightMath/' instead of 'https://brightai.site/botAI/BrightMath'",
+          "hreflang x-default points to 'https://brightai.site/ai-bots/BrightMath/' instead of 'https://brightai.site/botAI/BrightMath'"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightProject.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightProject/' should be 'https://brightai.site/botAI/BrightProject'",
+          "hreflang ar-SA points to 'https://brightai.site/ai-bots/BrightProject/' instead of 'https://brightai.site/botAI/BrightProject'",
+          "hreflang x-default points to 'https://brightai.site/ai-bots/BrightProject/' instead of 'https://brightai.site/botAI/BrightProject'"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightRecruiter.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightRecruiter/' should be 'https://brightai.site/botAI/BrightRecruiter'",
+          "hreflang ar-SA points to 'https://brightai.site/ai-bots/BrightRecruiter/' instead of 'https://brightai.site/botAI/BrightRecruiter'",
+          "hreflang x-default points to 'https://brightai.site/ai-bots/BrightRecruiter/' instead of 'https://brightai.site/botAI/BrightRecruiter'"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightSales.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightSales/' should be 'https://brightai.site/botAI/BrightSales'",
+          "hreflang ar-SA points to 'https://brightai.site/ai-bots/BrightSales/' instead of 'https://brightai.site/botAI/BrightSales'",
+          "hreflang x-default points to 'https://brightai.site/ai-bots/BrightSales/' instead of 'https://brightai.site/botAI/BrightSales'"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightSupport.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightSupport/' should be 'https://brightai.site/botAI/BrightSupport'",
+          "hreflang ar-SA points to 'https://brightai.site/ai-bots/BrightSupport/' instead of 'https://brightai.site/botAI/BrightSupport'",
+          "hreflang x-default points to 'https://brightai.site/ai-bots/BrightSupport/' instead of 'https://brightai.site/botAI/BrightSupport'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/ai-agent-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/ai-agent-en/' instead of 'https://brightai.site/docs/ai-agent'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/ai-agent-en/' instead of 'https://brightai.site/docs/ai-agent'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/ai-agent.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/ai-bots-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/ai-bots-en/' instead of 'https://brightai.site/docs/ai-bots'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/ai-bots-en/' instead of 'https://brightai.site/docs/ai-bots'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/ai-bots.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/consultation-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/consultation-en/' instead of 'https://brightai.site/docs/consultation'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/consultation-en/' instead of 'https://brightai.site/docs/consultation'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/consultation.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/contact-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/contact-en/' instead of 'https://brightai.site/docs/contact'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/contact-en/' instead of 'https://brightai.site/docs/contact'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/contact.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/data-analysis-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/data-analysis-en/' instead of 'https://brightai.site/docs/data-analysis'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/data-analysis-en/' instead of 'https://brightai.site/docs/data-analysis'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/data-analysis.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/faq-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/faq-en/' instead of 'https://brightai.site/docs/faq'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/faq-en/' instead of 'https://brightai.site/docs/faq'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/faq.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/privacy-policy-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/privacy-policy-en/' instead of 'https://brightai.site/docs/privacy-policy'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy-en/' instead of 'https://brightai.site/docs/privacy-policy'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/privacy-policy.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/services-overview-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/services-overview-en/' instead of 'https://brightai.site/docs/services-overview'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/services-overview-en/' instead of 'https://brightai.site/docs/services-overview'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/services-overview.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/smart-automation-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/smart-automation-en/' instead of 'https://brightai.site/docs/smart-automation'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/smart-automation-en/' instead of 'https://brightai.site/docs/smart-automation'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/smart-automation.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-bi-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-bi-en/' instead of 'https://brightai.site/docs/solutions-bi'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-bi-en/' instead of 'https://brightai.site/docs/solutions-bi'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-bi.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-crm-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-crm-en/' instead of 'https://brightai.site/docs/solutions-crm'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-crm-en/' instead of 'https://brightai.site/docs/solutions-crm'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-crm.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-finance-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-finance-en/' instead of 'https://brightai.site/docs/solutions-finance'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-finance-en/' instead of 'https://brightai.site/docs/solutions-finance'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-finance.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-healthcare-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-healthcare-en/' instead of 'https://brightai.site/docs/solutions-healthcare'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-healthcare-en/' instead of 'https://brightai.site/docs/solutions-healthcare'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-healthcare.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-hr-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-hr-en/' instead of 'https://brightai.site/docs/solutions-hr'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-hr-en/' instead of 'https://brightai.site/docs/solutions-hr'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-hr.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-interview-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-interview-en/' instead of 'https://brightai.site/docs/solutions-interview'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-interview-en/' instead of 'https://brightai.site/docs/solutions-interview'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-interview.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-logistics-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-logistics-en/' instead of 'https://brightai.site/docs/solutions-logistics'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-logistics-en/' instead of 'https://brightai.site/docs/solutions-logistics'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-logistics.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-ocr-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-ocr-en/' instead of 'https://brightai.site/docs/solutions-ocr'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-ocr-en/' instead of 'https://brightai.site/docs/solutions-ocr'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-ocr.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-retail-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-retail-en/' instead of 'https://brightai.site/docs/solutions-retail'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-retail-en/' instead of 'https://brightai.site/docs/solutions-retail'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-retail.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-supply-chain-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/solutions-supply-chain-en/' instead of 'https://brightai.site/docs/solutions-supply-chain'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/solutions-supply-chain-en/' instead of 'https://brightai.site/docs/solutions-supply-chain'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/solutions-supply-chain.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/terms-and-conditions-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/terms-and-conditions-en/' instead of 'https://brightai.site/docs/terms-and-conditions'",
+          "Missing hreflang en-SA",
+          "hreflang x-default points to 'https://brightai.site/docs/terms-and-conditions-en/' instead of 'https://brightai.site/docs/terms-and-conditions'"
+        ]
+      },
+      {
+        "file": "frontend/pages/docs/terms-and-conditions.html",
+        "issues": [
+          "Missing hreflang en-SA"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/g.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/admin.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/appointment/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/support-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/supportAI.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/Presentation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/offline/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/terms/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/docs/terms-and-conditions/' should be 'https://brightai.site/terms'",
+          "hreflang ar-SA points to 'https://brightai.site/docs/terms-and-conditions/' instead of 'https://brightai.site/terms'",
+          "hreflang x-default points to 'https://brightai.site/docs/terms-and-conditions/' instead of 'https://brightai.site/terms'"
+        ]
+      },
+      {
+        "file": "الاهم/saudi-keyword-targeting-complete.html",
+        "issues": [
+          "Missing meta description",
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "الاهم/تقارير للمشروع/SEO_Codex_Report_BrightAI.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      }
+    ]
+  },
+  "after": {
+    "scanned": 196,
+    "eligible": 195,
+    "skipped": 1,
+    "skippedFiles": [
+      "frontend/pages/partials/new_index_part.html"
+    ],
+    "affected": 22,
+    "missingCounts": {
+      "title": 0,
+      "description": 0,
+      "canonical": 22,
+      "h1": 0,
+      "hreflang": 22
+    },
+    "failingFiles": [
+      {
+        "file": "frontend/pages/blogger/ production-line.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%20production-line' should be 'https://brightai.site/blog/%20production-line'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%20production-line' instead of 'https://brightai.site/blog/%20production-line'",
+          "hreflang x-default points to 'https://brightai.site/blog/%20production-line' instead of 'https://brightai.site/blog/%20production-line'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/Generative artificial intelligence.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/Generative%20artificial%20intelligence' should be 'https://brightai.site/blog/Generative%20artificial%20intelligence'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/Generative%20artificial%20intelligence' instead of 'https://brightai.site/blog/Generative%20artificial%20intelligence'",
+          "hreflang x-default points to 'https://brightai.site/blog/Generative%20artificial%20intelligence' instead of 'https://brightai.site/blog/Generative%20artificial%20intelligence'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA%20%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82%20%D8%A5%D9%84%D9%89%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1' should be 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9' should be 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A7%D9%95%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA' should be 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA' instead of 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA' instead of 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D9%83%D9%8A%D9%81%20%D8%AA%D8%B3%D9%87%D9%85%20%D9%81%D9%8A%20%D8%AA%D8%AD%D9%82%D9%8A%D9%82%20%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA' should be 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA' instead of 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA' instead of 'https://brightai.site/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85%20%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9_%20%D9%83%D9%8A%D9%81%D9%8A%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF%20%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A7%D9%95%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84%20%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A%20%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA_%20%D9%83%D9%8A%D9%81%20%D9%8A%D9%85%D9%83%D9%86%20%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D8%A3%D9%86%20%D9%8A%D9%82%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A7%D9%94%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%94%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A%20%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9_%20%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%81%D9%8A%20%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9%20%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D8%B5%D9%88%D8%B1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D9%88%D9%94%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/تحليل-البيانات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA' should be 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA' instead of 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA' instead of 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84' should be 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A7%D9%93%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A7%D9%94%D8%B9%D9%85%D8%A7%D9%84'"
+        ]
+      },
+      {
+        "file": "frontend/pages/blogger/مقال-تحليل.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84' should be 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84' instead of 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84'",
+          "hreflang x-default points to 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84' instead of 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84'"
+        ]
+      },
+      {
+        "file": "الاهم/saudi-keyword-targeting-complete.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/saudi-keyword-targeting-complete' should be 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/saudi-keyword-targeting-complete'",
+          "hreflang ar-SA points to 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/saudi-keyword-targeting-complete' instead of 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/saudi-keyword-targeting-complete'",
+          "hreflang x-default points to 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/saudi-keyword-targeting-complete' instead of 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/saudi-keyword-targeting-complete'"
+        ]
+      },
+      {
+        "file": "الاهم/تقارير للمشروع/SEO_Codex_Report_BrightAI.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/%D8%AA%D9%82%D8%A7%D8%B1%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9/SEO_Codex_Report_BrightAI' should be 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/%D8%AA%D9%82%D8%A7%D8%B1%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9/SEO_Codex_Report_BrightAI'",
+          "hreflang ar-SA points to 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/%D8%AA%D9%82%D8%A7%D8%B1%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9/SEO_Codex_Report_BrightAI' instead of 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/%D8%AA%D9%82%D8%A7%D8%B1%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9/SEO_Codex_Report_BrightAI'",
+          "hreflang x-default points to 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/%D8%AA%D9%82%D8%A7%D8%B1%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9/SEO_Codex_Report_BrightAI' instead of 'https://brightai.site/%D8%A7%D9%84%D8%A7%D9%87%D9%85/%D8%AA%D9%82%D8%A7%D8%B1%D9%8A%D8%B1%20%D9%84%D9%84%D9%85%D8%B4%D8%B1%D9%88%D8%B9/SEO_Codex_Report_BrightAI'"
+        ]
+      }
+    ]
+  },
+  "fixedFiles": [
+    {
+      "file": "404.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "500.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "brightai-platform/public/404.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "brightai-platform/public/index.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/ production-line.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/astr.doc.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/Generative artificial intelligence.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/generative-artificial-intelligence-2.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/production-line-2.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/تحليل-البيانات.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/blogger/مقال-تحليل.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/botAI/BrightMath.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/botAI/BrightProject.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/botAI/BrightRecruiter.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/botAI/BrightSales.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/botAI/BrightSupport.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/ai-agent-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/ai-agent.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/ai-bots-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/ai-bots.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/consultation-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/consultation.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/contact-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/contact.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/data-analysis-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/data-analysis.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/faq-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/faq.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/privacy-policy-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/privacy-policy.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/services-overview-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/services-overview.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/smart-automation-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/smart-automation.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-bi-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-bi.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-crm-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-crm.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-finance-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-finance.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-healthcare-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-healthcare.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-hr-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-hr.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-interview-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-interview.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-logistics-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-logistics.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-ocr-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-ocr.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-retail-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-retail.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-supply-chain-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/solutions-supply-chain.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/terms-and-conditions-en.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/docs/terms-and-conditions.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/g.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/pages/admin.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/pages/appointment/index.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/pages/dashboard/index.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/pages/support-ai.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/pages/supportAI.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/pages/Visitor-registration/index.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/interview/Presentation.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/offline/index.html",
+      "actions": [
+        "hreflang"
+      ]
+    },
+    {
+      "file": "frontend/pages/terms/index.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "الاهم/saudi-keyword-targeting-complete.html",
+      "actions": [
+        "description",
+        "canonical",
+        "hreflang"
+      ]
+    },
+    {
+      "file": "الاهم/تقارير للمشروع/SEO_Codex_Report_BrightAI.html",
+      "actions": [
+        "canonical",
+        "hreflang"
+      ]
+    }
+  ]
+}

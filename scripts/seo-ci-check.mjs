@@ -1,168 +1,78 @@
 #!/usr/bin/env node
 import { promises as fs } from "fs";
 import path from "path";
+import {
+  findCounterpartRelPath,
+  normalizeSiteUrl,
+  relPathToCanonical,
+} from "./seo-url-map.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
 const OG_IMAGE_URL = `${BASE_URL}/assets/images/Gemini.png`;
 
-const SERVICE_PAGES = [
-  {
-    file: "smart-automation/index.html",
-    canonical: `${BASE_URL}/smart-automation`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/smart-automation`,
-      "x-default": `${BASE_URL}/smart-automation`,
-    },
-  },
-  {
-    file: "data-analysis/index.html",
-    canonical: `${BASE_URL}/data-analysis`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/data-analysis`,
-      "x-default": `${BASE_URL}/data-analysis`,
-    },
-  },
-  {
-    file: "ai-agent/index.html",
-    canonical: `${BASE_URL}/ai-agent`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/ai-agent`,
-      "x-default": `${BASE_URL}/ai-agent`,
-    },
-  },
-  {
-    file: "frontend/pages/smart-medical-archive/index.html",
-    canonical: `${BASE_URL}/smart-medical-archive`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/smart-medical-archive`,
-      "x-default": `${BASE_URL}/smart-medical-archive`,
-    },
-  },
-  {
-    file: "frontend/pages/ai-workflows/index.html",
-    canonical: `${BASE_URL}/ai-workflows`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/ai-workflows`,
-      "x-default": `${BASE_URL}/ai-workflows`,
-    },
-  },
-  {
-    file: "consultation/index.html",
-    canonical: `${BASE_URL}/consultation`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/consultation`,
-      "x-default": `${BASE_URL}/consultation`,
-    },
-  },
-  {
-    file: "machine-learning/index.html",
-    canonical: `${BASE_URL}/machine-learning`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/machine-learning`,
-      "x-default": `${BASE_URL}/machine-learning`,
-    },
-  },
-  {
-    file: "frontend/pages/ai-scolecs/index.html",
-    canonical: `${BASE_URL}/ai-scolecs`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/ai-scolecs`,
-      "x-default": `${BASE_URL}/ai-scolecs`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/services-overview.html",
-    canonical: `${BASE_URL}/docs/services-overview`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/services-overview`,
-      "en-SA": `${BASE_URL}/docs/services-overview-en`,
-      "x-default": `${BASE_URL}/docs/services-overview`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/services-overview-en.html",
-    canonical: `${BASE_URL}/docs/services-overview-en`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/services-overview`,
-      "en-SA": `${BASE_URL}/docs/services-overview-en`,
-      "x-default": `${BASE_URL}/docs/services-overview`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/consultation.html",
-    canonical: `${BASE_URL}/docs/consultation`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/consultation`,
-      "en-SA": `${BASE_URL}/docs/consultation-en`,
-      "x-default": `${BASE_URL}/docs/consultation`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/consultation-en.html",
-    canonical: `${BASE_URL}/docs/consultation-en`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/consultation`,
-      "en-SA": `${BASE_URL}/docs/consultation-en`,
-      "x-default": `${BASE_URL}/docs/consultation`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/ai-agent.html",
-    canonical: `${BASE_URL}/docs/ai-agent`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/ai-agent`,
-      "en-SA": `${BASE_URL}/docs/ai-agent-en`,
-      "x-default": `${BASE_URL}/docs/ai-agent`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/ai-agent-en.html",
-    canonical: `${BASE_URL}/docs/ai-agent-en`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/ai-agent`,
-      "en-SA": `${BASE_URL}/docs/ai-agent-en`,
-      "x-default": `${BASE_URL}/docs/ai-agent`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/smart-automation.html",
-    canonical: `${BASE_URL}/docs/smart-automation`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/smart-automation`,
-      "en-SA": `${BASE_URL}/docs/smart-automation-en`,
-      "x-default": `${BASE_URL}/docs/smart-automation`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/smart-automation-en.html",
-    canonical: `${BASE_URL}/docs/smart-automation-en`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/smart-automation`,
-      "en-SA": `${BASE_URL}/docs/smart-automation-en`,
-      "x-default": `${BASE_URL}/docs/smart-automation`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/data-analysis.html",
-    canonical: `${BASE_URL}/docs/data-analysis`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/data-analysis`,
-      "en-SA": `${BASE_URL}/docs/data-analysis-en`,
-      "x-default": `${BASE_URL}/docs/data-analysis`,
-    },
-  },
-  {
-    file: "frontend/pages/docs/data-analysis-en.html",
-    canonical: `${BASE_URL}/docs/data-analysis-en`,
-    hreflang: {
-      "ar-SA": `${BASE_URL}/docs/data-analysis`,
-      "en-SA": `${BASE_URL}/docs/data-analysis-en`,
-      "x-default": `${BASE_URL}/docs/data-analysis`,
-    },
-  },
+const SERVICE_PAGE_FILES = [
+  "smart-automation/index.html",
+  "data-analysis/index.html",
+  "ai-agent/index.html",
+  "frontend/pages/smart-medical-archive/index.html",
+  "frontend/pages/ai-workflows/index.html",
+  "consultation/index.html",
+  "machine-learning/index.html",
+  "frontend/pages/ai-scolecs/index.html",
+  "frontend/pages/docs/services-overview.html",
+  "frontend/pages/docs/services-overview-en.html",
+  "frontend/pages/docs/consultation.html",
+  "frontend/pages/docs/consultation-en.html",
+  "frontend/pages/docs/ai-agent.html",
+  "frontend/pages/docs/ai-agent-en.html",
+  "frontend/pages/docs/smart-automation.html",
+  "frontend/pages/docs/smart-automation-en.html",
+  "frontend/pages/docs/data-analysis.html",
+  "frontend/pages/docs/data-analysis-en.html",
 ];
+
+function buildRequiredHreflangForFile(file, lowerPathMap) {
+  const selfUrl = relPathToCanonical(file, BASE_URL);
+  const counterpart = findCounterpartRelPath(file, lowerPathMap);
+  const counterpartUrl = counterpart ? relPathToCanonical(counterpart, BASE_URL) : null;
+  const isEnglish = /-en\.html$/i.test(file);
+
+  if (isEnglish) {
+    if (counterpartUrl) {
+      return {
+        "ar-SA": counterpartUrl,
+        "en-SA": selfUrl,
+        "x-default": counterpartUrl,
+      };
+    }
+    return {
+      "en-SA": selfUrl,
+      "x-default": selfUrl,
+    };
+  }
+
+  if (counterpartUrl) {
+    return {
+      "ar-SA": selfUrl,
+      "en-SA": counterpartUrl,
+      "x-default": selfUrl,
+    };
+  }
+
+  return {
+    "ar-SA": selfUrl,
+    "x-default": selfUrl,
+  };
+}
+
+const SERVICE_PAGE_MAP = new Map(SERVICE_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
+const SERVICE_PAGES = SERVICE_PAGE_FILES.map((file) => ({
+  file,
+  canonical: relPathToCanonical(file, BASE_URL),
+  hreflang: buildRequiredHreflangForFile(file, SERVICE_PAGE_MAP),
+}));
 
 const SITEMAP_BANNED_PATTERNS = [
   /\/frontend\/pages\/interview\//,
@@ -406,7 +316,7 @@ async function checkServicePage(page) {
   const canonicalLinks = extractLinksByRel(html, "canonical");
   if (canonicalLinks.length !== 1) {
     result.errors.push(`Expected 1 canonical link, found ${canonicalLinks.length}.`);
-  } else if (canonicalLinks[0].href !== page.canonical) {
+  } else if (normalizeSiteUrl(canonicalLinks[0].href, BASE_URL) !== page.canonical) {
     result.errors.push(
       `Canonical mismatch. Expected '${page.canonical}', found '${canonicalLinks[0].href}'.`
     );
@@ -428,7 +338,7 @@ async function checkServicePage(page) {
       result.errors.push(`Expected exactly one hreflang '${key}', found ${hit.length}.`);
       continue;
     }
-    if (hit[0].href !== expectedHreflangs[key]) {
+    if (normalizeSiteUrl(hit[0].href, BASE_URL) !== expectedHreflangs[key]) {
       result.errors.push(
         `hreflang '${key}' mismatch. Expected '${expectedHreflangs[key]}', found '${hit[0].href}'.`
       );

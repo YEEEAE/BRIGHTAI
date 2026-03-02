@@ -2,6 +2,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { glob } from "glob";
+import {
+  findCounterpartRelPath,
+  normalizeRelPath,
+  normalizeSiteUrl,
+  relPathToCanonical,
+} from "./seo-url-map.mjs";
 
 const ROOT = process.cwd();
 const BASE_URL = "https://brightai.site";
@@ -44,29 +50,6 @@ function parseArgs(argv) {
   }
 
   return args;
-}
-
-function normalizeRelPath(filePath) {
-  return filePath.replace(/\\/g, "/");
-}
-
-function encodeUrlPath(urlPath) {
-  if (urlPath === "/") return "/";
-  const trailingSlash = urlPath.endsWith("/");
-  const encoded = urlPath
-    .split("/")
-    .filter(Boolean)
-    .map((segment) => encodeURIComponent(segment))
-    .join("/");
-  return `/${encoded}${trailingSlash ? "/" : ""}`;
-}
-
-function relPathToCanonical(relPath) {
-  const normalized = normalizeRelPath(relPath);
-  if (normalized === "index.html") {
-    return `${BASE_URL}/`;
-  }
-  return `${BASE_URL}${encodeUrlPath(`/${normalized}`)}`;
 }
 
 function parseAttributes(tag) {
@@ -245,27 +228,12 @@ function insertIntoBodyTop(content, tag) {
   return `${content.slice(0, insertAt)}\n${tag}${content.slice(insertAt)}`;
 }
 
-function findCounterpart(relPath, lowerPathMap) {
-  const normalized = normalizeRelPath(relPath);
-  const lower = normalized.toLowerCase();
-
-  if (/-en\.html$/i.test(lower)) {
-    const candidate = normalized.replace(/-en\.html$/i, ".html").toLowerCase();
-    return lowerPathMap.get(candidate) || null;
-  }
-
-  if (/\.html$/i.test(lower)) {
-    const candidate = normalized.replace(/\.html$/i, "-en.html").toLowerCase();
-    return lowerPathMap.get(candidate) || null;
-  }
-
-  return null;
-}
-
 function buildRequiredHreflang(relPath, lang, lowerPathMap) {
-  const selfUrl = relPathToCanonical(relPath);
-  const counterpart = findCounterpart(relPath, lowerPathMap);
-  const counterpartUrl = counterpart ? relPathToCanonical(counterpart) : null;
+  const selfUrl = relPathToCanonical(relPath, BASE_URL);
+  const counterpart = findCounterpartRelPath(relPath, lowerPathMap);
+  const counterpartUrl = counterpart ? relPathToCanonical(counterpart, BASE_URL) : null;
+
+  if (!selfUrl) return [];
 
   if (lang === "en") {
     if (counterpartUrl) {
@@ -302,7 +270,20 @@ function extractAlternateLinks(html) {
       ...tag,
       hreflang: tag.attrs.hreflang.trim(),
       href: (tag.attrs.href || "").trim(),
+      normalizedHref: normalizeSiteUrl(tag.attrs.href || "", BASE_URL),
     }));
+}
+
+function removeLinkTags(content, predicate) {
+  const tags = extractLinkTags(content)
+    .filter(predicate)
+    .sort((a, b) => b.start - a.start);
+
+  let updated = content;
+  for (const tag of tags) {
+    updated = replaceSlice(updated, tag.start, tag.end, "");
+  }
+  return updated;
 }
 
 function auditFile(content, relPath, lowerPathMap) {
@@ -325,35 +306,73 @@ function auditFile(content, relPath, lowerPathMap) {
   const titleText = extractTagContent(content, "title");
   const h1Text = extractTagContent(content, "h1");
   const lang = detectLang(content, relPath, titleText, h1Text);
+  const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
+
+  if (!expectedCanonical) {
+    return {
+      eligible: false,
+      issues: [],
+      requiredHreflang: [],
+      missing: {
+        title: false,
+        description: false,
+        canonical: false,
+        h1: false,
+        hreflang: false,
+      },
+      hreflangProblems: [],
+    };
+  }
+
   const requiredHreflang = buildRequiredHreflang(relPath, lang, lowerPathMap);
 
   const linkTags = extractLinkTags(content);
   const canonical = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
+  const canonicalRaw = (canonical?.attrs.href || "").trim();
+  const canonicalNormalized = normalizeSiteUrl(canonicalRaw, BASE_URL);
+  const canonicalMismatch = canonicalNormalized !== expectedCanonical;
   const metaDescription = extractMetaTags(content).find(
     (tag) => (tag.attrs.name || "").trim().toLowerCase() === "description"
   );
 
   const alternateLinks = extractAlternateLinks(content);
   const hreflangProblems = [];
+  const groupedByCode = new Map();
+  for (const link of alternateLinks) {
+    const code = link.hreflang.toLowerCase();
+    if (!groupedByCode.has(code)) groupedByCode.set(code, []);
+    groupedByCode.get(code).push(link);
+  }
+
   for (const expected of requiredHreflang) {
-    const hit = alternateLinks.find(
-      (link) => link.hreflang.toLowerCase() === expected.code.toLowerCase()
-    );
-    if (!hit) {
+    const bucket = groupedByCode.get(expected.code.toLowerCase()) || [];
+    if (bucket.length === 0) {
       hreflangProblems.push(`Missing hreflang ${expected.code}`);
       continue;
     }
-    if (hit.href !== expected.href) {
+    if (bucket.length > 1) {
+      hreflangProblems.push(`Duplicate hreflang ${expected.code} (${bucket.length})`);
+      continue;
+    }
+    const hit = bucket[0];
+    if (hit.normalizedHref !== expected.href) {
       hreflangProblems.push(
         `hreflang ${expected.code} points to '${hit.href || "(empty)"}' instead of '${expected.href}'`
       );
     }
   }
 
+  const expectedCodes = new Set(requiredHreflang.map((item) => item.code.toLowerCase()));
+  for (const code of groupedByCode.keys()) {
+    if (!expectedCodes.has(code)) {
+      hreflangProblems.push(`Unexpected hreflang ${code}`);
+    }
+  }
+
   const missing = {
     title: !titleText,
     description: !metaDescription || !(metaDescription.attrs.content || "").trim(),
-    canonical: !canonical || !(canonical.attrs.href || "").trim(),
+    canonical: !canonicalRaw || canonicalMismatch,
     h1: !h1Text,
     hreflang: hreflangProblems.length > 0,
   };
@@ -361,7 +380,13 @@ function auditFile(content, relPath, lowerPathMap) {
   const issues = [];
   if (missing.title) issues.push("Missing title");
   if (missing.description) issues.push("Missing meta description");
-  if (missing.canonical) issues.push("Missing canonical");
+  if (missing.canonical) {
+    issues.push(
+      !canonicalRaw
+        ? "Missing canonical"
+        : `Canonical mismatch: '${canonicalRaw}' should be '${expectedCanonical}'`
+    );
+  }
   if (missing.h1) issues.push("Missing H1");
   if (missing.hreflang) issues.push(...hreflangProblems);
 
@@ -425,14 +450,9 @@ function applyFixes(content, relPath, lowerPathMap) {
   }
 
   if (initialAudit.missing.canonical) {
-    const canonicalTag = `<link rel="canonical" href="${relPathToCanonical(relPath)}" />`;
-    const linkTags = extractLinkTags(updated);
-    const current = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
-    if (current) {
-      updated = replaceSlice(updated, current.start, current.end, canonicalTag);
-    } else {
-      updated = insertIntoHead(updated, canonicalTag);
-    }
+    const canonicalTag = `<link rel="canonical" href="${relPathToCanonical(relPath, BASE_URL)}" />`;
+    updated = removeLinkTags(updated, (tag) => hasRelToken(tag.attrs.rel, "canonical"));
+    updated = insertIntoHead(updated, canonicalTag);
     actions.push("canonical");
   }
 
@@ -457,20 +477,13 @@ function applyFixes(content, relPath, lowerPathMap) {
 
   if (initialAudit.missing.hreflang) {
     const required = buildRequiredHreflang(relPath, lang, lowerPathMap);
+    updated = removeLinkTags(
+      updated,
+      (tag) => hasRelToken(tag.attrs.rel, "alternate") && Boolean(tag.attrs.hreflang)
+    );
     for (const expected of required) {
-      const links = extractAlternateLinks(updated);
-      const current = links.find(
-        (link) => link.hreflang.toLowerCase() === expected.code.toLowerCase()
-      );
-      const hreflangTag =
-        `<link rel="alternate" hreflang="${expected.code}" href="${expected.href}" />`;
-      if (!current) {
-        updated = insertIntoHead(updated, hreflangTag);
-        continue;
-      }
-      if (current.href !== expected.href) {
-        updated = replaceSlice(updated, current.start, current.end, hreflangTag);
-      }
+      const hreflangTag = `<link rel="alternate" hreflang="${expected.code}" href="${expected.href}" />`;
+      updated = insertIntoHead(updated, hreflangTag);
     }
     actions.push("hreflang");
   }
