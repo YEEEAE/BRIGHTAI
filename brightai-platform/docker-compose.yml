@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: brightai-frontend
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: example.com
+      LETSENCRYPT_HOST: example.com
+      LETSENCRYPT_EMAIL: admin@example.com
+    networks:
+      - web
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: brightai-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./data/certs:/etc/nginx/certs:rw
+      - ./data/vhost:/etc/nginx/vhost.d
+      - ./data/html:/usr/share/nginx/html
+    networks:
+      - web
+
+  letsencrypt:
+    image: nginxproxy/acme-companion
+    container_name: brightai-letsencrypt
+    restart: unless-stopped
+    environment:
+      DEFAULT_EMAIL: admin@example.com
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/certs:/etc/nginx/certs:rw
+      - ./data/vhost:/etc/nginx/vhost.d
+      - ./data/html:/usr/share/nginx/html
+    networks:
+      - web
+
+  redis:
+    image: redis:alpine
+    container_name: brightai-redis
+    profiles: ["cache"]
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge

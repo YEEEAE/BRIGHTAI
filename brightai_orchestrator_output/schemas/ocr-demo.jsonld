@@ -1,0 +1,23 @@
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "طريقة استخدام OCR في BrightAI",
+  "description": "خطوات بسيطة لاستخراج النصوص والحقول من المستندات.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "ارفع الملف",
+      "text": "ارفع صورة أو PDF للمستند."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "انتظر التحليل",
+      "text": "سيتم استخراج النص والحقول تلقائياً."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "استلم JSON",
+      "text": "استلم النتائج بصيغة JSON جاهزة."
+    }
+  ]
+}

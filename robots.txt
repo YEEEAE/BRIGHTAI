@@ -1,0 +1,40 @@
+# BrightAI robots.txt
+# https://brightai.site
+
+Sitemap: https://brightai.site/sitemap.xml
+
+User-agent: *
+Allow: /
+Allow: /frontend/css/
+Allow: /frontend/js/
+Allow: /assets/
+Allow: /frontend/pages/
+Allow: /manifest.json
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /config/
+Disallow: /backup/
+Disallow: /logs/
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: /.git/
+Disallow: /.env
+Disallow: /.vscode/
+Disallow: /node_modules/
+Disallow: /tests/
+Disallow: /_next/
+Disallow: /.nuxt/
+Disallow: /dist/
+Disallow: /build/
+Disallow: /src/
+Disallow: /api/auth/
+Disallow: /api/internal/
+Disallow: /server/
+Disallow: /*.map$
+Disallow: /*.log$
+Disallow: /*.sql$
+Disallow: /*.zip$
+Disallow: /*?*utm_
+Disallow: /*?*gclid=
+Disallow: /*?*fbclid=

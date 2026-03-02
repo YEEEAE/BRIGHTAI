@@ -1,0 +1,71 @@
+# === ملفات البيئة ===
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.test
+
+# === ملفات بيئة المنصة ===
+brightai-platform/.env
+brightai-platform/.env.local
+brightai-platform/.env.production
+brightai-platform/.env.*.local
+
+# === ملفات env الواجهة الأمامية ===
+frontend/env.js
+frontend/env.local.js
+env.js
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+# Note: .min.js and .min.css files are now included in git (needed for production)
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Demo/Development directories (contain exposed API keys)
+h/
+Customer/
+try.html
+
+# Test/Dead files
+test-glassmorphism.html
+mm.html
+nn.html
+width.html
+fake.py
+ز.html
+يي
+
+# Directories with spaces (non-standard naming)
+Saudi tourism and heritage services/
+fix my website/
+Docfile/
+backups/
+*.zip
+.env*.local
+
+# Local Netlify folder
+.netlify

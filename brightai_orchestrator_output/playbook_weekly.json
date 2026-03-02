@@ -1,0 +1,112 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "range": "2026-02-09 إلى 2026-02-15",
+      "theme": "التحكم الداخلي + تأسيس صفحات الملك",
+      "tasks": [
+        {
+          "task": "إنشاء صفحات الملك الأربع (/demo, /demo/ocr-demo/, /demo/resources/report-ai-saudi-2026/, /demo/pricing/) مع H1 وMeta وCTA واضح",
+          "owner": "Frontend + Content",
+          "start_date": "2026-02-09",
+          "end_date": "2026-02-13",
+          "estimated_hours": 14,
+          "kpi": "نشر 4 صفحات تحويلية مع مؤشرات تتبع"
+        },
+        {
+          "task": "تنفيذ 10+ روابط داخلية عالية الأولوية نحو صفحات الملك (من الخطة)",
+          "owner": "SEO",
+          "start_date": "2026-02-10",
+          "end_date": "2026-02-15",
+          "estimated_hours": 10,
+          "kpi": ">=10 روابط داخلية فعالة إلى صفحات الملك"
+        },
+        {
+          "task": "إضافة Schema أساسي (SoftwareApplication + FAQ لـ /demo)",
+          "owner": "Frontend",
+          "start_date": "2026-02-12",
+          "end_date": "2026-02-15",
+          "estimated_hours": 4,
+          "kpi": "ظهور نتائج منسّقة FAQ خلال 2-3 أسابيع"
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "range": "2026-02-16 إلى 2026-02-22",
+      "theme": "Technical SEO sprint",
+      "tasks": [
+        {
+          "task": "معالجة العناوين/الوصف المفقود وتوحيد القوالب المكررة (تم نقل الصفحة)",
+          "owner": "SEO + Content",
+          "start_date": "2026-02-16",
+          "end_date": "2026-02-19",
+          "estimated_hours": 8,
+          "kpi": "0 صفحات بدون Meta description في الصفحات الأساسية"
+        },
+        {
+          "task": "تحسين LCP عبر ضغط صور الهيرو الكبيرة وتفعيل lazy-load",
+          "owner": "Frontend",
+          "start_date": "2026-02-16",
+          "end_date": "2026-02-20",
+          "estimated_hours": 6,
+          "kpi": "LCP < 2.5s على الجوال"
+        },
+        {
+          "task": "تحديث sitemap وrobots وربط canonical للنسخ المكررة",
+          "owner": "SEO",
+          "start_date": "2026-02-18",
+          "end_date": "2026-02-22",
+          "estimated_hours": 4,
+          "kpi": "Index Coverage نظيف بدون تضارب"
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "range": "2026-02-23 إلى 2026-03-01",
+      "theme": "Content/Outreach",
+      "tasks": [
+        {
+          "task": "إنشاء 4 مقالات سعودية داعمة تربط مباشرة بصفحات الملك",
+          "owner": "Content",
+          "start_date": "2026-02-23",
+          "end_date": "2026-02-28",
+          "estimated_hours": 16,
+          "kpi": "4 مقالات منشورة + 4 روابط داخلية تحويلية"
+        },
+        {
+          "task": "بناء 5 روابط خارجية نوعية من مواقع سعودية ذات صلة",
+          "owner": "SEO",
+          "start_date": "2026-02-24",
+          "end_date": "2026-03-01",
+          "estimated_hours": 12,
+          "kpi": ">=5 روابط dofollow جديدة"
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "range": "2026-03-02 إلى 2026-03-08",
+      "theme": "Measurement & Scaling",
+      "tasks": [
+        {
+          "task": "تهيئة تتبع التحويلات (CTA click, Demo start, OCR upload)",
+          "owner": "Analytics",
+          "start_date": "2026-03-02",
+          "end_date": "2026-03-04",
+          "estimated_hours": 6,
+          "kpi": "تغطية 100% لمسار التحويل الأساسي"
+        },
+        {
+          "task": "اختبار A/B لنسخ CTA في /demo و/demo/pricing/",
+          "owner": "Growth",
+          "start_date": "2026-03-04",
+          "end_date": "2026-03-08",
+          "estimated_hours": 8,
+          "kpi": "+15% CTR على CTA الرئيسي"
+        }
+      ]
+    }
+  ]
+}

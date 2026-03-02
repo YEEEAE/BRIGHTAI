@@ -1,0 +1,47 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "BrightAI Demo",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "تجربة فورية لذكاء BrightAI للشركات السعودية مع استجابات لحظية.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "SAR",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل الديمو يحتاج تسجيل؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا، تقدر تبدأ فوراً بدون تسجيل."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كم تأخذ النتائج؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تظهر أول نتيجة خلال أجزاء من الثانية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يدعم اللغة العربية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، يدعم العربية بلهجة سعودية واضحة."
+          }
+        }
+      ]
+    }
+  ]
+}

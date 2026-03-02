@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script
+  src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
+  crossorigin="anonymous"
+></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "voq2kb6voe");
+</script>
+
+
+<script src="/frontend/js/sentry-init.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+        
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://brightai.site/interview/pages/appointment/">
+    <title>حجز مواعيد الموارد البشرية - MAIS</title>
+<meta name="description" content="حجز مواعيد الموارد البشرية - MAIS - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'IBM Plex Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .appointment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-glass);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+        }
+
+        .calendar-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .calendar-nav {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .calendar-nav:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .calendar-day:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .calendar-day.selected {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .time-slot {
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-slot:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .time-slot.selected {
+            background: var(--warning-gradient);
+            border-color: #FFD700;
+        }
+
+        .time-slot.unavailable {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: rgba(255, 0, 0, 0.5);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .voice-input-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .voice-btn {
+            padding: 1rem;
+            background: var(--secondary-gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .voice-btn.recording {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .btn-submit {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hr-staff-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .staff-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .staff-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .staff-card.selected {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+        }
+
+        .staff-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--warning-gradient);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .staff-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .staff-title {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .appointment-summary {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            color: var(--text-primary);
+            margin-top: 2rem;
+        }
+
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.success {
+            background: #4CAF50;
+        }
+
+        .notification.error {
+            background: #f44336;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .appointment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-grid {
+                font-size: 0.9rem;
+            }
+            
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hr-staff-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+  
+  <meta property="og:title" content="حجز مواعيد الموارد البشرية - MAIS">
+  <meta property="og:description" content="حجز مواعيد الموارد البشرية - MAIS - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta property="og:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  <meta property="og:url" content="https://brightai.site/interview/pages/appointment">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="مُشرقة AI">
+  
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="حجز مواعيد الموارد البشرية - MAIS">
+  <meta name="twitter:description" content="حجز مواعيد الموارد البشرية - MAIS - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي">
+  <meta name="twitter:image" content="https://www2.0zz0.com/2025/06/23/22/317775783.png">
+  
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/main.bundle.css" /><noscript><link rel="stylesheet" href="/frontend/css/main.bundle.css" /></noscript>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/index-theme.css" /><noscript><link rel="stylesheet" href="/frontend/css/index-theme.css" /></noscript>
+
+<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+<script defer src="/frontend/js/iconify-preload.js"></script>
+<script defer src="/frontend/js/vendor/iconify.min.js"></script>
+<script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+    
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<script defer="" src="/frontend/js/navigation.js"></script>
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+</head>
+<body>
+
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
+            
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/services/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-automation/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-agent/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/contact/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/data-analysis/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-medical-archive">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/job.MAISco">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-scolecs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/health/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/about/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/docs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/blog/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+                
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+                
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full bai-inline-0001">
+            
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+            
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/services/">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/smart-automation/">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/ai-agent/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/data-analysis/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/contact/">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/smart-medical-archive">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/job.MAISco">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/ai-scolecs">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/health/">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/blog/">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/about/">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/docs">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/blog/">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/contact/">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer"
+                    target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/try">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-calendar-alt"></i>
+                حجز مواعيد الموارد البشرية
+            </h1>
+            <p class="page-subtitle">احجز موعد استشارة أو مقابلة مع فريق الموارد البشرية</p>
+        </div>
+
+        
+        <div class="glass-card">
+            <h3 class="card-title">
+                <i class="fas fa-users"></i>
+                اختر موظف الموارد البشرية
+            </h3>
+            <div class="hr-staff-list" id="hrStaffList">
+                
+            </div>
+        </div>
+
+        <div class="appointment-grid">
+            
+            <div class="glass-card">
+                <h3 class="card-title">
+                    <i class="fas fa-calendar"></i>
+                    اختر التاريخ
+                </h3>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" id="prevMonth">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <h3 id="currentMonth"></h3>
+                        <button class="calendar-nav" id="nextMonth">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        
+                    </div>
+                </div>
+                
+                <h4 style="color: white; margin: 1rem 0;">الأوقات المتاحة</h4>
+                <div class="time-slots" id="timeSlots">
+                    
+                </div>
+            </div>
+
+            
+            <div class="glass-card">
+                <h3 class="card-title">
+                    <i class="fas fa-clipboard-list"></i>
+                    تفاصيل الموعد
+                </h3>
+                <form id="appointmentForm">
+                    <div class="form-group">
+                        <label for="clientName">الاسم الكامل</label>
+                        <input type="text" id="clientName" class="form-control" placeholder="أدخل اسمك الكامل" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientEmail">البريد الإلكتروني</label>
+                        <input type="email" id="clientEmail" class="form-control" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clientPhone">رقم الهاتف</label>
+                        <input type="tel" id="clientPhone" class="form-control" placeholder="+966 XX XXX XXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentType">نوع الموعد</label>
+                        <select id="appointmentType" class="form-control" required>
+                            <option value="">اختر نوع الموعد</option>
+                            <option value="interview">مقابلة وظيفية</option>
+                            <option value="consultation">استشارة موارد بشرية</option>
+                            <option value="complaint">شكوى أو اقتراح</option>
+                            <option value="training">تدريب أو تطوير</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="appointmentNotes">ملاحظات إضافية</label>
+                        <textarea id="appointmentNotes" class="form-control" rows="3" placeholder="أضف أي تفاصيل إضافية..."></textarea>
+                        
+                        <div class="voice-input-container">
+                            <button type="button" class="voice-btn" id="voiceBtn" title="تسجيل صوتي">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">اضغط للتسجيل الصوتي</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn" disabled>
+                        <i class="fas fa-check"></i>
+                        حجز الموعد
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        
+        <div class="appointment-summary" id="appointmentSummary" style="display: none;">
+            <h3 class="summary-title">ملخص الموعد</h3>
+            <div id="summaryContent">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // HR Staff Data
+        const hrStaff = [
+            {
+                id: 1,
+                name: ' ابو فيصل',
+                title: 'مدير الموارد البشرية',
+                avatar: '👩‍💼',
+                available: true
+            },
+            {
+                id: 2,
+                name: 'عبدالعزيز',
+                title: ' الموارد البشرية',
+                avatar: '👨‍💼',
+                available: true
+            },
+            {
+                id: 3,
+                name: 'سلطان ',
+                title: ' الموارد البشرية',
+                avatar: '👩‍🎓',
+                available: true
+            },
+            {
+                id: 4,
+                name: 'علي ',
+                title: '  الامن والسلامة',
+                avatar: '👨‍💻',
+                available: false
+            }
+        ];
+
+        // Available time slots
+        const timeSlots = [
+            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+            '13:00', '13:30', '14:00', '14:30', '15:00', '15:30'
+        ];
+
+        // Global variables
+        let currentDate = new Date();
+        let selectedDate = null;
+        let selectedTime = null;
+        let selectedStaff = null;
+        let isRecording = false;
+        let recognition = null;
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeHRStaff();
+            initializeCalendar();
+            initializeVoiceInput();
+            initializeForm();
+        });
+
+        // Initialize HR Staff selection
+        function initializeHRStaff() {
+            const staffList = document.getElementById('hrStaffList');
+            
+            hrStaff.forEach(staff => {
+                const staffCard = document.createElement('div');
+                staffCard.className = 'staff-card';
+                staffCard.onclick = () => selectStaff(staff.id);
+                
+                staffCard.innerHTML = `
+                    <div class="staff-avatar">${staff.avatar}</div>
+                    <div class="staff-name">${staff.name}</div>
+                    <div class="staff-title">${staff.title}</div>
+                    ${!staff.available ? '<div class="bai-inline-0133">غير متاح حالياً</div>' : ''}
+                `;
+                
+                if (!staff.available) {
+                    staffCard.style.opacity = '0.6';
+                    staffCard.style.cursor = 'not-allowed';
+                    staffCard.onclick = null;
+                }
+                
+                staffList.appendChild(staffCard);
+            });
+        }
+
+        // Select HR staff member
+        function selectStaff(staffId) {
+            selectedStaff = staffId;
+            
+            // Update UI
+            document.querySelectorAll('.staff-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.staff-card')[staffId - 1].classList.add('selected');
+            
+            // Update available time slots
+            updateTimeSlots();
+            updateSubmitButton();
+        }
+
+        // Initialize calendar
+        function initializeCalendar() {
+            updateCalendarDisplay();
+            
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                updateCalendarDisplay();
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                updateCalendarDisplay();
+            });
+        }
+
+        // Update calendar display
+        function updateCalendarDisplay() {
+            const monthNames = [
+                'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+                'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+            ];
+            
+            document.getElementById('currentMonth').textContent = 
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+            
+            // Add day headers
+            const dayHeaders = ['أح', 'إث', 'ث', 'أر', 'خ', 'ج', 'س'];
+            dayHeaders.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day';
+                dayHeader.style.fontWeight = 'bold';
+                dayHeader.style.background = 'rgba(102, 126, 234, 0.2)';
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            // Generate calendar days
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = date.getDate();
+                
+                if (date.getMonth() !== currentDate.getMonth()) {
+                    dayElement.classList.add('disabled');
+                } else if (date < new Date().setHours(0,0,0,0)) {
+                    dayElement.classList.add('disabled');
+                } else {
+                    dayElement.addEventListener('click', () => selectDate(date));
+                }
+                
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        // Select date
+        function selectDate(date) {
+            selectedDate = new Date(date);
+            
+            // Update UI
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+            });
+            
+            event.target.classList.add('selected');
+            
+            // Update time slots
+            updateTimeSlots();
+            updateSubmitButton();
+        }
+
+        // Update available time slots
+        function updateTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            if (!selectedDate || !selectedStaff) {
+                return;
+            }
+            
+            timeSlots.forEach(time => {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = time;
+                
+                // Simulate some unavailable slots
+                const isUnavailable = Math.random() < 0.3;
+                if (isUnavailable) {
+                    timeSlot.classList.add('unavailable');
+                    timeSlot.title = 'غير متاح';
+                } else {
+                    timeSlot.addEventListener('click', () => selectTime(time, timeSlot));
+                }
+                
+                timeSlotsContainer.appendChild(timeSlot);
+            });
+        }
+
+        // Select time slot
+        function selectTime(time, element) {
+            selectedTime = time;
+            
+            // Update UI
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            updateSubmitButton();
+        }
+
+        // Initialize voice input
+        function initializeVoiceInput() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                recognition.lang = 'ar-SA';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                
+                recognition.onstart = function() {
+                    isRecording = true;
+                    document.getElementById('voiceBtn').classList.add('recording');
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    const notesField = document.getElementById('appointmentNotes');
+                    notesField.value += (notesField.value ? ' ' : '') + transcript;
+                };
+                
+                recognition.onend = function() {
+                    isRecording = false;
+                    document.getElementById('voiceBtn').classList.remove('recording');
+                };
+                
+                recognition.onerror = function(event) {
+                    showNotification('حدث خطأ في التسجيل الصوتي', 'error');
+                    isRecording = false;
+                    document.getElementById('voiceBtn').classList.remove('recording');
+                };
+                
+                document.getElementById('voiceBtn').addEventListener('click', function() {
+                    if (isRecording) {
+                        recognition.stop();
+                    } else {
+                        recognition.start();
+                    }
+                });
+            } else {
+                document.getElementById('voiceBtn').style.display = 'none';
+            }
+        }
+
+        // Initialize form
+        function initializeForm() {
+            const form = document.getElementById('appointmentForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!selectedStaff || !selectedDate || !selectedTime) {
+                    showNotification('يرجى اختيار الموظف والتاريخ والوقت', 'error');
+                    return;
+                }
+                
+                const formData = {
+                    staff: hrStaff.find(s => s.id === selectedStaff),
+                    date: selectedDate,
+                    time: selectedTime,
+                    name: document.getElementById('clientName').value,
+                    email: document.getElementById('clientEmail').value,
+                    phone: document.getElementById('clientPhone').value,
+                    type: document.getElementById('appointmentType').value,
+                    notes: document.getElementById('appointmentNotes').value
+                };
+                
+                // Simulate API call
+                submitAppointment(formData);
+            });
+        }
+
+        // Submit appointment
+        function submitAppointment(data) {
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحجز...';
+            submitBtn.disabled = true;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Store appointment (simulate)
+                const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+                appointments.push({
+                    id: Date.now(),
+                    ...data,
+                    status: 'confirmed',
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                
+                // Show success message
+                showNotification('تم حجز الموعد بنجاح!', 'success');
+                
+                // Show summary
+                showAppointmentSummary(data);
+                
+                // Reset form
+                document.getElementById('appointmentForm').reset();
+                selectedStaff = null;
+                selectedDate = null;
+                selectedTime = null;
+                
+                // Reset UI
+                document.querySelectorAll('.staff-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                document.querySelectorAll('.calendar-day').forEach(day => {
+                    day.classList.remove('selected');
+                });
+                document.getElementById('timeSlots').innerHTML = '';
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = true;
+                
+            }, 2000);
+        }
+
+        // Show appointment summary
+        function showAppointmentSummary(data) {
+            const summary = document.getElementById('appointmentSummary');
+            const content = document.getElementById('summaryContent');
+            
+            const dateStr = data.date.toLocaleDateString('ar-SA', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            const typeMap = {
+                'interview': 'مقابلة وظيفية',
+                'consultation': 'استشارة موارد بشرية',
+                'complaint': 'شكوى أو اقتراح',
+                'training': 'تدريب أو تطوير',
+                'other': 'أخرى'
+            };
+            
+            content.innerHTML = `
+                <div class="summary-item">
+                    <span><strong>الموظف:</strong></span>
+                    <span>${data.staff.name} - ${data.staff.title}</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>التاريخ:</strong></span>
+                    <span>${dateStr}</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>الوقت:</strong></span>
+                    <span>${data.time}</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>نوع الموعد:</strong></span>
+                    <span>${typeMap[data.type] || data.type}</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>اسم المتقدم:</strong></span>
+                    <span>${data.name}</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>البريد الإلكتروني:</strong></span>
+                    <span>${data.email}</span>
+                </div>
+                <div class="summary-item">
+                    <span><strong>رقم الهاتف:</strong></span>
+                    <span>${data.phone}</span>
+                </div>
+                ${data.notes ? `
+                <div class="summary-item">
+                    <span><strong>ملاحظات:</strong></span>
+                    <span>${data.notes}</span>
+                </div>
+                ` : ''}
+            `;
+            
+            summary.style.display = 'block';
+            summary.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Update submit button state
+        function updateSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            const canSubmit = selectedStaff && selectedDate && selectedTime;
+            
+            submitBtn.disabled = !canSubmit;
+            
+            if (canSubmit) {
+                submitBtn.style.opacity = '1';
+            } else {
+                submitBtn.style.opacity = '0.6';
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+
+    <script src="/frontend/js/main.bundle.js" defer></script>
+
+    <script src="/frontend/js/index-theme.js" defer></script>
+<script src="/frontend/js/clarity-events.js" defer></script>
+</body>
+</html>

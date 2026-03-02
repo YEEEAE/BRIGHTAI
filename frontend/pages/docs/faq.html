@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+<script
+  src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
+  crossorigin="anonymous"
+></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "voq2kb6voe");
+</script>
+
+
+<script src="/frontend/js/sentry-init.js" defer></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الأسئلة الشائعة | Bright AI - كل ما تحتاج معرفته</title>
+<meta name="description" content="إجابات لأهم الأسئلة الشائعة حول خدمات Bright AI، الأسعار، طريقة العمل، والدعم الفني. تواصل معنا لمزيد من التفاصيل." />
+
+<link rel="canonical" href="https://brightai.site/docs/faq/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/faq/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/faq/" />
+
+<link rel="stylesheet" href="/frontend/css/bundle-critical.css" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/main.bundle.css" /><noscript><link rel="stylesheet" href="/frontend/css/main.bundle.css" /></noscript>
+    <link rel="stylesheet" href="/frontend/css/bundle-pages.css" /><link rel="stylesheet" href="/frontend/css/docs.css" />
+    <script>
+        (function () {
+            function loadScript(src) { var s = document.createElement('script'); s.src = src; s.async = true; document.body.appendChild(s); }
+            setTimeout(function () {
+}, 50);
+        })();
+    </script>
+    <script src="/frontend/js/navigation.js" defer></script>
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"ما الفرق بين AIaaS والسحابة التقليدية؟","acceptedAnswer":{"@type":"Answer","text":"AIaaS يوفر نماذج ذكاء اصطناعي جاهزة وخدمات تشغيل ومراقبة للنماذج، بينما السحابة التقليدية توفر بنية تحتية عامة تحتاج بناء طبقة الذكاء فوقها."}},
+        {"@type":"Question","name":"هل تدعمون التكامل مع ERP وCRM؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نوفر تكامل API مع أنظمة ERP وCRM ومنصات الدعم والتذاكر مع حوكمة صلاحيات واضحة."}},
+        {"@type":"Question","name":"كم تكلفة تطبيق AI؟","acceptedAnswer":{"@type":"Answer","text":"تعتمد تكلفة تطبيق AI على نطاق الحالة، حجم البيانات، وعدد التكاملات. نبدأ بتقييم مجاني ثم نقدم عرض سعر واضح على مراحل."}},
+        {"@type":"Question","name":"هل بياناتي آمنة؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نعتمد تشفيراً أثناء النقل والتخزين، وضبط وصول حسب الدور، واستضافة داخل السعودية حسب متطلبات العميل والامتثال."}},
+        {"@type":"Question","name":"كم وقت التطبيق؟","acceptedAnswer":{"@type":"Answer","text":"غالباً يبدأ التنفيذ من 4 إلى 12 أسبوعاً حسب التعقيد والتكاملات، مع خطة مراحل واضحة من التحليل إلى الإطلاق."}},
+        {"@type":"Question","name":"هل تقدمون دعم فني بعد الإطلاق؟","acceptedAnswer":{"@type":"Answer","text":"نعم، نوفر باقات دعم وتشغيل ومراقبة وتحديثات دورية حسب اتفاقية مستوى الخدمة."}}
+    ]}
+    </script>
+    <style>
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-question {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+            padding-top: 1rem;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+
+<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+<script defer src="/frontend/js/iconify-preload.js"></script>
+<script defer src="/frontend/js/vendor/iconify.min.js"></script>
+<script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+    
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+</head>
+
+<body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
+
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
+            
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/services/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-automation/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-agent/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/contact/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/data-analysis/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-medical-archive">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/job.MAISco">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-scolecs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/health/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/about/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/docs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/blog/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+                
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+                
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full bai-inline-0001">
+            
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+            
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/services/">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/smart-automation/">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/ai-agent/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/data-analysis/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/contact/">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/smart-medical-archive">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/job.MAISco">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/ai-scolecs">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/health/">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/blog/">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/about/">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/docs">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/blog/">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/contact/">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer"
+                    target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/try">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+    
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="https://brightai.site/index.html">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="https://brightai.site/docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">الأسئلة الشائعة</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12 relative z-10">
+        <header class="doc-header mb-12 text-center">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-premium border border-emerald-500/30 mb-6">
+                <iconify-icon icon="lucide:help-circle" width="18" class="text-emerald-400"></iconify-icon>
+                <span class="text-emerald-300 text-sm font-medium">مركز المساعدة</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">الأسئلة <span
+                    class="gradient-text-animate">الشائعة</span></h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">جمعنا لك أكثر الأسئلة اللي يسألها عملاءنا. ما لقيت
+                جوابك؟ تواصل معنا مباشرة!</p>
+        </header>
+
+        <article class="doc-content">
+            
+            <section class="mb-10" style="content-visibility: auto;">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:cpu" class="text-gold-400"></iconify-icon> التقنية
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وش هي Bright AI بالضبط؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>إحنا شركة سعودية متخصصة في حلول الذكاء الاصطناعي للشركات. نساعد المنشآت السعودية تستفيد
+                                من تقنيات AI لتحسين عملياتها، تحليل بياناتها، وتوفير الوقت والتكاليف. فريقنا يتكون من 11
+                                خبير متخصصين في مجالات مختلفة من الذكاء الاصطناعي.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وين مقركم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>مقرنا في الرياض، حي الفيحاء. العنوان الكامل: 6913 المبارك بن فضالة، RQFA6913، 3041، حي
+                                الفيحاء، الرياض 14254.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تخدمون العملاء خارج الرياض؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>أكيد! نخدم عملاء في جميع مناطق المملكة. أغلب تواصلنا يكون عن بُعد عبر الاجتماعات
+                                الافتراضية، وإذا احتجنا حضور ميداني نوفره بكل سهولة.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">ما الفرق بين AIaaS والسحابة التقليدية؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20" class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>AIaaS يقدم لك طبقة ذكاء اصطناعي جاهزة تشمل النماذج، التشغيل، المراقبة، والتحديثات. السحابة التقليدية توفر البنية التحتية فقط، وتحتاج فريق يبني طبقة الذكاء من الصفر.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تدعمون التكامل مع ERP وCRM والأنظمة الحالية؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20" class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نعم، عندنا خبرة بالتكامل مع أنظمة ERP وCRM وواجهات API الداخلية، مع ضبط الصلاحيات وسجل تدقيق كامل.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="mb-10" style="content-visibility: auto;">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:workflow" class="text-indigo-400"></iconify-icon> التنفيذ
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وش الخدمات اللي تقدمونها؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نقدم مجموعة متكاملة من خدمات الذكاء الاصطناعي:</p>
+                            <ul class="mt-3 space-y-2 list-disc list-inside">
+                                <li>AIaaS - الذكاء الاصطناعي كخدمة سحابية</li>
+                                <li>أتمتة العمليات (RPA)</li>
+                                <li>تحليل البيانات الضخمة</li>
+                                <li>روبوتات المحادثة الذكية</li>
+                                <li>الأرشيف الطبي الذكي</li>
+                                <li>نظام التوظيف الذكي</li>
+                                <li>الاستشارات التقنية</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تقدمون حلول مخصصة؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>أكيد! كل مشروع نصممه حسب احتياجات العميل الخاصة. نبدأ بفهم تحدياتك وأهدافك، وبعدين نصمم
+                                حل يناسب متطلباتك بالضبط.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كم وقت التطبيق؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20" class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>المدة المعتادة من 4 إلى 12 أسبوعاً حسب نطاق المشروع، جودة البيانات، وعدد التكاملات المطلوبة.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="mb-10" style="content-visibility: auto;">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:credit-card" class="text-emerald-400"></iconify-icon> الأسعار والتكاليف
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كم تكلفة تطبيق AI؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>تكلفة تطبيق AI تعتمد على حالة الاستخدام، حجم البيانات، والبنية الحالية. نوفر تقييم مجاني ثم عرض سعر مرحلي واضح قبل البدء.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كم تكلفة خدماتكم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>الأسعار تختلف حسب نوع الخدمة وحجم المشروع ومتطلباتك الخاصة. عشان كذا نقدم استشارة مجانية
+                                لتقييم احتياجاتك وتقديم عرض سعر مخصص يناسب ميزانيتك.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل الاستشارة الأولى مجانية؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نعم! الاستشارة الأولى مجانية 100%. نسمعك ونفهم احتياجاتك ونعطيك تصور أولي عن الحلول
+                                الممكنة قبل أي التزام مالي.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="mb-10" style="content-visibility: auto;">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:shield" class="text-cyan-400"></iconify-icon> الأمان والخصوصية
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل بياناتي آمنة؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>نعم. نستخدم تشفيراً متقدماً، صلاحيات حسب الدور، ومراقبة مستمرة. ويمكن تفعيل استضافة محلية داخل السعودية حسب متطلبات الامتثال.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل بياناتي آمنة معكم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>الأمان أولويتنا رقم واحد! جميع البيانات مستضافة محلياً في السعودية مع تشفير متقدم
+                                AES-256. نلتزم بمعايير الهيئة الوطنية للأمن السيبراني (NCA) ومكتب إدارة البيانات الوطنية
+                                (NDMO).</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">وين تستضيفون البيانات؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>جميع بيانات عملائنا مستضافة محلياً داخل المملكة العربية السعودية. هذا يضمن السيادة على
+                                البيانات والامتثال للأنظمة المحلية.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="mb-10" style="content-visibility: auto;">
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <iconify-icon icon="lucide:headphones" class="text-violet-400"></iconify-icon> الدعم الفني
+                </h2>
+                <div class="space-y-4">
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">هل تقدمون دعم فني بعد التنفيذ؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>طبعاً! نوفر دعم فني مستمر على مدار الساعة باللغة العربية. تقدر تتواصل معنا عبر واتساب أو
+                                البريد الإلكتروني وبنرد عليك بأسرع وقت.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card rounded-xl">
+                        <div class="faq-question p-6 flex justify-between items-center" onclick="toggleFaq(this)">
+                            <h3 class="text-lg font-semibold text-white">كيف أتواصل معكم؟</h3>
+                            <iconify-icon icon="lucide:chevron-down" width="20"
+                                class="text-slate-400 faq-icon transition-transform"></iconify-icon>
+                        </div>
+                        <div class="faq-answer px-6 pb-6 text-slate-400">
+                            <p>عندنا عدة طرق للتواصل:</p>
+                            <ul class="mt-3 space-y-2">
+                                <li>📱 واتساب: <a href="https://wa.me/966538229013"
+                                        class="text-emerald-400 hover:underline">+966538229013</a></li>
+                                <li>📧 البريد: <a href="mailto:yazeed1job@gmail.com"
+                                        class="text-emerald-400 hover:underline">yazeed1job@gmail.com</a></li>
+                                <li>📸 إنستغرام: <a href="https://instagram.com/brightai_"
+                                        class="text-emerald-400 hover:underline">@brightai_</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="glass-card p-8 rounded-2xl text-center bai-inline-0080"
+               >
+                <h2 class="text-2xl font-bold text-white mb-4">ما لقيت جوابك؟</h2>
+                <p class="text-slate-300 mb-6">لا تتردد تتواصل معنا مباشرة وبنجاوب على كل استفساراتك</p>
+                <a href="https://wa.me/966538229013"
+                    class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105 bai-inline-0081"
+                   >
+                    <iconify-icon icon="logos:whatsapp-icon" width="20"></iconify-icon> تواصل معنا الحين
+                </a>
+            </section>
+        </article>
+    
+<div class="internal-linking-cta-wrap"><a class="internal-linking-cta" href="./faq-en.html?utm_source=internal&utm_medium=seo&utm_campaign=internal-linking-2026">English Version</a></div>
+</main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const allItems = document.querySelectorAll('.faq-item');
+            allItems.forEach(item => { if (item !== faqItem) item.classList.remove('open'); });
+            faqItem.classList.toggle('open');
+        }
+    </script>
+    <script src="/frontend/js/docs-scripts.js" defer></script>
+<script src="/frontend/js/clarity-events.js" defer></script>
+</body>
+
+</html>

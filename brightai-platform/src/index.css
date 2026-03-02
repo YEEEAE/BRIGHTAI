@@ -1,0 +1,300 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* تهيئة أساسية للواجهة العربية والاتجاه */
+:root {
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  direction: rtl;
+  text-align: right;
+  font-family: "Cairo", "Tajawal", ui-sans-serif, system-ui;
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: normal;
+  background-color: #0b1020;
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0b1020;
+  color: #e2e8f0;
+  font-weight: 400;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.8;
+  letter-spacing: normal;
+}
+
+/* شريط تمرير متوافق مع اتجاه اليمين لليسار */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #0b1020;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #0b1020;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #334155;
+  border-radius: 999px;
+  border: 2px solid #0b1020;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Tajawal", "Cairo", ui-sans-serif, system-ui;
+    line-height: 1.8;
+    letter-spacing: normal;
+    font-weight: 700;
+  }
+
+  p {
+    line-height: 1.8;
+    letter-spacing: normal;
+  }
+}
+
+@layer utilities {
+  .rtl-ms-2 {
+    margin-inline-start: 0.5rem;
+  }
+
+  .rtl-me-2 {
+    margin-inline-end: 0.5rem;
+  }
+
+  .rtl-ps-3 {
+    padding-inline-start: 0.75rem;
+  }
+
+  .rtl-pe-3 {
+    padding-inline-end: 0.75rem;
+  }
+
+  .rtl-flex {
+    flex-direction: row-reverse;
+  }
+
+  .rtl-text {
+    text-align: right;
+  }
+
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  .rtl-no-flip {
+    transform: none;
+  }
+
+  .bg-brand-gradient {
+    background-image: linear-gradient(135deg, #0b1020 0%, #0f172a 45%, #0b2a24 100%);
+  }
+
+  .bg-brand-radial {
+    background-image: radial-gradient(ellipse at top, rgba(16, 185, 129, 0.28), transparent 55%);
+  }
+
+  .glass-panel {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.35);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .glass-soft {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .backdrop-glass {
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .shadow-brand-glow {
+    box-shadow: 0 20px 60px rgba(16, 185, 129, 0.2);
+  }
+
+  .shadow-glass-soft {
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.35);
+  }
+
+  .text-ar-opt {
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+    font-variant-ligatures: contextual common-ligatures;
+    letter-spacing: normal;
+    word-spacing: 0;
+  }
+
+  .smooth {
+    transition: color 200ms ease, background-color 200ms ease, border-color 200ms ease,
+      transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .auth-bg {
+    background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.2), transparent 45%),
+      radial-gradient(circle at 80% 10%, rgba(14, 165, 233, 0.2), transparent 45%),
+      radial-gradient(circle at 70% 80%, rgba(20, 184, 166, 0.15), transparent 40%),
+      linear-gradient(135deg, #0b1020 0%, #0f172a 45%, #0b2a24 100%);
+    background-size: 200% 200%;
+    animation: auth-gradient 18s ease infinite;
+  }
+
+  .auth-card {
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 25px 70px rgba(2, 8, 23, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .auth-field {
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .auth-field:focus {
+    outline: none;
+    border-color: rgba(16, 185, 129, 0.7);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-card {
+    display: grid;
+    gap: 0.75rem;
+  }
+}
+
+@keyframes auth-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(16, 185, 129, 0);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(16, 185, 129, 0.35);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 16s ease infinite;
+}
+
+.animate-float {
+  animation: floaty 4s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

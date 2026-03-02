@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<script
+  src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
+  crossorigin="anonymous"
+></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "voq2kb6voe");
+</script>
+
+
+<script src="/frontend/js/sentry-init.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OCR عربي فوري للشركات السعودية | استخراج JSON دقيق</title>
+<meta name="description" content="ارفع مستندك واحصل على نص وحقول الفواتير والهويات بصيغة JSON خلال ثوانٍ، مناسب للشركات السعودية." />
+<meta content="OCR عربي, استخراج النصوص, فواتير, مستندات, BrightAI, السعودية" name="keywords"/>
+<meta content="Bright AI" name="author"/>
+<meta content="index, follow" name="robots"/>
+<link href="https://brightai.site/demo/ocr-demo/" rel="canonical"/>
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ocr-demo/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ocr-demo/" />
+
+<meta content="website" property="og:type"/>
+<meta content="Bright AI" property="og:site_name"/>
+<meta content="OCR عربي فوري للشركات السعودية | استخراج JSON دقيق" property="og:title"/>
+<meta content="حل OCR سريع للشركات السعودية مع JSON جاهز للتكامل." property="og:description"/>
+<meta content="https://brightai.site/demo/ocr-demo" property="og:url"/>
+<meta content="ar_SA" property="og:locale"/>
+
+<link href="/frontend/css/bundle-critical.css" rel="stylesheet"/>
+<link href="/frontend/css/main.bundle.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="/frontend/css/main.bundle.css" rel="stylesheet"/></noscript>
+<link href="/frontend/css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"/><noscript><link href="/frontend/css/index-theme.css" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+
+<noscript></noscript>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        :root {
+            --accent-1: #f59e0b;
+            --accent-2: #ef4444;
+            --accent-3: #14b8a6;
+        }
+
+        body {
+            background-color: #0a0f1a;
+            color: #e2e8f0;
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(at 0% 20%, rgba(245, 158, 11, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 0%, rgba(239, 68, 68, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(20, 184, 166, 0.12) 0px, transparent 50%);
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 110px 20px 60px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4vw, 3.4rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            max-width: 760px;
+            margin: 0 auto 24px;
+            color: #94a3b8;
+            line-height: 1.9;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .upload-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .drop-zone {
+            border: 1px dashed rgba(148, 163, 184, 0.4);
+            border-radius: 18px;
+            padding: 28px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.7);
+            margin-bottom: 16px;
+        }
+
+        .drop-zone i {
+            font-size: 32px;
+            color: #f59e0b;
+            margin-bottom: 12px;
+        }
+
+        .drop-zone input {
+            display: block;
+            margin: 12px auto 0;
+            color: #94a3b8;
+        }
+
+        .result-box {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 16px;
+            line-height: 1.8;
+            color: #e2e8f0;
+            min-height: 200px;
+        }
+
+        .json-box {
+            white-space: pre-wrap;
+            font-size: 0.92rem;
+            color: #cbd5f5;
+        }
+
+        .field-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(148, 163, 184, 0.2);
+        }
+
+        .field-row:last-child {
+            border-bottom: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: #fff;
+            padding: 12px 26px;
+            border-radius: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px -18px rgba(239, 68, 68, 0.6);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            color: #e2e8f0;
+            padding: 12px 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .chip {
+            display: inline-flex;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(20, 184, 166, 0.15);
+            color: #14b8a6;
+            font-size: 0.9rem;
+            margin-right: 8px;
+        }
+
+        .cta-strip {
+            margin-top: 40px;
+            padding: 24px;
+            border-radius: 20px;
+            background: rgba(245, 158, 11, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding-top: 90px;
+            }
+
+            .cta-strip {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+    </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "طريقة استخدام OCR في BrightAI",
+  "description": "خطوات بسيطة لاستخراج النصوص والحقول من المستندات.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "ارفع الملف",
+      "text": "ارفع صورة أو PDF للمستند."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "انتظر التحليل",
+      "text": "سيتم استخراج النص والحقول تلقائياً."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "استلم JSON",
+      "text": "استلم النتائج بصيغة JSON جاهزة."
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+<script defer src="/frontend/js/iconify-preload.js"></script>
+<script defer src="/frontend/js/vendor/iconify.min.js"></script>
+<script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+    
+    
+
+
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+    
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+</head>
+<body>
+
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
+            
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/services/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-automation/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-agent/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/contact/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/data-analysis/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-medical-archive">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/job.MAISco">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-scolecs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/health/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/about/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/docs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/blog/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+                
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+                
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full bai-inline-0001">
+            
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+            
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/services/">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/smart-automation/">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/ai-agent/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/data-analysis/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/contact/">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/smart-medical-archive">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/job.MAISco">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/ai-scolecs">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/health/">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/blog/">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/about/">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/docs">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/blog/">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/contact/">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer"
+                    target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/try">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+
+
+<main class="page-container">
+<section class="hero" style="content-visibility: auto;">
+<div class="hero-badge"><i class="fa-solid fa-file-lines"></i> OCR عربي دقيق</div>
+<h1>حوّل المستندات إلى بيانات جاهزة خلال ثواني</h1>
+<p>
+                ارفع فاتورة، عقد، أو هوية، وشاهد استخراج النصوص والحقول المهمة بصيغة JSON.
+                مناسب للشركات السعودية التي تحتاج دقة وسرعة مع دعم اللغة العربية.
+            </p>
+<div>
+<span class="chip">فاتورة ضريبية</span>
+<span class="chip">هوية وطنية</span>
+<span class="chip">عقد توريد</span>
+</div>
+</section>
+<section class="upload-grid" style="content-visibility: auto;">
+<div class="upload-card">
+<h3>١) ارفع الملف</h3>
+<div class="drop-zone">
+<i class="fa-solid fa-cloud-arrow-up"></i>
+<p>اسحب الملف هنا أو اختره من جهازك</p>
+<input accept=".pdf,.png,.jpg,.jpeg" id="ocr-file" type="file"/>
+</div>
+<button class="btn-primary" id="ocr-run" type="button">
+                    بدء التحليل
+                    <i class="fa-solid fa-rocket"></i>
+</button>
+<p style="color:#94a3b8;margin-top:12px;font-size:0.95rem;">
+                    يتم حذف الملف بعد التحليل مباشرة. لا يتم حفظ أي بيانات.
+                </p>
+</div>
+<div class="upload-card">
+<h3>٢) الحقول المستخرجة</h3>
+<div class="result-box" id="ocr-output">
+<div class="field-row"><span>الحالة</span><span>بانتظار ملف</span></div>
+</div>
+<div class="result-box json-box" id="ocr-json" style="margin-top:14px;">سيظهر JSON هنا بعد التحليل.</div>
+</div>
+<div class="upload-card">
+<h3>٣) استخدم النتائج فوراً</h3>
+<p style="color:#94a3b8;line-height:1.8;">
+                    اربط النتائج مع أنظمتك المالية أو ERP، أو صدّر JSON مباشرة لفريقك.
+                    ندعم قوالب مخصصة لكل قطاع داخل السعودية.
+                </p>
+<ul style="color:#cbd5f5;line-height:2;">
+<li>تصدير JSON جاهز للتكامل</li>
+<li>كشف أخطاء الإدخال اليدوي</li>
+<li>معايير دقيقة لمستندات السوق السعودي</li>
+</ul>
+<div class="bai-inline-0078">
+<a class="btn-primary" href="/demo/pricing">استعرض الباقات</a>
+<a class="btn-secondary" href="/demo">عودة للديمو</a>
+</div>
+</div>
+</section>
+<section class="cta-strip" style="content-visibility: auto;">
+<div>
+<h3>تحتاج OCR مخصص لحالاتك؟</h3>
+<p>احجز استشارة وخلي فريقنا يبني لك نموذج خاص بملفاتك.</p>
+</div>
+<a class="btn-primary" href="https://brightai.site/consultation/">احجز استشارة</a>
+</section>
+<section style="margin-top:32px;padding:28px;border-radius:20px;background:rgba(15,23,42,.6);border:1px solid rgba(148,163,184,.2);content-visibility:auto;">
+<h2 style="font-size:1.7rem;font-weight:800;margin-bottom:16px;">OCR عربي للشركات السعودية: من المستند الورقي إلى قرار فوري</h2>
+<div style="color:#cbd5e1;line-height:2;">
+<h3 style="font-size:1.2rem;font-weight:700;color:#f59e0b;margin:0 0 8px;">1) ما هي هذه الصفحة؟</h3>
+<p>
+                    هذه الصفحة مخصصة لتجربة OCR عربي عملي يخدم احتياجات الشركات السعودية في معالجة المستندات اليومية. الفكرة
+                    الأساسية بسيطة: بدل إدخال البيانات يدوياً من الفواتير والعقود والهويات والنماذج، ترفع الملف والنظام يستخرج
+                    النصوص والحقول المهمة بصيغة منظمة، مع JSON جاهز للتكامل. هذا النوع من الحلول أصبح ضرورة في القطاعات التي
+                    تعتمد على حجم مستندات كبير مثل الصحة، الخدمات اللوجستية، سلاسل الإمداد، التجارة، والجهات ذات الإجراءات
+                    التشغيلية العالية. الصفحة هنا تعطيك تجربة مباشرة حتى تقيّم بنفسك مستوى الدقة والسرعة قبل الانتقال للإطلاق الكامل.
+                </p>
+<p>
+                    نحن صممنا التجربة على واقع اللغة العربية والمستندات المحلية، لأن OCR التقليدي غالباً يواجه تحديات مع نماذج
+                    السوق السعودي أو تنسيقات الفواتير المختلفة. لذلك المحتوى والسيناريو في الصفحة يركز على الحالات الأكثر شيوعاً:
+                    استخراج رقم الفاتورة، إجمالي المبلغ، الضريبة، التاريخ، اسم الجهة، ونوع المستند. الهدف أن يشوف الزائر بسرعة
+                    كيف تنتقل المؤسسة من أرشفة تقليدية بطيئة إلى مسار رقمي يدعم التحول الرقمي الفعلي.
+                </p>
+<h3 style="font-size:1.2rem;font-weight:700;color:#f59e0b;margin:18px 0 8px;">2) ما الفائدة للمستخدم؟</h3>
+<p>
+                    الفائدة الأولى هي تقليل الوقت التشغيلي بشكل مباشر. إدخال البيانات اليدوي يستهلك ساعات طويلة ويرفع احتمال
+                    الأخطاء البشرية، بينما OCR الذكي يختصر الدورة من دقائق إلى ثوانٍ لكل مستند. هذا ينعكس على سرعة المعالجة،
+                    سرعة الفوترة، وسرعة إغلاق العمليات الداخلية. الفائدة الثانية هي رفع جودة البيانات، لأن استخراج الحقول بشكل
+                    منظم يساعد فرق التحليل والمالية تبني تقارير أدق وتقلل إعادة العمل الناتجة عن أخطاء الإدخال.
+                </p>
+<p>
+                    الفائدة الثالثة هي قابلية التكامل. لما تكون النتائج جاهزة بصيغة JSON، تقدر تربطها مع ERP، أنظمة المحاسبة،
+                    أو أدوات تحليل البيانات بدون بناء مخصص من الصفر. هذا يسرّع تبني الأتمتة الذكية ويجعل التحسين مستمر. الفائدة
+                    الرابعة تتعلق بالامتثال والثقة: المؤسسات في السعودية صارت أكثر حساسية تجاه الخصوصية وحوكمة البيانات، والصفحة
+                    توضح أن المعالجة مصممة بشكل يقلل حفظ البيانات غير الضرورية ويعطي مسار أوضح للحوكمة داخل بيئة العمل.
+                </p>
+<p>
+                    كذلك من ناحية تجربة المستخدم، الصفحة تبين بشكل واضح الخطوات الثلاث: رفع الملف، مشاهدة الحقول، ثم تصدير النتيجة.
+                    هذا مهم لأن القرار داخل المؤسسة عادة يمر عبر أكثر من جهة: فريق التشغيل، فريق التقنية، وفريق الإدارة. لما تكون
+                    التجربة مفهومة ومباشرة، يسهل على كل طرف استيعاب القيمة بسرعة واتخاذ قرار البدء. وهذا بالضبط ما تحتاجه المشاريع
+                    المرتبطة برؤية 2030: حلول عملية ترفع الكفاءة وتدعم الرقمنة المؤسسية بدون تعقيد.
+                </p>
+<h3 style="font-size:1.2rem;font-weight:700;color:#f59e0b;margin:18px 0 8px;">3) ما الخطوة التالية؟ (CTA)</h3>
+<p>
+                    بعد التجربة، الخطوة التالية أن تختبر ملفين إلى خمسة ملفات تمثل واقع مستنداتك الفعلية، ثم تقارن النتيجة بالوضع
+                    الحالي من حيث السرعة والدقة. إذا كانت النتائج مناسبة، انتقل إلى <a href="/demo/pricing/" style="color:#f59e0b;">صفحة الأسعار</a>
+                    لاختيار الباقة، أو احجز <a href="/consultation/" style="color:#f59e0b;">استشارة</a> إذا تحتاج نموذج OCR مخصص
+                    لقطاعك. وتقدر ترجع إلى <a href="/demo/" style="color:#f59e0b;">صفحة الديمو الرئيسية</a> لمراجعة حلول إضافية
+                    مرتبطة بالأتمتة وتحليل البيانات. الهدف النهائي أن تتحول مستنداتك من عبء تشغيلي إلى مصدر بيانات سريع وموثوق
+                    يدعم اتخاذ القرار في شركتك.
+                </p>
+</div>
+</section>
+</main>
+<footer class="border-t border-white/5 bg-slate-900/50 mt-16">
+<div class="max-w-7xl mx-auto px-6 py-12">
+<div class="flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-3">
+<img loading="lazy" alt="Bright AI" height="32" src="/assets/images/Gemini.png" width="32"/>
+<span class="text-white font-bold">Bright AI</span>
+</div>
+<div class="flex gap-6 text-sm text-gray-400">
+<a class="hover:text-white transition-colors" href="https://brightai.site/">الرئيسية</a>
+<a class="hover:text-white transition-colors" href="/demo/ocr-demo">OCR</a>
+<a class="hover:text-white transition-colors" href="/demo/pricing">الأسعار</a>
+<a class="hover:text-amber-400 transition-colors" href="https://wa.me/966538229013">واتساب</a>
+</div>
+<p class="text-xs text-gray-500">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+</div>
+</div>
+</footer>
+<script defer="" src="/frontend/js/navigation.js"></script>
+<script defer="" src="/frontend/js/main.bundle.js"></script>
+<script>
+        const ocrBtn = document.getElementById('ocr-run');
+        const ocrOutput = document.getElementById('ocr-output');
+        const ocrJson = document.getElementById('ocr-json');
+        const ocrFile = document.getElementById('ocr-file');
+        const originalOcrBtnHtml = ocrBtn ? ocrBtn.innerHTML : '';
+
+        const fieldLabels = {
+            document_type: 'نوع المستند',
+            invoice_number: 'رقم الفاتورة',
+            total_amount: 'المبلغ الإجمالي',
+            tax_amount: 'قيمة الضريبة',
+            date: 'التاريخ',
+            vendor_name: 'الجهة',
+            currency: 'العملة'
+        };
+
+        function renderFields(fields) {
+            if (!ocrOutput) return;
+            ocrOutput.innerHTML = '';
+            if (!fields || typeof fields !== 'object') {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                const label = document.createElement('span');
+                label.textContent = 'الحالة';
+                const value = document.createElement('span');
+                value.textContent = 'لم يتم العثور على حقول واضحة';
+                row.appendChild(label);
+                row.appendChild(value);
+                ocrOutput.appendChild(row);
+                return;
+            }
+
+            const entries = Object.keys(fieldLabels)
+                .filter((key) => fields[key] !== undefined && fields[key] !== null && fields[key] !== '')
+                .map((key) => [key, fields[key]]);
+
+            if (entries.length === 0) {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                const label = document.createElement('span');
+                label.textContent = 'الحالة';
+                const value = document.createElement('span');
+                value.textContent = 'لم يتم العثور على حقول واضحة';
+                row.appendChild(label);
+                row.appendChild(value);
+                ocrOutput.appendChild(row);
+                return;
+            }
+
+            for (const [key, value] of entries) {
+                const row = document.createElement('div');
+                row.className = 'field-row';
+                const label = document.createElement('span');
+                label.textContent = fieldLabels[key] || key;
+                const val = document.createElement('span');
+                val.textContent = String(value);
+                row.appendChild(label);
+                row.appendChild(val);
+                ocrOutput.appendChild(row);
+            }
+        }
+
+        function renderJson(fields) {
+            if (!ocrJson) return;
+            try {
+                ocrJson.textContent = JSON.stringify(fields || {}, null, 2);
+            } catch (e) {
+                ocrJson.textContent = 'تعذر توليد JSON.';
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('READ_ERROR'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function resolveApiBase() {
+            if (window.BRIGHTAI_API_BASE) return window.BRIGHTAI_API_BASE;
+            if (location && location.origin && location.origin !== 'null') {
+                return location.origin;
+            }
+            return 'http://localhost:3000';
+        }
+
+        async function runOcr() {
+            if (!ocrBtn || !ocrFile) return;
+            const file = ocrFile.files && ocrFile.files[0];
+            if (!file) {
+                renderFields(null);
+                if (ocrJson) ocrJson.textContent = 'يرجى اختيار ملف قبل البدء.';
+                return;
+            }
+
+            if (file.size > 4 * 1024 * 1024) {
+                renderFields(null);
+                if (ocrJson) ocrJson.textContent = 'حجم الملف كبير. الحد الأقصى 4 ميجابايت.';
+                return;
+            }
+
+            ocrBtn.disabled = true;
+            ocrBtn.innerHTML = 'جارٍ التحليل...';
+            if (ocrOutput) {
+                ocrOutput.innerHTML = '<div style="color:#f59e0b;">جارٍ استخراج النص والحقول...</div>';
+            }
+            if (ocrJson) {
+                ocrJson.textContent = 'جارٍ تجهيز JSON...';
+            }
+
+            try {
+                const base64 = await fileToBase64(file);
+                const apiBase = resolveApiBase();
+                const response = await fetch(`${apiBase}/api/ai/ocr`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fileBase64: base64,
+                        mimeType: file.type,
+                        fileName: file.name
+                    })
+                });
+
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    renderFields(null);
+                    if (ocrJson) {
+                        ocrJson.textContent = data.error || 'تعذر تحليل الملف حالياً.';
+                    }
+                    return;
+                }
+
+                renderFields(data.fields);
+                renderJson(data.fields);
+            } catch (error) {
+                renderFields(null);
+                if (ocrJson) {
+                    ocrJson.textContent = 'حدث خطأ أثناء التحليل. جرّب مرة أخرى.';
+                }
+            } finally {
+                ocrBtn.disabled = false;
+                ocrBtn.innerHTML = originalOcrBtnHtml;
+            }
+        }
+
+        if (ocrBtn) {
+            ocrBtn.addEventListener('click', runOcr);
+        }
+    </script>
+<script src="/frontend/js/clarity-events.js" defer></script>
+</body>
+</html>

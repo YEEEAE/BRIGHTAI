@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script
+  src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
+  crossorigin="anonymous"
+></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "voq2kb6voe");
+</script>
+
+
+<script src="/frontend/js/sentry-init.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+    <meta charset="UTF-8">
+  <link rel="canonical" href="https://brightai.site/docs/openapi/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/openapi/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/openapi/" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright AI API Documentation - وثائق واجهة برمجة التطبيقات</title>
+<meta name="description" content="توثيق واجهات BrightAI للمطورين مع أمثلة واضحة وتكامل سريع للشركات السعودية." />
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .nav a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .section {
+            background: white;
+            margin: 20px 0;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .endpoint {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-right: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        
+        .endpoint h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        
+        .method.post {
+            background: #10b981;
+            color: white;
+        }
+        
+        .method.get {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .param-table th,
+        .param-table td {
+            padding: 12px;
+            text-align: right;
+            border: 1px solid #ddd;
+        }
+        
+        .param-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .param-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .required {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .optional {
+            color: #10b981;
+        }
+        
+        .error-codes {
+            margin: 20px 0;
+        }
+        
+        .error-code {
+            padding: 10px;
+            margin: 10px 0;
+            border-right: 3px solid #ef4444;
+            background: #fef2f2;
+            border-radius: 4px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .status-200 { background: #d1fae5; color: #065f46; }
+        .status-400 { background: #fee2e2; color: #991b1b; }
+        .status-429 { background: #fef3c7; color: #92400e; }
+        .status-500 { background: #fee2e2; color: #991b1b; }
+        .status-503 { background: #fef3c7; color: #92400e; }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+            }
+            
+            .param-table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+
+<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+<script defer src="/frontend/js/iconify-preload.js"></script>
+<script defer src="/frontend/js/vendor/iconify.min.js"></script>
+<script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+    
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<link rel="preload" as="style" href="/frontend/css/main.bundle.css" onload="this.onload=null;this.rel='stylesheet'" />
+<noscript><link rel="stylesheet" href="/frontend/css/main.bundle.css" /></noscript>
+<script defer="" src="/frontend/js/navigation.js"></script>
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+</head>
+<body>
+
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
+            
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/services/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-automation/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-agent/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/contact/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/data-analysis/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-medical-archive">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/job.MAISco">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-scolecs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/health/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/about/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/docs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/blog/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+                
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+                
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full bai-inline-0001">
+            
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+            
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/services/">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/smart-automation/">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/ai-agent/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/data-analysis/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/contact/">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/smart-medical-archive">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/job.MAISco">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/ai-scolecs">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/health/">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/blog/">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/about/">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/docs">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/blog/">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/contact/">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer"
+                    target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/try">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+    <header>
+        <h1>BrightAI API Documentation</h1>
+        <p>وثائق واجهة برمجة التطبيقات - منصة الذكاء الاصطناعي للسوق السعودي</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">الإصدار 1.0.0</p>
+    </header>
+
+    <div class="container">
+        <nav class="nav">
+            <ul>
+                <li><a href="#overview">نظرة عامة</a></li>
+                <li><a href="#authentication">المصادقة</a></li>
+                <li><a href="#chat">محادثة ذكية</a></li>
+                <li><a href="#search">بحث ذكي</a></li>
+                <li><a href="#medical">تحليل طبي</a></li>
+                <li><a href="#summary">تلخيص نصوص</a></li>
+                <li><a href="#errors">أكواد الأخطاء</a></li>
+                <li><a href="#rate-limits">حدود الاستخدام</a></li>
+            </ul>
+        </nav>
+
+        
+        <section id="overview" class="section" style="content-visibility: auto;">
+            <h2>نظرة عامة</h2>
+            <p>BrightAI API توفر مجموعة من خدمات الذكاء الاصطناعي المصممة خصيصاً للسوق السعودي. جميع الخدمات تدعم اللغة العربية بشكل كامل وتتماشى مع رؤية المملكة 2030.</p>
+            
+            <h3 style="margin-top: 20px;">الخوادم المتاحة</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li><strong>خادم التطوير:</strong> http://localhost:3000</li>
+                <li><strong>خادم الإنتاج:</strong> https://api.brightai.sa</li>
+            </ul>
+
+            
+            <h3 style="margin-top: 20px;">تنسيق الطلبات والاستجابات</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>جميع الطلبات يجب أن تكون بتنسيق JSON</li>
+                <li>جميع الاستجابات بتنسيق JSON</li>
+                <li>الترميز: UTF-8</li>
+                <li>Content-Type: application/json</li>
+            </ul>
+        </section>
+
+        
+        <section id="authentication" class="section" style="content-visibility: auto;">
+            <h2>المصادقة</h2>
+            <p>حالياً، API لا يتطلب مصادقة للاستخدام العام. ومع ذلك، يتم تطبيق حدود معدل الطلبات (Rate Limiting) بناءً على عنوان IP.</p>
+            <p style="margin-top: 10px;"><strong>ملاحظة:</strong> في الإصدارات المستقبلية، سيتم إضافة نظام مصادقة باستخدام API Keys.</p>
+        </section>
+
+        
+        <section id="chat" class="section" style="content-visibility: auto;">
+            <h2>محادثة ذكية (Chat)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/chat
+                </h3>
+                <p>إرسال رسالة والحصول على رد من الذكاء الاصطناعي. يدعم المحادثات متعددة الأدوار مع الاحتفاظ بالسياق.</p>
+
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>الرسالة المراد إرسالها (حد أقصى 1000 حرف)</td>
+                            <td>string</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>message</td>
+                        </tr>
+                        <tr>
+                            <td>سجل المحادثة السابقة (مصفوفة من الرسائل)</td>
+                            <td>array</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>history</td>
+                        </tr>
+                        <tr>
+                            <td>معرف الجلسة للحفاظ على السياق</td>
+                            <td>string</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>sessionId</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "message": "ما هي خدمات BrightAI؟",
+  "history": [
+    {
+      "sender": "user",
+      "text": "مرحباً"
+    },
+    {
+      "sender": "bot",
+      "text": "مرحباً بك في BrightAI"
+    }
+  ],
+  "sessionId": "session_123456"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "reply": "BrightAI تقدم مجموعة من خدمات الذكاء الاصطناعي...",
+  "sessionId": "session_123456"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> NO_MESSAGE:</strong> يرجى إدخال رسالة
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> MESSAGE_TOO_LONG:</strong> الرسالة طويلة جداً. الحد الأقصى هو 1000 حرف
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> API_NOT_CONFIGURED:</strong> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="search" class="section" style="content-visibility: auto;">
+            <h2>بحث ذكي (Search)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/search
+                </h3>
+                <p>البحث الذكي في محتوى موقع BrightAI باستخدام الذكاء الاصطناعي.</p>
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>كلمة البحث (3 أحرف على الأقل)</td>
+                            <td>string</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>query</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "query": "وكلاء الذكاء الاصطناعي"
+}
+                </div>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "results": [
+    {
+      "title": "وكلاء الذكاء الاصطناعي",
+      "url": "/ai-agent.html",
+      "description": "حلول وكلاء ذكية لأتمتة المهام المعقدة"
+    },
+    {
+      "title": "الأتمتة الذكية",
+      "url": "/smart-automation.html",
+      "description": "أتمتة العمليات باستخدام الذكاء الاصطناعي"
+    }
+  ],
+  "query": "وكلاء الذكاء الاصطناعي"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> NO_QUERY:</strong> يرجى إدخال كلمة البحث
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> QUERY_TOO_SHORT:</strong> يجب أن تكون كلمة البحث 3 أحرف على الأقل
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> API_NOT_CONFIGURED:</strong> خدمة البحث غير متاحة حالياً
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="medical" class="section" style="content-visibility: auto;">
+            <h2>تحليل طبي (Medical)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/medical
+                </h3>
+                <p>تحليل البيانات الطبية والصور باستخدام الذكاء الاصطناعي.</p>
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>مصفوفة من النصوص للتحليل</td>
+                            <td>array[string]</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>textParts</td>
+                        </tr>
+                        <tr>
+                            <td>مصفوفة من الصور (base64)</td>
+                            <td>array[object]</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>inlineDataParts</td>
+                        </tr>
+                        <tr>
+                            <td>إعدادات التوليد</td>
+                            <td>object</td>
+                            <td><span class="optional">لا</span></td>
+                            <td>config</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+                <h4 style="margin-top: 20px;">بنية inlineDataParts</h4>
+                <div class="code-block">
+{
+  "mimeType": "image/jpeg",
+  "data": "base64_encoded_image_data"
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">أنواع الملفات المدعومة</h4>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li>image/jpeg</li>
+                    <li>image/png</li>
+                    <li>image/webp</li>
+                    <li>application/dicom</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "textParts": ["قم بتحليل هذه الصورة الطبية"],
+  "inlineDataParts": [
+    {
+      "mimeType": "image/jpeg",
+      "data": "/9j/4AAQSkZJRgABAQAA..."
+    }
+  ],
+  "config": {
+    "temperature": 0.2,
+    "max_output_tokens": 2048
+  }
+}
+                </div>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "text": "التحليل الطبي: الصورة تظهر..."
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> MISSING_TEXT:</strong> الرجاء تقديم نص للتحليل
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> INVALID_IMAGE_DATA:</strong> بيانات الصورة غير صالحة
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> UNSUPPORTED_FILE_TYPE:</strong> نوع الملف غير مدعوم
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> SERVICE_UNAVAILABLE:</strong> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="summary" class="section" style="content-visibility: auto;">
+            <h2>تلخيص نصوص (Summary)</h2>
+            
+            <div class="endpoint">
+                <h3>
+                    <span class="method post">POST</span>
+                    /api/ai/summary
+                </h3>
+                <p>توليد ملخص موجز وجذاب للنصوص الطويلة باللغة العربية.</p>
+                
+                <h4 style="margin-top: 20px;">معاملات الطلب</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>الوصف</th>
+                            <th>النوع</th>
+                            <th>مطلوب؟</th>
+                            <th>المعامل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>النص المراد تلخيصه (حد أقصى 5000 حرف)</td>
+                            <td>string</td>
+                            <td><span class="required">نعم</span></td>
+                            <td>text</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4 style="margin-top: 20px;">مثال على الطلب</h4>
+                <div class="code-block">
+{
+  "text": "نص طويل يحتاج إلى تلخيص..."
+}
+                </div>
+
+                
+                <h4 style="margin-top: 20px;">مثال على الاستجابة الناجحة <span class="status-badge status-200">200</span></h4>
+                <div class="code-block">
+{
+  "summary": "الملخص: النص يتحدث عن...",
+  "timestamp": 1234567890
+}
+                </div>
+                
+                <h4 style="margin-top: 20px;">Cache Headers</h4>
+                <p>يدعم هذا Endpoint التخزين المؤقت (Caching). ستحصل على أحد هذه Headers:</p>
+                <ul style="margin-right: 20px; margin-top: 10px;">
+                    <li><strong>X-Cache: HIT</strong> - الاستجابة من Cache</li>
+                    <li><strong>X-Cache: MISS</strong> - استجابة جديدة من API</li>
+                </ul>
+                
+                <h4 style="margin-top: 20px;">الأخطاء المحتملة</h4>
+                <div class="error-code">
+                    <strong><span class="status-badge status-400">400</span> MISSING_TEXT:</strong> يجب تقديم نص للتلخيص
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-503">503</span> API_NOT_CONFIGURED:</strong> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+                <div class="error-code">
+                    <strong><span class="status-badge status-500">500</span> SUMMARY_ERROR:</strong> حدث خطأ أثناء إنشاء الملخص
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="errors" class="section" style="content-visibility: auto;">
+            <h2>أكواد الأخطاء</h2>
+            <p>جميع الأخطاء تُرجع بتنسيق موحد يحتوي على:</p>
+            <div class="code-block">
+{
+  "error": "رسالة الخطأ بالعربية",
+  "errorCode": "ERROR_CODE",
+  "timestamp": 1234567890
+}
+            </div>
+            
+            <h3 style="margin-top: 30px;">أخطاء المدخلات (4xx)</h3>
+            <div class="error-codes">
+                <div class="error-code">
+                    <strong>NO_MESSAGE / NO_QUERY / MISSING_TEXT</strong><br>
+                    <span class="status-badge status-400">400</span> يجب تقديم البيانات المطلوبة
+                </div>
+                <div class="error-code">
+                    <strong>MESSAGE_TOO_LONG / QUERY_TOO_LONG</strong><br>
+                    <span class="status-badge status-400">400</span> المدخلات تتجاوز الحد المسموح
+                </div>
+                <div class="error-code">
+                    <strong>QUERY_TOO_SHORT</strong><br>
+                    <span class="status-badge status-400">400</span> كلمة البحث قصيرة جداً (3 أحرف على الأقل)
+                </div>
+                <div class="error-code">
+                    <strong>INVALID_REQUEST</strong><br>
+                    <span class="status-badge status-400">400</span> طلب غير صالح
+                </div>
+
+                <div class="error-code">
+                    <strong>INVALID_IMAGE_DATA</strong><br>
+                    <span class="status-badge status-400">400</span> بيانات الصورة غير صالحة
+                </div>
+                <div class="error-code">
+                    <strong>UNSUPPORTED_FILE_TYPE</strong><br>
+                    <span class="status-badge status-400">400</span> نوع الملف غير مدعوم
+                </div>
+                <div class="error-code">
+                    <strong>RATE_LIMIT_EXCEEDED</strong><br>
+                    <span class="status-badge status-429">429</span> تم تجاوز الحد المسموح من الطلبات
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 30px;">أخطاء الخادم (5xx)</h3>
+            <div class="error-codes">
+                <div class="error-code">
+                    <strong>API_NOT_CONFIGURED / SERVICE_UNAVAILABLE</strong><br>
+                    <span class="status-badge status-503">503</span> خدمة الذكاء الاصطناعي غير متاحة حالياً
+                </div>
+                <div class="error-code">
+                    <strong>API_ERROR / ANALYSIS_ERROR / SUMMARY_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> حدث خطأ أثناء المعالجة
+                </div>
+                <div class="error-code">
+                    <strong>NETWORK_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> خطأ في الاتصال بالشبكة
+                </div>
+
+                <div class="error-code">
+                    <strong>TIMEOUT_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> انتهت مهلة الطلب
+                </div>
+                <div class="error-code">
+                    <strong>UNKNOWN_ERROR</strong><br>
+                    <span class="status-badge status-500">500</span> حدث خطأ غير متوقع
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="rate-limits" class="section" style="content-visibility: auto;">
+            <h2>حدود الاستخدام (Rate Limits)</h2>
+            <p>لضمان جودة الخدمة لجميع المستخدمين، يتم تطبيق حدود معدل الطلبات التالية:</p>
+            
+            <table class="param-table" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>الوصف</th>
+                        <th>الحد</th>
+                        <th>النطاق الزمني</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>جميع Endpoints</td>
+                        <td>30 طلب</td>
+                        <td>دقيقة واحدة</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 style="margin-top: 30px;">Response Headers</h3>
+            <p>عند تجاوز الحد، ستحصل على:</p>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li><strong>Status Code:</strong> 429 Too Many Requests</li>
+                <li><strong>Error Code:</strong> RATE_LIMIT_EXCEEDED</li>
+                <li><strong>Retry-After:</strong> عدد الثواني قبل المحاولة مرة أخرى</li>
+            </ul>
+        </section>
+
+        
+        <section id="schemas" class="section" style="content-visibility: auto;">
+            <h2>Request/Response Schemas</h2>
+            
+            <h3>ChatRequest Schema</h3>
+            <div class="code-block">
+{
+  "message": "string (required, max 1000 chars)",
+  "history": [
+    {
+      "sender": "user | bot",
+      "text": "string"
+    }
+  ],
+  "sessionId": "string (optional)"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">ChatResponse Schema</h3>
+            <div class="code-block">
+{
+  "reply": "string",
+  "sessionId": "string"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SearchRequest Schema</h3>
+            <div class="code-block">
+{
+  "query": "string (required, min 3 chars)"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SearchResponse Schema</h3>
+            <div class="code-block">
+{
+  "results": [
+    {
+      "title": "string",
+      "url": "string",
+      "description": "string"
+    }
+  ],
+  "query": "string"
+}
+            </div>
+
+            
+            <h3 style="margin-top: 20px;">MedicalRequest Schema</h3>
+            <div class="code-block">
+{
+  "textParts": ["string (required)"],
+  "inlineDataParts": [
+    {
+      "mimeType": "string (image/jpeg, image/png, etc.)",
+      "data": "string (base64 encoded)"
+    }
+  ],
+  "config": {
+    "temperature": "number (0.0-1.0, default: 0.2)",
+    "top_p": "number (default: 0.9)",
+    "top_k": "number (default: 40)",
+    "max_output_tokens": "number (default: 2048)"
+  }
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">MedicalResponse Schema</h3>
+            <div class="code-block">
+{
+  "text": "string"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SummaryRequest Schema</h3>
+            <div class="code-block">
+{
+  "text": "string (required, max 5000 chars)"
+}
+            </div>
+            
+            <h3 style="margin-top: 20px;">SummaryResponse Schema</h3>
+            <div class="code-block">
+{
+  "summary": "string",
+  "timestamp": "number"
+}
+            </div>
+
+            
+            <h3 style="margin-top: 20px;">ErrorResponse Schema</h3>
+            <div class="code-block">
+{
+  "error": "string (Arabic error message)",
+  "errorCode": "string (ERROR_CODE)",
+  "timestamp": "number (Unix timestamp)",
+  "details": "string (only in development mode)"
+}
+            </div>
+        </section>
+
+        
+        <section id="examples" class="section" style="content-visibility: auto;">
+            <h2>أمثلة cURL</h2>
+            
+            <h3>Chat Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "ما هي خدمات BrightAI؟"
+  }'
+            </div>
+            
+            <h3 style="margin-top: 20px;">Search Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "وكلاء الذكاء الاصطناعي"
+  }'
+            </div>
+            
+            <h3 style="margin-top: 20px;">Medical Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/medical \
+  -H "Content-Type: application/json" \
+  -d '{
+    "textParts": ["قم بتحليل هذه البيانات الطبية"]
+  }'
+            </div>
+
+            
+            <h3 style="margin-top: 20px;">Summary Endpoint</h3>
+            <div class="code-block">
+curl -X POST http://localhost:3000/api/ai/summary \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "نص طويل يحتاج إلى تلخيص..."
+  }'
+            </div>
+        </section>
+
+        
+        <section id="best-practices" class="section" style="content-visibility: auto;">
+            <h2>أفضل الممارسات</h2>
+            
+            <h3>1. معالجة الأخطاء</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>تحقق دائماً من HTTP status code</li>
+                <li>اعرض رسالة الخطأ العربية للمستخدم</li>
+                <li>استخدم errorCode للمعالجة البرمجية</li>
+                <li>أعد المحاولة عند حدوث أخطاء 5xx</li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">2. Rate Limiting</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>احترم حدود معدل الطلبات (30 طلب/دقيقة)</li>
+                <li>استخدم Retry-After header عند تجاوز الحد</li>
+                <li>قم بتخزين النتائج مؤقتاً في تطبيقك</li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">3. الأداء</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>استفد من X-Cache header في Summary endpoint</li>
+                <li>قلل حجم المدخلات قدر الإمكان</li>
+                <li>استخدم sessionId للحفاظ على سياق المحادثة</li>
+            </ul>
+
+            
+            <h3 style="margin-top: 20px;">4. الأمان</h3>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>لا ترسل معلومات حساسة في الطلبات</li>
+                <li>استخدم HTTPS في الإنتاج</li>
+                <li>قم بتنظيف المدخلات قبل الإرسال</li>
+                <li>لا تعرض API keys في الكود العام</li>
+            </ul>
+        </section>
+
+        
+        <section id="contact" class="section" style="content-visibility: auto;">
+            <h2>الدعم والتواصل</h2>
+            <p>للحصول على دعم فني أو استفسارات حول API:</p>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li><strong>الموقع:</strong> <a href="https://brightai.sa" style="color: #667eea;">https://brightai.sa</a></li>
+                <li><strong>البريد الإلكتروني:</strong> support@brightai.sa</li>
+                <li><strong>واتساب:</strong> <a href="https://wa.me/966538229013" style="color: #667eea;">+966538229013</a></li>
+            </ul>
+            
+            <h3 style="margin-top: 20px;">التحديثات</h3>
+            <p>تابع صفحة المدونة للحصول على آخر التحديثات والميزات الجديدة:</p>
+            <p style="margin-top: 10px;"><a href="/blog/" style="color: #667eea;">مدونة BrightAI</a></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 BrightAI - جميع الحقوق محفوظة</p>
+        <p style="margin-top: 10px;">منصة الذكاء الاصطناعي للسوق السعودي</p>
+    </footer>
+<script src="/frontend/js/clarity-events.js" defer></script>
+</body>
+</html>

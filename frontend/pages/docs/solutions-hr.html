@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+
+<head>
+<script
+  src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
+  crossorigin="anonymous"
+></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "voq2kb6voe");
+</script>
+
+
+<script src="/frontend/js/sentry-init.js" defer></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة</title>
+<meta name="description" content="نظام HRMS سعودي متكامل من Bright AI. إدارة الرواتب (Payroll)، التأمينات، مدد، مقيم، الحضور والانصراف الذكي، وتقييم الأداء. متوافق مع نظام العمل السعودي." />
+    
+
+<link rel="canonical" href="https://brightai.site/docs/solutions-hr/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/solutions-hr/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/solutions-hr/" />
+
+<meta name="keywords"
+        content="نظام موارد بشرية، HRMS، مسير الرواتب، مكتب العمل، التأمينات الاجتماعية، مدد، مقيم، بصمة الوجه، تقييم الموظفين، إدارة الإجازات، تطبيق للموظفين، أتمتة الرواتب، نظام العمل السعودي" />
+
+    
+    <link rel="stylesheet" href="/frontend/css/bundle-critical.css" />
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/main.bundle.css" /><noscript><link rel="stylesheet" href="/frontend/css/main.bundle.css" /></noscript>
+    <link rel="stylesheet" href="/frontend/css/bundle-pages.css" />
+    <link rel="stylesheet" href="/frontend/css/docs.css" />
+
+    
+
+    <script src="/frontend/js/navigation.js" defer></script>
+    <script src="/frontend/js/docs-scripts.js" defer></script>
+
+    <script type="application/ld+json">
+    [
+        {
+            "@context":"https://schema.org",
+            "@type":"Service",
+            "name":"نظام إدارة الموارد البشرية HRMS",
+            "provider": {
+                "@type":"Organization",
+                "name":"Bright AI",
+                "url": "https://brightai.site"
+            },
+            "description":"نظام سحابي شامل لإدارة شؤون الموظفين والرواتب والامتثال الحكومي في السعودية",
+            "areaServed":"SA",
+            "serviceType": "Human Resources Software"
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "هل النظام مربوط مع منصة مدد والتأمينات الاجتماعية؟",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "نعم، يوفر النظام ملفات جاهزة للرفع المباشر على منصة مدد (حماية الأجور) وتحديث بيانات التأمينات الاجتماعية تلقائياً."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "هل يمكن تخصيص سياسات الإجازات والدوام؟",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "بالتأكيد، النظام مرن جداً ويسمح بتعريف سياسات متعددة للإجازات، الورديات، وساعات العمل الإضافي حسب حاجة كل قسم."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "هل بيانات الموظفين آمنة؟",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "نحن نطبق أعلى معايير الأمان والتشفير (AES-256) وتتم استضافة البيانات محلياً في المملكة لضمان الامتثال لسياسات الأمن السيبراني."
+                    }
+                }
+            ]
+        }
+    ]
+    </script>
+
+<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+<script defer src="/frontend/js/iconify-preload.js"></script>
+<script defer src="/frontend/js/vendor/iconify.min.js"></script>
+<script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+
+<style id="critical-css">
+    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
+    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+</style>
+    
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+</head>
+
+<body
+    class="antialiased selection:bg-indigo-500/30 selection:text-indigo-400 tracking-tight doc-page bg-slate-950 text-slate-300">
+
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
+            
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/index.html"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">الرئيسية</a>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/services/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-automation/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-agent/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/contact/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/data-analysis/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-medical-archive">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/job.MAISco">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-scolecs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/health/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/about/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/docs">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/blog/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+                
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+                
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full bai-inline-0001">
+            
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+            
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/index.html">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/services/">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/smart-automation/">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/ai-agent/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/data-analysis/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/contact/">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/smart-medical-archive">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/job.MAISco">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/ai-scolecs">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/health/">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/blog/">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
+                       >
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/about/">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/docs">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/blog/">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/contact/">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
+                    href="https://wa.me/966538229013" rel="noopener noreferrer"
+                    target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/try">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+    <canvas id="neural-canvas" class="fixed inset-0 z-0 pointer-events-none w-full h-full"></canvas>
+
+    
+    
+    <nav class="breadcrumb-nav max-w-7xl mx-auto px-6 pt-24">
+        <ol class="breadcrumb-list">
+            <li><a href="https://brightai.site/index.html">الرئيسية</a></li><span class="breadcrumb-separator">/</span>
+            <li><a href="https://brightai.site/docs">المستندات</a></li><span class="breadcrumb-separator">/</span>
+            <li class="active">الموارد البشرية (HRMS)</li>
+        </ol>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 py-12 relative z-10">
+
+        
+        <header class="doc-header text-center mb-16">
+            <div
+                class="w-24 h-24 mx-auto mb-8 rounded-3xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 shadow-2xl shadow-indigo-500/10 animate-float">
+                <iconify-icon icon="solar:users-group-rounded-bold-duotone" width="48"
+                    class="text-indigo-400"></iconify-icon>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 tracking-tight">إدارة موظفين <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-300">أسهل</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                انسى ملفات الرواتب المعقدة ومشاكل الحضور. نظام Bright HR يدير كل شيء من التوظيف إلى التقاعد، وبامتثال
+                كامل لنظام العمل السعودي.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mt-8">
+                <a href="/docs/solutions-hr"
+                    class="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all shadow-lg shadow-indigo-600/20 flex items-center gap-2">
+                    <iconify-icon icon="solar:calculator-minimalistic-linear" width="24"></iconify-icon>
+                    تجربة النظام الذكي
+                </a>
+                <a href="contact"
+                    class="px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium border border-white/10 transition-all">
+                    عرض ديمو للنظام
+                </a>
+            </div>
+        </header>
+
+        <div class="doc-content space-y-20">
+
+            
+            <section class="glass-card p-10 relative overflow-hidden" style="content-visibility: auto;">
+                <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-indigo-500 to-purple-500"></div>
+
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center gap-3">
+                    <iconify-icon icon="solar:shield-check-bold-duotone" class="text-indigo-400"></iconify-icon>
+                    الامتثال بنسبة 100%
+                </h2>
+                <div class="prose prose-invert max-w-none text-slate-300 leading-8">
+                    <p class="mb-6">
+                        تحديات الـ HR في السعودية مو سهلة: مدد، توطين، حماية الأجور، وتأمينات اجتماعية. أي غلطة ممكن
+                        تكلفك غرامات.
+                    </p>
+                    <p class="mb-6">
+                        نظامنا مصمم للسوق السعودي. نحدث القوانين أول بأول، نحسب لك الخصومات والبدلات، ونرسل ملف حماية
+                        الأجور (WPS) للبنك بضغطة زر. ريح راسك وركز على تطوير فريقك.
+                    </p>
+                </div>
+            </section>
+
+            
+            <section style="content-visibility: auto;">
+                <h3 class="text-3xl font-bold mb-10 text-center">كل ما يحتاجه قسم الـ HR</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-indigo-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
+                            <iconify-icon icon="solar:wallet-money-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">مسير الرواتب الآلي (Payroll)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            النظام يسحب الحضور، يحسب التأخير والغياب، يضيف البدلات، يخصم التأمينات، ويطلع الصافي..
+                            كل هذا في ثواني.
+                        </p>
+                    </div>
+
+                    
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-purple-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-6 text-purple-400">
+                            <iconify-icon icon="solar:face-scan-circle-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">الحضور الذكي (Smart Attendance)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            ما يحتاج بصمة اصبع تنقل عدوى. الموظف يبصم بوجهه من جواله (مع تحديد الموقع GPS) أو من جهاز
+                            التابلت في الاستقبال.
+                        </p>
+                    </div>
+
+                    
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-blue-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
+                            <iconify-icon icon="solar:smartphone-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">خدمة ذاتية للموظف (Self-Service)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تطبيق جوال لكل موظف: يقدم إجازة، يشوف رصيده، يحمل تعريف راتب، ويتابع طلباته بدون ما يزعج
+                            قسم الـ HR.
+                        </p>
+                    </div>
+
+                    
+                    <div class="glass-card p-8 hover:bg-white/5 transition duration-300 border-r-4 border-teal-500">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-teal-500/20 flex items-center justify-center mb-6 text-teal-400">
+                            <iconify-icon icon="solar:chart-square-bold-duotone" width="32"></iconify-icon>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">تقييم الأداء (Performance)</h4>
+                        <p class="text-slate-400 leading-relaxed">
+                            تتبع OKRs و KPIs لكل موظف. النظام يساعدك تحدد مين النجم اللي يستاهل بونص، ومين يحتاج تدريب
+                            إضافي.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section id="salary-demo" class="py-12" style="content-visibility: auto;">
+                <div class="glass-card p-1 rounded-3xl bg-gradient-to-b from-white/10 to-transparent">
+                    <div class="bg-[#0f172a] rounded-[22px] overflow-hidden flex flex-col md:flex-row shadow-2xl">
+                        <div class="p-10 md:w-1/2 flex flex-col justify-center">
+                            <span
+                                class="inline-block py-1 px-3 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold mb-4 border border-indigo-500/20 w-fit">
+                                واجهة التطبيق 📱
+                            </span>
+                            <h3 class="text-3xl font-bold text-white mb-4">كل شيء في جوال موظفك</h3>
+                            <p class="text-slate-400 mb-6 leading-relaxed">
+                                واجهة سهلة وبسيطة تدعم العربي والإنجليزي. الموظف يقدر يخلص كل أموره بنفسه.
+                            </p>
+                            <ul class="space-y-4 text-slate-300 text-sm">
+                                <li class="flex items-center gap-3">
+                                    <span
+                                        class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs"><iconify-icon
+                                            icon="solar:check-circle-bold"></iconify-icon></span>
+                                    إشعار فوري عند نزول الراتب
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span
+                                        class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs"><iconify-icon
+                                            icon="solar:check-circle-bold"></iconify-icon></span>
+                                    موافقة فورية على الإجازات (Workflow)
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span
+                                        class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs"><iconify-icon
+                                            icon="solar:check-circle-bold"></iconify-icon></span>
+                                    طباعة خطابات التعريف (مصدقة)
+                                </li>
+                            </ul>
+                        </div>
+                        <div
+                            class="md:w-1/2 bg-gradient-to-br from-indigo-900/20 to-black relative overflow-hidden flex items-center justify-center p-8">
+
+                            
+                            <div
+                                class="w-64 bg-slate-900 rounded-[2.5rem] border-[8px] border-slate-800 shadow-xl overflow-hidden relative">
+                                
+                                <div class="h-6 bg-slate-900 flex justify-between items-center px-4 pt-2">
+                                    <span class="text-[10px] text-white">9:41</span>
+                                    <div class="flex gap-1">
+                                        <div class="w-3 h-3 bg-white rounded-full opacity-20"></div>
+                                        <div class="w-3 h-3 bg-white rounded-full"></div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="bg-indigo-600 p-6 pt-8 rounded-b-[2rem] shadow-lg relative z-10">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <div class="text-white">
+                                            <p class="text-xs opacity-80">صباح الخير ☀️</p>
+                                            <h4 class="font-bold text-lg">أحمد الفهد</h4>
+                                        </div>
+                                        <div
+                                            class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30">
+                                            <iconify-icon icon="solar:user-bold"
+                                                class="text-white text-xl"></iconify-icon>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-[10px] text-indigo-200">الراتب القادم</p>
+                                            <p class="text-white font-bold text-lg">27 يناير</p>
+                                        </div>
+                                        <div class="p-2 bg-indigo-500 rounded-lg text-white">
+                                            <iconify-icon icon="solar:wallet-bold"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="p-4 space-y-3 bg-slate-50">
+                                    <div
+                                        class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center">
+                                                <iconify-icon icon="solar:calendar-bold"></iconify-icon>
+                                            </div>
+                                            <div>
+                                                <p class="text-slate-800 font-bold text-sm">رصيد الإجازات</p>
+                                                <p class="text-slate-500 text-[10px]">متبقي 21 يوم</p>
+                                            </div>
+                                        </div>
+                                        <iconify-icon icon="solar:alt-arrow-left-linear"
+                                            class="text-slate-400"></iconify-icon>
+                                    </div>
+
+                                    <div
+                                        class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                                                <iconify-icon icon="solar:file-text-bold"></iconify-icon>
+                                            </div>
+                                            <div>
+                                                <p class="text-slate-800 font-bold text-sm">الطلبات</p>
+                                                <p class="text-green-600 text-[10px]">تمت الموافقة (1)</p>
+                                            </div>
+                                        </div>
+                                        <iconify-icon icon="solar:alt-arrow-left-linear"
+                                            class="text-slate-400"></iconify-icon>
+                                    </div>
+                                </div>
+
+                                
+                                <div
+                                    class="absolute bottom-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-indigo-600 rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center text-white text-2xl">
+                                    <iconify-icon icon="solar:add-circle-bold"></iconify-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="grid md:grid-cols-3 gap-6" style="content-visibility: auto;">
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-indigo-900/50 rounded-full flex items-center justify-center text-indigo-400 mb-4">
+                        <iconify-icon icon="solar:check-read-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">امتثال قانوني</h4>
+                    <p class="text-slate-400 text-sm">تطبيق أحدث لوائح وزارة الموارد البشرية والتحديثات الحكومية
+                        تلقائياً.</p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-indigo-900/50 rounded-full flex items-center justify-center text-indigo-400 mb-4">
+                        <iconify-icon icon="solar:shield-keyhole-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">حماية البيانات</h4>
+                    <p class="text-slate-400 text-sm">استضافة سحابية آمنة داخل المملكة العربية السعودية.</p>
+                </div>
+                <div class="glass-card p-6 text-center hover:bg-white/5 transition">
+                    <div
+                        class="w-12 h-12 mx-auto bg-indigo-900/50 rounded-full flex items-center justify-center text-indigo-400 mb-4">
+                        <iconify-icon icon="solar:headphones-round-sound-bold" width="24"></iconify-icon>
+                    </div>
+                    <h4 class="text-white font-bold mb-2">دعم فني متخصص</h4>
+                    <p class="text-slate-400 text-sm">فريق دعم يتحدث لغتك ويفهم نظام العمل السعودي.</p>
+                </div>
+            </section>
+
+            
+            <section style="content-visibility: auto;">
+                <h3 class="text-2xl font-bold text-white mb-6">الأسئلة الشائعة</h3>
+                <div class="space-y-4">
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-indigo-500"></iconify-icon>
+                            هل النظام مربوط مع منصة مدد والتأمينات الاجتماعية؟
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            نعم، يوفر النظام ملفات جاهزة للرفع المباشر على منصة مدد (حماية الأجور) وتحديث بيانات
+                            التأمينات الاجتماعية تلقائياً.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-indigo-500"></iconify-icon>
+                            هل يمكن تخصيص سياسات الإجازات والدوام؟
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            بالتأكيد، النظام مرن جداً ويسمح بتعريف سياسات متعددة للإجازات، الورديات، وساعات العمل
+                            الإضافي حسب حاجة كل قسم.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6">
+                        <h4 class="text-white font-bold mb-2 flex items-center gap-2">
+                            <iconify-icon icon="solar:question-circle-bold" class="text-indigo-500"></iconify-icon>
+                            هل بيانات الموظفين آمنة؟
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            نحن نطبق أعلى معايير الأمان والتشفير (AES-256) وتتم استضافة البيانات محلياً في المملكة لضمان
+                            الامتثال لسياسات الأمن السيبراني.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            
+            <section class="text-center py-12 relative" style="content-visibility: auto;">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 blur-3xl rounded-full z-0">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">جاهز لأتمتة الـ HR؟</h2>
+                    <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                        تخلص من الأوراق، ووفر وقت فريقك للتركيز على استراتيجية الموارد البشرية.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-center gap-4">
+                        <a href="https://wa.me/966538229013"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition-all text-lg">
+                            <iconify-icon icon="logos:whatsapp-icon"></iconify-icon>
+                            تواصل مع مستشار
+                        </a>
+                        <a href="contact"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl glass-premium text-white font-bold transition-all hover:bg-white/10 text-lg">
+                            احجز ديمو مجاني
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    
+    
+    <section class="max-w-7xl mx-auto px-6 mt-12" style="content-visibility: auto;">
+      <h2 class="text-2xl font-bold mb-6">روابط القطاعات ذات الصلة</h2>
+      <div class="grid md:grid-cols-3 gap-5">
+        <a href="/sectors/healthcare" class="glass-card p-5 rounded-2xl border border-white/10 hover:bg-white/5 transition"><h3 class="text-lg font-bold text-white mb-2">قطاع الرعاية الصحية</h3><p class="text-sm text-slate-300">حلول التحول الطبي والعمليات السريرية الذكية.</p></a>
+        <a href="/sectors/finance" class="glass-card p-5 rounded-2xl border border-white/10 hover:bg-white/5 transition"><h3 class="text-lg font-bold text-white mb-2">القطاع المالي</h3><p class="text-sm text-slate-300">كشف الاحتيال والامتثال والقرارات الائتمانية الذكية.</p></a>
+        <a href="/sectors/logistics" class="glass-card p-5 rounded-2xl border border-white/10 hover:bg-white/5 transition"><h3 class="text-lg font-bold text-white mb-2">قطاع اللوجستيات</h3><p class="text-sm text-slate-300">سلاسل توريد ذكية وتحسين عمليات التسليم.</p></a>
+      </div>
+    </section>
+
+
+<div class="internal-linking-cta-wrap"><a class="internal-linking-cta" href="./solutions-hr-en.html?utm_source=internal&utm_medium=seo&utm_campaign=internal-linking-2026">English Version</a></div>
+</main>
+
+    <footer class="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6 mt-16">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2026 Bright AI. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+<script src="/frontend/js/clarity-events.js" defer></script>
+</body>
+
+</html>

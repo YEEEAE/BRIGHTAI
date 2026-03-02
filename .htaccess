@@ -1,0 +1,10 @@
+# ARCHIVED FILE (NOT USED IN PRODUCTION)
+#
+# Production provider is Netlify.
+# Source of truth for routing/security/caching:
+#   /netlify.toml
+#
+# Legacy Apache rules were moved to:
+#   /docs/deployment-archive/.htaccess.legacy
+#
+# This file is kept for documentation history only.
