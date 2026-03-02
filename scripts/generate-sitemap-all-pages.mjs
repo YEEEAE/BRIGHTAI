@@ -51,10 +51,12 @@ function isLowQualityPath(relPath) {
   if (normalized.startsWith("frontend/pages/offline/")) return true;
   if (normalized.startsWith("frontend/pages/terms/")) return true;
 
+  const base = path.basename(normalized);
+
+  // Exclude URLs with spaces or underscores anywhere in the file name/path
+  if (/\s/.test(normalized) || normalized.includes("_")) return true;
+
   if (normalized.startsWith("frontend/pages/blogger/")) {
-    const base = path.basename(normalized);
-    if (/\s/.test(base)) return true;
-    if (base.includes("_")) return true;
     if (/\.doc\.html$/i.test(base)) return true;
     if (LOW_QUALITY_BLOGGER_FILES.has(base)) return true;
   }
@@ -205,6 +207,30 @@ async function buildEntries() {
 
     const encodedPath = encodeUrlPath(rawPath);
     const loc = `${BASE_URL}${encodedPath}`;
+
+    // Read HTML to check for redirects or non-matching canonical links
+    const html = await fs.readFile(fullPath, "utf8");
+
+    // Skip if page has a meta refresh redirect
+    if (/<meta\s+http-equiv=["']refresh["']/i.test(html)) {
+      continue;
+    }
+
+    // Skip if page canonical doesn't match the loc
+    const canonicalMatch = html.match(/<link[^>]+rel=["']canonical["'][^>]*>/i);
+    if (canonicalMatch) {
+      const hrefMatch = canonicalMatch[0].match(/href=["']([^"']+)["']/i);
+      if (hrefMatch) {
+        let pageCanonicalUrl = hrefMatch[1];
+        // Normalize both to remove potential trailing slashes for safer comparison
+        const normLoc = loc.replace(/\/$/, "");
+        const normPageUrl = pageCanonicalUrl.replace(/\/$/, "");
+        if (normPageUrl !== normLoc) {
+          continue;
+        }
+      }
+    }
+
     const stat = await fs.stat(fullPath);
     const lastmod = toIsoDate(stat.mtime);
     const changefreq =
