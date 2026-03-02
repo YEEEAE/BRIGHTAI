@@ -22,7 +22,7 @@ async function loadHandleRequest(envOverrides = {}) {
   process.env.NODE_ENV = 'test';
   process.env.GEMINI_API_KEY = envOverrides.GEMINI_API_KEY ?? 'gemini_test_key';
   process.env.GEMINI_MODEL = envOverrides.GEMINI_MODEL ?? 'gemini-2.5-flash';
-  process.env.GROQ_API_KEY = envOverrides.GROQ_API_KEY ?? 'gsk_test_key';
+  process.env.GROQ_API_KEY = envOverrides.GROQ_API_KEY ?? 'gsk_placeholder_test_key';
   process.env.GROQ_STREAM_TIMEOUT_MS = String(envOverrides.GROQ_STREAM_TIMEOUT_MS ?? 150);
   process.env.RATE_LIMIT_REQUESTS_PER_MINUTE = String(
     envOverrides.RATE_LIMIT_REQUESTS_PER_MINUTE ?? 30
@@ -241,7 +241,7 @@ describe('Groq Stream Endpoint - Functional Scenarios', () => {
         body: {
           message: 'اختبار مفتاح وقت التشغيل',
           outputType: 'دعم العملاء',
-          apiKey: 'gsk_runtime_key_1234567890'
+          apiKey: 'gsk_placeholder_runtime_key'
         }
       });
 

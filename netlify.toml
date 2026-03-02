@@ -5,9 +5,7 @@
 [build]
 command = "npm install --prefix backend"
 publish = "."
-[build.environment]
-  SECRETS_SCAN_OMIT_PATHS = "frontend/pages/interview,backend"
-  SECRETS_SCAN_OMIT_KEYS = "apiKey,appId,messagingSenderId,projectId"
+
 [functions]
 directory = "api"
 node_bundler = "esbuild"
