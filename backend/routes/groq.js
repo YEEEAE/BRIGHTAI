@@ -101,6 +101,15 @@ function resolveHeaderValue(headers, key) {
   return '';
 }
 
+function resolveGroqApiKeyFromEnv() {
+  return normalizeGroqApiKey(
+    process.env.GROQ_API_KEY ||
+    process.env.GROQ_KEY ||
+    process.env.GROQ_TOKEN ||
+    ''
+  );
+}
+
 function resolveGroqApiKey(req) {
   const body = req && req.body && typeof req.body === 'object' ? req.body : {};
   const headers = req && req.headers && typeof req.headers === 'object' ? req.headers : {};
@@ -124,7 +133,7 @@ function resolveGroqApiKey(req) {
     if (bearerKey) return bearerKey;
   }
 
-  return normalizeGroqApiKey(config.groq.apiKey);
+  return resolveGroqApiKeyFromEnv() || normalizeGroqApiKey(config.groq.apiKey);
 }
 
 function resolveGroqModel(req) {

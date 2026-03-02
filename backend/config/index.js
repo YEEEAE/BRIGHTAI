@@ -20,10 +20,17 @@ if (selectedEnvPath) {
   require('dotenv').config();
 }
 
+function readSecret(name, fallback = '') {
+  const rawValue = process.env[name] || fallback;
+  const value = typeof rawValue === 'string' ? rawValue.trim() : '';
+  if (!value || value === 'YOUR_SECRET_HERE') return '';
+  return value;
+}
+
 const config = {
   // Gemini AI Configuration
   gemini: {
-    apiKey: process.env.GEMINI_API_KEY,
+    apiKey: readSecret('GEMINI_API_KEY'),
     model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/models'
   },
@@ -31,9 +38,9 @@ const config = {
   // Groq AI Configuration
   groq: {
     apiKey:
-      process.env.GROQ_API_KEY ||
-      process.env.GROQ_KEY ||
-      process.env.GROQ_TOKEN ||
+      readSecret('GROQ_API_KEY') ||
+      readSecret('GROQ_KEY') ||
+      readSecret('GROQ_TOKEN') ||
       '',
     model: process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama-3.3-70b-versatile',
     visionModel: process.env.GROQ_VISION_MODEL || 'llama-3.2-11b-vision-preview',
@@ -45,8 +52,8 @@ const config = {
   // GA4 Measurement Protocol (optional)
   analytics: {
     ga4MeasurementId: process.env.GA4_MEASUREMENT_ID || '',
-    ga4ApiSecret: process.env.GA4_API_SECRET || '',
-    webhookKey: process.env.ANALYTICS_WEBHOOK_KEY || '',
+    ga4ApiSecret: readSecret('GA4_API_SECRET'),
+    webhookKey: readSecret('ANALYTICS_WEBHOOK_KEY'),
     mpDebug: process.env.GA4_MP_DEBUG === '1'
   },
   

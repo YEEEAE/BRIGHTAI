@@ -76,11 +76,26 @@ const GEMINI_STREAM_SYSTEM_PROMPT = (() => {
 - لا تضف عبارة ---SUGGESTIONS--- مطلقاً.`;
 })();
 
+function resolveGeminiApiKey() {
+  const envValue = typeof process.env.GEMINI_API_KEY === 'string'
+    ? process.env.GEMINI_API_KEY.trim()
+    : '';
+  if (envValue && envValue !== 'YOUR_SECRET_HERE') return envValue;
+
+  const configValue = typeof config.gemini.apiKey === 'string'
+    ? config.gemini.apiKey.trim()
+    : '';
+  if (configValue && configValue !== 'YOUR_SECRET_HERE') return configValue;
+
+  return '';
+}
+
 function buildGeminiUrl() {
   const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
   const base = `${config.gemini.endpoint}/${model}:generateContent`;
-  if (config.gemini.apiKey) {
-    return `${base}?key=${encodeURIComponent(config.gemini.apiKey)}`;
+  const apiKey = resolveGeminiApiKey();
+  if (apiKey) {
+    return `${base}?key=${encodeURIComponent(apiKey)}`;
   }
   return base;
 }
@@ -90,8 +105,9 @@ function buildGeminiStreamUrl() {
   const base = `${config.gemini.endpoint}/${model}:streamGenerateContent`;
   const params = new URLSearchParams();
   params.set('alt', 'sse');
-  if (config.gemini.apiKey) {
-    params.set('key', config.gemini.apiKey);
+  const apiKey = resolveGeminiApiKey();
+  if (apiKey) {
+    params.set('key', apiKey);
   }
   return `${base}?${params.toString()}`;
 }

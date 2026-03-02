@@ -3,11 +3,11 @@
 # IMPORTANT: Never commit .env file with real API keys!
 
 # Gemini AI Configuration
-GEMINI_API_KEY=
+GEMINI_API_KEY=YOUR_SECRET_HERE
 GEMINI_MODEL=gemini-2.5-flash
 
 # Groq AI Configuration
-GROQ_API_KEY=
+GROQ_API_KEY=YOUR_SECRET_HERE
 GROQ_MODEL=llama3-70b-8192
 GROQ_ENDPOINT=https://api.groq.com/openai/v1/chat/completions
 GROQ_TRANSCRIBE_MODEL=whisper-large-v3-turbo
@@ -28,9 +28,9 @@ MAX_UPLOAD_BODY_BYTES=41943040
 
 # GA4 Measurement Protocol (optional - required for server-side conversion events)
 GA4_MEASUREMENT_ID=
-GA4_API_SECRET=
+GA4_API_SECRET=YOUR_SECRET_HERE
 # Optional shared key to protect analytics webhook endpoint
-ANALYTICS_WEBHOOK_KEY=
+ANALYTICS_WEBHOOK_KEY=YOUR_SECRET_HERE
 # Set to 1 to use GA4 debug endpoint and receive validation messages
 GA4_MP_DEBUG=0
 
