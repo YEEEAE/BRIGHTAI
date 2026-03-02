@@ -78,12 +78,22 @@ const GEMINI_STREAM_SYSTEM_PROMPT = (() => {
 
 function buildGeminiUrl() {
   const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
-  return `${config.gemini.endpoint}/${model}:generateContent`;
+  const base = `${config.gemini.endpoint}/${model}:generateContent`;
+  if (config.gemini.apiKey) {
+    return `${base}?key=${encodeURIComponent(config.gemini.apiKey)}`;
+  }
+  return base;
 }
 
 function buildGeminiStreamUrl() {
   const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
-  return `${config.gemini.endpoint}/${model}:streamGenerateContent?alt=sse`;
+  const base = `${config.gemini.endpoint}/${model}:streamGenerateContent`;
+  const params = new URLSearchParams();
+  params.set('alt', 'sse');
+  if (config.gemini.apiKey) {
+    params.set('key', config.gemini.apiKey);
+  }
+  return `${base}?${params.toString()}`;
 }
 
 function mapSessionRole(role) {
