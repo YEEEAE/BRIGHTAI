@@ -89,7 +89,6 @@ function normalizeGroqApiKey(value) {
   if (typeof value !== 'string') return '';
   const trimmed = value.trim();
   if (!trimmed) return '';
-  if (trimmed === 'YOUR_KEY_HERE') return '';
   if (!trimmed.startsWith('gsk_')) return '';
   return trimmed;
 }
@@ -741,11 +740,12 @@ async function callGroq({
     const response = await retryWithBackoff(
       async () => {
         const upstreamResponse = await fetch(
-          `${config.gemini.endpoint}/${activeModel}:generateContent?key=${config.gemini.apiKey}`,
+          `${config.gemini.endpoint}/${activeModel}:generateContent`,
           {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-goog-api-key': config.gemini.apiKey
           },
           body: JSON.stringify({
             contents: toGeminiContents(messages),
@@ -829,10 +829,13 @@ async function extractTextWithGemini({ base64Data, mimeType }) {
     throw error;
   }
 
-  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`;
+  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': config.gemini.apiKey
+    },
     body: JSON.stringify({
       contents: [
         {
@@ -874,10 +877,13 @@ async function callGeminiText({ prompt, maxOutputTokens = 1800, temperature = 0.
     throw error;
   }
 
-  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`;
+  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': config.gemini.apiKey
+    },
     body: JSON.stringify({
       contents: [
         {
@@ -911,10 +917,13 @@ async function transcribeAudioWithGemini({ base64Data, mimeType }) {
     throw error;
   }
 
-  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`;
+  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-goog-api-key': config.gemini.apiKey
+    },
     body: JSON.stringify({
       contents: [
         {

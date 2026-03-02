@@ -34,7 +34,6 @@ const config = {
       process.env.GROQ_API_KEY ||
       process.env.GROQ_KEY ||
       process.env.GROQ_TOKEN ||
-      process.env.NEXT_PUBLIC_GROQ_API_KEY ||
       '',
     model: process.env.GROQ_MODEL || process.env.GROQ_DEFAULT_MODEL || 'llama-3.3-70b-versatile',
     visionModel: process.env.GROQ_VISION_MODEL || 'llama-3.2-11b-vision-preview',
@@ -97,7 +96,7 @@ function validateConfig() {
  * @returns {boolean}
  */
 function isApiKeyConfigured() {
-  return !!config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE';
+  return !!config.gemini.apiKey;
 }
 
 /**
@@ -105,7 +104,7 @@ function isApiKeyConfigured() {
  * @returns {boolean}
  */
 function isGroqConfigured() {
-  return !!config.groq.apiKey && config.groq.apiKey !== 'YOUR_KEY_HERE';
+  return !!config.groq.apiKey;
 }
 
 /**

@@ -78,12 +78,12 @@ const GEMINI_STREAM_SYSTEM_PROMPT = (() => {
 
 function buildGeminiUrl() {
   const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
-  return `${config.gemini.endpoint}/${model}:generateContent?key=${config.gemini.apiKey}`;
+  return `${config.gemini.endpoint}/${model}:generateContent`;
 }
 
 function buildGeminiStreamUrl() {
   const model = String(config.gemini.model || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
-  return `${config.gemini.endpoint}/${model}:streamGenerateContent?alt=sse&key=${config.gemini.apiKey}`;
+  return `${config.gemini.endpoint}/${model}:streamGenerateContent?alt=sse`;
 }
 
 function mapSessionRole(role) {
@@ -259,7 +259,10 @@ async function callGeminiStream(contents, { signal, onToken } = {}) {
   try {
     const response = await fetch(buildGeminiStreamUrl(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': config.gemini.apiKey
+      },
       body: JSON.stringify({
         contents,
         generationConfig: {
@@ -358,7 +361,10 @@ async function callGemini(contents) {
     try {
       const response = await fetch(buildGeminiUrl(), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': config.gemini.apiKey
+        },
         body: JSON.stringify({
           contents,
           generationConfig: {
