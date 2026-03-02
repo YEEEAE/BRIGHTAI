@@ -69,3 +69,4 @@ backups/
 
 # Local Netlify folder
 .netlify
+.netlify-publish/

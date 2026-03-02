@@ -3,8 +3,8 @@
   SECRETS_SCAN_OMIT_KEYS = "apiKey,appId,messagingSenderId,projectId,storageBucket"
 
 [build]
-command = "npm install --prefix backend"
-publish = "."
+command = "npm install --prefix backend && node scripts/prepare-netlify-publish.mjs"
+publish = ".netlify-publish"
 
 [functions]
 directory = "api"
