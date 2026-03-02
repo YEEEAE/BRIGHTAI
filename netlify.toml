@@ -1,3 +1,7 @@
+[build.environment]
+  SECRETS_SCAN_OMIT_PATHS = "frontend/pages/interview,backend/groq-stream.functional.test.js,brightai_orchestrator_output,frontend/pages/interview/env.local.example.js"
+  SECRETS_SCAN_OMIT_KEYS = "apiKey,appId,messagingSenderId,projectId,storageBucket"
+
 [build]
 command = "npm install --prefix backend"
 publish = "."
