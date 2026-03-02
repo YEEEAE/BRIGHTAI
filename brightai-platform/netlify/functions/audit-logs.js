@@ -9,9 +9,9 @@ const MAX_LIMIT = 200;
 const DEFAULT_LIMIT = 50;
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const DEFAULT_ALLOWED_ROLES = ["super_admin", "company_admin"];
-const LOCAL_ADMIN_ENABLED = String(process.env.AUDIT_LOCAL_ADMIN_ENABLED || "true").toLowerCase() === "true";
+const LOCAL_ADMIN_ENABLED = String(process.env.AUDIT_LOCAL_ADMIN_ENABLED || "false").toLowerCase() === "true";
 const LOCAL_ADMIN_TOKEN = String(
-  process.env.AUDIT_LOCAL_ADMIN_TOKEN || process.env.LOCAL_ADMIN_ACCESS_TOKEN || "local-admin-access-token"
+  process.env.AUDIT_LOCAL_ADMIN_TOKEN || process.env.LOCAL_ADMIN_ACCESS_TOKEN || ""
 ).trim();
 const LOCAL_ADMIN_USER_ID = String(
   process.env.AUDIT_LOCAL_ADMIN_USER_ID || "11111111-1111-4111-8111-111111111111"

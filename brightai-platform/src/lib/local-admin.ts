@@ -7,7 +7,9 @@ const LOCAL_ADMIN_ENABLED = process.env.REACT_APP_ENABLE_LOCAL_ADMIN === "true";
 const LOCAL_ADMIN_EMAIL =
   process.env.REACT_APP_LOCAL_ADMIN_EMAIL || "admin@brightai.sa";
 const LOCAL_ADMIN_PASSWORD =
-  process.env.REACT_APP_LOCAL_ADMIN_PASSWORD || "admin12345";
+  process.env.REACT_APP_LOCAL_ADMIN_PASSWORD || "";
+const LOCAL_ADMIN_ACCESS_TOKEN =
+  process.env.REACT_APP_AUDIT_LOCAL_ADMIN_TOKEN || "";
 
 const getStorage = () => {
   if (typeof window === "undefined") {
@@ -38,6 +40,9 @@ const clearSupabaseAuthTokens = () => {
 
 export const isLocalAdminCredentials = (email: string, password: string) => {
   if (!LOCAL_ADMIN_ENABLED) {
+    return false;
+  }
+  if (!LOCAL_ADMIN_EMAIL || !LOCAL_ADMIN_PASSWORD) {
     return false;
   }
   return (
@@ -102,10 +107,12 @@ export const getLocalAdminSession = () => {
   if (!user) {
     return null;
   }
+  const tokenSeed = Date.now().toString(36);
+  const accessToken = LOCAL_ADMIN_ACCESS_TOKEN || `local-admin-${tokenSeed}`;
 
   return {
-    access_token: "local-admin-access-token",
-    refresh_token: "local-admin-refresh-token",
+    access_token: accessToken,
+    refresh_token: `local-admin-refresh-${tokenSeed}`,
     expires_in: 60 * 60 * 24,
     token_type: "bearer",
     user,

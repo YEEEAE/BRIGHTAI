@@ -2693,9 +2693,9 @@
 
         // --- Authentication Controller ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Hardcoded credentials for simulation purposes
-            const ADMIN_EMAIL = 'admin@login.com';
-            const ADMIN_PASS = 'admin12345';
+            // Inject admin credentials via runtime config before deploying this page.
+            const ADMIN_EMAIL = window.ADMIN_EMAIL || 'admin@example.com';
+            const ADMIN_PASS = window.ADMIN_PASS || '';
 
             const loginOverlay = document.getElementById('loginOverlay');
             const loginForm = document.getElementById('loginForm');
@@ -2718,6 +2718,10 @@
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 loginError.textContent = '';
+                if (!ADMIN_PASS) {
+                    loginError.textContent = 'Admin credentials are not configured. Set window.ADMIN_PASS first.';
+                    return;
+                }
                 const loginBtn = loginForm.querySelector('button[type="submit"]');
                 loginBtn.disabled = true;
                 const originalHTML = loginBtn.innerHTML;

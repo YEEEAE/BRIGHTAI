@@ -26,7 +26,7 @@ type LogsResponse = {
 const DEFAULT_LIMIT = 30;
 const EXPORT_LIMIT = 200;
 const LOCAL_ADMIN_AUDIT_TOKEN =
-  process.env.REACT_APP_AUDIT_LOCAL_ADMIN_TOKEN || "local-admin-access-token";
+  process.env.REACT_APP_AUDIT_LOCAL_ADMIN_TOKEN || "";
 
 const actionOptions = [
   { value: "", label: "كل الإجراءات" },

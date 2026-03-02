@@ -7,9 +7,9 @@ const RATE_LIMIT_WINDOW_MS = Number(process.env.AUDIT_RATE_LIMIT_WINDOW_MS || "6
 const ALLOW_UNAUTH = String(process.env.AUDIT_ALLOW_UNAUTHENTICATED || "false").toLowerCase() === "true";
 const AUDIT_LOGGING_ENABLED = String(process.env.AUDIT_LOGGING_ENABLED || "true").toLowerCase() !== "false";
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const LOCAL_ADMIN_ENABLED = String(process.env.AUDIT_LOCAL_ADMIN_ENABLED || "true").toLowerCase() === "true";
+const LOCAL_ADMIN_ENABLED = String(process.env.AUDIT_LOCAL_ADMIN_ENABLED || "false").toLowerCase() === "true";
 const LOCAL_ADMIN_TOKEN = String(
-  process.env.AUDIT_LOCAL_ADMIN_TOKEN || process.env.LOCAL_ADMIN_ACCESS_TOKEN || "local-admin-access-token"
+  process.env.AUDIT_LOCAL_ADMIN_TOKEN || process.env.LOCAL_ADMIN_ACCESS_TOKEN || ""
 ).trim();
 const LOCAL_ADMIN_USER_ID = String(
   process.env.AUDIT_LOCAL_ADMIN_USER_ID || "11111111-1111-4111-8111-111111111111"

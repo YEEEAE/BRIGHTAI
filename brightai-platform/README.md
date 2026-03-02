@@ -160,7 +160,7 @@ npm start
 - `AUDIT_ALLOW_UNAUTHENTICATED=false` للإنتاج
 - `AUDIT_VIEWER_ROLES=super_admin,company_admin`
 - `AUDIT_LOCAL_ADMIN_ENABLED=true` (fallback auth عند غياب Supabase)
-- `AUDIT_LOCAL_ADMIN_TOKEN` (افتراضي: `local-admin-access-token`)
+- `AUDIT_LOCAL_ADMIN_TOKEN` (مطلوب عند تفعيل local-admin ولا يوجد له قيمة افتراضية)
 - `AUDIT_LOCAL_ADMIN_USER_ID` (UUID ثابت)
 
 التخزين الفعلي لسجلات audit:
