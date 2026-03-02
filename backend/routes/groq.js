@@ -751,20 +751,20 @@ async function callGroq({
         const upstreamResponse = await fetch(
           `${config.gemini.endpoint}/${activeModel}:generateContent`,
           {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-goog-api-key': config.gemini.apiKey
-          },
-          body: JSON.stringify({
-            contents: toGeminiContents(messages),
-            generationConfig: {
-              temperature,
-              maxOutputTokens: maxTokens
-            }
-          }),
-          signal: requestSignal
-        });
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': config.gemini.apiKey
+            },
+            body: JSON.stringify({
+              contents: toGeminiContents(messages),
+              generationConfig: {
+                temperature,
+                maxOutputTokens: maxTokens
+              }
+            }),
+            signal: requestSignal
+          });
 
         if (!upstreamResponse.ok) {
           const errText = await upstreamResponse.text().catch(() => upstreamResponse.statusText);
@@ -1450,9 +1450,9 @@ async function groqMedicalAgentHandler(req, res) {
   const safeHospitalProfile = normalizeHospitalProfile(hospitalProfile);
   const normalizedRecords = Array.isArray(records)
     ? records
-        .slice(0, MAX_MEDICAL_RECORDS)
-        .map((record, index) => normalizeMedicalRecord(record, index))
-        .filter(record => record && record.recordId)
+      .slice(0, MAX_MEDICAL_RECORDS)
+      .map((record, index) => normalizeMedicalRecord(record, index))
+      .filter(record => record && record.recordId)
     : [];
 
   const safeBatchReport = {
@@ -1734,8 +1734,8 @@ async function groqOpenAiCompatHandler(req, res) {
     const messages = Array.isArray(body.messages)
       ? body.messages
       : (typeof body.prompt === 'string' && body.prompt.trim()
-          ? [{ role: 'user', content: body.prompt }]
-          : []);
+        ? [{ role: 'user', content: body.prompt }]
+        : []);
 
     if (!messages.length) {
       return res.status(400).json({
