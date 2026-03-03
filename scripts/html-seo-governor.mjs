@@ -270,7 +270,6 @@ function extractAlternateLinks(html) {
       ...tag,
       hreflang: tag.attrs.hreflang.trim(),
       href: (tag.attrs.href || "").trim(),
-      normalizedHref: normalizeSiteUrl(tag.attrs.href || "", BASE_URL),
     }));
 }
 
@@ -330,7 +329,7 @@ function auditFile(content, relPath, lowerPathMap) {
   const canonical = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
   const canonicalRaw = (canonical?.attrs.href || "").trim();
   const canonicalNormalized = normalizeSiteUrl(canonicalRaw, BASE_URL);
-  const canonicalMismatch = canonicalNormalized !== expectedCanonical;
+  const canonicalMismatch = canonicalRaw !== expectedCanonical || canonicalNormalized !== expectedCanonical;
   const metaDescription = extractMetaTags(content).find(
     (tag) => (tag.attrs.name || "").trim().toLowerCase() === "description"
   );
@@ -355,7 +354,8 @@ function auditFile(content, relPath, lowerPathMap) {
       continue;
     }
     const hit = bucket[0];
-    if (hit.normalizedHref !== expected.href) {
+    const hitNormalizedHref = normalizeSiteUrl(hit.href, BASE_URL);
+    if (hit.href !== expected.href || hitNormalizedHref !== expected.href) {
       hreflangProblems.push(
         `hreflang ${expected.code} points to '${hit.href || "(empty)"}' instead of '${expected.href}'`
       );

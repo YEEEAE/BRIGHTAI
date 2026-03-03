@@ -316,7 +316,10 @@ async function checkServicePage(page) {
   const canonicalLinks = extractLinksByRel(html, "canonical");
   if (canonicalLinks.length !== 1) {
     result.errors.push(`Expected 1 canonical link, found ${canonicalLinks.length}.`);
-  } else if (normalizeSiteUrl(canonicalLinks[0].href, BASE_URL) !== page.canonical) {
+  } else if (
+    canonicalLinks[0].href !== page.canonical ||
+    normalizeSiteUrl(canonicalLinks[0].href, BASE_URL) !== page.canonical
+  ) {
     result.errors.push(
       `Canonical mismatch. Expected '${page.canonical}', found '${canonicalLinks[0].href}'.`
     );
@@ -338,7 +341,10 @@ async function checkServicePage(page) {
       result.errors.push(`Expected exactly one hreflang '${key}', found ${hit.length}.`);
       continue;
     }
-    if (normalizeSiteUrl(hit[0].href, BASE_URL) !== expectedHreflangs[key]) {
+    if (
+      hit[0].href !== expectedHreflangs[key] ||
+      normalizeSiteUrl(hit[0].href, BASE_URL) !== expectedHreflangs[key]
+    ) {
       result.errors.push(
         `hreflang '${key}' mismatch. Expected '${expectedHreflangs[key]}', found '${hit[0].href}'.`
       );
@@ -441,6 +447,17 @@ async function checkSitemap() {
   for (const loc of locMatches) {
     if (!loc.startsWith(`${BASE_URL}/`) && loc !== BASE_URL + "/") {
       result.errors.push(`Sitemap URL has unexpected host/base: ${loc}`);
+      continue;
+    }
+
+    if (loc.includes("?")) {
+      result.errors.push(`Parameterized URL in sitemap is forbidden: ${loc}`);
+      continue;
+    }
+
+    const pathname = new URL(loc).pathname;
+    if (pathname.length > 1 && pathname.endsWith("/")) {
+      result.errors.push(`Trailing slash URL is forbidden by policy: ${loc}`);
       continue;
     }
 

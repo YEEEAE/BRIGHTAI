@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 import { promises as fs } from "fs";
 import path from "path";
+import {
+  findCounterpartRelPath,
+  normalizeRelPath,
+  normalizeSiteUrl,
+  relPathToCanonical,
+} from "./seo-url-map.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, "sitemap.xml");
 
-const STATIC_FILES = [
-  "index.html",
-  "docs.html",
-];
-
+const STATIC_FILES = ["index.html", "docs.html"];
 const ROOT_INDEX_DIRS = [
   "about",
   "ai-agent",
@@ -28,8 +30,8 @@ const ROOT_INDEX_DIRS = [
   "tools",
   "what-is-ai",
 ];
-
 const HTML_SCAN_DIRS = ["frontend/pages"];
+
 const EXCLUDE_FILES = new Set(["404.html", "500.html"]);
 const LOW_QUALITY_BLOGGER_FILES = new Set([
   "agint-bblog.html",
@@ -43,17 +45,16 @@ const LOW_QUALITY_BLOGGER_FILES = new Set([
   "production-line-2.html",
 ]);
 
-function isLowQualityPath(relPath) {
-  const normalized = relPath.replace(/\\/g, "/");
-
+function isExcludedPath(relPath) {
+  const normalized = normalizeRelPath(relPath);
+  const base = path.basename(normalized);
+  if (EXCLUDE_FILES.has(base)) return true;
+  if (normalized.includes("/partials/")) return true;
   if (normalized.startsWith("frontend/pages/interview/")) return true;
   if (normalized.startsWith("frontend/pages/botAI/")) return true;
   if (normalized.startsWith("frontend/pages/offline/")) return true;
   if (normalized.startsWith("frontend/pages/terms/")) return true;
-
-  const base = path.basename(normalized);
-
-  // Exclude URLs with spaces or underscores anywhere in the file name/path
+  if (normalized.startsWith("frontend/pages/sitemap/")) return true;
   if (/\s/.test(normalized) || normalized.includes("_")) return true;
 
   if (normalized.startsWith("frontend/pages/blogger/")) {
@@ -68,72 +69,58 @@ function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
 }
 
-function encodeUrlPath(urlPath) {
-  if (urlPath === "/") return "/";
-  const trailingSlash = urlPath.endsWith("/");
-  const encodeSegment = (segment) =>
-    encodeURIComponent(segment).replace(/[!'()*]/g, (char) =>
-      `%${char.charCodeAt(0).toString(16).toUpperCase()}`
-    );
-  const encoded = urlPath
-    .split("/")
-    .filter((segment) => segment.length > 0)
-    .map((segment) => encodeSegment(segment))
-    .join("/");
-  return `/${encoded}${trailingSlash ? "/" : ""}`;
+function xmlEscape(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
-function fileToUrlPath(filePath) {
-  const normalized = filePath.replace(/\\/g, "/");
+function extractCanonicalHref(html) {
+  const match = html.match(/<link\b[^>]*\brel\s*=\s*["']canonical["'][^>]*>/i);
+  if (!match) return "";
+  const href = match[0].match(/\bhref\s*=\s*["']([^"']+)["']/i);
+  return (href?.[1] || "").trim();
+}
 
-  if (normalized === "index.html") return "/";
-  if (normalized === "docs.html") return "/docs";
+function hasMetaRefresh(html) {
+  return /<meta\s+http-equiv=["']refresh["']/i.test(html);
+}
 
-  if (normalized.endsWith("/index.html")) {
-    const dir = normalized.replace(/\/index\.html$/, "");
+function buildHreflangSet(relPath, selfUrl, lowerPathMap, includedRelPaths) {
+  const counterpart = findCounterpartRelPath(relPath, lowerPathMap);
+  const counterpartExists = counterpart && includedRelPaths.has(counterpart.toLowerCase());
+  const counterpartUrl = counterpartExists ? relPathToCanonical(counterpart, BASE_URL) : null;
+  const isEnglish = /-en\.html$/i.test(relPath);
 
-    if (ROOT_INDEX_DIRS.includes(dir)) return `/${dir}`;
-    if (dir.startsWith("frontend/pages/ai-bots/")) {
-      return `/${dir.replace(/^frontend\/pages\//, "")}`;
+  if (isEnglish) {
+    if (counterpartUrl) {
+      return [
+        { code: "ar-SA", href: counterpartUrl },
+        { code: "en-SA", href: selfUrl },
+        { code: "x-default", href: counterpartUrl },
+      ];
     }
-    if (dir.startsWith("frontend/pages/try/")) {
-      return `/${dir.replace(/^frontend\/pages\//, "")}`;
-    }
-    if (dir.startsWith("frontend/pages/demo/")) {
-      return `/${dir.replace(/^frontend\/pages\//, "")}`;
-    }
-    if (dir === "frontend/pages/ai-workflows") return "/ai-workflows";
-    if (dir === "frontend/pages/ai-scolecs") return "/ai-scolecs";
-    if (dir === "frontend/pages/smart-medical-archive") return "/smart-medical-archive";
-    if (dir === "frontend/pages/privacy-cookies") return "/privacy-cookies";
-    if (dir === "frontend/pages/job.MAISco") return "/job.MAISco";
-    if (dir === "frontend/pages/interview") return "/interview";
-    return null;
+    return [
+      { code: "en-SA", href: selfUrl },
+      { code: "x-default", href: selfUrl },
+    ];
   }
 
-  if (normalized.startsWith("frontend/pages/blogger/") && normalized.endsWith(".html")) {
-    return `/blog/${path.basename(normalized, ".html")}`;
+  if (counterpartUrl) {
+    return [
+      { code: "ar-SA", href: selfUrl },
+      { code: "en-SA", href: counterpartUrl },
+      { code: "x-default", href: selfUrl },
+    ];
   }
 
-  if (normalized.startsWith("frontend/pages/blog/automation/") && normalized.endsWith(".html")) {
-    return `/blog/automation/${path.basename(normalized, ".html")}`;
-  }
-
-  if (normalized.startsWith("frontend/pages/blog/data-analytics/") && normalized.endsWith(".html")) {
-    return `/blog/data-analytics/${path.basename(normalized, ".html")}`;
-  }
-
-  if (normalized.startsWith("frontend/pages/docs/") && normalized.endsWith(".html")) {
-    const slug = path.basename(normalized, ".html");
-    if (slug === "docs") return null;
-    return `/docs/${slug}`;
-  }
-
-  if (normalized.startsWith("frontend/pages/sectors/") && normalized.endsWith(".html")) {
-    return `/sectors/${path.basename(normalized, ".html")}`;
-  }
-
-  return null;
+  return [
+    { code: "ar-SA", href: selfUrl },
+    { code: "x-default", href: selfUrl },
+  ];
 }
 
 async function walkHtmlFiles(dirPath) {
@@ -146,127 +133,119 @@ async function walkHtmlFiles(dirPath) {
       files.push(...(await walkHtmlFiles(fullPath)));
       continue;
     }
-
     if (!entry.isFile()) continue;
     if (!entry.name.endsWith(".html")) continue;
     files.push(fullPath);
   }
-
   return files;
 }
 
-async function collectFiles() {
+async function collectCandidateFiles() {
   const collected = new Set();
 
   for (const rel of STATIC_FILES) {
-    const fullPath = path.join(ROOT, rel);
     try {
-      await fs.access(fullPath);
-      collected.add(fullPath);
+      await fs.access(path.join(ROOT, rel));
+      collected.add(rel);
     } catch {
-      // Skip missing optional file.
+      // Optional page.
     }
   }
 
   for (const relDir of ROOT_INDEX_DIRS) {
-    const fullPath = path.join(ROOT, relDir, "index.html");
+    const rel = `${relDir}/index.html`;
     try {
-      await fs.access(fullPath);
-      collected.add(fullPath);
+      await fs.access(path.join(ROOT, rel));
+      collected.add(rel);
     } catch {
-      // Skip missing optional directory page.
+      // Optional page.
     }
   }
 
-  for (const dir of HTML_SCAN_DIRS) {
-    const fullDir = path.join(ROOT, dir);
+  for (const scanDir of HTML_SCAN_DIRS) {
+    const fullDir = path.join(ROOT, scanDir);
     try {
-      const htmlFiles = await walkHtmlFiles(fullDir);
-      for (const file of htmlFiles) {
-        collected.add(file);
+      const files = await walkHtmlFiles(fullDir);
+      for (const fullPath of files) {
+        collected.add(normalizeRelPath(path.relative(ROOT, fullPath)));
       }
     } catch {
-      // Skip missing optional directory.
+      // Optional directory.
     }
   }
 
-  return Array.from(collected);
+  return Array.from(collected).sort((a, b) => a.localeCompare(b, "en"));
 }
 
 async function buildEntries() {
-  const files = await collectFiles();
+  const candidates = await collectCandidateFiles();
   const byLoc = new Map();
 
-  for (const fullPath of files) {
-    const relPath = path.relative(ROOT, fullPath).replace(/\\/g, "/");
-    if (EXCLUDE_FILES.has(path.basename(relPath))) continue;
-    if (isLowQualityPath(relPath)) continue;
+  for (const relPath of candidates) {
+    if (isExcludedPath(relPath)) continue;
 
-    const rawPath = fileToUrlPath(relPath);
-    if (!rawPath) continue;
+    const canonicalUrl = relPathToCanonical(relPath, BASE_URL);
+    if (!canonicalUrl) continue;
 
-    const encodedPath = encodeUrlPath(rawPath);
-    const loc = `${BASE_URL}${encodedPath}`;
-
-    // Read HTML to check for redirects or non-matching canonical links
+    const fullPath = path.join(ROOT, relPath);
     const html = await fs.readFile(fullPath, "utf8");
+    if (hasMetaRefresh(html)) continue;
 
-    // Skip if page has a meta refresh redirect
-    if (/<meta\s+http-equiv=["']refresh["']/i.test(html)) {
+    const canonicalTagHref = extractCanonicalHref(html);
+    const canonicalTagNormalized = normalizeSiteUrl(canonicalTagHref, BASE_URL);
+    if (canonicalTagHref !== canonicalUrl || canonicalTagNormalized !== canonicalUrl) {
       continue;
     }
 
-    // Skip if page canonical doesn't match the loc
-    const canonicalMatch = html.match(/<link[^>]+rel=["']canonical["'][^>]*>/i);
-    if (canonicalMatch) {
-      const hrefMatch = canonicalMatch[0].match(/href=["']([^"']+)["']/i);
-      if (hrefMatch) {
-        let pageCanonicalUrl = hrefMatch[1];
-        // Normalize both to remove potential trailing slashes for safer comparison
-        const normLoc = loc.replace(/\/$/, "");
-        const normPageUrl = pageCanonicalUrl.replace(/\/$/, "");
-        if (normPageUrl !== normLoc) {
-          continue;
-        }
-      }
-    }
-
     const stat = await fs.stat(fullPath);
-    const lastmod = toIsoDate(stat.mtime);
-    const changefreq =
-      encodedPath === "/" ? "daily" : encodedPath.includes("/blog") ? "weekly" : "monthly";
-    const priority = encodedPath === "/" ? "1.0" : encodedPath.includes("/blog") ? "0.7" : "0.8";
+    const pathname = new URL(canonicalUrl).pathname;
+    const changefreq = pathname === "/" ? "daily" : pathname.startsWith("/blog/") ? "weekly" : "monthly";
+    const priority = pathname === "/" ? "1.0" : pathname.startsWith("/blog/") ? "0.7" : "0.8";
 
-    byLoc.set(loc, {
-      loc,
-      lastmod,
+    byLoc.set(canonicalUrl, {
+      loc: canonicalUrl,
+      relPath,
+      lastmod: toIsoDate(stat.mtime),
       changefreq,
       priority,
+      alternates: [],
     });
   }
 
-  return Array.from(byLoc.values()).sort((a, b) => a.loc.localeCompare(b.loc, "en"));
+  const entries = Array.from(byLoc.values()).sort((a, b) => a.loc.localeCompare(b.loc, "en"));
+  const lowerPathMap = new Map(entries.map((entry) => [entry.relPath.toLowerCase(), entry.relPath]));
+  const includedRelPaths = new Set(entries.map((entry) => entry.relPath.toLowerCase()));
+
+  for (const entry of entries) {
+    entry.alternates = buildHreflangSet(entry.relPath, entry.loc, lowerPathMap, includedRelPaths);
+  }
+
+  return entries;
 }
 
 function renderXml(entries) {
   const lines = [];
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
-  lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+  lines.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">');
   lines.push("");
 
   for (const entry of entries) {
     lines.push("  <url>");
-    lines.push(`    <loc>${entry.loc}</loc>`);
-    lines.push(`    <lastmod>${entry.lastmod}</lastmod>`);
-    lines.push(`    <changefreq>${entry.changefreq}</changefreq>`);
-    lines.push(`    <priority>${entry.priority}</priority>`);
+    lines.push(`    <loc>${xmlEscape(entry.loc)}</loc>`);
+    for (const alt of entry.alternates) {
+      lines.push(
+        `    <xhtml:link rel="alternate" hreflang="${xmlEscape(alt.code)}" href="${xmlEscape(alt.href)}" />`
+      );
+    }
+    lines.push(`    <lastmod>${xmlEscape(entry.lastmod)}</lastmod>`);
+    lines.push(`    <changefreq>${xmlEscape(entry.changefreq)}</changefreq>`);
+    lines.push(`    <priority>${xmlEscape(entry.priority)}</priority>`);
     lines.push("  </url>");
   }
 
   lines.push("");
   lines.push("</urlset>");
   lines.push("");
-
   return lines.join("\n");
 }
 
@@ -274,7 +253,7 @@ async function main() {
   const entries = await buildEntries();
   const xml = renderXml(entries);
   await fs.writeFile(OUTPUT, xml, "utf8");
-  process.stdout.write(`Generated sitemap.xml with ${entries.length} URLs\n`);
+  process.stdout.write(`Generated sitemap.xml with ${entries.length} canonical URLs\n`);
 }
 
 main().catch((error) => {

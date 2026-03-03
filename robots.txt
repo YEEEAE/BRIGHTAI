@@ -8,8 +8,8 @@ Allow: /
 Allow: /frontend/css/
 Allow: /frontend/js/
 Allow: /assets/
-Allow: /frontend/pages/
 Allow: /manifest.json
+Disallow: /frontend/pages/
 
 Disallow: /admin/
 Disallow: /private/
@@ -35,6 +35,8 @@ Disallow: /*.map$
 Disallow: /*.log$
 Disallow: /*.sql$
 Disallow: /*.zip$
+Disallow: /*?*
 Disallow: /*?*utm_
 Disallow: /*?*gclid=
 Disallow: /*?*fbclid=
+Disallow: /*?*msclkid=
