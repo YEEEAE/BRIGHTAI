@@ -100,7 +100,7 @@ async function main() {
   for (const relativeFile of bloggerFiles) {
     const absoluteFile = path.join(ROOT, relativeFile);
     const basename = path.basename(relativeFile);
-    const selfPath = `/blog/${basename}`;
+    const selfPath = `/blog/${path.basename(relativeFile, ".html")}`;
     const selfUrl = `${BASE_URL}${selfPath}`;
 
     const originalContent = await fs.readFile(absoluteFile, "utf8");

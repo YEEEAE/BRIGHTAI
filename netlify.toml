@@ -505,6 +505,12 @@ status = 301
 force = true
 
 [[redirects]]
+from = "/docs/:slug/"
+to = "/docs/:slug"
+status = 301
+force = true
+
+[[redirects]]
 from = "/docs/:slug"
 to = "/frontend/pages/docs/:slug.html"
 status = 200
@@ -527,13 +533,19 @@ force = true
 
 [[redirects]]
 from = "/blog/Generative%20artificial%20intelligence"
-to = "/blog/generative-artificial-intelligence"
+to = "/blog/Generative-artificial-intelligence"
 status = 301
 force = true
 
 [[redirects]]
 from = "/blog/generative-artificial-intelligence-2"
-to = "/blog/generative-artificial-intelligence"
+to = "/blog/Generative-artificial-intelligence"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/generative-artificial-intelligence"
+to = "/blog/Generative-artificial-intelligence"
 status = 301
 force = true
 
