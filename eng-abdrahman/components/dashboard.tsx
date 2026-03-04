@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
-import Papa from "papaparse"
 import {
   QCRow,
   parseRow,
@@ -20,6 +19,8 @@ import { DateFilter } from "@/components/date-filter"
 import { ParetoChart, TrendChart, DonutChart } from "@/components/qc-charts"
 import { DataTable } from "@/components/data-table"
 import { AIReport } from "@/components/ai-report"
+import { AIChatInterface } from "@/components/ai-chat-interface"
+import { ExportPDFButton } from "@/components/export-pdf-button"
 import { Loader2, ShieldAlert } from "lucide-react"
 
 export function Dashboard() {
@@ -29,22 +30,25 @@ export function Dashboard() {
   const [filter, setFilter] = useState<DateRangeFilter>("all")
   const [customRange, setCustomRange] = useState<DateRange>({ from: null, to: null })
 
-  // Load CSV on mount
+  // Fetch from API
   useEffect(() => {
-    Papa.parse<Record<string, string>>("/data.csv", {
-      header: true,
-      skipEmptyLines: true,
-      download: true,
-      complete: (result) => {
-        const parsed = result.data.map(parseRow).filter((r) => !isNaN(r.date.getTime()))
+    async function loadData() {
+      try {
+        const res = await fetch('/api/qc')
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+        const data = await res.json()
+        const parsed = data.map((r: any) => ({
+          ...r,
+          date: new Date(r.date)
+        }))
         setAllRows(parsed)
-        setLoading(false)
-      },
-      error: (err) => {
+      } catch (err: any) {
         setFetchError(err.message)
+      } finally {
         setLoading(false)
-      },
-    })
+      }
+    }
+    loadData()
   }, [])
 
   const filteredRows = useMemo(
@@ -96,16 +100,19 @@ export function Dashboard() {
               <code className="font-mono bg-secondary px-1 rounded">public/data.csv</code>
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="text-xs text-muted-foreground">
-              {allRows.length} total records loaded
-            </span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="text-xs text-muted-foreground hidden sm:inline-block">
+                {allRows.length} total records
+              </span>
+            </div>
+            <ExportPDFButton targetId="dashboard-main" />
           </div>
         </div>
       </header>
 
-      <main className="max-w-screen-xl mx-auto px-6 py-6 flex flex-col gap-6">
+      <main id="dashboard-main" className="max-w-screen-xl mx-auto px-6 py-6 flex flex-col gap-6 bg-background">
         {/* Date Filter */}
         <DateFilter
           filter={filter}
@@ -141,6 +148,9 @@ export function Dashboard() {
 
         {/* AI Report */}
         <AIReport payload={aiPayload} />
+
+        {/* AI Chat Consultant */}
+        <AIChatInterface />
 
         {/* Data Table */}
         <DataTable rows={filteredRows} />

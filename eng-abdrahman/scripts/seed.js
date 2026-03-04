@@ -1,0 +1,71 @@
+const { PrismaClient } = require('@prisma/client');
+const fs = require('fs');
+const path = require('path');
+const csv = require('csv-parser');
+const { parseISO } = require('date-fns');
+
+const prisma = new PrismaClient();
+
+async function main() {
+    console.log('Start seeding...');
+    const results = [];
+
+    // read from public/data.csv
+    const csvFilePath = path.join(__dirname, '../public/data.csv');
+
+    if (!fs.existsSync(csvFilePath)) {
+        console.error('data.csv not found at', csvFilePath);
+        return;
+    }
+
+    await new Promise((resolve, reject) => {
+        fs.createReadStream(csvFilePath)
+            .pipe(csv())
+            .on('data', (data) => {
+                const dateStr = data.Date ? data.Date.trim() : '';
+                const date = dateStr ? parseISO(dateStr) : new Date(0);
+
+                if (isNaN(date.getTime()) || date.getTime() === 0) return; // skip invalid dates
+
+                results.push({
+                    date,
+                    dateStr,
+                    docNo: data.DocNo ? data.DocNo.trim() : '',
+                    machineName: data['Machine Name'] ? data['Machine Name'].trim() : '',
+                    itemCode: data['Producted Item.Code'] ? data['Producted Item.Code'].trim() : '',
+                    itemName: data['Producted Item.Name'] ? data['Producted Item.Name'].trim() : '',
+                    producedQty: parseFloat(data['Producted Qty'] || '0') || 0,
+                    rejectedQty: parseFloat(data['Quantity (Rejected)'] || '0') || 0,
+                    rejectPct: parseFloat(data['Reject %'] || '0') || 0,
+                    rmType: data['RM TYPE'] ? data['RM TYPE'].trim() : '',
+                });
+            })
+            .on('end', () => resolve(true))
+            .on('error', reject);
+    });
+
+    console.log(`Parsed ${results.length} rows. Inserting into DB...`);
+
+    await prisma.qCRecord.deleteMany();
+
+    // chunked insert
+    const chunkSize = 200;
+    for (let i = 0; i < results.length; i += chunkSize) {
+        const chunk = results.slice(i, i + chunkSize);
+        await prisma.qCRecord.createMany({
+            data: chunk
+        });
+        console.log(`Inserted ${Math.min(i + chunk.length, results.length)} / ${results.length}`);
+    }
+
+    console.log('Seeding finished.');
+}
+
+main()
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });
