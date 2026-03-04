@@ -150,7 +150,7 @@ export function Dashboard() {
         <AIReport payload={aiPayload} />
 
         {/* AI Chat Consultant */}
-        <AIChatInterface />
+        <AIChatInterface payload={aiPayload} />
 
         {/* Data Table */}
         <DataTable rows={filteredRows} />

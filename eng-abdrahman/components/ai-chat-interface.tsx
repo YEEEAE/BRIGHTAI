@@ -1,19 +1,60 @@
 "use client";
 
-import { useChat } from 'ai/react';
 import { Bot, Send, User, Sparkles } from 'lucide-react';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
+import { AggregatedCritical } from "@/lib/dataProcessor";
 
-export function AIChatInterface() {
-    const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-        api: '/api/chat',
-    });
+interface Message {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+}
 
+export function AIChatInterface({ payload }: { payload: AggregatedCritical[] }) {
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [input, setInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const endRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim() || isLoading) return;
+
+        const userMsg: Message = { id: Date.now().toString(), role: 'user', content: input };
+        setMessages(prev => [...prev, userMsg]);
+        setInput('');
+        setIsLoading(true);
+
+        try {
+            // Netlify Function endpoint at root
+            const endpoint = "https://brightai.site/api/chat-assistant";
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.content })),
+                    criticalData: payload
+                })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Request failed');
+
+            const assistantMsg: Message = { id: (Date.now() + 1).toString(), role: 'assistant', content: data.content };
+            setMessages(prev => [...prev, assistantMsg]);
+        } catch (err: any) {
+            console.error(err);
+            const errorMsg: Message = { id: (Date.now() + 1).toString(), role: 'assistant', content: "عذراً، حدث خطأ أثناء الاتصال بخادم Netlify. تأكد من توفر الخدمة وتوفر مفاتيح API." };
+            setMessages(prev => [...prev, errorMsg]);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="flex flex-col h-[600px] border border-border rounded-xl bg-card shadow-sm overflow-hidden" dir="rtl">
@@ -21,7 +62,7 @@ export function AIChatInterface() {
                 <Sparkles className="w-5 h-5 text-emerald-600" />
                 <div>
                     <h3 className="font-bold text-base text-foreground">مستشار الجودة الذكي (Copilot)</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">مدعوم بالذكاء الاصطناعي لتحليل البيانات الحية واتخاذ القرارات</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">مدعوم بالذكاء الاصطناعي عبر Netlify لتحليل البيانات واتخاذ القرارات</p>
                 </div>
             </div>
 
@@ -32,7 +73,7 @@ export function AIChatInterface() {
                         <p className="text-sm font-medium">كيف يمكنني مساعدتك في تحليل الجودة اليوم؟</p>
                         <div className="flex flex-wrap gap-2 justify-center mt-4">
                             <span className="text-xs bg-muted px-3 py-1.5 rounded-full cursor-not-allowed">لماذا ارتفعت نسبة الرفض اليوم؟</span>
-                            <span className="text-xs bg-muted px-3 py-1.5 rounded-full cursor-not-allowed">أعطني ملخص عن ماكينات الرياض</span>
+                            <span className="text-xs bg-muted px-3 py-1.5 rounded-full cursor-not-allowed">أعطني ملخص عن ماكينات العرض</span>
                         </div>
                     </div>
                 )}
@@ -52,7 +93,7 @@ export function AIChatInterface() {
                         <div className="w-8 h-8 rounded-full bg-emerald-600/80 flex items-center justify-center shrink-0">
                             <span className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
                         </div>
-                        <p className="text-xs text-muted-foreground animate-pulse">يحلل ملايين السجلات لتجهيز الإجابة...</p>
+                        <p className="text-xs text-muted-foreground animate-pulse">يحلل السجلات عبر Netlify لتجهيز الإجابة...</p>
                     </div>
                 )}
                 <div ref={endRef} />
@@ -62,7 +103,7 @@ export function AIChatInterface() {
                 <input
                     className="flex-1 bg-muted/30 border border-border focus:bg-background rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-medium"
                     value={input}
-                    onChange={handleInputChange}
+                    onChange={(e) => setInput(e.target.value)}
                     placeholder="إسأل الذكاء الاصطناعي عن أي مؤشر أو عطل..."
                     dir="rtl"
                 />

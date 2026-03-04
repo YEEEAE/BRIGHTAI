@@ -19,7 +19,7 @@ export function AIReport({ payload }: AIReportProps) {
     setError(null)
     setSummary(null)
     try {
-      const endpoint = process.env.NEXT_PUBLIC_NETLIFY_API || "/api/generate-summary"
+      const endpoint = "https://brightai.site/api/generate-summary"
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
