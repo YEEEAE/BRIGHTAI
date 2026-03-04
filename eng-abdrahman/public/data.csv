@@ -1,0 +1,31 @@
+Date,DocNo,Machine Name,Producted Item.Code,Producted Item.Name,Producted Qty,Quantity (Rejected),Reject %,RM TYPE
+2025-06-01,DOC-001,Machine A,ITM-001,Bracket Assembly,500,18,3.60,Steel
+2025-06-01,DOC-002,Machine B,ITM-002,Shaft Cover,320,22,6.88,Aluminum
+2025-06-02,DOC-003,Machine A,ITM-003,Connector Plate,410,12,2.93,Steel
+2025-06-02,DOC-004,Machine C,ITM-004,Gear Housing,280,30,10.71,Cast Iron
+2025-06-03,DOC-005,Machine B,ITM-001,Bracket Assembly,480,10,2.08,Steel
+2025-06-03,DOC-006,Machine D,ITM-005,Valve Body,350,19,5.43,Aluminum
+2025-06-04,DOC-007,Machine A,ITM-002,Shaft Cover,390,28,7.18,Aluminum
+2025-06-04,DOC-008,Machine C,ITM-006,Flange Ring,200,8,4.00,Steel
+2025-06-05,DOC-009,Machine D,ITM-003,Connector Plate,460,15,3.26,Steel
+2025-06-05,DOC-010,Machine B,ITM-004,Gear Housing,300,35,11.67,Cast Iron
+2025-06-06,DOC-011,Machine A,ITM-005,Valve Body,370,20,5.41,Aluminum
+2025-06-06,DOC-012,Machine C,ITM-001,Bracket Assembly,520,9,1.73,Steel
+2025-06-07,DOC-013,Machine D,ITM-002,Shaft Cover,310,24,7.74,Aluminum
+2025-06-07,DOC-014,Machine B,ITM-006,Flange Ring,240,6,2.50,Steel
+2025-06-08,DOC-015,Machine A,ITM-004,Gear Housing,290,32,11.03,Cast Iron
+2025-06-08,DOC-016,Machine C,ITM-003,Connector Plate,430,11,2.56,Steel
+2025-06-09,DOC-017,Machine D,ITM-001,Bracket Assembly,510,16,3.14,Steel
+2025-06-09,DOC-018,Machine B,ITM-005,Valve Body,360,21,5.83,Aluminum
+2025-06-10,DOC-019,Machine A,ITM-006,Flange Ring,220,7,3.18,Steel
+2025-06-10,DOC-020,Machine C,ITM-002,Shaft Cover,330,27,8.18,Aluminum
+2025-06-11,DOC-021,Machine D,ITM-004,Gear Housing,270,29,10.74,Cast Iron
+2025-06-11,DOC-022,Machine B,ITM-003,Connector Plate,450,13,2.89,Steel
+2025-06-12,DOC-023,Machine A,ITM-001,Bracket Assembly,490,14,2.86,Steel
+2025-06-12,DOC-024,Machine C,ITM-005,Valve Body,340,18,5.29,Aluminum
+2025-06-13,DOC-025,Machine D,ITM-006,Flange Ring,210,5,2.38,Steel
+2025-06-13,DOC-026,Machine B,ITM-002,Shaft Cover,300,26,8.67,Aluminum
+2025-06-14,DOC-027,Machine A,ITM-003,Connector Plate,440,10,2.27,Steel
+2025-06-14,DOC-028,Machine C,ITM-004,Gear Housing,260,31,11.92,Cast Iron
+2025-06-15,DOC-029,Machine D,ITM-005,Valve Body,380,17,4.47,Aluminum
+2025-06-15,DOC-030,Machine B,ITM-001,Bracket Assembly,530,11,2.08,Steel
