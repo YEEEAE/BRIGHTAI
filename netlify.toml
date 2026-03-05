@@ -831,6 +831,18 @@ to = "/ai-bots"
 status = 301
 force = true
 
+[[redirects]]
+from = "/botAI/:slug.html"
+to = "/ai-bots/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/botAI/:slug"
+to = "/ai-bots/:slug"
+status = 301
+force = true
+
 # -------------------------------------------------
 # Deleted stubs → blog index
 # -------------------------------------------------
