@@ -4,8 +4,11 @@ git add .
 git commit -m "feat: direct push"
 git push origin main
 
-تشغيل نظام التحليل :
 
+codex mcp list
+
+
+تشغيل نظام التحليل :
 
 ```
 cd /Users/yzydalshmry/Desktop/BRIGHTAI/eng-abdrahman && npx next build 2>&1 | tail -40

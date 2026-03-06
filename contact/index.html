@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="scroll-smooth" dir="rtl" lang="ar">
+<html class="scroll-smooth" dir="rtl" lang="ar-SA">
 <head>
 <link rel="alternate" hreflang="x-default" href="https://brightai.site/contact" />
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/contact" />
@@ -64,7 +64,6 @@
 <meta content="1200" property="og:image:width"/>
 <meta content="630" property="og:image:height"/>
 <meta content="ar_SA" property="og:locale"/>
-<meta content="en_US" property="og:locale:alternate"/>
 
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="@BrightAI_SA" name="twitter:site"/>
@@ -87,13 +86,23 @@
             "name": "Bright AI",
             "alternateName": "مُشرقة للذكاء الاصطناعي",
             "url": "https://brightai.site",
-            "logo": "https://brightai.site/assets/images/Gemini.png",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://brightai.site/assets/images/Gemini.png"
+            },
             "contactPoint": [
                 {
                     "@type": "ContactPoint",
                     "telephone": "+966538229013",
                     "contactType": "sales",
-                    "areaServed": ["SA", "AE", "KW", "BH", "QA", "OM"],
+                    "areaServed": [
+                        { "@type": "Country", "name": "Saudi Arabia" },
+                        { "@type": "Country", "name": "United Arab Emirates" },
+                        { "@type": "Country", "name": "Kuwait" },
+                        { "@type": "Country", "name": "Bahrain" },
+                        { "@type": "Country", "name": "Qatar" },
+                        { "@type": "Country", "name": "Oman" }
+                    ],
                     "availableLanguage": ["Arabic", "English"],
                     "hoursAvailable": {
                         "@type": "OpeningHoursSpecification",
@@ -106,7 +115,7 @@
                     "@type": "ContactPoint",
                     "telephone": "+966538229013",
                     "contactType": "customer service",
-                    "areaServed": "SA",
+                    "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
                     "availableLanguage": ["Arabic", "English"]
                 }
             ],
