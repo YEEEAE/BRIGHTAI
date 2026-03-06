@@ -268,6 +268,22 @@ function extractMetaTags(html) {
   return tags;
 }
 
+function isPlaceholderVerificationTag(tag) {
+  const name = (tag.attrs.name || "").trim().toLowerCase();
+  const content = (tag.attrs.content || "").trim();
+  if (!name || !content) return false;
+
+  const placeholderValues = new Set([
+    "REPLACE_WITH_YOUR_GSC_VERIFICATION_CODE",
+    "REPLACE_WITH_YOUR_BING_CODE",
+  ]);
+
+  return (
+    (name === "google-site-verification" || name === "msvalidate.01") &&
+    placeholderValues.has(content)
+  );
+}
+
 function replaceSlice(content, start, end, replacement) {
   return `${content.slice(0, start)}${replacement}${content.slice(end)}`;
 }
@@ -359,6 +375,7 @@ function auditFile(content, relPath, lowerPathMap) {
         canonical: false,
         h1: false,
         hreflang: false,
+        verificationPlaceholder: false,
       },
       hreflangProblems: [],
     };
@@ -380,6 +397,7 @@ function auditFile(content, relPath, lowerPathMap) {
         canonical: false,
         h1: false,
         hreflang: false,
+        verificationPlaceholder: false,
       },
       hreflangProblems: [],
     };
@@ -392,9 +410,11 @@ function auditFile(content, relPath, lowerPathMap) {
   const canonicalRaw = (canonical?.attrs.href || "").trim();
   const canonicalNormalized = normalizeSiteUrl(canonicalRaw, BASE_URL);
   const canonicalMismatch = canonicalRaw !== expectedCanonical || canonicalNormalized !== expectedCanonical;
-  const metaDescription = extractMetaTags(content).find(
+  const metaTags = extractMetaTags(content);
+  const metaDescription = metaTags.find(
     (tag) => (tag.attrs.name || "").trim().toLowerCase() === "description"
   );
+  const placeholderVerificationTags = metaTags.filter(isPlaceholderVerificationTag);
 
   const alternateLinks = extractAlternateLinks(content);
   const hreflangProblems = [];
@@ -437,6 +457,7 @@ function auditFile(content, relPath, lowerPathMap) {
     canonical: !canonicalRaw || canonicalMismatch,
     h1: !h1Text,
     hreflang: hreflangProblems.length > 0,
+    verificationPlaceholder: placeholderVerificationTags.length > 0,
   };
 
   const issues = [];
@@ -451,6 +472,14 @@ function auditFile(content, relPath, lowerPathMap) {
   }
   if (missing.h1) issues.push("Missing H1");
   if (missing.hreflang) issues.push(...hreflangProblems);
+  if (missing.verificationPlaceholder) {
+    issues.push(
+      ...placeholderVerificationTags.map((tag) => {
+        const name = (tag.attrs.name || "").trim().toLowerCase();
+        return `Placeholder verification meta tag: '${name}'`;
+      })
+    );
+  }
 
   return {
     eligible: true,
@@ -461,6 +490,10 @@ function auditFile(content, relPath, lowerPathMap) {
     missing,
     issues,
     hreflangProblems,
+    placeholderVerificationTags: placeholderVerificationTags.map((tag) => ({
+      name: (tag.attrs.name || "").trim().toLowerCase(),
+      content: (tag.attrs.content || "").trim(),
+    })),
   };
 }
 
@@ -551,6 +584,18 @@ function applyFixes(content, relPath, lowerPathMap) {
     actions.push("hreflang");
   }
 
+  if (initialAudit.missing.verificationPlaceholder) {
+    const placeholderTags = extractMetaTags(updated)
+      .filter(isPlaceholderVerificationTag)
+      .sort((a, b) => b.start - a.start);
+    for (const tag of placeholderTags) {
+      updated = replaceSlice(updated, tag.start, tag.end, "");
+    }
+    if (placeholderTags.length > 0) {
+      actions.push("verification");
+    }
+  }
+
   return {
     content: updated,
     changed: updated !== content,
@@ -569,6 +614,7 @@ function summarizeAudits(audits) {
     canonical: 0,
     h1: 0,
     hreflang: 0,
+    verificationPlaceholder: 0,
   };
 
   for (const item of eligible) {
@@ -606,6 +652,7 @@ function renderSummary(title, summary) {
   lines.push(`- نقص canonical: ${summary.missingCounts.canonical}`);
   lines.push(`- نقص H1: ${summary.missingCounts.h1}`);
   lines.push(`- نقص/خلل hreflang: ${summary.missingCounts.hreflang}`);
+  lines.push(`- Placeholder verification tags: ${summary.missingCounts.verificationPlaceholder}`);
   lines.push("");
 
   if (summary.failingFiles.length > 0) {
@@ -652,6 +699,9 @@ function renderCompareReport(beforeSummary, afterSummary, fixedFiles) {
   lines.push(`| Missing H1 | ${beforeSummary.missingCounts.h1} | ${afterSummary.missingCounts.h1} |`);
   lines.push(
     `| Missing/mismatched hreflang | ${beforeSummary.missingCounts.hreflang} | ${afterSummary.missingCounts.hreflang} |`
+  );
+  lines.push(
+    `| Placeholder verification tags | ${beforeSummary.missingCounts.verificationPlaceholder} | ${afterSummary.missingCounts.verificationPlaceholder} |`
   );
   lines.push("");
   lines.push(`## Files Updated (${fixedFiles.length})`);
@@ -732,6 +782,9 @@ async function main() {
   console.log(`- Missing canonical (after): ${afterSummary.missingCounts.canonical}`);
   console.log(`- Missing H1 (after): ${afterSummary.missingCounts.h1}`);
   console.log(`- Missing/mismatched hreflang (after): ${afterSummary.missingCounts.hreflang}`);
+  console.log(
+    `- Placeholder verification tags (after): ${afterSummary.missingCounts.verificationPlaceholder}`
+  );
 
   const compareReport = renderCompareReport(beforeSummary, afterSummary, fixedFiles);
   if (args.report) {

@@ -1,17 +1,17 @@
-# Measurement Plan — HTML Canonical + Hreflang Remediation
-**Deploy Date:** 2026-03-05
+# Measurement Plan — Phase 4 Closure
+**Deploy Date:** 2026-03-06
 
 ## KPI Target
-- KPI: نسبة الصفحات السليمة في (Canonical + Hreflang)
-- Baseline: 13 صفحات متأثرة من 195 صفحة مؤهلة (6.67%)
-- Goal: 0 صفحات متأثرة (100% امتثال)
+- KPI: نسبة سلامة إشارات الفهرسة الأساسية والسايت ماب
+- Baseline: قبل الإقفال النهائي كان لدينا placeholders تحقق في الصفحة الرئيسية وسياسة سايت ماب أوسع من المطلوب
+- Goal: 0 Placeholder verification tags + 0 أخطاء في `seo:check` + 0 أخطاء في `seo:html:check`
 
 ## Tracking Event
-- Event Name: `seo_html_governor_fix_completed`
-- Trigger: بعد تشغيل `npm run seo:html:fix` وانتهاء الفحص اللاحق `npm run seo:html:check`
-- Payload: `scanned_pages`, `eligible_pages`, `affected_before`, `affected_after`, `fixed_files`, `timestamp`
+- Event Name: `seo_phase4_closure_verified`
+- Trigger: بعد تشغيل `npm run sitemap:all` و`npm run seo:check` و`npm run seo:html:check` و`npm run deploy:source-of-truth:check`
+- Payload: `sitemap_url_count`, `seo_ci_errors`, `html_governor_affected_pages`, `verification_placeholder_count`, `timestamp`
 
 ## Success Criteria
-- Minimum Improvement: 100% خفض في الصفحات المتأثرة (13 → 0)
+- Minimum Improvement: بقاء جميع الفحوصات عند `0` أخطاء واستمرار السايت ماب على نطاق `high-confidence`
 - Evaluation Window: 14 يوم
-- Rollback Trigger: ظهور أي نقص Canonical/Hreflang أكبر من 0 في فحص HTML الدوري
+- Rollback Trigger: رجوع أي Placeholder verification tag أو زيادة أخطاء `seo:check` أو `seo:html:check` فوق `0`

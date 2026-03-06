@@ -105,7 +105,7 @@ const requiredRedirects = [
   { from: '/blog/data-analytics/:slug', to: '/frontend/pages/blog/data-analytics/:slug.html', status: 200 },
 ];
 
-const requiredCanonicalNormalizationRedirects = [
+const disallowedDirectoryLoopRedirects = [
   { from: '/about/', to: '/about', status: 301 },
   { from: '/services/', to: '/services', status: 301 },
   { from: '/contact/', to: '/contact', status: 301 },
@@ -122,29 +122,6 @@ const requiredCanonicalNormalizationRedirects = [
   { from: '/health/', to: '/health', status: 301 },
   { from: '/machine-learning/', to: '/machine-learning', status: 301 },
   { from: '/docs/', to: '/docs', status: 301 },
-  { from: '/ai-workflows/', to: '/ai-workflows', status: 301 },
-  { from: '/ai-scolecs/', to: '/ai-scolecs', status: 301 },
-  { from: '/smart-medical-archive/', to: '/smart-medical-archive', status: 301 },
-  { from: '/job.MAISco/', to: '/job.MAISco', status: 301 },
-  { from: '/try/', to: '/try', status: 301 },
-  { from: '/demo/', to: '/demo', status: 301 },
-  { from: '/demo/pricing/', to: '/demo/pricing', status: 301 },
-  { from: '/interview/', to: '/interview', status: 301 },
-  { from: '/privacy-cookies/', to: '/privacy-cookies', status: 301 },
-  { from: '/terms/', to: '/terms', status: 301 },
-  { from: '/sitemap/', to: '/sitemap', status: 301 },
-  { from: '/offline/', to: '/offline', status: 301 },
-  { from: '/blog/:slug/', to: '/blog/:slug', status: 301 },
-  { from: '/blog/automation/:slug/', to: '/blog/automation/:slug', status: 301 },
-  { from: '/blog/data-analytics/:slug/', to: '/blog/data-analytics/:slug', status: 301 },
-  { from: '/ai-bots/:slug/', to: '/ai-bots/:slug', status: 301 },
-  { from: '/try/:slug/', to: '/try/:slug', status: 301 },
-  { from: '/demo/resources/:slug/', to: '/demo/resources/:slug', status: 301 },
-  { from: '/demo/:slug/', to: '/demo/:slug', status: 301 },
-  { from: '/interview/:slug/', to: '/interview/:slug', status: 301 },
-  { from: '/interview/pages/:slug/', to: '/interview/pages/:slug', status: 301 },
-  { from: '/interview/pages/:slug/:child/', to: '/interview/pages/:slug/:child', status: 301 },
-  { from: '/sectors/:slug/', to: '/sectors/:slug', status: 301 },
 ];
 
 for (const rule of requiredRedirects) {
@@ -155,11 +132,11 @@ for (const rule of requiredRedirects) {
   );
 }
 
-for (const rule of requiredCanonicalNormalizationRedirects) {
+for (const rule of disallowedDirectoryLoopRedirects) {
   check(
-    hasRedirect(rule.from, rule.to, rule.status),
-    `canonical redirect ${rule.from} -> ${rule.to} (${rule.status})`,
-    `Missing canonical normalization rule: ${JSON.stringify(rule)}`
+    !hasRedirect(rule.from, rule.to, rule.status),
+    `directory loop redirect absent for ${rule.from} -> ${rule.to} (${rule.status})`,
+    `Risky redirect loop rule still present: ${JSON.stringify(rule)}`
   );
 }
 
