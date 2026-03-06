@@ -7,9 +7,10 @@ User-agent: *
 Allow: /
 Allow: /frontend/css/
 Allow: /frontend/js/
+Allow: /frontend/pages/smart-medical-archive/
 Allow: /assets/
 Allow: /manifest.json
-Disallow: /frontend/pages/
+
 
 Disallow: /admin/
 Disallow: /private/

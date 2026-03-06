@@ -22,6 +22,12 @@ const IGNORE_PATTERNS = [
   "**/build/**",
   "**/coverage/**",
 ];
+const SEO_EXEMPT_ERROR_PAGES = new Set([
+  "404.html",
+  "500.html",
+  "brightai-platform/public/404.html",
+  "brightai-platform/public/500.html",
+]);
 
 function parseArgs(argv) {
   const args = {
@@ -363,6 +369,10 @@ function removeLinkTags(content, predicate) {
   return updated;
 }
 
+function isSeoExemptErrorPage(relPath) {
+  return SEO_EXEMPT_ERROR_PAGES.has(normalizeRelPath(relPath));
+}
+
 function auditFile(content, relPath, lowerPathMap) {
   if (!isFullHtmlDocument(content)) {
     return {
@@ -403,7 +413,10 @@ function auditFile(content, relPath, lowerPathMap) {
     };
   }
 
-  const requiredHreflang = buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
+  const isErrorPage = isSeoExemptErrorPage(relPath);
+  const requiredHreflang = isErrorPage
+    ? []
+    : buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
 
   const linkTags = extractLinkTags(content);
   const canonical = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
@@ -454,9 +467,9 @@ function auditFile(content, relPath, lowerPathMap) {
   const missing = {
     title: !titleText,
     description: !metaDescription || !(metaDescription.attrs.content || "").trim(),
-    canonical: !canonicalRaw || canonicalMismatch,
+    canonical: isErrorPage ? false : !canonicalRaw || canonicalMismatch,
     h1: !h1Text,
-    hreflang: hreflangProblems.length > 0,
+    hreflang: isErrorPage ? false : hreflangProblems.length > 0,
     verificationPlaceholder: placeholderVerificationTags.length > 0,
   };
 
@@ -545,7 +558,7 @@ function applyFixes(content, relPath, lowerPathMap) {
     actions.push("description");
   }
 
-  if (initialAudit.missing.canonical) {
+  if (!isSeoExemptErrorPage(relPath) && initialAudit.missing.canonical) {
     const canonicalTag = `<link rel="canonical" href="${expectedCanonical}" />`;
     updated = removeLinkTags(updated, (tag) => hasRelToken(tag.attrs.rel, "canonical"));
     updated = insertIntoHead(updated, canonicalTag);
@@ -571,7 +584,7 @@ function applyFixes(content, relPath, lowerPathMap) {
     actions.push("h1");
   }
 
-  if (initialAudit.missing.hreflang) {
+  if (!isSeoExemptErrorPage(relPath) && initialAudit.missing.hreflang) {
     const required = buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
     updated = removeLinkTags(
       updated,

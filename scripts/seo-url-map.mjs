@@ -43,6 +43,10 @@ function stripTrailingSlash(sitePath) {
 export function relPathToSitePath(relPath) {
   const normalized = normalizeRelPath(relPath);
 
+  if (normalized === "frontend/pages/blogger/Generative-artificial-intelligence.html") {
+    return "/blog/generative-artificial-intelligence";
+  }
+
   if (normalized === "index.html") return "/";
   if (normalized === "docs.html") return "/docs";
 

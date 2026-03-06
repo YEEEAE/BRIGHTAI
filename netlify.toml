@@ -540,19 +540,24 @@ force = true
 
 [[redirects]]
 from = "/blog/Generative%20artificial%20intelligence"
-to = "/blog/Generative-artificial-intelligence"
+to = "/blog/generative-artificial-intelligence"
 status = 301
 force = true
 
 [[redirects]]
 from = "/blog/generative-artificial-intelligence-2"
-to = "/blog/Generative-artificial-intelligence"
+to = "/blog/generative-artificial-intelligence"
 status = 301
 force = true
 
 [[redirects]]
 from = "/blog/generative-artificial-intelligence"
-to = "/blog/Generative-artificial-intelligence"
+to = "/frontend/pages/blogger/Generative-artificial-intelligence.html"
+status = 200
+
+[[redirects]]
+from = "/blog/Generative-artificial-intelligence"
+to = "/blog/generative-artificial-intelligence"
 status = 301
 force = true
 
@@ -903,19 +908,25 @@ force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/Generative%20artificial%20intelligence.html"
-to = "/blog/Generative-artificial-intelligence"
+to = "/blog/generative-artificial-intelligence"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/generative-artificial-intelligence-2.html"
-to = "/blog/Generative-artificial-intelligence"
+to = "/blog/generative-artificial-intelligence"
+status = 301
+force = true
+
+[[redirects]]
+from = "/frontend/pages/blogger/Generative-artificial-intelligence.html"
+to = "/blog/generative-artificial-intelligence"
 status = 301
 force = true
 
 [[redirects]]
 from = "/frontend/pages/blogger/generative-artificial-intelligence.html"
-to = "/blog/Generative-artificial-intelligence"
+to = "/blog/generative-artificial-intelligence"
 status = 301
 force = true
 
@@ -1224,6 +1235,16 @@ X-Robots-Tag = "index,follow"
 
 [[headers]]
 for = "/frontend/pages/*"
+[headers.values]
+X-Robots-Tag = "noindex,nofollow,noarchive"
+
+[[headers]]
+for = "/404.html"
+[headers.values]
+X-Robots-Tag = "noindex,nofollow,noarchive"
+
+[[headers]]
+for = "/500.html"
 [headers.values]
 X-Robots-Tag = "noindex,nofollow,noarchive"
 

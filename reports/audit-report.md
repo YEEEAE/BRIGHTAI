@@ -5,25 +5,24 @@
 ## Domain Scores
 | Domain | Score | Status |
 |--------|-------|--------|
-| Architecture Integrity | 86 | ⚠️ |
-| SEO Governance | 97 | ✅ |
-| Performance Posture | 95 | ✅ |
+| Architecture Integrity | 87 | ⚠️ |
+| SEO Governance | 98 | ✅ |
+| Performance Posture | 96 | ✅ |
 | RTL Integrity | 95 | ✅ |
-| Security Surface | 87 | ⚠️ |
-| Modularity Health | 89 | ✅ |
+| Security Surface | 89 | ⚠️ |
+| Modularity Health | 90 | ✅ |
 
 ## Critical Findings
-- لا يوجد `CRITICAL` حالياً في طبقة الموقع العامة بعد الفحوصات المحلية المنفذة بتاريخ 2026-03-06.
+- لا يوجد `CRITICAL` بعد دورة الإصلاح الحالية.
 
 ## Important Findings
-- البنية الحالية عبارة عن monorepo فيه `frontend` و`backend` و`brightai-platform` مع صفحات HTML ثابتة كثيرة على الجذر، وهذا يرفع كلفة الحوكمة ويزيد احتمال التكرار في المحتوى والـ slugs.
-- فحص HTML مرّ على `196` ملف HTML بدون أخطاء SEO حرجة، لكن لدينا `280` ملف HTML فعلياً مقابل `55` URL فقط في `sitemap.xml`، وهذا يدل على محتوى legacy واسع يحتاج سياسة أرشفة/دمج أوضح.
-- يوجد مخزون legacy داخل `frontend/pages/blogger` بأسماء ملفات غير مستقرة مثل المسافات و`_` و`.doc.html` ونسخ مكررة؛ هذا ليس ظاهر حالياً في الـ sitemap لكنه يضعف القابلية للتشغيل والتحليل.
-- لا يوجد تكامل برمجي حي لـ `SEMRUSH_API_KEY` داخل الشفرة الحالية، لذلك الاستفادة من Semrush ما زالت يدوية/تقريرية وليست جزءاً من دورة اتخاذ القرار داخل المشروع.
-- طبقة الحماية جيدة على Netlify مع `CSP` و`HSTS` و`Permissions-Policy`، لكن CSP ما زال يسمح `script-src 'unsafe-inline'` و`style-src 'unsafe-inline'` وهذا يحتاج tightening لاحقاً في المنصة العامة.
+- تمت معالجة إشارات SEO المضللة في صفحات الخطأ `404/500` عبر إزالة `canonical` و`hreflang` والإبقاء على `noindex,nofollow,noarchive`.
+- تم تثبيت slug عام لمقالة `generative-artificial-intelligence` وتقليل احتمالات `mixed-case URL` و`redirect chain` من خلال تحديث `netlify.toml` والروابط الداخلية وخرائط canonical.
+- تم فتح وصول الزواحف إلى موارد صفحة `/smart-medical-archive` اللازمة للرندر من خلال `robots.txt` بدون فك حظر فهرسة بقية مسارات `frontend/pages`.
+- ما زال لدينا مخزون legacy واسع داخل `frontend/pages/blogger` خارج `sitemap.xml` ويحتاج سياسة أشد: `merge` أو `redirect` أو `archive`.
+- ما زالت `CSP` تسمح `unsafe-inline` في بعض الأسطح العامة، وهذا مقبول مرحلياً لكنه ليس الوضع النهائي المستهدف.
 
 ## Optimization Queue
-- بناء موصل Semrush داخل `scripts/` لإخراج تقارير keyword clusters وcompetitors وSERP intent بصيغة Markdown/JSON تدخل مباشرة في backlog المحتوى.
-- توحيد وإزالة صفحات Blogger legacy غير الداخلة في `sitemap.xml` أو وضع سياسة redirect/archive واضحة لها.
-- ربط نتائج Semrush مع خرائط الصفحات الحالية: `/ai-agent` و`/ai-bots` و`/data-analysis` و`/smart-automation` وقطاع المدونة، بدل الاكتفاء ببحث كلمات متفرق.
-- إضافة baseline تشغيلي أسبوعي يجمع `Semrush + sitemap + internal links + GA4` داخل تقرير واحد.
+- إكمال تنظيف مخزون Blogger legacy غير المدرج في `sitemap.xml` مع إزالة الصفحات التحويلية الرقيقة بعد تثبيت كل 301 اللازمة.
+- ربط فهرس البحث الداخلي ومخرجات الأرشفة بأي canonical جديد بشكل آلي بدل التعديل اليدوي.
+- إضافة فحص آلي ضمن CI يرفض أي slug عام مختلط الأحرف أو أي رابط مشاركة يرجع إلى `/frontend/pages/*`.
