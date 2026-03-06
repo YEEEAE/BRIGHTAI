@@ -2185,7 +2185,7 @@
     {
       "objectID": "e2434574d710d79a6847",
       "id": "e2434574d710d79a6847",
-      "sourcePath": "frontend/pages/docs/ai-agent-en.html",
+      "sourcePath": "docs/ai-agent-en.html",
       "url": "/docs/ai-agent-en",
       "title": "AIaaS - AI As A Service | Bright AI",
       "description": "Get AI power without the infrastructure hassle. Bright AI AIaaS - secure cloud solutions hosted locally in KSA.",
@@ -2215,7 +2215,7 @@
     {
       "objectID": "d9b94cf99076fc204ee4",
       "id": "d9b94cf99076fc204ee4",
-      "sourcePath": "frontend/pages/docs/ai-agent.html",
+      "sourcePath": "docs/ai-agent.html",
       "url": "/docs/ai-agent",
       "title": "AIaaS - الذكاء الاصطناعي كخدمة | Bright AI",
       "description": "احصل على قوة الذكاء الاصطناعي بدون بنية تحتية معقدة. AIaaS من Bright AI - حلول سحابية آمنة ومستضافة محلياً في السعودية.",
@@ -2239,7 +2239,7 @@
     {
       "objectID": "060451e1af33f56e3134",
       "id": "060451e1af33f56e3134",
-      "sourcePath": "frontend/pages/docs/ai-bots-en.html",
+      "sourcePath": "docs/ai-bots-en.html",
       "url": "/docs/ai-bots-en",
       "title": "Smart Chatbots | Bright AI - Arabic AI Assistants",
       "description": "Smart chatbots that understand Arabic and Saudi dialect! 24/7 AI assistants that serve your customers naturally from Bright AI.",
@@ -2269,7 +2269,7 @@
     {
       "objectID": "e47bb99e7158e9b429ee",
       "id": "e47bb99e7158e9b429ee",
-      "sourcePath": "frontend/pages/docs/ai-bots.html",
+      "sourcePath": "docs/ai-bots.html",
       "url": "/docs/ai-bots",
       "title": "روبوتات المحادثة الذكية | Bright AI - شات بوت عربي",
       "description": "شات بوت ذكي يفهم العربي والسعودي! روبوتات محادثة تخدم عملاءك 24/7 بطريقة طبيعية وبشرية. من Bright AI.",
@@ -2294,7 +2294,7 @@
     {
       "objectID": "5357df0b2feb273d08af",
       "id": "5357df0b2feb273d08af",
-      "sourcePath": "frontend/pages/docs/consultation-en.html",
+      "sourcePath": "docs/consultation-en.html",
       "url": "/docs/consultation-en",
       "title": "Tech Consultation | Bright AI - Digital Transformation Roadmap",
       "description": "Expert consultants to build your AI strategy. We help you choose the right tech, conduct feasibility studies, and plan a secure digital transformation.",
@@ -2321,7 +2321,7 @@
     {
       "objectID": "8529d7938c310922dd2a",
       "id": "8529d7938c310922dd2a",
-      "sourcePath": "frontend/pages/docs/consultation.html",
+      "sourcePath": "docs/consultation.html",
       "url": "/docs/consultation",
       "title": "استشارات تقنية | Bright AI - خارطة الطريق للتحول الرقمي",
       "description": "خبراء استشاريون لبناء استراتيجية الذكاء الاصطناعي لمنشأتك. نساعدك في اختيار التقنية المناسبة، دراسة الجدوى، وتخطيط التحول الرقمي الآمن.",
@@ -2344,7 +2344,7 @@
     {
       "objectID": "d6e2e18ccca1fb419c29",
       "id": "d6e2e18ccca1fb419c29",
-      "sourcePath": "frontend/pages/docs/contact-en.html",
+      "sourcePath": "docs/contact-en.html",
       "url": "/docs/contact-en",
       "title": "Contact Us | Bright AI - Get in Touch",
       "description": "Contact Us | Bright AI - Get in Touch AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء ال",
@@ -2367,7 +2367,7 @@
     {
       "objectID": "1717b8c665b960091bd5",
       "id": "1717b8c665b960091bd5",
-      "sourcePath": "frontend/pages/docs/contact.html",
+      "sourcePath": "docs/contact.html",
       "url": "/docs/contact",
       "title": "اتصل بنا | Bright AI - تواصل معنا اليوم",
       "description": "اتصل بنا | Bright AI - تواصل معنا اليوم AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء ",
@@ -2390,7 +2390,7 @@
     {
       "objectID": "8a81392a0fcf1a5b4307",
       "id": "8a81392a0fcf1a5b4307",
-      "sourcePath": "frontend/pages/docs/data-analysis-en.html",
+      "sourcePath": "docs/data-analysis-en.html",
       "url": "/docs/data-analysis-en",
       "title": "Data Analysis | Bright AI - Intelligence for Decision Making",
       "description": "Turn your raw data into strategic decisions. Advanced Big Data Analytics and interactive Dashboards for Saudi businesses.",
@@ -2421,7 +2421,7 @@
     {
       "objectID": "bb94c918043aa0ed5a8f",
       "id": "bb94c918043aa0ed5a8f",
-      "sourcePath": "frontend/pages/docs/data-analysis.html",
+      "sourcePath": "docs/data-analysis.html",
       "url": "/docs/data-analysis",
       "title": "تحليل البيانات | Bright AI - ذكاء الأعمال والقرارات",
       "description": "لوحات تنفيذية وتنبيهات تنبؤية تربط البيانات بنتائج مالية واضحة للإدارة العليا.",
@@ -2443,7 +2443,7 @@
     {
       "objectID": "033ab56c78f82ed95aab",
       "id": "033ab56c78f82ed95aab",
-      "sourcePath": "frontend/pages/docs/docs.html",
+      "sourcePath": "docs.html",
       "url": "/docs",
       "title": "تم نقل مركز المستندات | BrightAI",
       "description": "تم نقل مركز المستندات إلى الرابط الجديد لعرض الوثائق والحلول.",
@@ -2459,7 +2459,7 @@
     {
       "objectID": "4e11df5bb066e965e8c0",
       "id": "4e11df5bb066e965e8c0",
-      "sourcePath": "frontend/pages/docs/faq-en.html",
+      "sourcePath": "docs/faq-en.html",
       "url": "/docs/faq-en",
       "title": "FAQ | Bright AI - Got Questions? We Got Answers 💡",
       "description": "FAQ | Bright AI - Got Questions? We Got Answers 💡 AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AI",
@@ -2482,7 +2482,7 @@
     {
       "objectID": "2a55daeb6ae2e2e442d3",
       "id": "2a55daeb6ae2e2e442d3",
-      "sourcePath": "frontend/pages/docs/faq.html",
+      "sourcePath": "docs/faq.html",
       "url": "/docs/faq",
       "title": "الأسئلة الشائعة | Bright AI - كل ما تحتاج معرفته",
       "description": "إجابات لأهم الأسئلة الشائعة حول خدمات Bright AI، الأسعار، طريقة العمل، والدعم الفني. تواصل معنا لمزيد من التفاصيل.",
@@ -2505,7 +2505,7 @@
     {
       "objectID": "7d922f03efa897644e9d",
       "id": "7d922f03efa897644e9d",
-      "sourcePath": "frontend/pages/docs/openapi.html",
+      "sourcePath": "docs/openapi.html",
       "url": "/docs/openapi",
       "title": "BrightAI API Documentation - وثائق واجهة برمجة التطبيقات",
       "description": "توثيق واجهات BrightAI للمطورين مع أمثلة واضحة وتكامل سريع للشركات السعودية.",
@@ -2528,7 +2528,7 @@
     {
       "objectID": "ed87a894083779d5a7e6",
       "id": "ed87a894083779d5a7e6",
-      "sourcePath": "frontend/pages/docs/privacy-policy-en.html",
+      "sourcePath": "docs/privacy-policy-en.html",
       "url": "/docs/privacy-policy-en",
       "title": "Privacy Policy | Bright AI - How We Protect Your Data",
       "description": "Privacy Policy | Bright AI - How We Protect Your Data AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم",
@@ -2551,7 +2551,7 @@
     {
       "objectID": "0230ac03904ea6a392bb",
       "id": "0230ac03904ea6a392bb",
-      "sourcePath": "frontend/pages/docs/privacy-policy.html",
+      "sourcePath": "docs/privacy-policy.html",
       "url": "/docs/privacy-policy",
       "title": "سياسة الخصوصية | Bright AI - حماية بياناتك أولويتنا",
       "description": "سياسة الخصوصية | Bright AI - حماية بياناتك أولويتنا AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم A",
@@ -2574,7 +2574,7 @@
     {
       "objectID": "b7a010182d78a6d03fb3",
       "id": "b7a010182d78a6d03fb3",
-      "sourcePath": "frontend/pages/docs/services-overview-en.html",
+      "sourcePath": "docs/services-overview-en.html",
       "url": "/docs/services-overview-en",
       "title": "Bright AI Services | AI Solutions That Actually Slap 🚀",
       "description": "Bright AI Services | AI Solutions That Actually Slap 🚀 AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتق",
@@ -2597,7 +2597,7 @@
     {
       "objectID": "b188e14d535cc19456ea",
       "id": "b188e14d535cc19456ea",
-      "sourcePath": "frontend/pages/docs/services-overview.html",
+      "sourcePath": "docs/services-overview.html",
       "url": "/docs/services-overview",
       "title": "خدمات Bright AI | حلول ذكاء اصطناعي متكاملة للشركات السعودية",
       "description": "اكتشف خدمات Bright AI المتكاملة: أتمتة العمليات، تحليل البيانات، روبوتات ذكية، واستشارات الذكاء الاصطناعي. 47 مشروع منجز و46 عميل راضي.",
@@ -2622,7 +2622,7 @@
     {
       "objectID": "36beb38f0a2fb853eabc",
       "id": "36beb38f0a2fb853eabc",
-      "sourcePath": "frontend/pages/docs/smart-automation-en.html",
+      "sourcePath": "docs/smart-automation-en.html",
       "url": "/docs/smart-automation-en",
       "title": "RPA Automation | Bright AI - Smart Work",
       "description": "Automate routine tasks with AI. Save time and reduce errors with Bright AI",
@@ -2649,7 +2649,7 @@
     {
       "objectID": "a6ca34380f130b11cf9e",
       "id": "a6ca34380f130b11cf9e",
-      "sourcePath": "frontend/pages/docs/smart-automation.html",
+      "sourcePath": "docs/smart-automation.html",
       "url": "/docs/smart-automation",
       "title": "أتمتة العمليات RPA | Bright AI - أتمتة ذكية للشركات",
       "description": "خفّض تكلفة التشغيل وارفع سرعة التنفيذ عبر سير عمل ذكي قابل للقياس خلال أسابيع.",
@@ -2673,7 +2673,7 @@
     {
       "objectID": "c036cb40c94e243068a0",
       "id": "c036cb40c94e243068a0",
-      "sourcePath": "frontend/pages/docs/solutions-bi-en.html",
+      "sourcePath": "docs/solutions-bi-en.html",
       "url": "/docs/solutions-bi-en",
       "title": "Business Intelligence (BI) | Bright AI - Interactive Dashboards",
       "description": "Turn your company data into smart decisions with Bright AI Business Intelligence (BI) solutions. We design interactive Power BI and Tableau dashboards compatible with the Saudi market.",
@@ -2707,7 +2707,7 @@
     {
       "objectID": "a0befcb5f82f86245ff0",
       "id": "a0befcb5f82f86245ff0",
-      "sourcePath": "frontend/pages/docs/solutions-bi.html",
+      "sourcePath": "docs/solutions-bi.html",
       "url": "/docs/solutions-bi",
       "title": "ذكاء الأعمال (BI) | Bright AI - لوحات تحكم تفاعلية",
       "description": "حول بيانات شركتك إلى قرارات ذكية مع حلول ذكاء الأعمال (BI) من Bright AI. نصمم لوحات تحكم Power BI و Tableau تفاعلية باللغة العربية، متوافقة مع متطلبات السوق السعودي ورؤية 2030.",
@@ -2731,7 +2731,7 @@
     {
       "objectID": "0a1c4be4dfb93af36eb3",
       "id": "0a1c4be4dfb93af36eb3",
-      "sourcePath": "frontend/pages/docs/solutions-crm-en.html",
+      "sourcePath": "docs/solutions-crm-en.html",
       "url": "/docs/solutions-crm-en",
       "title": "Smart CRM Solutions | Bright AI - Know Your Customer",
       "description": "Saudi AI-powered CRM system by Bright AI. Automate WhatsApp follow-ups, score leads, and analyze sentiment to boost sales.",
@@ -2762,7 +2762,7 @@
     {
       "objectID": "9c7182233b26820a3821",
       "id": "9c7182233b26820a3821",
-      "sourcePath": "frontend/pages/docs/solutions-crm.html",
+      "sourcePath": "docs/solutions-crm.html",
       "url": "/docs/solutions-crm",
       "title": "إدارة علاقات العملاء الذكية (CRM) | Bright AI",
       "description": "نظام CRM سعودي مدعوم بالذكاء الاصطناعي من Bright AI. أتمتة المتابعة عبر واتساب، تقييم العملاء المحتملين (Lead Scoring)، وتحليل المشاعر لزيادة المبيعات في السوق السعودي.",
@@ -2785,7 +2785,7 @@
     {
       "objectID": "aaca59fad48b53efa21b",
       "id": "aaca59fad48b53efa21b",
-      "sourcePath": "frontend/pages/docs/solutions-finance-en.html",
+      "sourcePath": "docs/solutions-finance-en.html",
       "url": "/docs/solutions-finance-en",
       "title": "Fintech Solutions | Bright AI - Smart & Secure",
       "description": "AI solutions for Saudi Fintech. Fraud detection, credit scoring, and full SAMA/NCA compliance. Banking made smarter.",
@@ -2814,7 +2814,7 @@
     {
       "objectID": "492e06fe6fb41cee9dde",
       "id": "492e06fe6fb41cee9dde",
-      "sourcePath": "frontend/pages/docs/solutions-finance.html",
+      "sourcePath": "docs/solutions-finance.html",
       "url": "/docs/solutions-finance",
       "title": "حلول المالية (Fintech) | Bright AI - كشف الاحتيال والامتثال",
       "description": "حلول ذكاء اصطناعي للقطاع المالي السعودي. كشف الاحتيال، تقييم الائتمان، والامتثال لتشريعات SAMA و NCA باستخدام خوارزميات متقدمة.",
@@ -2838,7 +2838,7 @@
     {
       "objectID": "8b4afacef6e2c7395596",
       "id": "8b4afacef6e2c7395596",
-      "sourcePath": "frontend/pages/docs/solutions-healthcare-en.html",
+      "sourcePath": "docs/solutions-healthcare-en.html",
       "url": "/docs/solutions-healthcare-en",
       "title": "Healthcare Solutions | Bright AI - Smart Medicine",
       "description": "AI solutions for Saudi healthcare. Smart diagnosis, medical archiving, and radiology AI analysis. CBAHI & HIPAA compliant. Next-level patient care.",
@@ -2867,7 +2867,7 @@
     {
       "objectID": "149b6112655898ff86d8",
       "id": "149b6112655898ff86d8",
-      "sourcePath": "frontend/pages/docs/solutions-healthcare.html",
+      "sourcePath": "docs/solutions-healthcare.html",
       "url": "/docs/solutions-healthcare",
       "title": "حلول الرعاية الصحية | Bright AI - الطب المتصل والذكي",
       "description": "حلول ذكاء اصطناعي للقطاع الصحي في السعودية. تشخيص ذكي، أرشفة طبية، وتحليل صور الأشعة بدقة متناهية. متوافق مع معايير سباهي ووزارة الصحة.",
@@ -2890,7 +2890,7 @@
     {
       "objectID": "66074ef1cf6c5fa031f1",
       "id": "66074ef1cf6c5fa031f1",
-      "sourcePath": "frontend/pages/docs/solutions-hr-en.html",
+      "sourcePath": "docs/solutions-hr-en.html",
       "url": "/docs/solutions-hr-en",
       "title": "HR Management (HRMS) | Bright AI - Payroll & Automation",
       "description": "Saudi HRMS by Bright AI. Automated payroll, GOSI, Madad, Muqeem, smart attendance. Fully compliant with Saudi Labor Law. 100% Legit.",
@@ -2921,7 +2921,7 @@
     {
       "objectID": "7213bc156007b4c8eb56",
       "id": "7213bc156007b4c8eb56",
-      "sourcePath": "frontend/pages/docs/solutions-hr.html",
+      "sourcePath": "docs/solutions-hr.html",
       "url": "/docs/solutions-hr",
       "title": "إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة",
       "description": "نظام HRMS سعودي متكامل من Bright AI. إدارة الرواتب (Payroll)، التأمينات، مدد، مقيم، الحضور والانصراف الذكي، وتقييم الأداء. متوافق مع نظام العمل السعودي.",
@@ -2944,7 +2944,7 @@
     {
       "objectID": "a211c5a7ff9d195aa2c6",
       "id": "a211c5a7ff9d195aa2c6",
-      "sourcePath": "frontend/pages/docs/solutions-interview-en.html",
+      "sourcePath": "docs/solutions-interview-en.html",
       "url": "/docs/solutions-interview-en",
       "title": "Smart Hiring | Bright AI - Recruitment on Autopilot",
       "description": "Smart hiring system by Bright AI. Filter resumes, run AI video interviews, and save 70% of your HR team",
@@ -2973,7 +2973,7 @@
     {
       "objectID": "2a54dbb43405a025c69a",
       "id": "2a54dbb43405a025c69a",
-      "sourcePath": "frontend/pages/docs/solutions-interview.html",
+      "sourcePath": "docs/solutions-interview.html",
       "url": "/docs/solutions-interview",
       "title": "حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء",
       "description": "نظام توظيف ذكي يقوم بفرز السير الذاتية وإجراء مقابلات فيديو آلية مع المرشحين. وفر 70% من وقت فريق HR مع حلول Bright AI.",
@@ -2996,7 +2996,7 @@
     {
       "objectID": "d6e6c5b6b6851b5b2586",
       "id": "d6e6c5b6b6851b5b2586",
-      "sourcePath": "frontend/pages/docs/solutions-logistics-en.html",
+      "sourcePath": "docs/solutions-logistics-en.html",
       "url": "/docs/solutions-logistics-en",
       "title": "Logistics & Fleet | Bright AI",
       "description": "Smart Fleet Management by Bright AI. Track trucks, optimize routes, and cut costs with AI. TGA compliant.",
@@ -3026,7 +3026,7 @@
     {
       "objectID": "460f802c63356e9f03a8",
       "id": "460f802c63356e9f03a8",
-      "sourcePath": "frontend/pages/docs/solutions-logistics.html",
+      "sourcePath": "docs/solutions-logistics.html",
       "url": "/docs/solutions-logistics",
       "title": "حلول اللوجستيات والنقل الذكي | Bright AI",
       "description": "نظام إدارة أسطول ذكي (Fleet Management) من Bright AI. تتبع الشاحنات، تحسين مسارات التوصيل وتقليل التكاليف باستخدام الذكاء الاصطناعي، متوافق مع هيئة النقل العام.",
@@ -3050,7 +3050,7 @@
     {
       "objectID": "00273d9376b801f501f6",
       "id": "00273d9376b801f501f6",
-      "sourcePath": "frontend/pages/docs/solutions-ocr-en.html",
+      "sourcePath": "docs/solutions-ocr-en.html",
       "url": "/docs/solutions-ocr-en",
       "title": "Intelligent Document Processing (OCR) | Bright AI",
       "description": "Convert paper documents into searchable digital data with Bright AI",
@@ -3076,7 +3076,7 @@
     {
       "objectID": "ce1a330d1a7c0ea1976f",
       "id": "ce1a330d1a7c0ea1976f",
-      "sourcePath": "frontend/pages/docs/solutions-ocr.html",
+      "sourcePath": "docs/solutions-ocr.html",
       "url": "/docs/solutions-ocr",
       "title": "معالجة المستندات الذكية (OCR) | Bright AI",
       "description": "معالجة المستندات الذكية (OCR) | Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكا",
@@ -3095,7 +3095,7 @@
     {
       "objectID": "d09a347ec72c046c31b5",
       "id": "d09a347ec72c046c31b5",
-      "sourcePath": "frontend/pages/docs/solutions-retail-en.html",
+      "sourcePath": "docs/solutions-retail-en.html",
       "url": "/docs/solutions-retail-en",
       "title": "Retail & E-commerce | Bright AI - Sell Smarter",
       "description": "AI solutions for Saudi Retail & E-commerce. Smart product recommendations, automated inventory, and customer analysis to boost sales.",
@@ -3125,7 +3125,7 @@
     {
       "objectID": "da93dfe3db97b66fbc27",
       "id": "da93dfe3db97b66fbc27",
-      "sourcePath": "frontend/pages/docs/solutions-retail.html",
+      "sourcePath": "docs/solutions-retail.html",
       "url": "/docs/solutions-retail",
       "title": "حلول التجزئة والتجارة الإلكترونية | Bright AI - بيع بذكاء",
       "description": "حلول ذكاء اصطناعي لقطاع التجزئة و E-commerce في السعودية. توصيات منتجات ذكية، إدارة مخزون آلية، وتحليل المتسوقين لزيادة المبيعات.",
@@ -3148,7 +3148,7 @@
     {
       "objectID": "26d72a3de9a1f115aa53",
       "id": "26d72a3de9a1f115aa53",
-      "sourcePath": "frontend/pages/docs/solutions-supply-chain-en.html",
+      "sourcePath": "docs/solutions-supply-chain-en.html",
       "url": "/docs/solutions-supply-chain-en",
       "title": "Supply Chain Management | Bright AI - Plan Ahead",
       "description": "AI Supply Chain solutions by Bright AI. Demand forecasting, supplier management (SRM), and inventory optimization for Saudi industries.",
@@ -3179,7 +3179,7 @@
     {
       "objectID": "be55757edc1d23d16afc",
       "id": "be55757edc1d23d16afc",
-      "sourcePath": "frontend/pages/docs/solutions-supply-chain.html",
+      "sourcePath": "docs/solutions-supply-chain.html",
       "url": "/docs/solutions-supply-chain",
       "title": "إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب والمخزون",
       "description": "حلول إدارة سلاسل الإمداد (Supply Chain) بالذكاء الاصطناعي من Bright AI. توقع الطلب (Demand Forecasting)، إدارة الموردين، وتحسين المخزون للشركات السعودية والمصانع.",
@@ -3202,7 +3202,7 @@
     {
       "objectID": "d9efe1c0ea28cf6e67de",
       "id": "d9efe1c0ea28cf6e67de",
-      "sourcePath": "frontend/pages/docs/terms-and-conditions-en.html",
+      "sourcePath": "docs/terms-and-conditions-en.html",
       "url": "/docs/terms-and-conditions-en",
       "title": "Terms & Conditions | Bright AI - The Fine Print",
       "description": "Terms & Conditions | Bright AI - The Fine Print AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS",
@@ -3225,7 +3225,7 @@
     {
       "objectID": "09c65d2b241fd9ab6f17",
       "id": "09c65d2b241fd9ab6f17",
-      "sourcePath": "frontend/pages/docs/terms-and-conditions.html",
+      "sourcePath": "docs/terms-and-conditions.html",
       "url": "/docs/terms-and-conditions",
       "title": "الشروط والأحكام | Bright AI - شروط استخدام خدماتنا",
       "description": "الشروط والأحكام | Bright AI - شروط استخدام خدماتنا AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AI",

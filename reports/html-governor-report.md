@@ -5,8 +5,8 @@
 
 | Metric | Before | After |
 |---|---:|---:|
-| Scanned HTML files | 196 | 196 |
-| Eligible pages | 195 | 195 |
+| Scanned HTML files | 195 | 195 |
+| Eligible pages | 194 | 194 |
 | Pages with issues | 0 | 0 |
 | Missing title | 0 | 0 |
 | Missing meta description | 0 | 0 |
@@ -21,8 +21,8 @@
 
 ## Before Audit Details
 
-- ملفات HTML المفحوصة: 196
-- صفحات HTML القابلة للتدقيق: 195
+- ملفات HTML المفحوصة: 195
+- صفحات HTML القابلة للتدقيق: 194
 - ملفات مستثناة (ليست صفحة HTML كاملة): 1
 - صفحات تحتاج معالجة: 0
 - نقص title: 0
@@ -38,8 +38,8 @@
 
 ## After Audit Details
 
-- ملفات HTML المفحوصة: 196
-- صفحات HTML القابلة للتدقيق: 195
+- ملفات HTML المفحوصة: 195
+- صفحات HTML القابلة للتدقيق: 194
 - ملفات مستثناة (ليست صفحة HTML كاملة): 1
 - صفحات تحتاج معالجة: 0
 - نقص title: 0

@@ -5,6 +5,7 @@ const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 
 const SITE_ROOT = path.resolve(__dirname, '../..');
 const PAGES_ROOT = path.join(SITE_ROOT, 'frontend/pages');
+const DOCS_ROOT = path.join(SITE_ROOT, 'docs');
 const ROOT_HTML_FILES = ['index.html', 'docs.html'];
 
 const INDEX_REFRESH_MS = clampNumber(process.env.RAG_INDEX_REFRESH_MS, 5 * 60 * 1000, 30 * 1000, 60 * 60 * 1000);
@@ -215,13 +216,19 @@ function collectCandidateFiles() {
   }
 
   const pageFiles = walkHtmlFiles(PAGES_ROOT);
+  const docsFiles = walkHtmlFiles(DOCS_ROOT);
   pageFiles.sort((a, b) => {
     const byPriority = filePathPriority(b) - filePathPriority(a);
     if (byPriority !== 0) return byPriority;
     return a.localeCompare(b);
   });
+  docsFiles.sort((a, b) => {
+    const byPriority = filePathPriority(b) - filePathPriority(a);
+    if (byPriority !== 0) return byPriority;
+    return a.localeCompare(b);
+  });
 
-  const combined = files.concat(pageFiles);
+  const combined = files.concat(docsFiles, pageFiles);
   const deduped = [];
   const seen = new Set();
 

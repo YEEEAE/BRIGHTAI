@@ -8,7 +8,7 @@ const BASE_URL = "https://brightai.site";
 const LEGACY_BASE_URL = "https://brightai.com.sa";
 
 const BLOGGER_PATTERN = "frontend/pages/blogger/*.html";
-const HTML_PATTERNS = ["index.html", "docs.html", "frontend/pages/**/*.html"];
+const HTML_PATTERNS = ["index.html", "docs.html", "docs/**/*.html", "frontend/pages/**/*.html"];
 
 const CANONICAL_REGEX = /<link[^>]*rel=["']canonical["'][^>]*>/i;
 const OG_URL_REGEX = /<meta[^>]*property=["']og:url["'][^>]*>/i;

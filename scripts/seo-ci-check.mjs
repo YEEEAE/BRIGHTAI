@@ -160,12 +160,11 @@ function buildLocalFileCandidates(decodedPath) {
 
   if (localPath === "docs") {
     addCandidate(candidates, "docs.html");
-    addCandidate(candidates, "frontend/pages/docs/docs.html");
   }
 
   if (localPath.startsWith("docs/")) {
     const slug = localPath.slice("docs/".length);
-    addCandidate(candidates, path.join("frontend/pages/docs", `${slug}.html`));
+    addCandidate(candidates, path.join("docs", `${slug}.html`));
   }
 
   if (localPath === "blog") {

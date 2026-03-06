@@ -18,7 +18,7 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/.netlify-publish/**",
   "backend/**",
   "brightai-platform/**",
-  "docs/**",
+  "docs/deployment-archive/**",
   "**/prisma/generated/**",
   "scripts/**",
   "تقارير للمشروع/**",

@@ -1,7 +1,7 @@
 {
   "before": {
-    "scanned": 196,
-    "eligible": 195,
+    "scanned": 195,
+    "eligible": 194,
     "skipped": 1,
     "skippedFiles": [
       "frontend/pages/partials/new_index_part.html"
@@ -18,8 +18,8 @@
     "failingFiles": []
   },
   "after": {
-    "scanned": 196,
-    "eligible": 195,
+    "scanned": 195,
+    "eligible": 194,
     "skipped": 1,
     "skippedFiles": [
       "frontend/pages/partials/new_index_part.html"

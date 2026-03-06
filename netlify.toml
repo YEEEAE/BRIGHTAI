@@ -519,7 +519,7 @@ force = true
 
 [[redirects]]
 from = "/docs/:slug"
-to = "/frontend/pages/docs/:slug.html"
+to = "/docs/:slug.html"
 status = 200
 
 [[redirects]]

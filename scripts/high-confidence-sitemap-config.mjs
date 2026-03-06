@@ -21,16 +21,16 @@ export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "consultation/index.html",
   "machine-learning/index.html",
   "frontend/pages/ai-scolecs/index.html",
-  "frontend/pages/docs/services-overview.html",
-  "frontend/pages/docs/services-overview-en.html",
-  "frontend/pages/docs/consultation.html",
-  "frontend/pages/docs/consultation-en.html",
-  "frontend/pages/docs/ai-agent.html",
-  "frontend/pages/docs/ai-agent-en.html",
-  "frontend/pages/docs/smart-automation.html",
-  "frontend/pages/docs/smart-automation-en.html",
-  "frontend/pages/docs/data-analysis.html",
-  "frontend/pages/docs/data-analysis-en.html"
+  "docs/services-overview.html",
+  "docs/services-overview-en.html",
+  "docs/consultation.html",
+  "docs/consultation-en.html",
+  "docs/ai-agent.html",
+  "docs/ai-agent-en.html",
+  "docs/smart-automation.html",
+  "docs/smart-automation-en.html",
+  "docs/data-analysis.html",
+  "docs/data-analysis-en.html"
 ];
 
 export const HIGH_CONFIDENCE_SECTOR_FILES = [

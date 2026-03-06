@@ -50,6 +50,10 @@ export function relPathToSitePath(relPath) {
   if (normalized === "index.html") return "/";
   if (normalized === "docs.html") return "/docs";
 
+  if (normalized.startsWith("docs/") && normalized.endsWith(".html")) {
+    return `/docs/${path.basename(normalized, ".html")}`;
+  }
+
   if (normalized.endsWith("/index.html")) {
     const dir = normalized.replace(/\/index\.html$/, "");
 
@@ -89,12 +93,6 @@ export function relPathToSitePath(relPath) {
 
   if (normalized.startsWith("frontend/pages/blog/data-analytics/") && normalized.endsWith(".html")) {
     return `/blog/data-analytics/${path.basename(normalized, ".html")}`;
-  }
-
-  if (normalized.startsWith("frontend/pages/docs/") && normalized.endsWith(".html")) {
-    const slug = path.basename(normalized, ".html");
-    if (slug === "docs") return "/docs";
-    return `/docs/${slug}`;
   }
 
   if (normalized.startsWith("frontend/pages/sectors/") && normalized.endsWith(".html")) {
