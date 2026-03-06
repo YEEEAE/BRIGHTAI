@@ -442,6 +442,63 @@ function ensureTrailingSlash(sitePath) {
   return sitePath.endsWith("/") ? sitePath : `${sitePath}/`;
 }
 
+function extractTomlString(block, key) {
+  const match = block.match(new RegExp(`^\\s*${key}\\s*=\\s*"(.*)"\\s*$`, "m"));
+  return match ? match[1] : null;
+}
+
+function extractTomlNumber(block, key) {
+  const match = block.match(new RegExp(`^\\s*${key}\\s*=\\s*(\\d+)\\s*$`, "m"));
+  return match ? Number(match[1]) : null;
+}
+
+function isExactNetlifyPath(routePath) {
+  return Boolean(routePath) && !routePath.includes(":") && !routePath.includes("*");
+}
+
+async function buildPublicRedirectMap(root) {
+  const redirectMap = new Map();
+  const netlifyPath = path.join(root, "netlify.toml");
+
+  let netlifyContent = "";
+  try {
+    netlifyContent = await fs.readFile(netlifyPath, "utf8");
+  } catch {
+    return redirectMap;
+  }
+
+  const blocks = netlifyContent.split("[[redirects]]").slice(1);
+  for (const block of blocks) {
+    const from = extractTomlString(block, "from");
+    const to = extractTomlString(block, "to");
+    const status = extractTomlNumber(block, "status");
+
+    if (!from || !to || !status || status < 300 || status >= 400) {
+      continue;
+    }
+
+    if (!isExactNetlifyPath(from) || !isExactNetlifyPath(to)) {
+      continue;
+    }
+
+    const normalizedFrom = stripTrailingSlash(normalizeSitePath(from) || "/");
+    if (!normalizedFrom || normalizedFrom.startsWith("/frontend/")) {
+      continue;
+    }
+
+    const targetRelative = normalizeRelativePath(to.replace(/^\/+/, ""));
+    const targetSitePath = relPathToSitePath(targetRelative);
+    const normalizedTo = stripTrailingSlash(normalizeSitePath(targetSitePath || to) || "/");
+    if (!normalizedTo) {
+      continue;
+    }
+
+    redirectMap.set(normalizedFrom, normalizedTo);
+  }
+
+  return redirectMap;
+}
+
 function derivePublicBasePath(file, sitePath) {
   if (!sitePath) {
     return "/";
@@ -669,6 +726,60 @@ function suggestPublicRoute(sitePath, fileIndex) {
   return null;
 }
 
+function toPublicSuggestion(pathValue, fileIndex) {
+  if (!pathValue) {
+    return null;
+  }
+
+  const sitePath = relPathToSitePath(pathValue);
+  if (!sitePath) {
+    return null;
+  }
+
+  const normalizedSitePath = stripTrailingSlash(normalizeSitePath(sitePath) || "/");
+  return (
+    fileIndex.publicRouteMap.get(normalizedSitePath) ||
+    fileIndex.publicRouteMap.get(ensureTrailingSlash(normalizedSitePath)) ||
+    normalizedSitePath
+  );
+}
+
+function resolveRedirectedPublicPath(sitePath, fileIndex) {
+  const normalizedStart = stripTrailingSlash(normalizeSitePath(sitePath) || "/");
+  if (!normalizedStart) {
+    return null;
+  }
+
+  let current = normalizedStart;
+  const visited = new Set([current]);
+
+  for (let step = 0; step < 10; step += 1) {
+    const redirectedTo = fileIndex.publicRedirectMap.get(current);
+    if (!redirectedTo) {
+      break;
+    }
+
+    const normalizedNext = stripTrailingSlash(normalizeSitePath(redirectedTo) || "/");
+    const canonicalNext =
+      fileIndex.publicRouteMap.get(normalizedNext) ||
+      fileIndex.publicRouteMap.get(ensureTrailingSlash(normalizedNext)) ||
+      normalizedNext;
+
+    if (!canonicalNext || visited.has(canonicalNext)) {
+      break;
+    }
+
+    visited.add(canonicalNext);
+    current = canonicalNext;
+  }
+
+  if (current === normalizedStart) {
+    return null;
+  }
+
+  return current;
+}
+
 function suggestPath(referencePath, sourceFile, fileIndex) {
   const normalized = normalizeReferencePath(referencePath);
   if (normalized === "" || normalized === "/") {
@@ -742,6 +853,7 @@ async function buildFileIndex({ root, ignorePatterns }) {
   const publicBasePathByFile = new Map();
   const publicRouteVariantsByBasename = new Map();
   const publicRouteVariantsByStem = new Map();
+  const publicRedirectMap = await buildPublicRedirectMap(root);
 
   for (const file of files) {
     const baseName = path.posix.basename(file).toLowerCase();
@@ -807,6 +919,7 @@ async function buildFileIndex({ root, ignorePatterns }) {
     publicBasePathByFile,
     publicRouteVariantsByBasename,
     publicRouteVariantsByStem,
+    publicRedirectMap,
     allPublicRouteVariants: [...publicRouteMap.keys()].sort(),
     allFilesArray: [...files].sort()
   };
@@ -843,6 +956,21 @@ function evaluateReference(reference, fileIndex) {
     return {
       status: "valid",
       matchedPath: matchedPublicCanonical,
+      canonical,
+      normalizedReferencePath: resolvedPublicReferencePath,
+      needsNormalization: canonical !== current
+    };
+  }
+
+  const redirectedPublicCanonical = resolvedPublicReferencePath
+    ? resolveRedirectedPublicPath(resolvedPublicReferencePath, fileIndex)
+    : null;
+  if (redirectedPublicCanonical) {
+    const canonical = `${redirectedPublicCanonical}${normalizedSuffix}`;
+    const current = reference.original.trim();
+    return {
+      status: "valid",
+      matchedPath: redirectedPublicCanonical,
       canonical,
       normalizedReferencePath: resolvedPublicReferencePath,
       needsNormalization: canonical !== current
@@ -899,12 +1027,13 @@ function evaluateReference(reference, fileIndex) {
 
   const suggested = suggestPath(normalizedReferencePath, reference.file, fileIndex);
   if (suggested) {
+    const publicSuggestion = toPublicSuggestion(suggested.path, fileIndex);
     return {
       status: "broken",
       reason: "المسار غير موجود",
       normalizedReferencePath,
-      suggestion: `/${suggested.path}${normalizedSuffix}`,
-      suggestionPath: suggested.path,
+      suggestion: `${publicSuggestion || `/${suggested.path}`}${normalizedSuffix}`,
+      suggestionPath: publicSuggestion || suggested.path,
       suggestionConfidence: suggested.confidence
     };
   }

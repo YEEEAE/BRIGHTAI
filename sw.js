@@ -7,7 +7,6 @@ const MAX_RECENT_ARTICLES = 30;
 
 const STATIC_ASSETS = [
   '/',
-  '/index.html',
   '/frontend/css/bundle-critical.css?v=20260206',
   '/frontend/css/main.bundle.css?v=20260206',
   '/frontend/js/main.bundle.js?v=20260206',
@@ -92,16 +91,14 @@ async function networkFirst(req) {
   } catch (err) {
     const cached = await caches.match(req);
     const offlineFallback = await caches.match('/offline');
-    return cached || offlineFallback || caches.match('/index.html');
+    return cached || offlineFallback || caches.match('/');
   }
 }
 
 function isArticleDocument(pathname) {
   return (
-    pathname.startsWith('/blog/') ||
-    (pathname.startsWith('/blog') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index')) ||
-    (pathname.startsWith('/docs/') && !pathname.endsWith('/docs')) ||
-    (pathname.startsWith('/blog/') && !pathname.endsWith('/index.html') && !pathname.endsWith('/index'))
+    (pathname.startsWith('/blog/') && pathname !== '/blog/') ||
+    (pathname.startsWith('/docs/') && pathname !== '/docs/')
   );
 }
 
@@ -125,7 +122,7 @@ async function networkFirstArticle(req) {
     const recent = await caches.open(RECENT_ARTICLES_CACHE);
     const cached = await recent.match(req);
     const offlineFallback = await caches.match('/offline');
-    return cached || offlineFallback || caches.match('/index.html');
+    return cached || offlineFallback || caches.match('/');
   }
 }
 

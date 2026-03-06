@@ -36,6 +36,11 @@ function headerHasKey(block, key) {
   return new RegExp(`^\\s*${key}\\s*=`, 'm').test(block);
 }
 
+function headerHasExactValue(block, key, expectedValue) {
+  const match = block.match(new RegExp(`^\\s*${key}\\s*=\\s*"(.*)"\\s*$`, 'm'));
+  return Boolean(match) && match[1] === expectedValue;
+}
+
 const checks = [];
 
 function check(ok, name, details = '') {
@@ -100,11 +105,61 @@ const requiredRedirects = [
   { from: '/blog/data-analytics/:slug', to: '/frontend/pages/blog/data-analytics/:slug.html', status: 200 },
 ];
 
+const requiredCanonicalNormalizationRedirects = [
+  { from: '/about/', to: '/about', status: 301 },
+  { from: '/services/', to: '/services', status: 301 },
+  { from: '/contact/', to: '/contact', status: 301 },
+  { from: '/blog/', to: '/blog', status: 301 },
+  { from: '/ai-agent/', to: '/ai-agent', status: 301 },
+  { from: '/ai-bots/', to: '/ai-bots', status: 301 },
+  { from: '/data-analysis/', to: '/data-analysis', status: 301 },
+  { from: '/consultation/', to: '/consultation', status: 301 },
+  { from: '/smart-automation/', to: '/smart-automation', status: 301 },
+  { from: '/case-studies/', to: '/case-studies', status: 301 },
+  { from: '/what-is-ai/', to: '/what-is-ai', status: 301 },
+  { from: '/partners/', to: '/partners', status: 301 },
+  { from: '/tools/', to: '/tools', status: 301 },
+  { from: '/health/', to: '/health', status: 301 },
+  { from: '/machine-learning/', to: '/machine-learning', status: 301 },
+  { from: '/docs/', to: '/docs', status: 301 },
+  { from: '/ai-workflows/', to: '/ai-workflows', status: 301 },
+  { from: '/ai-scolecs/', to: '/ai-scolecs', status: 301 },
+  { from: '/smart-medical-archive/', to: '/smart-medical-archive', status: 301 },
+  { from: '/job.MAISco/', to: '/job.MAISco', status: 301 },
+  { from: '/try/', to: '/try', status: 301 },
+  { from: '/demo/', to: '/demo', status: 301 },
+  { from: '/demo/pricing/', to: '/demo/pricing', status: 301 },
+  { from: '/interview/', to: '/interview', status: 301 },
+  { from: '/privacy-cookies/', to: '/privacy-cookies', status: 301 },
+  { from: '/terms/', to: '/terms', status: 301 },
+  { from: '/sitemap/', to: '/sitemap', status: 301 },
+  { from: '/offline/', to: '/offline', status: 301 },
+  { from: '/blog/:slug/', to: '/blog/:slug', status: 301 },
+  { from: '/blog/automation/:slug/', to: '/blog/automation/:slug', status: 301 },
+  { from: '/blog/data-analytics/:slug/', to: '/blog/data-analytics/:slug', status: 301 },
+  { from: '/ai-bots/:slug/', to: '/ai-bots/:slug', status: 301 },
+  { from: '/try/:slug/', to: '/try/:slug', status: 301 },
+  { from: '/demo/resources/:slug/', to: '/demo/resources/:slug', status: 301 },
+  { from: '/demo/:slug/', to: '/demo/:slug', status: 301 },
+  { from: '/interview/:slug/', to: '/interview/:slug', status: 301 },
+  { from: '/interview/pages/:slug/', to: '/interview/pages/:slug', status: 301 },
+  { from: '/interview/pages/:slug/:child/', to: '/interview/pages/:slug/:child', status: 301 },
+  { from: '/sectors/:slug/', to: '/sectors/:slug', status: 301 },
+];
+
 for (const rule of requiredRedirects) {
   check(
     hasRedirect(rule.from, rule.to, rule.status),
     `redirect ${rule.from} -> ${rule.to} (${rule.status})`,
     `Missing redirect rule: ${JSON.stringify(rule)}`
+  );
+}
+
+for (const rule of requiredCanonicalNormalizationRedirects) {
+  check(
+    hasRedirect(rule.from, rule.to, rule.status),
+    `canonical redirect ${rule.from} -> ${rule.to} (${rule.status})`,
+    `Missing canonical normalization rule: ${JSON.stringify(rule)}`
   );
 }
 
@@ -121,6 +176,46 @@ const securityBlock = getHeaderBlock('/*');
 const htmlBlock = getHeaderBlock('/*.html');
 const assetsBlock = getHeaderBlock('/assets/*');
 const swBlock = getHeaderBlock('/sw.js');
+const frontendPagesBlock = getHeaderBlock('/frontend/pages/*');
+
+const requiredPublicHeaderPaths = [
+  '/',
+  '/about',
+  '/services',
+  '/contact',
+  '/blog',
+  '/ai-agent',
+  '/ai-bots',
+  '/data-analysis',
+  '/consultation',
+  '/smart-automation',
+  '/case-studies',
+  '/what-is-ai',
+  '/partners',
+  '/tools',
+  '/health',
+  '/machine-learning',
+  '/docs',
+  '/ai-workflows',
+  '/ai-scolecs',
+  '/smart-medical-archive',
+  '/job.MAISco',
+  '/try',
+  '/demo',
+  '/demo/pricing',
+  '/interview',
+  '/privacy-cookies',
+  '/terms',
+  '/sitemap',
+  '/offline',
+  '/blog/*',
+  '/docs/*',
+  '/ai-bots/*',
+  '/try/*',
+  '/demo/*',
+  '/interview/*',
+  '/sectors/*',
+];
 
 check(
   securityBlock.length > 0,
@@ -167,6 +262,33 @@ check(
     headerHasKey(swBlock, 'Service-Worker-Allowed'),
   'service worker headers exist',
   'Missing sw.js Cache-Control or Service-Worker-Allowed'
+);
+
+for (const headerPath of requiredPublicHeaderPaths) {
+  const block = getHeaderBlock(headerPath);
+  check(
+    block.length > 0,
+    `public header block exists for ${headerPath}`,
+    `Missing [[headers]] block for ${headerPath}`
+  );
+  check(
+    block.length > 0 && headerHasExactValue(block, 'Cache-Control', 'public, max-age=0, must-revalidate'),
+    `public cache policy matches for ${headerPath}`,
+    `Missing or incorrect Cache-Control for ${headerPath}`
+  );
+  if (headerPath !== '/') {
+    check(
+      block.length > 0 && headerHasExactValue(block, 'X-Robots-Tag', 'index,follow'),
+      `public robots policy matches for ${headerPath}`,
+      `Missing or incorrect X-Robots-Tag for ${headerPath}`
+    );
+  }
+}
+
+check(
+  frontendPagesBlock.length > 0 && headerHasExactValue(frontendPagesBlock, 'X-Robots-Tag', 'noindex,nofollow,noarchive'),
+  'frontend/pages stay noindex',
+  'Missing or incorrect X-Robots-Tag for /frontend/pages/*'
 );
 
 check(
