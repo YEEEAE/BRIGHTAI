@@ -6,32 +6,12 @@ import {
   normalizeSiteUrl,
   relPathToCanonical,
 } from "./seo-url-map.mjs";
+import { SITEMAP_REQUIRED_SERVICE_PAGE_FILES } from "./high-confidence-sitemap-config.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
 const OG_IMAGE_URL = `${BASE_URL}/assets/images/Gemini.png`;
-
-const SERVICE_PAGE_FILES = [
-  "smart-automation/index.html",
-  "data-analysis/index.html",
-  "ai-agent/index.html",
-  "frontend/pages/smart-medical-archive/index.html",
-  "frontend/pages/ai-workflows/index.html",
-  "consultation/index.html",
-  "machine-learning/index.html",
-  "frontend/pages/ai-scolecs/index.html",
-  "frontend/pages/docs/services-overview.html",
-  "frontend/pages/docs/services-overview-en.html",
-  "frontend/pages/docs/consultation.html",
-  "frontend/pages/docs/consultation-en.html",
-  "frontend/pages/docs/ai-agent.html",
-  "frontend/pages/docs/ai-agent-en.html",
-  "frontend/pages/docs/smart-automation.html",
-  "frontend/pages/docs/smart-automation-en.html",
-  "frontend/pages/docs/data-analysis.html",
-  "frontend/pages/docs/data-analysis-en.html",
-];
 
 function buildRequiredHreflangForFile(file, lowerPathMap) {
   const selfUrl = relPathToCanonical(file, BASE_URL);
@@ -67,8 +47,8 @@ function buildRequiredHreflangForFile(file, lowerPathMap) {
   };
 }
 
-const SERVICE_PAGE_MAP = new Map(SERVICE_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
-const SERVICE_PAGES = SERVICE_PAGE_FILES.map((file) => ({
+const SERVICE_PAGE_MAP = new Map(SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
+const SERVICE_PAGES = SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => ({
   file,
   canonical: relPathToCanonical(file, BASE_URL),
   hreflang: buildRequiredHreflangForFile(file, SERVICE_PAGE_MAP),

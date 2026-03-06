@@ -7,63 +7,26 @@ import {
   normalizeSiteUrl,
   relPathToCanonical,
 } from "./seo-url-map.mjs";
+import {
+  HIGH_CONFIDENCE_BLOG_FILES,
+  HIGH_CONFIDENCE_CORE_FILES,
+  HIGH_CONFIDENCE_SECTOR_FILES,
+  HIGH_CONFIDENCE_SITEMAP_FILES,
+} from "./high-confidence-sitemap-config.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, "sitemap.xml");
+const REPORT_OUTPUT = path.join(ROOT, "sitemap-quality-report.md");
 
-const STATIC_FILES = ["index.html", "docs.html"];
-const ROOT_INDEX_DIRS = [
-  "about",
-  "ai-agent",
-  "ai-bots",
-  "blog",
-  "case-studies",
-  "consultation",
-  "contact",
-  "data-analysis",
-  "health",
-  "machine-learning",
-  "partners",
-  "services",
-  "smart-automation",
-  "tools",
-  "what-is-ai",
-];
-const HTML_SCAN_DIRS = ["frontend/pages"];
-
-const EXCLUDE_FILES = new Set(["404.html", "500.html"]);
-const LOW_QUALITY_BLOGGER_FILES = new Set([
-  "agint-bblog.html",
-  "ai.html",
-  "analysy.html",
-  "auto.html",
-  "digital.html",
-  "gov.html",
-  "atou-job.html",
-  "cloude-opus-4.6.html",
-  "production-line-2.html",
-]);
-
-function isExcludedPath(relPath) {
-  const normalized = normalizeRelPath(relPath);
-  const base = path.basename(normalized);
-  if (EXCLUDE_FILES.has(base)) return true;
-  if (normalized.includes("/partials/")) return true;
-  if (normalized.startsWith("frontend/pages/interview/")) return true;
-  if (normalized.startsWith("frontend/pages/botAI/")) return true;
-  if (normalized.startsWith("frontend/pages/offline/")) return true;
-  if (normalized.startsWith("frontend/pages/terms/")) return true;
-  if (normalized.startsWith("frontend/pages/sitemap/")) return true;
-  if (/\s/.test(normalized) || normalized.includes("_")) return true;
-
-  if (normalized.startsWith("frontend/pages/blogger/")) {
-    if (/\.doc\.html$/i.test(base)) return true;
-    if (LOW_QUALITY_BLOGGER_FILES.has(base)) return true;
-  }
-
-  return false;
-}
+const HIGH_CONFIDENCE_CORE_SET = new Set(HIGH_CONFIDENCE_CORE_FILES);
+const HIGH_CONFIDENCE_SECTOR_SET = new Set(HIGH_CONFIDENCE_SECTOR_FILES);
+const HIGH_CONFIDENCE_BLOG_SET = new Set(HIGH_CONFIDENCE_BLOG_FILES);
+const MIN_WORDS_BY_GROUP = {
+  core: 120,
+  sector: 350,
+  blog: 450,
+};
 
 function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
@@ -87,6 +50,83 @@ function extractCanonicalHref(html) {
 
 function hasMetaRefresh(html) {
   return /<meta\s+http-equiv=["']refresh["']/i.test(html);
+}
+
+function stripContent(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function countWords(html) {
+  const text = stripContent(html);
+  if (!text) {
+    return 0;
+  }
+  return text.split(" ").filter(Boolean).length;
+}
+
+function detectGroup(relPath) {
+  if (HIGH_CONFIDENCE_BLOG_SET.has(relPath)) {
+    return "blog";
+  }
+  if (HIGH_CONFIDENCE_SECTOR_SET.has(relPath)) {
+    return "sector";
+  }
+  if (HIGH_CONFIDENCE_CORE_SET.has(relPath)) {
+    return "core";
+  }
+  return "other";
+}
+
+function detectExplicitExclusionFamily(relPath) {
+  const normalized = normalizeRelPath(relPath);
+  if (normalized.startsWith("frontend/pages/ai-bots/")) return "ai-bots detail pages";
+  if (normalized.startsWith("frontend/pages/try/")) return "try/demo playground";
+  if (normalized.startsWith("frontend/pages/demo/")) return "try/demo playground";
+  if (normalized.startsWith("frontend/pages/interview/")) return "interview flow";
+  if (normalized.startsWith("frontend/pages/botAI/")) return "legacy botAI paths";
+  if (normalized.startsWith("frontend/pages/privacy-cookies/")) return "legal and utility pages";
+  if (normalized.startsWith("frontend/pages/terms/")) return "legal and utility pages";
+  if (normalized.startsWith("frontend/pages/offline/")) return "legal and utility pages";
+  if (normalized.startsWith("frontend/pages/sitemap/")) return "legal and utility pages";
+  return "phase-3 scope exclusion";
+}
+
+function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref, canonicalTagNormalized, wordCount, group) {
+  const reasons = [];
+
+  if (hasMetaRefresh(html)) {
+    reasons.push("meta_refresh");
+  }
+
+  if (!canonicalTagHref || canonicalTagHref !== expectedCanonical || canonicalTagNormalized !== expectedCanonical) {
+    reasons.push("canonical_mismatch");
+  }
+
+  if (/brightai\.com\.sa/i.test(html)) {
+    reasons.push("legacy_domain_signal");
+  }
+
+  if (/https:\/\/brightai\.site\/(?:\.\.\/)+assets\//i.test(html) || /"(?:\.\.\/)+assets\//i.test(html)) {
+    reasons.push("broken_schema_asset_path");
+  }
+
+  const minWords = MIN_WORDS_BY_GROUP[group] || 0;
+  if (minWords && wordCount < minWords) {
+    reasons.push(`thin_content_lt_${minWords}`);
+  }
+
+  if (/\s/.test(path.basename(relPath)) || path.basename(relPath).includes("_")) {
+    reasons.push("unstable_slug_shape");
+  }
+
+  return reasons;
 }
 
 function buildHreflangSet(relPath, selfUrl, lowerPathMap, includedRelPaths) {
@@ -123,6 +163,79 @@ function buildHreflangSet(relPath, selfUrl, lowerPathMap, includedRelPaths) {
   ];
 }
 
+async function analyzePage(relPath) {
+  const fullPath = path.join(ROOT, relPath);
+  const group = detectGroup(relPath);
+  const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
+
+  try {
+    const html = await fs.readFile(fullPath, "utf8");
+    const canonicalTagHref = extractCanonicalHref(html);
+    const canonicalTagNormalized = normalizeSiteUrl(canonicalTagHref, BASE_URL);
+    const wordCount = countWords(html);
+    const reasons = detectSignalReasons(
+      html,
+      relPath,
+      expectedCanonical,
+      canonicalTagHref,
+      canonicalTagNormalized,
+      wordCount,
+      group
+    );
+    const stat = await fs.stat(fullPath);
+
+    return {
+      relPath,
+      fullPath,
+      group,
+      loc: expectedCanonical,
+      canonicalTagHref,
+      wordCount,
+      lastmod: toIsoDate(stat.mtime),
+      reasons,
+      include: reasons.length === 0,
+    };
+  } catch (error) {
+    return {
+      relPath,
+      fullPath,
+      group,
+      loc: expectedCanonical,
+      canonicalTagHref: "",
+      wordCount: 0,
+      lastmod: "",
+      reasons: ["missing_or_unreadable_file", error.code || "read_error"],
+      include: false,
+    };
+  }
+}
+
+function changefreqForAnalysis(analysis) {
+  if (analysis.loc === `${BASE_URL}/`) {
+    return "daily";
+  }
+  if (analysis.group === "blog") {
+    return "weekly";
+  }
+  if (analysis.loc === `${BASE_URL}/blog` || analysis.loc === `${BASE_URL}/docs`) {
+    return "weekly";
+  }
+  return "monthly";
+}
+
+function priorityForAnalysis(analysis) {
+  if (analysis.loc === `${BASE_URL}/`) {
+    return "1.0";
+  }
+  if (analysis.group === "blog") {
+    return "0.7";
+  }
+  if (analysis.group === "sector") {
+    return "0.8";
+  }
+  return "0.9";
+}
+
 async function walkHtmlFiles(dirPath) {
   const files = [];
   const entries = await fs.readdir(dirPath, { withFileTypes: true });
@@ -133,86 +246,33 @@ async function walkHtmlFiles(dirPath) {
       files.push(...(await walkHtmlFiles(fullPath)));
       continue;
     }
-    if (!entry.isFile()) continue;
-    if (!entry.name.endsWith(".html")) continue;
-    files.push(fullPath);
+    if (entry.isFile() && entry.name.endsWith(".html")) {
+      files.push(fullPath);
+    }
   }
+
   return files;
 }
 
-async function collectCandidateFiles() {
-  const collected = new Set();
-
-  for (const rel of STATIC_FILES) {
-    try {
-      await fs.access(path.join(ROOT, rel));
-      collected.add(rel);
-    } catch {
-      // Optional page.
-    }
-  }
-
-  for (const relDir of ROOT_INDEX_DIRS) {
-    const rel = `${relDir}/index.html`;
-    try {
-      await fs.access(path.join(ROOT, rel));
-      collected.add(rel);
-    } catch {
-      // Optional page.
-    }
-  }
-
-  for (const scanDir of HTML_SCAN_DIRS) {
-    const fullDir = path.join(ROOT, scanDir);
-    try {
-      const files = await walkHtmlFiles(fullDir);
-      for (const fullPath of files) {
-        collected.add(normalizeRelPath(path.relative(ROOT, fullPath)));
-      }
-    } catch {
-      // Optional directory.
-    }
-  }
-
-  return Array.from(collected).sort((a, b) => a.localeCompare(b, "en"));
-}
-
 async function buildEntries() {
-  const candidates = await collectCandidateFiles();
+  const analyses = await Promise.all(HIGH_CONFIDENCE_SITEMAP_FILES.map((relPath) => analyzePage(relPath)));
+  const included = analyses.filter((analysis) => analysis.include && analysis.loc);
   const byLoc = new Map();
 
-  for (const relPath of candidates) {
-    if (isExcludedPath(relPath)) continue;
-
-    const canonicalUrl = relPathToCanonical(relPath, BASE_URL);
-    if (!canonicalUrl) continue;
-
-    const fullPath = path.join(ROOT, relPath);
-    const html = await fs.readFile(fullPath, "utf8");
-    if (hasMetaRefresh(html)) continue;
-
-    const canonicalTagHref = extractCanonicalHref(html);
-    const canonicalTagNormalized = normalizeSiteUrl(canonicalTagHref, BASE_URL);
-    if (canonicalTagHref !== canonicalUrl || canonicalTagNormalized !== canonicalUrl) {
-      continue;
-    }
-
-    const stat = await fs.stat(fullPath);
-    const pathname = new URL(canonicalUrl).pathname;
-    const changefreq = pathname === "/" ? "daily" : pathname.startsWith("/blog/") ? "weekly" : "monthly";
-    const priority = pathname === "/" ? "1.0" : pathname.startsWith("/blog/") ? "0.7" : "0.8";
-
-    byLoc.set(canonicalUrl, {
-      loc: canonicalUrl,
-      relPath,
-      lastmod: toIsoDate(stat.mtime),
-      changefreq,
-      priority,
+  for (const analysis of included) {
+    byLoc.set(analysis.loc, {
+      loc: analysis.loc,
+      relPath: analysis.relPath,
+      group: analysis.group,
+      wordCount: analysis.wordCount,
+      lastmod: analysis.lastmod,
+      changefreq: changefreqForAnalysis(analysis),
+      priority: priorityForAnalysis(analysis),
       alternates: [],
     });
   }
 
-  const entries = Array.from(byLoc.values()).sort((a, b) => a.loc.localeCompare(b.loc, "en"));
+  const entries = Array.from(byLoc.values()).sort((first, second) => first.loc.localeCompare(second.loc, "en"));
   const lowerPathMap = new Map(entries.map((entry) => [entry.relPath.toLowerCase(), entry.relPath]));
   const includedRelPaths = new Set(entries.map((entry) => entry.relPath.toLowerCase()));
 
@@ -220,7 +280,51 @@ async function buildEntries() {
     entry.alternates = buildHreflangSet(entry.relPath, entry.loc, lowerPathMap, includedRelPaths);
   }
 
-  return entries;
+  return { entries, analyses };
+}
+
+async function buildExcludedInventory() {
+  const auditDirs = [
+    "frontend/pages/blogger",
+    "frontend/pages/blog/automation",
+    "frontend/pages/blog/data-analytics",
+    "frontend/pages/sectors",
+  ];
+  const rows = [];
+  const selectedSet = new Set(HIGH_CONFIDENCE_SITEMAP_FILES);
+
+  for (const relDir of auditDirs) {
+    const fullDir = path.join(ROOT, relDir);
+    let files = [];
+    try {
+      files = await walkHtmlFiles(fullDir);
+    } catch {
+      continue;
+    }
+
+    for (const fullPath of files) {
+      const relPath = normalizeRelPath(path.relative(ROOT, fullPath));
+      if (selectedSet.has(relPath)) {
+        continue;
+      }
+
+      const analysis = await analyzePage(relPath);
+      const reasons = analysis.reasons.length
+        ? [...analysis.reasons, detectExplicitExclusionFamily(relPath)]
+        : [detectExplicitExclusionFamily(relPath)];
+
+      rows.push({
+        relPath,
+        group: detectGroup(relPath),
+        wordCount: analysis.wordCount,
+        reasons,
+        loc: analysis.loc || "",
+      });
+    }
+  }
+
+  rows.sort((first, second) => first.relPath.localeCompare(second.relPath, "en"));
+  return rows;
 }
 
 function renderXml(entries) {
@@ -249,14 +353,103 @@ function renderXml(entries) {
   return lines.join("\n");
 }
 
+function renderReport({ entries, analyses, excludedInventory }) {
+  const includedCore = entries.filter((entry) => entry.group === "core");
+  const includedSectors = entries.filter((entry) => entry.group === "sector");
+  const includedBlogs = entries.filter((entry) => entry.group === "blog");
+  const excludedSelected = analyses.filter((analysis) => !analysis.include);
+  const reasonCounts = new Map();
+
+  for (const row of [...excludedSelected, ...excludedInventory]) {
+    for (const reason of row.reasons) {
+      reasonCounts.set(reason, (reasonCounts.get(reason) || 0) + 1);
+    }
+  }
+
+  const topReasons = [...reasonCounts.entries()].sort((first, second) => second[1] - first[1] || first[0].localeCompare(second[0]));
+  const lines = [
+    "# Sitemap Quality Report",
+    "",
+    `- Date: ${new Date().toISOString()}`,
+    `- Total URLs in high-confidence sitemap: ${entries.length}`,
+    `- Included core pages: ${includedCore.length}`,
+    `- Included sector pages: ${includedSectors.length}`,
+    `- Included blog articles: ${includedBlogs.length}`,
+    `- Excluded curated candidates: ${excludedSelected.length}`,
+    `- Excluded inventory rows: ${excludedInventory.length}`,
+    "",
+    "## Inclusion Policy",
+    "- نضم فقط الصفحات المحددة ضمن high-confidence sitemap scope.",
+    "- أي صفحة تفشل في canonical النهائي أو تحتوي إشارات legacy أو مسارات assets معطوبة أو محتوى أضعف من الحد الأدنى تُستبعد تلقائياً.",
+    "- لم يتم تعديل أي `<title>` ضمن هذه المرحلة.",
+    "",
+    "## Top Exclusion Reasons",
+    ""
+  ];
+
+  if (!topReasons.length) {
+    lines.push("- لا توجد أسباب استبعاد مسجلة.");
+  } else {
+    lines.push("| Reason | Count |");
+    lines.push("| --- | ---: |");
+    for (const [reason, count] of topReasons) {
+      lines.push(`| ${reason} | ${count} |`);
+    }
+  }
+
+  lines.push("");
+  lines.push("## Included URLs");
+  lines.push("");
+  lines.push("| Group | File | Words | URL |");
+  lines.push("| --- | --- | ---: | --- |");
+  for (const entry of entries) {
+    lines.push(`| ${entry.group} | ${entry.relPath.replace(/\|/g, "\\|")} | ${entry.wordCount} | ${entry.loc.replace(/\|/g, "\\|")} |`);
+  }
+
+  lines.push("");
+  lines.push("## Excluded Curated Candidates");
+  lines.push("");
+  if (!excludedSelected.length) {
+    lines.push("- لا توجد صفحات مختارة تم استبعادها بعد بوابة الجودة.");
+  } else {
+    lines.push("| File | Words | Reasons |");
+    lines.push("| --- | ---: | --- |");
+    for (const row of excludedSelected) {
+      lines.push(`| ${row.relPath.replace(/\|/g, "\\|")} | ${row.wordCount} | ${row.reasons.join(", ").replace(/\|/g, "\\|")} |`);
+    }
+  }
+
+  lines.push("");
+  lines.push("## Excluded Content Inventory");
+  lines.push("");
+  if (!excludedInventory.length) {
+    lines.push("- لا توجد صفحات مستبعدة في نطاق الجرد.");
+  } else {
+    lines.push("| File | Words | Reasons |");
+    lines.push("| --- | ---: | --- |");
+    for (const row of excludedInventory) {
+      lines.push(`| ${row.relPath.replace(/\|/g, "\\|")} | ${row.wordCount} | ${row.reasons.join(", ").replace(/\|/g, "\\|")} |`);
+    }
+  }
+
+  lines.push("");
+  return `${lines.join("\n")}\n`;
+}
+
 async function main() {
-  const entries = await buildEntries();
+  const { entries, analyses } = await buildEntries();
+  const excludedInventory = await buildExcludedInventory();
   const xml = renderXml(entries);
+  const report = renderReport({ entries, analyses, excludedInventory });
+
   await fs.writeFile(OUTPUT, xml, "utf8");
-  process.stdout.write(`Generated sitemap.xml with ${entries.length} canonical URLs\n`);
+  await fs.writeFile(REPORT_OUTPUT, report, "utf8");
+
+  process.stdout.write(`Generated sitemap.xml with ${entries.length} high-confidence URLs\n`);
+  process.stdout.write(`Generated sitemap-quality-report.md with ${excludedInventory.length + analyses.length} analyzed rows\n`);
 }
 
 main().catch((error) => {
   process.stderr.write(`${error?.stack || error}\n`);
-  process.exit(1);
+  process.exitCode = 1;
 });
