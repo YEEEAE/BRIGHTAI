@@ -1,0 +1,39 @@
+{
+  "before": {
+    "scanned": 196,
+    "eligible": 195,
+    "skipped": 1,
+    "skippedFiles": [
+      "frontend/pages/partials/new_index_part.html"
+    ],
+    "affected": 0,
+    "missingCounts": {
+      "title": 0,
+      "description": 0,
+      "canonical": 0,
+      "h1": 0,
+      "hreflang": 0,
+      "verificationPlaceholder": 0
+    },
+    "failingFiles": []
+  },
+  "after": {
+    "scanned": 196,
+    "eligible": 195,
+    "skipped": 1,
+    "skippedFiles": [
+      "frontend/pages/partials/new_index_part.html"
+    ],
+    "affected": 0,
+    "missingCounts": {
+      "title": 0,
+      "description": 0,
+      "canonical": 0,
+      "h1": 0,
+      "hreflang": 0,
+      "verificationPlaceholder": 0
+    },
+    "failingFiles": []
+  },
+  "fixedFiles": []
+}

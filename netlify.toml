@@ -568,6 +568,54 @@ status = 301
 force = true
 
 [[redirects]]
+from = "/blog/agint-bblog"
+to = "/ai-agent"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/atou-job"
+to = "/blog/production-line"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/auto"
+to = "/blog/process-automation"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/cloude-opus-4.6"
+to = "/blog/chatgpt-vs-claude-vs-gemini-arabic"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/digital"
+to = "/blog/ai-transformation"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/gov"
+to = "/blog/vision-2030-ai-opportunities"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/ai-transformation-banking-saudi"
+to = "/blog/digital-banking-saudi"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/ai-transformation-health-smart-archive"
+to = "/blog/digital-health-smart-archive"
+status = 301
+force = true
+
+[[redirects]]
 from = "/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A_%20%D8%AD%D9%84%D9%88%D9%84%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9%20%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%20%D8%A7%D9%84%D8%A8%D8%AD%D8%AB%20(1)"
 to = "/blog/ai-transformation"
 status = 301

@@ -27,6 +27,12 @@ const SEO_EXEMPT_ERROR_PAGES = new Set([
   "500.html",
   "brightai-platform/public/404.html",
   "brightai-platform/public/500.html",
+  "frontend/pages/blogger/agint-bblog.html",
+  "frontend/pages/blogger/atou-job.html",
+  "frontend/pages/blogger/auto.html",
+  "frontend/pages/blogger/cloude-opus-4.6.html",
+  "frontend/pages/blogger/digital.html",
+  "frontend/pages/blogger/gov.html",
 ]);
 
 function parseArgs(argv) {
