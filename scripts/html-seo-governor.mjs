@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { glob } from "glob";
 import {
+  encodeUrlPath,
   findCounterpartRelPath,
   normalizeRelPath,
   normalizeSiteUrl,
@@ -50,6 +51,67 @@ function parseArgs(argv) {
   }
 
   return args;
+}
+
+function stripTrailingSlash(value) {
+  if (value === "/") return value;
+  return value.replace(/\/+$/, "") || "/";
+}
+
+function extractAttribute(tag, attrName) {
+  const match = tag.match(new RegExp(`${attrName}\\s*=\\s*["']([^"']+)["']`, "i"));
+  return match?.[1]?.trim() || null;
+}
+
+function normalizeToSitePath(rawValue, sourceFile) {
+  if (!rawValue) return null;
+  const value = rawValue.trim();
+  if (!value) return null;
+
+  try {
+    if (/^https?:\/\//i.test(value)) {
+      const parsed = new URL(value);
+      return parsed.pathname || "/";
+    }
+  } catch {
+    // Fall through to local-path handling.
+  }
+
+  if (value.startsWith("/")) return value;
+
+  const sourceDir = path.posix.dirname(sourceFile.replace(/\\/g, "/"));
+  const resolved = path.posix.normalize(path.posix.join("/", sourceDir, value));
+  return resolved.startsWith("/") ? resolved : `/${resolved}`;
+}
+
+function extractRedirectTargetPath(content, sourceFile) {
+  const metaTags = [...content.matchAll(/<meta[^>]*>/gi)].map((match) => match[0]);
+  for (const tag of metaTags) {
+    if (!/http-equiv\s*=\s*["']refresh["']/i.test(tag)) continue;
+    const refreshContent = extractAttribute(tag, "content");
+    if (!refreshContent) continue;
+    const urlMatch = refreshContent.match(/url\s*=\s*([^;]+)/i);
+    if (!urlMatch) continue;
+    const candidate = normalizeToSitePath(urlMatch[1], sourceFile);
+    if (candidate) return candidate;
+  }
+
+  const jsRedirectMatch = content.match(/window\.location\.replace\(\s*["']([^"']+)["']\s*\)/i);
+  if (jsRedirectMatch?.[1]) {
+    return normalizeToSitePath(jsRedirectMatch[1], sourceFile);
+  }
+
+  return null;
+}
+
+function resolveExpectedCanonical(content, relPath) {
+  const redirectTargetPath = extractRedirectTargetPath(content, relPath);
+  if (!redirectTargetPath) {
+    return relPathToCanonical(relPath, BASE_URL);
+  }
+
+  const normalizedPath = stripTrailingSlash(redirectTargetPath) || "/";
+  return `${BASE_URL}${encodeUrlPath(normalizedPath)}`;
 }
 
 function parseAttributes(tag) {
@@ -228,8 +290,8 @@ function insertIntoBodyTop(content, tag) {
   return `${content.slice(0, insertAt)}\n${tag}${content.slice(insertAt)}`;
 }
 
-function buildRequiredHreflang(relPath, lang, lowerPathMap) {
-  const selfUrl = relPathToCanonical(relPath, BASE_URL);
+function buildRequiredHreflang(relPath, lang, lowerPathMap, selfUrlOverride = null) {
+  const selfUrl = selfUrlOverride || relPathToCanonical(relPath, BASE_URL);
   const counterpart = findCounterpartRelPath(relPath, lowerPathMap);
   const counterpartUrl = counterpart ? relPathToCanonical(counterpart, BASE_URL) : null;
 
@@ -305,7 +367,7 @@ function auditFile(content, relPath, lowerPathMap) {
   const titleText = extractTagContent(content, "title");
   const h1Text = extractTagContent(content, "h1");
   const lang = detectLang(content, relPath, titleText, h1Text);
-  const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
+  const expectedCanonical = resolveExpectedCanonical(content, relPath);
 
   if (!expectedCanonical) {
     return {
@@ -323,7 +385,7 @@ function auditFile(content, relPath, lowerPathMap) {
     };
   }
 
-  const requiredHreflang = buildRequiredHreflang(relPath, lang, lowerPathMap);
+  const requiredHreflang = buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
 
   const linkTags = extractLinkTags(content);
   const canonical = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
@@ -415,6 +477,7 @@ function applyFixes(content, relPath, lowerPathMap) {
   const existingH1 = extractTagContent(updated, "h1");
   const lang = detectLang(updated, relPath, titleText, existingH1);
   const fallbackTitle = deriveTitle(relPath, existingH1, lang);
+  const expectedCanonical = resolveExpectedCanonical(updated, relPath);
 
   if (initialAudit.missing.title) {
     const titleMatch = updated.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
@@ -450,7 +513,7 @@ function applyFixes(content, relPath, lowerPathMap) {
   }
 
   if (initialAudit.missing.canonical) {
-    const canonicalTag = `<link rel="canonical" href="${relPathToCanonical(relPath, BASE_URL)}" />`;
+    const canonicalTag = `<link rel="canonical" href="${expectedCanonical}" />`;
     updated = removeLinkTags(updated, (tag) => hasRelToken(tag.attrs.rel, "canonical"));
     updated = insertIntoHead(updated, canonicalTag);
     actions.push("canonical");
@@ -476,7 +539,7 @@ function applyFixes(content, relPath, lowerPathMap) {
   }
 
   if (initialAudit.missing.hreflang) {
-    const required = buildRequiredHreflang(relPath, lang, lowerPathMap);
+    const required = buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
     updated = removeLinkTags(
       updated,
       (tag) => hasRelToken(tag.attrs.rel, "alternate") && Boolean(tag.attrs.hreflang)
