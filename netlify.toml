@@ -375,6 +375,243 @@ to = "/interview"
 status = 301
 force = true
 
+# -------------------------------------------------
+# Canonical path normalization
+# -------------------------------------------------
+[[redirects]]
+from = "/about/"
+to = "/about"
+status = 301
+force = true
+
+[[redirects]]
+from = "/services/"
+to = "/services"
+status = 301
+force = true
+
+[[redirects]]
+from = "/contact/"
+to = "/contact"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/"
+to = "/blog"
+status = 301
+force = true
+
+[[redirects]]
+from = "/ai-agent/"
+to = "/ai-agent"
+status = 301
+force = true
+
+[[redirects]]
+from = "/ai-bots/"
+to = "/ai-bots"
+status = 301
+force = true
+
+[[redirects]]
+from = "/data-analysis/"
+to = "/data-analysis"
+status = 301
+force = true
+
+[[redirects]]
+from = "/consultation/"
+to = "/consultation"
+status = 301
+force = true
+
+[[redirects]]
+from = "/smart-automation/"
+to = "/smart-automation"
+status = 301
+force = true
+
+[[redirects]]
+from = "/case-studies/"
+to = "/case-studies"
+status = 301
+force = true
+
+[[redirects]]
+from = "/what-is-ai/"
+to = "/what-is-ai"
+status = 301
+force = true
+
+[[redirects]]
+from = "/partners/"
+to = "/partners"
+status = 301
+force = true
+
+[[redirects]]
+from = "/tools/"
+to = "/tools"
+status = 301
+force = true
+
+[[redirects]]
+from = "/health/"
+to = "/health"
+status = 301
+force = true
+
+[[redirects]]
+from = "/machine-learning/"
+to = "/machine-learning"
+status = 301
+force = true
+
+[[redirects]]
+from = "/docs/"
+to = "/docs"
+status = 301
+force = true
+
+[[redirects]]
+from = "/ai-workflows/"
+to = "/ai-workflows"
+status = 301
+force = true
+
+[[redirects]]
+from = "/ai-scolecs/"
+to = "/ai-scolecs"
+status = 301
+force = true
+
+[[redirects]]
+from = "/smart-medical-archive/"
+to = "/smart-medical-archive"
+status = 301
+force = true
+
+[[redirects]]
+from = "/job.MAISco/"
+to = "/job.MAISco"
+status = 301
+force = true
+
+[[redirects]]
+from = "/try/"
+to = "/try"
+status = 301
+force = true
+
+[[redirects]]
+from = "/demo/"
+to = "/demo"
+status = 301
+force = true
+
+[[redirects]]
+from = "/demo/pricing/"
+to = "/demo/pricing"
+status = 301
+force = true
+
+[[redirects]]
+from = "/interview/"
+to = "/interview"
+status = 301
+force = true
+
+[[redirects]]
+from = "/privacy-cookies/"
+to = "/privacy-cookies"
+status = 301
+force = true
+
+[[redirects]]
+from = "/terms/"
+to = "/terms"
+status = 301
+force = true
+
+[[redirects]]
+from = "/sitemap/"
+to = "/sitemap"
+status = 301
+force = true
+
+[[redirects]]
+from = "/offline/"
+to = "/offline"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/:slug/"
+to = "/blog/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/automation/:slug/"
+to = "/blog/automation/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/data-analytics/:slug/"
+to = "/blog/data-analytics/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/ai-bots/:slug/"
+to = "/ai-bots/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/try/:slug/"
+to = "/try/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/demo/resources/:slug/"
+to = "/demo/resources/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/demo/:slug/"
+to = "/demo/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/interview/:slug/"
+to = "/interview/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/interview/pages/:slug/"
+to = "/interview/pages/:slug"
+status = 301
+force = true
+
+[[redirects]]
+from = "/interview/pages/:slug/:child/"
+to = "/interview/pages/:slug/:child"
+status = 301
+force = true
+
+[[redirects]]
+from = "/sectors/:slug/"
+to = "/sectors/:slug"
+status = 301
+force = true
+
 # Clean URL Rewrites — SEO-friendly paths
 [[redirects]]
 from = "/about"
@@ -643,7 +880,7 @@ to = "/frontend/pages/demo/index.html"
 status = 200
 
 [[redirects]]
-from = "/demo/pricing/"
+from = "/demo/pricing"
 to = "/frontend/pages/demo/pricing/index.html"
 status = 200
 
@@ -1001,6 +1238,216 @@ Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
 for = "/*.html"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/about"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/services"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/contact"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/blog"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/ai-agent"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/ai-bots"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/data-analysis"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/consultation"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/smart-automation"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/case-studies"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/what-is-ai"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/partners"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/tools"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/health"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/machine-learning"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/docs"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/ai-workflows"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/ai-scolecs"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/smart-medical-archive"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/job.MAISco"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/try"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/demo"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/demo/pricing"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/interview"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/privacy-cookies"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/terms"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/sitemap"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/offline"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/blog/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/docs/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/ai-bots/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/try/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/demo/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/interview/*"
+[headers.values]
+Cache-Control = "public, max-age=0, must-revalidate"
+X-Robots-Tag = "index,follow"
+
+[[headers]]
+for = "/sectors/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
 X-Robots-Tag = "index,follow"

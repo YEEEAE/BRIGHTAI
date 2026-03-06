@@ -1,24 +1,27 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { glob } from "glob";
+import { relPathToSitePath } from "./seo-url-map.mjs";
 
 export const DEFAULT_FILE_PATTERNS = [
-  "*.html",
-  "*.htm",
-  "*.js",
-  "*.css",
-  "frontend/**/*.html",
-  "frontend/**/*.htm",
-  "frontend/**/*.js",
-  "frontend/**/*.mjs",
-  "frontend/**/*.css"
+  "**/*.html",
+  "**/*.htm",
+  "**/*.js",
+  "**/*.mjs",
+  "**/*.css"
 ];
 
 export const DEFAULT_IGNORE_PATTERNS = [
   "**/.git/**",
   "**/node_modules/**",
+  "**/.netlify/**",
+  "**/.netlify-publish/**",
   "backend/**",
+  "brightai-platform/**",
+  "docs/**",
+  "**/prisma/generated/**",
   "scripts/**",
+  "تقارير للمشروع/**",
   "brightai_orchestrator_output/**"
 ];
 
@@ -49,6 +52,8 @@ const SKIP_PREFIXES = [
 ];
 
 const API_PREFIXES = ["/api/", "api/", "/backend/", "backend/"];
+const SITE_ORIGIN = "https://brightai.site";
+const TRACKING_PARAM_NAMES = new Set(["gclid", "fbclid", "msclkid"]);
 
 const HTML_FILE_REGEX = /\.(?:html?|xhtml)$/i;
 const JS_FILE_REGEX = /\.(?:m?js)$/i;
@@ -250,6 +255,53 @@ function splitReferenceAndSuffix(reference) {
   };
 }
 
+function splitReferenceParts(reference) {
+  const { referencePath, suffix } = splitReferenceAndSuffix(reference);
+  const hashIndex = suffix.indexOf("#");
+  const queryPart = hashIndex >= 0 ? suffix.slice(0, hashIndex) : suffix;
+  const hashPart = hashIndex >= 0 ? suffix.slice(hashIndex) : "";
+
+  return {
+    referencePath,
+    suffix,
+    queryPart,
+    hashPart
+  };
+}
+
+function isTrackingParam(paramName) {
+  if (!paramName) {
+    return false;
+  }
+
+  const lower = String(paramName).toLowerCase();
+  return lower.startsWith("utm_") || TRACKING_PARAM_NAMES.has(lower);
+}
+
+function normalizeSuffix({ queryPart, hashPart }) {
+  let normalizedQuery = "";
+
+  if (queryPart.startsWith("?")) {
+    const searchParams = new URLSearchParams(queryPart.slice(1));
+    const keptEntries = [];
+    for (const [name, value] of searchParams.entries()) {
+      if (!isTrackingParam(name)) {
+        keptEntries.push([name, value]);
+      }
+    }
+
+    if (keptEntries.length) {
+      const rebuilt = new URLSearchParams();
+      for (const [name, value] of keptEntries) {
+        rebuilt.append(name, value);
+      }
+      normalizedQuery = `?${rebuilt.toString()}`;
+    }
+  }
+
+  return `${normalizedQuery}${hashPart}`;
+}
+
 function getIgnoreReason(reference) {
   const trimmed = reference.original.trim();
   if (!trimmed) {
@@ -335,6 +387,143 @@ function normalizeReferencePath(referencePath) {
   }
 
   return normalized;
+}
+
+function stripTrailingSlash(sitePath) {
+  if (!sitePath || sitePath === "/") {
+    return "/";
+  }
+
+  return sitePath.replace(/\/+$/, "") || "/";
+}
+
+function normalizeSitePath(referencePath) {
+  if (!referencePath || referencePath === "/") {
+    return "/";
+  }
+
+  let normalized = normalizeReferencePath(referencePath);
+  if (!normalized) {
+    return "/";
+  }
+
+  if (/^https?:\/\//i.test(normalized)) {
+    try {
+      const parsed = new URL(normalized);
+      if (parsed.origin.toLowerCase() !== SITE_ORIGIN) {
+        return null;
+      }
+      normalized = parsed.pathname || "/";
+    } catch {
+      return null;
+    }
+  }
+
+  normalized = normalized.replace(/^https?:\/\/[^/]+/i, "");
+  normalized = normalized.replace(/\/{2,}/g, "/");
+  normalized = path.posix.normalize(normalized);
+
+  if (!normalized || normalized === ".") {
+    return "/";
+  }
+
+  if (!normalized.startsWith("/")) {
+    normalized = `/${normalized}`;
+  }
+
+  return normalized;
+}
+
+function ensureTrailingSlash(sitePath) {
+  if (!sitePath || sitePath === "/") {
+    return "/";
+  }
+
+  return sitePath.endsWith("/") ? sitePath : `${sitePath}/`;
+}
+
+function derivePublicBasePath(file, sitePath) {
+  if (!sitePath) {
+    return "/";
+  }
+
+  const normalizedSitePath = stripTrailingSlash(normalizeSitePath(sitePath) || "/");
+  const normalizedFile = normalizeRelativePath(file);
+
+  if (normalizedFile === "index.html" || normalizedFile.endsWith("/index.html")) {
+    return ensureTrailingSlash(normalizedSitePath);
+  }
+
+  return ensureTrailingSlash(path.posix.dirname(normalizedSitePath));
+}
+
+function addPublicRouteVariant(publicRouteMap, routePath, canonicalSitePath) {
+  const normalizedRoutePath = normalizeSitePath(routePath);
+  if (!normalizedRoutePath) {
+    return;
+  }
+
+  publicRouteMap.set(normalizedRoutePath, canonicalSitePath);
+}
+
+function buildPublicRouteVariants(file, canonicalSitePath) {
+  const variants = new Set();
+  const normalizedFile = normalizeRelativePath(file);
+  const normalizedCanonical = stripTrailingSlash(normalizeSitePath(canonicalSitePath) || "/");
+
+  variants.add(normalizedCanonical);
+  variants.add(`/${normalizedFile}`);
+
+  if (normalizedCanonical !== "/") {
+    variants.add(`${normalizedCanonical}/`);
+    variants.add(`${normalizedCanonical}/index.html`);
+    variants.add(`${normalizedCanonical}.html`);
+  } else {
+    variants.add("/index.html");
+  }
+
+  if (normalizedFile.endsWith("/index.html")) {
+    variants.add(`/${normalizedFile.replace(/\/index\.html$/i, "")}`);
+  } else if (normalizedFile.endsWith(".html")) {
+    variants.add(`/${normalizedFile.replace(/\.html$/i, "")}`);
+  }
+
+  return [...variants].map((value) => normalizeSitePath(value)).filter(Boolean);
+}
+
+function looksLikePageReference(referencePath) {
+  if (!referencePath) {
+    return false;
+  }
+
+  if (referencePath.endsWith("/")) {
+    return true;
+  }
+
+  const extension = path.posix.extname(referencePath).toLowerCase();
+  if (!extension) {
+    return true;
+  }
+
+  return extension === ".html" || extension === ".htm";
+}
+
+function resolvePublicReferencePath(referencePath, sourceFile, fileIndex) {
+  const sourceBasePath = fileIndex.publicBasePathByFile.get(sourceFile) || "/";
+  const normalizedReference = normalizeReferencePath(referencePath);
+  if (!normalizedReference) {
+    return "/";
+  }
+
+  try {
+    const resolved = new URL(normalizedReference, `${SITE_ORIGIN}${sourceBasePath}`);
+    if (resolved.origin.toLowerCase() !== SITE_ORIGIN) {
+      return null;
+    }
+    return normalizeSitePath(resolved.pathname || "/");
+  } catch {
+    return null;
+  }
 }
 
 function toProjectRelativePath(sourceFile, normalizedReferencePath) {
@@ -441,6 +630,45 @@ function chooseBestCandidate(candidates, wantedPath) {
   return null;
 }
 
+function suggestPublicRoute(sitePath, fileIndex) {
+  const normalizedWanted = normalizeSitePath(sitePath);
+  if (!normalizedWanted) {
+    return null;
+  }
+
+  const directMatches = fileIndex.publicRouteVariantsByBasename.get(path.posix.basename(normalizedWanted).toLowerCase()) || [];
+  const directPicked = chooseBestCandidate(directMatches, normalizedWanted);
+  if (directPicked) {
+    return {
+      path: fileIndex.publicRouteMap.get(directPicked.path) || directPicked.path,
+      confidence: directPicked.confidence
+    };
+  }
+
+  const stemName = path.posix.basename(normalizedWanted, path.posix.extname(normalizedWanted)).toLowerCase();
+  const byStem = fileIndex.publicRouteVariantsByStem.get(stemName) || [];
+  const stemPicked = chooseBestCandidate(byStem, normalizedWanted);
+  if (stemPicked) {
+    return {
+      path: fileIndex.publicRouteMap.get(stemPicked.path) || stemPicked.path,
+      confidence: stemPicked.confidence
+    };
+  }
+
+  const suffixMatches = fileIndex.allPublicRouteVariants.filter((candidate) =>
+    candidate.toLowerCase().endsWith(normalizedWanted.toLowerCase())
+  );
+
+  if (suffixMatches.length === 1) {
+    return {
+      path: fileIndex.publicRouteMap.get(suffixMatches[0]) || suffixMatches[0],
+      confidence: 0.85
+    };
+  }
+
+  return null;
+}
+
 function suggestPath(referencePath, sourceFile, fileIndex) {
   const normalized = normalizeReferencePath(referencePath);
   if (normalized === "" || normalized === "/") {
@@ -510,6 +738,10 @@ async function buildFileIndex({ root, ignorePatterns }) {
 
   const basenameMap = new Map();
   const stemMap = new Map();
+  const publicRouteMap = new Map();
+  const publicBasePathByFile = new Map();
+  const publicRouteVariantsByBasename = new Map();
+  const publicRouteVariantsByStem = new Map();
 
   for (const file of files) {
     const baseName = path.posix.basename(file).toLowerCase();
@@ -524,6 +756,31 @@ async function buildFileIndex({ root, ignorePatterns }) {
       stemMap.set(stemName, []);
     }
     stemMap.get(stemName).push(file);
+
+    if (HTML_FILE_REGEX.test(file)) {
+      const sitePath = relPathToSitePath(file);
+      if (sitePath) {
+        const canonicalSitePath = stripTrailingSlash(normalizeSitePath(sitePath) || "/");
+        publicBasePathByFile.set(file, derivePublicBasePath(file, canonicalSitePath));
+
+        for (const variant of buildPublicRouteVariants(file, canonicalSitePath)) {
+          addPublicRouteVariant(publicRouteMap, variant, canonicalSitePath);
+
+          const variantBaseName = path.posix.basename(variant).toLowerCase();
+          const variantStem = path.posix.basename(variant, path.posix.extname(variant)).toLowerCase();
+
+          if (!publicRouteVariantsByBasename.has(variantBaseName)) {
+            publicRouteVariantsByBasename.set(variantBaseName, []);
+          }
+          publicRouteVariantsByBasename.get(variantBaseName).push(variant);
+
+          if (!publicRouteVariantsByStem.has(variantStem)) {
+            publicRouteVariantsByStem.set(variantStem, []);
+          }
+          publicRouteVariantsByStem.get(variantStem).push(variant);
+        }
+      }
+    }
   }
 
   for (const values of basenameMap.values()) {
@@ -534,10 +791,23 @@ async function buildFileIndex({ root, ignorePatterns }) {
     values.sort();
   }
 
+  for (const values of publicRouteVariantsByBasename.values()) {
+    values.sort();
+  }
+
+  for (const values of publicRouteVariantsByStem.values()) {
+    values.sort();
+  }
+
   return {
     files,
     basenameMap,
     stemMap,
+    publicRouteMap,
+    publicBasePathByFile,
+    publicRouteVariantsByBasename,
+    publicRouteVariantsByStem,
+    allPublicRouteVariants: [...publicRouteMap.keys()].sort(),
     allFilesArray: [...files].sort()
   };
 }
@@ -551,13 +821,46 @@ function evaluateReference(reference, fileIndex) {
     };
   }
 
-  const { referencePath, suffix } = splitReferenceAndSuffix(reference.original);
+  const { referencePath, queryPart, hashPart } = splitReferenceParts(reference.original);
   const normalizedReferencePath = normalizeReferencePath(referencePath);
   if (!normalizedReferencePath) {
     return {
       status: "ignored",
       ignoreReason: "مسار فارغ بعد التنظيف"
     };
+  }
+
+  const normalizedSuffix = normalizeSuffix({ queryPart, hashPart });
+  const resolvedPublicReferencePath = resolvePublicReferencePath(normalizedReferencePath, reference.file, fileIndex);
+  const matchedPublicCanonical = resolvedPublicReferencePath
+    ? fileIndex.publicRouteMap.get(stripTrailingSlash(resolvedPublicReferencePath)) ||
+      fileIndex.publicRouteMap.get(resolvedPublicReferencePath)
+    : null;
+
+  if (matchedPublicCanonical) {
+    const canonical = `${matchedPublicCanonical}${normalizedSuffix}`;
+    const current = reference.original.trim();
+    return {
+      status: "valid",
+      matchedPath: matchedPublicCanonical,
+      canonical,
+      normalizedReferencePath: resolvedPublicReferencePath,
+      needsNormalization: canonical !== current
+    };
+  }
+
+  if (looksLikePageReference(normalizedReferencePath) && resolvedPublicReferencePath) {
+    const suggestedPublicRoute = suggestPublicRoute(resolvedPublicReferencePath, fileIndex);
+    if (suggestedPublicRoute) {
+      return {
+        status: "broken",
+        reason: "المسار العام غير موجود",
+        normalizedReferencePath: resolvedPublicReferencePath,
+        suggestion: `${suggestedPublicRoute.path}${normalizedSuffix}`,
+        suggestionPath: suggestedPublicRoute.path,
+        suggestionConfidence: suggestedPublicRoute.confidence
+      };
+    }
   }
 
   const projectRelativePath = toProjectRelativePath(reference.file, normalizedReferencePath);
@@ -567,7 +870,7 @@ function evaluateReference(reference, fileIndex) {
       status: "broken",
       reason: "المسار يشير إلى خارج جذر المشروع",
       normalizedReferencePath,
-      suggestion: suggestedOutsideRoot ? `/${suggestedOutsideRoot.path}${suffix}` : null,
+      suggestion: suggestedOutsideRoot ? `/${suggestedOutsideRoot.path}${normalizedSuffix}` : null,
       suggestionPath: suggestedOutsideRoot?.path || null,
       suggestionConfidence: suggestedOutsideRoot?.confidence
     };
@@ -583,7 +886,7 @@ function evaluateReference(reference, fileIndex) {
   }
 
   if (matchedPath) {
-    const canonical = `/${matchedPath}${suffix}`;
+    const canonical = `/${matchedPath}${normalizedSuffix}`;
     const current = reference.original.trim();
     return {
       status: "valid",
@@ -600,7 +903,7 @@ function evaluateReference(reference, fileIndex) {
       status: "broken",
       reason: "المسار غير موجود",
       normalizedReferencePath,
-      suggestion: `/${suggested.path}${suffix}`,
+      suggestion: `/${suggested.path}${normalizedSuffix}`,
       suggestionPath: suggested.path,
       suggestionConfidence: suggested.confidence
     };
