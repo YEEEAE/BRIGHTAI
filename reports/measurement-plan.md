@@ -1,25 +1,25 @@
-# Measurement Plan — Services Page Redesign
+# Measurement Plan — Semrush Structured Data & Broken Links Fix
 **Deploy Date:** 2026-03-08
 
 ## KPI Target
-- KPI: Click-through rate من هيرو صفحة الخدمات إلى قسم الكتالوج
-- Baseline: غير متوفر حالياً
-- Goal: رفع التفاعل الأولي على زر `ابدأ من الكتالوج التنفيذي`
+- KPI: عدد أخطاء Structured Data في Semrush
+- Baseline: 18 خطأ على الصفحات المحددة في تقرير 7 مارس 2026
+- Goal: الوصول إلى 0 في المجموعة الحالية بعد إعادة الزحف
 
-- KPI: Click-through rate من الكروت إلى modal أو الإجراء المباشر
-- Baseline: غير متوفر حالياً
-- Goal: رفع التفاعل على بطاقات الخدمات بعد تحسين الهرمية والوضوح
+- KPI: عدد الروابط الداخلية المكسورة في Semrush
+- Baseline: 14 رابطاً مكسوراً في التقرير الحالي
+- Goal: الوصول إلى 0 في المجموعة الحالية بعد إعادة الزحف
 
-- KPI: WhatsApp consultation intent
-- Baseline: غير متوفر حالياً
-- Goal: زيادة النقرات على `احجز جلسة تشخيص`
+- KPI: نسبة نجاح الوصول إلى مسارات demo/try/interview القديمة
+- Baseline: 404 على المسارات المرصودة
+- Goal: 200/redirect صالح على جميع المسارات المرصودة
 
 ## Tracking Event
-- Event Name: `services_page_engagement`
-- Trigger: النقر على CTA في الهيرو، تغيير الفئة، فتح بطاقة خدمة، أو النقر على زر واتساب
-- Payload: `section`, `category`, `product_name`, `cta_type`, `page_variant`
+- Event Name: `seo_semrush_remediation`
+- Trigger: بعد النشر وإعادة فحص Semrush وروابط الصحة اليدوية
+- Payload: `issue_type`, `page_url`, `status_before`, `status_after`, `crawl_date`
 
 ## Success Criteria
-- Minimum Improvement: تحسن ملحوظ في نقرات CTA الأساسية مقارنة بخط الأساس بعد أول أسبوع
-- Evaluation Window: 7 أيام بعد النشر
-- Rollback Trigger: ظهور تراجع واضح في التفاعل أو شكوى من وضوح الصفحة على الجوال
+- Minimum Improvement: اختفاء أخطاء المجموعتين المحددتين بالكامل من إعادة فحص Semrush
+- Evaluation Window: من 3 إلى 7 أيام بعد النشر وإعادة الزحف
+- Rollback Trigger: استمرار 404 على أي رابط من الروابط المستهدفة أو بقاء خطأ schema على أكثر من صفحتين بعد إعادة الزحف
