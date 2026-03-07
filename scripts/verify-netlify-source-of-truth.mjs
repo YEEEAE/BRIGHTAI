@@ -122,6 +122,7 @@ const disallowedDirectoryLoopRedirects = [
   { from: '/health/', to: '/health', status: 301 },
   { from: '/machine-learning/', to: '/machine-learning', status: 301 },
   { from: '/docs/', to: '/docs', status: 301 },
+  { from: '/docs/:slug/', to: '/docs/:slug', status: 301 },
 ];
 
 for (const rule of requiredRedirects) {

@@ -512,12 +512,6 @@ status = 301
 force = true
 
 [[redirects]]
-from = "/docs/:slug/"
-to = "/docs/:slug"
-status = 301
-force = true
-
-[[redirects]]
 from = "/docs/:slug"
 to = "/docs/:slug.html"
 status = 200

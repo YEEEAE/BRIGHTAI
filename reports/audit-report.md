@@ -18,6 +18,7 @@
 ## Important Findings
 - تمت معالجة إشارات SEO المضللة في صفحات الخطأ `404/500` عبر إزالة `canonical` و`hreflang` والإبقاء على `noindex,nofollow,noarchive`.
 - تم تثبيت slug عام لمقالة `generative-artificial-intelligence` وتقليل احتمالات `mixed-case URL` و`redirect chain` من خلال تحديث `netlify.toml` والروابط الداخلية وخرائط canonical.
+- تم تحديد loop فعلي في الإنتاج على مسارات `docs/*` حيث كان `https://brightai.site/docs/solutions-healthcare-en` يعيد `301` إلى نفسه. السبب كان قاعدة `/docs/:slug/ -> /docs/:slug` في `netlify.toml` وتمت إزالتها مع إضافة فحص يحظر رجوعها.
 - تم فتح وصول الزواحف إلى موارد صفحة `/smart-medical-archive` اللازمة للرندر من خلال `robots.txt` بدون فك حظر فهرسة بقية مسارات `frontend/pages`.
 - تمت معالجة دفعة Semrush الخاصة بـ `invalid structured data` عبر إزالة `mainEntityOfPage` من business schema في صفحات الخدمات، وتبسيط `areaServed` في الصفحة الرئيسية، وتصحيح `Organization` في صفحة التواصل، واستكمال حقول `Offer.price` و`WebApplication` في صفحات الأدوات والتسعير والتعليم.
 - ما زال لدينا مخزون legacy واسع داخل `frontend/pages/blogger` خارج `sitemap.xml` ويحتاج سياسة أشد: `merge` أو `redirect` أو `archive`.
