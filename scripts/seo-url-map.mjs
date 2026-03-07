@@ -40,6 +40,13 @@ function stripTrailingSlash(sitePath) {
   return sitePath.replace(/\/+$/, "");
 }
 
+function shouldKeepTrailingSlash(sitePath) {
+  if (!sitePath || sitePath === "/") return true;
+  const trimmed = stripTrailingSlash(sitePath);
+  const segment = trimmed.slice(1);
+  return ROOT_INDEX_DIRS.has(segment);
+}
+
 export function relPathToSitePath(relPath) {
   const normalized = normalizeRelPath(relPath);
 
@@ -57,7 +64,7 @@ export function relPathToSitePath(relPath) {
   if (normalized.endsWith("/index.html")) {
     const dir = normalized.replace(/\/index\.html$/, "");
 
-    if (ROOT_INDEX_DIRS.has(dir)) return `/${dir}`;
+    if (ROOT_INDEX_DIRS.has(dir)) return `/${dir}/`;
     if (dir === "frontend/pages/ai-workflows") return "/ai-workflows";
     if (dir === "frontend/pages/ai-scolecs") return "/ai-scolecs";
     if (dir === "frontend/pages/smart-medical-archive") return "/smart-medical-archive";
@@ -113,7 +120,9 @@ export function relPathToSitePath(relPath) {
 export function relPathToCanonical(relPath, baseUrl = BASE_URL) {
   const sitePath = relPathToSitePath(relPath);
   if (!sitePath) return null;
-  const normalizedPath = stripTrailingSlash(sitePath);
+  const normalizedPath = shouldKeepTrailingSlash(sitePath)
+    ? sitePath
+    : stripTrailingSlash(sitePath);
   return `${baseUrl}${encodeUrlPath(normalizedPath || "/")}`;
 }
 
@@ -132,7 +141,10 @@ export function normalizeSiteUrl(rawUrl, baseUrl = BASE_URL) {
   const expectedOrigin = new URL(baseUrl).origin.toLowerCase();
   if (parsed.origin.toLowerCase() !== expectedOrigin) return null;
 
-  const pathValue = stripTrailingSlash(parsed.pathname || "/") || "/";
+  const rawPathValue = parsed.pathname || "/";
+  const pathValue = shouldKeepTrailingSlash(rawPathValue)
+    ? rawPathValue
+    : stripTrailingSlash(rawPathValue) || "/";
   const decodedPath = pathValue
     .split("/")
     .map((segment) => {

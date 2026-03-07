@@ -155,7 +155,7 @@ function addCandidate(candidates, candidate) {
 }
 
 function buildLocalFileCandidates(decodedPath) {
-  const localPath = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
+  const localPath = (decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath).replace(/\/+$/, "");
   const candidates = new Set();
 
   if (localPath === "docs") {
@@ -434,9 +434,9 @@ async function checkSitemap() {
       continue;
     }
 
-    const pathname = new URL(loc).pathname;
-    if (pathname.length > 1 && pathname.endsWith("/")) {
-      result.errors.push(`Trailing slash URL is forbidden by policy: ${loc}`);
+    const normalizedLoc = normalizeSiteUrl(loc, BASE_URL);
+    if (!normalizedLoc || normalizedLoc !== loc) {
+      result.errors.push(`Non-canonical URL in sitemap is forbidden: ${loc}`);
       continue;
     }
 
