@@ -172,9 +172,9 @@ async function main() {
         console.log(red('  ❌ فشل الفحص — راجع الأخطاء أعلاه'));
         console.log('');
         console.log('  خطوات التشخيص:');
-        console.log('  1. تأكد أن netlify.toml يحتوي على redirect /api/* -> /.netlify/functions/all');
-        console.log('  2. تأكد أن GEMINI_API_KEY مُعد في Netlify Environment Variables');
-        console.log('  3. تحقق من Netlify Functions logs في لوحة التحكم');
+        console.log('  1. تأكد أن مسارات /api على الدومين الحالي موجهة إلى الـ backend/runtime الصحيح');
+        console.log('  2. تأكد أن GEMINI_API_KEY مُعد في متغيرات البيئة على الخادم');
+        console.log('  3. تحقق من logs الخاصة بالـ runtime أو السيرفر الذي يشغل الـ API');
         console.log('');
         process.exit(1);
     }
@@ -182,7 +182,7 @@ async function main() {
     if (warned > 0) {
         console.log('');
         console.log(yellow('  ⚠️  الخادم يعمل لكن بعض الخدمات غير مكتملة'));
-        console.log('  أضف GEMINI_API_KEY في Netlify Environment Variables لتفعيل الذكاء الاصطناعي');
+        console.log('  أضف GEMINI_API_KEY في متغيرات البيئة على الخادم لتفعيل الذكاء الاصطناعي');
         console.log('');
         process.exit(0);
     }

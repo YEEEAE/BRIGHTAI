@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
+    "build": "echo 'No build step required for brightai-backend'",
     "start": "node server.js",
     "dev": "node --watch server.js",
     "test:setup": "npm install --no-audit --no-fund",

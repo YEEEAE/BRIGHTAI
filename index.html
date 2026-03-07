@@ -30,13 +30,14 @@
 
 
     <script>
-        window.BRIGHTAI_API_BASE = "https://extraordinary-axolotl-d35933.netlify.app";
+        window.BRIGHTAI_API_BASE = (typeof window.BRIGHTAI_API_BASE === "string" && window.BRIGHTAI_API_BASE.trim())
+            ? window.BRIGHTAI_API_BASE.replace(/\/+$/, "")
+            : window.location.origin;
     </script>
 
     <meta charset="utf-8" />
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://extraordinary-axolotl-d35933.netlify.app">
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Bright AI | حلول ذكاء اصطناعي للشركات | شركة ذكاء اصطناعي في السعودية</title>

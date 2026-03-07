@@ -371,7 +371,7 @@ async function handleRequest(req, res) {
             model: geminiModel,
             message: geminiReady
               ? 'GEMINI_API_KEY مُعد وجاهز'
-              : 'GEMINI_API_KEY غير مُعد — أضفه في Netlify Environment Variables'
+              : 'GEMINI_API_KEY غير مُعد — أضفه في متغيرات البيئة على خادم الإنتاج'
           }
         }
       });

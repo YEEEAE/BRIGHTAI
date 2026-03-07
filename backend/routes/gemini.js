@@ -212,7 +212,7 @@ function parseIncomingChatRequest(req) {
   if (!isApiKeyConfigured()) {
     throw createInputError(
       503,
-      'خدمة الذكاء الاصطناعي غير متاحة حالياً — مفتاح GEMINI_API_KEY غير مُعد في بيئة الإنتاج. أضفه في إعدادات Netlify Environment Variables.',
+      'خدمة الذكاء الاصطناعي غير متاحة حالياً — مفتاح GEMINI_API_KEY غير مُعد في بيئة الخادم. أضفه في متغيرات البيئة على runtime الإنتاج.',
       'GEMINI_NOT_CONFIGURED'
     );
   }
