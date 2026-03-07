@@ -390,6 +390,724 @@
                 to { opacity: 1; transform: translateY(0); }
             }
         }
+
+        :root {
+            --services-bg: #04101d;
+            --services-surface: rgba(8, 19, 34, 0.72);
+            --services-surface-strong: rgba(9, 17, 30, 0.92);
+            --services-border: rgba(148, 163, 184, 0.16);
+            --services-border-strong: rgba(250, 204, 21, 0.28);
+            --services-text-soft: #94a3b8;
+            --services-text-muted: #64748b;
+            --services-cyan: #67e8f9;
+            --services-gold: #fbbf24;
+            --services-gold-soft: rgba(251, 191, 36, 0.14);
+            --services-radius-xl: 28px;
+            --services-radius-lg: 20px;
+            --services-shadow: 0 25px 80px rgba(2, 6, 23, 0.45);
+        }
+
+        body.services-shell {
+            background:
+                radial-gradient(circle at 15% 10%, rgba(251, 191, 36, 0.1), transparent 28%),
+                radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.12), transparent 26%),
+                linear-gradient(180deg, #07111f 0%, #040913 48%, #02050d 100%);
+            position: relative;
+        }
+
+        body.services-shell::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.03) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: linear-gradient(180deg, rgba(255,255,255,0.75), transparent 85%);
+            opacity: 0.45;
+        }
+
+        .services-command {
+            background: linear-gradient(180deg, rgba(6, 12, 22, 0.96), rgba(6, 12, 22, 0.82));
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 18px 50px rgba(2, 6, 23, 0.36);
+        }
+
+        .services-command-shell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 0;
+        }
+
+        .services-command-label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .services-command-label span:first-child {
+            color: var(--services-gold);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .services-command-label span:last-child {
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .services-filter-rail {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .services-filter-rail::-webkit-scrollbar {
+            display: none;
+        }
+
+        .services-filter-btn,
+        .services-filter-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            min-height: 44px;
+            padding: 0.7rem 1.15rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(255, 255, 255, 0.03);
+            color: #cbd5e1;
+            font-size: 0.92rem;
+            font-weight: 700;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .services-filter-btn:hover,
+        .services-filter-link:hover {
+            color: #fff;
+            border-color: rgba(103, 232, 249, 0.35);
+            background: rgba(15, 23, 42, 0.86);
+            transform: translateY(-1px);
+        }
+
+        .services-filter-btn.is-active {
+            color: #020617;
+            border-color: rgba(251, 191, 36, 0.65);
+            background: linear-gradient(135deg, #f8d36a, #67e8f9);
+            box-shadow: 0 12px 30px rgba(103, 232, 249, 0.15);
+        }
+
+        .services-hero {
+            position: relative;
+            padding: 5rem 0 2.5rem;
+        }
+
+        .services-hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.9fr);
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        .services-hero-copy,
+        .services-hero-panel,
+        .services-proof-card,
+        .services-decision-card,
+        .services-reference-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--services-border);
+            background: linear-gradient(180deg, rgba(8, 19, 34, 0.82), rgba(7, 13, 24, 0.72));
+            box-shadow: var(--services-shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .services-hero-copy {
+            border-radius: 36px;
+            padding: 2rem;
+        }
+
+        .services-hero-copy::before,
+        .services-hero-panel::before,
+        .services-proof-card::before,
+        .services-decision-card::before,
+        .services-reference-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent 38%, transparent 72%, rgba(103,232,249,0.08));
+            opacity: 0.55;
+        }
+
+        .services-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(250, 204, 21, 0.24);
+            background: rgba(250, 204, 21, 0.08);
+            color: #f8fafc;
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .services-eyebrow-dot {
+            width: 0.65rem;
+            height: 0.65rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--services-gold), var(--services-cyan));
+            box-shadow: 0 0 18px rgba(251, 191, 36, 0.45);
+        }
+
+        .services-display {
+            margin: 1.35rem 0 1rem;
+            color: #f8fafc;
+            font-size: clamp(2.6rem, 5vw, 5.4rem);
+            line-height: 1.05;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+        }
+
+        .services-display-accent {
+            display: inline-block;
+            color: transparent;
+            background: linear-gradient(135deg, #f8d36a 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .services-lead {
+            max-width: 42rem;
+            color: #cbd5e1;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            line-height: 1.9;
+        }
+
+        .services-hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            margin-top: 1.6rem;
+        }
+
+        .services-primary-btn,
+        .services-secondary-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            min-height: 54px;
+            padding: 0 1.4rem;
+            border-radius: 18px;
+            font-weight: 800;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .services-primary-btn {
+            color: #020617;
+            background: linear-gradient(135deg, #f8d36a, #67e8f9);
+            box-shadow: 0 18px 40px rgba(103, 232, 249, 0.16);
+        }
+
+        .services-primary-btn:hover,
+        .services-secondary-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .services-secondary-btn {
+            color: #f8fafc;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .services-mini-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.9rem;
+            margin-top: 1.8rem;
+        }
+
+        .services-stat-card {
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            background: rgba(255,255,255,0.03);
+            padding: 1rem;
+        }
+
+        .services-stat-value {
+            color: #f8fafc;
+            font-size: 1.7rem;
+            font-weight: 900;
+        }
+
+        .services-stat-label {
+            margin-top: 0.35rem;
+            color: var(--services-text-soft);
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+        .services-hero-panel {
+            border-radius: 32px;
+            padding: 1.6rem;
+        }
+
+        .services-panel-kicker {
+            color: var(--services-gold);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .services-panel-title {
+            margin-top: 0.75rem;
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.25;
+        }
+
+        .services-panel-copy {
+            margin-top: 0.7rem;
+            color: var(--services-text-soft);
+            line-height: 1.9;
+        }
+
+        .services-decision-list {
+            display: grid;
+            gap: 0.95rem;
+            margin-top: 1.5rem;
+        }
+
+        .services-decision-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 1rem 1.05rem;
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .services-decision-item i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.9rem;
+            height: 2.9rem;
+            border-radius: 16px;
+            color: #f8fafc;
+            background: linear-gradient(135deg, rgba(251,191,36,0.24), rgba(103,232,249,0.18));
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .services-decision-item strong {
+            display: block;
+            color: #f8fafc;
+            font-size: 0.98rem;
+            font-weight: 800;
+        }
+
+        .services-decision-item span {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--services-text-soft);
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        .services-decision-item small {
+            color: #67e8f9;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .services-proof-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .services-proof-card {
+            border-radius: 24px;
+            padding: 1.35rem;
+        }
+
+        .services-proof-card strong {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: #fff;
+            font-size: 1.02rem;
+        }
+
+        .services-proof-card p {
+            color: var(--services-text-soft);
+            line-height: 1.8;
+            font-size: 0.92rem;
+        }
+
+        .services-proof-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.9rem;
+            color: var(--services-gold);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .services-products-shell {
+            padding: 1rem 0 4rem;
+        }
+
+        .services-section-header {
+            max-width: 56rem;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
+
+        .services-section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(148,163,184,0.1);
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .services-section-title {
+            margin-top: 1rem;
+            color: #fff;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.15;
+            font-weight: 900;
+        }
+
+        .services-section-copy {
+            margin-top: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.9;
+            font-size: 1.02rem;
+        }
+
+        .services-grid-shell {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.2rem;
+        }
+
+        .service-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            padding: 1.35rem;
+            border-radius: 28px;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            background: linear-gradient(180deg, rgba(9, 18, 31, 0.92), rgba(6, 11, 21, 0.88));
+            box-shadow: 0 22px 50px rgba(2, 6, 23, 0.32);
+            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(145deg, rgba(103,232,249,0.28), rgba(251,191,36,0.02), rgba(255,255,255,0.04));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.28s ease;
+            pointer-events: none;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(103,232,249,0.32);
+            box-shadow: 0 28px 70px rgba(2, 6, 23, 0.5);
+        }
+
+        .service-card:hover::after {
+            opacity: 1;
+        }
+
+        .service-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .service-card-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.6rem;
+            height: 3.6rem;
+            border-radius: 22px;
+            border: 1px solid rgba(103,232,249,0.2);
+            background: linear-gradient(135deg, rgba(103,232,249,0.16), rgba(251,191,36,0.08));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        .service-card-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(148,163,184,0.12);
+            color: #e2e8f0;
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .service-card-title {
+            color: #fff;
+            font-size: 1.24rem;
+            line-height: 1.45;
+            font-weight: 900;
+        }
+
+        .service-card-summary {
+            margin-top: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.85;
+            font-size: 0.94rem;
+            min-height: 3.5rem;
+        }
+
+        .service-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .service-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.12);
+            background: rgba(255,255,255,0.03);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .service-chip.is-special {
+            color: #f8fafc;
+            border-color: rgba(251,191,36,0.24);
+            background: rgba(251,191,36,0.12);
+        }
+
+        .service-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .service-metric {
+            padding: 0.85rem 0.9rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(148,163,184,0.12);
+        }
+
+        .service-metric span {
+            display: block;
+            color: #64748b;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .service-metric strong {
+            color: #f8fafc;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .service-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 1.1rem;
+        }
+
+        .service-price-meta {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1rem;
+            border-top: 1px solid rgba(148,163,184,0.12);
+            padding-top: 1rem;
+        }
+
+        .service-price-label {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .service-price-value {
+            margin-top: 0.3rem;
+            color: #fff;
+            font-size: 1.55rem;
+            font-weight: 900;
+        }
+
+        .service-price-value.is-on-demand {
+            color: var(--services-gold);
+        }
+
+        .service-note {
+            margin-top: 0.25rem;
+            color: #94a3b8;
+            font-size: 0.78rem;
+        }
+
+        .service-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            min-height: 50px;
+            width: 100%;
+            border-radius: 18px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+        }
+
+        .service-cta:hover {
+            transform: translateY(-2px);
+        }
+
+        .service-cta--primary {
+            color: #04101d;
+            background: linear-gradient(135deg, #f8d36a, #67e8f9);
+        }
+
+        .service-cta--secondary {
+            color: var(--services-gold);
+            border: 1px solid rgba(251,191,36,0.28);
+            background: rgba(251,191,36,0.08);
+        }
+
+        .services-decision-grid,
+        .services-reference-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .services-decision-card,
+        .services-reference-card {
+            border-radius: 24px;
+            padding: 1.35rem;
+        }
+
+        .services-decision-card h3,
+        .services-reference-card h3 {
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .services-decision-card p,
+        .services-reference-card p {
+            margin-top: 0.7rem;
+            color: var(--services-text-soft);
+            line-height: 1.8;
+            font-size: 0.92rem;
+        }
+
+        .services-reference-card a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: var(--services-cyan);
+            font-weight: 700;
+        }
+
+        @media (max-width: 1024px) {
+            .services-hero-grid,
+            .services-proof-grid,
+            .services-grid-shell,
+            .services-decision-grid,
+            .services-reference-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-mini-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .services-command-shell {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .services-hero {
+                padding-top: 4rem;
+            }
+
+            .services-hero-copy,
+            .services-hero-panel {
+                border-radius: 28px;
+                padding: 1.4rem;
+            }
+
+            .services-display {
+                font-size: 2.6rem;
+            }
+
+            .service-card {
+                border-radius: 24px;
+                padding: 1.15rem;
+            }
+
+            .service-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap"
@@ -468,7 +1186,7 @@
     <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
 </head>
 
-<body class="gradient-bg min-h-screen text-white">
+<body class="gradient-bg services-shell min-h-screen text-white">
 
     <header class="unified-nav" id="main-header" role="banner">
         <div class="nav-container">
@@ -894,16 +1612,16 @@
     <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
 
 
-    <section
-        class="sticky z-40 bg-slate-900/98 backdrop-blur-xl border-b border-slate-700/50 shadow-lg shadow-slate-900/50"
-        style="top: var(--nav-height);">
-        <div class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-            <div class="flex items-center justify-between">
+    <section class="services-command sticky z-40" style="top: var(--nav-height);">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="services-command-shell">
+                <div class="services-command-label">
+                    <span>Service Command</span>
+                    <span>اختر مسار الحل المناسب ثم ادخل على الباقة الأقرب لمرحلتك</span>
+                </div>
 
-                <nav class="hidden lg:flex items-center gap-1 overflow-x-auto scrollbar-thin max-w-2xl"
-                    id="categoryNav">
-                    <a class="category-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-2"
-                        href="/">
+                <nav class="services-filter-rail hidden lg:flex" id="categoryNav">
+                    <a class="services-filter-link" href="/">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                             <path
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
@@ -911,15 +1629,13 @@
                         </svg>
                         الرئيسية
                     </a>
-                    <span class="w-px h-6 bg-slate-700 mx-2"></span>
-                    <button
-                        class="category-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-cyan-400 bg-cyan-400/10 shadow-sm"
-                        data-category="all" onclick="filterProducts('all')">الكل</button>
+                    <button class="category-btn services-filter-btn is-active" data-category="all" onclick="filterProducts('all')">
+                        الكل
+                    </button>
                 </nav>
 
                 <div class="flex items-center gap-2 sm:gap-3">
-
-                    <button class="lg:hidden p-2 rounded-lg hover:bg-slate-800 transition-all active:scale-95"
+                    <button class="lg:hidden p-2 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all active:scale-95"
                         onclick="toggleMobileMenu()">
                         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                             <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"
@@ -927,106 +1643,152 @@
                         </svg>
                     </button>
 
-                    <button class="relative p-2 rounded-lg hover:bg-slate-800 transition-all group active:scale-95"
+                    <button class="relative p-2.5 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all group active:scale-95"
                         onclick="toggleCart()">
-                        <svg class="w-5 h-5 sm:w-6 sm:h-6 group-hover:text-cyan-400 transition-colors" fill="none"
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 group-hover:text-cyan-300 transition-colors" fill="none"
                             stroke="currentColor" viewbox="0 0 24 24">
                             <path
                                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                         </svg>
                         <span
-                            class="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-cyan-500 to-blue-500 text-white text-xs rounded-full flex items-center justify-center font-bold hidden shadow-lg animate-pulse-slow"
+                            class="absolute -top-1 -left-1 w-5 h-5 bg-gradient-to-br from-cyan-500 to-amber-400 text-slate-950 text-xs rounded-full flex items-center justify-center font-bold hidden shadow-lg animate-pulse-slow"
                             id="cartCount">0</span>
                     </button>
                 </div>
             </div>
 
-            <nav class="hidden lg:hidden mt-3 sm:mt-4 pb-2 border-t border-slate-700 pt-3 sm:pt-4" id="mobileMenu">
-                <div class="flex overflow-x-auto gap-2 pb-2 scrollbar-thin -mx-4 px-4" id="mobileCategoryNav"></div>
+            <nav class="hidden mt-3 pb-2 border-t border-white/10 pt-3 lg:hidden" id="mobileMenu">
+                <div class="services-filter-rail -mx-4 px-4" id="mobileCategoryNav"></div>
             </nav>
         </div>
     </section>
 
-    <section class="relative py-20 sm:py-28 lg:py-32 overflow-hidden flex items-center justify-center min-h-[75vh]"
-        style="content-visibility: auto;">
-        <div class="absolute inset-0 z-0">
-            <div
-                class="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-cyan-500/10 blur-[120px] rounded-full">
+    <section class="services-hero" style="content-visibility: auto;">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="services-hero-grid">
+                <div class="services-hero-copy">
+                    <div class="services-eyebrow">
+                        <span class="services-eyebrow-dot"></span>
+                        كتالوج حلول مؤسسية للسوق السعودي
+                    </div>
+                    <h1 class="services-display">
+                        خدمات ومنصات <span class="services-display-accent">Bright AI</span><br />
+                        المصممة لقرار إداري أسرع وأثر تشغيلي أوضح
+                    </h1>
+                    <p class="services-lead">
+                        عندنا الصفحة هذه ليست مجرد قائمة أسعار. هي واجهة قرار تساعد المؤسسة تختار بين التحليل،
+                        الوكلاء، الأتمتة، والمنصات الجاهزة وفق أثر متوقع، سرعة الإطلاق، ومتطلبات الحوكمة داخل المملكة.
+                    </p>
+
+                    <div class="services-hero-actions">
+                        <a class="services-primary-btn" href="#products">
+                            ابدأ من الكتالوج التنفيذي
+                            <iconify-icon icon="lucide:arrow-down-left" width="18"></iconify-icon>
+                        </a>
+                        <a class="services-secondary-btn" href="https://wa.me/966538229013" target="_blank"
+                            rel="noopener noreferrer">
+                            احجز جلسة تشخيص
+                            <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                        </a>
+                    </div>
+
+                    <div class="services-mini-stats">
+                        <div class="services-stat-card">
+                            <div class="services-stat-value">35+</div>
+                            <div class="services-stat-label">خدمة ومنصة ومنتج موزعة على مسارات قرار واضحة.</div>
+                        </div>
+                        <div class="services-stat-card">
+                            <div class="services-stat-value">7</div>
+                            <div class="services-stat-label">مسارات تشغيل تغطي التحليل، الأتمتة، الوكلاء، والأنظمة الشاملة.</div>
+                        </div>
+                        <div class="services-stat-card">
+                            <div class="services-stat-value">NCA</div>
+                            <div class="services-stat-label">تصميم يراعي الخصوصية والحوكمة والتكامل المؤسسي من البداية.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="services-hero-panel" aria-label="خارطة قرار الخدمات">
+                    <span class="services-panel-kicker">Decision Map</span>
+                    <h2 class="services-panel-title">إذا كان التحدي واضحاً، اختيار الخدمة يصير أسرع بكثير</h2>
+                    <p class="services-panel-copy">
+                        رتبنا المسارات هنا حسب نوع الأثر الذي تبحث عنه. هذا يسهل على فريقك التنفيذي تحديد نقطة البداية
+                        بدل التنقل بين حلول متشابهة شكلياً ومختلفة فعلياً.
+                    </p>
+
+                    <div class="services-decision-list">
+                        <div class="services-decision-item">
+                            <i><iconify-icon icon="lucide:line-chart" width="18"></iconify-icon></i>
+                            <div>
+                                <strong>إذا مشكلتك في وضوح البيانات</strong>
+                                <span>ابدأ بمسار التحليل ولوحات القرار والتوقعات التشغيلية.</span>
+                            </div>
+                            <small>تحليل البيانات</small>
+                        </div>
+                        <div class="services-decision-item">
+                            <i><iconify-icon icon="lucide:bot" width="18"></iconify-icon></i>
+                            <div>
+                                <strong>إذا تحتاج رفع سرعة الخدمة أو المبيعات</strong>
+                                <span>الوكلاء الذكية تعطي فرقاً سريعاً في الرد، الفرز، والتوجيه.</span>
+                            </div>
+                            <small>AI Agents</small>
+                        </div>
+                        <div class="services-decision-item">
+                            <i><iconify-icon icon="lucide:workflow" width="18"></iconify-icon></i>
+                            <div>
+                                <strong>إذا عندك أعمال يدوية كثيرة</strong>
+                                <span>الأتمتة وحلول سير العمل تقلل الخطوات وتربط الأنظمة القائمة.</span>
+                            </div>
+                            <small>Automation</small>
+                        </div>
+                        <div class="services-decision-item">
+                            <i><iconify-icon icon="lucide:building-2" width="18"></iconify-icon></i>
+                            <div>
+                                <strong>إذا تحتاج منصة أو نظام متكامل</strong>
+                                <span>الأنظمة الشاملة والمنصات الجاهزة تناسب مبادرات التحول الأوسع.</span>
+                            </div>
+                            <small>Platforms</small>
+                        </div>
+                    </div>
+                </aside>
             </div>
-        </div>
-        <div class="container mx-auto max-w-5xl relative z-10 px-4">
-            <div class="text-center mb-8 sm:mb-12">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/80 border border-slate-700/50 backdrop-blur-md rounded-full text-slate-300 text-sm font-medium mb-8 shadow-sm">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span
-                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
-                    </span>
-                    ترسانة منتجات تواكب رؤية السعودية 2030
-                </div>
-                <h1
-                    class="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-6 leading-[1.2] tracking-tight text-white">
-                    منظومة تقنية <span
-                        class="bg-gradient-to-l from-cyan-400 to-blue-500 bg-clip-text text-transparent">متطورة</span>
-                    لتمكين<br />الأعمال والمؤسسات
-                </h1>
-                <p class="text-slate-400 text-lg sm:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed">
-                    استثمر في منتجات تعتمد على الذكاء الاصطناعي مهيأة لرفع كفاءة عملياتك ومصممة للتكامل الآمن والسريع
-                    بمعايير الهيئة الوطنية للأمن السيبراني.
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4 px-4 items-center">
-                    <a class="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 rounded-xl font-bold hover:bg-slate-100 transition-all transform hover:scale-105 shadow-lg text-base sm:text-lg flex items-center justify-center gap-2"
-                        href="#products">
-                        تصفح المنتجات
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                        </svg>
-                    </a>
-                    <a class="w-full sm:w-auto px-8 py-4 bg-slate-800/80 border border-slate-700 backdrop-blur-md text-white rounded-xl font-bold hover:bg-slate-700 transition-all text-base sm:text-lg flex items-center justify-center gap-2"
-                        href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">
-                        تواصل مع خبرائنا
-                        <img src="/assets/svg/inline-icon-756421bc760e.svg" alt="Icon" width="24" height="24" />
-                    </a>
-                </div>
 
-
-                <div
-                    class="mt-16 pt-8 border-t border-slate-700/50 flex flex-wrap justify-center items-center gap-8 sm:gap-12 opacity-80 transition-all duration-500">
-                    <span class="text-slate-400 font-semibold text-sm mr-4">متوافق مع أطر:</span>
-                    <div class="flex items-center gap-2"><svg class="w-6 h-6 text-green-500" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                            </path>
-                        </svg><span class="text-white font-bold">NCA الامتثال</span></div>
-                    <div class="flex items-center gap-2"><svg class="w-6 h-6 text-blue-500" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
-                            </path>
-                        </svg><span class="text-white font-bold">NDMO الخصوصية</span></div>
+            <div class="services-proof-grid">
+                <div class="services-proof-card">
+                    <div class="services-proof-badge">Compliance Ready</div>
+                    <strong>مبنية بلغة الحوكمة لا بلغة الديمو</strong>
+                    <p>نربط الحل بمتطلبات الحماية والخصوصية والتدقيق التشغيلي حتى يكون مناسباً للاعتماد داخل المؤسسة.</p>
+                </div>
+                <div class="services-proof-card">
+                    <div class="services-proof-badge">Integration First</div>
+                    <strong>جاهزية ربط مع ERP وCRM والوثائق</strong>
+                    <p>الواجهة مصممة لتسهل على العميل فهم أين تبدأ الخدمة وكيف تتكامل مع البنية الحالية بدون تعقيد.</p>
+                </div>
+                <div class="services-proof-card">
+                    <div class="services-proof-badge">Saudi Fit</div>
+                    <strong>موجهة لطريقة اتخاذ القرار في السوق السعودي</strong>
+                    <p>لغة أوضح، مسارات أقصر، وعرض يركز على الأثر والزمن والتكلفة بدل الوصف التسويقي الفضفاض.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-8 sm:py-12 px-4" id="products" style="content-visibility: auto;">
+    <section class="services-products-shell px-4" id="products" style="content-visibility: auto;">
         <div class="container mx-auto">
-            <div class="text-center mb-8 sm:mb-12">
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3">
-                    <span class="text-gradient">منتجاتنا وخدماتنا</span>
-                </h2>
-                <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
-                    اختر من بين مجموعة واسعة من الحلول الذكية المصممة لتلبية احتياجات عملك
+            <div class="services-section-header">
+                <div class="services-section-kicker">
+                    <iconify-icon icon="lucide:layout-grid" width="16"></iconify-icon>
+                    كتالوج قرار مؤسسي
+                </div>
+                <h2 class="services-section-title">حلول جاهزة للمقارنة والتصفية واختيار المسار الأنسب</h2>
+                <p class="services-section-copy">
+                    صممنا الكروت لتوضح الفئة، نوع الخدمة، الأثر المتوقع، وسرعة البدء بشكل أسرع. هذا يختصر وقت القراءة
+                    ويخلي المقارنة بين الخيارات أكثر وضوحاً لصاحب القرار والفريق التنفيذي.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" id="productsGrid">
-
-            </div>
+            <div class="services-grid-shell" id="productsGrid"></div>
 
             <div class="hidden text-center py-12 sm:py-16" id="noResults">
                 <svg class="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-slate-600 mb-4" fill="none" stroke="currentColor"
@@ -1034,7 +1796,26 @@
                     <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                 </svg>
-                <p class="text-slate-400 text-base sm:text-lg">لا توجد منتجات في هذه الفئة</p>
+                <p class="text-slate-400 text-base sm:text-lg">لا توجد حلول ضمن هذه الفئة حالياً</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="px-4 pb-12" style="content-visibility: auto;">
+        <div class="container mx-auto">
+            <div class="services-decision-grid">
+                <div class="services-decision-card">
+                    <h3>1. حدّد نوع الأثر المطلوب</h3>
+                    <p>هل الهدف خفض زمن الإنجاز، رفع دقة القرار، تحسين خدمة العميل، أو تقليل التكاليف التشغيلية؟ هذا السؤال يختصر نصف القرار.</p>
+                </div>
+                <div class="services-decision-card">
+                    <h3>2. اختر مسار الإطلاق المناسب</h3>
+                    <p>بعض الجهات تبدأ بخدمة محددة قابلة للقياس، والبعض يحتاج منصة أو نظام متكامل. الصفحة الآن توضح الفرق بصرياً ووظيفياً.</p>
+                </div>
+                <div class="services-decision-card">
+                    <h3>3. اربط الخدمة بحالة استخدام واضحة</h3>
+                    <p>كل منتج هنا يجب أن يرتبط بمؤشر أداء أو مشكلة تشغيلية محددة، وليس برغبة عامة في استخدام الذكاء الاصطناعي فقط.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1482,9 +2263,67 @@
             "System": "نظام"
         };
 
+        const categoryMeta = {
+            "Data Analytics": {
+                summary: "تحويل البيانات الخام إلى لوحات قرار وتوقعات تشغيلية يمكن اعتمادها بسرعة.",
+                outcome: "خفض زمن القرار ورفع دقة القراءة",
+                scope: "إطلاق تحليلي خلال 2-4 أسابيع"
+            },
+            "AI Agents": {
+                summary: "وكلاء ذكية للمبيعات والخدمة والمهام الداخلية مع تدفق رد أسرع وأكثر اتساقاً.",
+                outcome: "رفع سرعة الاستجابة وتحسين الخدمة",
+                scope: "إطلاق أولي خلال 1-3 أسابيع"
+            },
+            "Automation": {
+                summary: "أتمتة إجراءات الموافقات والمستندات والعمليات المتكررة وربطها بالأنظمة الحالية.",
+                outcome: "تقليل العمل اليدوي وتقليل الأخطاء",
+                scope: "تكامل تشغيلي خلال 2-6 أسابيع"
+            },
+            "Robotics": {
+                summary: "حلول روبوتية وتشغيلية للقطاعات التي تحتاج تفاعل ميداني أو استخداماً تعليمياً وصناعياً.",
+                outcome: "رفع الكفاءة الميدانية وتقليل الاعتماد اليدوي",
+                scope: "توريد وتنفيذ حسب النطاق"
+            },
+            "AI Platforms": {
+                summary: "منصات قابلة للتوسع لتمكين فرق العمل من إطلاق حالات استخدام متقدمة وإدارتها مركزياً.",
+                outcome: "بناء قدرة داخلية قابلة للتوسع",
+                scope: "تجهيز منصة وفق الجاهزية المؤسسية"
+            },
+            "Workflow Solutions": {
+                summary: "حلول تكامل وسير عمل للأقسام التي تحتاج ربط الأدوات والمهام والموافقات في مسار واحد.",
+                outcome: "اختصار الزمن بين الإدارات",
+                scope: "تهيئة وتكامل سريع حسب الأداة"
+            },
+            "Comprehensive Systems": {
+                summary: "أنظمة كاملة للحالات التشغيلية الحساسة مثل التوظيف والأرشفة وإدارة المعرفة المؤسسية.",
+                outcome: "منظومة موحدة بدلاً من أدوات متفرقة",
+                scope: "مشروع مؤسسي حسب المتطلبات"
+            }
+        };
+
         // Cart state
         let cart = [];
         let currentCategory = 'all';
+
+        function getCategoryButtonClass(active = false) {
+            return `category-btn services-filter-btn${active ? ' is-active' : ''}`;
+        }
+
+        function getCategoryMeta(category) {
+            return categoryMeta[category] || {
+                summary: "حلول مخصصة للقطاعات التي تحتاج سرعة في الإطلاق ووضوحاً في العائد.",
+                outcome: "أثر تشغيلي مباشر",
+                scope: "تنفيذ حسب المرحلة"
+            };
+        }
+
+        function formatPrice(price) {
+            if (price === "On Demand") {
+                return 'حسب الطلب';
+            }
+
+            return `${price.toLocaleString('ar-SA')} ر.س`;
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -1503,7 +2342,7 @@
                 const btn = document.createElement('button');
                 btn.onclick = () => filterProducts(cat);
                 btn.dataset.category = cat;
-                btn.className = 'category-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800';
+                btn.className = getCategoryButtonClass(false);
                 btn.textContent = categoryTranslations[cat] || cat;
                 navContainer.appendChild(btn);
 
@@ -1516,7 +2355,7 @@
             const allBtn = document.createElement('button');
             allBtn.onclick = () => filterProducts('all');
             allBtn.dataset.category = 'all';
-            allBtn.className = 'category-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-cyan-400 bg-cyan-400/10';
+            allBtn.className = getCategoryButtonClass(true);
             allBtn.textContent = 'الكل';
             mobileNavContainer.insertBefore(allBtn, mobileNavContainer.firstChild);
         }
@@ -1527,13 +2366,7 @@
 
             // Update active button
             document.querySelectorAll('.category-btn').forEach(btn => {
-                if (btn.dataset.category === category) {
-                    btn.classList.add('text-cyan-400', 'bg-cyan-400/10');
-                    btn.classList.remove('text-slate-400');
-                } else {
-                    btn.classList.remove('text-cyan-400', 'bg-cyan-400/10');
-                    btn.classList.add('text-slate-400');
-                }
+                btn.classList.toggle('is-active', btn.dataset.category === category);
             });
 
             renderProducts();
@@ -1559,53 +2392,67 @@
             grid.innerHTML = filteredProducts.map((product, index) => {
                 const originalIndex = products.indexOf(product);
                 const isOnDemand = product.price === "On Demand";
-                const priceDisplay = isOnDemand
-                    ? 'حسب الطلب'
-                    : `${product.price.toLocaleString('ar-SA')} ر.س`;
+                const priceDisplay = formatPrice(product.price);
+                const meta = getCategoryMeta(product.category);
 
                 return `
-                    <div class="bg-slate-800/80 backdrop-blur-md border border-slate-700 hover:border-cyan-500/50 rounded-2xl p-5 sm:p-6 card-hover cursor-pointer relative overflow-hidden group flex flex-col justify-between h-full" onclick="openProductModal(${originalIndex})">
-                        ${product.status ? `
-                            <div class="absolute top-4 left-4 px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-full text-xs text-green-400 font-bold shadow-lg z-10 w-auto text-center">
-                                عرض خاص
-                            </div>
-                        ` : ''}
-                        
-                        <div>
-                            <div class="w-14 h-14 bg-gradient-to-br from-cyan-400/10 to-blue-500/10 border border-cyan-500/20 rounded-xl flex items-center justify-center mb-5 group-hover:from-cyan-400/30 group-hover:to-blue-500/30 transition-all shadow-md">
+                    <article class="service-card cursor-pointer" onclick="openProductModal(${originalIndex})">
+                        <div class="service-card-head">
+                            <div class="service-card-icon">
                                 ${getCategoryIcon(product.category)}
                             </div>
-                            
-                            <h3 class="font-bold text-lg sm:text-xl mb-3 line-clamp-2 leading-tight min-h-[3rem] text-slate-100 group-hover:text-cyan-400 transition-colors">${product.name}</h3>
-                            
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                <span class="text-xs px-2.5 py-1 bg-slate-900 border border-slate-700/50 rounded text-slate-300 font-medium">${categoryTranslations[product.category]}</span>
-                                <span class="text-xs px-2.5 py-1 bg-slate-900 border border-slate-700/50 rounded text-slate-300 font-medium">${typeTranslations[product.type]}</span>
+                            <div class="service-card-type">
+                                <iconify-icon icon="lucide:sparkles" width="14"></iconify-icon>
+                                ${typeTranslations[product.type]}
                             </div>
                         </div>
-                        
-                        <div class="mt-auto">
-                            <div class="flex items-end justify-between mt-4 mb-5 pt-4 border-t border-slate-700/50">
-                                <div class="flex-1">
-                                    <p class="text-2xl font-extrabold ${isOnDemand ? 'text-amber-400' : 'text-transparent bg-clip-text bg-gradient-to-l from-cyan-400 to-blue-500'} price-badge">${priceDisplay}</p>
-                                    ${product.note ? `<p class="text-xs text-slate-400 mt-1.5">${product.note}</p>` : ''}
+
+                        <div>
+                            <h3 class="service-card-title">${product.name}</h3>
+                            <p class="service-card-summary">${meta.summary}</p>
+
+                            <div class="service-card-tags">
+                                <span class="service-chip">${categoryTranslations[product.category]}</span>
+                                <span class="service-chip">${typeTranslations[product.type]}</span>
+                                ${product.status ? `<span class="service-chip is-special">عرض خاص</span>` : ''}
+                            </div>
+
+                            <div class="service-metrics">
+                                <div class="service-metric">
+                                    <span>الأثر المتوقع</span>
+                                    <strong>${meta.outcome}</strong>
+                                </div>
+                                <div class="service-metric">
+                                    <span>مسار التنفيذ</span>
+                                    <strong>${isOnDemand ? 'تسعير ونطاق مخصص' : meta.scope}</strong>
                                 </div>
                             </div>
-                            
+                        </div>
+
+                        <div class="service-footer">
+                            <div class="service-price-meta">
+                                <div class="flex-1">
+                                    <div class="service-price-label">${isOnDemand ? 'Enterprise Scope' : 'Starting Price'}</div>
+                                    <div class="service-price-value${isOnDemand ? ' is-on-demand' : ''}">${priceDisplay}</div>
+                                    ${product.note ? `<p class="service-note">${product.note}</p>` : ''}
+                                </div>
+                            </div>
+
                             <div onclick="event.stopPropagation()">
                                 ${isOnDemand ? `
-                                    <a href="https://wa.me/966538229013?text=${encodeURIComponent('مرحباً، أود الاستفسار عن: ' + product.name)}" target="_blank" rel="noopener noreferrer" class="block w-full py-3 bg-slate-900 border border-amber-500/40 text-amber-400 rounded-xl font-bold text-center hover:bg-amber-500 hover:text-white transition-all text-sm shadow-md">
-                                        اطلب عرض سعر مسعّر لحالتك
+                                    <a href="https://wa.me/966538229013?text=${encodeURIComponent('مرحباً، أود الاستفسار عن: ' + product.name)}" target="_blank" rel="noopener noreferrer" class="service-cta service-cta--secondary">
+                                        اطلب عرض سعر مخصص
+                                        <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                                     </a>
                                 ` : `
-                                    <button onclick="addToCart(${originalIndex})" class="w-full py-3 bg-white text-slate-900 rounded-xl font-bold hover:bg-slate-200 transition-all shadow-md text-sm flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                        أضف للسلة
+                                    <button onclick="addToCart(${originalIndex})" class="service-cta service-cta--primary">
+                                        أضف إلى السلة
+                                        <iconify-icon icon="lucide:shopping-cart" width="16"></iconify-icon>
                                     </button>
                                 `}
                             </div>
                         </div>
-                    </div>
+                    </article>
                 `;
             }).join('');
         }
@@ -1915,56 +2762,35 @@ ${itemsList}
     <script defer="" src="/frontend/js/main.bundle.js"></script>
     <script defer="" src="/frontend/js/index-theme.js"></script>
 
-    <section
-        class="max-w-5xl mx-auto my-12 p-8 rounded-2xl border border-slate-700/50 bg-slate-800/40 backdrop-blur-sm text-center"
-        style="content-visibility: auto;">
-        <p class="text-slate-400 text-lg mb-6 font-medium">اختر الباقة التشغيلية التي تناسب متطلبات مؤسستك وأهداف نموها.
-        </p>
-        <a href="/services"
-            class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-l from-cyan-500 to-blue-600 text-white font-bold hover:shadow-lg hover:shadow-cyan-500/20 transition-all transform hover:-translate-y-1">
-            عرض الأسعار وباقات الشركات
-        </a>
-    </section>
-
-
-    <section class="max-w-6xl mx-auto my-12 p-8 rounded-2xl border border-slate-800 bg-slate-900/50 text-right"
-        style="content-visibility: auto;">
-        <h3 class="text-white text-xl font-bold mb-4">روابط مرجعية هامة للمؤسسات</h3>
-        <p class="text-slate-400 mb-6 leading-relaxed">
-            أدلة الاستخدام: <a href="/ai-bots/BrightMath"
-                class="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">وكيل الرياضات والأرقام</a>،
-            <a href="/docs" class="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">مستندات نقل
-                البيانات</a>،
-            <a href="/docs/solutions-retail"
-                class="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">أتمتة قطاع التجزئة</a>،
-            <a href="/consultation"
-                class="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">الاستشارات التقنية</a>.
-        </p>
-
-        <div class="flex flex-wrap gap-4 mb-8">
-            <a href="/docs/data-analysis-en"
-                class="inline-block px-5 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 font-semibold hover:border-cyan-500/50 hover:text-white transition-all text-sm">
-                تفاصيل تحليل البيانات الذكي (Data Analysis)
-            </a>
-            <a href="/docs/solutions-retail-en"
-                class="inline-block px-5 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 font-semibold hover:border-cyan-500/50 hover:text-white transition-all text-sm">
-                حلول التجزئة الذكية (Smart Retail)
-            </a>
-            <a href="/what-is-ai"
-                class="inline-block px-5 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 font-semibold hover:border-cyan-500/50 hover:text-white transition-all text-sm">
-                دليل الذكاء الاصطناعي الشامل
-            </a>
+    <section class="px-4 py-6" style="content-visibility: auto;">
+        <div class="container mx-auto">
+            <div class="services-reference-grid">
+                <div class="services-reference-card">
+                    <h3>جاهز لاختيار الباقة التشغيلية؟</h3>
+                    <p>إذا الصورة صارت واضحة، انتقل مباشرة إلى الباقات أو اطلب تسعيراً مخصصاً حسب نطاق المشروع والربط المطلوب.</p>
+                    <a href="/services">
+                        عرض الأسعار وباقات الشركات
+                        <iconify-icon icon="lucide:arrow-up-left" width="16"></iconify-icon>
+                    </a>
+                </div>
+                <div class="services-reference-card">
+                    <h3>مراجع مهمة قبل الاعتماد</h3>
+                    <p>راجع مستندات النقل والتكامل، وأمثلة الحلول القطاعية، حتى يكون القرار الفني والإداري مبنياً على وضوح كامل.</p>
+                    <a href="/docs">
+                        استعرض المستندات
+                        <iconify-icon icon="lucide:file-text" width="16"></iconify-icon>
+                    </a>
+                </div>
+                <div class="services-reference-card">
+                    <h3>ابدأ من جلسة تشخيص مختصرة</h3>
+                    <p>إذا كان التحدي اليوم غير محسوم بين التحليل والأتمتة والوكلاء، نرتب معكم جلسة تشخيص ونوجهكم إلى المسار الأعلى أثراً.</p>
+                    <a href="/consultation">
+                        اطلب استشارة تقنية
+                        <iconify-icon icon="lucide:briefcase-business" width="16"></iconify-icon>
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <ul class="space-y-4 text-slate-400 border-t border-slate-800 pt-6 pr-4 list-disc list-inside">
-            <li><a href="/docs/contact-en" class="hover:text-cyan-400 transition-colors">خدمات
-                    التواصل والمتابعة للدعم المؤسسي</a></li>
-            <li><a href="/docs/solutions-ocr-en" class="hover:text-cyan-400 transition-colors">حلول
-                    القراءة والاستخراج الفوري للمستندات (OCR)</a></li>
-            <li><a href="/smart-medical-archive" class="hover:text-cyan-400 transition-colors">منظومة الأرشيف الطبي
-                    والأدوات التحليلية للسجلات
-                    المستحدثة</a></li>
-        </ul>
     </section>
     <script src="/frontend/js/clarity-events.js" defer></script>
 </body>
