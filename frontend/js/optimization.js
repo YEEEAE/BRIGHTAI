@@ -1,1 +1,123 @@
-"use strict";const _isMobile=window.matchMedia("(max-width: 768px)").matches,_isLowPower=!(!navigator.connection||!navigator.connection.saveData),_prefersReducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;function yieldToMain(){return new Promise(e=>{"scheduler"in window&&"yield"in scheduler?scheduler.yield().then(e):setTimeout(e,0)})}function loadFonts(){if(window._fontsLoaded)return;window._fontsLoaded=!0;const e=document.createElement("link");e.rel="preconnect",e.href="https://fonts.googleapis.com",document.head.appendChild(e);const t=document.createElement("link");t.rel="preconnect",t.href="https://fonts.gstatic.com",t.crossOrigin="",document.head.appendChild(t);const o=document.createElement("link");o.rel="stylesheet",o.media="all",o.href=_isMobile?"https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&family=Tajawal:wght@400;700&display=optional":"https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=optional",document.head.appendChild(o)}function loadAnalytics(){function e(){dataLayer.push(arguments)}window._gaLoaded||(window._gaLoaded=!0,window.dataLayer=window.dataLayer||[],window.gtag=e,e("js",new Date),e("config","G-8LLESL207Q",{send_page_view:!0,transport_type:"beacon"}),setTimeout(()=>{const e=document.createElement("script");e.async=!0,e.defer=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q",document.head.appendChild(e)},200))}function loadIconify(){if(window._iconifyLoaded)return;window._iconifyLoaded=!0;const e=document.createElement("script");e.src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js",e.defer=!0,document.body.appendChild(e)}function extendCloudflareCache(){"requestIdleCallback"in window&&requestIdleCallback(()=>{},{timeout:5e3})}function mobileOptimize(){if(!_isMobile&&!_isLowPower)return;["#neural-canvas",".floating-orbs","#stars","#particles",".code-wall",".matrix","#matrixBackground",".gradient-bg",".glow-effect",".glow-effect-2",".hero-visual"].forEach(e=>{document.querySelectorAll(e).forEach(e=>{e&&e.remove()})});document.querySelectorAll(".bento").forEach(e=>e.classList.add("show"));const e=document.getElementById("top");e&&(e.style.minHeight="70vh",e.style.minHeight="70dvh")}async function initOptimization(){const e=["scroll","click","touchstart","keydown","mousemove","pointerdown"];let t=!1;const o=async()=>{t||(t=!0,e.forEach(e=>window.removeEventListener(e,o)),loadFonts(),await yieldToMain(),loadIconify(),await yieldToMain(),loadAnalytics(),await yieldToMain(),extendCloudflareCache())};e.forEach(e=>window.addEventListener(e,o,{once:!0,passive:!0})),mobileOptimize();setTimeout(o,_isMobile?4e3:5e3)}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",initOptimization):initOptimization();
+"use strict";
+
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+const isLowPower = Boolean(navigator.connection && navigator.connection.saveData);
+
+function yieldToMain() {
+    if ("scheduler" in window && "yield" in scheduler) {
+        return scheduler.yield();
+    }
+
+    return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+function appendScript(src) {
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+}
+
+function loadAnalytics() {
+    if (window._gaLoaded) {
+        return;
+    }
+
+    window._gaLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function gtag() {
+        window.dataLayer.push(arguments);
+    };
+
+    window.gtag("js", new Date());
+    window.gtag("config", "G-8LLESL207Q", {
+        send_page_view: true,
+        transport_type: "beacon"
+    });
+
+    appendScript("https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q");
+}
+
+function loadClarity() {
+    if (window._clarityLoaded) {
+        return;
+    }
+
+    window._clarityLoaded = true;
+    window.clarity = window.clarity || function clarity() {
+        (window.clarity.q = window.clarity.q || []).push(arguments);
+    };
+
+    appendScript("https://www.clarity.ms/tag/voq2kb6voe");
+}
+
+function extendCloudflareCache() {
+    if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => { }, { timeout: 5000 });
+    }
+}
+
+function mobileOptimize() {
+    if (!isMobile && !isLowPower) {
+        return;
+    }
+
+    [
+        "#neural-canvas",
+        ".floating-orbs",
+        "#stars",
+        "#particles",
+        ".code-wall",
+        ".matrix",
+        "#matrixBackground",
+        ".gradient-bg",
+        ".glow-effect",
+        ".glow-effect-2",
+        ".hero-visual"
+    ].forEach((selector) => {
+        document.querySelectorAll(selector).forEach((node) => node.remove());
+    });
+
+    document.querySelectorAll(".bento").forEach((card) => card.classList.add("show"));
+
+    const hero = document.getElementById("top");
+    if (hero) {
+        hero.style.minHeight = "70vh";
+        hero.style.minHeight = "70dvh";
+    }
+}
+
+async function initOptimization() {
+    const events = ["scroll", "click", "touchstart", "keydown", "mousemove", "pointerdown"];
+    let started = false;
+
+    const bootDeferredAssets = async () => {
+        if (started) {
+            return;
+        }
+
+        started = true;
+        events.forEach((eventName) => window.removeEventListener(eventName, bootDeferredAssets));
+
+        await yieldToMain();
+        loadAnalytics();
+        await yieldToMain();
+        loadClarity();
+        await yieldToMain();
+        extendCloudflareCache();
+    };
+
+    events.forEach((eventName) => {
+        window.addEventListener(eventName, bootDeferredAssets, { once: true, passive: true });
+    });
+
+    mobileOptimize();
+    setTimeout(bootDeferredAssets, isMobile ? 3500 : 4500);
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initOptimization, { once: true });
+} else {
+    initOptimization();
+}
