@@ -10,8 +10,6 @@ const HTML_GLOB = "**/*.html";
 const IGNORE_PATTERNS = [
   "**/.git/**",
   "**/node_modules/**",
-  "**/.netlify/**",
-  "**/.netlify-publish/**",
   "backend/**",
   "brightai-platform/**",
   "docs/**",

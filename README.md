@@ -1,205 +1,81 @@
-# githib
-
-git add .
-git commit -m "feat: direct push"
-git push origin main
-
-
-codex mcp list
-
-
-تشغيل نظام التحليل :
-
-```
-cd /Users/yzydalshmry/Desktop/BRIGHTAI/eng-abdrahman && npx next build 2>&1 | tail -40
-```
-
-http://localhost:3000
-
-🔍 SEO وتحسين محرك البحث
-
-Ahrefs Webmaster Tools (مجاني) — يحلل backlinks موقعك ويكشف الصفحات الضعيفة
-Semrush Free (10 بحث يومي) — تتبع ترتيبك على الكلمات المستهدفة
-PageSpeed Insights — سرعة موقعك مباشرة من Google، مهم جداً للترتيب
-Screaming Frog (500 صفحة مجاناً) — يكتشف أخطاء SEO التقنية
-
-🚀 أداء الموقع
-
-GTmetrix Free — تقارير أداء تفصيلية مع اقتراحات تحسين
-WebPageTest — اختبار السرعة من سيرفرات مختلفة حول العالم
-
-🎯 Lead Generation وتحويل الزوار
-
-Tally.so (مجاني) — نماذج ذكية تجمع leads بشكل احترافي
-Crisp (Free) — شات مباشر على الموقع + متابعة الزوار في real time
-
-🔔 مراقبة الموقع والتنبيهات
-
-UptimeRobot (مجاني) — يراقب Netlify API الخاص بك ويبلغك لو وقع الموقع
-Google Alerts — تنبيهات عند ذكر BrightAI أو منافسيك في الإنترنت
-
-لاختبار جودة وعمل api :
-npm run smoke-test:prod
-
 # BrightAI Monorepo
 
-هذا المستودع الآن مُدار كـ `npm workspaces` بثلاث وحدات مستقلة:
+مستودع BrightAI الآن يعمل على فصل واضح بين الواجهة الثابتة وواجهة الـ API الخادمية.
 
-- `frontend` (واجهات static)
-- `backend` (Node API + functional tests)
-- `brightai-platform` (React platform)
+## الوحدات
 
-## هيكل الوحدات
+- `frontend/`: ملفات الواجهة والصفحات الثابتة.
+- `backend/`: خادم Node المسؤول عن `Gemini/Groq` وبقية مسارات `/api`.
+- `brightai-platform/`: منصة React الداخلية.
 
-| الوحدة      | المسار           | التشغيل           | الاختبار          |
-| ----------------- | ---------------------- | ------------------------ | ------------------------- |
-| Frontend          | `frontend/`          | `npm run dev:frontend` | `npm run test:frontend` |
-| Backend           | `backend/`           | `npm run dev:backend`  | `npm run test:backend`  |
-| BrightAI Platform | `brightai-platform/` | `npm run dev:platform` | `npm run test:platform` |
+## التشغيل المحلي
 
-## استراتيجية التشغيل (بعزل)
+### الواجهة
+```bash
+npm run dev:frontend
+```
 
-- كل وحدة لها `package.json` خاص فيها.
-- التشغيل يتم من الجذر عبر workspace محدد، بدون مشاركة runtime command بين الوحدات.
-- أوامر الجذر:
-  - `npm run dev:frontend`
-  - `npm run dev:backend`
-  - `npm run dev:platform`
+### الـ backend
+```bash
+npm run dev:backend
+```
 
-## استراتيجية الاختبار (بعزل)
+### المنصة
+```bash
+npm run dev:platform
+```
 
-- `frontend`: اختبارات smoke عبر Node test runner داخل `frontend/tests` فقط.
-- `backend`: اختبارات Vitest عبر `backend/vitest.config.mjs` وبنطاق `*.functional.test.js` داخل الوحدة فقط.
-- `brightai-platform`: اختبارات `react-scripts test` داخل الوحدة فقط.
-
-## منع تداخل الاختبارات
-
-- لا يوجد أمر عام يعتمد على glob شامل لكل المشروع.
-- كل وحدة تُختبر بأمرها المحلي عبر workspace.
-- أمر `npm test` في الجذر يشغّل `scripts/run-monorepo-tests.mjs`، وينفّذ الاختبارات للوحدات الثلاث بالتسلسل مع ملخص نهائي منفصل لكل وحدة.
-
-## أمر الاختبار الواحد
+## الاختبارات
 
 ```bash
 npm test
 ```
 
-النتيجة المتوقعة:
+أوامر منفصلة:
 
-- إذا نجحت كل الوحدات: يخرج بنجاح.
-- إذا فشلت وحدة: يعرض سبب الفشل الخاص بها (مثال: نقص dependencies أو فشل اختبارات)، ثم ينهي بخروج غير صفري.
+- `npm run test:frontend`
+- `npm run test:backend`
+- `npm run test:platform`
 
-## تثبيت الحزم
+## النشر الحالي
 
-من الجذر:
+- GitHub هو مصدر الحقيقة للكود.
+- `backend` يُنشر على Render.
+- الرابط الحالي للـ API:
+  `https://brightai-92px.onrender.com`
 
-```bash
-npm install
-```
-
-أو تثبيت لوحدة محددة:
-
-```bash
-npm install --workspace frontend
-npm install --workspace backend
-npm install --workspace brightai-platform
-```
-
-## أوامر إضافية في الجذر
-
-- `npm run sitemap:all`
-- `npm run seo:check`
-- `npm run performance:budget`
-- `npm run deploy:source-of-truth:check`
-
-## حوكمة النشر
-
-- Netlify هو المزود الرسمي للإنتاج.
-- مصدر الحقيقة الوحيد لـ redirects/security headers/caching هو `netlify.toml`.
-- الدليل التشغيلي: `docs/deployment-governance.md`
-
-### حالة حماية الفرع الحالية (`main`)
-
-- Required check إلزامي: `Validate Netlify Source of Truth`
-- `required_approving_review_count = 0` (لا تحتاج موافقة بشرية للدمج)
-- `enforce_admins = true` (تنطبق القواعد حتى على الأدمن)
-
-### هل تحتاج تشغيل الأوامر كل مرة؟
-
-- **لا، ليس كل الأوامر كل مرة.**
-- إعدادات حماية الفرع عبر `gh api` هي إعداد لمرة واحدة فقط (إلا إذا أردت تغيير السياسة لاحقًا).
-- فحص CI (`Validate Netlify Source of Truth`) يعمل تلقائيًا على `pull_request` و `push`.
-- محليًا، شغّل هذا الأمر عند تعديل ملفات النشر (`netlify.toml` أو `.htaccess` أو `_headers` أو سكربتات التحقق):
-  - `npm run deploy:source-of-truth:check`
-- إذا تعديلاتك لا تمس إعدادات النشر، تشغيل الأمر محليًا يبقى اختياريًا.
-
-## سجل آخر 5 محادثات تنفيذية
-
-### 1) توحيد Netlify كمصدر حقيقة وحيد للإنتاج
-
-**Description:**
-مراجعة التضارب بين `netlify.toml` و `.htaccess` و `_headers`، ثم توحيد قواعد redirects/security headers/caching داخل `netlify.toml` فقط، مع تحويل الملفات الأخرى لأرشيف توثيقي.
-
-**Terminal Commands:**
+## فحص صحة الـ API
 
 ```bash
-rg --files -g 'netlify.toml' -g '.htaccess' -g '_headers'
-sed -n '1,260p' netlify.toml
-sed -n '1,260p' .htaccess
-sed -n '1,260p' _headers
-mkdir -p docs/deployment-archive && cp .htaccess docs/deployment-archive/.htaccess.legacy && cp _headers docs/deployment-archive/_headers.legacy
-npm run deploy:source-of-truth:check
+npm run smoke-test:prod
 ```
 
-### 2) إضافة تحقق آلي وCI Gate
-
-**Description:**
-إضافة سكربت تحقق `scripts/verify-netlify-source-of-truth.mjs`، وإضافة أمر npm مخصص، وإنشاء Workflow باسم `Netlify Source of Truth` لفرض الحوكمة تلقائيًا.
-
-**Terminal Commands:**
+أو مباشرة:
 
 ```bash
-npm run deploy:source-of-truth:check
-git show --name-status --oneline --stat -1
+node scripts/smoke-test-api.mjs https://brightai-92px.onrender.com
 ```
 
-### 3) تفعيل حماية فرع `main` وربط الفحص الإلزامي
+## أسرار البيئة
 
-**Description:**
-تفعيل Branch Protection على GitHub مع فرض check باسم `Validate Netlify Source of Truth` كشرط قبل الدمج، مع التأكد من الحالة عبر API.
-
-**Terminal Commands:**
+- لا تضع أي مفاتيح سرية داخل `frontend` أو أي متغير يبدأ بـ `REACT_APP_`.
+- استخدم ملفات `.env.local` غير المتتبعة محلياً.
+- للتشفير المحلي قبل حفظ النسخ المشفرة، استخدم:
 
 ```bash
-gh auth status
-gh api -X PUT repos/YEEEAE/BRIGHTAI/branches/main/protection -H "Accept: application/vnd.github+json" --input <payload.json>
-gh api repos/YEEEAE/BRIGHTAI/branches/main/protection -H "Accept: application/vnd.github+json"
-gh run list --workflow "Netlify Source of Truth" --limit 5
+node scripts/local-secrets.mjs encrypt --in backend/.env.local --out secrets/backend.env.enc
 ```
 
-### 4) تعريب `docs/deployment-governance.md` عبر PR
-
-**Description:**
-بسبب حماية `main` تم إنشاء فرع `codex/*`، رفع التغييرات، فتح PR، تشغيل الـ workflow المطلوب، ثم دمج PR ومزامنة المحلي مع `origin/main`.
-
-**Terminal Commands:**
+## دفع التغييرات إلى GitHub
 
 ```bash
-git switch -c codex/arabic-deployment-governance
-git push -u origin codex/arabic-deployment-governance
-gh pr create --base main --head codex/arabic-deployment-governance --title "docs(deploy): Arabic translation for deployment governance runbook"
-gh workflow run "Netlify Source of Truth" --ref codex/arabic-deployment-governance
-gh pr merge 1 --squash --delete-branch
-git pull --rebase origin main
+git switch main
+git pull --ff-only origin main
+git switch -c codex/my-change
+git add .
+git commit -m "feat: describe change"
+git push -u origin codex/my-change
+gh pr create --base main --head codex/my-change --fill
 ```
 
-### 5) المحادثة الحالية: تعريب `docs/pr/netlify-source-of-truth.md` وتوثيق آخر 5 محادثات
-
-**Description:**
-تعريب ملف `docs/pr/netlify-source-of-truth.md` ثم كتابة هذا السجل داخل `README.md` بحيث يكون مرجع تنفيذي واضح داخل المشروع.
-
-**Terminal Commands:**
-
-```bash
-nl -ba docs/pr/netlify-source-of-truth.md | sed -n '1,260p'
-```
+لا يوجد خطوات أخرى داخل هذا الملف، وتم توضيح الأساسيات بالكامل.

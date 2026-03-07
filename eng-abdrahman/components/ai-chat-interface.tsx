@@ -30,7 +30,6 @@ export function AIChatInterface({ payload }: { payload: AggregatedCritical[] }) 
         setIsLoading(true);
 
         try {
-            // Netlify Function endpoint at root
             const endpoint = "https://brightai.site/api/chat-assistant";
 
             const res = await fetch(endpoint, {
@@ -49,7 +48,7 @@ export function AIChatInterface({ payload }: { payload: AggregatedCritical[] }) 
             setMessages(prev => [...prev, assistantMsg]);
         } catch (err: any) {
             console.error(err);
-            const errorMsg: Message = { id: (Date.now() + 1).toString(), role: 'assistant', content: "عذراً، حدث خطأ أثناء الاتصال بخادم Netlify. تأكد من توفر الخدمة وتوفر مفاتيح API." };
+            const errorMsg: Message = { id: (Date.now() + 1).toString(), role: 'assistant', content: "عذراً، حدث خطأ أثناء الاتصال بالخادم. تأكد من توفر الخدمة وتوفر مفاتيح API." };
             setMessages(prev => [...prev, errorMsg]);
         } finally {
             setIsLoading(false);
@@ -62,7 +61,7 @@ export function AIChatInterface({ payload }: { payload: AggregatedCritical[] }) 
                 <Sparkles className="w-5 h-5 text-emerald-600" />
                 <div>
                     <h3 className="font-bold text-base text-foreground">مستشار الجودة الذكي (Copilot)</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">مدعوم بالذكاء الاصطناعي عبر Netlify لتحليل البيانات واتخاذ القرارات</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">مدعوم بالذكاء الاصطناعي عبر الخادم لتحليل البيانات واتخاذ القرارات</p>
                 </div>
             </div>
 
@@ -93,7 +92,7 @@ export function AIChatInterface({ payload }: { payload: AggregatedCritical[] }) 
                         <div className="w-8 h-8 rounded-full bg-emerald-600/80 flex items-center justify-center shrink-0">
                             <span className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
                         </div>
-                        <p className="text-xs text-muted-foreground animate-pulse">يحلل السجلات عبر Netlify لتجهيز الإجابة...</p>
+                        <p className="text-xs text-muted-foreground animate-pulse">يحلل السجلات عبر الخادم لتجهيز الإجابة...</p>
                     </div>
                 )}
                 <div ref={endRef} />

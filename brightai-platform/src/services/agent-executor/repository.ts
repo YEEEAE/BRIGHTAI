@@ -22,7 +22,7 @@ export class AgentExecutorRepository {
     const useUserKey = Boolean(input.context?.useUserKey) || Boolean(agent.settings?.useUserKey);
 
     if (!useUserKey) {
-      // التشغيل الافتراضي يعتمد على مفتاح سري في الخادم (Netlify Function)
+      // التشغيل الافتراضي يعتمد على مفتاح سري في الخادم
       // ولا يحتاج مفتاحًا مكشوفًا في واجهة المستخدم.
       return "";
     }

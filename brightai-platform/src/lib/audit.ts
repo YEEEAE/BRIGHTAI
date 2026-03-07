@@ -69,7 +69,7 @@ const shouldSample = () => {
 };
 
 const shouldSkipEndpoint = (endpoint: string) =>
-  endpoint.includes("/api/audit") || endpoint.includes("/.netlify/functions/audit");
+  endpoint.includes("/api/audit");
 
 const getAuthToken = async () => {
   try {

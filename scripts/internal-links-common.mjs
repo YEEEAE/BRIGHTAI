@@ -14,11 +14,8 @@ export const DEFAULT_FILE_PATTERNS = [
 export const DEFAULT_IGNORE_PATTERNS = [
   "**/.git/**",
   "**/node_modules/**",
-  "**/.netlify/**",
-  "**/.netlify-publish/**",
   "backend/**",
   "brightai-platform/**",
-  "docs/deployment-archive/**",
   "**/prisma/generated/**",
   "scripts/**",
   "تقارير للمشروع/**",
@@ -442,61 +439,9 @@ function ensureTrailingSlash(sitePath) {
   return sitePath.endsWith("/") ? sitePath : `${sitePath}/`;
 }
 
-function extractTomlString(block, key) {
-  const match = block.match(new RegExp(`^\\s*${key}\\s*=\\s*"(.*)"\\s*$`, "m"));
-  return match ? match[1] : null;
-}
-
-function extractTomlNumber(block, key) {
-  const match = block.match(new RegExp(`^\\s*${key}\\s*=\\s*(\\d+)\\s*$`, "m"));
-  return match ? Number(match[1]) : null;
-}
-
-function isExactNetlifyPath(routePath) {
-  return Boolean(routePath) && !routePath.includes(":") && !routePath.includes("*");
-}
-
 async function buildPublicRedirectMap(root) {
-  const redirectMap = new Map();
-  const netlifyPath = path.join(root, "netlify.toml");
-
-  let netlifyContent = "";
-  try {
-    netlifyContent = await fs.readFile(netlifyPath, "utf8");
-  } catch {
-    return redirectMap;
-  }
-
-  const blocks = netlifyContent.split("[[redirects]]").slice(1);
-  for (const block of blocks) {
-    const from = extractTomlString(block, "from");
-    const to = extractTomlString(block, "to");
-    const status = extractTomlNumber(block, "status");
-
-    if (!from || !to || !status || status < 300 || status >= 400) {
-      continue;
-    }
-
-    if (!isExactNetlifyPath(from) || !isExactNetlifyPath(to)) {
-      continue;
-    }
-
-    const normalizedFrom = stripTrailingSlash(normalizeSitePath(from) || "/");
-    if (!normalizedFrom || normalizedFrom.startsWith("/frontend/")) {
-      continue;
-    }
-
-    const targetRelative = normalizeRelativePath(to.replace(/^\/+/, ""));
-    const targetSitePath = relPathToSitePath(targetRelative);
-    const normalizedTo = stripTrailingSlash(normalizeSitePath(targetSitePath || to) || "/");
-    if (!normalizedTo) {
-      continue;
-    }
-
-    redirectMap.set(normalizedFrom, normalizedTo);
-  }
-
-  return redirectMap;
+  void root;
+  return new Map();
 }
 
 function derivePublicBasePath(file, sitePath) {

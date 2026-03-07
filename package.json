@@ -18,7 +18,6 @@
     "fast-check": "^3.15.0",
     "gsap": "^3.14.2",
     "jsdom": "^23.0.0",
-    "netlify-cli": "^24.0.1",
     "swiper": "^12.1.0",
     "vitest": "^1.0.0"
   },
@@ -43,9 +42,8 @@
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",
-    "deploy:source-of-truth:check": "node scripts/verify-netlify-source-of-truth.mjs",
     "smoke-test": "node scripts/smoke-test-api.mjs",
-    "smoke-test:prod": "node scripts/smoke-test-api.mjs https://brightai.site",
+    "smoke-test:prod": "node scripts/smoke-test-api.mjs https://brightai-92px.onrender.com",
     "test": "node scripts/run-monorepo-tests.mjs",
     "server": "npm run dev:backend",
     "server:dev": "npm run dev:backend"

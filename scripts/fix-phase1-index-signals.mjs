@@ -16,7 +16,6 @@ const HTML_PATTERNS = ["**/*.html", "**/*.HTML"];
 const IGNORE_PATTERNS = [
   "**/node_modules/**",
   "**/.git/**",
-  "**/.netlify/**",
   "**/dist/**",
   "**/build/**",
   "**/coverage/**",
