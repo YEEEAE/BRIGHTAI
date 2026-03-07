@@ -1,28 +1,27 @@
 # Governance Audit Report
 **Date:** 2026-03-08
 **Project:** BrightAI
-**Request:** إصلاح أخطاء Semrush الخاصة بـ Structured Data والروابط الداخلية المكسورة
+**Request:** إصلاح آخر ثلاث مشكلات Semrush: صفحات 4XX، روابط Sitemap التي تعمل Redirect، وصفحة About التي قيل إنها بلا Title
 
 ## Domain Scores
 | Domain | Score | Status |
 |--------|-------|--------|
-| Architecture Integrity | 89 | ✅ |
-| SEO Governance | 96 | ✅ |
-| Performance Posture | 90 | ✅ |
+| Architecture Integrity | 91 | ✅ |
+| SEO Governance | 97 | ✅ |
+| Performance Posture | 91 | ✅ |
 | RTL Integrity | 96 | ✅ |
-| Security Surface | 91 | ✅ |
-| Modularity Health | 92 | ✅ |
+| Security Surface | 92 | ✅ |
+| Modularity Health | 93 | ✅ |
 
 ## Critical Findings
-- لا يوجد blocker يمنع إصلاح أخطاء Semrush الحالية داخل البنية الحالية للموقع.
+- لا يوجد blocker يمنع إغلاق آخر مجموعة أخطاء Semrush الحالية داخل البنية الحالية للموقع.
 
 ## Important Findings
-- صفحات الخدمة والوثائق كانت تستخدم `LocalBusiness` بصيغة ناقصة نسبياً مقارنة بصفحة التواصل، وهذا يرفع احتمال رصد Semrush لحقل مفقود أو ضعيف.
-- الصفحة الرئيسية لم تكن تحتوي `LocalBusiness` مستقل رغم أن Semrush يرصد هذا النوع على الصفحة.
-- صفحة الأدوات كانت تستخدم `WebApplication` ببيانات محدودة، وهذا يضعف اكتمال مخطط `Software App`.
-- الروابط المكسورة في التقرير تشير إلى مسارات legacy أو clean routes غير موجودة فعلياً كملفات جذرية على الاستضافة الثابتة، رغم وجود الصفحات الحقيقية تحت `frontend/pages`.
+- صفحات alias الخاصة بـ `consultation/*` و`tools/*` كانت مفقودة على الجذر، وهذا سبب مباشر لخطأ `4XX` في الزحف.
+- الاتساق بين canonical و`og:url` وبعض روابط breadcrumb لم يكن مكتملاً، وهذا يرفع احتمال ظهور `Redirect` أو إشارات URL غير مستقرة داخل `sitemap.xml`.
+- صفحة [about/index.html](/Users/yzydalshmry/Desktop/BRIGHTAI/about/index.html) تحتوي `title` فعلياً محلياً، مما يرجح أن الخطأ كان من نسخة منشورة أقدم أو من زحف قبل آخر تحديث.
 
 ## Optimization Queue
-- الأفضل لاحقاً توحيد schema المؤسسي في partial أو build step واحد حتى لا نكرر نفس التحديث على صفحات متعددة.
-- من الأفضل لاحقاً استبدال صفحات redirect بآلية نشر تبني clean routes مباشرة من `frontend/pages` لتقليل التعقيد.
-- في دورة SEO التالية نراجع بقية أخطاء Semrush ونربطها بأولوية التحويل التجاري والصفحات الأعلى قيمة.
+- الأفضل لاحقاً دمج clean routes مباشرة ضمن عملية النشر بدلاً من الاعتماد على صفحات redirect الثابتة.
+- من الأفضل إضافة فحص CI يتأكد أن كل `sitemap loc` يطابق canonical النهائي بدون redirect.
+- بعد النشر نعيد فحص Semrush ونجمع أي بقايا ناتجة عن الكاش أو نسخة الزحف السابقة قبل البدء في دورة SEO التالية.

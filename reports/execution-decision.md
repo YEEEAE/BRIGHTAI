@@ -1,15 +1,15 @@
-# Execution Decision — Semrush Structured Data & Broken Links Fix
+# Execution Decision — Semrush 4XX, Sitemap Redirects, and About Title Fix
 **Date:** 2026-03-08
 **Decision:** ✅ APPROVED
 
 ## Phase Results
 | Phase | Status | Notes |
 |-------|--------|-------|
-| Phase 1 — Audit | ✅ | لا يوجد تعارض معماري أو SEO/RTL يمنع إصلاح الـ schema وإغلاق الروابط المكسورة. |
-| Phase 2 — Business | ✅ | الإصلاح يحمي الظهور العضوي والثقة التقنية للموقع في السوق السعودي ويمنع تسرب الزحف إلى 404. |
-| Phase 3 — Simulation | ✅ | التعديلات لا تضيف مكتبات أو أوزان حرجة، وتأثيرها محصور في JSON-LD وصفحات redirect بسيطة. |
-| Phase 4 — Measurement | ✅ | تم تعريف مؤشرات مرتبطة بانخفاض أخطاء الزحف وتحسن اكتمال الـ structured data. |
-| Phase 5 — Modularity | ✅ | التعديلات محصورة في الصفحات المتأثرة وملفات alias ثابتة قابلة للإزالة لاحقاً دون كسر. |
+| Phase 1 — Audit | ✅ | لا يوجد تعارض معماري أو SEO/RTL يمنع إغلاق صفحات 4XX وتنظيف sitemap. |
+| Phase 2 — Business | ✅ | الإصلاح يحمي الثقة العضوية ويمنع خسارة صفحات مهمة في الزحف والسوق السعودي لا يحتمل هذه الإشارات السلبية. |
+| Phase 3 — Simulation | ✅ | التعديلات محصورة في alias routes وتوحيد URLs وإعادة توليد sitemap بدون تأثير سلبي على الأداء. |
+| Phase 4 — Measurement | ✅ | تم تعريف قياس مبني على اختفاء أخطاء 4XX وRedirect وTitle من إعادة فحص Semrush. |
+| Phase 5 — Modularity | ✅ | التعديلات معزولة وقابلة للإزالة لاحقاً عند بناء مسارات clean routes الأصلية. |
 
 ## Rejection Reason (if applicable)
 لا يوجد.
