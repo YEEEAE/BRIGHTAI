@@ -7,40 +7,18 @@ const CORE_MARKETING_FILES = [
   "ai-bots/index.html",
   "case-studies/index.html",
   "partners/index.html",
-  "tools/index.html",
-  "what-is-ai/index.html",
-  "docs.html"
+  "what-is-ai/index.html"
 ];
 
 export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "smart-automation/index.html",
   "data-analysis/index.html",
   "ai-agent/index.html",
-  "frontend/pages/smart-medical-archive/index.html",
-  "frontend/pages/ai-workflows/index.html",
   "consultation/index.html",
-  "machine-learning/index.html",
-  "frontend/pages/ai-scolecs/index.html",
-  "docs/services-overview.html",
-  "docs/services-overview-en.html",
-  "docs/consultation.html",
-  "docs/consultation-en.html",
-  "docs/ai-agent.html",
-  "docs/ai-agent-en.html",
-  "docs/smart-automation.html",
-  "docs/smart-automation-en.html",
-  "docs/data-analysis.html",
-  "docs/data-analysis-en.html"
+  "machine-learning/index.html"
 ];
 
-export const HIGH_CONFIDENCE_SECTOR_FILES = [
-  "frontend/pages/sectors/ecommerce.html",
-  "frontend/pages/sectors/energy.html",
-  "frontend/pages/sectors/finance.html",
-  "frontend/pages/sectors/healthcare.html",
-  "frontend/pages/sectors/logistics.html",
-  "frontend/pages/sectors/manufacturing.html"
-];
+export const HIGH_CONFIDENCE_SECTOR_FILES = [];
 
 export const HIGH_CONFIDENCE_BLOG_FILES = [
   "frontend/pages/blogger/ai-guide-saudi-business.html",
@@ -54,14 +32,12 @@ export const HIGH_CONFIDENCE_BLOG_FILES = [
   "frontend/pages/blogger/ai-healthcare-saudi.html",
   "frontend/pages/blogger/ai-innovation-saudi-arabia.html",
   "frontend/pages/blogger/ai-generative-content-industry-saudi-arabia.html",
-  "frontend/pages/blogger/digital-health-smart-archive.html",
   "frontend/pages/blogger/saudi-bank-fraud-detection.html",
   "frontend/pages/blogger/saudi-logistics-route-optimization.html",
   "frontend/pages/blogger/saudi-energy-predictive-maintenance.html",
   "frontend/pages/blogger/saudi-manufacturing-predictive-maintenance.html",
   "frontend/pages/blogger/saudi-ecommerce-ai-growth.html",
   "frontend/pages/blog/automation/hr-automation-saudi.html",
-  "frontend/pages/blog/data-analytics/kpi-dashboard-guide.html",
   "frontend/pages/blog/data-analytics/power-bi-saudi-guide.html"
 ];
 

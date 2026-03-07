@@ -14,7 +14,7 @@
             "url": "https://brightai.site/",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+                "url": "https://brightai.site/assets/images/Gemini.png",
                 "width": 200,
                 "height": 55,
                 "caption": "شعار شركة مُشرقة AI السعودية الرائدة في الذكاء الاصطناعي"
@@ -89,8 +89,8 @@
             "sameAs": [
                 "https://wa.me/966538229013",
                 "https://www.tiktok.com/@bright1ai",
-                "https://www.instagram.com/iililil44",
-                "https://www.youtube.com/@TeechLab"
+                "https://www.linkedin.com/company/brightai-saudi",
+                "https://www.youtube.com/@BrightAiSaudi"
             ],
             "knowsAbout": [
                 "الذكاء الاصطناعي",
@@ -166,7 +166,7 @@
             "@type": "LocalBusiness",
             "@id": "https://brightai.site/#localbusiness",
             "name": "مُشرقة AI",
-            "image": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+            "image": "https://brightai.site/assets/images/Gemini.png",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "مقر شركة مُشرقة AI الرئيسي",
@@ -210,7 +210,7 @@
             },
             "image": {
                 "@type": "ImageObject",
-                "url": "https://www2.0zz0.com/2025/06/23/22/317775783.png",
+                "url": "https://brightai.site/assets/images/Gemini.png",
                 "width": 200,
                 "height": 55
             },

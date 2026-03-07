@@ -62,6 +62,75 @@ const REMOVABLE_EXTERNAL_SCRIPT_PATTERNS = [
   /<script[\s\S]*?src=["']https:\/\/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=[^"']+["'][\s\S]*?<\/script>\s*/gi
 ];
 
+const LEGACY_ROUTE_REPLACEMENTS = [
+  ['/smart-medical-archive', '/health'],
+  ['/job.MAISco', '/ai-bots'],
+  ['/ai-scolecs', '/services'],
+  ['/ai-workflows', '/smart-automation'],
+  ['/try', '/tools'],
+  ['/demo/pricing', '/services'],
+  ['/demo', '/tools'],
+  ['/interview', '/consultation']
+];
+
+const LEGACY_EXTERNAL_REPLACEMENTS = [
+  ['https://d.top4top.io/p_33458j6zm1.png', 'https://brightai.site/assets/images/Gemini.png'],
+  ['https://www2.0zz0.com/2025/06/23/22/317775783.png', 'https://brightai.site/assets/images/Gemini.png'],
+  ['https://www2.0zz0.com/2025/07/11/04/899155430.png', 'https://brightai.site/assets/images/Gemini.png'],
+  ['https://www2.0zz0.com/2025/07/12/12/475874739.png', 'https://brightai.site/assets/images/Gemini.png'],
+  ['https://www2.0zz0.com/2025/07/28/09/699905019.png', 'https://brightai.site/assets/images/Gemini.png'],
+  ['https://www.instagram.com/iililil44', 'https://www.linkedin.com/company/brightai-saudi'],
+  ['https://www.youtube.com/@TeechLab', 'https://www.youtube.com/@BrightAiSaudi'],
+  ['https://x.com/BrightAIII', 'https://x.com/brightai_sa'],
+  ['https://www.tiktok.com/@bright1ai', 'https://x.com/brightai_sa']
+];
+
+const PAGE_SPECIFIC_REWRITES = [
+  {
+    test: (file) => file.endsWith('/ai-bots/index.html'),
+    transform: (html) => html
+      .replaceAll('https://d.top4top.io/p_33458j6zm1.png', 'https://brightai.site/assets/images/Gemini.png')
+      .replaceAll('https://www2.0zz0.com/2025/06/23/22/317775783.png', 'https://brightai.site/assets/images/Gemini.png')
+      .replaceAll('https://www.instagram.com/iililil44', 'https://www.linkedin.com/company/brightai-saudi')
+      .replaceAll('https://www.youtube.com/@TeechLab', 'https://www.youtube.com/@BrightAiSaudi')
+      .replaceAll('https://www.tiktok.com/@bright1ai', 'https://x.com/brightai_sa')
+      .replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@graph": \[[\s\S]*?<\/script>\s*/i,
+        ''
+      ),
+  },
+  {
+    test: (file) => file.endsWith('/services/index.html'),
+    transform: (html) => html
+      .replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "ItemList",[\s\S]*?<\/script>\s*/i,
+        ''
+      )
+      .replace('<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>\n', '')
+      .replace('<style type="text/tailwindcss">', '<style>'),
+  },
+  {
+    test: (file) => file.endsWith('/index.html'),
+    transform: (html) => html
+      .replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "WebSite",[\s\S]*?<\/script>\s*/i,
+        ''
+      )
+      .replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "SoftwareApplication",[\s\S]*?<\/script>\s*/i,
+        ''
+      )
+      .replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "HowTo",[\s\S]*?<\/script>\s*/i,
+        ''
+      )
+      .replace(
+        /<script type="application\/ld\+json">\s*\{\s*"@context": "https:\/\/schema\.org",\s*"@type": "ItemList",\s*"name": "خدمات Bright AI للذكاء الاصطناعي",[\s\S]*?<\/script>\s*/i,
+        ''
+      ),
+  },
+];
+
 async function exists(targetPath) {
   try {
     await fs.access(targetPath);
@@ -93,6 +162,26 @@ function preserveQueryReplacement(html, fromPath, toPath) {
   const escaped = fromPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const pattern = new RegExp(`${escaped}(\\?[^"'\\s>]*)?`, 'g');
   return html.replace(pattern, (_, query = '') => `${toPath}${query}`);
+}
+
+function rewriteLegacyRoutes(html) {
+  let updated = html;
+  for (const [fromPath, toPath] of LEGACY_ROUTE_REPLACEMENTS) {
+    updated = preserveQueryReplacement(updated, fromPath, toPath);
+    updated = updated.replaceAll(`https://brightai.site${fromPath}`, `https://brightai.site${toPath}`);
+  }
+  for (const [fromUrl, toUrl] of LEGACY_EXTERNAL_REPLACEMENTS) {
+    updated = updated.replaceAll(fromUrl, toUrl);
+  }
+  return updated;
+}
+
+function minifyHtml(html) {
+  return html
+    .replace(/<!--(?!\[if[\s\S]*?endif\]-->)[\s\S]*?-->/g, '')
+    .replace(/>\s+</g, '><')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 
 async function writeMinifiedAsset(plan) {
@@ -143,8 +232,43 @@ async function rewriteHtmlAssetReferences() {
       updated = preserveQueryReplacement(updated, `/${plan.source}`, `/${plan.target}`);
     }
 
+    updated = rewriteLegacyRoutes(updated);
+
+    for (const rewrite of PAGE_SPECIFIC_REWRITES) {
+      if (rewrite.test(htmlFile)) {
+        updated = rewrite.transform(updated);
+      }
+    }
+
+    updated = minifyHtml(updated);
+
     if (updated !== html) {
       await fs.writeFile(htmlFile, updated, 'utf8');
+    }
+  }
+}
+
+function isGenericTextArtifact(filePath) {
+  return [
+    '.js',
+    '.json',
+    '.txt',
+    '.xml',
+    '.css',
+  ].some((ext) => filePath.endsWith(ext));
+}
+
+async function rewriteGenericTextArtifacts() {
+  const textFiles = await walkFiles(
+    publishDir,
+    (file) => isGenericTextArtifact(file) && !file.endsWith('.html')
+  );
+
+  for (const textFile of textFiles) {
+    const original = await fs.readFile(textFile, 'utf8');
+    const updated = rewriteLegacyRoutes(original);
+    if (updated !== original) {
+      await fs.writeFile(textFile, updated, 'utf8');
     }
   }
 }
@@ -168,6 +292,7 @@ async function main() {
   }
 
   await rewriteHtmlAssetReferences();
+  await rewriteGenericTextArtifacts();
 
   console.log(`Prepared Netlify publish directory: ${publishDir}`);
 }

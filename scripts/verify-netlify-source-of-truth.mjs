@@ -170,9 +170,13 @@ const requiredPublicHeaderPaths = [
   '/case-studies',
   '/what-is-ai',
   '/partners',
-  '/tools',
   '/health',
   '/machine-learning',
+  '/blog/*',
+];
+
+const requiredNoindexHeaderPaths = [
+  '/tools',
   '/docs',
   '/ai-workflows',
   '/ai-scolecs',
@@ -186,7 +190,6 @@ const requiredPublicHeaderPaths = [
   '/terms',
   '/sitemap',
   '/offline',
-  '/blog/*',
   '/docs/*',
   '/ai-bots/*',
   '/try/*',
@@ -261,6 +264,25 @@ for (const headerPath of requiredPublicHeaderPaths) {
       `Missing or incorrect X-Robots-Tag for ${headerPath}`
     );
   }
+}
+
+for (const headerPath of requiredNoindexHeaderPaths) {
+  const block = getHeaderBlock(headerPath);
+  check(
+    block.length > 0,
+    `noindex header block exists for ${headerPath}`,
+    `Missing [[headers]] block for ${headerPath}`
+  );
+  check(
+    block.length > 0 && headerHasExactValue(block, 'Cache-Control', 'public, max-age=0, must-revalidate'),
+    `noindex cache policy matches for ${headerPath}`,
+    `Missing or incorrect Cache-Control for ${headerPath}`
+  );
+  check(
+    block.length > 0 && headerHasExactValue(block, 'X-Robots-Tag', 'noindex,nofollow,noarchive'),
+    `noindex robots policy matches for ${headerPath}`,
+    `Missing or incorrect X-Robots-Tag for ${headerPath}`
+  );
 }
 
 check(

@@ -1141,7 +1141,7 @@ X-Robots-Tag = "index,follow"
 for = "/tools"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/health"
@@ -1159,79 +1159,79 @@ X-Robots-Tag = "index,follow"
 for = "/docs"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/ai-workflows"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/ai-scolecs"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/smart-medical-archive"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/job.MAISco"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/try"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/demo"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/demo/pricing"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/interview"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/privacy-cookies"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/terms"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/sitemap"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/offline"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/blog/*"
@@ -1243,37 +1243,37 @@ X-Robots-Tag = "index,follow"
 for = "/docs/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/ai-bots/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/try/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/demo/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/interview/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/sectors/*"
 [headers.values]
 Cache-Control = "public, max-age=0, must-revalidate"
-X-Robots-Tag = "index,follow"
+X-Robots-Tag = "noindex,nofollow,noarchive"
 
 [[headers]]
 for = "/frontend/pages/*"

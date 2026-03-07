@@ -7,7 +7,7 @@ User-agent: *
 Allow: /
 Allow: /frontend/css/
 Allow: /frontend/js/
-Allow: /frontend/pages/smart-medical-archive/
+Allow: /frontend/pages/health/
 Allow: /assets/
 Allow: /manifest.json
 

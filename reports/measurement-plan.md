@@ -1,17 +1,20 @@
-# Measurement Plan — Uncompressed Asset Warning Reduction
+# Measurement Plan — Semrush Remediation Cycle
 **Deploy Date:** 2026-03-07
 
 ## KPI Target
-- KPI: Semrush `uncompressed JavaScript and CSS files`
-- Baseline: issue present in the Site Audit generated on **March 6, 2026**, with local evidence on `about/`
-- Goal: remove the local artifact references most likely causing the warning and reduce the next Semrush warning count
+- KPI: عدد `Errors` و`Warnings` في Semrush Site Audit
+- Baseline: وجود أخطاء وتحذيرات متعددة في تقرير **March 7, 2026**
+- Goal: تصفير العناصر المحلية المسببة داخل artifact النهائي وتجهيز الموقع لنتيجة recrawl نظيفة
 
 ## Tracking Event
-- Event Name: `publish_artifact_external_script_cleanup`
-- Trigger: اكتمال `prepare-netlify-publish` بدون أي مرجع إلى `js.sentry-cdn.com` أو `pagead2.googlesyndication.com` داخل `.netlify-publish`
-- Payload: `artifact_html_files_scanned`, `sentry_cdn_refs`, `adsense_refs`, `report_date`
+- Event Name: `semrush_remediation_artifact_verified`
+- Trigger: اكتمال `prepare-netlify-publish` مع تحقق محلي من:
+  `seo:check = 0 errors / 0 warnings`
+  وعدم وجود الروابط الخارجية المكسورة داخل `.netlify-publish`
+  وارتفاع الصفحات الأساسية فوق الحد التشغيلي لنسبة text-to-HTML
+- Payload: `sitemap_urls`, `seo_errors`, `seo_warnings`, `services_ratio`, `machine_learning_ratio`, `contact_ratio`, `artifact_broken_link_refs`
 
 ## Success Criteria
-- Minimum Improvement: اختفاء المرجعين الخارجيين من artifact النهائي بالكامل
+- Minimum Improvement: اختفاء المسببات المحلية بالكامل من artifact النهائي
 - Evaluation Window: 7 days
-- Rollback Trigger: ظهور أي مرجع جديد داخل `.netlify-publish` إلى `js.sentry-cdn.com` أو `pagead2.googlesyndication.com`
+- Rollback Trigger: رجوع أي مسار مفهرس إلى noindex خاطئ، أو ظهور broken external refs، أو هبوط `seo:check` عن الصفر
