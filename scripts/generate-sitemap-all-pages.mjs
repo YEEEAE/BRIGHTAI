@@ -8,6 +8,11 @@ import {
   relPathToCanonical,
 } from "./seo-url-map.mjs";
 import {
+  extractCanonicalHref,
+  hasMetaRefresh,
+  hasNoindexDirective,
+} from "./sitemap-audit-utils.mjs";
+import {
   HIGH_CONFIDENCE_BLOG_FILES,
   HIGH_CONFIDENCE_CORE_FILES,
   HIGH_CONFIDENCE_SECTOR_FILES,
@@ -39,17 +44,6 @@ function xmlEscape(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
-}
-
-function extractCanonicalHref(html) {
-  const match = html.match(/<link\b[^>]*\brel\s*=\s*["']canonical["'][^>]*>/i);
-  if (!match) return "";
-  const href = match[0].match(/\bhref\s*=\s*["']([^"']+)["']/i);
-  return (href?.[1] || "").trim();
-}
-
-function hasMetaRefresh(html) {
-  return /<meta\s+http-equiv=["']refresh["']/i.test(html);
 }
 
 function stripContent(html) {
@@ -103,6 +97,10 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
 
   if (hasMetaRefresh(html)) {
     reasons.push("meta_refresh");
+  }
+
+  if (hasNoindexDirective(html)) {
+    reasons.push("robots_noindex");
   }
 
   if (!canonicalTagHref || canonicalTagHref !== expectedCanonical || canonicalTagNormalized !== expectedCanonical) {
@@ -380,7 +378,7 @@ function renderReport({ entries, analyses, excludedInventory }) {
     "",
     "## Inclusion Policy",
     "- نضم فقط الصفحات المحددة ضمن high-confidence sitemap scope.",
-    "- أي صفحة تفشل في canonical النهائي أو تحتوي إشارات legacy أو مسارات assets معطوبة أو محتوى أضعف من الحد الأدنى تُستبعد تلقائياً.",
+    "- أي صفحة تفشل في canonical النهائي أو تحتوي `noindex` أو redirect/meta refresh أو إشارات legacy أو مسارات assets معطوبة أو محتوى أضعف من الحد الأدنى تُستبعد تلقائياً.",
     "- لم يتم تعديل أي `<title>` ضمن هذه المرحلة.",
     "",
     "## Top Exclusion Reasons",

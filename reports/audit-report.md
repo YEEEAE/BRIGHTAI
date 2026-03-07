@@ -1,31 +1,25 @@
 # Governance Audit Report
 **Date:** 2026-03-07
 **Project:** BrightAI
+**Request:** Reduce Semrush `uncompressed JavaScript and CSS files`
 
 ## Domain Scores
 | Domain | Score | Status |
 |--------|-------|--------|
-| Architecture Integrity | 87 | ⚠️ |
-| SEO Governance | 98 | ✅ |
-| Performance Posture | 96 | ✅ |
-| RTL Integrity | 95 | ✅ |
-| Security Surface | 89 | ⚠️ |
-| Modularity Health | 90 | ✅ |
+| Architecture Integrity | 92 | ✅ |
+| SEO Governance | 91 | ✅ |
+| Performance Posture | 94 | ✅ |
+| RTL Integrity | 94 | ✅ |
+| Security Surface | 89 | ✅ |
+| Modularity Health | 93 | ✅ |
 
 ## Critical Findings
-- لا يوجد `CRITICAL` بعد دورة الإصلاح الحالية.
+- لا يوجد.
 
 ## Important Findings
-- تمت معالجة إشارات SEO المضللة في صفحات الخطأ `404/500` عبر إزالة `canonical` و`hreflang` والإبقاء على `noindex,nofollow,noarchive`.
-- تم تثبيت slug عام لمقالة `generative-artificial-intelligence` وتقليل احتمالات `mixed-case URL` و`redirect chain` من خلال تحديث `netlify.toml` والروابط الداخلية وخرائط canonical.
-- تم تحديد loop فعلي في الإنتاج على مسارات `docs/*` حيث كان `https://brightai.site/docs/solutions-healthcare-en` يعيد `301` إلى نفسه. السبب كان قاعدة `/docs/:slug/ -> /docs/:slug` في `netlify.toml` وتمت إزالتها مع إضافة فحص يحظر رجوعها.
-- تمت معالجة تعارضات `hreflang` و`canonical` في الصفحات الجذرية directory-backed مثل `/about/` و`/services/` و`/blog/`. جرى توحيد المرجع الرسمي لهذه الصفحات إلى النسخة النهائية `200` ذات trailing slash، مع تحديث خرائط SEO و`sitemap.xml` وفحوصات CI لتفهم هذا النمط بشكل صريح.
-- تم فتح وصول الزواحف إلى موارد صفحة `/smart-medical-archive` اللازمة للرندر من خلال `robots.txt` بدون فك حظر فهرسة بقية مسارات `frontend/pages`.
-- تمت معالجة دفعة Semrush الخاصة بـ `invalid structured data` عبر إزالة `mainEntityOfPage` من business schema في صفحات الخدمات، وتبسيط `areaServed` في الصفحة الرئيسية، وتصحيح `Organization` في صفحة التواصل، واستكمال حقول `Offer.price` و`WebApplication` في صفحات الأدوات والتسعير والتعليم.
-- ما زال لدينا مخزون legacy واسع داخل `frontend/pages/blogger` خارج `sitemap.xml` ويحتاج سياسة أشد: `merge` أو `redirect` أو `archive`.
-- ما زالت `CSP` تسمح `unsafe-inline` في بعض الأسطح العامة، وهذا مقبول مرحلياً لكنه ليس الوضع النهائي المستهدف.
+- صفحة [`about/index.html`](/Users/yzydalshmry/Desktop/BRIGHTAI/about/index.html) كانت تحمل AdSense خارجي (`pagead2.googlesyndication.com`) وهو أقرب سبب مباشر لسطر Semrush المحلي الظاهر على الصفحة 56 من التقرير.
+- عدد كبير من الصفحات كان يحمّل Sentry من CDN خارجي (`js.sentry-cdn.com`) بدون حاجة تشغيلية صارمة داخل artifact النهائي، لأن [`frontend/js/sentry-init.js`](/Users/yzydalshmry/Desktop/BRIGHTAI/frontend/js/sentry-init.js) يتعامل أصلاً مع غياب الـ SDK بدون كسر الصفحة.
 
 ## Optimization Queue
-- إكمال تنظيف مخزون Blogger legacy غير المدرج في `sitemap.xml` مع إزالة الصفحات التحويلية الرقيقة بعد تثبيت كل 301 اللازمة.
-- ربط فهرس البحث الداخلي ومخرجات الأرشفة بأي canonical جديد بشكل آلي بدل التعديل اليدوي.
-- إضافة فحص آلي ضمن CI يرفض أي slug عام مختلط الأحرف أو أي رابط مشاركة يرجع إلى `/frontend/pages/*`.
+- إذا استلزم العمل الإبقاء على Sentry مستقبلاً، الأفضل بناء SDK محلي static بدل تحميله من CDN خارجي.
+- إذا بقي تحذير Semrush بعد النشر، وقتها نحتاج تحقق شبكي مباشر من `Content-Encoding` على الإنتاج لأن الجزء المتبقي سيكون على مستوى الخادم/CDN لا HTML.

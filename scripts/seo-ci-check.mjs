@@ -6,7 +6,17 @@ import {
   normalizeSiteUrl,
   relPathToCanonical,
 } from "./seo-url-map.mjs";
-import { SITEMAP_REQUIRED_SERVICE_PAGE_FILES } from "./high-confidence-sitemap-config.mjs";
+import {
+  HIGH_CONFIDENCE_CORE_FILES,
+  SITEMAP_REQUIRED_SERVICE_PAGE_FILES,
+} from "./high-confidence-sitemap-config.mjs";
+import {
+  buildLocalFileCandidates,
+  decodePathFromLoc,
+  extractCanonicalHref,
+  hasMetaRefresh,
+  hasNoindexDirective,
+} from "./sitemap-audit-utils.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
@@ -48,6 +58,13 @@ function buildRequiredHreflangForFile(file, lowerPathMap) {
 }
 
 const SERVICE_PAGE_MAP = new Map(SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
+const HREFLANG_PAGE_FILES = [...new Set(HIGH_CONFIDENCE_CORE_FILES)];
+const HREFLANG_PAGE_MAP = new Map(HREFLANG_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
+const HREFLANG_PAGES = HREFLANG_PAGE_FILES.map((file) => ({
+  file,
+  canonical: relPathToCanonical(file, BASE_URL),
+  hreflang: buildRequiredHreflangForFile(file, HREFLANG_PAGE_MAP),
+}));
 const SERVICE_PAGES = SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => ({
   file,
   canonical: relPathToCanonical(file, BASE_URL),
@@ -135,139 +152,6 @@ function collectTypesFromJsonLd(node, out = new Set()) {
   return out;
 }
 
-function decodePathFromLoc(loc) {
-  try {
-    const url = new URL(loc);
-    return decodeURIComponent(url.pathname);
-  } catch {
-    return null;
-  }
-}
-
-function normalizeFsPath(candidate) {
-  return candidate.replace(/\\/g, "/").replace(/\/+/g, "/").replace(/^\.\//, "");
-}
-
-function addCandidate(candidates, candidate) {
-  const normalized = normalizeFsPath(candidate);
-  if (!normalized || normalized === ".") return;
-  candidates.add(normalized);
-}
-
-function buildLocalFileCandidates(decodedPath) {
-  const localPath = (decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath).replace(/\/+$/, "");
-  const candidates = new Set();
-
-  if (localPath === "docs") {
-    addCandidate(candidates, "docs.html");
-  }
-
-  if (localPath.startsWith("docs/")) {
-    const slug = localPath.slice("docs/".length);
-    addCandidate(candidates, path.join("docs", `${slug}.html`));
-  }
-
-  if (localPath === "blog") {
-    addCandidate(candidates, "blog/index.html");
-  }
-
-  if (localPath.startsWith("blog/automation/")) {
-    const slug = localPath.slice("blog/automation/".length);
-    addCandidate(candidates, path.join("frontend/pages/blog/automation", `${slug}.html`));
-  }
-
-  if (localPath.startsWith("blog/data-analytics/")) {
-    const slug = localPath.slice("blog/data-analytics/".length);
-    addCandidate(candidates, path.join("frontend/pages/blog/data-analytics", `${slug}.html`));
-  }
-
-  if (localPath.startsWith("blog/")) {
-    const slug = localPath.slice("blog/".length);
-    addCandidate(candidates, path.join("frontend/pages/blogger", `${slug}.html`));
-  }
-
-  if (localPath.startsWith("ai-bots/")) {
-    const slug = localPath.slice("ai-bots/".length);
-    addCandidate(candidates, path.join("frontend/pages/ai-bots", slug, "index.html"));
-  }
-
-  if (localPath.startsWith("try/")) {
-    const slug = localPath.slice("try/".length);
-    addCandidate(candidates, path.join("frontend/pages/try", slug, "index.html"));
-  }
-
-  if (localPath === "try") {
-    addCandidate(candidates, "frontend/pages/try/index.html");
-  }
-
-  if (localPath === "demo") {
-    addCandidate(candidates, "frontend/pages/demo/index.html");
-  }
-
-  if (localPath.startsWith("demo/resources/")) {
-    const slug = localPath.slice("demo/resources/".length);
-    addCandidate(candidates, path.join("frontend/pages/demo/resources", slug, "index.html"));
-  }
-
-  if (localPath.startsWith("demo/")) {
-    const slug = localPath.slice("demo/".length);
-    addCandidate(candidates, path.join("frontend/pages/demo", slug, "index.html"));
-  }
-
-  if (localPath === "interview") {
-    addCandidate(candidates, "frontend/pages/interview/index.html");
-  }
-
-  if (localPath.startsWith("interview/pages/")) {
-    const sub = localPath.slice("interview/pages/".length);
-    addCandidate(candidates, path.join("frontend/pages/interview/pages", `${sub}.html`));
-    addCandidate(candidates, path.join("frontend/pages/interview/pages", sub, "index.html"));
-  }
-
-  if (localPath.startsWith("interview/")) {
-    const slug = localPath.slice("interview/".length);
-    addCandidate(candidates, path.join("frontend/pages/interview", `${slug}.html`));
-    addCandidate(candidates, path.join("frontend/pages/interview", slug, "index.html"));
-  }
-
-  if (localPath.startsWith("sectors/")) {
-    const slug = localPath.slice("sectors/".length);
-    addCandidate(candidates, path.join("frontend/pages/sectors", `${slug}.html`));
-  }
-
-  [
-    "ai-workflows",
-    "ai-scolecs",
-    "smart-medical-archive",
-    "job.MAISco",
-    "privacy-cookies",
-    "terms",
-    "sitemap",
-    "offline",
-  ].forEach((slug) => {
-    if (localPath === slug) {
-      addCandidate(candidates, path.join("frontend/pages", slug, "index.html"));
-    }
-  });
-
-  addCandidate(candidates, localPath);
-
-  if (!path.extname(localPath)) {
-    addCandidate(candidates, `${localPath}.html`);
-    addCandidate(candidates, path.join(localPath, "index.html"));
-  }
-
-  if (!localPath.startsWith("frontend/pages/")) {
-    addCandidate(candidates, path.join("frontend/pages", localPath));
-    if (!path.extname(localPath)) {
-      addCandidate(candidates, path.join("frontend/pages", `${localPath}.html`));
-      addCandidate(candidates, path.join("frontend/pages", localPath, "index.html"));
-    }
-  }
-
-  return Array.from(candidates);
-}
-
 async function readFileSafe(file) {
   try {
     const content = await fs.readFile(path.join(ROOT, file), "utf8");
@@ -277,21 +161,7 @@ async function readFileSafe(file) {
   }
 }
 
-async function checkServicePage(page) {
-  const result = {
-    file: page.file,
-    errors: [],
-    warnings: [],
-  };
-
-  const fileRead = await readFileSafe(page.file);
-  if (!fileRead.ok) {
-    result.errors.push("File is missing or unreadable.");
-    return result;
-  }
-
-  const html = fileRead.content;
-
+function validateCanonicalAndHreflang(html, page, result) {
   const canonicalLinks = extractLinksByRel(html, "canonical");
   if (canonicalLinks.length !== 1) {
     result.errors.push(`Expected 1 canonical link, found ${canonicalLinks.length}.`);
@@ -336,6 +206,40 @@ async function checkServicePage(page) {
   if (extraHreflangs.length > 0) {
     result.errors.push(`Unexpected hreflang values: ${extraHreflangs.join(", ")}.`);
   }
+}
+
+async function checkHreflangPage(page) {
+  const result = {
+    file: page.file,
+    errors: [],
+    warnings: [],
+  };
+
+  const fileRead = await readFileSafe(page.file);
+  if (!fileRead.ok) {
+    result.errors.push("File is missing or unreadable.");
+    return result;
+  }
+
+  validateCanonicalAndHreflang(fileRead.content, page, result);
+  return result;
+}
+
+async function checkServicePage(page) {
+  const result = {
+    file: page.file,
+    errors: [],
+    warnings: [],
+  };
+
+  const fileRead = await readFileSafe(page.file);
+  if (!fileRead.ok) {
+    result.errors.push("File is missing or unreadable.");
+    return result;
+  }
+
+  const html = fileRead.content;
+  validateCanonicalAndHreflang(html, page, result);
 
   const ogImageValues = extractMetaValues(html, "og:image", "property");
   if (ogImageValues.length !== 1) {
@@ -464,20 +368,48 @@ async function checkSitemap() {
     }
 
     const localCandidates = buildLocalFileCandidates(decodedPath);
-    let resolved = false;
+    let resolvedFile = null;
     for (const candidate of localCandidates) {
       try {
-        await fs.access(path.join(ROOT, candidate));
-        resolved = true;
+        const stat = await fs.stat(path.join(ROOT, candidate));
+        if (!stat.isFile()) {
+          continue;
+        }
+        resolvedFile = candidate;
         break;
       } catch {
         // Try next candidate.
       }
     }
 
-    if (!resolved) {
+    if (!resolvedFile) {
       const primary = decodedPath.startsWith("/") ? decodedPath.slice(1) : decodedPath;
       result.errors.push(`Sitemap points to a missing file: ${loc} -> ${primary}`);
+      continue;
+    }
+
+    let html;
+    try {
+      html = await fs.readFile(path.join(ROOT, resolvedFile), "utf8");
+    } catch (error) {
+      result.errors.push(`Unable to read sitemap target file: ${loc} -> ${resolvedFile} (${error.message})`);
+      continue;
+    }
+
+    if (hasMetaRefresh(html)) {
+      result.errors.push(`Redirect-like page is forbidden in sitemap: ${loc} -> ${resolvedFile}`);
+    }
+
+    if (hasNoindexDirective(html)) {
+      result.errors.push(`Noindex page is forbidden in sitemap: ${loc} -> ${resolvedFile}`);
+    }
+
+    const canonicalHref = extractCanonicalHref(html);
+    const normalizedCanonical = normalizeSiteUrl(canonicalHref, BASE_URL);
+    if (!normalizedCanonical || normalizedCanonical !== loc) {
+      result.errors.push(
+        `Sitemap URL must self-canonicalize: ${loc} -> ${resolvedFile} (found '${canonicalHref || "missing"}')`
+      );
     }
   }
 
@@ -491,28 +423,37 @@ async function checkSitemap() {
 }
 
 async function main() {
-  const pageResults = [];
+  const hreflangResults = [];
+  for (const page of HREFLANG_PAGES) {
+    hreflangResults.push(await checkHreflangPage(page));
+  }
+
+  const serviceResults = [];
   for (const page of SERVICE_PAGES) {
-    pageResults.push(await checkServicePage(page));
+    serviceResults.push(await checkServicePage(page));
   }
 
   const sitemapResult = await checkSitemap();
 
-  const pageErrors = pageResults.flatMap((r) =>
+  const combinedPageResults = [...hreflangResults, ...serviceResults];
+  const pageErrors = combinedPageResults.flatMap((r) =>
     r.errors.map((message) => `[${r.file}] ${message}`)
   );
-  const pageWarnings = pageResults.flatMap((r) =>
+  const pageWarnings = combinedPageResults.flatMap((r) =>
     r.warnings.map((message) => `[${r.file}] ${message}`)
   );
 
   const errors = [...pageErrors, ...sitemapResult.errors.map((x) => `[sitemap] ${x}`)];
   const warnings = [...pageWarnings, ...sitemapResult.warnings.map((x) => `[sitemap] ${x}`)];
 
-  const passedPages = pageResults.filter((r) => r.errors.length === 0).length;
+  const passedHreflangPages = hreflangResults.filter((r) => r.errors.length === 0).length;
+  const passedServicePages = serviceResults.filter((r) => r.errors.length === 0).length;
 
   console.log(`SEO CI CHECK`);
-  console.log(`- Pages checked: ${pageResults.length}`);
-  console.log(`- Pages passed: ${passedPages}`);
+  console.log(`- Hreflang pages checked: ${hreflangResults.length}`);
+  console.log(`- Hreflang pages passed: ${passedHreflangPages}`);
+  console.log(`- Service pages checked: ${serviceResults.length}`);
+  console.log(`- Service pages passed: ${passedServicePages}`);
   console.log(`- Sitemap URLs: ${sitemapResult.summary.urls}`);
   console.log(`- Errors: ${errors.length}`);
   console.log(`- Warnings: ${warnings.length}`);
