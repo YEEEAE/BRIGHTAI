@@ -1,19 +1,17 @@
 #!/usr/bin/env node
 import fs from "node:fs/promises";
 import path from "node:path";
+import { encodeUrlPath, relPathToSitePath } from "./seo-url-map.mjs";
 
 const ROOT = process.cwd();
+const BASE_URL = "https://brightai.site";
 const DATE_STAMP = "2026-03-08";
-const REPORT_PATH = path.join(
-  ROOT,
-  "reports",
-  `semrush-incorrect-hreflang-links-${DATE_STAMP}.json`,
-);
-const OUTPUT_REPORT = path.join(
-  ROOT,
-  "reports",
-  `semrush-incorrect-hreflang-fixed-${DATE_STAMP}.md`,
-);
+const REPORT_PATH =
+  process.argv[2] ||
+  path.join(ROOT, "reports", `semrush-incorrect-hreflang-links-${DATE_STAMP}.json`);
+const OUTPUT_REPORT =
+  process.argv[3] ||
+  path.join(ROOT, "reports", `semrush-incorrect-hreflang-fixed-${DATE_STAMP}.md`);
 
 function normalizeRelPath(relPath) {
   return relPath.replace(/\\/g, "/");
@@ -32,23 +30,31 @@ function sourceUrlToRelPath(sourceUrl) {
   return pathname.slice(1);
 }
 
-function relPathToFrontendPath(relPath) {
+function relPathToPublicUrl(relPath) {
   const normalized = normalizeRelPath(relPath);
-  if (normalized === "frontend/pages/index.html") {
-    return "/frontend/pages/";
+  let sitePath = relPathToSitePath(normalized);
+
+  if (!sitePath) {
+    if (normalized === "frontend/pages/index.html") {
+      sitePath = "/";
+    } else if (normalized.endsWith("/index.html")) {
+      sitePath = `/${normalized
+        .replace(/^frontend\/pages\//, "")
+        .replace(/\/index\.html$/, "")}/`;
+    } else if (normalized.startsWith("frontend/pages/")) {
+      sitePath = `/${normalized
+        .replace(/^frontend\/pages\//, "")
+        .replace(/\.html$/, "")}`;
+    } else {
+      throw new Error(`Unable to derive public URL from ${normalized}`);
+    }
   }
 
-  if (normalized.endsWith("/index.html")) {
-    return `/${normalized
-      .replace(/\/index\.html$/, "/")
-      .replace(/^\/+/, "")}`;
+  if (normalized.endsWith("/index.html") && sitePath !== "/" && !sitePath.endsWith("/")) {
+    sitePath = `${sitePath}/`;
   }
 
-  if (normalized.startsWith("frontend/pages/")) {
-    return `/${normalized}`;
-  }
-
-  throw new Error(`Unable to derive frontend path from ${normalized}`);
+  return `${BASE_URL}${encodeUrlPath(sitePath || "/")}`;
 }
 
 function replaceAttr(tag, attr, value) {
@@ -129,7 +135,7 @@ const results = [];
 
 for (const relPath of relPaths) {
   const absPath = path.join(ROOT, relPath);
-  const finalUrl = relPathToFrontendPath(relPath);
+  const finalUrl = relPathToPublicUrl(relPath);
   const original = await fs.readFile(absPath, "utf8");
 
   let updated = original;
