@@ -6,8 +6,12 @@ import { relPathToSitePath } from "./seo-url-map.mjs";
 
 const ROOT = process.cwd();
 const SITE_ORIGIN = "https://brightai.site";
-const REPORT_PATH = path.join(ROOT, "reports", "semrush-broken-internal-links-2026-03-08.json");
-const REPORT_OUTPUT = path.join(ROOT, "reports", "semrush-broken-links-rewritten-to-frontend-pages.md");
+const REPORT_PATH =
+  process.argv[2] ||
+  path.join(ROOT, "reports", "semrush-broken-internal-links-2026-03-08.json");
+const REPORT_OUTPUT =
+  process.argv[3] ||
+  path.join(ROOT, "reports", "semrush-broken-links-rewritten-to-frontend-pages.md");
 
 const FILE_PATTERNS = ["**/*.html", "**/*.htm", "**/*.js", "**/*.mjs", "**/*.css"];
 const IGNORE_PATTERNS = [
