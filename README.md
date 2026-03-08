@@ -11,16 +11,19 @@
 ## التشغيل المحلي
 
 ### الواجهة
+
 ```bash
 npm run dev:frontend
 ```
 
 ### الـ backend
+
 ```bash
 npm run dev:backend
 ```
 
 ### المنصة
+
 ```bash
 npm run dev:platform
 ```
@@ -39,7 +42,7 @@ npm test
 
 ## النشر الحالي
 
-- GitHub هو مصدر الحقيقة للكود.
+-  GitHub هو مصدر الحقيقة للكود.
 - `backend` يُنشر على Render.
 - الرابط الحالي للـ API:
   `https://brightai-92px.onrender.com`
