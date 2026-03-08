@@ -1,0 +1,101 @@
+# Broken Links Rewritten To Frontend Pages
+
+- Date: 2026-03-08T01:00:39.421Z
+- Broken targets mapped: 87
+- Files updated: 92
+
+## Updated Files
+
+- `blog/index.html` => 8 replacements
+- `frontend/pages/blogger/ai-healthcare-saudi.html` => 3 replacements
+- `frontend/pages/ai-scolecs/index.html` => 2 replacements
+- `frontend/pages/blog/data-analytics/kpi-dashboard-guide.html` => 2 replacements
+- `frontend/pages/blog/data-analytics/power-bi-saudi-guide.html` => 2 replacements
+- `frontend/pages/blogger/ai-agent.html` => 2 replacements
+- `frontend/pages/blogger/ai-energy-saudi.html` => 2 replacements
+- `frontend/pages/blogger/ai-finance-saudi.html` => 2 replacements
+- `frontend/pages/blogger/ai-generative-content-industry-saudi-arabia.html` => 2 replacements
+- `frontend/pages/blogger/ai-transformation.html` => 2 replacements
+- `frontend/pages/blogger/ai.html` => 2 replacements
+- `frontend/pages/blogger/atou-job.html` => 2 replacements
+- `frontend/pages/blogger/atou.doc.html` => 2 replacements
+- `frontend/pages/blogger/auto.html` => 2 replacements
+- `frontend/pages/blogger/big-data-analysis.html` => 2 replacements
+- `frontend/pages/blogger/business-intelligence-saudi.html` => 2 replacements
+- `frontend/pages/blogger/case-study-saudi-companies-ai-agents-customer-service.html` => 2 replacements
+- `frontend/pages/blogger/cloude-opus-4.6.html` => 2 replacements
+- `frontend/pages/blogger/commerce-ministry-chatbot.html` => 2 replacements
+- `frontend/pages/blogger/digital-banking-saudi.html` => 2 replacements
+- `frontend/pages/blogger/digital-health-smart-archive.html` => 2 replacements
+- `frontend/pages/blogger/digital.html` => 2 replacements
+- `frontend/pages/blogger/future-of-intelligent-data-analysis-finance-sector.html` => 2 replacements
+- `frontend/pages/blogger/Generative-artificial-intelligence.html` => 2 replacements
+- `frontend/pages/blogger/gov.html` => 2 replacements
+- `frontend/pages/blogger/intelligent-data-analysis.html` => 2 replacements
+- `frontend/pages/blogger/ksu-adaptive-learning.html` => 2 replacements
+- `frontend/pages/blogger/nca-compliance.html` => 2 replacements
+- `frontend/pages/blogger/private-hospital-scheduling-optimization.html` => 2 replacements
+- `frontend/pages/blogger/process-automation.html` => 2 replacements
+- `frontend/pages/blogger/production-line.html` => 2 replacements
+- `frontend/pages/blogger/riyadh-municipality-ai-license.html` => 2 replacements
+- `frontend/pages/blogger/saudi-agritech-smart-farming.html` => 2 replacements
+- `frontend/pages/blogger/saudi-bank-fraud-detection.html` => 2 replacements
+- `frontend/pages/blogger/saudi-dates-quality-ai.html` => 2 replacements
+- `frontend/pages/blogger/saudi-ecommerce-ai-growth.html` => 2 replacements
+- `frontend/pages/blogger/saudi-edtech-personalized-learning.html` => 2 replacements
+- `frontend/pages/blogger/saudi-energy-predictive-maintenance.html` => 2 replacements
+- `frontend/pages/blogger/saudi-factory-ai-productivity.html` => 2 replacements
+- `frontend/pages/blogger/saudi-hospitality-dynamic-pricing.html` => 2 replacements
+- `frontend/pages/blogger/saudi-insurance-claims-ai.html` => 2 replacements
+- `frontend/pages/blogger/saudi-logistics-route-optimization.html` => 2 replacements
+- `frontend/pages/blogger/saudi-manufacturing-predictive-maintenance.html` => 2 replacements
+- `frontend/pages/blogger/saudi-mining-ai-exploration.html` => 2 replacements
+- `frontend/pages/blogger/saudi-petrochemical-ai-safety.html` => 2 replacements
+- `frontend/pages/blogger/saudi-real-estate-ai-valuation.html` => 2 replacements
+- `frontend/pages/blogger/saudi-renewable-energy-ai.html` => 2 replacements
+- `frontend/pages/blogger/saudi-smart-city-traffic.html` => 2 replacements
+- `frontend/pages/blogger/saudi-sports-analytics-ai.html` => 2 replacements
+- `frontend/pages/blogger/saudi-tourism-ai-guide.html` => 2 replacements
+- `frontend/pages/blogger/saudi-waste-management-ai.html` => 2 replacements
+- `frontend/pages/blogger/smart-automation-benefits.html` => 2 replacements
+- `frontend/pages/blogger/smart-crm-system.html` => 2 replacements
+- `frontend/pages/blogger/smart-document-processing.html` => 2 replacements
+- `frontend/pages/blogger/smart-inventory-management.html` => 2 replacements
+- `frontend/pages/blogger/transport-logistics-solutions.html` => 2 replacements
+- `frontend/pages/blogger/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html` => 2 replacements
+- `frontend/pages/blogger/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html` => 2 replacements
+- `frontend/pages/blogger/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html` => 2 replacements
+- `frontend/pages/blogger/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html` => 2 replacements
+- `frontend/pages/blogger/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html` => 2 replacements
+- `frontend/pages/blogger/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html` => 2 replacements
+- `frontend/pages/blogger/الذكاء-الاصطناعي-و-التسويق.html` => 2 replacements
+- `frontend/pages/blogger/تحليل-البيانات.html` => 2 replacements
+- `frontend/pages/blogger/تعلم-الآلة-و-الأعمال.html` => 2 replacements
+- `frontend/pages/blogger/مقال-تحليل.html` => 2 replacements
+- `index.html` => 2 replacements
+- `frontend/pages/ai-bots/BrightMath/index.html` => 1 replacements
+- `frontend/pages/ai-bots/BrightRecruiter/index.html` => 1 replacements
+- `frontend/pages/ai-bots/BrightSales/index.html` => 1 replacements
+- `frontend/pages/ai-bots/BrightSupport/index.html` => 1 replacements
+- `frontend/pages/blogger/ production-line.html` => 1 replacements
+- `frontend/pages/blogger/ai-guide-saudi-business.html` => 1 replacements
+- `frontend/pages/blogger/ai-implementation-cost-guide.html` => 1 replacements
+- `frontend/pages/blogger/ai-innovation-saudi-arabia.html` => 1 replacements
+- `frontend/pages/blogger/business-intelligence-data-analysis.html` => 1 replacements
+- `frontend/pages/blogger/chatgpt-vs-claude-vs-gemini-arabic.html` => 1 replacements
+- `frontend/pages/blogger/choose-ai-company-saudi.html` => 1 replacements
+- `frontend/pages/blogger/Generative artificial intelligence.html` => 1 replacements
+- `frontend/pages/blogger/generative-artificial-intelligence-2.html` => 1 replacements
+- `frontend/pages/blogger/hr-automation-case-study.html` => 1 replacements
+- `frontend/pages/blogger/kfshrc-breast-cancer-ai.html` => 1 replacements
+- `frontend/pages/blogger/nca-ai-compliance-saudi.html` => 1 replacements
+- `frontend/pages/blogger/production-line-2.html` => 1 replacements
+- `frontend/pages/blogger/top-ai-tools-saudi-2025.html` => 1 replacements
+- `frontend/pages/blogger/vision-2030-ai-opportunities.html` => 1 replacements
+- `frontend/pages/blogger/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html` => 1 replacements
+- `frontend/pages/blogger/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html` => 1 replacements
+- `frontend/pages/blogger/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html` => 1 replacements
+- `frontend/pages/blogger/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html` => 1 replacements
+- `frontend/pages/blogger/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html` => 1 replacements
+- `frontend/pages/blogger/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html` => 1 replacements
+
