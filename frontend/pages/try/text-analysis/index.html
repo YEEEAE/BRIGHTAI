@@ -2,53 +2,54 @@
 <html lang="ar" dir="rtl">
 
 <head>
-<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/try/text-analysis/" />
-<link rel="canonical" href="https://brightai.site/frontend/pages/try/text-analysis/" />
-<script
-  src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"
-  crossorigin="anonymous"
-></script>
+    <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/frontend/pages/try/text-analysis/" />
+    <link rel="canonical" href="https://brightai.site/frontend/pages/try/text-analysis/" />
+    <script src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js" crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "voq2kb6voe");
-</script>
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "voq2kb6voe");
+    </script>
 
 
-<script src="/frontend/js/sentry-init.js" defer></script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script src="/frontend/js/sentry-init.js" defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-  gtag('config', 'G-8LLESL207Q');
-</script>
+        gtag('config', 'G-8LLESL207Q');
+    </script>
 
     <meta charset="UTF-8">
-    
 
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>التحليل النصي الذكي | Bright AI</title>
-<meta name="description" content="حلل النصوص بالذكاء الاصطناعي - استخراج الكلمات المفتاحية، تحليل المشاعر، تلخيص النصوص مع Groq API." />
+    <meta name="description"
+        content="حلل النصوص بالذكاء الاصطناعي - استخراج الكلمات المفتاحية، تحليل المشاعر، تلخيص النصوص مع Groq API." />
 
-<meta name="keywords" content="تحليل نصي, NLP, ذكاء اصطناعي, تحليل المشاعر, تلخيص, السعودية">
+    <meta name="keywords" content="تحليل نصي, NLP, ذكاء اصطناعي, تحليل المشاعر, تلخيص, السعودية">
     <meta name="robots" content="index, follow">
 
-    
+
     <meta property="og:title" content="التحليل النصي الذكي | Bright AI">
     <meta property="og:description" content="حلل النصوص واستخرج الرؤى بالذكاء الاصطناعي">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="ar_SA">
 
-    
+
     <link rel="stylesheet" href="/frontend/css/bundle-critical.css">
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/main.bundle.css"><noscript><link rel="stylesheet" href="/frontend/css/main.bundle.css"></noscript>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/main.bundle.css">
+    <noscript>
+        <link rel="stylesheet" href="/frontend/css/main.bundle.css">
+    </noscript>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -213,37 +214,69 @@
         }
     </style>
 
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/index-theme.css"><noscript><link rel="stylesheet" href="/frontend/css/index-theme.css"></noscript>
 
-<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
-<script defer src="/frontend/js/iconify-preload.js"></script>
-<script defer src="/frontend/js/vendor/iconify.min.js"></script>
-<script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/index-theme.css">
+    <noscript>
+        <link rel="stylesheet" href="/frontend/css/index-theme.css">
+    </noscript>
+
+    <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+    <script defer src="/frontend/js/iconify-preload.js"></script>
+    <script defer src="/frontend/js/vendor/iconify.min.js"></script>
+    <script defer src="/frontend/js/vendor/iconify-icon.min.js"></script>
 
 
-<style id="critical-css">
-    .unified-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(10px); display: flex; align-items: center; min-height: 80px; }
-    .hero-section { position: relative; min-height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .hero-section h1 { opacity: 1 !important; transform: none !important; visibility: visible !important; }
-    .hero-section p { opacity: 1 !important; transform: none !important; visibility: visible !important; }
-</style>
-    
+    <style id="critical-css">
+        .unified-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .hero-section {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-section h1 {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+
+        .hero-section p {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+    </style>
+
     <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
     <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
-<script defer="" src="/frontend/js/navigation.js"></script>
-<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+    <script defer="" src="/frontend/js/navigation.js"></script>
+    <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
 </head>
 
 <body>
 
     <header class="unified-nav" id="main-header" role="banner">
         <div class="nav-container">
-            
+
             <div class="flex-shrink-0">
                 <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/"
                     title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
@@ -259,13 +292,13 @@
                     </div>
                 </a>
             </div>
-            
+
             <nav class="nav-desktop" style="contain: layout;">
                 <ul class="nav-links">
                     <li class="nav-item">
                         <a class="nav-link" href="/">الرئيسية</a>
                     </li>
-                    
+
                     <li class="nav-item group/dropdown relative">
                         <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
                             الحلول الذكية
@@ -353,7 +386,7 @@
                             </div>
                         </div>
                     </li>
-                    
+
                     <li class="nav-item group/dropdown relative">
                         <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
                             النماذج الذكية
@@ -422,7 +455,7 @@
                             </div>
                         </div>
                     </li>
-                    
+
                     <li class="nav-item group/dropdown relative">
                         <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
                             عن برايت
@@ -473,27 +506,27 @@
                     </li>
                 </ul>
             </nav>
-            
+
             <div class="nav-actions">
-                
+
                 <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
                     <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
                         icon="lucide:search"></iconify-icon>
                     <span class="text-[13px] font-medium">بحث...</span>
                     <kbd class="search-kbd">⌘K</kbd>
                 </button>
-                
+
                 <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
-                
+
                 <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
                     href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank"
                     title="تواصل معنا عبر الواتساب">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
-                
+
                 <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -502,10 +535,10 @@
             </div>
         </div>
     </header>
-    
+
     <div class="mobile-menu-drawer" id="mobileDrawer">
         <div class="flex flex-col h-full bai-inline-0001">
-            
+
             <div class="flex items-center justify-between mb-8 pb-6"
                 style="border-bottom: 1px solid rgba(255,255,255,0.06);">
                 <div class="flex items-center gap-2.5">
@@ -520,7 +553,7 @@
                     <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
                 </button>
             </div>
-            
+
             <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
                 <li>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
@@ -539,8 +572,7 @@
                         </span>
                         <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002"
-                       >
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002">
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
                             href="/services">
                             <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
@@ -578,8 +610,7 @@
                         </span>
                         <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003"
-                       >
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003">
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
                             href="/frontend/pages/smart-medical-archive/">
                             <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
@@ -619,8 +650,7 @@
                         </span>
                         <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
                     </a>
-                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004"
-                       >
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004">
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
                             href="/about">
                             <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
@@ -646,11 +676,10 @@
                     </a>
                 </li>
             </ul>
-            
+
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
                 <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
-                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer"
-                    target="_blank">
+                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -664,9 +693,9 @@
     </div>
     <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
 
-    
+
     <main class="tool-container">
-        
+
         <div class="text-center mb-10">
             <div
                 class="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 px-4 py-2 rounded-full text-sm mb-6">
@@ -683,7 +712,7 @@
             </p>
         </div>
 
-        
+
         <div class="flex flex-wrap justify-center gap-3 mb-8">
             <button class="analysis-type-btn active" data-type="summary">
                 <i class="fa-solid fa-compress ml-2"></i> تلخيص
@@ -702,13 +731,13 @@
             </button>
         </div>
 
-        
+
         <div class="mb-6">
             <textarea id="text-input" class="text-area w-full"
                 placeholder="اكتب أو الصق النص هنا للتحليل...&#10;&#10;يمكنك إدخال نص عربي أو إنجليزي - سيتم تحليله تلقائياً بالذكاء الاصطناعي."></textarea>
         </div>
 
-        
+
         <div class="flex justify-center gap-4 mb-8">
             <button id="analyze-btn" class="action-btn">
                 <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
@@ -721,9 +750,9 @@
             </button>
         </div>
 
-        
+
         <div id="results-section" class="hidden space-y-6">
-            
+
             <div class="analysis-card">
                 <div class="flex items-center gap-3 mb-4">
                     <div
@@ -738,7 +767,7 @@
                 <div id="analysis-result" class="result-box text-gray-300 leading-relaxed"></div>
             </div>
 
-            
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="analysis-card text-center">
                     <p class="text-gray-400 text-sm mb-1">عدد الكلمات</p>
@@ -758,7 +787,7 @@
                 </div>
             </div>
 
-            
+
             <div id="keywords-section" class="analysis-card hidden">
                 <h3 class="font-bold text-white mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-hashtag text-purple-400"></i>
@@ -768,7 +797,7 @@
             </div>
         </div>
 
-        
+
         <div class="mt-12">
             <h3 class="text-gray-400 text-sm mb-4 text-center">أو جرب أحد النصوص النموذجية:</h3>
             <div class="flex flex-wrap justify-center gap-3">
@@ -791,7 +820,175 @@
         </div>
     </main>
 
-    
+    <section class="container mx-auto px-4 py-16 text-slate-200 mt-12 bg-slate-800/20 border-t border-white/5">
+        <div class="max-w-4xl mx-auto space-y-12">
+
+            <header class="text-center space-y-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-white leading-tight">الدليل الشامل: أدوات تحليل النصوص
+                    بالذكاء الاصطناعي</h2>
+                <p class="text-xl text-slate-400">استثمر قوة معالجة اللغات الطبيعية (NLP) لاستخلاص رؤى قابلة للتنفيذ
+                    تدعم اتخاذ القرار في مؤسستك.</p>
+            </header>
+
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold text-purple-400">ما هو تحليل النصوص الذكي وكيف يخدم قطاع الأعمال السعودي؟
+                </h3>
+                <p class="text-lg leading-relaxed text-slate-300">
+                    تقنية تحليل النصوص أو معالجة اللغات الطبيعية (Natural Language Processing - NLP) هي واحدة من أهم
+                    فروع الذكاء الاصطناعي اليوم. تهدف هذه التقنية إلى تمكين الحواسيب من فهم، وتفسير، وتوليد اللغة
+                    البشرية بأسلوب يحاكي الإدراك البشري. بفضل التطور الهائل في النماذج اللغوية الضخمة (LLMs)، لم تعد
+                    الأجهزة تكتفي بمطابقة الكلمات المكتوبة، بل أصبحت تفهم السياق، النبرة، والمشاعر الكامنة وراء تلك
+                    الكلمات.
+                </p>
+                <p class="text-lg leading-relaxed text-slate-300">
+                    في المملكة العربية السعودية، ومع التوجه السريع نحو رقمنة كافة القطاعات تحقيقاً لمستهدفات رؤية 2030
+                    وبرامج التحول الوطني، تولد الشركات والجهات الحكومية يومياً ملايين المستندات النصية، رسائل البريد
+                    الإلكتروني، العقود، والتفاعلات عبر وسائل التواصل الاجتماعي. هذا الحجم الهائل من البيانات الدلالية
+                    يُعتبر منجماً ذهبياً للمعلومات إذا تم تحليله بشكل صحيح باستخدام أدوات التحليل المتقدمة التي توفرها
+                    <strong>Bright AI</strong>. بدلاً من استهلاك آلاف الساعات البشرية في قراءة وتصنيف هذه المستندات
+                    يدوياً، يمكن لأدواتنا استخراج زبدة القول في ثوانٍ معدودة وبدقة متناهية، خاصة مع الدعم الفائق لفهم
+                    تعقيدات اللغة العربية بلهجاتها المتعددة.
+                </p>
+            </div>
+
+            <div class="space-y-6 bg-slate-800/40 p-8 rounded-2xl border border-purple-500/20">
+                <h3 class="text-2xl font-bold text-white">كيف تستخدم هذه الأداة التجريبية بفاعلية؟</h3>
+                <p class="text-slate-400 mb-6">يتيح لك النموذج التجريبي أعلاه (Demo) تجربة خمس قدرات أساسية في تحليل
+                    النصوص. إليك كيفية الاستفادة من كل منها:</p>
+                <ul class="space-y-4">
+                    <li class="flex gap-4">
+                        <i class="fa-solid fa-compress text-purple-400 mt-1 text-xl"></i>
+                        <div>
+                            <strong class="text-white">وظيفة التلخيص (Summarization):</strong>
+                            <p class="text-slate-400 mt-1">هل لديك تقرير مكون من 50 صفحة أو مقال طويل جداً؟ قم بلصقه في
+                                المربع، وسيقوم محرك الذكاء الاصطناعي بقراءة النص كاملاً واستخلاص أهم النقاط الجوهرية في
+                                فقرة مكثفة لا تتجاوز عدة أسطر. هذا يوفر وقتاً ثميناً للإدارات العليا التي تحتاج إلى
+                                قراءة ملخصات تنفيذية (Executive Summaries) قبل اتخاذ القرارات.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <i class="fa-solid fa-key text-purple-400 mt-1 text-xl"></i>
+                        <div>
+                            <strong class="text-white">استخراج الكلمات المفتاحية (Keyword Extraction):</strong>
+                            <p class="text-slate-400 mt-1">يُعد استخراج الكلمات المعبرة من النصوص الطويلة أداة سحرية
+                                لمتخصصي السيو (SEO) ومديري المحتوى. تساعدك هذه الخاصية على بناء وسوم (Tags) تلقائية
+                                للمقالات، أو فهم المواضيع الرئيسية التي تدور حولها شكاوى العملاء بمجرد ضغطة زر واحدة.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <i class="fa-solid fa-face-smile text-purple-400 mt-1 text-xl"></i>
+                        <div>
+                            <strong class="text-white">تحليل المشاعر (Sentiment Analysis):</strong>
+                            <p class="text-slate-400 mt-1">إذا قمت بلصق آراء وتغريدات العملاء حول منتجك، ستخبرك الأداة
+                                فوراً ما إذا كان الانطباع العام إيجابياً، سلبياً، أو محايداً. تُستخدم هذه الآلية بكثافة
+                                في مراكز الاتصال (Call Centers) ووكالات التسويق بالمملكة لرصد مؤشر رضا العملاء (CSAT) في
+                                الوقت الفعلي ومنع تفاقم الأزمات قبل حدوثها.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <i class="fa-solid fa-tags text-purple-400 mt-1 text-xl"></i>
+                        <div>
+                            <strong class="text-white">استخراج الكيانات المُسماة (Entity Extraction):</strong>
+                            <p class="text-slate-400 mt-1">تعمل هذه الخاصية كعدسة مكبرة متطورة (NER) تقوم بالبحث في النص
+                                عن أسماء الأشخاص، الشركات، المدن، المبالغ المالية، والتواريخ، وتجميعها لك. إنها أداة لا
+                                غنى عنها للقطاع القانوني والمالي عند مراجعة العقود ومذكرات التفاهم بحثاً عن شروط
+                                ومعلومات محددة متباعدة بين طيات المستند.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <i class="fa-solid fa-circle-question text-purple-400 mt-1 text-xl"></i>
+                        <div>
+                            <strong class="text-white">توليد الأسئلة (Question Generation):</strong>
+                            <p class="text-slate-400 mt-1">خاصية ثورية لقطاع التعليم وصناعة المحتوى، حيث تقوم بتحويل أي
+                                نص مقروء إلى اختبار تقييمي أو مسابقة تفاعلية عبر توليد أسئلة دقيقة استناداً على المعطيات
+                                الواردة في المادة نفسها. تفيد أيضا الإداريين في التحضير للمقابلات والنقاشات المهنية
+                                بناءً على تقارير الأداء.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold text-pink-400">حالات استخدام واقعية في القطاعات السعودية الحيوية</h3>
+
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="glass-card p-6 border-t-4 border-pink-500 bg-slate-800/30">
+                        <h4 class="text-xl font-bold text-white mb-2">1. قطاع التجارة الإلكترونية والتجزئة</h4>
+                        <p class="text-slate-400 text-base leading-relaxed">
+                            مع تزايد منصات التجارة الإلكترونية المسجلة في معروف ووزارة التجارة، أصبح المتسوق السعودي
+                            يعتمد بشدة على المراجعات (Reviews). من خلال دمج API تحليل النصوص الذكي بصورة تلقائية
+                            (Automated Text Analysis Workflows)، يمكن للمتاجر فرز المراجعات السلبية وعزلها لإجراء
+                            استرداد أو استبدال بشكل آلي، وتوجيه آراء الشكر إلى فرق المبيعات، ومراقبة التوجهات الشرائية
+                            (Trends) دون الحاجة لفريق قراءة بشري يعمل على مدار الساعة.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-6 border-t-4 border-purple-500 bg-slate-800/30">
+                        <h4 class="text-xl font-bold text-white mb-2">2. قطاع الرعاية الصحية والطبية</h4>
+                        <p class="text-slate-400 text-base leading-relaxed">
+                            المستشفيات والعيادات تتعامل يومياً مع تقارير طبية نصية طويلة. يمكن الاستفادة من هذه الأداة
+                            لتلخيص التاريخ المرضي للمراجعين وتسليط الضوء على أبرز الأمراض المزمنة والعقاقير المستخدمة
+                            (استخراج الكيانات). هذا التلخيص الذكي يساعد الطبيب المعالج في أخذ نبذة كاملة عن المريض في
+                            ثوانٍ بدلاً من دقائق، مما يرفع مستوى الرعاية الصحية ويزيد إنتاجية العيادة بشكل مضاعف.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-6 border-t-4 border-indigo-500 bg-slate-800/30">
+                        <h4 class="text-xl font-bold text-white mb-2">3. الشؤون القانونية والموارد البشرية</h4>
+                        <p class="text-slate-400 text-base leading-relaxed">
+                            قراءة مئات السير الذاتية (CVs) يومياً هي مهمة شاقة لموظفي التوظيف. تحليل النصوص يقوم
+                            باستخراج أسماء الجامعات والتخصصات المتماشية مع متطلبات الوظيفة ويسلط الضوء عليها. وفي المسار
+                            القانوني، يقوم النظام بأتمتة البحث عن الجملة القانونية المخالفة للشروط المتعارف عليها داخل
+                            العقود المحلية ووسمها باللون الأحمر كـ (Red Flag) ليقوم المستشار بمراجعتها فوراً وتوفير
+                            الوقت الطويل المهدر في التدقيق المبدئي.
+                        </p>
+                    </div>
+
+                    <div class="glass-card p-6 border-t-4 border-emerald-500 bg-slate-800/30">
+                        <h4 class="text-xl font-bold text-white mb-2">4. القطاع الحكومي والخدمي</h4>
+                        <p class="text-slate-400 text-base leading-relaxed">
+                            تقييم رضا المواطنين والمقيمين عن الخدمات الحكومية هو أولوية استراتيجية. من خلال معالجة نصوص
+                            البلاغات المُستَلَمة عبر بوابات التواصل مع تدوينات المواطنين وأخبار الصحف المحلية وتحليل
+                            المشاعر حولها، يمكن لمتخذي القرار قياس نبض الشارع اللحظي حيال المبادرات والمشاريع الجديدة
+                            بشكل دقيق وموضوعي تماماً.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="space-y-6 p-8 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700">
+                <h3 class="text-2xl font-bold text-white mb-4">الأمن، الامتثال وحماية خصوصية بياناتك</h3>
+                <p class="text-lg leading-relaxed text-slate-300">
+                    ندرك في Bright AI أن البيانات النصية غالباً ما تحتوي على معلومات حساسة (PII) وأسرار تجارية لا مساومة
+                    عليها. لذلك، عند تحويل هذا النموذج التجريبي ليصبح <strong>حلاً مؤسسياً متكاملاً (Enterprise
+                        Solution)</strong> لشركتكم، فإننا نضمن تطبيق أعلى المعايير.
+                </p>
+                <p class="text-lg leading-relaxed text-slate-300 mb-0">
+                    نحن نحرص على التوافق التام مع ضوابط الأمن السيبراني (NCA) ونظام حماية البيانات الشخصية السعودي
+                    (PDPL). يمكننا استضافة نماذج تحليل النصوص في بيئتكم السحابية الخاصة (Private Cloud) أو حتى محلياً
+                    ضمن خوادمكم المتواجدة جغرافياً داخل الأراضي السعودية المتوافقة مع تصنيف متطلبات سيادة البيانات. إن
+                    البيانات التي تدخل النظام تُحلل وتُمحى فوراً (Zero-Retention Policy) دون استخدامها إطلاقاً في تدريب
+                    النماذج العامة.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+                <a href="/smart-automation"
+                    class="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-purple-500/25 transition-all transform hover:scale-105">
+                    تعرف على حلول الأتمتة المتقدمة
+                </a>
+                <a href="https://api.whatsapp.com/send?phone=966538229013"
+                    class="px-8 py-4 bg-transparent text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 rounded-xl font-bold text-lg transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-phone"></i>
+                    ناقش مشروعك مع خبير
+                </a>
+            </div>
+
+        </div>
+    </section>
+
     <footer class="border-t border-white/5 bg-slate-900/50 mt-16">
         <div class="max-w-7xl mx-auto px-6 py-8 text-center">
             <p class="text-gray-500 text-sm">© 2026 Bright AI - أدوات تحليل النصوص الذكية</p>
@@ -948,7 +1145,7 @@
             section.classList.remove('hidden');
         }
     </script>
-<script src="/frontend/js/clarity-events.js" defer></script>
+    <script src="/frontend/js/clarity-events.js" defer></script>
 </body>
 
 </html>
