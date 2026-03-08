@@ -1434,7 +1434,7 @@
                 </button>
 
                 <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
-                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank"
+                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank"
                     title="تواصل معنا عبر الواتساب">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
@@ -1596,7 +1596,7 @@
 
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
                 <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
-                    href="https://wa.me/966538229013" rel="noopener noreferrer" target="_blank">
+                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -1685,7 +1685,7 @@
                             ابدأ من الكتالوج التنفيذي
                             <iconify-icon icon="lucide:arrow-down-left" width="18"></iconify-icon>
                         </a>
-                        <a class="services-secondary-btn" href="https://wa.me/966538229013" target="_blank"
+                        <a class="services-secondary-btn" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank"
                             rel="noopener noreferrer">
                             احجز جلسة تشخيص
                             <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
@@ -2439,7 +2439,7 @@
 
                             <div onclick="event.stopPropagation()">
                                 ${isOnDemand ? `
-                                    <a href="https://wa.me/966538229013?text=${encodeURIComponent('مرحباً، أود الاستفسار عن: ' + product.name)}" target="_blank" rel="noopener noreferrer" class="service-cta service-cta--secondary">
+                                    <a href="https://api.whatsapp.com/send?phone=966538229013&text=${encodeURIComponent('مرحباً، أود الاستفسار عن: ' + product.name)}" target="_blank" rel="noopener noreferrer" class="service-cta service-cta--secondary">
                                         اطلب عرض سعر مخصص
                                         <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                                     </a>
@@ -2617,7 +2617,7 @@
             const actionContainer = document.getElementById('modalActionContainer');
             if (isOnDemand) {
                 actionContainer.innerHTML = `
-                    <a href="https://wa.me/966538229013?text=${encodeURIComponent('مرحباً، أود الاستفسار عن: ' + product.name)}" target="_blank" rel="noopener noreferrer" class="block w-full py-3 sm:py-4 bg-amber-500/20 border-2 border-amber-500/30 text-amber-400 rounded-xl font-semibold text-center hover:bg-amber-500/30 transition-all shadow-lg active:scale-95 text-sm sm:text-base">
+                    <a href="https://api.whatsapp.com/send?phone=966538229013&text=${encodeURIComponent('مرحباً، أود الاستفسار عن: ' + product.name)}" target="_blank" rel="noopener noreferrer" class="block w-full py-3 sm:py-4 bg-amber-500/20 border-2 border-amber-500/30 text-amber-400 rounded-xl font-semibold text-center hover:bg-amber-500/30 transition-all shadow-lg active:scale-95 text-sm sm:text-base">
                         اطلب عرض سعر عبر واتساب
                     </a>
                 `;
@@ -2708,7 +2708,7 @@ ${itemsList}
 
 تم التحويل عبر بنك D360. جاري إرفاق الإيصال...`;
 
-            const whatsappUrl = `https://wa.me/966538229013?text=${encodeURIComponent(message)}`;
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=966538229013&text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
 
             // Clear cart after sending

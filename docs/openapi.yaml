@@ -6,7 +6,7 @@ info:
   contact:
     name: BrightAI Support
     email: support@brightai.sa
-    url: https://brightai.sa
+    url: https://brightai.site
 
 servers:
   - url: http://localhost:3000
