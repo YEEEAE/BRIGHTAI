@@ -1,0 +1,120 @@
+services:
+  - type: web
+    runtime: static
+    name: brightai-site
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /ai-bots/:slug
+        destination: /frontend/pages/ai-bots/:slug/index.html
+      - type: rewrite
+        source: /ai-bots/:slug/
+        destination: /frontend/pages/ai-bots/:slug/index.html
+      - type: rewrite
+        source: /ai-scolecs
+        destination: /frontend/pages/ai-scolecs/index.html
+      - type: rewrite
+        source: /ai-scolecs/
+        destination: /frontend/pages/ai-scolecs/index.html
+      - type: rewrite
+        source: /ai-workflows
+        destination: /frontend/pages/ai-workflows/index.html
+      - type: rewrite
+        source: /ai-workflows/
+        destination: /frontend/pages/ai-workflows/index.html
+      - type: rewrite
+        source: /blog/data-analytics/:slug
+        destination: /frontend/pages/blog/data-analytics/:slug.html
+      - type: rewrite
+        source: /blog/:slug
+        destination: /frontend/pages/blogger/:slug.html
+      - type: rewrite
+        source: /demo
+        destination: /frontend/pages/demo/index.html
+      - type: rewrite
+        source: /demo/
+        destination: /frontend/pages/demo/index.html
+      - type: rewrite
+        source: /demo/ocr-demo
+        destination: /frontend/pages/demo/ocr-demo/index.html
+      - type: rewrite
+        source: /demo/ocr-demo/
+        destination: /frontend/pages/demo/ocr-demo/index.html
+      - type: rewrite
+        source: /demo/pricing/
+        destination: /frontend/pages/demo/pricing/index.html
+      - type: rewrite
+        source: /demo/pricing
+        destination: /frontend/pages/demo/pricing/index.html
+      - type: rewrite
+        source: /demo/resources/report-ai-saudi-2026
+        destination: /frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+      - type: rewrite
+        source: /demo/resources/report-ai-saudi-2026/
+        destination: /frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+      - type: rewrite
+        source: /interview
+        destination: /frontend/pages/interview/index.html
+      - type: rewrite
+        source: /interview/
+        destination: /frontend/pages/interview/index.html
+      - type: rewrite
+        source: /interview/Presentation
+        destination: /frontend/pages/interview/Presentation.html
+      - type: rewrite
+        source: /interview/pages/appointment
+        destination: /frontend/pages/interview/pages/appointment/index.html
+      - type: rewrite
+        source: /interview/pages/appointment/
+        destination: /frontend/pages/interview/pages/appointment/index.html
+      - type: rewrite
+        source: /interview/pages/admin
+        destination: /frontend/pages/interview/pages/admin.html
+      - type: rewrite
+        source: /interview/pages/dashboard
+        destination: /frontend/pages/interview/pages/dashboard/index.html
+      - type: rewrite
+        source: /interview/pages/dashboard/
+        destination: /frontend/pages/interview/pages/dashboard/index.html
+      - type: rewrite
+        source: /interview/pages/support-ai
+        destination: /frontend/pages/interview/pages/support-ai.html
+      - type: rewrite
+        source: /interview/pages/support-ai.html
+        destination: /frontend/pages/interview/pages/support-ai.html
+      - type: rewrite
+        source: /interview/pages/supportAI
+        destination: /frontend/pages/interview/pages/supportAI.html
+      - type: rewrite
+        source: /privacy-cookies/
+        destination: /frontend/pages/privacy-cookies/index.html
+      - type: rewrite
+        source: /privacy-cookies
+        destination: /frontend/pages/privacy-cookies/index.html
+      - type: rewrite
+        source: /sectors/:slug
+        destination: /frontend/pages/sectors/:slug.html
+      - type: rewrite
+        source: /smart-medical-archive
+        destination: /frontend/pages/smart-medical-archive/index.html
+      - type: rewrite
+        source: /smart-medical-archive/
+        destination: /frontend/pages/smart-medical-archive/index.html
+      - type: rewrite
+        source: /job.MAISco
+        destination: /frontend/pages/job.MAISco/index.html
+      - type: rewrite
+        source: /job.MAISco/
+        destination: /frontend/pages/job.MAISco/index.html
+      - type: rewrite
+        source: /try
+        destination: /frontend/pages/try/index.html
+      - type: rewrite
+        source: /try/
+        destination: /frontend/pages/try/index.html
+      - type: rewrite
+        source: /try/:slug
+        destination: /frontend/pages/try/:slug/index.html
+      - type: rewrite
+        source: /try/:slug/
+        destination: /frontend/pages/try/:slug/index.html
