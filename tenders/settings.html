@@ -147,6 +147,15 @@
       .search-shortcut { position: absolute; top: 50%; left: 14px; transform: translateY(-50%); padding: 6px 10px; color: var(--text-secondary); background: rgba(148,163,184,0.08); border: 1px solid var(--border); border-radius: 999px; font-family: "JetBrains Mono", monospace; font-size: 0.72rem; }
       .icon-button { min-width: 48px; height: 48px; }
       .notification-badge { position: absolute; top: 6px; left: 6px; min-width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; color: #fff; background: var(--danger); font-size: 0.68rem; }
+      .api-status {
+        display: flex; align-items: center; gap: 8px; padding: 6px 12px; color: var(--text-secondary); background: var(--bg-card);
+        border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.8rem; cursor: pointer; transition: var(--transition);
+      }
+      .api-status .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); animation: pulse 2s infinite; }
+      .api-status[data-status="connected"] .status-dot { background: var(--accent); animation: none; }
+      .api-status[data-status="error"] .status-dot { background: var(--danger); animation: none; }
+      .api-status:hover { background: var(--bg-card-hover); border-color: var(--border-hover); }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
       .page-content { flex: 1; padding: 28px; }
       .settings-shell,.page-hero { padding: 24px; border-radius: var(--radius-xl); }
       .page-hero { position: relative; overflow: hidden; }
@@ -280,6 +289,7 @@
           <span class="search-shortcut">Ctrl+K</span>
         </label>
         <div class="header-actions">
+          <div class="api-status" id="apiStatus" title="حالة اتصال الذكاء الاصطناعي"><span class="status-dot"></span><span class="status-text">جارٍ الاتصال...</span></div>
           <button class="icon-button" id="themeToggle" type="button" aria-label="تبديل الوضع"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
           <button class="icon-button" type="button" aria-label="الإشعارات"><span class="notification-badge">3</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 20a2 2 0 1 1-4 0m8-2H6c1.2-1.14 2-2.7 2-4.5V10a4 4 0 1 1 8 0v3.5c0 1.8.8 3.36 2 4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <a class="primary-button" href="index.html">رفع عقد جديد ←</a>
@@ -451,6 +461,7 @@ fetch("https://api.contractai.sa/v1/analyze", {
       </div>
     </main>
 
+    <script src="api-config.js"></script>
     <script>
       (function () {
         var authKey = "contractai-authenticated";
