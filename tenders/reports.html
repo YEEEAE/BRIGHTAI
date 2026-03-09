@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContractAI — التقارير والإحصائيات | أداء العقود واتجاهات المخاطر</title>
+    <meta
+      name="description"
+      content="صفحة التقارير والإحصائيات في ContractAI لعرض أداء العقود، اتجاهات المخاطر، توزيع أنواع العقود، والتوفير المحقق في السوق السعودي."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-primary: #080c14;
+        --bg-secondary: #0d1117;
+        --bg-card: #111827;
+        --bg-card-hover: #1a2332;
+        --accent: #00e5b4;
+        --accent-hover: #00c49a;
+        --accent-glow: rgba(0, 229, 180, 0.15);
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --info: #3b82f6;
+        --success: #22c55e;
+        --violet: #8b5cf6;
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border: rgba(255, 255, 255, 0.06);
+        --border-hover: rgba(0, 229, 180, 0.3);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 24px;
+        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+        --shadow-glow: 0 0 30px rgba(0, 229, 180, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --sidebar-width: 270px;
+        --header-height: 92px;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-card: #ffffff;
+        --bg-card-hover: #f1f5f9;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --border: rgba(0, 0, 0, 0.08);
+        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Tajawal", sans-serif;
+        color: var(--text-primary);
+        background:
+          radial-gradient(circle at top right, rgba(0, 229, 180, 0.12), transparent 24%),
+          radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent 22%),
+          linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 120px 120px;
+        mask-image: radial-gradient(circle at center, black 45%, transparent 92%);
+        opacity: 0.5;
+      }
+
+      body.menu-open,
+      body.dropdown-open {
+        overflow: hidden;
+      }
+
+      a,
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+      }
+
+      ::selection {
+        color: #031b16;
+        background: var(--accent);
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .glass {
+        background: rgba(17, 24, 39, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
+      }
+
+      [data-theme="light"] .glass {
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1000;
+        padding: 12px 16px;
+        color: #031b16;
+        background: var(--accent);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+
+      .sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 140;
+        background: rgba(3, 7, 18, 0.58);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+      }
+
+      .sidebar-backdrop.is-visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 180;
+        width: var(--sidebar-width);
+        height: 100vh;
+        padding: 24px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background:
+          linear-gradient(180deg, rgba(13, 17, 23, 0.96), rgba(8, 12, 20, 0.94)),
+          rgba(17, 24, 39, 0.6);
+        border-left: 1px solid var(--border);
+        box-shadow: -24px 0 80px rgba(0, 0, 0, 0.28);
+      }
+
+      .sidebar-header,
+      .brand,
+      .brand-title-row,
+      .header-side,
+      .header-actions,
+      .nav-main,
+      .filters-row,
+      .filters-inline,
+      .date-range,
+      .kpi-head,
+      .legend-list,
+      .legend-item,
+      .table-title-row,
+      .export-shell,
+      .toast,
+      .header-actions-inline,
+      .dropdown-menu button {
+        display: flex;
+        align-items: center;
+      }
+
+      .sidebar-header {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand {
+        gap: 14px;
+      }
+
+      .brand-logo {
+        width: 52px;
+        height: 52px;
+        padding: 12px;
+        border-radius: 18px;
+        color: var(--accent);
+        background: linear-gradient(135deg, var(--accent-glow), rgba(59, 130, 246, 0.08));
+        border: 1px solid rgba(0, 229, 180, 0.18);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .brand-title-row {
+        gap: 10px;
+      }
+
+      .brand-name {
+        margin: 0;
+        color: var(--accent);
+        font-size: 1.35rem;
+        font-weight: 700;
+      }
+
+      .brand-subtitle {
+        margin: 6px 0 0;
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: rgba(59, 130, 246, 0.16);
+        border: 1px solid rgba(59, 130, 246, 0.24);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .nav-list {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        overflow: hidden;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        right: 0;
+        width: 3px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+        border-color: var(--border-hover);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .nav-link[aria-current="page"] {
+        color: var(--accent);
+        background: rgba(0, 229, 180, 0.1);
+        border-color: rgba(0, 229, 180, 0.2);
+      }
+
+      .nav-link[aria-current="page"]::after {
+        background: var(--accent);
+      }
+
+      .nav-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .nav-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 26px;
+        height: 26px;
+        padding-inline: 8px;
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(255, 71, 87, 0.2);
+        border: 1px solid rgba(255, 71, 87, 0.3);
+      }
+
+      .user-card {
+        padding: 16px;
+        border-radius: var(--radius-lg);
+      }
+
+      .user-summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        font-weight: 700;
+        color: #031b16;
+        background: linear-gradient(135deg, #7ef6dd, var(--accent));
+      }
+
+      .user-name {
+        margin: 0;
+        font-weight: 700;
+      }
+
+      .user-plan {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+      }
+
+      .logout-button,
+      .primary-button,
+      .icon-button,
+      .secondary-button,
+      .filter-tab,
+      .filter-input,
+      .select-shell,
+      .export-trigger,
+      .dropdown-menu button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        transition: var(--transition);
+      }
+
+      .logout-button,
+      .secondary-button,
+      .icon-button,
+      .filter-tab,
+      .filter-input,
+      .select-shell,
+      .export-trigger,
+      .dropdown-menu button {
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.58);
+      }
+
+      .primary-button {
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #67f5d8);
+        border-color: transparent;
+        font-weight: 700;
+        box-shadow: 0 14px 34px rgba(0, 229, 180, 0.2);
+      }
+
+      .main-content {
+        min-height: 100vh;
+        margin-right: var(--sidebar-width);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-header {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) minmax(280px, 1.4fr) auto;
+        align-items: center;
+        gap: 20px;
+        min-height: var(--header-height);
+        padding: 20px 28px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(8, 12, 20, 0.68);
+        backdrop-filter: blur(16px);
+      }
+
+      .menu-toggle,
+      .close-sidebar {
+        display: none;
+      }
+
+      .breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+
+      .breadcrumb a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .breadcrumb .current {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      .search-shell {
+        position: relative;
+      }
+
+      .search-shell svg {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        width: 18px;
+        height: 18px;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 14px 122px 14px 48px;
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.6);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+      }
+
+      .search-shortcut {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+        transform: translateY(-50%);
+        padding: 6px 10px;
+        color: var(--text-secondary);
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+      }
+
+      .icon-button {
+        min-width: 48px;
+        height: 48px;
+        cursor: pointer;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        min-width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--danger);
+        font-size: 0.68rem;
+      }
+
+      .page-content {
+        flex: 1;
+        padding: 28px;
+      }
+
+      .reports-layout {
+        display: grid;
+        gap: 24px;
+      }
+
+      .page-hero,
+      .filters-shell,
+      .chart-card,
+      .table-shell,
+      .kpi-card {
+        padding: 24px;
+        border-radius: var(--radius-xl);
+      }
+
+      .page-hero {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(135deg, rgba(0, 229, 180, 0.06), transparent 60%),
+          radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 30%);
+        pointer-events: none;
+      }
+
+      .page-hero > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 2.4rem);
+      }
+
+      .page-subtitle {
+        margin: 12px 0 0;
+        max-width: 720px;
+        color: var(--text-secondary);
+        line-height: 1.9;
+      }
+
+      .filters-shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .filters-row {
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .filters-inline {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .filter-tab {
+        cursor: pointer;
+        color: var(--text-secondary);
+        background: rgba(148, 163, 184, 0.06);
+      }
+
+      .filter-tab.is-active {
+        color: var(--accent);
+        border-color: rgba(0, 229, 180, 0.24);
+        background: rgba(0, 229, 180, 0.08);
+      }
+
+      .select-shell,
+      .filter-input {
+        min-width: 190px;
+      }
+
+      .select-shell select,
+      .filter-input input {
+        width: 100%;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        outline: 0;
+      }
+
+      .date-range {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .date-range[hidden] {
+        display: none;
+      }
+
+      .header-actions-inline {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .export-shell {
+        position: relative;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 0;
+        z-index: 200;
+        min-width: 280px;
+        padding: 10px;
+        border-radius: 18px;
+        background: rgba(13, 17, 23, 0.96);
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: var(--transition);
+      }
+
+      .dropdown-menu.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-menu button {
+        width: 100%;
+        justify-content: flex-start;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .dropdown-menu button:last-child {
+        margin-bottom: 0;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .kpi-card {
+        display: grid;
+        gap: 14px;
+        transition: var(--transition);
+      }
+
+      .kpi-card:hover,
+      .chart-card:hover,
+      .table-shell:hover {
+        transform: translateY(-4px);
+        border-color: var(--border-hover);
+        box-shadow: 0 20px 46px rgba(0, 0, 0, 0.22);
+      }
+
+      .kpi-head {
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .kpi-label {
+        margin: 0;
+        color: var(--text-secondary);
+        font-size: 0.94rem;
+      }
+
+      .kpi-value {
+        margin: 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1.4rem, 2vw, 2rem);
+      }
+
+      .trend-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.86rem;
+      }
+
+      .trend-up {
+        color: var(--success);
+      }
+
+      .trend-down {
+        color: var(--success);
+      }
+
+      .kpi-subtext {
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+
+      .charts-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+        gap: 20px;
+      }
+
+      .chart-card {
+        display: grid;
+        gap: 18px;
+      }
+
+      .chart-title {
+        margin: 0;
+        font-size: 1.22rem;
+      }
+
+      .chart-subtitle {
+        color: var(--text-secondary);
+        margin: 4px 0 0;
+      }
+
+      .chart-frame {
+        position: relative;
+      }
+
+      .line-chart,
+      .donut-chart {
+        width: 100%;
+        height: auto;
+      }
+
+      .animated-stroke {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: draw-stroke 1.5s ease forwards;
+      }
+
+      .animated-delay {
+        animation-delay: 0.2s;
+      }
+
+      .chart-tooltip {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        min-height: 36px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(17, 24, 39, 0.92);
+        color: var(--text-primary);
+        font-size: 0.84rem;
+        pointer-events: none;
+      }
+
+      .legend-list {
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .legend-item {
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+      }
+
+      .donut-layout {
+        display: grid;
+        grid-template-columns: minmax(180px, 0.72fr) 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .donut-legend {
+        display: grid;
+        gap: 14px;
+      }
+
+      .donut-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-secondary);
+      }
+
+      .donut-swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+      }
+
+      .bar-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .bar-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .bar-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--text-secondary);
+      }
+
+      .bar-track {
+        height: 14px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      .bar-fill {
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        transition: width 1.1s ease;
+      }
+
+      .heatmap-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .heat-cell {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .heat-cell:hover {
+        transform: translateY(-2px) scale(1.03);
+      }
+
+      .heat-legend {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-secondary);
+      }
+
+      .heat-ramp {
+        width: 120px;
+        height: 12px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(0, 229, 180, 0.08), rgba(0, 229, 180, 0.92));
+      }
+
+      .table-shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .table-title-row {
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .table-wrap {
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 1040px;
+      }
+
+      th,
+      td {
+        padding: 14px 12px;
+        text-align: right;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+
+      th {
+        color: var(--text-secondary);
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .risk-pill,
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+
+      .risk-high {
+        color: #fecaca;
+        background: rgba(255, 71, 87, 0.16);
+      }
+
+      .risk-medium {
+        color: #fde68a;
+        background: rgba(245, 158, 11, 0.16);
+      }
+
+      .risk-low {
+        color: #bbf7d0;
+        background: rgba(34, 197, 94, 0.16);
+      }
+
+      .status-review {
+        color: #bfdbfe;
+        background: rgba(59, 130, 246, 0.16);
+      }
+
+      .status-signed {
+        color: #bbf7d0;
+        background: rgba(34, 197, 94, 0.16);
+      }
+
+      .status-negotiation {
+        color: #fde68a;
+        background: rgba(245, 158, 11, 0.16);
+      }
+
+      .sort-arrow {
+        font-size: 0.82rem;
+        color: var(--accent);
+        margin-right: 4px;
+      }
+
+      .toast-stack {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 260;
+        display: grid;
+        gap: 12px;
+      }
+
+      .toast {
+        min-width: 280px;
+        max-width: 360px;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(17, 24, 39, 0.94);
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+        animation: toast-in 0.3s ease;
+      }
+
+      .toast-close {
+        background: transparent;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      .section-fade {
+        animation: fade-view 0.22s ease;
+      }
+
+      @keyframes fade-view {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes draw-stroke {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateX(-14px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 1180px) {
+        .kpi-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .charts-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 1023px) {
+        .sidebar {
+          transform: translateX(110%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.is-open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-right: 0;
+        }
+
+        .close-sidebar,
+        .menu-toggle {
+          display: inline-flex;
+        }
+
+        .top-header {
+          grid-template-columns: 1fr;
+        }
+
+        .kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 767px) {
+        .page-content,
+        .top-header {
+          padding-right: 18px;
+          padding-left: 18px;
+        }
+
+        .kpi-grid,
+        .donut-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .filters-row,
+        .header-actions-inline,
+        .table-title-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .search-input {
+          padding-left: 96px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+    <aside class="sidebar" id="sidebar" role="complementary" aria-label="الشريط الجانبي">
+      <div class="sidebar-header">
+        <div class="brand">
+          <svg class="brand-logo" viewBox="0 0 24 24" fill="none" aria-label="شعار ContractAI">
+            <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <div>
+            <div class="brand-title-row">
+              <h1 class="brand-name">ContractAI</h1>
+              <span class="badge">BETA</span>
+            </div>
+            <p class="brand-subtitle">محلل العقود والمناقصات الذكي بالسعودية</p>
+          </div>
+        </div>
+        <button class="icon-button close-sidebar" id="closeSidebar" type="button" aria-label="إغلاق القائمة">✕</button>
+      </div>
+
+      <nav class="sidebar-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <ul class="nav-list">
+          <li>
+            <a class="nav-link" href="dashboard.html">
+              <span class="nav-main">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10v7H4V5.5ZM14 4h4.5A1.5 1.5 0 0 1 20 5.5V9h-6V4ZM4 15h6v5H5.5A1.5 1.5 0 0 1 4 18.5V15Zm10 0h6v3.5a1.5 1.5 0 0 1-1.5 1.5H14v-5Zm0-2V4h6v9h-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <span>لوحة التحكم</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" href="index.html">
+              <span class="nav-main">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M5 16.5V18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>رفع عقد جديد</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" href="index.html">
+              <span class="nav-main">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H10l2 2h5.5A2.5 2.5 0 0 1 20 9.5v7A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <span>عقودي</span>
+              </span>
+              <span class="nav-badge">3</span>
+            </a>
+          </li>
+          <li><a class="nav-link" href="templates.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5V5Zm4 0v14M5 10h14" stroke="currentColor" stroke-width="1.5"/></svg><span>القوالب</span></span></a></li>
+          <li><a class="nav-link" href="reports.html" aria-current="page"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M5 18V9m7 9V5m7 13v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M3.5 19.5h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>التقارير</span></span></a></li>
+          <li><a class="nav-link" href="compare.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M7 5h4v14H7V5Zm6 4h4v10h-4V9ZM4 19.5h16" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>مقارنة عقود</span></span></a></li>
+          <li><a class="nav-link" href="settings.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M19 12a7 7 0 0 0-.08-1l2.03-1.58-2-3.46-2.45.57a7.6 7.6 0 0 0-1.73-1L14.5 3h-5l-.27 2.53a7.6 7.6 0 0 0-1.73 1l-2.45-.57-2 3.46L5.08 11a7 7 0 0 0 0 2l-2.03 1.58 2 3.46 2.45-.57c.53.42 1.11.76 1.73 1L9.5 21h5l.27-2.53c.62-.24 1.2-.58 1.73-1l2.45.57 2-3.46L18.92 13c.05-.33.08-.66.08-1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>الإعدادات</span></span></a></li>
+        </ul>
+      </nav>
+
+      <div class="user-card glass">
+        <div class="user-summary">
+          <div class="avatar">أم</div>
+          <div>
+            <p class="user-name">أحمد المطيري</p>
+            <p class="user-plan">الخطة: احترافية</p>
+          </div>
+        </div>
+        <button class="logout-button" type="button">خروج</button>
+      </div>
+    </aside>
+
+    <main class="main-content" id="main-content" role="main">
+      <header class="top-header">
+        <div class="header-side">
+          <button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="فتح القائمة">☰</button>
+          <nav class="breadcrumb" aria-label="مسار التنقل">
+            <a href="dashboard.html">الرئيسية</a>
+            <span aria-hidden="true">›</span>
+            <span class="current">التقارير</span>
+          </nav>
+        </div>
+
+        <label class="search-shell" aria-label="ابحث في العقود والبنود">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input class="search-input" id="globalSearch" name="global_search" type="search" placeholder="ابحث في العقود والبنود..." />
+          <span class="search-shortcut">Ctrl+K</span>
+        </label>
+
+        <div class="header-actions">
+          <button class="icon-button" id="themeToggle" type="button" aria-label="تبديل الوضع">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="icon-button" type="button" aria-label="الإشعارات">
+            <span class="notification-badge">3</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 20a2 2 0 1 1-4 0m8-2H6c1.2-1.14 2-2.7 2-4.5V10a4 4 0 1 1 8 0v3.5c0 1.8.8 3.36 2 4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <a class="primary-button" href="index.html">رفع عقد جديد ←</a>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="reports-layout section-fade">
+          <section class="page-hero glass">
+            <h2 class="page-title">📊 التقارير والإحصائيات</h2>
+            <p class="page-subtitle">تقارير شاملة عن أداء عقودك واتجاهات المخاطر</p>
+          </section>
+
+          <section class="filters-shell glass">
+            <div class="filters-row">
+              <div class="filters-inline" id="periodTabs" aria-label="الفترة الزمنية">
+                <button class="filter-tab is-active" type="button" data-period="7">آخر 7 أيام</button>
+                <button class="filter-tab" type="button" data-period="30">آخر 30 يوم</button>
+                <button class="filter-tab" type="button" data-period="90">آخر 3 أشهر</button>
+                <button class="filter-tab" type="button" data-period="365">آخر سنة</button>
+                <button class="filter-tab" type="button" data-period="custom">مخصص</button>
+              </div>
+
+              <div class="header-actions-inline">
+                <label class="select-shell" aria-label="نوع العقد">
+                  <select id="contractTypeFilter" name="contract_type_filter">
+                    <option value="الكل">الكل</option>
+                    <option value="توريد">توريد</option>
+                    <option value="مناقصة">مناقصة</option>
+                    <option value="خدمات">خدمات</option>
+                    <option value="مقاولات">مقاولات</option>
+                    <option value="إيجار">إيجار</option>
+                  </select>
+                </label>
+                <button class="secondary-button" id="applyFilters" type="button">تطبيق</button>
+                <div class="export-shell">
+                  <button class="primary-button export-trigger" id="exportTrigger" type="button">تصدير التقرير</button>
+                  <div class="dropdown-menu" id="exportDropdown" role="menu" aria-label="خيارات تصدير التقرير">
+                    <button type="button" data-export="PDF">PDF: تقرير شامل بالرسوم البيانية</button>
+                    <button type="button" data-export="Excel">Excel: بيانات خام قابلة للتحليل</button>
+                    <button type="button" data-export="PowerPoint">PowerPoint: عرض تقديمي جاهز للإدارة</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="date-range" id="customDateRange" hidden>
+              <label class="filter-input" aria-label="من تاريخ">
+                <input id="dateFrom" name="date_from" type="date" value="2026-02-01" />
+              </label>
+              <label class="filter-input" aria-label="إلى تاريخ">
+                <input id="dateTo" name="date_to" type="date" value="2026-03-09" />
+              </label>
+            </div>
+          </section>
+
+          <section class="kpi-grid" id="kpiGrid">
+            <article class="kpi-card glass">
+              <div class="kpi-head"><h3 class="kpi-label">إجمالي العقود المحللة في الفترة</h3><span class="trend-note trend-up">↗ +35%</span></div>
+              <p class="kpi-value">23</p>
+            </article>
+            <article class="kpi-card glass">
+              <div class="kpi-head"><h3 class="kpi-label">القيمة الإجمالية للعقود</h3><span class="trend-note trend-up">↗ +18%</span></div>
+              <p class="kpi-value">12,950,000 ريال</p>
+            </article>
+            <article class="kpi-card glass">
+              <div class="kpi-head"><h3 class="kpi-label">متوسط المخاطرة</h3><span class="trend-note trend-down">↘ -12%</span></div>
+              <p class="kpi-value">48.5 نقطة</p>
+            </article>
+            <article class="kpi-card glass">
+              <div class="kpi-head"><h3 class="kpi-label">بنود خطرة مكتشفة</h3><span class="trend-note">15 عالي الخطورة</span></div>
+              <p class="kpi-value">47 بند</p>
+            </article>
+            <article class="kpi-card glass">
+              <div class="kpi-head"><h3 class="kpi-label">التوفير المحقق</h3><span class="trend-note">10.3% من الإجمالي</span></div>
+              <p class="kpi-value">1,240,000 ريال</p>
+            </article>
+          </section>
+
+          <div class="charts-grid">
+            <section class="chart-card glass">
+              <div>
+                <h3 class="chart-title">اتجاه التحليل والمخاطر</h3>
+                <p class="chart-subtitle">متابعة عدد العقود المحللة مقابل متوسط المخاطرة من أكتوبر 2025 حتى مارس 2026</p>
+              </div>
+              <div class="chart-frame">
+                <div class="chart-tooltip" id="areaTooltip">مرّر على أي نقطة لعرض التفاصيل</div>
+                <svg class="line-chart" viewBox="0 0 760 320" aria-label="اتجاه التحليل والمخاطر">
+                  <defs>
+                    <linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(0,229,180,0.28)"></stop>
+                      <stop offset="100%" stop-color="rgba(0,229,180,0.02)"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M72 40h620M72 95h620M72 150h620M72 205h620M72 260h620" stroke="rgba(148,163,184,0.12)" stroke-width="1"></path>
+                  <path d="M72 260 196 232 320 190 444 148 568 106 692 70L692 260L72 260Z" fill="url(#areaFill)"></path>
+                  <path class="animated-stroke" d="M72 260 196 232 320 190 444 148 568 106 692 70" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path class="animated-stroke animated-delay" d="M72 64 196 92 320 120 444 148 568 162 692 172" fill="none" stroke="var(--danger)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 10"></path>
+                  <g fill="var(--accent)">
+                    <circle class="area-point" cx="72" cy="260" r="6" data-label="أكتوبر 2025: 5 عقود"></circle>
+                    <circle class="area-point" cx="196" cy="232" r="6" data-label="نوفمبر 2025: 8 عقود"></circle>
+                    <circle class="area-point" cx="320" cy="190" r="6" data-label="ديسمبر 2025: 12 عقداً"></circle>
+                    <circle class="area-point" cx="444" cy="148" r="6" data-label="يناير 2026: 15 عقداً"></circle>
+                    <circle class="area-point" cx="568" cy="106" r="6" data-label="فبراير 2026: 19 عقداً"></circle>
+                    <circle class="area-point" cx="692" cy="70" r="6" data-label="مارس 2026: 23 عقداً"></circle>
+                  </g>
+                  <g fill="var(--danger)">
+                    <circle class="area-point" cx="72" cy="64" r="6" data-label="أكتوبر 2025: متوسط المخاطرة 62"></circle>
+                    <circle class="area-point" cx="196" cy="92" r="6" data-label="نوفمبر 2025: متوسط المخاطرة 58"></circle>
+                    <circle class="area-point" cx="320" cy="120" r="6" data-label="ديسمبر 2025: متوسط المخاطرة 55"></circle>
+                    <circle class="area-point" cx="444" cy="148" r="6" data-label="يناير 2026: متوسط المخاطرة 52"></circle>
+                    <circle class="area-point" cx="568" cy="162" r="6" data-label="فبراير 2026: متوسط المخاطرة 50"></circle>
+                    <circle class="area-point" cx="692" cy="172" r="6" data-label="مارس 2026: متوسط المخاطرة 48.5"></circle>
+                  </g>
+                  <g fill="#94A3B8" style="font:500 12px Tajawal;">
+                    <text x="72" y="292" text-anchor="middle">أكتوبر</text>
+                    <text x="196" y="292" text-anchor="middle">نوفمبر</text>
+                    <text x="320" y="292" text-anchor="middle">ديسمبر</text>
+                    <text x="444" y="292" text-anchor="middle">يناير</text>
+                    <text x="568" y="292" text-anchor="middle">فبراير</text>
+                    <text x="692" y="292" text-anchor="middle">مارس</text>
+                  </g>
+                </svg>
+              </div>
+              <div class="legend-list">
+                <div class="legend-item"><span class="legend-dot" style="background: var(--accent);"></span><span>عدد العقود المحللة</span></div>
+                <div class="legend-item"><span class="legend-dot" style="background: var(--danger);"></span><span>متوسط المخاطرة</span></div>
+              </div>
+            </section>
+
+            <section class="chart-card glass">
+              <div>
+                <h3 class="chart-title">توزيع العقود حسب النوع</h3>
+                <p class="chart-subtitle">حجم كل نوع داخل المحفظة الحالية</p>
+              </div>
+              <div class="chart-frame">
+                <div class="chart-tooltip" id="donutTooltip">مرّر على الشرائح لعرض التفاصيل</div>
+                <div class="donut-layout">
+                  <div class="donut-legend">
+                    <div class="donut-item"><span class="donut-swatch" style="background:#00E5B4;"></span><span>توريد: 8 (35%)</span></div>
+                    <div class="donut-item"><span class="donut-swatch" style="background:#3B82F6;"></span><span>مناقصات: 6 (26%)</span></div>
+                    <div class="donut-item"><span class="donut-swatch" style="background:#8B5CF6;"></span><span>خدمات: 4 (17%)</span></div>
+                    <div class="donut-item"><span class="donut-swatch" style="background:#F59E0B;"></span><span>مقاولات: 3 (13%)</span></div>
+                    <div class="donut-item"><span class="donut-swatch" style="background:#6B7280;"></span><span>أخرى: 2 (9%)</span></div>
+                  </div>
+                  <svg class="donut-chart" viewBox="0 0 240 240" aria-label="توزيع العقود حسب النوع">
+                    <g transform="translate(120 120)">
+                      <circle r="76" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="34"></circle>
+                      <circle class="donut-segment" r="76" fill="none" stroke="#00E5B4" stroke-width="34" stroke-dasharray="167 478" stroke-dashoffset="0" transform="rotate(-90)" data-label="توريد: 8 عقود (35%)"></circle>
+                      <circle class="donut-segment" r="76" fill="none" stroke="#3B82F6" stroke-width="34" stroke-dasharray="124 478" stroke-dashoffset="-167" transform="rotate(-90)" data-label="مناقصات: 6 عقود (26%)"></circle>
+                      <circle class="donut-segment" r="76" fill="none" stroke="#8B5CF6" stroke-width="34" stroke-dasharray="81 478" stroke-dashoffset="-291" transform="rotate(-90)" data-label="خدمات: 4 عقود (17%)"></circle>
+                      <circle class="donut-segment" r="76" fill="none" stroke="#F59E0B" stroke-width="34" stroke-dasharray="62 478" stroke-dashoffset="-372" transform="rotate(-90)" data-label="مقاولات: 3 عقود (13%)"></circle>
+                      <circle class="donut-segment" r="76" fill="none" stroke="#6B7280" stroke-width="34" stroke-dasharray="44 478" stroke-dashoffset="-434" transform="rotate(-90)" data-label="أخرى: 2 عقد (9%)"></circle>
+                      <text x="0" y="-2" text-anchor="middle" fill="currentColor" style="font:700 38px Tajawal;">23</text>
+                      <text x="0" y="28" text-anchor="middle" fill="#94A3B8" style="font:500 16px Tajawal;">عقد</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="charts-grid">
+            <section class="chart-card glass">
+              <div>
+                <h3 class="chart-title">أكثر المخاطر شيوعاً في عقودك</h3>
+                <p class="chart-subtitle">العناصر الأكثر تكراراً في بنود المخاطر الحالية</p>
+              </div>
+              <div class="bar-list">
+                <div class="bar-row"><div class="bar-title"><span>غرامات مرتفعة</span><span>18 بند</span></div><div class="bar-track"><div class="bar-fill" style="--target:100%; background:#ff4757;"></div></div></div>
+                <div class="bar-row"><div class="bar-title"><span>غياب آلية تسوية نزاعات</span><span>14 بند</span></div><div class="bar-track"><div class="bar-fill" style="--target:78%; background:#ff4757;"></div></div></div>
+                <div class="bar-row"><div class="bar-title"><span>إنهاء أحادي بدون تعويض</span><span>12 بند</span></div><div class="bar-track"><div class="bar-fill" style="--target:66%; background:#f97316;"></div></div></div>
+                <div class="bar-row"><div class="bar-title"><span>ملكية فكرية غير محددة</span><span>9 بند</span></div><div class="bar-track"><div class="bar-fill" style="--target:50%; background:#fbbf24;"></div></div></div>
+                <div class="bar-row"><div class="bar-title"><span>غياب فترة سماح</span><span>8 بنود</span></div><div class="bar-track"><div class="bar-fill" style="--target:44%; background:#fbbf24;"></div></div></div>
+                <div class="bar-row"><div class="bar-title"><span>عدم تحديد سقف غرامات</span><span>7 بنود</span></div><div class="bar-track"><div class="bar-fill" style="--target:39%; background:#fbbf24;"></div></div></div>
+              </div>
+            </section>
+
+            <section class="chart-card glass">
+              <div>
+                <h3 class="chart-title">نشاط التحليل الأسبوعي</h3>
+                <p class="chart-subtitle">توزيع حجم التحليل على آخر 4 أسابيع</p>
+              </div>
+              <div class="chart-frame">
+                <div class="chart-tooltip" id="heatTooltip">مرّر على أي مربع لعرض عدد العقود</div>
+                <div class="heatmap-grid" id="heatmapGrid"></div>
+              </div>
+              <div class="heat-legend">
+                <span>أقل</span>
+                <span class="heat-ramp" aria-hidden="true"></span>
+                <span>أكثر</span>
+              </div>
+            </section>
+          </div>
+
+          <section class="table-shell glass">
+            <div class="table-title-row">
+              <div>
+                <h3 class="chart-title">📋 تفاصيل العقود في الفترة المحددة</h3>
+                <p class="chart-subtitle" id="tableContext">البيانات الحالية معروضة لآخر 7 أيام ولكل أنواع العقود</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table aria-label="تفاصيل العقود في الفترة المحددة">
+                <thead>
+                  <tr>
+                    <th data-sort="name">اسم العقد <span class="sort-arrow" id="sort-name"></span></th>
+                    <th data-sort="type">النوع <span class="sort-arrow" id="sort-type"></span></th>
+                    <th data-sort="date">تاريخ التحليل <span class="sort-arrow" id="sort-date"></span></th>
+                    <th data-sort="risk">المخاطرة <span class="sort-arrow" id="sort-risk"></span></th>
+                    <th data-sort="value">القيمة <span class="sort-arrow" id="sort-value"></span></th>
+                    <th data-sort="clauses">البنود الخطرة <span class="sort-arrow" id="sort-clauses"></span></th>
+                    <th data-sort="saving">التوفير المحقق <span class="sort-arrow" id="sort-saving"></span></th>
+                    <th data-sort="status">الحالة <span class="sort-arrow" id="sort-status"></span></th>
+                  </tr>
+                </thead>
+                <tbody id="reportsTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        var authKey = "contractai-authenticated";
+        var toastKey = "contractai-auth-toast";
+        if (window.localStorage.getItem(authKey) !== "true") {
+          window.location.replace("landing.html");
+          return;
+        }
+        var root = document.documentElement;
+        var body = document.body;
+        var storageKey = "contractai-theme";
+        var logoutButton = document.querySelector(".logout-button");
+        var themeToggle = document.getElementById("themeToggle");
+        var themeIcon = document.getElementById("themeIcon");
+        var menuToggle = document.getElementById("menuToggle");
+        var closeSidebar = document.getElementById("closeSidebar");
+        var sidebar = document.getElementById("sidebar");
+        var sidebarBackdrop = document.getElementById("sidebarBackdrop");
+        var periodTabs = Array.prototype.slice.call(document.querySelectorAll("#periodTabs .filter-tab"));
+        var customDateRange = document.getElementById("customDateRange");
+        var contractTypeFilter = document.getElementById("contractTypeFilter");
+        var applyFilters = document.getElementById("applyFilters");
+        var exportTrigger = document.getElementById("exportTrigger");
+        var exportDropdown = document.getElementById("exportDropdown");
+        var toastStack = document.getElementById("toastStack");
+        var tableBody = document.getElementById("reportsTableBody");
+        var tableContext = document.getElementById("tableContext");
+        var areaTooltip = document.getElementById("areaTooltip");
+        var donutTooltip = document.getElementById("donutTooltip");
+        var heatTooltip = document.getElementById("heatTooltip");
+        var barFills = Array.prototype.slice.call(document.querySelectorAll(".bar-fill"));
+        var areaPoints = Array.prototype.slice.call(document.querySelectorAll(".area-point"));
+        var donutSegments = Array.prototype.slice.call(document.querySelectorAll(".donut-segment"));
+        var heatmapGrid = document.getElementById("heatmapGrid");
+        var sortableHeaders = Array.prototype.slice.call(document.querySelectorAll("th[data-sort]"));
+        var currentPeriod = "7";
+        var currentSort = { key: "date", direction: "desc" };
+
+        var contracts = [
+          { name: "عقد توريد مواد بناء", type: "توريد", date: "2026-03-09", risk: 72, riskLabel: "عالي", value: 2450000, clauses: 4, saving: 340000, status: "قيد المراجعة" },
+          { name: "مناقصة صيانة مباني", type: "مناقصة", date: "2026-03-07", risk: 45, riskLabel: "متوسط", value: 890000, clauses: 2, saving: 90000, status: "تم التوقيع" },
+          { name: "عقد خدمات تقنية", type: "خدمات", date: "2026-03-03", risk: 23, riskLabel: "منخفض", value: 1200000, clauses: 1, saving: 55000, status: "تم التوقيع" },
+          { name: "اتفاقية إيجار مستودع", type: "إيجار", date: "2026-02-28", risk: 51, riskLabel: "متوسط", value: 360000, clauses: 2, saving: 20000, status: "قيد التفاوض" },
+          { name: "عقد مقاولات طرق", type: "مقاولات", date: "2026-02-20", risk: 81, riskLabel: "عالي", value: 5700000, clauses: 5, saving: 510000, status: "ملغي" },
+          { name: "مناقصة توريد أجهزة", type: "مناقصة", date: "2026-02-15", risk: 18, riskLabel: "منخفض", value: 430000, clauses: 1, saving: 25000, status: "تم التوقيع" },
+          { name: "عقد تشغيل وصيانة", type: "خدمات", date: "2026-02-10", risk: 55, riskLabel: "متوسط", value: 1800000, clauses: 3, saving: 200000, status: "قيد المراجعة" }
+        ];
+
+        var heatmapData = [
+          { day: "الأحد", date: "2 مارس", count: 3 }, { day: "الإثنين", date: "3 مارس", count: 1 }, { day: "الثلاثاء", date: "4 مارس", count: 0 }, { day: "الأربعاء", date: "5 مارس", count: 2 }, { day: "الخميس", date: "6 مارس", count: 4 }, { day: "الجمعة", date: "7 مارس", count: 1 }, { day: "السبت", date: "8 مارس", count: 0 },
+          { day: "الأحد", date: "23 فبراير", count: 5 }, { day: "الإثنين", date: "24 فبراير", count: 2 }, { day: "الثلاثاء", date: "25 فبراير", count: 3 }, { day: "الأربعاء", date: "26 فبراير", count: 1 }, { day: "الخميس", date: "27 فبراير", count: 4 }, { day: "الجمعة", date: "28 فبراير", count: 2 }, { day: "السبت", date: "1 مارس", count: 1 },
+          { day: "الأحد", date: "16 فبراير", count: 2 }, { day: "الإثنين", date: "17 فبراير", count: 3 }, { day: "الثلاثاء", date: "18 فبراير", count: 0 }, { day: "الأربعاء", date: "19 فبراير", count: 4 }, { day: "الخميس", date: "20 فبراير", count: 5 }, { day: "الجمعة", date: "21 فبراير", count: 1 }, { day: "السبت", date: "22 فبراير", count: 2 },
+          { day: "الأحد", date: "9 فبراير", count: 1 }, { day: "الإثنين", date: "10 فبراير", count: 2 }, { day: "الثلاثاء", date: "11 فبراير", count: 3 }, { day: "الأربعاء", date: "12 فبراير", count: 1 }, { day: "الخميس", date: "13 فبراير", count: 0 }, { day: "الجمعة", date: "14 فبراير", count: 2 }, { day: "السبت", date: "15 فبراير", count: 4 }
+        ];
+
+        function setTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          themeIcon.innerHTML =
+            theme === "light"
+              ? '<path d="M20 12.5A8.5 8.5 0 1 1 11.5 4 6.5 6.5 0 0 0 20 12.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>'
+              : '<path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>';
+          window.localStorage.setItem(storageKey, theme);
+        }
+
+        function getPreferredTheme() {
+          var saved = window.localStorage.getItem(storageKey);
+          if (saved === "light" || saved === "dark") return saved;
+          return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+
+        function toggleSidebar(open) {
+          sidebar.classList.toggle("is-open", open);
+          sidebarBackdrop.classList.toggle("is-visible", open);
+          sidebarBackdrop.hidden = !open;
+          body.classList.toggle("menu-open", open);
+        }
+
+        function showToast(message) {
+          var toast = document.createElement("div");
+          toast.className = "toast";
+          toast.innerHTML = '<span>' + message + '</span><button class="toast-close" type="button" aria-label="إغلاق الإشعار">✕</button>';
+          toast.querySelector(".toast-close").addEventListener("click", function () {
+            toast.remove();
+          });
+          toastStack.appendChild(toast);
+          window.setTimeout(function () {
+            toast.remove();
+          }, 4000);
+        }
+
+        function formatMoney(value) {
+          return Number(value).toLocaleString("en-US") + " ريال";
+        }
+
+        function getRiskClass(label) {
+          if (label === "عالي") return "risk-high";
+          if (label === "متوسط") return "risk-medium";
+          return "risk-low";
+        }
+
+        function getStatusClass(status) {
+          if (status === "تم التوقيع") return "status-signed";
+          if (status === "قيد التفاوض") return "status-negotiation";
+          return "status-review";
+        }
+
+        function getFilteredContracts() {
+          var type = contractTypeFilter.value;
+          var filtered = contracts.filter(function (contract) {
+            return type === "الكل" || contract.type === type;
+          });
+
+          filtered.sort(function (a, b) {
+            var key = currentSort.key;
+            var direction = currentSort.direction === "asc" ? 1 : -1;
+            var first = a[key];
+            var second = b[key];
+            if (key === "name" || key === "type" || key === "status") {
+              return String(first).localeCompare(String(second), "ar") * direction;
+            }
+            if (key === "date") {
+              return (new Date(first) - new Date(second)) * direction;
+            }
+            return (first - second) * direction;
+          });
+
+          return filtered;
+        }
+
+        function updateSortIndicators() {
+          sortableHeaders.forEach(function (header) {
+            var key = header.getAttribute("data-sort");
+            var arrow = document.getElementById("sort-" + key);
+            arrow.textContent = currentSort.key === key ? (currentSort.direction === "asc" ? "↑" : "↓") : "";
+          });
+        }
+
+        function renderTable() {
+          var filtered = getFilteredContracts();
+          tableBody.innerHTML = filtered
+            .map(function (contract) {
+              return (
+                "<tr>" +
+                "<td>" + contract.name + "</td>" +
+                "<td>" + contract.type + "</td>" +
+                "<td>" + contract.date + "</td>" +
+                '<td><span class="risk-pill ' + getRiskClass(contract.riskLabel) + '">' + contract.risk + " " + contract.riskLabel + "</span></td>" +
+                "<td>" + formatMoney(contract.value) + "</td>" +
+                "<td>" + contract.clauses + " بنود</td>" +
+                "<td>" + formatMoney(contract.saving) + "</td>" +
+                '<td><span class="status-pill ' + getStatusClass(contract.status) + '">' + contract.status + "</span></td>" +
+                "</tr>"
+              );
+            })
+            .join("");
+          updateSortIndicators();
+        }
+
+        function renderHeatmap() {
+          heatmapGrid.innerHTML = heatmapData
+            .map(function (item) {
+              var opacity = Math.min(0.12 + item.count * 0.16, 0.92);
+              return '<button class="heat-cell" type="button" style="background: rgba(0,229,180,' + opacity + ');" data-label="' + item.day + " " + item.date + ": " + item.count + ' عقود"></button>';
+            })
+            .join("");
+        }
+
+        function applyContext() {
+          var periodLabel = periodTabs.filter(function (tab) { return tab.classList.contains("is-active"); })[0].textContent;
+          var typeLabel = contractTypeFilter.value;
+          tableContext.textContent = "البيانات الحالية معروضة لـ " + periodLabel + " ونوع العقد: " + typeLabel;
+        }
+
+        function animateBars() {
+          barFills.forEach(function (bar) {
+            bar.style.width = bar.style.getPropertyValue("--target");
+          });
+        }
+
+        if (logoutButton) {
+          logoutButton.addEventListener("click", function () {
+            window.localStorage.removeItem(authKey);
+            window.localStorage.removeItem("contractai-user-name");
+            window.localStorage.setItem(toastKey, "👋 تم تسجيل الخروج");
+            window.location.href = "landing.html";
+          });
+        }
+
+        themeToggle.addEventListener("click", function () {
+          setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+        });
+
+        menuToggle.addEventListener("click", function () {
+          toggleSidebar(true);
+        });
+
+        closeSidebar.addEventListener("click", function () {
+          toggleSidebar(false);
+        });
+
+        sidebarBackdrop.addEventListener("click", function () {
+          toggleSidebar(false);
+        });
+
+        periodTabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            periodTabs.forEach(function (item) {
+              item.classList.remove("is-active");
+            });
+            tab.classList.add("is-active");
+            currentPeriod = tab.getAttribute("data-period");
+            customDateRange.hidden = currentPeriod !== "custom";
+            applyContext();
+          });
+        });
+
+        applyFilters.addEventListener("click", function () {
+          renderTable();
+          applyContext();
+          showToast("تم تحديث التقرير حسب الفلاتر المحددة");
+        });
+
+        exportTrigger.addEventListener("click", function () {
+          exportDropdown.classList.toggle("is-visible");
+        });
+
+        exportDropdown.addEventListener("click", function (event) {
+          var button = event.target.closest("[data-export]");
+          if (!button) return;
+          var format = button.getAttribute("data-export");
+          exportDropdown.classList.remove("is-visible");
+          showToast("تم بدء إنشاء التقرير...");
+          window.setTimeout(function () {
+            showToast("✅ التقرير جاهز للتحميل (" + format + ")");
+          }, 2000);
+        });
+
+        document.addEventListener("click", function (event) {
+          if (!event.target.closest(".export-shell")) {
+            exportDropdown.classList.remove("is-visible");
+          }
+          var heatCell = event.target.closest(".heat-cell");
+          if (heatCell) {
+            heatTooltip.textContent = heatCell.getAttribute("data-label");
+          }
+        });
+
+        areaPoints.forEach(function (point) {
+          point.addEventListener("mouseenter", function () {
+            areaTooltip.textContent = point.getAttribute("data-label");
+          });
+        });
+
+        donutSegments.forEach(function (segment) {
+          segment.addEventListener("mouseenter", function () {
+            donutTooltip.textContent = segment.getAttribute("data-label");
+            segment.style.filter = "brightness(1.15)";
+            segment.style.transform = "scale(1.02)";
+          });
+          segment.addEventListener("mouseleave", function () {
+            segment.style.filter = "";
+            segment.style.transform = "";
+          });
+        });
+
+        sortableHeaders.forEach(function (header) {
+          header.addEventListener("click", function () {
+            var key = header.getAttribute("data-sort");
+            if (currentSort.key === key) {
+              currentSort.direction = currentSort.direction === "asc" ? "desc" : "asc";
+            } else {
+              currentSort.key = key;
+              currentSort.direction = key === "name" || key === "type" || key === "status" ? "asc" : "desc";
+            }
+            renderTable();
+          });
+        });
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            exportDropdown.classList.remove("is-visible");
+            toggleSidebar(false);
+          }
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+            event.preventDefault();
+            document.getElementById("globalSearch").focus();
+          }
+        });
+
+        setTheme(getPreferredTheme());
+        renderTable();
+        renderHeatmap();
+        applyContext();
+        window.setTimeout(animateBars, 220);
+      })();
+    </script>
+  </body>
+</html>

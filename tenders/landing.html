@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContractAI — محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية</title>
+    <meta
+      name="description"
+      content="حلّل عقودك واكتشف المخاطر والبنود الخطرة خلال ثوانٍ مع ContractAI. متوافق مع نظام المنافسات والمشتريات الحكومية ومنصة اعتماد."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-primary: #080c14;
+        --bg-secondary: #0d1117;
+        --bg-card: rgba(17, 24, 39, 0.6);
+        --bg-card-strong: #111827;
+        --accent: #00e5b4;
+        --accent-hover: #00c49a;
+        --accent-glow: rgba(0, 229, 180, 0.15);
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --info: #3b82f6;
+        --success: #22c55e;
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border: rgba(255, 255, 255, 0.08);
+        --radius-sm: 10px;
+        --radius-md: 16px;
+        --radius-lg: 24px;
+        --radius-xl: 32px;
+        --shadow-card: 0 24px 60px rgba(0, 0, 0, 0.24);
+        --shadow-glow: 0 0 40px rgba(0, 229, 180, 0.14);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --container: 1180px;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-card: rgba(255, 255, 255, 0.8);
+        --bg-card-strong: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --border: rgba(15, 23, 42, 0.08);
+        --shadow-card: 0 20px 46px rgba(15, 23, 42, 0.08);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Tajawal", sans-serif;
+        color: var(--text-primary);
+        background:
+          radial-gradient(circle at top right, rgba(0, 229, 180, 0.16), transparent 25%),
+          radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.14), transparent 18%),
+          linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 18px 18px;
+        mask-image: radial-gradient(circle at center, black 48%, transparent 92%);
+        opacity: 0.35;
+      }
+
+      body.modal-open,
+      body.menu-open {
+        overflow: hidden;
+      }
+
+      a,
+      button,
+      input {
+        font: inherit;
+      }
+
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+      }
+
+      ::selection {
+        color: #031b16;
+        background: var(--accent);
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .container {
+        width: min(var(--container), calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .glass {
+        background: var(--bg-card);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 300;
+        padding: 12px 16px;
+        color: #031b16;
+        background: var(--accent);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        transition: var(--transition);
+      }
+
+      .top-nav.is-scrolled .nav-shell {
+        background: rgba(8, 12, 20, 0.76);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.16);
+      }
+
+      .nav-shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 14px;
+        padding: 14px 18px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+      }
+
+      .brand,
+      .nav-links,
+      .nav-actions,
+      .hero-actions,
+      .hero-checks,
+      .feature-grid,
+      .steps-grid,
+      .pricing-grid,
+      .faq-grid,
+      .footer-grid,
+      .auth-tabs,
+      .auth-links,
+      .modal-actions,
+      .auth-alt,
+      .trust-track {
+        display: flex;
+        align-items: center;
+      }
+
+      .brand {
+        gap: 12px;
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        padding: 11px;
+        border-radius: 16px;
+        color: var(--accent);
+        background: linear-gradient(135deg, var(--accent-glow), rgba(59, 130, 246, 0.08));
+        border: 1px solid rgba(0, 229, 180, 0.2);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .brand-name {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 800;
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+
+      .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .nav-links a:hover {
+        color: var(--text-primary);
+      }
+
+      .nav-actions {
+        gap: 12px;
+      }
+
+      .link-button,
+      .primary-button,
+      .secondary-button,
+      .chip,
+      .auth-tab,
+      .social-button,
+      .toggle-pill,
+      .hamburger,
+      .close-mobile,
+      .form-field,
+      .google-button,
+      .toggle-visibility {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        transition: var(--transition);
+      }
+
+      .link-button,
+      .secondary-button,
+      .chip,
+      .auth-tab,
+      .social-button,
+      .toggle-pill,
+      .hamburger,
+      .close-mobile,
+      .form-field,
+      .google-button,
+      .toggle-visibility {
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.56);
+      }
+
+      .primary-button {
+        position: relative;
+        overflow: hidden;
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #7ef6dd);
+        border-color: transparent;
+        font-weight: 800;
+        box-shadow: 0 16px 38px rgba(0, 229, 180, 0.22);
+        text-decoration: none;
+      }
+
+      .primary-button::after {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 -40%;
+        width: 35%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        transform: skewX(-20deg);
+        animation: shimmer 4s ease-in-out infinite;
+      }
+
+      .primary-button:hover,
+      .secondary-button:hover,
+      .feature-card:hover,
+      .pricing-card:hover,
+      .faq-item:hover,
+      .step-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .hamburger,
+      .close-mobile {
+        display: none;
+        min-width: 46px;
+        height: 46px;
+        cursor: pointer;
+      }
+
+      .mobile-menu {
+        display: none;
+      }
+
+      .hero {
+        position: relative;
+        padding: 56px 0 38px;
+      }
+
+      .hero-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(420px, 0.95fr);
+        gap: 36px;
+        align-items: center;
+      }
+
+      .hero-copy {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4.4rem);
+        line-height: 1.05;
+      }
+
+      .hero-subtitle {
+        margin: 22px 0 0;
+        max-width: 640px;
+        color: var(--text-secondary);
+        font-size: 1.08rem;
+        line-height: 1.95;
+      }
+
+      .hero-actions {
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 30px;
+      }
+
+      .hero-checks {
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        color: var(--text-secondary);
+      }
+
+      .hero-checks span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hero-visual {
+        position: relative;
+        min-height: 520px;
+      }
+
+      .hero-glow {
+        position: absolute;
+        inset: 12% 15% auto auto;
+        width: 280px;
+        height: 280px;
+        border-radius: 999px;
+        background: radial-gradient(circle, rgba(0, 229, 180, 0.18), transparent 68%);
+        filter: blur(12px);
+      }
+
+      .app-mock {
+        position: relative;
+        margin: 56px auto 0;
+        padding: 16px;
+        border-radius: 30px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: var(--shadow-card);
+      }
+
+      .app-window {
+        padding: 18px;
+        border-radius: 24px;
+        background: rgba(8, 12, 20, 0.94);
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .app-header,
+      .app-row,
+      .app-list-item,
+      .feature-card,
+      .step-card,
+      .price-head,
+      .faq-question,
+      .footer-brand,
+      .auth-header,
+      .auth-footer,
+      .toast,
+      .trust-caption {
+        display: flex;
+        align-items: center;
+      }
+
+      .app-header {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .app-dots {
+        display: flex;
+        gap: 8px;
+      }
+
+      .app-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.18);
+      }
+
+      .app-panel {
+        margin-top: 18px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .app-row {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .app-card {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(17, 24, 39, 0.86);
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .app-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .app-list-item {
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.03);
+      }
+
+      .floating-badge {
+        position: absolute;
+        padding: 12px 16px;
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        background: rgba(13, 17, 23, 0.85);
+        box-shadow: var(--shadow-card);
+        animation: float 4s ease-in-out infinite;
+      }
+
+      .floating-badge.badge-speed { top: 28px; right: -10px; }
+      .floating-badge.badge-risk { top: 220px; left: -14px; animation-delay: 0.7s; }
+      .floating-badge.badge-saving { bottom: 20px; right: 14px; animation-delay: 1.1s; }
+
+      .trust {
+        padding: 18px 0 0;
+      }
+
+      .trust-shell {
+        padding: 20px 0 10px;
+        overflow: hidden;
+      }
+
+      .trust-caption {
+        justify-content: center;
+        gap: 8px;
+        color: var(--text-secondary);
+        margin-bottom: 18px;
+      }
+
+      .trust-track {
+        gap: 18px;
+        width: max-content;
+        animation: marquee 22s linear infinite;
+      }
+
+      .trust-logo {
+        min-width: 170px;
+        height: 58px;
+        border-radius: 16px;
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      .section {
+        padding: 82px 0;
+      }
+
+      .section-heading {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto 34px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 3rem);
+      }
+
+      .section-heading p {
+        margin: 12px 0 0;
+        color: var(--text-secondary);
+        line-height: 1.9;
+      }
+
+      .feature-grid {
+        align-items: stretch;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .feature-card {
+        flex: 1 1 calc(33.333% - 18px);
+        align-items: flex-start;
+        gap: 16px;
+        padding: 24px;
+        border-radius: 24px;
+        transition: var(--transition);
+        opacity: 0;
+        transform: translateY(22px);
+      }
+
+      .feature-card.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .feature-icon,
+      .step-number,
+      .pricing-icon {
+        width: 54px;
+        height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        flex: 0 0 54px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        font-size: 1.4rem;
+      }
+
+      .feature-copy h3,
+      .step-copy h3,
+      .pricing-card h3 {
+        margin: 0 0 10px;
+      }
+
+      .feature-copy p,
+      .step-copy p,
+      .pricing-list,
+      .faq-answer {
+        color: var(--text-secondary);
+        line-height: 1.9;
+      }
+
+      .steps-grid {
+        align-items: stretch;
+        gap: 22px;
+        position: relative;
+      }
+
+      .steps-grid::before {
+        content: "";
+        position: absolute;
+        top: 32px;
+        right: 10%;
+        left: 10%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(0,229,180,0.35), transparent);
+      }
+
+      .step-card {
+        flex: 1 1 0;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 26px;
+        border-radius: 24px;
+        position: relative;
+      }
+
+      .step-number {
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+      }
+
+      .pricing-toggle {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+
+      .toggle-pill {
+        gap: 10px;
+        padding: 8px;
+        border-radius: 999px;
+      }
+
+      .toggle-pill button {
+        padding: 12px 18px;
+        border: 0;
+        border-radius: 999px;
+        color: var(--text-secondary);
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .toggle-pill button.is-active {
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #7ef6dd);
+        font-weight: 800;
+      }
+
+      .pricing-grid {
+        align-items: stretch;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .pricing-card {
+        position: relative;
+        flex: 1 1 calc(33.333% - 18px);
+        display: grid;
+        gap: 16px;
+        padding: 28px;
+        border-radius: 28px;
+        transition: var(--transition);
+      }
+
+      .pricing-card.is-featured {
+        border-color: rgba(0,229,180,0.28);
+        transform: translateY(-10px);
+      }
+
+      .price-head {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .pricing-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .pricing-list li::before {
+        content: "✓";
+        color: var(--accent);
+        margin-left: 8px;
+      }
+
+      .faq-grid {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+
+      .faq-item {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 22px 24px;
+        border-radius: 22px;
+      }
+
+      .faq-question {
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        cursor: pointer;
+      }
+
+      .faq-question h3 {
+        margin: 0;
+        font-size: 1.08rem;
+      }
+
+      .faq-toggle {
+        font-size: 1.4rem;
+        color: var(--accent);
+        transition: var(--transition);
+      }
+
+      .faq-item.is-open .faq-toggle {
+        transform: rotate(45deg);
+      }
+
+      .faq-answer {
+        display: none;
+        margin-top: 12px;
+      }
+
+      .faq-item.is-open .faq-answer {
+        display: block;
+      }
+
+      .footer {
+        padding: 34px 0 26px;
+        border-top: 1px solid var(--border);
+      }
+
+      .footer-grid {
+        align-items: flex-start;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .footer-column {
+        flex: 1 1 220px;
+      }
+
+      .footer-column h3 {
+        margin: 0 0 12px;
+      }
+
+      .footer-column a,
+      .footer-column p {
+        display: block;
+        margin: 0 0 10px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        line-height: 1.8;
+      }
+
+      .footer-brand {
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .social-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .social-button {
+        width: 42px;
+        height: 42px;
+        padding: 0;
+      }
+
+      .footer-meta {
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        color: var(--text-secondary);
+        line-height: 1.9;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 220;
+        background: rgba(3, 7, 18, 0.72);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+      }
+
+      .modal-overlay.is-visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .auth-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 230;
+        width: min(450px, calc(100% - 24px));
+        padding: 24px;
+        border-radius: 28px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, -46%);
+        transition: var(--transition);
+      }
+
+      .auth-modal.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%);
+      }
+
+      .auth-header {
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .auth-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .auth-tabs {
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .auth-tab {
+        cursor: pointer;
+      }
+
+      .auth-tab.is-active {
+        color: var(--accent);
+        border-color: rgba(0,229,180,0.24);
+        background: rgba(0,229,180,0.08);
+      }
+
+      .auth-panel {
+        display: none;
+      }
+
+      .auth-panel.is-visible {
+        display: block;
+      }
+
+      .auth-panel h2 {
+        margin: 0 0 8px;
+      }
+
+      .auth-panel p {
+        margin: 0 0 18px;
+        color: var(--text-secondary);
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .field-wrap {
+        display: grid;
+        gap: 8px;
+      }
+
+      .form-field {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0 16px;
+      }
+
+      .form-field input {
+        width: 100%;
+        padding: 14px 0;
+        color: inherit;
+        background: transparent;
+        border: 0;
+        outline: 0;
+      }
+
+      .password-shell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toggle-visibility {
+        min-width: 44px;
+        height: 44px;
+        padding: 0;
+      }
+
+      .inline-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+      }
+
+      .error-text,
+      .success-text {
+        display: none;
+        font-size: 0.86rem;
+      }
+
+      .error-text.is-visible {
+        display: block;
+        color: var(--danger);
+      }
+
+      .success-text.is-visible {
+        display: block;
+        color: var(--success);
+      }
+
+      .form-field.is-error {
+        border-color: rgba(255, 71, 87, 0.45);
+      }
+
+      .remember-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--text-secondary);
+      }
+
+      .checkbox {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .checkbox input {
+        accent-color: var(--accent);
+      }
+
+      .auth-alt {
+        justify-content: center;
+        gap: 10px;
+        margin: 18px 0;
+        color: var(--text-muted);
+      }
+
+      .google-button {
+        width: 100%;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .auth-links,
+      .modal-actions {
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        color: var(--text-secondary);
+      }
+
+      .auth-link {
+        color: var(--accent);
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+      }
+
+      .password-strength {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+
+      .strength-track {
+        flex: 1;
+        height: 10px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      .strength-fill {
+        width: 15%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--danger);
+        transition: var(--transition);
+      }
+
+      .toast-stack {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 260;
+        display: grid;
+        gap: 12px;
+      }
+
+      .toast {
+        justify-content: space-between;
+        gap: 12px;
+        min-width: 280px;
+        max-width: 360px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(17, 24, 39, 0.94);
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+        animation: toast-in 0.3s ease;
+      }
+
+      .toast-close {
+        background: transparent;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      @keyframes shimmer {
+        0%, 100% { transform: translateX(0) skewX(-20deg); opacity: 0; }
+        20% { opacity: 1; }
+        50% { transform: translateX(320%) skewX(-20deg); opacity: 0.6; }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-12px); }
+      }
+
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(50%); }
+      }
+
+      @keyframes toast-in {
+        from { opacity: 0; transform: translateX(-14px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+
+      @media (max-width: 1023px) {
+        .nav-links,
+        .nav-actions {
+          display: none;
+        }
+
+        .hamburger {
+          display: inline-flex;
+        }
+
+        .mobile-menu {
+          position: fixed;
+          inset: 0;
+          z-index: 160;
+          display: grid;
+          grid-template-rows: auto 1fr;
+          background: rgba(8, 12, 20, 0.96);
+          opacity: 0;
+          visibility: hidden;
+          transition: var(--transition);
+        }
+
+        .mobile-menu.is-visible {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .mobile-menu-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 22px;
+        }
+
+        .mobile-links {
+          display: grid;
+          gap: 14px;
+          padding: 0 22px 22px;
+        }
+
+        .mobile-links a,
+        .mobile-links button {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .close-mobile {
+          display: inline-flex;
+        }
+
+        .hero-shell,
+        .feature-card,
+        .pricing-card,
+        .footer-column {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-shell {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .hero-visual {
+          min-height: auto;
+        }
+
+        .app-mock {
+          margin-top: 26px;
+        }
+
+        .steps-grid {
+          flex-direction: column;
+        }
+
+        .steps-grid::before {
+          display: none;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .hero {
+          padding-top: 34px;
+        }
+
+        .nav-shell {
+          margin-top: 10px;
+        }
+
+        .hero-actions,
+        .hero-checks,
+        .feature-grid,
+        .pricing-grid,
+        .footer-grid {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .feature-card,
+        .pricing-card {
+          flex-basis: 100%;
+        }
+
+        .floating-badge {
+          position: static;
+          margin-top: 12px;
+        }
+
+        .toast {
+          min-width: 0;
+          width: calc(100vw - 40px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+
+    <header class="top-nav" id="topNav">
+      <div class="container">
+        <div class="nav-shell glass">
+          <a class="brand" href="#hero" aria-label="الانتقال إلى أعلى الصفحة">
+            <svg class="brand-logo" viewBox="0 0 24 24" fill="none" aria-label="شعار ContractAI">
+              <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <div>
+              <p class="brand-name">ContractAI</p>
+            </div>
+          </a>
+
+          <nav class="nav-links" aria-label="التنقل في صفحة الهبوط">
+            <a href="#features">المميزات</a>
+            <a href="#how-it-works">كيف يعمل</a>
+            <a href="#pricing">التسعير</a>
+            <a href="#faq">الأسئلة الشائعة</a>
+          </nav>
+
+          <div class="nav-actions">
+            <button class="link-button" type="button" data-auth-open="login">تسجيل الدخول</button>
+            <button class="primary-button" type="button" data-auth-open="signup">ابدأ مجاناً ←</button>
+          </div>
+
+          <button class="hamburger" id="openMobileMenu" type="button" aria-label="فتح القائمة">☰</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-header">
+        <a class="brand" href="#hero">
+          <svg class="brand-logo" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <p class="brand-name">ContractAI</p>
+        </a>
+        <button class="close-mobile" id="closeMobileMenu" type="button" aria-label="إغلاق القائمة">✕</button>
+      </div>
+      <div class="mobile-links">
+        <a class="secondary-button" href="#features">المميزات</a>
+        <a class="secondary-button" href="#how-it-works">كيف يعمل</a>
+        <a class="secondary-button" href="#pricing">التسعير</a>
+        <a class="secondary-button" href="#faq">الأسئلة الشائعة</a>
+        <button class="secondary-button" type="button" data-auth-open="login">تسجيل الدخول</button>
+        <button class="primary-button" type="button" data-auth-open="signup">ابدأ مجاناً ←</button>
+      </div>
+    </div>
+
+    <main id="main-content">
+      <section class="hero" id="hero">
+        <div class="container hero-shell">
+          <div class="hero-copy">
+            <h1 class="hero-title">محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية</h1>
+            <p class="hero-subtitle">حلّل عقودك واكتشف المخاطر والبنود الخطرة خلال ثوانٍ. متوافق مع نظام المنافسات والمشتريات الحكومية ومنصة اعتماد.</p>
+            <div class="hero-actions">
+              <button class="primary-button" type="button" data-auth-open="signup">جرّب التحليل مجاناً ←</button>
+              <a class="secondary-button" href="#how-it-works">شاهد العرض التوضيحي ▶</a>
+            </div>
+            <div class="hero-checks">
+              <span>✅ لا يحتاج بطاقة ائتمان</span>
+              <span>✅ 3 عقود مجانية</span>
+              <span>✅ نتائج خلال 30 ثانية</span>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-glow"></div>
+            <div class="app-mock glass">
+              <div class="app-window">
+                <div class="app-header">
+                  <div class="app-dots"><span></span><span></span><span></span></div>
+                  <span style="color:var(--text-secondary);">ContractAI Dashboard</span>
+                </div>
+                <div class="app-panel">
+                  <div class="app-row">
+                    <div class="app-card" style="flex:1;">
+                      <strong>درجة المخاطرة</strong>
+                      <div style="margin-top:10px; font:700 2rem JetBrains Mono, monospace;">72/100</div>
+                    </div>
+                    <div class="app-card" style="width:160px;">
+                      <strong>قيمة العقد</strong>
+                      <div style="margin-top:10px; font:700 1.1rem JetBrains Mono, monospace;">2.45M</div>
+                    </div>
+                  </div>
+                  <div class="app-card">
+                    <strong>البنود الخطرة</strong>
+                    <div class="app-list" style="margin-top:14px;">
+                      <div class="app-list-item"><span>البند 14.2 — الغرامات</span><span style="color:#ff8b95;">عالي</span></div>
+                      <div class="app-list-item"><span>البند 22.1 — الإنهاء</span><span style="color:#ff8b95;">عالي</span></div>
+                      <div class="app-list-item"><span>البند 8.5 — الملكية</span><span style="color:#fbbf24;">متوسط</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="floating-badge badge-speed">⚡ تحليل خلال 38 ثانية</div>
+            <div class="floating-badge badge-risk">🔴 4 بنود خطرة</div>
+            <div class="floating-badge badge-saving">💰 توفير 340K ريال</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust">
+        <div class="container trust-shell">
+          <div class="trust-caption">يثق بنا أكثر من 500+ شركة ومؤسسة في السعودية</div>
+          <div style="overflow:hidden;">
+            <div class="trust-track">
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+              <div class="trust-logo"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-heading">
+            <h2>لماذا ContractAI؟</h2>
+            <p>أدوات ذكية لتحليل عقودك بكل احترافية</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card glass reveal-card"><span class="feature-icon">🔍</span><div class="feature-copy"><h3>تحليل ذكي للبنود</h3><p>يقرأ العقد ويستخرج كل البنود والشروط والالتزامات تلقائياً باستخدام الذكاء الاصطناعي.</p></div></article>
+            <article class="feature-card glass reveal-card"><span class="feature-icon">🔴</span><div class="feature-copy"><h3>اكتشاف المخاطر</h3><p>يكتشف البنود الخطرة والغرامات المرتفعة والشروط غير العادلة ويقيّم مستوى المخاطرة.</p></div></article>
+            <article class="feature-card glass reveal-card"><span class="feature-icon">⚖️</span><div class="feature-copy"><h3>مطابقة الأنظمة السعودية</h3><p>يقارن بنود العقد بنظام المنافسات والمشتريات الحكومية ولوائحه التنفيذية تلقائياً.</p></div></article>
+            <article class="feature-card glass reveal-card"><span class="feature-icon">💡</span><div class="feature-copy"><h3>اقتراحات التفاوض</h3><p>يقدم نقاط تفاوض ذكية مع تقدير التوفير المالي لكل نقطة.</p></div></article>
+            <article class="feature-card glass reveal-card"><span class="feature-icon">📊</span><div class="feature-copy"><h3>مقارنة بمعايير السوق</h3><p>يقارن شروط عقدك بمعدلات السوق السعودي ويحدد الانحرافات.</p></div></article>
+            <article class="feature-card glass reveal-card"><span class="feature-icon">🤖</span><div class="feature-copy"><h3>محلل ذكي تفاعلي</h3><p>اسأل عن أي بند واحصل على تحليل فوري وتوصيات مخصصة.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="how-it-works">
+        <div class="container">
+          <div class="section-heading">
+            <h2>كيف يعمل محلل العقود؟</h2>
+          </div>
+          <div class="steps-grid">
+            <article class="step-card glass"><span class="step-number">①</span><div class="step-copy"><h3>ارفع العقد</h3><p>ارفع ملف العقد (PDF, DOCX) أو الصقه مباشرة</p></div></article>
+            <article class="step-card glass"><span class="step-number">②</span><div class="step-copy"><h3>التحليل الذكي</h3><p>الذكاء الاصطناعي يحلل البنود ويكتشف المخاطر خلال ثوانٍ</p></div></article>
+            <article class="step-card glass"><span class="step-number">③</span><div class="step-copy"><h3>النتائج والتوصيات</h3><p>احصل على تقرير شامل مع اقتراحات التفاوض والتصدير PDF</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="container">
+          <div class="section-heading">
+            <h2>خطط تناسب احتياجاتك</h2>
+          </div>
+          <div class="pricing-toggle">
+            <div class="toggle-pill glass">
+              <button class="is-active" type="button" data-billing="monthly">شهري</button>
+              <button type="button" data-billing="yearly">سنوي (خصم 20%)</button>
+            </div>
+          </div>
+          <div class="pricing-grid">
+            <article class="pricing-card glass">
+              <div class="price-head"><h3>مجانية</h3><span class="price-value" data-monthly="0 ريال/شهر" data-yearly="0 ريال/سنة">0 ريال/شهر</span></div>
+              <ul class="pricing-list">
+                <li>3 عقود شهرياً</li>
+                <li>تحليل سريع فقط</li>
+                <li>ملخص المخاطر</li>
+                <li>بدون تصدير PDF</li>
+              </ul>
+              <button class="secondary-button" type="button" data-auth-open="signup">ابدأ مجاناً</button>
+            </article>
+            <article class="pricing-card glass is-featured">
+              <div class="price-head"><h3>احترافية</h3><span class="badge">الأكثر شعبية</span></div>
+              <div class="price-value" data-monthly="299 ريال/شهر" data-yearly="239 ريال/شهر">299 ريال/شهر</div>
+              <ul class="pricing-list">
+                <li>50 عقد شهرياً</li>
+                <li>تحليل معمّق + شامل</li>
+                <li>تقارير PDF كاملة</li>
+                <li>المحلل الذكي</li>
+                <li>مقارنة العقود</li>
+                <li>مقارنة بمعايير السوق</li>
+              </ul>
+              <button class="primary-button" type="button" data-auth-open="signup">اشترك الآن ←</button>
+            </article>
+            <article class="pricing-card glass">
+              <div class="price-head"><h3>مؤسسات</h3><span class="price-value" data-monthly="تواصل معنا" data-yearly="تواصل معنا">تواصل معنا</span></div>
+              <ul class="pricing-list">
+                <li>عقود غير محدودة</li>
+                <li>API وتكامل</li>
+                <li>دعم مخصص 24/7</li>
+                <li>تدريب الفريق</li>
+                <li>SLA مخصص</li>
+              </ul>
+              <button class="secondary-button" type="button">تواصل مع المبيعات</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="container">
+          <div class="section-heading">
+            <h2>الأسئلة الشائعة</h2>
+          </div>
+          <div class="faq-grid">
+            <article class="faq-item glass is-open"><div class="faq-question"><h3>كيف يعمل محلل العقود بالذكاء الاصطناعي؟</h3><span class="faq-toggle">＋</span></div><div class="faq-answer">يقوم النظام بقراءة العقد تلقائياً واستخراج البنود والالتزامات والتواريخ والغرامات، ثم يحلل المخاطر ويقارنها بمعايير السوق السعودي ونظام المنافسات والمشتريات الحكومية.</div></article>
+            <article class="faq-item glass"><div class="faq-question"><h3>هل النظام متوافق مع نظام المنافسات والمشتريات الحكومية السعودي؟</h3><span class="faq-toggle">＋</span></div><div class="faq-answer">نعم، النظام مبني على قاعدة بيانات تشمل نظام المنافسات والمشتريات الحكومية ولوائحه التنفيذية، ويقارن بنود العقد تلقائياً بالمعايير النظامية.</div></article>
+            <article class="faq-item glass"><div class="faq-question"><h3>ما أنواع العقود التي يدعمها النظام؟</h3><span class="faq-toggle">＋</span></div><div class="faq-answer">يدعم عقود التوريد، عقود الخدمات، عقود الإيجار، المناقصات الحكومية، عقود المقاولات، وعقود التشغيل والصيانة.</div></article>
+            <article class="faq-item glass"><div class="faq-question"><h3>هل بياناتي آمنة؟</h3><span class="faq-toggle">＋</span></div><div class="faq-answer">نعم، جميع البيانات مشفرة بتقنية AES-256 ومخزنة في خوادم داخل المملكة العربية السعودية. لا نشارك أي بيانات مع أطراف ثالثة ونلتزم بنظام حماية البيانات الشخصية السعودي.</div></article>
+            <article class="faq-item glass"><div class="faq-question"><h3>هل يمكنني تجربة النظام مجاناً؟</h3><span class="faq-toggle">＋</span></div><div class="faq-answer">نعم، يمكنك تحليل 3 عقود مجاناً بدون الحاجة لبطاقة ائتمان. التحليل المجاني يشمل الملخص ودرجة المخاطرة.</div></article>
+            <article class="faq-item glass"><div class="faq-question"><h3>هل يدعم النظام اللغة الإنجليزية؟</h3><span class="faq-toggle">＋</span></div><div class="faq-answer">نعم، النظام يدعم تحليل العقود باللغتين العربية والإنجليزية، وكذلك العقود المختلطة.</div></article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <div class="footer-brand">
+              <svg class="brand-logo" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <div><strong>ContractAI</strong></div>
+            </div>
+            <p>منصة عربية لتحليل العقود والمناقصات بالذكاء الاصطناعي، مصممة للسوق السعودي والفرق القانونية والمشتريات.</p>
+            <div class="social-row">
+              <a class="social-button" href="#" aria-label="Twitter">𝕏</a>
+              <a class="social-button" href="#" aria-label="LinkedIn">in</a>
+              <a class="social-button" href="#" aria-label="YouTube">▶</a>
+            </div>
+          </div>
+          <div class="footer-column"><h3>المنتج</h3><a href="#features">المميزات</a><a href="#pricing">التسعير</a><a href="#faq">API</a><a href="templates.html">القوالب</a></div>
+          <div class="footer-column"><h3>الشركة</h3><a href="#">عن BrightAI</a><a href="#">المدونة</a><a href="#">وظائف</a><a href="#">تواصل معنا</a></div>
+          <div class="footer-column"><h3>قانوني</h3><a href="#">سياسة الخصوصية</a><a href="#">الشروط والأحكام</a><a href="#">سياسة الاستخدام</a></div>
+        </div>
+        <div class="footer-meta">© 2026 ContractAI by BrightAI — محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية<br />مسجل في المملكة العربية السعودية — سجل تجاري: XXXXXXXXXX</div>
+      </div>
+    </footer>
+
+    <div class="modal-overlay" id="authOverlay"></div>
+    <div class="auth-modal glass" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="auth-header">
+        <div class="auth-brand">
+          <svg class="brand-logo" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <strong>ContractAI</strong>
+        </div>
+        <button class="close-mobile" id="closeAuthModal" type="button" aria-label="إغلاق">✕</button>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab is-active" type="button" data-auth-tab="login">تسجيل الدخول</button>
+        <button class="auth-tab" type="button" data-auth-tab="signup">إنشاء حساب</button>
+        <button class="auth-tab" type="button" data-auth-tab="forgot">نسيت كلمة المرور</button>
+      </div>
+
+      <section class="auth-panel is-visible" id="auth-panel-login">
+        <h2 id="authTitle">مرحباً بعودتك</h2>
+        <p>أدخل بياناتك للوصول إلى لوحة التحليل</p>
+        <div class="form-grid">
+          <label class="field-wrap"><span>البريد الإلكتروني</span><div class="form-field" id="loginEmailField"><input id="loginEmail" name="login_email" type="email" /></div><span class="error-text" id="loginEmailError">أدخل بريد إلكتروني صحيح</span></label>
+          <label class="field-wrap"><span>كلمة المرور</span><div class="form-field password-shell" id="loginPasswordField"><input id="loginPassword" name="login_password" type="password" /><button class="toggle-visibility" type="button" data-toggle-password="loginPassword">👁</button></div><span class="error-text" id="loginPasswordError">كلمة المرور يجب أن تحتوي على 8 أحرف ورقم وحرف كبير</span></label>
+          <div class="remember-row"><label class="checkbox"><input id="rememberMe" type="checkbox" /> تذكرني</label><button class="auth-link" type="button" data-auth-tab-link="forgot">نسيت كلمة المرور؟</button></div>
+          <button class="primary-button" id="loginSubmit" type="button">تسجيل الدخول</button>
+        </div>
+        <div class="auth-alt">— أو —</div>
+        <button class="google-button" type="button">🔵 تسجيل الدخول بحساب Google</button>
+        <div class="auth-links">ليس لديك حساب؟ <button class="auth-link" type="button" data-auth-tab-link="signup">أنشئ حساباً مجاناً</button></div>
+      </section>
+
+      <section class="auth-panel" id="auth-panel-signup">
+        <h2>أنشئ حسابك المجاني</h2>
+        <p>ابدأ أول 3 عقود مجاناً بدون بطاقة ائتمان</p>
+        <div class="form-grid">
+          <label class="field-wrap"><span>الاسم الكامل</span><div class="form-field" id="signupNameField"><input id="signupName" name="signup_name" type="text" /></div><span class="error-text" id="signupNameError">هذا الحقل مطلوب</span></label>
+          <label class="field-wrap"><span>البريد الإلكتروني</span><div class="form-field" id="signupEmailField"><input id="signupEmail" name="signup_email" type="email" /></div><span class="error-text" id="signupEmailError">أدخل بريد إلكتروني صحيح</span></label>
+          <label class="field-wrap"><span>كلمة المرور</span><div class="form-field password-shell" id="signupPasswordField"><input id="signupPassword" name="signup_password" type="password" /><button class="toggle-visibility" type="button" data-toggle-password="signupPassword">👁</button></div><div class="password-strength"><span id="strengthLabel">ضعيفة</span><div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div></div><span class="error-text" id="signupPasswordError">كلمة المرور يجب أن تحتوي على 8 أحرف ورقم وحرف كبير</span></label>
+          <label class="field-wrap"><span>تأكيد كلمة المرور</span><div class="form-field" id="signupConfirmField"><input id="signupConfirm" name="signup_confirm" type="password" /></div><span class="error-text" id="signupConfirmError">تأكيد كلمة المرور غير مطابق</span></label>
+          <label class="field-wrap"><span>الشركة (اختياري)</span><div class="form-field"><input id="signupCompany" name="signup_company" type="text" /></div></label>
+          <label class="checkbox"><input id="acceptTerms" type="checkbox" /> أوافق على الشروط والأحكام وسياسة الخصوصية</label>
+          <span class="error-text" id="acceptTermsError">يجب الموافقة على الشروط والأحكام</span>
+          <button class="primary-button" id="signupSubmit" type="button">إنشاء حساب مجاني ←</button>
+        </div>
+        <div class="auth-links">لديك حساب؟ <button class="auth-link" type="button" data-auth-tab-link="login">سجّل الدخول</button></div>
+      </section>
+
+      <section class="auth-panel" id="auth-panel-forgot">
+        <h2>استعادة كلمة المرور</h2>
+        <p>أدخل بريدك الإلكتروني وسنرسل لك رابط الاستعادة</p>
+        <div class="form-grid">
+          <label class="field-wrap"><span>البريد الإلكتروني</span><div class="form-field" id="forgotEmailField"><input id="forgotEmail" name="forgot_email" type="email" /></div><span class="error-text" id="forgotEmailError">أدخل بريد إلكتروني صحيح</span><span class="success-text" id="forgotSuccess">✅ تم إرسال رابط الاستعادة لبريدك الإلكتروني</span></label>
+          <button class="primary-button" id="forgotSubmit" type="button">إرسال رابط الاستعادة</button>
+        </div>
+        <div class="auth-links"><button class="auth-link" type="button" data-auth-tab-link="login">العودة لتسجيل الدخول</button></div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        var authKey = "contractai-authenticated";
+        var userKey = "contractai-user-name";
+        var toastKey = "contractai-auth-toast";
+        var themeKey = "contractai-theme";
+        var root = document.documentElement;
+        var body = document.body;
+        var topNav = document.getElementById("topNav");
+        var authModal = document.getElementById("authModal");
+        var authOverlay = document.getElementById("authOverlay");
+        var closeAuthModal = document.getElementById("closeAuthModal");
+        var authTabs = Array.prototype.slice.call(document.querySelectorAll(".auth-tab"));
+        var authPanels = Array.prototype.slice.call(document.querySelectorAll(".auth-panel"));
+        var authOpeners = Array.prototype.slice.call(document.querySelectorAll("[data-auth-open]"));
+        var authTabLinks = Array.prototype.slice.call(document.querySelectorAll("[data-auth-tab-link]"));
+        var openMobileMenu = document.getElementById("openMobileMenu");
+        var closeMobileMenu = document.getElementById("closeMobileMenu");
+        var mobileMenu = document.getElementById("mobileMenu");
+        var toastStack = document.getElementById("toastStack");
+        var revealCards = Array.prototype.slice.call(document.querySelectorAll(".reveal-card"));
+        var pricingToggleButtons = Array.prototype.slice.call(document.querySelectorAll("[data-billing]"));
+        var priceValues = Array.prototype.slice.call(document.querySelectorAll(".price-value"));
+        var faqItems = Array.prototype.slice.call(document.querySelectorAll(".faq-item"));
+        var passwordToggles = Array.prototype.slice.call(document.querySelectorAll("[data-toggle-password]"));
+
+        if (window.localStorage.getItem(authKey) === "true") {
+          window.location.replace("dashboard.html");
+          return;
+        }
+
+        function setTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          window.localStorage.setItem(themeKey, theme);
+        }
+
+        function getPreferredTheme() {
+          var saved = window.localStorage.getItem(themeKey);
+          if (saved === "light" || saved === "dark") return saved;
+          return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+
+        function showToast(message) {
+          var toast = document.createElement("div");
+          toast.className = "toast glass";
+          toast.innerHTML = '<span>' + message + '</span><button class="toast-close" type="button" aria-label="إغلاق الإشعار">✕</button>';
+          toast.querySelector(".toast-close").addEventListener("click", function () {
+            toast.remove();
+          });
+          toastStack.appendChild(toast);
+          window.setTimeout(function () {
+            toast.remove();
+          }, 4000);
+        }
+
+        function switchAuthTab(tabId) {
+          authTabs.forEach(function (tab) {
+            tab.classList.toggle("is-active", tab.getAttribute("data-auth-tab") === tabId);
+          });
+          authPanels.forEach(function (panel) {
+            panel.classList.toggle("is-visible", panel.id === "auth-panel-" + tabId);
+          });
+        }
+
+        function openAuthModal(tabId) {
+          switchAuthTab(tabId || "login");
+          authModal.classList.add("is-visible");
+          authOverlay.classList.add("is-visible");
+          body.classList.add("modal-open");
+        }
+
+        function closeModal() {
+          authModal.classList.remove("is-visible");
+          authOverlay.classList.remove("is-visible");
+          body.classList.remove("modal-open");
+        }
+
+        function toggleMobileMenu(open) {
+          mobileMenu.classList.toggle("is-visible", open);
+          body.classList.toggle("menu-open", open);
+        }
+
+        function validateEmail(value) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        }
+
+        function validatePassword(value) {
+          return /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(value);
+        }
+
+        function markField(fieldId, errorId, valid, message) {
+          var field = document.getElementById(fieldId);
+          var error = document.getElementById(errorId);
+          if (!field || !error) return valid;
+          field.classList.toggle("is-error", !valid);
+          if (!valid) {
+            error.textContent = message;
+            error.classList.add("is-visible");
+          } else {
+            error.classList.remove("is-visible");
+          }
+          return valid;
+        }
+
+        function evaluatePasswordStrength(value) {
+          var score = 0;
+          if (value.length >= 8) score += 1;
+          if (/[A-Z]/.test(value)) score += 1;
+          if (/\d/.test(value)) score += 1;
+          if (/[^A-Za-z0-9]/.test(value)) score += 1;
+          if (score <= 1) return { label: "ضعيفة", width: "22%", color: "var(--danger)" };
+          if (score <= 3) return { label: "متوسطة", width: "60%", color: "var(--warning)" };
+          return { label: "قوية", width: "100%", color: "var(--success)" };
+        }
+
+        function completeLogin(name) {
+          window.localStorage.setItem(authKey, "true");
+          window.localStorage.setItem(userKey, name || "أحمد المطيري");
+          window.localStorage.setItem(toastKey, "✅ تم تسجيل الدخول");
+          showToast("✅ تم تسجيل الدخول");
+          window.setTimeout(function () {
+            window.location.href = "dashboard.html";
+          }, 700);
+        }
+
+        function handleLogin() {
+          var email = document.getElementById("loginEmail").value.trim();
+          var password = document.getElementById("loginPassword").value.trim();
+          var validEmail = markField("loginEmailField", "loginEmailError", validateEmail(email), "أدخل بريد إلكتروني صحيح");
+          var validPassword = markField("loginPasswordField", "loginPasswordError", validatePassword(password), "كلمة المرور يجب أن تحتوي على 8 أحرف ورقم وحرف كبير");
+          if (validEmail && validPassword) completeLogin("أحمد المطيري");
+        }
+
+        function handleSignup() {
+          var name = document.getElementById("signupName").value.trim();
+          var email = document.getElementById("signupEmail").value.trim();
+          var password = document.getElementById("signupPassword").value.trim();
+          var confirm = document.getElementById("signupConfirm").value.trim();
+          var accepted = document.getElementById("acceptTerms").checked;
+          var validName = markField("signupNameField", "signupNameError", Boolean(name), "هذا الحقل مطلوب");
+          var validEmail = markField("signupEmailField", "signupEmailError", validateEmail(email), "أدخل بريد إلكتروني صحيح");
+          var validPassword = markField("signupPasswordField", "signupPasswordError", validatePassword(password), "كلمة المرور يجب أن تحتوي على 8 أحرف ورقم وحرف كبير");
+          var validConfirm = markField("signupConfirmField", "signupConfirmError", confirm === password && confirm.length > 0, "تأكيد كلمة المرور غير مطابق");
+          document.getElementById("acceptTermsError").classList.toggle("is-visible", !accepted);
+          if (validName && validEmail && validPassword && validConfirm && accepted) completeLogin(name);
+        }
+
+        function handleForgot() {
+          var email = document.getElementById("forgotEmail").value.trim();
+          var validEmail = markField("forgotEmailField", "forgotEmailError", validateEmail(email), "أدخل بريد إلكتروني صحيح");
+          document.getElementById("forgotSuccess").classList.toggle("is-visible", validEmail);
+        }
+
+        authOpeners.forEach(function (button) {
+          button.addEventListener("click", function () {
+            openAuthModal(button.getAttribute("data-auth-open"));
+            toggleMobileMenu(false);
+          });
+        });
+
+        authTabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            switchAuthTab(tab.getAttribute("data-auth-tab"));
+          });
+        });
+
+        authTabLinks.forEach(function (link) {
+          link.addEventListener("click", function () {
+            switchAuthTab(link.getAttribute("data-auth-tab-link"));
+          });
+        });
+
+        faqItems.forEach(function (item) {
+          item.querySelector(".faq-question").addEventListener("click", function () {
+            item.classList.toggle("is-open");
+          });
+        });
+
+        pricingToggleButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            pricingToggleButtons.forEach(function (item) { item.classList.remove("is-active"); });
+            button.classList.add("is-active");
+            var mode = button.getAttribute("data-billing");
+            priceValues.forEach(function (price) {
+              price.textContent = price.getAttribute("data-" + mode);
+            });
+          });
+        });
+
+        passwordToggles.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var input = document.getElementById(button.getAttribute("data-toggle-password"));
+            input.type = input.type === "password" ? "text" : "password";
+          });
+        });
+
+        document.getElementById("signupPassword").addEventListener("input", function (event) {
+          var result = evaluatePasswordStrength(event.target.value);
+          document.getElementById("strengthLabel").textContent = result.label;
+          document.getElementById("strengthFill").style.width = result.width;
+          document.getElementById("strengthFill").style.background = result.color;
+        });
+
+        document.getElementById("loginSubmit").addEventListener("click", handleLogin);
+        document.getElementById("signupSubmit").addEventListener("click", handleSignup);
+        document.getElementById("forgotSubmit").addEventListener("click", handleForgot);
+
+        authOverlay.addEventListener("click", closeModal);
+        closeAuthModal.addEventListener("click", closeModal);
+        openMobileMenu.addEventListener("click", function () { toggleMobileMenu(true); });
+        closeMobileMenu.addEventListener("click", function () { toggleMobileMenu(false); });
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            closeModal();
+            toggleMobileMenu(false);
+          }
+        });
+
+        window.addEventListener("scroll", function () {
+          topNav.classList.toggle("is-scrolled", window.scrollY > 12);
+        });
+
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.18 });
+
+        revealCards.forEach(function (card, index) {
+          card.style.transitionDelay = (index * 90) + "ms";
+          revealObserver.observe(card);
+        });
+
+        setTheme(getPreferredTheme());
+
+        var storedToast = window.localStorage.getItem(toastKey);
+        if (storedToast) {
+          showToast(storedToast);
+          window.localStorage.removeItem(toastKey);
+        }
+      })();
+    </script>
+  </body>
+</html>

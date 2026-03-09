@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContractAI — لوحة التحكم | ملخص العقود والمخاطر في السعودية</title>
+    <meta
+      name="description"
+      content="لوحة تحكم ContractAI لعرض ملخص العقود المحللة والمخاطر والتوفير والمواعيد القادمة داخل بيئة عربية مهيأة للسوق السعودي."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&family=Tajawal:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-primary: #080c14;
+        --bg-secondary: #0d1117;
+        --bg-card: #111827;
+        --bg-card-hover: #1a2332;
+        --accent: #00e5b4;
+        --accent-hover: #00c49a;
+        --accent-glow: rgba(0, 229, 180, 0.15);
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --info: #3b82f6;
+        --success: #22c55e;
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border: rgba(255, 255, 255, 0.06);
+        --border-hover: rgba(0, 229, 180, 0.3);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 24px;
+        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+        --shadow-glow: 0 0 30px rgba(0, 229, 180, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --sidebar-width: 270px;
+        --header-height: 92px;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-card: #ffffff;
+        --bg-card-hover: #f1f5f9;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --border: rgba(0, 0, 0, 0.08);
+        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Tajawal", sans-serif;
+        color: var(--text-primary);
+        background:
+          radial-gradient(circle at top right, rgba(0, 229, 180, 0.12), transparent 24%),
+          radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent 20%),
+          linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 120px 120px;
+        mask-image: radial-gradient(circle at center, black 45%, transparent 92%);
+        opacity: 0.5;
+      }
+
+      body.menu-open {
+        overflow: hidden;
+      }
+
+      a,
+      button,
+      input {
+        font: inherit;
+      }
+
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+      }
+
+      ::selection {
+        color: #031b16;
+        background: var(--accent);
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .glass {
+        background: rgba(17, 24, 39, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
+      }
+
+      [data-theme="light"] .glass {
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1000;
+        padding: 12px 16px;
+        color: #031b16;
+        background: var(--accent);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+
+      .sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 140;
+        background: rgba(3, 7, 18, 0.58);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+      }
+
+      .sidebar-backdrop.is-visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 180;
+        width: var(--sidebar-width);
+        height: 100vh;
+        padding: 24px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background:
+          linear-gradient(180deg, rgba(13, 17, 23, 0.96), rgba(8, 12, 20, 0.94)),
+          rgba(17, 24, 39, 0.6);
+        border-left: 1px solid var(--border);
+        box-shadow: -24px 0 80px rgba(0, 0, 0, 0.28);
+      }
+
+      .sidebar-header,
+      .brand,
+      .brand-title-row,
+      .header-side,
+      .header-actions,
+      .nav-main,
+      .timeline-item,
+      .deadline-head,
+      .tip-row,
+      .tip-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .sidebar-header {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand {
+        gap: 14px;
+      }
+
+      .brand-logo {
+        width: 52px;
+        height: 52px;
+        padding: 12px;
+        border-radius: 18px;
+        color: var(--accent);
+        background: linear-gradient(135deg, var(--accent-glow), rgba(59, 130, 246, 0.08));
+        border: 1px solid rgba(0, 229, 180, 0.18);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .brand-title-row {
+        gap: 10px;
+      }
+
+      .brand-name {
+        margin: 0;
+        color: var(--accent);
+        font-size: 1.35rem;
+        font-weight: 700;
+      }
+
+      .brand-subtitle {
+        margin: 6px 0 0;
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: rgba(59, 130, 246, 0.16);
+        border: 1px solid rgba(59, 130, 246, 0.24);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .nav-list {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        overflow: hidden;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        right: 0;
+        width: 3px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+        border-color: var(--border-hover);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .nav-link[aria-current="page"] {
+        color: var(--accent);
+        background: rgba(0, 229, 180, 0.1);
+        border-color: rgba(0, 229, 180, 0.2);
+      }
+
+      .nav-link[aria-current="page"]::after {
+        background: var(--accent);
+      }
+
+      .nav-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .nav-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 26px;
+        height: 26px;
+        padding-inline: 8px;
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(255, 71, 87, 0.2);
+        border: 1px solid rgba(255, 71, 87, 0.3);
+      }
+
+      .user-card {
+        padding: 16px;
+        border-radius: var(--radius-lg);
+      }
+
+      .user-summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        font-weight: 700;
+        color: #031b16;
+        background: linear-gradient(135deg, #7ef6dd, var(--accent));
+      }
+
+      .user-name {
+        margin: 0;
+        font-weight: 700;
+      }
+
+      .user-plan {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+      }
+
+      .logout-button,
+      .primary-button,
+      .icon-button,
+      .secondary-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        text-decoration: none;
+        border: 1px solid var(--border);
+        cursor: pointer;
+      }
+
+      .logout-button,
+      .secondary-button,
+      .icon-button {
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.58);
+      }
+
+      .primary-button {
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #67f5d8);
+        border-color: transparent;
+        font-weight: 700;
+        box-shadow: 0 14px 34px rgba(0, 229, 180, 0.2);
+      }
+
+      .main-content {
+        min-height: 100vh;
+        margin-right: var(--sidebar-width);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-header {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) minmax(280px, 1.4fr) auto;
+        align-items: center;
+        gap: 20px;
+        min-height: var(--header-height);
+        padding: 20px 28px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(8, 12, 20, 0.68);
+        backdrop-filter: blur(16px);
+      }
+
+      .menu-toggle,
+      .close-sidebar {
+        display: none;
+      }
+
+      .breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+
+      .breadcrumb a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .breadcrumb .current {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      .search-shell {
+        position: relative;
+      }
+
+      .search-shell svg {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        width: 18px;
+        height: 18px;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 14px 122px 14px 48px;
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.6);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+      }
+
+      .search-shortcut {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+        transform: translateY(-50%);
+        padding: 6px 10px;
+        color: var(--text-secondary);
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+      }
+
+      .icon-button {
+        min-width: 48px;
+        height: 48px;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        min-width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--danger);
+        font-size: 0.68rem;
+      }
+
+      .page-content {
+        flex: 1;
+        padding: 28px;
+      }
+
+      .dashboard-layout {
+        display: grid;
+        gap: 24px;
+      }
+
+      .welcome-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px;
+        overflow: hidden;
+      }
+
+      .welcome-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(135deg, rgba(0, 229, 180, 0.06), transparent 60%),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' fill='none'%3E%3Cpath d='M0 80h160M80 0v160M20 20l120 120M140 20 20 140' stroke='rgba(0,229,180,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+        pointer-events: none;
+      }
+
+      .welcome-copy,
+      .chart-card,
+      .timeline-card,
+      .deadline-card,
+      .tip-card {
+        position: relative;
+        z-index: 1;
+      }
+
+      .welcome-title {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 2.5rem);
+      }
+
+      .welcome-subtitle {
+        margin: 10px 0 0;
+        color: var(--text-secondary);
+        font-size: 1rem;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .kpi-card,
+      .chart-card,
+      .timeline-card,
+      .deadline-card,
+      .tip-card {
+        padding: 20px;
+        border-radius: var(--radius-xl);
+      }
+
+      .kpi-card:hover,
+      .chart-card:hover,
+      .timeline-card:hover,
+      .deadline-card:hover,
+      .tip-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--border-hover);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      }
+
+      .kpi-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .kpi-icon {
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        border: 1px solid currentColor;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .kpi-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .kpi-label {
+        margin: 16px 0 8px;
+        font-size: 0.96rem;
+        font-weight: 700;
+      }
+
+      .kpi-value {
+        margin: 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1.55rem, 2vw, 2.15rem);
+      }
+
+      .kpi-note {
+        margin: 10px 0 0;
+        color: var(--text-secondary);
+      }
+
+      .positive {
+        color: var(--success);
+      }
+
+      .negative {
+        color: var(--danger);
+      }
+
+      .sparkline {
+        width: 100%;
+        height: 54px;
+        margin-top: 16px;
+      }
+
+      .mini-donut {
+        width: 62px;
+        height: 62px;
+      }
+
+      .chart-card {
+        display: grid;
+        gap: 18px;
+      }
+
+      .chart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .chart-title {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .chart-tabs {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .chart-tab {
+        padding: 9px 12px;
+        color: var(--text-secondary);
+        background: rgba(148, 163, 184, 0.06);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+
+      .chart-tab.is-active {
+        color: var(--accent);
+        border-color: rgba(0, 229, 180, 0.26);
+        background: rgba(0, 229, 180, 0.08);
+      }
+
+      .chart-panel {
+        display: none;
+      }
+
+      .chart-panel.is-active {
+        display: block;
+      }
+
+      .bars-list,
+      .legend-list,
+      .timeline-list,
+      .deadlines-list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .bar-row {
+        display: grid;
+        gap: 8px;
+      }
+
+      .bar-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .bar-track {
+        height: 14px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      .bar-fill {
+        height: 100%;
+        border-radius: inherit;
+      }
+
+      .legend-list {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+      }
+
+      .line-chart {
+        width: 100%;
+        height: auto;
+      }
+
+      .line-point {
+        cursor: pointer;
+      }
+
+      .chart-tooltip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.88);
+        border: 1px solid var(--border);
+        font-size: 0.84rem;
+      }
+
+      .dashboard-secondary {
+        display: grid;
+        grid-template-columns: 1.2fr 0.9fr;
+        gap: 18px;
+      }
+
+      .timeline-item {
+        position: relative;
+        align-items: flex-start;
+        gap: 14px;
+        padding-right: 24px;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 8px;
+        bottom: -18px;
+        width: 2px;
+        background: rgba(148, 163, 184, 0.18);
+      }
+
+      .timeline-item:last-child::before {
+        display: none;
+      }
+
+      .timeline-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        flex: 0 0 18px;
+        margin-top: 4px;
+      }
+
+      .timeline-body {
+        display: grid;
+        gap: 6px;
+      }
+
+      .timeline-meta {
+        color: var(--text-muted);
+        font-size: 0.84rem;
+      }
+
+      .timeline-text {
+        margin: 0;
+        color: var(--text-primary);
+        line-height: 1.8;
+      }
+
+      .deadline-item {
+        display: grid;
+        gap: 10px;
+      }
+
+      .deadline-head {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .deadline-title {
+        margin: 0;
+        font-weight: 700;
+      }
+
+      .deadline-date {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .deadline-progress {
+        height: 10px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      .deadline-progress > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+      }
+
+      .tip-card {
+        background: rgba(0, 229, 180, 0.06);
+        border: 1px solid rgba(0, 229, 180, 0.22);
+      }
+
+      .tip-row {
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .tip-icon {
+        width: 44px;
+        height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        color: #031b16;
+        background: var(--accent);
+        flex: 0 0 44px;
+      }
+
+      .tip-copy {
+        margin: 0;
+        line-height: 1.9;
+      }
+
+      .tip-actions {
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 18px;
+      }
+
+      .section-fade {
+        animation: fade-view 0.2s ease;
+      }
+
+      @keyframes fade-view {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1023px) {
+        .sidebar {
+          transform: translateX(110%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.is-open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-right: 0;
+        }
+
+        .close-sidebar,
+        .menu-toggle {
+          display: inline-flex;
+        }
+
+        .top-header {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dashboard-secondary {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .page-content,
+        .top-header {
+          padding-right: 18px;
+          padding-left: 18px;
+        }
+
+        .welcome-card,
+        .chart-header,
+        .header-actions {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .dashboard-grid,
+        .legend-list {
+          grid-template-columns: 1fr;
+        }
+
+        .search-input {
+          padding-left: 94px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+    <aside class="sidebar" id="sidebar" role="complementary" aria-label="الشريط الجانبي">
+      <div class="sidebar-header">
+        <div class="brand">
+          <svg class="brand-logo" viewBox="0 0 24 24" fill="none" aria-label="شعار ContractAI">
+            <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <div>
+            <div class="brand-title-row">
+              <h1 class="brand-name">ContractAI</h1>
+              <span class="badge">BETA</span>
+            </div>
+            <p class="brand-subtitle">محلل العقود والمناقصات الذكي بالسعودية</p>
+          </div>
+        </div>
+        <button class="icon-button close-sidebar" id="closeSidebar" type="button" aria-label="إغلاق القائمة">✕</button>
+      </div>
+
+      <nav class="sidebar-nav" role="navigation" aria-label="التنقل الرئيسي">
+        <ul class="nav-list">
+          <li>
+            <a class="nav-link" href="dashboard.html" aria-current="page">
+              <span class="nav-main">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10v7H4V5.5ZM14 4h4.5A1.5 1.5 0 0 1 20 5.5V9h-6V4ZM4 15h6v5H5.5A1.5 1.5 0 0 1 4 18.5V15Zm10 0h6v3.5a1.5 1.5 0 0 1-1.5 1.5H14v-5Zm0-2V4h6v9h-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <span>لوحة التحكم</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" href="index.html">
+              <span class="nav-main">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M5 16.5V18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>رفع عقد جديد</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="nav-link" href="index.html">
+              <span class="nav-main">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H10l2 2h5.5A2.5 2.5 0 0 1 20 9.5v7A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                <span>عقودي</span>
+              </span>
+              <span class="nav-badge">3</span>
+            </a>
+          </li>
+          <li><a class="nav-link" href="templates.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M5 5h14v14H5V5Zm4 0v14M5 10h14" stroke="currentColor" stroke-width="1.5"/></svg><span>القوالب</span></span></a></li>
+          <li><a class="nav-link" href="reports.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M5 18V9m7 9V5m7 13v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M3.5 19.5h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>التقارير</span></span></a></li>
+          <li><a class="nav-link" href="compare.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M7 5h4v14H7V5Zm6 4h4v10h-4V9ZM4 19.5h16" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>مقارنة عقود</span></span></a></li>
+          <li><a class="nav-link" href="settings.html"><span class="nav-main"><svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" stroke="currentColor" stroke-width="1.5"/><path d="M19 12a7 7 0 0 0-.08-1l2.03-1.58-2-3.46-2.45.57a7.6 7.6 0 0 0-1.73-1L14.5 3h-5l-.27 2.53a7.6 7.6 0 0 0-1.73 1l-2.45-.57-2 3.46L5.08 11a7 7 0 0 0 0 2l-2.03 1.58 2 3.46 2.45-.57c.53.42 1.11.76 1.73 1L9.5 21h5l.27-2.53c.62-.24 1.2-.58 1.73-1l2.45.57 2-3.46L18.92 13c.05-.33.08-.66.08-1Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span>الإعدادات</span></span></a></li>
+        </ul>
+      </nav>
+
+      <div class="user-card glass">
+        <div class="user-summary">
+          <div class="avatar">أم</div>
+          <div>
+            <p class="user-name">أحمد المطيري</p>
+            <p class="user-plan">الخطة: احترافية</p>
+          </div>
+        </div>
+        <button class="logout-button" type="button">خروج</button>
+      </div>
+    </aside>
+
+    <main class="main-content" id="main-content" role="main">
+      <header class="top-header">
+        <div class="header-side">
+          <button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="فتح القائمة">☰</button>
+          <nav class="breadcrumb" aria-label="مسار التنقل">
+            <a href="dashboard.html">الرئيسية</a>
+            <span aria-hidden="true">›</span>
+            <span class="current">لوحة التحكم</span>
+          </nav>
+        </div>
+
+        <label class="search-shell" aria-label="ابحث في العقود والبنود">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input class="search-input" id="globalSearch" type="search" placeholder="ابحث في العقود والبنود..." />
+          <span class="search-shortcut">Ctrl+K</span>
+        </label>
+
+        <div class="header-actions">
+          <button class="icon-button" id="themeToggle" type="button" aria-label="تبديل الوضع">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="icon-button" type="button" aria-label="الإشعارات">
+            <span class="notification-badge">3</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 20a2 2 0 1 1-4 0m8-2H6c1.2-1.14 2-2.7 2-4.5V10a4 4 0 1 1 8 0v3.5c0 1.8.8 3.36 2 4.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <a class="primary-button" href="index.html">رفع عقد جديد ←</a>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="dashboard-layout">
+          <section class="welcome-card glass section-fade">
+            <div class="welcome-copy">
+              <h2 class="welcome-title">صباح الخير، أحمد 👋</h2>
+              <p class="welcome-subtitle">إليك ملخص نشاطك اليوم — الأحد 9 مارس 2026</p>
+            </div>
+            <a class="primary-button" href="index.html">رفع عقد جديد ←</a>
+          </section>
+
+          <section class="dashboard-grid">
+            <article class="kpi-card glass">
+              <div class="kpi-head">
+                <span class="kpi-icon" style="color: var(--accent);">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H10l2 2h5.5A2.5 2.5 0 0 1 20 9.5v7A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+              <h3 class="kpi-label">إجمالي العقود المحللة</h3>
+              <p class="kpi-value"><span class="counter" data-target="23" data-suffix="">0</span></p>
+              <p class="kpi-note positive">+3 هذا الأسبوع</p>
+              <svg class="sparkline" viewBox="0 0 120 54" aria-hidden="true"><path d="M6 42 22 30 38 34 54 18 70 22 86 12 114 6" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </article>
+
+            <article class="kpi-card glass">
+              <div class="kpi-head">
+                <span class="kpi-icon" style="color: var(--danger);">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 4 20 18H4L12 4Zm0 5v4m0 3h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+              <h3 class="kpi-label">عقود عالية المخاطرة</h3>
+              <p class="kpi-value"><span class="counter" data-target="5" data-suffix="">0</span></p>
+              <p class="kpi-note negative">2 تحتاج مراجعة فورية</p>
+              <svg class="sparkline" viewBox="0 0 120 54" aria-hidden="true"><path d="M6 34 22 40 38 26 54 34 70 18 86 24 114 18" fill="none" stroke="var(--danger)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </article>
+
+            <article class="kpi-card glass">
+              <div class="kpi-head">
+                <span class="kpi-icon" style="color: var(--warning);">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 4a8 8 0 1 0 8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+              <h3 class="kpi-label">متوسط درجة المخاطرة</h3>
+              <p class="kpi-value"><span class="counter" data-target="48.5" data-suffix="">0</span></p>
+              <p class="kpi-note positive">↓ تحسن 12% عن الشهر الماضي</p>
+              <svg class="sparkline" viewBox="0 0 120 54" aria-hidden="true"><path d="M6 10 22 16 38 20 54 22 70 18 86 28 114 25" fill="none" stroke="var(--warning)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </article>
+
+            <article class="kpi-card glass">
+              <div class="kpi-head">
+                <span class="kpi-icon" style="color: var(--accent);">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M8.5 8.5c0-1.38 1.57-2.5 3.5-2.5s3.5 1.12 3.5 2.5S13.93 11 12 11s-3.5 1.12-3.5 2.5S10.07 16 12 16s3.5-1.12 3.5-2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </span>
+              </div>
+              <h3 class="kpi-label">إجمالي التوفير المحقق</h3>
+              <p class="kpi-value"><span class="counter" data-target="1240000" data-format="money">0</span></p>
+              <p class="kpi-note positive">+340,000 هذا الشهر</p>
+              <svg class="sparkline" viewBox="0 0 120 54" aria-hidden="true"><path d="M6 42 22 35 38 28 54 22 70 16 86 10 114 4" fill="none" stroke="var(--success)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </article>
+
+            <article class="kpi-card glass">
+              <div class="kpi-head">
+                <span class="kpi-icon" style="color: var(--info);">
+                  <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v4l2.8 2.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+              <h3 class="kpi-label">وقت التحليل المتوسط</h3>
+              <p class="kpi-value"><span class="counter" data-target="42" data-suffix=" ثانية">0</span></p>
+              <p class="kpi-note">أسرع بـ 38x من المراجعة اليدوية</p>
+              <svg class="sparkline" viewBox="0 0 120 54" aria-hidden="true"><path d="M6 18 22 20 38 24 54 28 70 30 86 34 114 32" fill="none" stroke="var(--info)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </article>
+
+            <article class="kpi-card glass">
+              <div class="kpi-head">
+                <span class="kpi-icon" style="color: var(--accent);">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 5 5v5c0 5 3 9.5 7 11 4-1.5 7-6 7-11V5l-7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                </span>
+                <svg class="mini-donut" viewBox="0 0 42 42" aria-hidden="true">
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="rgba(148,163,184,0.16)" stroke-width="4"></circle>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="96.3 100" stroke-linecap="round" transform="rotate(-90 21 21)"></circle>
+                </svg>
+              </div>
+              <h3 class="kpi-label">معدل اكتشاف المخاطر</h3>
+              <p class="kpi-value"><span class="counter" data-target="96.3" data-suffix="%">0</span></p>
+              <p class="kpi-note">مُدرَّب على +50,000 عقد سعودي</p>
+            </article>
+          </section>
+
+          <section class="chart-card glass">
+            <div class="chart-header">
+              <h3 class="chart-title">📊 توزيع المخاطر في عقودك</h3>
+              <div class="chart-tabs">
+                <button class="chart-tab is-active" type="button" data-chart-tab="level">حسب المستوى</button>
+                <button class="chart-tab" type="button" data-chart-tab="type">حسب النوع</button>
+                <button class="chart-tab" type="button" data-chart-tab="trend">الاتجاه الشهري</button>
+              </div>
+            </div>
+
+            <div class="chart-panel is-active" id="chart-level">
+              <div class="bars-list">
+                <div class="bar-row"><div class="bar-label"><span>عالية</span><span>5 عقود (22%)</span></div><div class="bar-track"><div class="bar-fill" style="width:22%; background:#ff4757;"></div></div></div>
+                <div class="bar-row"><div class="bar-label"><span>متوسطة</span><span>10 عقود (43%)</span></div><div class="bar-track"><div class="bar-fill" style="width:43%; background:#fbbf24;"></div></div></div>
+                <div class="bar-row"><div class="bar-label"><span>منخفضة</span><span>8 عقود (35%)</span></div><div class="bar-track"><div class="bar-fill" style="width:35%; background:#22c55e;"></div></div></div>
+              </div>
+            </div>
+
+            <div class="chart-panel" id="chart-type">
+              <div style="display:grid; justify-items:center; gap:20px;">
+                <svg viewBox="0 0 180 180" width="220" height="220" aria-label="توزيع العقود حسب النوع">
+                  <circle cx="90" cy="90" r="56" fill="none" stroke="rgba(148,163,184,0.12)" stroke-width="26"></circle>
+                  <circle cx="90" cy="90" r="56" fill="none" stroke="#00e5b4" stroke-width="26" stroke-dasharray="123 351.8" stroke-dashoffset="0" transform="rotate(-90 90 90)"></circle>
+                  <circle cx="90" cy="90" r="56" fill="none" stroke="#3b82f6" stroke-width="26" stroke-dasharray="88 351.8" stroke-dashoffset="-123" transform="rotate(-90 90 90)"></circle>
+                  <circle cx="90" cy="90" r="56" fill="none" stroke="#f59e0b" stroke-width="26" stroke-dasharray="70 351.8" stroke-dashoffset="-211" transform="rotate(-90 90 90)"></circle>
+                  <circle cx="90" cy="90" r="56" fill="none" stroke="#ff4757" stroke-width="26" stroke-dasharray="42 351.8" stroke-dashoffset="-281" transform="rotate(-90 90 90)"></circle>
+                  <circle cx="90" cy="90" r="56" fill="none" stroke="#a78bfa" stroke-width="26" stroke-dasharray="28 351.8" stroke-dashoffset="-323" transform="rotate(-90 90 90)"></circle>
+                  <text x="90" y="84" text-anchor="middle" fill="currentColor" style="font:700 14px Tajawal;">23</text>
+                  <text x="90" y="104" text-anchor="middle" fill="#94A3B8" style="font:500 11px Tajawal;">عقد</text>
+                </svg>
+                <div class="legend-list">
+                  <div class="legend-item"><span class="legend-dot" style="background:#00e5b4;"></span><span>توريد 35%</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:#3b82f6;"></span><span>مناقصات 25%</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:#f59e0b;"></span><span>خدمات 20%</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:#ff4757;"></span><span>مقاولات 12%</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:#a78bfa;"></span><span>أخرى 8%</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-panel" id="chart-trend">
+              <div style="display:grid; gap:14px;">
+                <div class="chart-tooltip" id="chartTooltip">مرّر على النقاط لعرض التفاصيل</div>
+                <svg class="line-chart" viewBox="0 0 760 280" aria-label="الاتجاه الشهري">
+                  <path d="M70 40h620M70 95h620M70 150h620M70 205h620M70 260h620" stroke="rgba(148,163,184,0.12)" stroke-width="1"></path>
+                  <path d="M70 230 190 205 310 185 430 148 550 120 670 88" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M70 70 190 94 310 118 430 130 550 145 670 162" fill="none" stroke="#ff4757" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <g fill="#22c55e">
+                    <circle class="line-point" cx="70" cy="230" r="6" data-label="أكتوبر: 8 عقود"></circle>
+                    <circle class="line-point" cx="190" cy="205" r="6" data-label="نوفمبر: 10 عقود"></circle>
+                    <circle class="line-point" cx="310" cy="185" r="6" data-label="ديسمبر: 12 عقداً"></circle>
+                    <circle class="line-point" cx="430" cy="148" r="6" data-label="يناير: 15 عقداً"></circle>
+                    <circle class="line-point" cx="550" cy="120" r="6" data-label="فبراير: 19 عقداً"></circle>
+                    <circle class="line-point" cx="670" cy="88" r="6" data-label="مارس: 23 عقداً"></circle>
+                  </g>
+                  <g fill="#ff4757">
+                    <circle class="line-point" cx="70" cy="70" r="6" data-label="أكتوبر: متوسط مخاطر 61"></circle>
+                    <circle class="line-point" cx="190" cy="94" r="6" data-label="نوفمبر: متوسط مخاطر 57"></circle>
+                    <circle class="line-point" cx="310" cy="118" r="6" data-label="ديسمبر: متوسط مخاطر 54"></circle>
+                    <circle class="line-point" cx="430" cy="130" r="6" data-label="يناير: متوسط مخاطر 52"></circle>
+                    <circle class="line-point" cx="550" cy="145" r="6" data-label="فبراير: متوسط مخاطر 50"></circle>
+                    <circle class="line-point" cx="670" cy="162" r="6" data-label="مارس: متوسط مخاطر 48.5"></circle>
+                  </g>
+                  <g fill="#94A3B8" style="font:500 12px Tajawal;">
+                    <text x="70" y="276" text-anchor="middle">أكتوبر</text>
+                    <text x="190" y="276" text-anchor="middle">نوفمبر</text>
+                    <text x="310" y="276" text-anchor="middle">ديسمبر</text>
+                    <text x="430" y="276" text-anchor="middle">يناير</text>
+                    <text x="550" y="276" text-anchor="middle">فبراير</text>
+                    <text x="670" y="276" text-anchor="middle">مارس</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </section>
+
+          <div class="dashboard-secondary">
+            <section class="timeline-card glass">
+              <h3 class="chart-title">🕒 آخر النشاطات</h3>
+              <div class="timeline-list" style="margin-top:18px;">
+                <div class="timeline-item"><span class="timeline-dot" style="background:#ff4757;"></span><div class="timeline-body"><span class="timeline-meta">منذ ساعة</span><p class="timeline-text">اكتمل تحليل عقد توريد مواد بناء — مخاطرة عالية (72)</p><a class="secondary-button" href="index.html">عرض التقرير</a></div></div>
+                <div class="timeline-item"><span class="timeline-dot" style="background:#22c55e;"></span><div class="timeline-body"><span class="timeline-meta">منذ 3 ساعات</span><p class="timeline-text">تم تصدير تقرير مناقصة صيانة المباني بصيغة PDF</p></div></div>
+                <div class="timeline-item"><span class="timeline-dot" style="background:#3b82f6;"></span><div class="timeline-body"><span class="timeline-meta">منذ 5 ساعات</span><p class="timeline-text">استفسار عبر المحلل الذكي عن بند الغرامات في عقد خدمات تقنية</p></div></div>
+                <div class="timeline-item"><span class="timeline-dot" style="background:#00e5b4;"></span><div class="timeline-body"><span class="timeline-meta">أمس</span><p class="timeline-text">تم مشاركة تقرير اتفاقية إيجار مستودع مع الفريق القانوني</p></div></div>
+                <div class="timeline-item"><span class="timeline-dot" style="background:#ff4757;"></span><div class="timeline-body"><span class="timeline-meta">أمس</span><p class="timeline-text">تنبيه: موعد تقديم الضمان البنكي خلال 23 يوم (عقد توريد مواد بناء)</p></div></div>
+              </div>
+            </section>
+
+            <div style="display:grid; gap:18px;">
+              <section class="deadline-card glass">
+                <h3 class="chart-title">⏰ مواعيد قادمة تحتاج انتباهك</h3>
+                <div class="deadlines-list" style="margin-top:18px;">
+                  <div class="deadline-item">
+                    <div class="deadline-head"><div><p class="deadline-title">🔴 اعتماد العينات — عقد توريد مواد بناء</p><span class="deadline-date">20 مارس 2026 (متبقي 11 يوم)</span></div></div>
+                    <div class="deadline-progress"><span style="width:82%; background:#ff4757;"></span></div>
+                  </div>
+                  <div class="deadline-item">
+                    <div class="deadline-head"><div><p class="deadline-title">🔴 تقديم الضمان البنكي — عقد توريد مواد بناء</p><span class="deadline-date">1 أبريل 2026 (متبقي 23 يوم)</span></div></div>
+                    <div class="deadline-progress"><span style="width:68%; background:#ff4757;"></span></div>
+                  </div>
+                  <div class="deadline-item">
+                    <div class="deadline-head"><div><p class="deadline-title">⚠️ تسليم الدفعة الأولى — عقد توريد مواد بناء</p><span class="deadline-date">15 أبريل 2026 (متبقي 37 يوم)</span></div></div>
+                    <div class="deadline-progress"><span style="width:52%; background:#fbbf24;"></span></div>
+                  </div>
+                </div>
+                <a class="primary-button" style="margin-top:18px; width:100%;" href="index.html">عرض كل المواعيد ←</a>
+              </section>
+
+              <section class="tip-card glass">
+                <div class="tip-row">
+                  <span class="tip-icon">💡</span>
+                  <p class="tip-copy" id="tipText">نصيحة اليوم: عقد توريد مواد البناء يحتوي على غرامات أعلى من المعدل بـ 300%. استخدم نقاط التفاوض المقترحة لتوفير حتى 340,000 ريال.</p>
+                </div>
+                <div class="tip-actions">
+                  <a class="primary-button" href="index.html">عرض نقاط التفاوض ←</a>
+                  <button class="secondary-button" id="nextTip" type="button">نصيحة أخرى</button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        var authKey = "contractai-authenticated";
+        var toastKey = "contractai-auth-toast";
+        if (window.localStorage.getItem(authKey) !== "true") {
+          window.location.replace("landing.html");
+          return;
+        }
+        var root = document.documentElement;
+        var body = document.body;
+        var storageKey = "contractai-theme";
+        var logoutButton = document.querySelector(".logout-button");
+        var themeToggle = document.getElementById("themeToggle");
+        var themeIcon = document.getElementById("themeIcon");
+        var menuToggle = document.getElementById("menuToggle");
+        var closeSidebar = document.getElementById("closeSidebar");
+        var sidebar = document.getElementById("sidebar");
+        var sidebarBackdrop = document.getElementById("sidebarBackdrop");
+        var chartTabs = Array.prototype.slice.call(document.querySelectorAll(".chart-tab"));
+        var chartPanels = Array.prototype.slice.call(document.querySelectorAll(".chart-panel"));
+        var linePoints = Array.prototype.slice.call(document.querySelectorAll(".line-point"));
+        var chartTooltip = document.getElementById("chartTooltip");
+        var nextTip = document.getElementById("nextTip");
+        var tipText = document.getElementById("tipText");
+        var counters = Array.prototype.slice.call(document.querySelectorAll(".counter"));
+        var tips = [
+          "نصيحة اليوم: عقد توريد مواد البناء يحتوي على غرامات أعلى من المعدل بـ 300%. استخدم نقاط التفاوض المقترحة لتوفير حتى 340,000 ريال.",
+          "مراجعة بند الإنهاء المبكر قبل التوقيع ترفع توازنك التفاوضي بشكل واضح، خصوصاً إذا ما فيه إشعار مسبق أو تعويض.",
+          "إذا العقد فيه مواعيد قريبة خلال 30 يوم، صدّرها مباشرة للتقويم حتى ما تفوتك التزامات الاعتماد أو الضمان البنكي."
+        ];
+        var tipIndex = 0;
+
+        function setTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          themeIcon.innerHTML =
+            theme === "light"
+              ? '<path d="M20 12.5A8.5 8.5 0 1 1 11.5 4 6.5 6.5 0 0 0 20 12.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>'
+              : '<path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>';
+          window.localStorage.setItem(storageKey, theme);
+        }
+
+        function getPreferredTheme() {
+          var saved = window.localStorage.getItem(storageKey);
+          if (saved === "light" || saved === "dark") return saved;
+          return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+
+        function toggleSidebar(open) {
+          sidebar.classList.toggle("is-open", open);
+          sidebarBackdrop.classList.toggle("is-visible", open);
+          sidebarBackdrop.hidden = !open;
+          body.classList.toggle("menu-open", open);
+        }
+
+        function formatCounter(value, counter) {
+          if (counter.dataset.format === "money") {
+            return Number(value).toLocaleString("en-US") + " ريال";
+          }
+          if ((counter.dataset.suffix || "").indexOf("%") !== -1 || value % 1 !== 0) {
+            return value.toFixed(1) + (counter.dataset.suffix || "");
+          }
+          return Math.round(value) + (counter.dataset.suffix || "");
+        }
+
+        function animateCounter(counter) {
+          if (counter.dataset.done === "true") return;
+          counter.dataset.done = "true";
+          var target = Number(counter.dataset.target || 0);
+          var start = null;
+          var duration = 1300;
+
+          function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            counter.textContent = formatCounter(target * progress, counter);
+            if (progress < 1) {
+              window.requestAnimationFrame(step);
+            } else {
+              counter.textContent = formatCounter(target, counter);
+            }
+          }
+
+          window.requestAnimationFrame(step);
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              animateCounter(entry.target);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+
+        counters.forEach(function (counter) {
+          observer.observe(counter);
+        });
+
+        chartTabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            chartTabs.forEach(function (item) {
+              item.classList.remove("is-active");
+            });
+            chartPanels.forEach(function (panel) {
+              panel.classList.remove("is-active");
+            });
+            tab.classList.add("is-active");
+            document.getElementById("chart-" + tab.dataset.chartTab).classList.add("is-active");
+          });
+        });
+
+        linePoints.forEach(function (point) {
+          point.addEventListener("mouseenter", function () {
+            chartTooltip.textContent = point.getAttribute("data-label");
+          });
+          point.addEventListener("mouseleave", function () {
+            chartTooltip.textContent = "مرّر على النقاط لعرض التفاصيل";
+          });
+        });
+
+        nextTip.addEventListener("click", function () {
+          tipIndex = (tipIndex + 1) % tips.length;
+          tipText.style.opacity = "0";
+          window.setTimeout(function () {
+            tipText.textContent = tips[tipIndex];
+            tipText.style.opacity = "1";
+          }, 160);
+        });
+
+        if (logoutButton) {
+          logoutButton.addEventListener("click", function () {
+            window.localStorage.removeItem(authKey);
+            window.localStorage.removeItem("contractai-user-name");
+            window.localStorage.setItem(toastKey, "👋 تم تسجيل الخروج");
+            window.location.href = "landing.html";
+          });
+        }
+
+        themeToggle.addEventListener("click", function () {
+          setTheme(root.getAttribute("data-theme") === "light" ? "dark" : "light");
+        });
+
+        menuToggle.addEventListener("click", function () {
+          toggleSidebar(true);
+        });
+
+        closeSidebar.addEventListener("click", function () {
+          toggleSidebar(false);
+        });
+
+        sidebarBackdrop.addEventListener("click", function () {
+          toggleSidebar(false);
+        });
+
+        window.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") toggleSidebar(false);
+        });
+
+        window.addEventListener("resize", function () {
+          if (window.innerWidth > 1023) toggleSidebar(false);
+        });
+
+        setTheme(getPreferredTheme());
+      })();
+    </script>
+  </body>
+</html>
