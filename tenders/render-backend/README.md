@@ -1,16 +1,18 @@
 # Render Backend Proxy
 
-هذا المجلد يحتوي مثال Backend Proxy لحماية مفاتيح `NVIDIA` و`DeepSeek` وعدم كشفها في الـ Frontend.
+هذا المجلد صار wrapper خفيف يشغّل الـ backend الرئيسي الموجود في [backend/server.js](/Users/yzydalshmry/Desktop/BRIGHTAI/backend/server.js)، بدل إنشاء proxy منفصل خارج المنظومة.
 
 ## الملفات
 
-- `server.js`: خادم `Express` يمرر طلبات المحادثة إلى مزودي الذكاء الاصطناعي.
-- `package.json`: تبعيات التشغيل على `Render`.
+- `server.js`: wrapper يشغّل الخادم الرئيسي المشترك.
+- `package.json`: تعريف تشغيل بسيط لهذا الغرض.
 
 ## Environment Variables
 
 - `NVIDIA_API_KEY`
 - `DEEPSEEK_API_KEY`
+- `DEEPSEEKAI_MODEL`
+- `NVIDIA_MODEL` اختياري
 - `PORT` اختياري، ويُدار تلقائياً في `Render`
 
 ## التشغيل المحلي
@@ -20,12 +22,16 @@ npm install
 npm start
 ```
 
-## المسارات
+## المسارات المستخدمة من ContractAI
 
-- `POST /api/nvidia/chat`
-- `POST /api/deepseek/chat`
+- `POST /api/ai/chat/completions`
+- `POST /api/ai/openai-chat`
 - `GET /api/health`
 
 ## ملاحظة مهمة
 
-قبل الإنتاج، استبدل قيمة `proxyUrl` داخل [api-config.js](/Users/yzydalshmry/Desktop/BRIGHTAI/tenders/api-config.js) بعنوان خدمة `Render` الفعلي.
+تم ضبط `proxyUrl` داخل [api-config.js](/Users/yzydalshmry/Desktop/BRIGHTAI/tenders/api-config.js) على خدمة Render التالية:
+
+- `https://brightai-92px.onrender.com`
+
+وسيتم أخذ نموذج DeepSeek من `DEEPSEEKAI_MODEL` على مستوى الخادم مباشرة، مع استخدام `NVIDIA_API_KEY` عندما يكون المزود المطلوب هو `nvidia`.

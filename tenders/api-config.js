@@ -11,9 +11,11 @@ const API_CONFIG = {
       embeddings: "/embeddings"
     },
     model: "nvidia/llama-3.1-nemotron-70b-instruct",
+    provider: "nvidia",
     // API Key يُقرأ من Environment Variable في Render
-    // في الـ Frontend، نستخدم Proxy Backend
-    proxyUrl: "https://YOUR-RENDER-APP.onrender.com/api/nvidia"
+    // في الـ Frontend، نستخدم الـ backend الحالي عبر OpenAI-compatible gateway
+    proxyUrl: "https://brightai-92px.onrender.com",
+    proxyPath: "/api/ai/chat/completions"
   },
 
   // DeepSeek AI Configuration
@@ -23,8 +25,10 @@ const API_CONFIG = {
       chat: "/chat/completions",
       analyze: "/analyze"
     },
-    model: "deepseek-chat", // أو deepseek-coder للتحليل التقني
-    proxyUrl: "https://YOUR-RENDER-APP.onrender.com/api/deepseek"
+    model: "deepseek-chat", // القيمة الفعلية يمكن أن تأتي من DEEPSEEKAI_MODEL على الخادم
+    provider: "deepseek",
+    proxyUrl: "https://brightai-92px.onrender.com",
+    proxyPath: "/api/ai/chat/completions"
   },
 
   // إعدادات عامة
@@ -33,7 +37,8 @@ const API_CONFIG = {
     maxRetries: 3,
     retryDelay: 1000,
     maxTokens: 4096,
-    temperature: 0.3 // دقة عالية للتحليل القانوني
+    temperature: 0.3, // دقة عالية للتحليل القانوني
+    healthPath: "/api/health"
   }
 };
 
@@ -49,8 +54,9 @@ async function callAI(provider, messages, options = {}) {
   const config = API_CONFIG[provider];
   if (!config) throw new Error(`Provider "${provider}" not configured`);
 
-  const url = `${config.proxyUrl}/chat`;
+  const url = `${config.proxyUrl}${config.proxyPath || "/api/ai/chat/completions"}`;
   const payload = {
+    provider: config.provider || provider,
     model: options.model || config.model,
     messages: messages,
     max_tokens: options.maxTokens || API_CONFIG.settings.maxTokens,
@@ -134,22 +140,36 @@ async function checkAPIHealth() {
 
   try {
     const response = await fetch(
-      `${API_CONFIG.nvidia.proxyUrl.replace("/nvidia", "")}/health`
+      `${API_CONFIG.nvidia.proxyUrl}${API_CONFIG.settings.healthPath}`
     );
     const data = await response.json();
+    const providers = data.providers || {};
+    const nvidiaConfigured =
+      typeof data.nvidia === "boolean"
+        ? data.nvidia
+        : !!(
+            (providers.nvidia && providers.nvidia.configured) ||
+            (providers.nim && providers.nim.configured)
+          );
+    const deepseekConfigured =
+      typeof data.deepseek === "boolean"
+        ? data.deepseek
+        : !!(providers.deepseek && providers.deepseek.configured);
 
     connectionState.nvidia = {
-      status: data.nvidia ? "connected" : "error",
-      lastCheck: Date.now()
+      status: nvidiaConfigured ? "connected" : "error",
+      lastCheck: Date.now(),
+      error: nvidiaConfigured ? null : "nvidia_unavailable"
     };
     connectionState.deepseek = {
-      status: data.deepseek ? "connected" : "error",
-      lastCheck: Date.now()
+      status: deepseekConfigured ? "connected" : "error",
+      lastCheck: Date.now(),
+      error: deepseekConfigured ? null : "deepseek_unavailable"
     };
 
-    if (data.nvidia) {
+    if (nvidiaConfigured) {
       connectionState.activeProvider = "nvidia";
-    } else if (data.deepseek) {
+    } else if (deepseekConfigured) {
       connectionState.activeProvider = "deepseek";
     }
 
@@ -181,6 +201,8 @@ function updateAPIStatusUI() {
 
   if (state.status === "connected") {
     text.textContent = `متصل — ${provider === "nvidia" ? "NVIDIA" : "DeepSeek"}`;
+  } else if (state.error === "nvidia_unavailable" || state.error === "deepseek_unavailable") {
+    text.textContent = "الخادم لا يوفّر NVIDIA/DeepSeek";
   } else if (state.status === "error") {
     text.textContent = "خطأ في الاتصال";
   } else if (!hasConfiguredProxy()) {

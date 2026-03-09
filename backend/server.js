@@ -27,6 +27,7 @@ const {
   groqHealthHandler,
   groqOpenAiCompatHandler
 } = require('./routes/groq');
+const { getProviderHealthSnapshot } = require('./services/openaiCompatProvider');
 
 // CORS headers for API responses
 const CORS_HEADERS = {
@@ -310,8 +311,11 @@ async function handleRequest(req, res) {
       ctx.res.status(200).json({
         object: 'list',
         data: [
+          { id: 'nvidia/llama-3.1-nemotron-70b-instruct', object: 'model', owned_by: 'nvidia' },
+          { id: 'deepseek-chat', object: 'model', owned_by: 'deepseek' },
           { id: 'gemini-2.5-flash', object: 'model', owned_by: 'google' },
-          { id: 'gemini-1.5-pro', object: 'model', owned_by: 'google' }
+          { id: 'gemini-1.5-pro', object: 'model', owned_by: 'google' },
+          { id: config.groq.model || 'llama-3.3-70b-versatile', object: 'model', owned_by: 'groq' }
         ]
       });
     } else if (method === 'POST' && STREAM_ROUTE_ALIASES.has(url)) {
@@ -357,23 +361,14 @@ async function handleRequest(req, res) {
         });
       }
     } else if (url === '/api/health') {
-      const geminiReady = !!(config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE' && config.gemini.apiKey !== 'YOUR_GEMINI_KEY_HERE');
-      const geminiModel = config.gemini.model || 'not set';
-      const overallOk = geminiReady;
+      const providers = getProviderHealthSnapshot();
+      const overallOk = Object.values(providers).some(provider => provider.configured);
 
       ctx.res.status(overallOk ? 200 : 503).json({
         status: overallOk ? 'ok' : 'degraded',
         timestamp: Date.now(),
         environment: config.server.nodeEnv,
-        providers: {
-          gemini: {
-            configured: geminiReady,
-            model: geminiModel,
-            message: geminiReady
-              ? 'GEMINI_API_KEY مُعد وجاهز'
-              : 'GEMINI_API_KEY غير مُعد — أضفه في متغيرات البيئة على خادم الإنتاج'
-          }
-        }
+        providers
       });
     } else {
       ctx.res.status(404).json({
@@ -415,7 +410,7 @@ function startServer() {
   // Validate configuration
   if (!validateConfig()) {
     console.warn('Warning: Server starting with incomplete configuration');
-    console.warn('AI features may return 503 until at least one provider key is configured (GROQ_API_KEY or GEMINI_API_KEY)');
+    console.warn('AI features may return 503 until at least one provider key is configured (GEMINI_API_KEY, GROQ_API_KEY, NVIDIA_API_KEY, or DEEPSEEK_API_KEY)');
   }
 
   const server = http.createServer(handleRequest);
@@ -431,8 +426,8 @@ function startServer() {
     console.log('  POST /api/ai/search  - Smart search');
     console.log('  POST /api/ai/medical - Medical image analysis');
     console.log('  POST /api/ai/summary - Text summarization');
-    console.log('  POST /api/ai/openai-chat - OpenAI-compatible chat payload');
-    console.log('  POST /api/ai/chat/completions - OpenAI-compatible alias');
+    console.log('  POST /api/ai/openai-chat - OpenAI-compatible chat payload (supports NVIDIA/DeepSeek/Groq)');
+    console.log('  POST /api/ai/chat/completions - OpenAI-compatible alias for tenders/chat systems');
     console.log('  GET  /api/ai/models - Model catalog');
     console.log('  POST /api/ai/stream   - Streaming AI responses');
     console.log('  POST /api/ai/ocr      - OCR JSON extraction');

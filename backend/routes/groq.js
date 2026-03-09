@@ -9,6 +9,7 @@ const { config, isApiKeyConfigured, isGroqConfigured } = require('../config');
 const { sanitizeForAI, sanitizeUserInput } = require('../utils/sanitizer');
 const { retryWithBackoff } = require('../utils/errorHandler');
 const { createSessionId, getOrCreateSession, addToSession } = require('../utils/sessionStore');
+const { pickProvider, callOpenAiCompatibleProvider } = require('../services/openaiCompatProvider');
 
 const MAX_OCR_TEXT_CHARS = 6000;
 const MAX_MEDICAL_REPORT_CHARS = 12000;
@@ -1725,6 +1726,7 @@ async function groqHealthHandler(_req, res) {
 async function groqOpenAiCompatHandler(req, res) {
   try {
     const body = req && req.body && typeof req.body === 'object' ? req.body : {};
+    const provider = pickProvider(body);
     const model = resolveGroqModel(req);
     const temperature = Number.isFinite(Number(body.temperature)) ? Number(body.temperature) : 0.4;
     const maxTokens = Number.isFinite(Number(body.max_tokens || body.maxTokens))
@@ -1741,6 +1743,22 @@ async function groqOpenAiCompatHandler(req, res) {
       return res.status(400).json({
         error: 'يرجى إرسال messages أو prompt',
         errorCode: 'INVALID_MESSAGES'
+      });
+    }
+
+    if (provider === 'nvidia' || provider === 'deepseek') {
+      const result = await callOpenAiCompatibleProvider({
+        provider,
+        messages,
+        temperature,
+        maxTokens,
+        model: body.model
+      });
+
+      return res.status(200).json({
+        ...result.data,
+        provider: result.provider,
+        activeModel: result.model
       });
     }
 

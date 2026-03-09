@@ -49,6 +49,20 @@ const config = {
     streamTimeoutMs: parseInt(process.env.GROQ_STREAM_TIMEOUT_MS, 10) || 30000
   },
 
+  // NVIDIA NIM Configuration
+  nvidia: {
+    apiKey: readSecret('NVIDIA_API_KEY'),
+    model: process.env.NVIDIA_MODEL || 'nvidia/llama-3.1-nemotron-70b-instruct',
+    endpoint: process.env.NVIDIA_ENDPOINT || 'https://integrate.api.nvidia.com/v1/chat/completions'
+  },
+
+  // DeepSeek Configuration
+  deepseek: {
+    apiKey: readSecret('DEEPSEEK_API_KEY'),
+    model: process.env.DEEPSEEKAI_MODEL || process.env.DEEPSEEK_MODEL || 'deepseek-chat',
+    endpoint: process.env.DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/v1/chat/completions'
+  },
+
   // GA4 Measurement Protocol (optional)
   analytics: {
     ga4MeasurementId: process.env.GA4_MEASUREMENT_ID || '',
@@ -86,8 +100,8 @@ const config = {
 function validateConfig() {
   const errors = [];
   
-  if (!config.gemini.apiKey && !config.groq.apiKey) {
-    errors.push('At least one provider key is required (GEMINI_API_KEY preferred)');
+  if (!config.gemini.apiKey && !config.groq.apiKey && !config.nvidia.apiKey && !config.deepseek.apiKey) {
+    errors.push('At least one provider key is required (GEMINI_API_KEY, GROQ_API_KEY, NVIDIA_API_KEY, or DEEPSEEK_API_KEY)');
   }
   
   if (errors.length > 0) {
@@ -114,6 +128,14 @@ function isGroqConfigured() {
   return !!config.groq.apiKey;
 }
 
+function isNvidiaConfigured() {
+  return !!config.nvidia.apiKey;
+}
+
+function isDeepSeekConfigured() {
+  return !!config.deepseek.apiKey;
+}
+
 /**
  * Check if GA4 Measurement Protocol is configured
  * @returns {boolean}
@@ -127,5 +149,7 @@ module.exports = {
   validateConfig,
   isApiKeyConfigured,
   isGroqConfigured,
+  isNvidiaConfigured,
+  isDeepSeekConfigured,
   isGa4MpConfigured
 };
