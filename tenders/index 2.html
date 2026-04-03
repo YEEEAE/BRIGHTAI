@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar-SA">
+<head>
+<link href="https://brightai.site/tenders/index 2/" rel="canonical"/>
+<link href="https://www.googletagmanager.com" rel="preconnect"/>
+<link href="https://www.googletagmanager.com" rel="dns-prefetch"/>
+<link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect"/>
+<link href="https://js.sentry-cdn.com" rel="dns-prefetch"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="theme-color" content="#0b1020">
+<meta content="noindex, nofollow, noarchive" name="robots"/>
+<title>ContractAI | لوحة التحكم</title>
+<meta content="واجهة ContractAI الأساسية لإدارة العقود بهيكل RTL احترافي مهيأ للتوسع." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+      :root {
+        --bg: #080c14;
+        --bg-elevated: rgba(15, 23, 42, 0.74);
+        --bg-panel: rgba(8, 12, 20, 0.9);
+        --bg-soft: rgba(148, 163, 184, 0.08);
+        --surface-border: rgba(148, 163, 184, 0.16);
+        --surface-strong: rgba(0, 229, 180, 0.18);
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --accent: #00e5b4;
+        --accent-strong: #14f1c0;
+        --accent-shadow: rgba(0, 229, 180, 0.22);
+        --danger: #fb7185;
+        --sidebar-width: 260px;
+        --header-height: 88px;
+        --footer-height: 56px;
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+        --shadow-lg: 0 28px 80px rgba(2, 6, 23, 0.42);
+        --shadow-md: 0 12px 36px rgba(2, 6, 23, 0.28);
+        --blur: 22px;
+        --content-max: 1600px;
+        --transition: 180ms ease;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text-primary);
+        font-family: "Tajawal", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(0, 229, 180, 0.14), transparent 26%),
+          radial-gradient(circle at top right, rgba(59, 130, 246, 0.14), transparent 28%),
+          linear-gradient(180deg, #0a1020 0%, var(--bg) 40%, #060910 100%);
+        overflow-x: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: auto;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      body::before {
+        top: -140px;
+        left: -120px;
+        width: 360px;
+        height: 360px;
+        background: radial-gradient(circle, rgba(0, 229, 180, 0.18), transparent 72%);
+        filter: blur(12px);
+      }
+
+      body::after {
+        right: -120px;
+        bottom: 0;
+        width: 420px;
+        height: 420px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.14), transparent 68%);
+        filter: blur(22px);
+      }
+
+      a,
+      button {
+        font: inherit;
+      }
+
+      .app-shell {
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        bottom: 20px;
+        width: var(--sidebar-width);
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 22px 18px;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.86), rgba(8, 12, 20, 0.84));
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        backdrop-filter: blur(var(--blur));
+        -webkit-backdrop-filter: blur(var(--blur));
+        z-index: 10;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 10px 12px 16px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        color: var(--bg);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--accent), #7bf7de);
+        box-shadow: 0 14px 28px var(--accent-shadow);
+      }
+
+      .brand-copy {
+        flex: 1;
+        text-align: right;
+      }
+
+      .brand-title {
+        margin: 0;
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-subtitle {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+        font-size: 0.84rem;
+      }
+
+      .nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .nav-link {
+        position: relative;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        width: 100%;
+        padding: 14px 16px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        background: transparent;
+        transition:
+          transform var(--transition),
+          color var(--transition),
+          border-color var(--transition),
+          background-color var(--transition);
+      }
+
+      .nav-link::before {
+        content: "";
+        position: absolute;
+        inset-block: 10px;
+        inset-inline-start: 0;
+        width: 4px;
+        border-radius: 999px;
+        background: transparent;
+        transition: background-color var(--transition), box-shadow var(--transition);
+      }
+
+      .nav-link:hover {
+        transform: translateX(-3px);
+        color: var(--text-primary);
+        border-color: rgba(148, 163, 184, 0.1);
+        background: rgba(148, 163, 184, 0.06);
+      }
+
+      .nav-link.is-active {
+        color: var(--text-primary);
+        background: linear-gradient(135deg, rgba(0, 229, 180, 0.16), rgba(15, 23, 42, 0.38));
+        border-color: rgba(0, 229, 180, 0.18);
+        box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.04);
+      }
+
+      .nav-link.is-active::before {
+        background: linear-gradient(180deg, var(--accent), #67e8f9);
+        box-shadow: 0 0 18px rgba(0, 229, 180, 0.28);
+      }
+
+      .nav-link-main {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .nav-link-icon {
+        flex: 0 0 20px;
+        width: 20px;
+        height: 20px;
+        color: currentColor;
+      }
+
+      .nav-link-label {
+        font-size: 0.98rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .nav-link-arrow {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        display: grid;
+        gap: 14px;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.52);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      .plan-card,
+      .profile-card {
+        padding: 16px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .plan-name,
+      .profile-name {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .plan-meta,
+      .profile-role {
+        margin: 6px 0 0;
+        color: var(--text-secondary);
+        font-size: 0.86rem;
+      }
+
+      .plan-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 8px 10px;
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        border-radius: 999px;
+        background: rgba(0, 229, 180, 0.1);
+      }
+
+      .profile-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        color: var(--bg);
+        font-weight: 800;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #f8fafc, #7dd3fc);
+      }
+
+      .content-shell {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        margin-inline-start: calc(var(--sidebar-width) + 40px);
+        padding: 20px 24px calc(var(--footer-height) + 32px);
+      }
+
+      .content-frame {
+        max-width: var(--content-max);
+        min-height: calc(100vh - 40px);
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .header {
+        position: sticky;
+        top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: var(--header-height);
+        padding: 18px 24px;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(8, 12, 20, 0.74));
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        z-index: 5;
+      }
+
+      .header-copy {
+        display: grid;
+        gap: 6px;
+      }
+
+      .header-copy span {
+        color: var(--text-secondary);
+        font-size: 0.86rem;
+      }
+
+      .header-title {
+        margin: 0;
+        font-size: clamp(1.6rem, 2vw, 2.1rem);
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .action-button,
+      .icon-button {
+        border: 0;
+        cursor: pointer;
+        transition:
+          transform var(--transition),
+          background-color var(--transition),
+          border-color var(--transition);
+      }
+
+      .action-button:hover,
+      .icon-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .action-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 18px;
+        color: #03111b;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        border-radius: 16px;
+        box-shadow: 0 18px 36px rgba(0, 229, 180, 0.22);
+      }
+
+      .action-button svg,
+      .icon-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .icon-button {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        display: inline-grid;
+        place-items: center;
+        color: var(--text-primary);
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 16px;
+      }
+
+      .icon-button::after {
+        content: attr(data-count);
+        position: absolute;
+        top: -6px;
+        right: -4px;
+        min-width: 22px;
+        height: 22px;
+        padding: 0 6px;
+        display: grid;
+        place-items: center;
+        color: #03111b;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 10px 20px rgba(0, 229, 180, 0.22);
+      }
+
+      .workspace {
+        flex: 1;
+        min-height: calc(100vh - var(--header-height) - var(--footer-height) - 96px);
+        border: 1px dashed rgba(148, 163, 184, 0.14);
+        border-radius: var(--radius-xl);
+        background:
+          linear-gradient(180deg, rgba(15, 23, 42, 0.24), rgba(8, 12, 20, 0.18)),
+          repeating-linear-gradient(
+            -45deg,
+            rgba(148, 163, 184, 0.02) 0,
+            rgba(148, 163, 184, 0.02) 12px,
+            transparent 12px,
+            transparent 24px
+          );
+      }
+
+      .footer {
+        position: fixed;
+        left: calc(var(--sidebar-width) + 64px);
+        right: 24px;
+        bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: var(--footer-height);
+        padding: 0 20px;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        background: rgba(8, 12, 20, 0.72);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 18px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        z-index: 6;
+      }
+
+      .footer code {
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.84rem;
+      }
+
+      @media (max-width: 1120px) {
+        :root {
+          --sidebar-width: 232px;
+        }
+
+        .content-shell {
+          margin-inline-start: calc(var(--sidebar-width) + 32px);
+          padding-inline: 18px;
+        }
+
+        .footer {
+          left: calc(var(--sidebar-width) + 50px);
+        }
+      }
+
+      @media (max-width: 920px) {
+        .sidebar {
+          position: relative;
+          inset: 16px 16px 0;
+          width: auto;
+          bottom: auto;
+        }
+
+        .content-shell {
+          margin-inline-start: 0;
+          padding: 16px 16px calc(var(--footer-height) + 32px);
+        }
+
+        .content-frame {
+          min-height: auto;
+        }
+
+        .header {
+          top: 16px;
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .header-actions {
+          justify-content: space-between;
+        }
+
+        .footer {
+          left: 16px;
+          right: 16px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .brand,
+        .header,
+        .plan-card,
+        .profile-card {
+          padding-inline: 14px;
+        }
+
+        .header-actions {
+          flex-wrap: wrap;
+        }
+
+        .action-button {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .icon-button {
+          flex: 1;
+        }
+
+        .footer {
+          flex-direction: column;
+          justify-content: center;
+          padding-block: 10px;
+          text-align: center;
+        }
+      }
+    </style>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+<meta content="https://brightai.site/tenders/index 2/" property="og:url"/>
+<meta content="website" property="og:type"/>
+<meta content="Bright AI - مُشرقة للذكاء الاصطناعي" property="og:site_name"/>
+<meta content="ContractAI | لوحة التحكم" property="og:title"/>
+<meta content="واجهة ContractAI الأساسية لإدارة العقود بهيكل RTL احترافي مهيأ للتوسع." property="og:description"/>
+<meta content="https://brightai.site/assets/images/Gemini.png" property="og:image"/>
+<meta content="ar_SA" property="og:locale"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="@BrightAI_SA" name="twitter:site"/>
+<meta content="ContractAI | لوحة التحكم" name="twitter:title"/>
+<meta content="واجهة ContractAI الأساسية لإدارة العقود بهيكل RTL احترافي مهيأ للتوسع." name="twitter:description"/>
+<meta content="https://brightai.site/assets/images/Gemini.png" name="twitter:image"/>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "headline": "ContractAI | لوحة التحكم",
+  "description": "واجهة ContractAI الأساسية لإدارة العقود بهيكل RTL احترافي مهيأ للتوسع.",
+  "image": "https://brightai.site/assets/images/Gemini.png",
+  "url": "https://brightai.site/tenders/index 2/"
+}</script>
+</head>
+<body>
+<div class="app-shell">
+<aside aria-label="الشريط الجانبي" class="sidebar">
+<div class="brand">
+<div class="brand-copy">
+<p class="brand-title">ContractAI</p>
+<p class="brand-subtitle">Contract Intelligence Workspace</p>
+</div>
+<div aria-hidden="true" class="brand-mark">CA</div>
+</div>
+<nav aria-label="التنقل الرئيسي">
+<ul class="nav-list">
+<li>
+<a class="nav-link is-active" data-section="لوحة التحكم" href="#">
+<span class="nav-link-main">
+<svg aria-hidden="true" class="nav-link-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M3 12.5 12 4l9 8.5"></path>
+<path d="M5 10.5V20h14v-9.5"></path>
+<path d="M9.5 20v-5h5v5"></path>
+</svg>
+<span class="nav-link-label">لوحة التحكم</span>
+</span>
+<span aria-hidden="true" class="nav-link-arrow">01</span>
+</a>
+</li>
+<li>
+<a class="nav-link" data-section="رفع عقد جديد" href="#">
+<span class="nav-link-main">
+<svg aria-hidden="true" class="nav-link-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 16V8"></path>
+<path d="M8.5 11.5 12 8l3.5 3.5"></path>
+<path d="M5 19h14"></path>
+<rect height="16" rx="3" width="16" x="4" y="4"></rect>
+</svg>
+<span class="nav-link-label">رفع عقد جديد</span>
+</span>
+<span aria-hidden="true" class="nav-link-arrow">02</span>
+</a>
+</li>
+<li>
+<a class="nav-link" data-section="عقودي" href="#">
+<span class="nav-link-main">
+<svg aria-hidden="true" class="nav-link-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M8 7h8"></path>
+<path d="M8 11h8"></path>
+<path d="M8 15h5"></path>
+<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"></path>
+<path d="M14 3v5h5"></path>
+</svg>
+<span class="nav-link-label">عقودي</span>
+</span>
+<span aria-hidden="true" class="nav-link-arrow">03</span>
+</a>
+</li>
+<li>
+<a class="nav-link" data-section="القوالب" href="#">
+<span class="nav-link-main">
+<svg aria-hidden="true" class="nav-link-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M5 5h6v6H5z"></path>
+<path d="M13 5h6v6h-6z"></path>
+<path d="M5 13h6v6H5z"></path>
+<path d="M13 13h6v6h-6z"></path>
+</svg>
+<span class="nav-link-label">القوالب</span>
+</span>
+<span aria-hidden="true" class="nav-link-arrow">04</span>
+</a>
+</li>
+<li>
+<a class="nav-link" data-section="التقارير" href="#">
+<span class="nav-link-main">
+<svg aria-hidden="true" class="nav-link-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M4 19h16"></path>
+<path d="M7 16V9"></path>
+<path d="M12 16V5"></path>
+<path d="M17 16v-4"></path>
+</svg>
+<span class="nav-link-label">التقارير</span>
+</span>
+<span aria-hidden="true" class="nav-link-arrow">05</span>
+</a>
+</li>
+<li>
+<a class="nav-link" data-section="الإعدادات" href="#">
+<span class="nav-link-main">
+<svg aria-hidden="true" class="nav-link-icon" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"></path>
+<path d="M19.4 15a1.6 1.6 0 0 0 .32 1.76l.05.05a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.05-.05a1.6 1.6 0 0 0-1.76-.32 1.6 1.6 0 0 0-.97 1.47V21a2 2 0 0 1-4 0v-.08a1.6 1.6 0 0 0-.97-1.47 1.6 1.6 0 0 0-1.76.32l-.05.05a2 2 0 0 1-2.83-2.83l.05-.05A1.6 1.6 0 0 0 4.6 15a1.6 1.6 0 0 0-1.47-.97H3a2 2 0 0 1 0-4h.08a1.6 1.6 0 0 0 1.47-.97 1.6 1.6 0 0 0-.32-1.76l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05a1.6 1.6 0 0 0 1.76.32H9a1.6 1.6 0 0 0 .97-1.47V3a2 2 0 0 1 4 0v.08A1.6 1.6 0 0 0 14.94 4h.17a1.6 1.6 0 0 0 1.76-.32l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.6 1.6 0 0 0 19.4 9c.63.24 1.05.85 1.05 1.53V11a2 2 0 0 1 0 4h-.08c-.68 0-1.29.42-1.53 1.05Z"></path>
+</svg>
+<span class="nav-link-label">الإعدادات</span>
+</span>
+<span aria-hidden="true" class="nav-link-arrow">06</span>
+</a>
+</li>
+</ul>
+</nav>
+<div class="sidebar-footer">
+<section aria-label="معلومات الخطة" class="plan-card glass-card">
+<p class="eyebrow">Plan</p>
+<p class="plan-name">Enterprise Governance</p>
+<p class="plan-meta">مراقبة العقود، القوالب، والتقارير التنفيذية</p>
+<span class="plan-badge">ACTIVE / PRO</span>
+</section>
+<section aria-label="معلومات المستخدم" class="profile-card glass-card">
+<div aria-hidden="true" class="avatar">YA</div>
+<div>
+<p class="profile-name">Yazeed Alshammari</p>
+<p class="profile-role">Legal Ops Admin</p>
+</div>
+</section>
+</div>
+</aside>
+<main class="content-shell">
+<div class="content-frame">
+<header aria-label="رأس الصفحة" class="header">
+<div class="header-copy">
+<span>Contract governance overview</span>
+<h1 class="header-title" id="current-section">لوحة التحكم</h1>
+</div>
+<div class="header-actions">
+<button class="action-button" type="button">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 5v14"></path>
+<path d="M5 12h14"></path>
+</svg>
+                رفع عقد
+              </button>
+<button aria-label="الإشعارات" class="icon-button" data-count="3" type="button">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"></path>
+<path d="M10 20a2 2 0 0 0 4 0"></path>
+</svg>
+</button>
+</div>
+</header>
+<section aria-label="مساحة المحتوى الرئيسية" class="workspace"></section>
+</div>
+</main>
+<footer class="footer">
+<span>ContractAI Workspace Structure v1</span>
+<code>RTL / Pure HTML-CSS-JS</code>
+</footer>
+</div>
+<script>
+      const navLinks = document.querySelectorAll(".nav-link");
+      const currentSection = document.getElementById("current-section");
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+
+          navLinks.forEach((item) => item.classList.remove("is-active"));
+          link.classList.add("is-active");
+          currentSection.textContent = link.dataset.section || "لوحة التحكم";
+        });
+      });
+    </script>
+</body>
+</html>

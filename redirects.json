@@ -1,0 +1,229 @@
+{
+  "redirects": [
+    { "from": "/index.html", "to": "/" },
+    { "from": "/:slug/index.html", "to": "/:slug/" },
+    { "from": "/en/index.html", "to": "/en/" },
+    { "from": "/en/:slug/index.html", "to": "/en/:slug/" },
+    { "from": "/smart-automation.html", "to": "/smart-automation/" },
+    { "from": "/ai-agent.html", "to": "/ai-agent/" },
+    { "from": "/health-bright.html", "to": "/health/" },
+    { "from": "/consultation.html", "to": "/consultation/" },
+    { "from": "/data-analysis.html", "to": "/data-analysis/" },
+    { "from": "/our-products.html", "to": "/services/" },
+    { "from": "/Company%20performance%20monitoring%20tool.html", "to": "/tools/" },
+    { "from": "/blogger/ai-generative-content-industry-saudi-arabia.html", "to": "/blog/ai-generative-content-industry-saudi-arabia/" },
+    { "from": "/frontend/pages/about-us/index.html", "to": "/about/" },
+    { "from": "/frontend/pages/about-us/", "to": "/about/" },
+    { "from": "/frontend/pages/ai-agent/index.html", "to": "/ai-agent/" },
+    { "from": "/frontend/pages/ai-agent/", "to": "/ai-agent/" },
+    { "from": "/frontend/pages/ai-bots/index.html", "to": "/ai-bots/" },
+    { "from": "/frontend/pages/ai-bots/", "to": "/ai-bots/" },
+    { "from": "/frontend/pages/ai-bots/BrightProject/index.html", "to": "/ai-bots/BrightProject/" },
+    { "from": "/frontend/pages/ai-bots/BrightMath/index.html", "to": "/ai-bots/BrightMath/" },
+    { "from": "/frontend/pages/ai-bots/BrightSales/index.html", "to": "/ai-bots/BrightSales/" },
+    { "from": "/frontend/pages/ai-bots/BrightSupport/index.html", "to": "/ai-bots/BrightSupport/" },
+    { "from": "/frontend/pages/ai-bots/BrightRecruiter/index.html", "to": "/ai-bots/BrightRecruiter/" },
+    { "from": "/frontend/pages/ai-scolecs/index.html", "to": "/ai-scolecs/" },
+    { "from": "/frontend/pages/ai-workflows/index.html", "to": "/ai-workflows/" },
+    { "from": "/frontend/pages/ai-workflows/", "to": "/ai-workflows/" },
+    { "from": "/frontend/pages/consultation/index.html", "to": "/consultation/" },
+    { "from": "/frontend/pages/consultation/", "to": "/consultation/" },
+    { "from": "/frontend/pages/contact/index.html", "to": "/contact/" },
+    { "from": "/frontend/pages/contact/", "to": "/contact/" },
+    { "from": "/frontend/pages/data-analysis/index.html", "to": "/data-analysis/" },
+    { "from": "/frontend/pages/data-analysis/", "to": "/data-analysis/" },
+    { "from": "/frontend/pages/our-products/index.html", "to": "/services/" },
+    { "from": "/frontend/pages/our-products/", "to": "/services/" },
+    { "from": "/frontend/pages/smart-automation/index.html", "to": "/smart-automation/" },
+    { "from": "/frontend/pages/smart-automation/", "to": "/smart-automation/" },
+    { "from": "/frontend/pages/smart-medical-archive/index.html", "to": "/smart-medical-archive/" },
+    { "from": "/frontend/pages/smart-medical-archive/", "to": "/smart-medical-archive/" },
+    { "from": "/interview/pages/supportAI", "to": "/interview/pages/support-ai/" },
+    { "from": "/interview/pages/supportAI/", "to": "/interview/pages/support-ai/" },
+    { "from": "/interview/pages/supportAI/index.html", "to": "/interview/pages/support-ai/" },
+    { "from": "/interview/pages/Visitor-registration/index.html", "to": "/interview/pages/Visitor-registration/" },
+    { "from": "/frontend/pages/try/index.html", "to": "/try/" },
+    { "from": "/frontend/pages/try/", "to": "/try/" },
+    { "from": "/frontend/pages/try/data-analyzer/index.html", "to": "/try/data-analyzer/" },
+    { "from": "/frontend/pages/try/data-quality/index.html", "to": "/try/data-quality/" },
+    { "from": "/frontend/pages/try/text-analysis/index.html", "to": "/try/text-analysis/" },
+    { "from": "/frontend/pages/blog/data-analytics/kpi-dashboard-guide.html", "to": "/blog/data-analytics/kpi-dashboard-guide/" },
+    { "from": "/frontend/pages/blog/data-analytics/power-bi-saudi-guide.html", "to": "/blog/data-analytics/power-bi-saudi-guide/" },
+    { "from": "/frontend/pages/blogger/nca-compliance", "to": "/blog/nca-compliance/" },
+    { "from": "/blog/production-line/", "to": "/blog/production-line" },
+    { "from": "/blog/production-line.html", "to": "/blog/production-line" },
+    { "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات", "to": "/blog/" },
+    { "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/", "to": "/blog/" },
+    { "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html", "to": "/blog/" },
+    { "from": "/blog/ production-line", "to": "/blog/production-line" },
+    { "from": "/blog/Generative artificial intelligence", "to": "/blog/Generative-artificial-intelligence" },
+    {
+      "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)",
+      "to": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1"
+    },
+    {
+      "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/",
+      "to": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+    },
+    {
+      "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
+      "to": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+    },
+    {
+      "from": "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية",
+      "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية"
+    },
+    {
+      "from": "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/",
+      "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+    },
+    {
+      "from": "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
+      "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+    },
+    {
+      "from": "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية"
+    },
+    {
+      "from": "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+    },
+    {
+      "from": "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+    },
+    {
+      "from": "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية",
+      "to": "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية"
+    },
+    {
+      "from": "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/",
+      "to": "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+    },
+    {
+      "from": "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
+      "to": "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+    },
+    {
+      "from": "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار",
+      "to": "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار"
+    },
+    {
+      "from": "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/",
+      "to": "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+    },
+    {
+      "from": "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
+      "to": "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+    },
+    {
+      "from": "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور",
+      "to": "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور"
+    },
+    {
+      "from": "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/",
+      "to": "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+    },
+    {
+      "from": "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
+      "to": "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+    },
+    {
+      "from": "/docs/terms-and-conditions/terms-and-conditions-en.html",
+      "to": "/docs/terms-and-conditions-en/"
+    },
+    {
+      "from": "/docs/solutions-supply-chain/solutions-supply-chain-en.html",
+      "to": "/docs/solutions-supply-chain-en/"
+    },
+    {
+      "from": "/docs/solutions-retail/solutions-retail-en.html",
+      "to": "/docs/solutions-retail-en/"
+    },
+    {
+      "from": "/docs/solutions-ocr/solutions-ocr-en.html",
+      "to": "/docs/solutions-ocr-en/"
+    },
+    {
+      "from": "/docs/solutions-logistics/solutions-logistics-en.html",
+      "to": "/docs/solutions-logistics-en/"
+    },
+    {
+      "from": "/docs/solutions-interview/solutions-interview-en.html",
+      "to": "/docs/solutions-interview-en/"
+    },
+    {
+      "from": "/docs/solutions-hr/solutions-hr-en.html",
+      "to": "/docs/solutions-hr-en/"
+    },
+    {
+      "from": "/docs/solutions-healthcare/solutions-healthcare-en.html",
+      "to": "/docs/solutions-healthcare-en/"
+    },
+    {
+      "from": "/docs/solutions-finance/solutions-finance-en.html",
+      "to": "/docs/solutions-finance-en/"
+    },
+    {
+      "from": "/docs/solutions-crm/solutions-crm-en.html",
+      "to": "/docs/solutions-crm-en/"
+    },
+    {
+      "from": "/docs/solutions-bi/solutions-bi-en.html",
+      "to": "/docs/solutions-bi-en/"
+    },
+    {
+      "from": "/docs/smart-automation/smart-automation-en.html",
+      "to": "/docs/smart-automation-en/"
+    },
+    {
+      "from": "/docs/services-overview/services-overview-en.html",
+      "to": "/docs/services-overview-en/"
+    },
+    {
+      "from": "/docs/privacy-policy/privacy-policy-en.html",
+      "to": "/docs/privacy-policy-en/"
+    },
+    {
+      "from": "/docs/faq/faq-en.html",
+      "to": "/docs/faq-en/"
+    },
+    {
+      "from": "/docs/docs-en.html",
+      "to": "/docs-en.html"
+    },
+    {
+      "from": "/docs/data-analysis/data-analysis-en.html",
+      "to": "/docs/data-analysis-en/"
+    },
+    {
+      "from": "/docs/contact/contact-en.html",
+      "to": "/docs/contact-en/"
+    },
+    {
+      "from": "/docs/consultation/consultation-en.html",
+      "to": "/docs/consultation-en/"
+    },
+    {
+      "from": "/docs/ai-bots/ai-bots-en.html",
+      "to": "/docs/ai-bots-en/"
+    },
+    {
+      "from": "/docs/ai-agent/ai-agent-en.html",
+      "to": "/docs/ai-agent-en/"
+    }
+  ]
+}

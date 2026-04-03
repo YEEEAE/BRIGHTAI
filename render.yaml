@@ -1,0 +1,931 @@
+services:
+  - type: web
+    runtime: static
+    name: brightai-site
+    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run assets:minify && npm run seo:gate && rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains; preload
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=(), interest-cohort=()
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src 'self' https://brightai-92px.onrender.com https://*.sentry.io https://www.google-analytics.com; frame-ancestors 'none'"
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=300, s-maxage=300
+      - path: /*.html
+        name: Cache-Control
+        value: public, max-age=300, s-maxage=300
+      - path: /**/*.html
+        name: Cache-Control
+        value: public, max-age=300, s-maxage=300
+
+      - path: /tenders/dashboard
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/dashboard/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/dashboard.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/dashboard
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/dashboard/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/dashboard.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/admin
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/admin/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/admin.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/Visitor-registration
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/Visitor-registration/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/Visitor-registration/index.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.png
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /**/*.png
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /*.jpg
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /**/*.jpg
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /*.jpeg
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /**/*.jpeg
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /*.webp
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /**/*.webp
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /*.svg
+        name: Cache-Control
+        value: public, max-age=2592000
+      - path: /**/*.svg
+        name: Cache-Control
+        value: public, max-age=2592000
+    routes:
+      # فرض الدومين الأساسي حتى لا تظهر إشارات canonical أو Coverage على نسخ متعددة.
+      - type: redirect
+        source: http://brightai.site/:splat
+        destination: https://brightai.site/:splat
+        status: 301
+      - type: redirect
+        source: https://www.brightai.site/:splat
+        destination: https://brightai.site/:splat
+        status: 301
+      - type: redirect
+        source: https://brightai-92px.onrender.com/:splat
+        destination: https://brightai.site/:splat
+        status: 301
+
+      # ملاحظة تشغيلية: بعد أي Sync/Deploy يغيّر قواعد routes في Render،
+      # امسح Cloudflare Cache حتى لا تستمر استجابات 404 أو 301 القديمة على الدومين.
+      # منع Render من تقديم صفحة 404 كملف حقيقي بحالة 200 عند طلب /404 مباشرة.
+      - type: redirect
+        source: /404
+        destination: /404.html
+        status: 301
+      - type: redirect
+        source: /404/
+        destination: /404.html
+        status: 301
+
+      # توحيد نسخ index.html مع المسار المعياري لمنع تعارضات canonical و hreflang.
+      - type: redirect
+        source: /index.html
+        destination: /
+        status: 301
+      - type: redirect
+        source: /:slug/index.html
+        destination: /:slug/
+        status: 301
+      - type: redirect
+        source: /en/index.html
+        destination: /en/
+        status: 301
+      - type: redirect
+        source: /en/:slug/index.html
+        destination: /en/:slug/
+        status: 301
+
+      # === 1. إضافة Redirects للـ URLs القديمة (301) ===
+      - type: redirect
+        source: /smart-automation.html
+        destination: /smart-automation/
+      - type: redirect
+        source: /ai-agent.html
+        destination: /ai-agent/
+      - type: redirect
+        source: /consultation.html
+        destination: /consultation/
+      - type: redirect
+        source: /data-analysis.html
+        destination: /data-analysis/
+      - type: redirect
+        source: /tools.html
+        destination: /tools/
+      - type: redirect
+        source: /our-products.html
+        destination: /services/
+      - type: redirect
+        source: /health-bright.html
+        destination: /health/
+      - type: redirect
+        source: /Company%20performance%20monitoring%20tool.html
+        destination: /tools/
+      - type: redirect
+        source: /blogger/ai-generative-content-industry-saudi-arabia.html
+        destination: /blog/ai-generative-content-industry-saudi-arabia/
+      - type: redirect
+        source: /frontend/pages/about-us/index.html
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/about-us/
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/ai-agent/index.html
+        destination: /ai-agent/
+      - type: redirect
+        source: /frontend/pages/ai-agent/
+        destination: /ai-agent/
+      - type: redirect
+        source: /frontend/pages/ai-bots/index.html
+        destination: /ai-bots/
+      - type: redirect
+        source: /frontend/pages/ai-bots/
+        destination: /ai-bots/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightProject/index.html
+        destination: /ai-bots/BrightProject/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightMath/index.html
+        destination: /ai-bots/BrightMath/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightSales/index.html
+        destination: /ai-bots/BrightSales/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightSupport/index.html
+        destination: /ai-bots/BrightSupport/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightRecruiter/index.html
+        destination: /ai-bots/BrightRecruiter/
+      - type: redirect
+        source: /frontend/pages/ai-scolecs/index.html
+        destination: /ai-scolecs/
+      - type: redirect
+        source: /frontend/pages/ai-workflows/index.html
+        destination: /ai-workflows/
+      - type: redirect
+        source: /frontend/pages/ai-workflows/
+        destination: /ai-workflows/
+      - type: redirect
+        source: /frontend/pages/consultation/index.html
+        destination: /consultation/
+      - type: redirect
+        source: /frontend/pages/consultation/
+        destination: /consultation/
+      - type: redirect
+        source: /frontend/pages/contact/index.html
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/contact/
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/data-analysis/index.html
+        destination: /data-analysis/
+      - type: redirect
+        source: /frontend/pages/data-analysis/
+        destination: /data-analysis/
+      - type: redirect
+        source: /frontend/pages/our-products/index.html
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/our-products/
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/smart-automation/index.html
+        destination: /smart-automation/
+      - type: redirect
+        source: /frontend/pages/smart-automation/
+        destination: /smart-automation/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/index.html
+        destination: /smart-medical-archive/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/
+        destination: /smart-medical-archive/
+      - type: redirect
+        source: /frontend/pages/try/index.html
+        destination: /try/
+      - type: redirect
+        source: /frontend/pages/try/
+        destination: /try/
+      - type: redirect
+        source: /frontend/pages/try/data-analyzer/index.html
+        destination: /try/data-analyzer/
+      - type: redirect
+        source: /frontend/pages/try/data-quality/index.html
+        destination: /try/data-quality/
+      - type: redirect
+        source: /frontend/pages/try/text-analysis/index.html
+        destination: /try/text-analysis/
+      - type: redirect
+        source: /frontend/pages/blog/data-analytics/kpi-dashboard-guide.html
+        destination: /blog/data-analytics/kpi-dashboard-guide/
+      - type: redirect
+        source: /frontend/pages/blog/data-analytics/power-bi-saudi-guide.html
+        destination: /blog/data-analytics/power-bi-saudi-guide/
+      - type: redirect
+        source: /frontend/pages/job.MAISco/index.html
+        destination: /interview/
+      - type: redirect
+        source: /frontend/pages/job.MAISco/
+        destination: /interview/
+      - type: redirect
+        source: /frontend/pages/blogger/nca-compliance
+        destination: /blog/nca-compliance/
+      - type: redirect
+        source: /frontend/pages/*
+        destination: /
+      - type: redirect
+        source: /blogger/*
+        destination: /blog/:splat
+
+      # === 2. إضافة Redirects لإصلاح Trailing Slash (حل مشكلة GSC) ===
+      - type: redirect
+        source: /about
+        destination: /about/
+      - type: redirect
+        source: /ai-agent
+        destination: /ai-agent/
+      - type: redirect
+        source: /ai-bots
+        destination: /ai-bots/
+      - type: redirect
+        source: /smart-automation
+        destination: /smart-automation/
+      - type: redirect
+        source: /consultation
+        destination: /consultation/
+      - type: redirect
+        source: /data-analysis
+        destination: /data-analysis/
+      - type: redirect
+        source: /about/index-en.html
+        destination: /en/about/
+      - type: redirect
+        source: /ai-agent/index-en.html
+        destination: /en/ai-agent/
+      - type: redirect
+        source: /ai-workflows/index-en.html
+        destination: /en/ai-workflows/
+      - type: redirect
+        source: /consultation/index-en.html
+        destination: /en/consultation/
+      - type: redirect
+        source: /data-analysis/index-en.html
+        destination: /en/data-analysis/
+      - type: redirect
+        source: /health/index-en.html
+        destination: /en/health/
+      - type: redirect
+        source: /interview/index-en.html
+        destination: /en/interview/
+      - type: redirect
+        source: /smart-automation/index-en.html
+        destination: /en/smart-automation/
+      - type: redirect
+        source: /smart-medical-archive/index-en.html
+        destination: /en/smart-medical-archive/
+      - type: redirect
+        source: /tools/index-en.html
+        destination: /en/tools/
+      - type: redirect
+        source: /docs-en.html
+        destination: /en/docs/
+
+      # Blog Arabic files redirects
+      - type: redirect
+        source: "/blog/Generative-artificial-intelligence"
+        destination: "/blog/generative-artificial-intelligence"
+      - type: redirect
+        source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)"
+        destination: "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+      - type: redirect
+        source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/"
+        destination: "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+      - type: redirect
+        source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html"
+        destination: "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+      - type: redirect
+        source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية"
+        destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+      - type: redirect
+        source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/"
+        destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+      - type: redirect
+        source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html"
+        destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+      - type: redirect
+        source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات"
+        destination: "/blog/"
+      - type: redirect
+        source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/"
+        destination: "/blog/"
+      - type: redirect
+        source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html"
+        destination: "/blog/"
+      - type: redirect
+        source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+      - type: redirect
+        source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+      - type: redirect
+        source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+      - type: redirect
+        source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية"
+        destination: "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+      - type: redirect
+        source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/"
+        destination: "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+      - type: redirect
+        source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html"
+        destination: "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+      - type: redirect
+        source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار"
+        destination: "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+      - type: redirect
+        source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/"
+        destination: "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+      - type: redirect
+        source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html"
+        destination: "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+      - type: redirect
+        source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور"
+        destination: "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+      - type: redirect
+        source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/"
+        destination: "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+      - type: redirect
+        source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html"
+        destination: "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+
+      # Redirects إضافية موجودة مسبقاً (لحالات خاصة في المدونة)
+      - type: redirect
+        source: "/blog/production-line"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/production-line/"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/production-line.html"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات"
+        destination: /blog/
+      - type: redirect
+        source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/"
+        destination: /blog/
+      - type: redirect
+        source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html"
+        destination: /blog/
+      - type: redirect
+        source: "/blog/ production-line"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/Generative artificial intelligence"
+        destination: /blog/generative-artificial-intelligence
+      - type: redirect
+        source: /blog/production-line-2
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: /blog/production-line-2/
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: /blog/production-line-2.html
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)"
+        destination: /blog/ai-transformation/
+        status: 301
+      - type: redirect
+        source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/"
+        destination: /blog/ai-transformation/
+        status: 301
+      - type: redirect
+        source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html"
+        destination: /blog/ai-transformation/
+        status: 301
+      - type: redirect
+        source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية"
+        destination: /blog/hr-automation-case-study/
+        status: 301
+      - type: redirect
+        source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/"
+        destination: /blog/hr-automation-case-study/
+        status: 301
+      - type: redirect
+        source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html"
+        destination: /blog/hr-automation-case-study/
+        status: 301
+      - type: redirect
+        source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار"
+        destination: /blog/ai-transformation/
+        status: 301
+      - type: redirect
+        source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/"
+        destination: /blog/ai-transformation/
+        status: 301
+      - type: redirect
+        source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html"
+        destination: /blog/ai-transformation/
+        status: 301
+      - type: redirect
+        source: /blog/ai-consulting-digital-transformation
+        destination: /blog/
+        status: 301
+      - type: redirect
+        source: /blog/ai-consulting-digital-transformation/
+        destination: /blog/
+        status: 301
+      - type: redirect
+        source: /blog/ai-consulting-digital-transformation.html
+        destination: /blog/
+        status: 301
+      - type: redirect
+        source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية"
+        destination: /blog/process-automation/
+        status: 301
+      - type: redirect
+        source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/"
+        destination: /blog/process-automation/
+        status: 301
+      - type: redirect
+        source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html"
+        destination: /blog/process-automation/
+        status: 301
+      - type: redirect
+        source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html"
+        destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
+      - type: redirect
+        source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات"
+        destination: /blog/choose-ai-company-saudi/
+        status: 301
+      - type: redirect
+        source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/"
+        destination: /blog/choose-ai-company-saudi/
+        status: 301
+      - type: redirect
+        source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html"
+        destination: /blog/choose-ai-company-saudi/
+        status: 301
+      - type: redirect
+        source: /blog/generative-artificial-intelligence-2
+        destination: /blog/generative-artificial-intelligence/
+        status: 301
+      - type: redirect
+        source: /blog/generative-artificial-intelligence-2/
+        destination: /blog/generative-artificial-intelligence/
+        status: 301
+      - type: redirect
+        source: /blog/generative-artificial-intelligence-2.html
+        destination: /blog/generative-artificial-intelligence/
+        status: 301
+      - type: redirect
+        source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور"
+        destination: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/
+        status: 301
+      - type: redirect
+        source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/"
+        destination: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/
+        status: 301
+      - type: redirect
+        source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html"
+        destination: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/
+        status: 301
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات
+        destination: /blog/
+        status: 301
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/
+        destination: /blog/
+        status: 301
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html
+        destination: /blog/
+        status: 301
+
+      # === 2.1 Redirects عامة للروابط القديمة .html ===
+      - type: redirect
+        source: /blog/:section/:slug.html
+        destination: /blog/:section/:slug/
+        status: 301
+      - type: redirect
+        source: /blog/:slug.html
+        destination: /blog/:slug/
+        status: 301
+      - type: redirect
+        source: /:slug.html
+        destination: /:slug/
+        status: 301
+
+      # === 3. Rewrites (200) مسارات محددة ===
+
+      # استثناء مسارات المدونة المتداخلة (يجب أن تكون قبل القاعدة العامة للمدونة)
+      - type: rewrite
+        source: /blog/data-analytics/kpi-dashboard-guide
+        destination: /frontend/pages/blog/data-analytics/kpi-dashboard-guide.html
+      - type: rewrite
+        source: /blog/data-analytics/kpi-dashboard-guide/
+        destination: /frontend/pages/blog/data-analytics/kpi-dashboard-guide.html
+      - type: rewrite
+        source: /blog/data-analytics/power-bi-saudi-guide
+        destination: /frontend/pages/blog/data-analytics/power-bi-saudi-guide.html
+      - type: rewrite
+        source: /blog/data-analytics/power-bi-saudi-guide/
+        destination: /frontend/pages/blog/data-analytics/power-bi-saudi-guide.html
+      - type: rewrite
+        source: /blog/generative-artificial-intelligence
+        destination: /blog/generative-artificial-intelligence.html
+      - type: rewrite
+        source: /blog/generative-artificial-intelligence/
+        destination: /blog/generative-artificial-intelligence.html
+      - type: rewrite
+        source: /blog/:section/:slug
+        destination: /frontend/pages/blog/:section/:slug.html
+      - type: rewrite
+        source: /blog/:section/:slug/
+        destination: /frontend/pages/blog/:section/:slug.html
+
+      # توافق صريح للمسارات الحالية في المدونة
+      - type: rewrite
+        source: /blog/data-analytics/:slug
+        destination: /frontend/pages/blog/data-analytics/:slug.html
+      - type: rewrite
+        source: /blog/data-analytics/:slug/
+        destination: /frontend/pages/blog/data-analytics/:slug.html
+      - type: rewrite
+        source: /blog/automation/:slug
+        destination: /frontend/pages/blog/automation/:slug.html
+      - type: rewrite
+        source: /blog/automation/:slug/
+        destination: /frontend/pages/blog/automation/:slug.html
+      
+      # ① إصلاح Blog Routes (الأهم)
+      - type: rewrite
+        source: /blog/:slug
+        destination: /blog/:slug.html
+      - type: rewrite
+        source: /blog/:slug/
+        destination: /blog/:slug.html
+
+      # ② إصلاح Sectors Routes
+      - type: rewrite
+        source: /sectors/:slug
+        destination: /sectors/:slug.html
+      - type: rewrite
+        source: /sectors/:slug/
+        destination: /sectors/:slug.html
+
+      # ⑤ مسارات الـ Rewrites للـ Frontend (المتبقية كما هي)
+      - type: rewrite
+        source: /ai-bots/BrightMath
+        destination: /frontend/pages/ai-bots/BrightMath/index.html
+      - type: rewrite
+        source: /ai-bots/BrightMath/
+        destination: /frontend/pages/ai-bots/BrightMath/index.html
+      - type: rewrite
+        source: /ai-bots/BrightProject
+        destination: /frontend/pages/ai-bots/BrightProject/index.html
+      - type: rewrite
+        source: /ai-bots/BrightProject/
+        destination: /frontend/pages/ai-bots/BrightProject/index.html
+      - type: rewrite
+        source: /ai-bots/BrightRecruiter
+        destination: /frontend/pages/ai-bots/BrightRecruiter/index.html
+      - type: rewrite
+        source: /ai-bots/BrightRecruiter/
+        destination: /frontend/pages/ai-bots/BrightRecruiter/index.html
+      - type: rewrite
+        source: /ai-bots/BrightSales
+        destination: /frontend/pages/ai-bots/BrightSales/index.html
+      - type: rewrite
+        source: /ai-bots/BrightSales/
+        destination: /frontend/pages/ai-bots/BrightSales/index.html
+      - type: rewrite
+        source: /ai-bots/BrightSupport
+        destination: /frontend/pages/ai-bots/BrightSupport/index.html
+      - type: rewrite
+        source: /ai-bots/BrightSupport/
+        destination: /frontend/pages/ai-bots/BrightSupport/index.html
+      - type: rewrite
+        source: /ai-bots/:slug
+        destination: /frontend/pages/ai-bots/:slug/index.html
+      - type: rewrite
+        source: /ai-bots/:slug/
+        destination: /frontend/pages/ai-bots/:slug/index.html
+      
+      - type: rewrite
+        source: /ai-scolecs
+        destination: /frontend/pages/ai-scolecs/index.html
+      - type: rewrite
+        source: /ai-scolecs/
+        destination: /frontend/pages/ai-scolecs/index.html
+      
+      - type: rewrite
+        source: /ai-workflows
+        destination: /frontend/pages/ai-workflows/index.html
+      - type: rewrite
+        source: /ai-workflows/
+        destination: /frontend/pages/ai-workflows/index.html
+
+      - type: rewrite
+        source: /docs
+        destination: /docs.html
+      - type: rewrite
+        source: /docs/
+        destination: /docs.html
+      - type: rewrite
+        source: /docs/:slug
+        destination: /docs/:slug.html
+      - type: rewrite
+        source: /docs/:slug/
+        destination: /docs/:slug.html
+      
+      - type: rewrite
+        source: /demo
+        destination: /frontend/pages/demo/index.html
+      - type: rewrite
+        source: /demo/
+        destination: /frontend/pages/demo/index.html
+      
+      - type: rewrite
+        source: /demo/ocr-demo
+        destination: /frontend/pages/demo/ocr-demo/index.html
+      - type: rewrite
+        source: /demo/ocr-demo/
+        destination: /frontend/pages/demo/ocr-demo/index.html
+      
+      - type: rewrite
+        source: /demo/pricing
+        destination: /frontend/pages/demo/pricing/index.html
+      - type: rewrite
+        source: /demo/pricing/
+        destination: /frontend/pages/demo/pricing/index.html
+      
+      - type: rewrite
+        source: /demo/resources/report-ai-saudi-2026
+        destination: /frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+      - type: rewrite
+        source: /demo/resources/report-ai-saudi-2026/
+        destination: /frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+      
+      - type: rewrite
+        source: /interview
+        destination: /interview/index.html
+      - type: rewrite
+        source: /interview/
+        destination: /interview/index.html
+      - type: rewrite
+        source: /interview/Presentation
+        destination: /frontend/pages/interview/Presentation.html
+      - type: rewrite
+        source: /interview/Presentation/
+        destination: /frontend/pages/interview/Presentation.html
+      
+      - type: rewrite
+        source: /interview/pages/appointment
+        destination: /frontend/pages/interview/pages/appointment/index.html
+      - type: rewrite
+        source: /interview/pages/appointment/
+        destination: /frontend/pages/interview/pages/appointment/index.html
+      
+      - type: rewrite
+        source: /interview/pages/admin
+        destination: /frontend/pages/interview/pages/admin.html
+      - type: rewrite
+        source: /interview/pages/admin/
+        destination: /frontend/pages/interview/pages/admin.html
+      
+      - type: rewrite
+        source: /interview/pages/dashboard
+        destination: /frontend/pages/interview/pages/dashboard/index.html
+      - type: rewrite
+        source: /interview/pages/dashboard/
+        destination: /frontend/pages/interview/pages/dashboard/index.html
+      
+      - type: rewrite
+        source: /interview/pages/support-ai
+        destination: /frontend/pages/interview/pages/support-ai.html
+      - type: rewrite
+        source: /interview/pages/support-ai/
+        destination: /frontend/pages/interview/pages/support-ai.html
+      - type: rewrite
+        source: /interview/pages/support-ai.html
+        destination: /frontend/pages/interview/pages/support-ai.html
+      - type: redirect
+        source: /interview/pages/supportAI
+        destination: /interview/pages/support-ai/
+        status: 301
+      - type: redirect
+        source: /interview/pages/supportAI/
+        destination: /interview/pages/support-ai/
+        status: 301
+      - type: redirect
+        source: /interview/pages/supportAI/index.html
+        destination: /interview/pages/support-ai/
+        status: 301
+      
+      - type: rewrite
+        source: /interview/pages/Visitor-registration
+        destination: /frontend/pages/interview/pages/Visitor-registration/index.html
+      - type: rewrite
+        source: /interview/pages/Visitor-registration/
+        destination: /frontend/pages/interview/pages/Visitor-registration/index.html
+      - type: redirect
+        source: /interview/pages/Visitor-registration/index.html
+        destination: /interview/pages/Visitor-registration/
+      
+      - type: rewrite
+        source: /privacy-cookies
+        destination: /privacy-cookies/index.html
+      - type: rewrite
+        source: /privacy-cookies/
+        destination: /privacy-cookies/index.html
+      
+      - type: rewrite
+        source: /smart-medical-archive
+        destination: /smart-medical-archive/index.html
+      - type: rewrite
+        source: /smart-medical-archive/
+        destination: /smart-medical-archive/index.html
+
+      - type: rewrite
+        source: /sitemap
+        destination: /frontend/pages/sitemap/index.html
+      - type: rewrite
+        source: /sitemap/
+        destination: /frontend/pages/sitemap/index.html
+
+      - type: rewrite
+        source: /terms
+        destination: /frontend/pages/terms/index.html
+      - type: rewrite
+        source: /terms/
+        destination: /frontend/pages/terms/index.html
+
+      - type: rewrite
+        source: /tenders
+        destination: /tenders/index.html
+      - type: rewrite
+        source: /tenders/
+        destination: /tenders/index.html
+      - type: rewrite
+        source: /tenders/compare
+        destination: /tenders/compare.html
+      - type: rewrite
+        source: /tenders/compare/
+        destination: /tenders/compare.html
+      - type: rewrite
+        source: /tenders/landing
+        destination: /tenders/landing.html
+      - type: rewrite
+        source: /tenders/landing/
+        destination: /tenders/landing.html
+      - type: rewrite
+        source: /tenders/templates
+        destination: /tenders/templates.html
+      - type: rewrite
+        source: /tenders/templates/
+        destination: /tenders/templates.html
+      - type: rewrite
+        source: /tenders/:slug
+        destination: /tenders/:slug.html
+      - type: rewrite
+        source: /tenders/:slug/
+        destination: /tenders/:slug.html
+      - type: rewrite
+        source: /en/docs
+        destination: /en/docs/docs.html
+      - type: rewrite
+        source: /en/docs/
+        destination: /en/docs/docs.html
+      - type: rewrite
+        source: /en/:slug
+        destination: /en/:slug/index.html
+      - type: rewrite
+        source: /en/:slug/
+        destination: /en/:slug/index.html
+      - type: rewrite
+        source: /en/tenders/:slug
+        destination: /en/tenders/:slug.html
+      - type: rewrite
+        source: /en/tenders/:slug/
+        destination: /en/tenders/:slug.html
+      
+      - type: redirect
+        source: /job.MAISco
+        destination: /interview/
+      - type: redirect
+        source: /job.MAISco/
+        destination: /interview/
+      
+      - type: rewrite
+        source: /try
+        destination: /frontend/pages/try/index.html
+      - type: rewrite
+        source: /try/
+        destination: /frontend/pages/try/index.html
+      - type: rewrite
+        source: /try/data-analyzer
+        destination: /frontend/pages/try/data-analyzer/index.html
+      - type: rewrite
+        source: /try/data-analyzer/
+        destination: /frontend/pages/try/data-analyzer/index.html
+      - type: rewrite
+        source: /try/data-quality
+        destination: /frontend/pages/try/data-quality/index.html
+      - type: rewrite
+        source: /try/data-quality/
+        destination: /frontend/pages/try/data-quality/index.html
+      - type: rewrite
+        source: /try/text-analysis
+        destination: /frontend/pages/try/text-analysis/index.html
+      - type: rewrite
+        source: /try/text-analysis/
+        destination: /frontend/pages/try/text-analysis/index.html
+
+      - type: rewrite
+        source: /try/:slug
+        destination: /frontend/pages/try/:slug/index.html
+      - type: rewrite
+        source: /try/:slug/
+        destination: /frontend/pages/try/:slug/index.html

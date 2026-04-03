@@ -1,0 +1,1614 @@
+{
+  "snapshot_id": "69cc605f48fb9e3046a2b8cd",
+  "issues": [
+    {
+      "issue_id": 4,
+      "name": "صفحات محظورة من الزحف (Blocked from Crawling)",
+      "severity": "errors",
+      "total": 6,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf7237b",
+          "title": "ContractAI — لوحة التحكم | ملخص العقود والمخاطر في السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/tenders/dashboard/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72340",
+          "title": "ContractAI Dashboard | Contract Activity, Risk, and Deadlines",
+          "num": 0,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/en/tenders/dashboard/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7233d",
+          "title": "تم نقل المقال | Bright AI",
+          "num": 0,
+          "discovered": 1774467379864,
+          "source_url": "https://brightai.site/blog/production-line/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72369",
+          "title": "تم نقل المقال | Bright AI",
+          "num": 0,
+          "discovered": 1774440404392,
+          "source_url": "https://brightai.site/blog/production-line"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72318",
+          "title": "أتمتة العمليات الذكية | دليل Bright AI لتحسين التشغيل في السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/blog/atou.doc/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72326",
+          "title": "أرشيف الرابط القديم astr.doc | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/blog/astr.doc/"
+        }
+      ]
+    },
+    {
+      "issue_id": 24,
+      "name": "مشاكل Hreflang في صفحات HTTPS (Hreflang Conflicts)",
+      "severity": "errors",
+      "total": 3,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf72373",
+          "title": "Free AI Tools & Software for Teams | Bright AI",
+          "num": 0,
+          "discovered": 1774623371104,
+          "info": {
+            "hreflang": "",
+            "errorType": "7"
+          },
+          "source_url": "https://brightai.site/en/tools/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722be",
+          "title": "Smart Medical Archive for Saudi Hospitals | Bright AI",
+          "num": 0,
+          "discovered": 1774993043334,
+          "info": {
+            "hreflang": "",
+            "errorType": "7"
+          },
+          "source_url": "https://brightai.site/en/smart-medical-archive/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e6",
+          "title": "AI Workflows for Saudi Businesses | Bright AI",
+          "num": 0,
+          "discovered": 1774993043334,
+          "info": {
+            "hreflang": "",
+            "errorType": "7"
+          },
+          "source_url": "https://brightai.site/en/ai-workflows/index.html"
+        }
+      ]
+    },
+    {
+      "issue_id": 112,
+      "name": "صور بدون نص بديل alt (Missing Alt Text)",
+      "severity": "warnings",
+      "total": 9,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf722fa",
+          "title": "ContractAI — الإعدادات | تفضيلات النظام والحساب",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.05",
+          "source_url": "https://brightai.site/tenders/settings/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72337",
+          "title": "ContractAI — التقارير والإحصائيات | أداء العقود واتجاهات المخاطر",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.03",
+          "source_url": "https://brightai.site/tenders/reports/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e9",
+          "title": "نافذة الدعم الفني الذكي | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.02",
+          "source_url": "https://brightai.site/interview/pages/support-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72306",
+          "title": "لوحة تحكم المسؤول - نظام التوظيف الذكي",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.02",
+          "source_url": "https://brightai.site/interview/pages/dashboard/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722f5",
+          "title": "حجز مواعيد الموارد البشرية - MAIS",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.02",
+          "source_url": "https://brightai.site/interview/pages/appointment/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7233a",
+          "title": "ContractAI Settings | Profile, Security, Alerts, and API",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.04",
+          "source_url": "https://brightai.site/en/tenders/settings/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72327",
+          "title": "ContractAI Reports | Contract Performance and Risk Trends",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.03",
+          "source_url": "https://brightai.site/en/tenders/reports/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72325",
+          "title": "وثيقة الشروط والأحكام العامة | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.08",
+          "source_url": "https://brightai.site/docs/terms-and-conditions/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722bf",
+          "title": "سياسة الخصوصية | Bright AI - حماية بياناتك أولويتنا",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": "0.08",
+          "source_url": "https://brightai.site/docs/privacy-policy/"
+        }
+      ]
+    },
+    {
+      "issue_id": 117,
+      "name": "JavaScript كبير في الصفحة (Large JS)",
+      "severity": "warnings",
+      "total": 3,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf7232d",
+          "title": "خريطة الموقع | BrightAI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": 196,
+          "source_url": "https://brightai.site/sitemap/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e9",
+          "title": "نافذة الدعم الفني الذكي | Bright AI",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": 136,
+          "source_url": "https://brightai.site/interview/pages/support-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722f5",
+          "title": "حجز مواعيد الموارد البشرية - MAIS",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": 157,
+          "source_url": "https://brightai.site/interview/pages/appointment/"
+        }
+      ]
+    },
+    {
+      "issue_id": 135,
+      "name": "ملفات CSS/JS غير مضغوطة (Unminified Resources)",
+      "severity": "warnings",
+      "total": 87,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf7236f",
+          "title": "مراقبة جودة البيانات والمنتجات | Bright AI Enterprise",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/try/data-quality/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7233f",
+          "title": "أدوات الذكاء الاصطناعي للشركات السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/tools/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722cd",
+          "title": "قوالب العقود الجاهزة | ContractAI من Bright AI للعقود السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/tenders/templates/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722d7",
+          "title": "ContractAI | تحليل العقود والمناقصات بالذكاء الاصطناعي في السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/tenders/landing/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72305",
+          "title": "مقارنة العقود الذكية | ContractAI من Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/tenders/compare/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722bc",
+          "title": "ContractAI من Bright AI | تحليل عقود ومناقصات السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "javascript"
+          },
+          "target_url": "https://brightai.site/frontend/js/tenders-index-app.js",
+          "source_url": "https://brightai.site/tenders/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722bc",
+          "title": "ContractAI من Bright AI | تحليل عقود ومناقصات السعودية",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/frontend/css/tenders-index-inline.css",
+          "source_url": "https://brightai.site/tenders/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722bc",
+          "title": "ContractAI من Bright AI | تحليل عقود ومناقصات السعودية",
+          "num": 2,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/tenders/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722eb",
+          "title": "خدمات الذكاء الاصطناعي للشركات السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/services/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7233b",
+          "title": "الذكاء الاصطناعي للصناعة السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/manufacturing/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72375",
+          "title": "AI for Saudi Manufacturing | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/manufacturing-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72315",
+          "title": "الذكاء الاصطناعي للوجستيات في السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/logistics/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722dd",
+          "title": "AI for Saudi Logistics | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/logistics-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72361",
+          "title": "الذكاء الاصطناعي للرعاية الصحية في السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/healthcare/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e3",
+          "title": "AI for Saudi Healthcare | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/healthcare-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7237a",
+          "title": "الذكاء الاصطناعي للقطاع المالي السعودي | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/finance/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722b9",
+          "title": "AI for Financial Services in Saudi Arabia | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/finance-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72329",
+          "title": "الذكاء الاصطناعي لقطاع الطاقة السعودي | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/energy/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7235d",
+          "title": "AI for Energy Companies in Saudi Arabia | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/energy-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72311",
+          "title": "الذكاء الاصطناعي للتجارة الإلكترونية السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/ecommerce/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72328",
+          "title": "AI for Saudi E-Commerce | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/sectors/ecommerce-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e2",
+          "title": "بوابة وظائف Bright AI | التوظيف الذكي",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/frontend/css/interview-inline.css",
+          "source_url": "https://brightai.site/interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e2",
+          "title": "بوابة وظائف Bright AI | التوظيف الذكي",
+          "num": 2,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e2",
+          "title": "بوابة وظائف Bright AI | التوظيف الذكي",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "javascript"
+          },
+          "target_url": "https://brightai.site/frontend/js/interview-app.js",
+          "source_url": "https://brightai.site/interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72373",
+          "title": "Free AI Tools & Software for Teams | Bright AI",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/tools/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72370",
+          "title": "Free AI Tools & Software for Teams | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/tools/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72346",
+          "title": "Saudi Contract Templates Library | ContractAI by Bright AI",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/tenders/templates/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72346",
+          "title": "Saudi Contract Templates Library | ContractAI by Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/frontend/css/en-tenders-templates-inline.css",
+          "source_url": "https://brightai.site/en/tenders/templates/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72346",
+          "title": "Saudi Contract Templates Library | ContractAI by Bright AI",
+          "num": 2,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "javascript"
+          },
+          "target_url": "https://brightai.site/frontend/js/en-tenders-templates-app.js",
+          "source_url": "https://brightai.site/en/tenders/templates/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72301",
+          "title": "ContractAI for Saudi Contracts and Tenders | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/tenders/landing/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722f4",
+          "title": "Compare Contract Drafts and Tender Revisions | ContractAI by Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/tenders/compare/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7230d",
+          "title": "Bright AI Job Portal | Smart Recruitment",
+          "num": 2,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7230d",
+          "title": "Bright AI Job Portal | Smart Recruitment",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/frontend/css/en-interview-inline.css",
+          "source_url": "https://brightai.site/en/interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7230d",
+          "title": "Bright AI Job Portal | Smart Recruitment",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "javascript"
+          },
+          "target_url": "https://brightai.site/frontend/js/en-interview-app.js",
+          "source_url": "https://brightai.site/en/interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722df",
+          "title": "Data Analysis with AI | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/en/data-analysis/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7235a",
+          "title": "إدارة سلسلة الإمداد (SCM) | Bright AI - تخطيط الطلب والمخزون",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-supply-chain/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72354",
+          "title": "حلول التجزئة والتجارة الإلكترونية | Bright AI - بيع بذكاء",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-retail/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722b8",
+          "title": "معالجة المستندات الذكية (OCR) | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-ocr/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7234b",
+          "title": "حلول اللوجستيات والنقل الذكي | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-logistics/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72334",
+          "title": "حلول الموارد البشرية والتوظيف | Bright AI - وظف بذكاء",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-interview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722fd",
+          "title": "إدارة الموارد البشرية (HRMS) | Bright AI - رواتب وأتمتة",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-hr/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72362",
+          "title": "HR Management (HRMS) | Bright AI - Payroll & Automation",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-hr-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7230a",
+          "title": "حلول الرعاية الصحية | Bright AI - الطب المتصل والذكي",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-healthcare/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7231a",
+          "title": "حلول المالية (Fintech) | Bright AI - كشف الاحتيال والامتثال",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-finance/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722ee",
+          "title": "إدارة علاقات العملاء الذكية (CRM) | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-crm/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7232b",
+          "title": "ذكاء الأعمال (BI) | Bright AI - لوحات تحكم تفاعلية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/solutions-bi/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7235e",
+          "title": "أتمتة العمليات RPA | Bright AI - أتمتة ذكية للشركات",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/smart-automation/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722c5",
+          "title": "خدمات Bright AI | حلول ذكاء اصطناعي متكاملة للشركات السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/services-overview/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722bd",
+          "title": "الأسئلة الشائعة | Bright AI - كل ما تحتاج معرفته",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/faq/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72353",
+          "title": "استشارات تقنية | Bright AI - خارطة الطريق للتحول الرقمي",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/consultation/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722b6",
+          "title": "AIaaS - الذكاء الاصطناعي كخدمة | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/ai-agent/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72338",
+          "title": "AIaaS - AI As A Service | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/docs/ai-agent-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7236a",
+          "title": "تحليل البيانات لاتخاذ القرار | Bright AI السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/تحليل-البيانات/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72359",
+          "title": "الذكاء الاصطناعي في التسويق | Bright AI السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/الذكاء-الاصطناعي-و-التسويق/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722f9",
+          "title": "حلول النقل واللوجستيات الذكية في السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/transport-logistics-solutions/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72300",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية |",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-tourism-ai-guide/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7235b",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية |",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-sports-analytics-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7232c",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في العقارات السعودية |",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-real-estate-ai-valuation/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72368",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في البتروكيماويات",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-petrochemical-ai-safety/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72357",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التعدين السعودي | كنز",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-mining-ai-exploration/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72376",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الصناعة السعودية |",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72335",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في اللوجستيات السعودية |",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-logistics-route-optimization/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722d5",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التأمين السعودي | كشف",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-insurance-claims-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722ea",
+          "title": "دراسة حالة: مجموعة فنادق سعودية | زيادة الإشغال 20%",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e5",
+          "title": "دراسة حالة: مصنع سعودي | رفع الإنتاجية 30% بتحليلات الذكاء",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-factory-ai-productivity/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7236b",
+          "title": "دراسة حالة: شركة طاقة سعودية | توفير 40 مليون ريال سنوياً",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-energy-predictive-maintenance/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722cc",
+          "title": "دراسة حالة: منصة تعليمية سعودية | تخصيص مسارات التعلم لـ",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-edtech-personalized-learning/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72378",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التجارة الإلكترونية",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-ecommerce-ai-growth/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72365",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في جودة التمور السعودية",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-dates-quality-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72344",
+          "title": "دراسة حالة: بنك سعودي | كشف 95% من محاولات الاحتيال بالذكاء",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-bank-fraud-detection/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72379",
+          "title": "دراسة حالة شاملة: الزراعة الذكية في السعودية | توفير المياه",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/saudi-agritech-smart-farming/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72356",
+          "title": "دراسة حالة: مجموعة صحية خاصة | تقليل أوقات الانتظار بنسبة",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/private-hospital-scheduling-optimization/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7230f",
+          "title": "دراسة حالة: جامعة الملك سعود | منصة تعلم تكيفي ترفع معدلات",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/ksu-adaptive-learning/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722f2",
+          "title": "الذكاء الاصطناعي التوليدي: ثورة في عالم الإبداع | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/generative-artificial-intelligence/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72341",
+          "title": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/digital-health-smart-archive/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72317",
+          "title": "الخدمات المصرفية الرقمية في السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/digital-banking-saudi/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722d0",
+          "title": "Power BI للشركات السعودية: دليل البداية الشامل | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/data-analytics/power-bi-saudi-guide/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7230e",
+          "title": "دراسة حالة: وزارة التجارة | شات بوت ذكي يخدم 50,000 تاجر",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/commerce-ministry-chatbot/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7237d",
+          "title": "ذكاء الأعمال BI في السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/business-intelligence-saudi/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e4",
+          "title": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/automation/hr-automation-saudi/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722c2",
+          "title": "كيف تُحدث حلول الذكاء الاصطناعي المبتكرة تحولًا في الأعمال",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/ai-transformation/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e0",
+          "title": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72374",
+          "title": "وكيل الذكاء الاصطناعي للشركات | Bright AI السعودية",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/blog/ai-agent/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722da",
+          "title": "المنصة التعليمية الذكية | Bright AI",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "javascript"
+          },
+          "target_url": "https://brightai.site/frontend/js/ai-scolecs-app.js",
+          "source_url": "https://brightai.site/ai-scolecs/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722da",
+          "title": "المنصة التعليمية الذكية | Bright AI",
+          "num": 2,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/frontend/css/ai-scolecs-inline.css",
+          "source_url": "https://brightai.site/ai-scolecs/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722da",
+          "title": "المنصة التعليمية الذكية | Bright AI",
+          "num": 3,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/ai-scolecs/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7236e",
+          "title": "وكيل ذكاء اصطناعي للشركات السعودية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "resourceType": "css"
+          },
+          "target_url": "https://brightai.site/assets/css/text-ratio-fix.css",
+          "source_url": "https://brightai.site/ai-agent/"
+        }
+      ]
+    },
+    {
+      "issue_id": 205,
+      "name": "عناوين URL مكررة www/non-www",
+      "severity": "notices",
+      "total": 1,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf72367",
+          "title": "Bright AI | حلول ذكاء اصطناعي للشركات | شركة ذكاء اصطناعي في السعودية",
+          "num": 0,
+          "discovered": 1774440404392,
+          "source_url": "https://brightai.site/"
+        }
+      ]
+    },
+    {
+      "issue_id": 212,
+      "name": "canonical خارجي (External Canonical)",
+      "severity": "notices",
+      "total": 3,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf722fa",
+          "title": "ContractAI — الإعدادات | تفضيلات النظام والحساب",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": 4,
+          "source_url": "https://brightai.site/tenders/settings/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72373",
+          "title": "Free AI Tools & Software for Teams | Bright AI",
+          "num": 2,
+          "discovered": 1774623371104,
+          "info": 4,
+          "source_url": "https://brightai.site/en/tools/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7233a",
+          "title": "ContractAI Settings | Profile, Security, Alerts, and API",
+          "num": 1,
+          "discovered": 1775001113584,
+          "info": 4,
+          "source_url": "https://brightai.site/en/tenders/settings/"
+        }
+      ]
+    },
+    {
+      "issue_id": 213,
+      "name": "صفحات بدون hreflang (No Hreflang)",
+      "severity": "notices",
+      "total": 15,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf722fa",
+          "title": "ContractAI — الإعدادات | تفضيلات النظام والحساب",
+          "num": 2,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/tenders/settings/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72375",
+          "title": "AI for Saudi Manufacturing | Bright AI",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/sectors/manufacturing-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722dd",
+          "title": "AI for Saudi Logistics | Bright AI",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/sectors/logistics-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e3",
+          "title": "AI for Saudi Healthcare | Bright AI",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/sectors/healthcare-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722b9",
+          "title": "AI for Financial Services in Saudi Arabia | Bright AI",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/sectors/finance-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7235d",
+          "title": "AI for Energy Companies in Saudi Arabia | Bright AI",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/sectors/energy-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72328",
+          "title": "AI for Saudi E-Commerce | Bright AI",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/sectors/ecommerce-en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e9",
+          "title": "نافذة الدعم الفني الذكي | Bright AI",
+          "num": 2,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/interview/pages/support-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72306",
+          "title": "لوحة تحكم المسؤول - نظام التوظيف الذكي",
+          "num": 1,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/interview/pages/dashboard/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722f5",
+          "title": "حجز مواعيد الموارد البشرية - MAIS",
+          "num": 2,
+          "discovered": 1775001113584,
+          "source_url": "https://brightai.site/interview/pages/appointment/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72373",
+          "title": "Free AI Tools & Software for Teams | Bright AI",
+          "num": 3,
+          "discovered": 1774623371104,
+          "source_url": "https://brightai.site/en/tools/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722be",
+          "title": "Smart Medical Archive for Saudi Hospitals | Bright AI",
+          "num": 1,
+          "discovered": 1774623371104,
+          "source_url": "https://brightai.site/en/smart-medical-archive/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e8",
+          "title": "Docs Hub | Bright AI - Your Ultimate Guide to AI Tools",
+          "num": 0,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/en/docs/docs/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722e6",
+          "title": "AI Workflows for Saudi Businesses | Bright AI",
+          "num": 1,
+          "discovered": 1774623371104,
+          "source_url": "https://brightai.site/en/ai-workflows/index.html"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72302",
+          "title": "Bright AI | AI Solutions Company in Saudi Arabia",
+          "num": 1,
+          "discovered": 1774993043334,
+          "source_url": "https://brightai.site/en/"
+        }
+      ]
+    },
+    {
+      "issue_id": 223,
+      "name": "مشاكل برمجية (JavaScript Issues)",
+      "severity": "notices",
+      "total": 16,
+      "urls": [
+        {
+          "page_id": "69cc62fa1e98e42ebcf7236f",
+          "title": "مراقبة جودة البيانات والمنتجات | Bright AI Enterprise",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/try/data-quality/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72302",
+          "title": "Bright AI | AI Solutions Company in Saudi Arabia",
+          "num": 0,
+          "discovered": 1774993043334,
+          "info": {
+            "integrations": {
+              "contentAudit": true
+            },
+            "errors": [
+              {
+                "errorType": 3
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/en/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72300",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية |",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-tourism-ai-guide/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7235b",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية |",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-sports-analytics-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf7232c",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في العقارات السعودية |",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-real-estate-ai-valuation/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72368",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في البتروكيماويات",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-petrochemical-ai-safety/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72357",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التعدين السعودي | كنز",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-mining-ai-exploration/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72376",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الصناعة السعودية |",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72335",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في اللوجستيات السعودية |",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-logistics-route-optimization/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722d5",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التأمين السعودي | كشف",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-insurance-claims-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72378",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التجارة الإلكترونية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-ecommerce-ai-growth/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72365",
+          "title": "دراسة حالة شاملة: الذكاء الاصطناعي في جودة التمور السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-dates-quality-ai/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72379",
+          "title": "دراسة حالة شاملة: الزراعة الذكية في السعودية | توفير المياه",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/saudi-agritech-smart-farming/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722c2",
+          "title": "كيف تُحدث حلول الذكاء الاصطناعي المبتكرة تحولًا في الأعمال",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/ai-transformation/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf72374",
+          "title": "وكيل الذكاء الاصطناعي للشركات | Bright AI السعودية",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/blog/ai-agent/"
+        },
+        {
+          "page_id": "69cc62fa1e98e42ebcf722da",
+          "title": "المنصة التعليمية الذكية | Bright AI",
+          "num": 0,
+          "discovered": 1775001113584,
+          "info": {
+            "integrations": {
+              "contentAudit": false
+            },
+            "errors": [
+              {
+                "errorType": 1
+              }
+            ]
+          },
+          "source_url": "https://brightai.site/ai-scolecs/"
+        }
+      ]
+    }
+  ],
+  "fetched_at": "2026-04-01T04:03:27.334168"
+}

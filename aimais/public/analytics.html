@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+<link rel="preconnect" href="https://www.googletagmanager.com" />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+<link rel="preconnect" href="https://js.sentry-cdn.com" crossorigin />
+<link rel="dns-prefetch" href="https://js.sentry-cdn.com" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <link rel="canonical" href="https://brightai.site/aimais/public/analytics" />
+    <title>Analytics — AIMAIS</title>
+    <meta
+      name="description"
+      content="Item-level rejection analysis across the manufacturing timeline with anomaly detection and loss ranking."
+    />
+    <meta name="theme-color" content="#050b11" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+</head>
+  <body data-page="analytics">
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+    <header class="mobile-topbar">
+      <a class="mobile-brand" href="/">
+        <div class="mobile-brand-icon">
+          <svg width="14" height="14" viewBox="0 0 18 18"
+               fill="none">
+            <path d="M2 9L9 2L16 9L9 16L2 9Z"
+                  fill="none"
+                  stroke="url(#mg)" stroke-width="1.5"
+                  stroke-linejoin="round"/>
+            <circle cx="9" cy="9" r="2.5"
+                    fill="url(#mg)"/>
+            <defs>
+              <linearGradient id="mg" x1="2" y1="2"
+                              x2="16" y2="16"
+                              gradientUnits="userSpaceOnUse">
+                <stop stop-color="#3ecf8e"/>
+                <stop offset="1" stop-color="#5b9cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="mobile-brand-name">AIMAIS</span>
+      </a>
+      <span class="mobile-page-title" id="mobile-page-title">
+      </span>
+      <button class="hamburger-btn"
+              id="hamburger-btn"
+              aria-label="Open navigation"
+              aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/">
+          <div class="brand-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 9L9 2L16 9L9 16L2 9Z"
+                    fill="none"
+                    stroke="url(#bg)" stroke-width="1.5"
+                    stroke-linejoin="round"/>
+              <circle cx="9" cy="9" r="2.5" fill="url(#bg)"/>
+              <defs>
+                <linearGradient id="bg" x1="2" y1="2"
+                                x2="16" y2="16"
+                                gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#3ecf8e"/>
+                  <stop offset="1" stop-color="#5b9cf6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <strong class="brand-name">AIMAIS</strong>
+            <span class="brand-sub">Quality Intelligence</span>
+          </div>
+        </a>
+
+        <nav class="nav">
+          <a href="/" data-nav="dashboard">Dashboard</a>
+          <a href="/analytics" data-nav="analytics">Analytics</a>
+          <a href="/operations" data-nav="operations">Operations</a>
+          <a href="/plans" data-nav="plans">Plans</a>
+          <a href="/copilot" data-nav="copilot">AI Copilot</a>
+          <a href="/reports" data-nav="reports">Reports</a>
+          <a href="/scorecard" data-nav="scorecard">Scorecard</a>
+          <a href="/executive"
+             data-nav="executive"
+             style="border-color:rgba(62,207,142,0.2);
+                    color:var(--accent)">
+            Executive View
+          </a>
+        </nav>
+
+        <section class="sidebar-card">
+          <p class="eyebrow">AI STATUS</p>
+          <div id="ai-status" class="status-pill">Checking AI...</div>
+          <p id="human-headline" class="sidebar-copy"></p>
+        </section>
+
+        <section class="sidebar-card">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">ACTIVE TASKS</p>
+              <h2>Open work</h2>
+            </div>
+            <a class="panel-link" href="/operations">All tasks</a>
+          </div>
+          <div id="sidebar-tasks-preview" class="stack-list"></div>
+        </section>
+
+        <section class="sidebar-card">
+          <p class="eyebrow">VIEWING AS</p>
+          <div class="role-switcher" id="role-switcher"></div>
+        </section>
+      </aside>
+
+      <div class="app-main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">REJECTION INTELLIGENCE</p>
+            <h1>Find the signal. Explain the pattern.</h1>
+            <p class="lead">
+              Item code by date. One question: where is the pressure right now?
+            </p>
+          </div>
+          <div id="topbar-period" class="period-chip">Loading period...</div>
+          <div class="search-wrap">
+            <input type="text" id="global-search"
+                   class="global-search-input"
+                   placeholder="Search item codes, periods, tasks..."
+                   autocomplete="off" />
+            <div id="search-results"
+                 class="search-results-dropdown hidden"></div>
+          </div>
+        </header>
+
+        <main class="page-grid">
+          <section class="dual-grid analytics-top-grid">
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">DATA SOURCE</p>
+                  <h2>Import rejection data</h2>
+                </div>
+              </div>
+              <div id="bundled-source" class="data-source-card"></div>
+              <form id="import-form" class="stack-form" data-role-hide="manager supervisor">
+                <label class="sr-only" for="analytics-excel-file">Upload rejection workbook</label>
+                <input id="analytics-excel-file" name="excelFile" type="file" accept=".xlsx" required />
+                <div class="import-actions">
+                  <button type="submit" data-import-action="upload">Upload and refresh analytics</button>
+                  <button type="button" class="ghost-btn" id="bundled-import-button">Use project workbook</button>
+                </div>
+              </form>
+              <div id="import-status" class="inline-status" data-role-hide="manager supervisor">No data imported yet.</div>
+              <section class="import-history-panel" data-role-hide="manager supervisor">
+                <button type="button" id="import-history-toggle" class="ghost-btn import-history-toggle">
+                  Import History — <span id="import-history-count">0</span> files imported
+                </button>
+                <div id="import-history-content" class="import-history-content hidden"></div>
+              </section>
+            </article>
+
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">AI TOOLS</p>
+                  <h2>Ask the harder questions</h2>
+                </div>
+              </div>
+              <div id="analytics-ai-tools" class="tool-grid"></div>
+            </article>
+          </section>
+
+          <section class="panel full-span recent-window-panel">
+            <div class="section-heading recent-window-heading">
+              <div>
+                <p class="eyebrow">LAST 15 DAYS</p>
+                <h2>Real rejection pulse before the timeline</h2>
+                <p class="section-subtitle">
+                  Live rows from the latest 15 days in the workbook, with each
+                  <span class="mono">Reject %</span> compared against a real trailing 3-month baseline.
+                </p>
+              </div>
+              <div id="recent-window-meta" class="period-chip">Loading window...</div>
+            </div>
+            <div id="recent-window-summary" class="recent-window-summary"></div>
+            <div id="recent-window-table" class="table-wrap recent-window-table"></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">TIMELINE</p>
+                <h2>Monthly at a glance</h2>
+              </div>
+            </div>
+            <div id="month-strip" class="month-strip"></div>
+          </section>
+
+          <section id="period-insights" class="metric-grid"></section>
+
+          <section class="panel chart-panel full-span">
+            <div class="section-heading analytics-trend-heading">
+              <div>
+                  <p class="eyebrow">REJECT RATE TREND</p>
+                  <h2>Overall reject rate — month by month</h2>
+              </div>
+              <div id="analytics-trend-toggle" class="chart-view-toggle" aria-label="Period view toggle">
+                <button type="button" class="chart-toggle-btn active" data-period-view="monthly" aria-pressed="true">Monthly</button>
+                <button type="button" class="chart-toggle-btn" data-period-view="weekly" aria-pressed="false">Weekly</button>
+              </div>
+            </div>
+            <div id="analytics-trend-view" class="analytics-trend-view is-monthly">
+              <div class="chart-view-panel chart-view-panel-active" data-chart-view-panel="monthly">
+                <div id="monthly-chart" class="chart-surface wide"></div>
+              </div>
+              <div class="chart-view-panel" data-chart-view-panel="weekly">
+                <div id="weekly-chart" class="chart-surface wide"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="dual-grid analytics-middle-grid">
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">TOP ITEMS</p>
+                  <h2>Highest reject rate</h2>
+                </div>
+              </div>
+              <div class="chart-canvas-wrap tall">
+                <canvas id="top-products-chart" aria-label="Top product reject percentage chart"></canvas>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">WEEKLY</p>
+                  <h2>Last 8 weeks</h2>
+                </div>
+              </div>
+              <div id="week-strip" class="week-strip"></div>
+            </article>
+          </section>
+
+          <section class="panel chart-panel full-span" data-role-hide="supervisor">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">PARETO</p>
+                <h2>What drives 80% of rejections</h2>
+              </div>
+            </div>
+            <div class="chart-canvas-wrap tall">
+              <canvas id="pareto-chart" aria-label="Pareto chart for rejected quantity by product"></canvas>
+            </div>
+            <p id="pareto-callout" class="chart-callout">Loading Pareto cutoff...</p>
+          </section>
+
+          <section class="dual-grid">
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">THRESHOLD</p>
+                  <h2>Items above 5% reject rate</h2>
+                  <p class="section-subtitle">
+                    Sorted by reject rate — highest first.
+                  </p>
+                </div>
+              </div>
+              <div id="alerts-table" class="table-wrap"></div>
+            </article>
+
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">VOLUME LOSS</p>
+                  <h2>Top items by rejected quantity</h2>
+                </div>
+              </div>
+              <div id="loss-list" class="stack-list"></div>
+            </article>
+          </section>
+
+          <section class="panel full-span" data-role-hide="supervisor">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">ALL ITEMS</p>
+                <h2>Ranked by average reject rate</h2>
+              </div>
+            </div>
+            <p class="lead">
+              Items with avg reject rate above 3%, all time.
+            </p>
+            <div class="table-wrap" id="items-by-pct-table"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

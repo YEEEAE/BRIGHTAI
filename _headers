@@ -1,0 +1,91 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src 'self' https://brightai-92px.onrender.com https://*.sentry.io https://www.google-analytics.com; frame-ancestors 'none'
+  Cache-Control: public, max-age=300, s-maxage=300
+
+/*.html
+  Cache-Control: public, max-age=300, s-maxage=300
+
+/**/*.html
+  Cache-Control: public, max-age=300, s-maxage=300
+
+/tenders/dashboard
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/tenders/dashboard/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/tenders/dashboard.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+/en/tenders/dashboard
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/en/tenders/dashboard/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/en/tenders/dashboard.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/interview/pages/admin
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/interview/pages/admin/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/interview/pages/admin.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/interview/pages/Visitor-registration
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/interview/pages/Visitor-registration/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/interview/pages/Visitor-registration/index.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/**/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/**/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=2592000
+
+/**/*.png
+  Cache-Control: public, max-age=2592000
+
+/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/**/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/*.jpeg
+  Cache-Control: public, max-age=2592000
+
+/**/*.jpeg
+  Cache-Control: public, max-age=2592000
+
+/*.webp
+  Cache-Control: public, max-age=2592000
+
+/**/*.webp
+  Cache-Control: public, max-age=2592000
+
+/*.svg
+  Cache-Control: public, max-age=2592000
+
+/**/*.svg
+  Cache-Control: public, max-age=2592000

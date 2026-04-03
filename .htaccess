@@ -1,0 +1,10 @@
+# ARCHIVED FILE (NOT USED IN PRODUCTION)
+#
+# Production provider is Render.
+# Source of truth for routing/security/caching:
+#   /render.yaml
+#
+# Legacy Apache rules were moved to:
+#   /docs/deployment-archive/.htaccess.legacy
+#
+# This file is kept for documentation history only.

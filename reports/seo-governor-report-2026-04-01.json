@@ -1,0 +1,2139 @@
+{
+  "before": {
+    "scanned": 270,
+    "eligible": 267,
+    "skipped": 3,
+    "skippedFiles": [
+      ".venv/lib/python3.14/site-packages/setuptools/tests/indexes/test_links_priority/external.html",
+      ".venv/lib/python3.14/site-packages/setuptools/tests/indexes/test_links_priority/simple/foobar/index.html",
+      "frontend/pages/partials/new_index_part.html"
+    ],
+    "affected": 141,
+    "missingCounts": {
+      "title": 0,
+      "description": 0,
+      "canonical": 26,
+      "h1": 0,
+      "hreflang": 132,
+      "verificationPlaceholder": 0,
+      "onrenderReference": 9,
+      "redirectSignals": 18,
+      "badPublicSlug": 6
+    },
+    "failingFiles": [
+      {
+        "file": "ai-scolecs/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/agint-bblog.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-agent.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-energy-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-finance-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-generative-content-industry-saudi-arabia.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-guide-saudi-business.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-healthcare-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-implementation-cost-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-innovation-saudi-arabia.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-transformation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/analysy.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/atou-job.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/auto.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/automation/hr-automation-saudi/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/big-data-analysis.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/business-intelligence-data-analysis.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/business-intelligence-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/case-study-saudi-companies-ai-agents-customer-service.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/chatgpt-vs-claude-vs-gemini-arabic.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/choose-ai-company-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/cloude-opus-4.6.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/commerce-ministry-chatbot.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/data-analytics/kpi-dashboard-guide/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/data-analytics/power-bi-saudi-guide/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/digital-banking-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/digital-health-smart-archive.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/digital.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/future-of-intelligent-data-analysis-finance-sector.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/generative-artificial-intelligence/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/gov.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/hr-automation-case-study.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/intelligent-data-analysis.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/kfshrc-breast-cancer-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ksu-adaptive-learning.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/nca-ai-compliance-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/nca-compliance.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/private-hospital-scheduling-optimization.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/process-automation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/riyadh-municipality-ai-license.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-agritech-smart-farming.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-bank-fraud-detection.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-dates-quality-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-ecommerce-ai-growth.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-edtech-personalized-learning.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-energy-predictive-maintenance.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-factory-ai-productivity.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-hospitality-dynamic-pricing.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-insurance-claims-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-logistics-route-optimization.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-manufacturing-predictive-maintenance.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-mining-ai-exploration.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-petrochemical-ai-safety.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-real-estate-ai-valuation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-renewable-energy-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-smart-city-traffic.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-sports-analytics-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-tourism-ai-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-waste-management-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-automation-benefits.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-crm-system.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-document-processing.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-inventory-management.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/top-ai-tools-saudi-2025.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/transport-logistics-solutions.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/vision-2030-ai-opportunities.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/الذكاء-الاصطناعي-و-التسويق.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الذكاء-الاصطناعي-و-التسويق/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/تحليل-البيانات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/تحليل-البيانات/' should be 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/تعلم-الآلة-و-الأعمال.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' should be 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/مقال-تحليل.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/مقال-تحليل/' should be 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "brightai-platform/public/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/ocr-demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/resources/report-ai-saudi-2026/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "docs.html",
+        "issues": [
+          "Missing hreflang en-US"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy-en.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions-en.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "en/docs/docs.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/docs/docs/' should be 'https://brightai.site/en/docs/docs'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "en/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "en/tenders/compare.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/compare/' should be 'https://brightai.site/en/tenders/compare'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/dashboard.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/dashboard/' should be 'https://brightai.site/en/tenders/dashboard'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/landing.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/landing/' should be 'https://brightai.site/en/tenders/landing'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/reports.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/reports/' should be 'https://brightai.site/en/tenders/reports'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/settings.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/settings/' should be 'https://brightai.site/en/tenders/settings'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/templates.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/templates/' should be 'https://brightai.site/en/tenders/templates'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightMath/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightProject/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightSales/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightSupport/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-scolecs/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-workflows/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blog/automation/hr-automation-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blog/data-analytics/kpi-dashboard-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blog/data-analytics/power-bi-saudi-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightMath.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightMath' should be 'https://brightai.site/ai-bots/BrightMath/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightProject.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightProject' should be 'https://brightai.site/ai-bots/BrightProject/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightRecruiter.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightRecruiter' should be 'https://brightai.site/ai-bots/BrightRecruiter/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightSales.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightSales' should be 'https://brightai.site/ai-bots/BrightSales/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightSupport.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightSupport' should be 'https://brightai.site/ai-bots/BrightSupport/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/ocr-demo/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/pricing/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/resources/report-ai-saudi-2026/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/appointment/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/support-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/supportAI.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/interview/pages/support-ai' should be 'https://brightai.site/interview/pages/supportAI/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/Presentation.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/interview' should be 'https://brightai.site/interview/Presentation/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "frontend/pages/sitemap/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/terms/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/data-analyzer/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/data-quality/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/text-analysis/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "interview/pages/appointment/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/support-ai/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/supportAI/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/interview/pages/support-ai/' should be 'https://brightai.site/interview/pages/supportAI/'"
+        ]
+      },
+      {
+        "file": "interview/pages/Visitor-registration/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "privacy-cookies/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "sitemap/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "tenders/compare.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/dashboard.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/index 2.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/tenders/index 2/' should be 'https://brightai.site/tenders/index%202/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "tenders/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "tenders/landing.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/reports.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/settings.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/templates.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "terms/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      }
+    ]
+  },
+  "after": {
+    "scanned": 270,
+    "eligible": 267,
+    "skipped": 3,
+    "skippedFiles": [
+      ".venv/lib/python3.14/site-packages/setuptools/tests/indexes/test_links_priority/external.html",
+      ".venv/lib/python3.14/site-packages/setuptools/tests/indexes/test_links_priority/simple/foobar/index.html",
+      "frontend/pages/partials/new_index_part.html"
+    ],
+    "affected": 141,
+    "missingCounts": {
+      "title": 0,
+      "description": 0,
+      "canonical": 26,
+      "h1": 0,
+      "hreflang": 132,
+      "verificationPlaceholder": 0,
+      "onrenderReference": 9,
+      "redirectSignals": 18,
+      "badPublicSlug": 6
+    },
+    "failingFiles": [
+      {
+        "file": "ai-scolecs/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/agint-bblog.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-agent.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-energy-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-finance-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-generative-content-industry-saudi-arabia.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-guide-saudi-business.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-healthcare-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-implementation-cost-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-innovation-saudi-arabia.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai-transformation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/analysy.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/atou-job.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/auto.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/automation/hr-automation-saudi/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/big-data-analysis.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/business-intelligence-data-analysis.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/business-intelligence-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/case-study-saudi-companies-ai-agents-customer-service.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/chatgpt-vs-claude-vs-gemini-arabic.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/choose-ai-company-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/cloude-opus-4.6.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/commerce-ministry-chatbot.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/data-analytics/kpi-dashboard-guide/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/data-analytics/power-bi-saudi-guide/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/digital-banking-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/digital-health-smart-archive.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/digital.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/future-of-intelligent-data-analysis-finance-sector.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/generative-artificial-intelligence/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/gov.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/hr-automation-case-study.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/intelligent-data-analysis.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/kfshrc-breast-cancer-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/ksu-adaptive-learning.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/nca-ai-compliance-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/nca-compliance.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/private-hospital-scheduling-optimization.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/process-automation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/riyadh-municipality-ai-license.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-agritech-smart-farming.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-bank-fraud-detection.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-dates-quality-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-ecommerce-ai-growth.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-edtech-personalized-learning.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-energy-predictive-maintenance.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-factory-ai-productivity.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-hospitality-dynamic-pricing.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-insurance-claims-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-logistics-route-optimization.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-manufacturing-predictive-maintenance.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-mining-ai-exploration.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-petrochemical-ai-safety.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-real-estate-ai-valuation.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-renewable-energy-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-smart-city-traffic.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-sports-analytics-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-tourism-ai-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/saudi-waste-management-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-automation-benefits.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-crm-system.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-document-processing.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/smart-inventory-management.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/top-ai-tools-saudi-2025.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/transport-logistics-solutions.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/vision-2030-ai-opportunities.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/الذكاء-الاصطناعي-و-التسويق.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الذكاء-الاصطناعي-و-التسويق/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/تحليل-البيانات.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/تحليل-البيانات/' should be 'https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/تعلم-الآلة-و-الأعمال.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' should be 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "blog/مقال-تحليل.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/مقال-تحليل/' should be 'https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "brightai-platform/public/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/ocr-demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/resources/report-ai-saudi-2026/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "docs.html",
+        "issues": [
+          "Missing hreflang en-US"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy-en.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions-en.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "en/docs/docs.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/docs/docs/' should be 'https://brightai.site/en/docs/docs'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "en/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "en/tenders/compare.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/compare/' should be 'https://brightai.site/en/tenders/compare'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/dashboard.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/dashboard/' should be 'https://brightai.site/en/tenders/dashboard'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/landing.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/landing/' should be 'https://brightai.site/en/tenders/landing'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/reports.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/reports/' should be 'https://brightai.site/en/tenders/reports'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/settings.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/settings/' should be 'https://brightai.site/en/tenders/settings'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/templates.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/templates/' should be 'https://brightai.site/en/tenders/templates'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightMath/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightProject/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightSales/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-bots/BrightSupport/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-scolecs/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/ai-workflows/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blog/automation/hr-automation-saudi.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blog/data-analytics/kpi-dashboard-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/blog/data-analytics/power-bi-saudi-guide.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightMath.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightMath' should be 'https://brightai.site/ai-bots/BrightMath/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightProject.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightProject' should be 'https://brightai.site/ai-bots/BrightProject/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightRecruiter.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightRecruiter' should be 'https://brightai.site/ai-bots/BrightRecruiter/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightSales.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightSales' should be 'https://brightai.site/ai-bots/BrightSales/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/botAI/BrightSupport.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/ai-bots/BrightSupport' should be 'https://brightai.site/ai-bots/BrightSupport/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/ocr-demo/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/pricing/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/demo/resources/report-ai-saudi-2026/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/appointment/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/support-ai.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/pages/supportAI.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/interview/pages/support-ai' should be 'https://brightai.site/interview/pages/supportAI/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "frontend/pages/interview/Presentation.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/interview' should be 'https://brightai.site/interview/Presentation/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "frontend/pages/sitemap/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/terms/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/data-analyzer/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/data-quality/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "frontend/pages/try/text-analysis/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "interview/pages/appointment/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/support-ai/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/supportAI/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/interview/pages/support-ai/' should be 'https://brightai.site/interview/pages/supportAI/'"
+        ]
+      },
+      {
+        "file": "interview/pages/Visitor-registration/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "privacy-cookies/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "sitemap/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "tenders/compare.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/dashboard.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/index 2.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/tenders/index 2/' should be 'https://brightai.site/tenders/index%202/'",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default",
+          "Indexable page uses a weak or badly encoded public slug"
+        ]
+      },
+      {
+        "file": "tenders/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "tenders/landing.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/reports.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/settings.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/templates.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "terms/index.html",
+        "issues": [
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      }
+    ]
+  },
+  "fixedFiles": []
+}

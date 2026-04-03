@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar-SA">
+
+<head>
+<meta name="twitter:site" content="@BrightAI_SA" />
+<link rel="preconnect" href="https://www.googletagmanager.com" />
+<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+<link rel="preconnect" href="https://js.sentry-cdn.com" crossorigin />
+<link rel="dns-prefetch" href="https://js.sentry-cdn.com" />
+
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<link rel="canonical" href="https://brightai.site/blog/smart-inventory-management/" />
+<meta property="og:url" content="https://brightai.site/blog/smart-inventory-management/" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
+<meta property="og:title" content="إدارة المخزون الذكية بالذكاء الاصطناعي | Bright AI" />
+<meta property="og:description" content="حلول إدارة المخزون الذكية بالذكاء الاصطناعي. التنبؤ بالطلب وتحسين سلسلة الإمداد." />
+<meta property="og:image" content="https://brightai.site/assets/images/Gemini.png" />
+<meta property="og:image:alt" content="Bright AI حلول الذكاء الاصطناعي المؤسسية في السعودية" />
+<meta property="og:locale" content="ar_SA" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="إدارة المخزون الذكية بالذكاء الاصطناعي | Bright AI" />
+<meta name="twitter:description" content="حلول إدارة المخزون الذكية بالذكاء الاصطناعي. التنبؤ بالطلب وتحسين سلسلة الإمداد." />
+<meta name="twitter:image" content="https://brightai.site/assets/images/Gemini.png" />
+<meta name="twitter:image:alt" content="Bright AI حلول الذكاء الاصطناعي المؤسسية في السعودية" />
+<link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml" />
+<script src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js" crossorigin="anonymous" defer></script>
+
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "voq2kb6voe");
+    </script>
+
+    <script src="/frontend/js/sentry-init.js" defer></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-8LLESL207Q');
+    </script>
+
+    <meta charset="utf-8" />
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="theme-color" content="#0b1020">
+    <title>إدارة المخزون الذكية بالذكاء الاصطناعي | Bright AI</title>
+    <meta name="description"
+        content="حلول إدارة المخزون الذكية بالذكاء الاصطناعي. التنبؤ بالطلب وتحسين سلسلة الإمداد." />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="إدارة المخزون الذكية, Supply Chain السعودية, التنبؤ بالطلب, سلسلة الإمداد, AI Inventory"
+        name="keywords" />
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap"
+        rel="stylesheet" />
+
+    <link as="style" href="/frontend/css/main.bundle.css" onload="this.onload=null;this.rel='stylesheet'"
+        rel="preload" /><noscript>
+        <link href="/frontend/css/main.bundle.css" rel="stylesheet" />
+    </noscript>
+    <link href="/frontend/css/bundle-critical.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .blog-content p,
+        .blog-content li {
+            color: #374151;
+        }
+
+        /* Ensure text visibility */
+    </style>
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "مخزونذكيوفعال",
+  "description": "حلول إدارة المخزون الذكية بالذكاء الاصطناعي. التنبؤ بالطلب وتحسين سلسلة الإمداد.",
+  "image": "https://brightai.site/assets/images/Gemini.png",
+  "url": "https://brightai.site/blog/smart-inventory-management/",
+  "datePublished": "2025-01-01T08:00:00+03:00",
+  "dateModified": "2026-02-21T19:48:36+03:00",
+  "author": {
+    "@type": "Organization",
+    "name": "Bright AI",
+    "url": "https://brightai.site/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://brightai.site/#organization",
+    "name": "Bright AI",
+    "url": "https://brightai.site/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://brightai.site/assets/images/Gemini.png"
+    }
+  },
+  "mainEntityOfPage": "https://brightai.site/blog/smart-inventory-management/",
+  "wordCount": 255,
+  "inLanguage": "ar",
+  "@id": "https://brightai.site/blog/smart-inventory-management/#article"
+}
+</script>
+    <link href="/frontend/css/tailwind.local.min.css" rel="stylesheet" />
+    <script defer="" src="/frontend/js/iconify-preload.js"></script>
+    <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
+
+    <style id="critical-css">
+        .unified-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .hero-section {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-section h1 {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+
+        .hero-section p {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
+        }
+    </style>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "مخزونذكيوفعال",
+  "author": {
+    "@type": "Organization",
+    "name": "Bright AI",
+    "url": "https://brightai.site/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://brightai.site/#organization",
+    "name": "Bright AI",
+    "url": "https://brightai.site/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://brightai.site/assets/images/Gemini.png"
+    }
+  },
+  "datePublished": "2025-01-01T08:00:00+03:00",
+  "dateModified": "2026-02-21T19:48:36+03:00",
+  "image": "https://brightai.site/assets/images/Gemini.png",
+  "wordCount": 255,
+  "articleSection": "الذكاء الاصطناعي وتحليل البيانات والأتمتة",
+  "inLanguage": "ar",
+  "url": "https://brightai.site/blog/smart-inventory-management/",
+  "mainEntityOfPage": "https://brightai.site/blog/smart-inventory-management/",
+  "@id": "https://brightai.site/blog/smart-inventory-management/#article",
+  "description": "حلول إدارة المخزون الذكية بالذكاء الاصطناعي. التنبؤ بالطلب وتحسين سلسلة الإمداد."
+}
+</script>
+    
+
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
+    <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+    <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
+    <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "https://brightai.site/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "المدونة",
+      "item": "https://brightai.site/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "إدارة المخزون الذكية بالذكاء الاصطناعي",
+      "item": "https://brightai.site/blog/smart-inventory-management/"
+    }
+  ]
+}
+</script>
+</head>
+
+<body class="bg-slate-50 text-slate-900">
+
+    <header class="unified-nav" id="main-header" role="banner">
+        <div class="nav-container">
+
+            <div class="flex-shrink-0">
+                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/"
+                    title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+                    <div
+                        class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+                        <span class="text-white font-black text-lg tracking-tighter">AI</span>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span
+                            class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span
+                                class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+                        <span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="nav-desktop" style="contain: layout;">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">الرئيسية</a>
+                    </li>
+
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+    href="/tenders/landing/">
+    <div class="flex items-center gap-3">
+        <div
+            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+            <iconify-icon icon="lucide:file-search" width="18"></iconify-icon>
+        </div>
+        <div>
+            <div
+                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                نظام تحليل العقود والمناقصات</div>
+            <div class="text-xs text-slate-400">ContractAI للعقود والاعتمادات</div>
+        </div>
+    </div>
+</a>
+
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/services/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+                                            <iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-automation/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+                                            <iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-agent/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+                                            <iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/contact/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+                                            <iconify-icon icon="lucide:users" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/data-analysis/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+                                            <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/smart-medical-archive/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+                                            <iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/interview/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+                                            <iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/ai-scolecs/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+                                            <iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/health/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+                                            <iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div
+                                                class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                حلول AI الطبية المتقدمة</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item group/dropdown relative">
+                        <button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60"
+                                icon="lucide:chevron-down"></iconify-icon>
+                        </button>
+                        <div
+                            class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+                            <div class="p-2 space-y-1">
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/about/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+                                            <iconify-icon icon="lucide:info" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/docs/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+                                            <iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+                                    </div>
+                                </a>
+                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
+                                    href="/blog/">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+                                            <iconify-icon icon="lucide:library" width="18"></iconify-icon>
+                                        </div>
+                                        <div
+                                            class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+
+                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+                    <iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors"
+                        icon="lucide:search"></iconify-icon>
+                    <span class="text-[13px] font-medium">بحث...</span>
+                    <kbd class="search-kbd">⌘K</kbd>
+                </button>
+
+                <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+                    <iconify-icon icon="lucide:search" width="18"></iconify-icon>
+                </button>
+
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
+                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank"
+                    title="تواصل معنا عبر الواتساب">
+                    <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+
+                <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mobile-menu-drawer" id="mobileDrawer">
+        <div class="flex flex-col h-full bai-inline-0001">
+
+            <div class="flex items-center justify-between mb-8 pb-6"
+                style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <div class="flex items-center gap-2.5">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <span class="text-white font-black text-sm">AI</span>
+                    </div>
+                    <span class="text-base font-bold text-white">القائمة</span>
+                </div>
+                <button aria-label="إغلاق القائمة"
+                    class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+                    <iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+                </button>
+            </div>
+
+            <ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/">
+                        <iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+    href="/tenders/landing/">
+    <iconify-icon class="text-slate-600" icon="lucide:file-search" width="15"></iconify-icon>
+    نظام تحليل العقود والمناقصات
+</a>
+
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/services/">
+                            <iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/smart-automation/">
+                            <iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/ai-agent/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/data-analysis/">
+                            <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
+                            href="/contact/">
+                            <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0003">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/smart-medical-archive/">
+                            <iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/interview/">
+                            <iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/ai-scolecs/">
+                            <iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all"
+                            href="/health/">
+                            <iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            حلول AI الطبية المتقدمة
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
+                        href="/blog/">
+                        <iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+                </li>
+                <li>
+                    <a aria-expanded="false" aria-haspopup="true"
+                        class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer"
+                        href="#">
+                        <span class="flex items-center gap-3">
+                            <iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+                        <iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+                    </a>
+                    <div class="mobile-dropdown mt-1 mr-6 bai-inline-0004">
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/about/">
+                            <iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/docs/">
+                            <iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+                        <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all"
+                            href="/blog/">
+                            <iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
+                        href="/contact/">
+                        <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
+                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                    <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+                <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
+                    href="/try/">
+                    <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
+
+    <div class="floating-share">
+        <a aria-label="Share on Twitter" class="share-btn twitter" href="#"
+            onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&amp;url=' + encodeURIComponent(window.location.href), '_blank'); return false;">
+            <iconify-icon icon="lucide:twitter" width="20"></iconify-icon>
+        </a>
+        <a aria-label="Share on LinkedIn" class="share-btn linkedin" href="#"
+            onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank'); return false;">
+            <iconify-icon icon="lucide:linkedin" width="20"></iconify-icon>
+        </a>
+        <a aria-label="Share on WhatsApp" class="share-btn whatsapp" href="#"
+            onclick="window.open('https://wa.me/?text=' + encodeURIComponent(document.title + ' ' + window.location.href), '_blank'); return false;">
+            <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
+        </a>
+    </div>
+
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar" id="readingProgress"></div>
+    </div>
+
+    <div class="blog-page-wrapper">
+        <div class="blog-container">
+            <article class="blog-card" data-aos="fade-up">
+                <header class="blog-header">
+                    <nav aria-label="breadcrumb" class="breadcrumb text-sm text-slate-500 mb-4">
+                        <ol class="flex flex-wrap gap-x-2 gap-y-1 items-center">
+                            <li><a class="hover:text-purple-600 transition" href="/">الرئيسية</a></li>
+                            <li><span class="mx-2">&gt;</span></li>
+                            <li><a class="hover:text-purple-600 transition" href="/blog/">المكتبة الذكية</a></li>
+                            <li><span class="mx-2">&gt;</span></li>
+                            <li aria-current="page" class="text-slate-800 font-medium">مخزون ذكي وفعال</li>
+                        </ol>
+                    </nav>
+                    <h1 class="blog-title">مخزون <span class="gradient-text">ذكي</span> وفعال</h1>
+                    <div class="blog-meta">
+                        <div class="blog-meta-item">
+                            <iconify-icon icon="lucide:calendar"></iconify-icon>
+                            <span>تحديث جديد</span>
+                        </div>
+                    </div>
+                </header>
+                <div class="blog-content">
+
+
+
+                    <main class="max-w-6xl mx-auto px-6 pb-20">
+                        <article class="glass-card p-8 md:p-12 mb-12" style="content-visibility: auto;">
+                            <div class="prose prose-lg prose-slate max-w-none text-slate-300">
+                                <h2 class="text-3xl font-bold text-white mb-8 border-b border-indigo-500/30 pb-4">إدارة
+                                    المخزون الذكية (Smart Inventory Management): التنبؤ والمزامنة بالذكاء الاصطناعي في
+                                    السوق السعودي</h2>
+
+                                <p class="text-lg leading-relaxed mb-6">
+                                    يواجه قطاع التجزئة والتصنيع وسلاسل الإمداد في المملكة العربية السعودية تحديات تتعاظم
+                                    يوماً بعد يوم، خاصة مع النمو الاقتصادي السريع المصاحب لبرامج رؤية 2030. من أكبر هذه
+                                    التحديات وأكثرها استنزافاً للأموال: <strong>إدارة المخزون بالطرق التقليدية المعتمدة
+                                        على الحدس أو الأكسيل التقديري.</strong> الشركات السعودية تخسر الملايين سنوياً في
+                                    إحدى حالتين: <strong>تكدس المخزون (Overstocking)</strong> الذي يجمد رأس المال
+                                    التشغيلي ويأكل مساحات المستودعات، أو <strong>نفاد المخزون (Stockouts)</strong> الذي
+                                    يؤدي لخسارة المبيعات وانتقال العملاء للمنافسين. الحل الجذري والنهائي الذي نقدمه في
+                                    <a class="text-emerald-400 font-bold hover:underline" data-auto-link="true"
+                                        href="/smart-automation/">Bright AI للأتمتة والذكاء الاصطناعي</a> هو الانتقال
+                                    الكلي إلى <strong>إدارة المخزون الذكية (Smart Inventory Management).</strong>
+                                </p>
+
+                                <h3 class="text-2xl font-bold text-lime-400 mt-10 mb-4">ما هو نظام إدارة المخزون الذكي
+                                    وكيف يختلف عن أنظمة الـ ERP؟</h3>
+                                <p class="leading-relaxed mb-4">
+                                    بينما تقف أنظمة الـ ERP (كمنصات أودو Odoo أو ساب SAP) كمسجل ممتاز للبيانات يخبرك
+                                    <strong>"بما حدث"</strong> و <strong>"بالموجود حالياً"</strong>، يذهب الذكاء
+                                    الاصطناعي أبعد من ذلك ليخبرك <strong>"بما سيحدث"</strong> و <strong>"بما يجب أن
+                                        تفعله الآن لتجنب الخسارة المرجحة"</strong>.
+                                </p>
+                                <p class="leading-relaxed mb-6">
+                                    نظام الذكي من Bright AI ليس بديلاً لنظام الـ ERP بل يعمل فوقه كعقل مفكر (AI Layer).
+                                    فهو يعتمد على خوارزميات التنبؤ بالطلب (Demand Forecasting Models) عبر تحليل سلاسل
+                                    البيانات الزمنية (Time-Series Analysis) ليقرأ حركة مبيعات سابقة، تأثير المواسم
+                                    (رمضان، الأعياد، مواسم العودة للمدارس في السعودية، الجمعة البيضاء)، بل وحتى تأثير
+                                    الطقس وحملاتك الإعلانية النشطة، ليقرر بدقة متناهية متى وأين وبكمية كم يجب أن تعيد
+                                    الطلب لكل منتج.
+                                </p>
+
+                                <div class="bg-indigo-900/10 border border-lime-500/20 p-6 rounded-xl my-8">
+                                    <h4 class="text-xl font-bold text-white mb-3">قدرات ومميزات نظام إدارة المخزون الذكي
+                                        (AI Inventory):</h4>
+                                    <ul class="space-y-4">
+                                        <li class="flex items-start gap-3">
+                                            <iconify-icon class="text-lime-400 mt-1"
+                                                icon="lucide:check-circle"></iconify-icon>
+                                            <div>
+                                                <strong class="text-white">التنبؤ التلقائي بالطلب (Demand
+                                                    Forecasting):</strong>
+                                                بدقة تتجاوز 90%، يقوم الذكاء الاصطناعي بتحليل الأنماط الشرائية للمستهلك
+                                                السعودي لكل منطقة (الرياض، جدة، الشرقية.. إلخ) وتوقع حجم المبيعات لكل
+                                                صنف (SKU) في الأشهر والأسابيع القادمة، مما يعني عدم شراء بضائع إضافية لن
+                                                تُباع.
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <iconify-icon class="text-lime-400 mt-1"
+                                                icon="lucide:check-circle"></iconify-icon>
+                                            <div>
+                                                <strong class="text-white">تحسين نقاط إعادة الطلب الديناميكية (Dynamic
+                                                    Reorder Points):</strong>
+                                                بدلاً من تحديد نقطة طلب ثابتة (مثلاً اطلب عندما يصل المخزون لـ 50 حبة)،
+                                                يغير الذكاء الاصطناعي هذه النقاط يومياً بناءً على سرعة البيع (Velocity)
+                                                وفترات التوريد من المصانع (Lead time)، ليضمن عدم توقف مبيعاتك لحظة
+                                                واحدة.
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <iconify-icon class="text-lime-400 mt-1"
+                                                icon="lucide:check-circle"></iconify-icon>
+                                            <div>
+                                                <strong class="text-white">التحويل التلقائي بين المستودعات (Smart
+                                                    Routing):</strong>
+                                                تخيل أن لديك فائضاً لمنتج في مستودع الدمام، ونقصاً حاداً ومبيعات عالية
+                                                له في مستودع الرياض. الخوارزمية ترصد هذا الخلل لحظياً وتقترح عليك نقل
+                                                المخزون داخلياً (Inventory Transfer) بدلاً من استيراد شحنة جديدة بأسابيع
+                                                تأخير.
+                                            </div>
+                                        </li>
+                                        <li class="flex items-start gap-3">
+                                            <iconify-icon class="text-lime-400 mt-1"
+                                                icon="lucide:check-circle"></iconify-icon>
+                                            <div>
+                                                <strong class="text-white">تكامل فوري وأتمتة شاملة للمشتريات:</strong>
+                                                لا يكتفي النظام بالتنبيه، بل يمكنه <strong>أتمتة أوامر الشراء (Automated
+                                                    POs)</strong> وإرسالها مباشرة لمورديك بناءً على عروض الأسعار المسجلة
+                                                في الـ ERP عند الحاجة. كل هذا مع توفير لوحات قياس (Dashboards) حية
+                                                وواقعية.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <h3 class="text-2xl font-bold text-lime-400 mt-10 mb-4">تأثير إدارة المخزون الذكية على
+                                    أرباح قطاع الأعمال</h3>
+                                <p class="leading-relaxed mb-6">
+                                    تمكين الذكاء الاصطناعي في المستودعات (Warehouses) وصالات العرض (Showrooms) يحقق
+                                    قفزات مذهلة في مؤشرات الأداء الرئيسية (KPIs) لمدراء العمليات والمدراء الماليين على
+                                    حد سواء. تشمل الفوائد:
+                                </p>
+
+                                <div class="grid md:grid-cols-3 gap-6 text-center mt-8 mb-10">
+                                    <div
+                                        class="p-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl flex flex-col items-center hover:border-lime-500/30 transition-all">
+                                        <div
+                                            class="w-16 h-16 rounded-full bg-lime-500/10 flex items-center justify-center mb-4">
+                                            <iconify-icon icon="lucide:trending-down"
+                                                class="text-3xl text-lime-400"></iconify-icon>
+                                        </div>
+                                        <div class="text-4xl font-black text-white mb-2 tracking-tight">30%+</div>
+                                        <h4 class="text-lg font-bold text-white mb-1">خفض تكاليف التخزين</h4>
+                                        <p class="text-sm text-slate-400 leading-snug">تقليص المساحات المطلوبة للمخزون
+                                            الراكد غير الاستراتيجي (Dead Stock) والإعفاء من مصاريف التأمين وحراسة
+                                            البضائع الميتة.</p>
+                                    </div>
+                                    <div
+                                        class="p-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl flex flex-col items-center hover:border-lime-500/30 transition-all">
+                                        <div
+                                            class="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mb-4">
+                                            <iconify-icon icon="lucide:shopping-cart"
+                                                class="text-3xl text-blue-400"></iconify-icon>
+                                        </div>
+                                        <div class="text-4xl font-black text-white mb-2 tracking-tight">90%</div>
+                                        <h4 class="text-lg font-bold text-white mb-1">تحجيم نفاد المخزون (Stockouts)
+                                        </h4>
+                                        <p class="text-sm text-slate-400 leading-snug">ضمان توفر المنتجات الأكثر مبيعاً
+                                            دائماً (A-Class Items)، ما ينعكس بشكل حتمي ومباشر على رفع المبيعات وتعزيز
+                                            رضا العميل.</p>
+                                    </div>
+                                    <div
+                                        class="p-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl flex flex-col items-center hover:border-lime-500/30 transition-all">
+                                        <div
+                                            class="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
+                                            <iconify-icon icon="lucide:activity"
+                                                class="text-3xl text-emerald-400"></iconify-icon>
+                                        </div>
+                                        <div class="text-4xl font-black text-white mb-2 tracking-tight">40%+</div>
+                                        <h4 class="text-lg font-bold text-white mb-1">رفع كفاءة التوريد ودوران السلع
+                                        </h4>
+                                        <p class="text-sm text-slate-400 leading-snug">تسريع معدل دوران المخزون
+                                            (Inventory Turnover Ratio)، ما يخلق سيولة مالية مستمرة ممتازة للشركة
+                                            لاستثمارها بمجالات أو فروع جديدة.</p>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-2xl font-bold text-lime-400 mt-10 mb-4">تكامل تقنيات المخزون الذكي مع
+                                    منصاتنا القائمة</h3>
+                                <p class="leading-relaxed mb-6">
+                                    ليست أنظمة إدارة المخزون لدينا منعزلة عن التقدم التقني العام في مؤسستك. يمكنك ربطها
+                                    وتعميق استفادتك عبر منظومتنا الشاملة. كمثال حي: أتمتة قراءة الفواتير وتوثيق أوامر
+                                    الاستلام يتم عن طريق <a class="text-lime-400 hover:underline hover:text-lime-300"
+                                        href="/blog/smart-document-processing/">انظمة المعالجة
+                                        الذكية للمستندات (OCR)</a> الخاصة بنا، بينما تعطي <a
+                                        class="text-lime-400 hover:underline hover:text-lime-300"
+                                        href="/docs/ai-bots/">روبوتات الدردشة (الـ AI Bots)</a> موظفيك وفرق عملك
+                                    وصولاً لحظياً لبيانات المنتجات المتوفرة عبر الواتساب في حال سؤال العملاء. كما ينعكس
+                                    هذا كلياً على الارتقاء بمفهوم إدارة علاقات العملاء ضمن <a
+                                        class="text-lime-400 hover:underline hover:text-lime-300"
+                                        href="/blog/smart-crm-system/">الـ CRM الذكي</a> لخدمة
+                                    قطاع المبيعات بأفضل السبل.
+                                </p>
+
+                                <h3 class="text-2xl font-bold text-lime-400 mt-10 mb-4">التطبيق الفعلي: إدارة مخزون قطاع
+                                    التجزئة والجملة في السعودية</h3>
+                                <p class="leading-relaxed mb-4">
+                                    تخيل حجم التحديات التي تواجه مورد جملة في الرياض يوزع لآلاف نقاط البيع، أو سلسلة
+                                    سوبرماركت كبرى تمتلك فروعاً ممتدة من جدة إلى الدمام. إدارة آلاف الأصناف (SKUs)
+                                    بالطرق اليدوية يجعل التسرب المالي حتمياً. تقنيات الذكاء الاصطناعي للمخزون من Bright
+                                    AI تتيح الآتي:
+                                </p>
+
+                                <h4 class="text-lg font-bold text-lime-200 mt-6 mb-2">1. الاستعداد الاستباقي للذروات
+                                    الموسمية (Peak Season Preparation)</h4>
+                                <p class="leading-relaxed mb-4">
+                                    تتميز السوق السعودية بمواسم بيعية حادة ومكثفة مثل موسم الحج، شهر رمضان المبارك،
+                                    والعودة للمدارس. النظام الذكي لا يعتمد فقط على مبيعات العام الماضي التقديرية، بل
+                                    يسحب بيانات خارجية حية تقيس توجهات المستهلكين (Consumer Trends) وعمليات البحث
+                                    الحالية، ليقترح على مدير المشتريات زيادة مخزون سلع معينة قبل بدء الموسم بأسابيع
+                                    لتجنب انقطاعها وقت الذروة، مع حساب المساحات التخزينية المتاحة.
+                                </p>
+
+                                <h4 class="text-lg font-bold text-lime-200 mt-6 mb-2">2. إدارة المنتجات سريعة التلف
+                                    (Perishable Goods Management)</h4>
+                                <p class="leading-relaxed mb-4">
+                                    للصناعات الغذائية والأدوية، تاريخ الصلاحية (Expiry Date) هو التحدي الأهم. يمكن
+                                    للذكاء الاصطناعي تتبع دفعات الإنتاج (Batch Tracking) والتنبيه المبكر باقتراب انتهاء
+                                    صلاحية شحنات محددة، ليقترح أوتوماتيكياً إطلاق حملات ترويجية وخصومات (Promotions) عبر
+                                    قنوات المبيعات لتصريفها السريع قبل تحولها إلى خسارة محققة (Write-offs).
+                                </p>
+
+                                <h4 class="text-lg font-bold text-lime-200 mt-6 mb-2">3. تحليل الجدوى المكانية
+                                    (Geospatial Inventory Analysis)</h4>
+                                <p class="leading-relaxed mb-6">
+                                    لماذا تخزن معاطف شتوية بكميات ضخمة في مستودعات جدة الدافئة بينما هناك طلب هائل عليها
+                                    في تبوك؟ يربط محركنا الذكي بين النطاق الجغرافي والطلب الفعلي. من خلال خرائط حرارية
+                                    (Heatmaps) يقدم النظام توصيات بإعادة توزيع المخزون الموجود مسبقاً جغرافياً ليكون
+                                    أقرب لنقاط البيع التي تشهد طلباً أعلى، مما يخفض تكاليف النقل (Logistics Costs) ويقلل
+                                    سرعة التوصيل للعميل النهائي.
+                                </p>
+
+                                <h3 class="text-2xl font-bold text-lime-400 mt-10 mb-4">أمان بيانات سلاسل الإمداد
+                                    ومطابقتها للمتطلبات الوطنية</h3>
+                                <p class="leading-relaxed mb-6">
+                                    بيانات الموردين، تكاليف الشراء، وهوامش الربح هي أسرار تجارية عليا لأي منشأة سعودية.
+                                    نحرص في <strong>Bright AI</strong> على أن تتم جميع عمليات التحليل والتنبؤ البياني
+                                    داخل بيئة سحابية وطنية مغلقة ومؤمنة بأعلى المعايير، متوافقة بالكامل مع ضوابط
+                                    <strong>الهيئة الوطنية للأمن السيبراني (NCA)</strong> وقوانين <strong>حماية البيانات
+                                        الشخصية (PDPL)</strong>. لا مجال لمشاركة حساسات سلاسل أمدادك خارج الحدود، بل تتم
+                                    الاستضافة والمعالجة في خوادم محلية موثوقة لضمان السيادة الرقمية التامة للمؤسسة.
+                                </p>
+
+                                <div class="border-t border-slate-700/50 pt-8 mt-12 w-full">
+                                    <section
+                                        class="internal-linking-cta-wrap bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+                                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                            <iconify-icon icon="lucide:link-2" class="text-slate-400"></iconify-icon>
+                                            روابط اللوجستيات والمخزون الداعمة
+                                        </h3>
+                                        <ul class="space-y-2 marker:text-lime-500 list-inside list-disc">
+                                            <li><a class="text-lime-400 hover:text-lime-300 transition-colors"
+                                                    href="/blog/transport-logistics-solutions/">تعلم
+                                                    كيف تعزز أنظمة النقل واللوجستيات المتقدمة من سرعة الإمداد الداخلي
+                                                    بين مستودعاتك</a></li>
+                                            <li><a class="text-lime-400 hover:text-lime-300 transition-colors"
+                                                    href="/smart-automation/">تواصل لفهم خارطة الأتمتة الكاملة
+                                                    (Automation Hub) لخطوط الإمداد والتوريد</a></li>
+                                            <li><a class="text-lime-400 hover:text-lime-300 transition-colors"
+                                                    href="/data-analysis/">كيف يولد علم البيانات والرؤى التحليلية العميقة
+                                                    توقعات مذهلة لحجم المبيعات</a></li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                        </article>
+                        <section class="glass-card p-8 text-center" style="content-visibility: auto;">
+                            <h2 class="text-2xl font-bold text-white mb-4">حسّن إدارة مخزونك اليوم</h2>
+                            <div class="flex flex-wrap justify-center gap-4 mt-6">
+                                <a class="px-6 py-3 rounded-xl cta-btn text-black font-bold" href="/consultation/">احجز
+                                    استشارة</a>
+                                <a class="px-6 py-3 rounded-xl border border-white/30 text-white"
+                                    href="/blog/transport-logistics-solutions/">حلول
+                                    اللوجستيات</a>
+                            </div>
+                        </section>
+                    </main>
+                    <div
+                        class="article-cta mt-8 p-5 bg-purple-50 rounded-xl border border-purple-100 flex flex-col items-center text-center md:p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">هل أنت مستعد لنقل أعمالك إلى المستوى التالي؟
+                        </h3>
+                        <p class="text-slate-600 mb-4">اكتشف كيف يمكن لخدماتنا في BrightAI مساعدتك في تحقيق أهدافك
+                            بكفاءة عالية.</p>
+                        <a class="px-6 py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition w-full md:w-auto"
+                            href="/smart-automation/">استكشف خدماتنا الآن</a>
+                    </div>
+                </div>
+
+                <div class="author-card" data-aos="fade-up">
+                    <img alt="صورة رمزية لفريق BrightAI" class="author-avatar" loading="lazy" src="/assets/images/Gemini.png"
+                        width="80" height="80" />
+                    <div class="author-info">
+                        <h4>فريق BrightAI</h4>
+                        <p class="author-bio">
+                            نحن فريق متخصص في حلول الذكاء الاصطناعي والأتمتة، نسعى لتمكين الشركات من بناء مستقبل ذكي
+                            ومستدام من خلال أحدث التقنيات.
+                        </p>
+                    </div>
+                </div>
+                <div class="px-8 pb-8 pt-4 border-t border-slate-100 mt-8">
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm font-medium">الذكاء
+                            الاصطناعي</span>
+                        <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm font-medium">المعرفة</span>
+                    </div>
+                </div>
+
+                <section class="related-articles mt-12 p-5 bg-slate-900/50 border border-slate-700/50 rounded-xl md:p-6"
+                    data-auto-related="true" style="content-visibility: auto;">
+                    <h2 class="text-2xl font-bold text-white mb-4">مقالات ذات صلة</h2>
+                    <ul class="space-y-3 text-slate-300">
+                        <li><a class="hover:text-purple-400 transition"
+                                href="/blog/smart-crm-system/">نظام CRM ذكي بالذكاء الاصطناعي في
+                                السعودية | Bright AI</a></li>
+                        <li><a class="hover:text-purple-400 transition"
+                                href="/blog/saudi-waste-management-ai/">دراسة حالة شاملة: إدارة
+                                النفايات بالذكاء الاصطناعي في السعودية | نحو صفر مرادم</a></li>
+                        <li><a class="hover:text-purple-400 transition"
+                                href="/blog/saudi-renewable-energy-ai/">دراسة حالة شاملة: الذكاء
+                                الاصطناعي في الطاقة المتجددة السعودية | كفاءة الصحراء</a></li>
+                    </ul>
+                </section>
+
+            </article>
+        </div>
+    </div>
+    <footer class="bg-slate-900 border-t border-slate-800 pt-16 pb-8 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold">
+                            AI
+                        </div>
+                        <span class="font-bold text-xl text-white">
+                            Bright<span class="text-purple-400">AI</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed mb-6 max-w-md">
+                        نمكن الشركات من بناء مستقبل ذكي من خلال حلول الذكاء الاصطناعي المتقدمة والأتمتة الشاملة.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-6">روابط سريعة</h3>
+                    <ul class="space-y-4">
+                        <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="/">الرئيسية</a></li>
+                        <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="/about/">من نحن</a>
+                        </li>
+                        <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="/blog/">المدونة</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-6">تواصل معنا</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 text-slate-400">
+                            <iconify-icon class="text-purple-400" icon="lucide:mail"></iconify-icon>
+                            yazeed1job@gmail.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+                © 2024 BrightAI. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+    <script defer="" src="/frontend/js/navigation.js"></script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+    <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            const progressBar = document.getElementById('readingProgress');
+            if (progressBar) {
+                progressBar.style.width = scrollPercent + '%';
+            }
+        });
+    </script>
+    <script defer src="/frontend/js/article-ux-enhancements.js"></script>
+    <script src="/frontend/js/clarity-events.js" defer></script>
+</body>
+
+</html>

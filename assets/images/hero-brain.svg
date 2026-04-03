@@ -1,0 +1,275 @@
+<svg class="brain-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    /* 3D Brain SVG Styles */
+    .brain-svg {
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.3));
+        animation: brainRotate 25s linear infinite;
+        transform-origin: center;
+    }
+
+    @keyframes brainRotate {
+        0% { transform: rotateY(0deg) rotateX(5deg); }
+        100% { transform: rotateY(360deg) rotateX(5deg); }
+    }
+
+    /* Neural Network Lines */
+    .neural-line {
+        stroke: url(#neuralGradient);
+        stroke-width: 1.5;
+        fill: none;
+        stroke-dasharray: 200;
+        animation: dashMove 3s linear infinite;
+        filter: drop-shadow(0 0 3px rgba(0, 255, 136, 0.5));
+    }
+
+    @keyframes dashMove {
+        to { stroke-dashoffset: -400; }
+    }
+
+    /* Data Points */
+    .data-point {
+        fill: #00ff88;
+        animation: pulse 2s ease-in-out infinite;
+        filter: drop-shadow(0 0 6px #00ff88);
+        transform-origin: center;
+        transform-box: fill-box;
+    }
+
+    .data-point-blue {
+        fill: #00d4ff;
+        filter: drop-shadow(0 0 6px #00d4ff);
+    }
+
+    .data-point-purple {
+        fill: #8b5cf6;
+        filter: drop-shadow(0 0 6px #8b5cf6);
+    }
+
+    .data-point:nth-child(3n) { animation-delay: 0.3s; }
+    .data-point:nth-child(3n+1) { animation-delay: 0.6s; }
+    .data-point:nth-child(3n+2) { animation-delay: 0.9s; }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Circuit Paths */
+    .circuit-path {
+        stroke: rgba(0, 212, 255, 0.5);
+        stroke-width: 1;
+        fill: none;
+    }
+  </style>
+  <defs>
+    <!-- Neural Gradient -->
+    <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1">
+        <animate attributeName="stop-color" values="#00ff88;#00d4ff;#8b5cf6;#00ff88" dur="4s"
+          repeatCount="indefinite" />
+      </stop>
+      <stop offset="50%" style="stop-color:#00d4ff;stop-opacity:1">
+        <animate attributeName="stop-color" values="#00d4ff;#8b5cf6;#00ff88;#00d4ff" dur="4s"
+          repeatCount="indefinite" />
+      </stop>
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1">
+        <animate attributeName="stop-color" values="#8b5cf6;#00ff88;#00d4ff;#8b5cf6" dur="4s"
+          repeatCount="indefinite" />
+      </stop>
+    </linearGradient>
+
+    <!-- Brain Fill Gradient -->
+    <radialGradient id="brainGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#00ff88;stop-opacity:0.15" />
+      <stop offset="40%" style="stop-color:#00d4ff;stop-opacity:0.1" />
+      <stop offset="70%" style="stop-color:#8b5cf6;stop-opacity:0.08" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.02" />
+    </radialGradient>
+
+    <!-- Inner Glow -->
+    <filter id="innerGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Outer Glow -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Brain Outer Shape -->
+  <g filter="url(#glow)">
+    <!-- Left Hemisphere -->
+    <path d="M200 40 
+                         Q140 50 100 100 
+                         Q60 160 70 220 
+                         Q80 280 120 320 
+                         Q160 360 200 370" fill="url(#brainGradient)" stroke="url(#neuralGradient)"
+      stroke-width="2" />
+
+    <!-- Right Hemisphere -->
+    <path d="M200 40 
+                         Q260 50 300 100 
+                         Q340 160 330 220 
+                         Q320 280 280 320 
+                         Q240 360 200 370" fill="url(#brainGradient)" stroke="url(#neuralGradient)"
+      stroke-width="2" />
+
+    <!-- Brain Stem -->
+    <path d="M180 350 Q200 380 220 350" fill="none" stroke="url(#neuralGradient)" stroke-width="2" />
+
+    <!-- Left Brain Folds -->
+    <path class="circuit-path" d="M90 150 Q130 130 170 150 Q130 170 100 180" />
+    <path class="circuit-path" d="M80 200 Q140 175 185 200 Q130 225 90 240" />
+    <path class="circuit-path" d="M100 270 Q150 245 180 270 Q140 295 110 310" />
+    <path class="circuit-path" d="M120 120 Q150 100 180 115" />
+
+    <!-- Right Brain Folds -->
+    <path class="circuit-path" d="M310 150 Q270 130 230 150 Q270 170 300 180" />
+    <path class="circuit-path" d="M320 200 Q260 175 215 200 Q270 225 310 240" />
+    <path class="circuit-path" d="M300 270 Q250 245 220 270 Q260 295 290 310" />
+    <path class="circuit-path" d="M280 120 Q250 100 220 115" />
+
+    <!-- Central Line -->
+    <path d="M200 50 L200 350" stroke="rgba(0, 212, 255, 0.3)" stroke-width="1" stroke-dasharray="5,5" />
+
+    <!-- Neural Network Lines - Horizontal -->
+    <path class="neural-line" d="M100 130 Q200 80 300 130" />
+    <path class="neural-line" d="M80 180 Q200 130 320 180" style="animation-delay: 0.3s" />
+    <path class="neural-line" d="M75 230 Q200 180 325 230" style="animation-delay: 0.6s" />
+    <path class="neural-line" d="M90 280 Q200 230 310 280" style="animation-delay: 0.9s" />
+    <path class="neural-line" d="M120 320 Q200 280 280 320" style="animation-delay: 1.2s" />
+
+    <!-- Neural Network Lines - Vertical -->
+    <path class="neural-line" d="M140 80 Q120 200 140 340" style="animation-delay: 0.2s" />
+    <path class="neural-line" d="M200 50 Q200 200 200 360" style="animation-delay: 0.5s" />
+    <path class="neural-line" d="M260 80 Q280 200 260 340" style="animation-delay: 0.8s" />
+
+    <!-- Cross Neural Lines -->
+    <path class="neural-line" d="M100 100 Q200 200 300 300" style="animation-delay: 1s" />
+    <path class="neural-line" d="M300 100 Q200 200 100 300" style="animation-delay: 1.3s" />
+
+    <!-- Circuit Details -->
+    <path class="circuit-path" d="M200 80 L200 60 L180 60 L180 45" />
+    <path class="circuit-path" d="M200 80 L200 60 L220 60 L220 45" />
+    <path class="circuit-path" d="M130 150 L110 150 L110 130" />
+    <path class="circuit-path" d="M270 150 L290 150 L290 130" />
+    <path class="circuit-path" d="M100 230 L80 230 L80 250" />
+    <path class="circuit-path" d="M300 230 L320 230 L320 250" />
+  </g>
+
+  <!-- Data Points (Neurons) - Multiple Colors -->
+  <g class="neurons">
+    <!-- Main nodes -->
+    <circle class="data-point" cx="200" cy="100" r="6" />
+    <circle class="data-point data-point-blue" cx="200" cy="200" r="8" />
+    <circle class="data-point data-point-purple" cx="200" cy="300" r="5" />
+
+    <!-- Left side nodes -->
+    <circle class="data-point" cx="100" cy="130" r="4" />
+    <circle class="data-point data-point-blue" cx="80" cy="180" r="5" />
+    <circle class="data-point" cx="75" cy="230" r="4" />
+    <circle class="data-point data-point-purple" cx="90" cy="280" r="5" />
+    <circle class="data-point" cx="120" cy="320" r="4" />
+    <circle class="data-point data-point-blue" cx="140" cy="150" r="3" />
+    <circle class="data-point" cx="130" cy="200" r="4" />
+    <circle class="data-point data-point-purple" cx="150" cy="250" r="3" />
+    <circle class="data-point" cx="160" cy="300" r="4" />
+
+    <!-- Right side nodes -->
+    <circle class="data-point data-point-blue" cx="300" cy="130" r="4" />
+    <circle class="data-point" cx="320" cy="180" r="5" />
+    <circle class="data-point data-point-purple" cx="325" cy="230" r="4" />
+    <circle class="data-point" cx="310" cy="280" r="5" />
+    <circle class="data-point data-point-blue" cx="280" cy="320" r="4" />
+    <circle class="data-point data-point-purple" cx="260" cy="150" r="3" />
+    <circle class="data-point" cx="270" cy="200" r="4" />
+    <circle class="data-point data-point-blue" cx="250" cy="250" r="3" />
+    <circle class="data-point" cx="240" cy="300" r="4" />
+
+    <!-- Inner nodes -->
+    <circle class="data-point data-point-purple" cx="170" cy="120" r="3" />
+    <circle class="data-point" cx="230" cy="120" r="3" />
+    <circle class="data-point data-point-blue" cx="160" cy="180" r="4" />
+    <circle class="data-point" cx="240" cy="180" r="4" />
+    <circle class="data-point data-point-purple" cx="170" cy="230" r="3" />
+    <circle class="data-point" cx="230" cy="230" r="3" />
+    <circle class="data-point data-point-blue" cx="180" cy="280" r="4" />
+    <circle class="data-point" cx="220" cy="280" r="4" />
+  </g>
+
+  <!-- Animated Light Pulses -->
+  <g class="light-pulses">
+    <!-- Horizontal pulses -->
+    <circle r="4" fill="#ffffff">
+      <animateMotion dur="2s" repeatCount="indefinite">
+        <mpath href="#pulse-h-1" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="r" values="2;4;2" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <circle r="4" fill="#00ff88">
+      <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.3s">
+        <mpath href="#pulse-h-2" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="0.3s" />
+    </circle>
+    <circle r="4" fill="#00d4ff">
+      <animateMotion dur="3s" repeatCount="indefinite" begin="0.6s">
+        <mpath href="#pulse-h-3" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="0.6s" />
+    </circle>
+    <circle r="4" fill="#8b5cf6">
+      <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.9s">
+        <mpath href="#pulse-h-4" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2.8s" repeatCount="indefinite" begin="0.9s" />
+    </circle>
+
+    <!-- Vertical pulses -->
+    <circle r="3" fill="#ffffff">
+      <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.2s">
+        <mpath href="#pulse-v-1" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="3.5s" repeatCount="indefinite" begin="0.2s" />
+    </circle>
+    <circle r="3" fill="#00ff88">
+      <animateMotion dur="4s" repeatCount="indefinite" begin="0.5s">
+        <mpath href="#pulse-v-2" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite" begin="0.5s" />
+    </circle>
+
+    <!-- Diagonal pulses -->
+    <circle r="3" fill="#00d4ff">
+      <animateMotion dur="3s" repeatCount="indefinite" begin="1s">
+        <mpath href="#pulse-d-1" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite" begin="1s" />
+    </circle>
+    <circle r="3" fill="#8b5cf6">
+      <animateMotion dur="3.2s" repeatCount="indefinite" begin="1.5s">
+        <mpath href="#pulse-d-2" />
+      </animateMotion>
+      <animate attributeName="opacity" values="0;1;1;0" dur="3.2s" repeatCount="indefinite" begin="1.5s" />
+    </circle>
+  </g>
+
+  <!-- Hidden paths for light animation -->
+  <path id="pulse-h-1" d="M100 130 Q200 80 300 130" fill="none" />
+  <path id="pulse-h-2" d="M80 180 Q200 130 320 180" fill="none" />
+  <path id="pulse-h-3" d="M75 230 Q200 180 325 230" fill="none" />
+  <path id="pulse-h-4" d="M90 280 Q200 230 310 280" fill="none" />
+  <path id="pulse-v-1" d="M140 80 Q120 200 140 340" fill="none" />
+  <path id="pulse-v-2" d="M200 50 Q200 200 200 360" fill="none" />
+  <path id="pulse-d-1" d="M100 100 Q200 200 300 300" fill="none" />
+  <path id="pulse-d-2" d="M300 100 Q200 200 100 300" fill="none" />
+</svg>
