@@ -929,3 +929,11 @@ services:
       - type: rewrite
         source: /try/:slug/
         destination: /frontend/pages/try/:slug/index.html
+
+      # mais-OBM Dashboard Routes
+      - type: rewrite
+        source: /mais-OBM
+        destination: /mais-OBM/index.html
+      - type: rewrite
+        source: /mais-OBM/
+        destination: /mais-OBM/index.html
