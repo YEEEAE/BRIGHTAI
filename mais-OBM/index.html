@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mais Co. OBM Rejection Intelligence Dashboard — Executive quality monitoring for medical products manufacturing." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#060810" />
+  <title>OBM Rejection Intelligence — Mais Co.</title>
+  <script src="./vendor/chart.umd.min.js"></script>
+  <script src="./vendor/chartjs-plugin-datalabels.min.js"></script>
+  <script src="./vendor/papaparse.min.js"></script>
+  <script src="./vendor/marked.min.js"></script>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./ai-tools.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="loading-overlay" id="loadingOverlay" aria-live="polite">
+      <div class="loading-card">
+        <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(79,143,247,0.15);border-top-color:rgba(79,143,247,0.8);animation:aiSpin 0.8s linear infinite;margin:0 auto 16px;"></div>
+        <strong>Initializing Dashboard</strong>
+        <p>Preparing the embedded rejection dataset for analysis.</p>
+      </div>
+    </div>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">M</div>
+          <div class="brand-copy">
+            <h1>Mais Co.</h1>
+            <p>OBM Rejection Intelligence</p>
+          </div>
+        </div>
+        <div class="topbar-badges">
+          <div class="period-pill" id="datePeriodBadge" aria-live="polite">
+            <span class="period-pill-label">Data Period</span>
+            <strong>Waiting for data</strong>
+          </div>
+          <div class="status-pill" aria-label="Dashboard readiness">
+            <span class="status-dot"></span>
+            <span>Offline-ready executive dashboard</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="sticky-summary" id="stickySummary" aria-live="polite">
+      <div class="sticky-summary-inner">
+        <div class="sticky-summary-block">
+          <div class="sticky-summary-label">Active View</div>
+          <div class="sticky-summary-value" id="stickyViewLabel">All data</div>
+        </div>
+        <div class="sticky-summary-block">
+          <div class="sticky-summary-label">Produced</div>
+          <div class="sticky-summary-value" id="stickyProduced">0</div>
+        </div>
+        <div class="sticky-summary-block">
+          <div class="sticky-summary-label">Rejected</div>
+          <div class="sticky-summary-value" id="stickyRejected">0</div>
+        </div>
+        <div class="sticky-summary-block">
+          <div class="sticky-summary-label">Rate</div>
+          <div class="sticky-summary-value" id="stickyRate">0.00%</div>
+        </div>
+        <div class="sticky-summary-block">
+          <div class="sticky-summary-label">Records</div>
+          <div class="sticky-summary-value" id="stickyRecords">0</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="loader-wrap fade print-hide file-bar-section" aria-label="Data source loader">
+      <div class="loader-bar">
+        <div class="filepath-display" id="filepathDisplay">
+          <strong>Embedded dataset hint</strong>
+          <span>/Users/yzydalshmry/Desktop/BRIGHTAI/mais-OBM/Rejection_Slip_Report885853_Saudi_Mais_Co__For_Medical_Products.csv</span>
+        </div>
+        <input id="csvFileInput" type="file" accept=".csv" hidden />
+        <button class="btn btn-primary" type="button" id="browseButton">Browse</button>
+        <button class="btn btn-secondary" type="button" id="embeddedButton">Load Embedded Data</button>
+      </div>
+    </section>
+
+    <section class="loader-wrap fade print-hide search-filters-section" aria-label="Interactive filters">
+      <div class="filter-bar">
+        <div class="filter-dock" role="tablist" aria-label="Filter controls">
+          <button class="filter-icon-btn active" type="button" data-filter-panel="dates" aria-expanded="true" aria-controls="filterPanelDates" title="Date range">
+            <span class="filter-icon-symbol" aria-hidden="true">🗓</span>
+            <span class="sr-only">Date range</span>
+          </button>
+          <button class="filter-icon-btn" type="button" data-filter-panel="codes" aria-expanded="false" aria-controls="filterPanelCodes" title="Product codes">
+            <span class="filter-icon-symbol" aria-hidden="true">📦</span>
+            <span class="sr-only">Product codes</span>
+          </button>
+          <button class="filter-icon-btn" type="button" data-filter-panel="search" aria-expanded="false" aria-controls="filterPanelSearch" title="Search">
+            <span class="filter-icon-symbol" aria-hidden="true">🔎</span>
+            <span class="sr-only">Search</span>
+          </button>
+          <button class="filter-icon-btn" type="button" data-filter-panel="quick" aria-expanded="false" aria-controls="filterPanelQuick" title="Quick filters">
+            <span class="filter-icon-symbol" aria-hidden="true">⚡</span>
+            <span class="sr-only">Quick filters</span>
+          </button>
+          <button class="filter-icon-btn" type="button" data-filter-panel="focus" aria-expanded="false" aria-controls="filterPanelFocus" title="Current focus">
+            <span class="filter-icon-symbol" aria-hidden="true">🎯</span>
+            <span class="sr-only">Current focus</span>
+          </button>
+          <button class="filter-icon-btn" type="button" data-filter-panel="actions" aria-expanded="false" aria-controls="filterPanelActions" title="Actions">
+            <span class="filter-icon-symbol" aria-hidden="true">⤴</span>
+            <span class="sr-only">Actions</span>
+          </button>
+        </div>
+
+        <div class="filter-panel-grid">
+          <article class="filter-panel active" id="filterPanelDates" data-filter-panel-id="dates">
+            <div class="filter-panel-head">
+              <strong>Date Range</strong>
+              <span>Choose the visible production window</span>
+            </div>
+            <div class="filter-panel-body two-col">
+              <div class="filter-field">
+                <label for="startDateFilter">Start Date</label>
+                <input class="filter-input" id="startDateFilter" type="date" />
+              </div>
+              <div class="filter-field">
+                <label for="endDateFilter">End Date</label>
+                <input class="filter-input" id="endDateFilter" type="date" />
+              </div>
+            </div>
+          </article>
+
+          <article class="filter-panel" id="filterPanelCodes" data-filter-panel-id="codes" hidden>
+            <div class="filter-panel-head">
+              <strong>Product Codes</strong>
+              <span>Filter the dashboard by one or more items</span>
+            </div>
+            <div class="filter-panel-body">
+              <div class="filter-field">
+                <label for="codeFilter">Product Code</label>
+                <select class="filter-select" id="codeFilter" multiple>
+                </select>
+                <div class="filter-help">Use Ctrl or Cmd to select multiple product codes.</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="filter-panel" id="filterPanelSearch" data-filter-panel-id="search" hidden>
+            <div class="filter-panel-head">
+              <strong>Search</strong>
+              <span>Search by code or product name</span>
+            </div>
+            <div class="filter-panel-body">
+              <div class="filter-field">
+                <label for="searchFilter">Search</label>
+                <input class="filter-input" id="searchFilter" type="search" placeholder="Search code or product name" />
+              </div>
+            </div>
+          </article>
+
+          <article class="filter-panel" id="filterPanelQuick" data-filter-panel-id="quick" hidden>
+            <div class="filter-panel-head">
+              <strong>Quick Filters</strong>
+              <span>Apply prebuilt operational slices instantly</span>
+            </div>
+            <div class="filter-panel-body">
+              <div class="filter-field">
+                <label>Quick Filters</label>
+                <div class="quick-filter-bar">
+                  <button class="quick-filter-btn active" type="button" data-quick-filter="all">All</button>
+                  <button class="quick-filter-btn" type="button" data-quick-filter="critical">Critical only</button>
+                  <button class="quick-filter-btn" type="button" data-quick-filter="outliers">Top outliers</button>
+                  <button class="quick-filter-btn" type="button" data-quick-filter="repeat">Repeat codes</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="filter-panel" id="filterPanelFocus" data-filter-panel-id="focus" hidden>
+            <div class="filter-panel-head">
+              <strong>Current Focus</strong>
+              <span>Review drill-down state and active visible volume</span>
+            </div>
+            <div class="filter-panel-body two-col">
+              <div class="filter-field">
+                <label>Chart Focus</label>
+                <div class="filter-status" id="filterStatus">
+                  <span>No active drill-down</span>
+                  <strong>All data</strong>
+                </div>
+              </div>
+              <div class="filter-field">
+                <label>Filtered View</label>
+                <div class="filter-status" id="filterSummary">
+                  <span>Records in view</span>
+                  <strong>0</strong>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="filter-panel" id="filterPanelActions" data-filter-panel-id="actions" hidden>
+            <div class="filter-panel-head">
+              <strong>Actions</strong>
+              <span>Reset the slice or export the current view</span>
+            </div>
+            <div class="filter-panel-body">
+              <div class="filter-actions">
+                <button class="btn" type="button" id="resetFiltersButton">Reset Filters</button>
+                <button class="btn" type="button" id="exportCsvButton">Export CSV</button>
+                <button class="btn btn-primary" type="button" id="exportPdfButton">Export PDF</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <main class="main-content">
+      <div class="dashboard-stack">
+        <section class="ai-studio-shell fade" aria-label="AI Operations Studio">
+          <article class="ai-studio-panel">
+            <div class="ai-studio-header">
+              <div>
+                <div class="eyebrow">AI Control Layer</div>
+                <h2 class="ai-studio-title">AI Operations Studio</h2>
+                <p class="ai-studio-copy">
+                  Live OBM reasoning over the actual loaded dataset. Every reply is grounded in the
+                  current file, the latest 10 production days, and the active filtered view before
+                  the answer is generated.
+                </p>
+              </div>
+              <div class="ai-studio-header-actions">
+                <span class="ai-live-pill" id="aiStudioLivePill">Waiting for data</span>
+                <button class="btn btn-primary" type="button" id="aiRefreshContextButton">Refresh AI Context</button>
+              </div>
+            </div>
+
+            <div class="ai-studio-grid">
+              <section class="ai-brief-card">
+                <div class="section-head">
+                  <h3>Live AI Context</h3>
+                  <span id="aiContextMeta">No active context yet</span>
+                </div>
+                <div class="ai-brief-metrics" id="aiBriefMetrics"></div>
+                <ul class="mini-list ai-brief-list" id="aiFocusList"></ul>
+
+                <div class="ai-actions">
+                  <button class="ai-action-btn" type="button" data-ai-prompt="Give me an executive summary for the latest 10 production days only.">Latest 10 Days Summary</button>
+                  <button class="ai-action-btn" type="button" data-ai-prompt="Compare the latest 10 production days against the immediately previous 10 production days using only the data.">Recent vs Previous 10</button>
+                  <button class="ai-action-btn" type="button" data-ai-prompt="List the highest-risk products right now and rank them by rejection severity using only the current loaded data.">Rank Highest-Risk Products</button>
+                  <button class="ai-action-btn" type="button" data-ai-prompt="Review the active filtered view and tell me the main operational signals using only the current rows in view.">Analyze Current View</button>
+                </div>
+
+                <article class="ai-status-card">
+                  <div class="section-head">
+                    <h3>AI Activity</h3>
+                    <span id="aiStudioStatusTone">Idle</span>
+                  </div>
+                  <p class="ai-status-line" id="aiStudioStatusLine">The assistant is waiting for the local dataset to be loaded.</p>
+                  <div class="ai-thinking-stack" id="aiThinkingStack">
+                    <div class="ai-thinking-step" data-state="idle">Reading active dataset</div>
+                    <div class="ai-thinking-step" data-state="idle">Analyzing production and rejection patterns</div>
+                    <div class="ai-thinking-step" data-state="idle">Preparing grounded response</div>
+                  </div>
+                </article>
+              </section>
+
+              <section class="ai-chat-card">
+                <div class="section-head">
+                  <h3>Live Data Chat</h3>
+                  <span id="aiChatMeta">Ask about the data and get a grounded answer</span>
+                </div>
+
+                <div class="ai-chat-thread" id="aiChatThread" aria-live="polite">
+                  <article class="ai-message ai-message-assistant">
+                    <div class="ai-message-role">AI Analyst</div>
+                    <div class="ai-message-body">
+                      Load the embedded file or your local CSV, then ask a question about the real
+                      rejection data. I will analyze the numbers first, then answer from the actual
+                      dataset.
+                    </div>
+                  </article>
+                </div>
+
+                <form class="ai-chat-form" id="aiChatForm">
+                  <label class="sr-only" for="aiChatInput">Ask AI about the OBM data</label>
+                  <textarea
+                    id="aiChatInput"
+                    class="ai-chat-input"
+                    rows="3"
+                    placeholder="Ask about the loaded rejection data, the latest 10 days, the current filtered view, or the highest-risk products..."
+                  ></textarea>
+                  <div class="ai-chat-actions">
+                    <div class="ai-chat-hint">The assistant analyzes the live data before every answer.</div>
+                    <button class="btn btn-primary" type="submit" id="aiSendButton">Ask AI</button>
+                  </div>
+                </form>
+              </section>
+            </div>
+
+            <section class="ai-gemini-shell" aria-label="Gemini AI Integration">
+              <div class="section-head">
+                <h3>Gemini AI Integration</h3>
+                <span>Enter an API key for local testing · In production, the Render backend handles this automatically</span>
+              </div>
+
+              <div class="ai-gemini-grid">
+                <div class="ai-gemini-controls">
+                  <label class="ai-gemini-field" for="aiKey">
+                    <span>Gemini API Key</span>
+                    <input
+                      id="aiKey"
+                      class="ai-gemini-input"
+                      type="password"
+                      placeholder="Paste your Gemini API key"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                  </label>
+
+                  <label class="ai-gemini-field" for="aiModel">
+                    <span>Model</span>
+                    <select id="aiModel" class="ai-gemini-select">
+                      <option value="gemini-2.0-flash" selected>gemini-2.0-flash</option>
+                      <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                      <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                    </select>
+                  </label>
+
+                  <label class="ai-gemini-field ai-gemini-field-wide" for="aiQ">
+                    <span>Custom Prompt</span>
+                    <textarea
+                      id="aiQ"
+                      class="ai-gemini-textarea"
+                      rows="4"
+                      placeholder="Write a custom question for the current OBM rejection dataset..."
+                    ></textarea>
+                  </label>
+
+                  <div class="ai-gemini-quick-prompts">
+                    <button class="ai-action-btn" type="button" data-gemini-prefill="Provide a full executive summary of the current OBM rejection dataset using only the loaded data.">📊 Full Summary</button>
+                    <button class="ai-action-btn" type="button" data-gemini-prefill="List the top problems in the current OBM rejection dataset and rank them by severity using only the loaded data.">🚨 Top Problems</button>
+                    <button class="ai-action-btn" type="button" data-gemini-prefill="Give me practical recommendations to reduce rejections based only on the current OBM rejection dataset.">💡 Recommendations</button>
+                    <button class="ai-action-btn" type="button" data-gemini-prefill="Analyze the key trends in the current OBM rejection dataset over time using only the loaded data.">📈 Trends</button>
+                    <button class="ai-action-btn" type="button" data-gemini-prefill="Generate a professional weekly report from the current OBM rejection dataset using only the loaded data.">📋 Weekly Report</button>
+                    <button class="ai-action-btn" type="button" data-gemini-prefill="Perform a root cause style analysis for the highest rejection items using only the loaded data and visible patterns.">🔬 Root Cause</button>
+                  </div>
+
+                  <div class="ai-gemini-actions">
+                    <button class="ai-action-btn" type="button" data-gemini-mode="summary">Executive Summary</button>
+                    <button class="ai-action-btn" type="button" data-gemini-mode="problems">Top Problems</button>
+                    <button class="ai-action-btn" type="button" data-gemini-mode="recs">Recommendations</button>
+                    <button class="ai-action-btn" type="button" data-gemini-mode="trends">Trend Analysis</button>
+                    <button class="ai-action-btn" type="button" data-gemini-mode="weekly">Weekly Report</button>
+                    <button class="ai-action-btn" type="button" data-gemini-mode="root">Root Cause Analysis</button>
+                    <button class="btn btn-primary" type="button" data-gemini-mode="custom">Run Custom Prompt</button>
+                  </div>
+                </div>
+
+                <article class="ai-gemini-output-card">
+                  <div class="section-head">
+                    <h3>Gemini Output</h3>
+                    <span id="aiGeminiMeta">Ready when a valid local dataset is loaded</span>
+                  </div>
+                  <div id="aiOut" class="ai-gemini-output">
+                    Gemini responses will render here as formatted markdown once you run an analysis.
+                  </div>
+                </article>
+              </div>
+            </section>
+          </article>
+        </section>
+
+        <section class="panel-card recent-shell fade" aria-label="Latest 10 production days overview">
+          <div class="recent-shell-head">
+            <div>
+              <div class="eyebrow">Latest 10 Production Days</div>
+              <h2 class="recent-title">Last 10 Days Executive Quality Layer</h2>
+            </div>
+            <div class="recent-shell-actions">
+              <span class="recent-ai-status" id="recentAiStatus">AI comments standby</span>
+              <span class="recent-range-pill" id="recentRange">Waiting for live data</span>
+              <a class="btn" href="#fullHistorySection">Open Full History</a>
+            </div>
+          </div>
+
+          <p class="hero-copy recent-copy" id="recentNarrative">
+            The latest ten production days will appear here as the default operational view once the
+            local rejection dataset is loaded.
+          </p>
+          <ul class="mini-list recent-comment-list" id="recentCommentList"></ul>
+
+          <div class="recent-metric-grid">
+            <article class="metric-card" style="--metric-accent: var(--accent-blue);">
+              <div class="metric-label">Latest 10 Days Produced</div>
+              <p class="metric-value" id="rk1">0</p>
+              <div class="metric-foot">Total produced quantity across the most recent 10 production days</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-red);">
+              <div class="metric-label">Latest 10 Days Rejected</div>
+              <p class="metric-value" id="rk2">0</p>
+              <div class="metric-foot">Total rejected quantity inside the same recent operating window</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-green);">
+              <div class="metric-label">Recent Reject Rate</div>
+              <p class="metric-value" id="rk3">0%</p>
+              <div class="metric-foot">Portfolio rejection rate for the latest 10 production days</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-purple);">
+              <div class="metric-label">Recent Product Codes</div>
+              <p class="metric-value" id="rk4">0</p>
+              <div class="metric-foot">Unique product codes active during the latest 10-day window</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-orange);">
+              <div class="metric-label">Recent Critical Rows</div>
+              <p class="metric-value" id="rk5">0</p>
+              <div class="metric-foot">Rows above 5% rejection inside the recent production window</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-orange);">
+              <div class="metric-label">Worst Recent Day</div>
+              <p class="metric-value compact" id="rk6">-</p>
+              <div class="metric-foot">Day with the highest weighted rejection rate across the latest 10 days</div>
+            </article>
+          </div>
+
+          <div class="recent-chart-grid">
+            <article class="panel-card chart-card-full">
+              <div class="section-head">
+                <h3>Recent 10-Day Production Curve</h3>
+                <span id="recentTrendMeta">Daily produced, rejected, and weighted reject rate</span>
+              </div>
+              <div class="chart-shell tall">
+                <canvas id="chRecentTrend" aria-label="Recent ten day trend chart"></canvas>
+              </div>
+            </article>
+
+            <article class="panel-card">
+              <div class="section-head">
+                <h3>Recent Top Products</h3>
+                <span id="recentTopMeta">Highest rejected products in the latest 10-day window</span>
+              </div>
+              <div class="chart-shell medium">
+                <canvas id="chRecentTop" aria-label="Recent top products chart"></canvas>
+              </div>
+            </article>
+
+            <article class="panel-card">
+              <div class="section-head">
+                <h3>Recent Risk Matrix</h3>
+                <span id="recentBubbleMeta">Produced volume versus reject rate for the latest active items</span>
+              </div>
+              <div class="chart-shell medium">
+                <canvas id="chRecentBubble" aria-label="Recent risk bubble chart"></canvas>
+              </div>
+            </article>
+
+            <article class="panel-card">
+              <div class="section-head">
+                <h3>Recent Category Mix</h3>
+                <span id="recentPieMeta">Rejected quantity grouped by derived product category</span>
+              </div>
+              <div class="chart-shell medium">
+                <canvas id="chRecentPie" aria-label="Recent category mix chart"></canvas>
+              </div>
+            </article>
+          </div>
+
+          <div class="recent-bottom-grid">
+            <article class="placeholder-row">
+              <div class="section-head">
+                <h3>Latest 10-Day Highlights</h3>
+                <span id="recentHighlightMeta">Operational summary from the most recent production window</span>
+              </div>
+              <ul class="mini-list" id="recentHighlightList"></ul>
+            </article>
+
+            <article class="placeholder-row">
+              <div class="section-head">
+                <h3>Day-by-Day Risk Ranking</h3>
+                <span id="recentDayRankMeta">Highest daily pressure points inside the latest production window</span>
+              </div>
+              <ul class="mini-list" id="recentDayRankList"></ul>
+            </article>
+
+            <article class="placeholder-row">
+              <div class="section-head">
+                <h3>Latest 10 vs Prior 10 Days</h3>
+                <span id="recentCompareMeta">Direct comparison against the previous 10 production days</span>
+              </div>
+              <ul class="mini-list compare-list" id="recentCompareList"></ul>
+            </article>
+          </div>
+
+          <article class="table-card">
+            <div class="section-head">
+              <h3>Latest 10-Day Detailed Items</h3>
+              <span id="recentTableMeta">Detailed rows sorted by date then rejected quantity</span>
+            </div>
+            <div class="table-shell recent-table-shell" id="recentTableShell"></div>
+          </article>
+        </section>
+
+        <section id="fullHistorySection" class="fade" aria-label="Full history analysis heading">
+          <div class="section-head">
+            <h2>Full History Analysis</h2>
+            <span>The current interactive dashboard below still covers every loaded day and all filters</span>
+          </div>
+        </section>
+
+        <section class="fade" aria-label="Executive alerts">
+          <div class="alert-grid" id="alertGrid"></div>
+        </section>
+
+        <section class="hero-grid fade" aria-label="Dashboard overview">
+          <article class="panel-card">
+            <div class="eyebrow">Operations Monitoring Board</div>
+            <h2 class="hero-title">Mais Co. OBM Rejection Dashboard</h2>
+            <p class="hero-copy">
+              A production-ready decision layer for medical products operations, designed to expose
+              rejection pressure, identify unstable products quickly, and move quality review from
+              reactive follow-up to daily executive control.
+            </p>
+            <div class="hero-meta">
+              <div class="meta-chip"><strong>Theme</strong> Deep navy command center</div>
+              <div class="meta-chip"><strong>Source</strong> CSV-ready data loader</div>
+              <div class="meta-chip"><strong>Mode</strong> Executive monitoring layout</div>
+            </div>
+          </article>
+
+          <aside class="panel-card summary-card" aria-label="Summary panel">
+            <div>
+              <div class="section-head">
+                <h2>Intelligence Snapshot</h2>
+                <span id="snapshotRange">Live summary</span>
+              </div>
+              <p class="hero-copy summary-copy" id="snapshotText">
+                The live portfolio summary will appear here after the local rejection dataset is
+                loaded and mapped into the dashboard.
+              </p>
+            </div>
+            <ul class="mini-list tight" id="snapshotList"></ul>
+          </aside>
+        </section>
+
+        <section class="fade" aria-label="Key metrics">
+          <div class="section-head">
+            <h2>Key Rejection Metrics</h2>
+            <span id="metricMeta">Metric cards prepared for dynamic values</span>
+          </div>
+          <div class="metric-grid">
+            <article class="metric-card" style="--metric-accent: var(--accent-blue);">
+              <div class="metric-label">Total Produced</div>
+              <p class="metric-value" id="k1">0</p>
+              <div class="metric-delta na" id="kd1">Awaiting comparison baseline</div>
+              <div class="metric-foot">Overall manufactured quantity in the active dataset</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-red);">
+              <div class="metric-label">Total Rejected</div>
+              <p class="metric-value" id="k2">0</p>
+              <div class="metric-delta na" id="kd2">Awaiting comparison baseline</div>
+              <div class="metric-foot">Combined rejected quantity across all loaded records</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-green);">
+              <div class="metric-label">Average Rejection Rate</div>
+              <p class="metric-value" id="k3">0%</p>
+              <div class="metric-delta na" id="kd3">Awaiting comparison baseline</div>
+              <div class="metric-foot">Rejected quantity divided by total produced output</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-purple);">
+              <div class="metric-label">Total Records</div>
+              <p class="metric-value" id="k4">0</p>
+              <div class="metric-delta na" id="kd4">Awaiting comparison baseline</div>
+              <div class="metric-foot">Number of mapped production rejection entries</div>
+            </article>
+            <article class="metric-card" style="--metric-accent: var(--accent-orange);">
+              <div class="metric-label">Critical Records</div>
+              <p class="metric-value" id="k5">0</p>
+              <div class="metric-delta na" id="kd5">Awaiting comparison baseline</div>
+              <div class="metric-foot">Entries where the rejection percentage exceeds 5%</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="chart-grid fade" aria-label="Charting area">
+          <article class="panel-card chart-card-full">
+            <div class="section-head">
+              <h3>Daily Trend</h3>
+              <span id="trendMeta">Rejected quantity and weighted reject rate by day</span>
+            </div>
+            <div class="chart-focus-row">
+              <div class="chart-focus-chip" id="trendFocusChip">
+                <span id="trendFocusText">Date focus</span>
+                <button type="button" id="trendFocusClear" aria-label="Clear trend focus">×</button>
+              </div>
+            </div>
+            <div class="chart-shell tall">
+              <canvas id="chTrend" aria-label="Daily trend chart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel-card">
+            <div class="section-head">
+              <h3>Top 10 Products</h3>
+              <span id="topMeta">Highest rejected products in current view</span>
+            </div>
+            <div class="chart-focus-row">
+              <div class="chart-focus-chip" id="topFocusChip">
+                <span id="topFocusText">Code focus</span>
+                <button type="button" id="topFocusClear" aria-label="Clear top-product focus">×</button>
+              </div>
+            </div>
+            <div class="chart-shell medium">
+              <canvas id="chTop" aria-label="Top products chart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel-card">
+            <div class="section-head">
+              <h3>Highest Reject Rates</h3>
+              <span id="rateMeta">Maximum reject percentage by product code</span>
+            </div>
+            <div class="chart-focus-row">
+              <div class="chart-focus-chip" id="rateFocusChip">
+                <span id="rateFocusText">Rate focus</span>
+                <button type="button" id="rateFocusClear" aria-label="Clear rate focus">×</button>
+              </div>
+            </div>
+            <div class="chart-shell medium">
+              <canvas id="chRate" aria-label="Highest reject rates chart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel-card">
+            <div class="section-head">
+              <h3>Weekly Comparison</h3>
+              <span id="weekMeta">Produced versus rejected by ISO week</span>
+            </div>
+            <div class="chart-focus-row">
+              <div class="chart-focus-chip" id="weekFocusChip">
+                <span id="weekFocusText">Week focus</span>
+                <button type="button" id="weekFocusClear" aria-label="Clear week focus">×</button>
+              </div>
+            </div>
+            <div class="chart-shell medium">
+              <canvas id="chWeek" aria-label="Weekly comparison chart"></canvas>
+            </div>
+          </article>
+
+          <article class="panel-card">
+            <div class="section-head">
+              <h3>Rejection Distribution</h3>
+              <span id="pieMeta">Rejected quantity by derived product category</span>
+            </div>
+            <div class="chart-focus-row">
+              <div class="chart-focus-chip" id="pieFocusChip">
+                <span id="pieFocusText">Category focus</span>
+                <button type="button" id="pieFocusClear" aria-label="Clear category focus">×</button>
+              </div>
+            </div>
+            <div class="chart-shell medium">
+              <canvas id="chPie" aria-label="Rejection distribution chart"></canvas>
+            </div>
+          </article>
+        </section>
+
+        <section class="secondary-grid fade" aria-label="Detailed breakdowns">
+          <article class="placeholder-row">
+            <div class="section-head">
+              <h3>Product Breakdown</h3>
+              <span>SKU-level view</span>
+            </div>
+            <ul class="mini-list" id="productBreakdownList"></ul>
+          </article>
+
+          <article class="placeholder-row">
+            <div class="section-head">
+              <h3>Action Queue</h3>
+              <span>Next operational steps</span>
+            </div>
+            <ul class="mini-list" id="actionQueueList"></ul>
+          </article>
+
+          <article class="placeholder-row">
+            <div class="section-head">
+              <h3>Period Comparison</h3>
+              <span id="compareMeta">Window-over-window movement</span>
+            </div>
+            <ul class="mini-list compare-list" id="periodCompareList"></ul>
+          </article>
+        </section>
+
+        <section class="issue-section fade" aria-label="Weekly issues review">
+          <div class="section-head">
+            <h2>This Week's Issues</h2>
+            <span id="weekBanner">
+              <strong id="weekN">0</strong>
+              <span id="weekTxt">No weekly rejection events are available yet.</span>
+            </span>
+          </div>
+          <div class="issue-grid" id="weekGrid"></div>
+        </section>
+
+        <section class="issue-section fade" aria-label="Recurring problems review">
+          <div class="section-head">
+            <h2>Recurring Problems</h2>
+            <span>Pattern detection across the full loaded dataset</span>
+          </div>
+          <div class="issue-grid" id="probGrid"></div>
+        </section>
+
+        <section class="analytics-grid fade" aria-label="Narrative and table area">
+          <article class="table-card">
+            <div class="section-head">
+              <h3>Detailed Rejection Table</h3>
+              <span id="tableMeta">Sorted by rejected quantity</span>
+            </div>
+            <div class="table-toolbar print-hide" aria-label="Table controls">
+              <label class="table-tool search-tool" for="tblSearch">
+                <span>Search records</span>
+                <input id="tblSearch" type="search" placeholder="Search by date, item code, or product name" />
+              </label>
+              <label class="table-tool filter-tool" for="tblFilter">
+                <span>Severity</span>
+                <select id="tblFilter">
+                  <option value="">All severities</option>
+                  <option value="crit">Critical</option>
+                  <option value="high">High</option>
+                  <option value="med">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </label>
+              <div class="table-count" id="tblCnt">0 records</div>
+            </div>
+            <div class="table-shell" id="tableShell">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th data-col="date">Date</th>
+                    <th data-col="code">Item Code</th>
+                    <th data-col="name">Product Name</th>
+                    <th data-col="produced">Produced</th>
+                    <th data-col="rejected">Rejected</th>
+                    <th data-col="pct">Reject %</th>
+                  </tr>
+                </thead>
+                <tbody id="tblBody"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="narrative-card">
+            <div class="section-head">
+              <h3>Markdown Insight Feed</h3>
+              <span id="markdownMeta">Auto-generated from live metrics</span>
+            </div>
+            <div class="markdown-shell" id="markdownShell"></div>
+          </article>
+        </section>
+
+        <section class="fade" aria-label="Pinned comparison tray">
+          <article class="panel-card pin-tray">
+            <div class="pin-toolbar">
+              <div class="section-head" style="margin-bottom: 0;">
+                <h3>Pinned Comparison Tray</h3>
+                <span id="pinMeta">Capture rows and active chart focus for side-by-side review</span>
+              </div>
+              <div class="pin-actions">
+                <button class="btn" type="button" id="pinSelectedButton">Pin Selected Row</button>
+                <button class="btn" type="button" id="pinFocusButton">Pin Current Focus</button>
+                <button class="btn" type="button" id="clearPinsButton">Clear Pins</button>
+              </div>
+            </div>
+            <div class="pin-grid" id="pinGrid"></div>
+          </article>
+        </section>
+
+        <p class="footer-note">Mais Co. — OBM Rejection Intelligence Dashboard • Medical Products Quality Control • Executive View</p>
+      </div>
+    </main>
+  </div>
+  <script src="./app.js"></script>
+  <script src="./ai-tools.js"></script>
+</body>
+</html>
