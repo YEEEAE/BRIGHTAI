@@ -1,223 +1,2419 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mais Co. — OBM Sample Rejection Report</title>
-<meta name="description" content="Interactive quality assurance dashboard for OBM sample rejection tracking at Saudi Mais Co. For Medical Products.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBM Rejects Control Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="data.js"></script>
-<link rel="stylesheet" href="style.css">
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #111638;
+            --bg-card: #141937;
+            --bg-card-hover: #1a2048;
+            --bg-table-row: #141937;
+            --bg-table-row-alt: #111333;
+            --bg-table-header: #0d1029;
+            --text-primary: #e4e6f5;
+            --text-secondary: #9498b8;
+            --text-muted: #5c6089;
+            --accent-green: #4ade80;
+            --accent-green-bg: rgba(74, 222, 128, 0.12);
+            --accent-red: #f87171;
+            --accent-red-bg: rgba(248, 113, 113, 0.12);
+            --accent-orange: #fb923c;
+            --accent-orange-bg: rgba(251, 146, 60, 0.12);
+            --accent-blue: #60a5fa;
+            --accent-blue-bg: rgba(96, 165, 250, 0.12);
+            --accent-purple: #a78bfa;
+            --accent-purple-bg: rgba(167, 139, 250, 0.12);
+            --accent-cyan: #22d3ee;
+            --accent-cyan-bg: rgba(34, 211, 238, 0.12);
+            --accent-teal: #2dd4bf;
+            --accent-yellow: #fbbf24;
+            --accent-yellow-bg: rgba(251, 191, 36, 0.12);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+            --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass: rgba(20, 25, 55, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 15% 30%, rgba(99, 102, 241, 0.1) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(34, 211, 238, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(248, 113, 113, 0.03) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a2f5a;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-purple);
+        }
+
+        .app-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 20px 24px;
+        }
+
+        /* ===== HEADER ===== */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e4e6f5 0%, #a78bfa 40%, #60a5fa 70%, #22d3ee 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.8px;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            font-weight: 400;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 16px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* ===== TABS ===== */
+        .tab-nav {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 24px;
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 4px;
+            border: 1px solid var(--border-color);
+            width: fit-content;
+            backdrop-filter: blur(12px);
+        }
+
+        .tab-btn {
+            padding: 10px 26px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.1px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), rgba(139, 92, 246, 0.35));
+            color: #fff;
+            box-shadow: 0 2px 16px rgba(99, 102, 241, 0.25);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== SUMMARY CARDS ===== */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .summary-card:nth-child(1)::before {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .summary-card:nth-child(2)::before {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-teal));
+        }
+
+        .summary-card:nth-child(3)::before {
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+        }
+
+        .summary-card:nth-child(4)::before {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-light);
+            box-shadow: var(--shadow);
+        }
+
+        .summary-info h3 {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 8px;
+        }
+
+        .summary-info .value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+
+        .summary-info .change {
+            font-size: 11px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+
+        .change.up {
+            color: var(--accent-green);
+        }
+
+        .change.down {
+            color: var(--accent-red);
+        }
+
+        .change.neutral {
+            color: var(--text-muted);
+        }
+
+        .summary-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .summary-icon.blue {
+            background: var(--accent-blue-bg);
+            color: var(--accent-blue);
+        }
+
+        .summary-icon.green {
+            background: var(--accent-green-bg);
+            color: var(--accent-green);
+        }
+
+        .summary-icon.red {
+            background: var(--accent-red-bg);
+            color: var(--accent-red);
+        }
+
+        .summary-icon.purple {
+            background: var(--accent-purple-bg);
+            color: var(--accent-purple);
+        }
+
+        /* ===== CHARTS ===== */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .charts-row-equal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 22px;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+        }
+
+        .chart-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .chart-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .chart-card-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .chart-filter {
+            padding: 6px 14px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .chart-filter:hover,
+        .chart-filter:focus {
+            border-color: var(--accent-purple);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+
+        .chart-wrapper.small {
+            height: 250px;
+        }
+
+        /* ===== TABLES ===== */
+        .table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 22px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .table-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .table-card-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .table-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .table-search input {
+            padding: 9px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            width: 240px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .table-search input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+        }
+
+        .table-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead th {
+            background: var(--bg-table-header);
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1.2px;
+            padding: 13px 14px;
+            text-align: left;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--bg-table-row-alt);
+        }
+
+        tbody tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        tbody td {
+            padding: 11px 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            font-size: 12.5px;
+        }
+
+        tbody td:first-child {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .status-badge.good {
+            background: var(--accent-green-bg);
+            color: var(--accent-green);
+        }
+
+        .status-badge.warning {
+            background: var(--accent-orange-bg);
+            color: var(--accent-orange);
+        }
+
+        .status-badge.critical {
+            background: var(--accent-red-bg);
+            color: var(--accent-red);
+        }
+
+        .reject-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reject-bar-track {
+            width: 60px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .reject-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s ease;
+        }
+
+        .reject-bar-fill.good {
+            background: var(--accent-green);
+        }
+
+        .reject-bar-fill.warning {
+            background: var(--accent-orange);
+        }
+
+        .reject-bar-fill.critical {
+            background: var(--accent-red);
+        }
+
+        /* Reason column */
+        .reason-cell {
+            max-width: 260px;
+            white-space: normal !important;
+            line-height: 1.45;
+            font-size: 11.5px;
+        }
+
+        .reason-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 10.5px;
+            font-weight: 600;
+        }
+
+        .reason-tag.has-reason {
+            background: var(--accent-red-bg);
+            color: var(--accent-red);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+
+        .reason-tag.no-reason {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .reason-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .reason-tooltip .reason-popup {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2352;
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            padding: 12px 16px;
+            width: 300px;
+            z-index: 100;
+            box-shadow: var(--shadow-lg);
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            white-space: normal;
+        }
+
+        .reason-tooltip:hover .reason-popup {
+            display: block;
+        }
+
+        .reason-popup strong {
+            color: var(--accent-red);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .pagination-info {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .pagination-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .pagination-btns button {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-family: inherit;
+            font-weight: 600;
+        }
+
+        .pagination-btns button:hover:not(:disabled) {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .pagination-btns button.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(139, 92, 246, 0.4));
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .pagination-btns button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* ===== TOP REJECTED LIST ===== */
+        .top-reject-list {
+            list-style: none;
+        }
+
+        .top-reject-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+
+        .top-reject-list li:last-child {
+            border-bottom: none;
+        }
+
+        .top-reject-list .item-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            max-width: 60%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .top-reject-list .item-pct {
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .stat-mini {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .stat-mini .stat-number {
+            font-size: 30px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-mini .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .donut-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 220px;
+        }
+
+        /* ============================================
+           CHATBOT STYLES
+           ============================================ */
+        .chat-toggle-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #a78bfa);
+            border: none;
+            color: #fff;
+            font-size: 26px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 6px 28px rgba(99, 102, 241, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            animation: chatBtnPulse 3s infinite;
+        }
+
+        .chat-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 36px rgba(99, 102, 241, 0.6);
+        }
+
+        .chat-toggle-btn.open {
+            border-radius: 16px;
+        }
+
+        @keyframes chatBtnPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 6px 28px rgba(99, 102, 241, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 6px 40px rgba(99, 102, 241, 0.8), 0 0 60px rgba(139, 92, 246, 0.3);
+            }
+        }
+
+        .chat-panel {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            width: 420px;
+            max-height: 600px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            z-index: 9998;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(20px);
+            animation: chatSlideUp 0.35s ease;
+        }
+
+        .chat-panel.visible {
+            display: flex;
+        }
+
+        @keyframes chatSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chat-header {
+            padding: 18px 20px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15));
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .chat-header-info h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .chat-header-info p {
+            font-size: 11px;
+            color: var(--accent-green);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chat-header-info p .mini-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            min-height: 300px;
+        }
+
+        .chat-msg {
+            display: flex;
+            gap: 10px;
+            animation: msgFade 0.3s ease;
+        }
+
+        @keyframes msgFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-msg.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .chat-msg.bot .chat-msg-avatar {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        .chat-msg.user .chat-msg-avatar {
+            background: linear-gradient(135deg, #22d3ee, #06b6d4);
+        }
+
+        .chat-msg-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+        }
+
+        .chat-msg.bot .chat-msg-bubble {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-top-left-radius: 4px;
+        }
+
+        .chat-msg.user .chat-msg-bubble {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-top-right-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .chat-msg-bubble strong {
+            color: var(--text-primary);
+        }
+
+        .chat-msg-bubble code {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--accent-cyan);
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 16px;
+        }
+
+        .typing-indicator .dot-typing {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-indicator .dot-typing:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator .dot-typing:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+
+            30% {
+                transform: translateY(-8px);
+                opacity: 1;
+            }
+        }
+
+        .typing-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-left: 6px;
+            font-style: italic;
+        }
+
+        .chat-input-area {
+            padding: 14px 16px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: rgba(15, 19, 44, 0.6);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 11px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .chat-input-area input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12);
+        }
+
+        .chat-input-area input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .chat-send-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .chat-send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0 16px 12px;
+        }
+
+        .chat-suggestion-chip {
+            padding: 6px 12px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--accent-purple);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .chat-suggestion-chip:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        /* Analysis progress bar */
+        .analysis-progress {
+            padding: 8px 16px 12px;
+            display: none;
+        }
+
+        .analysis-progress.active {
+            display: block;
+        }
+
+        .progress-bar-container {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressShimmer 1.5s infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        .progress-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .progress-label .spin-icon {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== FOOTER ===== */
+        .dashboard-footer {
+            text-align: center;
+            padding: 24px 0;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-wrapper {
+                padding: 12px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 22px;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .charts-row-equal {
+                grid-template-columns: 1fr;
+            }
+
+            .table-search input {
+                width: 160px;
+            }
+
+            .chat-panel {
+                width: calc(100vw - 32px);
+                right: 16px;
+                bottom: 88px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-nav {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .tab-btn {
+                flex: 1;
+                text-align: center;
+                padding: 10px 12px;
+                font-size: 11px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<!-- Full-screen Loading Overlay -->
-<div id="loadingOverlay" class="full-overlay">
-  <div class="overlay-content">
-    <div class="overlay-logo">M</div>
-    <div class="overlay-text" id="overlayText">Loading rejection data...</div>
-    <div class="overlay-progress"><div class="overlay-progress-bar" id="overlayProgressBar"></div></div>
-    <div class="overlay-subtext">Mais Co. Quality Assurance</div>
-  </div>
-</div>
 
-<!-- ═══════════════ HEADER ═══════════════ -->
-<header class="header" id="top">
-  <div class="header-inner">
-    <div class="header-brand">
-      <div class="header-logo">M</div>
-      <div class="header-text">
-        <h1>OBM Sample Rejection Report</h1>
-        <p>Saudi Mais Co. For Medical Products</p>
-      </div>
-    </div>
-    <div class="header-badge">
-      <span class="dot"></span>
-      <span id="dateRangeBadge">Loading date range…</span>
-    </div>
-    <div class="header-tools">
-      <div class="data-freshness" id="dataFreshnessBadge">
-        <span class="freshness-icon">⏳</span> <span id="dataFreshnessText">Waiting for data...</span>
-      </div>
-      <div class="header-buttons">
-        <button id="themeToggleBtn" class="icon-btn" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">🌙</button>
-        <button id="printBtn" class="icon-btn" aria-label="Print Report" title="Print Report">🖨️</button>
-      </div>
-    </div>
+    <div class="app-wrapper">
 
-  </div>
-</header>
+        <!-- ===== HEADER ===== -->
+        <header class="dashboard-header">
+            <div>
+                <h1>OBM Rejects Control Dashboard</h1>
+                <p class="header-subtitle">Production Reject Analysis &mdash; Intelligent Monitoring System</p>
+            </div>
+            <div class="header-right">
+                <div class="header-badge">
+                    <span class="dot"></span>
+                    Live Data
+                </div>
+                <div class="header-badge" id="currentDateBadge"></div>
+            </div>
+        </header>
 
-<!-- ═══════════════ NAVIGATION ═══════════════ -->
-<nav class="nav" id="mainNav">
-  <div class="nav-inner">
-    <a href="#section-executive" class="nav-link active" data-section="section-executive">Executive Summary</a>
-    <a href="#section-last15" class="nav-link" data-section="section-last15">Last 15 Days</a>
-    <a href="#section-full" class="nav-link" data-section="section-full">Full Period</a>
-    <a href="#section-deepdive" class="nav-link" data-section="section-deepdive">Product Deep-Dive</a>
-    <a href="#section-issues" class="nav-link" data-section="section-issues">Issues &amp; Notes</a>
-    <a href="#section-ai" class="nav-link" data-section="section-ai">AI Analysis</a>
-  </div>
-</nav>
+        <!-- ===== TAB NAVIGATION ===== -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="overview">Dashboard Overview</button>
+            <button class="tab-btn" data-tab="last15">Last 15 Days</button>
+            <button class="tab-btn" data-tab="alldata">All Records</button>
+        </nav>
 
-<!-- ═══════════════ UPLOAD BAR ═══════════════ -->
-<div class="upload-bar show" id="uploadBar">
-  <div class="upload-inner">
-    <label for="csvFile">📂 Load CSV File:</label>
-    <input type="file" id="csvFile" accept=".csv">
-    <span class="upload-status" id="uploadStatus">Waiting for data…</span>
-  </div>
-</div>
+        <!-- ===== TAB 1: OVERVIEW ===== -->
+        <div class="tab-content active" id="tab-overview">
+            <div class="summary-cards" id="summaryCards"></div>
 
-<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
-<main class="container">
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Production vs Reject Trend</h2>
+                        <select class="chart-filter" id="trendFilter">
+                            <option value="all">All Months</option>
+                        </select>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="trendChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Reject Status Breakdown</h2>
+                    </div>
+                    <div class="donut-wrapper"><canvas id="donutChart"></canvas></div>
+                    <div style="display:flex; justify-content:space-around; margin-top:12px;">
+                        <div class="stat-mini">
+                            <div class="stat-number" id="donutGoodCount">0</div>
+                            <div class="stat-label">Good (&lt;2%)</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-number" id="donutWarnCount">0</div>
+                            <div class="stat-label">Warning (2-5%)</div>
+                        </div>
+                        <div class="stat-mini">
+                            <div class="stat-number" id="donutCritCount">0</div>
+                            <div class="stat-label">Critical (&gt;5%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  <!-- SECTION 1: Executive Summary -->
-  <section class="section" id="section-executive">
-    <div class="section-header">
-      <div class="section-icon blue">📊</div>
-      <div>
-        <div class="section-title">Executive Summary</div>
-        <div class="section-subtitle">Key performance indicators at a glance</div>
-        <div class="section-divider"></div>
-      </div>
-    </div>
-    <div id="executive-content">
-      <div class="loader"><div class="spinner"></div><div class="loader-text">Waiting for data…</div></div>
-    </div>
-  </section>
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Reject % Over Time</h2>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="rejectLineChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Top Rejected Products</h2>
+                    </div>
+                    <ul class="top-reject-list" id="topRejectList"></ul>
+                </div>
+            </div>
 
-  <!-- SECTION 2: Last 15 Days -->
-  <section class="section" id="section-last15">
-    <div class="section-header">
-      <div class="section-icon orange">📅</div>
-      <div>
-        <div class="section-title">Last 15 Days Performance</div>
-        <div class="section-subtitle">Recent rejection trends from the last 15 production days</div>
-        <div class="section-divider"></div>
-      </div>
-    </div>
-    <div id="last15-content">
-      <div class="loader"><div class="spinner"></div><div class="loader-text">Waiting for data…</div></div>
-    </div>
-  </section>
-
-  <!-- SECTION 3: Full Period Overview -->
-  <section class="section" id="section-full">
-    <div class="section-header">
-      <div class="section-icon green">📈</div>
-      <div>
-        <div class="section-title">Full Period Overview</div>
-        <div class="section-subtitle">Complete data analysis across the entire reporting period</div>
-        <div class="section-divider"></div>
-      </div>
-    </div>
-    <div id="full-content">
-      <div class="loader"><div class="spinner"></div><div class="loader-text">Waiting for data…</div></div>
-    </div>
-  </section>
-
-  <!-- SECTION 4: Product Deep-Dive -->
-  <section class="section" id="section-deepdive">
-    <div class="section-header">
-      <div class="section-icon blue">🔍</div>
-      <div>
-        <div class="section-title">Product Deep-Dive</div>
-        <div class="section-subtitle">Detailed breakdown per product — click to expand</div>
-        <div class="section-divider"></div>
-      </div>
-    </div>
-    <div id="deepdive-content">
-      <div class="loader"><div class="spinner"></div><div class="loader-text">Waiting for data…</div></div>
-    </div>
-  </section>
-
-  <!-- SECTION 5: Issues & Notes -->
-  <section class="section section-timeline-bg" id="section-issues">
-    <div class="section-header">
-      <div class="section-icon red">⚠️</div>
-      <div>
-        <div class="section-title">This Week's Quality Notes &amp; Issues</div>
-        <div class="section-subtitle">Documented findings from the QA team — updated weekly</div>
-        <div class="section-divider"></div>
-      </div>
-    </div>
-    <div id="issues-content" class="issues-timeline-container fade-in">
-      
-      <!-- ISSUE CARD 1 -->
-      <div class="issue-card severity-red">
-        <div class="issue-card-header">
-          <span class="issue-date">30 Mar 2026</span>
-          <span class="issue-status status-green">Investigated ✓</span>
+            <div class="charts-row-equal">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Monthly Reject Rate</h2>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="monthlyBarChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Production Volume by Month</h2>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="prodVolumeChart"></canvas></div>
+                </div>
+            </div>
         </div>
-        <h3 class="issue-title">Abnormally High Rejection Rate — BU-093-1000 (Laryngeal Airway Mask Size 1)</h3>
-        <div class="issue-body">
-          <p>During OBM sampling on 30 March, product BU-093-1000 (Laryngeal Airway Mask Size 1 PVC) recorded rejection rates of 21.72%, 5.36%, 55.73%, and 66.67% across multiple inspection records — the highest in this reporting period.</p>
-          <p><strong>Root Cause:</strong> Investigation confirmed that this product batch (Lot: CD14J03) is extremely old stock dating back to prior years. Quality degradation over time — including material brittleness, discoloration, and cuff integrity failures — led to mass rejection during sampling.</p>
-          <p>Additionally, 2024 quality audit records had already flagged concerns about this batch's storage conditions and aging profile.</p>
-        </div>
-      </div>
 
-      <!-- ISSUE CARD 2 -->
-      <div class="issue-card severity-orange">
-        <div class="issue-card-header">
-          <span class="issue-date">30 Mar 2026</span>
-          <span class="issue-status status-blue">Resolved ✓</span>
-        </div>
-        <h3 class="issue-title">Unauthorized Stock Transfer — BU-093-1000</h3>
-        <div class="issue-body">
-          <p>It was discovered that the entire quantity of BU-093-1000 (1,682 units across two lots) was physically transferred from the warehouse to the production floor without any formal transfer documentation — no transfer orders were created, and no entries were recorded in the FOCUS ERP system.</p>
-          <p>The product was found physically present on the production line but had no traceability trail in the system. Investigation determined this was an individual human error by a warehouse operator who bypassed standard procedures.</p>
-          <p><strong>Resolution:</strong> The issue has been fully resolved. Proper transfer documents have been retroactively created, inventory records corrected in FOCUS, and the responsible personnel has been counseled. A reminder on SOPs for stock movements has been circulated to all warehouse staff.</p>
-        </div>
-      </div>
+        <!-- ===== TAB 2: LAST 15 DAYS ===== -->
+        <div class="tab-content" id="tab-last15">
+            <div class="summary-cards" id="last15Summary"></div>
 
-      <!-- ISSUE CARD 3 -->
-      <div class="issue-card severity-red">
-        <div class="issue-card-header">
-          <span class="issue-date">07-08 Mar 2026</span>
-          <span class="issue-status status-green">Investigated ✓</span>
+            <div class="charts-row-equal" style="margin-bottom:24px;">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Last 15 Days &mdash; Daily Reject %</h2>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="last15LineChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <h2>Last 15 Days &mdash; Production vs Rejects</h2>
+                    </div>
+                    <div class="chart-wrapper"><canvas id="last15BarChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h2>Last 15 Days Records</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Doc No</th>
+                                <th>Product Code</th>
+                                <th>Produced Qty</th>
+                                <th>Reject Qty</th>
+                                <th>Reject %</th>
+                                <th>Status</th>
+                                <th>Reason High</th>
+                            </tr>
+                        </thead>
+                        <tbody id="last15TableBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <h3 class="issue-title">Elevated Rejections — Laryngeal Airway Masks (Sizes 4.0 &amp; 5.0)</h3>
-        <div class="issue-body">
-          <p>Products BU-093-4000 (Size 4.0) and BU-093-5000 (Size 5.0) showed rejection rates of 30.64% and 24.85% respectively during OBM sampling on 7-8 March 2026.</p>
-          <p>These rates are significantly above the standard threshold. The batch (Lot: 231028) has been flagged for detailed quality review. Preliminary findings suggest potential supplier-side quality issues from the 2023 procurement batch.</p>
+
+        <!-- ===== TAB 3: ALL DATA ===== -->
+        <div class="tab-content" id="tab-alldata">
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h2>Complete Production Records</h2>
+                    <div class="table-search">
+                        <input type="text" id="allDataSearch" placeholder="Search product code, doc no...">
+                    </div>
+                </div>
+                <div class="table-container" style="max-height: 75vh; overflow-y: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date</th>
+                                <th>Doc No</th>
+                                <th>Product Code</th>
+                                <th>Produced Qty</th>
+                                <th>Lot No</th>
+                                <th>Item Code</th>
+                                <th>Reject Qty</th>
+                                <th>Reject %</th>
+                                <th>Status</th>
+                                <th>Reason High</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allDataTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="allDataPagination"></div>
+            </div>
         </div>
-      </div>
+
+        <footer class="dashboard-footer">
+            OBM Quality Control Dashboard &copy; 2026 &mdash; Production Reject Monitoring System &mdash; Powered by AI
+            Analytics
+        </footer>
 
     </div>
-  </section>
 
-  <!-- SECTION 6: AI Analysis -->
-  <section class="section" id="section-ai">
-    <div class="section-header">
-      <div class="section-icon orange">🤖</div>
-      <div>
-        <div class="section-title">AI Analysis</div>
-        <div class="section-subtitle">Gemini-powered insights and pattern detection</div>
-        <div class="section-divider"></div>
-      </div>
+    <!-- ===== CHATBOT ===== -->
+    <button class="chat-toggle-btn" id="chatToggleBtn" title="Chat with Dashboard AI">
+        &#x1F4AC;
+    </button>
+
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-header">
+            <div class="chat-header-icon">&#x1F916;</div>
+            <div class="chat-header-info">
+                <h3>Dashboard AI Assistant</h3>
+                <p><span class="mini-dot"></span> Online &mdash; Powered by Gemini</p>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">
+                <div class="chat-msg-avatar">&#x1F916;</div>
+                <div class="chat-msg-bubble">
+                    Welcome! I'm your <strong>Dashboard AI Assistant</strong>. I can analyze your production & reject
+                    data in real-time. Try asking me questions like:<br><br>
+                    &bull; "Show me the worst 5 products in February"<br>
+                    &bull; "Compare March vs February"<br>
+                    &bull; "Which product has the most repeated high rejects?"
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-suggestions" id="chatSuggestions">
+            <button class="chat-suggestion-chip"
+                onclick="askSuggestion('Show me the worst 5 products in February')">Worst 5 in Feb</button>
+            <button class="chat-suggestion-chip" onclick="askSuggestion('Compare March vs February reject rates')">Mar
+                vs Feb</button>
+            <button class="chat-suggestion-chip"
+                onclick="askSuggestion('Which product has the most repeated high rejects?')">Most repeated high
+                reject</button>
+            <button class="chat-suggestion-chip"
+                onclick="askSuggestion('Give me a summary of all critical batches')">Critical batches</button>
+            <button class="chat-suggestion-chip" onclick="askSuggestion('What is the overall reject trend?')">Overall
+                trend</button>
+        </div>
+
+        <div class="analysis-progress" id="analysisProgress">
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+            <div class="progress-label">
+                <span class="spin-icon">&#x2699;</span>
+                <span id="progressLabel">Analyzing data...</span>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Ask about your production data..." autocomplete="off">
+            <button class="chat-send-btn" id="chatSendBtn" title="Send">&#x27A4;</button>
+        </div>
     </div>
-    <div id="ai-content">
-      <div class="loader"><div class="spinner"></div><div class="loader-text">Waiting for data…</div></div>
+
+
+    <script>
+        // ======================================================
+        // DATA
+        // ======================================================
+        const RAW_DATA = [
+            { date: "2026-02-08", docNo: "MS-26-02593", productCode: "G-444-1005", producedQty: 843, lotNo: "210610", itemCode: "BU-444-1005", rejectQty: 6, rejectPct: 0.71 },
+            { date: "2026-02-09", docNo: "MS-26-02199", productCode: "G-442-1815", producedQty: 1000, lotNo: "2509053360", itemCode: "BU-442-1815", rejectQty: 44, rejectPct: 4.4 },
+            { date: "2026-02-09", docNo: "MS-26-02201", productCode: "G-681-1435", producedQty: 429, lotNo: "202307", itemCode: "nan", rejectQty: 2, rejectPct: 0.47 },
+            { date: "2026-02-09", docNo: "MS-26-02203", productCode: "G-056-12PD", producedQty: 12700, lotNo: "202307", itemCode: "BU-056-12PD", rejectQty: 188, rejectPct: 1.48 },
+            { date: "2026-02-09", docNo: "MS-26-02205", productCode: "G-681-2050", producedQty: 300, lotNo: "nan", itemCode: "G-681-2050", rejectQty: 3, rejectPct: 0.33 },
+            { date: "2026-02-10", docNo: "MS-26-02595", productCode: "BU-501-3485", producedQty: 100, lotNo: "2209052122", itemCode: "BU-501-3485", rejectQty: 1, rejectPct: 1.0 },
+            { date: "2026-02-10", docNo: "MS-26-02598", productCode: "BU-681-1435", producedQty: 500, lotNo: "2508052857", itemCode: "BU-681-1435", rejectQty: 1, rejectPct: 0.44 },
+            { date: "2026-02-10", docNo: "MS-26-02600", productCode: "BU-056-12PD", producedQty: 8000, lotNo: "LATEX RUBBER", itemCode: "BU-056-12PD", rejectQty: 32, rejectPct: 0.4 },
+            { date: "2026-02-10", docNo: "MS-26-02601", productCode: "BU-175-20ML", producedQty: 7000, lotNo: "251120", itemCode: "BU-175-20ML", rejectQty: 3, rejectPct: 0.04 },
+            { date: "2026-02-11", docNo: "MS-26-02589", productCode: "BU-506-2870T", producedQty: 800, lotNo: "20250723", itemCode: "BU-506-2870T", rejectQty: 1, rejectPct: 0.13 },
+            { date: "2026-02-11", docNo: "MS-26-02590", productCode: "BU-431-1510", producedQty: 265, lotNo: "200804", itemCode: "BU-431-1510", rejectQty: 4, rejectPct: 1.51 },
+            { date: "2026-02-12", docNo: "MS-26-02604", productCode: "G-431-1510", producedQty: 400, lotNo: "231208", itemCode: "BU-431-1510", rejectQty: 25, rejectPct: 6.25 },
+            { date: "2026-02-12", docNo: "MS-26-02607", productCode: "G-431-1510", producedQty: 360, lotNo: "2008804", itemCode: "BU-431-1510", rejectQty: 9, rejectPct: 2.5 },
+            { date: "2026-02-14", docNo: "MS-26-02196", productCode: "G-183-0000", producedQty: 18900, lotNo: "20250507", itemCode: "BU-183-0000", rejectQty: 21, rejectPct: 0.11 },
+            { date: "2026-02-14", docNo: "MS-26-02591", productCode: "BU-183-0000", producedQty: 18900, lotNo: "20250507", itemCode: "BU-183-0000", rejectQty: 19, rejectPct: 0.1 },
+            { date: "2026-02-17", docNo: "MS-26-02587", productCode: "BU-501-2870", producedQty: 1600, lotNo: "2405051364", itemCode: "BU-501-2870", rejectQty: 1, rejectPct: 0.19 },
+            { date: "2026-02-17", docNo: "MS-26-02588", productCode: "BU-428-0100", producedQty: 800, lotNo: "20200610", itemCode: "BU-428-0100", rejectQty: 1, rejectPct: 0.13 },
+            { date: "2026-02-18", docNo: "MS-26-02592", productCode: "BU-506-2665T", producedQty: 120, lotNo: "20251009", itemCode: "BU-506-2665T", rejectQty: 1, rejectPct: 0.83 },
+            { date: "2026-02-19", docNo: "MS-26-02597", productCode: "G-442-1215", producedQty: 281, lotNo: "220214", itemCode: "BU-442-1215", rejectQty: 2, rejectPct: 0.71 },
+            { date: "2026-02-21", docNo: "MS-26-02387", productCode: "G-056-12PD", producedQty: 1000, lotNo: "202307", itemCode: "BU-056-12PD", rejectQty: 2, rejectPct: 0.2 },
+            { date: "2026-02-21", docNo: "MS-26-02389", productCode: "G-691-3280", producedQty: 200, lotNo: "2301050105", itemCode: "G-691-3280", rejectQty: 1, rejectPct: 0.5 },
+            { date: "2026-02-23", docNo: "MS-26-02619", productCode: "G-PS-PS", producedQty: 800, lotNo: "2025TF8226", itemCode: "BU-PS-PS", rejectQty: 13, rejectPct: 1.63 },
+            { date: "2026-02-23", docNo: "MS-26-02620", productCode: "G-PS-NBL", producedQty: 2370, lotNo: "2025TF8254", itemCode: "BU-PS-NBL", rejectQty: 17, rejectPct: 0.72 },
+            { date: "2026-02-23", docNo: "MS-26-02311", productCode: "SUC-CON-T-180", producedQty: 4205, lotNo: "260203-3", itemCode: "SUC-CON-T-180", rejectQty: 5, rejectPct: 0.12 },
+            { date: "2026-02-23", docNo: "MS-26-02312", productCode: "SUC-CON-T-180", producedQty: 3904, lotNo: "260201-1", itemCode: "SUC-CON-T-180", rejectQty: 4, rejectPct: 0.1 },
+            { date: "2026-02-23", docNo: "MS-26-02313", productCode: "SUC-CON-T-180", producedQty: 3908, lotNo: "260201-1", itemCode: "SUC-CON-T-180", rejectQty: 8, rejectPct: 0.2 },
+            { date: "2026-02-25", docNo: "MS-26-02596", productCode: "G-421-2138", producedQty: 2400, lotNo: "20250810", itemCode: "BU-421-2138", rejectQty: 4, rejectPct: 0.17 },
+            { date: "2026-02-28", docNo: "MS-26-02621", productCode: "G-PS-PS", producedQty: 700, lotNo: "2025TF8226", itemCode: "BU-PS-PS", rejectQty: 5, rejectPct: 0.71 },
+            { date: "2026-02-28", docNo: "MS-26-02622", productCode: "G-PS-PMI", producedQty: 1400, lotNo: "2025TF8226", itemCode: "BU-PS-PMI", rejectQty: 8, rejectPct: 0.57 },
+            { date: "2026-02-28", docNo: "MS-26-02623", productCode: "G-431-1510", producedQty: 400, lotNo: "20190105", itemCode: "BU-431-1510", rejectQty: 5, rejectPct: 1.25 },
+            { date: "2026-02-28", docNo: "MS-26-02624", productCode: "G-112-0550", producedQty: 400, lotNo: "20131015", itemCode: "BU-112-0550", rejectQty: 3, rejectPct: 0.75 },
+            { date: "2026-03-01", docNo: "MS-26-02625", productCode: "G-431-1510", producedQty: 280, lotNo: "181020", itemCode: "BU-431-1510", rejectQty: 5, rejectPct: 1.79 },
+            { date: "2026-03-01", docNo: "MS-26-02626", productCode: "G-442-1615", producedQty: 150, lotNo: "250705", itemCode: "BU-431-1510", rejectQty: 6, rejectPct: 4.0 },
+            { date: "2026-03-01", docNo: "MS-26-02627", productCode: "G-442-1615", producedQty: 1300, lotNo: "2508052857", itemCode: "BU-442-1615", rejectQty: 13, rejectPct: 1.0 },
+            { date: "2026-03-01", docNo: "MS-26-02628", productCode: "G-PS-PMI", producedQty: 1300, lotNo: "2025STF-8226", itemCode: "BU-PS-PMI", rejectQty: 5, rejectPct: 0.38 },
+            { date: "2026-03-02", docNo: "MS-26-02662", productCode: "BU-112-0550", producedQty: 1500, lotNo: "20131015", itemCode: "BU-112-0550", rejectQty: 5, rejectPct: 0.33 },
+            { date: "2026-03-02", docNo: "MS-26-02663", productCode: "BU-442-1415", producedQty: 1300, lotNo: "Various", itemCode: "BU-442-1415", rejectQty: 67, rejectPct: 5.15 },
+            { date: "2026-03-02", docNo: "MS-26-02664", productCode: "BU-442-1415", producedQty: 1000, lotNo: "Various", itemCode: "BU-442-1415", rejectQty: 15, rejectPct: 1.5 },
+            { date: "2026-03-04", docNo: "MS-26-02766", productCode: "G-112-0550", producedQty: 1000, lotNo: "20131015", itemCode: "BU-112-0550", rejectQty: 1, rejectPct: 0.1 },
+            { date: "2026-03-04", docNo: "MS-26-02767", productCode: "G-431-1510", producedQty: 13000, lotNo: "20170105", itemCode: "BU-431-1510", rejectQty: 15, rejectPct: 0.12 },
+            { date: "2026-03-04", docNo: "MS-26-02749", productCode: "G-112-0550", producedQty: 1000, lotNo: "20131015", itemCode: "BU-112-0550", rejectQty: 1, rejectPct: 0.1 },
+            { date: "2026-03-05", docNo: "MS-26-02818", productCode: "G-093-1500C", producedQty: 200, lotNo: "CY25M12", itemCode: "BU-093-1500C", rejectQty: 1, rejectPct: 0.5 },
+            { date: "2026-03-05", docNo: "MS-26-02819", productCode: "G-681-18451", producedQty: 1730, lotNo: "2511540119", itemCode: "BU-681-18451", rejectQty: 10, rejectPct: 0.6 },
+            { date: "2026-03-07", docNo: "MS-26-02814", productCode: "G-093-4000", producedQty: 816, lotNo: "231028", itemCode: "BU-093-4000", rejectQty: 250, rejectPct: 30.64 },
+            { date: "2026-03-08", docNo: "MS-26-02866", productCode: "G-093-5000", producedQty: 330, lotNo: "231028", itemCode: "BU-093-5000", rejectQty: 82, rejectPct: 24.85 },
+            { date: "2026-03-09", docNo: "MS-26-02932", productCode: "G-501-3075", producedQty: 4190, lotNo: "251105", itemCode: "BU-501-3075", rejectQty: 2, rejectPct: 0.05 },
+            { date: "2026-03-11", docNo: "MS-26-03045", productCode: "G-501-3075", producedQty: 820, lotNo: "251105", itemCode: "BU-501-3075", rejectQty: 1, rejectPct: 0.12 },
+            { date: "2026-03-11", docNo: "MS-26-03046", productCode: "G-501-3075", producedQty: 2374, lotNo: "251105", itemCode: "BU-501-3075", rejectQty: 1, rejectPct: 0.04 },
+            { date: "2026-03-17", docNo: "MS-26-03455", productCode: "BU-506-3075T", producedQty: 759, lotNo: "20251220", itemCode: "BU-506-3075T", rejectQty: 1, rejectPct: 0.13 },
+            { date: "2026-03-17", docNo: "MS-26-03456", productCode: "BU-501-2870C", producedQty: 831, lotNo: "Various", itemCode: "BU-501-2870C", rejectQty: 2, rejectPct: 0.24 },
+            { date: "2026-03-17", docNo: "MS-26-03457", productCode: "BU-501-2460C", producedQty: 1400, lotNo: "Various", itemCode: "BU-501-2460C", rejectQty: 2, rejectPct: 0.14 },
+            { date: "2026-03-17", docNo: "MS-26-03458", productCode: "BU-506-2870T", producedQty: 250, lotNo: "20250723", itemCode: "BU-506-2870T", rejectQty: 1, rejectPct: 0.4 },
+            { date: "2026-03-18", docNo: "MS-26-03453", productCode: "BU-501-2460C", producedQty: 1650, lotNo: "Various", itemCode: "BU-501-2460C", rejectQty: 2, rejectPct: 0.12 },
+            { date: "2026-03-18", docNo: "MS-26-03459", productCode: "BU-502-2870C", producedQty: 1580, lotNo: "20251220", itemCode: "BU-502-2870C", rejectQty: 1, rejectPct: 0.06 },
+            { date: "2026-03-19", docNo: "MS-26-03448", productCode: "BU-502-2460C", producedQty: 1218, lotNo: "6.0MM (ID)", itemCode: "BU-502-2460C", rejectQty: 11, rejectPct: 0.86 },
+            { date: "2026-03-19", docNo: "MS-26-03450", productCode: "BU-506-3075", producedQty: 300, lotNo: "20251220", itemCode: "BU-506-3075", rejectQty: 1, rejectPct: 0.33 },
+            { date: "2026-03-22", docNo: "MS-26-03451", productCode: "BU-506-2870T", producedQty: 200, lotNo: "20250723", itemCode: "BU-506-2870T", rejectQty: 1, rejectPct: 0.5 },
+            { date: "2026-03-22", docNo: "MS-26-03452", productCode: "BU-506-2255", producedQty: 50, lotNo: "220115009", itemCode: "BU-506-2255", rejectQty: 1, rejectPct: 2.0 },
+            { date: "2026-03-26", docNo: "MS-26-03775", productCode: "BU-372-40ML", producedQty: 1600, lotNo: "SPECIMEN PLASTIC- STERILE", itemCode: "BU-372-40ML", rejectQty: 4, rejectPct: 0.25 },
+            { date: "2026-03-27", docNo: "MS-26-03765", productCode: "BU-372-40ML", producedQty: 600, lotNo: "SPECIMEN PLASTIC- STERILE", itemCode: "BU-372-40ML", rejectQty: 1, rejectPct: 0.17 },
+            { date: "2026-03-27", docNo: "MS-26-03772", productCode: "BU-372-40ML", producedQty: 600, lotNo: "SPECIMEN PLASTIC- STERILE", itemCode: "BU-372-40ML", rejectQty: 1, rejectPct: 0.17 },
+            { date: "2026-03-28", docNo: "MS-26-03771", productCode: "BU-372-40ML", producedQty: 1400, lotNo: "SPECIMEN PLASTIC- STERILE", itemCode: "BU-372-40ML", rejectQty: 22, rejectPct: 1.57 },
+            { date: "2026-03-30", docNo: "MS-26-03773", productCode: "BU-093-1000", producedQty: 1082, lotNo: "CD14J03", itemCode: "BU-093-1000", rejectQty: 235, rejectPct: 21.72 },
+            { date: "2026-03-30", docNo: "MS-26-03773", productCode: "BU-093-1000", producedQty: 1082, lotNo: "CD14J03", itemCode: "BU-093-1000", rejectQty: 58, rejectPct: 5.36 },
+            { date: "2026-03-30", docNo: "MS-26-03773", productCode: "BU-093-1000", producedQty: 1082, lotNo: "CD14J03", itemCode: "BU-093-1000", rejectQty: 603, rejectPct: 55.73 },
+            { date: "2026-03-30", docNo: "MS-26-03774", productCode: "BU-093-1000", producedQty: 600, lotNo: "CDI4J03", itemCode: "BU-093-1000", rejectQty: 400, rejectPct: 66.67 }
+        ];
+
+        RAW_DATA.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // ======================================================
+        // REASON HIGH MAP
+        // ======================================================
+        const REASON_MAP = {
+            'BU-093-1000': 'Old product from 2024 warehouse stock (Lot CD14J03). Material received from storage had pre-existing quality degradation due to prolonged storage conditions and improper climate control in the warehouse.',
+            'G-093-4000': 'Old product from 2024 warehouse stock (Lot 231028). Bulk items received from long-term storage facility showed significant quality deterioration. Material age and warehouse conditions contributed to high reject rate.',
+            'G-093-5000': 'Old product from 2024 warehouse stock (Lot 231028). Same batch origin as G-093-4000 — items sourced from aged inventory in storage. Quality compromise due to extended shelf time and storage environment.'
+        };
+
+        function getReasonHTML(r) {
+            const code = r.productCode;
+            const itemCode = r.itemCode;
+            const reason = REASON_MAP[code] || REASON_MAP[itemCode];
+
+            if (reason && r.rejectPct > 5) {
+                return `<td class="reason-cell">
+            <div class="reason-tooltip">
+                <span class="reason-tag has-reason">&#x26A0; Identified</span>
+                <div class="reason-popup">
+                    <strong>&#x26A0; Root Cause Analysis</strong>
+                    ${reason}
+                </div>
+            </div>
+        </td>`;
+            } else if (r.rejectPct > 5) {
+                return `<td class="reason-cell"><span class="reason-tag has-reason">&#x26A0; Under Review</span></td>`;
+            } else if (r.rejectPct >= 2) {
+                return `<td class="reason-cell"><span class="reason-tag no-reason">&#x1F50D; Monitoring</span></td>`;
+            } else {
+                return `<td class="reason-cell"><span class="reason-tag no-reason">&#x2714; Normal</span></td>`;
+            }
+        }
+
+        // ======================================================
+        // UTILITIES
+        // ======================================================
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        }
+
+        function getStatusClass(pct) {
+            if (pct < 2) return 'good';
+            if (pct <= 5) return 'warning';
+            return 'critical';
+        }
+
+        function getStatusLabel(pct) {
+            if (pct < 2) return 'Good';
+            if (pct <= 5) return 'Warning';
+            return 'Critical';
+        }
+
+        function getMonthKey(dateStr) {
+            const d = new Date(dateStr);
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        }
+
+        function getMonthLabel(key) {
+            const [y, m] = key.split('-');
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[parseInt(m) - 1]} ${y}`;
+        }
+
+        // ======================================================
+        // SET DATE
+        // ======================================================
+        document.getElementById('currentDateBadge').textContent = formatDate('2026-04-04');
+
+        // ======================================================
+        // TAB SWITCHING
+        // ======================================================
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ======================================================
+        // COMPUTE STATS
+        // ======================================================
+        const totalRecords = RAW_DATA.length;
+        const totalProduced = RAW_DATA.reduce((s, r) => s + r.producedQty, 0);
+        const totalRejects = RAW_DATA.reduce((s, r) => s + r.rejectQty, 0);
+        const avgRejectPct = (RAW_DATA.reduce((s, r) => s + r.rejectPct, 0) / totalRecords).toFixed(2);
+        const criticalCount = RAW_DATA.filter(r => r.rejectPct > 5).length;
+        const goodCount = RAW_DATA.filter(r => r.rejectPct < 2).length;
+        const warningCount = RAW_DATA.filter(r => r.rejectPct >= 2 && r.rejectPct <= 5).length;
+
+        // ======================================================
+        // SUMMARY CARDS
+        // ======================================================
+        document.getElementById('summaryCards').innerHTML = `
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Total Records</h3>
+            <div class="value">${totalRecords.toLocaleString()}</div>
+            <div class="change neutral">Feb &mdash; Mar 2026</div>
+        </div>
+        <div class="summary-icon blue">&#128203;</div>
     </div>
-  </section>
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Total Produced</h3>
+            <div class="value">${totalProduced.toLocaleString()}</div>
+            <div class="change up">&#9650; All batches combined</div>
+        </div>
+        <div class="summary-icon green">&#9881;</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Total Rejects</h3>
+            <div class="value">${totalRejects.toLocaleString()}</div>
+            <div class="change down">&#9660; ${(totalRejects / totalProduced * 100).toFixed(2)}% overall rate</div>
+        </div>
+        <div class="summary-icon red">&#10060;</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Avg Reject %</h3>
+            <div class="value">${avgRejectPct}%</div>
+            <div class="change ${parseFloat(avgRejectPct) > 2 ? 'down' : 'up'}">${criticalCount} critical batches</div>
+        </div>
+        <div class="summary-icon purple">&#128200;</div>
+    </div>`;
 
-</main>
+        // ======================================================
+        // DONUT CHART
+        // ======================================================
+        document.getElementById('donutGoodCount').textContent = goodCount;
+        document.getElementById('donutWarnCount').textContent = warningCount;
+        document.getElementById('donutCritCount').textContent = criticalCount;
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div><strong>Mais Co. Quality Assurance Department</strong> | OBM Sample Rejection Tracking Dashboard</div>
-    <div id="footerDataPeriod">Data period: — to —</div>
-    <div id="footerGenDate">Report generated: —</div>
-    <div class="footer-small">Powered by Chart.js & Google Gemini AI</div>
-  </div>
-</footer>
+        new Chart(document.getElementById('donutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Good (<2%)', 'Warning (2-5%)', 'Critical (>5%)'],
+                datasets: [{
+                    data: [goodCount, warningCount, criticalCount],
+                    backgroundColor: ['rgba(74,222,128,0.8)', 'rgba(251,146,60,0.8)', 'rgba(248,113,113,0.8)'],
+                    borderColor: ['rgba(74,222,128,1)', 'rgba(251,146,60,1)', 'rgba(248,113,113,1)'],
+                    borderWidth: 2, hoverOffset: 8, spacing: 3
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: true, position: 'bottom',
+                        labels: { color: '#9498b8', padding: 12, font: { size: 11 }, usePointStyle: true, pointStyleWidth: 10 }
+                    }
+                }
+            }
+        });
 
-<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+        // ======================================================
+        // TREND CHART
+        // ======================================================
+        const dateAgg = {};
+        RAW_DATA.forEach(r => {
+            if (!dateAgg[r.date]) dateAgg[r.date] = { produced: 0, rejects: 0 };
+            dateAgg[r.date].produced += r.producedQty;
+            dateAgg[r.date].rejects += r.rejectQty;
+        });
+        const dateSorted = Object.keys(dateAgg).sort();
+        const trendLabels = dateSorted.map(d => formatDate(d));
+        const trendProduced = dateSorted.map(d => dateAgg[d].produced);
+        const trendRejects = dateSorted.map(d => dateAgg[d].rejects);
 
-<script src="app.js" defer></script>
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        const gradProd = trendCtx.createLinearGradient(0, 0, 0, 300);
+        gradProd.addColorStop(0, 'rgba(167,139,250,0.4)');
+        gradProd.addColorStop(1, 'rgba(167,139,250,0.02)');
+        const gradRej = trendCtx.createLinearGradient(0, 0, 0, 300);
+        gradRej.addColorStop(0, 'rgba(251,146,60,0.4)');
+        gradRej.addColorStop(1, 'rgba(251,146,60,0.02)');
+
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: trendLabels,
+                datasets: [
+                    {
+                        label: 'Produced Qty', data: trendProduced,
+                        borderColor: 'rgba(167,139,250,1)', backgroundColor: gradProd,
+                        fill: true, tension: 0.4, pointRadius: 3,
+                        pointBackgroundColor: 'rgba(167,139,250,1)', borderWidth: 2
+                    },
+                    {
+                        label: 'Reject Qty', data: trendRejects,
+                        borderColor: 'rgba(251,146,60,1)', backgroundColor: gradRej,
+                        fill: true, tension: 0.4, pointRadius: 3,
+                        pointBackgroundColor: 'rgba(251,146,60,1)', borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { labels: { color: '#9498b8', usePointStyle: true, padding: 16, font: { size: 12 } } },
+                    tooltip: {
+                        backgroundColor: '#1a2035', titleColor: '#e4e6f5', bodyColor: '#9498b8',
+                        borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, cornerRadius: 8, padding: 12,
+                        callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#5c6089', maxRotation: 45, font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                    y: { ticks: { color: '#5c6089', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        // ======================================================
+        // REJECT % LINE CHART
+        // ======================================================
+        const rejectLineCtx = document.getElementById('rejectLineChart').getContext('2d');
+        const rejLineGrad = rejectLineCtx.createLinearGradient(0, 0, 0, 300);
+        rejLineGrad.addColorStop(0, 'rgba(96,165,250,0.35)');
+        rejLineGrad.addColorStop(1, 'rgba(96,165,250,0.02)');
+
+        new Chart(rejectLineCtx, {
+            type: 'line',
+            data: {
+                labels: RAW_DATA.map(r => formatDate(r.date)),
+                datasets: [{
+                    label: 'Reject %', data: RAW_DATA.map(r => r.rejectPct),
+                    borderColor: 'rgba(96,165,250,1)', backgroundColor: rejLineGrad,
+                    fill: true, tension: 0.3, pointRadius: 3,
+                    pointBackgroundColor: RAW_DATA.map(r => {
+                        if (r.rejectPct > 5) return 'rgba(248,113,113,1)';
+                        if (r.rejectPct >= 2) return 'rgba(251,146,60,1)';
+                        return 'rgba(74,222,128,1)';
+                    }),
+                    pointBorderColor: RAW_DATA.map(r => {
+                        if (r.rejectPct > 5) return 'rgba(248,113,113,1)';
+                        if (r.rejectPct >= 2) return 'rgba(251,146,60,1)';
+                        return 'rgba(74,222,128,1)';
+                    }),
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a2035', titleColor: '#e4e6f5', bodyColor: '#9498b8',
+                        borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, cornerRadius: 8, padding: 12,
+                        callbacks: {
+                            title: items => RAW_DATA[items[0].dataIndex].productCode + '  ' + formatDate(RAW_DATA[items[0].dataIndex].date),
+                            label: ctx => `Reject: ${ctx.parsed.y}%`
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#5c6089', maxRotation: 45, maxTicksLimit: 15, font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                    y: { ticks: { color: '#5c6089', callback: v => v + '%', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        // ======================================================
+        // TOP REJECTED PRODUCTS
+        // ======================================================
+        const productAgg = {};
+        RAW_DATA.forEach(r => {
+            if (!productAgg[r.productCode]) productAgg[r.productCode] = { totalReject: 0, count: 0, totalPct: 0 };
+            productAgg[r.productCode].totalReject += r.rejectQty;
+            productAgg[r.productCode].count++;
+            productAgg[r.productCode].totalPct += r.rejectPct;
+        });
+
+        const topRejected = Object.entries(productAgg)
+            .map(([code, d]) => ({ code, avgPct: (d.totalPct / d.count).toFixed(2), totalReject: d.totalReject }))
+            .sort((a, b) => parseFloat(b.avgPct) - parseFloat(a.avgPct))
+            .slice(0, 8);
+
+        document.getElementById('topRejectList').innerHTML = topRejected.map(item => {
+            const cls = getStatusClass(parseFloat(item.avgPct));
+            return `<li>
+        <span class="item-name">${item.code}</span>
+        <span class="item-pct status-badge ${cls}">${item.avgPct}%</span>
+    </li>`;
+        }).join('');
+
+        // ======================================================
+        // MONTHLY BAR CHART
+        // ======================================================
+        const monthAgg = {};
+        RAW_DATA.forEach(r => {
+            const mk = getMonthKey(r.date);
+            if (!monthAgg[mk]) monthAgg[mk] = { produced: 0, rejects: 0, pctSum: 0, count: 0 };
+            monthAgg[mk].produced += r.producedQty;
+            monthAgg[mk].rejects += r.rejectQty;
+            monthAgg[mk].pctSum += r.rejectPct;
+            monthAgg[mk].count++;
+        });
+        const monthKeys = Object.keys(monthAgg).sort();
+
+        new Chart(document.getElementById('monthlyBarChart'), {
+            type: 'bar',
+            data: {
+                labels: monthKeys.map(getMonthLabel),
+                datasets: [{
+                    label: 'Avg Reject %',
+                    data: monthKeys.map(k => (monthAgg[k].pctSum / monthAgg[k].count).toFixed(2)),
+                    backgroundColor: monthKeys.map(k => {
+                        const avg = monthAgg[k].pctSum / monthAgg[k].count;
+                        if (avg > 5) return 'rgba(248,113,113,0.7)';
+                        if (avg >= 2) return 'rgba(251,146,60,0.7)';
+                        return 'rgba(74,222,128,0.7)';
+                    }),
+                    borderColor: monthKeys.map(k => {
+                        const avg = monthAgg[k].pctSum / monthAgg[k].count;
+                        if (avg > 5) return 'rgba(248,113,113,1)';
+                        if (avg >= 2) return 'rgba(251,146,60,1)';
+                        return 'rgba(74,222,128,1)';
+                    }),
+                    borderWidth: 2, borderRadius: 8, borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a2035', titleColor: '#e4e6f5', bodyColor: '#9498b8',
+                        borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, cornerRadius: 8,
+                        callbacks: { label: ctx => `Avg Reject: ${ctx.parsed.y}%` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#5c6089', font: { size: 11 } }, grid: { display: false } },
+                    y: { ticks: { color: '#5c6089', callback: v => v + '%', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        // ======================================================
+        // PRODUCTION VOLUME CHART
+        // ======================================================
+        new Chart(document.getElementById('prodVolumeChart'), {
+            type: 'bar',
+            data: {
+                labels: monthKeys.map(getMonthLabel),
+                datasets: [
+                    {
+                        label: 'Produced', data: monthKeys.map(k => monthAgg[k].produced),
+                        backgroundColor: 'rgba(167,139,250,0.6)', borderColor: 'rgba(167,139,250,1)',
+                        borderWidth: 2, borderRadius: 8, borderSkipped: false
+                    },
+                    {
+                        label: 'Rejected', data: monthKeys.map(k => monthAgg[k].rejects),
+                        backgroundColor: 'rgba(248,113,113,0.6)', borderColor: 'rgba(248,113,113,1)',
+                        borderWidth: 2, borderRadius: 8, borderSkipped: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#9498b8', usePointStyle: true, padding: 16, font: { size: 12 } } },
+                    tooltip: {
+                        backgroundColor: '#1a2035', titleColor: '#e4e6f5', bodyColor: '#9498b8',
+                        borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, cornerRadius: 8,
+                        callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#5c6089', font: { size: 11 } }, grid: { display: false } },
+                    y: { ticks: { color: '#5c6089', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        // ======================================================
+        // TAB 2: LAST 15 DAYS
+        // ======================================================
+        const latestDate = new Date('2026-04-04');
+        const fifteenDaysAgo = new Date(latestDate);
+        fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+        const last15Data = RAW_DATA.filter(r => {
+            const d = new Date(r.date);
+            return d >= fifteenDaysAgo && d <= latestDate;
+        });
+
+        const l15TotalProduced = last15Data.reduce((s, r) => s + r.producedQty, 0);
+        const l15TotalRejects = last15Data.reduce((s, r) => s + r.rejectQty, 0);
+        const l15AvgPct = last15Data.length ? (last15Data.reduce((s, r) => s + r.rejectPct, 0) / last15Data.length).toFixed(2) : 0;
+        const l15Critical = last15Data.filter(r => r.rejectPct > 5).length;
+
+        document.getElementById('last15Summary').innerHTML = `
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Records (15 Days)</h3>
+            <div class="value">${last15Data.length}</div>
+            <div class="change neutral">Last 15 days</div>
+        </div>
+        <div class="summary-icon blue">&#128203;</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Produced (15 Days)</h3>
+            <div class="value">${l15TotalProduced.toLocaleString()}</div>
+            <div class="change up">Total volume</div>
+        </div>
+        <div class="summary-icon green">&#9881;</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Rejects (15 Days)</h3>
+            <div class="value">${l15TotalRejects.toLocaleString()}</div>
+            <div class="change down">${(l15TotalRejects / l15TotalProduced * 100).toFixed(2)}% rate</div>
+        </div>
+        <div class="summary-icon red">&#10060;</div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-info">
+            <h3>Avg Reject %</h3>
+            <div class="value">${l15AvgPct}%</div>
+            <div class="change ${l15Critical > 0 ? 'down' : 'up'}">${l15Critical} critical batches</div>
+        </div>
+        <div class="summary-icon purple">&#128200;</div>
+    </div>`;
+
+        // Last 15 days charts
+        const l15DateAgg = {};
+        last15Data.forEach(r => {
+            if (!l15DateAgg[r.date]) l15DateAgg[r.date] = { pctSum: 0, count: 0, produced: 0, rejects: 0 };
+            l15DateAgg[r.date].pctSum += r.rejectPct;
+            l15DateAgg[r.date].count++;
+            l15DateAgg[r.date].produced += r.producedQty;
+            l15DateAgg[r.date].rejects += r.rejectQty;
+        });
+        const l15Dates = Object.keys(l15DateAgg).sort();
+
+        const l15LineCtx = document.getElementById('last15LineChart').getContext('2d');
+        const l15Grad = l15LineCtx.createLinearGradient(0, 0, 0, 250);
+        l15Grad.addColorStop(0, 'rgba(96,165,250,0.35)');
+        l15Grad.addColorStop(1, 'rgba(96,165,250,0.02)');
+
+        new Chart(l15LineCtx, {
+            type: 'line',
+            data: {
+                labels: l15Dates.map(formatDate),
+                datasets: [{
+                    label: 'Avg Daily Reject %',
+                    data: l15Dates.map(d => (l15DateAgg[d].pctSum / l15DateAgg[d].count).toFixed(2)),
+                    borderColor: 'rgba(96,165,250,1)', backgroundColor: l15Grad,
+                    fill: true, tension: 0.4, pointRadius: 5,
+                    pointBackgroundColor: l15Dates.map(d => {
+                        const avg = l15DateAgg[d].pctSum / l15DateAgg[d].count;
+                        if (avg > 5) return 'rgba(248,113,113,1)';
+                        if (avg >= 2) return 'rgba(251,146,60,1)';
+                        return 'rgba(74,222,128,1)';
+                    }),
+                    borderWidth: 2.5
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1a2035', titleColor: '#e4e6f5', bodyColor: '#9498b8',
+                        borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, cornerRadius: 8,
+                        callbacks: { label: ctx => `Avg Reject: ${ctx.parsed.y}%` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#5c6089', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } },
+                    y: { ticks: { color: '#5c6089', callback: v => v + '%', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('last15BarChart'), {
+            type: 'bar',
+            data: {
+                labels: l15Dates.map(formatDate),
+                datasets: [
+                    {
+                        label: 'Produced', data: l15Dates.map(d => l15DateAgg[d].produced),
+                        backgroundColor: 'rgba(167,139,250,0.6)', borderColor: 'rgba(167,139,250,1)',
+                        borderWidth: 2, borderRadius: 6, borderSkipped: false
+                    },
+                    {
+                        label: 'Rejected', data: l15Dates.map(d => l15DateAgg[d].rejects),
+                        backgroundColor: 'rgba(248,113,113,0.6)', borderColor: 'rgba(248,113,113,1)',
+                        borderWidth: 2, borderRadius: 6, borderSkipped: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#9498b8', usePointStyle: true, font: { size: 12 } } },
+                    tooltip: {
+                        backgroundColor: '#1a2035', titleColor: '#e4e6f5', bodyColor: '#9498b8',
+                        borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, cornerRadius: 8,
+                        callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#5c6089', font: { size: 10 } }, grid: { display: false } },
+                    y: { ticks: { color: '#5c6089', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                }
+            }
+        });
+
+        // Last 15 table with Reason High column
+        document.getElementById('last15TableBody').innerHTML = last15Data.map((r, i) => {
+            const cls = getStatusClass(r.rejectPct);
+            const barW = Math.min(r.rejectPct * 1.5, 100);
+            return `<tr>
+        <td>${i + 1}</td>
+        <td>${formatDate(r.date)}</td>
+        <td>${r.docNo}</td>
+        <td>${r.productCode}</td>
+        <td>${r.producedQty.toLocaleString()}</td>
+        <td>${r.rejectQty.toLocaleString()}</td>
+        <td>
+            <div class="reject-bar">
+                <div class="reject-bar-track"><div class="reject-bar-fill ${cls}" style="width:${barW}%"></div></div>
+                <span>${r.rejectPct}%</span>
+            </div>
+        </td>
+        <td><span class="status-badge ${cls}">${getStatusLabel(r.rejectPct)}</span></td>
+        ${getReasonHTML(r)}
+    </tr>`;
+        }).join('');
+
+        // ======================================================
+        // TAB 3: ALL DATA WITH PAGINATION & SEARCH
+        // ======================================================
+        const ROWS_PER_PAGE = 15;
+        let allDataFiltered = [...RAW_DATA];
+        let currentPage = 1;
+
+        function renderAllDataTable() {
+            const start = (currentPage - 1) * ROWS_PER_PAGE;
+            const pageData = allDataFiltered.slice(start, start + ROWS_PER_PAGE);
+            const totalPages = Math.ceil(allDataFiltered.length / ROWS_PER_PAGE);
+
+            document.getElementById('allDataTableBody').innerHTML = pageData.map((r, i) => {
+                const cls = getStatusClass(r.rejectPct);
+                const barW = Math.min(r.rejectPct * 1.5, 100);
+                return `<tr>
+            <td>${start + i + 1}</td>
+            <td>${formatDate(r.date)}</td>
+            <td>${r.docNo}</td>
+            <td>${r.productCode}</td>
+            <td>${r.producedQty.toLocaleString()}</td>
+            <td>${r.lotNo}</td>
+            <td>${r.itemCode}</td>
+            <td>${r.rejectQty.toLocaleString()}</td>
+            <td>
+                <div class="reject-bar">
+                    <div class="reject-bar-track"><div class="reject-bar-fill ${cls}" style="width:${barW}%"></div></div>
+                    <span>${r.rejectPct}%</span>
+                </div>
+            </td>
+            <td><span class="status-badge ${cls}">${getStatusLabel(r.rejectPct)}</span></td>
+            ${getReasonHTML(r)}
+        </tr>`;
+            }).join('');
+
+            let pagHTML = `<div class="pagination-info">Showing ${start + 1}-${Math.min(start + ROWS_PER_PAGE, allDataFiltered.length)} of ${allDataFiltered.length} records</div>`;
+            pagHTML += '<div class="pagination-btns">';
+            pagHTML += `<button onclick="goPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>&laquo;</button>`;
+            for (let p = 1; p <= totalPages; p++) {
+                if (totalPages > 7) {
+                    if (p === 1 || p === totalPages || (p >= currentPage - 1 && p <= currentPage + 1)) {
+                        pagHTML += `<button class="${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+                    } else if (p === currentPage - 2 || p === currentPage + 2) {
+                        pagHTML += `<button disabled>...</button>`;
+                    }
+                } else {
+                    pagHTML += `<button class="${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+                }
+            }
+            pagHTML += `<button onclick="goPage(${currentPage + 1})" ${currentPage === Math.ceil(allDataFiltered.length / ROWS_PER_PAGE) ? 'disabled' : ''}>&raquo;</button>`;
+            pagHTML += '</div>';
+            document.getElementById('allDataPagination').innerHTML = pagHTML;
+        }
+
+        window.goPage = function (p) {
+            const totalPages = Math.ceil(allDataFiltered.length / ROWS_PER_PAGE);
+            if (p < 1 || p > totalPages) return;
+            currentPage = p;
+            renderAllDataTable();
+        };
+
+        document.getElementById('allDataSearch').addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            allDataFiltered = RAW_DATA.filter(r =>
+                r.productCode.toLowerCase().includes(query) ||
+                r.docNo.toLowerCase().includes(query) ||
+                r.itemCode.toLowerCase().includes(query) ||
+                r.date.includes(query)
+            );
+            currentPage = 1;
+            renderAllDataTable();
+        });
+
+        renderAllDataTable();
+
+        // ======================================================
+        // TREND FILTER
+        // ======================================================
+        const trendFilterEl = document.getElementById('trendFilter');
+        monthKeys.forEach(mk => {
+            const opt = document.createElement('option');
+            opt.value = mk;
+            opt.textContent = getMonthLabel(mk);
+            trendFilterEl.appendChild(opt);
+        });
+
+        // ======================================================
+        // CHATBOT - GEMINI INTEGRATION
+        // ======================================================
+        const GEMINI_API_KEY = 'AIzaSyA0fBepdERu2XDDPeqotM3QuRhiBtaUyNs';
+        const GEMINI_MODEL = 'gemini-2.5-flash';
+        const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+
+        // Prepare data summary for context
+        function buildDataContext() {
+            let ctx = `You are name is YAZEED , an AI assistant for the OBM Rejects Control Dashboard. You analyze production and reject quality control data. Today's date is April 4, 2026.\n\n`;
+            ctx += `DATASET SUMMARY:\n`;
+            ctx += `- Total records: ${totalRecords}\n`;
+            ctx += `- Date range: ${RAW_DATA[0].date} to ${RAW_DATA[RAW_DATA.length - 1].date}\n`;
+            ctx += `- Total produced: ${totalProduced.toLocaleString()} units\n`;
+            ctx += `- Total rejects: ${totalRejects.toLocaleString()} units\n`;
+            ctx += `- Overall reject rate: ${(totalRejects / totalProduced * 100).toFixed(2)}%\n`;
+            ctx += `- Average reject %: ${avgRejectPct}%\n`;
+            ctx += `- Good batches (<2%): ${goodCount}\n`;
+            ctx += `- Warning batches (2-5%): ${warningCount}\n`;
+            ctx += `- Critical batches (>5%): ${criticalCount}\n\n`;
+
+            ctx += `FULL DATA (each row: date | docNo | productCode | producedQty | rejectQty | rejectPct%):\n`;
+            RAW_DATA.forEach(r => {
+                ctx += `${r.date} | ${r.docNo} | ${r.productCode} | ${r.producedQty} | ${r.rejectQty} | ${r.rejectPct}%\n`;
+            });
+
+            ctx += `\nKNOWN ROOT CAUSES:\n`;
+            ctx += `- BU-093-1000 (reject rates: 21.72%, 5.36%, 55.73%, 66.67%): Old product from 2024 warehouse stock. Material received from storage had pre-existing quality degradation due to prolonged storage and improper climate control.\n`;
+            ctx += `- G-093-4000 (reject rate: 30.64%): Old product from 2024 warehouse stock (Lot 231028). Significant quality deterioration from long-term storage.\n`;
+            ctx += `- G-093-5000 (reject rate: 24.85%): Same batch origin as G-093-4000 — items from aged 2024 inventory. Extended shelf time caused quality issues.\n\n`;
+
+            ctx += `MONTHLY BREAKDOWN:\n`;
+            monthKeys.forEach(mk => {
+                const m = monthAgg[mk];
+                ctx += `${getMonthLabel(mk)}: ${m.count} records, produced ${m.produced.toLocaleString()}, rejects ${m.rejects.toLocaleString()}, avg reject ${(m.pctSum / m.count).toFixed(2)}%\n`;
+            });
+
+            ctx += `\nINSTRUCTIONS: Answer in clear, concise English. Use numbers and percentages. When listing products, include their reject rates. Format your response with clear structure. If asked to compare months, provide specific numbers for both. Always be data-driven and precise.`;
+            return ctx;
+        }
+
+        const systemContext = buildDataContext();
+
+        // Chat toggle
+        const chatToggleBtn = document.getElementById('chatToggleBtn');
+        const chatPanel = document.getElementById('chatPanel');
+        let chatOpen = false;
+
+        chatToggleBtn.addEventListener('click', () => {
+            chatOpen = !chatOpen;
+            chatPanel.classList.toggle('visible', chatOpen);
+            chatToggleBtn.innerHTML = chatOpen ? '&#x2715;' : '&#x1F4AC;';
+        });
+
+        // Chat functions
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const analysisProgress = document.getElementById('analysisProgress');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const progressLabel = document.getElementById('progressLabel');
+
+        let chatHistory = [];
+
+        function addMessage(type, text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-msg ${type}`;
+            const avatar = type === 'bot' ? '&#x1F916;' : '&#x1F464;';
+            const bgClass = type === 'bot' ? 'background: linear-gradient(135deg, #6366f1, #8b5cf6);' : 'background: linear-gradient(135deg, #22d3ee, #06b6d4);';
+
+            // Convert markdown-like formatting
+            let formattedText = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>')
+                .replace(/`(.*?)`/g, '<code>$1</code>');
+
+            msgDiv.innerHTML = `
+        <div class="chat-msg-avatar" style="${bgClass}">${avatar}</div>
+        <div class="chat-msg-bubble">${formattedText}</div>
+    `;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chat-msg bot';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+        <div class="chat-msg-avatar" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">&#x1F916;</div>
+        <div class="chat-msg-bubble">
+            <div class="typing-indicator">
+                <div class="dot-typing"></div>
+                <div class="dot-typing"></div>
+                <div class="dot-typing"></div>
+                <span class="typing-status">Analyzing data...</span>
+            </div>
+        </div>
+    `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        const progressSteps = [
+            { pct: 15, label: 'Reading production records...' },
+            { pct: 35, label: 'Analyzing reject patterns...' },
+            { pct: 55, label: 'Cross-referencing data points...' },
+            { pct: 75, label: 'Generating insights...' },
+            { pct: 90, label: 'Formatting response...' },
+            { pct: 100, label: 'Complete!' }
+        ];
+
+        function animateProgress() {
+            analysisProgress.classList.add('active');
+            let stepIndex = 0;
+
+            function nextStep() {
+                if (stepIndex < progressSteps.length) {
+                    const step = progressSteps[stepIndex];
+                    progressBarFill.style.width = step.pct + '%';
+                    progressLabel.textContent = step.label;
+                    stepIndex++;
+                    setTimeout(nextStep, 400 + Math.random() * 300);
+                }
+            }
+            nextStep();
+        }
+
+        function hideProgress() {
+            analysisProgress.classList.remove('active');
+            progressBarFill.style.width = '0%';
+        }
+
+        // Update typing status text dynamically
+        function updateTypingStatus(text) {
+            const statusEl = document.querySelector('#typingIndicator .typing-status');
+            if (statusEl) statusEl.textContent = text;
+        }
+
+        async function sendToGemini(userMessage) {
+            chatHistory.push({ role: 'user', parts: [{ text: userMessage }] });
+
+            const requestBody = {
+                contents: [
+                    { role: 'user', parts: [{ text: systemContext }] },
+                    { role: 'model', parts: [{ text: 'Understood. I have access to the full OBM production and reject dataset. I will analyze the data and provide precise, data-driven answers. Ready for questions.' }] },
+                    ...chatHistory
+                ],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 2048,
+                    topP: 0.9
+                }
+            };
+
+            try {
+                const response = await fetch(GEMINI_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const botText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response. Please try again.';
+
+                chatHistory.push({ role: 'model', parts: [{ text: botText }] });
+
+                // Keep history manageable
+                if (chatHistory.length > 20) {
+                    chatHistory = chatHistory.slice(-16);
+                }
+
+                return botText;
+            } catch (error) {
+                console.error('Gemini API error:', error);
+                return `I encountered an error while analyzing the data: ${error.message}. Please check the API connection and try again.`;
+            }
+        }
+
+        async function handleSend() {
+            const msg = chatInput.value.trim();
+            if (!msg) return;
+
+            chatInput.value = '';
+            chatSendBtn.disabled = true;
+            chatInput.disabled = true;
+
+            // Hide suggestions after first message
+            document.getElementById('chatSuggestions').style.display = 'none';
+
+            addMessage('user', msg);
+
+            // Show typing + progress
+            showTypingIndicator();
+            animateProgress();
+
+            // Cycle through typing statuses
+            const statuses = ['Reading your question...', 'Scanning records...', 'Analyzing reject data...', 'Crunching numbers...', 'Preparing analysis...'];
+            let statusIdx = 0;
+            const statusInterval = setInterval(() => {
+                statusIdx = (statusIdx + 1) % statuses.length;
+                updateTypingStatus(statuses[statusIdx]);
+            }, 1200);
+
+            const response = await sendToGemini(msg);
+
+            clearInterval(statusInterval);
+            removeTypingIndicator();
+            hideProgress();
+
+            addMessage('bot', response);
+
+            chatSendBtn.disabled = false;
+            chatInput.disabled = false;
+            chatInput.focus();
+        }
+
+        chatSendBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+
+        window.askSuggestion = function (text) {
+            chatInput.value = text;
+            handleSend();
+        };
+
+    </script>
+
 </body>
+
 </html>
