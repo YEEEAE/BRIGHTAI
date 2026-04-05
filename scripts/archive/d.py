@@ -62,17 +62,19 @@ class Like4LikeBot:
 
         # ═══ كروم يشتغل خارج الشاشة — ما يظهر ولا يسحبك ═══
         options.add_argument("--window-size=1920,1080")
-        options.add_argument("--window-position=-9999,-9999")
+        # تم إزالة --window-position=-9999 لأنه يسبب (SIGTRAP/EXC_BREAKPOINT) في معالجات Apple Silicon (M3)
         options.add_argument("--no-first-run")
         options.add_argument("--no-default-browser-check")
         options.add_argument("--disable-features=IdentityStatusDialog,ProfilePicker")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-software-rasterizer")
 
         self.driver = uc.Chrome(options=options, use_sandbox=False, version_main=146)
         time.sleep(1.5)
 
-        # نحرك النافذة برا الشاشة + نرجع الفوكس لتطبيقك
+        # نحرك النافذة برا الشاشة بطريقة آمنة لتفادي الكراش
         try:
-            self.driver.set_window_position(-9999, -9999)
+            self.driver.minimize_window()  # التصغير أأمن بكثير من الإحداثيات السالبة جداً
             # macOS: نرجع الفوكس للتطبيق اللي كنت فيه
             subprocess.run(
                 ["osascript", "-e",
@@ -526,10 +528,28 @@ class Like4LikeBot:
 #   التشغيل
 # ═══════════════════════════════════════════
 if __name__ == "__main__":
-    # تنظيف أي كروم عالق من تشغيلات سابقة
-    for proc in ["chromedriver"]:
-        subprocess.run(["pkill", "-9", "-f", proc],
-                       capture_output=True, timeout=5)
+    import shutil
+    
+    # 1. تنظيف أي عمليات ChromeDriver عالقة
+    subprocess.run(["pkill", "-9", "-f", "chromedriver"], capture_output=True)
+    
+    # 2. إزالة ملف القفل (SingletonLock) لتفادي كراش المتصفح
+    lock_file = os.path.join(CHROME_PROFILE, "SingletonLock")
+    if os.path.exists(lock_file):
+        try:
+            os.remove(lock_file)
+        except OSError:
+            pass
+            
+    # 3. تنظيف كاش النسخة المعدلة لمتصفح undetected_chromedriver 
+    # (النسخة التالفة تسبب توقف Mac وإغلاق مفاجئ - Code Signature)
+    uc_cache_dir = os.path.expanduser("~/.local/share/undetected_chromedriver")
+    if os.path.exists(uc_cache_dir):
+        try:
+            shutil.rmtree(uc_cache_dir)
+        except OSError:
+            pass
+
     time.sleep(1)
 
     bot = Like4LikeBot()

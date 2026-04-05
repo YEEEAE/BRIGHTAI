@@ -3,9 +3,10 @@
 # النطاق الأساسي الوحيد المعتمد للفهرسة هو https://brightai.site
 
 Sitemap: https://brightai.site/sitemap.xml
-Allow: /llms.txt
 
 User-agent: *
+Allow: /
+Crawl-delay: 1
 Allow: /*.css$
 Allow: /*.css?*
 Allow: /*.js$
@@ -19,8 +20,9 @@ Allow: /*.jpeg?*
 Allow: /*.svg$
 Allow: /*.svg?*
 
-# حظر مجلدات البنية البرمجية والملفات الداخلية فقط
+Allow: /llms.txt
 
+# حظر مجلدات البنية البرمجية والملفات الداخلية فقط (في حال تسربها كمسارات URL)
 Disallow: /.git/
 Disallow: /.vscode/
 Disallow: /node_modules/
@@ -32,7 +34,6 @@ Disallow: /build/
 Disallow: /src/
 Disallow: /server/
 Disallow: /backend/
-Disallow: /frontend/pages/
 
 # AI search crawlers
 User-agent: GPTBot
