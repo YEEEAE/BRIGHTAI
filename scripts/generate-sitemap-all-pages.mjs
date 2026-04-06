@@ -148,30 +148,33 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
   return reasons;
 }
 
-function buildHreflangSet(relPath, selfUrl, lowerPathMap, includedRelPaths) {
-  const counterpart = findCounterpartRelPath(relPath, lowerPathMap);
-  const counterpartExists = counterpart && includedRelPaths.has(counterpart.toLowerCase());
-  if (!counterpartExists) {
+function buildHreflangSet(selfUrl) {
+  try {
+    const urlObj = new URL(selfUrl);
+    const pathname = urlObj.pathname;
+    
+    const isEnglish = pathname.startsWith("/en/") || pathname === "/en";
+    
+    let arPath = isEnglish ? pathname.substring(3) : pathname;
+    if (!arPath || arPath === "") arPath = "/";
+    
+    let enPath = "/en" + (arPath.startsWith("/") ? arPath : "/" + arPath);
+    
+    // Normalize slashes
+    arPath = arPath.replace(/\/+/g, "/");
+    enPath = enPath.replace(/\/+/g, "/");
+    
+    const arUrl = urlObj.origin + arPath + urlObj.search + urlObj.hash;
+    const enUrl = urlObj.origin + enPath + urlObj.search + urlObj.hash;
+
+    return [
+      { code: "ar-SA", href: arUrl },
+      { code: "en-US", href: enUrl },
+      { code: "x-default", href: arUrl },
+    ];
+  } catch (error) {
     return [];
   }
-
-  const counterpartUrl = relPathToCanonical(counterpart, BASE_URL);
-  const normalized = normalizeRelPath(relPath);
-  const isEnglish = /-en\.html$/i.test(normalized) || normalized === "en/index.html" || normalized.startsWith("en/");
-
-  if (isEnglish) {
-    return [
-      { code: "ar-SA", href: counterpartUrl },
-      { code: "en-US", href: selfUrl },
-      { code: "x-default", href: counterpartUrl },
-    ];
-  }
-
-  return [
-    { code: "ar-SA", href: selfUrl },
-    { code: "en-US", href: counterpartUrl },
-    { code: "x-default", href: selfUrl },
-  ];
 }
 
 async function analyzePage(relPath) {
@@ -309,11 +312,8 @@ async function buildEntries() {
   }
 
   const entries = Array.from(byLoc.values()).sort((first, second) => first.loc.localeCompare(second.loc, "en"));
-  const lowerPathMap = new Map(entries.map((entry) => [entry.relPath.toLowerCase(), entry.relPath]));
-  const includedRelPaths = new Set(entries.map((entry) => entry.relPath.toLowerCase()));
-
   for (const entry of entries) {
-    entry.alternates = buildHreflangSet(entry.relPath, entry.loc, lowerPathMap, includedRelPaths);
+    entry.alternates = buildHreflangSet(entry.loc);
   }
 
   return { entries, analyses };
