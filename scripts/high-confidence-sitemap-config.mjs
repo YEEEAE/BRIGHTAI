@@ -109,8 +109,8 @@ export const HIGH_CONFIDENCE_BLOG_FILES = [
   "blog/saudi-energy-predictive-maintenance.html",
   "blog/saudi-manufacturing-predictive-maintenance.html",
   "blog/saudi-ecommerce-ai-growth.html",
-  "frontend/pages/blog/automation/hr-automation-saudi.html",
-  "frontend/pages/blog/data-analytics/power-bi-saudi-guide.html"
+  "blog/automation/hr-automation-saudi/index.html",
+  "blog/data-analytics/power-bi-saudi-guide/index.html"
 ];
 
 export const HIGH_CONFIDENCE_CORE_FILES = [

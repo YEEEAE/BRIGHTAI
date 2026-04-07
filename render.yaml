@@ -204,30 +204,6 @@ services:
         source: /frontend/pages/ai-bots/
         destination: /ai-bots/
       - type: redirect
-        source: /frontend/pages/ai-bots/BrightProject/index.html
-        destination: /ai-bots/BrightProject/
-      - type: redirect
-        source: /frontend/pages/ai-bots/BrightMath/index.html
-        destination: /ai-bots/BrightMath/
-      - type: redirect
-        source: /frontend/pages/ai-bots/BrightSales/index.html
-        destination: /ai-bots/BrightSales/
-      - type: redirect
-        source: /frontend/pages/ai-bots/BrightSupport/index.html
-        destination: /ai-bots/BrightSupport/
-      - type: redirect
-        source: /frontend/pages/ai-bots/BrightRecruiter/index.html
-        destination: /ai-bots/BrightRecruiter/
-      - type: redirect
-        source: /frontend/pages/ai-scolecs/index.html
-        destination: /ai-scolecs/
-      - type: redirect
-        source: /frontend/pages/ai-workflows/index.html
-        destination: /ai-workflows/
-      - type: redirect
-        source: /frontend/pages/ai-workflows/
-        destination: /ai-workflows/
-      - type: redirect
         source: /frontend/pages/consultation/index.html
         destination: /consultation/
       - type: redirect
@@ -263,27 +239,6 @@ services:
       - type: redirect
         source: /frontend/pages/smart-medical-archive/
         destination: /smart-medical-archive/
-      - type: redirect
-        source: /frontend/pages/try/index.html
-        destination: /try/
-      - type: redirect
-        source: /frontend/pages/try/
-        destination: /try/
-      - type: redirect
-        source: /frontend/pages/try/data-analyzer/index.html
-        destination: /try/data-analyzer/
-      - type: redirect
-        source: /frontend/pages/try/data-quality/index.html
-        destination: /try/data-quality/
-      - type: redirect
-        source: /frontend/pages/try/text-analysis/index.html
-        destination: /try/text-analysis/
-      - type: redirect
-        source: /frontend/pages/blog/data-analytics/kpi-dashboard-guide.html
-        destination: /blog/data-analytics/kpi-dashboard-guide/
-      - type: redirect
-        source: /frontend/pages/blog/data-analytics/power-bi-saudi-guide.html
-        destination: /blog/data-analytics/power-bi-saudi-guide/
       - type: redirect
         source: /frontend/pages/job.MAISco/index.html
         destination: /interview/
@@ -435,6 +390,22 @@ services:
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
         status: 301
       - type: redirect
+        source: "/blog/atou.doc"
+        destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+        status: 301
+      - type: redirect
+        source: "/blog/atou.doc/"
+        destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+        status: 301
+      - type: redirect
+        source: "/blog/astr.doc"
+        destination: /blog/
+        status: 301
+      - type: redirect
+        source: "/blog/astr.doc/"
+        destination: /blog/
+        status: 301
+      - type: redirect
         source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات"
         destination: /blog/
       - type: redirect
@@ -464,39 +435,39 @@ services:
         status: 301
       - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)"
-        destination: /blog/ai-transformation/
+        destination: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/
         status: 301
       - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/"
-        destination: /blog/ai-transformation/
+        destination: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/
         status: 301
       - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html"
-        destination: /blog/ai-transformation/
+        destination: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/
         status: 301
       - type: redirect
         source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية"
-        destination: /blog/hr-automation-case-study/
+        destination: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/
         status: 301
       - type: redirect
         source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/"
-        destination: /blog/hr-automation-case-study/
+        destination: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/
         status: 301
       - type: redirect
         source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html"
-        destination: /blog/hr-automation-case-study/
+        destination: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/
         status: 301
       - type: redirect
         source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار"
-        destination: /blog/ai-transformation/
+        destination: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/
         status: 301
       - type: redirect
         source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/"
-        destination: /blog/ai-transformation/
+        destination: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/
         status: 301
       - type: redirect
         source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html"
-        destination: /blog/ai-transformation/
+        destination: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/
         status: 301
       - type: redirect
         source: /blog/ai-consulting-digital-transformation
@@ -512,15 +483,15 @@ services:
         status: 301
       - type: redirect
         source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية"
-        destination: /blog/process-automation/
+        destination: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/
         status: 301
       - type: redirect
         source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/"
-        destination: /blog/process-automation/
+        destination: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/
         status: 301
       - type: redirect
         source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html"
-        destination: /blog/process-automation/
+        destination: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/
         status: 301
       - type: redirect
         source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية"
@@ -602,42 +573,42 @@ services:
       # استثناء مسارات المدونة المتداخلة (يجب أن تكون قبل القاعدة العامة للمدونة)
       - type: rewrite
         source: /blog/data-analytics/kpi-dashboard-guide
-        destination: /frontend/pages/blog/data-analytics/kpi-dashboard-guide.html
+        destination: /blog/data-analytics/kpi-dashboard-guide/index.html
       - type: rewrite
         source: /blog/data-analytics/kpi-dashboard-guide/
-        destination: /frontend/pages/blog/data-analytics/kpi-dashboard-guide.html
+        destination: /blog/data-analytics/kpi-dashboard-guide/index.html
       - type: rewrite
         source: /blog/data-analytics/power-bi-saudi-guide
-        destination: /frontend/pages/blog/data-analytics/power-bi-saudi-guide.html
+        destination: /blog/data-analytics/power-bi-saudi-guide/index.html
       - type: rewrite
         source: /blog/data-analytics/power-bi-saudi-guide/
-        destination: /frontend/pages/blog/data-analytics/power-bi-saudi-guide.html
+        destination: /blog/data-analytics/power-bi-saudi-guide/index.html
       - type: rewrite
         source: /blog/generative-artificial-intelligence
-        destination: /blog/generative-artificial-intelligence.html
+        destination: /blog/generative-artificial-intelligence/index.html
       - type: rewrite
         source: /blog/generative-artificial-intelligence/
-        destination: /blog/generative-artificial-intelligence.html
+        destination: /blog/generative-artificial-intelligence/index.html
       - type: rewrite
         source: /blog/:section/:slug
-        destination: /frontend/pages/blog/:section/:slug.html
+        destination: /blog/:section/:slug/index.html
       - type: rewrite
         source: /blog/:section/:slug/
-        destination: /frontend/pages/blog/:section/:slug.html
+        destination: /blog/:section/:slug/index.html
 
       # توافق صريح للمسارات الحالية في المدونة
       - type: rewrite
         source: /blog/data-analytics/:slug
-        destination: /frontend/pages/blog/data-analytics/:slug.html
+        destination: /blog/data-analytics/:slug/index.html
       - type: rewrite
         source: /blog/data-analytics/:slug/
-        destination: /frontend/pages/blog/data-analytics/:slug.html
+        destination: /blog/data-analytics/:slug/index.html
       - type: rewrite
         source: /blog/automation/:slug
-        destination: /frontend/pages/blog/automation/:slug.html
+        destination: /blog/automation/:slug/index.html
       - type: rewrite
         source: /blog/automation/:slug/
-        destination: /frontend/pages/blog/automation/:slug.html
+        destination: /blog/automation/:slug/index.html
       
       # ① إصلاح Blog Routes (الأهم)
       - type: rewrite
@@ -658,54 +629,54 @@ services:
       # ⑤ مسارات الـ Rewrites للـ Frontend (المتبقية كما هي)
       - type: rewrite
         source: /ai-bots/BrightMath
-        destination: /frontend/pages/ai-bots/BrightMath/index.html
+        destination: /ai-bots/BrightMath/index.html
       - type: rewrite
         source: /ai-bots/BrightMath/
-        destination: /frontend/pages/ai-bots/BrightMath/index.html
+        destination: /ai-bots/BrightMath/index.html
       - type: rewrite
         source: /ai-bots/BrightProject
-        destination: /frontend/pages/ai-bots/BrightProject/index.html
+        destination: /ai-bots/BrightProject/index.html
       - type: rewrite
         source: /ai-bots/BrightProject/
-        destination: /frontend/pages/ai-bots/BrightProject/index.html
+        destination: /ai-bots/BrightProject/index.html
       - type: rewrite
         source: /ai-bots/BrightRecruiter
-        destination: /frontend/pages/ai-bots/BrightRecruiter/index.html
+        destination: /ai-bots/BrightRecruiter/index.html
       - type: rewrite
         source: /ai-bots/BrightRecruiter/
-        destination: /frontend/pages/ai-bots/BrightRecruiter/index.html
+        destination: /ai-bots/BrightRecruiter/index.html
       - type: rewrite
         source: /ai-bots/BrightSales
-        destination: /frontend/pages/ai-bots/BrightSales/index.html
+        destination: /ai-bots/BrightSales/index.html
       - type: rewrite
         source: /ai-bots/BrightSales/
-        destination: /frontend/pages/ai-bots/BrightSales/index.html
+        destination: /ai-bots/BrightSales/index.html
       - type: rewrite
         source: /ai-bots/BrightSupport
-        destination: /frontend/pages/ai-bots/BrightSupport/index.html
+        destination: /ai-bots/BrightSupport/index.html
       - type: rewrite
         source: /ai-bots/BrightSupport/
-        destination: /frontend/pages/ai-bots/BrightSupport/index.html
+        destination: /ai-bots/BrightSupport/index.html
       - type: rewrite
         source: /ai-bots/:slug
-        destination: /frontend/pages/ai-bots/:slug/index.html
+        destination: /ai-bots/:slug/index.html
       - type: rewrite
         source: /ai-bots/:slug/
-        destination: /frontend/pages/ai-bots/:slug/index.html
+        destination: /ai-bots/:slug/index.html
       
       - type: rewrite
         source: /ai-scolecs
-        destination: /frontend/pages/ai-scolecs/index.html
+        destination: /ai-scolecs/index.html
       - type: rewrite
         source: /ai-scolecs/
-        destination: /frontend/pages/ai-scolecs/index.html
+        destination: /ai-scolecs/index.html
       
       - type: rewrite
         source: /ai-workflows
-        destination: /frontend/pages/ai-workflows/index.html
+        destination: /ai-workflows/index.html
       - type: rewrite
         source: /ai-workflows/
-        destination: /frontend/pages/ai-workflows/index.html
+        destination: /ai-workflows/index.html
 
       - type: rewrite
         source: /docs
@@ -722,31 +693,31 @@ services:
       
       - type: rewrite
         source: /demo
-        destination: /frontend/pages/demo/index.html
+        destination: /demo/index.html
       - type: rewrite
         source: /demo/
-        destination: /frontend/pages/demo/index.html
+        destination: /demo/index.html
       
       - type: rewrite
         source: /demo/ocr-demo
-        destination: /frontend/pages/demo/ocr-demo/index.html
+        destination: /demo/ocr-demo/index.html
       - type: rewrite
         source: /demo/ocr-demo/
-        destination: /frontend/pages/demo/ocr-demo/index.html
+        destination: /demo/ocr-demo/index.html
       
       - type: rewrite
         source: /demo/pricing
-        destination: /frontend/pages/demo/pricing/index.html
+        destination: /demo/pricing/index.html
       - type: rewrite
         source: /demo/pricing/
-        destination: /frontend/pages/demo/pricing/index.html
+        destination: /demo/pricing/index.html
       
       - type: rewrite
         source: /demo/resources/report-ai-saudi-2026
-        destination: /frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+        destination: /demo/resources/report-ai-saudi-2026/index.html
       - type: rewrite
         source: /demo/resources/report-ai-saudi-2026/
-        destination: /frontend/pages/demo/resources/report-ai-saudi-2026/index.html
+        destination: /demo/resources/report-ai-saudi-2026/index.html
       
       - type: rewrite
         source: /interview
@@ -763,10 +734,10 @@ services:
       
       - type: rewrite
         source: /interview/pages/appointment
-        destination: /frontend/pages/interview/pages/appointment/index.html
+        destination: /interview/pages/appointment/index.html
       - type: rewrite
         source: /interview/pages/appointment/
-        destination: /frontend/pages/interview/pages/appointment/index.html
+        destination: /interview/pages/appointment/index.html
       
       - type: rewrite
         source: /interview/pages/admin
@@ -777,20 +748,20 @@ services:
       
       - type: rewrite
         source: /interview/pages/dashboard
-        destination: /frontend/pages/interview/pages/dashboard/index.html
+        destination: /interview/pages/dashboard/index.html
       - type: rewrite
         source: /interview/pages/dashboard/
-        destination: /frontend/pages/interview/pages/dashboard/index.html
+        destination: /interview/pages/dashboard/index.html
       
       - type: rewrite
         source: /interview/pages/support-ai
-        destination: /frontend/pages/interview/pages/support-ai.html
+        destination: /interview/pages/support-ai/index.html
       - type: rewrite
         source: /interview/pages/support-ai/
-        destination: /frontend/pages/interview/pages/support-ai.html
+        destination: /interview/pages/support-ai/index.html
       - type: rewrite
         source: /interview/pages/support-ai.html
-        destination: /frontend/pages/interview/pages/support-ai.html
+        destination: /interview/pages/support-ai/index.html
       - type: redirect
         source: /interview/pages/supportAI
         destination: /interview/pages/support-ai/
@@ -830,17 +801,17 @@ services:
 
       - type: rewrite
         source: /sitemap
-        destination: /frontend/pages/sitemap/index.html
+        destination: /sitemap/index.html
       - type: rewrite
         source: /sitemap/
-        destination: /frontend/pages/sitemap/index.html
+        destination: /sitemap/index.html
 
       - type: rewrite
         source: /terms
-        destination: /frontend/pages/terms/index.html
+        destination: /terms/index.html
       - type: rewrite
         source: /terms/
-        destination: /frontend/pages/terms/index.html
+        destination: /terms/index.html
 
       - type: rewrite
         source: /tenders
@@ -900,28 +871,28 @@ services:
       
       - type: rewrite
         source: /try
-        destination: /frontend/pages/try/index.html
+        destination: /try/index.html
       - type: rewrite
         source: /try/
-        destination: /frontend/pages/try/index.html
+        destination: /try/index.html
       - type: rewrite
         source: /try/data-analyzer
-        destination: /frontend/pages/try/data-analyzer/index.html
+        destination: /try/data-analyzer/index.html
       - type: rewrite
         source: /try/data-analyzer/
-        destination: /frontend/pages/try/data-analyzer/index.html
+        destination: /try/data-analyzer/index.html
       - type: rewrite
         source: /try/data-quality
-        destination: /frontend/pages/try/data-quality/index.html
+        destination: /try/data-quality/index.html
       - type: rewrite
         source: /try/data-quality/
-        destination: /frontend/pages/try/data-quality/index.html
+        destination: /try/data-quality/index.html
       - type: rewrite
         source: /try/text-analysis
-        destination: /frontend/pages/try/text-analysis/index.html
+        destination: /try/text-analysis/index.html
       - type: rewrite
         source: /try/text-analysis/
-        destination: /frontend/pages/try/text-analysis/index.html
+        destination: /try/text-analysis/index.html
 
       - type: rewrite
         source: /try/:slug

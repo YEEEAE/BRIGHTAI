@@ -92,6 +92,14 @@ const BLOG_SLUG_REDIRECTS = new Map([
   [
     '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور',
     '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/'
+  ],
+  [
+    '/blog/atou.doc',
+    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/'
+  ],
+  [
+    '/blog/astr.doc',
+    '/blog/'
   ]
 ]);
 
@@ -113,7 +121,7 @@ function getStaticRedirectTarget(pathname) {
   }
 
   if (pathname === '/blog/production-line/' || pathname === '/blog/production-line.html') {
-    return '/blog/production-line';
+    return '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/';
   }
 
   if (

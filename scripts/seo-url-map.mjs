@@ -35,7 +35,7 @@ const TRAILING_SLASH_ROUTE_PATTERNS = [
 ];
 
 export function normalizeRelPath(filePath) {
-  return filePath.replace(/\\/g, "/");
+  return filePath.replace(/\\/g, "/").normalize("NFC");
 }
 
 export function encodeUrlPath(urlPath) {

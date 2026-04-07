@@ -2,7 +2,7 @@
   "version": 1,
   "generatedAt": "2026-02-23T01:08:37.458Z",
   "sourceLatestMtimeMs": 1771807520210.2617,
-  "total": 176,
+  "total": 170,
   "documents": [
     {
       "objectID": "3e66f13f846b24b2ae00",
@@ -76,7 +76,7 @@
     {
       "objectID": "eb28985b8cc438c56b73",
       "id": "eb28985b8cc438c56b73",
-      "sourcePath": "frontend/pages/ai-bots/BrightMath/index.html",
+      "sourcePath": "ai-bots/BrightMath/index.html",
       "url": "/ai-bots/BrightMath",
       "title": "BrightMath - مساعد الرياضيات الذكي",
       "description": "BrightMath - مساعد الرياضيات الذكي AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصط",
@@ -92,7 +92,7 @@
     {
       "objectID": "f7e34abd9baca2593c91",
       "id": "f7e34abd9baca2593c91",
-      "sourcePath": "frontend/pages/ai-bots/BrightProject/index.html",
+      "sourcePath": "ai-bots/BrightProject/index.html",
       "url": "/ai-bots/BrightProject",
       "title": "BrightProject - روبوت إدارة المشاريع الذكي",
       "description": "BrightProject - روبوت إدارة المشاريع الذكي AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذك",
@@ -108,7 +108,7 @@
     {
       "objectID": "dac9b9c9df3f5eb7f04b",
       "id": "dac9b9c9df3f5eb7f04b",
-      "sourcePath": "frontend/pages/ai-bots/BrightRecruiter/index.html",
+      "sourcePath": "ai-bots/BrightRecruiter/index.html",
       "url": "/ai-bots/BrightRecruiter",
       "title": "BrightRecruiter - روبوت التوظيف الذكي",
       "description": "BrightRecruiter - روبوت التوظيف الذكي AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء ال",
@@ -124,7 +124,7 @@
     {
       "objectID": "4141b1953b7f736fd8e5",
       "id": "4141b1953b7f736fd8e5",
-      "sourcePath": "frontend/pages/ai-bots/BrightSales/index.html",
+      "sourcePath": "ai-bots/BrightSales/index.html",
       "url": "/ai-bots/BrightSales",
       "title": "BrightSales - روبوت المبيعات الذكي",
       "description": "BrightSales - روبوت المبيعات الذكي AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصط",
@@ -140,7 +140,7 @@
     {
       "objectID": "6234d747ac7c5b001dc2",
       "id": "6234d747ac7c5b001dc2",
-      "sourcePath": "frontend/pages/ai-bots/BrightSupport/index.html",
+      "sourcePath": "ai-bots/BrightSupport/index.html",
       "url": "/ai-bots/BrightSupport",
       "title": "BrightSupport - روبوت خدمة العملاء الذكي",
       "description": "BrightSupport - روبوت خدمة العملاء الذكي AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء",
@@ -179,7 +179,7 @@
     {
       "objectID": "dc588e1bb8ebce3671a6",
       "id": "dc588e1bb8ebce3671a6",
-      "sourcePath": "frontend/pages/ai-scolecs/index.html",
+      "sourcePath": "ai-scolecs/index.html",
       "url": "/ai-scolecs",
       "title": "المنصة التعليمية الذكية - التعليم المعزز بالذكاء الاصطناعي | Bright Edu",
       "description": "المنصة التعليمية الذكية - التعليم المعزز بالذكاء الاصطناعي | Bright Edu AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية ",
@@ -202,7 +202,7 @@
     {
       "objectID": "a0fc2145da083234e7cd",
       "id": "a0fc2145da083234e7cd",
-      "sourcePath": "frontend/pages/ai-workflows/index.html",
+      "sourcePath": "ai-workflows/index.html",
       "url": "/ai-workflows",
       "title": "AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI",
       "description": "AI Workflows - سير عمل الذكاء الاصطناعي | Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم A",
@@ -218,7 +218,7 @@
     {
       "objectID": "a496680a6177046a2c7d",
       "id": "a496680a6177046a2c7d",
-      "sourcePath": "frontend/pages/blog/automation/hr-automation-saudi",
+      "sourcePath": "blog/automation/hr-automation-saudi/index.html",
       "url": "/blog/automation/hr-automation-saudi",
       "title": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك | Bright AI",
       "description": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك | Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتق",
@@ -241,7 +241,7 @@
     {
       "objectID": "abff6cb58f9b40f973f2",
       "id": "abff6cb58f9b40f973f2",
-      "sourcePath": "frontend/pages/blog/data-analytics/kpi-dashboard-guide",
+      "sourcePath": "blog/data-analytics/kpi-dashboard-guide/index.html",
       "url": "/blog/data-analytics/kpi-dashboard-guide",
       "title": "كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة | Bright AI",
       "description": "كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة | Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل الم",
@@ -264,7 +264,7 @@
     {
       "objectID": "2c8463a08cedc62ce604",
       "id": "2c8463a08cedc62ce604",
-      "sourcePath": "frontend/pages/blog/data-analytics/power-bi-saudi-guide",
+      "sourcePath": "blog/data-analytics/power-bi-saudi-guide/index.html",
       "url": "/blog/data-analytics/power-bi-saudi-guide",
       "title": "Power BI للشركات السعودية: دليل البداية الشامل 2026 | Bright AI",
       "description": "Power BI للشركات السعودية: دليل البداية الشامل 2026 | Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير الع",
@@ -306,20 +306,6 @@
       "type": "article",
       "category": "المدونة",
       "lastModified": "2026-02-22T20:36:42.847Z"
-    },
-    {
-      "objectID": "aad76f74b6c7ea72513a",
-      "id": "aad76f74b6c7ea72513a",
-      "sourcePath": "frontend/pages/blogger/ production-line.html",
-      "url": "/blog/ production-line.html",
-      "title": "تم نقل الصفحة",
-      "description": "تم نقل الصفحة AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصطناعي كخدمة استشارات ح",
-      "snippet": "تم نقل الصفحة AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصطناعي كخدمة استشارات حلول مخصصة لشركتك تحليل البيانات رؤى دقيقة وقرارات ذكية النماذج الذكية الأرشيف ال",
-      "headings": [],
-      "keywords": [],
-      "type": "article",
-      "category": "المدونة",
-      "lastModified": "2026-02-22T20:36:42.762Z"
     },
     {
       "objectID": "76ddf456f74fb6a9e9ce",
@@ -529,20 +515,6 @@
       "lastModified": "2026-02-22T20:36:42.778Z"
     },
     {
-      "objectID": "47218d6148e2417432f6",
-      "id": "47218d6148e2417432f6",
-      "sourcePath": "frontend/pages/blogger/astr.doc.html",
-      "url": "/blog/astr.doc",
-      "title": "صفحة بدون عنوان",
-      "description": "",
-      "snippet": "",
-      "headings": [],
-      "keywords": [],
-      "type": "article",
-      "category": "المدونة",
-      "lastModified": "2026-02-22T20:27:58.271Z"
-    },
-    {
       "objectID": "e39bda8466672a28ef03",
       "id": "e39bda8466672a28ef03",
       "sourcePath": "frontend/pages/blogger/atou-job.html",
@@ -562,29 +534,6 @@
       "type": "article",
       "category": "المدونة",
       "lastModified": "2026-02-22T20:36:42.759Z"
-    },
-    {
-      "objectID": "5a2edb51798cb703e147",
-      "id": "5a2edb51798cb703e147",
-      "sourcePath": "frontend/pages/blogger/atou.doc.html",
-      "url": "/blog/atou.doc",
-      "title": "أتمتة العمليات الذكية | حلول Bright AI المتكاملة لتحويل الأعمال",
-      "description": "أتمتة العمليات الذكية | حلول Bright AI المتكاملة لتحويل الأعمال AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير الع",
-      "snippet": "أتمتة العمليات الذكية | حلول Bright AI المتكاملة لتحويل الأعمال AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصطناعي كخدمة استشارات حلول مخصصة لشركتك تحليل البيانا",
-      "headings": [
-        "أتمتة العمليات الذكية: الثورة التقنية التي تقودها Bright AI",
-        "كيف تعيد أتمتة العمليات الذكية تعريف كفاءة الأعمال؟",
-        "90%",
-        "50%+",
-        "40%",
-        "الحلول الذكية التي نقدمها",
-        "١. أنظمة أتمتة العمليات المتكاملة (RPA)",
-        "٢. أتمتة خدمة العملاء الذكية"
-      ],
-      "keywords": [],
-      "type": "article",
-      "category": "المدونة",
-      "lastModified": "2026-02-22T20:36:42.769Z"
     },
     {
       "objectID": "99600544c2f87e74da3d",
@@ -1010,40 +959,6 @@
       "type": "article",
       "category": "المدونة",
       "lastModified": "2026-02-22T20:36:42.761Z"
-    },
-    {
-      "objectID": "b4bee30fa7408ad29335",
-      "id": "b4bee30fa7408ad29335",
-      "sourcePath": "frontend/pages/blogger/production-line-2.html",
-      "url": "/blog/production-line-2",
-      "title": "تم نقل الصفحة",
-      "description": "تم نقل الصفحة AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصطناعي كخدمة استشارات ح",
-      "snippet": "تم نقل الصفحة AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصطناعي كخدمة استشارات حلول مخصصة لشركتك تحليل البيانات رؤى دقيقة وقرارات ذكية النماذج الذكية الأرشيف ال",
-      "headings": [],
-      "keywords": [],
-      "type": "article",
-      "category": "المدونة",
-      "lastModified": "2026-02-22T20:36:42.741Z"
-    },
-    {
-      "objectID": "5dee62b5c8bf49ef8a24",
-      "id": "5dee62b5c8bf49ef8a24",
-      "sourcePath": "frontend/pages/blogger/production-line.html",
-      "url": "/blog/production-line",
-      "title": "كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟ - Bright AI",
-      "description": "كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟ - Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل ا",
-      "snippet": "كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟ - Bright AI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS الذكاء الاصطناعي كخدمة استشارات حلول مخصصة لشركتك تحليل البيانات رؤ",
-      "headings": [
-        "كيف يُحسّن الذكاء الاصطناعي كفاءة خطوط الإنتاج؟",
-        "هل أنت مستعد لنقل أعمالك إلى المستوى التالي؟",
-        "مقالات ذات صلة",
-        "روابط سريعة",
-        "تواصل معنا"
-      ],
-      "keywords": [],
-      "type": "article",
-      "category": "المدونة",
-      "lastModified": "2026-02-22T20:36:42.772Z"
     },
     {
       "objectID": "1362878d1253451c9e14",
@@ -2109,7 +2024,7 @@
     {
       "objectID": "4cc5ce23c63ebc9402eb",
       "id": "4cc5ce23c63ebc9402eb",
-      "sourcePath": "frontend/pages/demo/index.html",
+      "sourcePath": "demo/index.html",
       "url": "/demo",
       "title": "ديمو ذكاء اصطناعي مباشر للشركات السعودية | BrightAI",
       "description": "ديمو ذكاء اصطناعي مباشر للشركات السعودية | BrightAI AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم A",
@@ -2129,7 +2044,7 @@
     {
       "objectID": "71bbd31317db05b9b4be",
       "id": "71bbd31317db05b9b4be",
-      "sourcePath": "frontend/pages/demo/ocr-demo/index.html",
+      "sourcePath": "demo/ocr-demo/index.html",
       "url": "/demo/ocr-demo",
       "title": "OCR عربي فوري للشركات السعودية | استخراج JSON دقيق",
       "description": "OCR عربي فوري للشركات السعودية | استخراج JSON دقيق AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AI",
@@ -2149,7 +2064,7 @@
     {
       "objectID": "1cf22e480b684cf9d0b6",
       "id": "1cf22e480b684cf9d0b6",
-      "sourcePath": "frontend/pages/demo/pricing/index.html",
+      "sourcePath": "demo/pricing/index.html",
       "url": "/demo/pricing",
       "title": "أسعار BrightAI | باقات مرنة للشركات السعودية",
       "description": "أسعار BrightAI | باقات مرنة للشركات السعودية AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتقدم AIaaS ال",
@@ -2167,7 +2082,7 @@
     {
       "objectID": "c9b6f4e42c60bfd9a596",
       "id": "c9b6f4e42c60bfd9a596",
-      "sourcePath": "frontend/pages/demo/resources/report-ai-saudi-2026/index.html",
+      "sourcePath": "demo/resources/report-ai-saudi-2026/index.html",
       "url": "/demo/resources/report-ai-saudi-2026",
       "title": "تقرير الذكاء الاصطناعي السعودي 2026 | تحميل لصناع القرار",
       "description": "تقرير الذكاء الاصطناعي السعودي 2026 | تحميل لصناع القرار AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المت",
@@ -3357,7 +3272,7 @@
     {
       "objectID": "89956bc87e085d97c120",
       "id": "89956bc87e085d97c120",
-      "sourcePath": "frontend/pages/interview/pages/appointment/index.html",
+      "sourcePath": "interview/pages/appointment/index.html",
       "url": "/interview/pages/appointment",
       "title": "حجز مواعيد الموارد البشرية - MAIS",
       "description": "حجز مواعيد الموارد البشرية - MAIS - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
@@ -3377,7 +3292,7 @@
     {
       "objectID": "1bcfccf57b703eade6e6",
       "id": "1bcfccf57b703eade6e6",
-      "sourcePath": "frontend/pages/interview/pages/dashboard/index.html",
+      "sourcePath": "interview/pages/dashboard/index.html",
       "url": "/interview/pages/dashboard",
       "title": "لوحة تحكم المسؤول - نظام التوظيف الذكي",
       "description": "لوحة تحكم المسؤول - نظام التوظيف الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
@@ -3400,7 +3315,7 @@
     {
       "objectID": "32bc917aa9c57445c564",
       "id": "32bc917aa9c57445c564",
-      "sourcePath": "frontend/pages/interview/pages/support-ai.html",
+      "sourcePath": "interview/pages/support-ai/index.html",
       "url": "/interview/pages/support-ai",
       "title": "نافذة الدعم الفني الذكي",
       "description": "نافذة الدعم الفني الذكي - مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي",
@@ -3813,7 +3728,7 @@
     {
       "objectID": "8f69fd5d1cd6ceac9e6a",
       "id": "8f69fd5d1cd6ceac9e6a",
-      "sourcePath": "frontend/pages/try/data-analyzer/index.html",
+      "sourcePath": "try/data-analyzer/index.html",
       "url": "/try/data-analyzer",
       "title": "محلل البيانات الذكي | Bright AI - تحليل CSV و Excel",
       "description": "حلل ملفات CSV و Excel بالذكاء الاصطناعي. رسوم بيانية تفاعلية، إحصائيات دقيقة، ورؤى ذكية مع Groq AI.",
@@ -3843,7 +3758,7 @@
     {
       "objectID": "182bb9a8cbbd3e509145",
       "id": "182bb9a8cbbd3e509145",
-      "sourcePath": "frontend/pages/try/data-quality/index.html",
+      "sourcePath": "try/data-quality/index.html",
       "url": "/try/data-quality",
       "title": "مراقبة جودة البيانات والمنتجات | Bright AI Enterprise",
       "description": "نظام ذكي لمراقبة جودة البيانات والمنتجات للشركات. تحليل التكرارات، كشف الانحرافات، تنبيهات فورية، وتكامل مع أنظمة ERP.",
@@ -3861,7 +3776,7 @@
     {
       "objectID": "a970f3bea708b7d4ab40",
       "id": "a970f3bea708b7d4ab40",
-      "sourcePath": "frontend/pages/try/index.html",
+      "sourcePath": "try/index.html",
       "url": "/try",
       "title": "نماذج الذكاء الاصطناعي | Bright AI - جرب أدواتنا مجاناً",
       "description": "نماذج الذكاء الاصطناعي | Bright AI - جرب أدواتنا مجاناً AI Bright AI Saudi الرئيسية الحلول الذكية منصة Bright AI Agents بناء وإدارة الوكلاء الأذكياء الأتمتة الذكية وسير العمل المتق",
@@ -3882,7 +3797,7 @@
     {
       "objectID": "6bf7878715ab8cb05920",
       "id": "6bf7878715ab8cb05920",
-      "sourcePath": "frontend/pages/try/text-analysis/index.html",
+      "sourcePath": "try/text-analysis/index.html",
       "url": "/try/text-analysis",
       "title": "التحليل النصي الذكي | Bright AI",
       "description": "حلل النصوص بالذكاء الاصطناعي - استخراج الكلمات المفتاحية، تحليل المشاعر، تلخيص النصوص مع Groq API.",
