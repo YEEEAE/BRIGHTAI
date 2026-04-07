@@ -42,6 +42,42 @@ services:
       - path: /tenders/dashboard.html
         name: X-Robots-Tag
         value: noindex, nofollow, noarchive
+      - path: /tenders/reports
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/reports/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/reports.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/settings
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/settings/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/settings.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/compare
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/compare/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/compare.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/templates
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/templates/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /tenders/templates.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
       - path: /en/tenders/dashboard
         name: X-Robots-Tag
         value: noindex, nofollow, noarchive
@@ -49,6 +85,42 @@ services:
         name: X-Robots-Tag
         value: noindex, nofollow, noarchive
       - path: /en/tenders/dashboard.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/reports
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/reports/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/reports.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/settings
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/settings/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/settings.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/compare
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/compare/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/compare.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/templates
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/templates/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /en/tenders/templates.html
         name: X-Robots-Tag
         value: noindex, nofollow, noarchive
       - path: /interview/pages/admin
@@ -67,6 +139,24 @@ services:
         name: X-Robots-Tag
         value: noindex, nofollow, noarchive
       - path: /interview/pages/Visitor-registration/index.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/dashboard
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/dashboard/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/dashboard/index.html
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/appointment
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/appointment/
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive
+      - path: /interview/pages/appointment/index.html
         name: X-Robots-Tag
         value: noindex, nofollow, noarchive
 

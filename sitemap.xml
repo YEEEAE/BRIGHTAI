@@ -1266,22 +1266,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://brightai.site/tenders/compare/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tenders/compare/" />
-    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/en/tenders/compare/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/tenders/compare/" />
-    <lastmod>2026-04-05</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/tenders/templates/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tenders/templates/" />
-    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/en/tenders/templates/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/tenders/templates/" />
-    <lastmod>2026-04-05</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://brightai.site/tools/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tools/" />
     <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/en/tools/" />

@@ -36,8 +36,8 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)\.html$/i,
   /^frontend\/pages\//i,
   /^interview\/pages\//i,
-  /^tenders\/(?:dashboard|reports|settings)\.html$/i,
-  /^en\/tenders\/(?:dashboard|reports|settings)\.html$/i,
+  /^tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
+  /^en\/tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
   /^tenders\/index 2\.html$/i,
   /^tenders\/landing\.html$/i,
 ];
@@ -102,8 +102,8 @@ function detectExplicitExclusionFamily(relPath) {
   if (normalized.startsWith("interview/pages/")) {
     return "interview app internal routes";
   }
-  if (/^tenders\/(?:dashboard|reports|settings)\.html$/i.test(normalized)) return "authenticated tender app routes";
-  if (/^en\/tenders\/(?:dashboard|reports|settings)\.html$/i.test(normalized)) return "authenticated tender app routes";
+  if (/^tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i.test(normalized)) return "authenticated tender app routes";
+  if (/^en\/tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i.test(normalized)) return "authenticated tender app routes";
   if (/^tenders\/index 2\.html$/i.test(normalized)) return "duplicate tender entry";
   if (/^tenders\/landing\.html$/i.test(normalized)) return "duplicate tender landing page";
   return "quality or canonical exclusion";
