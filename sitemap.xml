@@ -209,6 +209,34 @@
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/docs/terms-and-conditions/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/terms-and-conditions/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/terms-and-conditions-en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/terms-and-conditions/" />
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/terms-and-conditions-en/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/terms-and-conditions/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/terms-and-conditions-en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/terms-and-conditions/" />
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/tenders/landing/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tenders/landing/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/en/tenders/landing/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/tenders/landing/" />
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/tenders/landing/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tenders/landing/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/en/tenders/landing/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/tenders/landing/" />
+    <lastmod>2026-04-13</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/blog/</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
