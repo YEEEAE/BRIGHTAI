@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-13T16:09:47.216Z",
+  "generatedAt": "2026-04-13T16:39:12.490Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
   "filesScanned": 286,
-  "referencesScanned": 17214,
-  "internalReferences": 12571,
-  "brokenReferences": 18,
-  "fixableBrokenReferences": 10,
-  "normalizationCandidates": 38,
+  "referencesScanned": 17287,
+  "internalReferences": 12644,
+  "brokenReferences": 8,
+  "fixableBrokenReferences": 0,
+  "normalizationCandidates": 56,
   "topBrokenFiles": [
     {
       "file": "frontend/js/en-interview-app.js",
@@ -15,103 +15,9 @@
     {
       "file": "frontend/js/interview-app.js",
       "count": 4
-    },
-    {
-      "file": "ai-bots/BrightMath/index.html",
-      "count": 1
-    },
-    {
-      "file": "ai-bots/BrightProject/index.html",
-      "count": 1
-    },
-    {
-      "file": "blog/smart-crm-system.html",
-      "count": 1
-    },
-    {
-      "file": "docs/services-overview-en.html",
-      "count": 1
-    },
-    {
-      "file": "en/about/index.html",
-      "count": 1
-    },
-    {
-      "file": "en/tools/index.html",
-      "count": 1
-    },
-    {
-      "file": "frontend/js/search 2.js",
-      "count": 1
-    },
-    {
-      "file": "frontend/js/search.js",
-      "count": 1
-    },
-    {
-      "file": "tools/index.html",
-      "count": 1
-    },
-    {
-      "file": "what-is-ai/index.html",
-      "count": 1
     }
   ],
   "brokenRows": [
-    {
-      "file": "ai-bots/BrightMath/index.html",
-      "line": 1052,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "ai-bots/BrightProject/index.html",
-      "line": 965,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "blog/smart-crm-system.html",
-      "line": 909,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "docs/services-overview-en.html",
-      "line": 379,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "en/about/index.html",
-      "line": 959,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "en/tools/index.html",
-      "line": 1155,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
     {
       "file": "frontend/js/en-interview-app.js",
       "line": 818,
@@ -183,42 +89,6 @@
       "normalizedReferencePath": "دعم فني مبتدئ",
       "reason": "المسار غير موجود",
       "suggestion": ""
-    },
-    {
-      "file": "frontend/js/search 2.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "frontend/js/search.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "tools/index.html",
-      "line": 1006,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "what-is-ai/index.html",
-      "line": 702,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
     }
   ]
 }

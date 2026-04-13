@@ -165,188 +165,81 @@
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://brightai.site/#organization",
+  "name": "Bright AI",
+  "url": "https://brightai.site/",
+  "logo": "https://brightai.site/assets/images/Gemini.png",
+  "telephone": "+966538229013",
+  "sameAs": [
+    "https://www.linkedin.com/company/brightai-saudi",
+    "https://x.com/brightai_sa"
+  ]
+}
+</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://brightai.site/en/ai-agent/#webpage",
+  "url": "https://brightai.site/en/ai-agent/",
+  "name": "AI as a Service (AIaaS) for Saudi Businesses | Bright AI",
+  "description": "Enterprise AI agent and AIaaS delivery for Saudi businesses, including Arabic NLP, integrations, and secure deployment paths.",
+  "inLanguage": "en-US",
+  "about": {
+    "@id": "https://brightai.site/#organization"
+  }
+}
+</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Saudi AIaaS - AI as a Service for Enterprises",
+  "@id": "https://brightai.site/en/ai-agent/#service",
+  "name": "AI agents and AIaaS for Saudi businesses",
+  "serviceType": "Enterprise AI Agent",
+  "url": "https://brightai.site/en/ai-agent/",
+  "description": "Enterprise AI agent delivery for Saudi businesses with Arabic NLP, integrations, and secure deployment models.",
   "provider": {
-    "@type": "Organization",
-    "name": "Bright AI"
+    "@id": "https://brightai.site/#organization"
   },
-  "areaServed":[
-    "Riyadh",
-    "Jeddah",
-    "NEOM",
-    "Saudi Arabia"
-  ],
-  "serviceType": "Saudi AIaaS, Enterprise LLMs, Machine Learning for Saudi Enterprises",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Saudi Arabia"
+  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "AIaaS Packages for Saudi Enterprises",
-    "itemListElement":[
+    "name": "AI agent packages",
+    "itemListElement": [
       {
         "@type": "Offer",
         "name": "Startup Package",
         "priceCurrency": "SAR",
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "price": "4500",
-          "priceCurrency": "SAR",
-          "billingDuration": "P1M"
-        },
         "itemOffered": {
           "@type": "Service",
-          "name": "Running large language models for companies with API integration"
+          "name": "AI agent with API integration"
         }
       },
       {
         "@type": "Offer",
         "name": "Growth Package",
         "priceCurrency": "SAR",
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "price": "12000",
-          "priceCurrency": "SAR",
-          "billingDuration": "P1M"
-        },
         "itemOffered": {
           "@type": "Service",
-          "name": "Machine learning for Saudi enterprises with continuous monitoring"
+          "name": "Continuous monitoring and optimization"
         }
       },
       {
         "@type": "Offer",
         "name": "Enterprise Package",
         "priceCurrency": "SAR",
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "price": "25000",
-          "priceCurrency": "SAR",
-          "billingDuration": "P1M"
-        },
         "itemOffered": {
           "@type": "Service",
-          "name": "Advanced sovereign deployment with NCA compliance and Arabic NLP"
+          "name": "Advanced sovereign deployment"
         }
       }
     ]
-  },
-  "datePublished": "2025-01-01T08:00:00+03:00",
-  "dateModified": "2026-02-21T19:48:36+03:00",
-  "image": "https://brightai.site/assets/images/Gemini.png"
-}
-</script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity":[
-    {
-      "@type": "Question",
-      "name": "How does AIaaS hit different than traditional cloud?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "AIaaS drops a ready-to-use layer for models, governance, and ops, while the traditional cloud just gives you the bare bones and makes your squad build it from scratch."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is the data locked down locally?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For sure. We hook you up with local hosting inside the Kingdom, sovereign deployment options, and hardcore end-to-end encryption."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you guys support big enterprise language models?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yeah, we support GPT, Claude, and Llama, managing usage policies and picking the best model based on your vibe and budget."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you have Arabic NLP?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, we offer Arabic NLP powered by a Saudi context, covering classic Arabic, white dialect, and legit gov terminology."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does pricing work for Saudi AIaaS?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We got three monthly tiers based on your usage, integration needs, and compliance flex, plus custom enterprise contracts."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is the platform NCA compliant?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Totally. The platform is built from the ground up to support Saudi enterprise cybersecurity controls, access policies, and audit trails."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How long until an AIaaS project goes live?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Usually takes about 2 to 6 weeks depending on how clean your data is and how crazy the internal integrations are."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can you integrate with ERP and CRM?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yep, our API-First setup plays nice with SAP, Oracle, Microsoft Dynamics, and whatever custom rig you got."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What's the difference between AIaaS and an internal AI agent?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "AIaaS is the entire operational framework, while the smart agent is a functional piece running on top of it to crush specific tasks."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I measure ROI?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We track processing time, cost per operation, answer quality, and the rate of zero-touch task completions."
-      }
-    }
-  ]
-}
-</script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "How to Flex Our Service",
-  "step":[
-    {
-      "@type": "HowToStep",
-      "url": "https://brightai.site/en/ai-agent/#step1",
-      "name": "Strategic Breakdown",
-      "text": "We analyze your biz needs and gaps to build a sick data-driven plan."
-    },
-    {
-      "@type": "HowToStep",
-      "url": "https://brightai.site/en/ai-agent/#step2",
-      "name": "Design & Dev",
-      "text": "We build out the software models and AI rigs, tuning them perfectly for your data."
-    },
-    {
-      "@type": "HowToStep",
-      "url": "https://brightai.site/en/ai-agent/#step3",
-      "name": "Launch & Scale",
-      "text": "We train the systems, drop them securely into production, and monitor the performance."
-    }
-  ]
+  }
 }
 </script>
 
@@ -355,70 +248,6 @@
     <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
     <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
     
-
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type":[
-    "LocalBusiness",
-    "ProfessionalService"
-  ],
-  "@id": "https://brightai.site/#local-business",
-  "name": "Bright AI - Bright AI Tech Vibes",
-  "url": "https://brightai.site/",
-  "image": "https://brightai.site/assets/images/Gemini.png",
-  "logo": "https://brightai.site/assets/images/Gemini.png",
-  "email": "yazeed1job@gmail.com",
-  "telephone": "+966538229013",
-  "priceRange": "$",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "6913 Al Mubarak Bin Fadalah, Al Fayha District",
-    "addressLocality": "Riyadh",
-    "addressRegion": "Riyadh Province",
-    "postalCode": "14254",
-    "addressCountry": "SA"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 24.7136,
-    "longitude": 46.6753
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek":[
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday"
-    ],
-    "opens": "09:00",
-    "closes": "18:00"
-  },
-  "sameAs":[
-    "https://api.whatsapp.com/send?phone=966538229013",
-    "https://x.com/brightai_sa",
-    "https://www.linkedin.com/company/brightai-saudi",
-    "https://www.youtube.com/@BrightAiSaudi"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+966538229013",
-    "email": "yazeed1job@gmail.com",
-    "contactType": "customer service",
-    "areaServed": "SA",
-    "availableLanguage": [
-      "ar",
-      "en"
-    ]
-  },
-  "areaServed": {
-    "@type": "Country",
-    "name": "Saudi Arabia"
-  }
-}
-</script>
 
     <style id="internal-linking-cta-style">
         .internal-linking-cta-wrap {
@@ -2230,6 +2059,11 @@
                 href="/blog/top-ai-tools-saudi-2025/" class="bai-inline-0151">Top AI Tools for Biz</a><a
                 href="/en/consultation/" class="bai-inline-0151">Book an Exec Consultation</a><a href="/case-studies/"
                 class="bai-inline-0151">See Success Stories</a></div>
+        <div class="internal-linking-cta-wrap"><strong style="color:#fff">Expand this path:</strong> <a
+                class="internal-linking-inline" href="/en/services/">Services Hub</a>, <a
+                class="internal-linking-inline" href="/sectors/">Sectors Hub</a>, <a
+                class="internal-linking-inline" href="/blog/ai-agent/">AI Agent Article</a>, <a
+                class="internal-linking-inline" href="/docs/services-overview-en/">Service Overview</a></div>
         <ul class="bai-inline-0152">
             <li><a href="/docs/data-analysis/" style="color:#e2e8f0;text-decoration:none;">AI Agent integration with
                     Data Analysis</a></li>

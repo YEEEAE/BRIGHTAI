@@ -1,6 +1,7 @@
 import path from "node:path";
 
 const BASE_URL = "https://brightai.site";
+const DEFAULT_COUNTERPART_OPTIONS = Object.freeze({});
 
 const ROOT_INDEX_DIRS = new Set([
   "about",
@@ -21,6 +22,20 @@ const ROOT_INDEX_DIRS = new Set([
 ]);
 
 const REL_PATH_ALIASES = new Map();
+const NON_INDEXABLE_REL_PATH_PATTERNS = [
+  /^(404|500)\.html$/i,
+  /^privacy-cookies\/index\.html$/i,
+  /^terms\/index\.html$/i,
+  /^sitemap\/index\.html$/i,
+  /^aimais\/public\//i,
+  /^frontend\/pages\//i,
+  /^interview\/pages\//i,
+  /^tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
+  /^en\/tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
+  /^blog\/atou\.doc\.html$/i,
+  /^blog\/generative-artificial-intelligence\.html$/i,
+  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)\.html$/i,
+];
 
 const TRAILING_SLASH_ROUTE_PATTERNS = [
   /^\/$/,
@@ -36,6 +51,11 @@ const TRAILING_SLASH_ROUTE_PATTERNS = [
 
 export function normalizeRelPath(filePath) {
   return filePath.replace(/\\/g, "/").normalize("NFC");
+}
+
+export function isPublicIndexableRelPath(relPath) {
+  const normalized = normalizeRelPath(relPath);
+  return !NON_INDEXABLE_REL_PATH_PATTERNS.some((pattern) => pattern.test(normalized));
 }
 
 export function encodeUrlPath(urlPath) {
@@ -176,6 +196,7 @@ export function relPathToSitePath(relPath) {
 }
 
 export function relPathToCanonical(relPath, baseUrl = BASE_URL) {
+  if (!isPublicIndexableRelPath(relPath)) return null;
   const sitePath = relPathToSitePath(relPath);
   if (!sitePath) return null;
   const normalizedPath = shouldKeepTrailingSlash(sitePath)
@@ -214,44 +235,81 @@ export function normalizeSiteUrl(rawUrl, baseUrl = BASE_URL) {
   return `${baseUrl}${encodeUrlPath(decodedPath)}`;
 }
 
-export function findCounterpartRelPath(relPath, lowerPathMap) {
+function pickAllowedPath(candidateKey, lowerPathMap, allowedRelPaths) {
+  const candidate = lowerPathMap.get(candidateKey);
+  if (!candidate) return null;
+  if (allowedRelPaths && !allowedRelPaths.has(candidate)) {
+    return null;
+  }
+  if (!isPublicIndexableRelPath(candidate)) {
+    return null;
+  }
+  return candidate;
+}
+
+export function buildPublicUrlRegistry(relPaths, baseUrl = BASE_URL) {
+  const publicRelPaths = new Set();
+  const canonicalByRelPath = new Map();
+  const relPathByCanonical = new Map();
+
+  for (const relPath of relPaths) {
+    const normalized = normalizeRelPath(relPath);
+    if (!isPublicIndexableRelPath(normalized)) continue;
+    const canonical = relPathToCanonical(normalized, baseUrl);
+    if (!canonical) continue;
+    publicRelPaths.add(normalized);
+    canonicalByRelPath.set(normalized, canonical);
+    if (!relPathByCanonical.has(canonical)) {
+      relPathByCanonical.set(canonical, normalized);
+    }
+  }
+
+  return {
+    publicRelPaths,
+    canonicalByRelPath,
+    relPathByCanonical,
+  };
+}
+
+export function findCounterpartRelPath(relPath, lowerPathMap, options = DEFAULT_COUNTERPART_OPTIONS) {
   const normalized = normalizeRelPath(relPath);
   const lower = normalized.toLowerCase();
+  const allowedRelPaths = options.allowedRelPaths || null;
 
   if (lower === "docs.html") {
-    return lowerPathMap.get("en/docs/docs.html") || null;
+    return pickAllowedPath("en/docs/docs.html", lowerPathMap, allowedRelPaths);
   }
 
   if (lower === "en/docs/docs.html") {
-    return lowerPathMap.get("docs.html") || null;
+    return pickAllowedPath("docs.html", lowerPathMap, allowedRelPaths);
   }
 
   if (lower === "index.html") {
-    return lowerPathMap.get("en/index.html") || null;
+    return pickAllowedPath("en/index.html", lowerPathMap, allowedRelPaths);
   }
 
   if (lower === "en/index.html") {
-    return lowerPathMap.get("index.html") || null;
+    return pickAllowedPath("index.html", lowerPathMap, allowedRelPaths);
   }
 
   if (lower.startsWith("en/")) {
     const candidate = normalized.slice(3).toLowerCase();
-    return lowerPathMap.get(candidate) || null;
+    return pickAllowedPath(candidate, lowerPathMap, allowedRelPaths);
   }
 
   const englishMirrorCandidate = `en/${normalized}`.toLowerCase();
   if (lowerPathMap.has(englishMirrorCandidate)) {
-    return lowerPathMap.get(englishMirrorCandidate) || null;
+    return pickAllowedPath(englishMirrorCandidate, lowerPathMap, allowedRelPaths);
   }
 
   if (/-en\.html$/i.test(lower)) {
     const candidate = normalized.replace(/-en\.html$/i, ".html").toLowerCase();
-    return lowerPathMap.get(candidate) || null;
+    return pickAllowedPath(candidate, lowerPathMap, allowedRelPaths);
   }
 
   if (/\.html$/i.test(lower)) {
     const candidate = normalized.replace(/\.html$/i, "-en.html").toLowerCase();
-    return lowerPathMap.get(candidate) || null;
+    return pickAllowedPath(candidate, lowerPathMap, allowedRelPaths);
   }
 
   return null;

@@ -5,10 +5,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const hasType = (type) => existingSchemas.some((text) =>
     new RegExp(`"@type"\\s*:\\s*(?:\\[\\s*)?(?:"${type}")`).test(text)
   );
-  const canonicalHref =
-    document.querySelector('link[rel="canonical"]')?.getAttribute("href") ||
-    `${window.location.origin}${window.location.pathname}`;
+  const canonicalHref = (() => {
+    const rawCanonical = document.querySelector('link[rel="canonical"]')?.getAttribute("href")?.trim();
+    if (rawCanonical) {
+      try {
+        return new URL(rawCanonical, window.location.origin).toString();
+      } catch {
+        // نرجع إلى المسار الحالي إذا كانت قيمة canonical غير قابلة للتحليل
+      }
+    }
+
+    const normalizedPath =
+      window.location.pathname === "/" ? "/" : window.location.pathname.replace(/\/+$/, "") + "/";
+    return `${window.location.origin}${normalizedPath}`;
+  })();
   const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  const isHomePage = pathname === "/" || pathname === "/en";
 
   const appendSchema = (payload) => {
     const script = document.createElement("script");
@@ -34,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  if (!hasType("WebSite")) {
+  if (isHomePage && !hasType("WebSite")) {
     appendSchema({
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -52,9 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "@id": `${canonicalHref}#webpage`,
       url: canonicalHref,
       inLanguage: document.documentElement.lang || (isEnglish ? "en-US" : "ar-SA"),
-      isPartOf: {
-        "@id": "https://brightai.site/#website"
-      }
+      ...(isHomePage ? {
+        isPartOf: {
+          "@id": "https://brightai.site/#website"
+        }
+      } : {})
     });
   }
 });

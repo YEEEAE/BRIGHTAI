@@ -3,7 +3,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { findOnrenderReferences, hasHtmlRedirectSignals } from "./sitemap-audit-utils.mjs";
 import {
+  buildPublicUrlRegistry,
   findCounterpartRelPath,
+  isPublicIndexableRelPath,
   normalizeRelPath,
   normalizeSiteUrl,
   relPathToCanonical,
@@ -287,10 +289,21 @@ function insertIntoBodyTop(content, tag) {
   return `${content.slice(0, insertAt)}\n${tag}${content.slice(insertAt)}`;
 }
 
-function buildRequiredHreflang(relPath, lang, lowerPathMap, selfUrlOverride = null) {
-  const selfUrl = selfUrlOverride || relPathToCanonical(relPath, BASE_URL);
-  const counterpart = findCounterpartRelPath(relPath, lowerPathMap);
-  const counterpartUrl = counterpart ? relPathToCanonical(counterpart, BASE_URL) : null;
+function buildRequiredHreflang(relPath, lang, lowerPathMap, publicRegistry, selfUrlOverride = null) {
+  if (!publicRegistry.publicRelPaths.has(relPath)) {
+    return [];
+  }
+
+  const selfUrl =
+    selfUrlOverride ||
+    publicRegistry.canonicalByRelPath.get(relPath) ||
+    relPathToCanonical(relPath, BASE_URL);
+  const counterpart = findCounterpartRelPath(relPath, lowerPathMap, {
+    allowedRelPaths: publicRegistry.publicRelPaths,
+  });
+  const counterpartUrl = counterpart
+    ? publicRegistry.canonicalByRelPath.get(counterpart) || relPathToCanonical(counterpart, BASE_URL)
+    : null;
 
   if (!selfUrl) return [];
 
@@ -358,7 +371,7 @@ function hasNoindexDirective(content) {
   );
 }
 
-function auditFile(content, relPath, lowerPathMap) {
+function auditFile(content, relPath, lowerPathMap, publicRegistry) {
   if (!isFullHtmlDocument(content)) {
     return {
       eligible: false,
@@ -380,8 +393,9 @@ function auditFile(content, relPath, lowerPathMap) {
   const h1Text = extractTagContent(content, "h1");
   const lang = detectLang(content, relPath, titleText, h1Text);
   const expectedCanonical = resolveExpectedCanonical(content, relPath);
+  const isPublicPage = isPublicIndexableRelPath(relPath) && Boolean(expectedCanonical);
 
-  if (!expectedCanonical) {
+  if (!isPublicPage) {
     return {
       eligible: false,
       issues: [],
@@ -402,7 +416,7 @@ function auditFile(content, relPath, lowerPathMap) {
   const isNoindexPage = hasNoindexDirective(content);
   const requiredHreflang = isErrorPage || isNoindexPage
     ? []
-    : buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
+    : buildRequiredHreflang(relPath, lang, lowerPathMap, publicRegistry, expectedCanonical);
   const onrenderRefs = findOnrenderReferences(content);
   const hasRedirectSignals = hasHtmlRedirectSignals(content);
 
@@ -516,8 +530,8 @@ function auditFile(content, relPath, lowerPathMap) {
   };
 }
 
-function applyFixes(content, relPath, lowerPathMap) {
-  const initialAudit = auditFile(content, relPath, lowerPathMap);
+function applyFixes(content, relPath, lowerPathMap, publicRegistry) {
+  const initialAudit = auditFile(content, relPath, lowerPathMap, publicRegistry);
   if (!initialAudit.eligible) {
     return { content, changed: false, actions: [] };
   }
@@ -596,7 +610,7 @@ function applyFixes(content, relPath, lowerPathMap) {
       (tag) => hasRelToken(tag.attrs.rel, "alternate") && Boolean(tag.attrs.hreflang)
     );
     if (!initialAudit.isNoindexPage) {
-      const required = buildRequiredHreflang(relPath, lang, lowerPathMap, expectedCanonical);
+      const required = buildRequiredHreflang(relPath, lang, lowerPathMap, publicRegistry, expectedCanonical);
       for (const expected of required) {
         const hreflangTag = `<link rel="alternate" hreflang="${expected.code}" href="${expected.href}" />`;
         updated = insertIntoHead(updated, hreflangTag);
@@ -761,13 +775,14 @@ async function main() {
   const htmlFiles = (await walkHtmlFiles(ROOT)).sort((a, b) => a.localeCompare(b, "en"));
 
   const lowerPathMap = new Map(htmlFiles.map((file) => [file.toLowerCase(), file]));
+  const publicRegistry = buildPublicUrlRegistry(htmlFiles, BASE_URL);
 
   const beforeAudits = [];
   for (const relPath of htmlFiles) {
     const content = await fs.readFile(path.join(ROOT, relPath), "utf8");
     beforeAudits.push({
       file: relPath,
-      audit: auditFile(content, relPath, lowerPathMap),
+      audit: auditFile(content, relPath, lowerPathMap, publicRegistry),
     });
   }
   const beforeSummary = summarizeAudits(beforeAudits);
@@ -778,7 +793,7 @@ async function main() {
       const fullPath = path.join(ROOT, relPath);
       const original = await fs.readFile(fullPath, "utf8");
       if (!isFullHtmlDocument(original)) continue;
-      const result = applyFixes(original, relPath, lowerPathMap);
+      const result = applyFixes(original, relPath, lowerPathMap, publicRegistry);
       if (!result.changed) continue;
       await fs.writeFile(fullPath, result.content, "utf8");
       fixedFiles.push({
@@ -793,7 +808,7 @@ async function main() {
     const content = await fs.readFile(path.join(ROOT, relPath), "utf8");
     afterAudits.push({
       file: relPath,
-      audit: auditFile(content, relPath, lowerPathMap),
+      audit: auditFile(content, relPath, lowerPathMap, publicRegistry),
     });
   }
   const afterSummary = summarizeAudits(afterAudits);

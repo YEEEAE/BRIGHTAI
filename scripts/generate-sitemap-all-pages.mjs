@@ -2,6 +2,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import {
+  buildPublicUrlRegistry,
   findCounterpartRelPath,
   normalizeRelPath,
   normalizeSiteUrl,
@@ -148,33 +149,45 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
   return reasons;
 }
 
-function buildHreflangSet(selfUrl) {
-  try {
-    const urlObj = new URL(selfUrl);
-    const pathname = urlObj.pathname;
-    
-    const isEnglish = pathname.startsWith("/en/") || pathname === "/en";
-    
-    let arPath = isEnglish ? pathname.substring(3) : pathname;
-    if (!arPath || arPath === "") arPath = "/";
-    
-    let enPath = "/en" + (arPath.startsWith("/") ? arPath : "/" + arPath);
-    
-    // Normalize slashes
-    arPath = arPath.replace(/\/+/g, "/");
-    enPath = enPath.replace(/\/+/g, "/");
-    
-    const arUrl = urlObj.origin + arPath + urlObj.search + urlObj.hash;
-    const enUrl = urlObj.origin + enPath + urlObj.search + urlObj.hash;
-
-    return [
-      { code: "ar-SA", href: arUrl },
-      { code: "en-US", href: enUrl },
-      { code: "x-default", href: arUrl },
-    ];
-  } catch (error) {
+function buildHreflangSet(entry, registry, lowerPathMap) {
+  const selfUrl = registry.canonicalByRelPath.get(entry.relPath) || entry.loc;
+  if (!selfUrl || !registry.publicRelPaths.has(entry.relPath)) {
     return [];
   }
+
+  const counterpart = findCounterpartRelPath(entry.relPath, lowerPathMap, {
+    allowedRelPaths: registry.publicRelPaths,
+  });
+  const counterpartUrl = counterpart ? registry.canonicalByRelPath.get(counterpart) : null;
+  const isEnglish = entry.relPath.toLowerCase().startsWith("en/") || /-en\.html$/i.test(entry.relPath);
+
+  if (isEnglish) {
+    if (counterpartUrl) {
+      return [
+        { code: "ar-SA", href: counterpartUrl },
+        { code: "en-US", href: selfUrl },
+        { code: "x-default", href: counterpartUrl },
+      ];
+    }
+
+    return [
+      { code: "en-US", href: selfUrl },
+      { code: "x-default", href: selfUrl },
+    ];
+  }
+
+  if (counterpartUrl) {
+    return [
+      { code: "ar-SA", href: selfUrl },
+      { code: "en-US", href: counterpartUrl },
+      { code: "x-default", href: selfUrl },
+    ];
+  }
+
+  return [
+    { code: "ar-SA", href: selfUrl },
+    { code: "x-default", href: selfUrl },
+  ];
 }
 
 async function analyzePage(relPath) {
@@ -287,8 +300,11 @@ function sourcePriority(relPath) {
 
 async function buildEntries() {
   const allFiles = await walkHtmlFiles(ROOT);
+  const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
+  const lowerPathMap = new Map(normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath]));
+  const registry = buildPublicUrlRegistry(normalizedRelPaths, BASE_URL);
   const analyses = await Promise.all(
-    allFiles.map((fullPath) => analyzePage(normalizeRelPath(path.relative(ROOT, fullPath))))
+    normalizedRelPaths.map((relPath) => analyzePage(relPath))
   );
   const included = analyses.filter((analysis) => analysis.include && analysis.loc);
   const byLoc = new Map();
@@ -313,7 +329,7 @@ async function buildEntries() {
 
   const entries = Array.from(byLoc.values()).sort((first, second) => first.loc.localeCompare(second.loc, "en"));
   for (const entry of entries) {
-    entry.alternates = buildHreflangSet(entry.loc);
+    entry.alternates = buildHreflangSet(entry, registry, lowerPathMap);
   }
 
   return { entries, analyses };

@@ -1,12 +1,12 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-07T19:31:10.353Z
-- Total URLs in generated sitemap: 164
-- Included core pages: 82
+- Date: 2026-04-13T17:43:50.708Z
+- Total URLs in generated sitemap: 170
+- Included core pages: 83
 - Included sector pages: 12
-- Included blog articles: 70
-- Excluded analyzed pages: 44
-- Excluded inventory rows: 44
+- Included blog articles: 75
+- Excluded analyzed pages: 39
+- Excluded inventory rows: 39
 
 ## Inclusion Policy
 - نضم كل صفحة عامة قابلة للفهرسة داخل الموقع إذا كان canonical النهائي صحيحًا ولا تحتوي `noindex` أو redirect/meta refresh أو إشارات legacy أو مسارات تقنية مستبعدة.
@@ -17,16 +17,17 @@
 
 | Reason | Count |
 | --- | ---: |
-| canonical_mismatch | 68 |
+| canonical_mismatch | 76 |
+| robots_noindex | 54 |
 | explicit_scope_exclusion | 52 |
-| robots_noindex | 48 |
-| quality or canonical exclusion | 18 |
+| quality or canonical exclusion | 13 |
 | authenticated tender app routes | 10 |
 | interview app internal routes | 5 |
 | legal docs already noindexed | 4 |
-| thin_content_lt_120 | 4 |
 | utility and legal pages | 3 |
 | error pages | 2 |
+| thin_content_lt_120 | 2 |
+| thin_content_lt_350 | 2 |
 | currently unpublished blog route | 1 |
 | duplicate tender landing page | 1 |
 
@@ -34,9 +35,9 @@
 
 | Group | File | Words | URL |
 | --- | --- | ---: | --- |
-| core | index.html | 4581 | https://brightai.site/ |
-| core | about/index.html | 1267 | https://brightai.site/about/ |
-| core | ai-agent/index.html | 2627 | https://brightai.site/ai-agent/ |
+| core | index.html | 4617 | https://brightai.site/ |
+| core | about/index.html | 1270 | https://brightai.site/about/ |
+| core | ai-agent/index.html | 2663 | https://brightai.site/ai-agent/ |
 | core | ai-bots/BrightMath/index.html | 1092 | https://brightai.site/ai-bots/BrightMath/ |
 | core | ai-bots/BrightProject/index.html | 1122 | https://brightai.site/ai-bots/BrightProject/ |
 | core | ai-bots/BrightRecruiter/index.html | 1343 | https://brightai.site/ai-bots/BrightRecruiter/ |
@@ -45,8 +46,13 @@
 | core | ai-scolecs/index.html | 1548 | https://brightai.site/ai-scolecs/ |
 | core | ai-workflows/index.html | 1873 | https://brightai.site/ai-workflows/ |
 | blog | blog/index.html | 2057 | https://brightai.site/blog/ |
+| blog | blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html | 2019 | https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/ |
+| blog | blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html | 2085 | https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/ |
+| blog | blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html | 1931 | https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/ |
+| blog | blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html | 1908 | https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/ |
 | blog | blog/الذكاء-الاصطناعي-و-التسويق.html | 1405 | https://brightai.site/blog/%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%88-%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82/ |
 | blog | blog/تحليل-البيانات.html | 1439 | https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/ |
+| blog | blog/تعلم-الآلة-و-الأعمال.html | 882 | https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/ |
 | blog | blog/مقال-تحليل.html | 789 | https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/ |
 | blog | blog/agint-bblog.html | 1642 | https://brightai.site/blog/agint-bblog/ |
 | blog | blog/ai-agent.html | 1387 | https://brightai.site/blog/ai-agent/ |
@@ -117,7 +123,7 @@
 | core | case-studies/index.html | 801 | https://brightai.site/case-studies/ |
 | core | consultation/index.html | 823 | https://brightai.site/consultation/ |
 | core | contact/index.html | 1084 | https://brightai.site/contact/ |
-| core | data-analysis/index.html | 1850 | https://brightai.site/data-analysis/ |
+| core | data-analysis/index.html | 1858 | https://brightai.site/data-analysis/ |
 | core | demo/index.html | 775 | https://brightai.site/demo/ |
 | core | demo/ocr-demo/index.html | 926 | https://brightai.site/demo/ocr-demo/ |
 | core | demo/pricing/index.html | 884 | https://brightai.site/demo/pricing/ |
@@ -162,34 +168,35 @@
 | core | docs/solutions-supply-chain.html | 1273 | https://brightai.site/docs/solutions-supply-chain/ |
 | core | en/index.html | 5264 | https://brightai.site/en/ |
 | core | en/about/index.html | 1682 | https://brightai.site/en/about/ |
-| core | en/ai-agent/index.html | 2699 | https://brightai.site/en/ai-agent/ |
+| core | en/ai-agent/index.html | 2714 | https://brightai.site/en/ai-agent/ |
 | core | en/ai-workflows/index.html | 2052 | https://brightai.site/en/ai-workflows/ |
 | core | en/consultation/index.html | 1130 | https://brightai.site/en/consultation/ |
 | core | en/data-analysis/index.html | 2568 | https://brightai.site/en/data-analysis/ |
-| core | en/docs/index.html | 1282 | https://brightai.site/en/docs/ |
-| core | en/health/index.html | 2053 | https://brightai.site/en/health/ |
+| core | en/docs/index.html | 1281 | https://brightai.site/en/docs/ |
+| core | en/health/index.html | 2059 | https://brightai.site/en/health/ |
 | core | en/interview/index.html | 1386 | https://brightai.site/en/interview/ |
+| core | en/services/index.html | 280 | https://brightai.site/en/services/ |
 | core | en/smart-automation/index.html | 2284 | https://brightai.site/en/smart-automation/ |
 | core | en/smart-medical-archive/index.html | 1675 | https://brightai.site/en/smart-medical-archive/ |
 | core | en/tools/index.html | 1508 | https://brightai.site/en/tools/ |
-| core | health/index.html | 1928 | https://brightai.site/health/ |
+| core | health/index.html | 1934 | https://brightai.site/health/ |
 | core | interview/index.html | 1596 | https://brightai.site/interview/ |
 | core | machine-learning/index.html | 1180 | https://brightai.site/machine-learning/ |
 | core | partners/index.html | 767 | https://brightai.site/partners/ |
-| sector | sectors/ecommerce-en.html | 1126 | https://brightai.site/sectors/ecommerce-en/ |
-| sector | sectors/ecommerce.html | 1341 | https://brightai.site/sectors/ecommerce/ |
-| sector | sectors/energy-en.html | 1236 | https://brightai.site/sectors/energy-en/ |
-| sector | sectors/energy.html | 1348 | https://brightai.site/sectors/energy/ |
-| sector | sectors/finance-en.html | 1262 | https://brightai.site/sectors/finance-en/ |
-| sector | sectors/finance.html | 1350 | https://brightai.site/sectors/finance/ |
-| sector | sectors/healthcare-en.html | 1310 | https://brightai.site/sectors/healthcare-en/ |
-| sector | sectors/healthcare.html | 1338 | https://brightai.site/sectors/healthcare/ |
-| sector | sectors/logistics-en.html | 1213 | https://brightai.site/sectors/logistics-en/ |
-| sector | sectors/logistics.html | 1337 | https://brightai.site/sectors/logistics/ |
-| sector | sectors/manufacturing-en.html | 1214 | https://brightai.site/sectors/manufacturing-en/ |
-| sector | sectors/manufacturing.html | 1362 | https://brightai.site/sectors/manufacturing/ |
-| core | services/index.html | 2914 | https://brightai.site/services/ |
-| core | smart-automation/index.html | 2167 | https://brightai.site/smart-automation/ |
+| sector | sectors/ecommerce-en.html | 1139 | https://brightai.site/sectors/ecommerce-en/ |
+| sector | sectors/ecommerce.html | 1356 | https://brightai.site/sectors/ecommerce/ |
+| sector | sectors/energy-en.html | 1249 | https://brightai.site/sectors/energy-en/ |
+| sector | sectors/energy.html | 1363 | https://brightai.site/sectors/energy/ |
+| sector | sectors/finance-en.html | 1275 | https://brightai.site/sectors/finance-en/ |
+| sector | sectors/finance.html | 1365 | https://brightai.site/sectors/finance/ |
+| sector | sectors/healthcare-en.html | 1323 | https://brightai.site/sectors/healthcare-en/ |
+| sector | sectors/healthcare.html | 1353 | https://brightai.site/sectors/healthcare/ |
+| sector | sectors/logistics-en.html | 1226 | https://brightai.site/sectors/logistics-en/ |
+| sector | sectors/logistics.html | 1352 | https://brightai.site/sectors/logistics/ |
+| sector | sectors/manufacturing-en.html | 1227 | https://brightai.site/sectors/manufacturing-en/ |
+| sector | sectors/manufacturing.html | 1377 | https://brightai.site/sectors/manufacturing/ |
+| core | services/index.html | 2979 | https://brightai.site/services/ |
+| core | smart-automation/index.html | 2177 | https://brightai.site/smart-automation/ |
 | core | smart-medical-archive/index.html | 1479 | https://brightai.site/smart-medical-archive/ |
 | core | tenders/index.html | 3029 | https://brightai.site/tenders/ |
 | core | tools/index.html | 1516 | https://brightai.site/tools/ |
@@ -214,17 +221,11 @@
 | blog/process-automation-ai-efficiency.html | 2085 | robots_noindex, canonical_mismatch |
 | blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html | 2048 | canonical_mismatch |
 | blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html | 1994 | canonical_mismatch |
-| blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html | 1931 | canonical_mismatch |
-| blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html | 1908 | canonical_mismatch |
-| blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html | 2019 | canonical_mismatch |
-| blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html | 2085 | canonical_mismatch |
-| blog/تعلم-الآلة-و-الأعمال.html | 882 | canonical_mismatch |
-| docs/privacy-policy-en.html | 591 | explicit_scope_exclusion |
-| docs/privacy-policy.html | 689 | explicit_scope_exclusion |
-| docs/terms-and-conditions-en.html | 689 | explicit_scope_exclusion |
-| docs/terms-and-conditions.html | 726 | explicit_scope_exclusion |
-| en/docs/docs.html | 1282 | canonical_mismatch |
-| en/services/index.html | 31 | thin_content_lt_120 |
+| docs/privacy-policy-en.html | 585 | canonical_mismatch, explicit_scope_exclusion |
+| docs/privacy-policy.html | 689 | canonical_mismatch, explicit_scope_exclusion |
+| docs/terms-and-conditions-en.html | 689 | canonical_mismatch, explicit_scope_exclusion |
+| docs/terms-and-conditions.html | 726 | canonical_mismatch, explicit_scope_exclusion |
+| en/docs/docs.html | 1281 | robots_noindex, canonical_mismatch |
 | en/tenders/compare.html | 1203 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | en/tenders/dashboard.html | 445 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | en/tenders/landing.html | 1642 | canonical_mismatch |
@@ -235,18 +236,19 @@
 | interview/pages/Visitor-registration/index.html | 414 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | interview/pages/appointment/index.html | 183 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | interview/pages/dashboard/index.html | 290 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
-| interview/pages/support-ai/index.html | 163 | explicit_scope_exclusion |
+| interview/pages/support-ai/index.html | 163 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | interview/pages/supportAI/index.html | 30 | robots_noindex, canonical_mismatch, thin_content_lt_120, explicit_scope_exclusion |
-| mais-OBM/index.html | 202 | canonical_mismatch |
-| privacy-cookies/index.html | 944 | explicit_scope_exclusion |
-| sitemap/index.html | 206 | explicit_scope_exclusion |
+| mais-OBM/index.html | 202 | robots_noindex, canonical_mismatch |
+| privacy-cookies/index.html | 944 | canonical_mismatch, explicit_scope_exclusion |
+| sectors/index.html | 320 | canonical_mismatch, thin_content_lt_350 |
+| sitemap/index.html | 206 | canonical_mismatch, explicit_scope_exclusion |
 | tenders/compare.html | 1339 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | tenders/dashboard.html | 315 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | tenders/landing.html | 1390 | explicit_scope_exclusion |
 | tenders/reports.html | 290 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | tenders/settings.html | 313 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | tenders/templates.html | 1342 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
-| terms/index.html | 1279 | explicit_scope_exclusion |
+| terms/index.html | 1279 | canonical_mismatch, explicit_scope_exclusion |
 
 ## Excluded Content Inventory
 
@@ -261,19 +263,13 @@
 | blog/industrial-automation-productivity.html | 2042 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | blog/machine-learning-computer-vision.html | 1862 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | blog/process-automation-ai-efficiency.html | 2085 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
-| blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html | 2019 | canonical_mismatch, quality or canonical exclusion |
-| blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html | 2085 | canonical_mismatch, quality or canonical exclusion |
 | blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html | 2048 | canonical_mismatch, quality or canonical exclusion |
 | blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html | 1994 | canonical_mismatch, quality or canonical exclusion |
-| blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html | 1931 | canonical_mismatch, quality or canonical exclusion |
-| blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html | 1908 | canonical_mismatch, quality or canonical exclusion |
-| blog/تعلم-الآلة-و-الأعمال.html | 882 | canonical_mismatch, quality or canonical exclusion |
-| docs/privacy-policy-en.html | 591 | explicit_scope_exclusion, legal docs already noindexed |
-| docs/privacy-policy.html | 689 | explicit_scope_exclusion, legal docs already noindexed |
-| docs/terms-and-conditions-en.html | 689 | explicit_scope_exclusion, legal docs already noindexed |
-| docs/terms-and-conditions.html | 726 | explicit_scope_exclusion, legal docs already noindexed |
-| en/docs/docs.html | 1282 | canonical_mismatch, quality or canonical exclusion |
-| en/services/index.html | 31 | thin_content_lt_120, quality or canonical exclusion |
+| docs/privacy-policy-en.html | 585 | canonical_mismatch, explicit_scope_exclusion, legal docs already noindexed |
+| docs/privacy-policy.html | 689 | canonical_mismatch, explicit_scope_exclusion, legal docs already noindexed |
+| docs/terms-and-conditions-en.html | 689 | canonical_mismatch, explicit_scope_exclusion, legal docs already noindexed |
+| docs/terms-and-conditions.html | 726 | canonical_mismatch, explicit_scope_exclusion, legal docs already noindexed |
+| en/docs/docs.html | 1281 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | en/tenders/compare.html | 1203 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | en/tenders/dashboard.html | 445 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | en/tenders/landing.html | 1642 | canonical_mismatch, quality or canonical exclusion |
@@ -283,17 +279,18 @@
 | error.html | 2341 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | interview/pages/appointment/index.html | 183 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
 | interview/pages/dashboard/index.html | 290 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
-| interview/pages/support-ai/index.html | 163 | explicit_scope_exclusion, interview app internal routes |
+| interview/pages/support-ai/index.html | 163 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
 | interview/pages/supportAI/index.html | 30 | robots_noindex, canonical_mismatch, thin_content_lt_120, explicit_scope_exclusion, interview app internal routes |
 | interview/pages/Visitor-registration/index.html | 414 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
-| mais-OBM/index.html | 202 | canonical_mismatch, quality or canonical exclusion |
-| privacy-cookies/index.html | 944 | explicit_scope_exclusion, utility and legal pages |
-| sitemap/index.html | 206 | explicit_scope_exclusion, utility and legal pages |
+| mais-OBM/index.html | 202 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
+| privacy-cookies/index.html | 944 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
+| sectors/index.html | 320 | canonical_mismatch, thin_content_lt_350, quality or canonical exclusion |
+| sitemap/index.html | 206 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
 | tenders/compare.html | 1339 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | tenders/dashboard.html | 315 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | tenders/landing.html | 1390 | explicit_scope_exclusion, duplicate tender landing page |
 | tenders/reports.html | 290 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | tenders/settings.html | 313 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | tenders/templates.html | 1342 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| terms/index.html | 1279 | explicit_scope_exclusion, utility and legal pages |
+| terms/index.html | 1279 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
 

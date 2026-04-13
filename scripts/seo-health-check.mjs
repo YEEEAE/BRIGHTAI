@@ -9,7 +9,12 @@ import {
   hasHtmlRedirectSignals,
   hasNoindexDirective,
 } from "./sitemap-audit-utils.mjs";
-import { normalizeSiteUrl, relPathToCanonical } from "./seo-url-map.mjs";
+import {
+  buildPublicUrlRegistry,
+  isPublicIndexableRelPath,
+  normalizeSiteUrl,
+  relPathToCanonical,
+} from "./seo-url-map.mjs";
 
 const BASE_URL = "https://brightai.site";
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -107,6 +112,30 @@ function isInternalPage(relPath) {
   return INTERNAL_PAGE_PATTERN.test(relPath);
 }
 
+function extractInternalHrefTargets(html) {
+  const matches = [...html.matchAll(/\bhref\s*=\s*["']([^"']+)["']/gi)];
+  return matches
+    .map((match) => (match[1] || "").trim())
+    .filter(Boolean)
+    .filter((href) => href.startsWith("/") || href.startsWith("https://brightai.site/"));
+}
+
+function normalizeInternalHrefToCanonical(href) {
+  try {
+    const parsed = new URL(href, `${BASE_URL}/`);
+    if (parsed.origin !== BASE_URL) return null;
+    return normalizeSiteUrl(parsed.toString(), BASE_URL);
+  } catch {
+    return null;
+  }
+}
+
+function extractSitemapAlternateTargets(xml) {
+  return [...xml.matchAll(/<xhtml:link\b[^>]*\bhref="([^"]+)"[^>]*>/gi)].map((match) =>
+    decodeXmlEntities(match[1].trim())
+  );
+}
+
 function hasBadPublicSlugPattern(relPath) {
   return /(^|\/)[^/]*([ _()]|\.doc(?=\/|\.|$)|[A-Z])[^/]*\.html?$/u.test(relPath);
 }
@@ -197,7 +226,7 @@ async function walkHtmlFiles(dirPath, bucket = []) {
   return bucket;
 }
 
-async function auditHtmlFile(filePath) {
+async function auditHtmlFile(filePath, publicRegistry) {
   const relPath = toRootRelative(filePath);
   const html = await fs.readFile(filePath, "utf8");
 
@@ -217,27 +246,45 @@ async function auditHtmlFile(filePath) {
   const description = extractMetaDescription(html);
   const h1Count = countH1(html);
   const internal = isInternalPage(relPath);
+  const publicDocument = isPublicIndexableRelPath(relPath) && Boolean(expectedCanonical) && !internal;
   const hasNoindex = hasNoindexDirective(html);
   const hreflangLinks = extractAlternateHreflangLinks(html);
   const frontendPagesLink = hasFrontendPagesLinks(html);
   const onrenderRefs = findOnrenderReferences(html);
   const hasHtmlRedirect = hasHtmlRedirectSignals(html);
+  const hreflangGhostTargets = [];
+  const brokenAiBotsLinks = [];
 
-  if (!canonical) {
+  for (const link of hreflangLinks) {
+    const normalizedHref = normalizeSiteUrl(link.href, BASE_URL);
+    if (!normalizedHref || !publicRegistry.relPathByCanonical.has(normalizedHref)) {
+      hreflangGhostTargets.push(`${link.hreflang} -> ${link.href || "(empty)"}`);
+    }
+  }
+
+  for (const href of extractInternalHrefTargets(html)) {
+    if (!/\/ai-bots\//i.test(href)) continue;
+    const normalizedHref = normalizeInternalHrefToCanonical(href);
+    if (!normalizedHref || !publicRegistry.relPathByCanonical.has(normalizedHref)) {
+      brokenAiBotsLinks.push(href);
+    }
+  }
+
+  if (publicDocument && !canonical) {
     issues.push("canonical_missing");
-  } else if (!expectedCanonical || normalizedCanonical !== expectedCanonical) {
+  } else if (publicDocument && normalizedCanonical !== expectedCanonical) {
     issues.push("canonical_invalid");
   }
 
-  if (!title) {
+  if (publicDocument && !title) {
     issues.push("title_missing");
   }
 
-  if (!description) {
+  if (publicDocument && !description) {
     issues.push("description_missing");
   }
 
-  if (h1Count !== 1) {
+  if (publicDocument && h1Count !== 1) {
     issues.push("h1_invalid");
   }
 
@@ -257,12 +304,20 @@ async function auditHtmlFile(filePath) {
     issues.push("noindex_hreflang");
   }
 
+  if (publicDocument && hreflangGhostTargets.length > 0) {
+    issues.push("hreflang_ghost");
+  }
+
   if (hasHtmlRedirect) {
     issues.push("html_redirect");
   }
 
-  if (!hasNoindex && !internal && hasBadPublicSlugPattern(relPath)) {
+  if (publicDocument && !hasNoindex && hasBadPublicSlugPattern(relPath)) {
     issues.push("public_bad_slug");
+  }
+
+  if (brokenAiBotsLinks.length > 0) {
+    issues.push("broken_ai_bots_link");
   }
 
   return {
@@ -272,6 +327,8 @@ async function auditHtmlFile(filePath) {
     expectedCanonical,
     actualCanonical: canonical,
     onrenderRefs,
+    hreflangGhostTargets,
+    brokenAiBotsLinks,
   };
 }
 
@@ -286,6 +343,8 @@ async function main() {
   const robots = checkRobots(robotsContent);
   const sitemap = validateSitemapXml(sitemapContent);
   const sitemapLocs = sitemap.locs;
+  const sitemapLocSet = new Set(sitemapLocs.map((loc) => normalizeSiteUrl(loc, BASE_URL)).filter(Boolean));
+  const sitemapAlternates = extractSitemapAlternateTargets(sitemapContent);
   const sitemapWithSpaces = sitemapLocs.filter((loc) => /%20/i.test(loc));
   const sitemapAdminDashboard = sitemapLocs.filter((loc) => {
     try {
@@ -303,9 +362,23 @@ async function main() {
       return false;
     }
   });
+  const publicRegistry = buildPublicUrlRegistry(
+    (await walkHtmlFiles(ROOT)).map((filePath) => toRootRelative(filePath)),
+    BASE_URL
+  );
+  const sitemapAlternateTargetMissing = sitemapAlternates.filter((href) => {
+    const normalizedHref = normalizeSiteUrl(href, BASE_URL);
+    return (
+      !normalizedHref ||
+      !publicRegistry.relPathByCanonical.has(normalizedHref) ||
+      !sitemapLocSet.has(normalizedHref)
+    );
+  });
 
   const htmlFiles = await walkHtmlFiles(ROOT);
-  const htmlAudits = await Promise.all(htmlFiles.map((filePath) => auditHtmlFile(filePath)));
+  const htmlAudits = await Promise.all(
+    htmlFiles.map((filePath) => auditHtmlFile(filePath, publicRegistry))
+  );
   const documentAudits = htmlAudits.filter((item) => item.isDocument);
   const skippedHtmlFiles = htmlAudits.filter((item) => !item.isDocument).map((item) => item.relPath);
 
@@ -329,6 +402,16 @@ async function main() {
   const noindexHreflang = summarizeIssue(documentAudits, "noindex_hreflang");
   const htmlRedirectPages = summarizeIssue(documentAudits, "html_redirect");
   const publicBadSlugs = summarizeIssue(documentAudits, "public_bad_slug");
+  const hreflangGhostPages = summarizeIssue(
+    documentAudits,
+    "hreflang_ghost",
+    (item) => `${item.relPath} -> ${takeSample(item.hreflangGhostTargets, 4).join(" | ")}`
+  );
+  const brokenAiBotsLinks = summarizeIssue(
+    documentAudits,
+    "broken_ai_bots_link",
+    (item) => `${item.relPath} -> ${takeSample(unique(item.brokenAiBotsLinks), 4).join(" | ")}`
+  );
 
   printSection("تقرير فحص SEO المحلي");
   console.log(`المجلد: ${ROOT}`);
@@ -362,6 +445,11 @@ async function main() {
     sitemapWithoutTrailingSlash.length === 0,
     "كل الروابط تنتهي بـ /",
     sitemapWithoutTrailingSlash.length === 0 ? "" : takeSample(sitemapWithoutTrailingSlash).join(" | ")
+  );
+  printResult(
+    sitemapAlternateTargetMissing.length === 0,
+    "كل بدائل sitemap تشير إلى صفحات عامة موجودة",
+    sitemapAlternateTargetMissing.length === 0 ? "" : takeSample(sitemapAlternateTargetMissing).join(" | ")
   );
   console.log(`✅ عدد الروابط في sitemap.xml: ${sitemapLocs.length}`);
 
@@ -421,6 +509,11 @@ async function main() {
     noindexHreflang.length === 0 ? "" : takeSample(noindexHreflang).join(" | ")
   );
   printResult(
+    hreflangGhostPages.length === 0,
+    "لا يوجد hreflang يشير إلى صفحات غير موجودة أو غير عامة",
+    hreflangGhostPages.length === 0 ? "" : takeSample(hreflangGhostPages, 8).join(" | ")
+  );
+  printResult(
     htmlRedirectPages.length === 0,
     "عدم وجود صفحات HTML تحويلية",
     htmlRedirectPages.length === 0 ? "" : takeSample(htmlRedirectPages).join(" | ")
@@ -430,6 +523,11 @@ async function main() {
     "عدم وجود صفحات عامة بمسارات رديئة أو مرمزة بشكل ضعيف",
     publicBadSlugs.length === 0 ? "" : takeSample(publicBadSlugs).join(" | ")
   );
+  printResult(
+    brokenAiBotsLinks.length === 0,
+    "عدم وجود روابط داخلية مكسورة ضمن النمط /ai-bots/",
+    brokenAiBotsLinks.length === 0 ? "" : takeSample(brokenAiBotsLinks, 8).join(" | ")
+  );
 
   const failureCount =
     Number(!robots.disallowFrontendPages) +
@@ -438,6 +536,7 @@ async function main() {
     Number(sitemapWithSpaces.length > 0) +
     Number(sitemapAdminDashboard.length > 0) +
     Number(sitemapWithoutTrailingSlash.length > 0) +
+    Number(sitemapAlternateTargetMissing.length > 0) +
     Number(canonicalMissing.length > 0) +
     Number(canonicalInvalid.length > 0) +
     Number(titleMissing.length > 0) +
@@ -447,8 +546,10 @@ async function main() {
     Number(frontendPagesLinks.length > 0) +
     Number(onrenderReferences.length > 0) +
     Number(noindexHreflang.length > 0) +
+    Number(hreflangGhostPages.length > 0) +
     Number(htmlRedirectPages.length > 0) +
-    Number(publicBadSlugs.length > 0);
+    Number(publicBadSlugs.length > 0) +
+    Number(brokenAiBotsLinks.length > 0);
 
   printSection("النتيجة النهائية");
   if (failureCount === 0) {
