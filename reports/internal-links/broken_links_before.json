@@ -1,0 +1,574 @@
+{
+  "generatedAt": "2026-04-13T14:01:58.544Z",
+  "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
+  "filesScanned": 285,
+  "referencesScanned": 17213,
+  "internalReferences": 12548,
+  "brokenReferences": 48,
+  "fixableBrokenReferences": 40,
+  "normalizationCandidates": 35,
+  "topBrokenFiles": [
+    {
+      "file": "frontend/js/en-interview-app.js",
+      "count": 4
+    },
+    {
+      "file": "frontend/js/interview-app.js",
+      "count": 4
+    },
+    {
+      "file": "ai-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "en/ai-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "en/index.html",
+      "count": 3
+    },
+    {
+      "file": "index.html",
+      "count": 3
+    },
+    {
+      "file": "sectors/ecommerce-en.html",
+      "count": 2
+    },
+    {
+      "file": "sectors/ecommerce.html",
+      "count": 2
+    },
+    {
+      "file": "about/index.html",
+      "count": 1
+    },
+    {
+      "file": "ai-bots/BrightMath/index.html",
+      "count": 1
+    },
+    {
+      "file": "ai-bots/BrightProject/index.html",
+      "count": 1
+    },
+    {
+      "file": "blog/smart-crm-system.html",
+      "count": 1
+    },
+    {
+      "file": "docs/services-overview-en.html",
+      "count": 1
+    },
+    {
+      "file": "en/about/index.html",
+      "count": 1
+    },
+    {
+      "file": "en/health/index.html",
+      "count": 1
+    },
+    {
+      "file": "en/tools/index.html",
+      "count": 1
+    },
+    {
+      "file": "frontend/js/search 2.js",
+      "count": 1
+    },
+    {
+      "file": "frontend/js/search.js",
+      "count": 1
+    },
+    {
+      "file": "health/index.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/energy-en.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/energy.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/finance-en.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/finance.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/healthcare-en.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/healthcare.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/logistics-en.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/logistics.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/manufacturing-en.html",
+      "count": 1
+    },
+    {
+      "file": "sectors/manufacturing.html",
+      "count": 1
+    },
+    {
+      "file": "services/index.html",
+      "count": 1
+    },
+    {
+      "file": "tools/index.html",
+      "count": 1
+    },
+    {
+      "file": "what-is-ai/index.html",
+      "count": 1
+    }
+  ],
+  "brokenRows": [
+    {
+      "file": "about/index.html",
+      "line": 915,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "ai-agent/index.html",
+      "line": 1975,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "ai-agent/index.html",
+      "line": 2013,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "ai-agent/index.html",
+      "line": 2036,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "ai-bots/BrightMath/index.html",
+      "line": 1052,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "ai-bots/BrightProject/index.html",
+      "line": 965,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "blog/smart-crm-system.html",
+      "line": 909,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "docs/services-overview-en.html",
+      "line": 379,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/about/index.html",
+      "line": 959,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/ai-agent/index.html",
+      "line": 2010,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/ai-agent/index.html",
+      "line": 2054,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/ai-agent/index.html",
+      "line": 2081,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/health/index.html",
+      "line": 2040,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/index.html",
+      "line": 2207,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/index.html",
+      "line": 3019,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/index.html",
+      "line": 4449,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "en/tools/index.html",
+      "line": 1155,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "frontend/js/en-interview-app.js",
+      "line": 818,
+      "patternType": "js-key",
+      "reference": "<Career path 1>",
+      "normalizedReferencePath": "<Career path 1>",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/en-interview-app.js",
+      "line": 819,
+      "patternType": "js-key",
+      "reference": "<Career path 2>",
+      "normalizedReferencePath": "<Career path 2>",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/en-interview-app.js",
+      "line": 842,
+      "patternType": "js-key",
+      "reference": "Internship",
+      "normalizedReferencePath": "Internship",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/en-interview-app.js",
+      "line": 843,
+      "patternType": "js-key",
+      "reference": "Junior Tech Support",
+      "normalizedReferencePath": "Junior Tech Support",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/interview-app.js",
+      "line": 818,
+      "patternType": "js-key",
+      "reference": "<Career path 1>",
+      "normalizedReferencePath": "<Career path 1>",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/interview-app.js",
+      "line": 819,
+      "patternType": "js-key",
+      "reference": "<Career path 2>",
+      "normalizedReferencePath": "<Career path 2>",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/interview-app.js",
+      "line": 842,
+      "patternType": "js-key",
+      "reference": "فترة تدريبية (Internship)",
+      "normalizedReferencePath": "فترة تدريبية (Internship)",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/interview-app.js",
+      "line": 843,
+      "patternType": "js-key",
+      "reference": "دعم فني مبتدئ",
+      "normalizedReferencePath": "دعم فني مبتدئ",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "frontend/js/search 2.js",
+      "line": 1,
+      "patternType": "js-key",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "frontend/js/search.js",
+      "line": 1,
+      "patternType": "js-key",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "health/index.html",
+      "line": 1903,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "index.html",
+      "line": 2373,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "index.html",
+      "line": 3196,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "index.html",
+      "line": 4661,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/ecommerce-en.html",
+      "line": 898,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/ecommerce-en.html",
+      "line": 938,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/ecommerce.html",
+      "line": 766,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/ecommerce.html",
+      "line": 823,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/energy-en.html",
+      "line": 898,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/energy.html",
+      "line": 766,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/finance-en.html",
+      "line": 949,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/finance.html",
+      "line": 829,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/healthcare-en.html",
+      "line": 934,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/healthcare.html",
+      "line": 798,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/logistics-en.html",
+      "line": 932,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/logistics.html",
+      "line": 773,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/manufacturing-en.html",
+      "line": 989,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "sectors/manufacturing.html",
+      "line": 839,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "services/index.html",
+      "line": 3109,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "tools/index.html",
+      "line": 1006,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    },
+    {
+      "file": "what-is-ai/index.html",
+      "line": 702,
+      "patternType": "attr",
+      "reference": "/ai-bots/",
+      "normalizedReferencePath": "/ai-bots/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/ai-bots/"
+    }
+  ]
+}

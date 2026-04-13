@@ -1,0 +1,863 @@
+{
+  "before": {
+    "scanned": 209,
+    "eligible": 209,
+    "skipped": 0,
+    "skippedFiles": [],
+    "affected": 53,
+    "missingCounts": {
+      "title": 0,
+      "description": 1,
+      "canonical": 35,
+      "h1": 0,
+      "hreflang": 36,
+      "verificationPlaceholder": 0,
+      "onrenderReference": 6,
+      "redirectSignals": 11,
+      "badPublicSlug": 0
+    },
+    "failingFiles": [
+      {
+        "file": "404.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "500.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "ai-scolecs/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/ai-scolecs/index.html' instead of 'https://brightai.site/ai-scolecs/'",
+          "hreflang x-default points to 'https://brightai.site/ai-scolecs/index.html' instead of 'https://brightai.site/ai-scolecs/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "blog/ai-automation-project-analysis.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/digital-transformation-automation.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/financial-hr-automation.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/Generative-artificial-intelligence.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/industrial-automation-productivity.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/machine-learning-computer-vision.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/process-automation-ai-efficiency.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'",
+          "hreflang x-default points to 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'",
+          "hreflang x-default points to 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'",
+          "hreflang x-default points to 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'",
+          "hreflang x-default points to 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'"
+        ]
+      },
+      {
+        "file": "blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'",
+          "hreflang x-default points to 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'"
+        ]
+      },
+      {
+        "file": "blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'",
+          "hreflang x-default points to 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'"
+        ]
+      },
+      {
+        "file": "blog/تعلم-الآلة-و-الأعمال.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' should be 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'",
+          "hreflang x-default points to 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'"
+        ]
+      },
+      {
+        "file": "demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/ocr-demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/resources/report-ai-saudi-2026/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "docs.html",
+        "issues": [
+          "Missing hreflang en-US"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/privacy-policy-en.html' instead of 'https://brightai.site/docs/privacy-policy/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/privacy-policy-en.html' instead of 'https://brightai.site/docs/privacy-policy-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy-en.html' instead of 'https://brightai.site/docs/privacy-policy/'"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/privacy-policy.html' instead of 'https://brightai.site/docs/privacy-policy/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/privacy-policy.html' instead of 'https://brightai.site/docs/privacy-policy-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy.html' instead of 'https://brightai.site/docs/privacy-policy/'"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/terms-and-conditions-en.html' instead of 'https://brightai.site/docs/terms-and-conditions/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/terms-and-conditions-en.html' instead of 'https://brightai.site/docs/terms-and-conditions-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/terms-and-conditions-en.html' instead of 'https://brightai.site/docs/terms-and-conditions/'"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/terms-and-conditions.html' instead of 'https://brightai.site/docs/terms-and-conditions/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/terms-and-conditions.html' instead of 'https://brightai.site/docs/terms-and-conditions-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/terms-and-conditions.html' instead of 'https://brightai.site/docs/terms-and-conditions/'"
+        ]
+      },
+      {
+        "file": "en/docs/docs.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/docs/' should be 'https://brightai.site/en/docs/docs'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/' instead of 'https://brightai.site/en/docs/docs'"
+        ]
+      },
+      {
+        "file": "en/docs/index.html",
+        "issues": [
+          "hreflang x-default points to 'https://brightai.site/docs/' instead of 'https://brightai.site/en/docs/'",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "en/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "en/tenders/compare.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/dashboard.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/landing.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/landing/' should be 'https://brightai.site/en/tenders/landing'",
+          "hreflang ar-SA points to 'https://brightai.site/en/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "hreflang en-US points to 'https://brightai.site/en/en/tenders/landing.html' instead of 'https://brightai.site/en/tenders/landing'",
+          "hreflang x-default points to 'https://brightai.site/en/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/reports.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/settings.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/templates.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "error.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "interview/pages/appointment/index.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/support-ai/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/interview/pages/support-ai/index.html' instead of 'https://brightai.site/interview/pages/support-ai/'",
+          "hreflang x-default points to 'https://brightai.site/interview/pages/support-ai/index.html' instead of 'https://brightai.site/interview/pages/support-ai/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "interview/pages/supportAI/index.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "interview/pages/Visitor-registration/index.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "mais-OBM/index.html",
+        "issues": [
+          "Missing meta description",
+          "Canonical mismatch: 'https://brightai.site/mais-OBM/' should be 'https://brightai.site/mais-OBM'",
+          "hreflang en-US points to 'https://brightai.site/en/mais-OBM/index.html' instead of 'https://brightai.site/mais-OBM'",
+          "hreflang x-default points to 'https://brightai.site/mais-OBM/index.html' instead of 'https://brightai.site/mais-OBM'",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "privacy-cookies/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/privacy-cookies/index.html' instead of 'https://brightai.site/privacy-cookies/'",
+          "hreflang x-default points to 'https://brightai.site/privacy-cookies/index.html' instead of 'https://brightai.site/privacy-cookies/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "sectors/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/sectors/' should be 'https://brightai.site/sectors'",
+          "hreflang ar-SA points to 'https://brightai.site/sectors/' instead of 'https://brightai.site/sectors'",
+          "hreflang x-default points to 'https://brightai.site/sectors/' instead of 'https://brightai.site/sectors'"
+        ]
+      },
+      {
+        "file": "sitemap/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/sitemap/index.html' instead of 'https://brightai.site/sitemap/'",
+          "hreflang x-default points to 'https://brightai.site/sitemap/index.html' instead of 'https://brightai.site/sitemap/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "tenders/compare.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/dashboard.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "tenders/landing.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "hreflang en-US points to 'https://brightai.site/en/tenders/landing.html' instead of 'https://brightai.site/en/tenders/landing'",
+          "hreflang x-default points to 'https://brightai.site/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/reports.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/settings.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/templates.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "terms/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/terms/index.html' instead of 'https://brightai.site/terms/'",
+          "hreflang x-default points to 'https://brightai.site/terms/index.html' instead of 'https://brightai.site/terms/'",
+          "Unexpected hreflang en-us"
+        ]
+      }
+    ]
+  },
+  "after": {
+    "scanned": 209,
+    "eligible": 209,
+    "skipped": 0,
+    "skippedFiles": [],
+    "affected": 53,
+    "missingCounts": {
+      "title": 0,
+      "description": 1,
+      "canonical": 35,
+      "h1": 0,
+      "hreflang": 36,
+      "verificationPlaceholder": 0,
+      "onrenderReference": 6,
+      "redirectSignals": 11,
+      "badPublicSlug": 0
+    },
+    "failingFiles": [
+      {
+        "file": "404.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "500.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "ai-scolecs/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/ai-scolecs/index.html' instead of 'https://brightai.site/ai-scolecs/'",
+          "hreflang x-default points to 'https://brightai.site/ai-scolecs/index.html' instead of 'https://brightai.site/ai-scolecs/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "blog/ai-automation-project-analysis.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/digital-transformation-automation.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/financial-hr-automation.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/Generative-artificial-intelligence.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/industrial-automation-productivity.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/machine-learning-computer-vision.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/process-automation-ai-efficiency.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'",
+          "hreflang x-default points to 'https://brightai.site/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'"
+        ]
+      },
+      {
+        "file": "blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' should be 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'",
+          "hreflang x-default points to 'https://brightai.site/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/' instead of 'https://brightai.site/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D8%A8%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A7%D9%84%D8%B7%D8%B1%D9%8A%D9%82-%D8%A5%D9%84%D9%89-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%AA%D8%B4%D8%BA%D9%8A%D9%84%D9%8A%D8%A9/'"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'",
+          "hreflang x-default points to 'https://brightai.site/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B5%D9%86%D8%A7%D8%B9%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%87%D8%A7%D9%85-%D8%A7%D9%84%D9%85%D8%AA%D9%83%D8%B1%D8%B1%D8%A9-%D9%83%D9%8A%D9%81%D9%8A%D8%A9-%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D8%A7%D9%84%D9%83%D9%81%D8%A7%D8%A1%D8%A9-%D8%A7%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%D9%8A%D8%A9/'"
+        ]
+      },
+      {
+        "file": "blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'",
+          "hreflang x-default points to 'https://brightai.site/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D9%85%D9%88%D8%A7%D8%B1%D8%AF-%D8%A7%D9%84%D8%A8%D8%B4%D8%B1%D9%8A%D8%A9-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84%D9%8A%D8%A9-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D9%8A%D8%A9/'"
+        ]
+      },
+      {
+        "file": "blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'",
+          "hreflang x-default points to 'https://brightai.site/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%88%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B9%D9%85%D9%84%D9%8A%D8%A7%D8%AA-%D9%83%D9%8A%D9%81-%D9%8A%D9%85%D9%83%D9%86-%D9%84%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%A3%D9%86-%D9%8A%D9%82%D9%88%D8%AF-%D8%A7%D9%84%D8%A7%D8%A8%D8%AA%D9%83%D8%A7%D8%B1/'"
+        ]
+      },
+      {
+        "file": "blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' should be 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'",
+          "hreflang x-default points to 'https://brightai.site/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/' instead of 'https://brightai.site/blog/%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D9%8A-%D9%88%D8%A7%D9%84%D8%B1%D8%A4%D9%8A%D8%A9-%D8%A7%D9%84%D8%AD%D8%A7%D8%B3%D9%88%D8%A8%D9%8A%D8%A9-%D9%85%D8%B3%D8%AA%D9%82%D8%A8%D9%84-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%81%D9%8A-%D9%85%D8%B9%D8%A7%D9%84%D8%AC%D8%A9-%D8%A7%D9%84%D9%84%D8%BA%D8%A9-%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%B9%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%81-%D8%B9%D9%84%D9%89-%D8%A7%D9%84%D8%B5%D9%88%D8%B1/'"
+        ]
+      },
+      {
+        "file": "blog/تعلم-الآلة-و-الأعمال.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' should be 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'",
+          "hreflang x-default points to 'https://brightai.site/blog/تعلم-الآلة-و-الأعمال/' instead of 'https://brightai.site/blog/%D8%AA%D8%B9%D9%84%D9%85-%D8%A7%D9%84%D8%A2%D9%84%D8%A9-%D9%88-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84/'"
+        ]
+      },
+      {
+        "file": "demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/ocr-demo/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "demo/resources/report-ai-saudi-2026/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "docs.html",
+        "issues": [
+          "Missing hreflang en-US"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/privacy-policy-en.html' instead of 'https://brightai.site/docs/privacy-policy/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/privacy-policy-en.html' instead of 'https://brightai.site/docs/privacy-policy-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy-en.html' instead of 'https://brightai.site/docs/privacy-policy/'"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/privacy-policy.html' instead of 'https://brightai.site/docs/privacy-policy/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/privacy-policy.html' instead of 'https://brightai.site/docs/privacy-policy-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy.html' instead of 'https://brightai.site/docs/privacy-policy/'"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions-en.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/terms-and-conditions-en.html' instead of 'https://brightai.site/docs/terms-and-conditions/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/terms-and-conditions-en.html' instead of 'https://brightai.site/docs/terms-and-conditions-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/terms-and-conditions-en.html' instead of 'https://brightai.site/docs/terms-and-conditions/'"
+        ]
+      },
+      {
+        "file": "docs/terms-and-conditions.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/docs/terms-and-conditions.html' instead of 'https://brightai.site/docs/terms-and-conditions/'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/terms-and-conditions.html' instead of 'https://brightai.site/docs/terms-and-conditions-en/'",
+          "hreflang x-default points to 'https://brightai.site/docs/terms-and-conditions.html' instead of 'https://brightai.site/docs/terms-and-conditions/'"
+        ]
+      },
+      {
+        "file": "en/docs/docs.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/docs/' should be 'https://brightai.site/en/docs/docs'",
+          "hreflang en-US points to 'https://brightai.site/en/docs/' instead of 'https://brightai.site/en/docs/docs'"
+        ]
+      },
+      {
+        "file": "en/docs/index.html",
+        "issues": [
+          "hreflang x-default points to 'https://brightai.site/docs/' instead of 'https://brightai.site/en/docs/'",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "en/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "en/tenders/compare.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/dashboard.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/landing.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/en/tenders/landing/' should be 'https://brightai.site/en/tenders/landing'",
+          "hreflang ar-SA points to 'https://brightai.site/en/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "hreflang en-US points to 'https://brightai.site/en/en/tenders/landing.html' instead of 'https://brightai.site/en/tenders/landing'",
+          "hreflang x-default points to 'https://brightai.site/en/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/reports.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/settings.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "en/tenders/templates.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "error.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "interview/pages/appointment/index.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/dashboard/index.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "interview/pages/support-ai/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/interview/pages/support-ai/index.html' instead of 'https://brightai.site/interview/pages/support-ai/'",
+          "hreflang x-default points to 'https://brightai.site/interview/pages/support-ai/index.html' instead of 'https://brightai.site/interview/pages/support-ai/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "interview/pages/supportAI/index.html",
+        "issues": [
+          "Missing canonical"
+        ]
+      },
+      {
+        "file": "interview/pages/Visitor-registration/index.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang x-default"
+        ]
+      },
+      {
+        "file": "mais-OBM/index.html",
+        "issues": [
+          "Missing meta description",
+          "Canonical mismatch: 'https://brightai.site/mais-OBM/' should be 'https://brightai.site/mais-OBM'",
+          "hreflang en-US points to 'https://brightai.site/en/mais-OBM/index.html' instead of 'https://brightai.site/mais-OBM'",
+          "hreflang x-default points to 'https://brightai.site/mais-OBM/index.html' instead of 'https://brightai.site/mais-OBM'",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "privacy-cookies/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/privacy-cookies/index.html' instead of 'https://brightai.site/privacy-cookies/'",
+          "hreflang x-default points to 'https://brightai.site/privacy-cookies/index.html' instead of 'https://brightai.site/privacy-cookies/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "sectors/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/sectors/' should be 'https://brightai.site/sectors'",
+          "hreflang ar-SA points to 'https://brightai.site/sectors/' instead of 'https://brightai.site/sectors'",
+          "hreflang x-default points to 'https://brightai.site/sectors/' instead of 'https://brightai.site/sectors'"
+        ]
+      },
+      {
+        "file": "sitemap/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/sitemap/index.html' instead of 'https://brightai.site/sitemap/'",
+          "hreflang x-default points to 'https://brightai.site/sitemap/index.html' instead of 'https://brightai.site/sitemap/'",
+          "Unexpected hreflang en-us"
+        ]
+      },
+      {
+        "file": "tenders/compare.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/dashboard.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/index.html",
+        "issues": [
+          "Found onrender.com host reference(s): https://brightai-92px.onrender.com"
+        ]
+      },
+      {
+        "file": "tenders/landing.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "hreflang en-US points to 'https://brightai.site/en/tenders/landing.html' instead of 'https://brightai.site/en/tenders/landing'",
+          "hreflang x-default points to 'https://brightai.site/tenders/landing.html' instead of 'https://brightai.site/tenders/landing/'",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/reports.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/settings.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "tenders/templates.html",
+        "issues": [
+          "Missing canonical",
+          "Missing hreflang ar-SA",
+          "Missing hreflang en-US",
+          "Missing hreflang x-default",
+          "HTML page contains redirect-like meta refresh or location redirect logic"
+        ]
+      },
+      {
+        "file": "terms/index.html",
+        "issues": [
+          "hreflang ar-SA points to 'https://brightai.site/terms/index.html' instead of 'https://brightai.site/terms/'",
+          "hreflang x-default points to 'https://brightai.site/terms/index.html' instead of 'https://brightai.site/terms/'",
+          "Unexpected hreflang en-us"
+        ]
+      }
+    ]
+  },
+  "fixedFiles": []
+}
