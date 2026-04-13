@@ -72,69 +72,35 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
-      "name": "Bright Edu AI Platform",
-      "url": "https://brightai.site/ai-scolecs",
-      "description": "منصة تعليمية سعودية ذكية تستخدم الذكاء الاصطناعي لمساعدة الطلاب والمعلمين.",
+      "@type": "SoftwareApplication",
+      "@id": "https://brightai.site/ai-scolecs/#app",
+      "name": "Bright Edu",
+      "url": "https://brightai.site/ai-scolecs/",
+      "description": "منصة تعليمية ذكية من Bright AI لدعم الشرح، بناء الاختبارات، ومتابعة التعلم في المؤسسات التعليمية السعودية.",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "SAR"
-      },
-      "provider": {
+      "inLanguage": "ar-SA",
+      "publisher": {
         "@type": "Organization",
         "name": "Bright AI",
         "url": "https://brightai.site/"
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "37",
-        "reviewCount": "37",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Organization",
-            "name": "Bright AI Clients"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "حلول Bright AI قدمت تجربة تشغيل موثوقة وسريعة مع نتائج واضحة للشركات في السوق السعودي."
-        }
-      ]
-    },
-    {
-      "@type": "EducationalOrganization",
-      "name": "Bright AI Education",
-      "url": "https://brightai.site/ai-scolecs",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://brightai.site/assets/images/Gemini.png"
-      },
-      "sameAs": [
-        "https://twitter.com/brightai_sa",
-        "https://linkedin.com/company/brightai-saudi"
-      ]
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "SAR"
+      }
     },
     {
       "@type": "FAQPage",
+      "@id": "https://brightai.site/ai-scolecs/#faq",
       "mainEntity": [
         {
           "@type": "Question",
           "name": "كيف يساعدني المساعد التعليمي الذكي؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "يقوم المساعد الذكي بشرح الدروس، حل المسائل المعقدة، وتقديم أمثلة توضيحية فورية باستخدام نماذج لغوية متطورة."
+            "text": "يساعد في شرح الدروس، تقديم أمثلة إضافية، وتوليد أنشطة تعليمية أولية يمكن للمعلم مراجعتها واعتمادها."
           }
         },
         {
@@ -142,7 +108,7 @@
           "name": "هل تدعم المنصة المناهج السعودية؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "نعم، تم تدريب وضبط النظام ليتوافق تماماً مع المناهج الدراسية السعودية لجميع المراحل (ابتدائي، متوسط، ثانوي)."
+            "text": "الصفحة موجّهة للسوق السعودي وتعرض مسار استخدام متوافقاً مع احتياجات المدارس والجامعات داخل المملكة."
           }
         },
         {
@@ -150,7 +116,7 @@
           "name": "هل يمكن للمعلمين استخدام المنصة؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "بالتأكيد، توفر المنصة أدوات خاصة للمعلمين مثل مولد خطط الدروس ومصحح الواجبات الآلي ومولد الاختبارات."
+            "text": "نعم، يمكن استخدامها كنقطة انطلاق لإعداد أنشطة، اختبارات، ومسارات متابعة قبل التوسع إلى تكامل مؤسسي أوسع."
           }
         }
       ]
@@ -290,9 +256,8 @@
   <link rel="stylesheet" href="/assets/css/text-ratio-fix.css" />
 
     <!-- تحسينات SEO: hreflang (تمت إضافتها تلقائياً) -->
-    <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-scolecs/index.html" />
-    <link rel="alternate" hreflang="en-US" href="https://brightai.site/en/ai-scolecs/index.html" />
-    <link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-scolecs/index.html" />
+    <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-scolecs/" />
+    <link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-scolecs/" />
   
 </head>
 

@@ -138,6 +138,33 @@
 /interview/pages/appointment/index.html
   X-Robots-Tag: noindex, nofollow, noarchive
 
+/interview/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/en/interview/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/demo/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/try/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/tools/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/en/tools/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/mais-OBM
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/mais-OBM/
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/mais-OBM/index.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
 /*.css
   Cache-Control: public, max-age=31536000, immutable
 

@@ -75,100 +75,37 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "منتجات وخدمات Bright AI",
-        "description": "كتالوج شامل لحلول الذكاء الاصطناعي للشركات السعودية",
-        "numberOfItems": 55,
-        "itemListElement": [
+        "@type": "CollectionPage",
+        "@id": "https://brightai.site/services/#page",
+        "name": "خدمات Bright AI",
+        "url": "https://brightai.site/services/",
+        "inLanguage": "ar-SA",
+        "description": "صفحة خدمات Bright AI التي تعرض المسارات الأساسية للذكاء الاصطناعي، الأتمتة، تحليل البيانات، والحلول المؤسسية في السعودية.",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Bright AI",
+            "url": "https://brightai.site/"
+        },
+        "hasPart": [
             {
-                "@type": "ListItem",
-                "position": 1,
-                "item": {
-                    "@type": "Service",
-                    "name": "تحليل بيانات وسائل التواصل الاجتماعي",
-                    "description": "تحليل متقدم لبيانات وسائل التواصل الاجتماعي باستخدام الذكاء الاصطناعي",
-                    "provider": {"@type": "Organization", "name": "Bright AI"},
-                    "areaServed": "SA",
-                    "offers": {"@type": "Offer", "priceCurrency": "SAR", "price": "535"}
-                }
+                "@type": "Service",
+                "name": "وكلاء الذكاء الاصطناعي",
+                "url": "https://brightai.site/ai-agent/"
             },
             {
-                "@type": "ListItem",
-                "position": 2,
-                "item": {
-                    "@type": "Service",
-                    "name": "وكيل ذكاء اصطناعي مخصص",
-                    "description": "وكيل AI مخصص لاحتياجات عملك",
-                    "provider": {"@type": "Organization", "name": "Bright AI"},
-                    "areaServed": "SA",
-                    "offers": {"@type": "Offer", "priceCurrency": "SAR", "price": "700"}
-                }
+                "@type": "Service",
+                "name": "الأتمتة الذكية",
+                "url": "https://brightai.site/smart-automation/"
             },
             {
-                "@type": "ListItem",
-                "position": 3,
-                "item": {
-                    "@type": "Product",
-                    "name": "روبوت يد آلية صناعية",
-                    "description": "روبوت صناعي متقدم للمصانع والمنشآت",
-                    "image": "https://brightai.site/assets/images/Gemini.png",
-                    "brand": {"@type": "Brand", "name": "Bright AI"},
-                    "aggregateRating": {
-                        "@type": "AggregateRating",
-                        "ratingValue": "4.8",
-                        "reviewCount": "34"
-                    },
-                    "review": [
-                        {
-                            "@type": "Review",
-                            "author": {"@type": "Person", "name": "مدير تشغيل مصنع في الرياض"},
-                            "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
-                            "reviewBody": "ساهم الروبوت في رفع دقة خطوط التجميع وتقليل زمن التشغيل."
-                        }
-                    ],
-                    "offers": {
-                        "@type": "Offer",
-                        "priceCurrency": "SAR",
-                        "price": "76686.42",
-                        "priceValidUntil": "2030-12-31",
-                        "availability": "https://schema.org/InStock",
-                        "shippingDetails": {
-                            "@type": "OfferShippingDetails",
-                            "shippingRate": {
-                                "@type": "MonetaryAmount",
-                                "value": "0",
-                                "currency": "SAR"
-                            },
-                            "shippingDestination": {
-                                "@type": "DefinedRegion",
-                                "addressCountry": "SA"
-                            },
-                            "deliveryTime": {
-                                "@type": "ShippingDeliveryTime",
-                                "handlingTime": {
-                                    "@type": "QuantitativeValue",
-                                    "minValue": 1,
-                                    "maxValue": 3,
-                                    "unitCode": "DAY"
-                                },
-                                "transitTime": {
-                                    "@type": "QuantitativeValue",
-                                    "minValue": 2,
-                                    "maxValue": 7,
-                                    "unitCode": "DAY"
-                                }
-                            }
-                        },
-                        "hasMerchantReturnPolicy": {
-                            "@type": "MerchantReturnPolicy",
-                            "applicableCountry": "SA",
-                            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                            "merchantReturnDays": 30,
-                            "returnMethod": "https://schema.org/ReturnByMail",
-                            "returnFees": "https://schema.org/FreeReturn"
-                        }
-                    }
-                }
+                "@type": "Service",
+                "name": "تحليل البيانات",
+                "url": "https://brightai.site/data-analysis/"
+            },
+            {
+                "@type": "Service",
+                "name": "الأرشيف الطبي الذكي",
+                "url": "https://brightai.site/smart-medical-archive/"
             }
         ]
     }
@@ -3106,7 +3043,7 @@ ${itemsList}
             </div>
             <div class="internal-linking-cta-wrap">
                 <strong style="color:#fff">استخدامات وتطبيقات متخصصة:</strong>
-                <a class="internal-linking-inline" href="/ai-bots/">روبوتات جاهزة لخدمة العملاء</a>،
+                <a class="internal-linking-inline" href="/docs/ai-bots/">روبوتات جاهزة لخدمة العملاء</a>،
                 <a class="internal-linking-inline" href="/health/">حلول صحية مدعومة بالذكاء الاصطناعي</a>،
                 <a class="internal-linking-inline" href="/smart-medical-archive/">أرشيف طبي ذكي للمستشفيات</a>،
                 <a class="internal-linking-inline" href="/tenders/">مراجعة العقود والمناقصات بالذكاء الاصطناعي</a>

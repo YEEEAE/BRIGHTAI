@@ -1,12 +1,12 @@
 # تقرير الروابط والمسارات المكسورة قبل الإصلاح
 
-- تاريخ التقرير: 2026-04-13T14:01:58.544Z
-- عدد الملفات المفحوصة: 285
-- إجمالي المراجع المكتشفة: 17213
-- المراجع الداخلية المفحوصة: 12548
-- الروابط/المسارات المكسورة: 48
-- المكسور القابل للإصلاح التلقائي: 40
-- فرص توحيد نمط الروابط: 35
+- تاريخ التقرير: 2026-04-13T15:02:50.547Z
+- عدد الملفات المفحوصة: 286
+- إجمالي المراجع المكتشفة: 17225
+- المراجع الداخلية المفحوصة: 12562
+- الروابط/المسارات المكسورة: 41
+- المكسور القابل للإصلاح التلقائي: 33
+- فرص توحيد نمط الروابط: 37
 
 ## الملفات الأعلى أعطالًا
 
@@ -16,8 +16,6 @@
 | frontend/js/interview-app.js | 4 |
 | ai-agent/index.html | 3 |
 | en/ai-agent/index.html | 3 |
-| en/index.html | 3 |
-| index.html | 3 |
 | sectors/ecommerce-en.html | 2 |
 | sectors/ecommerce.html | 2 |
 | about/index.html | 1 |
@@ -37,6 +35,8 @@
 | sectors/finance.html | 1 |
 | sectors/healthcare-en.html | 1 |
 | sectors/healthcare.html | 1 |
+| sectors/logistics-en.html | 1 |
+| sectors/logistics.html | 1 |
 
 ## تفاصيل الأعطال
 
@@ -55,9 +55,6 @@
 | en/ai-agent/index.html | 2054 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | en/ai-agent/index.html | 2081 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | en/health/index.html | 2040 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| en/index.html | 2207 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| en/index.html | 3019 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| en/index.html | 4449 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | en/tools/index.html | 1155 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | frontend/js/en-interview-app.js | 818 | js-key | <Career path 1> | — | المسار غير موجود |
 | frontend/js/en-interview-app.js | 819 | js-key | <Career path 2> | — | المسار غير موجود |
@@ -70,9 +67,6 @@
 | frontend/js/search 2.js | 1 | js-key | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | frontend/js/search.js | 1 | js-key | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | health/index.html | 1903 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| index.html | 2373 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| index.html | 3196 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| index.html | 4661 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | sectors/ecommerce-en.html | 898 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | sectors/ecommerce-en.html | 938 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | sectors/ecommerce.html | 766 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
@@ -87,7 +81,6 @@
 | sectors/logistics.html | 773 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | sectors/manufacturing-en.html | 989 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | sectors/manufacturing.html | 839 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
-| services/index.html | 3109 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | tools/index.html | 1006 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 | what-is-ai/index.html | 702 | attr | /ai-bots/ | /docs/ai-bots/ | المسار العام غير موجود |
 

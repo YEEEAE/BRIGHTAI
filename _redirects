@@ -12,6 +12,14 @@ https://brightai-92px.onrender.com/* https://brightai.site/:splat 301
 /:slug/index.html /:slug/ 301
 /en/index.html /en/ 301
 /en/:slug/index.html /en/:slug/ 301
+/en/docs/docs.html /en/docs/ 301
+
+/ai-bots /docs/ai-bots.html 301
+/ai-bots/ /docs/ai-bots.html 301
+/docs/:slug/ /docs/:slug.html 301
+/sectors/:slug/ /sectors/:slug.html 301
+/tenders/:slug/ /tenders/:slug.html 301
+/en/tenders/:slug/ /en/tenders/:slug.html 301
 
 /blog/:section/:slug.html /blog/:section/:slug/ 301
 /blog/:slug.html /blog/:slug/ 301

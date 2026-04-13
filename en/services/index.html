@@ -2,37 +2,354 @@
 <html lang="en-US" dir="ltr">
 <head>
     <meta charset="utf-8" />
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-8LLESL207Q');
     </script>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Services for Saudi Businesses | Bright AI</title>
-    
-    <!-- Meta Description for English Audience -->
-    <meta name="description" content="Explore Bright AI's tailored Artificial Intelligence services for Saudi businesses, including smart automation, data analysis, and custom AI agents for faster operations." />
-
-    <!-- SEO & Localization -->
+    <meta name="description" content="Explore Bright AI services for Saudi organizations, including AI agents, intelligent automation, data analysis, and sector-ready delivery paths for enterprise teams." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://brightai.site/en/services/" />
     <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/" />
     <link rel="alternate" hreflang="en-US" href="https://brightai.site/en/services/" />
     <link rel="alternate" hreflang="x-default" href="https://brightai.site/services/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://brightai.site/en/services/" />
+    <meta property="og:title" content="AI Services for Saudi Businesses | Bright AI" />
+    <meta property="og:description" content="A focused overview of Bright AI service lines for enterprise teams in Saudi Arabia, from automation and analytics to custom AI delivery." />
+    <meta property="og:image" content="https://brightai.site/assets/images/Gemini.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ar_SA" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI Services for Saudi Businesses | Bright AI" />
+    <meta name="twitter:description" content="A focused overview of Bright AI service lines for enterprise teams in Saudi Arabia, from automation and analytics to custom AI delivery." />
+    <meta name="twitter:image" content="https://brightai.site/assets/images/Gemini.png" />
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #07111f;
+            --panel: rgba(12, 22, 38, 0.82);
+            --panel-strong: #0f1c31;
+            --text: #e5eefc;
+            --muted: #9bb0cb;
+            --line: rgba(148, 163, 184, 0.2);
+            --brand: #56a5ff;
+            --brand-soft: rgba(86, 165, 255, 0.14);
+            --accent: #f0b35c;
+            --radius: 22px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(86, 165, 255, 0.18), transparent 30%),
+                radial-gradient(circle at top right, rgba(240, 179, 92, 0.12), transparent 24%),
+                linear-gradient(180deg, #050c17 0%, #081222 55%, #050b14 100%);
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .shell {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 24px 0 72px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 18px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(8, 15, 27, 0.75);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .brand {
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .hero,
+        .panel {
+            margin-top: 24px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--panel);
+            backdrop-filter: blur(14px);
+        }
+
+        .hero {
+            padding: 44px 28px;
+            display: grid;
+            gap: 24px;
+            grid-template-columns: 1.2fr 0.8fr;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--brand-soft);
+            color: #c9dcff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        h1, h2, h3, p { margin: 0; }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.6rem);
+            line-height: 1.08;
+            margin-top: 18px;
+            max-width: 10ch;
+        }
+
+        .lead {
+            margin-top: 18px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--muted);
+            max-width: 62ch;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            min-height: 46px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand), #7b8dff);
+            color: #06101d;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--line);
+            color: var(--text);
+        }
+
+        .hero-card {
+            padding: 22px;
+            border-radius: 18px;
+            background: var(--panel-strong);
+            border: 1px solid rgba(240, 179, 92, 0.14);
+        }
+
+        .hero-card + .hero-card { margin-top: 16px; }
+
+        .hero-card small {
+            display: block;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            padding: 28px;
+        }
+
+        .card {
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(9, 19, 33, 0.82);
+            border: 1px solid var(--line);
+        }
+
+        .card p,
+        .notes li,
+        .service-list li {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .service-list,
+        .notes {
+            margin: 14px 0 0;
+            padding-left: 18px;
+        }
+
+        .split {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: 1fr 1fr;
+            padding: 0 28px 28px;
+        }
+
+        .footer {
+            margin-top: 24px;
+            padding: 18px 22px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(8, 15, 27, 0.78);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 840px) {
+            .hero,
+            .grid,
+            .split { grid-template-columns: 1fr; }
+            .shell { width: min(1120px, calc(100% - 20px)); }
+            .hero,
+            .grid,
+            .split { padding-left: 18px; padding-right: 18px; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": "https://brightai.site/en/services/#page",
+      "name": "Bright AI Services",
+      "url": "https://brightai.site/en/services/",
+      "inLanguage": "en-US",
+      "description": "An overview of Bright AI service lines for enterprise teams in Saudi Arabia.",
+      "hasPart": [
+        { "@type": "Service", "name": "AI Agents", "url": "https://brightai.site/en/ai-agent/" },
+        { "@type": "Service", "name": "Smart Automation", "url": "https://brightai.site/en/smart-automation/" },
+        { "@type": "Service", "name": "Data Analysis", "url": "https://brightai.site/en/data-analysis/" },
+        { "@type": "Service", "name": "Healthcare Solutions", "url": "https://brightai.site/en/health/" }
+      ]
+    }
+    </script>
 </head>
 <body>
-    <header>
-        <h1>AI Services Overview</h1>
-    </header>
-    <main>
-        <!-- English content placeholder for Bright AI Services -->
-        <section>
-            <h2>Empowering Saudi Enterprises with AI</h2>
-            <p>Welcome to our services page. Here you'll find custom AI solutions tailored for Saudi businesses.</p>
-        </section>
-    </main>
+    <div class="shell">
+        <nav class="nav" aria-label="Primary">
+            <div class="brand">Bright AI</div>
+            <div class="nav-links">
+                <a href="/en/">Home</a>
+                <a href="/en/ai-agent/">AI Agents</a>
+                <a href="/en/smart-automation/">Automation</a>
+                <a href="/en/data-analysis/">Data Analysis</a>
+                <a href="/en/consultation/">Consultation</a>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero">
+                <div>
+                    <span class="eyebrow">Enterprise Services in Saudi Arabia</span>
+                    <h1>AI delivery paths built for real operating teams.</h1>
+                    <p class="lead">Bright AI helps organizations move from scattered pilots to governed delivery across automation, analytics, AI agents, and sector-specific deployment tracks.</p>
+                    <div class="cta-row">
+                        <a class="btn btn-primary" href="/en/consultation/">Request Consultation</a>
+                        <a class="btn btn-secondary" href="/docs/">Open Documentation</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="hero-card">
+                        <small>Delivery Focus</small>
+                        <h2>From use case selection to production rollout</h2>
+                        <p class="lead" style="font-size:15px;margin-top:12px;">Each service line is designed to help enterprise teams define scope, validate value, and move toward measurable adoption inside Saudi operating environments.</p>
+                    </div>
+                    <div class="hero-card">
+                        <small>Primary Tracks</small>
+                        <p>AI agents, intelligent automation, data analysis, healthcare-ready workflows, and advisory support for executive teams.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="grid">
+                    <article class="card">
+                        <h2>AI Agents</h2>
+                        <p>Custom assistants and task-oriented agents for service delivery, internal operations, and controlled enterprise execution.</p>
+                        <ul class="service-list">
+                            <li>Workflow-specific prompts and actions</li>
+                            <li>Arabic and English business contexts</li>
+                            <li><a href="/en/ai-agent/">View AI agents</a></li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h2>Smart Automation</h2>
+                        <p>Operational automation for repetitive flows, approvals, and coordination-heavy work across departments.</p>
+                        <ul class="service-list">
+                            <li>Structured intake and routing</li>
+                            <li>Process visibility for stakeholders</li>
+                            <li><a href="/en/smart-automation/">View automation services</a></li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h2>Data Analysis</h2>
+                        <p>Reporting and decision support for teams that need cleaner visibility into performance, risk, and trend signals.</p>
+                        <ul class="service-list">
+                            <li>Analytical summaries and dashboards</li>
+                            <li>Operational reporting support</li>
+                            <li><a href="/en/data-analysis/">Explore analytics delivery</a></li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h2>Sector Delivery</h2>
+                        <p>Service packaging for healthcare and broader enterprise environments that need domain-specific implementation paths.</p>
+                        <ul class="service-list">
+                            <li>Healthcare-oriented scenarios</li>
+                            <li>Enterprise readiness checkpoints</li>
+                            <li><a href="/en/health/">View healthcare solutions</a></li>
+                        </ul>
+                    </article>
+                </div>
+                <div class="split">
+                    <section class="card">
+                        <h3>What this page is for</h3>
+                        <ul class="notes">
+                            <li>Clarifying the main public service lines available from Bright AI.</li>
+                            <li>Helping decision-makers identify the next relevant section to review.</li>
+                            <li>Directing technical readers to the documentation center when they need deeper detail.</li>
+                        </ul>
+                    </section>
+                    <section class="card">
+                        <h3>Suggested next steps</h3>
+                        <ul class="notes">
+                            <li>Review the documentation center for implementation context.</li>
+                            <li>Use the consultation page when the requirement is already defined.</li>
+                            <li>Compare the Arabic and English service views if your team works bilingually.</li>
+                        </ul>
+                    </section>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <a href="/services/">Arabic Services</a> |
+            <a href="/docs/">Documentation Center</a> |
+            <a href="/docs/privacy-policy-en.html">Privacy Policy</a>
+        </footer>
+    </div>
 </body>
 </html>
