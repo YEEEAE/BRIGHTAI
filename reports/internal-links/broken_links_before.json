@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-13T15:02:50.547Z",
+  "generatedAt": "2026-04-13T16:09:47.216Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
   "filesScanned": 286,
-  "referencesScanned": 17225,
-  "internalReferences": 12562,
-  "brokenReferences": 41,
-  "fixableBrokenReferences": 33,
-  "normalizationCandidates": 37,
+  "referencesScanned": 17214,
+  "internalReferences": 12571,
+  "brokenReferences": 18,
+  "fixableBrokenReferences": 10,
+  "normalizationCandidates": 38,
   "topBrokenFiles": [
     {
       "file": "frontend/js/en-interview-app.js",
@@ -15,26 +15,6 @@
     {
       "file": "frontend/js/interview-app.js",
       "count": 4
-    },
-    {
-      "file": "ai-agent/index.html",
-      "count": 3
-    },
-    {
-      "file": "en/ai-agent/index.html",
-      "count": 3
-    },
-    {
-      "file": "sectors/ecommerce-en.html",
-      "count": 2
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "count": 2
-    },
-    {
-      "file": "about/index.html",
-      "count": 1
     },
     {
       "file": "ai-bots/BrightMath/index.html",
@@ -57,10 +37,6 @@
       "count": 1
     },
     {
-      "file": "en/health/index.html",
-      "count": 1
-    },
-    {
       "file": "en/tools/index.html",
       "count": 1
     },
@@ -73,50 +49,6 @@
       "count": 1
     },
     {
-      "file": "health/index.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/energy-en.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/energy.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/finance.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/healthcare-en.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/healthcare.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/logistics.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "count": 1
-    },
-    {
-      "file": "sectors/manufacturing.html",
-      "count": 1
-    },
-    {
       "file": "tools/index.html",
       "count": 1
     },
@@ -126,42 +58,6 @@
     }
   ],
   "brokenRows": [
-    {
-      "file": "about/index.html",
-      "line": 915,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 1975,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 2013,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 2036,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
     {
       "file": "ai-bots/BrightMath/index.html",
       "line": 1052,
@@ -201,42 +97,6 @@
     {
       "file": "en/about/index.html",
       "line": 959,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "en/ai-agent/index.html",
-      "line": 2010,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "en/ai-agent/index.html",
-      "line": 2054,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "en/ai-agent/index.html",
-      "line": 2081,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "en/health/index.html",
-      "line": 2040,
       "patternType": "attr",
       "reference": "/ai-bots/",
       "normalizedReferencePath": "/ai-bots/",
@@ -337,141 +197,6 @@
       "file": "frontend/js/search.js",
       "line": 1,
       "patternType": "js-key",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "health/index.html",
-      "line": 1903,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/ecommerce-en.html",
-      "line": 898,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/ecommerce-en.html",
-      "line": 938,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "line": 766,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "line": 823,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/energy-en.html",
-      "line": 898,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/energy.html",
-      "line": 766,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "line": 949,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/finance.html",
-      "line": 829,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/healthcare-en.html",
-      "line": 934,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/healthcare.html",
-      "line": 798,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "line": 932,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/logistics.html",
-      "line": 773,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "line": 989,
-      "patternType": "attr",
-      "reference": "/ai-bots/",
-      "normalizedReferencePath": "/ai-bots/",
-      "reason": "المسار العام غير موجود",
-      "suggestion": "/docs/ai-bots/"
-    },
-    {
-      "file": "sectors/manufacturing.html",
-      "line": 839,
-      "patternType": "attr",
       "reference": "/ai-bots/",
       "normalizedReferencePath": "/ai-bots/",
       "reason": "المسار العام غير موجود",
