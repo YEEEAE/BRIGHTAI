@@ -1,6 +1,6 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-13T17:43:50.708Z
+- Date: 2026-04-13T20:36:11.051Z
 - Total URLs in generated sitemap: 170
 - Included core pages: 83
 - Included sector pages: 12
@@ -17,7 +17,7 @@
 
 | Reason | Count |
 | --- | ---: |
-| canonical_mismatch | 76 |
+| canonical_mismatch | 74 |
 | robots_noindex | 54 |
 | explicit_scope_exclusion | 52 |
 | quality or canonical exclusion | 13 |
@@ -240,7 +240,7 @@
 | interview/pages/supportAI/index.html | 30 | robots_noindex, canonical_mismatch, thin_content_lt_120, explicit_scope_exclusion |
 | mais-OBM/index.html | 202 | robots_noindex, canonical_mismatch |
 | privacy-cookies/index.html | 944 | canonical_mismatch, explicit_scope_exclusion |
-| sectors/index.html | 320 | canonical_mismatch, thin_content_lt_350 |
+| sectors/index.html | 320 | thin_content_lt_350 |
 | sitemap/index.html | 206 | canonical_mismatch, explicit_scope_exclusion |
 | tenders/compare.html | 1339 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | tenders/dashboard.html | 315 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
@@ -284,7 +284,7 @@
 | interview/pages/Visitor-registration/index.html | 414 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
 | mais-OBM/index.html | 202 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | privacy-cookies/index.html | 944 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
-| sectors/index.html | 320 | canonical_mismatch, thin_content_lt_350, quality or canonical exclusion |
+| sectors/index.html | 320 | thin_content_lt_350, quality or canonical exclusion |
 | sitemap/index.html | 206 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
 | tenders/compare.html | 1339 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | tenders/dashboard.html | 315 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |

@@ -815,8 +815,8 @@ steps: [
                 "salaryAnalysis": "<Salary analysis>",
                 "marketBenchmark": "<Market benchmark statement>",
                 "careerRoadmap": [
-                    { "path": "<Career path 1>", "skills": "<Skills for path 1>" },
-                    { "path": "<Career path 2>", "skills": "<Skills for path 2>" }
+                    { "roleTitle": "مسار مهني 1", "skills": "مهارات مقترحة للمسار 1" },
+                    { "roleTitle": "مسار مهني 2", "skills": "مهارات مقترحة للمسار 2" }
                 ],
                 "finalVerdict": "<Final verdict>"
             }
@@ -839,8 +839,8 @@ steps: [
                 salaryAnalysis: "الراتب المتوقع أعلى من متوسط السوق للمهارات المعروضة حالياً. قد يكون من المفيد إعادة تقييمه بعد اكتساب المزيد من الخبرة.",
                 marketBenchmark: "توجد فجوة واضحة في المهارات التقنية الأساسية مقارنة بمتطلبات السوق الحالية لهذا الدور.",
                 careerRoadmap: [
-                    { path: "فترة تدريبية (Internship)", skills: "دورات أساسية في علوم الحاسب, بناء مشاريع شخصية بسيطة" },
-                    { path: "دعم فني مبتدئ", skills: "شهادات مثل CompTIA A+, مهارات خدمة العملاء" }
+                    { roleTitle: "فترة تدريبية تقنية", skills: "دورات أساسية في علوم الحاسب, بناء مشاريع شخصية بسيطة" },
+                    { roleTitle: "دعم فني مبتدئ", skills: "شهادات مثل CompTIA A+, مهارات خدمة العملاء" }
                 ],
                 finalVerdict: "في الوقت الحالي، هناك فجوات كبيرة بين مؤهلاتك ومتطلبات الدور. نوصي بالتركيز على مجالات التطوير المذكورة وبناء قاعدة معرفية صلبة قبل التقدم مرة أخرى لوظائف مماثلة."
             };
@@ -903,7 +903,7 @@ steps: [
                 <div class="career-path-explorer">
                     ${data.careerRoadmap.map(r => `
                     <div class="career-path-node">
-                        <h4>${r.path}</h4>
+                        <h4>${r.roleTitle || r.path}</h4>
                         <p><strong>المهارات المطلوبة:</strong> ${r.skills}</p>
                     </div>`).join('')}
                 </div>

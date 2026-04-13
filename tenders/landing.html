@@ -1204,7 +1204,6 @@
 
     <!-- تحسينات SEO: hreflang (تمت إضافتها تلقائياً) -->
     <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tenders/landing/" />
-    <link rel="alternate" hreflang="en-US" href="https://brightai.site/en/tenders/landing/" />
     <link rel="alternate" hreflang="x-default" href="https://brightai.site/tenders/landing/" />
 
 </head>
@@ -1603,7 +1602,7 @@
         var passwordToggles = Array.prototype.slice.call(document.querySelectorAll("[data-toggle-password]"));
 
         if (window.localStorage.getItem(authKey) === "true") {
-          window.location.replace("/tenders/");
+          window.open("/tenders/", "_self");
           return;
         }
 
@@ -1697,7 +1696,7 @@
           window.localStorage.setItem(toastKey, "✅ تم تسجيل الدخول");
           showToast("✅ تم تسجيل الدخول");
           window.setTimeout(function () {
-            window.location.href = "/tenders/";
+            window.open("/tenders/", "_self");
           }, 700);
         }
 

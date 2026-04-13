@@ -34,6 +34,7 @@ Disallow: /build/
 Disallow: /src/
 Disallow: /server/
 Disallow: /backend/
+Disallow: /frontend/pages/
 
 # AI search crawlers
 User-agent: GPTBot

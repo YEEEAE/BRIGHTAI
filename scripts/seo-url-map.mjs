@@ -16,6 +16,7 @@ const ROOT_INDEX_DIRS = new Set([
   "machine-learning",
   "partners",
   "services",
+  "sectors",
   "smart-automation",
   "tools",
   "what-is-ai",
@@ -24,9 +25,14 @@ const ROOT_INDEX_DIRS = new Set([
 const REL_PATH_ALIASES = new Map();
 const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^(404|500)\.html$/i,
+  /^error\.html$/i,
   /^privacy-cookies\/index\.html$/i,
   /^terms\/index\.html$/i,
   /^sitemap\/index\.html$/i,
+  /^mais-OBM\/index\.html$/i,
+  /^en\/docs\/docs\.html$/i,
+  /^en\/tenders\/landing\.html$/i,
+  /^blog\/(ai-automation-project-analysis|digital-transformation-automation|financial-hr-automation|industrial-automation-productivity|machine-learning-computer-vision|process-automation-ai-efficiency)\.html$/i,
   /^aimais\/public\//i,
   /^frontend\/pages\//i,
   /^interview\/pages\//i,
@@ -199,9 +205,7 @@ export function relPathToCanonical(relPath, baseUrl = BASE_URL) {
   if (!isPublicIndexableRelPath(relPath)) return null;
   const sitePath = relPathToSitePath(relPath);
   if (!sitePath) return null;
-  const normalizedPath = shouldKeepTrailingSlash(sitePath)
-    ? sitePath
-    : stripTrailingSlash(sitePath);
+  const normalizedPath = canonicalizeSitePath(sitePath);
   return `${baseUrl}${encodeUrlPath(normalizedPath || "/")}`;
 }
 
@@ -277,10 +281,13 @@ export function findCounterpartRelPath(relPath, lowerPathMap, options = DEFAULT_
   const allowedRelPaths = options.allowedRelPaths || null;
 
   if (lower === "docs.html") {
-    return pickAllowedPath("en/docs/docs.html", lowerPathMap, allowedRelPaths);
+    return (
+      pickAllowedPath("en/docs/index.html", lowerPathMap, allowedRelPaths) ||
+      pickAllowedPath("en/docs/docs.html", lowerPathMap, allowedRelPaths)
+    );
   }
 
-  if (lower === "en/docs/docs.html") {
+  if (lower === "en/docs/index.html") {
     return pickAllowedPath("docs.html", lowerPathMap, allowedRelPaths);
   }
 

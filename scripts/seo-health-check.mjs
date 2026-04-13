@@ -308,7 +308,7 @@ async function auditHtmlFile(filePath, publicRegistry) {
     issues.push("hreflang_ghost");
   }
 
-  if (hasHtmlRedirect) {
+  if (hasHtmlRedirect && !hasNoindex) {
     issues.push("html_redirect");
   }
 

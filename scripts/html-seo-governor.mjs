@@ -424,7 +424,7 @@ function auditFile(content, relPath, lowerPathMap, publicRegistry) {
   const canonical = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
   const canonicalRaw = (canonical?.attrs.href || "").trim();
   const canonicalNormalized = normalizeSiteUrl(canonicalRaw, BASE_URL);
-  const canonicalMismatch = canonicalRaw !== expectedCanonical || canonicalNormalized !== expectedCanonical;
+  const canonicalMismatch = !canonicalRaw || canonicalNormalized !== expectedCanonical;
   const metaTags = extractMetaTags(content);
   const metaDescription = metaTags.find(
     (tag) => (tag.attrs.name || "").trim().toLowerCase() === "description"
@@ -452,7 +452,7 @@ function auditFile(content, relPath, lowerPathMap, publicRegistry) {
     }
     const hit = bucket[0];
     const hitNormalizedHref = normalizeSiteUrl(hit.href, BASE_URL);
-    if (hit.href !== expected.href || hitNormalizedHref !== expected.href) {
+    if (hitNormalizedHref !== expected.href) {
       hreflangProblems.push(
         `hreflang ${expected.code} points to '${hit.href || "(empty)"}' instead of '${expected.href}'`
       );

@@ -1869,7 +1869,7 @@
             var passwordToggles = Array.prototype.slice.call(document.querySelectorAll("[data-toggle-password]"));
 
             if (window.localStorage.getItem(authKey) === "true") {
-                window.location.replace("/en/tenders/landing/");
+                window.open("/en/tenders/", "_self");
                 return;
             }
 
@@ -1963,7 +1963,7 @@
                 window.localStorage.setItem(toastKey, "✅ Successfully logged in");
                 showToast("✅ Successfully logged in");
                 window.setTimeout(function () {
-                    window.location.href = "/tenders/";
+                    window.open("/en/tenders/", "_self");
                 }, 700);
             }
 

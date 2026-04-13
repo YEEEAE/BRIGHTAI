@@ -815,8 +815,8 @@ const App = function () {
                 "salaryAnalysis": "<Salary analysis>",
                 "marketBenchmark": "<Market benchmark statement>",
                 "careerRoadmap":[
-                    { "path": "<Career path 1>", "skills": "<Skills for path 1>" },
-                    { "path": "<Career path 2>", "skills": "<Skills for path 2>" }
+                    { "roleTitle": "Career track 1", "skills": "Suggested skills for track 1" },
+                    { "roleTitle": "Career track 2", "skills": "Suggested skills for track 2" }
                 ],
                 "finalVerdict": "<Final verdict>"
             }
@@ -839,8 +839,8 @@ const App = function () {
                         salaryAnalysis: "Your expected salary is a bit higher than the market average for your current skills. Might want to reassess after gaining more experience.",
                         marketBenchmark: "There's a noticeable gap in core tech skills compared to what the market is looking for right now.",
                         careerRoadmap: [
-                            { path: "Internship", skills: "Basic CS courses, building some personal projects" },
-                            { path: "Junior Tech Support", skills: "Certs like CompTIA A+, customer service skills" }
+                            { roleTitle: "Technical internship", skills: "Basic CS courses, building some personal projects" },
+                            { roleTitle: "Junior technical support", skills: "Certs like CompTIA A+, customer service skills" }
                         ],
                         finalVerdict: "Right now, there's a pretty big gap between your skills and the role's requirements. We totally recommend focusing on those areas for improvement and building a solid foundation before applying for similar gigs."
                     };
@@ -903,7 +903,7 @@ const App = function () {
                 <div class="career-path-explorer">
                     ${data.careerRoadmap.map(r => `
                     <div class="career-path-node">
-                        <h4>${r.path}</h4>
+                        <h4>${r.roleTitle || r.path}</h4>
                         <p><strong>Required Skills:</strong> ${r.skills}</p>
                     </div>`).join('')}
                 </div>
