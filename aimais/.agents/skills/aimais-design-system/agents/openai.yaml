@@ -1,4 +1,0 @@
-interface:
-  display_name: "AIMAIS Design System"
-  short_description: "Enforce AIMAIS dashboard UI standards"
-  default_prompt: "Use $aimais-design-system to design or refine AIMAIS frontend work while keeping it aligned with the project design system."

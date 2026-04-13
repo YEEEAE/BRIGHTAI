@@ -1,5 +1,0 @@
-.tmp/
-*.db
-data/uploads/
-data/analytics-cache.json
-data/import-summary.json
