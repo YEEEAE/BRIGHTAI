@@ -5,6 +5,8 @@ services:
     buildCommand: npm ci --include=dev --no-audit --no-fund && npm run assets:minify && npm run seo:gate && rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js
     staticPublishPath: .
     headers:
+      # المصدر المرجعي الأساسي للهيدرز هو ملف _headers.
+      # هذا القسم يحتفظ فقط بالقيم التنفيذية التي يجب أن يطبّقها Render أثناء النشر.
       - path: /*
         name: Strict-Transport-Security
         value: max-age=31536000; includeSubDomains; preload
@@ -19,19 +21,19 @@ services:
         value: strict-origin-when-cross-origin
       - path: /*
         name: Permissions-Policy
-        value: camera=(), microphone=(), geolocation=(), interest-cohort=()
+        value: camera=(), microphone=(), geolocation=()
       - path: /*
         name: Content-Security-Policy
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src 'self' https://brightai-92px.onrender.com https://*.sentry.io https://www.google-analytics.com; frame-ancestors 'none'"
+        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://www.clarity.ms https://cdnjs.cloudflare.com https://tovik.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://brightai-92px.onrender.com https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://api.contractai.sa https://tovik.app; frame-src 'self' https://tovik.app; worker-src 'self' blob:; manifest-src 'self'"
       - path: /*
         name: Cache-Control
-        value: public, max-age=300, s-maxage=300
+        value: public, max-age=0, must-revalidate
       - path: /*.html
         name: Cache-Control
-        value: public, max-age=300, s-maxage=300
+        value: public, max-age=0, must-revalidate
       - path: /**/*.html
         name: Cache-Control
-        value: public, max-age=300, s-maxage=300
+        value: public, max-age=0, must-revalidate
 
       - path: /tenders/dashboard
         name: X-Robots-Tag
@@ -162,46 +164,79 @@ services:
 
       - path: /*.css
         name: Cache-Control
-        value: public, max-age=31536000, immutable
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.css
         name: Cache-Control
-        value: public, max-age=31536000, immutable
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /*.js
         name: Cache-Control
-        value: public, max-age=31536000, immutable
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.js
         name: Cache-Control
-        value: public, max-age=31536000, immutable
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /*.woff
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /**/*.woff
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /*.woff2
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /**/*.woff2
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /*.ttf
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /**/*.ttf
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /*.otf
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /**/*.otf
+        name: Cache-Control
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /*.png
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.png
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /*.jpg
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.jpg
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /*.jpeg
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.jpeg
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /*.webp
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.webp
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /*.svg
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
       - path: /**/*.svg
         name: Cache-Control
-        value: public, max-age=2592000
+        value: public, max-age=2592000, stale-while-revalidate=86400
+      - path: /assets/svg/inline-icon-20ad9f0ba8e6.svg
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /assets/svg/inline-icon-3effdab8a020.svg
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /assets/svg/inline-icon-756421bc760e.svg
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
     routes:
       # فرض الدومين الأساسي حتى لا تظهر إشارات canonical أو Coverage على نسخ متعددة.
       - type: redirect
@@ -239,12 +274,24 @@ services:
         destination: /:slug/
         status: 301
       - type: redirect
+        source: /:section/:slug/index.html
+        destination: /:section/:slug/
+        status: 301
+      - type: redirect
+        source: /:section/:subsection/:slug/index.html
+        destination: /:section/:subsection/:slug/
+        status: 301
+      - type: redirect
         source: /en/index.html
         destination: /en/
         status: 301
       - type: redirect
         source: /en/:slug/index.html
         destination: /en/:slug/
+        status: 301
+      - type: redirect
+        source: /en/docs/docs.html
+        destination: /en/docs/
         status: 301
 
       # === 1. إضافة Redirects للـ URLs القديمة (301) ===
@@ -650,8 +697,20 @@ services:
         destination: /blog/:section/:slug/
         status: 301
       - type: redirect
+        source: /blog/:section/:slug/index.html
+        destination: /blog/:section/:slug/
+        status: 301
+      - type: redirect
         source: /blog/:slug.html
         destination: /blog/:slug/
+        status: 301
+      - type: redirect
+        source: /blog/:slug/index.html
+        destination: /blog/:slug/
+        status: 301
+      - type: redirect
+        source: /:section/:slug.html
+        destination: /:section/:slug/
         status: 301
       - type: redirect
         source: /:slug.html
