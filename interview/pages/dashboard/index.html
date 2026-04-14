@@ -969,7 +969,7 @@
 <div class="dashboard-container">
 <aside class="sidebar">
 <div class="sidebar-header">
-<h3 class="sidebar-logo"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h3>
+<p class="sidebar-logo"><i class="fas fa-tachometer-alt"></i> لوحة التحكم</p>
 </div>
 <nav class="sidebar-nav">
 <ul>
@@ -993,29 +993,29 @@
 <div class="stat-item">
 <div class="stat-item-icon primary"><i class="fas fa-users"></i></div>
 <div class="stat-item-info">
-<h4 id="totalApplicants">0</h4>
-<p>إجمالي المتقدمين</p>
+<p id="totalApplicants">0</p>
+<p>إجمالي المتقدمين</h3>
 </div>
 </div>
 <div class="stat-item">
 <div class="stat-item-icon success"><i class="fas fa-user-check"></i></div>
 <div class="stat-item-info">
-<h4 id="highlyRatedApplicants">0</h4>
-<p>متقدمون بتقييم عالي</p>
+<p id="highlyRatedApplicants">0</p>
+<p>متقدمون بتقييم عالي</h4>
 </div>
 </div>
 <div class="stat-item">
 <div class="stat-item-icon warning"><i class="fas fa-briefcase"></i></div>
 <div class="stat-item-info">
-<h4 id="commonSpecialization">N/A</h4>
-<p>التخصص الأكثر شيوعًا</p>
+<p id="commonSpecialization">N/A</p>
+<p>التخصص الأكثر شيوعًا</h4>
 </div>
 </div>
 <div class="stat-item">
 <div class="stat-item-icon danger"><i class="fas fa-bullhorn"></i></div>
 <div class="stat-item-info">
-<h4 id="totalJobPostings">0</h4>
-<p>إجمالي الوظائف الشاغرة</p>
+<p id="totalJobPostings">0</p>
+<p>إجمالي الوظائف الشاغرة</h4>
 </div>
 </div>
 </div>
@@ -1165,7 +1165,7 @@
 <button class="close-modal" onclick="closeModal('jobMatchingModal')">×</button>
 </div>
 <div class="modal-body" id="jobMatchingResultsBody">
-<p>جاري تحليل المطابقة...</p>
+<p>جاري تحليل المطابقة...</h2>
 </div>
 </div>
 </div>
@@ -1176,7 +1176,7 @@
 <button class="close-modal" onclick="closeModal('viewJobMatchesModal')">×</button>
 </div>
 <div class="modal-body" id="jobMatchesForPostingBody">
-<p>جاري البحث عن متقدمين مطابقين...</p>
+<p>جاري البحث عن متقدمين مطابقين...</h2>
 </div>
 </div>
 </div>
@@ -1492,14 +1492,14 @@
             document.getElementById('modalApplicantName').textContent = applicant.fullName;
             const detailsDiv = document.getElementById('modalApplicantDetails');
             detailsDiv.innerHTML = `
-                <p><strong>البريد الإلكتروني:</strong> ${applicant.email}</p>
+                <p><strong>البريد الإلكتروني:</strong> ${applicant.email}</h2>
                 <p><strong>رقم الهاتف:</strong> ${applicant.phone}</p>
                 <p><strong>سنوات الخبرة:</strong> ${applicant.experienceYears}</p>
                 <p><strong>التخصص الأساسي:</strong> ${applicant.educationMajor}</p>
                 <p><strong>الوظيفة المقترحة (CV):</strong> ${applicant.recommendedJobTitle}</p>
                 <hr style="margin: 15px 0;">
                 <h4>ملخص السيرة الذاتية:</h4>
-                <p class="bai-inline-0135">${applicant.cvSummary || 'غير متوفر'}</p>
+                <p class="bai-inline-0135">${applicant.cvSummary || 'غير متوفر'}</h4>
                 <h4>المهارات الأساسية (من السيرة):</h4>
                 <ul class="skills-list">
                     ${applicant.keySkills && applicant.keySkills.length > 0 ?
@@ -1507,7 +1507,7 @@
                     '<li>لم يتم استخلاص مهارات</li>'}
                 </ul>
                 <hr style="margin: 15px 0;">
-                <p><strong>تقييم السيرة الذاتية:</strong> ${applicant.overallCvScore}%</p>
+                <p><strong>تقييم السيرة الذاتية:</strong> ${applicant.overallCvScore}%</h4>
                 <p><strong>تقييم المقابلة:</strong> ${applicant.interviewScore}%</p>
                 <p><strong>القرار المبدئي:</strong> ${applicant.finalDecision}</p>
                 <p><strong>تاريخ التقديم:</strong> ${new Date(applicant.submissionDate).toLocaleString('ar-EG')}</p>
@@ -1626,7 +1626,7 @@
                 jobCard.className = 'job-card-dashboard';
                 jobCard.innerHTML = `
                     <h4>${job.title} (${job.department || 'قسم غير محدد'})</h4>
-                    <p><strong>الوصف:</strong> ${job.description.substring(0, 150)}...</p>
+                    <p><strong>الوصف:</strong> ${job.description.substring(0, 150)}...</h4>
                     <p><strong>المهارات المطلوبة:</strong> ${job.skills.map(s => `<span class="skills-tag">${s}</span>`).join(' ')}</p>
                     <div class="job-card-actions" style="text-align:left; margin-top:10px;">
                         <button class="btn btn-sm btn-primary" onclick="viewJobMatches('${job.id}')"><i class="fas fa-users"></i> عرض المتقدمين المطابقين</button>
@@ -1685,13 +1685,13 @@
                     matchResultsHTML += `
                         <div class="job-match-result">
                             <h5>${job.title} - <span class="bai-inline-0136">${matchResult.matchPercentage}% مطابقة</span></h5>
-                            <p><strong>المبررات:</strong> ${matchResult.overallJustification}</p>
+                            <p><strong>المبررات:</strong> ${matchResult.overallJustification}</h4>
                             <p><strong>نقاط قوة داعمة:</strong> ${matchResult.supportingStrengths.join('، ') || '-'}</p>
                             <p><strong>فجوات محتملة:</strong> ${matchResult.potentialGaps.join('، ') || '-'}</p>
                         </div>`;
                 } catch (e) {
                     console.error(`Error matching with job ${job.title}:`, e);
-                    matchResultsHTML += `<div class="job-match-result"><h5>${job.title}</h5><p style="color:red;">خطأ في تحليل المطابقة لهذه الوظيفة.</p></div>`;
+                    matchResultsHTML += `<div class="job-match-result"><h5>${job.title}</h5><p style="color:red;">خطأ في تحليل المطابقة لهذه الوظيفة.</h5></div>`;
                 }
             }
             resultsBody.innerHTML = matchResultsHTML;
@@ -1755,7 +1755,7 @@
                         matchedApplicantsHTML += `
                             <div class="applicant-match-item">
                                 <h5>${applicant.fullName} - <span class="bai-inline-0136">${matchResult.matchPercentage}% مطابقة</span></h5>
-                                <p><strong>السبب:</strong> ${matchResult.briefReasoning}</p>
+                                <p><strong>السبب:</strong> ${matchResult.briefReasoning}</h5>
                                 <p><strong>الخبرة:</strong> ${applicant.experienceYears} | <strong>التخصص:</strong> ${applicant.educationMajor}</p>
                                 <button class="btn btn-sm btn-primary" onclick="showApplicantDetails('${applicant.id}'); closeModal('viewJobMatchesModal');">عرض التفاصيل الكاملة</button>
                             </div>`;

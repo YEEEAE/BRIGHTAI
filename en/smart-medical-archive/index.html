@@ -759,23 +759,23 @@
             <div class="section-title">
                 <h2>Why is this a Game-Changer for Saudi Hospitals?</h2>
                 <p>Laser-focused on delivering real, measurable operational impact in high-stress medical environments.
-                </p>
+                </h2>
             </div>
             <div class="problem-grid">
                 <article class="problem-card">
                     <h3>The Buzzkill</h3>
                     <p>A mountain of unstructured, messy reports eats up your doctors' time and totally bogs down how
-                        fast you can find the right patient info.</p>
+                        fast you can find the right patient info.</h3>
                 </article>
                 <article class="problem-card">
                     <h3>The Fix</h3>
                     <p>We use <strong>artificial intelligence</strong> to instantly turn text into neat, structured
-                        data. We link diagnoses and meds to a badass natural language search engine.</p>
+                        data. We link diagnoses and meds to a badass natural language search engine.</h3>
                 </article>
                 <article class="problem-card">
                     <h3>The Proof</h3>
                     <p>Way less manual data entry, spot-on record accuracy, and insanely fast retrieval of similar cases
-                        when making big clinical decisions.</p>
+                        when making big clinical decisions.</h3>
                 </article>
             </div>
         </section>
@@ -783,23 +783,23 @@
             <div class="section-title">
                 <h2>What's in the Box? (Sandbox Scope)</h2>
                 <p>Built for the whole hospital lifecycle: Medical Report → Structured Record → Clinical Search →
-                    Operational Analytics → Integrations.</p>
+                    Operational Analytics → Integrations.</h2>
             </div>
             <div class="capabilities">
                 <article class="capability-card">
                     <h3>1) Digital Document Ingestion</h3>
                     <p>Drop your actual medical files in, and watch the system magically pull structured health data out
-                        of messy text.</p>
+                        of messy text.</h3>
                 </article>
                 <article class="capability-card">
                     <h3>2) Natural Language Search</h3>
                     <p>Doctors or admins just type their questions normally. Our <strong>ai tools</strong> spit back
-                        exact matches with clear reasons why they popped up.</p>
+                        exact matches with clear reasons why they popped up.</h3>
                 </article>
                 <article class="capability-card">
                     <h3>3) Auto-Extraction on Autopilot</h3>
                     <p>Ditch the manual entry. We automatically update health records to keep things super accurate and
-                        speed up decision-making.</p>
+                        speed up decision-making.</h3>
                 </article>
             </div>
         </section>
@@ -814,13 +814,13 @@
             <div class="section-title">
                 <h2>The Hospital Trial Console</h2>
                 <p>Upload a file or paste a report, get instant <strong>data analysis</strong>, save records, search,
-                    analyze, and push to your EHR.</p>
+                    analyze, and push to your EHR.</h2>
             </div>
             <div class="console-grid">
                 <article class="console-panel">
                     <h3>Step 1: Facility Setup & Report Input</h3>
                     <p class="panel-sub">Set your hospital context, then drop your medical files or paste text right
-                        here to kick off the magic.</p>
+                        here to kick off the magic.</h3>
                     <div class="form-grid">
                         <input id="hospitalName" placeholder="Hospital Name" type="text" value="King Fahad Hospital" />
                         <input id="hospitalCity" placeholder="City" type="text" value="Riyadh" />
@@ -864,7 +864,7 @@
                         <div class="file-queue" id="fileQueue"></div>
                     </div>
                     <div class="storage-box">
-                        <h4>Cloud Storage Integration (AWS S3 or Firebase)</h4>
+                        <h3>Cloud Storage Integration (AWS S3 or Firebase)</h3>
                         <div class="storage-grid">
                             <select id="storageProvider">
                                 <option value="none">No Cloud Storage</option>
@@ -900,7 +900,7 @@
                 <article class="console-panel">
                     <h3>Step 2: Structured Data Output</h3>
                     <p class="panel-sub">This shows how your messy text files get transformed into clean, searchable
-                        health records.</p>
+                        health records.</h3>
                     <div class="result-box" id="extractResult"></div>
                     <h3 style="margin-top: 14px;">Records Saved in Sandbox</h3>
                     <div class="record-list" id="recordsList"></div>
@@ -910,7 +910,7 @@
                 <article class="console-panel">
                     <h3>Step 3: Natural Language Medical Search</h3>
                     <p class="panel-sub">The ultimate multi-level engine: Instant typing + advanced semantic + voice +
-                        <strong>ai generated images</strong> search.</p>
+                        <strong>ai generated images</strong> search.</h3>
                     <div class="search-quick-box">
                         <div class="search-input-wrap">
                             <input autocomplete="off" id="searchQuery" placeholder="Type your medical query here..."
@@ -928,7 +928,7 @@
                             voice/image.</div>
                     </div>
                     <div class="search-advanced-box">
-                        <h4>Advanced Filters</h4>
+                        <h3>Advanced Filters</h3>
                         <div class="search-filters-grid">
                             <input id="filterAgeMin" min="0" placeholder="Min Age" type="number" />
                             <input id="filterAgeMax" min="0" placeholder="Max Age" type="number" />
@@ -987,7 +987,7 @@
                 <article class="console-panel">
                     <h3>Step 4: Instant Operational Analytics</h3>
                     <p class="panel-sub">Get real-time risk indicators and executive recommendations straight to your
-                        hospital management.</p>
+                        hospital management.</h3>
                     <div class="action-row">
                         <button class="btn-main" id="insightsBtn" type="button">Generate Analytics</button>
                     </div>
@@ -1000,7 +1000,7 @@
                 <article class="console-panel">
                     <h3>Smart AI Agent (Gemini Flash)</h3>
                     <p class="panel-sub">Your personal <strong>autonomous public agent</strong> for hospital ops. Ask it
-                        anything about your current batches.</p>
+                        anything about your current batches.</h3>
                     <input id="agentQuestion"
                         placeholder="e.g., How do we cut triage time for critical cases in the next 30 days?"
                         type="text" />
@@ -1013,7 +1013,7 @@
                 </article>
                 <article class="console-panel">
                     <h3>Post-Processing Batch Report</h3>
-                    <p class="panel-sub">Instant updates on success/fails, ready files, and validation checks.</p>
+                    <p class="panel-sub">Instant updates on success/fails, ready files, and validation checks.</h3>
                     <div class="result-box" id="batchReport"></div>
                 </article>
             </div>
@@ -1021,7 +1021,7 @@
                 <article class="console-panel">
                     <h3>Step 5: Seamless EHR Exports</h3>
                     <p class="panel-sub">Push your extracted data out in formats that play nice with your current EHR
-                        systems.</p>
+                        systems.</h3>
                     <div class="export-grid">
                         <button class="btn-outline" id="exportFhirBtn" type="button">Export as FHIR JSON</button>
                         <button class="btn-outline" id="exportCsvBtn" type="button">Export as CSV</button>
@@ -1046,7 +1046,7 @@
         <section id="dashboardStudio" style="content-visibility: auto;">
             <div class="section-title">
                 <h2>The Ultimate Interactive Dashboard</h2>
-                <p>Live metrics + sick charts + smart alerts + custom widgets + real-time updates.</p>
+                <p>Live metrics + sick charts + smart alerts + custom widgets + real-time updates.</h3>
             </div>
             <div class="dashboard-toolbar">
                 <div class="dashboard-toolbar-grid">
@@ -1225,7 +1225,7 @@
         <section class="lead-strip" id="leadForm" style="content-visibility: auto;">
             <div class="section-title" style="margin: 0 0 10px;">
                 <h2>Activate Your Enterprise Trial</h2>
-                <p>Shoot a request to the Bright AI squad to get your hospital's sandbox up and running.</p>
+                <p>Shoot a request to the Bright AI squad to get your hospital's sandbox up and running.</h3>
             </div>
             <div class="lead-grid">
                 <input id="leadHospital" placeholder="Hospital Name" type="text" />
@@ -1239,7 +1239,7 @@
         <section style="content-visibility: auto;">
             <div class="section-title">
                 <h2>Check Out Our Ecosystem</h2>
-                <p>Links that help your medical and admin teams transition seamlessly without getting lost.</p>
+                <p>Links that help your medical and admin teams transition seamlessly without getting lost.</h2>
             </div>
             <div class="internal-links">
                 <a href="/sectors/healthcare/">Healthcare AI Solutions</a>
@@ -1253,28 +1253,28 @@
         <section style="content-visibility: auto;">
             <div class="section-title">
                 <h2>Operations FAQ</h2>
-                <p>Real answers for your team before you go live in a production hospital environment.</p>
+                <p>Real answers for your team before you go live in a production hospital environment.</h2>
             </div>
             <div class="faq-grid" id="faq">
                 <article class="faq-item">
-                    <h4>Does the sandbox handle both Arabic and English reports?</h4>
+                    <h3>Does the sandbox handle both Arabic and English reports?</h3>
                     <p>Absolutely. The system processes bilingual reports and normalizes them into one highly
-                        searchable, unified structure.</p>
+                        searchable, unified structure.</h3>
                 </article>
                 <article class="faq-item">
-                    <h4>What's the first success metric we should track?</h4>
+                    <h3>What's the first success metric we should track?</h3>
                     <p>Keep an eye on the time it takes to convert a raw report into a searchable record, and how fast a
-                        doctor pulls up similar past cases during diagnosis.</p>
+                        doctor pulls up similar past cases during diagnosis.</h3>
                 </article>
                 <article class="faq-item">
-                    <h4>Does it actually link up to our EHR?</h4>
+                    <h3>Does it actually link up to our EHR?</h3>
                     <p>Yep! You can start by exporting FHIR, HL7, and CSV formats, and later build out direct API
-                        integrations into your main system.</p>
+                        integrations into your main system.</h3>
                 </article>
                 <article class="faq-item">
-                    <h4>Can it handle insane pressure like Hajj or Umrah seasons?</h4>
+                    <h3>Can it handle insane pressure like Hajj or Umrah seasons?</h3>
                     <p>100%. It's built exactly for that—cutting down reading time and instantly flagging critical
-                        alerts in triage and ER when the rush hits.</p>
+                        alerts in triage and ER when the rush hits.</h3>
                 </article>
             </div>
         </section>
@@ -1290,7 +1290,7 @@
                     organized, instantly searchable knowledge base using killer OCR and semantic classification
                     <strong>ai software</strong>. Forget sending your staff to a boring <strong>artificial intelligence
                         course</strong>—our system is plug-and-play.
-                </p>
+                </h3>
                 <p class="mb-6">
                     What makes us the best <strong>agent in artificial intelligence</strong> for this? We strictly
                     follow the rules from the Council of Cooperative Health Insurance (CCHI) and the National Data
@@ -1300,7 +1300,7 @@
                     actual patient care while learning <strong>how does artificial intelligence work</strong> in real
                     life.
                 </p>
-                <h4 class="text-2xl font-bold text-indigo-400 mb-4 mt-8">Why Our AI Tools Dominate</h4>
+                <h3 class="text-2xl font-bold text-indigo-400 mb-4 mt-8">Why Our AI Tools Dominate</h3>
                 <ul class="list-disc pl-6 pr-6 space-y-3 mb-8">
                     <li><strong>Smart Indexing & Data Mining:</strong> We auto-classify diseases and extract medical
                         histories with crazy accuracy. It's practically <strong>free ai</strong> labor for your data
@@ -1314,62 +1314,62 @@
                 </ul>
             </div>
             <div class="max-w-7xl mx-auto px-6 mt-16 pb-12">
-                <h4 class="text-3xl font-bold text-white mb-8 text-center">More Tech Goodies You'll Love</h4>
+                <h3 class="text-3xl font-bold text-white mb-8 text-center">More Tech Goodies You'll Love</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50"
                         href="/en/data-analysis/">
-                        <h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Data Analysis
-                            <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-right"></iconify-icon></h5>
+                        <h3 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Data Analysis
+                            <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-right"></iconify-icon></h3>
                     </a><a
                         class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50"
                         href="/en/consultation/">
-                        <h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Tech
+                        <h3 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Tech
                             Consultation <iconify-icon class="text-indigo-400"
-                                icon="lucide:arrow-up-right"></iconify-icon></h5>
+                                icon="lucide:arrow-up-right"></iconify-icon></h3>
                     </a><a
                         class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50"
                         href="/en/smart-automation/">
-                        <h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Smart Med
+                        <h3 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Smart Med
                             Automation <iconify-icon class="text-indigo-400"
-                                icon="lucide:arrow-up-right"></iconify-icon></h5>
+                                icon="lucide:arrow-up-right"></iconify-icon></h3>
                     </a><a
                         class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50"
                         href="/docs/solutions-ocr/">
-                        <h5 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Doc & Med OCR
+                        <h3 class="text-xl font-bold text-white mb-2 flex items-center justify-between">Doc & Med OCR
                             Guide <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-right"></iconify-icon>
-                        </h5>
+                        </h3>
                     </a>
                 </div>
             </div>
         </section>
 
         <div id="silo-spokes-links" class="max-w-7xl mx-auto px-6 mt-12 pb-12">
-            <h4 class="text-2xl font-bold text-white mb-6 text-center border-b border-white/10 pb-4">Related Health Tech
-                Reads</h4>
+            <h3 class="text-2xl font-bold text-white mb-6 text-center border-b border-white/10 pb-4">Related Health Tech
+                Reads</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <a href="/blog/ai-healthcare-saudi/"
                     class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
-                    <h5 class="text-sm font-bold text-slate-300 flex items-center justify-between">AI in Saudi
+                    <h3 class="text-sm font-bold text-slate-300 flex items-center justify-between">AI in Saudi
                         Healthcare <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-right"></iconify-icon>
-                    </h5>
+                    </h3>
                 </a>
                 <a href="/blog/digital-health-smart-archive/"
                     class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
-                    <h5 class="text-sm font-bold text-slate-300 flex items-center justify-between">Digital Health &
+                    <h3 class="text-sm font-bold text-slate-300 flex items-center justify-between">Digital Health &
                         Smart Archives <iconify-icon class="text-indigo-400"
-                            icon="lucide:arrow-up-right"></iconify-icon></h5>
+                            icon="lucide:arrow-up-right"></iconify-icon></h3>
                 </a>
                 <a href="/blog/kfshrc-breast-cancer-ai/"
                     class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
-                    <h5 class="text-sm font-bold text-slate-300 flex items-center justify-between">AI in Breast Cancer
+                    <h3 class="text-sm font-bold text-slate-300 flex items-center justify-between">AI in Breast Cancer
                         Detection <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-right"></iconify-icon>
-                    </h5>
+                    </h3>
                 </a>
                 <a href="/blog/private-hospital-scheduling-optimization/"
                     class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
-                    <h5 class="text-sm font-bold text-slate-300 flex items-center justify-between">Optimizing Private
+                    <h3 class="text-sm font-bold text-slate-300 flex items-center justify-between">Optimizing Private
                         Hospital Scheduling <iconify-icon class="text-indigo-400"
-                            icon="lucide:arrow-up-right"></iconify-icon></h5>
+                            icon="lucide:arrow-up-right"></iconify-icon></h3>
                 </a>
             </div>
         </div>
@@ -1393,7 +1393,7 @@
             </div>
 
             <div class="custom-seo-links-universal bai-inline-0011">
-                <h4 style="color:#fff; font-weight:600; margin-bottom:12px;">Quick Links & Killer Services</h4>
+                <h3 style="color:#fff; font-weight:600; margin-bottom:12px;">Quick Links & Killer Services</h3>
                 <ul class="bai-inline-0012">
                     <li><a href="/" style="color:#94a3b8; text-decoration:none;">Home Page</a></li>
                     <li><a href="/services/" style="color:#94a3b8; text-decoration:none;">Other Services</a></li>
@@ -1405,7 +1405,7 @@
         </footer>
 
         <p class="internal-linking-cta-wrap">Preview Time: <a class="internal-linking-inline"
-                href="/demo/ocr-demo/">Activate Med Archive OCR Now</a></p>
+                href="/demo/ocr-demo/">Activate Med Archive OCR Now</a></h3>
     </main>
     <script defer="" src="/frontend/js/navigation.js"></script>
     <script defer="" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
