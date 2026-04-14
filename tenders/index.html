@@ -22,14 +22,20 @@
     gtag('config', 'G-8LLESL207Q');
   </script>
 <script>
-    window.BRIGHTAI_API_BASE = window.location.origin;
+    (() => {
+        const host = window.location.hostname;
+        const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+        window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || (
+            isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com'
+        );
+    })();
   </script>
 <!-- SEO Meta Tags -->
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="theme-color" content="#0b1020">
-<title>ContractAI من Bright AI | تحليل عقود ومناقصات السعودية</title>
-<meta content="أداة ذكية تساعدك على تحليل العقود والمناقصات الحكومية في السعودية، من مراجعة البنود والمخاطر إلى متابعة عقود التوريد والخدمات ومنافسات اعتماد بشكل أوضح وأسرع." name="description"/>
+<title>ContractAI لتحليل العقود والمناقصات في السعودية | Bright AI</title>
+<meta content="ContractAI من Bright AI يساعد الفرق القانونية والمشتريات في السعودية على تحليل العقود والمناقصات، ومراجعة البنود والمخاطر قبل الاعتماد أو التفاوض." name="description"/>
 <meta content="محلل عقود ذكاء اصطناعي, تحليل عقود السعودية, مراجعة عقود بالذكاء الاصطناعي, تحليل مناقصات حكومية, نظام المنافسات والمشتريات, اكتشاف مخاطر العقود, أداة تحليل عقود, مستشار قانوني ذكاء اصطناعي, تحليل عقود توريد, مناقصات اعتماد, تحليل بنود العقود, AI contract analysis Saudi Arabia, contract review tool" name="keywords"/>
 <meta content="BrightAI" name="author"/>
 <!-- Open Graph -->

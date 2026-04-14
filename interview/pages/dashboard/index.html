@@ -1199,7 +1199,15 @@
         let allApplicantsData = [];
         let jobPostings = [];
         let currentViewedApplicantId = null;
-        const GEMINI_API_URL = '/api/gemini/chat';
+        const GEMINI_API_URL = (() => {
+            if (window.BrightAIGateway && typeof window.BrightAIGateway.buildUrl === 'function') {
+                return window.BrightAIGateway.buildUrl('/api/gemini/chat');
+            }
+            const host = window.location.hostname;
+            const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+            const apiBase = (window.BRIGHTAI_API_BASE || (isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com')).replace(/\/+$/, '');
+            return `${apiBase}/api/gemini/chat`;
+        })();
         let geminiSessionId = null;
 
         document.addEventListener('DOMContentLoaded', () => {

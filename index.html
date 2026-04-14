@@ -15,7 +15,13 @@
     <meta name="ahrefs-site-verification" content="540816f77eec3c6bccb64458a16cfa022c451cb1dd0d49a48d47d3ea108058ee">
 
     <script>
-        window.BRIGHTAI_API_BASE = window.location.origin;
+        (() => {
+            const host = window.location.hostname;
+            const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+            window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || (
+                isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com'
+            );
+        })();
     </script>
 
     <meta charset="utf-8" />
@@ -29,9 +35,9 @@
       gtag('config', 'G-8LLESL207Q');
     </script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>شركة ذكاء اصطناعي في السعودية | حلول AI للشركات | Bright AI</title>
+    <title>شركة ذكاء اصطناعي للشركات في السعودية | Bright AI</title>
     <meta name="description"
-        content="Bright AI شركة ذكاء اصطناعي في السعودية تقدم حلول AI للشركات والمؤسسات تشمل AI Agent، أتمتة العمليات، وتحليل البيانات ضمن حوكمة مؤسسية تدعم رؤية 2030." />
+        content="Bright AI شركة ذكاء اصطناعي للشركات في السعودية، تقدم وكلاء AI مؤسسية وأتمتة ذكية وتحليل بيانات لدعم التشغيل والقرار ضمن حوكمة تناسب المؤسسات." />
     <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author" />
     <link as="font" crossorigin="anonymous" href="/assets/fonts/ScheherazadeNew-Regular.woff2" rel="preload"
         type="font/woff2" fetchpriority="high" />
@@ -50,9 +56,9 @@
 
     <meta content="website" property="og:type" />
     <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" property="og:site_name" />
-    <meta content="شركة ذكاء اصطناعي في السعودية | حلول AI للشركات | Bright AI" property="og:title" />
+    <meta content="شركة ذكاء اصطناعي للشركات في السعودية | Bright AI" property="og:title" />
     <meta
-        content="Bright AI شركة ذكاء اصطناعي في السعودية تقدم حلول AI للشركات والمؤسسات تشمل AI Agent، أتمتة العمليات، وتحليل البيانات ضمن حوكمة مؤسسية تدعم رؤية 2030."
+        content="Bright AI شركة ذكاء اصطناعي للشركات في السعودية، تقدم وكلاء AI مؤسسية وأتمتة ذكية وتحليل بيانات لدعم التشغيل والقرار ضمن حوكمة تناسب المؤسسات."
         property="og:description" />
     <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image" />
     <meta content="Bright AI - شعار الشركة" property="og:image:alt" />

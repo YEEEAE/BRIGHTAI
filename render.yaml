@@ -758,7 +758,7 @@ services:
       - type: rewrite
         source: /blog/automation/:slug/
         destination: /blog/automation/:slug/index.html
-      
+
       # ① إصلاح Blog Routes (الأهم)
       - type: rewrite
         source: /blog/:slug
@@ -812,14 +812,14 @@ services:
       - type: rewrite
         source: /ai-bots/:slug/
         destination: /ai-bots/:slug/index.html
-      
+
       - type: rewrite
         source: /ai-scolecs
         destination: /ai-scolecs/index.html
       - type: rewrite
         source: /ai-scolecs/
         destination: /ai-scolecs/index.html
-      
+
       - type: rewrite
         source: /ai-workflows
         destination: /ai-workflows/index.html
@@ -839,35 +839,35 @@ services:
       - type: rewrite
         source: /docs/:slug/
         destination: /docs/:slug.html
-      
+
       - type: rewrite
         source: /demo
         destination: /demo/index.html
       - type: rewrite
         source: /demo/
         destination: /demo/index.html
-      
+
       - type: rewrite
         source: /demo/ocr-demo
         destination: /demo/ocr-demo/index.html
       - type: rewrite
         source: /demo/ocr-demo/
         destination: /demo/ocr-demo/index.html
-      
+
       - type: rewrite
         source: /demo/pricing
         destination: /demo/pricing/index.html
       - type: rewrite
         source: /demo/pricing/
         destination: /demo/pricing/index.html
-      
+
       - type: rewrite
         source: /demo/resources/report-ai-saudi-2026
         destination: /demo/resources/report-ai-saudi-2026/index.html
       - type: rewrite
         source: /demo/resources/report-ai-saudi-2026/
         destination: /demo/resources/report-ai-saudi-2026/index.html
-      
+
       - type: rewrite
         source: /interview
         destination: /interview/index.html
@@ -880,28 +880,28 @@ services:
       - type: rewrite
         source: /interview/Presentation/
         destination: /frontend/pages/interview/Presentation.html
-      
+
       - type: rewrite
         source: /interview/pages/appointment
         destination: /interview/pages/appointment/index.html
       - type: rewrite
         source: /interview/pages/appointment/
         destination: /interview/pages/appointment/index.html
-      
+
       - type: rewrite
         source: /interview/pages/admin
         destination: /frontend/pages/interview/pages/admin.html
       - type: rewrite
         source: /interview/pages/admin/
         destination: /frontend/pages/interview/pages/admin.html
-      
+
       - type: rewrite
         source: /interview/pages/dashboard
         destination: /interview/pages/dashboard/index.html
       - type: rewrite
         source: /interview/pages/dashboard/
         destination: /interview/pages/dashboard/index.html
-      
+
       - type: rewrite
         source: /interview/pages/support-ai
         destination: /interview/pages/support-ai/index.html
@@ -923,7 +923,7 @@ services:
         source: /interview/pages/supportAI/index.html
         destination: /interview/pages/support-ai/
         status: 301
-      
+
       - type: rewrite
         source: /interview/pages/Visitor-registration
         destination: /frontend/pages/interview/pages/Visitor-registration/index.html
@@ -933,14 +933,14 @@ services:
       - type: redirect
         source: /interview/pages/Visitor-registration/index.html
         destination: /interview/pages/Visitor-registration/
-      
+
       - type: rewrite
         source: /privacy-cookies
         destination: /privacy-cookies/index.html
       - type: rewrite
         source: /privacy-cookies/
         destination: /privacy-cookies/index.html
-      
+
       - type: rewrite
         source: /smart-medical-archive
         destination: /smart-medical-archive/index.html
@@ -1010,14 +1010,14 @@ services:
       - type: rewrite
         source: /en/tenders/:slug/
         destination: /en/tenders/:slug.html
-      
+
       - type: redirect
         source: /job.MAISco
         destination: /interview/
       - type: redirect
         source: /job.MAISco/
         destination: /interview/
-      
+
       - type: rewrite
         source: /try
         destination: /try/index.html

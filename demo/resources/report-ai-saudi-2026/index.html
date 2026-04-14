@@ -37,7 +37,13 @@
 </script>
 
 <script>
-  window.BRIGHTAI_API_BASE = window.location.origin;
+  (() => {
+    const host = window.location.hostname;
+    const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+    window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || (
+      isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com'
+    );
+  })();
 </script>
 
 <meta charset="utf-8"/>
