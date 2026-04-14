@@ -71,8 +71,7 @@ npm test
 
 - GitHub هو مصدر الحقيقة للكود.
 - `backend` يُنشر على Render.
-- الرابط الحالي للـ API:
-  `https://brightai-92px.onrender.com`
+- الواجهة تعتمد الآن على `/api` من نفس الدومين، وRender يعيد توجيهه داخلياً إلى خدمة `brightai-api`.
 
 ## فحص صحة الـ API
 
@@ -83,7 +82,7 @@ npm run smoke-test:prod
 أو مباشرة:
 
 ```bash
-node scripts/smoke-test-api.mjs https://brightai-92px.onrender.com
+node scripts/smoke-test-api.mjs https://brightai.site
 ```
 
 ## أسرار البيئة

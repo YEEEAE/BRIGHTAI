@@ -1,1 +1,210 @@
-!function(e,t){"undefined"!=typeof module&&module.exports?module.exports=t():e.BrightAIGateway=t()}("undefined"!=typeof globalThis?globalThis:this,function(){"use strict";let e=null;function t(){if(null!==e)return e;const i="undefined"!=typeof window&&window.BRIGHTAI_API_BASE&&"string"==typeof window.BRIGHTAI_API_BASE?window.BRIGHTAI_API_BASE.replace(/\/+$/,""):"";const s="undefined"!=typeof window&&window.location&&window.location.hostname==="localhost"?"http://localhost:3000":"https://brightai-api.onrender.com";return e=i||s||"https://brightai-api.onrender.com",e}function i(e){const i=t(),a=e.startsWith("/")?e:"/"+e;return i?i+a:a}var a=Object.freeze({GEMINI_CHAT:"/api/gemini/chat",GEMINI_CHAT_STREAM:"/api/gemini/chat/stream",AI_STREAM:"/api/ai/stream",AI_CHAT:"/api/ai/chat",AI_SEARCH:"/api/ai/search",AI_MEDICAL:"/api/ai/medical",AI_SUMMARY:"/api/ai/summary",AI_OCR:"/api/ai/ocr",AI_EXTRACT_TEXT:"/api/ai/extract-text",AI_TRANSCRIBE:"/api/ai/transcribe",AI_MEDICAL_AGENT:"/api/ai/medical-agent",AI_FAQ:"/api/ai/faq",AI_MEDICAL_ARCHIVE:"/api/ai/medical-archive",AI_MODELS:"/api/ai/models",AI_OPENAI_CHAT:"/api/ai/openai-chat",HEALTH:"/api/health",HEALTH_AI:"/api/health/ai",ANALYTICS_CONVERSION:"/api/analytics/ga4/conversion"}),n={checked:!1,healthy:!1,message:"",timestamp:0};function o(e){if("undefined"!=typeof document&&!document.getElementById("brightai-health-banner")){var t=document.createElement("div");t.id="brightai-health-banner",t.setAttribute("role","alert"),t.setAttribute("dir","rtl"),t.style.cssText="position:fixed;top:0;left:0;right:0;z-index:999999;background:linear-gradient(135deg,#991b1b,#7f1d1d);color:#fecaca;padding:14px 20px;font-size:14px;line-height:1.7;font-family:system-ui,-apple-system,sans-serif;text-align:right;box-shadow:0 4px 20px rgba(0,0,0,.4);border-bottom:2px solid #dc2626;";var i=document.createElement("button");i.textContent="✕",i.style.cssText="position:absolute;top:8px;left:12px;background:none;border:none;color:#fecaca;font-size:18px;cursor:pointer;padding:4px;",i.addEventListener("click",function(){t.remove()}),t.textContent="⚠️ "+e,t.appendChild(i),document.body.insertBefore(t,document.body.firstChild)}}return{getApiBase:t,resetApiBase:function(){e=null},buildUrl:i,ENDPOINTS:a,preflight:async function(e){var t=e||{},r=t.timeoutMs||6e3,s=t.silent||!1,c=new AbortController,l=setTimeout(function(){c.abort()},r);try{var d=i(a.HEALTH),u=await fetch(d,{method:"GET",signal:c.signal});if(clearTimeout(l),!u.ok){var h="";try{var p=await u.json();h=p.error||p.message||""}catch(e){h="HTTP "+u.status}var A=function(e,t){if(503===e)return t&&(t.includes("key")||t.includes("API")||t.includes("configured"))?"الخادم يعمل لكن مفتاح API غير مُعد (GEMINI_API_KEY). أضف المفتاح في متغيرات البيئة على الخادم.":"الخادم يعمل لكن الخدمة غير متاحة حالياً (503). تحقق من إعدادات المزود.";if(404===e)return"مسار /api/health غير موجود (404). تحقق من مسار الخادم أو من نشر خدمة brightai-api.";if(500===e)return"خطأ داخلي في الخادم (500). راجع logs الخاصة بالـ backend أو الـ runtime.";return"فشل الاتصال بالخادم (HTTP "+e+"). "+(t||"")}(u.status,h);return n={checked:!0,healthy:!1,message:A,timestamp:Date.now()},s||(console.error("[BrightAI Gateway] ❌ فحص الاتصال فشل:",A),o(A)),{healthy:!1,message:A}}return n={checked:!0,healthy:!0,message:"الاتصال بالخادم يعمل بنجاح",timestamp:Date.now()},s||console.info("[BrightAI Gateway] ✅ الاتصال بالخادم يعمل بنجاح"),{healthy:!0,message:"ok"}}catch(e){clearTimeout(l);var f="";return f=e&&"AbortError"===e.name?"انتهت مهلة الاتصال بالخادم ("+r/1e3+" ثوانٍ). تأكد أن الخادم يعمل وأن الـ API endpoint متاح.":"تعذر الاتصال بالخادم: "+(e.message||"خطأ غير معروف")+". تأكد من إعدادات الشبكة والنشر.",n={checked:!0,healthy:!1,message:f,timestamp:Date.now()},s||(console.error("[BrightAI Gateway] ❌ فحص الاتصال فشل:",f),o(f)),{healthy:!1,message:f}}},getHealthState:function(){return Object.assign({},n)},apiFetch:async function(e,t,a){var n=a||15e3,o=i(e),r=new AbortController,s=setTimeout(function(){r.abort()},n),c=Object.assign({},t||{});c.signal=r.signal;try{var l=await fetch(o,c);return clearTimeout(s),l}catch(e){throw clearTimeout(s),e}}}});
+!(function attachBrightAIGateway(globalScope, factory) {
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = factory(globalScope);
+    return;
+  }
+
+  globalScope.BrightAIGateway = factory(globalScope);
+})(typeof globalThis !== "undefined" ? globalThis : this, function buildBrightAIGateway(globalScope) {
+  "use strict";
+
+  var ENDPOINTS = Object.freeze({
+    GEMINI_CHAT: "/api/gemini/chat",
+    GEMINI_CHAT_STREAM: "/api/gemini/chat/stream",
+    AI_STREAM: "/api/ai/stream",
+    AI_CHAT: "/api/ai/chat",
+    AI_SEARCH: "/api/ai/search",
+    AI_MEDICAL: "/api/ai/medical",
+    AI_SUMMARY: "/api/ai/summary",
+    AI_OCR: "/api/ai/ocr",
+    AI_EXTRACT_TEXT: "/api/ai/extract-text",
+    AI_TRANSCRIBE: "/api/ai/transcribe",
+    AI_MEDICAL_AGENT: "/api/ai/medical-agent",
+    AI_FAQ: "/api/ai/faq",
+    AI_MEDICAL_ARCHIVE: "/api/ai/medical-archive",
+    AI_MODELS: "/api/ai/models",
+    AI_OPENAI_CHAT: "/api/ai/openai-chat",
+    HEALTH: "/api/health",
+    HEALTH_AI: "/api/health/ai",
+    ANALYTICS_CONVERSION: "/api/analytics/ga4/conversion"
+  });
+
+  var healthState = {
+    checked: false,
+    healthy: false,
+    message: "",
+    timestamp: 0
+  };
+
+  function getRuntimeConfig() {
+    var runtimeConfig = globalScope && globalScope.BrightAIRuntimeConfig;
+    if (!runtimeConfig || typeof runtimeConfig.buildApiUrl !== "function") {
+      throw new Error(
+        "ملف runtime-config.js غير محمل. يجب تحميل /frontend/js/runtime-config.js قبل api-gateway.js."
+      );
+    }
+    return runtimeConfig;
+  }
+
+  function getApiBase() {
+    return getRuntimeConfig().getApiBase();
+  }
+
+  function buildUrl(path) {
+    return getRuntimeConfig().buildApiUrl(path);
+  }
+
+  function showHealthBanner(message) {
+    if (
+      typeof document === "undefined" ||
+      document.getElementById("brightai-health-banner")
+    ) {
+      return;
+    }
+
+    var banner = document.createElement("div");
+    banner.id = "brightai-health-banner";
+    banner.setAttribute("role", "alert");
+    banner.setAttribute("dir", "rtl");
+    banner.style.cssText =
+      "position:fixed;top:0;left:0;right:0;z-index:999999;background:linear-gradient(135deg,#991b1b,#7f1d1d);color:#fecaca;padding:14px 20px;font-size:14px;line-height:1.7;font-family:system-ui,-apple-system,sans-serif;text-align:right;box-shadow:0 4px 20px rgba(0,0,0,.4);border-bottom:2px solid #dc2626;";
+
+    var closeButton = document.createElement("button");
+    closeButton.textContent = "✕";
+    closeButton.style.cssText =
+      "position:absolute;top:8px;left:12px;background:none;border:none;color:#fecaca;font-size:18px;cursor:pointer;padding:4px;";
+    closeButton.addEventListener("click", function removeBanner() {
+      banner.remove();
+    });
+
+    banner.textContent = "⚠️ " + message;
+    banner.appendChild(closeButton);
+    document.body.insertBefore(banner, document.body.firstChild);
+  }
+
+  function mapPreflightError(status, details) {
+    if (status === 503) {
+      if (details && (details.includes("key") || details.includes("API") || details.includes("configured"))) {
+        return "الخادم يعمل لكن مفتاح API غير مُعد (GEMINI_API_KEY). أضف المفتاح في متغيرات البيئة على الخادم.";
+      }
+      return "الخادم يعمل لكن الخدمة غير متاحة حالياً (503). تحقق من إعدادات المزود.";
+    }
+
+    if (status === 404) {
+      return "مسار /api/health غير موجود (404). تحقق من مسار الخادم أو إعدادات إعادة التوجيه.";
+    }
+
+    if (status === 500) {
+      return "خطأ داخلي في الخادم (500). راجع سجلات الـ backend أو الـ runtime.";
+    }
+
+    return "فشل الاتصال بالخادم (HTTP " + status + "). " + (details || "");
+  }
+
+  return {
+    getApiBase: getApiBase,
+    resetApiBase: function resetApiBase() {
+      return getRuntimeConfig().resolveApiBase();
+    },
+    buildUrl: buildUrl,
+    ENDPOINTS: ENDPOINTS,
+    preflight: async function preflight(options) {
+      var settings = options || {};
+      var timeoutMs = settings.timeoutMs || 6000;
+      var silent = settings.silent || false;
+      var controller = new AbortController();
+      var timeoutId = setTimeout(function abortRequest() {
+        controller.abort();
+      }, timeoutMs);
+
+      try {
+        var response = await fetch(buildUrl(ENDPOINTS.HEALTH), {
+          method: "GET",
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          var details = "";
+          try {
+            var payload = await response.json();
+            details = payload.error || payload.message || "";
+          } catch (error) {
+            details = "HTTP " + response.status;
+          }
+
+          var failureMessage = mapPreflightError(response.status, details);
+          healthState = {
+            checked: true,
+            healthy: false,
+            message: failureMessage,
+            timestamp: Date.now()
+          };
+
+          if (!silent) {
+            console.error("[BrightAI Gateway] فشل فحص الاتصال:", failureMessage);
+            showHealthBanner(failureMessage);
+          }
+
+          return { healthy: false, message: failureMessage };
+        }
+
+        healthState = {
+          checked: true,
+          healthy: true,
+          message: "الاتصال بالخادم يعمل بنجاح",
+          timestamp: Date.now()
+        };
+
+        if (!silent) {
+          console.info("[BrightAI Gateway] الاتصال بالخادم يعمل بنجاح");
+        }
+
+        return { healthy: true, message: "ok" };
+      } catch (error) {
+        clearTimeout(timeoutId);
+
+        var message =
+          error && error.name === "AbortError"
+            ? "انتهت مهلة الاتصال بالخادم (" + timeoutMs / 1000 + " ثوانٍ). تأكد أن الخادم يعمل وأن الـ API endpoint متاح."
+            : "تعذر الاتصال بالخادم: " + ((error && error.message) || "خطأ غير معروف") + ". تأكد من إعدادات الشبكة والنشر.";
+
+        healthState = {
+          checked: true,
+          healthy: false,
+          message: message,
+          timestamp: Date.now()
+        };
+
+        if (!silent) {
+          console.error("[BrightAI Gateway] فشل فحص الاتصال:", message);
+          showHealthBanner(message);
+        }
+
+        return { healthy: false, message: message };
+      }
+    },
+    getHealthState: function getHealthState() {
+      return Object.assign({}, healthState);
+    },
+    apiFetch: async function apiFetch(path, fetchOptions, timeoutMs) {
+      var timeout = timeoutMs || 15000;
+      var controller = new AbortController();
+      var timeoutId = setTimeout(function abortRequest() {
+        controller.abort();
+      }, timeout);
+      var options = Object.assign({}, fetchOptions || {});
+      options.signal = controller.signal;
+
+      try {
+        var response = await fetch(buildUrl(path), options);
+        clearTimeout(timeoutId);
+        return response;
+      } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
+      }
+    }
+  };
+});

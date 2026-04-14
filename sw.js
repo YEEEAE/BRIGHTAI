@@ -1,5 +1,5 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-03-01-6';
+const CACHE_VERSION = '2026-04-14-1';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
 const RECENT_ARTICLES_CACHE = `brightai-recent-articles-${CACHE_VERSION}`;
@@ -10,6 +10,7 @@ const STATIC_ASSETS = [
   '/frontend/css/bundle-critical.css',
   '/frontend/css/main.bundle.css',
   '/frontend/js/main.bundle.js?v=20260206',
+  '/frontend/js/runtime-config.js',
   '/frontend/js/navigation.js',
   '/frontend/js/article-ux-enhancements.js',
   '/frontend/js/page-enhancements.js',

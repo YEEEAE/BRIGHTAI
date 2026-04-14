@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * BrightAI Smoke Test — يتحقق من نجاح اتصال API الإنتاج
+ * BrightAI Smoke Test — يتحقق من نجاح اتصال API الموحد
  *
  * الاستخدام:
  *   node scripts/smoke-test-api.mjs
  *   node scripts/smoke-test-api.mjs https://brightai.site
+ *   BRIGHTAI_API_BASE=https://brightai.site node scripts/smoke-test-api.mjs
  *
  * يفحص:
  *   1. GET /api/health
@@ -12,7 +13,7 @@
  *   3. POST /api/gemini/chat/stream
  */
 
-const BASE_URL = process.argv[2] || 'https://brightai.site';
+const BASE_URL = process.argv[2] || process.env.BRIGHTAI_API_BASE || 'https://brightai.site';
 
 const TESTS = [
     {

@@ -2,6 +2,16 @@
 // █  API CONFIGURATION - NVIDIA & DEEPSEEK              █
 // ═══════════════════════════════════════════════════════
 
+function getBrightAIRuntimeConfig() {
+  if (!window.BrightAIRuntimeConfig || typeof window.BrightAIRuntimeConfig.buildApiUrl !== "function") {
+    throw new Error(
+      "ملف runtime-config.js غير محمل. يجب تحميل /frontend/js/runtime-config.js قبل tenders/api-config.js."
+    );
+  }
+
+  return window.BrightAIRuntimeConfig;
+}
+
 const API_CONFIG = {
   // NVIDIA NIM API Configuration
   nvidia: {
@@ -12,9 +22,6 @@ const API_CONFIG = {
     },
     model: "nvidia/llama-3.1-nemotron-70b-instruct",
     provider: "nvidia",
-    // API Key يُقرأ من Environment Variable في Render
-    // في الـ Frontend، نستخدم الـ backend الحالي عبر OpenAI-compatible gateway
-    proxyUrl: "https://brightai-92px.onrender.com",
     proxyPath: "/api/ai/chat/completions"
   },
 
@@ -27,7 +34,6 @@ const API_CONFIG = {
     },
     model: "deepseek-chat", // القيمة الفعلية يمكن أن تأتي من DEEPSEEKAI_MODEL على الخادم
     provider: "deepseek",
-    proxyUrl: "https://brightai-92px.onrender.com",
     proxyPath: "/api/ai/chat/completions"
   },
 
@@ -38,7 +44,16 @@ const API_CONFIG = {
     retryDelay: 1000,
     maxTokens: 4096,
     temperature: 0.3, // دقة عالية للتحليل القانوني
-    healthPath: "/api/health"
+    healthPath: "/api/health",
+    getApiBase() {
+      return getBrightAIRuntimeConfig().getApiBase();
+    },
+    buildApiUrl(path) {
+      return getBrightAIRuntimeConfig().buildApiUrl(path);
+    },
+    getProxyUrl(path = "/api/ai/chat/completions") {
+      return getBrightAIRuntimeConfig().buildApiUrl(path);
+    }
   }
 };
 
@@ -54,7 +69,9 @@ async function callAI(provider, messages, options = {}) {
   const config = API_CONFIG[provider];
   if (!config) throw new Error(`Provider "${provider}" not configured`);
 
-  const url = `${config.proxyUrl}${config.proxyPath || "/api/ai/chat/completions"}`;
+  const url = API_CONFIG.settings.getProxyUrl(
+    config.proxyPath || "/api/ai/chat/completions"
+  );
   const payload = {
     provider: config.provider || provider,
     model: options.model || config.model,
@@ -124,10 +141,11 @@ async function callAIWithFallback(messages, options = {}) {
 }
 
 function hasConfiguredProxy() {
-  return (
-    API_CONFIG.nvidia.proxyUrl.indexOf("YOUR-RENDER-APP") === -1 &&
-    API_CONFIG.deepseek.proxyUrl.indexOf("YOUR-RENDER-APP") === -1
-  );
+  try {
+    return Boolean(API_CONFIG.settings.getApiBase());
+  } catch (error) {
+    return false;
+  }
 }
 
 // فحص صحة الاتصال
@@ -140,7 +158,7 @@ async function checkAPIHealth() {
 
   try {
     const response = await fetch(
-      `${API_CONFIG.nvidia.proxyUrl}${API_CONFIG.settings.healthPath}`
+      API_CONFIG.settings.buildApiUrl(API_CONFIG.settings.healthPath)
     );
     const data = await response.json();
     const providers = data.providers || {};

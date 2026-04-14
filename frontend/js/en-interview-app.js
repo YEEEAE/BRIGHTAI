@@ -195,14 +195,13 @@ const App = function () {
                 if (!this.config.useProxyApi && (!this.config.groqApiKey || !this.config.groqApiKey.startsWith('gsk_'))) {
                     throw new Error("Groq API key is not configured correctly.");
                 }
+                const runtimeConfig = (typeof window !== 'undefined' && window.BrightAIRuntimeConfig) || null;
                 const gateway = (typeof window !== 'undefined' && window.BrightAIGateway) || null;
-                const fallbackBase = typeof window !== 'undefined'
-                    ? (window.BRIGHTAI_API_BASE || window.location.origin)
-                    : 'https://brightai.site';
-                const normalizedBase = String(fallbackBase).replace(/\/+$/, '');
-                const url = gateway && typeof gateway.buildUrl === 'function'
-                    ? gateway.buildUrl('/api/ai/openai-chat')
-                    : `${normalizedBase}/api/ai/openai-chat`;
+                const url = runtimeConfig && typeof runtimeConfig.buildApiUrl === 'function'
+                    ? runtimeConfig.buildApiUrl('/api/ai/openai-chat')
+                    : gateway && typeof gateway.buildUrl === 'function'
+                        ? gateway.buildUrl('/api/ai/openai-chat')
+                        : (() => { throw new Error('Unable to resolve the BrightAI API base. Load runtime-config.js before en-interview-app.js.'); })();
                 const body = {
                     messages: [{ role: "user", content: prompt }],
                     model: this.config.groqModel,

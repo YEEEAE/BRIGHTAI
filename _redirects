@@ -3,8 +3,6 @@
 
 http://brightai.site/* https://brightai.site/:splat 301
 https://www.brightai.site/* https://brightai.site/:splat 301
-https://brightai-92px.onrender.com/* https://brightai.site/:splat 301
-
 /404 /404.html 301
 /404/ /404.html 301
 

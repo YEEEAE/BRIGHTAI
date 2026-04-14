@@ -890,6 +890,7 @@
 <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png">
 <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png"/>
 <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180">
+<script defer src="/frontend/js/runtime-config.js"></script>
 <script defer="" src="/frontend/js/navigation.js"></script>
 <link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
 <link href="/assets/css/extracted-inline-styles.css" rel="stylesheet"/>
@@ -1346,11 +1347,13 @@
 
             // === API Configuration ===
             const API_URL = (() => {
+                if (window.BrightAIRuntimeConfig && typeof window.BrightAIRuntimeConfig.buildApiUrl === 'function') {
+                    return window.BrightAIRuntimeConfig.buildApiUrl('/api/gemini/chat');
+                }
                 if (window.BrightAIGateway && typeof window.BrightAIGateway.buildUrl === 'function') {
                     return window.BrightAIGateway.buildUrl('/api/gemini/chat');
                 }
-                const apiBase = (window.BRIGHTAI_API_BASE || window.location.origin).replace(/\/+$/, '');
-                return `${apiBase}/api/gemini/chat`;
+                throw new Error('تعذر تحديد عنوان BrightAI API. تأكد من تحميل runtime-config.js قبل هذا السكربت.');
             })();
             const CHAT_TOGGLE_DELAY_MS = 3000;
 
