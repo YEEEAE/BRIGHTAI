@@ -196,11 +196,9 @@ const App = function () {
                     throw new Error("Groq API key is not configured correctly.");
                 }
                 const gateway = (typeof window !== 'undefined' && window.BrightAIGateway) || null;
-                const host = typeof window !== 'undefined' ? window.location.hostname : '';
-                const isLocalHost = host === 'localhost' || host === '127.0.0.1';
                 const fallbackBase = typeof window !== 'undefined'
-                    ? (window.BRIGHTAI_API_BASE || (isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com'))
-                    : 'https://brightai-92px.onrender.com';
+                    ? (window.BRIGHTAI_API_BASE || window.location.origin)
+                    : 'https://brightai.site';
                 const normalizedBase = String(fallbackBase).replace(/\/+$/, '');
                 const url = gateway && typeof gateway.buildUrl === 'function'
                     ? gateway.buildUrl('/api/ai/openai-chat')

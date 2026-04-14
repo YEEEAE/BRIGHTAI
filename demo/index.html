@@ -38,11 +38,7 @@
 
 <script>
   (() => {
-    const host = window.location.hostname;
-    const isLocalHost = host === 'localhost' || host === '127.0.0.1';
-    window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || (
-      isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com'
-    );
+    window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || window.location.origin;
   })();
 </script>
 
@@ -50,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="theme-color" content="#0b1020">
 <title>ديمو ذكاء اصطناعي مباشر للشركات السعودية | Bright AI</title>
-<meta name="description" content="اكتب طلبك وشاهد البث الفوري خلال ثوانٍ بدون تسجيل. مخرجات تنفيذية مخصصة للشركات السعودية." />
+<meta name="description" content="اختبر ديمو Bright AI المباشر للشركات السعودية وشاهد مخرجات تنفيذية فورية توضح قدرات الأتمتة والتحليل قبل بدء المشروع." />
 <meta content="ديمو ذكاء اصطناعي, تجربة فورية, BrightAI, الذكاء الاصطناعي للشركات السعودية, روبوتات أعمال, أتمتة" name="keywords"/>
 <meta content="Bright AI" name="author"/>
 <meta content="website" property="og:type"/>

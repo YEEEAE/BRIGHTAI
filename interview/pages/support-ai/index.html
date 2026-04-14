@@ -1349,9 +1349,7 @@
                 if (window.BrightAIGateway && typeof window.BrightAIGateway.buildUrl === 'function') {
                     return window.BrightAIGateway.buildUrl('/api/gemini/chat');
                 }
-                const host = window.location.hostname;
-                const isLocalHost = host === 'localhost' || host === '127.0.0.1';
-                const apiBase = (window.BRIGHTAI_API_BASE || (isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com')).replace(/\/+$/, '');
+                const apiBase = (window.BRIGHTAI_API_BASE || window.location.origin).replace(/\/+$/, '');
                 return `${apiBase}/api/gemini/chat`;
             })();
             const CHAT_TOGGLE_DELAY_MS = 3000;

@@ -38,19 +38,15 @@
 
 <script>
   (() => {
-    const host = window.location.hostname;
-    const isLocalHost = host === 'localhost' || host === '127.0.0.1';
-    window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || (
-      isLocalHost ? window.location.origin : 'https://brightai-92px.onrender.com'
-    );
+    window.BRIGHTAI_API_BASE = window.BRIGHTAI_API_BASE || window.location.origin;
   })();
 </script>
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="theme-color" content="#0b1020">
-<title>OCR عربي فوري للشركات السعودية | استخراج JSON دقيق</title>
-<meta name="description" content="ارفع مستندك واحصل على نص وحقول الفواتير والهويات بصيغة JSON خلال ثوانٍ، مناسب للشركات السعودية." />
+<title>OCR عربي للمستندات في السعودية | Bright AI Demo</title>
+<meta name="description" content="جرّب OCR العربي من Bright AI لاستخراج النصوص والحقول المنظمة من الفواتير والهويات والمستندات خلال ثوانٍ للشركات السعودية." />
 <meta content="OCR عربي, استخراج النصوص, فواتير, مستندات, BrightAI, السعودية" name="keywords"/>
 <meta content="Bright AI" name="author"/>
 <meta content="website" property="og:type"/>
