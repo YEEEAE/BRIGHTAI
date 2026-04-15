@@ -294,6 +294,21 @@ function createContext(req, res) {
     json(data) {
       res.writeHead(this.statusCode, this.headers);
       res.end(JSON.stringify(data));
+    },
+
+    writeHead(statusCode, headers) {
+      this.statusCode = statusCode;
+      if (headers) Object.assign(this.headers, headers);
+      res.writeHead(statusCode, this.headers);
+      return this;
+    },
+
+    write(chunk) {
+      return res.write(chunk);
+    },
+
+    end(chunk) {
+      return res.end(chunk);
     }
   };
 

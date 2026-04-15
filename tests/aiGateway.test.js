@@ -252,3 +252,21 @@ describe('AI Gateway — All Frontend Files Use Unified Endpoints', () => {
     expect(src).toContain('/api/ai/chat/stream');
   });
 });
+
+describe('AI Gateway — Server enhancedRes supports SSE streaming', () => {
+  const fs = require('fs');
+  const path = require('path');
+
+  it('server.js enhancedRes has write, end, and writeHead methods', () => {
+    const src = fs.readFileSync(path.resolve(__dirname, '..', 'backend/server.js'), 'utf8');
+    // Check that enhancedRes has write, end, writeHead for SSE streaming
+    expect(src).toContain('write(chunk)');
+    expect(src).toContain('end(chunk)');
+    expect(src).toContain('writeHead(statusCode, headers)');
+  });
+
+  it('server.js passes rawRes to unifiedChatStreamHandler', () => {
+    const src = fs.readFileSync(path.resolve(__dirname, '..', 'backend/server.js'), 'utf8');
+    expect(src).toContain('unifiedChatStreamHandler(ctx.req, ctx.res, res)');
+  });
+});
