@@ -6,7 +6,20 @@ Sitemap: https://brightai.site/sitemap.xml
 
 User-agent: *
 Allow: /
-Crawl-delay: 1
+
+# ── السماح الصريح بموارد العرض التي يحتاجها Googlebot ──
+# هذه القواعد أطول (أكثر تحديدًا) من أي Disallow لاحق،
+# فيُفسّرها Googlebot كأولوية عند التعارض.
+Allow: /frontend/js/
+Allow: /frontend/css/
+Allow: /assets/css/
+Allow: /assets/js/
+Allow: /assets/images/
+Allow: /assets/fonts/
+Allow: /assets/3d-icons/
+Allow: /assets/svg/
+
+# السماح بأنماط الملفات العامة (صور، خطوط)
 Allow: /*.css$
 Allow: /*.css?*
 Allow: /*.js$
@@ -19,10 +32,22 @@ Allow: /*.jpeg$
 Allow: /*.jpeg?*
 Allow: /*.svg$
 Allow: /*.svg?*
+Allow: /*.webp$
+Allow: /*.webp?*
+Allow: /*.woff2$
+Allow: /*.ttf$
 
 Allow: /llms.txt
 
-# حظر مجلدات البنية البرمجية والملفات الداخلية فقط (في حال تسربها كمسارات URL)
+Crawl-delay: 1
+
+# ── حظر المجلدات الداخلية والبنية البرمجية ──
+Disallow: /frontend/pages/
+Disallow: /backend/
+Disallow: /scripts/
+Disallow: /tmp/
+Disallow: /reports/
+Disallow: /venv/
 Disallow: /.git/
 Disallow: /.vscode/
 Disallow: /node_modules/

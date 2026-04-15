@@ -62,211 +62,8 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 
-<noscript></noscript>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<style>
-        :root {
-            --accent-1: #10b981;
-            --accent-2: #06b6d4;
-            --accent-3: #8b5cf6;
-        }
-
-        body {
-            background-color: #0a0f1a;
-            color: #e2e8f0;
-            font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            background-image:
-                radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
-                radial-gradient(at 90% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%);
-        }
-
-        .page-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 110px 20px 60px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 999px;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            font-weight: 700;
-            margin-bottom: 18px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.3rem, 4vw, 3.6rem);
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .hero p {
-            max-width: 780px;
-            margin: 0 auto 28px;
-            color: #94a3b8;
-            font-size: 1.1rem;
-            line-height: 1.9;
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: #fff;
-            padding: 14px 28px;
-            border-radius: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 18px 40px -18px rgba(6, 182, 212, 0.7);
-        }
-
-        .btn-secondary {
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            color: #e2e8f0;
-            padding: 14px 24px;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: border-color 0.3s ease, color 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            border-color: rgba(16, 185, 129, 0.8);
-            color: #10b981;
-        }
-
-        .demo-shell {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 40px;
-        }
-
-        .demo-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 24px;
-            min-height: 100%;
-        }
-
-        .demo-card h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .demo-input {
-            width: 100%;
-            border-radius: 12px;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            padding: 12px 14px;
-            background: rgba(15, 23, 42, 0.8);
-            color: #e2e8f0;
-            margin-bottom: 12px;
-        }
-
-        .demo-output {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px dashed rgba(148, 163, 184, 0.3);
-            border-radius: 16px;
-            padding: 16px;
-            min-height: 160px;
-            color: #cbd5f5;
-            line-height: 1.8;
-            white-space: pre-wrap;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-top: 32px;
-        }
-
-        .feature-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px;
-            border-radius: 16px;
-        }
-
-        .trust-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-top: 28px;
-        }
-
-        .trust-pill {
-            padding: 8px 14px;
-            background: rgba(16, 185, 129, 0.12);
-            color: #10b981;
-            border-radius: 999px;
-            font-size: 0.9rem;
-        }
-
-        .cta-strip {
-            margin-top: 48px;
-            padding: 28px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(59, 130, 246, 0.12));
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .cta-strip h3 {
-            font-size: 1.4rem;
-            margin: 0;
-        }
-
-        .cta-strip p {
-            margin: 4px 0 0;
-            color: #94a3b8;
-        }
-
-        .cta-strip .btn-primary {
-            white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-            .page-container {
-                padding-top: 90px;
-            }
-
-            .cta-strip {
-                text-align: center;
-                justify-content: center;
-            }
-        }
-    </style>
+<link rel="stylesheet" href="/frontend/css/demo-theme.css"/>
 
 <script type="application/ld+json">
 {
@@ -839,7 +636,8 @@
 <p>
                 اكتب هدفك أو وصفك المختصر، وخلي BrightAI يحولها إلى خطة تنفيذ أو مخرجات جاهزة. التجربة
                 مصممة خصيصاً للشركات السعودية: لغة واضحة، سرعة عالية، وخصوصية محلية.
-            </h3>
+            </p>
+<p>تُعدّ هذه الصفحة بوابتك الأولى لتقييم حلول الذكاء الاصطناعي بشكل عملي ومباشر. بدلاً من قراءة العروض النظرية أو حضور اجتماعات طويلة، يمكنك هنا كتابة سيناريو عمل حقيقي من بيئتك واستلام مخرجات فورية تساعدك على فهم جودة النموذج وسرعة الاستجابة ومدى ملاءمة الحل لقطاعك. سواء كنت تعمل في القطاع الصحي أو اللوجستي أو المالي أو التجزئة، يمكنك تجربة حالة الاستخدام الخاصة بك مباشرة.</p>
 <div class="hero-actions">
 <a class="btn-primary" href="#live-demo">
                     ابدأ الديمو الآن
@@ -882,12 +680,19 @@
 <h3>٣) ماذا بعد؟</h3>
 <p style="color:#94a3b8;line-height:1.8;">
                     بعد الديمو تقدر تختار باقة مناسبة، أو تطلب استشارة مجانية لبناء حل مخصص لفريقك.
-                </h3>
+                </p>
+<p>تتميز تجربة الديمو في BrightAI بأنها لا تتطلب تسجيلاً أو بطاقة ائتمانية. يمكنك كتابة أي سيناريو عمل ترغب في اختباره مباشرة، سواء كان ذلك إنشاء خطة تسويقية لمنتج جديد، أو صياغة رد احترافي لشكوى عميل، أو تحليل بيانات مبيعات ربع سنوية. النظام يستجيب بالعربية بجودة عالية وسرعة فورية، مما يمنحك مؤشراً حقيقياً عن أداء الحل في بيئة عملك الفعلية.</p>
+<p>كما يمكنك اختيار نوع المخرجات المناسب لاحتياجك: نص سردي، جدول منظم، خطة تنفيذية مرقمة، أو حتى JSON قابل للتكامل مع أنظمتك التقنية. هذا التنوع في صيغ الإخراج يجعل الديمو مفيداً لفرق الأعمال وفرق التقنية على حد سواء، ويساعدك على تقييم الحل من زوايا متعددة قبل اتخاذ قرار الشراء.</p>
+<p>النموذج المستخدم في هذه التجربة مُدرَّب خصيصاً للتعامل مع السياقات العربية السعودية، مما يعني أنه يفهم المصطلحات المحلية وأنماط الأعمال المعتادة في المملكة. على سبيل المثال، إذا طلبت تحليلاً لأداء فريق مبيعات، سيتعرف النظام على مفاهيم مثل السجل التجاري والرقم الضريبي وضريبة القيمة المضافة ويتعامل معها بشكل طبيعي. هذا التخصيص المحلي يمنح مخرجات الديمو واقعية عملية أعلى بكثير من النماذج العالمية العامة.</p>
+<p>بعد تجربة الديمو، يمكنك طلب استشارة مجانية مع فريقنا لمناقشة كيفية تخصيص الحل لقطاعك تحديداً. سواء كنت تعمل في الرعاية الصحية أو التجزئة أو اللوجستيات أو المالية، لدينا خبرة في بناء حلول مخصصة تراعي متطلبات التنظيم المحلي وطبيعة البيانات المتاحة في بيئتك. الاستشارة لا تتطلب أي التزام مالي وتهدف إلى مساعدتك على رسم خارطة طريق واضحة لتبني الذكاء الاصطناعي في مؤسستك.</p>
+<p>تجربة الديمو مصممة لتكون نقطة البداية وليست النهاية. بعد أن تقيّم جودة المخرجات بنفسك، يمكنك اختيار أحد مسارات التعاون: إما الاشتراك في خدمة سحابية جاهزة تناسب احتياجاتك الفورية، أو طلب حل مخصص يُبنى خصيصاً ليتكامل مع أنظمتك الحالية ويعالج بياناتك الداخلية. كلا المسارين يبدأ بفترة تجريبية تتيح لك قياس الأثر الفعلي قبل الالتزام الكامل.</p>
+<p>في BrightAI نؤمن أن أفضل طريقة لتقييم حل ذكاء اصطناعي هي تجربته عملياً وليس قراءة كتيباته التسويقية. لهذا السبب جعلنا الديمو متاحاً بدون تسجيل أو دفع. اكتب سيناريو حقيقي من بيئة عملك وشاهد النتيجة بنفسك. إذا أعجبتك الجودة، الخطوة التالية بسيطة وسريعة.</p>
+<p>ننصحك بتجربة عدة أنواع من الطلبات لتقييم النظام من زوايا مختلفة. جرّب طلباً إبداعياً مثل صياغة عرض تسويقي، وآخر تحليلياً مثل تلخيص تقرير مالي، وثالثاً عملياً مثل إنشاء قائمة مهام لمشروع. هذا التنوع في التجربة يمنحك صورة أشمل عن قدرات النظام ومدى ملاءمته لاحتياجاتك المتنوعة. كذلك يمكنك تجربة الديمو بكل من العربية والإنجليزية لتقييم جودة التعامل مع كلتا اللغتين.</p>
 <div class="features-grid">
-<div class="feature-item">تحويل الطلبات إلى إجراءات</div>
-<div class="feature-item">نماذج وتقارير جاهزة</div>
-<div class="feature-item">تخصيص للقطاع السعودي</div>
-<div class="feature-item">تكامل سريع مع أنظمتك</div>
+<div class="feature-item">تحويل الطلبات إلى إجراءات تنفيذية واضحة</div>
+<div class="feature-item">نماذج وتقارير جاهزة بصيغة مهنية</div>
+<div class="feature-item">تخصيص للقطاع السعودي بدعم عربي كامل</div>
+<div class="feature-item">تكامل سريع مع أنظمتك عبر JSON وAPI</div>
 </div>
 <div class="bai-inline-0077">
 <a class="btn-secondary" href="/consultation/">احجز استشارة</a>
@@ -970,121 +775,7 @@
 <script defer src="/frontend/js/runtime-config.js"></script>
 <script defer="" src="/frontend/js/navigation.js"></script>
 <script defer="" src="/frontend/js/main.bundle.js"></script>
-<script>
-        const runBtn = document.getElementById('demo-run');
-        const output = document.getElementById('demo-output');
-        const promptInput = document.getElementById('demo-prompt');
-        const outputType = document.getElementById('demo-output-type');
-        let activeController = null;
-
-        const originalBtnHtml = runBtn ? runBtn.innerHTML : '';
-
-        function getSessionId() {
-            return sessionStorage.getItem('brightai_demo_session') || '';
-        }
-
-        function setSessionId(id) {
-            if (!id) return;
-            sessionStorage.setItem('brightai_demo_session', id);
-        }
-
-        function resolveApiBase() {
-            if (window.BRIGHTAI_API_BASE) return window.BRIGHTAI_API_BASE;
-            if (location && location.origin && location.origin !== 'null') {
-                return location.origin;
-            }
-            return 'http://localhost:3000';
-        }
-
-        async function streamDemo() {
-            if (!runBtn || !output || !promptInput || !outputType) return;
-            const message = promptInput.value.trim();
-            if (!message) {
-                output.textContent = 'يرجى كتابة طلب واضح قبل التشغيل.';
-                return;
-            }
-
-            if (activeController) {
-                activeController.abort();
-            }
-
-            activeController = new AbortController();
-            runBtn.disabled = true;
-            runBtn.innerHTML = 'جارٍ البث...';
-            output.textContent = 'جارٍ الاتصال بخدمة الذكاء الاصطناعي...';
-
-            try {
-                const apiBase = resolveApiBase();
-                const response = await fetch(`${apiBase}/api/ai/chat/stream`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message,
-                        outputType: outputType.value,
-                        sessionId: getSessionId()
-                    }),
-                    signal: activeController.signal
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    output.textContent = errorData.error || 'تعذر الاتصال بالخدمة حالياً.';
-                    return;
-                }
-
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder('utf-8');
-                let buffer = '';
-                let fullText = '';
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    buffer += decoder.decode(value, { stream: true });
-                    const events = buffer.split('\n\n');
-                    buffer = events.pop();
-
-                    for (const event of events) {
-                        const line = event.split('\n').find((l) => l.startsWith('data:'));
-                        if (!line) continue;
-                        const payload = line.replace(/^data:\s*/, '').trim();
-                        if (!payload) continue;
-                        if (payload === '[DONE]') {
-                            continue;
-                        }
-                        try {
-                            const data = JSON.parse(payload);
-                            if (data.sessionId) {
-                                setSessionId(data.sessionId);
-                            }
-                            if (data.error) {
-                                output.textContent = data.error;
-                                continue;
-                            }
-                            if (data.token) {
-                                fullText += data.token;
-                                output.textContent = fullText;
-                            }
-                        } catch (e) {
-                            continue;
-                        }
-                    }
-                }
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    output.textContent = 'حدث خطأ أثناء البث. جرّب مرة أخرى.';
-                }
-            } finally {
-                runBtn.disabled = false;
-                runBtn.innerHTML = originalBtnHtml;
-                activeController = null;
-            }
-        }
-
-        if (runBtn) {
-            runBtn.addEventListener('click', streamDemo);
-        }
-    </script>
+<script defer src="/frontend/js/demo-stream.js"></script>
 <script src="/frontend/js/clarity-events.js" defer></script>
 </body>
 </html>

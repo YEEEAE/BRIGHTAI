@@ -56,185 +56,8 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 
-<noscript></noscript>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-<style>
-        :root {
-            --accent-1: #f59e0b;
-            --accent-2: #ef4444;
-            --accent-3: #14b8a6;
-        }
-
-        body {
-            background-color: #0a0f1a;
-            color: #e2e8f0;
-            font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            background-image:
-                radial-gradient(at 0% 20%, rgba(245, 158, 11, 0.12) 0px, transparent 50%),
-                radial-gradient(at 90% 0%, rgba(239, 68, 68, 0.12) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(20, 184, 166, 0.12) 0px, transparent 50%);
-        }
-
-        .page-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 110px 20px 60px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 999px;
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-            font-weight: 700;
-            margin-bottom: 18px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.2rem, 4vw, 3.4rem);
-            font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .hero p {
-            max-width: 760px;
-            margin: 0 auto 24px;
-            color: #94a3b8;
-            line-height: 1.9;
-        }
-
-        .upload-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-        }
-
-        .upload-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 24px;
-        }
-
-        .drop-zone {
-            border: 1px dashed rgba(148, 163, 184, 0.4);
-            border-radius: 18px;
-            padding: 28px;
-            text-align: center;
-            background: rgba(15, 23, 42, 0.7);
-            margin-bottom: 16px;
-        }
-
-        .drop-zone i {
-            font-size: 32px;
-            color: #f59e0b;
-            margin-bottom: 12px;
-        }
-
-        .drop-zone input {
-            display: block;
-            margin: 12px auto 0;
-            color: #94a3b8;
-        }
-
-        .result-box {
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 16px;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            padding: 16px;
-            line-height: 1.8;
-            color: #e2e8f0;
-            min-height: 200px;
-        }
-
-        .json-box {
-            white-space: pre-wrap;
-            font-size: 0.92rem;
-            color: #cbd5f5;
-        }
-
-        .field-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px dashed rgba(148, 163, 184, 0.2);
-        }
-
-        .field-row:last-child {
-            border-bottom: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: #fff;
-            padding: 12px 26px;
-            border-radius: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 18px 40px -18px rgba(239, 68, 68, 0.6);
-        }
-
-        .btn-secondary {
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            color: #e2e8f0;
-            padding: 12px 22px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .chip {
-            display: inline-flex;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: rgba(20, 184, 166, 0.15);
-            color: #14b8a6;
-            font-size: 0.9rem;
-            margin-right: 8px;
-        }
-
-        .cta-strip {
-            margin-top: 40px;
-            padding: 24px;
-            border-radius: 20px;
-            background: rgba(245, 158, 11, 0.1);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .page-container {
-                padding-top: 90px;
-            }
-
-            .cta-strip {
-                text-align: center;
-                justify-content: center;
-            }
-        }
-    </style>
+<link rel="stylesheet" href="/frontend/css/ocr-demo-theme.css"/>
 
 <script type="application/ld+json">
 {
@@ -783,6 +606,7 @@
                 ارفع فاتورة، عقد، أو هوية، وشاهد استخراج النصوص والحقول المهمة بصيغة JSON.
                 مناسب للشركات السعودية التي تحتاج دقة وسرعة مع دعم اللغة العربية.
             </p>
+<p>يُعدّ التعرف البصري على الحروف (OCR) أحد أكثر التقنيات طلباً في سوق التحول الرقمي السعودي، حيث تعتمد المؤسسات على كميات كبيرة من المستندات الورقية يومياً. يوفّر هذا النظام استخراجاً فورياً للحقول الجوهرية مثل رقم الفاتورة والمبلغ الإجمالي وقيمة الضريبة وتاريخ الإصدار واسم الجهة، مما يُغني عن الإدخال اليدوي ويقلل الأخطاء البشرية بنسبة تتجاوز 90%. النتائج تظهر بصيغة JSON قابلة للتكامل المباشر مع أنظمة ERP والمحاسبة وأدوات تحليل البيانات.</p>
 <div>
 <span class="chip">فاتورة ضريبية</span>
 <span class="chip">هوية وطنية</span>
@@ -817,7 +641,11 @@
 <p style="color:#94a3b8;line-height:1.8;">
                     اربط النتائج مع أنظمتك المالية أو ERP، أو صدّر JSON مباشرة لفريقك.
                     ندعم قوالب مخصصة لكل قطاع داخل السعودية.
-                </h2>
+                </p>
+<p>يُعدّ استخراج البيانات من المستندات خطوة محورية في أي مشروع أتمتة. الشركات السعودية تعالج آلاف الفواتير والعقود والهويات شهرياً، وكل مستند يتطلب إدخالاً يدوياً يستغرق دقائق وينطوي على احتمال خطأ بشري مرتفع. نظام OCR من BrightAI يختصر هذه العملية إلى ثوانٍ معدودة مع دقة تتجاوز 95% للمستندات العربية الواضحة. البيانات المستخرجة تأتي بصيغة JSON مهيكلة جاهزة للتكامل مع أي نظام محاسبي أو إداري تستخدمه.</p>
+<p>النظام يدعم أنواع المستندات الشائعة في السوق السعودي مثل فواتير ضريبة القيمة المضافة، بطاقات الهوية الوطنية، عقود التوريد والتشغيل، وتقارير الفحص. كل نوع مستند يُعالج بنموذج مُدرَّب خصيصاً على أنماط المستندات السعودية، مما يضمن التعرف الصحيح على الحقول المحلية مثل الرقم الضريبي ورقم السجل التجاري ورمز العملة السعودي.</p>
+<p>من أهم الفوائد التشغيلية لنظام OCR الذكي أنه يُلغي الحاجة لإدخال البيانات يدوياً بالكامل، مما يوفر ساعات عمل يومية لفرق المحاسبة والإدارة. في شركة متوسطة تعالج 200 فاتورة شهرياً، يوفر النظام ما يعادل 40 ساعة عمل شهرياً كانت تُهدر في الإدخال اليدوي والمراجعة. هذا التوفير يترجم مباشرة إلى خفض تكاليف تشغيلية وتسريع دورة الفوترة وإغلاق الحسابات الشهرية بوقت أقل.</p>
+<p>كذلك يقلل النظام من أخطاء الإدخال البشري التي قد تؤدي لمشاكل ضريبية أو محاسبية مكلفة. دقة الاستخراج تتجاوز 95% للمستندات الواضحة، ويمكن تحسينها أكثر عبر تدريب النموذج على نماذج مستندات خاصة بشركتك. كلما استخدمت النظام أكثر، تحسنت دقته لأنه يتعلم من التصحيحات التي تقدمها ويتكيف مع أنماط مستنداتك الفريدة.</p>
 <ul style="color:#cbd5f5;line-height:2;">
 <li>تصدير JSON جاهز للتكامل</li>
 <li>كشف أخطاء الإدخال اليدوي</li>
@@ -926,158 +754,7 @@
 <script defer src="/frontend/js/runtime-config.js"></script>
 <script defer="" src="/frontend/js/navigation.js"></script>
 <script defer="" src="/frontend/js/main.bundle.js"></script>
-<script>
-        const ocrBtn = document.getElementById('ocr-run');
-        const ocrOutput = document.getElementById('ocr-output');
-        const ocrJson = document.getElementById('ocr-json');
-        const ocrFile = document.getElementById('ocr-file');
-        const originalOcrBtnHtml = ocrBtn ? ocrBtn.innerHTML : '';
-
-        const fieldLabels = {
-            document_type: 'نوع المستند',
-            invoice_number: 'رقم الفاتورة',
-            total_amount: 'المبلغ الإجمالي',
-            tax_amount: 'قيمة الضريبة',
-            date: 'التاريخ',
-            vendor_name: 'الجهة',
-            currency: 'العملة'
-        };
-
-        function renderFields(fields) {
-            if (!ocrOutput) return;
-            ocrOutput.innerHTML = '';
-            if (!fields || typeof fields !== 'object') {
-                const row = document.createElement('div');
-                row.className = 'field-row';
-                const label = document.createElement('span');
-                label.textContent = 'الحالة';
-                const value = document.createElement('span');
-                value.textContent = 'لم يتم العثور على حقول واضحة';
-                row.appendChild(label);
-                row.appendChild(value);
-                ocrOutput.appendChild(row);
-                return;
-            }
-
-            const entries = Object.keys(fieldLabels)
-                .filter((key) => fields[key] !== undefined && fields[key] !== null && fields[key] !== '')
-                .map((key) => [key, fields[key]]);
-
-            if (entries.length === 0) {
-                const row = document.createElement('div');
-                row.className = 'field-row';
-                const label = document.createElement('span');
-                label.textContent = 'الحالة';
-                const value = document.createElement('span');
-                value.textContent = 'لم يتم العثور على حقول واضحة';
-                row.appendChild(label);
-                row.appendChild(value);
-                ocrOutput.appendChild(row);
-                return;
-            }
-
-            for (const [key, value] of entries) {
-                const row = document.createElement('div');
-                row.className = 'field-row';
-                const label = document.createElement('span');
-                label.textContent = fieldLabels[key] || key;
-                const val = document.createElement('span');
-                val.textContent = String(value);
-                row.appendChild(label);
-                row.appendChild(val);
-                ocrOutput.appendChild(row);
-            }
-        }
-
-        function renderJson(fields) {
-            if (!ocrJson) return;
-            try {
-                ocrJson.textContent = JSON.stringify(fields || {}, null, 2);
-            } catch (e) {
-                ocrJson.textContent = 'تعذر توليد JSON.';
-            }
-        }
-
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(new Error('READ_ERROR'));
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function resolveApiBase() {
-            if (window.BRIGHTAI_API_BASE) return window.BRIGHTAI_API_BASE;
-            if (location && location.origin && location.origin !== 'null') {
-                return location.origin;
-            }
-            return 'http://localhost:3000';
-        }
-
-        async function runOcr() {
-            if (!ocrBtn || !ocrFile) return;
-            const file = ocrFile.files && ocrFile.files[0];
-            if (!file) {
-                renderFields(null);
-                if (ocrJson) ocrJson.textContent = 'يرجى اختيار ملف قبل البدء.';
-                return;
-            }
-
-            if (file.size > 4 * 1024 * 1024) {
-                renderFields(null);
-                if (ocrJson) ocrJson.textContent = 'حجم الملف كبير. الحد الأقصى 4 ميجابايت.';
-                return;
-            }
-
-            ocrBtn.disabled = true;
-            ocrBtn.innerHTML = 'جارٍ التحليل...';
-            if (ocrOutput) {
-                ocrOutput.innerHTML = '<div style="color:#f59e0b;">جارٍ استخراج النص والحقول...</div>';
-            }
-            if (ocrJson) {
-                ocrJson.textContent = 'جارٍ تجهيز JSON...';
-            }
-
-            try {
-                const base64 = await fileToBase64(file);
-                const apiBase = resolveApiBase();
-                const response = await fetch(`${apiBase}/api/ai/ocr`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        fileBase64: base64,
-                        mimeType: file.type,
-                        fileName: file.name
-                    })
-                });
-
-                const data = await response.json().catch(() => ({}));
-                if (!response.ok) {
-                    renderFields(null);
-                    if (ocrJson) {
-                        ocrJson.textContent = data.error || 'تعذر تحليل الملف حالياً.';
-                    }
-                    return;
-                }
-
-                renderFields(data.fields);
-                renderJson(data.fields);
-            } catch (error) {
-                renderFields(null);
-                if (ocrJson) {
-                    ocrJson.textContent = 'حدث خطأ أثناء التحليل. جرّب مرة أخرى.';
-                }
-            } finally {
-                ocrBtn.disabled = false;
-                ocrBtn.innerHTML = originalOcrBtnHtml;
-            }
-        }
-
-        if (ocrBtn) {
-            ocrBtn.addEventListener('click', runOcr);
-        }
-    </script>
+<script defer src="/frontend/js/ocr-demo.js"></script>
 <script src="/frontend/js/clarity-events.js" defer></script>
 </body>
 </html>
