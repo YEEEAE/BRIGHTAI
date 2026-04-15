@@ -1265,5 +1265,58 @@
     <lastmod>2026-04-13</lastmod>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://brightai.site/privacy-cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/privacy-cookies/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/privacy-cookies/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/terms/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/terms/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/sitemap/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/sitemap/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/sitemap/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/terms-and-conditions/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/terms-and-conditions/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/terms-and-conditions-en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/terms-and-conditions/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/terms-and-conditions-en/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/terms-and-conditions/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/terms-and-conditions-en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/terms-and-conditions/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/privacy-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/privacy-policy/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/privacy-policy-en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/privacy-policy/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/privacy-policy-en/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/privacy-policy/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/privacy-policy-en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/privacy-policy/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.5</priority>
+  </url>
 
 </urlset>

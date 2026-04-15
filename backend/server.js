@@ -129,7 +129,7 @@ function getStaticRedirectTarget(pathname) {
     return null;
   }
 
-  if (pathname === '/blog/production-line/' || pathname === '/blog/production-line.html') {
+  if (pathname === '/blog/production-line' || pathname === '/blog/production-line/' || pathname === '/blog/production-line.html') {
     return '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/';
   }
 

@@ -108,6 +108,7 @@
     { "from": "/interview/pages/supportAI/", "to": "/interview/pages/support-ai/" },
     { "from": "/interview/pages/supportAI/index.html", "to": "/interview/pages/support-ai/" },
     { "from": "/frontend/pages/blogger/nca-compliance", "to": "/blog/nca-compliance/" },
+    { "from": "/blog/production-line", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
     { "from": "/blog/production-line/", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
     { "from": "/blog/production-line.html", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
     { "from": "/blog/atou.doc", "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/" },
