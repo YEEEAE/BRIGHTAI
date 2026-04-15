@@ -1202,10 +1202,10 @@
         let currentViewedApplicantId = null;
         const GEMINI_API_URL = (() => {
             if (window.BrightAIRuntimeConfig && typeof window.BrightAIRuntimeConfig.buildApiUrl === 'function') {
-                return window.BrightAIRuntimeConfig.buildApiUrl('/api/gemini/chat');
+                return window.BrightAIRuntimeConfig.buildApiUrl('/api/ai/chat');
             }
             if (window.BrightAIGateway && typeof window.BrightAIGateway.buildUrl === 'function') {
-                return window.BrightAIGateway.buildUrl('/api/gemini/chat');
+                return window.BrightAIGateway.buildUrl('/api/ai/chat');
             }
             throw new Error('تعذر تحديد عنوان BrightAI API. تأكد من تحميل runtime-config.js قبل هذا السكربت.');
         })();

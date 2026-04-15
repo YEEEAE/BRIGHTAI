@@ -188,3 +188,67 @@ describe('AI Gateway — Config Security', () => {
     expect(src).toContain('dotenvMissing');
   });
 });
+
+describe('AI Gateway — All Frontend Files Use Unified Endpoints', () => {
+  const fs = require('fs');
+  const path = require('path');
+
+  const frontendJsFiles = [
+    'frontend/js/index-theme.js',
+    'frontend/js/index-theme.min.js',
+    'frontend/js/chat-widget.js',
+    'frontend/js/main.bundle.js',
+    'frontend/js/article-ux-enhancements.js',
+    'frontend/js/groq-client.js',
+    'frontend/js/chatbot-production.bundle.js'
+    // Note: api-gateway.js keeps AI_STREAM as a legacy alias name in ENDPOINTS
+  ];
+
+  it('no frontend JS file references /api/gemini/chat', () => {
+    for (const file of frontendJsFiles) {
+      const src = fs.readFileSync(path.resolve(__dirname, '..', file), 'utf8');
+      expect(src).not.toContain('/api/gemini/chat');
+    }
+  });
+
+  it('no frontend JS file references /api/ai/stream (replaced by /api/ai/chat/stream)', () => {
+    for (const file of frontendJsFiles) {
+      const src = fs.readFileSync(path.resolve(__dirname, '..', file), 'utf8');
+      expect(src).not.toContain('/api/ai/stream');
+    }
+  });
+
+  const aiBotHtmlFiles = [
+    'ai-bots/BrightMath/index.html',
+    'ai-bots/BrightSupport/index.html',
+    'ai-bots/BrightProject/index.html',
+    'ai-bots/BrightRecruiter/index.html',
+    'ai-bots/BrightSales/index.html'
+  ];
+
+  it('all ai-bots HTML use /api/ai/chat/stream as data-chat-endpoint', () => {
+    for (const file of aiBotHtmlFiles) {
+      const src = fs.readFileSync(path.resolve(__dirname, '..', file), 'utf8');
+      expect(src).toContain('data-chat-endpoint="/api/ai/chat/stream"');
+    }
+  });
+
+  const interviewHtmlFiles = [
+    'interview/pages/dashboard/index.html',
+    'interview/pages/support-ai/index.html'
+  ];
+
+  it('interview pages use /api/ai/chat not /api/gemini/chat', () => {
+    for (const file of interviewHtmlFiles) {
+      const src = fs.readFileSync(path.resolve(__dirname, '..', file), 'utf8');
+      expect(src).not.toContain('/api/gemini/chat');
+      expect(src).toContain('/api/ai/chat');
+    }
+  });
+
+  it('demo/index.html uses /api/ai/chat/stream', () => {
+    const src = fs.readFileSync(path.resolve(__dirname, '..', 'demo/index.html'), 'utf8');
+    expect(src).not.toContain('/api/ai/stream');
+    expect(src).toContain('/api/ai/chat/stream');
+  });
+});
