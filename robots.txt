@@ -43,7 +43,6 @@ Crawl-delay: 1
 
 # ── حظر المجلدات الداخلية والبنية البرمجية ──
 Disallow: /frontend/pages/
-Disallow: /backend/
 Disallow: /scripts/
 Disallow: /tmp/
 Disallow: /reports/
@@ -57,7 +56,6 @@ Disallow: /.nuxt/
 Disallow: /dist/
 Disallow: /build/
 Disallow: /src/
-Disallow: /server/
 
 
 # AI search crawlers
