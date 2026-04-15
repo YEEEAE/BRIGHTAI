@@ -5,8 +5,7 @@
 
         // --- Configuration ---
         const CONFIG = {
-            GROQ_API_KEY: '', // As provided
-            MODEL: 'llama-3.3-70b-versatile', // Best for Arabic generation
+            MODEL: 'llama-3.3-70b-versatile',
             API_URL: '/api/ai/openai-chat'
         };
 
@@ -15,7 +14,6 @@
             static async call(messages, temperature = 0.7, jsonMode = false) {
                 try {
                     const headers = {
-                        'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
                         'Content-Type': 'application/json'
                     };
 

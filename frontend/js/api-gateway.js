@@ -9,8 +9,10 @@
   "use strict";
 
   var ENDPOINTS = Object.freeze({
-    GEMINI_CHAT: "/api/gemini/chat",
-    GEMINI_CHAT_STREAM: "/api/gemini/chat/stream",
+    UNIFIED_CHAT: "/api/ai/chat",
+    UNIFIED_CHAT_STREAM: "/api/ai/chat/stream",
+    GEMINI_CHAT: "/api/ai/chat",
+    GEMINI_CHAT_STREAM: "/api/ai/chat/stream",
     AI_STREAM: "/api/ai/stream",
     AI_CHAT: "/api/ai/chat",
     AI_SEARCH: "/api/ai/search",

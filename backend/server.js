@@ -28,6 +28,12 @@ const {
   groqOpenAiCompatHandler
 } = require('./routes/groq');
 const { getProviderHealthSnapshot } = require('./services/openaiCompatProvider');
+const {
+  unifiedChatHandler,
+  unifiedChatStreamHandler,
+  unifiedOpenAiCompatHandler
+} = require('./routes/aiGateway');
+const { getProviderStatus } = require('./services/aiGateway');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
@@ -64,6 +70,9 @@ const CORS_HEADERS = {
 };
 
 const STREAM_ROUTE_ALIASES = new Set(['/api/ai/stream', '/api/groq/stream']);
+const CHAT_ROUTE_ALIASES = new Set(['/api/gemini/chat']);
+const CHAT_STREAM_ROUTE_ALIASES = new Set(['/api/gemini/chat/stream']);
+const OPENAI_COMPAT_ROUTE_ALIASES = new Set(['/api/ai/openai-chat', '/api/ai/chat/completions']);
 const BLOG_SLUG_REDIRECTS = new Map([
   [
     '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)',
@@ -587,21 +596,26 @@ async function handleRequest(req, res) {
       return;
     }
 
-    // Route requests
-    if (method === 'POST' && url === '/api/gemini/chat') {
-      await geminiChatHandler(ctx.req, ctx.res);
-    } else if (method === 'POST' && url === '/api/gemini/chat/stream') {
-      await geminiChatStreamHandler(ctx.req, ctx.res, res);
-    } else if (method === 'POST' && url === '/api/ai/chat') {
-      await chatHandler(ctx.req, ctx.res);
+    // Route requests — Unified AI Gateway (primary) + legacy aliases
+    if (method === 'POST' && url === '/api/ai/chat') {
+      await unifiedChatHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && url === '/api/ai/chat/stream') {
+      await unifiedChatStreamHandler(ctx.req, ctx.res, res);
+    } else if (method === 'POST' && CHAT_ROUTE_ALIASES.has(url)) {
+      // Alias: /api/gemini/chat → unified chat
+      await unifiedChatHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && CHAT_STREAM_ROUTE_ALIASES.has(url)) {
+      // Alias: /api/gemini/chat/stream → unified stream
+      await unifiedChatStreamHandler(ctx.req, ctx.res, res);
+    } else if (method === 'POST' && OPENAI_COMPAT_ROUTE_ALIASES.has(url)) {
+      // Alias: /api/ai/openai-chat, /api/ai/chat/completions → unified OpenAI-compat
+      await unifiedOpenAiCompatHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/search') {
       await searchHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/medical') {
       await medicalHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/summary') {
       await summaryHandler(ctx.req, ctx.res);
-    } else if (method === 'POST' && (url === '/api/ai/openai-chat' || url === '/api/ai/chat/completions')) {
-      await groqOpenAiCompatHandler(ctx.req, ctx.res);
     } else if (method === 'GET' && url === '/api/ai/models') {
       ctx.res.status(200).json({
         object: 'list',
@@ -663,7 +677,7 @@ async function handleRequest(req, res) {
         });
       }
     } else if (url === '/api/health') {
-      const providers = getProviderHealthSnapshot();
+      const providers = getProviderStatus();
       const overallOk = Object.values(providers).some(provider => provider.configured);
 
       ctx.res.status(overallOk ? 200 : 503).json({

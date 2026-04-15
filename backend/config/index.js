@@ -14,10 +14,15 @@ const envCandidates = [
 ];
 
 const selectedEnvPath = envCandidates.find(candidate => fs.existsSync(candidate));
-if (selectedEnvPath) {
-  require('dotenv').config({ path: selectedEnvPath });
-} else {
-  require('dotenv').config();
+try {
+  const dotenv = require('dotenv');
+  if (selectedEnvPath) {
+    dotenv.config({ path: selectedEnvPath });
+  } else {
+    dotenv.config();
+  }
+} catch (_dotenvMissing) {
+  // dotenv not installed — rely on process.env set by the hosting platform (Render, Netlify, etc.)
 }
 
 function readSecret(name, fallback = '') {
@@ -30,7 +35,7 @@ function readSecret(name, fallback = '') {
 const config = {
   // Gemini AI Configuration
   gemini: {
-    apiKey: readSecret('GEMINI_API_KEY') || 'AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8',
+    apiKey: readSecret('GEMINI_API_KEY'),
     model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/models'
   },
@@ -99,16 +104,20 @@ const config = {
  */
 function validateConfig() {
   const errors = [];
-  
+
   if (!config.gemini.apiKey && !config.groq.apiKey && !config.nvidia.apiKey && !config.deepseek.apiKey) {
     errors.push('At least one provider key is required (GEMINI_API_KEY, GROQ_API_KEY, NVIDIA_API_KEY, or DEEPSEEK_API_KEY)');
   }
-  
+
+  if (config.server.nodeEnv === 'production' && !config.gemini.apiKey) {
+    console.warn('Warning: GEMINI_API_KEY not set in production. Primary AI provider will be unavailable.');
+  }
+
   if (errors.length > 0) {
     console.error('Configuration errors:', errors);
     return false;
   }
-  
+
   return true;
 }
 
@@ -148,6 +157,7 @@ module.exports = {
   config,
   validateConfig,
   isApiKeyConfigured,
+  isGeminiConfigured: isApiKeyConfigured,
   isGroqConfigured,
   isNvidiaConfigured,
   isDeepSeekConfigured,
