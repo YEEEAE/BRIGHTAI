@@ -74,23 +74,58 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "SoftwareApplication",
+      "@type": "WebApplication",
       "@id": "https://brightai.site/ai-scolecs/#app",
       "name": "Bright Edu",
       "url": "https://brightai.site/ai-scolecs/",
       "description": "منصة تعليمية ذكية من Bright AI لدعم الشرح، بناء الاختبارات، ومتابعة التعلم في المؤسسات التعليمية السعودية.",
       "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Web",
       "inLanguage": "ar-SA",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
       "publisher": {
-        "@type": "Organization",
-        "name": "Bright AI",
-        "url": "https://brightai.site/"
+        "@id": "https://brightai.site/#organization"
       },
       "offers": {
         "@type": "Offer",
         "price": "0",
-        "priceCurrency": "SAR"
+        "priceCurrency": "SAR",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://brightai.site/assets/images/Gemini.png"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/ai-scolecs/#webpage",
+      "url": "https://brightai.site/ai-scolecs/",
+      "name": "المنصة التعليمية الذكية في السعودية | Bright AI",
+      "description": "منصة Bright Edu التعليمية الذكية من Bright AI، وتشمل مساعداً تعليمياً ومولد اختبارات وتصحيحاً تلقائياً وخططاً دراسية تدعم المنهج السعودي.",
+      "inLanguage": "ar-SA",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/ai-scolecs/#app"
+      },
+      "datePublished": "2024-01-01",
+      "dateModified": "2025-04-16"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site/",
+      "name": "Bright AI",
+      "inLanguage": "ar-SA",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
       }
     },
     {
