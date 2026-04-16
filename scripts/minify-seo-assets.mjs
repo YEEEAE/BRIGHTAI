@@ -40,6 +40,16 @@ const targets = [
     entry: "frontend/css/index-critical-overrides.css",
     outfile: "frontend/css/index-critical-overrides.min.css",
     type: "css"
+  },
+  {
+    entry: "frontend/js/runtime-config.js",
+    outfile: "frontend/js/runtime-config.min.js",
+    type: "js"
+  },
+  {
+    entry: "assets/css/text-ratio-fix.css",
+    outfile: "assets/css/text-ratio-fix.min.css",
+    type: "css"
   }
 ];
 
