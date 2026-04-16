@@ -33,6 +33,97 @@ const REPLACEMENTS = [
     pattern: /\/assets\/css\/text-ratio-fix\.css/g,
     replacement: "/assets/css/text-ratio-fix.min.css",
     label: "text-ratio-fix.css"
+  },
+  // --- Demo / Interview / Sectors / Try ---
+  // api-gateway.js → api-gateway.min.js
+  {
+    pattern: /\/frontend\/js\/api-gateway\.js/g,
+    replacement: "/frontend/js/api-gateway.min.js",
+    label: "api-gateway.js"
+  },
+  // api-preflight.js → api-preflight.min.js
+  {
+    pattern: /\/frontend\/js\/api-preflight\.js/g,
+    replacement: "/frontend/js/api-preflight.min.js",
+    label: "api-preflight.js"
+  },
+  // interview-app.js → interview-app.min.js
+  {
+    pattern: /\/frontend\/js\/interview-app\.js/g,
+    replacement: "/frontend/js/interview-app.min.js",
+    label: "interview-app.js"
+  },
+  // en-interview-app.js → en-interview-app.min.js
+  {
+    pattern: /\/frontend\/js\/en-interview-app\.js/g,
+    replacement: "/frontend/js/en-interview-app.min.js",
+    label: "en-interview-app.js"
+  },
+  // ocr-demo.js → ocr-demo.min.js
+  {
+    pattern: /\/frontend\/js\/ocr-demo\.js/g,
+    replacement: "/frontend/js/ocr-demo.min.js",
+    label: "ocr-demo.js"
+  },
+  // data-analyzer.js → data-analyzer.min.js
+  {
+    pattern: /\/frontend\/js\/data-analyzer\.js/g,
+    replacement: "/frontend/js/data-analyzer.min.js",
+    label: "data-analyzer.js"
+  },
+  // demo-stream.js → demo-stream.min.js
+  {
+    pattern: /\/frontend\/js\/demo-stream\.js/g,
+    replacement: "/frontend/js/demo-stream.min.js",
+    label: "demo-stream.js"
+  },
+  // tenders-index-app.js → tenders-index-app.min.js
+  {
+    pattern: /\/frontend\/js\/tenders-index-app\.js/g,
+    replacement: "/frontend/js/tenders-index-app.min.js",
+    label: "tenders-index-app.js"
+  },
+  // en-tenders-templates-app.js → en-tenders-templates-app.min.js
+  {
+    pattern: /\/frontend\/js\/en-tenders-templates-app\.js/g,
+    replacement: "/frontend/js/en-tenders-templates-app.min.js",
+    label: "en-tenders-templates-app.js"
+  },
+  // interview-inline.css → interview-inline.min.css
+  {
+    pattern: /\/frontend\/css\/interview-inline\.css/g,
+    replacement: "/frontend/css/interview-inline.min.css",
+    label: "interview-inline.css"
+  },
+  // en-interview-inline.css → en-interview-inline.min.css
+  {
+    pattern: /\/frontend\/css\/en-interview-inline\.css/g,
+    replacement: "/frontend/css/en-interview-inline.min.css",
+    label: "en-interview-inline.css"
+  },
+  // demo-theme.css → demo-theme.min.css
+  {
+    pattern: /\/frontend\/css\/demo-theme\.css/g,
+    replacement: "/frontend/css/demo-theme.min.css",
+    label: "demo-theme.css"
+  },
+  // ocr-demo-theme.css → ocr-demo-theme.min.css
+  {
+    pattern: /\/frontend\/css\/ocr-demo-theme\.css/g,
+    replacement: "/frontend/css/ocr-demo-theme.min.css",
+    label: "ocr-demo-theme.css"
+  },
+  // tenders-index-inline.css → tenders-index-inline.min.css
+  {
+    pattern: /\/frontend\/css\/tenders-index-inline\.css/g,
+    replacement: "/frontend/css/tenders-index-inline.min.css",
+    label: "tenders-index-inline.css"
+  },
+  // en-tenders-templates-inline.css → en-tenders-templates-inline.min.css
+  {
+    pattern: /\/frontend\/css\/en-tenders-templates-inline\.css/g,
+    replacement: "/frontend/css/en-tenders-templates-inline.min.css",
+    label: "en-tenders-templates-inline.css"
   }
 ];
 
