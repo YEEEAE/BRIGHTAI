@@ -1305,15 +1305,7 @@
   <url>
     <loc>https://brightai.site/docs/privacy-policy/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/privacy-policy/" />
-    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/privacy-policy-en/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/privacy-policy/" />
-    <lastmod>2026-04-13</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/docs/privacy-policy-en/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/privacy-policy/" />
-    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/privacy-policy-en/" />
+    <xhtml:link rel="alternate" hreflang="en-US" href="https://brightai.site/docs/privacy-policy-en.html" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/privacy-policy/" />
     <lastmod>2026-04-13</lastmod>
     <priority>0.5</priority>
