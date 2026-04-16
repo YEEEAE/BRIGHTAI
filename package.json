@@ -25,6 +25,8 @@
   "scripts": {
     "build": "npm run assets:minify && npm run performance:budget",
     "assets:minify": "node scripts/minify-seo-assets.mjs",
+    "assets:replace-refs": "node scripts/replace-unminified-refs.mjs",
+    "build:minify-all": "node scripts/minify-seo-assets.mjs && node scripts/replace-unminified-refs.mjs",
     "dev:frontend": "npm run start --workspace frontend",
     "dev:backend": "npm run start --workspace backend",
     "dev:platform": "npm run start --workspace brightai-platform",
