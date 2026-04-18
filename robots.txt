@@ -39,7 +39,7 @@ Allow: /*.ttf$
 
 Allow: /llms.txt
 
-Crawl-delay: 1
+# Crawl-delay removed – let Googlebot crawl freely for faster indexing
 
 # ── حظر المجلدات الداخلية والبنية البرمجية ──
 Disallow: /frontend/pages/

@@ -434,7 +434,10 @@ services:
         destination: /ai-agent/
       - type: redirect
         source: /ai-bots
-        destination: /ai-bots/
+        destination: /docs/ai-bots/
+      - type: redirect
+        source: /ai-bots/
+        destination: /docs/ai-bots/
       - type: redirect
         source: /smart-automation
         destination: /smart-automation/
@@ -589,8 +592,16 @@ services:
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
         status: 301
       - type: redirect
+        source: "/blog/Generative-artificial-intelligence"
+        destination: /blog/generative-artificial-intelligence/
+        status: 301
+      - type: redirect
+        source: "/blog/Generative-artificial-intelligence/"
+        destination: /blog/generative-artificial-intelligence/
+        status: 301
+      - type: redirect
         source: "/blog/Generative artificial intelligence"
-        destination: /blog/generative-artificial-intelligence
+        destination: /blog/generative-artificial-intelligence/
       - type: redirect
         source: /blog/production-line-2
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"

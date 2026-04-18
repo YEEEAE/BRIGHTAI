@@ -20,8 +20,8 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /en/ai-workflows/index.html /en/ai-workflows/ 301
 /docs/privacy-policy-en/ /docs/privacy-policy-en.html 301
 
-/ai-bots /docs/ai-bots.html 301
-/ai-bots/ /docs/ai-bots.html 301
+/ai-bots /docs/ai-bots/ 301
+/ai-bots/ /docs/ai-bots/ 301
 
 # 301 redirects for removed blog pages
 /blog/astr.doc /blog/ 301

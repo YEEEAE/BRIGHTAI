@@ -1,10 +1,57 @@
-# ARCHIVED FILE (NOT USED IN PRODUCTION)
-#
-# Production provider is Render.
-# Source of truth for routing/security/caching:
-#   /render.yaml
-#
-# Legacy Apache rules were moved to:
-#   /docs/deployment-archive/.htaccess.legacy
-#
-# This file is kept for documentation history only.
+# BrightAI .htaccess
+# Production provider is Render (render.yaml is the primary routing config).
+# This file serves as a fallback for Apache-based hosting or local dev.
+
+# ── فرض HTTPS ──
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── فرض non-www (brightai.site بدون www) ──
+RewriteCond %{HTTP_HOST} ^www\.brightai\.site$ [NC]
+RewriteRule ^(.*)$ https://brightai.site/$1 [L,R=301]
+
+# ── توحيد index.html مع المسار المعياري ──
+RewriteCond %{THE_REQUEST} /index\.html [NC]
+RewriteRule ^(.*)index\.html$ /$1 [L,R=301]
+
+# ── توحيد .html مع المسار بدون امتداد ──
+RewriteCond %{THE_REQUEST} /(.+)\.html [NC]
+RewriteRule ^ /%1/ [L,R=301]
+
+# ── إضافة trailing slash للروابط بدون امتداد ──
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.*)$ /$1/ [L,R=301]
+
+# ── Error pages ──
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# ── Security Headers ──
+<IfModule mod_headers.c>
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# ── Caching ──
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+</IfModule>
+
+# ── Gzip Compression ──
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
