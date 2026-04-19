@@ -18,6 +18,11 @@ Cache Reserve
 
 Security action items
 
+## الفهرسه 
+تمت في bing , google search 
+
+
+
 ## الوحدات
 
 - `frontend/`: ملفات الواجهة والصفحات الثابتة.

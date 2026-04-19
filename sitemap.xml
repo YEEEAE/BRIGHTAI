@@ -1526,5 +1526,27 @@
     <lastmod>2026-04-13</lastmod>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://brightai.site/case-studies/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/case-studies/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/case-studies/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/partners/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/partners/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/partners/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/smart-automation/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/smart-automation/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/smart-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/smart-automation/" />
+    <lastmod>2026-04-13</lastmod>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>
