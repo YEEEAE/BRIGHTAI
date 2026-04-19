@@ -4114,83 +4114,8 @@
         <iconify-icon class="text-xl" icon="lucide:arrow-up"></iconify-icon>
     </button>
 
-    <div class="chat-fab-container fixed bottom-8 right-8 z-40 group">
-        <button aria-controls="chatWindow" aria-expanded="false" aria-label="فتح محادثة الدعم الفني"
-            class="chat-fab chat-widget-toggle w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-xl shadow-indigo-500/20 cursor-pointer hover:scale-110 transition-transform duration-300 relative border-none"
-            data-chat-controller="index-theme" id="chatFab" type="button">
-            <iconify-icon class="text-2xl group-hover:rotate-12 transition-transform"
-                icon="lucide:message-circle"></iconify-icon>
-            <div class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-[#020617] rounded-full text-[10px] font-bold flex items-center justify-center"
-                id="chatBadge">1</div>
-        </button>
-    </div>
-    <div class="chat-window fixed bottom-24 right-8 left-auto w-96 z-50 bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden transition-all duration-300 origin-bottom-right"
-        aria-hidden="true" data-chat-controller="index-theme" id="chatWindow">
-        <div
-            class="chat-head bg-gradient-to-r from-indigo-900 to-slate-900 p-4 border-b border-white/5 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div
-                    class="bot-avatar w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-                    <iconify-icon class="text-xl" icon="lucide:bot"></iconify-icon>
-                </div>
-                <div>
-                    <div class="text-white font-bold text-sm">BrightAI Assistant</div>
-                    <div
-                        class="flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
-                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                        متصل الآن
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <button class="iconbtn p-1.5 text-slate-400 hover:text-white transition-colors" id="chatClear"
-                    title="مسح المحادثة" aria-label="مسح المحادثة"><iconify-icon
-                        icon="lucide:trash-2"></iconify-icon></button>
-                <button class="iconbtn p-1.5 text-slate-400 hover:text-white transition-colors" id="chatMin"
-                    title="تصغير المحادثة" aria-label="تصغير المحادثة"><iconify-icon
-                        icon="lucide:minus"></iconify-icon></button>
-                <button class="iconbtn chat-close p-1.5 text-slate-400 hover:text-white transition-colors"
-                    id="chatClose" title="إغلاق المحادثة" aria-label="إغلاق المحادثة"><iconify-icon
-                        icon="lucide:x"></iconify-icon></button>
-            </div>
-        </div>
-        <div class="chat-body chat-messages h-96 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10"
-            id="chatBody" aria-live="polite" aria-atomic="false">
-            <div
-                class="msg bot bg-white/5 p-3 rounded-2xl rounded-tr-none border border-white/5 text-slate-300 text-sm max-w-[85%]">
-                مرحباً بك في برايت AI! أنا مساعدك الذكي، كيف يمكنني مساعدتك في رحلة التحول الرقمي اليوم؟
-            </div>
-            <div class="quick-replies-container">
-                <div class="quick-replies flex flex-wrap gap-2 mt-2">
-                    <button
-                        class="qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
-                        data-q="ما هي خدماتكم؟">ما هي خدماتكم؟</button>
-                    <button
-                        class="qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
-                        data-q="أريد استشارة تقنية">أريد استشارة تقنية</button>
-                    <button
-                        class="qbtn px-3 py-1.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-xs text-indigo-300 hover:bg-indigo-500/20 transition-colors"
-                        data-q="كيف أبدأ معكم؟">كيف أبدأ معكم؟</button>
-                </div>
-            </div>
-            <div class="typing flex items-center gap-1 text-[10px] text-slate-500 font-bold uppercase tracking-widest hidden"
-                id="typing">
-                المساعد يكتب الآن<span class="animate-bounce">.</span><span
-                    class="animate-bounce [animation-delay:0.2s]">.</span><span
-                    class="animate-bounce [animation-delay:0.4s]">.</span>
-            </div>
-        </div>
-        <div class="chat-input-area p-4 border-t border-white/5 bg-white/5 flex items-center gap-2">
-            <input
-                class="chat-input flex-1 bg-transparent border-none text-white text-sm focus:ring-0 placeholder:text-slate-600"
-                id="chatInput" placeholder="اكتب استفسارك هنا..." type="text" />
-            <button
-                class="chat-send w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-500 transition-colors shadow-lg shadow-indigo-500/20"
-                id="chatSend" type="button" aria-label="إرسال الرسالة">
-                <iconify-icon icon="lucide:send"></iconify-icon>
-            </button>
-        </div>
-    </div>
+    <!-- Bot iframe overlay -->
+    <iframe id="bot-frame" src="/bot/?embed=true" style="position:fixed;bottom:0;left:0;width:100%;height:100%;border:none;z-index:9999;pointer-events:none;background:transparent;" allow="clipboard-write"></iframe>
 
 
     <div class="cookies fixed bottom-8 left-8 right-8 md:left-auto md:w-[480px] z-[80] bg-[#0f172a]/95 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-2xl transform translate-y-[200%] transition-transform duration-700"
