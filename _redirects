@@ -14,11 +14,17 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /en/:slug/index.html /en/:slug/ 301
 /en/docs/docs.html /en/docs/ 301
 
-# Explicit 301 redirects for hreflang self-referencing mismatch (SEMrush Error 7)
+# Explicit 301 redirects for hreflang self-referencing (SEMrush)
 /en/tools/index.html /en/tools/ 301
 /en/smart-medical-archive/index.html /en/smart-medical-archive/ 301
 /en/ai-workflows/index.html /en/ai-workflows/ 301
-/docs/privacy-policy-en/ /docs/privacy-policy-en.html 301
+/sectors/ecommerce-en.html /sectors/ecommerce-en/ 301
+/sectors/energy-en.html /sectors/energy-en/ 301
+/sectors/finance-en.html /sectors/finance-en/ 301
+/sectors/healthcare-en.html /sectors/healthcare-en/ 301
+/sectors/logistics-en.html /sectors/logistics-en/ 301
+/sectors/manufacturing-en.html /sectors/manufacturing-en/ 301
+/docs/privacy-policy-en.html /docs/privacy-policy-en/ 301
 
 /ai-bots /docs/ai-bots/ 301
 /ai-bots/ /docs/ai-bots/ 301

@@ -32,7 +32,7 @@ services:
   - type: web
     runtime: static
     name: brightai-site
-    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run assets:minify && npm run seo:gate && rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js
+    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run assets:minify && npm run seo:gate && rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js && bash scripts/seo-hreflang-dirs.sh
     staticPublishPath: .
     headers:
       # المصدر المرجعي الأساسي للهيدرز هو ملف _headers.
@@ -325,6 +325,48 @@ services:
       - type: redirect
         source: /en/docs/docs.html
         destination: /en/docs/
+        status: 301
+
+      # === إصلاح hreflang self-referencing: توجيه .html إلى المسار المعياري ===
+      - type: redirect
+        source: /sectors/ecommerce-en.html
+        destination: /sectors/ecommerce-en/
+        status: 301
+      - type: redirect
+        source: /sectors/energy-en.html
+        destination: /sectors/energy-en/
+        status: 301
+      - type: redirect
+        source: /sectors/finance-en.html
+        destination: /sectors/finance-en/
+        status: 301
+      - type: redirect
+        source: /sectors/healthcare-en.html
+        destination: /sectors/healthcare-en/
+        status: 301
+      - type: redirect
+        source: /sectors/logistics-en.html
+        destination: /sectors/logistics-en/
+        status: 301
+      - type: redirect
+        source: /sectors/manufacturing-en.html
+        destination: /sectors/manufacturing-en/
+        status: 301
+      - type: redirect
+        source: /docs/privacy-policy-en.html
+        destination: /docs/privacy-policy-en/
+        status: 301
+      - type: redirect
+        source: /en/ai-workflows/index.html
+        destination: /en/ai-workflows/
+        status: 301
+      - type: redirect
+        source: /en/smart-medical-archive/index.html
+        destination: /en/smart-medical-archive/
+        status: 301
+      - type: redirect
+        source: /en/tools/index.html
+        destination: /en/tools/
         status: 301
 
       # === 1. إضافة Redirects للـ URLs القديمة (301) ===

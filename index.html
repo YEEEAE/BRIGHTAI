@@ -4114,8 +4114,31 @@
         <iconify-icon class="text-xl" icon="lucide:arrow-up"></iconify-icon>
     </button>
 
-    <!-- Bot iframe overlay -->
+    <!-- Bot floating button + iframe overlay -->
+    <button id="bot-fab" aria-label="تحدث معنا" style="position:fixed;bottom:28px;left:28px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#D4A843,#F0C060);border:none;cursor:pointer;z-index:10000;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(212,168,67,0.45);transition:transform 0.3s,box-shadow 0.3s;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#0A0C12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <iframe id="bot-frame" src="/bot/?embed=true" style="position:fixed;bottom:0;left:0;width:100%;height:100%;border:none;z-index:9999;pointer-events:none;background:transparent;" allow="clipboard-write"></iframe>
+    <script>
+    (function(){
+        var fab=document.getElementById('bot-fab'),
+            frame=document.getElementById('bot-frame'),
+            botOpen=false;
+        fab.addEventListener('click',function(){
+            botOpen=!botOpen;
+            frame.style.pointerEvents=botOpen?'auto':'none';
+            frame.contentWindow.postMessage({type:botOpen?'bot-open':'bot-close'},'*');
+            fab.style.display='none';
+        });
+        window.addEventListener('message',function(e){
+            if(e.data&&e.data.type==='bot-closed'){
+                botOpen=false;
+                frame.style.pointerEvents='none';
+                fab.style.display='flex';
+            }
+        });
+    })();
+    </script>
 
 
     <div class="cookies fixed bottom-8 left-8 right-8 md:left-auto md:w-[480px] z-[80] bg-[#0f172a]/95 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-2xl transform translate-y-[200%] transition-transform duration-700"

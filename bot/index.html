@@ -45,6 +45,8 @@
   body.embed-mode #notif-dot {
     pointer-events: auto;
   }
+  body.embed-mode #chat-toggle { display: none; }
+  body.embed-mode #notif-dot { display: none; }
 
   /* ── TOGGLE BUTTON ── */
   #chat-toggle {
@@ -617,22 +619,35 @@ const minimizeBtn = document.getElementById('minimize-btn');
 const quickReplies = document.getElementById('quick-replies');
 
 // ── TOGGLE ──
-toggleBtn.addEventListener('click', () => {
-  windowOpen = !windowOpen;
-  chatWindow.classList.toggle('open', windowOpen);
-  toggleBtn.classList.toggle('open', windowOpen);
+function openChat() {
+  windowOpen = true;
+  chatWindow.classList.add('open');
+  toggleBtn.classList.add('open');
   notifDot.style.opacity = '0';
-  if (windowOpen && chatHistory.length === 0) {
+  if (chatHistory.length === 0) {
     setTimeout(() => sendAgentMessage('هلا وغلا! 👋 أنا سلطان من فريق Bright AI. وش أقدر أساعدك فيه اليوم؟'), 400);
   }
-  if (windowOpen) userInput.focus();
-});
-
-minimizeBtn.addEventListener('click', () => {
+  userInput.focus();
+}
+function closeChat() {
   windowOpen = false;
   chatWindow.classList.remove('open');
   toggleBtn.classList.remove('open');
+  if (isEmbed) parent.postMessage({type:'bot-closed'},'*');
+}
+toggleBtn.addEventListener('click', () => {
+  if (windowOpen) closeChat(); else openChat();
 });
+minimizeBtn.addEventListener('click', closeChat);
+
+// ── PARENT MESSAGES (embed mode) ──
+if (isEmbed) {
+  window.addEventListener('message', e => {
+    if (!e.data || !e.data.type) return;
+    if (e.data.type === 'bot-open') openChat();
+    if (e.data.type === 'bot-close') closeChat();
+  });
+}
 
 // ── SEND ──
 sendBtn.addEventListener('click', sendMessage);
