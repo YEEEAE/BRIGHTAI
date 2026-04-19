@@ -69,11 +69,6 @@ Disallow: /.git/
 Disallow: /.vscode/
 Disallow: /node_modules/
 Disallow: /tests/
-Disallow: /_next/
-Disallow: /.nuxt/
-Disallow: /dist/
-Disallow: /build/
-Disallow: /src/
 
 
 # AI search crawlers
