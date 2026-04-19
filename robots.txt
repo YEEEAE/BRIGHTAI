@@ -3,6 +3,8 @@
 # النطاق الأساسي الوحيد المعتمد للفهرسة هو https://brightai.site
 
 Sitemap: https://brightai.site/sitemap.xml
+# IndexNow protocol
+IndexNow: https://brightai.site/brightai-indexnow-key.txt
 
 User-agent: *
 Allow: /
@@ -89,3 +91,9 @@ Allow: /
 
 User-agent: PerplexityBot
 Allow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /

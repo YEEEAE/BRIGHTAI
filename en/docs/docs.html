@@ -12,11 +12,15 @@
     <script crossorigin="anonymous" defer=""
         src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"></script>
     <script type="text/javascript">
-        (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "voq2kb6voe");
+        window.addEventListener('load', function() {
+            requestIdleCallback(function() {
+                (function (c, l, a, r, i, t, y) {
+                    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+                    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+                    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+                })(window, document, "clarity", "script", "voq2kb6voe");
+            });
+        });
     </script>
     <script defer="" src="/frontend/js/sentry-init.js"></script>
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
@@ -34,19 +38,22 @@
     <meta
         content="Official Bright AI documentation. Deep dives into services, ai tools, saas solutions, tech integrations, and OpenAPI."
         name="description" />
-    <meta content="US" name="geo.region" />
-    <meta content="Silicon Valley, USA" name="geo.placename" />
-    <meta content="37.3861;-122.0839" name="geo.position" />
-    <meta content="37.3861, -122.0839" name="ICBM" />
-    <meta content="English" name="language" />
-    <meta content="en-US" http-equiv="content-language" />
+    
+    
+    
+    
+    
+    
     <meta content="website" property="og:type" />
     <meta content="Bright AI" property="og:site_name" />
     <meta content="Docs Hub | Bright AI" property="og:title" />
     <meta content="Full guides for ai software, machine learning solutions, and tech integrations."
         property="og:description" />
     <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image" />
-    <meta content="en_US" property="og:locale" />
+<meta content="1200" property="og:image:width" />
+<meta content="630" property="og:image:height" />
+    <meta content="en_SA" property="og:locale" />
+<meta content="ar_SA" property="og:locale:alternate" />
     <meta content="summary_large_image" name="twitter:card" />
     <meta content="@BrightAI_SA" name="twitter:site" />
     <meta content="Docs Hub | Bright AI" name="twitter:title" />

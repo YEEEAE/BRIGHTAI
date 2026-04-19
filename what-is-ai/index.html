@@ -19,11 +19,15 @@
  defer></script>
 
 <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "voq2kb6voe");
+    window.addEventListener('load', function() {
+        requestIdleCallback(function() {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "voq2kb6voe");
+        });
+    });
 </script>
 
 <script src="/frontend/js/sentry-init.js" defer></script>
@@ -52,8 +56,11 @@
 <meta content="ما هو الذكاء الاصطناعي؟ دليل المبتدئين الشامل - Bright AI" property="og:title"/>
 <meta content="كل ما تحتاج معرفته عن ثورة الذكاء الاصطناعي وكيف تؤثر على عالمنا." property="og:description"/>
 <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image"/>
+<meta content="1200" property="og:image:width" />
+<meta content="630" property="og:image:height" />
 <meta content="ما هو الذكاء الاصطناعي - Bright AI" property="og:image:alt"/>
 <meta content="ar_SA" property="og:locale"/>
+<meta content="en_SA" property="og:locale:alternate" />
 
 <meta content="summary_large_image" name="twitter:card"/>
 <meta content="@BrightAI_SA" name="twitter:site"/>
@@ -61,12 +68,12 @@
 <meta content="دليل شامل يشرح مفهوم الذكاء الاصطناعي، أنواعه، وتطبيقاته في الأعمال." name="twitter:description"/>
 <meta content="https://brightai.site/assets/images/Gemini.png" name="twitter:image"/>
 
-<meta content="SA" name="geo.region"/>
-<meta content="Riyadh, Saudi Arabia" name="geo.placename"/>
-<meta content="24.7136;46.6753" name="geo.position"/>
-<meta content="24.7136, 46.6753" name="ICBM"/>
-<meta content="Arabic" name="language"/>
-<meta content="ar-SA" http-equiv="content-language"/>
+
+
+
+
+
+
 
     
     

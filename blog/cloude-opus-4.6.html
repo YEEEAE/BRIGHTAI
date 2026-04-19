@@ -21,11 +21,15 @@
  defer></script>
 
 <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "voq2kb6voe");
+    window.addEventListener('load', function() {
+        requestIdleCallback(function() {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "voq2kb6voe");
+        });
+    });
 </script>
 
 <script src="/frontend/js/sentry-init.js" defer></script>
@@ -47,17 +51,20 @@
 <meta content="Cloud Opus 4.6, Claude Opus 4.6, Anthropic, BrightAI, الذكاء الاصطناعي السحابي, السعودية, AI السحابي, agents, context window" name="keywords"/>
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" name="author"/>
 
-<meta content="SA" name="geo.region"/>
-<meta content="Riyadh, Saudi Arabia" name="geo.placename"/>
-<meta content="24.7136;46.6753" name="geo.position"/>
-<meta content="24.7136, 46.6753" name="ICBM"/>
+
+
+
+
 
 <meta property="og:type" content="article" />
 <meta content="Bright AI - مُشرقة للذكاء الاصطناعي" property="og:site_name"/>
 <meta property="og:title" content="Cloud Opus 4.6 في السوق السعودي | Bright AI" />
 <meta content="شرح Cloud Opus 4.6 ومزاياه وكيفية توظيفه داخل BrightAI لدفع التحول الرقمي في المؤسسات السعودية." property="og:description"/>
 <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image">
+<meta content="1200" property="og:image:width" />
+<meta content="630" property="og:image:height" />
 <meta content="ar_SA" property="og:locale">
+<meta content="en_SA" property="og:locale:alternate" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@BrightAI_SA" />

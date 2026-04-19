@@ -25,11 +25,15 @@
         gtag('config', 'G-8LLESL207Q');
     </script>
     <script type="text/javascript">
-        (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "voq2kb6voe");
+        window.addEventListener('load', function() {
+            requestIdleCallback(function() {
+                (function (c, l, a, r, i, t, y) {
+                    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+                    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+                    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+                })(window, document, "clarity", "script", "voq2kb6voe");
+            });
+        });
     </script>
     <script defer="" src="/frontend/js/sentry-init.js"></script>
     <meta charset="utf-8" />
@@ -43,6 +47,8 @@
         content="Smart automation and artificial intelligence workflows for Saudi companies. Go beyond basic RPA with machine learning solutions that make independent decisions. Save 60% of costs and boost productivity by 80%."
         property="og:description" />
     <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image" />
+<meta content="1200" property="og:image:width" />
+<meta content="630" property="og:image:height" />
     <meta content="Smart Automation and AI Workflows for Saudi Companies" property="og:image:alt" />
     <meta content="summary_large_image" name="twitter:card" />
     <meta content="https://brightai.site/assets/images/Gemini.png" name="twitter:image" />
@@ -52,12 +58,12 @@
         content="Bright AI delivers smart automation for Saudi enterprises, from RPA and workflow coordination to system integration that reduces manual effort and operating cost."
         name="description" />
     <meta content="Bright AI" name="author" />
-    <meta content="SA" name="geo.region" />
-    <meta content="Riyadh, Saudi Arabia" name="geo.placename" />
-    <meta content="24.7136;46.6753" name="geo.position" />
-    <meta content="24.7136, 46.6753" name="ICBM" />
-    <meta content="English" name="language" />
-    <meta content="en-US" http-equiv="content-language" />
+    
+    
+    
+    
+    
+    
     <style id="critical-css">
         .unified-nav {
             position: fixed;

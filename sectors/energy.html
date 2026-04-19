@@ -19,11 +19,15 @@
  defer></script>
 
 <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "voq2kb6voe");
+    window.addEventListener('load', function() {
+        requestIdleCallback(function() {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "voq2kb6voe");
+        });
+    });
 </script>
 
 <script src="/frontend/js/sentry-init.js" defer></script>
@@ -45,8 +49,8 @@
 <meta name="keywords" content="ذكاء اصطناعي لمحطات الطاقة, الذكاء الاصطناعي للطاقة, الصيانة التنبؤية, الطاقة المتجددة السعودية, إدارة الشبكات الذكية, تحسين كفاءة المحطات">
     <meta name="author" content="Bright AI - مُشرقة للذكاء الاصطناعي">
 
-<meta name="geo.region" content="SA" />
-    <meta name="geo.placename" content="Riyadh, Saudi Arabia" />
+
+    
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Bright AI - مُشرقة للذكاء الاصطناعي" />
@@ -54,6 +58,7 @@
     <meta property="og:description" content="حلول ذكاء اصطناعي للطاقة في السعودية: صيانة تنبؤية، تحسين الإنتاج، خفض التكاليف، وإدارة الشبكات الذكية وفق رؤية 2030." />
 <meta property="og:image" content="https://brightai.site/assets/images/Gemini.png" />
     <meta property="og:locale" content="ar_SA" />
+<meta content="en_SA" property="og:locale:alternate" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@BrightAI_SA" />

@@ -8,11 +8,15 @@
 <link href="https://js.sentry-cdn.com" rel="dns-prefetch"/>
 <script crossorigin="anonymous" defer="" src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"></script>
 <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "voq2kb6voe");
+    window.addEventListener('load', function() {
+        requestIdleCallback(function() {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "voq2kb6voe");
+        });
+    });
 </script>
 <script defer="" src="/frontend/js/sentry-init.js"></script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
@@ -40,8 +44,11 @@
 <meta content="حدث خطأ مؤقت في الخادم أثناء تحميل الصفحة. يمكنك المحاولة لاحقاً أو العودة إلى الصفحة الرئيسية في موقع Bright AI." property="og:description"/>
 <meta content="https://brightai.site/500" property="og:url"/>
 <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image"/>
+<meta content="1200" property="og:image:width" />
+<meta content="630" property="og:image:height" />
 <meta content="website" property="og:type"/>
 <meta content="ar_SA" property="og:locale"/>
+<meta content="en_SA" property="og:locale:alternate" />
 <meta content="مُشرقة AI" property="og:site_name"/>
 <script defer src="/frontend/js/runtime-config.min.js"></script>
 <script defer="" src="/frontend/js/navigation.js"></script>

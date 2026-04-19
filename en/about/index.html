@@ -27,11 +27,15 @@
     </script>
 
     <script type="text/javascript">
-        (function (c, l, a, r, i, t, y) {
-            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
-            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
-            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-        })(window, document, "clarity", "script", "voq2kb6voe");
+        window.addEventListener('load', function() {
+            requestIdleCallback(function() {
+                (function (c, l, a, r, i, t, y) {
+                    c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+                    t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+                    y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+                })(window, document, "clarity", "script", "voq2kb6voe");
+            });
+        });
     </script>
 
     <script src="/frontend/js/sentry-init.js" defer></script>
@@ -60,13 +64,13 @@
         content="ai, Artificial intelligence, data analysis, machine learning, consultation, ai chat, ai website, artificial intelligence website, ai chatbot, ai tools, free ai, artificial intelligence meaning, ai meaning, talk to ai, ai courses, ai learning, artificial intelligence course, ai software, ai stands for, ai chat bot, ai bot, create artificial intelligence, ai search, ai online course, what is ai technology, uses of ai, uses of artificial intelligence, ai training, ai certification, artificial intelligence definition, introduction for artificial intelligence, how does artificial intelligence work, public agent, ai app, agent, saas, agent in artificial intelligence, autonomous, ai generated images, saas meaning, create ai"
         name="keywords" />
 
-    <meta content="SA" name="geo.region" />
-    <meta content="Riyadh, Saudi Arabia" name="geo.placename" />
-    <meta content="24.7136;46.6753" name="geo.position" />
-    <meta content="24.7136, 46.6753" name="ICBM" />
+    
+    
+    
+    
 
-    <meta content="English" name="language" />
-    <meta content="en-US" http-equiv="content-language" />
+    
+    
     
 
     <script type="application/ld+json">

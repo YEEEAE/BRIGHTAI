@@ -1,13 +1,13 @@
 {
-  "name": "شركة مُشرقة AI | الذكاء الاصطناعي السعودية - الرياض جدة الدمام",
-  "short_name": "مُشرقة AI",
-  "description": "مُشرقة AI الشركة السعودية الرائدة في الذكاء الاصطناعي بالرياض. حلول التعلم العميق، أتمتة العمليات، روبوتات المحادثة العربية للشركات السعودية",
-  "start_url": "/index.html?utm_source=pwa",
+  "name": "Bright AI | حلول الذكاء الاصطناعي السعودية - الرياض جدة الدمام",
+  "short_name": "Bright AI",
+  "description": "Bright AI الشركة السعودية الرائدة في الذكاء الاصطناعي بالرياض. حلول التعلم العميق، أتمتة العمليات، روبوتات المحادثة العربية للشركات السعودية",
+  "start_url": "/?utm_source=pwa",
   "id": "/index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0A192F",
-  "theme_color": "#64FFDA",
+  "theme_color": "#0b1020",
   "orientation": "portrait-primary",
   "lang": "ar-SA",
   "dir": "rtl",
@@ -49,21 +49,21 @@
       "sizes": "1280x720",
       "type": "image/png",
       "platform": "wide",
-      "label": "الصفحة الرئيسية لشركة مُشرقة AI السعودية"
+      "label": "الصفحة الرئيسية لشركة Bright AI السعودية"
     },
     {
       "src": "assets/images/Gemini.png",
       "sizes": "750x1334",
       "type": "image/png",
       "platform": "narrow",
-      "label": "تطبيق مُشرقة AI للهواتف الذكية"
+      "label": "تطبيق Bright AI للهواتف الذكية"
     }
   ],
   "shortcuts": [
     {
       "name": "خدماتنا",
       "short_name": "الخدمات",
-      "description": "استعرض خدمات الذكاء الاصطناعي من مُشرقة AI",
+      "description": "استعرض خدمات الذكاء الاصطناعي من Bright AI",
       "url": "/services",
       "icons": [
         {
@@ -99,7 +99,7 @@
     {
       "name": "تواصل معنا",
       "short_name": "التواصل",
-      "description": "تواصل مع فريق مُشرقة AI",
+      "description": "تواصل مع فريق Bright AI",
       "url": "/contact",
       "icons": [
         {
