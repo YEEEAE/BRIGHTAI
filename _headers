@@ -13,94 +13,6 @@
 /**/*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-/tenders/dashboard
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/dashboard/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/dashboard.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/reports
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/reports/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/reports.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/settings
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/settings/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/settings.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/compare
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/compare/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/compare.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/templates
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/templates/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tenders/templates.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-/en/tenders/dashboard
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/dashboard/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/dashboard.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/reports
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/reports/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/reports.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/settings
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/settings/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/settings.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/compare
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/compare/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/compare.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/templates
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/templates/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tenders/templates.html
-  X-Robots-Tag: noindex, nofollow, noarchive
 
 /interview/pages/admin
   X-Robots-Tag: noindex, nofollow, noarchive
@@ -118,42 +30,6 @@
   X-Robots-Tag: noindex, nofollow, noarchive
 
 /interview/pages/Visitor-registration/index.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/pages/dashboard
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/pages/dashboard/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/pages/dashboard/index.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/pages/appointment
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/pages/appointment/
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/pages/appointment/index.html
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/interview/*
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/interview/*
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/demo/*
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/try/*
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/tools/*
-  X-Robots-Tag: noindex, nofollow, noarchive
-
-/en/tools/*
   X-Robots-Tag: noindex, nofollow, noarchive
 
 /mais-OBM
