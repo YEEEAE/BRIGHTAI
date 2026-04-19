@@ -25,6 +25,14 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !/$
 RewriteRule ^(.*)$ /$1/ [L,R=301]
 
+# ── Blog renamed pages 301 redirects ──
+RewriteRule ^blog/analysy/?$ /blog/data-analysis-best-practices.html [L,R=301]
+RewriteRule ^blog/auto/?$ /blog/workplace-automation-guide.html [L,R=301]
+RewriteRule ^blog/gov/?$ /blog/government-ai-solutions.html [L,R=301]
+RewriteRule ^blog/digital/?$ /blog/ai-manufacturing-digital-guide.html [L,R=301]
+RewriteRule ^blog/atou-job/?$ /blog/industrial-automation-repetitive-tasks.html [L,R=301]
+RewriteRule ^blog/agint-bblog/?$ /blog/building-ai-agents-guide.html [L,R=301]
+
 # ── Error pages ──
 ErrorDocument 404 /404.html
 ErrorDocument 500 /500.html

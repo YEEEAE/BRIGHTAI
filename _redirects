@@ -43,3 +43,23 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/:slug/index.html /blog/:slug/ 301
 /:section/:slug.html /:section/:slug/ 301
 /:slug.html /:slug/ 301
+
+# 301 redirects for renamed blog pages (bad filenames → descriptive URLs)
+/blog/analysy.html /blog/data-analysis-best-practices.html 301
+/blog/analysy /blog/data-analysis-best-practices.html 301
+/blog/analysy/ /blog/data-analysis-best-practices.html 301
+/blog/auto.html /blog/workplace-automation-guide.html 301
+/blog/auto /blog/workplace-automation-guide.html 301
+/blog/auto/ /blog/workplace-automation-guide.html 301
+/blog/gov.html /blog/government-ai-solutions.html 301
+/blog/gov /blog/government-ai-solutions.html 301
+/blog/gov/ /blog/government-ai-solutions.html 301
+/blog/digital.html /blog/ai-manufacturing-digital-guide.html 301
+/blog/digital /blog/ai-manufacturing-digital-guide.html 301
+/blog/digital/ /blog/ai-manufacturing-digital-guide.html 301
+/blog/atou-job.html /blog/industrial-automation-repetitive-tasks.html 301
+/blog/atou-job /blog/industrial-automation-repetitive-tasks.html 301
+/blog/atou-job/ /blog/industrial-automation-repetitive-tasks.html 301
+/blog/agint-bblog.html /blog/building-ai-agents-guide.html 301
+/blog/agint-bblog /blog/building-ai-agents-guide.html 301
+/blog/agint-bblog/ /blog/building-ai-agents-guide.html 301
