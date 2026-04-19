@@ -4,6 +4,9 @@
 
 <head>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://scripts.clarity.ms" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://brightai.site/" />
@@ -17,15 +20,14 @@
     <script defer src="/frontend/js/runtime-config.min.js"></script>
 
     <meta charset="utf-8" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <!-- Google tag (gtag.js) — deferred for performance -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-8LLESL207Q');
     </script>
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>شركة ذكاء اصطناعي للشركات في السعودية | Bright AI</title>
 <meta name="keywords" content="شركة ذكاء اصطناعي للشركات في السعودية, Bright AI, الذكاء الاصطناعي, السعودية" />
@@ -878,11 +880,32 @@
             color: #cbd5e1;
             border-color: rgba(255, 255, 255, 0.16);
         }
+
+        /* === MOBILE TOUCH TARGET FIXES === */
+        @media (max-width: 1023px) {
+            input[type="range"] {
+                height: 44px;
+                min-height: 44px;
+            }
+
+            a.btn.cta {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+            }
+
+            .slider label {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+            }
+        }
     </style>
 
     <link rel="stylesheet" href="/frontend/css/main.bundle.min.css">
     <link rel="stylesheet" href="/frontend/css/index-theme.min.css">
-    <link rel="stylesheet" href="/frontend/css/main.bundle.min.css">
     <link rel="stylesheet" href="/frontend/css/index-critical-overrides.min.css">
 
 
@@ -892,7 +915,8 @@
     <link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
     <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
-    <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
+    <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="/frontend/css/unified-nav-search.css" rel="stylesheet" /></noscript>
     <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
 
     <style id="internal-linking-cta-style">
@@ -930,7 +954,8 @@
             text-shadow: 0 1px 8px rgba(56, 189, 248, .2)
         }
     </style>
-    <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+    <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" /></noscript>
     <script defer src="/frontend/js/performance-loader.min.js" data-analytics="content" data-clarity="interaction"
         data-sentry="idle" data-local-scripts="/frontend/js/main.bundle.js,/frontend/js/index-theme.min.js"
         data-local-scripts-on="idle"
@@ -1553,7 +1578,7 @@
         </ol>
     </nav>
 
-    <main id="main" itemscope="" itemtype="https://schema.org/WebPage" style="contain: paint;">
+    <main id="main" itemscope="" itemtype="https://schema.org/WebPage">
 
 
 
@@ -4183,18 +4208,26 @@
                 stroke="#0A0C12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </button>
-    <iframe id="bot-frame" src="/bot/?embed=true"
+    <iframe id="bot-frame" title="مساعد برايت الذكي"
         style="position:fixed;bottom:0;left:0;width:100%;height:100%;border:none;z-index:9999;pointer-events:none;background:transparent;"
-        allow="clipboard-write"></iframe>
+        allow="clipboard-write" loading="lazy"></iframe>
     <script>
         (function () {
             var fab = document.getElementById('bot-fab'),
                 frame = document.getElementById('bot-frame'),
-                botOpen = false;
+                botOpen = false,
+                botLoaded = false;
+            function loadBot() {
+                if (!botLoaded) {
+                    frame.src = '/bot/?embed=true';
+                    botLoaded = true;
+                }
+            }
             fab.addEventListener('click', function () {
+                loadBot();
                 botOpen = !botOpen;
                 frame.style.pointerEvents = botOpen ? 'auto' : 'none';
-                frame.contentWindow.postMessage({ type: botOpen ? 'bot-open' : 'bot-close' }, '*');
+                if (botLoaded) frame.contentWindow.postMessage({ type: botOpen ? 'bot-open' : 'bot-close' }, '*');
                 fab.style.display = 'none';
             });
             window.addEventListener('message', function (e) {

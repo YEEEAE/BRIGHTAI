@@ -4,7 +4,6 @@
 
 Sitemap: https://brightai.site/sitemap.xml
 # IndexNow protocol
-IndexNow: https://brightai.site/brightai-indexnow-key.txt
 
 User-agent: *
 Allow: /
