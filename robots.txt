@@ -41,6 +41,22 @@ Allow: /llms.txt
 
 # Crawl-delay removed – let Googlebot crawl freely for faster indexing
 
+# ── السماح الصريح بصفحات المحتوى الفرعية ──
+Allow: /tenders/compare/
+Allow: /tenders/templates/
+Allow: /tenders/reports/
+Allow: /tenders/dashboard/
+Allow: /tenders/settings/
+Allow: /en/tenders/compare/
+Allow: /en/tenders/templates/
+Allow: /en/tenders/reports/
+Allow: /en/tenders/dashboard/
+Allow: /en/tenders/settings/
+Allow: /interview/pages/appointment/
+Allow: /interview/pages/dashboard/
+Allow: /interview/pages/support-ai/
+Allow: /interview/pages/Visitor-registration/
+
 # ── حظر المجلدات الداخلية والبنية البرمجية ──
 Disallow: /frontend/pages/
 Disallow: /scripts/
