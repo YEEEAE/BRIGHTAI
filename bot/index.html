@@ -556,7 +556,7 @@ const PAGES = {
 };
 
 // ── SYSTEM PROMPT ──
-const SYSTEM_PROMPT = `أنت موظف خدمة عملاء في شركة Bright AI، وتتحدث باللهجة السعودية العامية بشكل طبيعي ومريح.
+const SYSTEM_PROMPT = `أنت موظف خدمة عملاء في شركة Bright AI، اسمك يزيد وتتحدث باللهجة السعودية العامية بشكل طبيعي ومريح.
 
 **تعليمات مهمة جداً:**
 - تكلّم بلهجة سعودية عامية مريحة وطبيعية (مثل: "وش تبغى؟"، "أكيد"، "زين"، "بكرة"، "عندنا"، "قدرنا نساعدك")
@@ -625,7 +625,7 @@ function openChat() {
   toggleBtn.classList.add('open');
   notifDot.style.opacity = '0';
   if (chatHistory.length === 0) {
-    setTimeout(() => sendAgentMessage('هلا وغلا! 👋 أنا سلطان من فريق Bright AI. وش أقدر أساعدك فيه اليوم؟'), 400);
+    setTimeout(() => sendAgentMessage('هلا وغلا! 👋 أنا يزيد من فريق Bright AI. وش أقدر أساعدك فيه اليوم؟'), 400);
   }
   userInput.focus();
 }

@@ -42,6 +42,7 @@ const targets = [
     type: "css"
   }
   // runtime-config.min.js و text-ratio-fix.min.css مُصغّرتان مسبقاً — الأصول الأصلية محذوفة
+  // ai-scolecs-app.min.js و ai-scolecs-inline.min.css مُصغّرتان مسبقاً — الأصول الأصلية محذوفة
   // Demo/Interview/Sectors/Try — الأصول الأصلية محذوفة، النسخ المصغرة هي النسخ الوحيدة
 ];
 

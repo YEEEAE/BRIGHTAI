@@ -125,6 +125,7 @@ const REPLACEMENTS = [
     replacement: "/frontend/css/en-tenders-templates-inline.min.css",
     label: "en-tenders-templates-inline.css"
   }
+  // ai-scolecs-app.min.js و ai-scolecs-inline.min.css مُصغّرتان مسبقاً — الأصول الأصلية محذوفة
 ];
 
 const IGNORE_DIRS = [

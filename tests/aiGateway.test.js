@@ -159,9 +159,9 @@ describe('AI Gateway — Route Aliases', () => {
 });
 
 describe('AI Gateway — Frontend Security', () => {
-  it('ai-scolecs-app.js has no GROQ_API_KEY or Authorization header', () => {
+  it('ai-scolecs-app.min.js has no GROQ_API_KEY or Authorization header', () => {
     const fs = require('fs');
-    const src = fs.readFileSync(require('path').resolve(__dirname, '../frontend/js/ai-scolecs-app.js'), 'utf8');
+    const src = fs.readFileSync(require('path').resolve(__dirname, '../frontend/js/ai-scolecs-app.min.js'), 'utf8');
     expect(src).not.toContain('GROQ_API_KEY');
     expect(src).not.toContain('Authorization');
   });
