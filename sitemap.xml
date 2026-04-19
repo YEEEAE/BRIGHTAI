@@ -1549,4 +1549,61 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://brightai.site/en/ai-bots/BrightMath/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/BrightMath/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/ai-bots/BrightMath/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-bots/BrightMath/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/ai-bots/BrightProject/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/BrightProject/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/ai-bots/BrightProject/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-bots/BrightProject/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/ai-bots/BrightRecruiter/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/BrightRecruiter/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/ai-bots/BrightRecruiter/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-bots/BrightRecruiter/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/ai-bots/BrightSales/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/BrightSales/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/ai-bots/BrightSales/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-bots/BrightSales/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/ai-bots/BrightSupport/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/BrightSupport/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/ai-bots/BrightSupport/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-bots/BrightSupport/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/privacy-cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/privacy-cookies/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/privacy-cookies/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/privacy-cookies/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/terms/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/terms/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/terms/" />
+    <lastmod>2026-04-19</lastmod>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>

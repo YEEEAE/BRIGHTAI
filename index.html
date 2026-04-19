@@ -5,8 +5,7 @@
 <head>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://scripts.clarity.ms" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
 
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <link rel="canonical" href="https://brightai.site/" />
@@ -24,10 +23,14 @@
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-8LLESL207Q');
     </script>
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q" fetchpriority="low"></script>
+    <script>
+        window.addEventListener('load', function() {
+            gtag('js', new Date());
+            gtag('config', 'G-8LLESL207Q');
+        });
+    </script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>شركة ذكاء اصطناعي للشركات في السعودية | Bright AI</title>
 <meta name="keywords" content="شركة ذكاء اصطناعي للشركات في السعودية, Bright AI, الذكاء الاصطناعي, السعودية" />
@@ -904,9 +907,11 @@
         }
     </style>
 
-    <link rel="stylesheet" href="/frontend/css/main.bundle.min.css">
-    <link rel="stylesheet" href="/frontend/css/index-theme.min.css">
     <link rel="stylesheet" href="/frontend/css/index-critical-overrides.min.css">
+    <link rel="stylesheet" href="/frontend/css/main.bundle.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/frontend/css/main.bundle.min.css" /></noscript>
+    <link rel="stylesheet" href="/frontend/css/index-theme.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/frontend/css/index-theme.min.css" /></noscript>
 
 
 
@@ -917,7 +922,7 @@
     <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180" />
     <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript><link href="/frontend/css/unified-nav-search.css" rel="stylesheet" /></noscript>
-    <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
+    <script async src="/frontend/js/vendor/iconify-icon.min.js" fetchpriority="low"></script>
 
     <style id="internal-linking-cta-style">
         .internal-linking-cta-wrap {
@@ -1578,7 +1583,7 @@
         </ol>
     </nav>
 
-    <main id="main" itemscope="" itemtype="https://schema.org/WebPage">
+    <main id="main" itemscope="" itemtype="https://schema.org/WebPage" style="padding-top: var(--nav-height); contain: layout style;">
 
 
 
@@ -4263,12 +4268,12 @@
     <script defer src="/frontend/js/api-gateway.min.js"></script>
     <script defer src="/frontend/js/api-preflight.min.js"></script>
 
-    <script defer="" src="/frontend/js/optimization.js"></script>
-    <script defer="" src="/frontend/js/navigation.min.js"></script>
+    <script async src="/frontend/js/optimization.js" fetchpriority="low"></script>
+    <script async src="/frontend/js/navigation.min.js" fetchpriority="low"></script>
 
-    <script defer="" src="/frontend/js/search.min.js"></script>
+    <script async src="/frontend/js/search.min.js" fetchpriority="low"></script>
 
-    <script defer src="/frontend/js/accessibility.min.js"></script>
+    <script async src="/frontend/js/accessibility.min.js" fetchpriority="low"></script>
 </body>
 
 </html>
