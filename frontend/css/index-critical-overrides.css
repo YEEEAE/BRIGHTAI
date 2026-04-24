@@ -8,8 +8,8 @@
 
 @media (max-width: 1023px) {
     :root {
-        --nav-height: 76px;
-        --nav-bg: rgba(2, 6, 23, 0.85);
+        --nav-height: 60px;
+        --nav-bg: rgba(2, 6, 23, 0.88);
     }
 }
 

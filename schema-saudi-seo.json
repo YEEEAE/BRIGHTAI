@@ -27,10 +27,10 @@
             },
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "مقر شركة مُشرقة AI الرئيسي",
+                "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
                 "addressLocality": "الرياض",
                 "addressRegion": "منطقة الرياض",
-                "postalCode": "11564",
+                "postalCode": "14254",
                 "addressCountry": "SA"
             },
             "areaServed": [
@@ -66,7 +66,7 @@
             "contactPoint": [
                 {
                     "@type": "ContactPoint",
-                    "telephone": "+966-53-822-9013",
+                    "telephone": "+966538229013",
                     "contactType": "customer support",
                     "areaServed": "SA",
                     "availableLanguage": [
@@ -77,7 +77,7 @@
                 },
                 {
                     "@type": "ContactPoint",
-                    "email": "info@brightaii.com",
+                    "email": "yazeed1job@gmail.com",
                     "contactType": "technical support",
                     "areaServed": "SA",
                     "availableLanguage": [
@@ -169,10 +169,10 @@
             "image": "https://brightai.site/assets/images/Gemini.png",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "مقر شركة مُشرقة AI الرئيسي",
+                "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
                 "addressLocality": "الرياض",
                 "addressRegion": "منطقة الرياض",
-                "postalCode": "11564",
+                "postalCode": "14254",
                 "addressCountry": "SA"
             },
             "geo": {
@@ -180,8 +180,8 @@
                 "latitude": 24.7136,
                 "longitude": 46.6753
             },
-            "telephone": "+966-53-822-9013",
-            "email": "info@brightaii.com",
+            "telephone": "+966538229013",
+            "email": "yazeed1job@gmail.com",
             "url": "https://brightai.site/",
             "openingHours": "Mo-Th 08:00-17:00, Su 08:00-17:00",
             "priceRange": "$$",
