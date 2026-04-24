@@ -1287,13 +1287,9 @@
 <script src="/tenders/api-config.min.js"></script>
     <script>
         (function () {
-            var authKey = "contractai-authenticated";
-            var toastKey = "contractai-auth-toast";
-            if (window.localStorage.getItem(authKey) !== "true") {
-                window.location.replace("/en/tenders/landing/");
-                return;
-            }
-            var root = document.documentElement;
+        var authKey = "contractai-authenticated";
+        var toastKey = "contractai-auth-toast";
+        var root = document.documentElement;
             var storageKey = "contractai-theme";
             var logoutButton = document.querySelector(".logout-button");
             var themeToggle = document.getElementById("themeToggle");
