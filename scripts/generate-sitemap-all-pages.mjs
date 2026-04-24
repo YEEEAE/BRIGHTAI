@@ -34,7 +34,7 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^sitemap\/index\.html$/i,
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
-  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)\.html$/i,
+  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i,
   /^frontend\/pages\//i,
   /^interview\/pages\//i,
   /^tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
@@ -95,7 +95,7 @@ function detectExplicitExclusionFamily(relPath) {
   if (/^(404|500)\.html$/i.test(normalized)) return "error pages";
   if (/^blog\/atou\.doc\.html$/i.test(normalized)) return "legacy archive blog route";
   if (/^blog\/generative-artificial-intelligence\.html$/i.test(normalized)) return "currently unpublished blog route";
-  if (/^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)\.html$/i.test(normalized)) {
+  if (/^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i.test(normalized)) {
     return "legal docs already noindexed";
   }
   if (/^(privacy-cookies|terms|sitemap)\/index\.html$/i.test(normalized)) return "utility and legal pages";
@@ -165,13 +165,13 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
     if (counterpartUrl) {
       return [
         { code: "ar-SA", href: counterpartUrl },
-        { code: "en-US", href: selfUrl },
+        { code: "en-SA", href: selfUrl },
         { code: "x-default", href: counterpartUrl },
       ];
     }
 
     return [
-      { code: "en-US", href: selfUrl },
+      { code: "en-SA", href: selfUrl },
       { code: "x-default", href: selfUrl },
     ];
   }
@@ -179,7 +179,7 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
   if (counterpartUrl) {
     return [
       { code: "ar-SA", href: selfUrl },
-      { code: "en-US", href: counterpartUrl },
+      { code: "en-SA", href: counterpartUrl },
       { code: "x-default", href: selfUrl },
     ];
   }

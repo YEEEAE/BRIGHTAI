@@ -311,12 +311,12 @@ function buildRequiredHreflang(relPath, lang, lowerPathMap, publicRegistry, self
     if (counterpartUrl) {
       return [
         { code: "ar-SA", href: counterpartUrl },
-        { code: "en-US", href: selfUrl },
+        { code: "en-SA", href: selfUrl },
         { code: "x-default", href: counterpartUrl },
       ];
     }
     return [
-      { code: "en-US", href: selfUrl },
+      { code: "en-SA", href: selfUrl },
       { code: "x-default", href: selfUrl },
     ];
   }
@@ -324,7 +324,7 @@ function buildRequiredHreflang(relPath, lang, lowerPathMap, publicRegistry, self
   if (counterpartUrl) {
     return [
       { code: "ar-SA", href: selfUrl },
-      { code: "en-US", href: counterpartUrl },
+      { code: "en-SA", href: counterpartUrl },
       { code: "x-default", href: selfUrl },
     ];
   }

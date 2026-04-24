@@ -40,7 +40,7 @@ const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^en\/tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
-  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)\.html$/i,
+  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i,
 ];
 
 const TRAILING_SLASH_ROUTE_PATTERNS = [
@@ -122,6 +122,7 @@ export function relPathToSitePath(relPath) {
   }
 
   if (normalized === "index.html") return "/";
+  if (normalized === "docs/index.html") return "/docs/";
   if (normalized === "docs.html") return "/docs/";
 
   if (normalized.startsWith("docs/") && normalized.endsWith(".html")) {
@@ -287,8 +288,18 @@ export function findCounterpartRelPath(relPath, lowerPathMap, options = DEFAULT_
     );
   }
 
+  if (lower === "docs/index.html") {
+    return (
+      pickAllowedPath("en/docs/index.html", lowerPathMap, allowedRelPaths) ||
+      pickAllowedPath("en/docs/docs.html", lowerPathMap, allowedRelPaths)
+    );
+  }
+
   if (lower === "en/docs/index.html") {
-    return pickAllowedPath("docs.html", lowerPathMap, allowedRelPaths);
+    return (
+      pickAllowedPath("docs.html", lowerPathMap, allowedRelPaths) ||
+      pickAllowedPath("docs/index.html", lowerPathMap, allowedRelPaths)
+    );
   }
 
   if (lower === "index.html") {
@@ -301,6 +312,11 @@ export function findCounterpartRelPath(relPath, lowerPathMap, options = DEFAULT_
 
   if (lower.startsWith("en/")) {
     const candidate = normalized.slice(3).toLowerCase();
+    return pickAllowedPath(candidate, lowerPathMap, allowedRelPaths);
+  }
+
+  if (/-en\/index\.html$/i.test(lower)) {
+    const candidate = normalized.replace(/-en\/index\.html$/i, ".html").toLowerCase();
     return pickAllowedPath(candidate, lowerPathMap, allowedRelPaths);
   }
 

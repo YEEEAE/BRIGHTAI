@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import {
   findCounterpartRelPath,
+  isPublicIndexableRelPath,
   normalizeSiteUrl,
   relPathToCanonical,
 } from "./seo-url-map.mjs";
@@ -39,12 +40,12 @@ function buildRequiredHreflangForFile(file, lowerPathMap) {
     if (counterpartUrl) {
       return {
         "ar-SA": counterpartUrl,
-        "en-US": selfUrl,
+        "en-SA": selfUrl,
         "x-default": counterpartUrl,
       };
     }
     return {
-      "en-US": selfUrl,
+      "en-SA": selfUrl,
       "x-default": selfUrl,
     };
   }
@@ -52,7 +53,7 @@ function buildRequiredHreflangForFile(file, lowerPathMap) {
   if (counterpartUrl) {
     return {
       "ar-SA": selfUrl,
-      "en-US": counterpartUrl,
+      "en-SA": counterpartUrl,
       "x-default": selfUrl,
     };
   }
@@ -555,6 +556,10 @@ async function checkHtmlPolicy() {
     if (hasHtmlRedirectSignals(html)) {
       result.summary.redirectPages += 1;
       result.errors.push(`${relPath} contains HTML/JS redirect signals.`);
+    }
+
+    if (!isPublicIndexableRelPath(relPath)) {
+      continue;
     }
 
     const expectedCanonical = relPathToCanonical(relPath, BASE_URL);

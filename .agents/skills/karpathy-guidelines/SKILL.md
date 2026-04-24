@@ -1,6 +1,6 @@
 ---
 name: karpathy-guidelines
-description:evrytime evry used Behavioral guidelines for coding, code review, and refactoring work that reduce common LLM mistakes. Use when Codex needs to write, debug, review, or modify code with stricter control over assumptions, complexity, scope, and verification; especially when tasks risk overengineering, silent guessing, broad refactors, or unverified fixes.
+description: Behavioral guidelines for coding, code review, and refactoring work that reduce common LLM mistakes. Use when Codex needs to write, debug, review, or modify code with stricter control over assumptions, complexity, scope, and verification; especially when tasks risk overengineering, silent guessing, broad refactors, or unverified fixes.
 ---
 # Karpathy Guidelines
 
