@@ -1,0 +1,1603 @@
+{
+  "before": {
+    "scanned": 231,
+    "eligible": 196,
+    "skipped": 35,
+    "skippedFiles": [
+      "404.html",
+      "500.html",
+      "blog/ai-automation-project-analysis.html",
+      "blog/digital-transformation-automation.html",
+      "blog/financial-hr-automation.html",
+      "blog/Generative-artificial-intelligence.html",
+      "blog/industrial-automation-productivity.html",
+      "blog/machine-learning-computer-vision.html",
+      "blog/process-automation-ai-efficiency.html",
+      "docs/privacy-policy-en.html",
+      "docs/privacy-policy.html",
+      "docs/terms-and-conditions-en.html",
+      "docs/terms-and-conditions.html",
+      "en/docs/docs.html",
+      "en/tenders/compare.html",
+      "en/tenders/dashboard.html",
+      "en/tenders/landing.html",
+      "en/tenders/reports.html",
+      "en/tenders/settings.html",
+      "en/tenders/templates.html",
+      "error.html",
+      "interview/pages/appointment/index.html",
+      "interview/pages/dashboard/index.html",
+      "interview/pages/support-ai/index.html",
+      "interview/pages/supportAI/index.html",
+      "interview/pages/Visitor-registration/index.html",
+      "mais-OBM/index.html",
+      "privacy-cookies/index.html",
+      "sitemap/index.html",
+      "tenders/compare.html",
+      "tenders/dashboard.html",
+      "tenders/reports.html",
+      "tenders/settings.html",
+      "tenders/templates.html",
+      "terms/index.html"
+    ],
+    "affected": 103,
+    "missingCounts": {
+      "title": 0,
+      "description": 1,
+      "canonical": 7,
+      "h1": 0,
+      "hreflang": 102,
+      "verificationPlaceholder": 0,
+      "onrenderReference": 0,
+      "redirectSignals": 0,
+      "badPublicSlug": 0
+    },
+    "failingFiles": [
+      {
+        "file": "about/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-agent/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightMath/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightProject/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightRecruiter/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightSales/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightSupport/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-workflows/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "blog/ai-manufacturing-digital-guide.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/digital/' should be 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/digital/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/digital/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'"
+        ]
+      },
+      {
+        "file": "blog/building-ai-agents-guide.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/agint-bblog/' should be 'https://brightai.site/blog/building-ai-agents-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/agint-bblog/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/agint-bblog/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'"
+        ]
+      },
+      {
+        "file": "blog/data-analysis-best-practices.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/analysy/' should be 'https://brightai.site/blog/data-analysis-best-practices/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/analysy/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'",
+          "hreflang x-default points to 'https://brightai.site/blog/analysy/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'"
+        ]
+      },
+      {
+        "file": "blog/government-ai-solutions.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/gov/' should be 'https://brightai.site/blog/government-ai-solutions/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/gov/' instead of 'https://brightai.site/blog/government-ai-solutions/'",
+          "hreflang x-default points to 'https://brightai.site/blog/gov/' instead of 'https://brightai.site/blog/government-ai-solutions/'"
+        ]
+      },
+      {
+        "file": "blog/industrial-automation-repetitive-tasks.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/atou-job/' should be 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/atou-job/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
+          "hreflang x-default points to 'https://brightai.site/blog/atou-job/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'"
+        ]
+      },
+      {
+        "file": "blog/workplace-automation-guide.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/auto/' should be 'https://brightai.site/blog/workplace-automation-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/auto/' instead of 'https://brightai.site/blog/workplace-automation-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/auto/' instead of 'https://brightai.site/blog/workplace-automation-guide/'"
+        ]
+      },
+      {
+        "file": "bot/index.html",
+        "issues": [
+          "Missing meta description"
+        ]
+      },
+      {
+        "file": "consultation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "contact/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "data-analysis/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-agent-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-agent.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-bots-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-bots.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/consultation-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/consultation.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/contact-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/contact.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/data-analysis-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/data-analysis.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/faq-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/faq.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy-en/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/docs/privacy-policy-en/' should be 'https://brightai.site/docs/index/'",
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy/' instead of 'https://brightai.site/docs/index/'",
+          "Unexpected hreflang ar-sa",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/services-overview-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/services-overview.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/smart-automation-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/smart-automation.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-bi-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-bi.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-crm-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-crm.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-finance-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-finance.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-healthcare-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-healthcare.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-hr-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-hr.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-interview-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-interview.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-logistics-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-logistics.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-ocr-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-ocr.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-retail-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-retail.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-supply-chain-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-supply-chain.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/about/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-agent/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightMath/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightProject/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightRecruiter/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightSales/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightSupport/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-workflows/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/consultation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/contact/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/data-analysis/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/docs/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/health/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/interview/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/privacy-cookies/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/privacy-cookies/' instead of 'https://brightai.site/en/privacy-cookies/'",
+          "Unexpected hreflang ar-sa",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/services/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/smart-automation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/smart-medical-archive/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/terms/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/terms/' instead of 'https://brightai.site/en/terms/'",
+          "Unexpected hreflang ar-sa",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/tools/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "health/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "interview/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/ecommerce-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/ecommerce-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/ecommerce/' instead of 'https://brightai.site/sectors/ecommerce-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/ecommerce.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/energy-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/energy-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/energy/' instead of 'https://brightai.site/sectors/energy-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/energy.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/finance-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/finance-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/finance/' instead of 'https://brightai.site/sectors/finance-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/finance.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/healthcare-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/healthcare-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/healthcare/' instead of 'https://brightai.site/sectors/healthcare-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/healthcare.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/logistics-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/logistics-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/logistics/' instead of 'https://brightai.site/sectors/logistics-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/logistics.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/manufacturing-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/manufacturing-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/manufacturing/' instead of 'https://brightai.site/sectors/manufacturing-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/manufacturing.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "services/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "smart-automation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "smart-medical-archive/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "tenders/landing.html",
+        "issues": [
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "tools/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      }
+    ]
+  },
+  "after": {
+    "scanned": 231,
+    "eligible": 196,
+    "skipped": 35,
+    "skippedFiles": [
+      "404.html",
+      "500.html",
+      "blog/ai-automation-project-analysis.html",
+      "blog/digital-transformation-automation.html",
+      "blog/financial-hr-automation.html",
+      "blog/Generative-artificial-intelligence.html",
+      "blog/industrial-automation-productivity.html",
+      "blog/machine-learning-computer-vision.html",
+      "blog/process-automation-ai-efficiency.html",
+      "docs/privacy-policy-en.html",
+      "docs/privacy-policy.html",
+      "docs/terms-and-conditions-en.html",
+      "docs/terms-and-conditions.html",
+      "en/docs/docs.html",
+      "en/tenders/compare.html",
+      "en/tenders/dashboard.html",
+      "en/tenders/landing.html",
+      "en/tenders/reports.html",
+      "en/tenders/settings.html",
+      "en/tenders/templates.html",
+      "error.html",
+      "interview/pages/appointment/index.html",
+      "interview/pages/dashboard/index.html",
+      "interview/pages/support-ai/index.html",
+      "interview/pages/supportAI/index.html",
+      "interview/pages/Visitor-registration/index.html",
+      "mais-OBM/index.html",
+      "privacy-cookies/index.html",
+      "sitemap/index.html",
+      "tenders/compare.html",
+      "tenders/dashboard.html",
+      "tenders/reports.html",
+      "tenders/settings.html",
+      "tenders/templates.html",
+      "terms/index.html"
+    ],
+    "affected": 103,
+    "missingCounts": {
+      "title": 0,
+      "description": 1,
+      "canonical": 7,
+      "h1": 0,
+      "hreflang": 102,
+      "verificationPlaceholder": 0,
+      "onrenderReference": 0,
+      "redirectSignals": 0,
+      "badPublicSlug": 0
+    },
+    "failingFiles": [
+      {
+        "file": "about/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-agent/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightMath/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightProject/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightRecruiter/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightSales/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-bots/BrightSupport/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "ai-workflows/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "blog/ai-manufacturing-digital-guide.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/digital/' should be 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/digital/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/digital/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'"
+        ]
+      },
+      {
+        "file": "blog/building-ai-agents-guide.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/agint-bblog/' should be 'https://brightai.site/blog/building-ai-agents-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/agint-bblog/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/agint-bblog/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'"
+        ]
+      },
+      {
+        "file": "blog/data-analysis-best-practices.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/analysy/' should be 'https://brightai.site/blog/data-analysis-best-practices/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/analysy/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'",
+          "hreflang x-default points to 'https://brightai.site/blog/analysy/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'"
+        ]
+      },
+      {
+        "file": "blog/government-ai-solutions.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/gov/' should be 'https://brightai.site/blog/government-ai-solutions/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/gov/' instead of 'https://brightai.site/blog/government-ai-solutions/'",
+          "hreflang x-default points to 'https://brightai.site/blog/gov/' instead of 'https://brightai.site/blog/government-ai-solutions/'"
+        ]
+      },
+      {
+        "file": "blog/industrial-automation-repetitive-tasks.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/atou-job/' should be 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/atou-job/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
+          "hreflang x-default points to 'https://brightai.site/blog/atou-job/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'"
+        ]
+      },
+      {
+        "file": "blog/workplace-automation-guide.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/blog/auto/' should be 'https://brightai.site/blog/workplace-automation-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/auto/' instead of 'https://brightai.site/blog/workplace-automation-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/auto/' instead of 'https://brightai.site/blog/workplace-automation-guide/'"
+        ]
+      },
+      {
+        "file": "bot/index.html",
+        "issues": [
+          "Missing meta description"
+        ]
+      },
+      {
+        "file": "consultation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "contact/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "data-analysis/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-agent-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-agent.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-bots-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/ai-bots.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/consultation-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/consultation.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/contact-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/contact.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/data-analysis-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/data-analysis.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/faq-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/faq.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/privacy-policy-en/index.html",
+        "issues": [
+          "Canonical mismatch: 'https://brightai.site/docs/privacy-policy-en/' should be 'https://brightai.site/docs/index/'",
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/docs/privacy-policy/' instead of 'https://brightai.site/docs/index/'",
+          "Unexpected hreflang ar-sa",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/services-overview-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/services-overview.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/smart-automation-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/smart-automation.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-bi-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-bi.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-crm-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-crm.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-finance-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-finance.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-healthcare-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-healthcare.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-hr-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-hr.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-interview-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-interview.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-logistics-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-logistics.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-ocr-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-ocr.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-retail-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-retail.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-supply-chain-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "docs/solutions-supply-chain.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/about/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-agent/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightMath/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightProject/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightRecruiter/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightSales/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-bots/BrightSupport/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/ai-workflows/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/consultation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/contact/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/data-analysis/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/docs/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/health/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/interview/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/privacy-cookies/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/privacy-cookies/' instead of 'https://brightai.site/en/privacy-cookies/'",
+          "Unexpected hreflang ar-sa",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/services/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/smart-automation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/smart-medical-archive/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/terms/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/terms/' instead of 'https://brightai.site/en/terms/'",
+          "Unexpected hreflang ar-sa",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "en/tools/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "health/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "interview/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/ecommerce-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/ecommerce-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/ecommerce/' instead of 'https://brightai.site/sectors/ecommerce-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/ecommerce.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/energy-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/energy-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/energy/' instead of 'https://brightai.site/sectors/energy-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/energy.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/finance-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/finance-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/finance/' instead of 'https://brightai.site/sectors/finance-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/finance.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/healthcare-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/healthcare-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/healthcare/' instead of 'https://brightai.site/sectors/healthcare-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/healthcare.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/logistics-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/logistics-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/logistics/' instead of 'https://brightai.site/sectors/logistics-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/logistics.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/manufacturing-en.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "sectors/manufacturing-en/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "hreflang x-default points to 'https://brightai.site/sectors/manufacturing/' instead of 'https://brightai.site/sectors/manufacturing-en/'",
+          "Unexpected hreflang en-sa",
+          "Unexpected hreflang ar-sa"
+        ]
+      },
+      {
+        "file": "sectors/manufacturing.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "services/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "smart-automation/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "smart-medical-archive/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "tenders/landing.html",
+        "issues": [
+          "Unexpected hreflang en-sa"
+        ]
+      },
+      {
+        "file": "tools/index.html",
+        "issues": [
+          "Missing hreflang en-US",
+          "Unexpected hreflang en-sa"
+        ]
+      }
+    ]
+  },
+  "fixedFiles": []
+}

@@ -26,6 +26,27 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /sectors/manufacturing-en.html /sectors/manufacturing-en/ 301
 /docs/privacy-policy-en.html /docs/privacy-policy-en/ 301
 
+/smart-automation.html /smart-automation/ 301
+/ai-agent.html /ai-agent/ 301
+/blogger/ai-generative-content-industry-saudi-arabia.html /blog/ai-generative-content-industry-saudi-arabia/ 301
+/frontend/pages/blogger/nca-compliance /blog/nca-compliance/ 301
+/frontend/pages/try/index.html /try/ 301
+/frontend/pages/ai-workflows/index.html /ai-workflows/ 301
+/frontend/pages/about-us/index.html /about/ 301
+/frontend/pages/ai-agent/index.html /ai-agent/ 301
+/frontend/pages/ai-bots/index.html /ai-bots/ 301
+/frontend/pages/ai-bots/BrightProject/index.html /ai-bots/BrightProject/ 301
+/frontend/pages/ai-bots/BrightSales/index.html /ai-bots/BrightSales/ 301
+/frontend/pages/ai-bots/BrightRecruiter/index.html /ai-bots/BrightRecruiter/ 301
+/frontend/pages/consultation/index.html /consultation/ 301
+/frontend/pages/contact/index.html /contact/ 301
+/frontend/pages/data-analysis/index.html /data-analysis/ 301
+/frontend/pages/our-products/index.html /services/ 301
+/frontend/pages/smart-medical-archive/index.html /smart-medical-archive/ 301
+/frontend/pages/smart-automation/index.html /smart-automation/ 301
+/ai-workflows /ai-workflows/ 301
+/docs /docs/ 301
+
 /ai-bots /docs/ai-bots/ 301
 /ai-bots/ /docs/ai-bots/ 301
 

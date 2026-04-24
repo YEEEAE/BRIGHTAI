@@ -373,122 +373,189 @@ services:
       - type: redirect
         source: /smart-automation.html
         destination: /smart-automation/
+        status: 301
       - type: redirect
         source: /ai-agent.html
         destination: /ai-agent/
+        status: 301
       - type: redirect
         source: /consultation.html
         destination: /consultation/
+        status: 301
       - type: redirect
         source: /data-analysis.html
         destination: /data-analysis/
+        status: 301
       - type: redirect
         source: /tools.html
         destination: /tools/
+        status: 301
       - type: redirect
         source: /our-products.html
         destination: /services/
+        status: 301
       - type: redirect
         source: /health-bright.html
         destination: /health/
+        status: 301
       - type: redirect
         source: /Company%20performance%20monitoring%20tool.html
         destination: /tools/
+        status: 301
       - type: redirect
         source: /blogger/ai-generative-content-industry-saudi-arabia.html
         destination: /blog/ai-generative-content-industry-saudi-arabia/
+        status: 301
       - type: redirect
         source: /frontend/pages/about-us/index.html
         destination: /about/
+        status: 301
       - type: redirect
         source: /frontend/pages/about-us/
         destination: /about/
+        status: 301
       - type: redirect
         source: /frontend/pages/ai-agent/index.html
         destination: /ai-agent/
+        status: 301
       - type: redirect
         source: /frontend/pages/ai-agent/
         destination: /ai-agent/
+        status: 301
       - type: redirect
         source: /frontend/pages/ai-bots/index.html
         destination: /ai-bots/
+        status: 301
       - type: redirect
         source: /frontend/pages/ai-bots/
         destination: /ai-bots/
+        status: 301
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightProject/index.html
+        destination: /ai-bots/BrightProject/
+        status: 301
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightSales/index.html
+        destination: /ai-bots/BrightSales/
+        status: 301
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightRecruiter/index.html
+        destination: /ai-bots/BrightRecruiter/
+        status: 301
       - type: redirect
         source: /frontend/pages/consultation/index.html
         destination: /consultation/
+        status: 301
       - type: redirect
         source: /frontend/pages/consultation/
         destination: /consultation/
+        status: 301
       - type: redirect
         source: /frontend/pages/contact/index.html
         destination: /contact/
+        status: 301
       - type: redirect
         source: /frontend/pages/contact/
         destination: /contact/
+        status: 301
       - type: redirect
         source: /frontend/pages/data-analysis/index.html
         destination: /data-analysis/
+        status: 301
       - type: redirect
         source: /frontend/pages/data-analysis/
         destination: /data-analysis/
+        status: 301
+      - type: redirect
+        source: /frontend/pages/ai-workflows/index.html
+        destination: /ai-workflows/
+        status: 301
       - type: redirect
         source: /frontend/pages/our-products/index.html
         destination: /services/
+        status: 301
       - type: redirect
         source: /frontend/pages/our-products/
         destination: /services/
+        status: 301
       - type: redirect
         source: /frontend/pages/smart-automation/index.html
         destination: /smart-automation/
+        status: 301
       - type: redirect
         source: /frontend/pages/smart-automation/
         destination: /smart-automation/
+        status: 301
       - type: redirect
         source: /frontend/pages/smart-medical-archive/index.html
         destination: /smart-medical-archive/
+        status: 301
       - type: redirect
         source: /frontend/pages/smart-medical-archive/
         destination: /smart-medical-archive/
+        status: 301
+      - type: redirect
+        source: /frontend/pages/try/index.html
+        destination: /try/
+        status: 301
       - type: redirect
         source: /frontend/pages/job.MAISco/index.html
         destination: /interview/
+        status: 301
       - type: redirect
         source: /frontend/pages/job.MAISco/
         destination: /interview/
+        status: 301
       - type: redirect
         source: /frontend/pages/blogger/nca-compliance
         destination: /blog/nca-compliance/
+        status: 301
       - type: redirect
         source: /frontend/pages/*
         destination: /
+        status: 301
       - type: redirect
         source: /blogger/*
         destination: /blog/:splat
+        status: 301
 
       # === 2. إضافة Redirects لإصلاح Trailing Slash (حل مشكلة GSC) ===
       - type: redirect
         source: /about
         destination: /about/
+        status: 301
       - type: redirect
         source: /ai-agent
         destination: /ai-agent/
+        status: 301
       - type: redirect
         source: /ai-bots
         destination: /docs/ai-bots/
+        status: 301
       - type: redirect
         source: /ai-bots/
         destination: /docs/ai-bots/
+        status: 301
       - type: redirect
         source: /smart-automation
         destination: /smart-automation/
+        status: 301
       - type: redirect
         source: /consultation
         destination: /consultation/
+        status: 301
       - type: redirect
         source: /data-analysis
         destination: /data-analysis/
+        status: 301
+      - type: redirect
+        source: /ai-workflows
+        destination: /ai-workflows/
+        status: 301
+      - type: redirect
+        source: /docs
+        destination: /docs/
+        status: 301
       - type: redirect
         source: /about/index-en.html
         destination: /en/about/
