@@ -822,8 +822,7 @@
             
             <h3 style="margin-top: 20px;">الخوادم المتاحة</h3>
             <ul style="margin-inline-start: 20px; margin-top: 10px;">
-                <li><strong>خادم التطوير:</strong> <span class="latin-term">http://localhost:3000</span></li>
-                <li><strong>خادم الإنتاج:</strong> <span class="latin-term">https://api.brightai.sa</span></li>
+                <li><strong>خادم الإنتاج:</strong> <span class="latin-term">https://brightai.site/api</span></li>
             </ul>
 
             
@@ -1375,7 +1374,7 @@
             
             <h3>Chat Endpoint</h3>
             <div class="code-block">
-curl -X POST http://localhost:3000/api/ai/chat \
+curl -X POST https://brightai.site/api/ai/chat \
   -H "Content-Type: application/json" \
   -d '{
     "message": "ما هي خدمات BrightAI؟"
@@ -1384,7 +1383,7 @@ curl -X POST http://localhost:3000/api/ai/chat \
             
             <h3 style="margin-top: 20px;">Search Endpoint</h3>
             <div class="code-block">
-curl -X POST http://localhost:3000/api/ai/search \
+curl -X POST https://brightai.site/api/ai/search \
   -H "Content-Type: application/json" \
   -d '{
     "query": "وكلاء الذكاء الاصطناعي"
@@ -1393,7 +1392,7 @@ curl -X POST http://localhost:3000/api/ai/search \
             
             <h3 style="margin-top: 20px;">Medical Endpoint</h3>
             <div class="code-block">
-curl -X POST http://localhost:3000/api/ai/medical \
+curl -X POST https://brightai.site/api/ai/medical \
   -H "Content-Type: application/json" \
   -d '{
     "textParts": ["قم بتحليل هذه البيانات الطبية"]
@@ -1403,7 +1402,7 @@ curl -X POST http://localhost:3000/api/ai/medical \
             
             <h3 style="margin-top: 20px;">Summary Endpoint</h3>
             <div class="code-block">
-curl -X POST http://localhost:3000/api/ai/summary \
+curl -X POST https://brightai.site/api/ai/summary \
   -H "Content-Type: application/json" \
   -d '{
     "text": "نص طويل يحتاج إلى تلخيص..."

@@ -9,9 +9,7 @@ info:
     url: https://brightai.site
 
 servers:
-  - url: http://localhost:3000
-    description: خادم التطوير
-  - url: https://api.brightai.sa
+  - url: https://brightai.site/api
     description: خادم الإنتاج
 
 paths:
