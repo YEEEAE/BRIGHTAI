@@ -36,8 +36,6 @@ const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^aimais\/public\//i,
   /^frontend\/pages\//i,
   /^interview\/pages\//i,
-  /^tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
-  /^en\/tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i,
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
   /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i,

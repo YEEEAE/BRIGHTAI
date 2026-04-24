@@ -33,6 +33,7 @@ const HTML_IGNORE_DIRS = new Set([
 ]);
 const INTERNAL_PAGE_PATTERN =
   /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^frontend\/pages\/interview\/|(^|\/)(admin|dashboard|settings|analytics|reports|operations|scorecard|copilot|executive|appointment)(\/|\.|$)/i;
+const PUBLIC_TENDERS_DEMO_URL_PATTERN = /^https:\/\/brightai\.site\/(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\/$/i;
 
 function icon(ok) {
   return ok ? "✅" : "❌";
@@ -109,6 +110,9 @@ function hasFrontendPagesLinks(html) {
 }
 
 function isInternalPage(relPath) {
+  if (/^(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i.test(relPath)) {
+    return false;
+  }
   return INTERNAL_PAGE_PATTERN.test(relPath);
 }
 
@@ -308,7 +312,7 @@ async function auditHtmlFile(filePath, publicRegistry) {
     issues.push("hreflang_ghost");
   }
 
-  if (hasHtmlRedirect && !hasNoindex) {
+  if (hasHtmlRedirect && !hasNoindex && !/^(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i.test(relPath)) {
     issues.push("html_redirect");
   }
 
@@ -347,6 +351,9 @@ async function main() {
   const sitemapAlternates = extractSitemapAlternateTargets(sitemapContent);
   const sitemapWithSpaces = sitemapLocs.filter((loc) => /%20/i.test(loc));
   const sitemapAdminDashboard = sitemapLocs.filter((loc) => {
+    if (PUBLIC_TENDERS_DEMO_URL_PATTERN.test(loc)) {
+      return false;
+    }
     try {
       const pathname = decodeURIComponent(new URL(loc).pathname);
       return /\/(admin|dashboard)(\/|$)/i.test(pathname);

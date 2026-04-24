@@ -1,12 +1,12 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-24T13:32:06.548Z
-- Total URLs in generated sitemap: 184
-- Included core pages: 91
+- Date: 2026-04-24T14:14:24.768Z
+- Total URLs in generated sitemap: 196
+- Included core pages: 103
 - Included sector pages: 12
 - Included blog articles: 81
-- Excluded analyzed pages: 41
-- Excluded inventory rows: 41
+- Excluded analyzed pages: 31
+- Excluded inventory rows: 31
 
 ## Inclusion Policy
 - نضم كل صفحة عامة قابلة للفهرسة داخل الموقع إذا كان canonical النهائي صحيحًا ولا تحتوي `noindex` أو redirect/meta refresh أو إشارات legacy أو مسارات تقنية مستبعدة.
@@ -17,11 +17,10 @@
 
 | Reason | Count |
 | --- | ---: |
-| canonical_mismatch | 78 |
-| explicit_scope_exclusion | 54 |
+| canonical_mismatch | 58 |
+| explicit_scope_exclusion | 34 |
+| robots_noindex | 18 |
 | quality or canonical exclusion | 14 |
-| authenticated tender app routes | 10 |
-| robots_noindex | 10 |
 | interview app internal routes | 5 |
 | legal docs already noindexed | 5 |
 | thin_content_lt_120 | 4 |
@@ -38,6 +37,7 @@
 | core | index.html | 4578 | https://brightai.site/ |
 | core | about/index.html | 1269 | https://brightai.site/about/ |
 | core | ai-agent/index.html | 2658 | https://brightai.site/ai-agent/ |
+| core | ai-bots/index.html | 242 | https://brightai.site/ai-bots/ |
 | core | ai-bots/BrightMath/index.html | 1092 | https://brightai.site/ai-bots/BrightMath/ |
 | core | ai-bots/BrightProject/index.html | 1122 | https://brightai.site/ai-bots/BrightProject/ |
 | core | ai-bots/BrightRecruiter/index.html | 1343 | https://brightai.site/ai-bots/BrightRecruiter/ |
@@ -175,6 +175,7 @@
 | core | en/index.html | 5263 | https://brightai.site/en/ |
 | core | en/about/index.html | 1680 | https://brightai.site/en/about/ |
 | core | en/ai-agent/index.html | 2709 | https://brightai.site/en/ai-agent/ |
+| core | en/ai-bots/index.html | 263 | https://brightai.site/en/ai-bots/ |
 | core | en/ai-bots/BrightMath/index.html | 1104 | https://brightai.site/en/ai-bots/BrightMath/ |
 | core | en/ai-bots/BrightProject/index.html | 1134 | https://brightai.site/en/ai-bots/BrightProject/ |
 | core | en/ai-bots/BrightRecruiter/index.html | 1355 | https://brightai.site/en/ai-bots/BrightRecruiter/ |
@@ -191,6 +192,11 @@
 | core | en/services/index.html | 280 | https://brightai.site/en/services/ |
 | core | en/smart-automation/index.html | 2283 | https://brightai.site/en/smart-automation/ |
 | core | en/smart-medical-archive/index.html | 1675 | https://brightai.site/en/smart-medical-archive/ |
+| core | en/tenders/compare.html | 1203 | https://brightai.site/en/tenders/compare/ |
+| core | en/tenders/dashboard.html | 627 | https://brightai.site/en/tenders/dashboard/ |
+| core | en/tenders/reports.html | 576 | https://brightai.site/en/tenders/reports/ |
+| core | en/tenders/settings.html | 568 | https://brightai.site/en/tenders/settings/ |
+| core | en/tenders/templates.html | 1174 | https://brightai.site/en/tenders/templates/ |
 | core | en/terms/index.html | 1297 | https://brightai.site/en/terms/ |
 | core | en/tools/index.html | 1514 | https://brightai.site/en/tools/ |
 | core | health/index.html | 1952 | https://brightai.site/health/ |
@@ -213,6 +219,11 @@
 | core | smart-automation/index.html | 2174 | https://brightai.site/smart-automation/ |
 | core | smart-medical-archive/index.html | 1477 | https://brightai.site/smart-medical-archive/ |
 | core | tenders/index.html | 3029 | https://brightai.site/tenders/ |
+| core | tenders/compare.html | 1339 | https://brightai.site/tenders/compare/ |
+| core | tenders/dashboard.html | 484 | https://brightai.site/tenders/dashboard/ |
+| core | tenders/reports.html | 495 | https://brightai.site/tenders/reports/ |
+| core | tenders/settings.html | 487 | https://brightai.site/tenders/settings/ |
+| core | tenders/templates.html | 1342 | https://brightai.site/tenders/templates/ |
 | core | tools/index.html | 1516 | https://brightai.site/tools/ |
 | core | try/index.html | 995 | https://brightai.site/try/ |
 | core | try/data-analyzer/index.html | 1842 | https://brightai.site/try/data-analyzer/ |
@@ -242,28 +253,18 @@
 | docs/terms-and-conditions-en.html | 688 | canonical_mismatch, explicit_scope_exclusion |
 | docs/terms-and-conditions.html | 1569 | canonical_mismatch, explicit_scope_exclusion |
 | en/docs/docs.html | 1279 | canonical_mismatch |
-| en/tenders/compare.html | 1203 | canonical_mismatch, explicit_scope_exclusion |
-| en/tenders/dashboard.html | 627 | canonical_mismatch, explicit_scope_exclusion |
 | en/tenders/landing.html | 1642 | canonical_mismatch |
-| en/tenders/reports.html | 576 | canonical_mismatch, explicit_scope_exclusion |
-| en/tenders/settings.html | 568 | canonical_mismatch, explicit_scope_exclusion |
-| en/tenders/templates.html | 1174 | canonical_mismatch, explicit_scope_exclusion |
 | error.html | 2341 | robots_noindex, canonical_mismatch |
-| interview/pages/Visitor-registration/index.html | 414 | canonical_mismatch, explicit_scope_exclusion |
-| interview/pages/appointment/index.html | 639 | canonical_mismatch, explicit_scope_exclusion |
-| interview/pages/dashboard/index.html | 428 | canonical_mismatch, explicit_scope_exclusion |
-| interview/pages/support-ai/index.html | 529 | canonical_mismatch, explicit_scope_exclusion |
+| interview/pages/Visitor-registration/index.html | 414 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
+| interview/pages/appointment/index.html | 639 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
+| interview/pages/dashboard/index.html | 428 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
+| interview/pages/support-ai/index.html | 529 | robots_noindex, canonical_mismatch, explicit_scope_exclusion |
 | interview/pages/supportAI/index.html | 30 | robots_noindex, canonical_mismatch, thin_content_lt_120, explicit_scope_exclusion |
 | mais-OBM/index.html | 202 | robots_noindex, canonical_mismatch |
 | privacy-cookies/index.html | 945 | canonical_mismatch, explicit_scope_exclusion |
 | sectors/index.html | 318 | thin_content_lt_350 |
 | sitemap/index.html | 700 | canonical_mismatch, explicit_scope_exclusion |
-| tenders/compare.html | 1339 | canonical_mismatch, explicit_scope_exclusion |
-| tenders/dashboard.html | 484 | canonical_mismatch, explicit_scope_exclusion |
 | tenders/landing.html | 1388 | explicit_scope_exclusion |
-| tenders/reports.html | 495 | canonical_mismatch, explicit_scope_exclusion |
-| tenders/settings.html | 487 | canonical_mismatch, explicit_scope_exclusion |
-| tenders/templates.html | 1342 | canonical_mismatch, explicit_scope_exclusion |
 | terms/index.html | 1281 | canonical_mismatch, explicit_scope_exclusion |
 
 ## Excluded Content Inventory
@@ -288,27 +289,17 @@
 | docs/terms-and-conditions-en.html | 688 | canonical_mismatch, explicit_scope_exclusion, legal docs already noindexed |
 | docs/terms-and-conditions.html | 1569 | canonical_mismatch, explicit_scope_exclusion, legal docs already noindexed |
 | en/docs/docs.html | 1279 | canonical_mismatch, quality or canonical exclusion |
-| en/tenders/compare.html | 1203 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| en/tenders/dashboard.html | 627 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | en/tenders/landing.html | 1642 | canonical_mismatch, quality or canonical exclusion |
-| en/tenders/reports.html | 576 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| en/tenders/settings.html | 568 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| en/tenders/templates.html | 1174 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | error.html | 2341 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
-| interview/pages/appointment/index.html | 639 | canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
-| interview/pages/dashboard/index.html | 428 | canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
-| interview/pages/support-ai/index.html | 529 | canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
+| interview/pages/appointment/index.html | 639 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
+| interview/pages/dashboard/index.html | 428 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
+| interview/pages/support-ai/index.html | 529 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
 | interview/pages/supportAI/index.html | 30 | robots_noindex, canonical_mismatch, thin_content_lt_120, explicit_scope_exclusion, interview app internal routes |
-| interview/pages/Visitor-registration/index.html | 414 | canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
+| interview/pages/Visitor-registration/index.html | 414 | robots_noindex, canonical_mismatch, explicit_scope_exclusion, interview app internal routes |
 | mais-OBM/index.html | 202 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | privacy-cookies/index.html | 945 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
 | sectors/index.html | 318 | thin_content_lt_350, quality or canonical exclusion |
 | sitemap/index.html | 700 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
-| tenders/compare.html | 1339 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| tenders/dashboard.html | 484 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | tenders/landing.html | 1388 | explicit_scope_exclusion, duplicate tender landing page |
-| tenders/reports.html | 495 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| tenders/settings.html | 487 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
-| tenders/templates.html | 1342 | canonical_mismatch, explicit_scope_exclusion, authenticated tender app routes |
 | terms/index.html | 1281 | canonical_mismatch, explicit_scope_exclusion, utility and legal pages |
 

@@ -14,6 +14,9 @@ const CORE_MARKETING_FILES = [
 const EN_CORE_MARKETING_FILES = [
   "en/index.html",
   "en/about/index.html",
+  "en/services/index.html",
+  "en/contact/index.html",
+  "en/ai-bots/index.html",
   "en/tools/index.html",
 ];
 
