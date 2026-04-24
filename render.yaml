@@ -440,11 +440,7 @@ services:
         status: 301
       - type: redirect
         source: /ai-bots
-        destination: /docs/ai-bots/
-        status: 301
-      - type: redirect
-        source: /ai-bots/
-        destination: /docs/ai-bots/
+        destination: /ai-bots/
         status: 301
       - type: redirect
         source: /smart-automation
@@ -469,104 +465,137 @@ services:
       - type: redirect
         source: /about/index-en.html
         destination: /en/about/
+        status: 301
       - type: redirect
         source: /ai-agent/index-en.html
         destination: /en/ai-agent/
+        status: 301
       - type: redirect
         source: /ai-workflows/index-en.html
         destination: /en/ai-workflows/
+        status: 301
       - type: redirect
         source: /consultation/index-en.html
         destination: /en/consultation/
+        status: 301
       - type: redirect
         source: /data-analysis/index-en.html
         destination: /en/data-analysis/
+        status: 301
       - type: redirect
         source: /health/index-en.html
         destination: /en/health/
+        status: 301
       - type: redirect
         source: /interview/index-en.html
         destination: /en/interview/
+        status: 301
       - type: redirect
         source: /smart-automation/index-en.html
         destination: /en/smart-automation/
+        status: 301
       - type: redirect
         source: /smart-medical-archive/index-en.html
         destination: /en/smart-medical-archive/
+        status: 301
       - type: redirect
         source: /tools/index-en.html
         destination: /en/tools/
+        status: 301
       - type: redirect
         source: /docs-en.html
         destination: /en/docs/
+        status: 301
 
       # Blog Arabic files redirects
       - type: redirect
         source: "/blog/Generative-artificial-intelligence"
         destination: "/blog/generative-artificial-intelligence"
+        status: 301
       - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)"
         destination: "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+        status: 301
       - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/"
         destination: "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+        status: 301
       - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html"
         destination: "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/"
+        status: 301
       - type: redirect
         source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية"
         destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+        status: 301
       - type: redirect
         source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/"
         destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+        status: 301
       - type: redirect
         source: "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html"
         destination: "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+        status: 301
       - type: redirect
         source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات"
         destination: "/blog/"
+        status: 301
       - type: redirect
         source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/"
         destination: "/blog/"
+        status: 301
       - type: redirect
         source: "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html"
         destination: "/blog/"
+        status: 301
       - type: redirect
         source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية"
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
       - type: redirect
         source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/"
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
       - type: redirect
         source: "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html"
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+        status: 301
       - type: redirect
         source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية"
         destination: "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+        status: 301
       - type: redirect
         source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/"
         destination: "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+        status: 301
       - type: redirect
         source: "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html"
         destination: "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/"
+        status: 301
       - type: redirect
         source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار"
         destination: "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+        status: 301
       - type: redirect
         source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/"
         destination: "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+        status: 301
       - type: redirect
         source: "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html"
         destination: "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/"
+        status: 301
       - type: redirect
         source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور"
         destination: "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+        status: 301
       - type: redirect
         source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/"
         destination: "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+        status: 301
       - type: redirect
         source: "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html"
         destination: "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/"
+        status: 301
 
       # Redirects إضافية موجودة مسبقاً (لحالات خاصة في المدونة)
       - type: redirect
@@ -600,12 +629,15 @@ services:
       - type: redirect
         source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات"
         destination: /blog/
+        status: 301
       - type: redirect
         source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/"
         destination: /blog/
+        status: 301
       - type: redirect
         source: "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html"
         destination: /blog/
+        status: 301
       - type: redirect
         source: "/blog/ production-line"
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
@@ -621,6 +653,7 @@ services:
       - type: redirect
         source: "/blog/Generative artificial intelligence"
         destination: /blog/generative-artificial-intelligence/
+        status: 301
       - type: redirect
         source: /blog/production-line-2
         destination: "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
@@ -996,6 +1029,7 @@ services:
       - type: redirect
         source: /interview/pages/Visitor-registration/index.html
         destination: /interview/pages/Visitor-registration/
+        status: 301
 
       - type: rewrite
         source: /privacy-cookies
@@ -1077,9 +1111,11 @@ services:
       - type: redirect
         source: /job.MAISco
         destination: /interview/
+        status: 301
       - type: redirect
         source: /job.MAISco/
         destination: /interview/
+        status: 301
 
       - type: rewrite
         source: /try
