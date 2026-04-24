@@ -259,6 +259,7 @@ window.addEventListener('load', function() {
   ]
 }
 </script>
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 <header class="unified-nav" id="main-header" role="banner">
@@ -286,7 +287,7 @@ window.addEventListener('load', function() {
 </button>
 <div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
 <div class="p-2 space-y-1">
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/tenders/landing/">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="contractai_tenders" data-tender-feature="landing">
 <div class="flex items-center gap-3">
 <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
 <iconify-icon icon="lucide:file-search" width="18"></iconify-icon>
@@ -334,7 +335,7 @@ window.addEventListener('load', function() {
 </div>
 </div>
 </a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/contact/">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/contact/" data-analytics-event="generate_lead" data-cta-location="smart-automation">
 <div class="flex items-center gap-3">
 <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
 <iconify-icon icon="lucide:users" width="18"></iconify-icon>
@@ -346,7 +347,7 @@ window.addEventListener('load', function() {
 </div>
 </div>
 </a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/data-analysis/">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="data_analysis">
 <div class="flex items-center gap-3">
 <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
 <iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
@@ -467,7 +468,7 @@ window.addEventListener('load', function() {
 <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
 <span class="tracking-wide">EN</span>
 </a>
-<a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب">
+<a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="smart-automation">
 <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -526,15 +527,15 @@ window.addEventListener('load', function() {
 <iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
                             AIaaS — الذكاء كخدمة
                         </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/tenders/landing/">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="contractai_tenders" data-tender-feature="landing">
 <iconify-icon class="text-slate-600" icon="lucide:file-search" width="15"></iconify-icon>
     نظام تحليل العقود والمناقصات
 </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/data-analysis/">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="data_analysis">
 <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
                             تحليل البيانات
                         </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/contact/">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/contact/" data-analytics-event="generate_lead" data-cta-location="smart-automation">
 <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
                             استشارات
                         </a>
@@ -597,18 +598,18 @@ window.addEventListener('load', function() {
 </div>
 </li>
 <li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all" href="/contact/">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all" href="/contact/" data-analytics-event="generate_lead" data-cta-location="smart-automation">
 <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
                         تواصل معنا
                     </a>
 </li>
 </ul>
 <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-<a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+<a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="smart-automation">
 <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
-<a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all" href="/try/">
+<a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all" href="/try/" data-analytics-event="request_demo" data-cta-location="smart-automation">
 <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
                     جرّب النظام مجاناً
                 </a>
@@ -659,7 +660,7 @@ window.addEventListener('load', function() {
           بسير عمل أذكى يرفع الكفاءة التشغيلية ويمنح فرقك وضوحاً أعلى في التنفيذ.
         </p>
 <div class="flex gap-4">
-<a class="btn-primary" href="https://api.whatsapp.com/send?phone=966538229013">
+<a class="btn-primary" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="smart-automation">
 <span>ابدأ الأتمتة</span>
 <iconify-icon icon="lucide:arrow-left"></iconify-icon>
 </a>
@@ -802,8 +803,8 @@ window.addEventListener('load', function() {
 <div class="max-w-3xl mx-auto text-center">
 <p class="text-slate-300 text-lg mb-8">تواصل مع BrightAI ونحلل لك العملية الأعلى أثراً في شركتك، ونبني لك خارطة تنفيذ عملية وآمنة ومتوافقة مع بيئة الأعمال السعودية من أول خطوة.</p>
 <div class="flex flex-wrap justify-center gap-4">
-<a class="btn-primary text-lg px-8 py-4" href="https://api.whatsapp.com/send?phone=966538229013"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon><span>كلمنا الحين</span></a>
-<a class="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/5 transition text-lg flex items-center gap-2" href="/demo/"><iconify-icon icon="lucide:play" width="20"></iconify-icon><span>شوف ديمو عملي</span></a>
+<a class="btn-primary text-lg px-8 py-4" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="smart-automation"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon><span>كلمنا الحين</span></a>
+<a class="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/5 transition text-lg flex items-center gap-2" href="/demo/" data-analytics-event="request_demo" data-cta-location="smart-automation"><iconify-icon icon="lucide:play" width="20"></iconify-icon><span>شوف ديمو عملي</span></a>
 </div>
 </div>
 </div>
@@ -1000,7 +1001,7 @@ window.addEventListener('load', function() {
 <div class="mb-20">
 <div class="max-w-4xl mx-auto internal-linking-cta-wrap">
 <h2 class="text-2xl font-bold text-white mb-4 text-center">أتمتة المشتريات والعقود تحتاج مساراً متخصصاً</h2>
-<p style="margin:0;color:#cbd5e1;line-height:2;">عندما تتحول الأتمتة من مهام تشغيلية عامة إلى ملفات مشتريات ومراجعة عقود ومنافسات متعددة، فالأفضل الانتقال إلى <a class="internal-linking-inline" href="/tenders/landing/">تحليل المناقصات بالذكاء الاصطناعي</a> بدل الاكتفاء بقوالب RPA العامة. هذا المسار يربط القراءة الأولية بالمخاطر والتفاوض، ويصبح أقوى أكثر عند استخدام <a class="internal-linking-inline" href="/tenders/compare/">مقارنة عروض المناقصات</a> مع <a class="internal-linking-inline" href="/data-analysis/">لوحات التحليل التنفيذي</a> لمتابعة القرار. وإذا كانت الجهة تريد تقييم نطاق التطبيق قبل البدء، يمكنها <a class="internal-linking-inline" href="/contact/">طلب عرض توضيحي</a> يناسب دورة العمل الحالية.</p>
+<p style="margin:0;color:#cbd5e1;line-height:2;">عندما تتحول الأتمتة من مهام تشغيلية عامة إلى ملفات مشتريات ومراجعة عقود ومنافسات متعددة، فالأفضل الانتقال إلى <a class="internal-linking-inline" href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="contractai_tenders" data-tender-feature="landing">تحليل المناقصات بالذكاء الاصطناعي</a> بدل الاكتفاء بقوالب RPA العامة. هذا المسار يربط القراءة الأولية بالمخاطر والتفاوض، ويصبح أقوى أكثر عند استخدام <a class="internal-linking-inline" href="/tenders/compare/" data-analytics-event="tender_compare_open" data-cta-location="smart-automation" data-service-name="contractai_tenders" data-tender-feature="compare">مقارنة عروض المناقصات</a> مع <a class="internal-linking-inline" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="data_analysis">لوحات التحليل التنفيذي</a> لمتابعة القرار. وإذا كانت الجهة تريد تقييم نطاق التطبيق قبل البدء، يمكنها <a class="internal-linking-inline" href="/contact/" data-analytics-event="request_demo" data-cta-location="smart-automation">طلب عرض توضيحي</a> يناسب دورة العمل الحالية.</p>
 </div>
 </div>
 <div class="mb-20">
@@ -1176,7 +1177,7 @@ window.addEventListener('load', function() {
 <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
 <h2 class="text-4xl font-bold text-white mb-8">جاهز لأتمتة أعمالك بذكاء؟</h2>
 <p class="text-xl text-slate-300 mb-10">تواصل معنا اليوم لتصميم سير عمل مخصص يرفع كفاءة مؤسستك.</h2>
-<a class="btn-primary text-lg px-8 py-4" href="https://api.whatsapp.com/send?phone=966538229013">
+<a class="btn-primary text-lg px-8 py-4" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="smart-automation">
         احجز استشارة مجانية
       </a>
 </div>
@@ -1215,15 +1216,15 @@ window.addEventListener('load', function() {
             نبتكر المستقبل اليوم. حلول ذكاء اصطناعي آمنة وموثوقة.
           </p>
 <div class="flex gap-4">
-<a class="text-slate-400 hover:text-white transition" aria-label="واتساب" title="تواصل معنا عبر الواتساب" href="https://api.whatsapp.com/send?phone=966538229013"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon></a>
-<a class="text-slate-400 hover:text-white transition" aria-label="البريد الإلكتروني" title="أرسل لنا بريداً إلكترونياً" href="mailto:yazeed1job@gmail.com"><iconify-icon icon="lucide:mail" width="20"></iconify-icon></a>
+<a class="text-slate-400 hover:text-white transition" aria-label="واتساب" title="تواصل معنا عبر الواتساب" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="smart-automation"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon></a>
+<a class="text-slate-400 hover:text-white transition" aria-label="البريد الإلكتروني" title="أرسل لنا بريداً إلكترونياً" href="mailto:yazeed1job@gmail.com" data-analytics-event="email_click" data-cta-location="smart-automation"><iconify-icon icon="lucide:mail" width="20"></iconify-icon></a>
 </div>
 </div>
 <div>
 <p class="text-white font-medium mb-6">الشركة</p>
 <ul class="space-y-3 text-sm text-slate-400">
 <li><a class="hover:text-gold-400" href="/about/">عن Bright AI</a></li>
-<li><a class="hover:text-gold-400" href="/contact/">اتصل بنا</a></li>
+<li><a class="hover:text-gold-400" href="/contact/" data-analytics-event="generate_lead" data-cta-location="smart-automation">اتصل بنا</a></li>
 </ul>
 </div>
 <div>
@@ -1237,7 +1238,7 @@ window.addEventListener('load', function() {
 <p class="text-white font-medium mb-6">خدماتنا</p>
 <ul class="space-y-3 text-sm text-slate-400">
 <li><a class="hover:text-gold-400" href="/ai-agent/">AIaaS</a></li>
-<li><a class="hover:text-gold-400" href="/data-analysis/">تحليل البيانات</a></li>
+<li><a class="hover:text-gold-400" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="smart-automation" data-service-name="data_analysis">تحليل البيانات</a></li>
 </ul>
 </div>
 <div class="custom-seo-links mt-8 pt-8 border-t border-white/10">
@@ -1246,7 +1247,7 @@ window.addEventListener('load', function() {
 <li><a class="hover:text-gold-400" href="/">الصفحة الرئيسية</a></li>
 <li><a class="hover:text-gold-400" href="/blog/">صفحة المدونة</a></li>
 <li><a class="hover:text-gold-400" href="/about/">صفحة من نحن</a></li>
-<li><a class="hover:text-gold-400" href="/contact/">صفحة اتصل بنا</a></li>
+<li><a class="hover:text-gold-400" href="/contact/" data-analytics-event="generate_lead" data-cta-location="smart-automation">صفحة اتصل بنا</a></li>
 </ul>
 </div>
 </div>
@@ -1263,12 +1264,12 @@ window.addEventListener('load', function() {
 <li><a href="/blog/" style="color:#94a3b8; text-decoration:none;">صفحة المدونة</a></li>
 <li><a href="/about/" style="color:#94a3b8; text-decoration:none;">صفحة من نحن</a>
 </li>
-<li><a href="/contact/" style="color:#94a3b8; text-decoration:none;">صفحة اتصل بنا</a>
+<li><a href="/contact/" style="color:#94a3b8; text-decoration:none;" data-analytics-event="generate_lead" data-cta-location="smart-automation">صفحة اتصل بنا</a>
 </li>
 </ul>
 </div>
-<div class="internal-linking-cta-wrap"><a class="internal-linking-inline" href="/ai-workflows/">AI Workflows</a> → <a class="internal-linking-inline" href="/demo/">الديمو</a></div>
-<section class="internal-linking-cta-wrap"><h3 style="color:#fff;margin:0 0 8px">أدوات ذات صلة</h3><p style="color:#94a3b8;margin:0 0 10px">مسارات جاهزة للتنفيذ لمن يبغى يربط الأتمتة بالخدمة والعمليات وسلسلة الإمداد.</h3><a class="internal-linking-inline" href="/ai-workflows/">AI Workflows</a>، <a class="internal-linking-inline" href="/docs/smart-automation/">دليل الأتمتة الذكية</a>، <a class="internal-linking-inline" href="/docs/solutions-crm/">حلول CRM والمبيعات</a>، <a class="internal-linking-inline" href="/docs/solutions-logistics/">حلول اللوجستيات</a>، <a class="internal-linking-inline" href="/docs/solutions-supply-chain/">حلول سلسلة الإمداد</a>، <a class="internal-linking-inline" href="/blog/auto/">الأتمتة في مكان العمل</a>، <a class="internal-linking-inline" href="/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/">التحول الرقمي وأتمتة العمليات</a>، <a class="internal-linking-inline" href="/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/">أتمتة الذكاء الاصطناعي للمشاريع</a>، <a class="internal-linking-inline" href="/blog/digital/">تطبيق الذكاء الاصطناعي في المصانع</a>، <a class="internal-linking-inline" href="/blog/atou-job/">الأتمتة الصناعية والمهام المتكررة</a></section>
+<div class="internal-linking-cta-wrap"><a class="internal-linking-inline" href="/ai-workflows/">AI Workflows</a> → <a class="internal-linking-inline" href="/demo/" data-analytics-event="request_demo" data-cta-location="smart-automation">الديمو</a></div>
+<section class="internal-linking-cta-wrap"><h3 style="color:#fff;margin:0 0 8px">أدوات ذات صلة</h3><p style="color:#94a3b8;margin:0 0 10px">مسارات جاهزة للتنفيذ لمن يبغى يربط الأتمتة بالخدمة والعمليات وسلسلة الإمداد.</h3><a class="internal-linking-inline" href="/ai-workflows/">AI Workflows</a>، <a class="internal-linking-inline" href="/docs/smart-automation/">دليل الأتمتة الذكية</a>، <a class="internal-linking-inline" href="/docs/solutions-crm/" data-analytics-event="generate_lead" data-cta-location="smart-automation">حلول CRM والمبيعات</a>، <a class="internal-linking-inline" href="/docs/solutions-logistics/">حلول اللوجستيات</a>، <a class="internal-linking-inline" href="/docs/solutions-supply-chain/">حلول سلسلة الإمداد</a>، <a class="internal-linking-inline" href="/blog/auto/">الأتمتة في مكان العمل</a>، <a class="internal-linking-inline" href="/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/">التحول الرقمي وأتمتة العمليات</a>، <a class="internal-linking-inline" href="/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/" data-analytics-event="tool_start" data-cta-location="smart-automation">أتمتة الذكاء الاصطناعي للمشاريع</a>، <a class="internal-linking-inline" href="/blog/digital/">تطبيق الذكاء الاصطناعي في المصانع</a>، <a class="internal-linking-inline" href="/blog/atou-job/">الأتمتة الصناعية والمهام المتكررة</a></section>
 <div class="internal-linking-cta-wrap"><strong style="color:#fff">مسارات قطاعية جاهزة:</strong> <a class="internal-linking-inline" href="/sectors/">جميع القطاعات</a>، <a class="internal-linking-inline" href="/sectors/manufacturing/">التصنيع</a>، <a class="internal-linking-inline" href="/sectors/logistics/">اللوجستيات</a>، <a class="internal-linking-inline" href="/sectors/energy/">الطاقة</a></div>
 </footer>
 <script defer src="/frontend/js/runtime-config.min.js"></script>

@@ -232,10 +232,11 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
   ]
 }
 </script>
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 
-<a aria-label="الانتقال إلى النسخة الإنجليزية" class="consultation-lang-switch" href="/en/consultation/" title="English Version">
+<a aria-label="الانتقال إلى النسخة الإنجليزية" class="consultation-lang-switch" href="/en/consultation/" title="English Version" data-analytics-event="consultation_request" data-cta-location="consultation">
 <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
 <span>EN</span>
 </a>
@@ -258,7 +259,7 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
                     نرافقك في رحلة تبني الذكاء الاصطناعي من التخطيط الاستراتيجي وحتى التنفيذ وقياس الأثر، لضمان تحقيق
                     أهداف مؤسستك عبر مسار استشاري واضح يناسب السوق السعودي ومتطلبات التحول الرقمي.
                 </p>
-<a class="btn-primary" href="#contact-modal" onclick="document.getElementById('contact-modal').style.display='block'">
+<a class="btn-primary" href="#contact-modal" onclick="document.getElementById('contact-modal').style.display='block'" data-analytics-event="consultation_request" data-cta-location="consultation">
                     احجز استشارة مجانية
                 </a>
 </div>
@@ -367,7 +368,7 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
                     ابدأ نموذج الحجز
                 </a>
 </div>
-<form class="glass-card p-8 border border-white/10 space-y-4" data-form-type="booking" id="calendar-booking-form">
+<form class="glass-card p-8 border border-white/10 space-y-4" data-form-type="booking" id="calendar-booking-form" data-analytics-event="contact_form_start" data-cta-location="consultation" data-analytics-submit-event="consultation_request">
 <h3 class="text-xl font-bold text-white">طلب حجز سريع</h3>
 <p class="text-slate-400 text-sm">إذا تفضّل، ارسل الوقت المناسب ونرجع لك بتأكيد الموعد.</h3>
 <input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cyan-500" name="name" placeholder="الاسم الكامل" required type="text"/>
@@ -382,7 +383,7 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
 </select>
 </div>
 <textarea class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white min-h-[110px] focus:outline-none focus:border-cyan-500" name="notes" placeholder="ملخص سريع عن التحدي أو الهدف"></textarea>
-<button class="btn-primary w-full justify-center" type="submit">إرسال طلب الحجز</button>
+<button class="btn-primary w-full justify-center" type="submit" data-analytics-event="tool_start" data-cta-location="consultation">إرسال طلب الحجز</button>
 </form>
 </div>
 </section>
@@ -395,11 +396,11 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
 <iconify-icon icon="lucide:x" width="24"></iconify-icon>
 </button>
 <h3 class="text-2xl font-bold text-white mb-6">احجز استشارتك المجانية</h3>
-<form class="space-y-4" id="consultation-form" data-form-type="consultation" data-conversion-goal="lead_generation">
+<form class="space-y-4" id="consultation-form" data-form-type="consultation" data-conversion-goal="lead_generation" data-analytics-event="contact_form_start" data-cta-location="consultation" data-analytics-submit-event="consultation_request">
 <input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="الاسم الكامل" type="text"/>
 <input class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500" placeholder="البريد الإلكتروني" type="email"/>
 <textarea class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 min-h-[120px]" placeholder="كيف يمكننا مساعدتك؟"></textarea>
-<button class="btn-primary w-full justify-center" type="submit">إرسال الطلب</button>
+<button class="btn-primary w-full justify-center" type="submit" data-analytics-event="tool_start" data-cta-location="consultation">إرسال الطلب</button>
 </form>
 </div>
 </div>
@@ -437,14 +438,14 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
                 الخطوة التالية واضحة: جهّز وصف مختصر للتحدي الحالي، المؤشرات التي تبغى تحسينها، والأنظمة المستخدمة لديكم، ثم احجز جلسة استشارية.
                 في الجلسة نضع خطة تنفيذ أولية تشمل النطاق، الجدول الزمني، والـ KPI المتوقع لكل مرحلة. إذا تبي نظرة أوسع قبل الحجز، تقدر تزور
                 <a href="/services/" class="text-indigo-300 underline">صفحة الخدمات</a> وتشوف مسارات التنفيذ المناسبة، ثم تتواصل معنا مباشرة عبر
-                <a href="/contact/" class="text-indigo-300 underline">نموذج التواصل</a>. بهذه الطريقة تكون البداية مدروسة، سريعة، ومبنية على أثر
+                <a href="/contact/" class="text-indigo-300 underline" data-analytics-event="generate_lead" data-cta-location="consultation">نموذج التواصل</a>. بهذه الطريقة تكون البداية مدروسة، سريعة، ومبنية على أثر
                 حقيقي في بيئة العمل السعودية.
             </p>
 </div>
 <div class="max-w-7xl mx-auto px-6 mt-16 pb-12">
 <h3 class="text-3xl font-bold text-white mb-8 text-center">خدمات تقنية ذات صلة تفيدك</h3>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/what-is-ai/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">أساسيات وتطبيقات AI <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/data-analysis/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">منهجية تحليل المعطيات <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/about/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">نبذة عن الشركة <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4></a>
+<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/what-is-ai/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">أساسيات وتطبيقات AI <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="consultation" data-service-name="data_analysis"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">منهجية تحليل المعطيات <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4></a><a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/about/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">نبذة عن الشركة <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4></a>
 </div>
 </div>
 </section>
@@ -455,7 +456,7 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
         <a href="/blog/ai-transformation/" class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
             <h3 class="text-sm font-bold text-slate-300 flex items-center justify-between">التحول بواسطة الذكاء الاصطناعي <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h3>
         </a>
-        <a href="/blog/" class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
+        <a href="/blog/" class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" data-analytics-event="consultation_request" data-cta-location="consultation">
             <h4 class="text-sm font-bold text-slate-300 flex items-center justify-between">الاستشارة قبل التنفيذ <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4>
         </a>
         <a href="/blog/nca-compliance/" class="glass-card p-4 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50">
@@ -482,15 +483,15 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
                         نبتكر المستقبل اليوم. حلول ذكاء اصطناعي آمنة وموثوقة.
                     </h3>
 <div class="flex gap-4">
-<a class="text-slate-400 hover:text-white transition" aria-label="واتساب" title="تواصل معنا عبر الواتساب" href="https://api.whatsapp.com/send?phone=966538229013"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon></a>
-<a class="text-slate-400 hover:text-white transition" aria-label="البريد الإلكتروني" title="أرسل لنا بريداً إلكترونياً" href="mailto:yazeed1job@gmail.com"><iconify-icon icon="lucide:mail" width="20"></iconify-icon></a>
+<a class="text-slate-400 hover:text-white transition" aria-label="واتساب" title="تواصل معنا عبر الواتساب" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="consultation"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon></a>
+<a class="text-slate-400 hover:text-white transition" aria-label="البريد الإلكتروني" title="أرسل لنا بريداً إلكترونياً" href="mailto:yazeed1job@gmail.com" data-analytics-event="email_click" data-cta-location="consultation"><iconify-icon icon="lucide:mail" width="20"></iconify-icon></a>
 </div>
 </div>
 <div>
 <h4 class="text-white font-medium mb-6">الشركة</h4>
 <ul class="space-y-3 text-sm text-slate-400">
 <li><a class="hover:text-gold-400" href="/about/">عن Bright AI</a></li>
-<li><a class="hover:text-gold-400" href="/contact/">اتصل بنا</a></li>
+<li><a class="hover:text-gold-400" href="/contact/" data-analytics-event="generate_lead" data-cta-location="consultation">اتصل بنا</a></li>
 </ul>
 </div>
 <div>
@@ -504,7 +505,7 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
 <h4 class="text-white font-medium mb-6">خدماتنا</h4>
 <ul class="space-y-3 text-sm text-slate-400">
 <li><a class="hover:text-gold-400" href="/ai-agent/">AIaaS</a></li>
-<li><a class="hover:text-gold-400" href="/data-analysis/">تحليل البيانات</a></li>
+<li><a class="hover:text-gold-400" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="consultation" data-service-name="data_analysis">تحليل البيانات</a></li>
 </ul>
 </div>
 <div class="custom-seo-links mt-8 pt-8 border-t border-white/10">
@@ -513,7 +514,7 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
 <li><a class="hover:text-gold-400" href="/">الصفحة الرئيسية</a></li>
 <li><a class="hover:text-gold-400" href="/blog/">صفحة المدونة</a></li>
 <li><a class="hover:text-gold-400" href="/about/">صفحة من نحن</a></li>
-<li><a class="hover:text-gold-400" href="/contact/">صفحة اتصل بنا</a></li>
+<li><a class="hover:text-gold-400" href="/contact/" data-analytics-event="generate_lead" data-cta-location="consultation">صفحة اتصل بنا</a></li>
 </ul>
 </div>
 </div>
@@ -529,13 +530,13 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
 <li><a href="/services/" style="color:#94a3b8; text-decoration:none;">صفحات الخدمات الأخرى</a></li>
 <li><a href="/blog/" style="color:#94a3b8; text-decoration:none;">صفحة المدونة</a></li>
 <li><a href="/about/" style="color:#94a3b8; text-decoration:none;">صفحة من نحن</a></li>
-<li><a href="/contact/" style="color:#94a3b8; text-decoration:none;">صفحة اتصل بنا</a></li>
+<li><a href="/contact/" style="color:#94a3b8; text-decoration:none;" data-analytics-event="generate_lead" data-cta-location="consultation">صفحة اتصل بنا</a></li>
 <li><a href="/privacy-cookies/" style="color:#94a3b8; text-decoration:none;">سياسة الخصوصية</a></li>
 <li><a href="/terms/" style="color:#94a3b8; text-decoration:none;">شروط الاستخدام</a></li>
 </ul>
 </div>
 
-<div class="internal-linking-cta-wrap"><a class="internal-linking-inline" href="/demo/pricing/">اطّلع على الباقات قبل الاستشارة</a></div>
+<div class="internal-linking-cta-wrap"><a class="internal-linking-inline" href="/demo/pricing/" data-analytics-event="pricing_click" data-cta-location="consultation">اطّلع على الباقات قبل الاستشارة</a></div>
 </footer>
 
 
@@ -544,16 +545,16 @@ a.text-cyan-300.font-semibold.hover\:underline:hover{text-shadow:0 1px 8px rgba(
 
 <section class="brightai-command-cta bai-inline-0086">
 <p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">قبل الاستشارة، شوف الباقات وخيارات التسعير.</h4>
-<a href="/demo/pricing/" class="bai-inline-0087">
+<a href="/demo/pricing/" class="bai-inline-0087" data-analytics-event="pricing_click" data-cta-location="consultation">
             اختر الباقة المناسبة لفريقك
         </a>
 </section>
 
 <section class="brightai-orphan-links bai-inline-0148">
 <h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">روابط ذات صلة</h3>
-<p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">إذا كنت بمرحلة تقييم المشروع، راجع <a href="/services/" class="bai-inline-0149">صفحة الخدمات</a>، ثم <a href="/docs/consultation/" class="bai-inline-0149">دليل الاستشارات التنفيذية</a>، وبعدها شوف <a href="/blog/nca-compliance/" class="bai-inline-0149">مقال الامتثال للأمن السيبراني</a> و<a href="/blog/vision-2030-ai-opportunities/" class="bai-inline-0149">فرص الذكاء الاصطناعي في رؤية 2030</a>.</h3>
+<p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">إذا كنت بمرحلة تقييم المشروع، راجع <a href="/services/" class="bai-inline-0149">صفحة الخدمات</a>، ثم <a href="/docs/consultation/" class="bai-inline-0149" data-analytics-event="consultation_request" data-cta-location="consultation">دليل الاستشارات التنفيذية</a>، وبعدها شوف <a href="/blog/nca-compliance/" class="bai-inline-0149">مقال الامتثال للأمن السيبراني</a> و<a href="/blog/vision-2030-ai-opportunities/" class="bai-inline-0149">فرص الذكاء الاصطناعي في رؤية 2030</a>.</h3>
 <div class="bai-inline-0150"><a href="/ai-workflows/" class="bai-inline-0151">سير العمل الذكي للعمليات اليومية</a><a href="/docs/solutions-bi/" class="bai-inline-0151">حلول ذكاء الأعمال للإدارة</a><a href="/docs/terms-and-conditions/" class="bai-inline-0151">الشروط والأحكام</a><a href="#calendar-booking-form" class="bai-inline-0151">ابدأ طلب الحجز</a></div>
-<ul class="bai-inline-0152"><li><a href="/smart-automation/" style="color:#e2e8f0;text-decoration:none;">الأتمتة الذكية للمشاريع التشغيلية</a></li><li><a href="/data-analysis/" style="color:#e2e8f0;text-decoration:none;">تحليل البيانات قبل القرار التنفيذي</a></li><li><a href="/interview/" style="color:#e2e8f0;text-decoration:none;">حلول التوظيف والمقابلات الذكية</a></li><li><a href="/about/" style="color:#e2e8f0;text-decoration:none;">تعرف علينا قبل بدء الشراكة</a></li></ul>
+<ul class="bai-inline-0152"><li><a href="/smart-automation/" style="color:#e2e8f0;text-decoration:none;" data-analytics-event="tool_start" data-cta-location="consultation" data-service-name="smart_automation">الأتمتة الذكية للمشاريع التشغيلية</a></li><li><a href="/data-analysis/" style="color:#e2e8f0;text-decoration:none;" data-analytics-event="tool_start" data-cta-location="consultation" data-service-name="data_analysis">تحليل البيانات قبل القرار التنفيذي</a></li><li><a href="/interview/" style="color:#e2e8f0;text-decoration:none;">حلول التوظيف والمقابلات الذكية</a></li><li><a href="/about/" style="color:#e2e8f0;text-decoration:none;">تعرف علينا قبل بدء الشراكة</a></li></ul>
 </section>
 <script defer src="/frontend/js/runtime-config.min.js"></script>
 <script defer src="/frontend/js/navigation.min.js"></script>

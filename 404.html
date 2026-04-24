@@ -63,8 +63,9 @@
   "url": "https://brightai.site/404"
 }</script>
 
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
-<body class="bg-slate-950 text-slate-100">
+<body class="bg-slate-950 text-slate-100" data-page-type="404">
 <main class="max-w-4xl mx-auto px-6 pt-36 pb-20" id="main-content">
 <section class="rounded-3xl border border-white/10 bg-white/5 p-8 md:p-12 text-center">
 <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-amber-500/30 to-orange-500/20 border border-amber-400/30 flex items-center justify-center mb-6">
@@ -75,13 +76,14 @@
 <p class="text-slate-400 leading-8 max-w-3xl mx-auto mb-6">إذا كنت داخل من محرك بحث أو مشاركة قديمة، فغالباً المحتوى انتقل إلى مسار أحدث ضمن صفحات الخدمات أو المدونة أو المستندات. في Bright AI نرتب المسارات باستمرار عشان تبقى التجربة أوضح للمستخدم السعودي، خصوصاً على الجوال، لذلك بعض الروابط القديمة نوقفها ونعوضها بصفحات أحدث وأدق من ناحية المحتوى والحوكمة.</p>
 <p class="text-slate-400 leading-8 max-w-3xl mx-auto mb-8">أفضل خطوة الآن هي الرجوع إلى الصفحة الرئيسية ثم اختيار الخدمة المناسبة: الأتمتة الذكية، تحليل البيانات، وكلاء الذكاء الاصطناعي، أو التواصل المباشر مع الفريق. وإذا كنت تبحث عن وثيقة أو شرح تقني، فمركز المستندات فيه النسخ المحدثة من الأدلة والواجهات الفنية والسياسات. بهذه الطريقة نضمن أنك تصل للمعلومة الصحيحة بدل صفحة انتهى استخدامها.</p>
 <div class="flex flex-wrap justify-center gap-3 mb-8">
-<a class="px-5 py-2 rounded-lg bg-amber-400 text-slate-900 font-bold" href="/">الصفحة الرئيسية</a>
-<a class="px-5 py-2 rounded-lg border border-white/25" href="/blog/">المدونة</a>
-<a class="px-5 py-2 rounded-lg border border-white/25" href="/docs/">المستندات</a>
-<a class="px-5 py-2 rounded-lg border border-white/25" href="/services/">الخدمات</a>
+<a class="px-5 py-2 rounded-lg bg-amber-400 text-slate-900 font-bold" href="/" data-analytics-event="cta_click" data-cta-location="404">الصفحة الرئيسية</a>
+<a class="px-5 py-2 rounded-lg border border-white/25" href="/services/" data-analytics-event="cta_click" data-cta-location="404" data-service-name="services">حلول ذكاء اصطناعي للشركات</a>
+<a class="px-5 py-2 rounded-lg border border-white/25" href="/tenders/" data-analytics-event="tender_compare_open" data-cta-location="404" data-service-name="contractai_tenders" data-tender-feature="overview">تحليل المناقصات بالذكاء الاصطناعي</a>
+<a class="px-5 py-2 rounded-lg border border-white/25" href="/contact/" data-analytics-event="generate_lead" data-cta-location="404">تواصل معنا</a>
+<button class="px-5 py-2 rounded-lg border border-white/25" type="button" data-analytics-event="search_open" data-cta-location="404" onclick="document.querySelector('.search-mobile, [data-search-open], #site-search, input[type=search]')?.click?.()">افتح البحث</button>
 </div>
 <div class="grid md:grid-cols-3 gap-4 text-right">
-<a class="rounded-xl border border-white/10 bg-black/20 p-4 hover:border-cyan-400/40 transition" href="/services/">
+<a class="rounded-xl border border-white/10 bg-black/20 p-4 hover:border-cyan-400/40 transition" href="/services/" data-analytics-event="pricing_click" data-cta-location="404" data-service-name="services">
 <h2 class="text-lg font-bold text-white mb-1">الأسعار</h2>
 <p class="text-sm text-slate-400">خطط وأسعار الحلول المؤسسية.</h2>
 </a>
@@ -89,7 +91,7 @@
 <h2 class="text-lg font-bold text-white mb-1">قصص النجاح</h2>
 <p class="text-sm text-slate-400">نتائج تنفيذ فعلية في السوق السعودي.</h2>
 </a>
-<a class="rounded-xl border border-white/10 bg-black/20 p-4 hover:border-cyan-400/40 transition" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+<a class="rounded-xl border border-white/10 bg-black/20 p-4 hover:border-cyan-400/40 transition" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="404">
 <h2 class="text-lg font-bold text-white mb-1">دعم سريع</h2>
 <p class="text-sm text-slate-400">تواصل مباشر عبر واتساب.</h2>
 </a>

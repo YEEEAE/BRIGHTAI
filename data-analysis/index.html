@@ -224,6 +224,7 @@
   ]
 }
 </script>
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
     <header class="unified-nav" id="main-header" role="banner">
@@ -264,7 +265,7 @@
                             class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/tenders/landing/">
+                                    href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="data-analysis" data-service-name="contractai_tenders" data-tender-feature="landing">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
@@ -324,7 +325,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/contact/">
+                                    href="/contact/" data-analytics-event="generate_lead" data-cta-location="data-analysis">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
@@ -339,7 +340,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/data-analysis/">
+                                    href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="data-analysis" data-service-name="data_analysis">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
@@ -475,7 +476,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/demo/pricing/">الأسعار</a>
+                        <a class="nav-link" href="/demo/pricing/" data-analytics-event="pricing_click" data-cta-location="data-analysis">الأسعار</a>
                     </li>
                 </ul>
             </nav>
@@ -517,7 +518,7 @@
 
                 <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop hidden lg:flex"
                     href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank"
-                    title="تواصل معنا عبر الواتساب">
+                    title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="data-analysis">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -601,7 +602,7 @@
                             <iconify-icon class="text-slate-500 text-sm transition-transform duration-300 transform group-[[aria-expanded='true']]:rotate-180" icon="lucide:chevron-down"></iconify-icon>
                         </a>
                         <div class="mobile-dropdown ml-0 mr-12 pl-0 pr-4 mt-1 mb-2 border-r-[1.5px] border-white/[0.04] flex-col gap-1">
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/tenders/landing/">
+                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="data-analysis" data-service-name="contractai_tenders" data-tender-feature="landing">
                                 <iconify-icon class="text-cyan-500" icon="lucide:file-search" width="16"></iconify-icon>
                                 نظام تحليل العقود والمناقصات
                             </a>
@@ -617,7 +618,7 @@
                                 <iconify-icon class="text-amber-400" icon="lucide:bot" width="16"></iconify-icon>
                                 الذكاء كخدمة AIaaS
                             </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/data-analysis/">
+                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="data-analysis" data-service-name="data_analysis">
                                 <iconify-icon class="text-emerald-400" icon="lucide:bar-chart-3" width="16"></iconify-icon>
                                 تحليل البيانات BI
                             </a>
@@ -682,7 +683,7 @@
                                 <iconify-icon class="text-slate-400" icon="lucide:file-text" width="16"></iconify-icon>
                                 المستندات التقنية
                             </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/pricing/">
+                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/pricing/" data-analytics-event="pricing_click" data-cta-location="data-analysis">
                                 <iconify-icon class="text-amber-400" icon="lucide:badge-dollar-sign" width="16"></iconify-icon>
                                 الباقات والأسعار
                             </a>
@@ -694,11 +695,11 @@
             <!-- Sticky Fixed CTA Footer -->
             <div class="absolute bottom-0 left-0 right-0 p-6 pt-10 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-20 pointer-events-none w-full">
                 <div class="pointer-events-auto flex flex-col gap-3">
-                    <a class="flex items-center justify-center gap-3 w-full px-4 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 text-white font-bold text-[15px] shadow-[0_8px_20px_-6px_rgba(99,102,241,0.5)] hover:shadow-[0_12px_24px_-8px_rgba(99,102,241,0.7)] active:scale-[0.98] transition-all" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer">
+                    <a class="flex items-center justify-center gap-3 w-full px-4 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 text-white font-bold text-[15px] shadow-[0_8px_20px_-6px_rgba(99,102,241,0.5)] hover:shadow-[0_12px_24px_-8px_rgba(99,102,241,0.7)] active:scale-[0.98] transition-all" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer" data-analytics-event="whatsapp_click" data-cta-location="data-analysis">
                         <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
                         ابدأ رحلة التحول التقني
                     </a>
-                    <a class="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-full border border-white/10 text-slate-300 font-medium text-[14px] hover:text-white hover:bg-white/[0.05] active:bg-white/[0.1] transition-all backdrop-blur-md" href="/try/">
+                    <a class="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-full border border-white/10 text-slate-300 font-medium text-[14px] hover:text-white hover:bg-white/[0.05] active:bg-white/[0.1] transition-all backdrop-blur-md" href="/try/" data-analytics-event="request_demo" data-cta-location="data-analysis">
                         <iconify-icon icon="lucide:play-circle" width="18"></iconify-icon>
                         جرّب منصة الذكاء مجاناً
                     </a>
@@ -733,11 +734,11 @@
                 نحول البيانات الخام إلى رؤى استراتيجية. من لوحات (Power BI) المتقدمة إلى التحليلات التشغيلية، نبني لك مساراً تحليلياً يمنح إدارتك رؤية أوضح واتخاذ قرار أسرع داخل بيئة مؤسسية سعودية.
             </p>
 <div class="flex flex-col sm:flex-row gap-5 animate-fade-in-up">
-<a href="/contact/" class="relative inline-flex h-14 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-8 font-medium text-white shadow-[0_0_40px_-10px_rgba(6,182,212,0.5)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-15px_rgba(6,182,212,0.7)] group">
+<a href="/contact/" class="relative inline-flex h-14 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-8 font-medium text-white shadow-[0_0_40px_-10px_rgba(6,182,212,0.5)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-15px_rgba(6,182,212,0.7)] group" data-analytics-event="generate_lead" data-cta-location="data-analysis">
 <span class="absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 bg-white opacity-10 transition-all duration-1000 ease-out group-hover:-translate-x-40"></span>
 <span class="flex items-center gap-2 text-lg font-bold">ابدأ رحلة تحول بياناتك <iconify-icon icon="lucide:rocket"></iconify-icon></span>
 </a>
-<a href="/try/data-analyzer/" class="inline-flex h-14 items-center justify-center rounded-xl bg-white/5 px-8 font-medium text-slate-300 backdrop-blur-sm border border-white/10 transition-colors hover:bg-white/10 hover:text-white">
+<a href="/try/data-analyzer/" class="inline-flex h-14 items-center justify-center rounded-xl bg-white/5 px-8 font-medium text-slate-300 backdrop-blur-sm border border-white/10 transition-colors hover:bg-white/10 hover:text-white" data-analytics-event="tool_start" data-cta-location="data-analysis">
 <span class="flex items-center gap-2 text-lg">تجربة التحليل مجاناً <iconify-icon icon="lucide:play-circle"></iconify-icon></span>
 </a>
 </div>
@@ -745,7 +746,7 @@
                 إذا ودك تدخل أعمق، شوف
                 <a class="text-cyan-400 hover:text-cyan-300 transition-colors font-medium border-b border-cyan-500/30 pb-0.5" href="/docs/data-analysis/">شرح التنفيذ خطوة بخطوة</a>،
                 أو مر على <a class="text-cyan-400 hover:text-cyan-300 transition-colors font-medium border-b border-cyan-500/30 pb-0.5" href="/case-studies/">نتائج فعلية مع العملاء</a>، 
-                أو <a class="text-cyan-400 hover:text-cyan-300 transition-colors font-medium border-b border-cyan-500/30 pb-0.5" href="/consultation/">احجز استشارة لترتيب الأولويات</a>،
+                أو <a class="text-cyan-400 hover:text-cyan-300 transition-colors font-medium border-b border-cyan-500/30 pb-0.5" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="data-analysis">احجز استشارة لترتيب الأولويات</a>،
                 أو راجع <a class="text-cyan-400 hover:text-cyan-300 transition-colors font-medium border-b border-cyan-500/30 pb-0.5" href="/sectors/">المسارات القطاعية</a>.
             </p>
 </div>
@@ -921,8 +922,8 @@
     <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">جاهز تحوّل بياناتك لقرارات؟</h2>
     <p class="text-slate-300 text-lg mb-8">تواصل مع BrightAI ونبني لك منظومة تحليل بيانات مخصصة تناسب حجم شركتك وقطاعك — من أول استشارة مجانية.</h2>
     <div class="flex flex-wrap justify-center gap-4">
-      <a class="btn-primary text-lg px-8 py-4" href="https://api.whatsapp.com/send?phone=966538229013"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon><span>كلمنا الحين</span></a>
-      <a class="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/5 transition text-lg flex items-center gap-2" href="/try/data-analyzer/"><iconify-icon icon="lucide:play" width="20"></iconify-icon><span>جرّب تحليل البيانات مجاناً</span></a>
+      <a class="btn-primary text-lg px-8 py-4" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="data-analysis"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon><span>كلمنا الحين</span></a>
+      <a class="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/5 transition text-lg flex items-center gap-2" href="/try/data-analyzer/" data-analytics-event="tool_start" data-cta-location="data-analysis"><iconify-icon icon="lucide:play" width="20"></iconify-icon><span>جرّب تحليل البيانات مجاناً</span></a>
     </div>
   </div>
 </section>
@@ -948,8 +949,8 @@
     <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">جاهز تحوّل بياناتك لقرارات؟</h2>
     <p class="text-slate-300 text-lg mb-8">تواصل مع BrightAI ونبني لك منظومة تحليل بيانات مخصصة تناسب حجم شركتك وقطاعك — من أول استشارة مجانية.</h2>
     <div class="flex flex-wrap justify-center gap-4">
-      <a class="btn-primary text-lg px-8 py-4" href="/contact/"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon><span>ابدأ رحلة تحول بياناتك</span></a>
-      <a class="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/5 transition text-lg flex items-center gap-2" href="/try/data-analyzer/"><iconify-icon icon="lucide:play" width="20"></iconify-icon><span>جرّب تحليل البيانات مجاناً</span></a>
+      <a class="btn-primary text-lg px-8 py-4" href="/contact/" data-analytics-event="generate_lead" data-cta-location="data-analysis"><iconify-icon icon="lucide:message-circle" width="20"></iconify-icon><span>ابدأ رحلة تحول بياناتك</span></a>
+      <a class="px-8 py-4 rounded-xl border border-white/20 text-white hover:bg-white/5 transition text-lg flex items-center gap-2" href="/try/data-analyzer/" data-analytics-event="tool_start" data-cta-location="data-analysis"><iconify-icon icon="lucide:play" width="20"></iconify-icon><span>جرّب تحليل البيانات مجاناً</span></a>
     </div>
   </div>
 </section>
@@ -1338,7 +1339,7 @@
 <div class="max-w-4xl mx-auto text-center">
 <h2 class="text-3xl font-bold text-white mb-4">جرّب أداة تحليل البيانات المجانية</h2>
 <p class="text-slate-300 mb-8">اختبر التحليل مباشرة قبل بدء مشروعك الكامل.</h2>
-<a class="btn-primary inline-flex items-center gap-2 text-lg px-8 py-4" href="/try/data-analyzer/">
+<a class="btn-primary inline-flex items-center gap-2 text-lg px-8 py-4" href="/try/data-analyzer/" data-analytics-event="tool_start" data-cta-location="data-analysis">
 <iconify-icon icon="lucide:play-circle" width="20"></iconify-icon>
                 جرّب Data Analyzer الآن
             </a>
@@ -1487,8 +1488,8 @@
 <div class="max-w-7xl mx-auto">
 <h3 class="text-3xl font-bold text-white mb-8 text-center">خدمات تقنية ذات صلة تفيدك</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/consultation/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">الاستشارات التقنية <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4><p class="text-slate-400 text-sm">جلسة استشارية لتحديد أولويات التحول الرقمي.</h3></a>
-<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/tools/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">أدوات الذكاء الاصطناعي <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4><p class="text-slate-400 text-sm">أدوات جاهزة للاستخدام المباشر في عملك.</h4></a>
+<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="data-analysis"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">الاستشارات التقنية <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4><p class="text-slate-400 text-sm">جلسة استشارية لتحديد أولويات التحول الرقمي.</h3></a>
+<a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/tools/" data-analytics-event="tool_start" data-cta-location="data-analysis" data-service-name="ai_tools"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">أدوات الذكاء الاصطناعي <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4><p class="text-slate-400 text-sm">أدوات جاهزة للاستخدام المباشر في عملك.</h4></a>
 <a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/smart-automation/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">الأتمتة الذكية <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4><p class="text-slate-400 text-sm">أتمتة العمليات بالذكاء الاصطناعي.</h4></a>
 <a class="glass-card p-6 block hover:-translate-y-1 transition duration-300 border border-white/10 hover:border-indigo-500/50" href="/sectors/finance/"><h4 class="text-xl font-bold text-white mb-2 flex items-center justify-between">حلول القطاع المالي <iconify-icon class="text-indigo-400" icon="lucide:arrow-up-left"></iconify-icon></h4><p class="text-slate-400 text-sm">حلول بيانات متخصصة للبنوك والتأمين.</h4></a>
 </div>
@@ -1508,11 +1509,11 @@
             <p class="text-slate-400 text-sm">مقالات وتقارير وأدوات مساعدة لبناء استراتيجية البيانات لمنشأتك</h3>
         </div>
         <div class="mt-4 md:mt-0 flex flex-wrap gap-3">
-            <a class="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-indigo-500/50 text-white text-sm font-medium transition-all flex items-center gap-2" href="/demo/ocr-demo/">
+            <a class="px-5 py-2.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-indigo-500/50 text-white text-sm font-medium transition-all flex items-center gap-2" href="/demo/ocr-demo/" data-analytics-event="request_demo" data-cta-location="data-analysis">
                 <iconify-icon class="text-indigo-400" icon="lucide:scan-eye"></iconify-icon>
                 استخراج البيانات ضوئياً
             </a>
-            <a class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white shadow-lg shadow-blue-900/20 text-sm font-medium transition-all flex items-center gap-2" href="/demo/resources/report-ai-saudi-2026/">
+            <a class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white shadow-lg shadow-blue-900/20 text-sm font-medium transition-all flex items-center gap-2" href="/demo/resources/report-ai-saudi-2026/" data-analytics-event="tool_start" data-cta-location="data-analysis">
                 <iconify-icon icon="lucide:download"></iconify-icon>
                 تحميل تقرير 2026
             </a>
@@ -1520,11 +1521,11 @@
     </div>
     
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <a href="/blog/big-data-analysis/" class="group p-4 rounded-xl bg-slate-900/50 border border-white/5 hover:border-blue-500/30 hover:bg-slate-800 transition-all">
+        <a href="/blog/big-data-analysis/" class="group p-4 rounded-xl bg-slate-900/50 border border-white/5 hover:border-blue-500/30 hover:bg-slate-800 transition-all" data-analytics-event="tool_start" data-cta-location="data-analysis">
              <div class="text-blue-400 mb-2 opacity-70 group-hover:opacity-100 transition-opacity"><iconify-icon icon="lucide:database" width="20"></iconify-icon></div>
             <h4 class="text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">تحليل البيانات الضخمة</h4>
         </a>
-        <a href="/blog/intelligent-data-analysis/" class="group p-4 rounded-xl bg-slate-900/50 border border-white/5 hover:border-blue-500/30 hover:bg-slate-800 transition-all">
+        <a href="/blog/intelligent-data-analysis/" class="group p-4 rounded-xl bg-slate-900/50 border border-white/5 hover:border-blue-500/30 hover:bg-slate-800 transition-all" data-analytics-event="tool_start" data-cta-location="data-analysis">
              <div class="text-blue-400 mb-2 opacity-70 group-hover:opacity-100 transition-opacity"><iconify-icon icon="lucide:brain-circuit" width="20"></iconify-icon></div>
             <h4 class="text-sm font-semibold text-slate-300 group-hover:text-white transition-colors">التحليل الذكي للبيانات</h4>
         </a>
@@ -1573,7 +1574,7 @@
   </ul>
 </div>
 <div style="margin-top:24px;">
-  <a href="/try/data-analyzer/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;">جرّب محلل البيانات</a>
+  <a href="/try/data-analyzer/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;" data-analytics-event="tool_start" data-cta-location="data-analysis">جرّب محلل البيانات</a>
 </div>
   </div>
 </section>
@@ -1591,15 +1592,15 @@
                         نبتكر المستقبل اليوم. حلول ذكاء اصطناعي آمنة وموثوقة مصممة خصيصاً للسوق السعودي وتتوافق مع أعلى معايير الخصوصية.
                     </h3>
 <div class="flex gap-4">
-<a aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-colors border border-white/10" href="https://api.whatsapp.com/send?phone=966538229013"><iconify-icon icon="lucide:message-circle" width="18"></iconify-icon></a>
-<a aria-label="Email" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-colors border border-white/10" href="mailto:yazeed1job@gmail.com"><iconify-icon icon="lucide:mail" width="18"></iconify-icon></a>
+<a aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-colors border border-white/10" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="data-analysis"><iconify-icon icon="lucide:message-circle" width="18"></iconify-icon></a>
+<a aria-label="Email" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-colors border border-white/10" href="mailto:yazeed1job@gmail.com" data-analytics-event="email_click" data-cta-location="data-analysis"><iconify-icon icon="lucide:mail" width="18"></iconify-icon></a>
 </div>
 </div>
 <div>
 <h3 class="text-white font-semibold mb-6">الشركة</h3>
 <ul class="space-y-4 text-sm text-slate-400">
 <li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/about/"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> عن Bright AI</a></li>
-<li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/contact/"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> اتصل بنا</a></li>
+<li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/contact/" data-analytics-event="generate_lead" data-cta-location="data-analysis"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> اتصل بنا</a></li>
 <li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/about/#careers"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> الوظائف</a></li>
 </ul>
 </div>
@@ -1616,7 +1617,7 @@
 <ul class="space-y-4 text-sm text-slate-400">
 <li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/services/"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> كافة الخدمات</a></li>
 <li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/ai-agent/"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> وكلاء الذكاء الاصطناعي</a></li>
-<li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/data-analysis/"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> تحليل البيانات</a></li>
+<li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="data-analysis" data-service-name="data_analysis"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> تحليل البيانات</a></li>
 <li><a class="hover:text-cyan-400 transition-colors flex items-center gap-2" href="/smart-automation/"><iconify-icon icon="lucide:chevron-left" class="text-white/20"></iconify-icon> الأتمتة الذكية</a></li>
 </ul>
 </div>
@@ -1628,9 +1629,9 @@
 </footer>
 <div class="internal-linking-cta-wrap">
 <strong style="color:#fff">مراجع البيانات والتنفيذ:</strong>
-<a class="internal-linking-inline" href="/docs/data-analysis/">الدليل الكامل لتحليل البيانات</a>،
+<a class="internal-linking-inline" href="/docs/data-analysis/" data-analytics-event="tool_start" data-cta-location="data-analysis">الدليل الكامل لتحليل البيانات</a>،
 <a class="internal-linking-inline" href="/docs/solutions-bi/">حلول ذكاء الأعمال التنفيذية</a>،
-<a class="internal-linking-inline" href="/docs/solutions-finance/">حلول المالية والتحليلات</a>،
+<a class="internal-linking-inline" href="/docs/solutions-finance/" data-analytics-event="tool_start" data-cta-location="data-analysis">حلول المالية والتحليلات</a>،
 <a class="internal-linking-inline" href="/docs/openapi/">مرجع OpenAPI</a>،
 <a class="internal-linking-inline" href="/case-studies/">قصص نجاح العملاء</a>
 </div>
@@ -1638,7 +1639,7 @@
 <strong style="color:#fff">قراءات مساندة:</strong>
 <a class="internal-linking-inline" href="/blog/business-intelligence-saudi/">ذكاء الأعمال للشركات السعودية</a>،
 <a class="internal-linking-inline" href="/blog/تعلم-الآلة-و-الأعمال/">تعلم الآلة للأعمال</a>،
-<a class="internal-linking-inline" href="/blog/top-ai-tools-saudi-2025/">أفضل أدوات AI للشركات</a>
+<a class="internal-linking-inline" href="/blog/top-ai-tools-saudi-2025/" data-analytics-event="tool_start" data-cta-location="data-analysis">أفضل أدوات AI للشركات</a>
 </div>
 <div aria-hidden="true" class="img-lightbox" id="dashboard-lightbox">
 <img alt="معاينة لوحة البيانات بالحجم الكامل" id="dashboard-lightbox-image" src="" loading="lazy" decoding="async" width="626" height="626" />

@@ -140,6 +140,7 @@
 }
 </script>
   <link rel="stylesheet" href="/assets/css/text-ratio-fix.min.css" />
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -160,7 +161,7 @@
 </div>
 <p class="brand-subtitle">راجع العقود والمناقصات الحكومية بشكل أسرع وأوضح وبدون لف ودوران</p>
 <p class="brand-subtitle" style="margin-top:8px;">
-              إذا احتجت تكمل بعد التحليل، انتقل إلى <a href="/services/">الخدمة المناسبة بعد المراجعة</a> أو <a href="/consultation/">جلسة مراجعة مع الفريق</a>
+              إذا احتجت تكمل بعد التحليل، انتقل إلى <a href="/services/">الخدمة المناسبة بعد المراجعة</a> أو <a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">جلسة مراجعة مع الفريق</a>
               أو شوف <a href="/case-studies/">مشاريع قريبة من نفس النوع</a> قبل اعتماد القرار.
             </p>
 </div>
@@ -215,7 +216,7 @@
 </a>
 </li>
 <li>
-<a aria-label="الانتقال إلى مقارنة العقود" class="nav-link" href="/tenders/compare/">
+<a aria-label="الانتقال إلى مقارنة العقود" class="nav-link" href="/tenders/compare/" data-analytics-event="tender_compare_open" data-cta-location="tenders" data-service-name="contractai_tenders" data-tender-feature="compare">
 <span class="nav-main">
 <svg aria-hidden="true" class="nav-icon" fill="none" viewbox="0 0 24 24">
 <path d="M5 18V9m7 9V5m7 13v-7" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path>
@@ -226,7 +227,7 @@
 </a>
 </li>
 <li>
-<a aria-label="الانتقال إلى طلب تفعيل النظام" class="nav-link" href="/consultation/">
+<a aria-label="الانتقال إلى طلب تفعيل النظام" class="nav-link" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">
 <span class="nav-main">
 <svg aria-hidden="true" class="nav-icon" fill="none" viewbox="0 0 24 24">
 <path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" stroke="currentColor" stroke-width="1.5"></path>
@@ -532,7 +533,7 @@
 </div>
 </fieldset>
 <div class="field-group span-2">
-<button aria-label="بدء التحليل الذكي للملف المرفوع" class="primary-button analysis-button" id="startAnalysis" type="button">
+<button aria-label="بدء التحليل الذكي للملف المرفوع" class="primary-button analysis-button" id="startAnalysis" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis" data-tool-name="contractai">
                         بدء التحليل الذكي ←
                       </button>
 </div>
@@ -568,7 +569,7 @@
 </div>
 </div>
 <h3>المناقصات الحكومية</h3>
-<p>متوافق مع منصة اعتماد ونظام المنافسات والمشتريات، ومعه مسار <a href="/consultation/">جلسة مراجعة قبل التقديم</a> إذا تبغون قرار أسرع.</h3>
+<p>متوافق مع منصة اعتماد ونظام المنافسات والمشتريات، ومعه مسار <a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">جلسة مراجعة قبل التقديم</a> إذا تبغون قرار أسرع.</h3>
 </article>
 <article class="support-card glass">
 <div class="support-card-head">
@@ -626,7 +627,7 @@
 <div class="support-cards">
 <article class="support-card glass">
 <h3>قبل الاعتماد الداخلي</h3>
-<p>إذا كان القرار ينتظر ملخصاً واضحاً للبنود الحرجة، فابدأ بتحليل العقد ثم مرر المخرجات إلى <a href="/consultation/">جلسة مراجعة تنفيذية</a> عندما تحتاج الإدارة إلى تفسير أسرع للمخاطر والأثر المالي.</h3>
+<p>إذا كان القرار ينتظر ملخصاً واضحاً للبنود الحرجة، فابدأ بتحليل العقد ثم مرر المخرجات إلى <a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">جلسة مراجعة تنفيذية</a> عندما تحتاج الإدارة إلى تفسير أسرع للمخاطر والأثر المالي.</h3>
 </article>
 <article class="support-card glass">
 <h3>قبل المنافسة أو التفاوض</h3>
@@ -634,7 +635,7 @@
 </article>
 <article class="support-card glass">
 <h3>بعد أول تجربة ناجحة</h3>
-<p>عندما تثبت الأداة قيمة عملية داخل الفريق، تكون الخطوة التالية عادةً هي ربطها مع <a href="/ai-workflows/">سير عمل المراجعة</a> أو توسيعها ضمن <a href="/services/">مسار تشغيلي مؤسسي</a> يختصر وقت القراءة والتصعيد والمتابعة.</h3>
+<p>عندما تثبت الأداة قيمة عملية داخل الفريق، تكون الخطوة التالية عادةً هي ربطها مع <a href="/ai-workflows/">سير عمل المراجعة</a> أو توسيعها ضمن <a href="/services/" data-analytics-event="tool_start" data-cta-location="tenders" data-service-name="services">مسار تشغيلي مؤسسي</a> يختصر وقت القراءة والتصعيد والمتابعة.</h3>
 </article>
 </div>
 </section>
@@ -770,7 +771,7 @@
 </div>
 <div class="risk-section">
 <p class="risk-section-label">الخطوة التالية</p>
-<p>إذا تحتاجون مراجعة تنفيذية للبند قبل الاعتماد، ابدؤوا من <a href="/consultation/">جلسة مراجعة تنفيذية سريعة</a>،
+<p>إذا تحتاجون مراجعة تنفيذية للبند قبل الاعتماد، ابدؤوا من <a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">جلسة مراجعة تنفيذية سريعة</a>،
                                     وإذا الهدف بناء مسار مراجعة ثابت داخل المؤسسة فهذه <a href="/services/">الخدمات اللي تضبط المسار من البداية</a> هي الأنسب.</p>
 </div>
 <div class="risk-section">
@@ -1193,7 +1194,7 @@
 <span class="export-badge">الأكثر استخداماً</span>
 </div>
 <p class="export-description">تقرير شامل يتضمن الملخص والمخاطر والتوصيات</h3>
-<button class="primary-button export-action" data-export="pdf-preview" type="button">معاينة وتحميل</button>
+<button class="primary-button export-action" data-export="pdf-preview" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">معاينة وتحميل</button>
 </article>
 <article class="export-card">
 <span class="export-icon">
@@ -1204,7 +1205,7 @@
 </span>
 <h3 class="export-title">📝 ملخص تنفيذي Word</h3>
 <p class="export-description">ملخص من صفحة واحدة مناسب للإدارة</h3>
-<button class="icon-button export-action" data-export="docx" type="button">تحميل
+<button class="icon-button export-action" data-export="docx" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">تحميل
                                   .docx</button>
 </article>
 <article class="export-card">
@@ -1215,7 +1216,7 @@
 </span>
 <h3 class="export-title">📊 جدول المخاطر Excel</h3>
 <p class="export-description">جدول تفصيلي بكل البنود ومستويات الخطورة</h3>
-<button class="icon-button export-action" data-export="xlsx" type="button">تحميل
+<button class="icon-button export-action" data-export="xlsx" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">تحميل
                                   .xlsx</button>
 </article>
 <article class="export-card">
@@ -1249,7 +1250,7 @@
 </span>
 <h3 class="export-title">📅 تصدير المواعيد</h3>
 <p class="export-description">إضافة كل المواعيد والاستحقاقات للتقويم</h3>
-<button class="icon-button export-action" data-export="ics" type="button">تحميل
+<button class="icon-button export-action" data-export="ics" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">تحميل
                                   .ics</button>
 </article>
 <article class="export-card">
@@ -1260,7 +1261,7 @@
 </span>
 <h3 class="export-title">🧭 الخطوة التالية</h3>
 <p class="export-description">إذا التقرير كشف نقاط حساسة، احجز مراجعة تنفيذية سريعة</h3>
-<a class="icon-button export-action" href="/consultation/">احجز جلسة مراجعة سريعة</a>
+<a class="icon-button export-action" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">احجز جلسة مراجعة سريعة</a>
 </article>
 </div>
 </div>
@@ -1354,8 +1355,8 @@
 <div style="border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px;background:rgba(15,23,42,.52);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 60px rgba(2,6,23,.22);">
 <span style="display:inline-block;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#94a3b8;font-weight:800;">BrightAI Brief</span>
 <h2 style="margin:14px 0 14px;color:#fff;font-size:clamp(1.7rem,3vw,2.3rem);font-weight:900;line-height:1.35;">تعريف واضح بمنتج ContractAI وحدود استخدامه</h2>
-<p style="margin:0;color:#cbd5e1;line-height:2;">ContractAI هو تطبيق ويب لتحليل العقود والمناقصات باللغة العربية داخل السياق السعودي. يقرأ النص أو الملف، ويُخرج ملخصاً تنفيذياً، مؤشرات مخاطر، وتفصيلاً للبنود الحساسة مثل الجزاءات، الضمانات، الجداول الزمنية، وآليات الدفع. وجود هذا الشرح داخل الصفحة مهم لأنه يوضح للقارئ ومحركات البحث أن الخدمة ليست مجرد واجهة رفع ملفات، بل أداة متخصصة لدعم فرق المشتريات والشؤون القانونية وإدارات المشاريع في مرحلة القراءة الأولية واتخاذ القرار. ولمن يريد نسخة أوضح من رحلة المنتج قبل الدخول إلى الواجهة التفاعلية، توجد <a href="/tenders/landing/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">صفحة الهبوط الخاصة بتحليل المناقصات بالذكاء الاصطناعي</a>.</h2>
-<p style="margin:18px 0 0;color:#cbd5e1;line-height:2;">المنصة لا تدّعي أنها بديل عن الرأي القانوني النهائي، لكنها تختصر الوقت الضائع في القراءة اليدوية الأولى، وتساعد الفريق على توحيد فهم العقد قبل الإحالة الداخلية أو بدء التفاوض. وهذا مهم خصوصاً في العقود المتكررة أو المنافسات التي تتطلب <a href="/tenders/compare/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">مقارنة عروض المناقصات</a> أو استخراج نقاط الخطر قبل الاعتماد، وربطها لاحقاً مع <a href="/smart-automation/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">أتمتة المناقصات الحكومية</a> و<a href="/data-analysis/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">التحليل التنفيذي</a> للقرار.</p>
+<p style="margin:0;color:#cbd5e1;line-height:2;">ContractAI هو تطبيق ويب لتحليل العقود والمناقصات باللغة العربية داخل السياق السعودي. يقرأ النص أو الملف، ويُخرج ملخصاً تنفيذياً، مؤشرات مخاطر، وتفصيلاً للبنود الحساسة مثل الجزاءات، الضمانات، الجداول الزمنية، وآليات الدفع. وجود هذا الشرح داخل الصفحة مهم لأنه يوضح للقارئ ومحركات البحث أن الخدمة ليست مجرد واجهة رفع ملفات، بل أداة متخصصة لدعم فرق المشتريات والشؤون القانونية وإدارات المشاريع في مرحلة القراءة الأولية واتخاذ القرار. ولمن يريد نسخة أوضح من رحلة المنتج قبل الدخول إلى الواجهة التفاعلية، توجد <a href="/tenders/landing/" style="color:#7dd3fc;text-decoration:none;font-weight:700;" data-analytics-event="tool_start" data-cta-location="tenders" data-service-name="contractai_tenders" data-tender-feature="landing">صفحة الهبوط الخاصة بتحليل المناقصات بالذكاء الاصطناعي</a>.</h2>
+<p style="margin:18px 0 0;color:#cbd5e1;line-height:2;">المنصة لا تدّعي أنها بديل عن الرأي القانوني النهائي، لكنها تختصر الوقت الضائع في القراءة اليدوية الأولى، وتساعد الفريق على توحيد فهم العقد قبل الإحالة الداخلية أو بدء التفاوض. وهذا مهم خصوصاً في العقود المتكررة أو المنافسات التي تتطلب <a href="/tenders/compare/" style="color:#7dd3fc;text-decoration:none;font-weight:700;" data-analytics-event="tender_compare_open" data-cta-location="tenders" data-service-name="contractai_tenders" data-tender-feature="compare">مقارنة عروض المناقصات</a> أو استخراج نقاط الخطر قبل الاعتماد، وربطها لاحقاً مع <a href="/smart-automation/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">أتمتة المناقصات الحكومية</a> و<a href="/data-analysis/" style="color:#7dd3fc;text-decoration:none;font-weight:700;" data-analytics-event="tool_start" data-cta-location="tenders" data-service-name="data_analysis">التحليل التنفيذي</a> للقرار.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px;">
 <div style="padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
 <h3 style="margin:0 0 8px;color:#fff;font-size:1.05rem;font-weight:800;">ما الذي يقرأه</h3>
@@ -1425,9 +1426,9 @@
 <li style="margin:0;">تسهيل المقارنة بين نسخ العقود أو بين عروض الموردين بطريقة أكثر انضباطاً.</li>
 </ul>
 </div>
-<p style="margin:24px 0 0;color:#e2e8f0;line-height:2;font-weight:600;">أفضل استخدام لـ ContractAI هو تسريع الفهم، توحيد القراءة الأولية، وتقليل احتمال مرور بند حساس دون انتباه في المراحل المبكرة. وإذا كانت الجهة جاهزة لتطبيق المسار داخل فريقها، فبإمكانها <a href="/contact/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">طلب عرض توضيحي</a> مخصص لسير العمل الحالي.</h3>
+<p style="margin:24px 0 0;color:#e2e8f0;line-height:2;font-weight:600;">أفضل استخدام لـ ContractAI هو تسريع الفهم، توحيد القراءة الأولية، وتقليل احتمال مرور بند حساس دون انتباه في المراحل المبكرة. وإذا كانت الجهة جاهزة لتطبيق المسار داخل فريقها، فبإمكانها <a href="/contact/" style="color:#7dd3fc;text-decoration:none;font-weight:700;" data-analytics-event="tender_demo_start" data-cta-location="tenders">طلب عرض توضيحي</a> مخصص لسير العمل الحالي.</h3>
 <div style="margin-top:24px;">
-<a href="/tenders/compare/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;">جرّب مقارنة العقود</a>
+<a href="/tenders/compare/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;" data-analytics-event="tender_compare_open" data-cta-location="tenders" data-service-name="contractai_tenders" data-tender-feature="compare">جرّب مقارنة العقود</a>
 </div>
 </div>
 </section>
@@ -1464,7 +1465,7 @@
         <h3>روابط تكمل المسار</h3>
         <ul>
           <li><a href="/services/">استعرض الخدمات المؤسسية</a> إذا كنت تقارن بين الحلول قبل الاجتماع التنفيذي.</li>
-          <li><a href="/consultation/">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
+          <li><a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
           <li><a href="/docs/">مركز الوثائق</a> مناسب للفِرق التقنية أو التشغيلية التي تريد تفاصيل أعمق.</li>
           <li><a href="/case-studies/">قصص النجاح</a> مفيدة إذا كان قرار الشراء مرتبطاً بعائد واضح أو benchmark داخلي.</li>
         </ul>
@@ -1480,7 +1481,7 @@
 <div class="footer-links">
 <a aria-label="الانتقال إلى سياسة الخصوصية" href="/privacy-cookies/">سياسة الخصوصية</a>
 <a aria-label="الانتقال إلى الشروط والأحكام" href="/terms/">الشروط والأحكام</a>
-<a aria-label="الانتقال إلى صفحة تواصل معنا" href="/contact/">تواصل معنا</a>
+<a aria-label="الانتقال إلى صفحة تواصل معنا" href="/contact/" data-analytics-event="generate_lead" data-cta-location="tenders">تواصل معنا</a>
 <a aria-label="الانتقال إلى خريطة الموقع" href="/sitemap/">خريطة الموقع</a>
 </div>
 <div class="glass" style="margin-top:16px;padding:18px;border-radius:20px;">
@@ -1489,10 +1490,10 @@
             </p>
 <div class="footer-links" style="flex-wrap:wrap;gap:12px 18px;">
 <a href="/tenders/">الصفحة الرئيسية للنظام</a>
-<a href="/tenders/landing/">صفحة الهبوط</a>
-<a href="/tenders/compare/">مقارنة العقود</a>
+<a href="/tenders/landing/" data-analytics-event="tender_demo_start" data-cta-location="tenders" data-service-name="contractai_tenders" data-tender-feature="landing">صفحة الهبوط</a>
+<a href="/tenders/compare/" data-analytics-event="tender_compare_open" data-cta-location="tenders" data-service-name="contractai_tenders" data-tender-feature="compare">مقارنة العقود</a>
 <a href="/tenders/templates/">القوالب</a>
-<a href="/consultation/">اطلب التفعيل</a>
+<a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders">اطلب التفعيل</a>
 <a href="/services/">كتالوج الخدمات</a>
 <a href="/docs/">الوثائق</a>
 <a href="/smart-medical-archive/">الأرشيف الطبي الذكي</a>
@@ -1509,8 +1510,8 @@
 <div class="modal-header">
 <h3 class="modal-title">معاينة التقرير</h3>
 <div class="modal-actions">
-<button class="primary-button" id="downloadPdfBtn" type="button">تحميل PDF</button>
-<button class="icon-button" id="openEmailModalBtn" type="button">إرسال بالبريد</button>
+<button class="primary-button" id="downloadPdfBtn" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">تحميل PDF</button>
+<button class="icon-button" id="openEmailModalBtn" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">إرسال بالبريد</button>
 <button class="icon-button" id="printPdfBtn" type="button">طباعة</button>
 <button class="icon-button" id="closePdfModal" type="button">إغلاق</button>
 </div>
@@ -1615,7 +1616,7 @@
 <div class="modal-scroll" style="padding:20px;">
 <div class="email-form">
 <input aria-label="أدخل البريد الإلكتروني" class="field-input" id="emailAddressInput" placeholder="example@company.sa" type="email"/>
-<button class="primary-button" id="sendEmailBtn" type="button">إرسال</button>
+<button class="primary-button" id="sendEmailBtn" type="button" data-analytics-event="tool_start" data-cta-location="tenders" data-tender-feature="demo_or_analysis">إرسال</button>
 </div>
 </div>
 </div>

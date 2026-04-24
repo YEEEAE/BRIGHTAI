@@ -1263,6 +1263,7 @@
     
     
 
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -1282,13 +1283,13 @@
 <nav aria-label="التنقل في صفحة الهبوط" class="nav-links">
 <a href="#features">المميزات</a>
 <a href="#how-it-works">كيف يعمل</a>
-<a href="#pricing">التسعير</a>
+<a href="#pricing" data-analytics-event="pricing_click" data-cta-location="tenders_landing">التسعير</a>
 <a href="#faq">الأسئلة الشائعة</a>
 </nav>
 <div class="nav-actions">
-<a aria-label="الانتقال إلى النسخة الإنجليزية" class="link-button" href="/en/tenders/landing/">EN</a>
+<a aria-label="الانتقال إلى النسخة الإنجليزية" class="link-button" href="/en/tenders/landing/" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing" data-tender-feature="landing">EN</a>
 <button class="link-button" data-auth-open="login" type="button">تسجيل الدخول</button>
-<button class="primary-button" data-auth-open="signup" type="button">ابدأ مجاناً ←</button>
+<button class="primary-button" data-auth-open="signup" type="button" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis">ابدأ مجاناً ←</button>
 </div>
 <button aria-label="فتح القائمة" class="hamburger" id="openMobileMenu" type="button">☰</button>
 </div>
@@ -1306,13 +1307,13 @@
 <button aria-label="إغلاق القائمة" class="close-mobile" id="closeMobileMenu" type="button">✕</button>
 </div>
 <div class="mobile-links">
-<a class="secondary-button" href="/en/tenders/landing/">النسخة الإنجليزية</a>
+<a class="secondary-button" href="/en/tenders/landing/" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing" data-tender-feature="landing">النسخة الإنجليزية</a>
 <a class="secondary-button" href="#features">المميزات</a>
 <a class="secondary-button" href="#how-it-works">كيف يعمل</a>
-<a class="secondary-button" href="#pricing">التسعير</a>
+<a class="secondary-button" href="#pricing" data-analytics-event="pricing_click" data-cta-location="tenders_landing">التسعير</a>
 <a class="secondary-button" href="#faq">الأسئلة الشائعة</a>
 <button class="secondary-button" data-auth-open="login" type="button">تسجيل الدخول</button>
-<button class="primary-button" data-auth-open="signup" type="button">ابدأ مجاناً ←</button>
+<button class="primary-button" data-auth-open="signup" type="button" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis">ابدأ مجاناً ←</button>
 </div>
 </div>
 <main id="main-content">
@@ -1322,7 +1323,7 @@
 <h1 class="hero-title">محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية</h1>
 <p class="hero-subtitle">حلّل عقودك واكتشف المخاطر والبنود الخطرة خلال ثوانٍ. متوافق مع نظام المنافسات والمشتريات الحكومية ومنصة اعتماد.</p>
 <div class="hero-actions">
-<button class="primary-button" data-auth-open="signup" type="button">جرّب التحليل مجاناً ←</button>
+<button class="primary-button" data-auth-open="signup" type="button" data-analytics-event="tool_start" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis" data-tool-name="contractai">جرّب التحليل مجاناً ←</button>
 <a class="secondary-button" href="#how-it-works">شاهد العرض التوضيحي ▶</a>
 </div>
 <div class="hero-checks">
@@ -1436,7 +1437,7 @@
 <li>ملخص المخاطر</li>
 <li>بدون تصدير PDF</li>
 </ul>
-<button class="secondary-button" data-auth-open="signup" type="button">ابدأ مجاناً</button>
+<button class="secondary-button" data-auth-open="signup" type="button" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis">ابدأ مجاناً</button>
 </article>
 <article class="pricing-card glass is-featured">
 <div class="price-head"><h3>احترافية</h3><span class="badge">الأكثر شعبية</span></div>
@@ -1449,7 +1450,7 @@
 <li>مقارنة العقود</li>
 <li>مقارنة بمعايير السوق</li>
 </ul>
-<button class="primary-button" data-auth-open="signup" type="button">اشترك الآن ←</button>
+<button class="primary-button" data-auth-open="signup" type="button" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis">اشترك الآن ←</button>
 </article>
 <article class="pricing-card glass">
 <div class="price-head"><h3>مؤسسات</h3><span class="price-value" data-monthly="تواصل معنا" data-yearly="تواصل معنا">تواصل معنا</span></div>
@@ -1460,7 +1461,7 @@
 <li>تدريب الفريق</li>
 <li>SLA مخصص</li>
 </ul>
-<button class="secondary-button" type="button">تواصل مع المبيعات</button>
+<button class="secondary-button" type="button" data-analytics-event="generate_lead" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis">تواصل مع المبيعات</button>
 </article>
 </div>
 </div>
@@ -1484,7 +1485,7 @@
 <div style="border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px;background:rgba(15,23,42,.52);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 60px rgba(2,6,23,.22);">
 <span style="display:inline-block;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#94a3b8;font-weight:800;">BrightAI Brief</span>
 <h2 style="margin:14px 0 14px;color:#fff;font-size:clamp(1.7rem,3vw,2.3rem);font-weight:900;line-height:1.35;">كيف يقدّم ContractAI قيمة فعلية لفرق العقود والمناقصات؟</h2>
-<p style="margin:0;color:#cbd5e1;line-height:2;">صفحة الهبوط تشرح منتجاً موجهاً لبيئة فيها قرارات حساسة، مدد قصيرة، وضغط مراجعة مرتفع. قيمة ContractAI أنه لا يكتفي بعرض واجهة تحليل؛ بل يختصر وقت القراءة القانونية الأولية، يبرز البنود عالية المخاطر، ويساعد فرق المشتريات والعقود على تجهيز مراجعة أكثر انضباطاً. وعندما تحتاج الجهة مقارنة نسختين أو أكثر قبل الرفع أو التفاوض، يمكنها الانتقال مباشرة إلى <a href="/tenders/compare/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">مقارنة عروض المناقصات</a>.</h2>
+<p style="margin:0;color:#cbd5e1;line-height:2;">صفحة الهبوط تشرح منتجاً موجهاً لبيئة فيها قرارات حساسة، مدد قصيرة، وضغط مراجعة مرتفع. قيمة ContractAI أنه لا يكتفي بعرض واجهة تحليل؛ بل يختصر وقت القراءة القانونية الأولية، يبرز البنود عالية المخاطر، ويساعد فرق المشتريات والعقود على تجهيز مراجعة أكثر انضباطاً. وعندما تحتاج الجهة مقارنة نسختين أو أكثر قبل الرفع أو التفاوض، يمكنها الانتقال مباشرة إلى <a href="/tenders/compare/" style="color:#7dd3fc;text-decoration:none;font-weight:700;" data-analytics-event="tender_compare_open" data-cta-location="tenders_landing" data-service-name="contractai_tenders" data-tender-feature="compare">مقارنة عروض المناقصات</a>.</h2>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px;">
 <div style="padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
 <h3 style="margin:0 0 8px;color:#fff;font-size:1.05rem;font-weight:800;">الجمهور المستهدف</h3>
@@ -1504,12 +1505,12 @@
 <ul style="margin:0;padding:0 1.1rem 0 0;color:#cbd5e1;line-height:2;">
 <li style="margin:0 0 10px;">يفيد قبل التوقيع عندما تحتاج الإدارة إلى ملخص واضح لا قراءة كاملة من الصفر.</li>
 <li style="margin:0 0 10px;">يفيد قبل الرفع على اعتماد أو قبل تجهيز الردود على استفسارات المنافسات، خصوصاً إذا كانت الجهة تبني <a href="/smart-automation/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">أتمتة للموافقات والمشتريات</a> حول نفس الدورة.</li>
-<li style="margin:0 0 10px;">يفيد عند مقارنة أكثر من صيغة عقدية داخل الشركة لاختيار النسخة الأنسب عبر <a href="/tenders/compare/" style="color:#7dd3fc;text-decoration:none;font-weight:700;">صفحة مقارنة العقود</a>.</li>
+<li style="margin:0 0 10px;">يفيد عند مقارنة أكثر من صيغة عقدية داخل الشركة لاختيار النسخة الأنسب عبر <a href="/tenders/compare/" style="color:#7dd3fc;text-decoration:none;font-weight:700;" data-analytics-event="tender_compare_open" data-cta-location="tenders_landing" data-service-name="contractai_tenders" data-tender-feature="compare">صفحة مقارنة العقود</a>.</li>
 </ul>
 </div>
 <div style="margin-top:24px;">
 <a href="/tenders/templates/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;">استعرض القوالب الجاهزة</a>
-<a href="/contact/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;margin-inline-start:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);color:#fff;text-decoration:none;font-weight:800;">طلب عرض توضيحي</a>
+<a href="/contact/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;margin-inline-start:12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);color:#fff;text-decoration:none;font-weight:800;" data-analytics-event="tender_demo_start" data-cta-location="tenders_landing">طلب عرض توضيحي</a>
 </div>
 </div>
 </section>
@@ -1546,7 +1547,7 @@
         <h3>روابط تكمل المسار</h3>
         <ul>
           <li><a href="/services/">استعرض الخدمات المؤسسية</a> إذا كنت تقارن بين الحلول قبل الاجتماع التنفيذي.</li>
-          <li><a href="/consultation/">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
+          <li><a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders_landing">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
           <li><a href="/docs/">مركز الوثائق</a> مناسب للفِرق التقنية أو التشغيلية التي تريد تفاصيل أعمق.</li>
           <li><a href="/case-studies/">قصص النجاح</a> مفيدة إذا كان قرار الشراء مرتبطاً بعائد واضح أو benchmark داخلي.</li>
         </ul>
@@ -1571,8 +1572,8 @@
 <a aria-label="YouTube" class="social-button" href="#">▶</a>
 </div>
 </div>
-<div class="footer-column"><h3>المنتج</h3><a href="#features">المميزات</a><a href="#pricing">التسعير</a><a href="#faq">API</a><a href="/tenders/templates/">القوالب</a></div>
-<div class="footer-column"><h3>الشركة</h3><a href="#">عن BrightAI</a><a href="#">المدونة</a><a href="#">وظائف</a><a href="#">تواصل معنا</a></div>
+<div class="footer-column"><h3>المنتج</h3><a href="#features">المميزات</a><a href="#pricing" data-analytics-event="pricing_click" data-cta-location="tenders_landing">التسعير</a><a href="#faq">API</a><a href="/tenders/templates/">القوالب</a></div>
+<div class="footer-column"><h3>الشركة</h3><a href="#">عن BrightAI</a><a href="#">المدونة</a><a href="#">وظائف</a><a href="#" data-analytics-event="generate_lead" data-cta-location="tenders_landing">تواصل معنا</a></div>
 <div class="footer-column"><h3>قانوني</h3><a href="#">سياسة الخصوصية</a><a href="#">الشروط والأحكام</a><a href="#">سياسة الاستخدام</a></div>
 </div>
 <div class="footer-meta">© 2026 ContractAI by BrightAI — محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية<br/>مسجل في المملكة العربية السعودية — سجل تجاري: XXXXXXXXXX</div>
@@ -1628,7 +1629,7 @@
 <p>أدخل بريدك الإلكتروني وسنرسل لك رابط الاستعادة</h2>
 <div class="form-grid">
 <label class="field-wrap"><span>البريد الإلكتروني</span><div class="form-field" id="forgotEmailField"><input id="forgotEmail" name="forgot_email" type="email"/></div><span class="error-text" id="forgotEmailError">أدخل بريد إلكتروني صحيح</span><span class="success-text" id="forgotSuccess">✅ تم إرسال رابط الاستعادة لبريدك الإلكتروني</span></label>
-<button class="primary-button" id="forgotSubmit" type="button">إرسال رابط الاستعادة</button>
+<button class="primary-button" id="forgotSubmit" type="button" data-analytics-event="tool_start" data-cta-location="tenders_landing" data-tender-feature="demo_or_analysis">إرسال رابط الاستعادة</button>
 </div>
 <div class="auth-links"><button class="auth-link" data-auth-tab-link="login" type="button">العودة لتسجيل الدخول</button></div>
 </section>

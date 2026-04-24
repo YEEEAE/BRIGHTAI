@@ -31,7 +31,6 @@ const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^sitemap\/index\.html$/i,
   /^mais-OBM\/index\.html$/i,
   /^en\/docs\/docs\.html$/i,
-  /^en\/tenders\/landing\.html$/i,
   /^blog\/(ai-automation-project-analysis|digital-transformation-automation|financial-hr-automation|industrial-automation-productivity|machine-learning-computer-vision|process-automation-ai-efficiency)\.html$/i,
   /^aimais\/public\//i,
   /^frontend\/pages\//i,

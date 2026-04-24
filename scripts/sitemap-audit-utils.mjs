@@ -30,7 +30,7 @@ export function hasMetaRefresh(html) {
 
 export function hasJsRedirect(html) {
   if (!html || typeof html !== "string") return false;
-  return /(?:window\.)?location\.(?:href|assign|replace)\s*\(|(?:window\.)?location\s*=\s*["']/i.test(
+  return /(?:^|[^\w-])(?:window\.)?location\.(?:href|assign|replace)\s*\(|(?:^|[^\w-])(?:window\.)?location\s*=\s*["']/i.test(
     html
   );
 }

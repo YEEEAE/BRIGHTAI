@@ -244,6 +244,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 }
 </script>
   <link rel="stylesheet" href="/assets/css/text-ratio-fix.min.css" />
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 
@@ -282,7 +283,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                             class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-    href="/tenders/landing/">
+    href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="tools" data-service-name="contractai_tenders" data-tender-feature="landing">
     <div class="flex items-center gap-3">
         <div
             class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
@@ -343,7 +344,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/contact/">
+                                    href="/contact/" data-analytics-event="generate_lead" data-cta-location="tools">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
@@ -358,7 +359,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/data-analysis/">
+                                    href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="tools" data-service-name="data_analysis">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
@@ -509,14 +510,14 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
                 
-                <a aria-label="الانتقال إلى النسخة الإنجليزية" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/en/tools/" title="English Version">
+                <a aria-label="الانتقال إلى النسخة الإنجليزية" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/en/tools/" title="English Version" data-analytics-event="tool_start" data-cta-location="tools">
                     <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
                     <span class="tracking-wide">EN</span>
                 </a>
                 
                 <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
                     href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank"
-                    title="تواصل معنا عبر الواتساب">
+                    title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="tools">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -558,7 +559,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                 </li>
                 <li>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all"
-                        href="/en/tools/">
+                        href="/en/tools/" data-analytics-event="tool_start" data-cta-location="tools">
                         <iconify-icon class="text-slate-500" icon="lucide:languages" width="18"></iconify-icon>
                         النسخة الإنجليزية
                     </a>
@@ -591,18 +592,18 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                             AIaaS — الذكاء كخدمة
                         </a>
 <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
-    href="/tenders/landing/">
+    href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="tools" data-service-name="contractai_tenders" data-tender-feature="landing">
     <iconify-icon class="text-slate-600" icon="lucide:file-search" width="15"></iconify-icon>
     نظام تحليل العقود والمناقصات
 </a>
 
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
-                            href="/data-analysis/">
+                            href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="tools" data-service-name="data_analysis">
                             <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
                             تحليل البيانات
                         </a>
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
-                            href="/contact/">
+                            href="/contact/" data-analytics-event="generate_lead" data-cta-location="tools">
                             <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
                             استشارات
                         </a>
@@ -680,7 +681,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
                 </li>
                 <li>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
-                        href="/contact/">
+                        href="/contact/" data-analytics-event="generate_lead" data-cta-location="tools">
                         <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
                         تواصل معنا
                     </a>
@@ -690,12 +691,12 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
                 <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
                     href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer"
-                    target="_blank">
+                    target="_blank" data-analytics-event="whatsapp_click" data-cta-location="tools">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
                 <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
-                    href="/try/">
+                    href="/try/" data-analytics-event="request_demo" data-cta-location="tools">
                     <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
                     جرّب النظام مجاناً
                 </a>
@@ -886,7 +887,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
   <p style="margin:0;color:#cbd5e1;line-height:2;">بهذه الطريقة، تصبح صفحة الأدوات جزءاً من رحلة شراء تدريجية: اكتشاف، تجربة، تقييم، ثم توسع مدروس. وهذا أنسب كثيراً للفرق السعودية التي تريد إثبات القيمة بسرعة قبل الالتزام بمشروع أكبر.</p>
 </div>
 <div style="margin-top:24px;">
-  <a href="/try/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;">ابدأ التجربة العملية</a>
+  <a href="/try/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;" data-analytics-event="request_demo" data-cta-location="tools">ابدأ التجربة العملية</a>
 </div>
   </div>
 </section>
@@ -922,7 +923,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
         <h3>روابط تكمل المسار</h3>
         <ul>
           <li><a href="/services/">استعرض الخدمات المؤسسية</a> إذا كنت تقارن بين الحلول قبل الاجتماع التنفيذي.</li>
-          <li><a href="/consultation/">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
+          <li><a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tools">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
           <li><a href="/docs/">مركز الوثائق</a> مناسب للفِرق التقنية أو التشغيلية التي تريد تفاصيل أعمق.</li>
           <li><a href="/case-studies/">قصص النجاح</a> مفيدة إذا كان قرار الشراء مرتبطاً بعائد واضح أو benchmark داخلي.</li>
         </ul>
@@ -947,7 +948,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <p class="text-white font-medium mb-6">الشركة</p>
 <ul class="space-y-3 text-sm text-slate-400">
 <li><a class="hover:text-gold-400" href="/about/">عن Bright AI</a></li>
-<li><a class="hover:text-gold-400" href="/contact/">اتصل بنا</a></li>
+<li><a class="hover:text-gold-400" href="/contact/" data-analytics-event="generate_lead" data-cta-location="tools">اتصل بنا</a></li>
 </ul>
 </div>
 <div>
@@ -961,7 +962,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <p class="text-white font-medium mb-6">خدماتنا</p>
 <ul class="space-y-3 text-sm text-slate-400">
 <li><a class="hover:text-gold-400" href="/ai-agent/">AIaaS</a></li>
-<li><a class="hover:text-gold-400" href="/data-analysis/">تحليل البيانات</a></li>
+<li><a class="hover:text-gold-400" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="tools" data-service-name="data_analysis">تحليل البيانات</a></li>
 </ul>
 </div>
 <div class="custom-seo-links mt-8 pt-8 border-t border-white/10">
@@ -970,7 +971,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <li><a class="hover:text-gold-400" href="/">الصفحة الرئيسية</a></li>
 <li><a class="hover:text-gold-400" href="/blog/">صفحة المدونة</a></li>
 <li><a class="hover:text-gold-400" href="/about/">صفحة من نحن</a></li>
-<li><a class="hover:text-gold-400" href="/contact/">صفحة اتصل بنا</a></li>
+<li><a class="hover:text-gold-400" href="/contact/" data-analytics-event="generate_lead" data-cta-location="tools">صفحة اتصل بنا</a></li>
 </ul>
 </div>
 </div>
@@ -986,7 +987,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <li><a href="/services/" style="color:#94a3b8; text-decoration:none;">صفحات الخدمات الأخرى</a></li>
 <li><a href="/blog/" style="color:#94a3b8; text-decoration:none;">صفحة المدونة</a></li>
 <li><a href="/about/" style="color:#94a3b8; text-decoration:none;">صفحة من نحن</a></li>
-<li><a href="/contact/" style="color:#94a3b8; text-decoration:none;">صفحة اتصل بنا</a></li>
+<li><a href="/contact/" style="color:#94a3b8; text-decoration:none;" data-analytics-event="generate_lead" data-cta-location="tools">صفحة اتصل بنا</a></li>
 </ul>
 </div>
 </footer>
@@ -1000,7 +1001,7 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 
 <section class="brightai-command-cta bai-inline-0086">
 <p style="margin:0 0 12px; color:#94a3b8; font-size:0.98rem;">نتائج OCR جاهزة بصيغة JSON خلال ثواني.</p>
-<a href="/demo/ocr-demo/" class="bai-inline-0087">
+<a href="/demo/ocr-demo/" class="bai-inline-0087" data-analytics-event="request_demo" data-cta-location="tools">
             جرّب التعرف الضوئي على مستندك
         </a>
 </section>
@@ -1008,13 +1009,13 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <section class="brightai-orphan-links bai-inline-0148">
 <h3 style="margin:0 0 12px; color:#e2e8f0; font-size:1.05rem;">روابط ذات صلة</h3>
 <p style="margin:0 0 12px;color:#94a3b8;line-height:1.9;">إذا كنت تستخدم الأدوات كبوابة قبل الحل المؤسسي، راجع <a href="/docs/solutions-interview/" class="bai-inline-0149">حلول التوظيف الذكي</a>، ثم <a href="/blog/automation/hr-automation-saudi/" class="bai-inline-0149">دليل أتمتة الموارد البشرية</a>، وإذا كان اهتمامك بالدعم الذكي فانتقل إلى <a href="/docs/ai-bots/" class="bai-inline-0149">دليل روبوتات المحادثة</a>.</h3>
-<div class="bai-inline-0150"><a href="/docs/ai-agent/" class="bai-inline-0151">دليل AI Agent</a><a href="/docs/solutions-interview/" class="bai-inline-0151">حلول التوظيف الذكي</a><a href="/docs/solutions-hr/" class="bai-inline-0151">حلول الموارد البشرية</a><a href="/contact/" class="bai-inline-0151">تواصل معنا</a><a href="/docs/ai-bots/" class="bai-inline-0151">الدعم الفني الذكي</a></div>
+<div class="bai-inline-0150"><a href="/docs/ai-agent/" class="bai-inline-0151">دليل AI Agent</a><a href="/docs/solutions-interview/" class="bai-inline-0151">حلول التوظيف الذكي</a><a href="/docs/solutions-hr/" class="bai-inline-0151">حلول الموارد البشرية</a><a href="/contact/" class="bai-inline-0151" data-analytics-event="generate_lead" data-cta-location="tools">تواصل معنا</a><a href="/docs/ai-bots/" class="bai-inline-0151">الدعم الفني الذكي</a></div>
 <ul class="bai-inline-0152"><li><a href="/services/" style="color:#e2e8f0;text-decoration:none;">من الأدوات إلى الحلول المؤسسية</a></li><li><a href="/docs/solutions-hr/" style="color:#e2e8f0;text-decoration:none;">إدارة الموظفين بشكل أذكى</a></li><li><a href="/docs/solutions-interview/" style="color:#e2e8f0;text-decoration:none;">مسار التوظيف والتقييم</a></li><li><a href="/blog/hr-automation-case-study/" style="color:#e2e8f0;text-decoration:none;">دراسة حالة أتمتة HR</a></li></ul>
 <div class="internal-linking-cta-wrap"><strong style="color:#fff">أدوات حسب القطاع:</strong> <a class="internal-linking-inline" href="/sectors/ecommerce/">التجزئة والتجارة</a>، <a class="internal-linking-inline" href="/sectors/healthcare/">الرعاية الصحية</a>، <a class="internal-linking-inline" href="/sectors/finance/">القطاع المالي</a></div>
-<div class="internal-linking-cta-wrap"><strong style="color:#fff">إذا خلصت من تجربة الأداة:</strong> <a class="internal-linking-inline" href="/services/">استعرض الحلول المؤسسية</a>، <a class="internal-linking-inline" href="/docs/ai-bots/">جرّب الروبوتات الجاهزة</a>، <a class="internal-linking-inline" href="/ai-agent/">شوف AI Agent</a>، <a class="internal-linking-inline" href="/consultation/">واحجز استشارة تناسب مشروعك</a></div>
+<div class="internal-linking-cta-wrap"><strong style="color:#fff">إذا خلصت من تجربة الأداة:</strong> <a class="internal-linking-inline" href="/services/">استعرض الحلول المؤسسية</a>، <a class="internal-linking-inline" href="/docs/ai-bots/" data-analytics-event="request_demo" data-cta-location="tools">جرّب الروبوتات الجاهزة</a>، <a class="internal-linking-inline" href="/ai-agent/">شوف AI Agent</a>، <a class="internal-linking-inline" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tools">واحجز استشارة تناسب مشروعك</a></div>
 </section>
 <script src="/frontend/js/clarity-events.js" defer></script>
 
-<div class="internal-linking-cta-wrap"><h3 style="color:#fff;margin:0 0 8px">أداة OCR</h3><p style="color:#94a3b8;margin:0 0 10px">استخراج النصوص والبيانات من المستندات العربية.</h3><a class="internal-linking-cta" href="/demo/ocr-demo/">جرّب OCR على مستندك</a></div>
+<div class="internal-linking-cta-wrap"><h3 style="color:#fff;margin:0 0 8px">أداة OCR</h3><p style="color:#94a3b8;margin:0 0 10px">استخراج النصوص والبيانات من المستندات العربية.</h3><a class="internal-linking-cta" href="/demo/ocr-demo/" data-analytics-event="request_demo" data-cta-location="tools">جرّب OCR على مستندك</a></div>
 </body>
 </html>

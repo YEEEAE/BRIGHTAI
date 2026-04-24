@@ -307,6 +307,7 @@
   ]
 }
 </script>
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 
 <body>
@@ -346,7 +347,7 @@
                             class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
                             <div class="p-2 space-y-1">
 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-    href="/tenders/landing/">
+    href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="ai-workflows" data-service-name="contractai_tenders" data-tender-feature="landing">
     <div class="flex items-center gap-3">
         <div
             class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
@@ -407,7 +408,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/contact/">
+                                    href="/contact/" data-analytics-event="generate_lead" data-cta-location="ai-workflows">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
@@ -422,7 +423,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/data-analysis/">
+                                    href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="ai-workflows" data-service-name="data_analysis">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
@@ -579,7 +580,7 @@
                 </a>
                 <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop"
                     href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank"
-                    title="تواصل معنا عبر الواتساب">
+                    title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="ai-workflows">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -638,7 +639,7 @@
                     </a>
                     <div class="mobile-dropdown mt-1 mr-6 bai-inline-0002">
 <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
-    href="/tenders/landing/">
+    href="/tenders/landing/" data-analytics-event="tool_start" data-cta-location="ai-workflows" data-service-name="contractai_tenders" data-tender-feature="landing">
     <iconify-icon class="text-slate-600" icon="lucide:file-search" width="15"></iconify-icon>
     نظام تحليل العقود والمناقصات
 </a>
@@ -659,12 +660,12 @@
                             AIaaS — الذكاء كخدمة
                         </a>
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
-                            href="/data-analysis/">
+                            href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="ai-workflows" data-service-name="data_analysis">
                             <iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
                             تحليل البيانات
                         </a>
                         <a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all"
-                            href="/contact/">
+                            href="/contact/" data-analytics-event="generate_lead" data-cta-location="ai-workflows">
                             <iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
                             استشارات
                         </a>
@@ -740,7 +741,7 @@
                 </li>
                 <li>
                     <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all"
-                        href="/contact/">
+                        href="/contact/" data-analytics-event="generate_lead" data-cta-location="ai-workflows">
                         <iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
                         تواصل معنا
                     </a>
@@ -749,12 +750,12 @@
 
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
                 <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005"
-                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                    href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="ai-workflows">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
                 <a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all"
-                    href="/try/">
+                    href="/try/" data-analytics-event="request_demo" data-cta-location="ai-workflows">
                     <iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
                     جرّب النظام مجاناً
                 </a>
@@ -855,7 +856,7 @@
                                 المستندات، كيفية انتقال المعلومات بين الأقسام، وما هي الأنظمة (ERP, CRM, Legacy Systems)
                                 التي سيتم التخاطب معها باستخدام الـ APIs أو تقنيات الدمج الأخرى.</h3>
                             <p class="text-slate-300 mt-3">إذا تحتاجون نبدأ بتقييم واضح قبل الدخول في التنفيذ، هذه
-                                <a class="text-cyan-300 font-semibold hover:underline" href="/consultation/">جلسة اكتشاف سريعة مع الفريق</a>
+                                <a class="text-cyan-300 font-semibold hover:underline" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="ai-workflows">جلسة اكتشاف سريعة مع الفريق</a>
                                 تعطيكم تصور عملي سريع.</p>
                         </div>
                     </div>
@@ -871,7 +872,7 @@
                                 نحتاج محركات استخراج النصوص العربية (OCR)، وأين يجب تفعيل نماذج اللغات الضخمة (LLMs)
                                 لمعالجة اللغة الطبيعية، وأين سيتم الربط لضخ هذه البيانات في مكانها الصحيح آلياً.</h3>
                             <p class="text-slate-300 mt-3">وفي هالمرحلة غالباً نربطها مع
-                                <a class="text-cyan-300 font-semibold hover:underline" href="/services/">الخدمة الأنسب لطبيعة تشغيلكم</a>
+                                <a class="text-cyan-300 font-semibold hover:underline" href="/services/" data-analytics-event="tool_start" data-cta-location="ai-workflows" data-service-name="services">الخدمة الأنسب لطبيعة تشغيلكم</a>
                                 أو مسار <a class="text-cyan-300 font-semibold hover:underline" href="/smart-automation/">أتمتة المهام المتكررة</a>
                                 إذا كان عندكم تشغيل يومي متكرر.</p>
                         </div>
@@ -1122,11 +1123,11 @@
             <div
                 class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12 py-8 border-t border-slate-700/50">
                 <a href="/try/"
-                    class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-indigo-500/25 transition-all transform hover:scale-105">
+                    class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-indigo-500/25 transition-all transform hover:scale-105" data-analytics-event="request_demo" data-cta-location="ai-workflows">
                     تصفح النماذج التجريبية (Demo)
                 </a>
                 <a href="https://api.whatsapp.com/send?phone=966538229013"
-                    class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-xl font-bold text-lg transition-all flex items-center gap-2">
+                    class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-xl font-bold text-lg transition-all flex items-center gap-2" data-analytics-event="whatsapp_click" data-cta-location="ai-workflows">
                     <iconify-icon icon="lucide:message-circle"></iconify-icon>
                     تواصل معنا لطلب استشارة
                 </a>
@@ -1148,7 +1149,7 @@
                 <li><a href="/services/" style="color:#94a3b8; text-decoration:none;">صفحات الخدمات الأخرى</a></li>
                 <li><a href="/blog/" style="color:#94a3b8; text-decoration:none;">صفحة المدونة</a></li>
                 <li><a href="/about/" style="color:#94a3b8; text-decoration:none;">صفحة من نحن</a></li>
-                <li><a href="/contact/" style="color:#94a3b8; text-decoration:none;">صفحة اتصل بنا</a></li>
+                <li><a href="/contact/" style="color:#94a3b8; text-decoration:none;" data-analytics-event="generate_lead" data-cta-location="ai-workflows">صفحة اتصل بنا</a></li>
             </ul>
         </div>
     </footer>

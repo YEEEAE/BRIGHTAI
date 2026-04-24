@@ -108,6 +108,7 @@
     ]
   }
   </script>
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
   <div class="shell">
@@ -116,7 +117,7 @@
       <nav class="nav-links">
         <a href="/">الرئيسية</a>
         <a href="/services/">الخدمات</a>
-        <a href="/contact/">التواصل</a>
+        <a href="/contact/" data-analytics-event="generate_lead" data-cta-location="ai-bots">التواصل</a>
         <a href="/en/ai-bots/">English</a>
       </nav>
     </header>
@@ -128,7 +129,7 @@
           <h1>روبوتات ذكاء اصطناعي جاهزة لفرقك التشغيلية</h1>
           <p class="lead">هذه الصفحة تجمع نماذج Bright AI التجريبية القابلة للنشر للعملاء. الفكرة ليست عرض “شات بوت” عام، بل تقديم مسارات تطبيق سريعة لفرق المبيعات والتوظيف والدعم وإدارة المشاريع داخل المؤسسات السعودية.</p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="/contact/">اطلب عرضاً مخصصاً</a>
+            <a class="btn btn-primary" href="/contact/" data-analytics-event="generate_lead" data-cta-location="ai-bots">اطلب عرضاً مخصصاً</a>
             <a class="btn btn-secondary" href="/services/">استعرض بقية الخدمات</a>
           </div>
         </div>

@@ -401,6 +401,7 @@
 </script>
   <link rel="stylesheet" href="/assets/css/text-ratio-fix.min.css" />
 
+<script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -430,8 +431,8 @@
 <li><a class="nav-link" href="/"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H10l2 2h5.5A2.5 2.5 0 0 1 20 9.5v7A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>عقودي</span></span><span class="nav-badge">3</span></a></li>
 <li><a class="nav-link" href="/tenders/templates/"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M5 5h14v14H5V5Zm4 0v14M5 10h14" stroke="currentColor" stroke-width="1.5"></path></svg><span>القوالب</span></span></a></li>
 <li><a class="nav-link" href="/tenders/templates/"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M5 18V9m7 9V5m7 13v-7" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path><path d="M3.5 19.5h17" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path></svg><span>القوالب</span></span></a></li>
-<li><a aria-current="page" class="nav-link" href="/tenders/compare/"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M7 5h4v14H7V5Zm6 4h4v10h-4V9ZM4 19.5h16" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>مقارنة عقود</span></span></a></li>
-<li><a class="nav-link" href="/consultation/"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" stroke="currentColor" stroke-width="1.5"></path><path d="M19 12a7 7 0 0 0-.08-1l2.03-1.58-2-3.46-2.45.57a7.6 7.6 0 0 0-1.73-1L14.5 3h-5l-.27 2.53a7.6 7.6 0 0 0-1.73 1l-2.45-.57-2 3.46L5.08 11a7 7 0 0 0 0 2l-2.03 1.58 2 3.46 2.45-.57c.53.42 1.11.76 1.73 1L9.5 21h5l.27-2.53c.62-.24 1.2-.58 1.73-1l2.45.57 2-3.46L18.92 13c.05-.33.08-.66.08-1Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>اطلب التفعيل</span></span></a></li>
+<li><a aria-current="page" class="nav-link" href="/tenders/compare/" data-analytics-event="tender_compare_open" data-cta-location="tenders_compare" data-service-name="contractai_tenders" data-tender-feature="compare"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M7 5h4v14H7V5Zm6 4h4v10h-4V9ZM4 19.5h16" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>مقارنة عقود</span></span></a></li>
+<li><a class="nav-link" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders_compare"><span class="nav-main"><svg class="nav-icon" fill="none" viewbox="0 0 24 24"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" stroke="currentColor" stroke-width="1.5"></path><path d="M19 12a7 7 0 0 0-.08-1l2.03-1.58-2-3.46-2.45.57a7.6 7.6 0 0 0-1.73-1L14.5 3h-5l-.27 2.53a7.6 7.6 0 0 0-1.73 1l-2.45-.57-2 3.46L5.08 11a7 7 0 0 0 0 2l-2.03 1.58 2 3.46 2.45-.57c.53.42 1.11.76 1.73 1L9.5 21h5l.27-2.53c.62-.24 1.2-.58 1.73-1l2.45.57 2-3.46L18.92 13c.05-.33.08-.66.08-1Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>اطلب التفعيل</span></span></a></li>
 </ul>
 </nav>
 <div class="user-card glass">
@@ -455,7 +456,7 @@
 </label>
 <div class="header-actions">
 <div class="api-status" id="apiStatus" title="حالة اتصال الذكاء الاصطناعي"><span class="status-dot"></span><span class="status-text">جارٍ الاتصال...</span></div>
-<a aria-label="الانتقال إلى النسخة الإنجليزية" class="secondary-button" href="/en/tenders/compare/">EN</a>
+<a aria-label="الانتقال إلى النسخة الإنجليزية" class="secondary-button" href="/en/tenders/compare/" data-analytics-event="tender_compare_open" data-cta-location="tenders_compare" data-tender-feature="compare">EN</a>
 <button aria-label="تبديل الوضع" class="icon-button" id="themeToggle" type="button"><svg aria-hidden="true" fill="none" id="themeIcon" viewbox="0 0 24 24"><path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.6"></path></svg></button>
 <button aria-label="الإشعارات" class="icon-button" type="button"><span class="notification-badge">3</span><svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="M14 20a2 2 0 1 1-4 0m8-2H6c1.2-1.14 2-2.7 2-4.5V10a4 4 0 1 1 8 0v3.5c0 1.8.8 3.36 2 4.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg></button>
 <a class="primary-button" href="/">رفع عقد جديد ←</a>
@@ -559,7 +560,7 @@
 </div>
 <div style="margin-top:24px;padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
 <h3 style="margin:0 0 10px;color:#fff;font-size:1.05rem;font-weight:800;">ما الصفحة الأنسب بعد المقارنة؟</h3>
-<p style="margin:0 0 14px;color:#cbd5e1;line-height:2;">إذا كانت المشكلة في نقطة البداية فارجع إلى <a href="/tenders/templates/" style="color:#60a5fa;">مكتبة القوالب</a> لاختيار صيغة أنسب. وإذا كانت الفروقات تحتاج رفعاً داخلياً أو أرشفة ملخصات منظمة فانتقل إلى <a href="/tenders/reports/" style="color:#60a5fa;">التقارير</a>. أما إذا كان الملف جزءاً من مسار مؤسسي أكبر، فالأفضل ربطه مع <a href="/consultation/" style="color:#60a5fa;">الاستشارة</a> أو <a href="/services/" style="color:#60a5fa;">الخدمات</a> لتحديد آلية التشغيل والتكامل.</h3>
+<p style="margin:0 0 14px;color:#cbd5e1;line-height:2;">إذا كانت المشكلة في نقطة البداية فارجع إلى <a href="/tenders/templates/" style="color:#60a5fa;">مكتبة القوالب</a> لاختيار صيغة أنسب. وإذا كانت الفروقات تحتاج رفعاً داخلياً أو أرشفة ملخصات منظمة فانتقل إلى <a href="/tenders/reports/" style="color:#60a5fa;">التقارير</a>. أما إذا كان الملف جزءاً من مسار مؤسسي أكبر، فالأفضل ربطه مع <a href="/consultation/" style="color:#60a5fa;" data-analytics-event="consultation_request" data-cta-location="tenders_compare">الاستشارة</a> أو <a href="/services/" style="color:#60a5fa;">الخدمات</a> لتحديد آلية التشغيل والتكامل.</h3>
 <p style="margin:0;color:#cbd5e1;line-height:2;">هذا الربط الداخلي يساعد الفريق على الانتقال من المقارنة إلى الإجراء، ويقلل بقاء الصفحة معزولة داخل بنية الموقع.</p>
 </div>
 <p style="margin:24px 0 0;color:#e2e8f0;line-height:2;font-weight:600;">في العقود، الفارق الحاسم أحياناً يكون في سطر واحد. المقارنة الجيدة تجعل هذا السطر ظاهراً قبل أن يصبح التزاماً نافذاً.</p>
@@ -828,7 +829,7 @@
         <h3>روابط تكمل المسار</h3>
         <ul>
           <li><a href="/services/">استعرض الخدمات المؤسسية</a> إذا كنت تقارن بين الحلول قبل الاجتماع التنفيذي.</li>
-          <li><a href="/consultation/">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
+          <li><a href="/consultation/" data-analytics-event="consultation_request" data-cta-location="tenders_compare">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
           <li><a href="/docs/">مركز الوثائق</a> مناسب للفِرق التقنية أو التشغيلية التي تريد تفاصيل أعمق.</li>
           <li><a href="/case-studies/">قصص النجاح</a> مفيدة إذا كان قرار الشراء مرتبطاً بعائد واضح أو benchmark داخلي.</li>
         </ul>
