@@ -32,8 +32,8 @@ services:
   - type: web
     runtime: static
     name: brightai-site
-    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run assets:minify && npm run seo:gate && rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js && bash scripts/seo-hreflang-dirs.sh && node scripts/prepare-render-static-output.mjs
-    staticPublishPath: .render-static
+    buildCommand: npm ci --include=dev --no-audit --no-fund && npm run assets:minify && npm run seo:gate && rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js && bash scripts/seo-hreflang-dirs.sh
+    staticPublishPath: .
     headers:
       # المصدر المرجعي الأساسي للهيدرز هو ملف _headers.
       # هذا القسم يحتفظ فقط بالقيم التنفيذية التي يجب أن يطبّقها Render أثناء النشر.
@@ -974,9 +974,15 @@ services:
         destination: /ai-scolecs/index.html
 
       - type: rewrite
+        source: /ai-workflows
+        destination: /ai-workflows/index.html
+      - type: rewrite
         source: /ai-workflows/
         destination: /ai-workflows/index.html
 
+      - type: rewrite
+        source: /docs
+        destination: /docs.html
       - type: rewrite
         source: /docs/
         destination: /docs.html
