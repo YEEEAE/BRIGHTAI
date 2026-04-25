@@ -136,6 +136,21 @@
             max-width: 62ch;
         }
 
+        .answer-block {
+            margin-top: 18px;
+            padding: 18px;
+            border: 1px solid rgba(86, 165, 255, 0.28);
+            border-radius: 18px;
+            background: rgba(86, 165, 255, 0.08);
+        }
+
+        .answer-block p {
+            color: #dbeafe;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-weight: 700;
+        }
+
         .cta-row {
             display: flex;
             flex-wrap: wrap;
@@ -191,6 +206,29 @@
             border-radius: 18px;
             background: rgba(9, 19, 33, 0.82);
             border: 1px solid var(--line);
+        }
+
+        .geo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .geo-table th,
+        .geo-table td {
+            border: 1px solid var(--line);
+            padding: 14px;
+            text-align: left;
+            vertical-align: top;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .geo-table th {
+            color: var(--text);
+            background: rgba(86, 165, 255, 0.1);
         }
 
         .card p,
@@ -250,6 +288,32 @@
       ]
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/en/services/#faq",
+      "inLanguage": "en-SA",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Which Bright AI service should an enterprise start with?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The starting point depends on the operational problem. Use AI agents for knowledge and task assistance, automation for repeated workflows, data analysis for decision visibility, and consultation when the scope is unclear."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Bright AI build custom AI systems or only demos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bright AI supports custom delivery paths. Public demos help clarify direction, but implementation is scoped around the client's data, workflow, governance needs, and integration points."
+          }
+        }
+      ]
+    }
+    </script>
 <script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
@@ -270,6 +334,10 @@
                 <div>
                     <span class="eyebrow">Enterprise Services in Saudi Arabia</span>
                     <h1>AI delivery paths built for real operating teams.</h1>
+                    <section class="answer-block seo-answer-block" aria-labelledby="en-services-answer-title" data-seo-intent-answer="true">
+                        <h2 id="en-services-answer-title">What does Bright AI deliver?</h2>
+                        <p>Bright AI helps Saudi enterprise teams move from scattered AI experiments to governed delivery across AI agents, intelligent automation, data analysis, and sector-specific workflows. Each service is scoped around a real operating problem, available data, integration needs, and the decision process required for production use.</p>
+                    </section>
                     <p class="lead">Bright AI helps organizations move from scattered pilots to governed delivery across automation, analytics, AI agents, and sector-specific deployment tracks.</p>
                     <div class="cta-row">
                         <a class="btn btn-primary" href="/en/consultation/">Request Consultation</a>
@@ -280,7 +348,7 @@
                     <div class="hero-card">
                         <small>Delivery Focus</small>
                         <h2>From use case selection to production rollout</h2>
-                        <p class="lead" style="font-size:15px;margin-top:12px;">Each service line is designed to help enterprise teams define scope, validate value, and move toward measurable adoption inside Saudi operating environments.</h2>
+                        <p class="lead" style="font-size:15px;margin-top:12px;">Each service line is designed to help enterprise teams define scope, validate value, and move toward measurable adoption inside Saudi operating environments.</p>
                     </div>
                     <div class="hero-card">
                         <small>Primary Tracks</small>
@@ -293,7 +361,7 @@
                 <div class="grid">
                     <article class="card">
                         <h2>AI Agents</h2>
-                        <p>Custom assistants and task-oriented agents for service delivery, internal operations, and controlled enterprise execution.</h2>
+                        <p>Custom assistants and task-oriented agents for service delivery, internal operations, and controlled enterprise execution.</p>
                         <ul class="service-list">
                             <li>Workflow-specific prompts and actions</li>
                             <li>Arabic and English business contexts</li>
@@ -302,7 +370,7 @@
                     </article>
                     <article class="card">
                         <h2>Smart Automation</h2>
-                        <p>Operational automation for repetitive flows, approvals, and coordination-heavy work across departments.</h2>
+                        <p>Operational automation for repetitive flows, approvals, and coordination-heavy work across departments.</p>
                         <ul class="service-list">
                             <li>Structured intake and routing</li>
                             <li>Process visibility for stakeholders</li>
@@ -311,7 +379,7 @@
                     </article>
                     <article class="card">
                         <h2>Data Analysis</h2>
-                        <p>Reporting and decision support for teams that need cleaner visibility into performance, risk, and trend signals.</h2>
+                        <p>Reporting and decision support for teams that need cleaner visibility into performance, risk, and trend signals.</p>
                         <ul class="service-list">
                             <li>Analytical summaries and dashboards</li>
                             <li>Operational reporting support</li>
@@ -320,7 +388,7 @@
                     </article>
                     <article class="card">
                         <h2>Sector Delivery</h2>
-                        <p>Service packaging for healthcare and broader enterprise environments that need domain-specific implementation paths.</h2>
+                        <p>Service packaging for healthcare and broader enterprise environments that need domain-specific implementation paths.</p>
                         <ul class="service-list">
                             <li>Healthcare-oriented scenarios</li>
                             <li>Enterprise readiness checkpoints</li>
@@ -346,6 +414,48 @@
                         </ul>
                     </section>
                 </div>
+                <section class="card" aria-labelledby="en-services-citation-title">
+                    <h2 id="en-services-citation-title">When do you need this service?</h2>
+                    <p>Use Bright AI services when the business problem is clear enough to test but too important for a generic AI tool. Common signals include repeated manual work, fragmented reports, slow approvals, unsupported customer questions, or teams that need Arabic and English AI support inside a governed workflow.</p>
+
+                    <h2>How Bright AI helps</h2>
+                    <p>Bright AI starts by narrowing the use case, then maps data sources, users, decision points, and integration constraints. The result is a delivery path that can start small, prove value, and expand into production without changing the operating model every time.</p>
+
+                    <h2>Why this matters in Saudi Arabia</h2>
+                    <p>Saudi organizations often need AI that respects Arabic language use, local operating context, and internal governance. Bright AI services are positioned around enterprise adoption, not one-off prompts, so teams can keep scope, accountability, and data handling visible.</p>
+
+                    <h2>Short comparison</h2>
+                    <table class="geo-table">
+                        <thead>
+                            <tr><th>Need</th><th>Best service path</th><th>Why</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Repeated internal questions or tasks</td><td>AI Agents</td><td>Creates a controlled assistant for a defined workflow</td></tr>
+                            <tr><td>Manual approvals and coordination</td><td>Smart Automation</td><td>Turns recurring steps into visible, trackable flows</td></tr>
+                            <tr><td>Unclear numbers and reports</td><td>Data Analysis</td><td>Consolidates data into decision-ready views</td></tr>
+                            <tr><td>Unclear scope or priorities</td><td>Consultation</td><td>Defines the first safe use case before build work</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2>Trust/Evidence</h2>
+                    <ul class="notes">
+                        <li>This page links to concrete service tracks already published on the site: AI agents, automation, data analysis, and healthcare solutions.</li>
+                        <li>The copy avoids unverified performance numbers and frames delivery around scope, governance, and integration readiness.</li>
+                        <li>Each service path points users to a real page or documentation route for deeper review.</li>
+                    </ul>
+
+                    <h2>FAQ</h2>
+                    <div class="grid">
+                        <article class="card">
+                            <h3>Which Bright AI service should an enterprise start with?</h3>
+                            <p>The starting point depends on the operational problem. Use AI agents for knowledge and task assistance, automation for repeated workflows, data analysis for decision visibility, and consultation when the scope is unclear.</p>
+                        </article>
+                        <article class="card">
+                            <h3>Does Bright AI build custom AI systems or only demos?</h3>
+                            <p>Bright AI supports custom delivery paths. Public demos help clarify direction, but implementation is scoped around the client's data, workflow, governance needs, and integration points.</p>
+                        </article>
+                    </div>
+                </section>
             </section>
         </main>
 

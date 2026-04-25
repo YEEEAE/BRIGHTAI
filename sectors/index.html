@@ -112,6 +112,39 @@
         .sector-link:hover {
             text-decoration: underline;
         }
+        .answer-block {
+            margin-top: 24px;
+            padding: 22px;
+            border-radius: 24px;
+            border: 1px solid rgba(125, 211, 252, 0.28);
+            background: rgba(14, 165, 233, 0.08);
+        }
+        .answer-block p {
+            color: #dbeafe;
+            font-size: 1.08rem;
+            line-height: 2;
+            font-weight: 700;
+        }
+        .geo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .geo-table th,
+        .geo-table td {
+            border: 1px solid var(--sector-border);
+            padding: 14px;
+            text-align: start;
+            vertical-align: top;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+        .geo-table th {
+            color: #fff;
+            background: rgba(125, 211, 252, 0.08);
+        }
     </style>
     <script type="application/ld+json">
     {
@@ -170,6 +203,10 @@
                         من <strong>AI Agent</strong> المؤسسي إلى <strong>أتمتة العمليات</strong> و<strong>تحليل البيانات</strong>،
                         مع تركيز واضح على سيناريوهات السوق السعودي ومتطلبات التشغيل والحوكمة.
                     </p>
+                    <section class="answer-block seo-answer-block" aria-labelledby="sectors-answer-title" data-seo-intent-answer="true">
+                        <h2 id="sectors-answer-title" class="text-2xl font-bold mb-3">ما هي حلول الذكاء الاصطناعي حسب القطاع؟</h2>
+                        <p>حلول الذكاء الاصطناعي حسب القطاع تربط التقنية بمشكلة تشغيلية محددة داخل بيئة سعودية، مثل كشف الاحتيال في المالية، تنظيم المعرفة الطبية في الصحة، تحسين المستودعات في اللوجستيات، أو مراقبة الإنتاج في التصنيع. Bright AI تساعد الجهة على اختيار المسار المناسب قبل بناء الحل.</p>
+                    </section>
                     <div class="flex flex-wrap gap-4 mt-8">
                         <a class="btn-primary" href="/consultation/">احجز جلسة تشخيص</a>
                         <a class="btn-secondary" href="/services/">استعرض كل الخدمات</a>
@@ -185,37 +222,37 @@
                     <article class="sector-card sector-glass">
                         <p class="text-sm text-amber-200 mb-3">القطاع المالي</p>
                         <h2 class="text-2xl font-bold mb-3">ذكاء اصطناعي للبنوك والتأمين</h2>
-                        <p class="text-slate-300 leading-8 mb-5">حالات استخدام تركّز على كشف الاحتيال، تحسين القرارات الائتمانية، وتحليل المحافظ والعمليات الخلفية.</h2>
+                        <p class="text-slate-300 leading-8 mb-5">حالات استخدام تركّز على كشف الاحتيال، تحسين القرارات الائتمانية، وتحليل المحافظ والعمليات الخلفية.</p>
                         <a class="sector-link" href="/sectors/finance/">الانتقال إلى صفحة القطاع المالي</a>
                     </article>
                     <article class="sector-card sector-glass">
                         <p class="text-sm text-amber-200 mb-3">الرعاية الصحية</p>
                         <h2 class="text-2xl font-bold mb-3">حلول ذكية للمستشفيات والعيادات</h2>
-                        <p class="text-slate-300 leading-8 mb-5">مسارات تشغيلية لتحسين تجربة المريض، تنظيم المعرفة الطبية، وتقليل الأعمال اليدوية في الإدارات الحيوية.</h2>
+                        <p class="text-slate-300 leading-8 mb-5">مسارات تشغيلية لتحسين تجربة المريض، تنظيم المعرفة الطبية، وتقليل الأعمال اليدوية في الإدارات الحيوية.</p>
                         <a class="sector-link" href="/sectors/healthcare/">الانتقال إلى صفحة الرعاية الصحية</a>
                     </article>
                     <article class="sector-card sector-glass">
                         <p class="text-sm text-amber-200 mb-3">اللوجستيات</p>
                         <h2 class="text-2xl font-bold mb-3">تشغيل أسرع وسلاسل إمداد أوضح</h2>
-                        <p class="text-slate-300 leading-8 mb-5">تكامل بين الأتمتة والتحليلات والتتبع لرفع كفاءة المستودعات، الأساطيل، ونقاط التسليم.</h2>
+                        <p class="text-slate-300 leading-8 mb-5">تكامل بين الأتمتة والتحليلات والتتبع لرفع كفاءة المستودعات، الأساطيل، ونقاط التسليم.</p>
                         <a class="sector-link" href="/sectors/logistics/">الانتقال إلى صفحة اللوجستيات</a>
                     </article>
                     <article class="sector-card sector-glass">
                         <p class="text-sm text-amber-200 mb-3">التصنيع</p>
                         <h2 class="text-2xl font-bold mb-3">أتمتة وتحليل للعمليات الصناعية</h2>
-                        <p class="text-slate-300 leading-8 mb-5">تقليل الهدر، قراءة مؤشرات التشغيل لحظياً، وربط البيانات بخطط التحسين والإنتاج.</h2>
+                        <p class="text-slate-300 leading-8 mb-5">تقليل الهدر، قراءة مؤشرات التشغيل لحظياً، وربط البيانات بخطط التحسين والإنتاج.</p>
                         <a class="sector-link" href="/sectors/manufacturing/">الانتقال إلى صفحة التصنيع</a>
                     </article>
                     <article class="sector-card sector-glass">
                         <p class="text-sm text-amber-200 mb-3">التجارة الإلكترونية</p>
                         <h2 class="text-2xl font-bold mb-3">تحسين الطلبات والتجربة الرقمية</h2>
-                        <p class="text-slate-300 leading-8 mb-5">استخدام الوكلاء الذكيين والتحليلات لرفع التحويل، تحسين الدعم، وتحسين كفاءة العمليات اليومية.</h2>
+                        <p class="text-slate-300 leading-8 mb-5">استخدام الوكلاء الذكيين والتحليلات لرفع التحويل، تحسين الدعم، وتحسين كفاءة العمليات اليومية.</p>
                         <a class="sector-link" href="/sectors/ecommerce/">الانتقال إلى صفحة التجارة الإلكترونية</a>
                     </article>
                     <article class="sector-card sector-glass">
                         <p class="text-sm text-amber-200 mb-3">الطاقة</p>
                         <h2 class="text-2xl font-bold mb-3">ذكاء تشغيلي للبنية الحرجة</h2>
-                        <p class="text-slate-300 leading-8 mb-5">مراقبة أفضل للعمليات والمخاطر، وربط البيانات الميدانية بقرارات تشغيلية أسرع وأكثر اتساقاً.</h2>
+                        <p class="text-slate-300 leading-8 mb-5">مراقبة أفضل للعمليات والمخاطر، وربط البيانات الميدانية بقرارات تشغيلية أسرع وأكثر اتساقاً.</p>
                         <a class="sector-link" href="/sectors/energy/">الانتقال إلى صفحة الطاقة</a>
                     </article>
                 </div>
@@ -255,6 +292,83 @@
                         <a class="sector-link" href="/blog/top-ai-tools-saudi-2025/">المقالات الداعمة لاتخاذ القرار</a>
                         قبل التواصل مع الفريق.
                     </p>
+                </div>
+            </div>
+        </section>
+        <section class="py-8" aria-labelledby="sectors-citation-title">
+            <div class="sector-shell">
+                <div class="sector-glass rounded-[28px] p-8 md:p-10">
+                    <h2 id="sectors-citation-title" class="text-3xl font-bold mb-5">المشكلة التي تحلها حلول القطاعات</h2>
+                    <p class="text-slate-300 leading-8 mb-6">المشكلة ليست في نقص أدوات AI، بل في اختيار أداة عامة لا تعرف طبيعة القطاع. الجهة المالية تحتاج ضوابط مخاطر، والجهة الصحية تحتاج خصوصية وسياقاً طبياً، والمصنع يحتاج قراءة تشغيلية مختلفة عن متجر إلكتروني. هذه الصفحة تساعد صاحب القرار على ربط الحل بالسياق القطاعي قبل طلب التنفيذ.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">لمن هذه الصفحة؟</h2>
+                    <p class="text-slate-300 leading-8 mb-6">هذه الصفحة موجهة للإدارات التنفيذية، فرق التحول الرقمي، مسؤولي البيانات، ومديري العمليات الذين يريدون معرفة المسار الأقرب قبل الدخول في تفاصيل تقنية. كما تفيد الجهات التي تقارن بين AI Agent، الأتمتة، تحليل البيانات، أو بناء حل مخصص حسب قطاعها.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">حالات استخدام في السعودية</h2>
+                    <p class="text-slate-300 leading-8 mb-6">في السعودية تظهر الحاجة في كشف الأنماط غير الطبيعية في المالية، تنظيم المعرفة في المستشفيات، متابعة المستودعات والأساطيل في اللوجستيات، قراءة مؤشرات خطوط الإنتاج، تحسين تجربة التجارة الإلكترونية، ومراقبة أصول الطاقة. كل حالة تحتاج نطاقاً مختلفاً للبيانات والصلاحيات والتكامل.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">طريقة التنفيذ</h2>
+                    <p class="text-slate-300 leading-8 mb-6">يبدأ التنفيذ بتحديد القطاع والمشكلة، ثم حصر الأنظمة والبيانات المتاحة، ثم اختيار تجربة أولية صغيرة قابلة للقياس. بعد ذلك يتم بناء نموذج أو سير عمل محدود، مراجعته مع مالك العملية، ثم توسيعه فقط إذا أثبت أن المخرجات مفهومة وقابلة للاستخدام.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">الفوائد العملية</h2>
+                    <ul class="text-slate-300 leading-8 list-disc pr-6 mb-6">
+                        <li>تقليل الاختيارات التقنية غير المناسبة لطبيعة القطاع.</li>
+                        <li>توضيح أثر AI بلغة تشغيلية يفهمها المدير والفريق الفني معاً.</li>
+                        <li>تسريع قرار البداية عبر ربط كل قطاع بصفحات وحلول داخلية ذات صلة.</li>
+                    </ul>
+
+                    <h2 class="text-3xl font-bold mb-5">المخاطر الشائعة</h2>
+                    <p class="text-slate-300 leading-8 mb-6">أكثر المخاطر شيوعاً هي تعميم حل واحد على كل القطاعات، تجاهل حساسية البيانات، أو البدء بتكامل كبير قبل إثبات حالة الاستخدام. لذلك يجب فصل التجربة الأولية عن مشروع التوسع، وتحديد من يملك القرار ومن يراجع المخرجات.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">مؤشرات النجاح</h2>
+                    <p class="text-slate-300 leading-8 mb-6">يُقاس النجاح بوضوح الحالة المختارة، جاهزية البيانات، قبول المستخدمين للمخرجات، انخفاض العمل اليدوي في خطوة محددة، وتحسن سرعة القرار أو جودة المتابعة. لا نستخدم أرقاماً عامة قبل دراسة الحالة، بل نربط القياس بمؤشر داخلي متفق عليه.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">متى تحتاج هذه الخدمة؟</h2>
+                    <p class="text-slate-300 leading-8 mb-6">تحتاج الجهة إلى حلول AI حسب القطاع عندما تكون المشكلة مرتبطة بطبيعة النشاط، لا بمجرد أداة عامة. يظهر ذلك في قطاعات مثل المالية، الصحة، اللوجستيات، التصنيع، الطاقة، والتجارة الإلكترونية، حيث تختلف البيانات والمخاطر والأنظمة وطريقة اتخاذ القرار.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">كيف تساعد Bright AI؟</h2>
+                    <p class="text-slate-300 leading-8 mb-6">تساعد Bright AI في تحويل الاحتياج القطاعي إلى نطاق تنفيذ واضح: تحديد المشكلة، قراءة البيانات والأنظمة الحالية، اختيار مسار AI Agent أو الأتمتة أو التحليلات، ثم بناء تجربة قابلة للاختبار قبل التوسع.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">لماذا هذا مهم في السعودية؟</h2>
+                    <p class="text-slate-300 leading-8 mb-6">السوق السعودي يجمع بين قطاعات منظمة، فرق تشغيل كبيرة، ومتطلبات تحول رقمي متسارعة. الحل القطاعي يقلل التعميم، يحافظ على سياق الأعمال المحلي، ويجعل تبني AI أقرب إلى قرار تشغيلي قابل للمراجعة.</p>
+
+                    <h2 class="text-3xl font-bold mb-5">مقارنة مختصرة حسب حالة الاستخدام</h2>
+                    <table class="geo-table">
+                        <thead>
+                            <tr><th>الحالة</th><th>المسار الأنسب</th><th>سبب الاختيار</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>أسئلة وخدمة عملاء متكررة</td><td>AI Agent</td><td>يوحّد المعرفة ويضبط الردود والتصعيد</td></tr>
+                            <tr><td>خطوات تشغيلية وموافقات</td><td>أتمتة العمليات</td><td>يحوّل التكرار إلى مسار قابل للمتابعة</td></tr>
+                            <tr><td>مؤشرات وقرارات تنفيذية</td><td>تحليل البيانات</td><td>ينظم مصادر البيانات ويجعل القراءة أوضح</td></tr>
+                            <tr><td>متطلبات قطاعية دقيقة</td><td>حل قطاعي مخصص</td><td>يراعي اختلاف الأنظمة والمخاطر وسياق القرار</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="text-3xl font-bold mb-5 mt-8">لماذا Bright AI؟</h2>
+                    <ul class="text-slate-300 leading-8 list-disc pr-6">
+                        <li>الصفحة تربط كل قطاع بصفحة مخصصة داخل الموقع بدلاً من عرض ادعاءات عامة.</li>
+                        <li>التوصيات مبنية على حالات استخدام تشغيلية مثل الخدمة، التقارير، المستودعات، المخاطر، والإنتاج.</li>
+                        <li>لا تستخدم الصفحة أرقاماً أو شهادات غير موثقة، وتترك قرار النطاق لمرحلة التشخيص.</li>
+                    </ul>
+
+                    <div class="mt-8 p-6 rounded-2xl" style="border:1px solid rgba(125,211,252,.25);background:rgba(14,165,233,.08);">
+                        <h2 class="text-2xl font-bold mb-3">CTA واضح</h2>
+                        <p class="text-slate-300 leading-8 mb-4">إذا كان القطاع واضحاً لكن حالة الاستخدام غير محسومة، ابدأ بجلسة تشخيص قصيرة لتحديد المسار العملي قبل بناء أي حل.</p>
+                        <a class="btn-primary" href="/consultation/">احجز جلسة تشخيص حسب القطاع</a>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-5 mt-8">أسئلة شائعة</h2>
+                    <div class="sector-grid">
+                        <article class="sector-card sector-glass">
+                            <h3 class="text-xl font-bold mb-3">كيف تختار الشركة السعودية حل الذكاء الاصطناعي المناسب حسب القطاع؟</h3>
+                            <p class="text-slate-300 leading-8">تبدأ الشركة بتحديد المشكلة القطاعية الأكثر تكراراً: خدمة العملاء، العمليات، التقارير، المخاطر، أو إدارة المعرفة. بعد ذلك تختار المسار الأقرب: AI Agent، أتمتة، تحليل بيانات، أو حل قطاعي متخصص.</p>
+                        </article>
+                        <article class="sector-card sector-glass">
+                            <h3 class="text-xl font-bold mb-3">هل تختلف حلول AI بين القطاعات؟</h3>
+                            <p class="text-slate-300 leading-8">نعم. تختلف البيانات، الأنظمة، المخاطر، وسياق القرار بين المالية، الصحة، التصنيع، اللوجستيات، الطاقة، والتجارة الإلكترونية، لذلك يجب تخصيص نطاق الحل قبل التنفيذ.</p>
+                        </article>
+                    </div>
                 </div>
             </div>
         </section>

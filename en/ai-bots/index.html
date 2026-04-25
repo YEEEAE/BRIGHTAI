@@ -78,6 +78,11 @@
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
     .card { padding: 22px; border-radius: 18px; background: rgba(9, 19, 33, 0.82); border: 1px solid var(--line); }
     .card p, .list li { color: var(--muted); line-height: 1.8; }
+    .answer-block { margin-top: 18px; padding: 18px; border: 1px solid rgba(92, 212, 192, 0.28); border-radius: 18px; background: rgba(92, 212, 192, 0.08); }
+    .answer-block p { color: #dbeafe; font-size: 1.05rem; line-height: 1.8; font-weight: 700; }
+    .geo-table { width: 100%; border-collapse: collapse; margin-top: 18px; overflow: hidden; border-radius: 16px; }
+    .geo-table th, .geo-table td { border: 1px solid var(--line); padding: 14px; text-align: left; vertical-align: top; color: var(--muted); line-height: 1.7; }
+    .geo-table th { color: var(--text); background: rgba(92, 212, 192, 0.1); }
     .list { margin: 14px 0 0; padding-left: 18px; }
     .footer { margin-top: 24px; padding: 18px 22px; color: var(--muted); }
     @media (max-width: 840px) {
@@ -108,6 +113,32 @@
     ]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://brightai.site/en/ai-bots/#faq",
+    "inLanguage": "en-SA",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How are Bright AI bots different from a generic chatbot?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bright AI bots are tied to specific enterprise workflows such as sales, recruiting, support, and project operations. They are configured around knowledge, permissions, escalation paths, and integrations instead of giving generic answers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can the bots be localized for Saudi enterprise teams?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Bright AI can adapt the bot language, knowledge base, operating rules, and integration points to fit Saudi enterprise teams while keeping the scope and governance clear."
+        }
+      }
+    ]
+  }
+  </script>
 <script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
@@ -127,6 +158,10 @@
         <div>
           <span class="eyebrow">Publishable demo catalog</span>
           <h1>AI bots ready for enterprise teams</h1>
+          <section class="answer-block seo-answer-block" aria-labelledby="en-ai-bots-answer-title" data-seo-intent-answer="true">
+            <h2 id="en-ai-bots-answer-title">What are Bright AI bots?</h2>
+            <p>Bright AI bots are customizable AI product demos for sales, recruiting, support, projects, and guided learning teams in Saudi organizations. They turn repeated questions and operational tasks into governed workflows connected to knowledge, systems, permissions, and escalation rules.</p>
+          </section>
           <p class="lead">This page groups Bright AI demo bots that can be turned into client-facing deployments. The goal is not a generic chatbot showcase, but a focused set of workflow-ready products for sales, recruiting, support, and project operations in Saudi Arabia.</p>
           <div class="cta-row">
             <a class="btn btn-primary" href="/en/contact/">Request a tailored demo</a>
@@ -180,6 +215,47 @@
           <li>When prospects want to see concrete interface directions before requesting a custom build.</li>
           <li>When your go-to-market motion depends on role-based AI demos that map to real enterprise teams.</li>
         </ul>
+      </section>
+      <section class="section" aria-labelledby="en-ai-bots-citation-title">
+        <h2 id="en-ai-bots-citation-title">When do you need this service?</h2>
+        <p class="lead">You need AI bots when the same customer, employee, or candidate questions repeat across teams, or when a manual response process cannot be measured. This service is useful when your organization has internal knowledge or operational data that should be delivered through a controlled conversational interface.</p>
+
+        <h2>How Bright AI helps</h2>
+        <p class="lead">Bright AI defines the use case, configures the knowledge base, response style, permissions, and integration points, then connects the bot to a clear action such as qualifying a lead, opening a support request, screening a candidate, or summarizing a project status.</p>
+
+        <h2>Why this matters in Saudi Arabia</h2>
+        <p class="lead">Saudi enterprise teams need AI experiences that handle Arabic and English context, local operating expectations, and governance requirements. A controlled bot keeps answers aligned with the organization instead of relying on broad, generic AI behavior.</p>
+
+        <h2>Short comparison</h2>
+        <table class="geo-table">
+          <thead>
+            <tr><th>Option</th><th>Best fit</th><th>Limit</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Generic chatbot</td><td>Simple questions and early exploration</td><td>Does not know company policy or internal systems</td></tr>
+            <tr><td>Customized AI bot</td><td>A repeated workflow inside one team</td><td>Needs knowledge and integration setup before scale</td></tr>
+            <tr><td>Advanced AI agent</td><td>Multi-step execution and case follow-up</td><td>Requires stricter governance and action boundaries</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Trust/Evidence</h2>
+        <ul class="list">
+          <li>The page lists concrete bot demos published on the site: BrightSales, BrightRecruiter, BrightSupport, BrightProject, and BrightMath.</li>
+          <li>Each bot is mapped to a real operating function, not to an unsupported performance claim.</li>
+          <li>Customization is scoped around approved knowledge, language, integrations, and permissions.</li>
+        </ul>
+
+        <h2>FAQ</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>How are Bright AI bots different from a generic chatbot?</h3>
+            <p>Bright AI bots are tied to specific enterprise workflows such as sales, recruiting, support, and project operations. They are configured around knowledge, permissions, escalation paths, and integrations instead of giving generic answers.</p>
+          </article>
+          <article class="card">
+            <h3>Can the bots be localized for Saudi enterprise teams?</h3>
+            <p>Yes. Bright AI can adapt the bot language, knowledge base, operating rules, and integration points to fit Saudi enterprise teams while keeping the scope and governance clear.</p>
+          </article>
+        </div>
       </section>
     </main>
 
