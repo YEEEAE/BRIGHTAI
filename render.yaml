@@ -157,6 +157,141 @@ services:
         source: https://www.brightai.site/:splat
         destination: https://brightai.site/:splat
         status: 301
+      # === Product service landing pages ===
+      - type: rewrite
+        source: /services/data-analyst-agent/
+        destination: /services/data-analyst-agent.html
+      - type: redirect
+        source: /services/data-analyst-agent.html
+        destination: /services/data-analyst-agent/
+        status: 301
+      - type: rewrite
+        source: /services/custom-ai-agent/
+        destination: /services/custom-ai-agent.html
+      - type: redirect
+        source: /services/custom-ai-agent.html
+        destination: /services/custom-ai-agent/
+        status: 301
+      - type: rewrite
+        source: /services/competitor-analysis-agent/
+        destination: /services/competitor-analysis-agent.html
+      - type: redirect
+        source: /services/competitor-analysis-agent.html
+        destination: /services/competitor-analysis-agent/
+        status: 301
+      - type: rewrite
+        source: /services/seo-agent/
+        destination: /services/seo-agent.html
+      - type: redirect
+        source: /services/seo-agent.html
+        destination: /services/seo-agent/
+        status: 301
+      - type: rewrite
+        source: /services/social-data-analysis/
+        destination: /services/social-data-analysis.html
+      - type: redirect
+        source: /services/social-data-analysis.html
+        destination: /services/social-data-analysis/
+        status: 301
+      - type: rewrite
+        source: /services/health-data-analysis/
+        destination: /services/health-data-analysis.html
+      - type: redirect
+        source: /services/health-data-analysis.html
+        destination: /services/health-data-analysis/
+        status: 301
+      - type: rewrite
+        source: /services/marketing-agent/
+        destination: /services/marketing-agent.html
+      - type: redirect
+        source: /services/marketing-agent.html
+        destination: /services/marketing-agent/
+        status: 301
+      - type: rewrite
+        source: /services/document-automation/
+        destination: /services/document-automation.html
+      - type: redirect
+        source: /services/document-automation.html
+        destination: /services/document-automation/
+        status: 301
+      - type: rewrite
+        source: /services/smart-hiring-system/
+        destination: /services/smart-hiring-system.html
+      - type: redirect
+        source: /services/smart-hiring-system.html
+        destination: /services/smart-hiring-system/
+        status: 301
+      - type: rewrite
+        source: /services/medical-archive/
+        destination: /services/medical-archive.html
+      - type: redirect
+        source: /services/medical-archive.html
+        destination: /services/medical-archive/
+        status: 301
+      - type: rewrite
+        source: /services/data-platform/
+        destination: /services/data-platform.html
+      - type: redirect
+        source: /services/data-platform.html
+        destination: /services/data-platform/
+        status: 301
+      - type: rewrite
+        source: /services/lead-hunter/
+        destination: /services/lead-hunter.html
+      - type: redirect
+        source: /services/lead-hunter.html
+        destination: /services/lead-hunter/
+        status: 301
+      - type: rewrite
+        source: /services/customer-service-automation/
+        destination: /services/customer-service-automation.html
+      - type: redirect
+        source: /services/customer-service-automation.html
+        destination: /services/customer-service-automation/
+        status: 301
+      - type: rewrite
+        source: /services/hr-automation/
+        destination: /services/hr-automation.html
+      - type: redirect
+        source: /services/hr-automation.html
+        destination: /services/hr-automation/
+        status: 301
+      - type: rewrite
+        source: /services/marketing-automation/
+        destination: /services/marketing-automation.html
+      - type: redirect
+        source: /services/marketing-automation.html
+        destination: /services/marketing-automation/
+        status: 301
+      - type: rewrite
+        source: /services/approvals-automation/
+        destination: /services/approvals-automation.html
+      - type: redirect
+        source: /services/approvals-automation.html
+        destination: /services/approvals-automation/
+        status: 301
+      - type: rewrite
+        source: /services/operational-reports-automation/
+        destination: /services/operational-reports-automation.html
+      - type: redirect
+        source: /services/operational-reports-automation.html
+        destination: /services/operational-reports-automation/
+        status: 301
+      - type: rewrite
+        source: /services/supply-chain-optimization/
+        destination: /services/supply-chain-optimization.html
+      - type: redirect
+        source: /services/supply-chain-optimization.html
+        destination: /services/supply-chain-optimization/
+        status: 301
+      - type: rewrite
+        source: /services/ai-consulting/
+        destination: /services/ai-consulting.html
+      - type: redirect
+        source: /services/ai-consulting.html
+        destination: /services/ai-consulting/
+        status: 301
+
       # ملاحظة تشغيلية: بعد أي Sync/Deploy يغيّر قواعد routes في Render،
       # امسح Cloudflare Cache حتى لا تستمر استجابات 404 أو 301 القديمة على الدومين.
       # منع Render من تقديم صفحة 404 كملف حقيقي بحالة 200 عند طلب /404 مباشرة.

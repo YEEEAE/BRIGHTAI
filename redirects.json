@@ -1,132 +1,513 @@
 {
   "redirects": [
-    { "from": "/index.html", "to": "/" },
-    { "from": "/:slug/index.html", "to": "/:slug/" },
-    { "from": "/en/index.html", "to": "/en/" },
-    { "from": "/en/:slug/index.html", "to": "/en/:slug/" },
-    { "from": "/docs.html", "to": "/docs/" },
-    { "from": "/docs/openapi.html", "to": "/docs/openapi/" },
-    { "from": "/docs/faq.html", "to": "/docs/faq/" },
-    { "from": "/docs/faq-en.html", "to": "/docs/faq-en/" },
-    { "from": "/docs/terms-and-conditions.html", "to": "/docs/terms-and-conditions/" },
-    { "from": "/docs/terms-and-conditions-en.html", "to": "/docs/terms-and-conditions-en/" },
-    { "from": "/docs/smart-automation.html", "to": "/docs/smart-automation/" },
-    { "from": "/docs/smart-automation-en.html", "to": "/docs/smart-automation-en/" },
-    { "from": "/docs/services-overview.html", "to": "/docs/services-overview/" },
-    { "from": "/docs/services-overview-en.html", "to": "/docs/services-overview-en/" },
-    { "from": "/docs/privacy-policy.html", "to": "/docs/privacy-policy/" },
-    { "from": "/docs/privacy-policy-en.html", "to": "/docs/privacy-policy-en/" },
-    { "from": "/docs/data-analysis.html", "to": "/docs/data-analysis/" },
-    { "from": "/docs/data-analysis-en.html", "to": "/docs/data-analysis-en/" },
-    { "from": "/docs/contact.html", "to": "/docs/contact/" },
-    { "from": "/docs/contact-en.html", "to": "/docs/contact-en/" },
-    { "from": "/docs/consultation.html", "to": "/docs/consultation/" },
-    { "from": "/docs/consultation-en.html", "to": "/docs/consultation-en/" },
-    { "from": "/docs/ai-bots.html", "to": "/docs/ai-bots/" },
-    { "from": "/docs/ai-bots-en.html", "to": "/docs/ai-bots-en/" },
-    { "from": "/docs/ai-agent.html", "to": "/docs/ai-agent/" },
-    { "from": "/docs/ai-agent-en.html", "to": "/docs/ai-agent-en/" },
-    { "from": "/docs/solutions-bi.html", "to": "/docs/solutions-bi/" },
-    { "from": "/docs/solutions-bi-en.html", "to": "/docs/solutions-bi-en/" },
-    { "from": "/docs/solutions-crm.html", "to": "/docs/solutions-crm/" },
-    { "from": "/docs/solutions-crm-en.html", "to": "/docs/solutions-crm-en/" },
-    { "from": "/docs/solutions-finance.html", "to": "/docs/solutions-finance/" },
-    { "from": "/docs/solutions-finance-en.html", "to": "/docs/solutions-finance-en/" },
-    { "from": "/docs/solutions-healthcare.html", "to": "/docs/solutions-healthcare/" },
-    { "from": "/docs/solutions-healthcare-en.html", "to": "/docs/solutions-healthcare-en/" },
-    { "from": "/docs/solutions-hr.html", "to": "/docs/solutions-hr/" },
-    { "from": "/docs/solutions-hr-en.html", "to": "/docs/solutions-hr-en/" },
-    { "from": "/docs/solutions-interview.html", "to": "/docs/solutions-interview/" },
-    { "from": "/docs/solutions-interview-en.html", "to": "/docs/solutions-interview-en/" },
-    { "from": "/docs/solutions-logistics.html", "to": "/docs/solutions-logistics/" },
-    { "from": "/docs/solutions-logistics-en.html", "to": "/docs/solutions-logistics-en/" },
-    { "from": "/docs/solutions-ocr.html", "to": "/docs/solutions-ocr/" },
-    { "from": "/docs/solutions-ocr-en.html", "to": "/docs/solutions-ocr-en/" },
-    { "from": "/docs/solutions-retail.html", "to": "/docs/solutions-retail/" },
-    { "from": "/docs/solutions-retail-en.html", "to": "/docs/solutions-retail-en/" },
-    { "from": "/docs/solutions-supply-chain.html", "to": "/docs/solutions-supply-chain/" },
-    { "from": "/docs/solutions-supply-chain-en.html", "to": "/docs/solutions-supply-chain-en/" },
-    { "from": "/sectors/index.html", "to": "/sectors/" },
-    { "from": "/sectors/ecommerce.html", "to": "/sectors/ecommerce/" },
-    { "from": "/sectors/ecommerce-en.html", "to": "/sectors/ecommerce-en/" },
-    { "from": "/sectors/energy.html", "to": "/sectors/energy/" },
-    { "from": "/sectors/energy-en.html", "to": "/sectors/energy-en/" },
-    { "from": "/sectors/finance.html", "to": "/sectors/finance/" },
-    { "from": "/sectors/finance-en.html", "to": "/sectors/finance-en/" },
-    { "from": "/sectors/healthcare.html", "to": "/sectors/healthcare/" },
-    { "from": "/sectors/healthcare-en.html", "to": "/sectors/healthcare-en/" },
-    { "from": "/sectors/logistics.html", "to": "/sectors/logistics/" },
-    { "from": "/sectors/logistics-en.html", "to": "/sectors/logistics-en/" },
-    { "from": "/sectors/manufacturing.html", "to": "/sectors/manufacturing/" },
-    { "from": "/sectors/manufacturing-en.html", "to": "/sectors/manufacturing-en/" },
-    { "from": "/tenders/index.html", "to": "/tenders/" },
-    { "from": "/tenders/landing.html", "to": "/tenders/landing/" },
-    { "from": "/tenders/dashboard.html", "to": "/tenders/dashboard/" },
-    { "from": "/tenders/reports.html", "to": "/tenders/reports/" },
-    { "from": "/tenders/settings.html", "to": "/tenders/settings/" },
-    { "from": "/tenders/compare.html", "to": "/tenders/compare/" },
-    { "from": "/tenders/templates.html", "to": "/tenders/templates/" },
-    { "from": "/en/tenders/landing.html", "to": "/en/tenders/landing/" },
-    { "from": "/en/tenders/dashboard.html", "to": "/en/tenders/dashboard/" },
-    { "from": "/en/tenders/reports.html", "to": "/en/tenders/reports/" },
-    { "from": "/en/tenders/settings.html", "to": "/en/tenders/settings/" },
-    { "from": "/en/tenders/compare.html", "to": "/en/tenders/compare/" },
-    { "from": "/en/tenders/templates.html", "to": "/en/tenders/templates/" },
-    { "from": "/interview/index.html", "to": "/interview/" },
-    { "from": "/interview/pages/appointment/index.html", "to": "/interview/pages/appointment/" },
-    { "from": "/interview/pages/dashboard/index.html", "to": "/interview/pages/dashboard/" },
-    { "from": "/interview/pages/support-ai/index.html", "to": "/interview/pages/support-ai/" },
-    { "from": "/interview/pages/Visitor-registration/index.html", "to": "/interview/pages/Visitor-registration/" },
-    { "from": "/en/docs/docs.html", "to": "/en/docs/" },
-    { "from": "/smart-automation.html", "to": "/smart-automation/" },
-    { "from": "/ai-agent.html", "to": "/ai-agent/" },
-    { "from": "/health-bright.html", "to": "/health/" },
-    { "from": "/consultation.html", "to": "/consultation/" },
-    { "from": "/data-analysis.html", "to": "/data-analysis/" },
-    { "from": "/our-products.html", "to": "/services/" },
-    { "from": "/Company%20performance%20monitoring%20tool.html", "to": "/tools/" },
-    { "from": "/blogger/ai-generative-content-industry-saudi-arabia.html", "to": "/blog/ai-generative-content-industry-saudi-arabia/" },
-    { "from": "/frontend/pages/about-us/index.html", "to": "/about/" },
-    { "from": "/frontend/pages/about-us/", "to": "/about/" },
-    { "from": "/frontend/pages/ai-agent/index.html", "to": "/ai-agent/" },
-    { "from": "/frontend/pages/ai-agent/", "to": "/ai-agent/" },
-    { "from": "/frontend/pages/ai-bots/index.html", "to": "/ai-bots/" },
-    { "from": "/frontend/pages/ai-bots/", "to": "/ai-bots/" },
-    { "from": "/frontend/pages/ai-bots/BrightProject/index.html", "to": "/ai-bots/BrightProject/" },
-    { "from": "/frontend/pages/ai-bots/BrightSales/index.html", "to": "/ai-bots/BrightSales/" },
-    { "from": "/frontend/pages/ai-bots/BrightRecruiter/index.html", "to": "/ai-bots/BrightRecruiter/" },
-    { "from": "/frontend/pages/consultation/index.html", "to": "/consultation/" },
-    { "from": "/frontend/pages/consultation/", "to": "/consultation/" },
-    { "from": "/frontend/pages/contact/index.html", "to": "/contact/" },
-    { "from": "/frontend/pages/contact/", "to": "/contact/" },
-    { "from": "/frontend/pages/data-analysis/index.html", "to": "/data-analysis/" },
-    { "from": "/frontend/pages/data-analysis/", "to": "/data-analysis/" },
-    { "from": "/frontend/pages/ai-workflows/index.html", "to": "/ai-workflows/" },
-    { "from": "/frontend/pages/our-products/index.html", "to": "/services/" },
-    { "from": "/frontend/pages/our-products/", "to": "/services/" },
-    { "from": "/frontend/pages/smart-automation/index.html", "to": "/smart-automation/" },
-    { "from": "/frontend/pages/smart-automation/", "to": "/smart-automation/" },
-    { "from": "/frontend/pages/smart-medical-archive/index.html", "to": "/smart-medical-archive/" },
-    { "from": "/frontend/pages/smart-medical-archive/", "to": "/smart-medical-archive/" },
-    { "from": "/frontend/pages/try/index.html", "to": "/try/" },
-    { "from": "/interview/pages/supportAI", "to": "/interview/pages/support-ai/" },
-    { "from": "/interview/pages/supportAI/", "to": "/interview/pages/support-ai/" },
-    { "from": "/interview/pages/supportAI/index.html", "to": "/interview/pages/support-ai/" },
-    { "from": "/frontend/pages/blogger/nca-compliance", "to": "/blog/nca-compliance/" },
-    { "from": "/ai-workflows", "to": "/ai-workflows/" },
-    { "from": "/docs", "to": "/docs/" },
-    { "from": "/blog/production-line", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
-    { "from": "/blog/production-line/", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
-    { "from": "/blog/production-line.html", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
-    { "from": "/blog/atou.doc", "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/" },
-    { "from": "/blog/atou.doc/", "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/" },
-    { "from": "/blog/astr.doc", "to": "/blog/" },
-    { "from": "/blog/astr.doc/", "to": "/blog/" },
-    { "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات", "to": "/blog/" },
-    { "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/", "to": "/blog/" },
-    { "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html", "to": "/blog/" },
-    { "from": "/blog/ production-line", "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/" },
-    { "from": "/blog/Generative artificial intelligence", "to": "/blog/Generative-artificial-intelligence" },
+    {
+      "from": "/index.html",
+      "to": "/"
+    },
+    {
+      "from": "/:slug/index.html",
+      "to": "/:slug/"
+    },
+    {
+      "from": "/en/index.html",
+      "to": "/en/"
+    },
+    {
+      "from": "/en/:slug/index.html",
+      "to": "/en/:slug/"
+    },
+    {
+      "from": "/docs.html",
+      "to": "/docs/"
+    },
+    {
+      "from": "/docs/openapi.html",
+      "to": "/docs/openapi/"
+    },
+    {
+      "from": "/docs/faq.html",
+      "to": "/docs/faq/"
+    },
+    {
+      "from": "/docs/faq-en.html",
+      "to": "/docs/faq-en/"
+    },
+    {
+      "from": "/docs/terms-and-conditions.html",
+      "to": "/docs/terms-and-conditions/"
+    },
+    {
+      "from": "/docs/terms-and-conditions-en.html",
+      "to": "/docs/terms-and-conditions-en/"
+    },
+    {
+      "from": "/docs/smart-automation.html",
+      "to": "/docs/smart-automation/"
+    },
+    {
+      "from": "/docs/smart-automation-en.html",
+      "to": "/docs/smart-automation-en/"
+    },
+    {
+      "from": "/docs/services-overview.html",
+      "to": "/docs/services-overview/"
+    },
+    {
+      "from": "/docs/services-overview-en.html",
+      "to": "/docs/services-overview-en/"
+    },
+    {
+      "from": "/docs/privacy-policy.html",
+      "to": "/docs/privacy-policy/"
+    },
+    {
+      "from": "/docs/privacy-policy-en.html",
+      "to": "/docs/privacy-policy-en/"
+    },
+    {
+      "from": "/docs/data-analysis.html",
+      "to": "/docs/data-analysis/"
+    },
+    {
+      "from": "/docs/data-analysis-en.html",
+      "to": "/docs/data-analysis-en/"
+    },
+    {
+      "from": "/docs/contact.html",
+      "to": "/docs/contact/"
+    },
+    {
+      "from": "/docs/contact-en.html",
+      "to": "/docs/contact-en/"
+    },
+    {
+      "from": "/docs/consultation.html",
+      "to": "/docs/consultation/"
+    },
+    {
+      "from": "/docs/consultation-en.html",
+      "to": "/docs/consultation-en/"
+    },
+    {
+      "from": "/docs/ai-bots.html",
+      "to": "/docs/ai-bots/"
+    },
+    {
+      "from": "/docs/ai-bots-en.html",
+      "to": "/docs/ai-bots-en/"
+    },
+    {
+      "from": "/docs/ai-agent.html",
+      "to": "/docs/ai-agent/"
+    },
+    {
+      "from": "/docs/ai-agent-en.html",
+      "to": "/docs/ai-agent-en/"
+    },
+    {
+      "from": "/docs/solutions-bi.html",
+      "to": "/docs/solutions-bi/"
+    },
+    {
+      "from": "/docs/solutions-bi-en.html",
+      "to": "/docs/solutions-bi-en/"
+    },
+    {
+      "from": "/docs/solutions-crm.html",
+      "to": "/docs/solutions-crm/"
+    },
+    {
+      "from": "/docs/solutions-crm-en.html",
+      "to": "/docs/solutions-crm-en/"
+    },
+    {
+      "from": "/docs/solutions-finance.html",
+      "to": "/docs/solutions-finance/"
+    },
+    {
+      "from": "/docs/solutions-finance-en.html",
+      "to": "/docs/solutions-finance-en/"
+    },
+    {
+      "from": "/docs/solutions-healthcare.html",
+      "to": "/docs/solutions-healthcare/"
+    },
+    {
+      "from": "/docs/solutions-healthcare-en.html",
+      "to": "/docs/solutions-healthcare-en/"
+    },
+    {
+      "from": "/docs/solutions-hr.html",
+      "to": "/docs/solutions-hr/"
+    },
+    {
+      "from": "/docs/solutions-hr-en.html",
+      "to": "/docs/solutions-hr-en/"
+    },
+    {
+      "from": "/docs/solutions-interview.html",
+      "to": "/docs/solutions-interview/"
+    },
+    {
+      "from": "/docs/solutions-interview-en.html",
+      "to": "/docs/solutions-interview-en/"
+    },
+    {
+      "from": "/docs/solutions-logistics.html",
+      "to": "/docs/solutions-logistics/"
+    },
+    {
+      "from": "/docs/solutions-logistics-en.html",
+      "to": "/docs/solutions-logistics-en/"
+    },
+    {
+      "from": "/docs/solutions-ocr.html",
+      "to": "/docs/solutions-ocr/"
+    },
+    {
+      "from": "/docs/solutions-ocr-en.html",
+      "to": "/docs/solutions-ocr-en/"
+    },
+    {
+      "from": "/docs/solutions-retail.html",
+      "to": "/docs/solutions-retail/"
+    },
+    {
+      "from": "/docs/solutions-retail-en.html",
+      "to": "/docs/solutions-retail-en/"
+    },
+    {
+      "from": "/docs/solutions-supply-chain.html",
+      "to": "/docs/solutions-supply-chain/"
+    },
+    {
+      "from": "/docs/solutions-supply-chain-en.html",
+      "to": "/docs/solutions-supply-chain-en/"
+    },
+    {
+      "from": "/sectors/index.html",
+      "to": "/sectors/"
+    },
+    {
+      "from": "/sectors/ecommerce.html",
+      "to": "/sectors/ecommerce/"
+    },
+    {
+      "from": "/sectors/ecommerce-en.html",
+      "to": "/sectors/ecommerce-en/"
+    },
+    {
+      "from": "/sectors/energy.html",
+      "to": "/sectors/energy/"
+    },
+    {
+      "from": "/sectors/energy-en.html",
+      "to": "/sectors/energy-en/"
+    },
+    {
+      "from": "/sectors/finance.html",
+      "to": "/sectors/finance/"
+    },
+    {
+      "from": "/sectors/finance-en.html",
+      "to": "/sectors/finance-en/"
+    },
+    {
+      "from": "/sectors/healthcare.html",
+      "to": "/sectors/healthcare/"
+    },
+    {
+      "from": "/sectors/healthcare-en.html",
+      "to": "/sectors/healthcare-en/"
+    },
+    {
+      "from": "/sectors/logistics.html",
+      "to": "/sectors/logistics/"
+    },
+    {
+      "from": "/sectors/logistics-en.html",
+      "to": "/sectors/logistics-en/"
+    },
+    {
+      "from": "/sectors/manufacturing.html",
+      "to": "/sectors/manufacturing/"
+    },
+    {
+      "from": "/sectors/manufacturing-en.html",
+      "to": "/sectors/manufacturing-en/"
+    },
+    {
+      "from": "/tenders/index.html",
+      "to": "/tenders/"
+    },
+    {
+      "from": "/tenders/landing.html",
+      "to": "/tenders/landing/"
+    },
+    {
+      "from": "/tenders/dashboard.html",
+      "to": "/tenders/dashboard/"
+    },
+    {
+      "from": "/tenders/reports.html",
+      "to": "/tenders/reports/"
+    },
+    {
+      "from": "/tenders/settings.html",
+      "to": "/tenders/settings/"
+    },
+    {
+      "from": "/tenders/compare.html",
+      "to": "/tenders/compare/"
+    },
+    {
+      "from": "/tenders/templates.html",
+      "to": "/tenders/templates/"
+    },
+    {
+      "from": "/en/tenders/landing.html",
+      "to": "/en/tenders/landing/"
+    },
+    {
+      "from": "/en/tenders/dashboard.html",
+      "to": "/en/tenders/dashboard/"
+    },
+    {
+      "from": "/en/tenders/reports.html",
+      "to": "/en/tenders/reports/"
+    },
+    {
+      "from": "/en/tenders/settings.html",
+      "to": "/en/tenders/settings/"
+    },
+    {
+      "from": "/en/tenders/compare.html",
+      "to": "/en/tenders/compare/"
+    },
+    {
+      "from": "/en/tenders/templates.html",
+      "to": "/en/tenders/templates/"
+    },
+    {
+      "from": "/interview/index.html",
+      "to": "/interview/"
+    },
+    {
+      "from": "/interview/pages/appointment/index.html",
+      "to": "/interview/pages/appointment/"
+    },
+    {
+      "from": "/interview/pages/dashboard/index.html",
+      "to": "/interview/pages/dashboard/"
+    },
+    {
+      "from": "/interview/pages/support-ai/index.html",
+      "to": "/interview/pages/support-ai/"
+    },
+    {
+      "from": "/interview/pages/Visitor-registration/index.html",
+      "to": "/interview/pages/Visitor-registration/"
+    },
+    {
+      "from": "/en/docs/docs.html",
+      "to": "/en/docs/"
+    },
+    {
+      "from": "/smart-automation.html",
+      "to": "/smart-automation/"
+    },
+    {
+      "from": "/ai-agent.html",
+      "to": "/ai-agent/"
+    },
+    {
+      "from": "/health-bright.html",
+      "to": "/health/"
+    },
+    {
+      "from": "/consultation.html",
+      "to": "/consultation/"
+    },
+    {
+      "from": "/data-analysis.html",
+      "to": "/data-analysis/"
+    },
+    {
+      "from": "/our-products.html",
+      "to": "/services/"
+    },
+    {
+      "from": "/Company%20performance%20monitoring%20tool.html",
+      "to": "/tools/"
+    },
+    {
+      "from": "/blogger/ai-generative-content-industry-saudi-arabia.html",
+      "to": "/blog/ai-generative-content-industry-saudi-arabia/"
+    },
+    {
+      "from": "/frontend/pages/about-us/index.html",
+      "to": "/about/"
+    },
+    {
+      "from": "/frontend/pages/about-us/",
+      "to": "/about/"
+    },
+    {
+      "from": "/frontend/pages/ai-agent/index.html",
+      "to": "/ai-agent/"
+    },
+    {
+      "from": "/frontend/pages/ai-agent/",
+      "to": "/ai-agent/"
+    },
+    {
+      "from": "/frontend/pages/ai-bots/index.html",
+      "to": "/ai-bots/"
+    },
+    {
+      "from": "/frontend/pages/ai-bots/",
+      "to": "/ai-bots/"
+    },
+    {
+      "from": "/frontend/pages/ai-bots/BrightProject/index.html",
+      "to": "/ai-bots/BrightProject/"
+    },
+    {
+      "from": "/frontend/pages/ai-bots/BrightSales/index.html",
+      "to": "/ai-bots/BrightSales/"
+    },
+    {
+      "from": "/frontend/pages/ai-bots/BrightRecruiter/index.html",
+      "to": "/ai-bots/BrightRecruiter/"
+    },
+    {
+      "from": "/frontend/pages/consultation/index.html",
+      "to": "/consultation/"
+    },
+    {
+      "from": "/frontend/pages/consultation/",
+      "to": "/consultation/"
+    },
+    {
+      "from": "/frontend/pages/contact/index.html",
+      "to": "/contact/"
+    },
+    {
+      "from": "/frontend/pages/contact/",
+      "to": "/contact/"
+    },
+    {
+      "from": "/frontend/pages/data-analysis/index.html",
+      "to": "/data-analysis/"
+    },
+    {
+      "from": "/frontend/pages/data-analysis/",
+      "to": "/data-analysis/"
+    },
+    {
+      "from": "/frontend/pages/ai-workflows/index.html",
+      "to": "/ai-workflows/"
+    },
+    {
+      "from": "/frontend/pages/our-products/index.html",
+      "to": "/services/"
+    },
+    {
+      "from": "/frontend/pages/our-products/",
+      "to": "/services/"
+    },
+    {
+      "from": "/frontend/pages/smart-automation/index.html",
+      "to": "/smart-automation/"
+    },
+    {
+      "from": "/frontend/pages/smart-automation/",
+      "to": "/smart-automation/"
+    },
+    {
+      "from": "/frontend/pages/smart-medical-archive/index.html",
+      "to": "/smart-medical-archive/"
+    },
+    {
+      "from": "/frontend/pages/smart-medical-archive/",
+      "to": "/smart-medical-archive/"
+    },
+    {
+      "from": "/frontend/pages/try/index.html",
+      "to": "/try/"
+    },
+    {
+      "from": "/interview/pages/supportAI",
+      "to": "/interview/pages/support-ai/"
+    },
+    {
+      "from": "/interview/pages/supportAI/",
+      "to": "/interview/pages/support-ai/"
+    },
+    {
+      "from": "/interview/pages/supportAI/index.html",
+      "to": "/interview/pages/support-ai/"
+    },
+    {
+      "from": "/frontend/pages/blogger/nca-compliance",
+      "to": "/blog/nca-compliance/"
+    },
+    {
+      "from": "/ai-workflows",
+      "to": "/ai-workflows/"
+    },
+    {
+      "from": "/docs",
+      "to": "/docs/"
+    },
+    {
+      "from": "/blog/production-line",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+    },
+    {
+      "from": "/blog/production-line/",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+    },
+    {
+      "from": "/blog/production-line.html",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+    },
+    {
+      "from": "/blog/atou.doc",
+      "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+    },
+    {
+      "from": "/blog/atou.doc/",
+      "to": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/"
+    },
+    {
+      "from": "/blog/astr.doc",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/astr.doc/",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html",
+      "to": "/blog/"
+    },
+    {
+      "from": "/blog/ production-line",
+      "to": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/"
+    },
+    {
+      "from": "/blog/Generative artificial intelligence",
+      "to": "/blog/Generative-artificial-intelligence"
+    },
     {
       "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)",
       "to": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1"
@@ -294,6 +675,82 @@
     {
       "from": "/docs/ai-agent/ai-agent-en.html",
       "to": "/docs/ai-agent-en/"
+    },
+    {
+      "from": "/services/data-analyst-agent.html",
+      "to": "/services/data-analyst-agent/"
+    },
+    {
+      "from": "/services/custom-ai-agent.html",
+      "to": "/services/custom-ai-agent/"
+    },
+    {
+      "from": "/services/competitor-analysis-agent.html",
+      "to": "/services/competitor-analysis-agent/"
+    },
+    {
+      "from": "/services/seo-agent.html",
+      "to": "/services/seo-agent/"
+    },
+    {
+      "from": "/services/social-data-analysis.html",
+      "to": "/services/social-data-analysis/"
+    },
+    {
+      "from": "/services/health-data-analysis.html",
+      "to": "/services/health-data-analysis/"
+    },
+    {
+      "from": "/services/marketing-agent.html",
+      "to": "/services/marketing-agent/"
+    },
+    {
+      "from": "/services/document-automation.html",
+      "to": "/services/document-automation/"
+    },
+    {
+      "from": "/services/smart-hiring-system.html",
+      "to": "/services/smart-hiring-system/"
+    },
+    {
+      "from": "/services/medical-archive.html",
+      "to": "/services/medical-archive/"
+    },
+    {
+      "from": "/services/data-platform.html",
+      "to": "/services/data-platform/"
+    },
+    {
+      "from": "/services/lead-hunter.html",
+      "to": "/services/lead-hunter/"
+    },
+    {
+      "from": "/services/customer-service-automation.html",
+      "to": "/services/customer-service-automation/"
+    },
+    {
+      "from": "/services/hr-automation.html",
+      "to": "/services/hr-automation/"
+    },
+    {
+      "from": "/services/marketing-automation.html",
+      "to": "/services/marketing-automation/"
+    },
+    {
+      "from": "/services/approvals-automation.html",
+      "to": "/services/approvals-automation/"
+    },
+    {
+      "from": "/services/operational-reports-automation.html",
+      "to": "/services/operational-reports-automation/"
+    },
+    {
+      "from": "/services/supply-chain-optimization.html",
+      "to": "/services/supply-chain-optimization/"
+    },
+    {
+      "from": "/services/ai-consulting.html",
+      "to": "/services/ai-consulting/"
     }
   ]
 }
