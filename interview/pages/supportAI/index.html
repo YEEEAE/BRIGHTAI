@@ -99,6 +99,28 @@
     font-weight: 700;
   }
 
+  .conversion-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .conversion-cta a {
+    margin-top: 0;
+  }
+
+  .conversion-cta .conversion-secondary {
+    color: #e0f2fe;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(125, 211, 252, 0.32);
+  }
+
+  .conversion-support {
+    width: 100%;
+    color: var(--muted);
+  }
+
   .breadcrumbs {
     width: min(100%, 640px);
     margin: 0 auto 16px;
@@ -153,7 +175,11 @@
   <main class="glass-card">
     <h1>تم نقل الصفحة | Bright AI</h1>
     <p>تم نقل هذه الصفحة إلى المسار الموحد داخل Bright AI. استخدم الرابط النهائي المباشر.</p>
-    <a href="https://brightai.site/interview/pages/support-ai/">الانتقال إلى الوجهة النهائية</a>
+    <div class="conversion-cta">
+      <a href="https://brightai.site/interview/pages/support-ai/">افتح صفحة الدعم الذكي</a>
+      <a class="conversion-secondary" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="supportai-redirect">ناقش توظيف AI</a>
+      <p class="conversion-support">إذا وصلت من بحث أو رابط قديم، يمكنك فتح الصفحة النهائية أو طلب مراجعة قصيرة لملاءمة الحل قبل أي إعداد طويل.</p>
+    </div>
   </main>
 </body>
 </html>
