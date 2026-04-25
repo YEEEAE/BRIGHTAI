@@ -581,10 +581,11 @@ async function generateAnswerWithGemini(query, matches, options = {}) {
   }
 
   const activeModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
-  const response = await fetch(`${config.gemini.endpoint}/${activeModel}:generateContent?key=${config.gemini.apiKey}`, {
+  const response = await fetch(`${config.gemini.endpoint}/${activeModel}:generateContent`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-goog-api-key': config.gemini.apiKey
     },
     body: JSON.stringify({
       contents: [

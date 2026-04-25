@@ -1,5 +1,3 @@
-const GEMINI_MODEL = "gemini-2.5-flash";
-
         class DataAnalyzerPage {
             constructor() {
                 this.analyzer = new DataAnalyzer();
@@ -146,37 +144,37 @@ const GEMINI_MODEL = "gemini-2.5-flash";
                 اكتب بالعربية مع إيموجي.`;
 
                 try {
-                    const response = await fetch('/api/ai/openai-chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            messages: [{ role: "user", content: prompt }],
-                            model: GEMINI_MODEL,
-                            temperature: 0.7,
-                            max_tokens: 400
-                        })
+                    const gemini = window.BrightAIGemini;
+                    if (!gemini) throw new Error('Gemini client is not loaded');
+
+                    const response = await gemini.generateText(prompt, {
+                        temperature: 0.7,
+                        maxOutputTokens: 400
                     });
 
-                    const data = await response.json();
-                    const text = data.choices?.[0]?.message?.content || '';
+                    const text = response.text;
                     const insights = text.split('\n').filter(l => l.trim());
 
                     container.innerHTML = insights.map(i => `
                         <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
                             <i class="fa-solid fa-lightbulb text-yellow-400 mt-1"></i>
-                            <span>${i}</span>
+                            <span>${escapeHtml(i)}</span>
                         </li>
                     `).join('');
 
                 } catch (e) {
                     container.innerHTML = `
-                        <li class="flex gap-3 bg-white/5 p-4 rounded-xl">
-                            <i class="fa-solid fa-chart-pie text-purple-400"></i>
-                            <span>تم تحليل ${a.totalRows} سجل بنسبة جودة ${a.qualityScore}%</span>
+                        <li class="flex gap-3 bg-red-500/10 p-4 rounded-xl border border-red-500/20">
+                            <i class="fa-solid fa-exclamation-circle text-red-400 mt-1"></i>
+                            <span>${escapeHtml(window.BrightAIGemini?.getErrorMessage(e) || 'تعذر توليد الرؤى.')}</span>
+                        </li>
+                        <li>
+                            <button type="button" id="retry-insights-btn" class="px-4 py-2 rounded-xl bg-white/10 border border-white/10 hover:bg-white/15">
+                                <i class="fa-solid fa-rotate-right ml-2"></i> إعادة المحاولة
+                            </button>
                         </li>
                     `;
+                    document.getElementById('retry-insights-btn')?.addEventListener('click', () => this.getAIInsights(), { once: true });
                 }
             }
 
@@ -185,11 +183,12 @@ const GEMINI_MODEL = "gemini-2.5-flash";
 
                 const container = document.getElementById('ai-insights-list');
                 const input = document.getElementById('ask-input');
+                const askBtn = document.getElementById('ask-btn');
 
                 container.innerHTML += `
                     <li class="flex gap-3 bg-blue-500/10 p-4 rounded-xl border border-blue-500/20">
                         <i class="fa-solid fa-user text-blue-400"></i>
-                        <span>${question}</span>
+                        <span>${escapeHtml(question)}</span>
                     </li>
                 `;
                 input.value = '';
@@ -200,37 +199,50 @@ const GEMINI_MODEL = "gemini-2.5-flash";
                 أجب بإختصار بالعربية.`;
 
                 try {
-                    const response = await fetch('/api/ai/openai-chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            messages: [{ role: "user", content: prompt }],
-                            model: GEMINI_MODEL,
-                            temperature: 0.7,
-                            max_tokens: 300
-                        })
+                    if (askBtn) {
+                        askBtn.disabled = true;
+                        askBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    }
+
+                    const gemini = window.BrightAIGemini;
+                    if (!gemini) throw new Error('Gemini client is not loaded');
+
+                    const response = await gemini.generateText(prompt, {
+                        temperature: 0.7,
+                        maxOutputTokens: 300
                     });
 
-                    const data = await response.json();
-                    const answer = data.choices?.[0]?.message?.content || 'تعذر الإجابة';
+                    const answer = response.text;
 
                     container.innerHTML += `
                         <li class="flex gap-3 bg-white/5 p-4 rounded-xl border border-white/5">
                             <i class="fa-solid fa-robot text-purple-400"></i>
-                            <span>${answer}</span>
+                            <span>${escapeHtml(answer)}</span>
                         </li>
                     `;
                     container.parentElement.scrollTop = container.parentElement.scrollHeight;
 
                 } catch (e) {
+                    const retryQuestion = escapeAttribute(question);
                     container.innerHTML += `
-                        <li class="flex gap-3 bg-red-500/10 p-4 rounded-xl">
+                        <li class="flex gap-3 bg-red-500/10 p-4 rounded-xl border border-red-500/20">
                             <i class="fa-solid fa-exclamation-circle text-red-400"></i>
-                            <span>حدث خطأ في الإجابة</span>
+                            <span>${escapeHtml(window.BrightAIGemini?.getErrorMessage(e) || 'حدث خطأ في الإجابة')}</span>
+                        </li>
+                        <li>
+                            <button type="button" class="retry-question-btn px-4 py-2 rounded-xl bg-white/10 border border-white/10 hover:bg-white/15" data-question="${retryQuestion}">
+                                <i class="fa-solid fa-rotate-right ml-2"></i> إعادة المحاولة
+                            </button>
                         </li>
                     `;
+                    container.querySelector('.retry-question-btn:last-of-type')?.addEventListener('click', (event) => {
+                        this.askQuestion(event.currentTarget.dataset.question);
+                    }, { once: true });
+                } finally {
+                    if (askBtn) {
+                        askBtn.disabled = false;
+                        askBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+                    }
                 }
             }
 
@@ -242,3 +254,17 @@ const GEMINI_MODEL = "gemini-2.5-flash";
         }
 
         document.addEventListener('DOMContentLoaded', () => new DataAnalyzerPage());
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[char]));
+        }
+
+        function escapeAttribute(value) {
+            return escapeHtml(value).replace(/`/g, '&#096;');
+        }

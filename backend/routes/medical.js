@@ -35,10 +35,10 @@ async function callGeminiMedical({ textParts = [], inlineDataParts = [], config:
   };
 
   const response = await fetch(
-    `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`,
+    `${config.gemini.endpoint}/${config.gemini.model}:generateContent`,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': config.gemini.apiKey },
       body: JSON.stringify(body)
     }
   );

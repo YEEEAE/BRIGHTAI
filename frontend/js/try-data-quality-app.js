@@ -1,5 +1,3 @@
-const GEMINI_MODEL = "gemini-2.5-flash";
-
         // Tabs
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -118,6 +116,7 @@ const GEMINI_MODEL = "gemini-2.5-flash";
 
         async function getAIInsights(analysis) {
             const container = document.getElementById('ai-insights');
+            container.innerHTML = 'جاري توليد توصيات الذكاء الاصطناعي...';
             const prompt = `كمحلل جودة للشركات، قدم 4 رؤى مختصرة لتقرير الجودة هذا:
 - السجلات: ${analysis.rows}، الأعمدة: ${analysis.cols}
 - نسبة الجودة: ${analysis.score}%
@@ -126,14 +125,33 @@ const GEMINI_MODEL = "gemini-2.5-flash";
 قدم توصيات عملية لتحسين جودة البيانات. اكتب بالعربية مع إيموجي.`;
 
             try {
-                const res = await fetch('/api/ai/openai-chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ messages: [{ role: "user", content: prompt }], model: GEMINI_MODEL, temperature: 0.7, max_tokens: 500 })
+                const gemini = window.BrightAIGemini;
+                if (!gemini) throw new Error('Gemini client is not loaded');
+
+                const response = await gemini.generateText(prompt, {
+                    temperature: 0.7,
+                    maxOutputTokens: 500
                 });
-                const data = await res.json();
-                container.innerHTML = (data.choices?.[0]?.message?.content || 'تعذر التحليل').replace(/\n/g, '<br>');
+
+                container.innerHTML = escapeHtml(response.text).replace(/\n/g, '<br>');
             } catch (e) {
-                container.innerHTML = `📊 تم تحليل ${analysis.rows} سجل بنسبة جودة ${analysis.score}%.<br>💡 يُنصح بمعالجة ${analysis.missing} قيمة مفقودة و${analysis.dups} سجل مكرر.`;
+                const message = window.BrightAIGemini?.getErrorMessage(e) || 'تعذر توليد توصيات الذكاء الاصطناعي.';
+                container.innerHTML = `
+                    <div style="color: var(--red); margin-bottom: 12px;">${escapeHtml(message)}</div>
+                    <button type="button" id="retry-quality-insights" class="btn-secondary">
+                        <i class="fa-solid fa-rotate-right"></i> إعادة المحاولة
+                    </button>
+                `;
+                document.getElementById('retry-quality-insights')?.addEventListener('click', () => getAIInsights(analysis), { once: true });
             }
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[char]));
         }

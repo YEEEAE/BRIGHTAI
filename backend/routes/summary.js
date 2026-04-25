@@ -53,7 +53,7 @@ async function summaryHandler(req, res) {
         }
 
         // Use fetch-based API call like chat.js
-        const apiUrl = `${config.gemini.endpoint}/${config.gemini.model}:generateContent?key=${config.gemini.apiKey}`;
+        const apiUrl = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
 
         // Construct prompt
         const prompt = `
@@ -69,7 +69,8 @@ ${text ? text.substring(0, 5000) : 'لم يتم تقديم نص'}
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-goog-api-key': config.gemini.apiKey
             },
             body: JSON.stringify({
                 contents: [{

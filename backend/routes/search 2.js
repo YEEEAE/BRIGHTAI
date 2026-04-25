@@ -57,8 +57,8 @@ ${SITE_CONTENT}
  * @returns {string}
  */
 function buildGeminiUrl() {
-  const { endpoint, model, apiKey } = config.gemini;
-  return `${endpoint}/${model}:generateContent?key=${apiKey}`;
+  const { endpoint, model } = config.gemini;
+  return `${endpoint}/${model}:generateContent`;
 }
 
 /**
@@ -75,7 +75,8 @@ async function callGeminiSearch(query) {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-goog-api-key': config.gemini.apiKey
         },
         body: JSON.stringify({
           contents: [

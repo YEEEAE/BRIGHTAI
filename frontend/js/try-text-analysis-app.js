@@ -1,5 +1,3 @@
-const GEMINI_MODEL = "gemini-2.5-flash";
-
         const sampleTexts = {
             news: `أعلنت المملكة العربية السعودية عن إطلاق مشروع "نيوم" كأحد أهم المشاريع الضخمة ضمن رؤية 2030. يهدف المشروع إلى بناء مدينة ذكية مستدامة على ساحل البحر الأحمر بتكلفة تتجاوز 500 مليار دولار. ستعتمد المدينة بالكامل على الطاقة المتجددة وستضم أحدث التقنيات في مجالات الذكاء الاصطناعي والروبوتات.`,
             review: `قمت بتجربة هاتف آيفون 15 برو ماكس لمدة شهر كامل. التصميم رائع والكاميرا ممتازة خصوصاً في التصوير الليلي. الأداء سريع جداً مع شريحة A17 Pro. السلبيات الوحيدة هي السعر المرتفع ووزن الجهاز الثقيل نسبياً. بشكل عام أنصح به لمحبي التصوير والأداء العالي.`,
@@ -54,7 +52,12 @@ const GEMINI_MODEL = "gemini-2.5-flash";
             });
 
             // Analyze
-            analyzeBtn.addEventListener('click', async () => {
+            analyzeBtn.addEventListener('click', () => runAnalysis());
+        });
+
+        async function runAnalysis() {
+                const textInput = document.getElementById('text-input');
+                const analyzeBtn = document.getElementById('analyze-btn');
                 const text = textInput.value.trim();
                 if (!text) {
                     alert('يرجى إدخال نص للتحليل');
@@ -76,24 +79,18 @@ const GEMINI_MODEL = "gemini-2.5-flash";
                 resultBox.innerHTML = '<span class="typing-indicator"><span></span><span></span><span></span></span>';
 
                 try {
-                    const response = await fetch('/api/ai/openai-chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            messages: [
-                                { role: "system", content: "أنت محلل نصوص خبير. أجب باللغة العربية بشكل مختصر ومفيد." },
-                                { role: "user", content: prompts[currentType] + text }
-                            ],
-                            model: GEMINI_MODEL,
-                            temperature: 0.7,
-                            max_tokens: 500
-                        })
-                    });
+                    const gemini = window.BrightAIGemini;
+                    if (!gemini) throw new Error('Gemini client is not loaded');
 
-                    const data = await response.json();
-                    const result = data.choices?.[0]?.message?.content || 'تعذر إجراء التحليل';
+                    const response = await gemini.generateText(
+                        `أنت محلل نصوص خبير. أجب باللغة العربية بشكل مختصر ومفيد.\n\n${prompts[currentType]}${text}`,
+                        {
+                            temperature: 0.7,
+                            maxOutputTokens: 500
+                        }
+                    );
+
+                    const result = response.text;
 
                     // Animate result
                     resultBox.innerHTML = '';
@@ -108,13 +105,19 @@ const GEMINI_MODEL = "gemini-2.5-flash";
 
                 } catch (error) {
                     console.error(error);
-                    resultBox.innerHTML = '<span class="text-red-400">حدث خطأ في التحليل. يرجى المحاولة مرة أخرى.</span>';
+                    const message = window.BrightAIGemini?.getErrorMessage(error) || 'حدث خطأ في التحليل. يرجى المحاولة مرة أخرى.';
+                    resultBox.innerHTML = `
+                        <div class="text-red-400 mb-3">${escapeHtml(message)}</div>
+                        <button type="button" id="retry-analysis-btn" class="sample-btn">
+                            <i class="fa-solid fa-rotate-right ml-2"></i> إعادة المحاولة
+                        </button>
+                    `;
+                    document.getElementById('retry-analysis-btn')?.addEventListener('click', runAnalysis, { once: true });
                 }
 
                 analyzeBtn.disabled = false;
                 analyzeBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles ml-2"></i> تحليل النص';
-            });
-        });
+        }
 
         function updateStats(text) {
             const words = text.split(/\s+/).filter(w => w.length > 0);
@@ -130,7 +133,11 @@ const GEMINI_MODEL = "gemini-2.5-flash";
 
         async function typeText(element, text) {
             for (const char of text) {
-                element.innerHTML += char === '\n' ? '<br>' : char;
+                if (char === '\n') {
+                    element.appendChild(document.createElement('br'));
+                } else {
+                    element.appendChild(document.createTextNode(char));
+                }
                 await new Promise(r => setTimeout(r, 15));
             }
         }
@@ -142,6 +149,16 @@ const GEMINI_MODEL = "gemini-2.5-flash";
             // Extract keywords (assuming comma-separated)
             const keywords = result.split(/[,،\n]+/).map(k => k.trim()).filter(k => k.length > 0 && k.length < 30);
 
-            container.innerHTML = keywords.map(k => `<span class="keyword-tag">${k}</span>`).join('');
+            container.innerHTML = keywords.map(k => `<span class="keyword-tag">${escapeHtml(k)}</span>`).join('');
             section.classList.remove('hidden');
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[char]));
         }
