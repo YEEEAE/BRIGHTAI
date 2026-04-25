@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-25T08:42:01.757Z",
+  "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
+  "filesScanned": 258,
+  "resourcesScanned": 4015,
+  "localResources": 3344,
+  "brokenResources": 0,
+  "fixableBrokenResources": 0,
+  "duplicateResources": 0,
+  "normalizationCandidates": 0,
+  "topBrokenFiles": [],
+  "topDuplicateFiles": [],
+  "brokenRows": [],
+  "duplicateRows": []
+}

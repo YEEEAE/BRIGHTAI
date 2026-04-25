@@ -10,7 +10,7 @@ const STATIC_ASSETS = [
   '/frontend/css/bundle-critical.css',
   '/frontend/css/main.bundle.css',
   '/frontend/js/main.bundle.js?v=20260206',
-  '/frontend/js/runtime-config.js',
+  '/frontend/js/runtime-config.min.js',
   '/frontend/js/navigation.js',
   '/frontend/js/article-ux-enhancements.js',
   '/frontend/js/page-enhancements.js',
@@ -20,7 +20,6 @@ const STATIC_ASSETS = [
   '/assets/images/Gemini.png',
   '/assets/images/hero-brain.svg',
   '/manifest.json',
-  '/offline',
   '/robots.txt',
   '/sitemap.xml'
 ];

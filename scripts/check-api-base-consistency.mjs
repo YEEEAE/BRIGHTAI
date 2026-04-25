@@ -6,14 +6,24 @@ import vm from "node:vm";
 
 const repoRoot = "/Users/yzydalshmry/Desktop/BRIGHTAI";
 
-const runtimeConfigSource = fs.readFileSync(
-  path.join(repoRoot, "frontend/js/runtime-config.js"),
-  "utf8"
-);
-const apiGatewaySource = fs.readFileSync(
-  path.join(repoRoot, "frontend/js/api-gateway.js"),
-  "utf8"
-);
+function readExistingSource(candidates) {
+  for (const candidate of candidates) {
+    const fullPath = path.join(repoRoot, candidate);
+    if (fs.existsSync(fullPath)) {
+      return fs.readFileSync(fullPath, "utf8");
+    }
+  }
+  throw new Error(`Missing expected source file. Tried: ${candidates.join(", ")}`);
+}
+
+const runtimeConfigSource = readExistingSource([
+  "frontend/js/runtime-config.js",
+  "frontend/js/runtime-config.min.js"
+]);
+const apiGatewaySource = readExistingSource([
+  "frontend/js/api-gateway.js",
+  "frontend/js/api-gateway.min.js"
+]);
 const tendersConfigSource = fs.readFileSync(
   path.join(repoRoot, "tenders/api-config.js"),
   "utf8"

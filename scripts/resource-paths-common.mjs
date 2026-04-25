@@ -3,12 +3,8 @@ import path from "node:path";
 import { glob } from "glob";
 
 export const DEFAULT_HTML_PATTERNS = [
-  "*.html",
-  "*.htm",
-  "frontend/**/*.html",
-  "frontend/**/*.htm",
-  "brightai-platform/public/**/*.html",
-  "brightai-platform/public/**/*.htm"
+  "**/*.html",
+  "**/*.htm"
 ];
 
 export const DEFAULT_IGNORE_PATTERNS = [
