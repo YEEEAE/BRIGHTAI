@@ -788,13 +788,13 @@
     <div class="chat-container" data-chat-endpoint="/api/ai/chat/stream" data-chatbot-profile="project">
         <div id="chatMessages"></div>
         <div class="input-area">
-            <textarea id="userInput" placeholder="أدخل استفسارك أو طلبك هنا..."></textarea>
+            <textarea id="userInput" placeholder="أدخل استفسارك أو طلبك هنا..." aria-label="أدخل استفسارك أو طلبك هنا..."></textarea>
             <div class="input-actions">
-                <button id="attachButton">
+                <button id="attachButton" aria-label="Attach file">
                     <i class="material-icons">attach_file</i>
                 </button>
-                <input accept=".pdf,.doc,.docx,.txt,image/*" id="fileInput" type="file" />
-                <button id="sendButton">
+                <input accept=".pdf,.doc,.docx,.txt,image/*" id="fileInput" type="file" aria-label="رفع ملف" />
+                <button id="sendButton" aria-label="Send message">
                     <i class="material-icons">send</i>
                 </button>
             </div>
@@ -971,7 +971,7 @@
             </h3>
             <div style="margin-top:24px;padding:20px;border-radius:14px;background:#eef2ff;border:1px solid #c7d2fe;">
                 <h4 style="margin:0 0 12px;font-size:18px;color:#1e293b;">روابط داخلية مرتبطة بتجربة BrightProject</h4>
-                <p style="margin:0 0 10px;color:#475569;">إذا كانت رحلتك تشمل التحليل واتخاذ القرار، راجع أيضاً <a href="/ai-bots/BrightMath/" style="color:#4338ca;font-weight:700;">BrightMath</a> للحالات التعليمية والتحليلية، واطّلع على <a href="/docs/ai-bots/" style="color:#4338ca;font-weight:700;">فهرس الروبوتات</a> لاختيار المسار الأنسب لفريقك.</h4>
+                <p style="margin:0 0 10px;color:#475569;">إذا كانت رحلتك تشمل التحليل واتخاذ القرار، راجع أيضاً <a href="/ai-bots/BrightMath/" style="color:#4338ca;font-weight:700;">BrightMath</a> للحالات التعليمية والتحليلية، واطّلع على <a href="/docs/ai-bots/" style="color:#4338ca;font-weight:700;">فهرس الروبوتات</a> لاختيار المسار الأنسب لفريقك.</p>
             </div>
             <p style="font-size: 16px; color: #475569; margin-bottom: 15px;">
                 يمكن للروبوت التفاعل بشفافية تامة مع منصات التخطيط الحالية (مثل MS Project, Primavera) ليصبح المستشار

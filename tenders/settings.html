@@ -506,7 +506,7 @@
 <path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.6"></path>
 <path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-linecap="round" stroke-width="1.6"></path>
 </svg>
-<div><div class="brand-title-row"><h1 class="brand-name">ContractAI</h1><span class="badge">BETA</span></div><p class="brand-subtitle">محلل العقود والمناقصات الذكي بالسعودية</p></div>
+<div><div class="brand-title-row"><h1 class="brand-name">ContractAI</p><span class="badge">BETA</span></div><p class="brand-subtitle">محلل العقود والمناقصات الذكي بالسعودية</p></div>
 </div>
 <button aria-label="إغلاق القائمة" class="icon-button close-sidebar" id="closeSidebar" type="button">✕</button>
 </div>
@@ -535,7 +535,7 @@
 </div>
 <label aria-label="ابحث في العقود والبنود" class="search-shell">
 <svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>
-<input class="search-input" id="globalSearch" name="global_search" placeholder="ابحث في العقود والبنود..." type="search"/>
+<input class="search-input" id="globalSearch" name="global_search" placeholder="ابحث في العقود والبنود..." type="search"/ aria-label="ابحث في العقود والبنود">
 <span class="search-shortcut">Ctrl+K</span>
 </label>
 <div class="header-actions">
@@ -547,7 +547,7 @@
 </div>
 </header>
 <div class="page-content">
-<section class="page-hero glass"><h2 class="page-title">⚙️ الإعدادات</h2><p style="color:var(--text-secondary);line-height:1.8;margin-top:12px;">من صفحة الإعدادات يمكنك إدارة بيانات ملفك الشخصي وخطة الاشتراك وتفضيلات التنبيهات والأمان والمظهر وإعدادات التكامل عبر API. تحكم كامل في تجربتك مع ContractAI لضمان حصولك على أفضل أداء يتوافق مع احتياجات فريقك القانوني والمشتريات.</p></section>
+<section class="page-hero glass"><h2 class="page-title">⚙️ الإعدادات</p><p style="color:var(--text-secondary);line-height:1.8;margin-top:12px;">من صفحة الإعدادات يمكنك إدارة بيانات ملفك الشخصي وخطة الاشتراك وتفضيلات التنبيهات والأمان والمظهر وإعدادات التكامل عبر API. تحكم كامل في تجربتك مع ContractAI لضمان حصولك على أفضل أداء يتوافق مع احتياجات فريقك القانوني والمشتريات.</p></section>
 <section class="settings-shell glass section-fade">
 <div class="settings-layout">
 <aside aria-label="أقسام الإعدادات" class="settings-tabs" id="settingsTabs">
@@ -582,7 +582,7 @@
 <div class="field-wrap" style="flex:1 1 100%;">
 <div class="panel-card glass" style="padding:20px;">
 <div class="header-actions-inline" style="justify-content:space-between;"><strong>الخطة الاحترافية — 299 ريال/شهر</strong><span class="current-badge">خطتك الحالية</span></div>
-<p style="color:var(--text-secondary); line-height:1.9;">تحليل 50 عقد/شهر، تقارير PDF، المحلل الذكي، مقارنة العقود</h2>
+<p style="color:var(--text-secondary); line-height:1.9;">تحليل 50 عقد/شهر، تقارير PDF، المحلل الذكي، مقارنة العقود</p>
 <p style="color:var(--text-secondary); margin:0 0 8px;">23 من 50 عقد هذا الشهر (46%)</p>
 <div class="progress-track"><div class="progress-fill" style="width:46%;"></div></div>
 <p style="color:var(--text-secondary); margin:12px 0 0;">تاريخ التجديد: 1 أبريل 2026</p>
@@ -608,7 +608,7 @@
 <div class="toggle-row"><span>☐ إشعارات العروض والتحديثات</span><button class="toggle" type="button"></button></div>
 <div class="toggle-row"><span>☑ تنبيه عند اقتراب حد الاستخدام الشهري</span><button class="toggle is-on" type="button"></button></div>
 </div>
-<div class="field-wrap" style="margin-top:20px;"><span>البريد الإلكتروني للإشعارات</span><div class="field"><input id="notificationEmail" name="notification_email" value="ahmed@company.sa"/></div></div>
+<div class="field-wrap" style="margin-top:20px;"><span>البريد الإلكتروني للإشعارات</span><div class="field"><input id="notificationEmail" name="notification_email" value="ahmed@company.sa" aria-label="notification_email"/></div></div>
 <div class="header-actions-inline" style="margin-top:20px;"><button class="primary-button" data-save="notifications" type="button">حفظ</button></div>
 </article>
 </section>
@@ -616,8 +616,8 @@
 <article class="panel-card glass">
 <h3 class="panel-title">التفضيلات</h3>
 <div class="field-grid">
-<label class="field-wrap"><span>اللغة</span><div class="field"><select id="languageSelect" name="language_select"><option>العربية</option><option>English</option></select></div></label>
-<label class="field-wrap"><span>المنطقة الزمنية</span><div class="field"><select id="timezoneSelect" name="timezone_select"><option>توقيت الرياض UTC+3</option></select></div></label>
+<label class="field-wrap"><span>اللغة</span><div class="field"><select id="languageSelect" name="language_select" aria-label="العربية"><option>العربية</option><option>English</option></select></div></label>
+<label class="field-wrap"><span>المنطقة الزمنية</span><div class="field"><select id="timezoneSelect" name="timezone_select" aria-label="توقيت الرياض UTC+3"><option>توقيت الرياض UTC+3</option></select></div></label>
 </div>
 <h4 style="margin:22px 0 12px;">المظهر</h4>
 <div class="appearance-grid" id="appearanceGrid">
@@ -626,8 +626,8 @@
 <button class="appearance-card is-active" data-theme-mode="auto" type="button">🔄 تلقائي</button>
 </div>
 <div class="field-grid" style="margin-top:20px;">
-<label class="field-wrap"><span>مستوى التحليل الافتراضي</span><div class="field"><select id="defaultAnalysisLevel" name="default_analysis_level"><option>معمّق</option><option>سريع</option><option>شامل</option></select></div></label>
-<label class="field-wrap"><span>تنسيق التاريخ</span><div class="field"><select id="dateFormat" name="date_format"><option>ميلادي</option><option>هجري</option><option>كلاهما</option></select></div></label>
+<label class="field-wrap"><span>مستوى التحليل الافتراضي</span><div class="field"><select id="defaultAnalysisLevel" name="default_analysis_level" aria-label="معمّق"><option>معمّق</option><option>سريع</option><option>شامل</option></select></div></label>
+<label class="field-wrap"><span>تنسيق التاريخ</span><div class="field"><select id="dateFormat" name="date_format" aria-label="ميلادي"><option>ميلادي</option><option>هجري</option><option>كلاهما</option></select></div></label>
 </div>
 <div class="header-actions-inline" style="margin-top:20px;"><button class="primary-button" data-save="preferences" type="button">حفظ</button></div>
 </article>
@@ -643,7 +643,7 @@
 </div>
 <div class="password-strength"><span id="passwordStrengthLabel">ضعيفة</span><div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div></div>
 <div class="field-grid" style="margin-top:24px;">
-<div class="field-wrap"><span>المصادقة الثنائية</span><div class="header-actions-inline"><button class="toggle is-on" type="button"></button><span class="status-badge">✅ مفعّلة</span></div><div class="qr-placeholder">QR</div><div class="field"><input id="twoFactorCode" name="two_factor_code" placeholder="أدخل رمز التحقق"/></div></div>
+<div class="field-wrap"><span>المصادقة الثنائية</span><div class="header-actions-inline"><button class="toggle is-on" type="button"></button><span class="status-badge">✅ مفعّلة</span></div><div class="qr-placeholder">QR</div><div class="field"><input id="twoFactorCode" name="two_factor_code" placeholder="أدخل رمز التحقق" aria-label="أدخل رمز التحقق"/></div></div>
 </div>
 <table aria-label="سجل الجلسات" class="session-table">
 <thead><tr><th>الجهاز</th><th>الموقع</th><th>آخر نشاط</th><th>الحالة</th></tr></thead>
@@ -668,7 +668,7 @@
 <button class="secondary-button" id="regenerateApiKey" type="button">إعادة توليد</button>
 </div>
 </div>
-<p style="color:var(--text-secondary); margin:18px 0 8px;">1,247 طلب هذا الشهر من 10,000</h3>
+<p style="color:var(--text-secondary); margin:18px 0 8px;">1,247 طلب هذا الشهر من 10,000</p>
 <div class="progress-track"><div class="progress-fill" style="width:12.5%;"></div></div>
 <div class="code-tabs" id="codeTabs">
 <button class="code-tab is-active" data-code="curl" type="button">cURL</button>
@@ -696,7 +696,7 @@ fetch("https://api.contractai.sa/v1/analyze", {
   headers: { Authorization: "Bearer sk-xxxx" },
   body: formData,
 });</pre></div>
-<div class="field-wrap" style="margin-top:20px;"><span>Webhooks</span><div class="field"><input id="webhookUrl" name="webhook_url" placeholder="https://company.sa/webhooks/contractai"/></div></div>
+<div class="field-wrap" style="margin-top:20px;"><span>Webhooks</span><div class="field"><input id="webhookUrl" name="webhook_url" placeholder="https://company.sa/webhooks/contractai" aria-label="https://company.sa/webhooks/contractai"/></div></div>
 <div class="webhook-events">
 <button class="secondary-button is-active" type="button">تحليل مكتمل</button>
 <button class="secondary-button" type="button">مخاطرة عالية</button>

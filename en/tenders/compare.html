@@ -1225,7 +1225,7 @@
                         stroke-linecap="round" stroke-width="1.7"></path>
                 </svg>
                 <input class="search-input" id="globalSearch" name="global_search"
-                    placeholder="Hit up our ai search for docs & clauses..." type="search" />
+                    placeholder="Hit up our ai search for docs & clauses..." type="search" / aria-label="Search contracts and clauses">
                 <span class="search-shortcut">Ctrl+K</span>
             </label>
             <div class="header-actions">
@@ -1548,7 +1548,7 @@
                     slot.className = "contract-slot glass";
                     slot.innerHTML =
                         '<h3 class="slot-title">Doc ' + (i + 1) + '</h3>' +
-                        '<label class="select-shell"><select id="contract-select-' + i + '" name="contract_select_' + i + '" data-slot="' + i + '">' +
+                        '<label class="select-shell"><select id="contract-select-' + i + '" name="contract_select_' + i + '" data-slot="' + i + '" aria-label="&quot; + item.name + &quot;">' +
                         contracts.map(function (item) {
                             return '<option value="' + item.id + '"' + (item.id === contract.id ? " selected" : "") + ">" + item.name + "</option>";
                         }).join("") +
@@ -1696,11 +1696,11 @@
     <div class="text-ratio-fix-shell">
       <span class="text-ratio-fix-kicker">Decision Guide</span>
       <h2 class="text-ratio-fix-title">How this page should be used in a real evaluation flow</h2>
-      <p class="text-ratio-fix-intro">The page "Compare Contract Drafts and Tender Revisions | ContractAI by Bright AI" should do more than describe a capability. It should help an operations lead, product owner, or executive sponsor understand where the solution fits, what readiness looks like, and how to judge value in a real deployment context.</h3>
+      <p class="text-ratio-fix-intro">The page "Compare Contract Drafts and Tender Revisions | ContractAI by Bright AI" should do more than describe a capability. It should help an operations lead, product owner, or executive sponsor understand where the solution fits, what readiness looks like, and how to judge value in a real deployment context.</p>
       <div class="text-ratio-fix-grid">
-        <div class="text-ratio-fix-card"><h3>Expected value</h3><p>A clear improvement in execution speed, service quality, accuracy, or operating control.</h3></div>
-        <div class="text-ratio-fix-card"><h3>Readiness check</h3><p>A defined use case, a business owner, and enough process or data structure to support a pilot.</h3></div>
-        <div class="text-ratio-fix-card"><h3>Success signal</h3><p>A measurable result that appears quickly enough to justify expansion and further integration.</h3></div>
+        <div class="text-ratio-fix-card"><h3>Expected value</p><p>A clear improvement in execution speed, service quality, accuracy, or operating control.</p></div>
+        <div class="text-ratio-fix-card"><h3>Readiness check</p><p>A defined use case, a business owner, and enough process or data structure to support a pilot.</p></div>
+        <div class="text-ratio-fix-card"><h3>Success signal</p><p>A measurable result that appears quickly enough to justify expansion and further integration.</p></div>
       </div>
       <div class="text-ratio-fix-copy">
         <p>Enterprise buyers rarely search for a feature list alone. They search for fit. They want to know whether a solution belongs in customer operations, internal support, analytics, contract review, hiring workflows, or a sector-specific process. That is why this page benefits from explicit explanatory copy: it reduces ambiguity and makes the page more useful both to readers and to search engines trying to classify intent.</p>
@@ -1712,7 +1712,7 @@
       <div class="text-ratio-fix-faq">
         <h3>Quick evaluation questions</h3>
         <div class="text-ratio-fix-faq-list">
-          <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">Is this page enough for a final purchase decision?</h3><p class="text-ratio-fix-faq-answer">No. It is a strong orientation layer, but a final decision still needs scope, data, workflow, and integration validation.</p></div>
+          <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">Is this page enough for a final purchase decision?</p><p class="text-ratio-fix-faq-answer">No. It is a strong orientation layer, but a final decision still needs scope, data, workflow, and integration validation.</p></div>
           <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">What is the best starting point?</p><p class="text-ratio-fix-faq-answer">Start with one workflow that has visible pain, measurable volume, and a clear owner.</p></div>
           <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">Why add more explanatory text here?</p><p class="text-ratio-fix-faq-answer">Because readers and search engines both need explicit context, not just interface structure, to understand the page properly.</p></div>
         </div>

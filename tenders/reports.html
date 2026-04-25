@@ -1491,7 +1491,7 @@
             stroke-linecap="round" stroke-width="1.7"></path>
         </svg>
         <input class="search-input" id="globalSearch" name="global_search" placeholder="ابحث في العقود والبنود..."
-          type="search" />
+          type="search" / aria-label="ابحث في العقود والبنود">
         <span class="search-shortcut">Ctrl+K</span>
       </label>
       <div class="header-actions">
@@ -1535,7 +1535,7 @@
             </div>
             <div class="header-actions-inline">
               <label aria-label="نوع العقد" class="select-shell">
-                <select id="contractTypeFilter" name="contract_type_filter">
+                <select id="contractTypeFilter" name="contract_type_filter" aria-label="الكل">
                   <option value="الكل">الكل</option>
                   <option value="توريد">توريد</option>
                   <option value="مناقصة">مناقصة</option>
@@ -1557,10 +1557,10 @@
           </div>
           <div class="date-range" hidden="" id="customDateRange">
             <label aria-label="من تاريخ" class="filter-input">
-              <input id="dateFrom" name="date_from" type="date" value="2026-02-01" />
+              <input id="dateFrom" name="date_from" type="date" value="2026-02-01" aria-label="التاريخ" />
             </label>
             <label aria-label="إلى تاريخ" class="filter-input">
-              <input id="dateTo" name="date_to" type="date" value="2026-03-09" />
+              <input id="dateTo" name="date_to" type="date" value="2026-03-09" aria-label="التاريخ" />
             </label>
           </div>
         </section>
@@ -1569,31 +1569,31 @@
             <div class="kpi-head">
               <h3 class="kpi-label">إجمالي العقود المحللة في الفترة</h3><span class="trend-note trend-up">↗ +35%</span>
             </div>
-            <p class="kpi-value">23</h3>
+            <p class="kpi-value">23</p>
           </article>
           <article class="kpi-card glass">
             <div class="kpi-head">
               <h3 class="kpi-label">القيمة الإجمالية للعقود</h3><span class="trend-note trend-up">↗ +18%</span>
             </div>
-            <p class="kpi-value">12,950,000 ريال</h3>
+            <p class="kpi-value">12,950,000 ريال</p>
           </article>
           <article class="kpi-card glass">
             <div class="kpi-head">
               <h3 class="kpi-label">متوسط المخاطرة</h3><span class="trend-note trend-down">↘ -12%</span>
             </div>
-            <p class="kpi-value">48.5 نقطة</h3>
+            <p class="kpi-value">48.5 نقطة</p>
           </article>
           <article class="kpi-card glass">
             <div class="kpi-head">
               <h3 class="kpi-label">بنود خطرة مكتشفة</h3><span class="trend-note">15 عالي الخطورة</span>
             </div>
-            <p class="kpi-value">47 بند</h3>
+            <p class="kpi-value">47 بند</p>
           </article>
           <article class="kpi-card glass">
             <div class="kpi-head">
               <h3 class="kpi-label">التوفير المحقق</h3><span class="trend-note">10.3% من الإجمالي</span>
             </div>
-            <p class="kpi-value">1,240,000 ريال</h3>
+            <p class="kpi-value">1,240,000 ريال</p>
           </article>
         </section>
         <div class="charts-grid">
@@ -1772,7 +1772,7 @@
           <div class="table-title-row">
             <div>
               <h3 class="chart-title">📋 تفاصيل العقود في الفترة المحددة</h3>
-              <p class="chart-subtitle" id="tableContext">البيانات الحالية معروضة لآخر 7 أيام ولكل أنواع العقود</h3>
+              <p class="chart-subtitle" id="tableContext">البيانات الحالية معروضة لآخر 7 أيام ولكل أنواع العقود</p>
             </div>
           </div>
           <div class="table-wrap">

@@ -1367,7 +1367,7 @@
                         stroke-linecap="round" stroke-width="1.7"></path>
                 </svg>
                 <input class="search-input" id="globalSearch" name="global_search"
-                    placeholder="Hit up our ai search for docs & clauses..." type="search" />
+                    placeholder="Hit up our ai search for docs & clauses..." type="search" / aria-label="Search contracts and clauses">
                 <span class="search-shortcut">Ctrl+K</span>
             </label>
             <div class="header-actions">
@@ -1498,7 +1498,7 @@
                                 </div>
                                 <div class="field-wrap" style="margin-top:20px;"><span>Notification Email</span>
                                     <div class="field"><input id="notificationEmail" name="notification_email"
-                                            value="ahmed@company.sa" /></div>
+                                            value="ahmed@company.sa" aria-label="notification_email" /></div>
                                 </div>
                                 <div class="header-actions-inline" style="margin-top:20px;"><button
                                         class="primary-button" data-save="notifications" type="button">Save</button>
@@ -1510,13 +1510,13 @@
                                 <h3 class="panel-title">Preferences</h3>
                                 <div class="field-grid">
                                     <label class="field-wrap"><span>Language</span>
-                                        <div class="field"><select id="languageSelect" name="language_select">
+                                        <div class="field"><select id="languageSelect" name="language_select" aria-label="English">
                                                 <option>English</option>
                                                 <option>Arabic</option>
                                             </select></div>
                                     </label>
                                     <label class="field-wrap"><span>Timezone</span>
-                                        <div class="field"><select id="timezoneSelect" name="timezone_select">
+                                        <div class="field"><select id="timezoneSelect" name="timezone_select" aria-label="Riyadh Time UTC+3">
                                                 <option>Riyadh Time UTC+3</option>
                                             </select></div>
                                     </label>
@@ -1533,14 +1533,14 @@
                                 <div class="field-grid" style="margin-top:20px;">
                                     <label class="field-wrap"><span>Default Scan Level</span>
                                         <div class="field"><select id="defaultAnalysisLevel"
-                                                name="default_analysis_level">
+                                                name="default_analysis_level" aria-label="Deep">
                                                 <option>Deep</option>
                                                 <option>Quick</option>
                                                 <option>Comprehensive</option>
                                             </select></div>
                                     </label>
                                     <label class="field-wrap"><span>Date Format</span>
-                                        <div class="field"><select id="dateFormat" name="date_format">
+                                        <div class="field"><select id="dateFormat" name="date_format" aria-label="Gregorian">
                                                 <option>Gregorian</option>
                                                 <option>Hijri</option>
                                                 <option>Both</option>
@@ -1579,7 +1579,7 @@
                                                 type="button"></button><span class="status-badge">✅ Enabled</span></div>
                                         <div class="qr-placeholder">QR</div>
                                         <div class="field"><input id="twoFactorCode" name="two_factor_code"
-                                                placeholder="Enter auth code" /></div>
+                                                placeholder="Enter auth code" aria-label="Enter auth code" /></div>
                                     </div>
                                 </div>
                                 <table aria-label="Session History" class="session-table">
@@ -1670,7 +1670,7 @@ fetch("https://api.contractai.sa/v1/analyze", {
                                 </div>
                                 <div class="field-wrap" style="margin-top:20px;"><span>Webhooks</span>
                                     <div class="field"><input id="webhookUrl" name="webhook_url"
-                                            placeholder="https://company.sa/webhooks/contractai" /></div>
+                                            placeholder="https://company.sa/webhooks/contractai" aria-label="https://company.sa/webhooks/contractai" /></div>
                                 </div>
                                 <div class="webhook-events">
                                     <button class="secondary-button is-active" type="button">Scan Done</button>

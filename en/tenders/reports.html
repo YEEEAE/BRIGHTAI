@@ -1496,7 +1496,7 @@
                         stroke-linecap="round" stroke-width="1.7"></path>
                 </svg>
                 <input class="search-input" id="globalSearch" name="global_search"
-                    placeholder="Hit up our ai search for docs & clauses..." type="search" />
+                    placeholder="Hit up our ai search for docs & clauses..." type="search" / aria-label="Search contracts and clauses">
                 <span class="search-shortcut">Ctrl+K</span>
             </label>
             <div class="header-actions">
@@ -1542,7 +1542,7 @@
                         </div>
                         <div class="header-actions-inline">
                             <label aria-label="Contract Type" class="select-shell">
-                                <select id="contractTypeFilter" name="contract_type_filter">
+                                <select id="contractTypeFilter" name="contract_type_filter" aria-label="All">
                                     <option value="All">All</option>
                                     <option value="Supply">Supply</option>
                                     <option value="Tender">Tender</option>
@@ -1567,10 +1567,10 @@
                     </div>
                     <div class="date-range" hidden="" id="customDateRange">
                         <label aria-label="From date" class="filter-input">
-                            <input id="dateFrom" name="date_from" type="date" value="2026-02-01" />
+                            <input id="dateFrom" name="date_from" type="date" value="2026-02-01" aria-label="التاريخ" />
                         </label>
                         <label aria-label="To date" class="filter-input">
-                            <input id="dateTo" name="date_to" type="date" value="2026-03-09" />
+                            <input id="dateTo" name="date_to" type="date" value="2026-03-09" aria-label="التاريخ" />
                         </label>
                     </div>
                 </section>
@@ -1580,33 +1580,33 @@
                             <h3 class="kpi-label">Total contracts analyzed</h3><span
                                 class="trend-note trend-up">↗ +35%</span>
                         </div>
-                        <p class="kpi-value">23</h3>
+                        <p class="kpi-value">23</p>
                     </article>
                     <article class="kpi-card glass">
                         <div class="kpi-head">
                             <h3 class="kpi-label">Total Cash Value</h3><span class="trend-note trend-up">↗ +18%</span>
                         </div>
-                        <p class="kpi-value">12,950,000 SAR</h3>
+                        <p class="kpi-value">12,950,000 SAR</p>
                     </article>
                     <article class="kpi-card glass">
                         <div class="kpi-head">
                             <h3 class="kpi-label">Average Risk Score</h3><span class="trend-note trend-down">↘
                                 -12%</span>
                         </div>
-                        <p class="kpi-value">48.5 pts</h3>
+                        <p class="kpi-value">48.5 pts</p>
                     </article>
                     <article class="kpi-card glass">
                         <div class="kpi-head">
                             <h3 class="kpi-label">High-Risk Clauses Found</h3><span class="trend-note">15 flagged as
                                 critical</span>
                         </div>
-                        <p class="kpi-value">47 clauses</h3>
+                        <p class="kpi-value">47 clauses</p>
                     </article>
                     <article class="kpi-card glass">
                         <div class="kpi-head">
                             <h3 class="kpi-label">Cash Saved</h3><span class="trend-note">10.3% of the whole pie</span>
                         </div>
-                        <p class="kpi-value">1,240,000 SAR</h3>
+                        <p class="kpi-value">1,240,000 SAR</p>
                     </article>
                 </section>
                 <div class="charts-grid">

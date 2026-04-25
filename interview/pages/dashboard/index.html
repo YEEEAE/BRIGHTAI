@@ -1006,28 +1006,28 @@
 <div class="stat-item-icon primary"><i class="fas fa-users"></i></div>
 <div class="stat-item-info">
 <p id="totalApplicants">0</p>
-<p>إجمالي المتقدمين</h3>
+<p>إجمالي المتقدمين</p>
 </div>
 </div>
 <div class="stat-item">
 <div class="stat-item-icon success"><i class="fas fa-user-check"></i></div>
 <div class="stat-item-info">
 <p id="highlyRatedApplicants">0</p>
-<p>متقدمون بتقييم عالي</h4>
+<p>متقدمون بتقييم عالي</p>
 </div>
 </div>
 <div class="stat-item">
 <div class="stat-item-icon warning"><i class="fas fa-briefcase"></i></div>
 <div class="stat-item-info">
 <p id="commonSpecialization">N/A</p>
-<p>التخصص الأكثر شيوعًا</h4>
+<p>التخصص الأكثر شيوعًا</p>
 </div>
 </div>
 <div class="stat-item">
 <div class="stat-item-icon danger"><i class="fas fa-bullhorn"></i></div>
 <div class="stat-item-info">
 <p id="totalJobPostings">0</p>
-<p>إجمالي الوظائف الشاغرة</h4>
+<p>إجمالي الوظائف الشاغرة</p>
 </div>
 </div>
 </div>
@@ -1046,9 +1046,9 @@
 <div class="card">
 <div class="card-header"><i class="fas fa-search"></i> بحث وتصفية</div>
 <div class="search-controls">
-<input id="searchName" placeholder="بحث بالاسم..." type="text"/>
-<input id="searchSpecialization" placeholder="بحث بالتخصص..." type="text"/>
-<select id="filterExperience">
+<input id="searchName" placeholder="بحث بالاسم..." type="text" aria-label="بحث بالاسم..."/>
+<input id="searchSpecialization" placeholder="بحث بالتخصص..." type="text" aria-label="بحث بالتخصص..."/>
+<select id="filterExperience" aria-label="كل سنوات الخبرة">
 <option value="">كل سنوات الخبرة</option>
 <option value="0-1">أقل من سنة</option>
 <option value="1-3">1-3 سنوات</option>
@@ -1148,23 +1148,23 @@
 <input id="jobPostingId" type="hidden"/>
 <div class="form-group">
 <label for="jobTitleInput">المسمى الوظيفي:</label>
-<input class="search-controls input" id="jobTitleInput" type="text"/>
+<input class="search-controls input" id="jobTitleInput" type="text" aria-label="المسمى الوظيفي:"/>
 </div>
 <div class="form-group">
 <label for="jobDepartmentInput">القسم:</label>
-<input class="search-controls input" id="jobDepartmentInput" type="text"/>
+<input class="search-controls input" id="jobDepartmentInput" type="text" aria-label="القسم:"/>
 </div>
 <div class="form-group">
 <label for="jobDescriptionTextarea">الوصف الوظيفي:</label>
-<textarea class="search-controls textarea" id="jobDescriptionTextarea" rows="5"></textarea>
+<textarea class="search-controls textarea" id="jobDescriptionTextarea" rows="5" aria-label="الوصف الوظيفي:"></textarea>
 </div>
 <div class="form-group">
 <label for="jobRequirementsInput">المتطلبات (افصل بفاصلة):</label>
-<input class="search-controls input" id="jobRequirementsInput" placeholder="مثال: بكالوريوس صيدلة, خبرة 3 سنوات, ..." type="text"/>
+<input class="search-controls input" id="jobRequirementsInput" placeholder="مثال: بكالوريوس صيدلة, خبرة 3 سنوات, ..." type="text" aria-label="المتطلبات (افصل بفاصلة):"/>
 </div>
 <div class="form-group">
 <label for="jobSkillsInput">المهارات المطلوبة (افصل بفاصلة):</label>
-<input class="search-controls input" id="jobSkillsInput" placeholder="مثال: التواصل, التفاوض, ICDL, ..." type="text"/>
+<input class="search-controls input" id="jobSkillsInput" placeholder="مثال: التواصل, التفاوض, ICDL, ..." type="text" aria-label="المهارات المطلوبة (افصل بفاصلة):"/>
 </div>
 <div style="text-align: left;">
 <button class="btn btn-primary" onclick="saveJobPosting()"><i class="fas fa-save"></i> حفظ
@@ -1180,7 +1180,7 @@
 <button class="close-modal" onclick="closeModal('jobMatchingModal')">×</button>
 </div>
 <div class="modal-body" id="jobMatchingResultsBody">
-<p>جاري تحليل المطابقة...</h2>
+<p>جاري تحليل المطابقة...</p>
 </div>
 </div>
 </div>
@@ -1191,7 +1191,7 @@
 <button class="close-modal" onclick="closeModal('viewJobMatchesModal')">×</button>
 </div>
 <div class="modal-body" id="jobMatchesForPostingBody">
-<p>جاري البحث عن متقدمين مطابقين...</h2>
+<p>جاري البحث عن متقدمين مطابقين...</p>
 </div>
 </div>
 </div>
@@ -1202,7 +1202,7 @@
 <button class="close-modal" onclick="closeModal('communicationModal')">×</button>
 </div>
 <div class="modal-body">
-<textarea class="search-controls textarea" id="communicationMessage" rows="10" style="width:100%; font-size: 1rem;"></textarea>
+<textarea class="search-controls textarea" id="communicationMessage" rows="10" style="width:100%; font-size: 1rem;" aria-label="communicationMessage"></textarea>
 <div style="text-align: left; margin-top:15px;">
 <button class="btn btn-primary" onclick="copyCommunicationMessage()"><i class="fas fa-copy"></i> نسخ
                         النص</button>
@@ -1509,14 +1509,14 @@
             document.getElementById('modalApplicantName').textContent = applicant.fullName;
             const detailsDiv = document.getElementById('modalApplicantDetails');
             detailsDiv.innerHTML = `
-                <p><strong>البريد الإلكتروني:</strong> ${applicant.email}</h2>
+                <p><strong>البريد الإلكتروني:</strong> ${applicant.email}</p>
                 <p><strong>رقم الهاتف:</strong> ${applicant.phone}</p>
                 <p><strong>سنوات الخبرة:</strong> ${applicant.experienceYears}</p>
                 <p><strong>التخصص الأساسي:</strong> ${applicant.educationMajor}</p>
                 <p><strong>الوظيفة المقترحة (CV):</strong> ${applicant.recommendedJobTitle}</p>
                 <hr style="margin: 15px 0;">
                 <h4>ملخص السيرة الذاتية:</h4>
-                <p class="bai-inline-0135">${applicant.cvSummary || 'غير متوفر'}</h4>
+                <p class="bai-inline-0135">${applicant.cvSummary || 'غير متوفر'}</p>
                 <h4>المهارات الأساسية (من السيرة):</h4>
                 <ul class="skills-list">
                     ${applicant.keySkills && applicant.keySkills.length > 0 ?
@@ -1524,7 +1524,7 @@
                     '<li>لم يتم استخلاص مهارات</li>'}
                 </ul>
                 <hr style="margin: 15px 0;">
-                <p><strong>تقييم السيرة الذاتية:</strong> ${applicant.overallCvScore}%</h4>
+                <p><strong>تقييم السيرة الذاتية:</strong> ${applicant.overallCvScore}%</p>
                 <p><strong>تقييم المقابلة:</strong> ${applicant.interviewScore}%</p>
                 <p><strong>القرار المبدئي:</strong> ${applicant.finalDecision}</p>
                 <p><strong>تاريخ التقديم:</strong> ${new Date(applicant.submissionDate).toLocaleString('ar-EG')}</p>
@@ -1643,7 +1643,7 @@
                 jobCard.className = 'job-card-dashboard';
                 jobCard.innerHTML = `
                     <h4>${job.title} (${job.department || 'قسم غير محدد'})</h4>
-                    <p><strong>الوصف:</strong> ${job.description.substring(0, 150)}...</h4>
+                    <p><strong>الوصف:</strong> ${job.description.substring(0, 150)}...</p>
                     <p><strong>المهارات المطلوبة:</strong> ${job.skills.map(s => `<span class="skills-tag">${s}</span>`).join(' ')}</p>
                     <div class="job-card-actions" style="text-align:left; margin-top:10px;">
                         <button class="btn btn-sm btn-primary" onclick="viewJobMatches('${job.id}')"><i class="fas fa-users"></i> عرض المتقدمين المطابقين</button>
@@ -1702,13 +1702,13 @@
                     matchResultsHTML += `
                         <div class="job-match-result">
                             <h5>${job.title} - <span class="bai-inline-0136">${matchResult.matchPercentage}% مطابقة</span></h5>
-                            <p><strong>المبررات:</strong> ${matchResult.overallJustification}</h4>
+                            <p><strong>المبررات:</strong> ${matchResult.overallJustification}</p>
                             <p><strong>نقاط قوة داعمة:</strong> ${matchResult.supportingStrengths.join('، ') || '-'}</p>
                             <p><strong>فجوات محتملة:</strong> ${matchResult.potentialGaps.join('، ') || '-'}</p>
                         </div>`;
                 } catch (e) {
                     console.error(`Error matching with job ${job.title}:`, e);
-                    matchResultsHTML += `<div class="job-match-result"><h5>${job.title}</h5><p style="color:red;">خطأ في تحليل المطابقة لهذه الوظيفة.</h5></div>`;
+                    matchResultsHTML += `<div class="job-match-result"><h5>${job.title}</p><p style="color:red;">خطأ في تحليل المطابقة لهذه الوظيفة.</p></div>`;
                 }
             }
             resultsBody.innerHTML = matchResultsHTML;
@@ -1772,7 +1772,7 @@
                         matchedApplicantsHTML += `
                             <div class="applicant-match-item">
                                 <h5>${applicant.fullName} - <span class="bai-inline-0136">${matchResult.matchPercentage}% مطابقة</span></h5>
-                                <p><strong>السبب:</strong> ${matchResult.briefReasoning}</h5>
+                                <p><strong>السبب:</strong> ${matchResult.briefReasoning}</p>
                                 <p><strong>الخبرة:</strong> ${applicant.experienceYears} | <strong>التخصص:</strong> ${applicant.educationMajor}</p>
                                 <button class="btn btn-sm btn-primary" onclick="showApplicantDetails('${applicant.id}'); closeModal('viewJobMatchesModal');">عرض التفاصيل الكاملة</button>
                             </div>`;
@@ -1820,7 +1820,7 @@
                 const modalDetails = document.getElementById('modalApplicantDetails');
                 const summaryDiv = document.createElement('div');
                 summaryDiv.style.marginTop = '20px';
-                summaryDiv.innerHTML = `<h4>ملخص تنفيذي مقترح:</h4><textarea rows="8" id="executiveSummaryTextarea" class="bai-inline-0137">${cleanedSummary}</textarea>
+                summaryDiv.innerHTML = `<h4>ملخص تنفيذي مقترح:</h4><textarea rows="8" id="executiveSummaryTextarea" class="bai-inline-0137" aria-label="executiveSummaryTextarea">${cleanedSummary}</textarea>
                                         <button class="btn btn-sm btn-primary" onclick="copyToClipboard('executiveSummaryTextarea')" style="margin-top:5px;">نسخ الملخص</button>`;
 
                 const existingSummary = modalDetails.querySelector('.executive-summary-display');

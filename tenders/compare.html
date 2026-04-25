@@ -586,7 +586,7 @@
 </div>
 <label aria-label="ابحث في العقود والبنود" class="search-shell">
 <svg aria-hidden="true" fill="none" viewbox="0 0 24 24"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>
-<input class="search-input" id="globalSearch" name="global_search" placeholder="ابحث في العقود والبنود..." type="search"/>
+<input class="search-input" id="globalSearch" name="global_search" placeholder="ابحث في العقود والبنود..." type="search"/ aria-label="ابحث في العقود والبنود">
 <span class="search-shortcut">Ctrl+K</span>
 </label>
 <div class="header-actions">
@@ -893,7 +893,7 @@
             slot.className = "contract-slot glass";
             slot.innerHTML =
               '<h3 class="slot-title">العقد ' + (i + 1) + '</h3>' +
-              '<label class="select-shell"><select id="contract-select-' + i + '" name="contract_select_' + i + '" data-slot="' + i + '">' +
+              '<label class="select-shell"><select id="contract-select-' + i + '" name="contract_select_' + i + '" data-slot="' + i + '" aria-label="&quot; + item.name + &quot;">' +
               contracts.map(function (item) {
                 return '<option value="' + item.id + '"' + (item.id === contract.id ? " selected" : "") + ">" + item.name + "</option>";
               }).join("") +
@@ -1043,9 +1043,9 @@
       <h2 class="text-ratio-fix-title">كيف تساعد هذه الصفحة في اتخاذ قرار أوضح؟</h2>
       <p class="text-ratio-fix-intro">صفحة "مقارنة العقود الذكية | ContractAI من Bright AI" لا ينبغي أن تكون مجرد واجهة تعريفية، بل مرجعاً عملياً يشرح لمن تخدم هذه الخدمة، متى تُستخدم، وكيف يمكن تقييمها داخل بيئة عمل سعودية تحتاج وضوحاً في العائد والحوكمة والتنفيذ.</p>
       <div class="text-ratio-fix-grid">
-        <div class="text-ratio-fix-card"><h3>القيمة المتوقعة</h3><p>تسريع القرار أو التنفيذ أو الخدمة بشكل يمكن قياسه، وليس وعوداً عامة يصعب ربطها بنتيجة تشغيلية.</p></div>
-        <div class="text-ratio-fix-card"><h3>شروط الجاهزية</h3><p>وجود مالك للمبادرة، بيانات أو إجراءات واضحة، ونطاق أولي يمكن تنفيذه بدون تعقيد زائد.</p></div>
-        <div class="text-ratio-fix-card"><h3>معيار النجاح</h3><p>تحسن ظاهر في الوقت أو الدقة أو الامتثال أو رضا المستخدم ضمن فترة قصيرة نسبياً.</p></div>
+        <div class="text-ratio-fix-card"><h3>القيمة المتوقعة</p><p>تسريع القرار أو التنفيذ أو الخدمة بشكل يمكن قياسه، وليس وعوداً عامة يصعب ربطها بنتيجة تشغيلية.</p></div>
+        <div class="text-ratio-fix-card"><h3>شروط الجاهزية</p><p>وجود مالك للمبادرة، بيانات أو إجراءات واضحة، ونطاق أولي يمكن تنفيذه بدون تعقيد زائد.</p></div>
+        <div class="text-ratio-fix-card"><h3>معيار النجاح</p><p>تحسن ظاهر في الوقت أو الدقة أو الامتثال أو رضا المستخدم ضمن فترة قصيرة نسبياً.</p></div>
       </div>
       <div class="text-ratio-fix-copy">
         <p>عند تقييم أي صفحة خدمة أو وثائق أو قطاع، الزائر غالباً لا يبحث عن وصف تجميلي فقط. هو يريد أن يفهم سريعاً: هل هذا الحل يناسب حجم الجهة، وطبيعة العمليات، ومستوى النضج الرقمي الموجود اليوم؟ لهذا يجب أن تحتوي الصفحة على شرح يساعده على المقارنة بين "الحاجة الفعلية" و"القدرة التنفيذية". عندما يتحقق ذلك، تصبح الصفحة جزءاً من رحلة قرار ناضجة، لا مجرد محطة تعريفية.</p>
