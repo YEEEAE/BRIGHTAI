@@ -956,11 +956,13 @@
             border: none;
             cursor: pointer;
             z-index: 10000;
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
             box-shadow: 0 8px 32px rgba(212, 168, 67, 0.45);
-            transition: transform 0.28s ease, opacity 0.22s ease, box-shadow 0.28s ease;
+            transition-property: transform, opacity, box-shadow !important;
+            transition-duration: 0.28s !important;
+            transition-timing-function: ease !important;
         }
 
         #bot-fab:hover {
@@ -969,8 +971,8 @@
         }
 
         #bot-fab.is-hidden {
-            opacity: 0;
-            pointer-events: none;
+            opacity: 0 !important;
+            pointer-events: none !important;
             transform: translateY(10px) scale(0.94);
         }
 
@@ -985,12 +987,14 @@
             border: none;
             border-radius: 20px;
             z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
             background: transparent;
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 168, 67, 0.12);
-            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.35s cubic-bezier(.34, 1.56, .64, 1);
+            transition-property: opacity, visibility, transform !important;
+            transition-duration: 0.3s, 0.3s, 0.35s !important;
+            transition-timing-function: ease, ease, cubic-bezier(.34, 1.56, .64, 1) !important;
             transform: scale(0.9) translateY(20px);
             transform-origin: bottom left;
         }
@@ -1000,9 +1004,9 @@
         }
 
         #bot-frame.is-open {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
             transform: scale(1) translateY(0);
         }
 
@@ -4618,7 +4622,7 @@
                 stroke="#0A0C12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </button>
-    <iframe id="bot-frame" title="مساعد برايت الذكي" allow="clipboard-write" loading="lazy"></iframe>
+    <iframe id="bot-frame" title="مساعد برايت الذكي" allow="clipboard-write"></iframe>
     <script>
         (function () {
             var fab = document.getElementById('bot-fab');
@@ -4626,6 +4630,7 @@
             var botOpen = false;
             var botLoaded = false;
             var pendingMessage = null;
+            var loadRetries = 0;
 
             if (!fab || !frame) return;
 
@@ -4641,8 +4646,11 @@
                     pendingMessage = type;
                     return;
                 }
-
-                frame.contentWindow.postMessage({ type: type }, '*');
+                try {
+                    frame.contentWindow.postMessage({ type: type }, '*');
+                } catch (err) {
+                    console.warn('[BotEmbed] postMessage failed:', err);
+                }
             }
 
             function flushPendingMessage() {
@@ -4655,11 +4663,22 @@
             }
 
             function loadBot() {
-                if (botLoaded || frame.src) return;
+                if (botLoaded) return;
+                if (frame.src && frame.src !== 'about:blank' && frame.src !== '') return;
 
                 frame.addEventListener('load', function () {
                     botLoaded = true;
                     flushPendingMessage();
+                }, { once: true });
+
+                frame.addEventListener('error', function () {
+                    if (loadRetries < 2) {
+                        loadRetries++;
+                        setTimeout(function() {
+                            frame.src = '';
+                            frame.src = '/bot/?embed=true';
+                        }, 1000);
+                    }
                 }, { once: true });
 
                 frame.src = '/bot/?embed=true';
@@ -4675,7 +4694,12 @@
                 loadBot();
                 syncBotState(true);
                 pendingMessage = 'bot-open';
-                flushPendingMessage();
+
+                // If bot is already loaded, flush immediately
+                if (botLoaded) {
+                    flushPendingMessage();
+                }
+                // Otherwise, loadBot's onload handler will flush
             });
 
             window.addEventListener('message', function (e) {
