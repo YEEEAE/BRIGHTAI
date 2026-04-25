@@ -67,13 +67,6 @@
     <meta content="المنصة التعليمية الذكية - Bright Edu" property="twitter:title">
     <meta content="مستقبل التعليم في السعودية. ذكاء اصطناعي يشرح، يصحح، ويخطط لرحلتك التعليمية." property="twitter:description">
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js" defer=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer=""></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer=""></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js" defer=""></script>
-
     <link rel="stylesheet" href="/frontend/css/ai-scolecs-inline.min.css">
 
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
@@ -123,6 +116,54 @@
             opacity: 1 !important;
             transform: none !important;
             visibility: visible !important;
+        }
+
+        .printable-output {
+            color: #e5e7eb;
+            line-height: 1.9;
+        }
+
+        .printable-output table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-block: 1rem;
+            overflow-wrap: anywhere;
+        }
+
+        .printable-output th,
+        .printable-output td {
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            padding: 0.75rem;
+            vertical-align: top;
+        }
+
+        @media print {
+            body {
+                background: #fff !important;
+                color: #111827 !important;
+            }
+
+            header,
+            aside,
+            footer,
+            #toast-container,
+            .no-print {
+                display: none !important;
+            }
+
+            main,
+            .screen-section,
+            .glass-card,
+            .printable-output {
+                background: #fff !important;
+                color: #111827 !important;
+                box-shadow: none !important;
+                border-color: #d1d5db !important;
+            }
+
+            .printable-output * {
+                color: #111827 !important;
+            }
         }
     </style>
     
@@ -241,7 +282,7 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/frontend/css/product-demo-polish.min.css">
+<link rel="stylesheet" href="/frontend/css/demo-experience.css">
 </head>
 
 <body class="bg-dark-bg font-sans min-h-screen text-gray-100 selection:bg-brand-600 selection:text-white">
@@ -790,15 +831,19 @@
                 </div>
                 <div class="screen-section hidden h-full flex flex-col" id="screen-tutor">
 
-                    <div class="glass p-4 rounded-t-xl border-b border-brand-500/20 flex justify-between items-center mb-4 shrink-0">
+                    <div class="glass p-4 rounded-t-xl border-b border-brand-500/20 flex flex-col lg:flex-row justify-between gap-4 lg:items-center mb-4 shrink-0">
                         <div>
                             <h2 class="text-xl font-bold flex items-center gap-2">
                                 <span class="iconify text-brand-400" data-icon="carbon:bot"></span>
                                 المساعد التعليمي الذكي
                             </h2>
-                            <p class="text-xs text-brand-300 mt-1">مدعوم بنموذج meta-llama/llama-guard-4-12b
+                            <p class="text-xs text-brand-300 mt-1">مدعوم بنموذج Gemini 2.5 Flash عبر endpoint موحد
                         </p></div>
-                        <div class="flex gap-2">
+                        <div class="flex flex-wrap gap-2">
+                            <select class="bg-brand-900/50 border border-brand-500/30 rounded px-3 py-1 text-sm outline-none focus:border-brand-400 transition-colors" id="gemini-mode" aria-label="وضع الاتصال">
+                                <option value="unified">Unified endpoint: /api/ai/chat</option>
+                                <option value="direct">Direct Gemini mode</option>
+                            </select>
                             <select class="bg-brand-900/50 border border-brand-500/30 rounded px-3 py-1 text-sm outline-none focus:border-brand-400 transition-colors" id="tutor-grade" aria-label="عام">
                                 <option value="general">عام</option>
                                 <option value="elementary">الابتدائي</option>
@@ -817,6 +862,18 @@
                                 <option value="cs">الحاسب الالي</option>
                                 <option value="ai">الذكاء الاصطناعي</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="glass-card no-print p-4 rounded-2xl border border-emerald-500/20 mb-4">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-sm font-bold text-emerald-300">نموذج مدرسة تجريبي</h3>
+                                <p class="text-xs text-gray-400 mt-1">الصف: الخامس الابتدائي، المادة: العلوم، الهدف: فهم دورة حياة النبات، مستوى الطلاب: متفاوت مع حاجة لدعم بصري.</p>
+                            </div>
+                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors" onclick="app.loadSchoolDemo()">
+                                تعبئة الديمو
+                            </button>
                         </div>
                     </div>
 
@@ -905,6 +962,19 @@
                                         <input class="w-full bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-brand-500 transition-colors" id="exam-topic" placeholder="مثال: الخلية النباتية" type="text" aria-label="مثال: الخلية النباتية">
                                     </div>
                                     <div>
+                                        <label class="block text-sm text-gray-400 mb-1">الهدف التعليمي</label>
+                                        <input class="w-full bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-brand-500 transition-colors" id="exam-goal" placeholder="مثال: يميز الطالب مراحل دورة حياة النبات" type="text" aria-label="الهدف التعليمي للاختبار">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm text-gray-400 mb-1">مستوى الطلاب</label>
+                                        <select class="w-full bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-brand-500 transition-colors" id="exam-student-level" aria-label="مستوى الطلاب">
+                                            <option value="متفاوت">متفاوت</option>
+                                            <option value="متقدم">متقدم</option>
+                                            <option value="متوسط">متوسط</option>
+                                            <option value="يحتاج دعم">يحتاج دعم</option>
+                                        </select>
+                                    </div>
+                                    <div>
                                         <label class="block text-sm text-gray-400 mb-1">نوع الأسئلة</label>
                                         <select class="w-full bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-brand-500 transition-colors" id="exam-type" aria-label="اختيار من متعدد">
                                             <option value="mcq">اختيار من متعدد</option>
@@ -931,6 +1001,9 @@
                                             <span class="iconify" data-icon="carbon:magic-wand-filled"></span>
                                             توليد الاختبار
                                         </span>
+                                    </button>
+                                    <button class="w-full bg-dark-bg border border-emerald-500/30 text-emerald-200 font-bold py-2 rounded-xl transition-all mt-2" onclick="app.loadSchoolDemo('exams')">
+                                        استخدام ديمو المدرسة
                                     </button>
                                 </div>
                             </div>
@@ -979,11 +1052,23 @@
                                             (اختياري)</label>
                                         <textarea class="w-full bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-brand-500 transition-colors" id="plan-goals" placeholder="مثال: 1. أن يعدد الطالب مراحل نمو النبات..." rows="3" aria-label="مثال: 1. أن يعدد الطالب مراحل نمو النبات..."></textarea>
                                     </div>
+                                    <div>
+                                        <label class="block text-sm text-gray-400 mb-1">مستوى الطلاب</label>
+                                        <select class="w-full bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-brand-500 transition-colors" id="plan-student-level" aria-label="مستوى الطلاب">
+                                            <option value="متفاوت">متفاوت</option>
+                                            <option value="متقدم">متقدم</option>
+                                            <option value="متوسط">متوسط</option>
+                                            <option value="يحتاج دعم">يحتاج دعم</option>
+                                        </select>
+                                    </div>
                                     <button class="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold py-3 rounded-xl shadow-lg shadow-purple-500/30 transition-all transform active:scale-95 mt-2" id="btn-generate-plan" onclick="app.generatePlan()">
                                         <span class="flex items-center justify-center gap-2">
                                             <span class="iconify" data-icon="carbon:document-add"></span>
                                             توليد الخطة الدراسية
                                         </span>
+                                    </button>
+                                    <button class="w-full bg-dark-bg border border-emerald-500/30 text-emerald-200 font-bold py-2 rounded-xl transition-all mt-2" onclick="app.loadSchoolDemo('planner')">
+                                        استخدام ديمو المدرسة
                                     </button>
                                 </div>
                             </div>
@@ -1016,7 +1101,21 @@
                                 تصحيح الآن
                             </button>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                            <input class="bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-pink-500 transition-colors" id="homework-grade" placeholder="الصف" type="text" aria-label="الصف">
+                            <input class="bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-pink-500 transition-colors" id="homework-subject" placeholder="المادة" type="text" aria-label="المادة">
+                            <input class="bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-pink-500 transition-colors" id="homework-goal" placeholder="الهدف" type="text" aria-label="الهدف">
+                            <select class="bg-dark-bg border border-brand-500/20 rounded-lg px-3 py-2 text-white focus:border-pink-500 transition-colors" id="homework-student-level" aria-label="مستوى الطلاب">
+                                <option value="متفاوت">متفاوت</option>
+                                <option value="متقدم">متقدم</option>
+                                <option value="متوسط">متوسط</option>
+                                <option value="يحتاج دعم">يحتاج دعم</option>
+                            </select>
+                        </div>
                         <textarea class="w-full bg-dark-bg border border-brand-500/20 rounded-xl p-4 text-white focus:border-pink-500 transition-colors resize-y placeholder-gray-600" id="homework-text" placeholder="الصق نص المقال أو إجابة الواجب هنا..." rows="8" aria-label="الصق نص المقال أو إجابة الواجب هنا..."></textarea>
+                        <button class="bg-dark-bg border border-emerald-500/30 text-emerald-200 font-bold px-4 py-2 rounded-lg transition-all mt-3" onclick="app.loadSchoolDemo('corrector')">
+                            استخدام ديمو المدرسة
+                        </button>
                     </div>
                     <div class="hidden glass-card p-6 rounded-2xl animate-fade-in-up" id="correction-result">
                         <h3 class="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
@@ -1098,6 +1197,25 @@
                                 <span class="text-3xl mb-2">🎓</span>
                                 <span class="text-xs font-bold">تخرج بامتياز</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                            <h3 class="text-lg font-bold flex items-center gap-2">
+                                <span class="iconify text-emerald-400" data-icon="carbon:report"></span> تقرير أداء قابل للطباعة
+                            </h3>
+                            <div class="flex gap-2">
+                                <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors" id="btn-performance-report" onclick="app.generatePerformanceReport()">
+                                    توليد التقرير
+                                </button>
+                                <button class="bg-dark-bg border border-white/10 text-gray-200 px-4 py-2 rounded-lg text-sm font-bold transition-colors" onclick="window.print()">
+                                    طباعة
+                                </button>
+                            </div>
+                        </div>
+                        <div class="printable-output prose prose-invert max-w-none" id="performance-report">
+                            <p class="text-gray-400">اضغط على "توليد التقرير" لإنشاء ملخص أداء منظم للصف والمادة والهدف ومستوى الطلاب.</p>
                         </div>
                     </div>
                 </div>
@@ -1222,12 +1340,12 @@
 
     <script src="/frontend/js/ai-scolecs-app.min.js" defer></script>
     <script defer="" src="/frontend/js/main.bundle.min.js"></script>
-    <script defer="" src="/frontend/js/index-theme.min.js"></script>
     <script defer="" src="/frontend/js/runtime-config.min.js"></script>
+    <script defer="" src="/frontend/js/index-theme.min.js"></script>
 <script defer="" src="/frontend/js/navigation.min.js"></script>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
 
 
 
-<script defer src="/frontend/js/product-demo-enhancements.min.js"></script>
+<script defer src="/frontend/js/demo-experience.js"></script>
 </body></html>

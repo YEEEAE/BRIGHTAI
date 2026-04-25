@@ -510,7 +510,14 @@ async function openAiCompatChat(req) {
     throw error;
   }
 
-  const response = await fetch(`${config.gemini.endpoint}/${resolveModel()}:generateContent`, {
+  const activeModel = String(model || resolveModel()).trim() || resolveModel();
+  const wantsJson = body.response_format?.type === 'json_object';
+  const generationConfig = { temperature, maxOutputTokens: maxTokens };
+  if (wantsJson) {
+    generationConfig.responseMimeType = 'application/json';
+  }
+
+  const response = await fetch(`${config.gemini.endpoint}/${activeModel}:generateContent`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -518,7 +525,7 @@ async function openAiCompatChat(req) {
     },
     body: JSON.stringify({
       contents,
-      generationConfig: { temperature, maxOutputTokens: maxTokens }
+      generationConfig
     })
   });
 
@@ -535,7 +542,7 @@ async function openAiCompatChat(req) {
   return {
     choices: [{ message: { role: 'assistant', content: text }, finish_reason: 'stop' }],
     provider: 'gemini',
-    activeModel: resolveModel()
+    activeModel
   };
 }
 

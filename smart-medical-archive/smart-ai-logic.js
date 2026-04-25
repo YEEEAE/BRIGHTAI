@@ -1,1 +1,135 @@
-function e(){const e="llama3-70b-8192";let n="",t=window.BRIGHTAI_ENV&&window.BRIGHTAI_ENV.GROQ_MODEL?window.BRIGHTAI_ENV.GROQ_MODEL:e;if("undefined"!=typeof window&&window._brightaiGroqConfig&&(n=window._brightaiGroqConfig.key||"",t=window._brightaiGroqConfig.model||e),!n){const e=document.getElementById("groqApiKeyInput");e&&e.value.trim()&&(n=e.value.trim())}if(!t||t===e){const e=document.getElementById("groqModelInput");e&&e.value.trim()&&(t=e.value.trim())}if(!n)try{n=localStorage.getItem("brightai.medicalArchive.groqApiKey")||""}catch(e){}if(!t||t===e)try{const e=localStorage.getItem("brightai.medicalArchive.groqModel");e&&(t=e)}catch(e){}return n||(n=""),{API_URL:"/api/ai/openai-chat",API_KEY:n,MODEL:t||e,DEFAULT_HEADERS:{"Content-Type":"application/json"}}}async function n(n,t={}){const o=e();if(!o.API_KEY)throw new Error("مفتاح Groq API غير متوفر. أدخل المفتاح في قسم 'إعداد الاتصال' أعلى الصفحة.");const r={model:t.model||o.MODEL,messages:n,temperature:void 0!==t.temperature?t.temperature:.1,max_tokens:t.max_tokens||4096};t.json_mode&&(r.response_format={type:"json_object"});const i=new AbortController,a=t.timeout||6e4,s=setTimeout(function(){i.abort()},a);let c,l;try{c=await fetch(o.API_URL,{method:"POST",headers:{...o.DEFAULT_HEADERS,Authorization:`Bearer ${o.API_KEY}`},body:JSON.stringify(r),signal:i.signal})}catch(e){if(clearTimeout(s),"AbortError"===e.name)throw new Error("انتهت مهلة الاتصال ("+Math.round(a/1e3)+" ثانية). تحقق من الإنترنت وحاول مجدداً.");throw new Error("تعذر الاتصال بـ Groq API. تحقق من اتصال الإنترنت وإعدادات الشبكة.")}finally{clearTimeout(s)}if(!c.ok){let n={};try{n=await c.json()}catch(e){}!function(n,t){const o=t&&t.error&&t.error.message||"";switch(n.status){case 401:throw new Error("مفتاح Groq API غير صالح أو منتهي الصلاحية. تحقق من المفتاح في إعدادات الاتصال.");case 403:throw new Error("الوصول محظور. تأكد من صلاحيات المفتاح مع نموذج: "+e().MODEL);case 404:throw new Error("النموذج المطلوب غير موجود. تأكد من اسم النموذج: "+e().MODEL);case 413:throw new Error("حجم الطلب كبير جداً. قلّل حجم التقرير الطبي وحاول مجدداً.");case 429:throw new Error("تم تجاوز حد الطلبات المسموح. انتظر دقيقة ثم حاول مرة أخرى.");case 500:case 502:case 503:throw new Error("خلل مؤقت في خوادم Groq ("+n.status+"). حاول بعد قليل.");default:throw new Error(o||"مشكلة في الاتصال بالخادم الذكي (الحالة: "+n.status+")")}}(c,n)}try{l=await c.json()}catch(e){throw new Error("تعذر تحليل استجابة Groq. قد تكون الاستجابة تالفة. حاول مرة أخرى.")}if(!(l&&l.choices&&l.choices.length&&l.choices[0].message))throw new Error("استجابة فارغة أو غير مكتملة من Groq. حاول مرة أخرى.");return{content:l.choices[0].message.content||"",model:l.model||o.MODEL,usage:l.usage||null,finish_reason:l.choices[0].finish_reason||"stop"}}async function t(e,t={}){try{const t=await n([{role:"system",content:'أنت طبيب استشاري سعودي وخبير في تحليل البيانات الطبية (Clinical Data Extractor).\nمهمتك: قراءة التقرير الطبي المرفق واستخراج البيانات منه بدقة مطلقة لدمجها في نظام (EHR) وتصديرها بصيغة (FHIR / HL7).\nيجب أن يكون المخرج حصراً بصيغة JSON (Structured Data)، دون أي مقدمات أو نصوص إضافية.\nالهيكل المطلوب للـ JSON:\n{\n  "patient": {\n    "name": "اسم المريض (إن وُجد، أو null)",\n    "age": "العمر بالأرقام (أو null)",\n    "gender": "ذكر/أنثى/غير محدد",\n    "city": "المدينة إن ذُكرت"\n  },\n  "diagnoses": ["التشخيص الرئيسي", "تشخيصات ثانوية"],\n  "symptoms": ["عرض 1", "عرض 2"],\n  "medications": [\n    { "name": "اسم الدواء", "dose": "الجرعة", "frequency": "التكرار" }\n  ],\n  "labs": [\n    { "test": "الفحص", "result": "النتيجة", "unit": "الوحدة", "status": "طبيعي/مرتفع/منخفض" }\n  ],\n  "recommendations": "التوصيات الطبية والمتابعة",\n  "severity": "منخفض/متوسط/مرتفع/حرج",\n  "alerts": [\n    { "type": "risk/interaction/critical", "message": "رسالة التنبيه" }\n  ],\n  "hospital_department": "القسم الأنسب"\n}'},{role:"user",content:`التقرير الطبي المطلوب تحليله:\n\n${e}`}],{temperature:.1,json_mode:!0,timeout:6e4});let o;try{o=JSON.parse(t.content)}catch(e){const n=t.content.indexOf("{"),r=t.content.lastIndexOf("}");if(!(-1!==n&&-1!==r&&r>n))throw new Error("فشل في تحليل استجابة JSON. حاول مع تقرير أوضح.");o=JSON.parse(t.content.slice(n,r+1))}return o.clinical&&!o.diagnoses&&(o.diagnoses=o.clinical.diagnosis?[o.clinical.diagnosis]:[],o.symptoms=o.clinical.symptoms||[],o.medications=o.clinical.medications||[],o.recommendations=o.clinical.recommendations||"",o.severity=o.clinical.severity||"متوسط"),o}catch(e){throw console.error("خطأ في محرك الاستخراج الذكي:",e),e}}async function o(e,t){try{const o=await n([{role:"system",content:'أنت مساعد قواعد بيانات طبي ذكي.\nمهمتك تحويل سؤال الطبيب (باللغة العربية) إلى كائن JSON يحتوي على شروط البحث.\nالمخرج يجب أن يكون JSON فقط بالهيكل التالي:\n{\n  "conditions": ["مرض أو حالة 1", "حالة 2"],\n  "age_range": {"min": 0, "max": 120},\n  "medications": ["اسم الدواء"],\n  "gender": "",\n  "department": "",\n  "severity": ""\n}\nملاحظات:\n- إذا لم يذكر المستخدم أمراضاً، اترك conditions فارغة\n- إذا ذكر "فوق 60" يعني min:60, max:120\n- إذا ذكر "بين 20 و40" يعني min:20, max:40\n- إذا لم يحدد عمراً اترك age_range كما هو (0-120)'},{role:"user",content:`سؤال الطبيب: ${e}`}],{temperature:0,json_mode:!0,timeout:3e4});let r;try{r=JSON.parse(o.content)}catch(e){const n=o.content.indexOf("{"),t=o.content.lastIndexOf("}");if(-1===n||-1===t)throw new Error("تعذر تحليل فلاتر البحث الذكية.");r=JSON.parse(o.content.slice(n,t+1))}console.log("الفلاتر المستخرجة:",r);return t.filter(e=>{let n=!0;if(e.patient&&e.patient.age){const t=parseInt(e.patient.age,10);!isNaN(t)&&r.age_range&&(t<(r.age_range.min||0)||t>(r.age_range.max||120))&&(n=!1)}if(r.gender&&e.patient&&e.patient.gender){const t={male:"ذكر",female:"أنثى","ذكر":"ذكر","أنثى":"أنثى"}[r.gender]||r.gender;e.patient.gender!==t&&(n=!1)}if(r.conditions&&r.conditions.length>0){const t=Array.isArray(e.diagnoses)?e.diagnoses.join(" "):"",o=Array.isArray(e.symptoms)?e.symptoms.join(" "):"",i=e.clinical||{},a=(t+" "+o+" "+(i.diagnosis||"")+" "+(Array.isArray(i.symptoms)?i.symptoms.join(" "):"")).toLowerCase();r.conditions.some(e=>a.includes(e.toLowerCase()))||(n=!1)}if(r.medications&&r.medications.length>0){const t=((Array.isArray(e.medications)?e.medications.map(e=>e&&e.name||"").join(" "):"")+" "+(e.clinical&&Array.isArray(e.clinical.medications)?e.clinical.medications.map(e=>e&&e.name||"").join(" "):"")).toLowerCase();r.medications.some(e=>t.includes(e.toLowerCase()))||(n=!1)}return r.severity&&e.severity&&(e.severity.includes(r.severity)||(n=!1)),n})}catch(e){throw console.error("خطأ أثناء ترجمة لغة الاستعلام:",e),e}}async function r(e,t){try{return(await n([{role:"system",content:'أنت "مستشار طبي سريري سعودي ذكي" مدمج في نظام الأرشيف الطبي (CBAHI Compliant).\nالمطلوب منك الإجابة على استفسارات الطبيب المعالج بناءً **حصرياً** على "سياق المريض" المرفق بالأسفل.\n- قُم بتسليط الضوء على المخاطر، موانع الاستعمال، والتفاعلات الدوائية (Drug-Drug Interactions) إن وُجدت.\n- لا تخترع أية أمراض أو بيانات روتينية غير موجودة في السياق.\n- إذا كانت المعلومات غير كافية في السجل، اذكر بوضوح: "المعلومات المتوفرة في السجل الحالي لا تكفي للجزم...".\n- قُم باستخدام مصطلحات طبية مهنية عربية دقيقة.\n- نسّق الإجابة بنقاط مرقمة واضحة.'},{role:"user",content:`السجل الطبي للمريض:\n${JSON.stringify(t,null,2)}\n\n--- \nسؤال الطبيب:\n${e}`}],{temperature:.3,timeout:45e3})).content}catch(e){throw console.error("فشل في استدعاء الوكيل السريري:",e),e}}export{t as extractMedicalRecord,o as processNaturalLanguageQuery,r as askClinicalAgent,n as callGroqAPI,e as getGroqConfig};"undefined"!=typeof window&&(window.SmartClinicalAI={extractMedicalRecord:t,processNaturalLanguageQuery:o,askClinicalAgent:r,callGroqAPI:n,getGroqConfig:e});
+"use strict";
+
+const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_ENDPOINT = "/api/ai/gemini-chat";
+
+function getGeminiConfig() {
+  const env = window.BRIGHTAI_ENV || {};
+  const localKey = readStorage("brightai.medicalArchive.geminiApiKey");
+  const localModel = readStorage("brightai.medicalArchive.geminiModel");
+  const keyInput = document.getElementById("geminiApiKeyInput");
+  const modelInput = document.getElementById("geminiModelInput");
+
+  return {
+    API_URL: GEMINI_ENDPOINT,
+    API_KEY: env.GEMINI_API_KEY || keyInput?.value?.trim() || localKey || "",
+    MODEL: env.GEMINI_MODEL || modelInput?.value?.trim() || localModel || DEFAULT_GEMINI_MODEL,
+    DEFAULT_HEADERS: { "Content-Type": "application/json" }
+  };
+}
+
+function readStorage(key) {
+  try {
+    return localStorage.getItem(key) || "";
+  } catch {
+    return "";
+  }
+}
+
+async function callGeminiAPI(messages, options = {}) {
+  const config = getGeminiConfig();
+  if (!config.API_KEY) {
+    throw new Error("مفتاح Gemini API غير متوفر. أدخل المفتاح في إعداد الاتصال أو استخدم الخادم الموحد.");
+  }
+
+  const controller = new AbortController();
+  const timeoutMs = options.timeout || 6e4;
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(config.API_URL, {
+      method: "POST",
+      headers: {
+        ...config.DEFAULT_HEADERS,
+        Authorization: `Bearer ${config.API_KEY}`
+      },
+      body: JSON.stringify({
+        model: options.model || config.MODEL,
+        messages,
+        temperature: options.temperature ?? 0.1,
+        max_tokens: options.max_tokens || 4096,
+        response_format: options.json_mode ? { type: "json_object" } : undefined
+      }),
+      signal: controller.signal
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(payload?.error?.message || `تعذر استدعاء Gemini API (${response.status}).`);
+    }
+
+    const content = payload?.choices?.[0]?.message?.content || payload?.text || "";
+    if (!content) throw new Error("استجابة Gemini فارغة أو غير مكتملة.");
+    return {
+      content,
+      model: payload.model || config.MODEL,
+      usage: payload.usage || null,
+      finish_reason: payload?.choices?.[0]?.finish_reason || "stop"
+    };
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      throw new Error(`انتهت مهلة الاتصال بـ Gemini (${Math.round(timeoutMs / 1e3)} ثانية).`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function extractMedicalRecord(reportText) {
+  const response = await callGeminiAPI([
+    {
+      role: "system",
+      content: "استخرج بيانات التقرير الطبي كـ JSON فقط: patient, diagnoses, symptoms, medications, labs, recommendations, severity, alerts, hospital_department."
+    },
+    { role: "user", content: `التقرير الطبي المطلوب تحليله:\n\n${reportText}` }
+  ], { temperature: 0.1, json_mode: true, timeout: 6e4 });
+
+  return parseJsonObject(response.content);
+}
+
+async function processNaturalLanguageQuery(query, records) {
+  const response = await callGeminiAPI([
+    { role: "system", content: "حوّل سؤال البحث الطبي إلى شروط JSON مختصرة." },
+    { role: "user", content: query }
+  ], { temperature: 0, json_mode: true, timeout: 3e4 });
+  const filters = parseJsonObject(response.content);
+  return Array.isArray(records) ? records.filter((record) => JSON.stringify(record).includes(query) || filters.conditions?.length) : [];
+}
+
+async function askClinicalAgent(question, record) {
+  const response = await callGeminiAPI([
+    { role: "system", content: "أجب بالعربية بناءً على السجل الطبي المرفق فقط." },
+    { role: "user", content: `السجل:\n${JSON.stringify(record, null, 2)}\n\nالسؤال:\n${question}` }
+  ], { temperature: 0.3, timeout: 45e3 });
+  return response.content;
+}
+
+function parseJsonObject(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}");
+    if (start === -1 || end === -1 || end <= start) {
+      throw new Error("فشل في تحليل استجابة Gemini كـ JSON.");
+    }
+    return JSON.parse(text.slice(start, end + 1));
+  }
+}
+
+window.SmartClinicalAI = {
+  extractMedicalRecord,
+  processNaturalLanguageQuery,
+  askClinicalAgent,
+  callGeminiAPI,
+  getGeminiConfig
+};
+
+export {
+  extractMedicalRecord,
+  processNaturalLanguageQuery,
+  askClinicalAgent,
+  callGeminiAPI,
+  getGeminiConfig
+};

@@ -201,7 +201,13 @@
 
     if (updateHash) {
       history.replaceState(null, "", `#${tab}`);
-      els.sections[tab]?.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToElement(els.sections[tab]);
+    }
+  }
+
+  function scrollToElement(element) {
+    if (element && typeof element.scrollIntoView === "function") {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -216,7 +222,7 @@
 
         event.preventDefault();
         if (TAB_IDS.includes(targetId)) activateTab(targetId, false);
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        scrollToElement(target);
         history.replaceState(null, "", `#${targetId}`);
       });
     });

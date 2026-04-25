@@ -70,8 +70,8 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
 <link href="/frontend/css/bundle-critical.css" rel="stylesheet">
-<link href="/frontend/css/main.bundle.min.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="/frontend/css/main.bundle.min.css" rel="stylesheet"/></noscript>
-<link href="/frontend/css/index-theme.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="/frontend/css/index-theme.css" rel="stylesheet"/></noscript>
+<link href="/frontend/css/main.bundle.min.css" rel="stylesheet">
+<link href="/frontend/css/index-theme.css" rel="stylesheet">
 <link href="/smart-medical-archive/system-unified.css" rel="stylesheet">
 <script defer="" src="/frontend/js/iconify-preload.js" fetchpriority="low"></script>
 <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
@@ -246,6 +246,7 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/frontend/css/demo-experience.css">
 </head>
 <body>
 
@@ -730,8 +731,8 @@
 </section>
 
 <input id="apiBaseInput" type="hidden" value="">
-<input id="groqApiKeyInput" type="hidden" value="">
-<input id="groqModelInput" type="hidden" value="llama3-70b-8192">
+<input id="geminiApiKeyInput" type="hidden" value="">
+<input id="geminiModelInput" type="hidden" value="gemini-2.5-flash">
 <button hidden="" id="saveConnectionBtn" type="button"></button>
 <button hidden="" id="testConnectionBtn" type="button"></button>
 <div hidden="" id="connectionStatus"></div>
@@ -771,7 +772,7 @@
 <button class="btn-sub" id="processBatchBtn" type="button">معالجة دفعة الملفات</button>
 <button class="btn-outline" id="cancelBatchBtn" type="button">إلغاء المعالجة الجارية</button>
 <button class="btn-outline" id="resumeBatchBtn" type="button">استئناف الملفات المتوقفة</button>
-<button class="btn-main" id="analyzeBatchBtn" type="button" data-analytics-event="tool_start" data-cta-location="smart-medical-archive" data-tool-name="brightai_tool">تحليل الملفات الجاهزة عبر Groq</button>
+<button class="btn-main" id="analyzeBatchBtn" type="button" data-analytics-event="tool_start" data-cta-location="smart-medical-archive" data-tool-name="brightai_tool">تحليل الملفات الجاهزة عبر Gemini</button>
 </div>
 <p class="file-note">الصيغ المدعومة: PDF, DOCX, DOC, DICOM, JPG, PNG, MP3, WAV, Excel, TXT, CSV, JSON, XML,
               HTML</p>
@@ -804,7 +805,7 @@
 <button class="sample-btn" data-sample="emergency" type="button">عينة: طوارئ</button>
 </div>
 <div class="action-row">
-<button class="btn-main" id="analyzeBtn" type="button" data-analytics-event="tool_start" data-cta-location="smart-medical-archive" data-tool-name="brightai_tool">تحليل التقرير عبر Groq</button>
+<button class="btn-main" id="analyzeBtn" type="button" data-analytics-event="tool_start" data-cta-location="smart-medical-archive" data-tool-name="brightai_tool">تحليل التقرير عبر Gemini</button>
 <button class="btn-outline" disabled="" id="saveRecordBtn" type="button">حفظ في الأرشيف التجريبي</button>
 </div>
 <div class="status" id="extractStatus">ابدأ بتحليل تقرير طبي لتوليد سجل منظم.</div>
@@ -1332,8 +1333,14 @@
 <script defer="" src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script defer="" src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="/smart-medical-archive/smart-ai-logic.js" type="module"></script>
+<script defer="" src="/smart-medical-archive/medical-gemini-client.js"></script>
+<script defer="" src="/smart-medical-archive/medical-extraction.js"></script>
+<script defer="" src="/smart-medical-archive/medical-search.js"></script>
+<script defer="" src="/smart-medical-archive/medical-upload.js"></script>
+<script defer="" src="/smart-medical-archive/medical-dashboard.js"></script>
 <script defer="" src="/smart-medical-archive/system-unified.js"></script>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
 
 
+<script defer src="/frontend/js/demo-experience.js"></script>
 </body></html>

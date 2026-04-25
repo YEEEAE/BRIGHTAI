@@ -51,6 +51,34 @@ main.container {
   padding-block: 112px 88px;
 }
 
+.unified-nav {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  background: rgba(15, 15, 35, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.hero-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  overflow: hidden;
+}
+
+.hero-section h1,
+.hero-section p {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
