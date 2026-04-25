@@ -2,12 +2,16 @@
 <html dir="rtl" lang="ar-SA">
 <head>
   <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-8LLESL207Q');
+    gtag("js", new Date());
+    gtag("config", "G-8LLESL207Q", {
+      "anonymize_ip": true,
+      "send_page_view": true
+    });
   </script>
   <meta http-equiv="x-ua-compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -214,31 +218,45 @@
 }
   </script>
   <style>
-    :root { --bg:#020617; --panel:rgba(15,23,42,.76); --line:rgba(148,163,184,.18); --text:#f8fafc; --muted:#94a3b8; --soft:#c7d2fe; --primary:#6366f1; --green:#10b981; --cyan:#06b6d4; --container:1120px; }
+    :root { --bg:#020617; --panel:rgba(15,23,42,.76); --line:rgba(148,163,184,.18); --text:#f8fafc; --muted:#94a3b8; --soft:#c7d2fe; --primary:#6366f1; --green:#10b981; --cyan:#06b6d4; --container:1120px; --nav-height:72px; --nav-bg:rgba(2,6,23,.65); --nav-bg-scrolled:rgba(2,6,23,.92); --nav-backdrop-blur:24px; --nav-border:1px solid rgba(255,255,255,.06); --nav-border-scrolled:1px solid rgba(255,255,255,.1); --nav-text-color:#cbd5e1; --nav-hover-color:#ffffff; --radius-sm:8px; --radius-full:9999px; }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body { margin:0; font-family:"IBM Plex Sans Arabic","Segoe UI",Arial,sans-serif; color:var(--text); line-height:1.85; background:radial-gradient(circle at 80% -10%, rgba(99,102,241,.28), transparent 34%), radial-gradient(circle at 12% 12%, rgba(16,185,129,.14), transparent 28%), linear-gradient(180deg,#020617,#07111f 52%,#020617); }
     a { color:inherit; text-decoration:none; }
     .container { width:min(var(--container), calc(100% - 32px)); margin-inline:auto; }
-    .nav { position:sticky; top:0; z-index:10; border-bottom:1px solid rgba(255,255,255,.08); background:rgba(2,6,23,.86); backdrop-filter:blur(18px); }
-    .nav-inner { min-height:74px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:10px; font-weight:950; }
-    .brand-mark { width:40px; height:40px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),#8b5cf6,var(--green)); }
-    .nav-links { display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:#cbd5e1; font-weight:850; font-size:14px; }
+    .unified-nav { position:fixed; top:0; left:0; right:0; height:var(--nav-height); z-index:1000; background:var(--nav-bg); backdrop-filter:blur(var(--nav-backdrop-blur)); -webkit-backdrop-filter:blur(var(--nav-backdrop-blur)); border-bottom:var(--nav-border); transition:transform .35s ease, background .4s ease, border-bottom .4s ease, box-shadow .4s ease; }
+    .nav-container { max-width:1400px; margin:0 auto; height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 1.25rem; gap:.75rem; }
+    .nav-logo { display:flex; align-items:center; gap:.625rem; text-decoration:none; flex-shrink:0; }
+    .logo-box { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg,#4f46e5 0%, #8b5cf6 55%, #10b981 100%); box-shadow:0 8px 28px rgba(99,102,241,.28); }
+    .logo-box span { color:#fff; font-weight:900; font-size:1.05rem; letter-spacing:-.04em; }
+    .logo-copy { display:flex; flex-direction:column; line-height:1; }
+    .logo-copy strong { font-size:1.05rem; font-weight:900; letter-spacing:-.02em; color:#fff; }
+    .logo-copy strong span { color:#818cf8; }
+    .logo-copy small { margin-top:4px; font-size:9px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#64748b; }
+    .nav-desktop { display:none; }
+    .nav-links { list-style:none; margin:0; padding:0; gap:.25rem; }
+    .nav-item { position:relative; }
+    .nav-link { display:flex; align-items:center; gap:.375rem; padding:.5rem .875rem; color:var(--nav-text-color); font-size:.875rem; font-weight:500; border-radius:var(--radius-sm); transition:color .2s ease, background .2s ease; white-space:nowrap; }
+    .nav-link:hover, .nav-link.is-current { color:var(--nav-hover-color); background:rgba(255,255,255,.06); }
+    .nav-cta { display:none; align-items:center; gap:.5rem; padding:.5rem 1.25rem; background:linear-gradient(135deg,#6366f1 0%, #8b5cf6 100%); color:#fff; font-weight:600; font-size:.8125rem; border-radius:var(--radius-full); white-space:nowrap; transition:transform .2s ease, box-shadow .2s ease; box-shadow:0 2px 12px rgba(99,102,241,.3); }
+    .nav-cta:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(99,102,241,.45); }
+    .services-bar { position:fixed; top:var(--nav-height); left:0; right:0; z-index:999; border-bottom:1px solid rgba(255,255,255,.08); background:rgba(7,17,31,.88); backdrop-filter:blur(14px); }
+    .services-bar-inner { display:flex; gap:10px; overflow-x:auto; padding:12px 0 14px; scrollbar-width:thin; }
+    .service-chip { white-space:nowrap; padding:10px 14px; border-radius:999px; border:1px solid rgba(148,163,184,.16); background:rgba(255,255,255,.04); color:#cbd5e1; font-size:14px; font-weight:850; }
+    .service-chip:hover { border-color:rgba(129,140,248,.34); color:#fff; background:rgba(99,102,241,.12); }
+    .service-chip.is-active { color:#fff; background:linear-gradient(135deg,rgba(99,102,241,.3),rgba(16,185,129,.18)); border-color:rgba(129,140,248,.42); box-shadow:0 14px 32px rgba(99,102,241,.18); }
     .btn { border:0; border-radius:999px; padding:12px 18px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:900; min-height:48px; }
     .btn-primary { background:linear-gradient(135deg,var(--primary),#8b5cf6); color:#fff; box-shadow:0 18px 44px rgba(99,102,241,.28); }
     .btn-soft { background:rgba(99,102,241,.14); border:1px solid rgba(129,140,248,.28); color:#e0e7ff; }
     .btn-wa { background:#25d366; color:#052e16; }
-    .hero { padding:72px 0 34px; }
-    .hero-grid { display:grid; grid-template-columns:1.08fr .92fr; gap:22px; align-items:stretch; }
-    .glass, .card, .table-wrap, .faq-item, .answer { border:1px solid var(--line); background:linear-gradient(180deg,rgba(15,23,42,.84),rgba(15,23,42,.58)); box-shadow:0 24px 80px rgba(0,0,0,.28); backdrop-filter:blur(16px); }
-    .hero-copy, .hero-side { border-radius:28px; padding:clamp(24px,4vw,44px); }
+    .hero { padding:160px 0 34px; }
+    .hero-grid { display:grid; grid-template-columns:1fr; gap:22px; align-items:stretch; }
+    .glass, .card, .table-wrap, .faq-item, .answer, .feature-strip { border:1px solid var(--line); background:linear-gradient(180deg,rgba(15,23,42,.84),rgba(15,23,42,.58)); box-shadow:0 24px 80px rgba(0,0,0,.28); backdrop-filter:blur(16px); }
+    .hero-copy { border-radius:28px; padding:clamp(24px,4vw,44px); }
     .eyebrow { display:inline-flex; gap:8px; margin-bottom:18px; padding:8px 12px; border-radius:999px; background:rgba(99,102,241,.14); border:1px solid rgba(129,140,248,.24); color:#c7d2fe; font-weight:950; }
     h1 { margin:0; font-size:clamp(34px,5vw,60px); line-height:1.15; letter-spacing:0; }
     .lead { margin:18px 0 0; color:#cbd5e1; font-size:18px; max-width:780px; }
     .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
-    .intent-list { display:grid; gap:12px; margin:0; padding:0; list-style:none; }
-    .intent-list li { padding:14px; border-radius:16px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); }
     section { padding:34px 0; }
     .section-head { margin-bottom:18px; }
     .section-head h2 { margin:0; font-size:clamp(26px,3.4vw,42px); line-height:1.25; }
@@ -252,6 +270,9 @@
     .card p, .card li { color:#cbd5e1; }
     .card ul, .steps { margin:0; padding:0; list-style:none; display:grid; gap:10px; }
     .card li, .step { padding:12px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); }
+    .feature-strip { border-radius:24px; padding:18px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .feature-strip div { padding:14px; border-radius:16px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.07); }
+    .feature-strip strong { display:block; color:#fff; margin-bottom:4px; }
     .steps { counter-reset:step; }
     .step { counter-increment:step; display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; }
     .step::before { content:counter(step); width:34px; height:34px; border-radius:12px; display:grid; place-items:center; background:rgba(16,185,129,.14); color:#d1fae5; font-weight:950; }
@@ -270,25 +291,61 @@
     .final { text-align:center; border-radius:28px; padding:34px; background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(16,185,129,.12)); border:1px solid rgba(129,140,248,.24); }
     .breadcrumbs { color:#94a3b8; font-size:14px; margin-bottom:18px; }
     .breadcrumbs a { color:#c7d2fe; }
+    .text-link { color:#93c5fd; font-weight:900; text-decoration:underline; text-decoration-color:rgba(147,197,253,.35); text-underline-offset:3px; }
+    .prose { color:#cbd5e1; }
+    .prose p { margin:0 0 14px; }
+    .muted-note { color:#94a3b8; font-size:14px; }
     footer { padding:34px 0 48px; color:#94a3b8; border-top:1px solid rgba(255,255,255,.08); }
-    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid { grid-template-columns:1fr; } .nav-inner { align-items:flex-start; flex-direction:column; padding:14px 0; } .table-wrap { overflow-x:auto; } }
+    @media (min-width:1024px) { .nav-container { padding:0 2rem; gap:1.5rem; } .nav-desktop { display:flex; align-items:center; } .nav-links { display:flex; align-items:center; } .nav-cta { display:inline-flex; } }
+    @media (max-width:1023px) { :root { --nav-height:64px; } .hero { padding-top:148px; } }
+    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="/" aria-label="Bright AI">
-        <span class="brand-mark">AI</span>
-        <span>Bright AI</span>
+  <header class="unified-nav" id="main-header" role="banner">
+    <div class="nav-container">
+      <a class="nav-logo" href="/" aria-label="Bright AI — الصفحة الرئيسية" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+        <div class="logo-box"><span>AI</span></div>
+        <div class="logo-copy">
+          <strong>Bright<span>AI</span></strong>
+          <small>Saudi</small>
+        </div>
       </a>
-      <nav class="nav-links" aria-label="روابط رئيسية">
-        <a href="/services/">الخدمات</a>
-        <a href="/data-analysis/">تحليل البيانات</a>
-        <a href="/smart-automation/">الأتمتة الذكية</a>
-        <a href="/contact/">تواصل معنا</a>
+      <nav class="nav-desktop" aria-label="التنقل الرئيسي">
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
+          <li class="nav-item"><a class="nav-link is-current" href="/services/">خدماتنا</a></li>
+          <li class="nav-item"><a class="nav-link" href="/smart-automation/">الأتمتة الذكية</a></li>
+          <li class="nav-item"><a class="nav-link" href="/data-analysis/">تحليل البيانات</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact/">تواصل معنا</a></li>
+        </ul>
       </nav>
+      <a class="nav-cta" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer">ابدأ رحلة التحول</a>
     </div>
   </header>
+  <div class="services-bar" aria-label="قائمة صفحات الخدمات">
+    <div class="container services-bar-inner">
+      <a class="service-chip" href="/services/data-analyst-agent/">وكيل محلل بيانات</a>
+<a class="service-chip" href="/services/custom-ai-agent/">وكيل ذكاء اصطناعي مخصص</a>
+<a class="service-chip" href="/services/competitor-analysis-agent/">وكيل تحليل المنافسين</a>
+<a class="service-chip" href="/services/seo-agent/">وكيل تحسين محركات البحث SEO</a>
+<a class="service-chip" href="/services/social-data-analysis/">تحليل بيانات وسائل التواصل الاجتماعي متقدم</a>
+<a class="service-chip" href="/services/health-data-analysis/">تحليل البيانات الصحية</a>
+<a class="service-chip" href="/services/marketing-agent/">وكيل تسويق</a>
+<a class="service-chip" href="/services/document-automation/">أتمتة إدارة البيانات والوثائق</a>
+<a class="service-chip" href="/services/smart-hiring-system/">نظام الاستقطاب (توظيف ذكي)</a>
+<a class="service-chip is-active" href="/services/medical-archive/">نظام سجلات (أرشيف طبي)</a>
+<a class="service-chip" href="/services/data-platform/">نظام التحليل (منصة بيانات)</a>
+<a class="service-chip" href="/services/lead-hunter/">وكيل اكتشاف الفرص والعملاء</a>
+<a class="service-chip" href="/services/customer-service-automation/">أتمتة خدمة العملاء</a>
+<a class="service-chip" href="/services/hr-automation/">أتمتة إدارة الموارد البشرية</a>
+<a class="service-chip" href="/services/marketing-automation/">أتمتة التسويق الرقمي</a>
+<a class="service-chip" href="/services/approvals-automation/">أتمتة الموافقات الإدارية</a>
+<a class="service-chip" href="/services/operational-reports-automation/">أتمتة التقارير التشغيلية</a>
+<a class="service-chip" href="/services/supply-chain-optimization/">أتمتة تحسين سلسلة التوريد</a>
+<a class="service-chip" href="/services/ai-consulting/">استشارات الذكاء الاصطناعي</a>
+    </div>
+  </div>
 
   <main>
     <section class="hero">
@@ -303,15 +360,6 @@
             <a class="btn btn-soft" href="/services/">العودة إلى كل خدمات Bright AI</a>
           </div>
         </div>
-        <aside class="hero-side glass">
-          <h2 style="margin-top:0">ملخص نية البحث</h2>
-          <ul class="intent-list">
-            <li><strong>الكلمة الرئيسية:</strong> أرشيف طبي ذكي</li>
-            <li><strong>الجمهور:</strong> المستشفيات، المراكز الطبية، العيادات، وإدارات السجلات.</li>
-            <li><strong>هدف التحويل:</strong> طلب نقاش حول أرشفة طبية ذكية وآمنة.</li>
-            <li><strong>السعر الابتدائي:</strong> 899 ر.س</li>
-          </ul>
-        </aside>
       </div>
     </section>
 
@@ -319,7 +367,7 @@
       <div class="container">
         <div class="section-head"><h2>إجابة مختصرة</h2></div>
         <div class="answer">
-          <strong>نظام سجلات (أرشيف طبي)</strong> من Bright AI هو حل ذكاء اصطناعي يساعد المستشفيات، المراكز الطبية، العيادات، وإدارات السجلات. على يناسب المستشفيات والمراكز الطبية التي تحتاج أرشفة رقمية وربط بيانات المرضى بين الأقسام. يعالج الحل مشكلة السجلات الطبية المتفرقة تجعل البحث والمتابعة بين الأقسام أبطأ، وتزيد عبء الإدارة عند الحاجة إلى مراجعة أو استرجاع معلومات المريض. والنتيجة المتوقعة هي بحث أسرع في السجلات وتنظيم أعلى للملفات دون الاعتماد الكامل على العمل اليدوي.
+          <strong>نظام سجلات (أرشيف طبي)</strong> من Bright AI هو حل ذكاء اصطناعي موجه للشركات في السعودية يساعد المستشفيات، المراكز الطبية، العيادات، وإدارات السجلات. على معالجة تحدٍ تشغيلي واضح يتمثل في السجلات الطبية المتفرقة تجعل البحث والمتابعة بين الأقسام أبطأ، وتزيد عبء الإدارة عند الحاجة إلى مراجعة أو استرجاع معلومات المريض.. هذا الحل مناسب عندما يكون الهدف العملي هو يناسب المستشفيات والمراكز الطبية التي تحتاج أرشفة رقمية وربط بيانات المرضى بين الأقسام. وتكون النتيجة المتوقعة بحث أسرع في السجلات وتنظيم أعلى للملفات مع مسار تشغيل أكثر وضوحاً لفريقك.
         </div>
       </div>
     </section>
@@ -333,11 +381,21 @@
 
     <section>
       <div class="container">
+        <article class="card prose">
+          <h2>كيف يرتبط هذا الحل ببقية منظومة Bright AI؟</h2>
+          <p>الأرشيف الطبي ليس مجرد حفظ ملفات. قيمته التشغيلية ترتفع عندما يرتبط مع <a class="text-link" href="/services/health-data-analysis/">تحليل البيانات الصحية</a> لاستخراج المؤشرات، ومع <a class="text-link" href="/services/document-automation/">أتمتة إدارة البيانات والوثائق</a> لتحويل البيانات إلى رؤية تشغيلية. وإذا كانت البيانات تأتي من مستندات متعددة، يصبح <a class="text-link" href="/services/data-platform/">نظام التحليل (منصة بيانات)</a> جزءاً مكملاً من المنظومة.</p>
+          <p>الهدف هنا ليس حشو روابط داخلية، بل مساعدة القارئ على فهم ما إذا كان احتياجه يبدأ من هذه الخدمة وحدها أو يحتاج مساراً أوسع يربط بين أكثر من خدمة داخل Bright AI.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
         <div class="section-head"><h2>حالات استخدام في السعودية</h2><p>أمثلة عملية تساعد الفرق السعودية على فهم أين يمكن تطبيق الخدمة داخل الشركة أو الجهة.</p></div>
-        <div class="grid-2"><article class="card"><h3>تصنيف ملفات المرضى</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق.</p></article>
-<article class="card"><h3>استخراج بيانات سريرية</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق.</p></article>
-<article class="card"><h3>ربط ملفات الأقسام</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق.</p></article>
-<article class="card"><h3>دعم فرق السجلات والجودة</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق.</p></article></div>
+        <div class="grid-2"><article class="card"><h3>تصنيف ملفات المرضى</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق، مع ضبط النطاق على احتياج الجهة وليس على قالب عام.</p></article>
+<article class="card"><h3>استخراج بيانات سريرية</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق، مع ضبط النطاق على احتياج الجهة وليس على قالب عام.</p></article>
+<article class="card"><h3>ربط ملفات الأقسام</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق، مع ضبط النطاق على احتياج الجهة وليس على قالب عام.</p></article>
+<article class="card"><h3>دعم فرق السجلات والجودة</h3><p>يمكن تخصيص نظام سجلات (أرشيف طبي) لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق، مع ضبط النطاق على احتياج الجهة وليس على قالب عام.</p></article></div>
       </div>
     </section>
 
@@ -347,7 +405,19 @@
 <li>تنظيم أعلى للملفات</li>
 <li>تقليل التكرار اليدوي</li>
 <li>تخصيص حسب إجراءات المنشأة</li></ul></article>
-        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>المستشفيات، المراكز الطبية، العيادات، وإدارات السجلات.</p><p>هذه الصفحة تستهدف نية بحث محددة: منشأة صحية تريد تنظيم السجلات الطبية وربط الملفات بين الأقسام.</p></article>
+        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>المستشفيات، المراكز الطبية، العيادات، وإدارات السجلات.</p><p>هذه الصفحة تستهدف نية بحث محددة: منشأة صحية تريد تنظيم السجلات الطبية وربط الملفات بين الأقسام.</p><p class="muted-note">إذا كان احتياجك أوسع من هذه الصفحة وحدها، فابدأ من الخدمة الأقرب ثم انتقل إلى الصفحات المرتبطة داخل هذا المحتوى.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="card"><h2>متى تكون هذه الخدمة أولوية؟</h2><ul><li>إذا كان فريقك يعاني من تأخير مستمر في تصنيف ملفات المرضى، فهذه الخدمة تصبح أولوية واضحة.</li>
+<li>إذا كانت الإدارة تحتاج إلى تنظيم أعلى للملفات بدل الاعتماد على ملفات متناثرة ورسائل متفرقة، فهذا مؤشر قوي على ملاءمة الحل.</li>
+<li>إذا كان جزء من وقت الفريق يضيع في أعمال متكررة قبل الوصول إلى قيمة حقيقية، فغالباً يوفر هذا الحل بحث أسرع في السجلات.</li></ul></article>
+        <article class="card"><h2>مخرجات عملية متوقعة</h2><ul><li>تصور تنفيذي واضح يربط بين المشكلة الحالية ونتيجة الأعمال المتوقعة.</li>
+<li>مسار إعداد وتشغيل يناسب المستشفيات، المراكز الطبية، العيادات، وإدارات السجلات..</li>
+<li>بحث أسرع في السجلات مع مخرجات قابلة للمراجعة والتحسين.</li>
+<li>روابط عمل داخلية تقود إلى تحليل البيانات الصحية عند الحاجة إلى توسيع النطاق.</li></ul></article>
       </div>
     </section>
 
@@ -408,7 +478,7 @@
     <section>
       <div class="container final">
         <h2>ناقش احتياج شركتك في نظام سجلات (أرشيف طبي)</h2>
-        <p>أرسل لنا وصفاً مختصراً للعملية أو البيانات أو المشكلة، وسنقترح مساراً عملياً يناسب شركتك في السعودية.</p>
+        <p>أرسل لنا وصفاً مختصراً للعملية أو البيانات أو المشكلة، وسنقترح مساراً عملياً يناسب شركتك في السعودية. إذا اتضح أن احتياجك يتقاطع مع تحليل البيانات الصحية أو أتمتة إدارة البيانات والوثائق فسنوضح ذلك من البداية بدل توسيع النطاق بشكل ضبابي.</p>
         <div class="hero-actions" style="justify-content:center">
           <a class="btn btn-wa" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%86%D8%B8%D8%A7%D9%85%20%D8%B3%D8%AC%D9%84%D8%A7%D8%AA%20(%D8%A3%D8%B1%D8%B4%D9%8A%D9%81%20%D8%B7%D8%A8%D9%8A)%20%D9%84%D8%B4%D8%B1%D9%83%D8%AA%D9%8A.">تواصل عبر واتساب</a>
           <a class="btn btn-soft" href="/services/">استكشف كل الحلول</a>

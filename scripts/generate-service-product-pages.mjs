@@ -8,6 +8,7 @@ const sitemapPath = "sitemap.xml";
 const renderPath = "render.yaml";
 const redirectsPath = "_redirects";
 const redirectsJsonPath = "redirects.json";
+const pagesOnly = process.argv.includes("--pages-only");
 
 const source = fs.readFileSync(servicesPath, "utf8");
 const productsMatch = source.match(/const products = (\[.*?\]);\n\s*let cart/s);
@@ -283,11 +284,75 @@ function textList(items) {
   return items.map((item) => `<li>${esc(item)}</li>`).join("\n");
 }
 
+function linkTag(product) {
+  return `<a class="text-link" href="/services/${product.slug}/">${esc(product.name)}</a>`;
+}
+
 function relatedLinks(product) {
   return (related[product.slug] || [])
     .map((slug) => bySlug.get(slug))
     .filter(Boolean)
     .slice(0, 3);
+}
+
+function contextualBridge(product, rels) {
+  if (rels.length < 2) return "";
+  const first = linkTag(rels[0]);
+  const second = linkTag(rels[1]);
+  const third = rels[2] ? linkTag(rels[2]) : "";
+
+  const map = {
+    "data-analyst-agent": `عندما تكون البيانات موزعة بين أكثر من مصدر، يصبح الربط مع ${first} مهماً لتوحيد المصدر، بينما يدعم ${second} تحويل المؤشرات إلى متابعة دورية لصنّاع القرار.${third ? ` وإذا احتجت سلوكاً أعمق حسب سياسات الشركة فغالباً يبدأ النقاش مع ${third}.` : ""}`,
+    "custom-ai-agent": `إذا كان الوكيل المخصص سيعتمد على معرفة تشغيلية أو بيانات مؤسسية، فغالباً يرتبط مع ${first} لفهم المؤشرات، ومع ${second} لمعالجة المستندات أو الملفات التي تغذيه.${third ? ` وعندما يكون الهدف خدمة العملاء أو الفرق الداخلية بشكل مباشر، يصبح ${third} امتداداً عملياً لهذا المسار.` : ""}`,
+    "competitor-analysis-agent": `تحليل المنافسين يصبح أقوى عندما ينعكس على التنفيذ التسويقي عبر ${first}، وعلى تنظيم الحملات والمتابعة عبر ${second}.${third ? ` أما إذا كان الهدف النهائي هو اكتشاف فرص البيع الجديدة، فغالباً يتكامل مع ${third}.` : ""}`,
+    "seo-agent": `هذا الحل لا يعمل في فراغ. كثير من الشركات تحتاج معه ${first} لتحويل الرؤى إلى رسائل وحملات، و${second} لتنظيم النشر والمتابعة الدورية.${third ? ` وعند الحاجة إلى فهم تفاعل الجمهور مع المحتوى، يدعم ${third} هذا القرار.` : ""}`,
+    "social-data-analysis": `قراءة بيانات التواصل تصبح أكثر قيمة عندما تغذي ${first} لصياغة الرسائل، و${second} لتنظيم النشر والاستهداف.${third ? ` وإذا كان الهدف رفع الظهور العضوي، فغالباً تظهر الحاجة أيضاً إلى ${third}.` : ""}`,
+    "health-data-analysis": `في القطاع الصحي، يحتاج التحليل غالباً إلى قاعدة ملفات منظمة مثل ${first}، وإلى بنية تجميع مؤسسية مثل ${second}.${third ? ` وعند وجود مستندات وتقارير كثيرة، يكون ${third} خطوة مكمّلة لتجهيز البيانات.` : ""}`,
+    "marketing-agent": `كثير من فرق النمو تجمع بين هذا الوكيل وبين ${first} لتحسين الظهور العضوي، ومع ${second} لتشغيل الحملات بشكل أكثر انتظاماً.${third ? ` وإذا كان خط النمو يعتمد على اكتشاف فرص جديدة، فغالباً يتقاطع ذلك مع ${third}.` : ""}`,
+    "document-automation": `عندما تتحول الوثائق إلى بيانات قابلة للبحث، تظهر الحاجة عادة إلى ${first} لاستثمار هذه البيانات في لوحات وتحليلات، وإلى ${second} لتسريع مسارات الاعتماد.${third ? ` وفي السياقات الصحية والتنظيمية الكبيرة، يتكامل المسار كثيراً مع ${third}.` : ""}`,
+    "smart-hiring-system": `التوظيف الذكي يصبح أكثر نضجاً عندما يتصل مع ${first} لأتمتة خطوات HR اليومية، ومع ${second} لمعالجة السير الذاتية والعقود والمرفقات.${third ? ` وإذا كانت الشركة تحتاج وكيلاً داخلياً مخصصاً لفهم سياساتها، فقد يكمّل ذلك ${third}.` : ""}`,
+    "medical-archive": `الأرشيف الطبي ليس مجرد حفظ ملفات. قيمته التشغيلية ترتفع عندما يرتبط مع ${first} لاستخراج المؤشرات، ومع ${second} لتحويل البيانات إلى رؤية تشغيلية.${third ? ` وإذا كانت البيانات تأتي من مستندات متعددة، يصبح ${third} جزءاً مكملاً من المنظومة.` : ""}`,
+    "data-platform": `منصة البيانات غالباً تكون الأساس الذي يغذي ${first} بالقراءة التحليلية، و${second} بالتقارير الدورية الجاهزة.${third ? ` وعندما يكون جزء من البيانات مرتبطاً بالرعاية أو الملفات الصحية، يظهر أيضاً دور ${third}.` : ""}`,
+    "lead-hunter": `اكتشاف العملاء لا يحقق أثره وحده. غالباً يحتاج إلى ${first} لتحويل الفرص إلى رسائل وحملات، وإلى ${second} لفهم حركة السوق.${third ? ` وعندما تنتقل الفرصة إلى مرحلة التفاعل مع العميل، قد يصبح ${third} امتداداً منطقياً.` : ""}`,
+    "customer-service-automation": `هذه الخدمة تعمل بشكل أفضل عندما ترتبط مع ${first} لفهم مسار العميل قبل وبعد التواصل، ومع ${second} لدعم الرسائل والحملات.${third ? ` وإذا كانت الإجابات تحتاج معرفة تشغيلية مخصصة، فقد يتكامل المسار مع ${third}.` : ""}`,
+    "hr-automation": `تسريع عمليات الموارد البشرية يرتبط عادة مع ${first} عندما تكون أولوية الشركة هي التوظيف، ومع ${second} عندما تكون دورة الاعتماد الداخلية هي نقطة الاختناق.${third ? ` كما أن ${third} يساعد على تنظيم الوثائق والملفات المرتبطة بالموظفين والعقود.` : ""}`,
+    "marketing-automation": `أتمتة التسويق تكون أقوى عندما تأخذ اتجاه الرسالة من ${first}، وتستفيد من أولويات البحث والمحتوى من ${second}.${third ? ` كما أن ${third} يمد الفريق برؤية أدق عن تفاعل الجمهور مع الرسائل عبر القنوات.` : ""}`,
+    "approvals-automation": `الموافقات الإدارية غالباً لا تكون منعزلة عن بقية العمل. كثير من المنشآت تربطها مع ${first} لتقليل التأخير في HR، ومع ${second} للتعامل مع الوثائق والمرفقات.${third ? ` كما يظهر أثرها بوضوح عند ربطها مع ${third} لتقارير الإدارة والمتابعة.` : ""}`,
+    "operational-reports-automation": `التقارير التشغيلية تصبح أكثر دقة عندما تعتمد على ${first} كمصدر موحد، وعلى ${second} لتحليل التغيرات وليس فقط عرضها.${third ? ` وفي البيئات التي تمر فيها التقارير بمسارات اعتماد داخلية، يظهر أيضاً دور ${third}.` : ""}`,
+    "supply-chain-optimization": `تحسين سلسلة التوريد يحتاج عادة إلى ${first} لتغذية القرارات بتقارير مستمرة، وإلى ${second} لتجميع البيانات من المصادر المختلفة.${third ? ` كما أن ${third} يساعد على قراءة المؤشرات والتنبيهات بسرعة أكبر عند تغير الطلب.` : ""}`,
+    "ai-consulting": `الاستشارة الجيدة لا تنتهي بتوصية عامة. في كثير من الحالات تقود إلى تنفيذ مثل ${first} عندما يكون المطلوب وكيل مخصص، أو ${second} عندما تكون الأولوية بناء أساس بيانات واضح.${third ? ` وإذا كانت المؤسسة تفكر في أتمتة أوسع، فقد يمتد النقاش إلى ${third}.` : ""}`
+  };
+
+  return map[product.slug] || `يرتبط هذا الحل عملياً مع ${first} و${second}${third ? ` و${third}` : ""} بحسب مرحلة المشروع ونوع البيانات والجهة المالكة للعملية.`;
+}
+
+function prioritySignals(product) {
+  const [firstUseCase = "وجود اختناق تشغيلي متكرر", secondUseCase = "حاجة إلى سرعة أعلى في القرار"] = product.meta.useCases;
+  const [firstBenefit = "تقليل العمل اليدوي", secondBenefit = "رؤية تشغيلية أوضح"] = product.meta.benefits;
+  return [
+    `إذا كان فريقك يعاني من تأخير مستمر في ${firstUseCase}، فهذه الخدمة تصبح أولوية واضحة.`,
+    `إذا كانت الإدارة تحتاج إلى ${secondBenefit} بدل الاعتماد على ملفات متناثرة ورسائل متفرقة، فهذا مؤشر قوي على ملاءمة الحل.`,
+    `إذا كان جزء من وقت الفريق يضيع في أعمال متكررة قبل الوصول إلى قيمة حقيقية، فغالباً يوفر هذا الحل ${firstBenefit}.`
+  ];
+}
+
+function deliverables(product, rels) {
+  const extras = rels.slice(0, 2).map((item) => `روابط عمل داخلية تقود إلى ${item.name} عند الحاجة إلى توسيع النطاق.`);
+  return [
+    `تصور تنفيذي واضح يربط بين المشكلة الحالية ونتيجة الأعمال المتوقعة.`,
+    `مسار إعداد وتشغيل يناسب ${product.meta.audience}.`,
+    `${product.meta.benefits[0]} مع مخرجات قابلة للمراجعة والتحسين.`,
+    ...extras
+  ].slice(0, 4);
+}
+
+function servicePager(product) {
+  return products
+    .map((item) => {
+      const active = item.slug === product.slug ? " is-active" : "";
+      return `<a class="service-chip${active}" href="/services/${item.slug}/">${esc(item.name)}</a>`;
+    })
+    .join("\n");
 }
 
 function makeSchema(product, rels, faqs) {
@@ -398,17 +463,25 @@ function makePage(product) {
   const description = `${product.name} من Bright AI: ${product.answer} صفحة مخصصة تشرح المشكلة والحل وحالات الاستخدام وخطوات التنفيذ للشركات في السعودية.`;
   const relatedHtml = rels.map((item) => `<a class="related-card" href="/services/${item.slug}/"><strong>${esc(item.name)}</strong><span>${esc(item.answer)}</span></a>`).join("\n");
   const faqHtml = faqs.map((faq) => `<details class="faq-item"><summary>${esc(faq.q)}</summary><p>${esc(faq.a)}</p></details>`).join("\n");
+  const bridge = contextualBridge(product, rels);
+  const signalsHtml = prioritySignals(product).map((item) => `<li>${esc(item)}</li>`).join("\n");
+  const deliverablesHtml = deliverables(product, rels).map((item) => `<li>${esc(item)}</li>`).join("\n");
+  const pagerHtml = servicePager(product);
 
   return `<!DOCTYPE html>
 <html dir="rtl" lang="ar-SA">
 <head>
   <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-8LLESL207Q');
+    gtag("js", new Date());
+    gtag("config", "G-8LLESL207Q", {
+      "anonymize_ip": true,
+      "send_page_view": true
+    });
   </script>
   <meta http-equiv="x-ua-compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -443,31 +516,45 @@ function makePage(product) {
 ${jsonLd(schema)}
   </script>
   <style>
-    :root { --bg:#020617; --panel:rgba(15,23,42,.76); --line:rgba(148,163,184,.18); --text:#f8fafc; --muted:#94a3b8; --soft:#c7d2fe; --primary:#6366f1; --green:#10b981; --cyan:#06b6d4; --container:1120px; }
+    :root { --bg:#020617; --panel:rgba(15,23,42,.76); --line:rgba(148,163,184,.18); --text:#f8fafc; --muted:#94a3b8; --soft:#c7d2fe; --primary:#6366f1; --green:#10b981; --cyan:#06b6d4; --container:1120px; --nav-height:72px; --nav-bg:rgba(2,6,23,.65); --nav-bg-scrolled:rgba(2,6,23,.92); --nav-backdrop-blur:24px; --nav-border:1px solid rgba(255,255,255,.06); --nav-border-scrolled:1px solid rgba(255,255,255,.1); --nav-text-color:#cbd5e1; --nav-hover-color:#ffffff; --radius-sm:8px; --radius-full:9999px; }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; }
     body { margin:0; font-family:"IBM Plex Sans Arabic","Segoe UI",Arial,sans-serif; color:var(--text); line-height:1.85; background:radial-gradient(circle at 80% -10%, rgba(99,102,241,.28), transparent 34%), radial-gradient(circle at 12% 12%, rgba(16,185,129,.14), transparent 28%), linear-gradient(180deg,#020617,#07111f 52%,#020617); }
     a { color:inherit; text-decoration:none; }
     .container { width:min(var(--container), calc(100% - 32px)); margin-inline:auto; }
-    .nav { position:sticky; top:0; z-index:10; border-bottom:1px solid rgba(255,255,255,.08); background:rgba(2,6,23,.86); backdrop-filter:blur(18px); }
-    .nav-inner { min-height:74px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
-    .brand { display:flex; align-items:center; gap:10px; font-weight:950; }
-    .brand-mark { width:40px; height:40px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),#8b5cf6,var(--green)); }
-    .nav-links { display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:#cbd5e1; font-weight:850; font-size:14px; }
+    .unified-nav { position:fixed; top:0; left:0; right:0; height:var(--nav-height); z-index:1000; background:var(--nav-bg); backdrop-filter:blur(var(--nav-backdrop-blur)); -webkit-backdrop-filter:blur(var(--nav-backdrop-blur)); border-bottom:var(--nav-border); transition:transform .35s ease, background .4s ease, border-bottom .4s ease, box-shadow .4s ease; }
+    .nav-container { max-width:1400px; margin:0 auto; height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 1.25rem; gap:.75rem; }
+    .nav-logo { display:flex; align-items:center; gap:.625rem; text-decoration:none; flex-shrink:0; }
+    .logo-box { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg,#4f46e5 0%, #8b5cf6 55%, #10b981 100%); box-shadow:0 8px 28px rgba(99,102,241,.28); }
+    .logo-box span { color:#fff; font-weight:900; font-size:1.05rem; letter-spacing:-.04em; }
+    .logo-copy { display:flex; flex-direction:column; line-height:1; }
+    .logo-copy strong { font-size:1.05rem; font-weight:900; letter-spacing:-.02em; color:#fff; }
+    .logo-copy strong span { color:#818cf8; }
+    .logo-copy small { margin-top:4px; font-size:9px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#64748b; }
+    .nav-desktop { display:none; }
+    .nav-links { list-style:none; margin:0; padding:0; gap:.25rem; }
+    .nav-item { position:relative; }
+    .nav-link { display:flex; align-items:center; gap:.375rem; padding:.5rem .875rem; color:var(--nav-text-color); font-size:.875rem; font-weight:500; border-radius:var(--radius-sm); transition:color .2s ease, background .2s ease; white-space:nowrap; }
+    .nav-link:hover, .nav-link.is-current { color:var(--nav-hover-color); background:rgba(255,255,255,.06); }
+    .nav-cta { display:none; align-items:center; gap:.5rem; padding:.5rem 1.25rem; background:linear-gradient(135deg,#6366f1 0%, #8b5cf6 100%); color:#fff; font-weight:600; font-size:.8125rem; border-radius:var(--radius-full); white-space:nowrap; transition:transform .2s ease, box-shadow .2s ease; box-shadow:0 2px 12px rgba(99,102,241,.3); }
+    .nav-cta:hover { transform:translateY(-1px); box-shadow:0 6px 24px rgba(99,102,241,.45); }
+    .services-bar { position:fixed; top:var(--nav-height); left:0; right:0; z-index:999; border-bottom:1px solid rgba(255,255,255,.08); background:rgba(7,17,31,.88); backdrop-filter:blur(14px); }
+    .services-bar-inner { display:flex; gap:10px; overflow-x:auto; padding:12px 0 14px; scrollbar-width:thin; }
+    .service-chip { white-space:nowrap; padding:10px 14px; border-radius:999px; border:1px solid rgba(148,163,184,.16); background:rgba(255,255,255,.04); color:#cbd5e1; font-size:14px; font-weight:850; }
+    .service-chip:hover { border-color:rgba(129,140,248,.34); color:#fff; background:rgba(99,102,241,.12); }
+    .service-chip.is-active { color:#fff; background:linear-gradient(135deg,rgba(99,102,241,.3),rgba(16,185,129,.18)); border-color:rgba(129,140,248,.42); box-shadow:0 14px 32px rgba(99,102,241,.18); }
     .btn { border:0; border-radius:999px; padding:12px 18px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:900; min-height:48px; }
     .btn-primary { background:linear-gradient(135deg,var(--primary),#8b5cf6); color:#fff; box-shadow:0 18px 44px rgba(99,102,241,.28); }
     .btn-soft { background:rgba(99,102,241,.14); border:1px solid rgba(129,140,248,.28); color:#e0e7ff; }
     .btn-wa { background:#25d366; color:#052e16; }
-    .hero { padding:72px 0 34px; }
-    .hero-grid { display:grid; grid-template-columns:1.08fr .92fr; gap:22px; align-items:stretch; }
-    .glass, .card, .table-wrap, .faq-item, .answer { border:1px solid var(--line); background:linear-gradient(180deg,rgba(15,23,42,.84),rgba(15,23,42,.58)); box-shadow:0 24px 80px rgba(0,0,0,.28); backdrop-filter:blur(16px); }
-    .hero-copy, .hero-side { border-radius:28px; padding:clamp(24px,4vw,44px); }
+    .hero { padding:160px 0 34px; }
+    .hero-grid { display:grid; grid-template-columns:1fr; gap:22px; align-items:stretch; }
+    .glass, .card, .table-wrap, .faq-item, .answer, .feature-strip { border:1px solid var(--line); background:linear-gradient(180deg,rgba(15,23,42,.84),rgba(15,23,42,.58)); box-shadow:0 24px 80px rgba(0,0,0,.28); backdrop-filter:blur(16px); }
+    .hero-copy { border-radius:28px; padding:clamp(24px,4vw,44px); }
     .eyebrow { display:inline-flex; gap:8px; margin-bottom:18px; padding:8px 12px; border-radius:999px; background:rgba(99,102,241,.14); border:1px solid rgba(129,140,248,.24); color:#c7d2fe; font-weight:950; }
     h1 { margin:0; font-size:clamp(34px,5vw,60px); line-height:1.15; letter-spacing:0; }
     .lead { margin:18px 0 0; color:#cbd5e1; font-size:18px; max-width:780px; }
     .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
-    .intent-list { display:grid; gap:12px; margin:0; padding:0; list-style:none; }
-    .intent-list li { padding:14px; border-radius:16px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); }
     section { padding:34px 0; }
     .section-head { margin-bottom:18px; }
     .section-head h2 { margin:0; font-size:clamp(26px,3.4vw,42px); line-height:1.25; }
@@ -481,6 +568,9 @@ ${jsonLd(schema)}
     .card p, .card li { color:#cbd5e1; }
     .card ul, .steps { margin:0; padding:0; list-style:none; display:grid; gap:10px; }
     .card li, .step { padding:12px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); }
+    .feature-strip { border-radius:24px; padding:18px; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .feature-strip div { padding:14px; border-radius:16px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.07); }
+    .feature-strip strong { display:block; color:#fff; margin-bottom:4px; }
     .steps { counter-reset:step; }
     .step { counter-increment:step; display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; }
     .step::before { content:counter(step); width:34px; height:34px; border-radius:12px; display:grid; place-items:center; background:rgba(16,185,129,.14); color:#d1fae5; font-weight:950; }
@@ -499,25 +589,43 @@ ${jsonLd(schema)}
     .final { text-align:center; border-radius:28px; padding:34px; background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(16,185,129,.12)); border:1px solid rgba(129,140,248,.24); }
     .breadcrumbs { color:#94a3b8; font-size:14px; margin-bottom:18px; }
     .breadcrumbs a { color:#c7d2fe; }
+    .text-link { color:#93c5fd; font-weight:900; text-decoration:underline; text-decoration-color:rgba(147,197,253,.35); text-underline-offset:3px; }
+    .prose { color:#cbd5e1; }
+    .prose p { margin:0 0 14px; }
+    .muted-note { color:#94a3b8; font-size:14px; }
     footer { padding:34px 0 48px; color:#94a3b8; border-top:1px solid rgba(255,255,255,.08); }
-    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid { grid-template-columns:1fr; } .nav-inner { align-items:flex-start; flex-direction:column; padding:14px 0; } .table-wrap { overflow-x:auto; } }
+    @media (min-width:1024px) { .nav-container { padding:0 2rem; gap:1.5rem; } .nav-desktop { display:flex; align-items:center; } .nav-links { display:flex; align-items:center; } .nav-cta { display:inline-flex; } }
+    @media (max-width:1023px) { :root { --nav-height:64px; } .hero { padding-top:148px; } }
+    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="/" aria-label="Bright AI">
-        <span class="brand-mark">AI</span>
-        <span>Bright AI</span>
+  <header class="unified-nav" id="main-header" role="banner">
+    <div class="nav-container">
+      <a class="nav-logo" href="/" aria-label="Bright AI — الصفحة الرئيسية" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+        <div class="logo-box"><span>AI</span></div>
+        <div class="logo-copy">
+          <strong>Bright<span>AI</span></strong>
+          <small>Saudi</small>
+        </div>
       </a>
-      <nav class="nav-links" aria-label="روابط رئيسية">
-        <a href="/services/">الخدمات</a>
-        <a href="/data-analysis/">تحليل البيانات</a>
-        <a href="/smart-automation/">الأتمتة الذكية</a>
-        <a href="/contact/">تواصل معنا</a>
+      <nav class="nav-desktop" aria-label="التنقل الرئيسي">
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-link" href="/">الرئيسية</a></li>
+          <li class="nav-item"><a class="nav-link is-current" href="/services/">خدماتنا</a></li>
+          <li class="nav-item"><a class="nav-link" href="/smart-automation/">الأتمتة الذكية</a></li>
+          <li class="nav-item"><a class="nav-link" href="/data-analysis/">تحليل البيانات</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact/">تواصل معنا</a></li>
+        </ul>
       </nav>
+      <a class="nav-cta" href="${WHATSAPP}" target="_blank" rel="noopener noreferrer">ابدأ رحلة التحول</a>
     </div>
   </header>
+  <div class="services-bar" aria-label="قائمة صفحات الخدمات">
+    <div class="container services-bar-inner">
+      ${pagerHtml}
+    </div>
+  </div>
 
   <main>
     <section class="hero">
@@ -532,15 +640,6 @@ ${jsonLd(schema)}
             <a class="btn btn-soft" href="/services/">العودة إلى كل خدمات Bright AI</a>
           </div>
         </div>
-        <aside class="hero-side glass">
-          <h2 style="margin-top:0">ملخص نية البحث</h2>
-          <ul class="intent-list">
-            <li><strong>الكلمة الرئيسية:</strong> ${esc(m.primary)}</li>
-            <li><strong>الجمهور:</strong> ${esc(m.audience)}</li>
-            <li><strong>هدف التحويل:</strong> ${esc(m.goal)}</li>
-            <li><strong>السعر الابتدائي:</strong> ${esc(product.price)} ${esc(product.currency)}</li>
-          </ul>
-        </aside>
       </div>
     </section>
 
@@ -548,7 +647,7 @@ ${jsonLd(schema)}
       <div class="container">
         <div class="section-head"><h2>إجابة مختصرة</h2></div>
         <div class="answer">
-          <strong>${esc(product.name)}</strong> من Bright AI هو حل ذكاء اصطناعي يساعد ${esc(m.audience)} على ${esc(product.answer)} يعالج الحل مشكلة ${esc(m.problem)} والنتيجة المتوقعة هي ${esc(m.benefits.slice(0, 2).join(" و"))} دون الاعتماد الكامل على العمل اليدوي.
+          <strong>${esc(product.name)}</strong> من Bright AI هو حل ذكاء اصطناعي موجه للشركات في السعودية يساعد ${esc(m.audience)} على معالجة تحدٍ تشغيلي واضح يتمثل في ${esc(m.problem)}. هذا الحل مناسب عندما يكون الهدف العملي هو ${esc(product.answer)} وتكون النتيجة المتوقعة ${esc(m.benefits[0])} و${esc(m.benefits[1])} مع مسار تشغيل أكثر وضوحاً لفريقك.
         </div>
       </div>
     </section>
@@ -562,15 +661,32 @@ ${jsonLd(schema)}
 
     <section>
       <div class="container">
+        <article class="card prose">
+          <h2>كيف يرتبط هذا الحل ببقية منظومة Bright AI؟</h2>
+          <p>${bridge}</p>
+          <p>الهدف هنا ليس حشو روابط داخلية، بل مساعدة القارئ على فهم ما إذا كان احتياجه يبدأ من هذه الخدمة وحدها أو يحتاج مساراً أوسع يربط بين أكثر من خدمة داخل Bright AI.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
         <div class="section-head"><h2>حالات استخدام في السعودية</h2><p>أمثلة عملية تساعد الفرق السعودية على فهم أين يمكن تطبيق الخدمة داخل الشركة أو الجهة.</p></div>
-        <div class="grid-2">${m.useCases.map((item) => `<article class="card"><h3>${esc(item)}</h3><p>يمكن تخصيص ${esc(product.name)} لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق.</p></article>`).join("\n")}</div>
+        <div class="grid-2">${m.useCases.map((item) => `<article class="card"><h3>${esc(item)}</h3><p>يمكن تخصيص ${esc(product.name)} لهذا السيناريو حسب بياناتك وأنظمتك وصلاحيات الفريق، مع ضبط النطاق على احتياج الجهة وليس على قالب عام.</p></article>`).join("\n")}</div>
       </div>
     </section>
 
     <section>
       <div class="container grid-2">
         <article class="card"><h2>الفوائد</h2><ul>${textList(m.benefits)}</ul></article>
-        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>${esc(m.audience)}</p><p>هذه الصفحة تستهدف نية بحث محددة: ${esc(m.intent)}</p></article>
+        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>${esc(m.audience)}</p><p>هذه الصفحة تستهدف نية بحث محددة: ${esc(m.intent)}</p><p class="muted-note">إذا كان احتياجك أوسع من هذه الصفحة وحدها، فابدأ من الخدمة الأقرب ثم انتقل إلى الصفحات المرتبطة داخل هذا المحتوى.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="container grid-2">
+        <article class="card"><h2>متى تكون هذه الخدمة أولوية؟</h2><ul>${signalsHtml}</ul></article>
+        <article class="card"><h2>مخرجات عملية متوقعة</h2><ul>${deliverablesHtml}</ul></article>
       </div>
     </section>
 
@@ -624,7 +740,7 @@ ${jsonLd(schema)}
     <section>
       <div class="container final">
         <h2>ناقش احتياج شركتك في ${esc(product.name)}</h2>
-        <p>أرسل لنا وصفاً مختصراً للعملية أو البيانات أو المشكلة، وسنقترح مساراً عملياً يناسب شركتك في السعودية.</p>
+        <p>أرسل لنا وصفاً مختصراً للعملية أو البيانات أو المشكلة، وسنقترح مساراً عملياً يناسب شركتك في السعودية. إذا اتضح أن احتياجك يتقاطع مع ${rels[0] ? rels[0].name : "حلول أخرى"} أو ${rels[1] ? rels[1].name : "مسارات إضافية"} فسنوضح ذلك من البداية بدل توسيع النطاق بشكل ضبابي.</p>
         <div class="hero-actions" style="justify-content:center">
           <a class="btn btn-wa" href="${WHATSAPP}?text=${encodeURIComponent(`السلام عليكم، أريد مناقشة ${product.name} لشركتي.`)}">تواصل عبر واتساب</a>
           <a class="btn btn-soft" href="/services/">استكشف كل الحلول</a>
@@ -641,6 +757,10 @@ ${jsonLd(schema)}
 
 for (const product of products) {
   fs.writeFileSync(`services/${product.slug}.html`, makePage(product));
+}
+
+if (pagesOnly) {
+  process.exit(0);
 }
 
 function makeServicesSchema() {
