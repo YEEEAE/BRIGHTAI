@@ -4251,11 +4251,9 @@
 
     <script>
     (function(){
-        var API_KEY='AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8';
-        var MODEL='gemini-2.5-flash';
         var WA='966538229013';
+        var API_ENDPOINT='/api/ai/chat';
         var PAGES={'الرئيسية':'https://brightai.site/','من نحن':'https://brightai.site/about/','الخدمات':'https://brightai.site/services/','وكلاء الذكاء الاصطناعي':'https://brightai.site/ai-agent/','تحليل البيانات':'https://brightai.site/data-analysis/','الأتمتة الذكية':'https://brightai.site/smart-automation/','سير عمل الذكاء الاصطناعي':'https://brightai.site/ai-workflows/','الاستشارات':'https://brightai.site/consultation/','تواصل معنا':'https://brightai.site/contact/','المدونة':'https://brightai.site/blog/','الأدوات الذكية':'https://brightai.site/tools/','تجربة مجانية':'https://brightai.site/try/','الأرشيف الطبي الذكي':'https://brightai.site/smart-medical-archive/','دراسات الحالة':'https://brightai.site/case-studies/','الأسعار':'https://brightai.site/demo/pricing/','تجربة OCR':'https://brightai.site/demo/ocr-demo/','القطاعات':'https://brightai.site/sectors/','قطاع الصحة':'https://brightai.site/sectors/healthcare/','قطاع المالية':'https://brightai.site/sectors/finance/','قطاع اللوجستيات':'https://brightai.site/sectors/logistics/','قطاع الطاقة':'https://brightai.site/sectors/energy/','قطاع التجارة الإلكترونية':'https://brightai.site/sectors/ecommerce/','قطاع التصنيع':'https://brightai.site/sectors/manufacturing/','التوثيق':'https://brightai.site/docs/','الذكاء الاصطناعي السحابي':'https://brightai.site/ai-scolecs/','تقرير الذكاء الاصطناعي 2026':'https://brightai.site/demo/resources/report-ai-saudi-2026/'};
-        var SYS='أنت موظف خدمة عملاء في شركة Bright AI، اسمك يزيد وتتحدث باللهجة السعودية العامية بشكل طبيعي ومريح.\n\n**تعليمات مهمة جداً:**\n- تكلّم بلهجة سعودية عامية مريحة وطبيعية (مثل: \"وش تبغى؟\"، \"أكيد\"، \"زين\"، \"بكرة\"، \"عندنا\"، \"قدرنا نساعدك\")\n- لا تذكر أبداً أنك ذكاء اصطناعي أو روبوت أو بوت – أنت موظف حقيقي اسمك \"سلطان\"\n- إذا سألك أحد \"هل أنت بوت؟\" قل بشكل طبيعي: \"لا لا، أنا سلطان من فريق Bright AI 😄\"\n- استخدم إيموجيات بشكل طبيعي ولكن لا تبالغ\n- اختصر في الردود – لا تطوّل بدون حاجة\n- دائماً أرفق روابط الصفحات المناسبة عند الإجابة بهذا الشكل: [اسم الصفحة](الرابط)\n\n**معلومات عن شركة Bright AI:**\n- شركة سعودية متخصصة في حلول الذكاء الاصطناعي للمؤسسات\n- مقرها الرياض، مرخصة لدى وزارة التجارة والمركز السعودي للأعمال وموقع \"معروف\"\n- الموقع: brightai.site\n\n**الخدمات الرئيسية:**\n1. **وكلاء الذكاء الاصطناعي المخصصة** – نصمم وكلاء ذكاء اصطناعي حسب طلبك (مبيعات، HR، تحليل، خدمة عملاء...) → brightai.site/ai-agent/\n2. **الأتمتة الذكية (RPA)** – أتمتة الأعمال المتكررة وتوفير وقت وتكلفة → brightai.site/smart-automation/\n3. **تحليل البيانات وBI** – تحليل بياناتك واستخراج رؤى مفيدة → brightai.site/data-analysis/\n4. **الاستشارات** – نساعدك ترسم خارطة طريق للتحول الرقمي → brightai.site/consultation/\n5. **سير عمل الذكاء الاصطناعي** – أتمتة ذكية للمهام المعقدة → brightai.site/ai-workflows/\n6. **الأرشيف الطبي الذكي** – لقطاع الصحة والمستشفيات → brightai.site/smart-medical-archive/\n7. **الذكاء الاصطناعي كخدمة (AIaaS)** – سحابة محلية متوافقة مع معايير NCA → brightai.site/ai-scolecs/\n\n**الأسعار (تقريبية):**\n- أتمتة بسيطة: من 2,000 إلى 5,000 ريال\n- شات بوت خدمة عملاء: 3,000 – 6,000 ريال\n- حلول أتمتة متكاملة: 10,000 – 50,000 ريال\n- التسعير الدقيق يعتمد على حجم وتعقيد المشروع\n\n**القطاعات التي نخدمها:** النفط والغاز، الصحة، المالية، التجزئة، اللوجستيات، التصنيع، القطاع الحكومي\n\n**طريقة التواصل:**\n- واتساب: +966538229013 → wa.me/966538229013\n- صفحة التواصل: brightai.site/contact/\n- استشارة مجانية: brightai.site/consultation/\n\n**الروابط المتاحة للإرفاق:**\n'+Object.entries(PAGES).map(function(e){return '- '+e[0]+': '+e[1]}).join('\n')+'\n\n**قواعد الردود:**\n- إذا سألوا عن خدمة معينة → اشرح باختصار وأرفق الرابط\n- إذا طلبوا تواصل أو استشارة → وجّههم للواتساب أو صفحة الاستشارات\n- إذا السؤال خارج نطاق Bright AI → اعتذر بلطف وقل إنك تختص بمجال الذكاء الاصطناعي للأعمال\n- لا تخترع معلومات غير موجودة\n- دائماً كن إيجابياً ومرحباً';
 
         var fab=document.getElementById('bai-chat-fab');
         var box=document.getElementById('bai-chat-box');
@@ -4297,6 +4295,49 @@
             return t;
         }
 
+        function localSupportReply(text){
+            var q=String(text||'').toLowerCase();
+            if(/سعر|اسعار|أسعار|تكلفة|باقة|pricing|price/.test(q)){
+                return 'أكيد. التسعير يعتمد على نطاق المشروع والتكاملات المطلوبة. كبداية: أتمتة بسيطة من 2,000 إلى 5,000 ريال، وشات بوت خدمة عملاء من 3,000 إلى 6,000 ريال. للحساب الأدق تقدر تبدأ من [صفحة الاستشارات]('+PAGES['الاستشارات']+') أو واتساب: https://wa.me/'+WA;
+            }
+            if(/وكيل|agent|بوت|شات|خدمة عملاء/.test(q)){
+                return 'نقدر نبني وكيل ذكاء اصطناعي مخصص للمبيعات أو خدمة العملاء أو الموارد البشرية حسب بياناتك وسير العمل عندك. شوف التفاصيل هنا: [وكلاء الذكاء الاصطناعي]('+PAGES['وكلاء الذكاء الاصطناعي']+').';
+            }
+            if(/تحليل|بيانات|dashboard|bi|تقرير/.test(q)){
+                return 'خدمة تحليل البيانات وBI تساعدك تحول البيانات إلى مؤشرات تنفيذية ولوحات متابعة قابلة للقياس. التفاصيل هنا: [تحليل البيانات]('+PAGES['تحليل البيانات']+').';
+            }
+            if(/أتمت|rpa|عمليات|workflow|سير عمل/.test(q)){
+                return 'الأتمتة الذكية مناسبة للمهام المتكررة مثل إدخال البيانات، التقارير، الفرز، والمتابعة بين الأنظمة. ابدأ من: [الأتمتة الذكية]('+PAGES['الأتمتة الذكية']+').';
+            }
+            if(/تواصل|واتساب|موعد|استشارة|حجز/.test(q)){
+                return 'تقدر تتواصل معنا مباشرة عبر واتساب: https://wa.me/'+WA+' أو تحجز من [صفحة الاستشارات]('+PAGES['الاستشارات']+').';
+            }
+            return 'أهلاً بك. أقدر أساعدك في خدمات Bright AI: وكلاء الذكاء الاصطناعي، الأتمتة، تحليل البيانات، والاستشارات. قل لي وش الهدف التشغيلي عندك أو تواصل معنا مباشرة عبر واتساب: https://wa.me/'+WA;
+        }
+
+        async function callChatApi(text){
+            var lastError=null;
+            try{
+                var controller=new AbortController();
+                var timeout=setTimeout(function(){controller.abort()},12000);
+                var res=await fetch(API_ENDPOINT,{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({message:text,sessionId:history.sessionId||null}),
+                    signal:controller.signal
+                });
+                clearTimeout(timeout);
+                var data=await res.json().catch(function(){return {}});
+                if(!res.ok)throw new Error(data.error||('HTTP '+res.status));
+                if(data.sessionId)history.sessionId=data.sessionId;
+                return String(data.reply||'').trim();
+            }catch(e){
+                lastError=e;
+            }
+            console.warn('[BrightAI Chat] API unavailable, using local support reply.',lastError);
+            return localSupportReply(text);
+        }
+
         async function send(){
             var txt=inp.value.trim();
             if(!txt||sending)return;
@@ -4305,27 +4346,19 @@
             inp.value='';
             inp.style.height='auto';
             addMsg('user',txt);
-            history.push({role:'user',parts:[{text:txt}]});
+            history.push({role:'user',text:txt});
 
             var typing=addMsg('bot','يكتب...');
             typing.classList.add('typing');
 
             try{
-                var body={
-                    system_instruction:{parts:[{text:SYS}]},
-                    contents:history.slice(-20),
-                    generationConfig:{temperature:0.7,maxOutputTokens:1024}
-                };
-                var url='https://generativelanguage.googleapis.com/v1beta/models/'+MODEL+':generateContent?key='+API_KEY;
-                var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-                var data=await res.json();
-                var reply=(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text)||'عذراً، حصل خطأ. جرب مرة ثانية 🙏';
+                var reply=await callChatApi(txt);
                 typing.remove();
-                addMsg('bot',reply);
-                history.push({role:'model',parts:[{text:reply}]});
+                addMsg('bot',reply||localSupportReply(txt));
+                history.push({role:'bot',text:reply});
             }catch(e){
                 typing.remove();
-                addMsg('bot','عذراً، حصل خطأ بالاتصال. جرب مرة ثانية أو تواصل معنا عبر واتساب 📱');
+                addMsg('bot',localSupportReply(txt));
             }
             sending=false;
             sendBtn.disabled=false;
