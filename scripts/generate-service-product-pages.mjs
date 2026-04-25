@@ -1229,11 +1229,79 @@ function linkTag(product) {
   return `<a class="text-link" href="/services/${product.slug}/">${esc(product.name)}</a>`;
 }
 
+const serviceHubs = {
+  "وكيل": [
+    { href: "/ai-agent/", label: "دليل وكلاء الذكاء الاصطناعي", note: "لفهم متى تحتاج AI Agent مخصص أو جاهز." },
+    { href: "/services/?category=وكيل", label: "كل وكلاء Bright AI", note: "للمقارنة بين وكلاء المبيعات والتسويق والتحليل." },
+    { href: "/consultation/", label: "استشارة اختيار الوكيل", note: "عندما تحتاج تحديد الوكيل الأنسب قبل التنفيذ." }
+  ],
+  "أتمتة": [
+    { href: "/smart-automation/", label: "الأتمتة الذكية", note: "لمعرفة كيف تتحول العمليات المتكررة إلى مسار آلي." },
+    { href: "/services/?category=أتمتة", label: "خدمات الأتمتة", note: "لربط هذه الخدمة بمسارات HR والوثائق والتقارير." },
+    { href: "/consultation/", label: "تشخيص فرص الأتمتة", note: "لتحديد أين يبدأ التنفيذ بأقل مخاطرة." }
+  ],
+  "تحليل": [
+    { href: "/data-analysis/", label: "تحليل البيانات للشركات", note: "لفهم دور البيانات في القرار الإداري والتشغيلي." },
+    { href: "/try/data-analyzer/", label: "تجربة محلل البيانات", note: "لتجربة نموذج عملي قبل بناء مسار أوسع." },
+    { href: "/services/?category=تحليل", label: "خدمات التحليل", note: "للمقارنة بين التحليل الصحي والاجتماعي وتحليل الأعمال." }
+  ],
+  "أنظمة": [
+    { href: "/services/?category=أنظمة", label: "أنظمة Bright AI", note: "لرؤية الأنظمة المتكاملة المناسبة للجهات السعودية." },
+    { href: "/consultation/", label: "استشارة نظام مخصص", note: "عندما تحتاج ربط النظام ببيانات وإجراءات داخلية." },
+    { href: "/docs/services-overview/", label: "نظرة توثيقية على الخدمات", note: "للقراءة التقنية قبل القرار." }
+  ],
+  "استشارات": [
+    { href: "/consultation/", label: "ابدأ باستشارة مباشرة", note: "لتحديد الأولويات قبل شراء أو بناء حل." },
+    { href: "/services/", label: "كل خدمات Bright AI", note: "لتحويل التوصية إلى منتج أو مسار تنفيذي." },
+    { href: "/docs/services-overview/", label: "توثيق الخدمات", note: "لفهم نطاق الخدمات وطريقة الربط." }
+  ],
+  "القطاع المالي": [
+    { href: "/sectors/finance/", label: "حلول القطاع المالي", note: "لربط تحليل المناقصات باحتياجات المالية والمشتريات." },
+    { href: "/tenders/", label: "نموذج تحليل المناقصات", note: "لتجربة قراءة الكراسات والمخاطر عملياً." },
+    { href: "/services/?category=القطاع المالي", label: "خدمات القطاع المالي", note: "لرؤية الخدمات المالية داخل صفحة الخدمات." }
+  ]
+};
+
+function contextualHubLinks(product) {
+  return serviceHubs[product.category] || [
+    { href: "/services/", label: "كل خدمات Bright AI", note: "للمقارنة بين الخدمات حسب احتياجك." },
+    { href: "/consultation/", label: "استشارة تطبيق AI", note: "لتحديد البداية المناسبة قبل التنفيذ." },
+    { href: "/docs/services-overview/", label: "توثيق الخدمات", note: "للاطلاع على النطاق العام." }
+  ];
+}
+
+function hubLinksHtml(product) {
+  return contextualHubLinks(product)
+    .map((item) => `<a class="hub-link" href="${esc(item.href)}"><strong>${esc(item.label)}</strong><span>${esc(item.note)}</span></a>`)
+    .join("\n");
+}
+
 function relatedLinks(product) {
   return (related[product.slug] || [])
     .map((slug) => bySlug.get(slug))
     .filter(Boolean)
     .slice(0, 3);
+}
+
+function aiSearchAnswer(product, rels) {
+  const relText = rels.length
+    ? `وغالباً يرتبط القرار أيضاً مع ${rels.map((item) => item.name).slice(0, 2).join(" و")} عند توسيع النطاق.`
+    : "ويمكن ربطه لاحقاً بخدمات Bright AI الأخرى حسب البيانات والعملية.";
+  return `${product.name} من Bright AI هو حل موجه للشركات والجهات في السعودية التي تحتاج نتيجة عملية من الذكاء الاصطناعي، لا تجربة عامة. يساعد على ${product.meta.benefits.slice(0, 2).join(" و")} ضمن سياق ${product.category}. ${relText}`;
+}
+
+function searchQuestions(product) {
+  return [
+    `هل ${product.name} مناسب للشركات في السعودية؟`,
+    `ما الفرق بين ${product.name} والحلول التقليدية؟`,
+    `كيف أبدأ تطبيق ${product.name} بدون تعقيد؟`
+  ];
+}
+
+function searchQuestionsHtml(product) {
+  return searchQuestions(product)
+    .map((question) => `<li>${esc(question)}</li>`)
+    .join("\n");
 }
 
 function contextualBridge(product, rels) {
@@ -1454,6 +1522,9 @@ function makePage(product) {
   const relatedHtml = rels.map((item) => `<a class="related-card" href="/services/${item.slug}/"><strong>${esc(item.name)}</strong><span>${esc(item.answer)}</span></a>`).join("\n");
   const faqHtml = faqs.map((faq) => `<details class="faq-item"><summary>${esc(faq.q)}</summary><p>${esc(faq.a)}</p></details>`).join("\n");
   const bridge = contextualBridge(product, rels);
+  const aiAnswer = aiSearchAnswer(product, rels);
+  const hubHtml = hubLinksHtml(product);
+  const searchQuestionsList = searchQuestionsHtml(product);
   const signalsHtml = prioritySignals(product).map((item) => `<li>${esc(item)}</li>`).join("\n");
   const deliverablesHtml = deliverableItems(product, rels).map((item) => `<li>${esc(item)}</li>`).join("\n");
   const comparisonHtml = comparisonRows(product).map((row) => `<tr><td>${esc(row[0])}</td><td>${esc(row[1])}</td><td>${esc(row[2])}</td></tr>`).join("\n");
@@ -1590,9 +1661,15 @@ ${jsonLd(schema)}
     th,td { padding:16px; text-align:start; border-bottom:1px solid rgba(148,163,184,.14); vertical-align:top; }
     th { color:#c7d2fe; background:rgba(99,102,241,.08); }
     td { color:#cbd5e1; }
-    .related-card { display:grid; gap:6px; padding:18px; border-radius:20px; background:rgba(15,23,42,.68); border:1px solid rgba(129,140,248,.22); }
-    .related-card strong { color:#fff; }
-    .related-card span { color:#94a3b8; font-size:14px; }
+	    .related-card { display:grid; gap:6px; padding:18px; border-radius:20px; background:rgba(15,23,42,.68); border:1px solid rgba(129,140,248,.22); }
+	    .related-card strong { color:#fff; }
+	    .related-card span { color:#94a3b8; font-size:14px; }
+	    .answer-kicker { margin:0 0 8px; color:#86efac; font-weight:950; font-size:14px; }
+	    .quote-box { border-radius:22px; padding:20px; background:rgba(16,185,129,.08); border:1px solid rgba(16,185,129,.22); color:#dcfce7; font-size:18px; }
+	    .link-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+	    .hub-link { display:grid; gap:6px; padding:16px; border-radius:18px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); }
+	    .hub-link strong { color:#fff; }
+	    .hub-link span { color:#94a3b8; font-size:14px; }
     .faq-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
     .faq-item { border-radius:18px; overflow:hidden; }
     .faq-item summary { cursor:pointer; padding:16px 18px; font-weight:950; }
@@ -1607,7 +1684,7 @@ ${jsonLd(schema)}
     footer { padding:34px 0 48px; color:#94a3b8; border-top:1px solid rgba(255,255,255,.08); }
     @media (min-width:1024px) { .nav-container { padding:0 2rem; gap:1.5rem; } .nav-desktop { display:flex; align-items:center; } .nav-links { display:flex; align-items:center; } .nav-cta { display:inline-flex; } }
     @media (max-width:1023px) { :root { --nav-height:64px; } .hero { padding-top:148px; } }
-    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
+	    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip,.link-grid { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
   </style>
 </head>
 <body>
@@ -1657,10 +1734,14 @@ ${jsonLd(schema)}
 
     <section>
       <div class="container">
-        <div class="section-head"><h2>إجابة مختصرة</h2></div>
-        <div class="answer">${esc(m.answerBlock || `${product.name} من Bright AI هو حل موجه للشركات في السعودية لمعالجة احتياج تشغيلي واضح بنتائج عملية قابلة للتنفيذ.`)}</div>
-      </div>
-    </section>
+	        <div class="section-head"><h2>ما هو ${esc(product.name)}؟ إجابة مباشرة</h2><p>صياغة مختصرة وواضحة تساعد القارئ ومحركات البحث ومحركات الإجابة على فهم الخدمة بسرعة.</p></div>
+	        <div class="answer">
+	          <p class="answer-kicker">إجابة قابلة للاقتباس في AI Search</p>
+	          <div class="quote-box">${esc(aiAnswer)}</div>
+	          <p>${esc(m.answerBlock || `${product.name} من Bright AI هو حل موجه للشركات في السعودية لمعالجة احتياج تشغيلي واضح بنتائج عملية قابلة للتنفيذ.`)}</p>
+	        </div>
+	      </div>
+	    </section>
 
     <section>
       <div class="container grid-2">
@@ -1669,15 +1750,16 @@ ${jsonLd(schema)}
       </div>
     </section>
 
-    <section>
-      <div class="container">
-        <article class="card prose">
-          <h2>كيف يرتبط هذا الحل ببقية منظومة Bright AI؟</h2>
-          <p>${bridge}</p>
-          <p>الهدف هنا ليس حشو روابط داخلية، بل مساعدة القارئ على فهم ما إذا كان احتياجه يبدأ من هذه الخدمة وحدها أو يحتاج مساراً أوسع يربط بين أكثر من خدمة داخل Bright AI.</p>
-        </article>
-      </div>
-    </section>
+	    <section>
+	      <div class="container">
+	        <article class="card prose">
+	          <h2>ما الخدمات التي ترتبط بهذا الحل؟</h2>
+	          <p>${bridge}</p>
+	          <p>هذا الربط يساعدك على اتخاذ قرار أدق: هل تبدأ بهذه الخدمة وحدها، أم تحتاج مساراً أوسع يجمع بين البيانات، الأتمتة، الوكلاء، أو الأنظمة المتكاملة داخل Bright AI.</p>
+	          <div class="link-grid">${hubHtml}</div>
+	        </article>
+	      </div>
+	    </section>
 
     <section>
       <div class="container">
@@ -1688,10 +1770,23 @@ ${jsonLd(schema)}
 
     <section>
       <div class="container grid-2">
-        <article class="card"><h2>الفوائد</h2><ul>${textList(m.benefits)}</ul></article>
-        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>${esc(m.audience)}</p><p>هذه الصفحة تستهدف نية بحث محددة: ${esc(m.intent)}</p><p class="muted-note">إذا كان احتياجك أوسع من هذه الصفحة وحدها، فابدأ من الخدمة الأقرب ثم انتقل إلى الصفحات المرتبطة داخل هذا المحتوى.</p></article>
-      </div>
-    </section>
+	        <article class="card"><h2>الفوائد العملية للشركات السعودية</h2><ul>${textList(m.benefits)}</ul></article>
+	        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>${esc(m.audience)}</p><p>نية البحث التي تخدمها هذه الصفحة: ${esc(m.intent)}</p><p class="muted-note">إذا كان احتياجك أوسع من هذه الصفحة وحدها، فابدأ من الخدمة الأقرب ثم انتقل إلى الصفحات المرتبطة داخل هذا المحتوى.</p></article>
+	      </div>
+	    </section>
+
+	    <section>
+	      <div class="container grid-2">
+	        <article class="card">
+	          <h2>أسئلة يبحث عنها العملاء قبل اختيار الخدمة</h2>
+	          <ul>${searchQuestionsList}</ul>
+	        </article>
+	        <article class="card prose">
+	          <h2>كيف نخدم SEO وAEO وGEO؟</h2>
+	          <p>تم بناء هذه الصفحة حول إجابة مباشرة، وصف واضح للمشكلة والحل، روابط داخلية سياقية، وأسئلة شائعة قابلة للفهم من Google ومحركات الإجابة مثل ChatGPT Search وPerplexity. الهدف أن يجد العميل السعودي معلومة عملية لا نصاً عاماً محشواً بالكلمات.</p>
+	        </article>
+	      </div>
+	    </section>
 
     <section>
       <div class="container grid-2">
@@ -1723,8 +1818,8 @@ ${jsonLd(schema)}
 
     <section>
       <div class="container grid-2">
-        <article class="card"><h2>إشارات الثقة</h2><ul>${trustHtml}</ul></article>
-        <article class="card"><h2>روابط داخلية قريبة</h2><div class="grid-1">${relatedHtml}</div></article>
+	        <article class="card"><h2>لماذا Bright AI؟</h2><ul>${trustHtml}</ul></article>
+	        <article class="card"><h2>خدمات مكملة تستحق المقارنة</h2><div class="grid-1">${relatedHtml}</div></article>
       </div>
     </section>
 

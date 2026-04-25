@@ -282,9 +282,15 @@
     th,td { padding:16px; text-align:start; border-bottom:1px solid rgba(148,163,184,.14); vertical-align:top; }
     th { color:#c7d2fe; background:rgba(99,102,241,.08); }
     td { color:#cbd5e1; }
-    .related-card { display:grid; gap:6px; padding:18px; border-radius:20px; background:rgba(15,23,42,.68); border:1px solid rgba(129,140,248,.22); }
-    .related-card strong { color:#fff; }
-    .related-card span { color:#94a3b8; font-size:14px; }
+	    .related-card { display:grid; gap:6px; padding:18px; border-radius:20px; background:rgba(15,23,42,.68); border:1px solid rgba(129,140,248,.22); }
+	    .related-card strong { color:#fff; }
+	    .related-card span { color:#94a3b8; font-size:14px; }
+	    .answer-kicker { margin:0 0 8px; color:#86efac; font-weight:950; font-size:14px; }
+	    .quote-box { border-radius:22px; padding:20px; background:rgba(16,185,129,.08); border:1px solid rgba(16,185,129,.22); color:#dcfce7; font-size:18px; }
+	    .link-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+	    .hub-link { display:grid; gap:6px; padding:16px; border-radius:18px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); }
+	    .hub-link strong { color:#fff; }
+	    .hub-link span { color:#94a3b8; font-size:14px; }
     .faq-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
     .faq-item { border-radius:18px; overflow:hidden; }
     .faq-item summary { cursor:pointer; padding:16px 18px; font-weight:950; }
@@ -299,7 +305,7 @@
     footer { padding:34px 0 48px; color:#94a3b8; border-top:1px solid rgba(255,255,255,.08); }
     @media (min-width:1024px) { .nav-container { padding:0 2rem; gap:1.5rem; } .nav-desktop { display:flex; align-items:center; } .nav-links { display:flex; align-items:center; } .nav-cta { display:inline-flex; } }
     @media (max-width:1023px) { :root { --nav-height:64px; } .hero { padding-top:148px; } }
-    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
+	    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip,.link-grid { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
   </style>
 </head>
 <body>
@@ -372,10 +378,14 @@
 
     <section>
       <div class="container">
-        <div class="section-head"><h2>إجابة مختصرة</h2></div>
-        <div class="answer">وكيل اكتشاف العملاء من Bright AI يساعد فرق المبيعات وتطوير الأعمال في السعودية على العثور على فرص أكثر ملاءمة وترتيب أولويات المتابعة بشكل أذكى. يناسب الشركات التي يستهلك فريقها وقتًا طويلًا في البحث اليدوي قبل الوصول إلى عميل محتمل جاد.</div>
-      </div>
-    </section>
+	        <div class="section-head"><h2>ما هو وكيل اكتشاف الفرص والعملاء؟ إجابة مباشرة</h2><p>صياغة مختصرة وواضحة تساعد القارئ ومحركات البحث ومحركات الإجابة على فهم الخدمة بسرعة.</p></div>
+	        <div class="answer">
+	          <p class="answer-kicker">إجابة قابلة للاقتباس في AI Search</p>
+	          <div class="quote-box">وكيل اكتشاف الفرص والعملاء من Bright AI هو حل موجه للشركات والجهات في السعودية التي تحتاج نتيجة عملية من الذكاء الاصطناعي، لا تجربة عامة. يساعد على تدفق فرص أكثر تنظيماً وتركيز أعلى لفريق المبيعات ضمن سياق وكيل. وغالباً يرتبط القرار أيضاً مع وكيل تسويق ووكيل تحليل المنافسين عند توسيع النطاق.</div>
+	          <p>وكيل اكتشاف العملاء من Bright AI يساعد فرق المبيعات وتطوير الأعمال في السعودية على العثور على فرص أكثر ملاءمة وترتيب أولويات المتابعة بشكل أذكى. يناسب الشركات التي يستهلك فريقها وقتًا طويلًا في البحث اليدوي قبل الوصول إلى عميل محتمل جاد.</p>
+	        </div>
+	      </div>
+	    </section>
 
     <section>
       <div class="container grid-2">
@@ -384,15 +394,18 @@
       </div>
     </section>
 
-    <section>
-      <div class="container">
-        <article class="card prose">
-          <h2>كيف يرتبط هذا الحل ببقية منظومة Bright AI؟</h2>
-          <p>اكتشاف العملاء لا يحقق أثره وحده. غالباً يحتاج إلى <a class="text-link" href="/services/marketing-agent/">وكيل تسويق</a> لتحويل الفرص إلى رسائل وحملات، وإلى <a class="text-link" href="/services/competitor-analysis-agent/">وكيل تحليل المنافسين</a> لفهم حركة السوق. وعندما تنتقل الفرصة إلى مرحلة التفاعل مع العميل، قد يصبح <a class="text-link" href="/services/customer-service-automation/">أتمتة خدمة العملاء</a> امتداداً منطقياً.</p>
-          <p>الهدف هنا ليس حشو روابط داخلية، بل مساعدة القارئ على فهم ما إذا كان احتياجه يبدأ من هذه الخدمة وحدها أو يحتاج مساراً أوسع يربط بين أكثر من خدمة داخل Bright AI.</p>
-        </article>
-      </div>
-    </section>
+	    <section>
+	      <div class="container">
+	        <article class="card prose">
+	          <h2>ما الخدمات التي ترتبط بهذا الحل؟</h2>
+	          <p>اكتشاف العملاء لا يحقق أثره وحده. غالباً يحتاج إلى <a class="text-link" href="/services/marketing-agent/">وكيل تسويق</a> لتحويل الفرص إلى رسائل وحملات، وإلى <a class="text-link" href="/services/competitor-analysis-agent/">وكيل تحليل المنافسين</a> لفهم حركة السوق. وعندما تنتقل الفرصة إلى مرحلة التفاعل مع العميل، قد يصبح <a class="text-link" href="/services/customer-service-automation/">أتمتة خدمة العملاء</a> امتداداً منطقياً.</p>
+	          <p>هذا الربط يساعدك على اتخاذ قرار أدق: هل تبدأ بهذه الخدمة وحدها، أم تحتاج مساراً أوسع يجمع بين البيانات، الأتمتة، الوكلاء، أو الأنظمة المتكاملة داخل Bright AI.</p>
+	          <div class="link-grid"><a class="hub-link" href="/ai-agent/"><strong>دليل وكلاء الذكاء الاصطناعي</strong><span>لفهم متى تحتاج AI Agent مخصص أو جاهز.</span></a>
+<a class="hub-link" href="/services/?category=وكيل"><strong>كل وكلاء Bright AI</strong><span>للمقارنة بين وكلاء المبيعات والتسويق والتحليل.</span></a>
+<a class="hub-link" href="/consultation/"><strong>استشارة اختيار الوكيل</strong><span>عندما تحتاج تحديد الوكيل الأنسب قبل التنفيذ.</span></a></div>
+	        </article>
+	      </div>
+	    </section>
 
     <section>
       <div class="container">
@@ -406,13 +419,28 @@
 
     <section>
       <div class="container grid-2">
-        <article class="card"><h2>الفوائد</h2><ul><li>تدفق فرص أكثر تنظيماً</li>
+	        <article class="card"><h2>الفوائد العملية للشركات السعودية</h2><ul><li>تدفق فرص أكثر تنظيماً</li>
 <li>تركيز أعلى لفريق المبيعات</li>
 <li>تقليل البحث اليدوي</li>
 <li>تأهيل أولي قبل التواصل</li></ul></article>
-        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>المبيعات، تطوير الأعمال، التسويق، وشركات B2B.</p><p>هذه الصفحة تستهدف نية بحث محددة: فريق مبيعات يبحث عن طريقة منظمة لاكتشاف فرص وعملاء محتملين.</p><p class="muted-note">إذا كان احتياجك أوسع من هذه الصفحة وحدها، فابدأ من الخدمة الأقرب ثم انتقل إلى الصفحات المرتبطة داخل هذا المحتوى.</p></article>
-      </div>
-    </section>
+	        <article class="card"><h2>لمن هذه الخدمة؟</h2><p>المبيعات، تطوير الأعمال، التسويق، وشركات B2B.</p><p>نية البحث التي تخدمها هذه الصفحة: فريق مبيعات يبحث عن طريقة منظمة لاكتشاف فرص وعملاء محتملين.</p><p class="muted-note">إذا كان احتياجك أوسع من هذه الصفحة وحدها، فابدأ من الخدمة الأقرب ثم انتقل إلى الصفحات المرتبطة داخل هذا المحتوى.</p></article>
+	      </div>
+	    </section>
+
+	    <section>
+	      <div class="container grid-2">
+	        <article class="card">
+	          <h2>أسئلة يبحث عنها العملاء قبل اختيار الخدمة</h2>
+	          <ul><li>هل وكيل اكتشاف الفرص والعملاء مناسب للشركات في السعودية؟</li>
+<li>ما الفرق بين وكيل اكتشاف الفرص والعملاء والحلول التقليدية؟</li>
+<li>كيف أبدأ تطبيق وكيل اكتشاف الفرص والعملاء بدون تعقيد؟</li></ul>
+	        </article>
+	        <article class="card prose">
+	          <h2>كيف نخدم SEO وAEO وGEO؟</h2>
+	          <p>تم بناء هذه الصفحة حول إجابة مباشرة، وصف واضح للمشكلة والحل، روابط داخلية سياقية، وأسئلة شائعة قابلة للفهم من Google ومحركات الإجابة مثل ChatGPT Search وPerplexity. الهدف أن يجد العميل السعودي معلومة عملية لا نصاً عاماً محشواً بالكلمات.</p>
+	        </article>
+	      </div>
+	    </section>
 
     <section>
       <div class="container grid-2">
@@ -456,11 +484,11 @@
 
     <section>
       <div class="container grid-2">
-        <article class="card"><h2>إشارات الثقة</h2><ul><li>تركيز على احتياجات المبيعات وتطوير الأعمال في السوق السعودي.</li>
+	        <article class="card"><h2>لماذا Bright AI؟</h2><ul><li>تركيز على احتياجات المبيعات وتطوير الأعمال في السوق السعودي.</li>
 <li>إمكانية ضبط معايير الفرصة حسب القطاع أو نوع العميل المستهدف.</li>
 <li>قابلية بدء التطبيق على سوق أو شريحة محددة قبل التوسع.</li>
 <li>تركيز على جودة الأولوية لا مجرد زيادة عدد الأسماء.</li></ul></article>
-        <article class="card"><h2>روابط داخلية قريبة</h2><div class="grid-1"><a class="related-card" href="/services/marketing-agent/"><strong>وكيل تسويق</strong><span>يساعدك على إدارة الحملات، توليد المحتوى، وتحسين الوصول والتحويلات بأقل وقت وجهد.</span></a>
+	        <article class="card"><h2>خدمات مكملة تستحق المقارنة</h2><div class="grid-1"><a class="related-card" href="/services/marketing-agent/"><strong>وكيل تسويق</strong><span>يساعدك على إدارة الحملات، توليد المحتوى، وتحسين الوصول والتحويلات بأقل وقت وجهد.</span></a>
 <a class="related-card" href="/services/competitor-analysis-agent/"><strong>وكيل تحليل المنافسين</strong><span>يساعد فرق التسويق والمبيعات على فهم المنافسين، متابعة الحملات، واستخراج فرص نمو قابلة للتنفيذ.</span></a>
 <a class="related-card" href="/services/customer-service-automation/"><strong>أتمتة خدمة العملاء</strong><span>تقلل وقت الانتظار وتوفر خدمة عملاء أسرع عبر واتساب والموقع والبريد.</span></a></div></article>
       </div>
