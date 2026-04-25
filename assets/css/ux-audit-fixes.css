@@ -13,6 +13,17 @@
   box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.14);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 a,
 button,
 input,

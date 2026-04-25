@@ -22,19 +22,9 @@ const targets = [
     type: "js"
   },
   {
-    entry: "frontend/js/services-page.js",
-    outfile: "frontend/js/services-page.min.js",
-    type: "js"
-  },
-  {
     entry: "frontend/js/index-theme.js",
     outfile: "frontend/js/index-theme.min.js",
     type: "js"
-  },
-  {
-    entry: "frontend/css/services-page.css",
-    outfile: "frontend/css/services-page.min.css",
-    type: "css"
   },
   {
     entry: "frontend/css/index-critical-overrides.css",
