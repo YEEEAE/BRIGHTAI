@@ -570,3 +570,516 @@ section#blog a.btn,
         display: none !important;
     }
 }
+
+/* ============================================
+   HOMEPAGE V2 — 2026-04 IMPROVEMENTS
+   ============================================ */
+
+/* 1. Hide SEO-only content visually (keep for crawlers) */
+.seo-answer-block[data-seo-intent-answer],
+.seo-intent-section[data-seo-intent-section] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* 2. Hero subtitle */
+.hero-content .subtitle {
+    max-width: 52ch;
+    font-size: 1.15rem;
+    line-height: 2;
+    color: #cbd5e1;
+}
+
+/* 3. Hide redundant conversion path buttons */
+.hero-content [aria-label="مسارات تحويل رئيسية"] {
+    display: none !important;
+}
+
+/* 4. Hero button hierarchy */
+.hero-actions {
+    gap: 1rem !important;
+}
+
+.hero-actions .btn.primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 700 !important;
+    font-size: 1.0625rem !important;
+    padding: 1rem 2.5rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px -8px rgba(99, 102, 241, 0.5) !important;
+    letter-spacing: 0.02em;
+}
+
+.hero-actions .btn.primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 14px 40px -8px rgba(99, 102, 241, 0.6) !important;
+}
+
+.hero-actions .btn:not(.primary) {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #e2e8f0 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 16px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    padding: 1rem 2rem !important;
+    backdrop-filter: blur(8px);
+}
+
+.hero-actions .btn:not(.primary):hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* 5. Service cards upgrade */
+#our-services .grid > div.group {
+    background: linear-gradient(160deg, rgba(15, 23, 42, 0.9), rgba(8, 12, 30, 0.7)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 24px !important;
+    padding: 2rem 1.75rem !important;
+    position: relative;
+    overflow: hidden;
+}
+
+#our-services .grid > div.group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4);
+    border-radius: 24px 24px 0 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#our-services .grid > div.group:hover {
+    border-color: rgba(99, 102, 241, 0.25) !important;
+    transform: translateY(-6px) !important;
+    box-shadow: 0 24px 64px -16px rgba(99, 102, 241, 0.15) !important;
+}
+
+#our-services .grid > div.group:hover::before {
+    opacity: 1;
+}
+
+#our-services .grid > div.group h3 {
+    font-size: 1.125rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 0.75rem;
+}
+
+/* 6. Section badges */
+.badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 20px !important;
+    border-radius: 999px !important;
+    background: rgba(99, 102, 241, 0.08) !important;
+    border: 1px solid rgba(99, 102, 241, 0.18) !important;
+    color: #a5b4fc !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 1.25rem !important;
+}
+
+/* 7. Section titles */
+.section .title {
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+    color: #ffffff !important;
+    margin-bottom: 1rem !important;
+    text-wrap: balance;
+}
+
+.section .subtitle {
+    font-size: 1.0625rem !important;
+    line-height: 1.95 !important;
+    color: #94a3b8 !important;
+    max-width: 62ch !important;
+    margin-bottom: 2rem !important;
+}
+
+/* 8. KPI cards */
+.kpi-card {
+    border-radius: 24px !important;
+    padding: 2rem !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card .big {
+    font-size: 3rem !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg, #fff, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 9. Bento + Tech cards */
+.bento {
+    padding: 2rem !important;
+    border-radius: 24px !important;
+}
+
+.bento h3 {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 0.75rem;
+}
+
+.tech-card {
+    padding: 2rem !important;
+    border-radius: 24px !important;
+}
+
+.tech-card h3 {
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+}
+
+/* 10. CTA buttons consistency */
+a.btn.cta,
+button.btn.cta {
+    border-radius: 16px !important;
+    font-weight: 700 !important;
+    padding: 0.875rem 1.75rem !important;
+}
+
+/* 11. Try-tools cards */
+#try-tools .group {
+    border-radius: 28px !important;
+}
+
+/* ============================================
+   MOBILE V2 IMPROVEMENTS
+   ============================================ */
+@media (max-width: 768px) {
+    .hero-content .subtitle {
+        font-size: 0.9375rem !important;
+        line-height: 1.85 !important;
+        max-width: none !important;
+    }
+
+    .hero-actions .btn.primary {
+        font-size: 1rem !important;
+        padding: 0.875rem 1.75rem !important;
+        border-radius: 14px !important;
+    }
+
+    .hero-actions .btn:not(.primary) {
+        font-size: 0.9375rem !important;
+        padding: 0.875rem 1.5rem !important;
+        border-radius: 14px !important;
+    }
+
+    #our-services .grid > div.group {
+        padding: 1.5rem !important;
+        border-radius: 20px !important;
+    }
+
+    .section .title {
+        font-size: clamp(1.375rem, 5.5vw, 2rem) !important;
+        line-height: 1.4 !important;
+    }
+
+    .section .subtitle {
+        font-size: 0.9375rem !important;
+        line-height: 1.85 !important;
+    }
+
+    .bento,
+    .tech-card,
+    .kpi-card {
+        padding: 1.5rem !important;
+        border-radius: 20px !important;
+    }
+
+    #try-tools .group {
+        border-radius: 24px !important;
+        padding: 1.5rem !important;
+    }
+
+    .badge {
+        padding: 6px 14px !important;
+        font-size: 0.8125rem !important;
+    }
+
+    .section {
+        padding: 3rem 0 !important;
+    }
+
+    .kpi-card .big {
+        font-size: 2.25rem !important;
+    }
+}
+
+/* === TABLET V2 === */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #our-services .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .hero-actions {
+        flex-direction: row !important;
+    }
+}
+
+/* === تحسينات الرئيسية المركزة === */
+#top,
+.hero.section {
+    min-height: clamp(560px, 78dvh, 700px) !important;
+    padding-block: calc(var(--nav-height) + 1.5rem) 2.5rem !important;
+}
+
+.hero-grid {
+    min-height: auto !important;
+    gap: clamp(2rem, 5vw, 4.5rem) !important;
+}
+
+.hero-content {
+    min-block-size: auto !important;
+    max-inline-size: 720px;
+}
+
+.hero-content .inline-flex:first-child {
+    margin-bottom: 1rem !important;
+    border-color: rgba(14, 165, 233, 0.28) !important;
+    background: rgba(14, 165, 233, 0.1) !important;
+    color: #bae6fd !important;
+}
+
+.hero-content .title,
+#top h1 {
+    max-width: 12ch;
+    margin-bottom: 1rem !important;
+    font-size: clamp(2.35rem, 5vw, 4.25rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0 !important;
+}
+
+.hero-content .subtitle {
+    max-width: 48ch !important;
+    margin-bottom: 1.5rem !important;
+    font-size: clamp(1.05rem, 1.45vw, 1.2rem) !important;
+    line-height: 1.85 !important;
+    color: #dbeafe !important;
+}
+
+.hero-actions {
+    align-items: center;
+    margin-top: 0 !important;
+}
+
+.hero-actions .btn {
+    min-height: 58px !important;
+    min-width: 188px;
+    padding: 0.95rem 1.65rem !important;
+    border-radius: 18px !important;
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+}
+
+.hero-actions .btn.primary {
+    background: linear-gradient(135deg, #22c55e 0%, #0ea5e9 100%) !important;
+    color: #031018 !important;
+    box-shadow: 0 18px 44px -18px rgba(14, 165, 233, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+.hero-actions .btn:not(.primary) {
+    background: rgba(15, 23, 42, 0.86) !important;
+    border-color: rgba(125, 211, 252, 0.28) !important;
+    color: #f8fafc !important;
+}
+
+.hero-actions .btn iconify-icon {
+    inline-size: 1.2em;
+    block-size: 1.2em;
+    margin-inline: 0 0.35rem !important;
+}
+
+.hero-content .mt-12 {
+    margin-top: 1.75rem !important;
+    opacity: 0.82 !important;
+    filter: none !important;
+}
+
+.hero-visual .glass-card {
+    border-color: rgba(148, 163, 184, 0.18) !important;
+    background: linear-gradient(160deg, rgba(15, 23, 42, 0.78), rgba(8, 13, 28, 0.58)) !important;
+    box-shadow: 0 28px 72px -32px rgba(14, 165, 233, 0.45) !important;
+}
+
+#our-services {
+    padding-top: 3.75rem !important;
+}
+
+#our-services .text-center {
+    max-inline-size: 820px;
+    margin-inline: auto;
+}
+
+#our-services .grid {
+    gap: 1rem !important;
+}
+
+#our-services .grid > div.group {
+    min-height: 230px;
+    background:
+        linear-gradient(160deg, rgba(15, 23, 42, 0.96), rgba(8, 13, 28, 0.86)),
+        radial-gradient(circle at 20% 0%, rgba(14, 165, 233, 0.12), transparent 42%) !important;
+    border-color: rgba(148, 163, 184, 0.18) !important;
+    box-shadow: 0 18px 54px -32px rgba(2, 6, 23, 0.9) !important;
+}
+
+#our-services .grid > div.group h3 {
+    color: #f8fafc !important;
+    line-height: 1.45 !important;
+}
+
+#our-services .grid > div.group p {
+    color: #cbd5e1 !important;
+    line-height: 1.85 !important;
+}
+
+#our-services .grid > div.group a {
+    margin-top: auto !important;
+    padding-top: 0.9rem;
+    color: #67e8f9 !important;
+}
+
+.section {
+    border-block-start: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.section .title {
+    max-width: 18ch;
+}
+
+.text-center .title,
+.text-center .subtitle {
+    margin-inline: auto !important;
+}
+
+.bento,
+.tech-card,
+.panel,
+.engine,
+.project,
+.post,
+.kpi-card,
+.align-card,
+.vm-card,
+#try-tools .group {
+    border-color: rgba(148, 163, 184, 0.16) !important;
+    box-shadow: 0 18px 58px -34px rgba(2, 6, 23, 0.95) !important;
+}
+
+.homepage-polish-ready #our-services .grid > div.group,
+.homepage-polish-ready #try-tools .group,
+.homepage-polish-ready .tech-card,
+.homepage-polish-ready .bento,
+.homepage-polish-ready .kpi-card {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.homepage-polish-ready #our-services .grid > div.group.is-visible,
+.homepage-polish-ready #try-tools .group.is-visible,
+.homepage-polish-ready .tech-card.is-visible,
+.homepage-polish-ready .bento.is-visible,
+.homepage-polish-ready .kpi-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bento:hover,
+.tech-card:hover,
+.project:hover,
+.post:hover,
+#try-tools .group:hover {
+    transform: translateY(-4px) !important;
+    border-color: rgba(103, 232, 249, 0.28) !important;
+}
+
+@media (max-width: 768px) {
+    #top,
+    .hero.section {
+        padding-block: calc(var(--nav-height) + 1rem) 2rem !important;
+    }
+
+    .hero-content {
+        text-align: start;
+    }
+
+    .hero-content .title,
+    #top h1 {
+        max-width: 11ch;
+        font-size: clamp(2rem, 10vw, 3rem) !important;
+        line-height: 1.12 !important;
+    }
+
+    .hero-content .subtitle {
+        font-size: 1rem !important;
+        line-height: 1.8 !important;
+    }
+
+    .hero-actions {
+        gap: 0.75rem !important;
+    }
+
+    .hero-actions .btn {
+        width: 100% !important;
+        min-width: 0;
+        min-height: 54px !important;
+        padding: 0.9rem 1rem !important;
+    }
+
+    .hero-content .mt-12 {
+        margin-top: 1.25rem !important;
+    }
+
+    #our-services {
+        padding-top: 2.5rem !important;
+    }
+
+    #our-services .grid {
+        gap: 0.85rem !important;
+    }
+
+    #our-services .grid > div.group {
+        min-height: auto;
+    }
+
+    .section .title {
+        max-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .homepage-polish-ready #our-services .grid > div.group,
+    .homepage-polish-ready #try-tools .group,
+    .homepage-polish-ready .tech-card,
+    .homepage-polish-ready .bento,
+    .homepage-polish-ready .kpi-card {
+        opacity: 1;
+        transform: none;
+        transition: none !important;
+    }
+}
