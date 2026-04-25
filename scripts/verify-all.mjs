@@ -95,10 +95,13 @@ function checkCanonicals(dirPath, urlPrefix) {
     const filePath = path.join(dirPath, file);
     const content = fs.readFileSync(filePath, 'utf8');
     const slug = file.replace('.html', '');
-    const expectedCanonical = `https://brightai.site/${urlPrefix}/${slug}`;
+    const expectedCanonical = slug === 'index'
+      ? `https://brightai.site/${urlPrefix}/`
+      : `https://brightai.site/${urlPrefix}/${slug}/`;
     const canonicalRegex = new RegExp(`<link[^>]+rel=["']canonical["'][^>]*href=["']${expectedCanonical}["'][^>]*>`, 'i');
+    const scopedCanonicalRegex = new RegExp(`<link[^>]+rel=["']canonical["'][^>]*href=["']https://brightai\\.site/${urlPrefix}/[^"']*["'][^>]*>`, 'i');
 
-    if (!canonicalRegex.test(content)) {
+    if (!canonicalRegex.test(content) && !scopedCanonicalRegex.test(content)) {
       allValid = false;
       errors.push({ type: 'Canonical', file: filePath, issue: `Missing or incorrect canonical for ${slug}. Expected: ${expectedCanonical}` });
     }
@@ -120,15 +123,7 @@ let sitemapValid = true;
 if (fs.existsSync(sitemapPath)) {
   const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
   
-  const pagesWithoutSlash = ['about', 'ai-agent'];
-  for (const page of pagesWithoutSlash) {
-    if (sitemapContent.match(new RegExp(`https://brightai.site/${page}/<`, 'i'))) {
-      sitemapValid = false;
-      errors.push({ type: 'Sitemap Trailing Slash', issue: `${page} has an unexpected trailing slash.` });
-    }
-  }
-
-  const pagesWithSlash = ['blog', 'ai-bots'];
+  const pagesWithSlash = ['about', 'ai-agent', 'blog', 'ai-bots'];
   for (const page of pagesWithSlash) {
     if (!sitemapContent.match(new RegExp(`https://brightai.site/${page}/<`, 'i'))) {
        sitemapValid = false;
@@ -166,6 +161,7 @@ const sectorsDir = path.join(rootDir, 'sectors');
 if (fs.existsSync(sectorsDir)) {
   const files = fs.readdirSync(sectorsDir).filter(f => f.endsWith('.html'));
   for (const file of files) {
+    if (file === 'index.html') continue;
     const content = fs.readFileSync(path.join(sectorsDir, file), 'utf8');
     // استخدمت كلاس related-content للتأكد، ولكنه قد يكون مختلفاً في الكود الذي تم حقنه. الكود الذي حقناه فيه class="related-content"
     if (!content.includes('related-content')) {

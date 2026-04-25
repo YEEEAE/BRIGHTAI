@@ -1396,70 +1396,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services/data-analyst-agent/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/data-analyst-agent/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/data-analyst-agent/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/custom-ai-agent/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/custom-ai-agent/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/custom-ai-agent/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/competitor-analysis-agent/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/competitor-analysis-agent/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/competitor-analysis-agent/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/seo-agent/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/seo-agent/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/seo-agent/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/social-data-analysis/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/social-data-analysis/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/social-data-analysis/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/health-data-analysis/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/health-data-analysis/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/health-data-analysis/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/marketing-agent/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/marketing-agent/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/marketing-agent/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/services/document-automation/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/document-automation/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/document-automation/" />
-    <lastmod>2026-04-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
     <loc>https://brightai.site/services/smart-hiring-system/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/smart-hiring-system/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/smart-hiring-system/" />
@@ -1484,9 +1420,25 @@
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services/lead-hunter/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/lead-hunter/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/lead-hunter/" />
+    <loc>https://brightai.site/services/ai-scolecs/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-scolecs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-scolecs/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/smart-hospital-management/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/smart-hospital-management/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/smart-hospital-management/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/document-automation/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/document-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/document-automation/" />
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
@@ -1540,17 +1492,49 @@
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services/ai-consulting/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-consulting/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-consulting/" />
+    <loc>https://brightai.site/services/data-analyst-agent/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/data-analyst-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/data-analyst-agent/" />
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services/ai-tenders-analysis/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-tenders-analysis/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <loc>https://brightai.site/services/custom-ai-agent/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/custom-ai-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/custom-ai-agent/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/competitor-analysis-agent/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/competitor-analysis-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/competitor-analysis-agent/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/seo-agent/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/seo-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/seo-agent/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/marketing-agent/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/marketing-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/marketing-agent/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/lead-hunter/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/lead-hunter/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/lead-hunter/" />
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
@@ -1572,21 +1556,38 @@
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services/ai-scolecs/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-scolecs/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-scolecs/" />
+    <loc>https://brightai.site/services/social-data-analysis/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/social-data-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/social-data-analysis/" />
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services/smart-hospital-management/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/smart-hospital-management/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/smart-hospital-management/" />
+    <loc>https://brightai.site/services/health-data-analysis/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/health-data-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/health-data-analysis/" />
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
+  <url>
+    <loc>https://brightai.site/services/ai-tenders-analysis/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/ai-consulting/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-consulting/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-consulting/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
 
 
 

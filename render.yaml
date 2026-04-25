@@ -159,62 +159,6 @@ services:
         status: 301
       # === Product service landing pages ===
       - type: rewrite
-        source: /services/data-analyst-agent/
-        destination: /services/data-analyst-agent.html
-      - type: redirect
-        source: /services/data-analyst-agent.html
-        destination: /services/data-analyst-agent/
-        status: 301
-      - type: rewrite
-        source: /services/custom-ai-agent/
-        destination: /services/custom-ai-agent.html
-      - type: redirect
-        source: /services/custom-ai-agent.html
-        destination: /services/custom-ai-agent/
-        status: 301
-      - type: rewrite
-        source: /services/competitor-analysis-agent/
-        destination: /services/competitor-analysis-agent.html
-      - type: redirect
-        source: /services/competitor-analysis-agent.html
-        destination: /services/competitor-analysis-agent/
-        status: 301
-      - type: rewrite
-        source: /services/seo-agent/
-        destination: /services/seo-agent.html
-      - type: redirect
-        source: /services/seo-agent.html
-        destination: /services/seo-agent/
-        status: 301
-      - type: rewrite
-        source: /services/social-data-analysis/
-        destination: /services/social-data-analysis.html
-      - type: redirect
-        source: /services/social-data-analysis.html
-        destination: /services/social-data-analysis/
-        status: 301
-      - type: rewrite
-        source: /services/health-data-analysis/
-        destination: /services/health-data-analysis.html
-      - type: redirect
-        source: /services/health-data-analysis.html
-        destination: /services/health-data-analysis/
-        status: 301
-      - type: rewrite
-        source: /services/marketing-agent/
-        destination: /services/marketing-agent.html
-      - type: redirect
-        source: /services/marketing-agent.html
-        destination: /services/marketing-agent/
-        status: 301
-      - type: rewrite
-        source: /services/document-automation/
-        destination: /services/document-automation.html
-      - type: redirect
-        source: /services/document-automation.html
-        destination: /services/document-automation/
-        status: 301
-      - type: rewrite
         source: /services/smart-hiring-system/
         destination: /services/smart-hiring-system.html
       - type: redirect
@@ -236,11 +180,25 @@ services:
         destination: /services/data-platform/
         status: 301
       - type: rewrite
-        source: /services/lead-hunter/
-        destination: /services/lead-hunter.html
+        source: /services/ai-scolecs/
+        destination: /services/ai-scolecs.html
       - type: redirect
-        source: /services/lead-hunter.html
-        destination: /services/lead-hunter/
+        source: /services/ai-scolecs.html
+        destination: /services/ai-scolecs/
+        status: 301
+      - type: rewrite
+        source: /services/smart-hospital-management/
+        destination: /services/smart-hospital-management.html
+      - type: redirect
+        source: /services/smart-hospital-management.html
+        destination: /services/smart-hospital-management/
+        status: 301
+      - type: rewrite
+        source: /services/document-automation/
+        destination: /services/document-automation.html
+      - type: redirect
+        source: /services/document-automation.html
+        destination: /services/document-automation/
         status: 301
       - type: rewrite
         source: /services/customer-service-automation/
@@ -285,18 +243,46 @@ services:
         destination: /services/supply-chain-optimization/
         status: 301
       - type: rewrite
-        source: /services/ai-consulting/
-        destination: /services/ai-consulting.html
+        source: /services/data-analyst-agent/
+        destination: /services/data-analyst-agent.html
       - type: redirect
-        source: /services/ai-consulting.html
-        destination: /services/ai-consulting/
+        source: /services/data-analyst-agent.html
+        destination: /services/data-analyst-agent/
         status: 301
       - type: rewrite
-        source: /services/ai-tenders-analysis/
-        destination: /services/ai-tenders-analysis.html
+        source: /services/custom-ai-agent/
+        destination: /services/custom-ai-agent.html
       - type: redirect
-        source: /services/ai-tenders-analysis.html
-        destination: /services/ai-tenders-analysis/
+        source: /services/custom-ai-agent.html
+        destination: /services/custom-ai-agent/
+        status: 301
+      - type: rewrite
+        source: /services/competitor-analysis-agent/
+        destination: /services/competitor-analysis-agent.html
+      - type: redirect
+        source: /services/competitor-analysis-agent.html
+        destination: /services/competitor-analysis-agent/
+        status: 301
+      - type: rewrite
+        source: /services/seo-agent/
+        destination: /services/seo-agent.html
+      - type: redirect
+        source: /services/seo-agent.html
+        destination: /services/seo-agent/
+        status: 301
+      - type: rewrite
+        source: /services/marketing-agent/
+        destination: /services/marketing-agent.html
+      - type: redirect
+        source: /services/marketing-agent.html
+        destination: /services/marketing-agent/
+        status: 301
+      - type: rewrite
+        source: /services/lead-hunter/
+        destination: /services/lead-hunter.html
+      - type: redirect
+        source: /services/lead-hunter.html
+        destination: /services/lead-hunter/
         status: 301
       - type: rewrite
         source: /services/brightproject/
@@ -313,19 +299,34 @@ services:
         destination: /services/brightsales/
         status: 301
       - type: rewrite
-        source: /services/ai-scolecs/
-        destination: /services/ai-scolecs.html
+        source: /services/social-data-analysis/
+        destination: /services/social-data-analysis.html
       - type: redirect
-        source: /services/ai-scolecs.html
-        destination: /services/ai-scolecs/
+        source: /services/social-data-analysis.html
+        destination: /services/social-data-analysis/
         status: 301
       - type: rewrite
-        source: /services/smart-hospital-management/
-        destination: /services/smart-hospital-management.html
+        source: /services/health-data-analysis/
+        destination: /services/health-data-analysis.html
       - type: redirect
-        source: /services/smart-hospital-management.html
-        destination: /services/smart-hospital-management/
+        source: /services/health-data-analysis.html
+        destination: /services/health-data-analysis/
         status: 301
+      - type: rewrite
+        source: /services/ai-tenders-analysis/
+        destination: /services/ai-tenders-analysis.html
+      - type: redirect
+        source: /services/ai-tenders-analysis.html
+        destination: /services/ai-tenders-analysis/
+        status: 301
+      - type: rewrite
+        source: /services/ai-consulting/
+        destination: /services/ai-consulting.html
+      - type: redirect
+        source: /services/ai-consulting.html
+        destination: /services/ai-consulting/
+        status: 301
+
 
 
 

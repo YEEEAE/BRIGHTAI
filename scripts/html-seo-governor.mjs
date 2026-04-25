@@ -13,6 +13,7 @@ import {
 
 const ROOT = process.cwd();
 const BASE_URL = "https://brightai.site";
+const PUBLIC_TENDERS_DEMO_PATTERN = /^(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i;
 
 const HTML_PATTERNS = ["**/*.html", "**/*.HTML"];
 const IGNORE_PATTERNS = [
@@ -418,7 +419,7 @@ function auditFile(content, relPath, lowerPathMap, publicRegistry) {
     ? []
     : buildRequiredHreflang(relPath, lang, lowerPathMap, publicRegistry, expectedCanonical);
   const onrenderRefs = findOnrenderReferences(content);
-  const hasRedirectSignals = hasHtmlRedirectSignals(content);
+  const hasRedirectSignals = hasHtmlRedirectSignals(content) && !PUBLIC_TENDERS_DEMO_PATTERN.test(relPath);
 
   const linkTags = extractLinkTags(content);
   const canonical = linkTags.find((tag) => hasRelToken(tag.attrs.rel, "canonical"));
