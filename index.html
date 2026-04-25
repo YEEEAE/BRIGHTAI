@@ -934,88 +934,44 @@
             pointer-events: auto;
         }
 
-        /* === FLOATING BOT EMBED === */
-        #bot-fab {
-            position: fixed;
-            inset-inline-start: 1rem;
-            bottom: 1rem;
-            width: 58px;
-            height: 58px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, #D4A843, #F0C060);
-            border: none;
-            cursor: pointer;
-            z-index: 10000;
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 32px rgba(212, 168, 67, 0.45);
-            transition-property: transform, opacity, box-shadow !important;
-            transition-duration: 0.28s !important;
-            transition-timing-function: ease !important;
-        }
-
-        #bot-fab:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 36px rgba(212, 168, 67, 0.5);
-        }
-
-        #bot-fab.is-hidden {
-            opacity: 0 !important;
-            pointer-events: none !important;
-            transform: translateY(10px) scale(0.94);
-        }
-
-        /* البوت: نافذة شات على الديسكتوب، شاشة كاملة على الموبايل */
-        #bot-frame {
-            position: fixed;
-            bottom: 5.5rem;
-            inset-inline-start: 1rem;
-            width: 400px;
-            height: 620px;
-            max-height: calc(100vh - 7rem);
-            border: none;
-            border-radius: 20px;
-            z-index: 9999;
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-            background: transparent;
-            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 168, 67, 0.12);
-            transition-property: opacity, visibility, transform !important;
-            transition-duration: 0.3s, 0.3s, 0.35s !important;
-            transition-timing-function: ease, ease, cubic-bezier(.34, 1.56, .64, 1) !important;
-            transform: scale(0.9) translateY(20px);
-            transform-origin: bottom left;
-        }
-
-        [dir="rtl"] #bot-frame {
-            transform-origin: bottom right;
-        }
-
-        #bot-frame.is-open {
-            opacity: 1 !important;
-            visibility: visible !important;
-            pointer-events: auto !important;
-            transform: scale(1) translateY(0);
-        }
-
-        /* موبايل: شاشة كاملة */
-        @media (max-width: 480px) {
-            #bot-frame {
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                max-height: 100%;
-                border-radius: 0;
-                box-shadow: none;
-                transform: translateY(100%);
-                transform-origin: bottom center;
-            }
-
-            #bot-frame.is-open {
-                transform: translateY(0);
-            }
+        /* === BRIGHT AI INLINE CHATBOT === */
+        #bai-chat-fab{position:fixed;inset-inline-start:1rem;bottom:1rem;width:58px;height:58px;border-radius:999px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;cursor:pointer;z-index:10000;display:flex!important;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(99,102,241,.45);transition:transform .28s,box-shadow .28s}
+        #bai-chat-fab:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(99,102,241,.55)}
+        #bai-chat-fab.is-hidden{opacity:0!important;pointer-events:none!important;transform:translateY(10px) scale(.94)}
+        #bai-chat-box{position:fixed;bottom:5.5rem;inset-inline-start:1rem;width:400px;height:620px;max-height:calc(100vh - 7rem);border-radius:20px;z-index:9999;display:flex;flex-direction:column;background:#0a0f1e;border:1px solid rgba(99,102,241,.18);box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(99,102,241,.12);opacity:0;visibility:hidden;pointer-events:none;transform:scale(.9) translateY(20px);transform-origin:bottom left;transition:opacity .3s,visibility .3s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+        [dir="rtl"] #bai-chat-box{transform-origin:bottom right}
+        #bai-chat-box.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:scale(1) translateY(0)}
+        #bai-chat-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(15,23,42,.6);border-radius:20px 20px 0 0;flex-shrink:0}
+        #bai-chat-header .ch-info{display:flex;align-items:center;gap:10px}
+        #bai-chat-header .ch-avatar{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px}
+        #bai-chat-header .ch-name{color:#fff;font-weight:700;font-size:14px}
+        #bai-chat-header .ch-status{color:#94a3b8;font-size:11px;display:flex;align-items:center;gap:4px}
+        #bai-chat-header .ch-status .dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block}
+        #bai-chat-close{background:none;border:none;color:#94a3b8;cursor:pointer;padding:6px;border-radius:8px;transition:background .2s,color .2s}
+        #bai-chat-close:hover{background:rgba(255,255,255,.08);color:#fff}
+        #bai-chat-msgs{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+        #bai-chat-msgs::-webkit-scrollbar{width:4px}
+        #bai-chat-msgs::-webkit-scrollbar-track{background:transparent}
+        #bai-chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+        .bai-msg{max-width:85%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.7;word-break:break-word;direction:rtl;text-align:right}
+        .bai-msg a{color:#93c5fd;text-decoration:underline}
+        .bai-msg.bot{background:rgba(255,255,255,.05);color:#e2e8f0;border-bottom-right-radius:4px;align-self:flex-start}
+        .bai-msg.user{background:linear-gradient(135deg,#4f46e5,#6366f1);color:#fff;border-bottom-left-radius:4px;align-self:flex-end}
+        .bai-msg.bot.typing{color:#94a3b8;font-style:italic}
+        #bai-chat-input-wrap{display:flex;align-items:center;gap:8px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);background:rgba(15,23,42,.4);border-radius:0 0 20px 20px;flex-shrink:0}
+        #bai-chat-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;color:#fff;font-size:14px;outline:none;font-family:inherit;direction:rtl;resize:none;max-height:80px}
+        #bai-chat-input::placeholder{color:#64748b}
+        #bai-chat-input:focus{border-color:rgba(99,102,241,.4)}
+        #bai-chat-send{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;transition:transform .15s,opacity .15s;flex-shrink:0}
+        #bai-chat-send:hover{transform:scale(1.05)}
+        #bai-chat-send:disabled{opacity:.4;cursor:not-allowed;transform:none}
+        #bai-chat-wa{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px;font-size:11px;color:#94a3b8;text-decoration:none;border-top:1px solid rgba(255,255,255,.04);transition:color .2s}
+        #bai-chat-wa:hover{color:#22c55e}
+        @media(max-width:480px){
+            #bai-chat-box{inset:0;width:100%;height:100%;max-height:100%;border-radius:0;transform:translateY(100%)}
+            #bai-chat-box.is-open{transform:translateY(0)}
+            #bai-chat-header{border-radius:0}
+            #bai-chat-input-wrap{border-radius:0}
         }
 
         /* === RESPONSIVE POLISH FOR THE HOME PAGE === */
@@ -1288,7 +1244,7 @@
                 min-height: 150px;
             }
 
-            #bot-fab {
+            #bai-chat-fab {
                 inset-inline-start: 0.875rem;
                 bottom: 0.875rem;
             }
@@ -4260,98 +4216,135 @@
         <iconify-icon class="text-xl" icon="lucide:arrow-up"></iconify-icon>
     </button>
 
-    <!-- Bot floating button + iframe overlay -->
-    <button id="bot-fab" aria-label="تحدث معنا" aria-expanded="false" type="button">
+    <!-- Bright AI Inline Chatbot -->
+    <button id="bai-chat-fab" aria-label="تحدث معنا" aria-expanded="false" type="button">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#0A0C12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
     </button>
-    <iframe id="bot-frame" title="مساعد برايت الذكي" allow="clipboard-write"></iframe>
+
+    <div id="bai-chat-box" role="dialog" aria-label="مساعد برايت الذكي">
+        <div id="bai-chat-header">
+            <div class="ch-info">
+                <div class="ch-avatar">AI</div>
+                <div>
+                    <div class="ch-name">مساعد Bright AI</div>
+                    <div class="ch-status"><span class="dot"></span> متصل الآن</div>
+                </div>
+            </div>
+            <button id="bai-chat-close" aria-label="إغلاق المحادثة">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div id="bai-chat-msgs"></div>
+        <div id="bai-chat-input-wrap">
+            <textarea id="bai-chat-input" placeholder="اكتب رسالتك..." rows="1"></textarea>
+            <button id="bai-chat-send" aria-label="إرسال" disabled>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+        </div>
+        <a id="bai-chat-wa" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.625-1.462A11.93 11.93 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.178-.592-5.912-1.617l-.424-.252-2.744.868.833-2.604-.277-.44A9.765 9.765 0 012.182 12 9.818 9.818 0 0112 2.182 9.818 9.818 0 0121.818 12 9.818 9.818 0 0112 21.818z"/></svg>
+            أو تواصل عبر واتساب
+        </a>
+    </div>
+
     <script>
-        (function () {
-            var fab = document.getElementById('bot-fab');
-            var frame = document.getElementById('bot-frame');
-            var botOpen = false;
-            var botLoaded = false;
-            var pendingMessage = null;
-            var loadRetries = 0;
+    (function(){
+        var API_KEY='AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8';
+        var MODEL='gemini-2.5-flash';
+        var WA='966538229013';
+        var PAGES={'الرئيسية':'https://brightai.site/','من نحن':'https://brightai.site/about/','الخدمات':'https://brightai.site/services/','وكلاء الذكاء الاصطناعي':'https://brightai.site/ai-agent/','تحليل البيانات':'https://brightai.site/data-analysis/','الأتمتة الذكية':'https://brightai.site/smart-automation/','سير عمل الذكاء الاصطناعي':'https://brightai.site/ai-workflows/','الاستشارات':'https://brightai.site/consultation/','تواصل معنا':'https://brightai.site/contact/','المدونة':'https://brightai.site/blog/','الأدوات الذكية':'https://brightai.site/tools/','تجربة مجانية':'https://brightai.site/try/','الأرشيف الطبي الذكي':'https://brightai.site/smart-medical-archive/','دراسات الحالة':'https://brightai.site/case-studies/','الأسعار':'https://brightai.site/demo/pricing/','تجربة OCR':'https://brightai.site/demo/ocr-demo/','القطاعات':'https://brightai.site/sectors/','قطاع الصحة':'https://brightai.site/sectors/healthcare/','قطاع المالية':'https://brightai.site/sectors/finance/','قطاع اللوجستيات':'https://brightai.site/sectors/logistics/','قطاع الطاقة':'https://brightai.site/sectors/energy/','قطاع التجارة الإلكترونية':'https://brightai.site/sectors/ecommerce/','قطاع التصنيع':'https://brightai.site/sectors/manufacturing/','التوثيق':'https://brightai.site/docs/','الذكاء الاصطناعي السحابي':'https://brightai.site/ai-scolecs/','تقرير الذكاء الاصطناعي 2026':'https://brightai.site/demo/resources/report-ai-saudi-2026/'};
+        var SYS='أنت موظف خدمة عملاء في شركة Bright AI، اسمك يزيد وتتحدث باللهجة السعودية العامية بشكل طبيعي ومريح.\n\n**تعليمات مهمة جداً:**\n- تكلّم بلهجة سعودية عامية مريحة وطبيعية (مثل: \"وش تبغى؟\"، \"أكيد\"، \"زين\"، \"بكرة\"، \"عندنا\"، \"قدرنا نساعدك\")\n- لا تذكر أبداً أنك ذكاء اصطناعي أو روبوت أو بوت – أنت موظف حقيقي اسمك \"سلطان\"\n- إذا سألك أحد \"هل أنت بوت؟\" قل بشكل طبيعي: \"لا لا، أنا سلطان من فريق Bright AI 😄\"\n- استخدم إيموجيات بشكل طبيعي ولكن لا تبالغ\n- اختصر في الردود – لا تطوّل بدون حاجة\n- دائماً أرفق روابط الصفحات المناسبة عند الإجابة بهذا الشكل: [اسم الصفحة](الرابط)\n\n**معلومات عن شركة Bright AI:**\n- شركة سعودية متخصصة في حلول الذكاء الاصطناعي للمؤسسات\n- مقرها الرياض، مرخصة لدى وزارة التجارة والمركز السعودي للأعمال وموقع \"معروف\"\n- الموقع: brightai.site\n\n**الخدمات الرئيسية:**\n1. **وكلاء الذكاء الاصطناعي المخصصة** – نصمم وكلاء ذكاء اصطناعي حسب طلبك (مبيعات، HR، تحليل، خدمة عملاء...) → brightai.site/ai-agent/\n2. **الأتمتة الذكية (RPA)** – أتمتة الأعمال المتكررة وتوفير وقت وتكلفة → brightai.site/smart-automation/\n3. **تحليل البيانات وBI** – تحليل بياناتك واستخراج رؤى مفيدة → brightai.site/data-analysis/\n4. **الاستشارات** – نساعدك ترسم خارطة طريق للتحول الرقمي → brightai.site/consultation/\n5. **سير عمل الذكاء الاصطناعي** – أتمتة ذكية للمهام المعقدة → brightai.site/ai-workflows/\n6. **الأرشيف الطبي الذكي** – لقطاع الصحة والمستشفيات → brightai.site/smart-medical-archive/\n7. **الذكاء الاصطناعي كخدمة (AIaaS)** – سحابة محلية متوافقة مع معايير NCA → brightai.site/ai-scolecs/\n\n**الأسعار (تقريبية):**\n- أتمتة بسيطة: من 2,000 إلى 5,000 ريال\n- شات بوت خدمة عملاء: 3,000 – 6,000 ريال\n- حلول أتمتة متكاملة: 10,000 – 50,000 ريال\n- التسعير الدقيق يعتمد على حجم وتعقيد المشروع\n\n**القطاعات التي نخدمها:** النفط والغاز، الصحة، المالية، التجزئة، اللوجستيات، التصنيع، القطاع الحكومي\n\n**طريقة التواصل:**\n- واتساب: +966538229013 → wa.me/966538229013\n- صفحة التواصل: brightai.site/contact/\n- استشارة مجانية: brightai.site/consultation/\n\n**الروابط المتاحة للإرفاق:**\n'+Object.entries(PAGES).map(function(e){return '- '+e[0]+': '+e[1]}).join('\n')+'\n\n**قواعد الردود:**\n- إذا سألوا عن خدمة معينة → اشرح باختصار وأرفق الرابط\n- إذا طلبوا تواصل أو استشارة → وجّههم للواتساب أو صفحة الاستشارات\n- إذا السؤال خارج نطاق Bright AI → اعتذر بلطف وقل إنك تختص بمجال الذكاء الاصطناعي للأعمال\n- لا تخترع معلومات غير موجودة\n- دائماً كن إيجابياً ومرحباً';
 
-            if (!fab || !frame) return;
+        var fab=document.getElementById('bai-chat-fab');
+        var box=document.getElementById('bai-chat-box');
+        var msgs=document.getElementById('bai-chat-msgs');
+        var inp=document.getElementById('bai-chat-input');
+        var sendBtn=document.getElementById('bai-chat-send');
+        var closeBtn=document.getElementById('bai-chat-close');
+        if(!fab||!box)return;
 
-            function syncBotState(open) {
-                botOpen = open;
-                frame.classList.toggle('is-open', open);
-                fab.classList.toggle('is-hidden', open);
-                fab.setAttribute('aria-expanded', open ? 'true' : 'false');
+        var chatOpen=false;
+        var history=[];
+        var sending=false;
+
+        function toggle(open){
+            chatOpen=open;
+            box.classList.toggle('is-open',open);
+            fab.classList.toggle('is-hidden',open);
+            fab.setAttribute('aria-expanded',open?'true':'false');
+            if(open&&!msgs.children.length){
+                addMsg('bot','هلا وغلا! 👋 أنا يزيد من فريق Bright AI.\nوش أقدر أساعدك فيه اليوم؟');
             }
+            if(open)inp.focus();
+        }
 
-            function postToBot(type) {
-                if (!botLoaded || !frame.contentWindow) {
-                    pendingMessage = type;
-                    return;
-                }
-                try {
-                    frame.contentWindow.postMessage({ type: type }, '*');
-                } catch (err) {
-                    console.warn('[BotEmbed] postMessage failed:', err);
-                }
+        function addMsg(role,text){
+            var d=document.createElement('div');
+            d.className='bai-msg '+role;
+            d.innerHTML=renderMD(text);
+            msgs.appendChild(d);
+            msgs.scrollTop=msgs.scrollHeight;
+            return d;
+        }
+
+        function renderMD(t){
+            t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            t=t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+            t=t.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+            t=t.replace(/\n/g,'<br>');
+            return t;
+        }
+
+        async function send(){
+            var txt=inp.value.trim();
+            if(!txt||sending)return;
+            sending=true;
+            sendBtn.disabled=true;
+            inp.value='';
+            inp.style.height='auto';
+            addMsg('user',txt);
+            history.push({role:'user',parts:[{text:txt}]});
+
+            var typing=addMsg('bot','يكتب...');
+            typing.classList.add('typing');
+
+            try{
+                var body={
+                    system_instruction:{parts:[{text:SYS}]},
+                    contents:history.slice(-20),
+                    generationConfig:{temperature:0.7,maxOutputTokens:1024}
+                };
+                var url='https://generativelanguage.googleapis.com/v1beta/models/'+MODEL+':generateContent?key='+API_KEY;
+                var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+                var data=await res.json();
+                var reply=(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text)||'عذراً، حصل خطأ. جرب مرة ثانية 🙏';
+                typing.remove();
+                addMsg('bot',reply);
+                history.push({role:'model',parts:[{text:reply}]});
+            }catch(e){
+                typing.remove();
+                addMsg('bot','عذراً، حصل خطأ بالاتصال. جرب مرة ثانية أو تواصل معنا عبر واتساب 📱');
             }
+            sending=false;
+            sendBtn.disabled=false;
+            inp.focus();
+        }
 
-            function flushPendingMessage() {
-                if (!pendingMessage) return;
-                var nextMessage = pendingMessage;
-                pendingMessage = null;
-                requestAnimationFrame(function () {
-                    postToBot(nextMessage);
-                });
-            }
+        fab.addEventListener('click',function(){toggle(!chatOpen)});
+        closeBtn.addEventListener('click',function(){toggle(false)});
+        sendBtn.addEventListener('click',send);
 
-            function loadBot() {
-                if (botLoaded) return;
-                if (frame.src && frame.src !== 'about:blank' && frame.src !== '') return;
-
-                frame.addEventListener('load', function () {
-                    botLoaded = true;
-                    flushPendingMessage();
-                }, { once: true });
-
-                frame.addEventListener('error', function () {
-                    if (loadRetries < 2) {
-                        loadRetries++;
-                        setTimeout(function() {
-                            frame.src = '';
-                            frame.src = '/bot/?embed=true';
-                        }, 1000);
-                    }
-                }, { once: true });
-
-                frame.src = '/bot/?embed=true';
-            }
-
-            fab.addEventListener('click', function () {
-                if (botOpen) {
-                    postToBot('bot-close');
-                    syncBotState(false);
-                    return;
-                }
-
-                loadBot();
-                syncBotState(true);
-                pendingMessage = 'bot-open';
-
-                // If bot is already loaded, flush immediately
-                if (botLoaded) {
-                    flushPendingMessage();
-                }
-                // Otherwise, loadBot's onload handler will flush
-            });
-
-            window.addEventListener('message', function (e) {
-                if (e.data && e.data.type === 'bot-closed') {
-                    syncBotState(false);
-                }
-            });
-        })();
+        inp.addEventListener('input',function(){
+            this.style.height='auto';
+            this.style.height=Math.min(this.scrollHeight,80)+'px';
+            sendBtn.disabled=!this.value.trim();
+        });
+        inp.addEventListener('keydown',function(e){
+            if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}
+        });
+    })();
     </script>
 
 
