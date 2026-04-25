@@ -3,7 +3,13 @@
    brightai.site | gemini-2.5-flash powered
 ═══════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  src: url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --c-bg         : #070b14;
@@ -33,7 +39,7 @@
 body {
   background-color: var(--c-bg);
   color: var(--c-text);
-  font-family: 'Cairo', sans-serif;
+  font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
   min-height: 100vh;
   direction: rtl;
   overflow-x: hidden;
@@ -87,7 +93,7 @@ body {
 
 .hero h1 {
   font-size: clamp(2.4rem, 5vw, 3.8rem);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.15;
   margin-bottom: 20px;
   background: linear-gradient(135deg, #fff 20%, #94a3b8 100%);
@@ -119,14 +125,14 @@ body {
   gap: 10px;
   padding: 14px 30px;
   border-radius: var(--radius-btn);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
   color: #fff;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   border: none;
   cursor: pointer;
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   transition: transform var(--trans-med), box-shadow var(--trans-med), opacity var(--trans-fast);
   position: relative;
   overflow: hidden;
@@ -168,7 +174,7 @@ body {
   background: transparent;
   border: 1px solid var(--c-border-h);
   cursor: pointer;
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   transition: border-color var(--trans-med), color var(--trans-med), background var(--trans-fast);
 }
 
@@ -226,7 +232,7 @@ body {
 
 .demo-card h3 {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 18px;
   color: #fff;
   display: flex;
@@ -252,7 +258,7 @@ body {
   background: rgba(15,23,42,0.8);
   color: var(--c-text);
   margin-bottom: 14px;
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   font-size: 0.97rem;
   line-height: 1.7;
   transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
@@ -335,7 +341,7 @@ select.demo-input { cursor: pointer; }
 .md-heading {
   display: block;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   margin: 14px 0 6px;
 }
@@ -420,7 +426,7 @@ select.demo-input { cursor: pointer; }
 
 .cta-strip h3 {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   margin-bottom: 6px;
 }

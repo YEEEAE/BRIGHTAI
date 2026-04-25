@@ -3,7 +3,13 @@
    brightai.site | gemini-2.5-flash vision
 ═══════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  src: url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --c-bg        : #070b14;
@@ -31,7 +37,7 @@
 body {
   background-color: var(--c-bg);
   color: var(--c-text);
-  font-family: 'Cairo', sans-serif;
+  font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
   min-height: 100vh;
   direction: rtl;
   overflow-x: hidden;
@@ -85,7 +91,7 @@ body {
 
 .hero h1 {
   font-size: clamp(2.3rem, 5vw, 3.7rem);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.15;
   margin-bottom: 20px;
   background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
@@ -126,14 +132,14 @@ body {
   gap: 10px;
   padding: 14px 30px;
   border-radius: var(--radius-btn);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 1rem;
   text-decoration: none;
   color: #fff;
   background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   border: none;
   cursor: pointer;
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   transition: transform var(--trans-med), box-shadow var(--trans-med);
   position: relative;
   overflow: hidden;
@@ -168,7 +174,7 @@ body {
   background: transparent;
   border: 1px solid var(--c-border-h);
   cursor: pointer;
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   transition: border-color var(--trans-med), color var(--trans-med), background var(--trans-fast);
 }
 
@@ -207,7 +213,7 @@ body {
 
 .upload-card h2 {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 18px;
   color: #fff;
   display: flex;
@@ -374,7 +380,7 @@ body {
   background: rgba(147,197,253,0.06);
   color: #93c5fd;
   cursor: pointer;
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   transition: all var(--trans-fast);
 }
 #copy-json:hover { background: rgba(147,197,253,0.14); }
@@ -416,7 +422,7 @@ body {
 
 .cta-strip h2 {
   font-size: 1.4rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   margin-bottom: 6px;
 }

@@ -3,33 +3,14 @@
 <html dir="rtl" lang="ar-SA">
 <head>
 <link rel="canonical" href="https://brightai.site/interview/pages/support-ai/" />
-<link href="https://www.googletagmanager.com" rel="preconnect"/>
 <link href="https://www.googletagmanager.com" rel="dns-prefetch"/>
-<link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect"/>
-<link href="https://js.sentry-cdn.com" rel="dns-prefetch"/>
 <meta content="index, follow" name="robots"/>
 <link href="https://brightai.site/sitemap.xml" rel="sitemap" type="application/xml"/>
-<script crossorigin="anonymous" defer="" src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"></script>
-<script type="text/javascript">
-    window.addEventListener('load', function() {
-        requestIdleCallback(function() {
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "voq2kb6voe");
-        });
-    });
-</script>
-<script defer="" src="/frontend/js/sentry-init.js"></script>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
 </script>
+<script defer src="/frontend/js/performance-loader.min.js" data-analytics="load" data-clarity="interaction" data-sentry="idle"></script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
     <meta name="theme-color" content="#0b1020">
@@ -51,8 +32,6 @@
 <meta content="https://brightai.site/assets/images/Gemini.png" name="twitter:image"/>
 <style>
         /* --- Fonts and Variables --- */
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
-
         :root {
             /* Colors */
             --primary: #6366f1;
@@ -83,9 +62,17 @@
             --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
 
             /* Misc */
-            --font-family: 'Cairo', sans-serif;
+            --font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
             --border-radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @font-face {
+            font-family: "IBM Plex Sans Arabic";
+            src: url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
         }
 
         * {
@@ -883,8 +870,7 @@
             text-decoration: none;
         }
     </style>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="/assets/fonts/IBMPlexSansArabic-Regular.woff2" rel="preload" as="font" type="font/woff2" crossorigin/>
 <link as="style" href="/frontend/css/main.bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"><noscript><link href="/frontend/css/main.bundle.min.css" rel="stylesheet"/></noscript>
 <link as="style" href="/frontend/css/index-theme.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/><noscript><link href="/frontend/css/index-theme.css" rel="stylesheet"/></noscript>
 <script defer="" src="/frontend/js/iconify-preload.js" fetchpriority="low"></script>
@@ -900,9 +886,12 @@
 <link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180">
 <script defer src="/frontend/js/runtime-config.min.js"></script>
 <script defer="" src="/frontend/js/navigation.min.js"></script>
-<link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/>
-<link href="/assets/css/extracted-inline-styles.css" rel="stylesheet"/>
-<link href="/assets/css/ux-audit-fixes.css" rel="stylesheet"/>
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="/frontend/css/unified-nav-search.css" rel="stylesheet"/></noscript>
+<link href="/assets/css/extracted-inline-styles.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="/assets/css/extracted-inline-styles.css" rel="stylesheet"/></noscript>
+<link href="/assets/css/ux-audit-fixes.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="/assets/css/ux-audit-fixes.css" rel="stylesheet"/></noscript>
 </link></link></link></meta><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "WebPage",

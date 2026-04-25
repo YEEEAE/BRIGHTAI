@@ -6,8 +6,8 @@
     <meta http-equiv="x-ua-compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link href="/assets/fonts/IBMPlexSansArabic-Regular.woff2" rel="preload" as="font" type="font/woff2" crossorigin />
 
     <title>خدمات Bright AI في السعودية | وكلاء ذكاء اصطناعي وأتمتة أعمال وتحليل بيانات</title>
 
@@ -53,16 +53,11 @@
     <meta name="twitter:image" content="https://brightai.site/assets/images/Gemini.png" />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag("js", new Date());
-        gtag("config", "G-8LLESL207Q", {
-            "anonymize_ip": true,
-            "send_page_view": true
-        });
     </script>
+    <script defer src="/frontend/js/performance-loader.min.js" data-analytics="load" data-clarity="off" data-sentry="off"></script>
 
     <script type="application/ld+json">
 {
@@ -1055,6 +1050,14 @@
             --radius-md: 16px;
             --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
             --container: 1180px;
+        }
+
+        @font-face {
+            font-family: "IBM Plex Sans Arabic";
+            src: url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
         }
 
         * {
@@ -2831,7 +2834,6 @@
         }
 
         .answer-section,
-        .products-section,
         .geo-section,
         .faq-section,
         .payment-section {
@@ -2883,10 +2885,14 @@
             }
         }
     </style>
-<link rel="stylesheet" href="/frontend/css/demo-experience.css">
-<link rel="stylesheet" href="/assets/css/demo-experience.css">
-<link rel="stylesheet" href="/assets/css/ux-audit-fixes.css">
-<link rel="stylesheet" href="/assets/css/design-tokens.css">
+<link rel="stylesheet" href="/frontend/css/demo-experience.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/frontend/css/demo-experience.css"></noscript>
+<link rel="stylesheet" href="/assets/css/demo-experience.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/assets/css/demo-experience.css"></noscript>
+<link rel="stylesheet" href="/assets/css/ux-audit-fixes.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/assets/css/ux-audit-fixes.css"></noscript>
+<link rel="stylesheet" href="/assets/css/design-tokens.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="/assets/css/design-tokens.css"></noscript>
 </head>
 
 <body>
