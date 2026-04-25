@@ -2731,6 +2731,35 @@
     <div class="backdrop-overlay" id="mobileBackdrop" onclick="closeMobileMenu()"></div>
 
     <main>
+        <section id="products" class="products-section">
+            <div class="container">
+                <div class="section-head">
+                    <div>
+                        <h2>قائمة خدمات ومنتجات Bright AI</h2>
+                        <p>كل بطاقة تحتوي على أيقونة، السعر، التصنيف، وصف المنتج، لمن يناسب، رابط صفحة المنتج، وخيارات
+                            الإضافة للسلة أو التواصل المباشر.</p>
+                    </div>
+                </div>
+
+                <div class="toolbar" aria-label="أدوات البحث والتصفية">
+                    <input id="searchInput" class="field" type="search"
+                        placeholder="ابحث باسم المنتج أو الوصف أو المجال..." oninput="renderProducts()" aria-label="ابحث باسم المنتج أو الوصف أو المجال..." />
+                    <select id="categoryFilter" class="field" onchange="renderProducts()"
+                        aria-label="فلترة حسب التصنيف">
+                        <option value="all">كل التصنيفات</option>
+                        <option value="وكيل">وكيل</option>
+                        <option value="أتمتة">أتمتة</option>
+                        <option value="أنظمة">أنظمة</option>
+                        <option value="تحليل">تحليل</option>
+                        <option value="استشارات">استشارات</option>
+                    </select>
+                    <button class="btn btn-primary" type="button" onclick="openCart()">🛒 عرض السلة</button>
+                </div>
+
+                <div id="productsGrid" class="products-grid" aria-live="polite"></div>
+            </div>
+        </section>
+
         <section class="hero">
             <div class="container">
                 <div class="hero-grid">
@@ -2754,18 +2783,6 @@
                             <div class="stat-card"><span>طريقة الطلب</span><strong>واتساب</strong></div>
                         </div>
                     </div>
-
-                    <aside class="hero-panel glass">
-                        <div class="panel-title">ليش هذه الصفحة أقوى للـ SEO و AI Search؟</div>
-                        <div class="panel-list">
-                            <div class="panel-item"><strong>إجابات واضحة وقابلة للاقتباس</strong> كل منتج له وصف،
-                                استخدام مناسب، سعر، وتصنيف؛ وهذا يخدم AEO وظهور إجابات الذكاء الاصطناعي.</div>
-                            <div class="panel-item"><strong>استهداف محلي للسعودية</strong> المحتوى يذكر السعودية والمدن
-                                التجارية الرئيسية والقطاع المؤسسي، بدون حشو مزعج.</div>
-                            <div class="panel-item"><strong>أداء أسرع</strong> تم تقليل الاعتماد على مكتبات خارجية،
-                                واستخدام أيقونات نصية خفيفة، وتحسين تحميل البطاقات الطويلة.</div>
-                        </div>
-                    </aside>
                 </div>
             </div>
         </section>
@@ -2894,36 +2911,6 @@
                         </ul>
                     </article>
                 </div>
-
-
-        <section id="products" class="products-section">
-            <div class="container">
-                <div class="section-head">
-                    <div>
-                        <h2>قائمة خدمات ومنتجات Bright AI</h2>
-                        <p>كل بطاقة تحتوي على أيقونة، السعر، التصنيف، وصف المنتج، لمن يناسب، رابط صفحة المنتج، وخيارات
-                            الإضافة للسلة أو التواصل المباشر.</p>
-                    </div>
-                </div>
-
-                <div class="toolbar" aria-label="أدوات البحث والتصفية">
-                    <input id="searchInput" class="field" type="search"
-                        placeholder="ابحث باسم المنتج أو الوصف أو المجال..." oninput="renderProducts()" aria-label="ابحث باسم المنتج أو الوصف أو المجال..." />
-                    <select id="categoryFilter" class="field" onchange="renderProducts()"
-                        aria-label="فلترة حسب التصنيف">
-                        <option value="all">كل التصنيفات</option>
-                        <option value="وكيل">وكيل</option>
-                        <option value="أتمتة">أتمتة</option>
-                        <option value="أنظمة">أنظمة</option>
-                        <option value="تحليل">تحليل</option>
-                        <option value="استشارات">استشارات</option>
-                    </select>
-                    <button class="btn btn-primary" type="button" onclick="openCart()">🛒 عرض السلة</button>
-                </div>
-
-                <div id="productsGrid" class="products-grid" aria-live="polite"></div>
-            </div>
-        </section>
 
         <section class="geo-section" aria-labelledby="geo-heading">
             <div class="container">
