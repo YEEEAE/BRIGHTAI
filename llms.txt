@@ -1,24 +1,26 @@
 # Bright AI
-> Bright AI تخدم الجهات السعودية بحلول ذكاء اصطناعي مؤسسية تشمل الأتمتة، ذكاء المناقصات، تحليل البيانات، ووكلاء الذكاء الاصطناعي.
 
-## About
-- https://brightai.site/ : الصفحة الرئيسية وتعرض تموضع Bright AI وخدماتها الأساسية للمنظمات السعودية.
+Bright AI is a Saudi AI company serving enterprise and government teams in Saudi Arabia. This file lists strategic public pages for AI search crawlers.
 
-## Core Services
-- https://brightai.site/services/ : صفحة تجمع خدمات ومنتجات Bright AI المؤسسية في الذكاء الاصطناعي والتحول التشغيلي.
-- https://brightai.site/ai-agent/ : صفحة حلول وكلاء الذكاء الاصطناعي للأعمال والعمليات والخدمة الداخلية.
-- https://brightai.site/smart-automation/ : صفحة الأتمتة الذكية لتبسيط الإجراءات وتقليل العمل اليدوي المتكرر.
-- https://brightai.site/data-analysis/ : صفحة تحليل البيانات ولوحات المعلومات والرؤى التشغيلية للمؤسسات.
-- https://brightai.site/ai-bots/ : صفحة روبوتات ومساعدات الذكاء الاصطناعي لخدمة الاستخدامات المؤسسية.
-
-## Tender Intelligence
-- https://brightai.site/tenders/ : صفحة منصة المناقصات والشراء الذكي لمتابعة الفرص وتحليلها.
-- https://brightai.site/tenders/landing/ : صفحة تعريفية مخصصة لحل المناقصات الذكي وشرح قيمته التشغيلية.
-- https://brightai.site/tenders/compare/ : صفحة مقارنة عروض أو فرص المناقصات لدعم اتخاذ القرار بشكل أوضح.
-
-## Contact
-- https://brightai.site/contact/ : صفحة التواصل وطلب الاستشارة أو بدء النقاش حول مشروع مناسب.
+## Strategic pages
+- https://brightai.site/ — شركة ذكاء اصطناعي في السعودية
+- https://brightai.site/ai-agent/ — وكلاء ذكاء اصطناعي للمؤسسات
+- https://brightai.site/consultation/ — استشارات الذكاء الاصطناعي السعودية
+- https://brightai.site/contact/ — تواصل مع شركة ذكاء اصطناعي في السعودية
+- https://brightai.site/data-analysis/ — تحليل البيانات للشركات السعودية
+- https://brightai.site/en/ — artificial intelligence company in Saudi Arabia
+- https://brightai.site/en/ai-agent/ — AI agents for enterprises
+- https://brightai.site/en/data-analysis/ — data analysis for Saudi companies
+- https://brightai.site/en/tools/ — AI data analysis tools
+- https://brightai.site/sectors/finance/ — الذكاء الاصطناعي في القطاع المالي
+- https://brightai.site/sectors/healthcare/ — الذكاء الاصطناعي في الرعاية الصحية
+- https://brightai.site/sectors/logistics/ — الذكاء الاصطناعي في الخدمات اللوجستية
+- https://brightai.site/sectors/manufacturing/ — الذكاء الاصطناعي في المصانع
+- https://brightai.site/services/ — حلول ذكاء اصطناعي للشركات
+- https://brightai.site/smart-automation/ — أتمتة العمليات بالذكاء الاصطناعي
+- https://brightai.site/tenders/ — نظام تحليل المناقصات بالذكاء الاصطناعي
 
 ## Notes
-- جميع الروابط هنا روابط إنتاج نهائية على النطاق الرسمي `https://brightai.site/`.
-- هذا الملف موجز ومخصص لتوجيه أنظمة الاكتشاف والقراءة الآلية إلى الصفحات العامة الأهم.
+- Arabic pages use ar-SA and are the primary market pages.
+- English pages use en-SA and support Saudi enterprise discovery.
+- Public tender pages are demo and lead-generation pages, not admin-only routes.

@@ -104,7 +104,8 @@ function cleanText(text) {
 }
 
 function isEnglishRoute(route, lang = "") {
-  return route.startsWith("/en/") || route.includes("-en/") || route.includes("-en") || /^en/i.test(lang);
+  const segments = route.split("/").filter(Boolean);
+  return route.startsWith("/en/") || segments.some((segment) => segment.endsWith("-en")) || /^en/i.test(lang);
 }
 
 function routeToFile(route) {
@@ -140,6 +141,8 @@ function pageTypeFor(route) {
 function keywordFromTitle(title, route, en) {
   let value = cleanText(title).replace(/\s*\|\s*Bright AI.*$/i, "").replace(/\s*\|\s*ContractAI.*$/i, "");
   value = value.replace(/^Bright AI\s*[-|]\s*/i, "").replace(/\s*-\s*Bright AI.*$/i, "");
+  value = value.replace(/\s*\|\s*/g, en ? " - " : " - ");
+  value = value.replace(/\s*:\s*Practical Guide$/i, "").replace(/\s*:\s*شرح عملي$/i, "");
   if (!value || value.length < 4) {
     const slug = decodeURIComponent(route).replace(/^\/|\/$/g, "").split("/").pop().replace(/-/g, " ");
     value = en ? slug : slug;
@@ -437,6 +440,7 @@ function ensureSeoStyle($) {
 }
 
 function fixSchema($, meta) {
+  $("script[data-seo-intent-schema='true']").remove();
   $("script[type='application/ld+json']").each((_, node) => {
     const raw = $(node).contents().text();
     try {
@@ -454,20 +458,18 @@ function fixSchema($, meta) {
       // اترك السكربت للـ QA حتى لا نزيل بيانات قد تكون مستخدمة بسبب تنسيق غير قياسي.
     }
   });
-  if (!$("script[data-seo-intent-schema='true']").length) {
-    const schemaType = meta.pageType === "blog_article" ? "Article" : meta.pageType === "docs_page" ? "WebPage" : ["tender_demo_page", "tool_page", "demo_page", "product_page"].includes(meta.pageType) ? "SoftwareApplication" : "Service";
-    const schema = {
-      "@context": "https://schema.org",
-      "@type": schemaType,
-      "@id": `${site}${meta.route}#intent`,
-      "name": h1For(meta),
-      "url": `${site}${meta.route}`,
-      "description": descriptionFor(meta),
-      "inLanguage": meta.en ? "en-SA" : "ar-SA",
-      "provider": { "@id": `${site}/#organization` }
-    };
-    $("head").append(`\n<script type="application/ld+json" data-seo-intent-schema="true">\n${JSON.stringify(schema, null, 2)}\n</script>\n`);
-  }
+  const schemaType = meta.pageType === "blog_article" ? "Article" : meta.pageType === "docs_page" ? "WebPage" : ["tender_demo_page", "tool_page", "demo_page", "product_page"].includes(meta.pageType) ? "SoftwareApplication" : "Service";
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": schemaType,
+    "@id": `${site}${meta.route}#intent`,
+    "name": h1For(meta),
+    "url": `${site}${meta.route}`,
+    "description": descriptionFor(meta),
+    "inLanguage": meta.en ? "en-SA" : "ar-SA",
+    "provider": { "@id": `${site}/#organization` }
+  };
+  $("head").append(`\n<script type="application/ld+json" data-seo-intent-schema="true">\n${JSON.stringify(schema, null, 2)}\n</script>\n`);
 }
 
 function applyPage(file, url, allRecords) {
@@ -557,27 +559,31 @@ function writeReports(inventory, records, indexableUrls) {
 
   const mapLines = ["# خريطة intent إلى keyword للصفحات العامة القابلة للفهرسة", "", "| URL | Primary intent | Secondary intent | Primary keyword | Secondary keywords | Page type | Funnel | Audience | Commercial value | Volume priority | Competition | Main ranking page? | Supporting page | Cannibalization risk | Final recommendation |", "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"];
   for (const r of records.sort((a, b) => a.route.localeCompare(b.route))) {
-    mapLines.push(`| ${r.url} | ${r.intent} | ${r.secondaryIntent} | ${r.keyword} | ${secondaryKeywords(r).join(", ")} | ${r.pageType} | ${r.funnel} | ${r.persona} | ${r.commercialValue} | ${r.volumePriority} | ${r.competition} | ${r.mainRanking ? "yes" : "no"} | ${r.mainRanking ? "لا ينطبق" : supportingPage(r)} | ${r.mainRanking ? "منخفض" : "يجب أن تدعم الصفحة الرئيسية لا تنافسها"} | ${r.shouldRank ? "استهداف وترقية داخلية" : "دعم/توثيق دون منافسة"} |`);
+    mapLines.push(`| ${mdCell(r.url)} | ${r.intent} | ${r.secondaryIntent} | ${mdCell(r.keyword)} | ${mdCell(secondaryKeywords(r).join(", "))} | ${r.pageType} | ${r.funnel} | ${mdCell(r.persona)} | ${r.commercialValue} | ${r.volumePriority} | ${r.competition} | ${r.mainRanking ? "yes" : "no"} | ${r.mainRanking ? "لا ينطبق" : supportingPage(r)} | ${r.mainRanking ? "منخفض" : "يجب أن تدعم الصفحة الرئيسية لا تنافسها"} | ${r.shouldRank ? "استهداف وترقية داخلية" : "دعم/توثيق دون منافسة"} |`);
   }
   fs.writeFileSync(path.join(reportsDir, "intent-to-keyword-map.md"), mapLines.join("\n"));
 
   const blogLines = ["# خريطة intent والعناوين للمدونة", "", "| URL | Primary keyword | Intent | Target money page | Old H1 | New H1 | H2 changes | H3 changes | CTA added | Cannibalization notes |", "|---|---|---|---|---|---|---|---|---|---|"];
   for (const r of records.filter((x) => x.pageType === "blog_article")) {
-    blogLines.push(`| ${r.url} | ${r.keyword} | ${r.intent} | ${blogTarget(r.route)} | ${r.oldH1 || "غير موجود"} | ${r.newH1} | أضيفت بنية أسئلة intent أعلى المقال | أضيفت H3 داعمة لكل H2 | yes | أصبحت الصفحة داعمة لـ ${blogTarget(r.route)} بدلاً من منافسة صفحة الخدمة |`);
+    blogLines.push(`| ${mdCell(r.url)} | ${mdCell(r.keyword)} | ${r.intent} | ${blogTarget(r.route)} | ${mdCell(r.oldH1 || "غير موجود")} | ${mdCell(r.newH1)} | أضيفت بنية أسئلة intent أعلى المقال | أضيفت H3 داعمة لكل H2 | yes | أصبحت الصفحة داعمة لـ ${blogTarget(r.route)} بدلاً من منافسة صفحة الخدمة |`);
   }
   fs.writeFileSync(path.join(reportsDir, "blog-intent-heading-map.md"), blogLines.join("\n"));
 
   const linksLines = ["# الربط الداخلي حسب نية البحث", "", "| Source URL | Intent | Added/validated links | Reason |", "|---|---|---|---|"];
   for (const r of records) {
     const links = relatedLinks(r).map(([href, label]) => `${label} (${href})`).join(", ");
-    linksLines.push(`| ${r.url} | ${r.intent} | ${links} | ربط الصفحة بالخطوة التجارية أو صفحة الدعم المناسبة حسب intent |`);
+    linksLines.push(`| ${mdCell(r.url)} | ${r.intent} | ${mdCell(links)} | ربط الصفحة بالخطوة التجارية أو صفحة الدعم المناسبة حسب intent |`);
   }
   fs.writeFileSync(path.join(reportsDir, "internal-linking-by-intent.md"), linksLines.join("\n"));
 
   const changes = ["# ملخص تغييرات العناوين والمحتوى", "", "## Old vs New H1", "", "| URL | Old H1 | New H1 | Intent | Primary keyword |", "|---|---|---|---|---|"];
-  for (const r of records) changes.push(`| ${r.url} | ${r.oldH1 || "غير موجود"} | ${r.newH1} | ${r.intent} | ${r.keyword} |`);
+  for (const r of records) changes.push(`| ${mdCell(r.url)} | ${mdCell(r.oldH1 || "غير موجود")} | ${mdCell(r.newH1)} | ${r.intent} | ${mdCell(r.keyword)} |`);
   changes.push("", "## تغييرات H2/H3", "", "- أضيفت كتلة answer block أعلى الصفحة العامة القابلة للفهرسة.", "- أضيفت بنية H2/H3 مبنية على intent لكل صفحة عامة.", "- تم تحويل أي H1 زائد إلى H2 للحفاظ على H1 واحد.", "- أضيفت روابط intent داخلية نحو الاستشارة، الخدمات، صفحات المناقصات، أو صفحات الخدمات الداعمة للمدونة.", "", "## تعديلات schema", "", "- أزيلت أنواع schema الممنوعة عند وجودها: FAQPage, HowTo, SpecialAnnouncement, VehicleListing, ClaimReview.", "- أضيفت schema داعمة بعلامة `data-seo-intent-schema` حسب نوع الصفحة دون ratings أو reviews أو offers وهمية.");
   fs.writeFileSync(path.join(reportsDir, "heading-changes-summary.md"), changes.join("\n"));
+}
+
+function mdCell(value) {
+  return String(value ?? "").replace(/\|/g, "\\|").replace(/\r?\n/g, " ").trim();
 }
 
 function secondaryKeywords(meta) {
