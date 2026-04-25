@@ -219,6 +219,7 @@
       .session-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
       .session-table th,.session-table td { padding: 14px 12px; text-align: right; border-bottom: 1px solid var(--border); }
       .session-table th { color: var(--text-secondary); }
+      @media (max-width: 760px) { .session-table { display: block; max-width: 100%; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; } }
       .api-key {
         display: grid; gap: 12px; padding: 16px; border-radius: var(--radius-lg); background: rgba(255,255,255,0.03); border: 1px solid var(--border);
       }

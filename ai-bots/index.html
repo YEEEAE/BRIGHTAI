@@ -33,6 +33,7 @@
   <meta name="twitter:description" content="بوابة روبوتات Bright AI الجاهزة للعمليات التجارية والتشغيلية داخل المؤسسات السعودية." />
   <meta name="twitter:image" content="https://brightai.site/assets/images/Gemini.png" />
   <meta name="twitter:image:alt" content="روبوتات الذكاء الاصطناعي من Bright AI" />
+  <link rel="stylesheet" href="/assets/css/ux-audit-fixes.css" />
   <style>
     :root {
       color-scheme: dark;
@@ -83,6 +84,7 @@
     .geo-table { width: 100%; border-collapse: collapse; margin-top: 18px; overflow: hidden; border-radius: 16px; }
     .geo-table th, .geo-table td { border: 1px solid var(--line); padding: 14px; text-align: start; vertical-align: top; color: var(--muted); line-height: 1.7; }
     .geo-table th { color: var(--text); background: rgba(92, 212, 192, 0.1); }
+    @media (max-width: 760px) { .geo-table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
     .list { margin: 14px 0 0; padding-inline-start: 18px; }
     .internal-linking-inline { color: var(--brand); font-weight: 800; }
     .footer { margin-top: 24px; padding: 18px 22px; color: var(--muted); }
@@ -188,6 +190,23 @@
             <a class="btn btn-primary" href="/contact/" data-analytics-event="generate_lead" data-cta-location="ai-bots">اطلب عرضاً مخصصاً</a>
             <a class="btn btn-secondary" href="/services/">استعرض بقية الخدمات</a>
           </div>
+          <section class="ux-trust-block" aria-labelledby="ai-bots-trust-title">
+            <h2 id="ai-bots-trust-title">ثقة قبل اختيار البوت</h2>
+            <div class="grid">
+              <article class="ux-trust-item">
+                <h3>نطاق واضح</h3>
+                <p>نحدد قناة الاستخدام وقاعدة المعرفة والصلاحيات قبل تحويل النموذج إلى بوت مؤسسي.</p>
+              </article>
+              <article class="ux-trust-item">
+                <h3>تكامل قابل للتوسع</h3>
+                <p>يمكن ربط البوت لاحقاً مع CRM أو أنظمة الموارد البشرية أو قواعد المعرفة حسب الفريق.</p>
+              </article>
+            </div>
+            <div class="ux-section-cta">
+              <a class="btn btn-primary" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="ai-bots">احجز استشارة AI</a>
+              <a class="btn btn-secondary" href="/ai-agent/">قارن مع AI Agent</a>
+            </div>
+          </section>
         </div>
         <div>
           <article class="hero-card">

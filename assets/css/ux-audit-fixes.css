@@ -1,0 +1,256 @@
+:root {
+  --ba-ux-focus: #22d3ee;
+  --ba-ux-accent: #d4af37;
+  --ba-ux-panel: rgba(15, 23, 42, 0.72);
+  --ba-ux-border: rgba(148, 163, 184, 0.24);
+  --ba-ux-radius: 16px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ba-ux-focus);
+  outline-offset: 3px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.14);
+}
+
+a,
+button,
+input,
+select,
+textarea,
+summary,
+[role="button"] {
+  scroll-margin-block: 96px;
+}
+
+a,
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+summary {
+  min-height: 48px;
+}
+
+summary {
+  display: flex;
+  align-items: center;
+}
+
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-main,
+.btn-sub,
+.btn-outline,
+.nav-cta,
+.internal-linking-cta,
+.commercial-seo-ctas a,
+.brightai-command-cta a,
+.section-cta a,
+.ux-section-cta a {
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.btn-primary,
+.btn-main,
+.commercial-seo-ctas a:first-child,
+.brightai-command-cta a,
+.section-cta a:first-child,
+.ux-section-cta a:first-child {
+  box-shadow: 0 14px 34px rgba(14, 165, 233, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+.hero-section h1,
+.hero h1,
+header h1 {
+  max-width: 13ch;
+  margin-inline: auto;
+  text-wrap: balance;
+}
+
+.hero-section p,
+.hero p,
+header .lead {
+  max-width: 72ch;
+  margin-inline: auto;
+}
+
+.seo-answer-block,
+.answer-block {
+  border-inline-start: 4px solid var(--ba-ux-focus);
+  border-radius: var(--ba-ux-radius);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.13), rgba(15, 23, 42, 0.62));
+  border-color: rgba(125, 211, 252, 0.3);
+  box-shadow: 0 18px 48px rgba(2, 6, 23, 0.22);
+  text-align: start;
+}
+
+.seo-answer-block h2,
+.answer-block h2 {
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  line-height: 1.45;
+  margin-block: 0 0.6rem;
+}
+
+.seo-answer-block p,
+.answer-block p {
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  line-height: 1.95;
+}
+
+.seo-intent-section,
+.ux-trust-block {
+  max-width: 72rem;
+  margin: 1.1rem auto 1.5rem;
+  padding: 18px;
+  border: 1px solid var(--ba-ux-border);
+  border-radius: var(--ba-ux-radius);
+  background: var(--ba-ux-panel);
+  box-shadow: 0 18px 48px rgba(2, 6, 23, 0.18);
+  text-align: start;
+}
+
+.seo-intent-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.seo-intent-group,
+.seo-intent-links,
+.ux-trust-item {
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.seo-intent-section h2,
+.ux-trust-block h2 {
+  margin-block: 0 0.55rem;
+  color: #f8fafc;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.seo-intent-section h3,
+.ux-trust-block h3 {
+  margin-block: 0.65rem 0.35rem;
+  color: #bae6fd;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.seo-intent-section p,
+.ux-trust-block p {
+  margin-block: 0 0.65rem;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.85;
+}
+
+.seo-intent-links ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.seo-intent-links a,
+.section-cta a,
+.ux-section-cta a {
+  display: inline-flex;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.section-cta,
+.ux-section-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-block: 18px 0;
+}
+
+.responsive-table,
+.table-scroll,
+.geo-table,
+table {
+  max-width: 100%;
+}
+
+.responsive-table,
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  word-break: normal;
+}
+
+th,
+td {
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  .hero-section,
+  .hero {
+    min-height: auto;
+    padding-block: 96px 48px;
+  }
+
+  .hero-section h1,
+  .hero h1,
+  header h1 {
+    max-width: 100%;
+    font-size: clamp(1.85rem, 9vw, 2.6rem);
+    line-height: 1.25;
+  }
+
+  .seo-answer-block,
+  .answer-block,
+  .seo-intent-section,
+  .ux-trust-block {
+    padding: 16px;
+    margin-block: 16px;
+  }
+
+  .section-cta,
+  .ux-section-cta,
+  .commercial-seo-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .section-cta a,
+  .ux-section-cta a,
+  .commercial-seo-ctas a,
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-main,
+  .btn-sub,
+  .btn-outline {
+    width: 100%;
+    min-height: 48px;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .geo-table,
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

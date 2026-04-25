@@ -83,6 +83,7 @@
     .geo-table { width: 100%; border-collapse: collapse; margin-top: 18px; overflow: hidden; border-radius: 16px; }
     .geo-table th, .geo-table td { border: 1px solid var(--line); padding: 14px; text-align: left; vertical-align: top; color: var(--muted); line-height: 1.7; }
     .geo-table th { color: var(--text); background: rgba(92, 212, 192, 0.1); }
+    @media (max-width: 760px) { .geo-table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
     .list { margin: 14px 0 0; padding-left: 18px; }
     .footer { margin-top: 24px; padding: 18px 22px; color: var(--muted); }
     @media (max-width: 840px) {

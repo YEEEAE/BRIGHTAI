@@ -30,6 +30,7 @@
 <meta name="twitter:title" content="تم نقل الصفحة | Bright AI" />
 <meta name="twitter:description" content="تم نقل هذه الصفحة إلى المسار الموحد داخل Bright AI. استخدم الرابط النهائي المباشر." />
 <meta name="twitter:image" content="https://brightai.site/assets/images/Gemini.png" />
+<link href="/assets/css/ux-audit-fixes.css" rel="stylesheet" />
 <style>
   :root {
     color-scheme: dark;
@@ -88,7 +89,7 @@
     align-items: center;
     justify-content: center;
     min-width: 44px;
-    min-height: 44px;
+    min-height: 48px;
     margin-top: 20px;
     padding: 12px 18px;
     border-radius: 999px;
@@ -97,11 +98,58 @@
     text-decoration: none;
     font-weight: 700;
   }
+
+  .breadcrumbs {
+    width: min(100%, 640px);
+    margin: 0 auto 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .breadcrumbs a {
+    display: inline;
+    min-width: auto;
+    min-height: auto;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    color: #f3c870;
+    background: none;
+  }
 </style>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "https://brightai.site/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "منصة التوظيف الذكي",
+      "item": "https://brightai.site/interview/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "دعم المقابلات بالذكاء الاصطناعي",
+      "item": "https://brightai.site/interview/pages/support-ai/"
+    }
+  ]
+}
+</script>
 <script defer src="/frontend/js/analytics-events.js"></script>
 </head>
 <body>
+  <nav class="breadcrumbs" aria-label="مسار الصفحة">
+    <a href="/">الرئيسية</a> / <a href="/interview/">منصة التوظيف الذكي</a> / <span>دعم المقابلات بالذكاء الاصطناعي</span>
+  </nav>
   <main class="glass-card">
     <h1>تم نقل الصفحة | Bright AI</h1>
     <p>تم نقل هذه الصفحة إلى المسار الموحد داخل Bright AI. استخدم الرابط النهائي المباشر.</p>

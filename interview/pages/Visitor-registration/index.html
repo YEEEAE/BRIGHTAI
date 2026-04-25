@@ -83,8 +83,37 @@
 }</script>
 
 <script defer src="/frontend/js/analytics-events.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "https://brightai.site/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "منصة التوظيف الذكي",
+      "item": "https://brightai.site/interview/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "تسجيل الزوار",
+      "item": "https://brightai.site/interview/pages/Visitor-registration/"
+    }
+  ]
+}
+</script>
 </head>
 <body>
+<nav aria-label="مسار الصفحة" style="position:relative;z-index:20;max-width:1120px;margin:96px auto 0;padding:0 24px;color:#94a3b8;font-size:.9rem;">
+<a href="/" style="color:#7dd3fc;text-decoration:none;">الرئيسية</a> / <a href="/interview/" style="color:#7dd3fc;text-decoration:none;">منصة التوظيف الذكي</a> / <span>تسجيل الزوار</span>
+</nav>
 <header class="unified-nav" id="main-header" role="banner">
 <div class="nav-container">
 <div class="flex-shrink-0">

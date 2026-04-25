@@ -230,6 +230,14 @@
             color: var(--text);
             background: rgba(86, 165, 255, 0.1);
         }
+        @media (max-width: 760px) {
+            .geo-table {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
 
         .card p,
         .notes li,

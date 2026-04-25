@@ -847,6 +847,15 @@
         .session-table th {
             color: var(--text-secondary);
         }
+        @media (max-width: 760px) {
+            .session-table {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
 
         .api-key {
             display: grid;

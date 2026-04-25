@@ -54,6 +54,7 @@
     <link href="/frontend/css/main.bundle.min.css" rel="stylesheet" />
     <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
+    <link rel="stylesheet" href="/assets/css/ux-audit-fixes.css" />
     <style>
         :root {
             --sector-bg: #060b16;
@@ -145,6 +146,14 @@
             color: #fff;
             background: rgba(125, 211, 252, 0.08);
         }
+        @media (max-width: 760px) {
+            .geo-table {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
     </style>
     <script type="application/ld+json">
     {
@@ -212,6 +221,23 @@
                         <a class="btn-secondary" href="/services/">استعرض كل الخدمات</a>
                         <a class="btn-secondary" href="/ai-agent/">استكشف AI Agent</a>
                     </div>
+                    <section class="ux-trust-block" aria-labelledby="sectors-trust-title">
+                        <h2 id="sectors-trust-title">لماذا هذا المسار موثوق؟</h2>
+                        <div class="sector-grid">
+                            <article class="ux-trust-item">
+                                <h3>اختيار حسب القطاع</h3>
+                                <p>نبدأ بالمشكلة التشغيلية والبيانات المتاحة قبل اقتراح AI Agent أو أتمتة أو تحليل بيانات.</p>
+                            </article>
+                            <article class="ux-trust-item">
+                                <h3>سياق سعودي</h3>
+                                <p>تراعي التوصيات اللغة العربية، الحوكمة، والتكاملات المطلوبة داخل بيئات العمل السعودية.</p>
+                            </article>
+                            <article class="ux-trust-item">
+                                <h3>خطوة تحويل واضحة</h3>
+                                <p>جلسة التشخيص تساعدك على تحديد أولوية أول مشروع قابل للقياس قبل التوسع.</p>
+                            </article>
+                        </div>
+                    </section>
                 </div>
             </div>
         </section>
