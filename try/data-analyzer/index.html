@@ -289,6 +289,7 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/frontend/css/product-demo-polish.min.css">
 </head>
 
 <body>
@@ -1123,7 +1124,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer=""></script>
     <script defer="" src="/frontend/js/data-analyzer.min.js"></script>
     <script>
-        const GROQ_API_KEY = '';// local proxy
+        const GEMINI_MODEL = "gemini-2.5-flash";
 
         class DataAnalyzerPage {
             constructor() {
@@ -1274,12 +1275,11 @@
                     const response = await fetch('/api/ai/openai-chat', {
                         method: 'POST',
                         headers: {
-                            'Authorization': `Bearer ${GROQ_API_KEY}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             messages: [{ role: "user", content: prompt }],
-                            model: "llama3-70b-8192",
+                            model: GEMINI_MODEL,
                             temperature: 0.7,
                             max_tokens: 400
                         })
@@ -1329,12 +1329,11 @@
                     const response = await fetch('/api/ai/openai-chat', {
                         method: 'POST',
                         headers: {
-                            'Authorization': `Bearer ${GROQ_API_KEY}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             messages: [{ role: "user", content: prompt }],
-                            model: "llama3-70b-8192",
+                            model: GEMINI_MODEL,
                             temperature: 0.7,
                             max_tokens: 300
                         })
@@ -1374,4 +1373,5 @@
 
 
 
+<script defer src="/frontend/js/product-demo-enhancements.min.js"></script>
 </body></html>

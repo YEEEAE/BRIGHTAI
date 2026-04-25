@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════
-// █  API CONFIGURATION - NVIDIA & DEEPSEEK              █
+// █  API CONFIGURATION - GEMINI PRIMARY AI              █
 // ═══════════════════════════════════════════════════════
 
 function getBrightAIRuntimeConfig() {
@@ -13,6 +13,18 @@ function getBrightAIRuntimeConfig() {
 }
 
 const API_CONFIG = {
+  // Gemini API Configuration عبر بروكسي BrightAI الخلفي
+  gemini: {
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta/models",
+    endpoints: {
+      chat: "/generateContent",
+      stream: "/streamGenerateContent"
+    },
+    model: "gemini-2.5-flash",
+    provider: "gemini",
+    proxyPath: "/api/ai/chat/completions"
+  },
+
   // NVIDIA NIM API Configuration
   nvidia: {
     baseUrl: "https://integrate.api.nvidia.com/v1",
@@ -59,9 +71,10 @@ const API_CONFIG = {
 
 // حالة الاتصال
 const connectionState = {
+  gemini: { status: "disconnected", lastCheck: null },
   nvidia: { status: "disconnected", lastCheck: null },
   deepseek: { status: "disconnected", lastCheck: null },
-  activeProvider: "nvidia" // المزود الافتراضي
+  activeProvider: "gemini" // المزود الافتراضي
 };
 
 // دالة الاتصال العامة مع إعادة المحاولة
@@ -125,7 +138,7 @@ async function callAI(provider, messages, options = {}) {
 
 // دالة التبديل التلقائي بين المزودين (Fallback)
 async function callAIWithFallback(messages, options = {}) {
-  const providers = ["nvidia", "deepseek"];
+  const providers = ["gemini", "nvidia", "deepseek"];
 
   for (const provider of providers) {
     try {
@@ -151,6 +164,7 @@ function hasConfiguredProxy() {
 // فحص صحة الاتصال
 async function checkAPIHealth() {
   if (!hasConfiguredProxy()) {
+    connectionState.gemini = { status: "disconnected", lastCheck: Date.now() };
     connectionState.nvidia = { status: "disconnected", lastCheck: Date.now() };
     connectionState.deepseek = { status: "disconnected", lastCheck: Date.now() };
     return { status: "pending", error: "Proxy URL not configured yet" };
@@ -162,6 +176,10 @@ async function checkAPIHealth() {
     );
     const data = await response.json();
     const providers = data.providers || {};
+    const geminiConfigured =
+      typeof data.gemini === "boolean"
+        ? data.gemini
+        : !!(providers.gemini && providers.gemini.configured);
     const nvidiaConfigured =
       typeof data.nvidia === "boolean"
         ? data.nvidia
@@ -174,6 +192,11 @@ async function checkAPIHealth() {
         ? data.deepseek
         : !!(providers.deepseek && providers.deepseek.configured);
 
+    connectionState.gemini = {
+      status: geminiConfigured ? "connected" : "error",
+      lastCheck: Date.now(),
+      error: geminiConfigured ? null : "gemini_unavailable"
+    };
     connectionState.nvidia = {
       status: nvidiaConfigured ? "connected" : "error",
       lastCheck: Date.now(),
@@ -185,7 +208,9 @@ async function checkAPIHealth() {
       error: deepseekConfigured ? null : "deepseek_unavailable"
     };
 
-    if (nvidiaConfigured) {
+    if (geminiConfigured) {
+      connectionState.activeProvider = "gemini";
+    } else if (nvidiaConfigured) {
       connectionState.activeProvider = "nvidia";
     } else if (deepseekConfigured) {
       connectionState.activeProvider = "deepseek";
@@ -193,6 +218,11 @@ async function checkAPIHealth() {
 
     return data;
   } catch (error) {
+    connectionState.gemini = {
+      status: "error",
+      lastCheck: Date.now(),
+      error: error.message
+    };
     connectionState.nvidia = {
       status: "error",
       lastCheck: Date.now(),
@@ -218,9 +248,13 @@ function updateAPIStatusUI() {
   statusEl.dataset.status = state.status;
 
   if (state.status === "connected") {
-    text.textContent = `متصل — ${provider === "nvidia" ? "NVIDIA" : "DeepSeek"}`;
-  } else if (state.error === "nvidia_unavailable" || state.error === "deepseek_unavailable") {
-    text.textContent = "الخادم لا يوفّر NVIDIA/DeepSeek";
+    text.textContent = `متصل — ${provider === "gemini" ? "Gemini 2.5 Flash" : provider === "nvidia" ? "NVIDIA" : "DeepSeek"}`;
+  } else if (
+    state.error === "gemini_unavailable" ||
+    state.error === "nvidia_unavailable" ||
+    state.error === "deepseek_unavailable"
+  ) {
+    text.textContent = "الخادم لا يوفّر Gemini حالياً";
   } else if (state.status === "error") {
     text.textContent = "خطأ في الاتصال";
   } else if (!hasConfiguredProxy()) {

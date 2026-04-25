@@ -703,6 +703,7 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/frontend/css/product-demo-polish.min.css">
 </head>
 
 <body>
@@ -1441,7 +1442,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js" defer=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js" defer=""></script>
     <script>
-        const GROQ_API_KEY = '';// local proxy
+        const GEMINI_MODEL = "gemini-2.5-flash";
 
         // Tabs
         document.querySelectorAll('.tab').forEach(tab => {
@@ -1571,8 +1572,8 @@
             try {
                 const res = await fetch('/api/ai/openai-chat', {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${GROQ_API_KEY}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ messages: [{ role: "user", content: prompt }], model: "llama3-70b-8192", temperature: 0.7, max_tokens: 500 })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages: [{ role: "user", content: prompt }], model: GEMINI_MODEL, temperature: 0.7, max_tokens: 500 })
                 });
                 const data = await res.json();
                 container.innerHTML = (data.choices?.[0]?.message?.content || 'تعذر التحليل').replace(/\n/g, '<br>');
@@ -1585,4 +1586,5 @@
 
 
 
+<script defer src="/frontend/js/product-demo-enhancements.min.js"></script>
 </body></html>

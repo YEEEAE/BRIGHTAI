@@ -333,6 +333,7 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/frontend/css/product-demo-polish.min.css">
 </head>
 
 <body>
@@ -1156,7 +1157,7 @@
     </footer>
 
     <script>
-        const GROQ_API_KEY = '';// local proxy
+        const GEMINI_MODEL = "gemini-2.5-flash";
 
         const sampleTexts = {
             news: `أعلنت المملكة العربية السعودية عن إطلاق مشروع "نيوم" كأحد أهم المشاريع الضخمة ضمن رؤية 2030. يهدف المشروع إلى بناء مدينة ذكية مستدامة على ساحل البحر الأحمر بتكلفة تتجاوز 500 مليار دولار. ستعتمد المدينة بالكامل على الطاقة المتجددة وستضم أحدث التقنيات في مجالات الذكاء الاصطناعي والروبوتات.`,
@@ -1237,7 +1238,6 @@
                     const response = await fetch('/api/ai/openai-chat', {
                         method: 'POST',
                         headers: {
-                            'Authorization': `Bearer ${GROQ_API_KEY}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
@@ -1245,7 +1245,7 @@
                                 { role: "system", content: "أنت محلل نصوص خبير. أجب باللغة العربية بشكل مختصر ومفيد." },
                                 { role: "user", content: prompts[currentType] + text }
                             ],
-                            model: "llama3-70b-8192",
+                            model: GEMINI_MODEL,
                             temperature: 0.7,
                             max_tokens: 500
                         })
@@ -1308,4 +1308,5 @@
 
 
 
+<script defer src="/frontend/js/product-demo-enhancements.min.js"></script>
 </body></html>
