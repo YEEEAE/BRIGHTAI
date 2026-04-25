@@ -291,6 +291,43 @@ services:
         source: /services/ai-consulting.html
         destination: /services/ai-consulting/
         status: 301
+      - type: rewrite
+        source: /services/ai-tenders-analysis/
+        destination: /services/ai-tenders-analysis.html
+      - type: redirect
+        source: /services/ai-tenders-analysis.html
+        destination: /services/ai-tenders-analysis/
+        status: 301
+      - type: rewrite
+        source: /services/brightproject/
+        destination: /services/brightproject.html
+      - type: redirect
+        source: /services/brightproject.html
+        destination: /services/brightproject/
+        status: 301
+      - type: rewrite
+        source: /services/brightsales/
+        destination: /services/brightsales.html
+      - type: redirect
+        source: /services/brightsales.html
+        destination: /services/brightsales/
+        status: 301
+      - type: rewrite
+        source: /services/ai-scolecs/
+        destination: /services/ai-scolecs.html
+      - type: redirect
+        source: /services/ai-scolecs.html
+        destination: /services/ai-scolecs/
+        status: 301
+      - type: rewrite
+        source: /services/smart-hospital-management/
+        destination: /services/smart-hospital-management.html
+      - type: redirect
+        source: /services/smart-hospital-management.html
+        destination: /services/smart-hospital-management/
+        status: 301
+
+
 
       # ملاحظة تشغيلية: بعد أي Sync/Deploy يغيّر قواعد routes في Render،
       # امسح Cloudflare Cache حتى لا تستمر استجابات 404 أو 301 القديمة على الدومين.

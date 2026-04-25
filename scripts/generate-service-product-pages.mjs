@@ -26,20 +26,25 @@ const related = {
   "competitor-analysis-agent": ["seo-agent", "marketing-agent", "lead-hunter"],
   "seo-agent": ["marketing-agent", "marketing-automation", "social-data-analysis"],
   "social-data-analysis": ["marketing-agent", "marketing-automation", "seo-agent"],
-  "health-data-analysis": ["medical-archive", "data-platform", "document-automation"],
+  "health-data-analysis": ["medical-archive", "smart-hospital-management", "data-platform"],
   "marketing-agent": ["seo-agent", "marketing-automation", "lead-hunter"],
-  "document-automation": ["data-platform", "approvals-automation", "medical-archive"],
+  "document-automation": ["data-platform", "ai-tenders-analysis", "approvals-automation"],
   "smart-hiring-system": ["hr-automation", "custom-ai-agent", "document-automation"],
-  "medical-archive": ["health-data-analysis", "document-automation", "data-platform"],
-  "data-platform": ["data-analyst-agent", "operational-reports-automation", "health-data-analysis"],
+  "medical-archive": ["health-data-analysis", "smart-hospital-management", "document-automation"],
+  "data-platform": ["data-analyst-agent", "ai-tenders-analysis", "operational-reports-automation"],
   "lead-hunter": ["marketing-agent", "competitor-analysis-agent", "customer-service-automation"],
-  "customer-service-automation": ["lead-hunter", "marketing-agent", "custom-ai-agent"],
+  "customer-service-automation": ["lead-hunter", "brightsales", "custom-ai-agent"],
   "hr-automation": ["smart-hiring-system", "approvals-automation", "document-automation"],
-  "marketing-automation": ["marketing-agent", "seo-agent", "social-data-analysis"],
+  "marketing-automation": ["marketing-agent", "brightsales", "seo-agent"],
   "approvals-automation": ["hr-automation", "document-automation", "operational-reports-automation"],
-  "operational-reports-automation": ["data-platform", "data-analyst-agent", "approvals-automation"],
+  "operational-reports-automation": ["data-platform", "brightproject", "data-analyst-agent"],
   "supply-chain-optimization": ["operational-reports-automation", "data-platform", "data-analyst-agent"],
-  "ai-consulting": ["custom-ai-agent", "data-platform", "smart-automation"]
+  "ai-consulting": ["custom-ai-agent", "data-platform", "smart-automation"],
+  "ai-tenders-analysis": ["data-platform", "document-automation", "operational-reports-automation"],
+  "brightproject": ["operational-reports-automation", "custom-ai-agent", "data-platform"],
+  "brightsales": ["lead-hunter", "customer-service-automation", "marketing-agent"],
+  "ai-scolecs": ["custom-ai-agent", "data-platform", "operational-reports-automation"],
+  "smart-hospital-management": ["health-data-analysis", "medical-archive", "document-automation"]
 };
 
 const meta = {
@@ -258,6 +263,66 @@ const meta = {
     solution: "يساعد Bright AI على تحليل الطلب والمخزون وإشارات السوق لبناء توصيات طلب وتوزيع أكثر انتظاماً.",
     useCases: ["تنبؤ الطلب الموسمي", "متابعة نفاد المخزون", "تحسين إعادة الطلب", "تحليل أداء الفروع والمستودعات"],
     benefits: ["قرارات مخزون أوضح", "تقليل نفاد المنتجات", "تحسين التوزيع", "دعم فرق المشتريات والتشغيل"]
+  },
+  "ai-tenders-analysis": {
+    primary: "نظام تحليل المناقصات بالذكاء الاصطناعي",
+    secondary: ["تحليل المناقصات", "ذكاء اصطناعي للمشتريات", "تحليل كراسات الشروط"],
+    intent: "جهة مالية أو فريق مشتريات يريد تقييم المناقصات والعروض قبل قرار التقديم أو الترسية.",
+    audience: "فرق المشتريات، العقود، المالية، الشؤون القانونية، والإدارة التنفيذية في السعودية.",
+    goal: "طلب نظام يساعد على تحليل كراسات الشروط والعروض والمخاطر بطريقة قابلة للمراجعة.",
+    answerBlock: "نظام تحليل المناقصات من Bright AI يساعد الجهات المالية وفرق المشتريات في السعودية على قراءة كراسات الشروط والعروض بشكل أسرع، ثم تحويل البنود والمخاطر والفروقات إلى تقرير تنفيذي واضح. يناسب الفرق التي تحتاج قراراً أدق قبل التقديم أو الترسية أو التفاوض.",
+    problem: "تحليل المناقصات يستهلك وقتاً كبيراً بين قراءة البنود، مراجعة المتطلبات، مقارنة العروض، وفهم المخاطر القانونية والمالية. أي تأخير أو قراءة ناقصة قد يرفع تكلفة القرار أو يضعف فرصة الفوز.",
+    solution: "يرتب Bright AI كراسة الشروط، يستخرج البنود الحساسة، يقارن المتطلبات بالعروض، ويجهز ملخصاً تنفيذياً يساعد الفريق على مراجعة القرار قبل اعتماده.",
+    useCases: ["تحليل كراسات الشروط", "مقارنة العروض الفنية والمالية", "كشف مخاطر الالتزام", "تجهيز ملخص تنفيذي للجنة"],
+    benefits: ["تسريع قراءة المناقصات", "وضوح أعلى للمخاطر", "مقارنة منظمة للعروض", "دعم قرار التقديم أو الترسية"]
+  },
+  "brightproject": {
+    primary: "BrightProject لإدارة المشاريع الذكية",
+    secondary: ["إدارة مشاريع بالذكاء الاصطناعي", "متابعة المهام", "تنبيهات تأخير المشاريع"],
+    intent: "شركة تريد مساعداً شهرياً يتابع حالة المشاريع والمهام ويبرز التأخير قبل أن يتوسع أثره.",
+    audience: "مديرو المشاريع، فرق التشغيل، مكاتب PMO، والإدارة التنفيذية.",
+    goal: "تجربة BrightProject أو طلب ربطه بسير عمل المشاريع داخل الشركة.",
+    answerBlock: "BrightProject هو روبوت إدارة مشاريع ذكي يساعد فرق العمل في السعودية على متابعة المهام، تلخيص الحالة، وكشف التأخير بشكل مبكر. يناسب الشركات التي تريد رؤية شهرية واضحة للمشاريع دون انتظار اجتماعات طويلة أو تحديثات متفرقة.",
+    problem: "تحديثات المشاريع غالباً تتوزع بين محادثات وملفات وأدوات مختلفة، فيتأخر اكتشاف التعثر ويصعب على الإدارة معرفة الأولويات الفعلية.",
+    solution: "يساعد BrightProject على جمع حالة المهام، تلخيص المخاطر، وإبراز ما يحتاج تدخلاً سريعاً بلغة تنفيذية واضحة تناسب فرق العمل والإدارة.",
+    useCases: ["ملخص حالة المشاريع", "تنبيهات تأخير المهام", "متابعة التزامات الفرق", "تحضير تحديثات الإدارة"],
+    benefits: ["رؤية أسرع للحالة", "تقليل اجتماعات المتابعة", "تنبيه مبكر للتأخير", "قرارات تنفيذية أوضح"]
+  },
+  "brightsales": {
+    primary: "BrightSales روبوت المبيعات الذكي",
+    secondary: ["روبوت مبيعات", "متابعة العملاء المحتملين", "ذكاء اصطناعي للمبيعات"],
+    intent: "فريق مبيعات يريد مساعداً شهرياً ينظم الفرص ورسائل المتابعة ويرفع سرعة التحويل.",
+    audience: "فرق المبيعات، تطوير الأعمال، إدارة الحسابات، والتجارة الإلكترونية.",
+    goal: "تجربة BrightSales أو طلب ربطه بمسار المبيعات والعملاء المحتملين.",
+    answerBlock: "BrightSales يساعد فرق المبيعات في السعودية على متابعة العملاء المحتملين، تجهيز رسائل بيع مناسبة، وترتيب الفرص حسب الأولوية. يناسب الفرق التي تحتاج مساعداً شهرياً يقلل التشتت ويحافظ على سرعة المتابعة بعد كل فرصة.",
+    problem: "الفرص البيعية تضيع عندما تتأخر المتابعة أو تتشابه الرسائل أو لا تكون الأولوية واضحة للفريق، خصوصاً مع كثرة العملاء المحتملين والقنوات.",
+    solution: "ينظم BrightSales بيانات الفرص، يقترح رسائل متابعة، ويساعد الفريق على التركيز على العملاء الأكثر جاهزية للتحويل.",
+    useCases: ["متابعة Leads بعد الحملات", "تجهيز رسائل بيع", "ترتيب فرص CRM", "تلخيص حالة الصفقات"],
+    benefits: ["متابعة أسرع", "رسائل أكثر اتساقاً", "أولوية أوضح للفرص", "تحسين احتمالية التحويل"]
+  },
+  "ai-scolecs": {
+    primary: "منصة تعليمية ذكية متكاملة",
+    secondary: ["تعليم إلكتروني بالذكاء الاصطناعي", "تحليل أداء الطلاب", "منصة تعلم ذكية"],
+    intent: "جهة تعليمية أو تدريبية تريد منصة ذكية لإدارة المحتوى والمتعلمين وقياس الأداء.",
+    audience: "المدارس، المعاهد، مراكز التدريب، وإدارات التعليم والتطوير.",
+    goal: "طلب منصة تعليمية ذكية أو تجربة النموذج الأولي قبل التنفيذ الكامل.",
+    answerBlock: "منصة ai-scolecs من Bright AI تساعد الجهات التعليمية والتدريبية في السعودية على إدارة التعلم والمحتوى وتحليل أداء المتعلمين ضمن تجربة واحدة. تناسب الجهات التي تريد تطوير التعليم الإلكتروني من إدارة ملفات إلى تجربة أكثر ذكاء وتخصيصاً.",
+    problem: "المنصات التعليمية التقليدية تعرض المحتوى والاختبارات لكنها لا تعطي دائماً قراءة واضحة لأداء الطالب أو احتياجه أو جودة التفاعل مع المادة.",
+    solution: "تجمع المنصة إدارة المحتوى والتقييمات مع تحليلات أداء تساعد المعلمين والإدارة على فهم التقدم وتخصيص تجربة التعلم.",
+    useCases: ["إدارة محتوى تعليمي", "متابعة أداء الطلاب", "اختبارات وتقييمات", "تقارير تقدم للجهة التعليمية"],
+    benefits: ["إدارة تعلم أوضح", "تحليل أداء المتعلمين", "تجربة تعليم قابلة للتخصيص", "تقارير تساعد التطوير"]
+  },
+  "smart-hospital-management": {
+    primary: "نظام إدارة المستشفيات الذكية",
+    secondary: ["إدارة مستشفيات بالذكاء الاصطناعي", "ذكاء اصطناعي صحي", "مؤشرات تشغيلية صحية"],
+    intent: "منشأة صحية تريد إدارة أذكى للعمليات والمؤشرات والتقارير الصحية.",
+    audience: "المستشفيات، المراكز الطبية، إدارات الجودة، التشغيل، والتحول الرقمي الصحي.",
+    goal: "طلب نظام يساعد على تنظيم التشغيل الصحي وقراءة المؤشرات قبل التنفيذ الكامل.",
+    answerBlock: "نظام إدارة المستشفيات الذكية من Bright AI يساعد المنشآت الصحية في السعودية على تنظيم العمليات وقراءة المؤشرات ودعم قرارات الجودة من خلال بيانات وتقارير أوضح. يناسب المستشفيات والمراكز التي تريد تحسين التشغيل دون فقدان حساسية السياق الصحي.",
+    problem: "إدارة المستشفيات تحتاج متابعة مستمرة للعمليات والجودة والبيانات. عندما تتفرق المؤشرات بين الأقسام والتقارير اليدوية تتأخر القرارات وتزداد صعوبة التحسين.",
+    solution: "يساعد Bright AI على تنظيم المؤشرات والتقارير وربطها بسياق المنشأة، مع دعم فرق الجودة والتشغيل في مراجعة البيانات واتخاذ خطوات عملية.",
+    useCases: ["متابعة مؤشرات التشغيل", "تقارير الجودة الصحية", "تنظيم بيانات الأقسام", "دعم قرارات الإدارة الطبية"],
+    benefits: ["رؤية تشغيلية أوضح", "دعم أفضل للجودة", "تقارير صحية منظمة", "قابلية تخصيص حسب المنشأة"]
   },
   "ai-consulting": {
     primary: "استشارات الذكاء الاصطناعي",
@@ -1267,6 +1332,51 @@ function servicePager(product) {
 
 function makeSchema(product, rels, faqs) {
   const url = `${SITE}/services/${product.slug}/`;
+  const significantLink = rels.map((item) => item.url);
+  if (product.demoUrl) significantLink.push(product.demoUrl);
+  if (product.secondaryDemoUrl) significantLink.push(product.secondaryDemoUrl);
+  const webPageNode = {
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    "url": url,
+    "name": product.title,
+    "description": product.description,
+    "inLanguage": "ar-SA",
+    "isPartOf": { "@id": `${SITE}/#website` },
+    "about": { "@id": `${url}#service` },
+    "dateModified": DATE,
+    "breadcrumb": { "@id": `${url}#breadcrumb` },
+    "significantLink": significantLink
+  };
+  const serviceNode = {
+    "@type": "Service",
+    "@id": `${url}#service`,
+    "name": product.name,
+    "description": product.description,
+    "url": url,
+    "provider": { "@id": `${SITE}/#organization` },
+    "serviceType": product.category,
+    "category": product.category,
+    "sku": product.sku,
+    "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
+    "audience": { "@type": "Audience", "audienceType": product.meta.audience },
+    "offers": {
+      "@type": "Offer",
+      "url": url,
+      "price": String(product.price),
+      "priceCurrency": "SAR",
+      "availability": "https://schema.org/InStock",
+      "seller": { "@id": `${SITE}/#organization` }
+    }
+  };
+  if (product.demoUrl) {
+    serviceNode.sameAs = [product.demoUrl, product.secondaryDemoUrl].filter(Boolean);
+    serviceNode.potentialAction = {
+      "@type": "ViewAction",
+      "name": product.demoLabel || "جرّب النموذج الأولي",
+      "target": product.demoUrl
+    };
+  }
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -1295,19 +1405,7 @@ function makeSchema(product, rels, faqs) {
         "inLanguage": "ar-SA",
         "publisher": { "@id": `${SITE}/#organization` }
       },
-      {
-        "@type": "WebPage",
-        "@id": `${url}#webpage`,
-        "url": url,
-        "name": product.title,
-        "description": product.description,
-        "inLanguage": "ar-SA",
-        "isPartOf": { "@id": `${SITE}/#website` },
-        "about": { "@id": `${url}#service` },
-        "dateModified": DATE,
-        "breadcrumb": { "@id": `${url}#breadcrumb` },
-        "significantLink": rels.map((item) => item.url)
-      },
+      webPageNode,
       {
         "@type": "BreadcrumbList",
         "@id": `${url}#breadcrumb`,
@@ -1317,27 +1415,7 @@ function makeSchema(product, rels, faqs) {
           { "@type": "ListItem", "position": 3, "name": product.name, "item": url }
         ]
       },
-      {
-        "@type": "Service",
-        "@id": `${url}#service`,
-        "name": product.name,
-        "description": product.description,
-        "url": url,
-        "provider": { "@id": `${SITE}/#organization` },
-        "serviceType": product.category,
-        "category": product.category,
-        "sku": product.sku,
-        "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
-        "audience": { "@type": "Audience", "audienceType": product.meta.audience },
-        "offers": {
-          "@type": "Offer",
-          "url": url,
-          "price": String(product.price),
-          "priceCurrency": "SAR",
-          "availability": "https://schema.org/InStock",
-          "seller": { "@id": `${SITE}/#organization` }
-        }
-      },
+      serviceNode,
       {
         "@type": "FAQPage",
         "@id": `${url}#faq`,
@@ -1352,13 +1430,17 @@ function makeSchema(product, rels, faqs) {
 }
 
 function makeFaqs(product) {
-  return faqOverrides[product.slug] || [
+  const faqs = faqOverrides[product.slug] || [
     { q: `ما هو ${product.name} من Bright AI؟`, a: `${product.name} هو حل من Bright AI يساعد على معالجة احتياج تشغيلي واضح داخل الشركات والجهات في السعودية.` },
     { q: `لمن يناسب ${product.name}؟`, a: `يناسب الجهات التي تحتاج مساراً أوضح في التنفيذ أو التحليل أو الأتمتة بحسب طبيعة الخدمة والبيانات المتاحة.` },
     { q: "كيف يبدأ التنفيذ؟", a: "يبدأ التنفيذ بفهم الاحتياج، ثم تحديد نطاق العمل والبيانات أو الأنظمة ذات العلاقة قبل الإعداد والتجربة." },
     { q: "هل يمكن تخصيص الحل؟", a: "نعم، يتم تخصيص النطاق والمخرجات والربط حسب واقع الجهة واحتياجها العملي." },
     { q: "هل يمكن التوسع لاحقاً؟", a: "نعم، يمكن البدء بنطاق محدود ثم توسيع الخدمة بعد اختبار المخرجات والأثر." }
   ];
+  if (product.demoUrl && !faqs.some((faq) => faq.q === "هل يوجد نموذج تجريبي قبل الشراء؟")) {
+    return [...faqs, { q: "هل يوجد نموذج تجريبي قبل الشراء؟", a: "نعم، يوجد نموذج تجريبي يمكنك تجربته من صفحة المنتج قبل طلب التنفيذ الكامل." }];
+  }
+  return faqs;
 }
 
 function makePage(product) {
@@ -1378,6 +1460,23 @@ function makePage(product) {
   const workflowHtml = workflowSteps(product).map((step) => `<div class="step"><strong>${esc(step[0])}</strong><span>${esc(step[1])}</span></div>`).join("\n");
   const trustHtml = trustItems(product).map((item) => `<li>${esc(item)}</li>`).join("\n");
   const pagerHtml = servicePager(product);
+  const demoButtonLabel = product.demoLabel || "جرّب النموذج الأولي";
+  const heroDemoButton = product.demoUrl ? `<a class="btn btn-soft" href="${esc(product.demoUrl)}">${esc(demoButtonLabel)}</a>` : "";
+  const secondaryDemoLink = product.secondaryDemoUrl ? `<p class="muted-note">ويمكنك أيضاً مراجعة <a class="text-link" href="${esc(product.secondaryDemoUrl)}">${esc(product.secondaryDemoLabel || "نموذجاً مرتبطاً")}</a> لفهم سياق الاستخدام القريب من هذا المنتج.</p>` : "";
+  const demoSection = product.demoUrl ? `
+    <section>
+      <div class="container">
+        <article class="card prose">
+          <h2>جرّب النموذج الأولي قبل الشراء</h2>
+          <p>تقدر تستكشف نموذج أولي للمنتج قبل طلب التنفيذ الكامل، حتى تشوف طريقة العمل وتجربة الاستخدام بشكل عملي.</p>
+          ${secondaryDemoLink}
+          <div class="hero-actions">
+            <a class="btn btn-soft" href="${esc(product.demoUrl)}">${esc(demoButtonLabel)}</a>
+          </div>
+        </article>
+      </div>
+    </section>
+` : "";
 
   return `<!DOCTYPE html>
 <html dir="rtl" lang="ar-SA">
@@ -1549,6 +1648,7 @@ ${jsonLd(schema)}
           <p class="lead">${esc(product.description)}</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="${WHATSAPP}?text=${encodeURIComponent(`السلام عليكم، أحتاج تفاصيل عن ${product.name}`)}">اطلب الخدمة</a>
+            ${heroDemoButton}
             <a class="btn btn-soft" href="/services/">العودة إلى كل خدمات Bright AI</a>
           </div>
         </div>
@@ -1599,6 +1699,8 @@ ${jsonLd(schema)}
         <article class="card"><h2>مخرجات عملية متوقعة</h2><ul>${deliverablesHtml}</ul></article>
       </div>
     </section>
+
+    ${demoSection}
 
     <section>
       <div class="container">
@@ -1718,11 +1820,8 @@ function makeServicesSchema() {
         "name": "قائمة خدمات ومنتجات Bright AI",
         "description": "خدمات ووكلاء وأنظمة ذكاء اصطناعي وأتمتة أعمال للشركات في السعودية.",
         "numberOfItems": products.length,
-        "itemListElement": products.map((product, index) => ({
-          "@type": "ListItem",
-          "position": index + 1,
-          "url": product.url,
-          "item": {
+        "itemListElement": products.map((product, index) => {
+          const serviceItem = {
             "@type": "Service",
             "name": product.name,
             "description": product.description,
@@ -1732,8 +1831,22 @@ function makeServicesSchema() {
             "provider": { "@id": `${SITE}/#organization` },
             "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
             "offers": { "@type": "Offer", "url": product.url, "price": String(product.price), "priceCurrency": "SAR", "availability": "https://schema.org/InStock", "seller": { "@id": `${SITE}/#organization` } }
+          };
+          if (product.demoUrl) {
+            serviceItem.sameAs = [product.demoUrl, product.secondaryDemoUrl].filter(Boolean);
+            serviceItem.potentialAction = {
+              "@type": "ViewAction",
+              "name": product.demoLabel || "جرّب النموذج الأولي",
+              "target": product.demoUrl
+            };
           }
-        }))
+          return {
+            "@type": "ListItem",
+            "position": index + 1,
+            "url": product.url,
+            "item": serviceItem
+          };
+        })
       },
       {
         "@type": "FAQPage",
@@ -1794,14 +1907,18 @@ const rewrites = products.map((product) => `      - type: rewrite
         destination: /services/${product.slug}/
         status: 301`).join("\n");
 let render = fs.readFileSync(renderPath, "utf8");
-if (!render.includes("# === Product service landing pages ===")) {
+if (render.includes("# === Product service landing pages ===")) {
+  render = render.replace(/\n\s*# === Product service landing pages ===[\s\S]*?(?=\n\s*# ملاحظة تشغيلية: بعد أي Sync\/Deploy)/, `\n      # === Product service landing pages ===\n${rewrites}\n`);
+} else {
   render = render.replace(/(\s*# ملاحظة تشغيلية: بعد أي Sync\/Deploy)/, `\n      # === Product service landing pages ===\n${rewrites}\n$1`);
 }
 fs.writeFileSync(renderPath, render);
 
 let redirects = fs.readFileSync(redirectsPath, "utf8");
 const redirectLines = products.map((product) => `/services/${product.slug}/ /services/${product.slug}.html 200\n/services/${product.slug}.html /services/${product.slug}/ 301`).join("\n");
-if (!redirects.includes("# Product service landing pages")) {
+if (redirects.includes("# Product service landing pages")) {
+  redirects = redirects.replace(/\n# Product service landing pages[\s\S]*?(?=\n\/smart-automation\.html \/smart-automation\/ 301)/, `\n# Product service landing pages\n${redirectLines}\n`);
+} else {
   redirects = redirects.replace(/(\n\/smart-automation\.html \/smart-automation\/ 301)/, `\n# Product service landing pages\n${redirectLines}\n$1`);
 }
 fs.writeFileSync(redirectsPath, redirects);

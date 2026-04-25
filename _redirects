@@ -65,6 +65,16 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /services/supply-chain-optimization.html /services/supply-chain-optimization/ 301
 /services/ai-consulting/ /services/ai-consulting.html 200
 /services/ai-consulting.html /services/ai-consulting/ 301
+/services/ai-tenders-analysis/ /services/ai-tenders-analysis.html 200
+/services/ai-tenders-analysis.html /services/ai-tenders-analysis/ 301
+/services/brightproject/ /services/brightproject.html 200
+/services/brightproject.html /services/brightproject/ 301
+/services/brightsales/ /services/brightsales.html 200
+/services/brightsales.html /services/brightsales/ 301
+/services/ai-scolecs/ /services/ai-scolecs.html 200
+/services/ai-scolecs.html /services/ai-scolecs/ 301
+/services/smart-hospital-management/ /services/smart-hospital-management.html 200
+/services/smart-hospital-management.html /services/smart-hospital-management/ 301
 
 /smart-automation.html /smart-automation/ 301
 /ai-agent.html /ai-agent/ 301

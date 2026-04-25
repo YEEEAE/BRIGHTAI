@@ -751,6 +751,26 @@
     {
       "from": "/services/ai-consulting.html",
       "to": "/services/ai-consulting/"
+    },
+    {
+      "from": "/services/ai-tenders-analysis.html",
+      "to": "/services/ai-tenders-analysis/"
+    },
+    {
+      "from": "/services/brightproject.html",
+      "to": "/services/brightproject/"
+    },
+    {
+      "from": "/services/brightsales.html",
+      "to": "/services/brightsales/"
+    },
+    {
+      "from": "/services/ai-scolecs.html",
+      "to": "/services/ai-scolecs/"
+    },
+    {
+      "from": "/services/smart-hospital-management.html",
+      "to": "/services/smart-hospital-management/"
     }
   ]
 }

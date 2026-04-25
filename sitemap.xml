@@ -1547,6 +1547,49 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
+  <url>
+    <loc>https://brightai.site/services/ai-tenders-analysis/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/brightproject/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/brightproject/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/brightproject/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/brightsales/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/brightsales/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/brightsales/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/ai-scolecs/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-scolecs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-scolecs/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/smart-hospital-management/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/smart-hospital-management/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/smart-hospital-management/" />
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+
+
 
   <url>
     <loc>https://brightai.site/smart-automation/</loc>
