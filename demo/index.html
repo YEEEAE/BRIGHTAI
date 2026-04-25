@@ -563,7 +563,9 @@
 <h2 class="bai-inline-0076">اختر النموذج المناسب</h2>
 <div class="demo-card">
 <h3>١) اكتب طلبك</h3>
-<textarea class="demo-input" id="demo-prompt" placeholder="مثال: جهّز لي ملخص تنفيذي لتحسين خدمة العملاء في شركة لوجستية سعودية" rows="6" aria-label="مثال: جهّز لي ملخص تنفيذي لتحسين خدمة العملاء في شركة لوجستية سعودية"></textarea>
+<textarea class="demo-input" id="demo-prompt" placeholder="مثال: جهّز لي ملخص تنفيذي لتحسين خدمة العملاء في شركة لوجستية سعودية" rows="6" maxlength="500" aria-label="مثال: جهّز لي ملخص تنفيذي لتحسين خدمة العملاء في شركة لوجستية سعودية"></textarea>
+<div class="char-counter"><span id="prompt-char-count">0 / 500</span></div>
+<div class="input-hint">اضغط <kbd>Ctrl</kbd>+<kbd>Enter</kbd> للتشغيل السريع</div>
 <select aria-label="اختر نوع المخرجات" class="demo-input" id="demo-output-type">
 <option>ملخص تنفيذي</option>
 <option>خطة عمل مختصرة</option>
@@ -571,18 +573,14 @@
 <option>اقتراحات منتجات</option>
 </select>
 <button class="btn-primary" id="demo-run" type="button">
-                    تشغيل الديمو
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+<i class="fa-solid fa-wand-magic-sparkles"></i>
+تشغيل الديمو
 </button>
-<p style="color:#94a3b8;margin-top:12px;font-size:0.95rem;">
-                    ملاحظة: الديمو لا يخزن بياناتك، ونستخدم جلسة مؤقتة فقط.
-                
-</p></div>
+<p style="color:#64748b;margin-top:14px;font-size:0.88rem;">🔒 لا نخزن بياناتك — الجلسة مؤقتة وآمنة تماماً</p>
+</div>
 <div class="demo-card">
 <h3>٢) النتائج الفورية</h3>
-<div aria-live="polite" class="demo-output" id="demo-output">
-                    اكتب طلبك واضغط "تشغيل الديمو" لعرض النتائج هنا بشكل مباشر.
-                </div>
+<div aria-live="polite" class="demo-output" id="demo-output">اكتب طلبك واضغط <strong>«تشغيل الديمو»</strong> لعرض النتائج هنا مباشرةً — مدعوم بـ Gemini 2.5 Flash.</div>
 </div>
 <div class="demo-card">
 <h3>٣) ماذا بعد؟</h3>
@@ -685,6 +683,23 @@
 <script defer="" src="/frontend/js/main.bundle.min.js"></script>
 <script defer="" src="/frontend/js/demo-stream.min.js"></script>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
+<style>
+.char-counter{text-align:left;font-size:.78rem;color:#64748b;margin-top:-10px;margin-bottom:14px}
+.input-hint{font-size:.78rem;color:#64748b;margin-bottom:14px}
+.input-hint kbd{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:5px;padding:1px 6px;font-size:.75rem}
+.typing-dots{display:inline-flex;gap:5px;align-items:center}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:#10b981;animation:dot-bounce 1.2s ease infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot-bounce{0%,80%,100%{transform:scale(.7);opacity:.4}40%{transform:scale(1.2);opacity:1}}
+.demo-output.streaming{border:1px solid rgba(16,185,129,.3)!important;border-style:solid!important;animation:stream-glow 1.8s ease infinite alternate}
+@keyframes stream-glow{from{box-shadow:none}to{box-shadow:0 0 18px 0 rgba(16,185,129,.14)}}
+.demo-output.done-pulse{animation:done-flash .5s ease forwards}
+@keyframes done-flash{0%{border-color:rgba(16,185,129,.6);box-shadow:0 0 24px rgba(16,185,129,.25)}100%{border-color:rgba(148,163,184,.2);box-shadow:none}}
+.md-heading{display:block;font-size:1rem;font-weight:800;color:#fff;margin:14px 0 6px}
+.md-li{display:block;padding-inline-start:8px;margin:4px 0}
+.demo-error{color:#f87171;display:flex;align-items:center;gap:8px;font-weight:600}
+</style>
 
 
 

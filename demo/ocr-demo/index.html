@@ -597,25 +597,31 @@
 <section class="upload-grid" style="content-visibility: auto;">
 <div class="upload-card">
 <h2>١) ارفع الملف</h2>
-<div class="drop-zone">
+<div class="drop-zone" id="ocr-drop-zone">
 <i class="fa-solid fa-cloud-arrow-up"></i>
-<p>اسحب الملف هنا أو اختره من جهازك
-<input accept=".pdf,.png,.jpg,.jpeg" id="ocr-file" type="file" aria-label="رفع ملف">
-</p></div>
+<p>اسحب الملف هنا أو اضغط للاختيار</p>
+<p style="font-size:0.82rem;color:#64748b;margin-top:6px;">PDF, PNG, JPG, WEBP — حد أقصى 4MB</p>
+<input accept=".pdf,.png,.jpg,.jpeg,.webp" id="ocr-file" type="file" aria-label="رفع ملف للتحليل">
+</div>
+<span id="file-name-label" style="display:block;margin:8px 0 14px;font-size:0.83rem;color:#14b8a6;font-weight:600;word-break:break-all;"></span>
 <button class="btn-primary" id="ocr-run" type="button">
-                    بدء التحليل
-                    <i class="fa-solid fa-rocket"></i>
+<i class="fa-solid fa-magnifying-glass"></i>
+بدء التحليل
 </button>
-<p style="color:#94a3b8;margin-top:12px;font-size:0.95rem;">
-                    يتم حذف الملف بعد التحليل مباشرة. لا يتم حفظ أي بيانات.
-                </p>
+<p style="color:#64748b;margin-top:14px;font-size:0.85rem;">🔒 يُحذف الملف فور انتهاء التحليل — لا تُخزَّن أي بيانات</p>
 </div>
 <div class="upload-card">
 <h2>٢) الحقول المستخرجة</h2>
 <div class="result-box" id="ocr-output">
-<div class="field-row"><span>الحالة</span><span>بانتظار ملف</span></div>
+<div class="field-row"><span class="field-label">الحالة</span><span class="field-value">بانتظار ملف...</span></div>
 </div>
-<div class="result-box json-box" id="ocr-json" style="margin-top:14px;">سيظهر JSON هنا بعد التحليل.</div>
+<div style="margin-top:16px;">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+<span style="font-size:0.85rem;color:#64748b;font-weight:600;">JSON Output</span>
+<button id="copy-json" type="button"><i class="fa-solid fa-copy"></i> نسخ JSON</button>
+</div>
+<div class="result-box json-box" id="ocr-json">{}</div>
+</div>
 </div>
 <div class="upload-card">
 <h2>٣) استخدم النتائج فوراً</h2>
@@ -737,6 +743,21 @@
 <script defer="" src="/frontend/js/main.bundle.min.js"></script>
 <script defer="" src="/frontend/js/ocr-demo.min.js"></script>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
+<style>
+.fields-header{font-size:.85rem;font-weight:700;color:#10b981;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:6px}
+.field-label{color:#94a3b8;font-size:.88rem;font-weight:600;flex-shrink:0}
+.field-value{color:#f1f5f9;font-size:.93rem;font-weight:700;text-align:left;word-break:break-word}
+.field-value.monetary{color:#34d399;font-size:1rem}
+.field-row:hover{background:rgba(255,255,255,.02);border-radius:8px;padding-inline:6px}
+.ocr-processing{display:flex;align-items:center;gap:12px;color:#f59e0b;font-weight:600;font-size:.96rem}
+.ocr-error{color:#f87171;display:flex;align-items:center;gap:8px;font-weight:600}
+.drop-zone.drag-over{border-color:rgba(245,158,11,.6);background:rgba(245,158,11,.04);transform:scale(1.01)}
+#copy-json{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:.83rem;font-weight:700;border:1px solid rgba(147,197,253,.25);background:rgba(147,197,253,.06);color:#93c5fd;cursor:pointer;font-family:Cairo,sans-serif;transition:all .18s ease}
+#copy-json:hover{background:rgba(147,197,253,.14)}
+.result-box.done-pulse{animation:done-amber .5s ease forwards}
+@keyframes done-amber{0%{border-color:rgba(245,158,11,.6);box-shadow:0 0 24px rgba(245,158,11,.2)}100%{border-color:rgba(255,255,255,.07);box-shadow:none}}
+.json-box{direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:.85rem;color:#93c5fd}
+</style>
 
 
 </body></html>

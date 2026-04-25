@@ -774,21 +774,28 @@
 <a class="btn-secondary" href="/contact/">تواصل مع المبيعات</a>
 </div>
 </section>
-<section class="recommender" style="content-visibility: auto;">
-<h2>ساعدنا نوصلك إلى الباقة الأنسب</h2>
-<p style="color:#94a3b8;">جاوب على سؤالين واحصل على توصية فورية.
-</p><form>
-<input min="1" placeholder="عدد أفراد الفريق" required="" type="number" aria-label="عدد أفراد الفريق">
-<select required="" aria-label="نوع القطاع">
-<option value="">نوع القطاع</option>
+<section class="recommender" style="content-visibility: auto;" id="recommender">
+<h2><i class="fa-solid fa-robot" style="color:#8b5cf6;margin-left:8px;"></i> ساعدنا نوصلك إلى الباقة الأنسب</h2>
+<p style="color:#94a3b8;margin-bottom:16px;">جاوب على سؤالين واحصل على توصية فورية مدعومة بـ Gemini 2.5 Flash.</p>
+<form id="recommender-form" style="display:grid;gap:12px;margin-top:4px;">
+<input id="team-size" min="1" max="9999" placeholder="عدد أفراد الفريق" required="" type="number" aria-label="عدد أفراد الفريق">
+<select id="sector-type" required="" aria-label="نوع القطاع">
+<option value="">اختر القطاع</option>
 <option>الخدمات اللوجستية</option>
 <option>الصحة</option>
 <option>التجزئة</option>
 <option>الصناعة</option>
 <option>القطاع الحكومي</option>
+<option>التعليم</option>
+<option>الخدمات المالية</option>
+<option>العقارات</option>
+<option>غير ذلك</option>
 </select>
-<button class="btn-primary" type="submit">احصل على التوصية</button>
+<button class="btn-primary" id="recommender-submit" type="submit">
+<i class="fa-solid fa-wand-magic-sparkles"></i> احصل على التوصية
+</button>
 </form>
+<div id="recommender-result" style="margin-top:18px;min-height:48px;"></div>
 </section>
 <section class="cta-strip" style="content-visibility: auto;">
 <div>
@@ -901,7 +908,17 @@
 <script defer="" src="/frontend/js/runtime-config.min.js"></script>
 <script defer="" src="/frontend/js/navigation.min.js"></script>
 <script defer="" src="/frontend/js/main.bundle.min.js"></script>
+<script defer="" src="/frontend/js/pricing-recommender.min.js"></script>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
+<style>
+.recommender input,.recommender select{width:100%;padding:13px 15px;border-radius:13px;border:1px solid rgba(148,163,184,.2);background:rgba(15,23,42,.85);color:#e2e8f0;font-family:Cairo,sans-serif;font-size:.96rem;transition:border-color .18s ease}
+.recommender input:focus,.recommender select:focus{outline:none;border-color:rgba(139,92,246,.45);box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.plan-card{transition:transform .25s ease,box-shadow .25s ease}
+.rec-result{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.rec-icon{font-size:1.5rem;color:#8b5cf6}
+.rec-text{color:#cbd5e1;line-height:1.9;font-size:.96rem}
+.rec-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+</style>
 
 
 </body></html>
