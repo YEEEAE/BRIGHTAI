@@ -1012,14 +1012,6 @@ ${codeBlocks}
 | أول شهر | تحسين الصور وأبعادها | تقليل CLS/LCP risk | متوسطة | HTML/images/CSS | Medium |
 | 90 يوم | خطة نشر محتوى clusters ومراقبة GSC | نمو AI Search وorganic | عالية | blog/services/reports | High |
 
-## Prompts التنفيذ النهائية
-
-1. راقب بقاء \`robots.txt\` بدون \`Disallow\` لصفحات الموقع، ثم شغّل \`npm run seo:check\` و\`npm run internal-links:audit\`.
-2. نفّذ AEO/GEO للصفحات العشر العاجلة من جدول الأولوية.
-3. وسّع محتوى صفحات الخدمات حسب Deep Authoritative Content Plan.
-4. نفّذ تحسينات الأداء الآمنة للصور والسكربتات دون تغيير التصميم.
-5. راجع قبل/بعد بالنسب نفسها في هذا التقرير.
-
 ## Definition of Done
 
 - [ ] كل صفحة لها Title فريد.
@@ -1041,6 +1033,312 @@ ${codeBlocks}
 - [ ] Trust signals واضحة.
 - [ ] Internal linking محسّن.
 - [ ] لا يوجد keyword cannibalization خطير.
+
+## Prompts تنفيذ كل ما يحتويه التقرير
+
+### Prompt 1: تنفيذ إصلاحات الزحف والفهرسة التقنية
+
+\`\`\`text
+بناءً على تقرير Bright AI الشامل في reports/brightai_full_seo_ai_audit_2026-04-25.md، نفّذ إصلاحات Technical SEO فقط.
+
+المطلوب:
+1) راجع robots.txt وتأكد أنه لا يحتوي أي Disallow يمنع صفحات الموقع أو نماذج العملاء التجريبية.
+2) راجع _headers وrender.yaml وتأكد من عدم وجود X-Robots-Tag: noindex على صفحات الموقع أو demo أو try أو tenders أو interview أو mais-OBM.
+3) راجع meta robots داخل كل HTML وتأكد أن صفحات النماذج التجريبية index, follow.
+4) لا تغيّر noindex لصفحات الأخطاء 404/500/error إلا إذا طُلب صراحة.
+5) تحقق من canonical لكل صفحة عامة.
+6) تحقق من sitemap.xml وأن الصفحات العامة المهمة موجودة فيه.
+7) تحقق من hreflang للصفحات الثنائية ar-SA/en-SA فقط عندما تكون النسخة المقابلة موجودة فعلاً على القرص.
+8) أصلح broken links إن وجدت.
+9) لا تضف noindex لأي صفحة عامة أو demo.
+
+بعد التنفيذ شغّل:
+npm run seo:check
+npm run seo:gate
+npm run internal-links:audit
+
+أعطني:
+- الملفات المعدلة.
+- المشاكل التي أُغلقت.
+- أي مشاكل متبقية مع سبب عدم إصلاحها.
+\`\`\`
+
+### Prompt 2: تنفيذ On-Page SEO وMetadata
+
+\`\`\`text
+بناءً على جدول SEO Audit واقتراحات Title/Meta في تقرير Bright AI، حسّن On-Page SEO للصفحات ذات الأولوية.
+
+المطلوب:
+1) عالج duplicate titles وduplicate meta descriptions.
+2) حافظ على H1 واحد فقط في كل صفحة.
+3) اجعل Title لكل صفحة مناسبًا للسوق السعودي ولا يتجاوز الطول العملي.
+4) اجعل Meta Description فريدة وتزيد CTR بدون مبالغة أو ادعاءات غير موثقة.
+5) لا تجعل كل الصفحات تستهدف نفس الكلمات.
+6) اربط كل صفحة بنية البحث الخاصة بها من Keyword Mapping.
+7) لا تغيّر URL أو canonical إلا إذا كان الخطأ مثبتًا من التقرير.
+
+بعد التنفيذ أعطني جدول:
+| الصفحة | Title قبل | Title بعد | Meta قبل | Meta بعد | الكلمة المستهدفة | سبب التعديل |
+\`\`\`
+
+### Prompt 3: تنفيذ Keyword Mapping ومنع Cannibalization
+
+\`\`\`text
+استخدم ملف reports/keywords strategy 2026.xlsx وجدول Keyword Mapping في التقرير لتوزيع الكلمات المفتاحية على الصفحات.
+
+المطلوب:
+1) صنّف الكلمات إلى Main, Secondary, Long-tail, Question, Commercial, Informational, Transactional, B2B, B2G, Saudi local.
+2) خصص كلمة رئيسية واحدة لكل صفحة مهمة.
+3) حدد الكلمات التي لا تملك صفحة مناسبة.
+4) اقترح صفحات جديدة فقط عندما لا توجد صفحة مناسبة فعلًا.
+5) عالج أي Cannibalization واضح بين صفحات متشابهة.
+6) لا تحشو الكلمات داخل النص.
+
+أعطني جدول:
+| الكلمة | النية | الصفحة النهائية | هل تم تعديل الصفحة؟ | سبب الاختيار | خطر Cannibalization |
+\`\`\`
+
+### Prompt 4: تنفيذ AEO / GEO / AI Search
+
+\`\`\`text
+بناءً على قسم AEO/GEO/AI Search Audit وGoogle AI Mode Citation Readiness، حسّن الصفحات المهمة لتكون قابلة للاقتباس في AI Overviews وGoogle AI Mode وChatGPT Search وPerplexity.
+
+المطلوب:
+1) أضف Answer Block أعلى الصفحات ذات الأولوية.
+2) أضف FAQ مرئي فقط عندما تخدم الأسئلة نية البحث.
+3) أضف جدول مقارنة مختصر عند وجود بدائل أو حالات استخدام.
+4) أضف فقرة "متى تحتاج هذه الخدمة؟".
+5) أضف فقرة "كيف تساعد Bright AI؟".
+6) أضف فقرة "لماذا هذا مهم في السعودية؟".
+7) أضف Trust/Evidence block بدون اختراع أرقام أو عملاء أو شهادات.
+8) اجعل الجمل مباشرة وقابلة للاقتباس.
+9) لا تضف FAQPage schema إلا إذا أضفت FAQ مرئيًا في الصفحة.
+
+بعد التنفيذ أعطني:
+| الصفحة | Answer Block أُضيف؟ | FAQ أُضيف؟ | Schema أُضيف؟ | AI Citation improvement المتوقع |
+\`\`\`
+
+### Prompt 5: تنفيذ Deep Authoritative Content
+
+\`\`\`text
+وسّع محتوى الصفحات المهمة حسب Deep Authoritative Content Plan في التقرير.
+
+المطلوب لكل صفحة:
+1) تعريف واضح.
+2) المشكلة التي تحلها.
+3) لمن هذه الصفحة؟
+4) حالات استخدام في السعودية.
+5) طريقة التنفيذ.
+6) الفوائد العملية.
+7) المخاطر الشائعة.
+8) مؤشرات النجاح.
+9) مقارنة مع البدائل.
+10) أسئلة شائعة.
+11) لماذا Bright AI؟
+12) CTA واضح.
+
+الشروط:
+- لا تكرر نفس النص بين الصفحات.
+- لا تختلق أرقامًا أو عملاء أو شهادات.
+- حافظ على نبرة B2B/B2G سعودية هادئة ومباشرة.
+- لا تغيّر التصميم جذريًا.
+
+أعطني ملخصًا لكل صفحة:
+| الصفحة | الأقسام المضافة | الكلمة المستهدفة | عدد الكلمات قبل/بعد | الروابط الداخلية المضافة |
+\`\`\`
+
+### Prompt 6: تنفيذ Structured Data / Schema
+
+\`\`\`text
+بناءً على قسم Structured Data في التقرير، راجع JSON-LD في كل صفحة مهمة.
+
+المطلوب:
+1) تحقق من JSON-LD الموجود وأنه صالح.
+2) أضف BreadcrumbList للصفحات التي تحتاجه.
+3) أضف Service schema لصفحات الخدمات فقط.
+4) أضف WebPage schema عندما يكون ناقصًا.
+5) أضف Article schema للمقالات فقط.
+6) أضف AboutPage وContactPage للصفحات المناسبة.
+7) أضف FAQPage فقط إذا يوجد FAQ مرئي.
+8) لا تضف HowTo أو Reviews أو AggregateRating أو عملاء أو جوائز غير موجودة.
+
+بعد التنفيذ شغّل فحص JSON-LD محلي إن أمكن، ثم أعطني:
+| الصفحة | Schema قبل | Schema بعد | سبب الإضافة | مخاطر متبقية |
+\`\`\`
+
+### Prompt 7: تنفيذ Internal Linking وSite Architecture
+
+\`\`\`text
+بناءً على Click Depth والصفحات اليتيمة وخطة Internal Linking في التقرير، حسّن الربط الداخلي.
+
+المطلوب:
+1) قرّب الصفحات التجارية المهمة إلى ≤3 نقرات.
+2) أضف روابط سياقية طبيعية من المقالات إلى صفحات الخدمات.
+3) اربط صفحات الخدمات بالمقالات الداعمة.
+4) حسّن navigation وfooter بدون حشو روابط.
+5) أضف breadcrumbs للصفحات العميقة.
+6) عالج الصفحات اليتيمة أو شبه اليتيمة.
+7) حافظ على anchor text طبيعي وغير محشو.
+
+بعد التنفيذ شغّل:
+npm run internal-links:audit
+
+أعطني:
+| من الصفحة | إلى الصفحة | Anchor Text | نوع الرابط | سبب الربط |
+\`\`\`
+
+### Prompt 8: تنفيذ Performance / Page Speed
+
+\`\`\`text
+بناءً على قسم Performance / Speed، نفّذ تحسينات أداء آمنة لا تغيّر التصميم.
+
+المطلوب:
+1) أضف width وheight للصور التي تفتقدها.
+2) أضف loading="lazy" للصور غير الحرجة.
+3) أضف fetchpriority="high" فقط لصورة LCP الواضحة.
+4) استخدم decoding="async" حيث يناسب.
+5) أضف defer للسكربتات غير الحرجة.
+6) لا تستخدم CDN خارجي جديد.
+7) لا تحذف ملفات إلا إذا ثبت أنها غير مستخدمة.
+8) اقترح WebP/AVIF للصور الكبيرة بدل استبدال عشوائي.
+9) عالج CLS المتوقع من الصور والجداول.
+
+بعد التنفيذ شغّل:
+npm run performance:budget
+npm run seo:gate
+
+أعطني:
+| التحسين | الملفات | أثره على LCP/CLS/INP | تحقق |
+\`\`\`
+
+### Prompt 9: تنفيذ Mobile/Desktop UX وUI Design
+
+\`\`\`text
+بناءً على Mobile/Desktop UX وUI/UX Design Audit، حسّن تجربة الاستخدام دون إعادة تصميم كاملة.
+
+المطلوب:
+1) حسّن وضوح Hero في الصفحات المهمة.
+2) حسّن CTA visibility.
+3) أضف answer/trust/CTA blocks بتصميم متسق.
+4) عالج overflow للجداول والعناصر العريضة.
+5) حسّن tap targets لتكون 48px على الأقل.
+6) حسّن focus states.
+7) حافظ على RTL واستخدم logical CSS properties.
+8) لا تستخدم transform: scaleX(-1).
+9) لا تغيّر هوية الموقع جذريًا.
+
+بعد التنفيذ اختبر الجوال والسطح المكتبي بصريًا إن أمكن، ثم أعطني:
+| الصفحة | المشكلة | الحل | CSS/HTML المعدل | أثر UX |
+\`\`\`
+
+### Prompt 10: تنفيذ Accessibility
+
+\`\`\`text
+بناءً على قسم Accessibility، أصلح مشاكل الوصول الأساسية.
+
+المطلوب:
+1) أضف alt وصفي للصور غير الزخرفية.
+2) أضف alt فارغ للصور الزخرفية فقط.
+3) تأكد من labels للنماذج.
+4) حسّن aria-label للأزرار والروابط الأيقونية.
+5) حسّن focus-visible.
+6) أضف reduced motion fallback.
+7) راجع heading order.
+8) لا تغيّر النصوص التجارية إلا عند الحاجة.
+
+أعطني:
+| المشكلة | الصفحة | الإصلاح | الكود | تحقق |
+\`\`\`
+
+### Prompt 11: تنفيذ Conversion Optimization
+
+\`\`\`text
+بناءً على Conversion Optimization في التقرير، حسّن مسار التحويل للصفحات التجارية.
+
+المطلوب:
+1) CTA واضح above the fold.
+2) CTA بعد أقسام القيمة.
+3) CTA بعد Trust/Evidence.
+4) نص زر مختلف حسب نية الصفحة.
+5) نص داعم يخفف الاعتراضات.
+6) ربط مباشر إلى /consultation/ أو /contact/ حسب السياق.
+7) لا تضف نماذج طويلة دون حاجة.
+
+أعطني:
+| الصفحة | نية الزائر | CTA قبل | CTA بعد | مكان CTA | النص الداعم |
+\`\`\`
+
+### Prompt 12: تنفيذ Topical Authority والصفحات الجديدة
+
+\`\`\`text
+بناءً على Topical Authority Plan، أنشئ أو خطط الصفحات الجديدة المقترحة فقط بعد التأكد من عدم وجود صفحة قائمة تؤدي نفس النية.
+
+المطلوب:
+1) راجع الصفحات الحالية قبل إنشاء أي URL جديد.
+2) أنشئ الصفحات ذات الأولوية العالية فقط.
+3) أضف Title وMeta وH1 وOutline وSchema وBreadcrumbs.
+4) اربط الصفحة الجديدة من cluster مناسب.
+5) أضفها إلى sitemap إذا كانت عامة.
+6) لا تنشئ صفحات رقيقة.
+
+الصفحات المرشحة:
+- /enterprise-ai-saudi/
+- /ai-governance-pdpl-ndmo/
+- /rpa-saudi/
+- /government-ai-procurement/
+
+أعطني:
+| الصفحة الجديدة | سبب الإنشاء | الكلمات المستهدفة | الروابط الداخلة | الروابط الخارجة | حالة sitemap |
+\`\`\`
+
+### Prompt 13: تنفيذ Content Pruning / Consolidation
+
+\`\`\`text
+بناءً على Content Pruning في التقرير، راجع الصفحات الضعيفة أو المتكررة.
+
+المطلوب:
+1) لا تحذف أي صفحة دون دليل قوي.
+2) صنّف كل صفحة إلى: تحسين، دمج، إبقاء، noindex، redirect.
+3) لا تستخدم noindex لصفحات النماذج التجريبية للعملاء.
+4) إذا وجدت صفحة duplicate حقيقية، اقترح canonical أو redirect فقط مع دليل.
+5) إذا لا توجد وجهة بديلة آمنة، أنشئ تقريرًا ولا تحذف.
+
+أعطني:
+| الصفحة | القرار | الدليل | الإجراء | Redirect إن وجد | المخاطر |
+\`\`\`
+
+### Prompt 14: مراجعة شاملة بعد التنفيذ
+
+\`\`\`text
+بعد تنفيذ إصلاحات التقرير، أعد تدقيق مشروع Bright AI كاملًا.
+
+المطلوب:
+1) افحص كل ملفات HTML.
+2) قارن نتائج التقرير قبل/بعد.
+3) تحقق من robots.txt و_ headers وrender.yaml.
+4) تحقق من عدم وجود noindex على صفحات demo/try/tenders/interview/mais-OBM.
+5) تحقق من canonical وhreflang.
+6) تحقق من sitemap.
+7) تحقق من schema.
+8) تحقق من internal links.
+9) تحقق من الأداء.
+10) تحقق من UX/accessibility.
+
+شغّل:
+npm run seo:check
+npm run seo:gate
+npm run internal-links:audit
+npm run performance:budget
+
+أعطني:
+| المحور | النتيجة قبل | النتيجة بعد | التحسن | الدليل |
+
+ثم اختم بـ:
+- ما تم إصلاحه فعلاً.
+- ما فشل.
+- ما بقي قرارًا تحريرياً أو تجارياً.
+- هل أصبح الموقع مؤهلًا أكثر لـ Google AI Mode؟ ولماذا؟
+\`\`\`
 `;
 
 fs.writeFileSync(reportPath, report);

@@ -38,11 +38,10 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^frontend\/pages\//i,
   /^interview\/pages\//i,
   /^tenders\/index 2\.html$/i,
-  /^tenders\/landing\.html$/i,
 ];
 const MIN_WORDS_BY_GROUP = {
   core: 120,
-  sector: 350,
+  sector: 300,
   blog: 450,
 };
 
@@ -102,7 +101,6 @@ function detectExplicitExclusionFamily(relPath) {
     return "interview app internal routes";
   }
   if (/^tenders\/index 2\.html$/i.test(normalized)) return "duplicate tender entry";
-  if (/^tenders\/landing\.html$/i.test(normalized)) return "duplicate tender landing page";
   return "quality or canonical exclusion";
 }
 
