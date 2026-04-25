@@ -2884,6 +2884,7 @@
         }
     </style>
 <link rel="stylesheet" href="/frontend/css/demo-experience.css">
+<link rel="stylesheet" href="/assets/css/demo-experience.css">
 <link rel="stylesheet" href="/assets/css/ux-audit-fixes.css">
 </head>
 
@@ -3457,14 +3458,15 @@
             grid.innerHTML = filtered.map((product) => `
         ${(() => {
           const billingChip = product.billingLabel || product.qtyType;
-          const demoButton = product.demoUrl ? `<a class="btn btn-soft"${demoLinkAttributes(product)}>${escapeHtml(product.demoLabel || "جرّب النموذج الأولي")}</a>` : "";
-          const demoChip = product.demoUrl ? `<span class="chip">يوجد نموذج تجريبي قبل الشراء</span>` : "";
+          const hasLiveDemo = Boolean(product.hasLiveDemo || product.demoUrl);
+          const demoButton = product.demoUrl ? `<a class="btn btn-primary live-demo-btn"${demoLinkAttributes(product)}><span class="pulse-dot"></span>${escapeHtml(product.demoLabel || "جرّب النموذج الأولي")}</a>` : "";
+          const demoChip = hasLiveDemo ? `<span class="chip live-demo-badge">تجربة حية مع AI</span>` : "";
           return `
         <article class="product-card" itemscope itemtype="https://schema.org/Product">
           <meta itemprop="brand" content="Bright AI">
           <meta itemprop="sku" content="${escapeHtml(product.id)}">
           <div class="product-media">
-            <span class="product-tag">${escapeHtml(product.category)}</span>
+            <span class="product-tag ${hasLiveDemo ? "live-demo-badge" : ""}">${escapeHtml(hasLiveDemo ? "Live Demo" : product.category)}</span>
             <div class="product-icon" aria-hidden="true">${product.icon}</div>
             <h3 itemprop="name">${escapeHtml(product.name)}</h3>
           </div>
