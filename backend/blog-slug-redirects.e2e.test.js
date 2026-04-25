@@ -83,7 +83,7 @@ describe('Legacy Arabic blog redirects', () => {
 
       expect(result.status).toBe(301);
       expect(result.headers.Location).toBe(
-        '/blog/%D8%A3%D8%AA%D9%85%D8%AA%D8%A9-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D8%AD%D9%84%D9%88%D9%84-%D9%85%D8%AE%D8%B5%D8%B5%D8%A9-%D9%84%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9-%D9%88%D8%AA%D8%AD%D8%B3%D9%8A%D9%86-%D9%85%D8%AD%D8%B1%D9%83%D8%A7%D8%AA-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB-1/'
+        '/blog/ai-automation-project-analysis/'
       );
     } finally {
       runtime.restoreEnv();
@@ -100,8 +100,49 @@ describe('Legacy Arabic blog redirects', () => {
 
       expect(result.status).toBe(301);
       expect(result.headers.Location).toBe(
-        '/blog/%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A-%D9%83%D9%8A%D9%81-%D8%AA%D8%B3%D9%87%D9%85-%D9%81%D9%8A-%D8%AA%D8%AD%D9%82%D9%8A%D9%82-%D8%A7%D9%84%D8%AA%D8%AD%D9%88%D9%84-%D8%A7%D9%84%D8%B1%D9%82%D9%85%D9%8A-%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA/?ref=test'
+        '/blog/choose-ai-company-saudi/?ref=test'
       );
+    } finally {
+      runtime.restoreEnv();
+    }
+  });
+
+  it('redirects unsafe Arabic filename slugs directly to the English canonical path', async () => {
+    const runtime = await loadHandleRequest();
+
+    try {
+      const result = await invokeHandleRequest(runtime.handleRequest, {
+        url: '/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA.html?ref=test'
+      });
+
+      expect(result.status).toBe(301);
+      expect(result.headers.Location).toBe('/blog/data-analysis-decision-making/?ref=test');
+    } finally {
+      runtime.restoreEnv();
+    }
+  });
+
+  it('serves folder-based blog routes and redirects aliases to the slash path', async () => {
+    const runtime = await loadHandleRequest();
+
+    try {
+      const cleanPath = await invokeHandleRequest(runtime.handleRequest, {
+        method: 'HEAD',
+        url: '/blog/ai-marketing-guide'
+      });
+      const slashPath = await invokeHandleRequest(runtime.handleRequest, {
+        method: 'HEAD',
+        url: '/blog/ai-marketing-guide/'
+      });
+      const htmlAlias = await invokeHandleRequest(runtime.handleRequest, {
+        url: '/blog/ai-marketing-guide.html'
+      });
+
+      expect(cleanPath.status).toBe(301);
+      expect(cleanPath.headers.Location).toBe('/blog/ai-marketing-guide/');
+      expect(slashPath.status).toBe(200);
+      expect(htmlAlias.status).toBe(301);
+      expect(htmlAlias.headers.Location).toBe('/blog/ai-marketing-guide/');
     } finally {
       runtime.restoreEnv();
     }

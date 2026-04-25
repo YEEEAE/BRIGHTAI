@@ -75,41 +75,93 @@ const CHAT_STREAM_ROUTE_ALIASES = new Set(['/api/gemini/chat/stream']);
 const OPENAI_COMPAT_ROUTE_ALIASES = new Set(['/api/ai/openai-chat', '/api/ai/chat/completions']);
 const BLOG_SLUG_REDIRECTS = new Map([
   [
+    '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1',
+    '/blog/ai-automation-project-analysis/'
+  ],
+  [
+    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية',
+    '/blog/process-automation-ai-efficiency/'
+  ],
+  [
+    '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية',
+    '/blog/industrial-automation-productivity/'
+  ],
+  [
+    '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية',
+    '/blog/financial-hr-automation/'
+  ],
+  [
+    '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار',
+    '/blog/digital-transformation-automation/'
+  ],
+  [
+    '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور',
+    '/blog/machine-learning-computer-vision/'
+  ],
+  [
+    '/blog/الذكاء-الاصطناعي-و-التسويق',
+    '/blog/ai-marketing-guide/'
+  ],
+  [
+    '/blog/تحليل-البيانات',
+    '/blog/data-analysis-decision-making/'
+  ],
+  [
+    '/blog/تعلم-الآلة-و-الأعمال',
+    '/blog/machine-learning-business/'
+  ],
+  [
+    '/blog/مقال-تحليل',
+    '/blog/ai-data-analysis-tools/'
+  ],
+  [
     '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)',
-    '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/'
+    '/blog/ai-automation-project-analysis/'
   ],
   [
     '/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية',
-    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/'
+    '/blog/process-automation-ai-efficiency/'
   ],
   [
     '/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات',
-    '/blog/'
+    '/blog/choose-ai-company-saudi/'
   ],
   [
     '/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية',
-    '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/'
+    '/blog/industrial-automation-productivity/'
   ],
   [
     '/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية',
-    '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/'
+    '/blog/financial-hr-automation/'
   ],
   [
     '/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار',
-    '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/'
+    '/blog/digital-transformation-automation/'
   ],
   [
     '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور',
-    '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/'
+    '/blog/machine-learning-computer-vision/'
   ],
   [
     '/blog/atou.doc',
-    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/'
+    '/blog/process-automation-ai-efficiency/'
   ],
   [
     '/blog/astr.doc',
     '/blog/'
   ]
+]);
+const FOLDER_BLOG_SLUGS = new Set([
+  'ai-automation-project-analysis',
+  'process-automation-ai-efficiency',
+  'industrial-automation-productivity',
+  'financial-hr-automation',
+  'digital-transformation-automation',
+  'machine-learning-computer-vision',
+  'ai-marketing-guide',
+  'data-analysis-decision-making',
+  'machine-learning-business',
+  'ai-data-analysis-tools'
 ]);
 
 function normalizeStaticRedirectSource(pathname) {
@@ -129,8 +181,18 @@ function getStaticRedirectTarget(pathname) {
     return null;
   }
 
+  const folderSlug = pathname.match(/^\/blog\/([A-Za-z0-9-]+)\/?$/);
+  if (folderSlug && FOLDER_BLOG_SLUGS.has(folderSlug[1])) {
+    return pathname.endsWith('/') ? null : `/blog/${folderSlug[1]}/`;
+  }
+
+  const folderSlugHtml = pathname.match(/^\/blog\/([A-Za-z0-9-]+)\.html$/);
+  if (folderSlugHtml && FOLDER_BLOG_SLUGS.has(folderSlugHtml[1])) {
+    return `/blog/${folderSlugHtml[1]}/`;
+  }
+
   if (pathname === '/blog/production-line' || pathname === '/blog/production-line/' || pathname === '/blog/production-line.html') {
-    return '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/';
+    return '/blog/industrial-automation-productivity/';
   }
 
   if (
@@ -138,7 +200,7 @@ function getStaticRedirectTarget(pathname) {
     pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/' ||
     pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html'
   ) {
-    return '/blog/';
+    return '/blog/choose-ai-company-saudi/';
   }
 
   const candidates = new Set([pathname]);
