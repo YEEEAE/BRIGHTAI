@@ -936,7 +936,9 @@
     }
 
     .table-wrap {
+      min-height: 304px;
       overflow: auto;
+      contain: layout paint;
     }
 
     table {
@@ -1854,8 +1856,8 @@
   </div>
 </section>
 </main>
-  <script src="/frontend/js/runtime-config.min.js"></script>
-<script src="/tenders/api-config.min.js"></script>
+  <script defer src="/frontend/js/runtime-config.min.js"></script>
+<script defer src="/tenders/api-config.min.js"></script>
   <script>
     (function () {
       var authKey = "contractai-authenticated";

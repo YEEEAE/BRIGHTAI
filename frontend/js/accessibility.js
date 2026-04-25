@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cookieOk: "قبول ملفات تعريف الارتباط",
   };
 
+  const normalizeText = (value) => (value || "").replace(/\s+/g, " ").trim();
+
   const socialLabels = [
     {
       pattern: /linkedin\.com/i,
@@ -112,6 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   applyFontScale(fontScale);
 
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const syncReducedMotion = () => {
+    root.dataset.reducedMotion = String(reducedMotionQuery.matches);
+  };
+  syncReducedMotion();
+  reducedMotionQuery.addEventListener?.("change", syncReducedMotion);
+
   const initialTheme = localStorage.getItem("brightai_theme") || "dark";
   if (initialTheme === "light") {
     document.body.classList.add("light-theme");
@@ -125,6 +134,58 @@ document.addEventListener("DOMContentLoaded", () => {
       syncThemeIcon(theme);
     });
   }
+
+  const inferIconLabel = (element) => {
+    const href = element.tagName === "A" ? element.getAttribute("href") || "" : "";
+    const iconName = element.querySelector("iconify-icon")?.getAttribute("icon") || "";
+    const descriptor = `${element.id || ""} ${element.className || ""} ${href} ${iconName}`.toLowerCase();
+
+    if (/api\.whatsapp|wa\.me|whatsapp|message-circle/.test(descriptor)) {
+      return "بدء التواصل مع Bright AI عبر واتساب";
+    }
+
+    if (/mailto:|mail/.test(descriptor)) {
+      return "إرسال بريد إلى Bright AI";
+    }
+
+    if (/linkedin/.test(descriptor)) {
+      return "زيارة صفحة Bright AI على لينكدإن";
+    }
+
+    if (/(^|\s|\/)x\.com|twitter/.test(descriptor)) {
+      return "زيارة حساب Bright AI على منصة إكس";
+    }
+
+    if (/youtube/.test(descriptor)) {
+      return "زيارة قناة Bright AI على يوتيوب";
+    }
+
+    if (/search/.test(descriptor)) {
+      return "البحث في الموقع";
+    }
+
+    if (/menu|align-justify|hamburger/.test(descriptor)) {
+      return "فتح القائمة";
+    }
+
+    if (/send|paper-plane/.test(descriptor)) {
+      return "إرسال الرسالة";
+    }
+
+    if (/minus|minimize/.test(descriptor)) {
+      return "تصغير النافذة";
+    }
+
+    if (/(^|\s|:)x($|\s)|close|times/.test(descriptor)) {
+      return "إغلاق النافذة";
+    }
+
+    if (/external-link|arrow-up-left|arrow-up-right/.test(descriptor) && href) {
+      return "فتح الرابط";
+    }
+
+    return "";
+  };
 
   const applyAccessibleLabel = (element) => {
     if (!element || element.getAttribute("aria-label")) {
@@ -152,24 +213,104 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    const text = (element.textContent || "").replace(/\s+/g, " ").trim();
+    const text = normalizeText(element.textContent);
     if (text) {
       element.setAttribute("aria-label", text);
       return;
     }
 
-    const iconName = element.querySelector("iconify-icon")?.getAttribute("icon") || "";
-    if (/search/i.test(iconName)) {
-      element.setAttribute("aria-label", "البحث في الموقع");
-    } else if (/menu|align-justify/i.test(iconName)) {
-      element.setAttribute("aria-label", "فتح القائمة");
-    } else if (/send/i.test(iconName)) {
-      element.setAttribute("aria-label", "إرسال");
-    } else if (/minus/i.test(iconName)) {
-      element.setAttribute("aria-label", "تصغير العنصر");
-    } else if (/x|close/i.test(iconName)) {
-      element.setAttribute("aria-label", "إغلاق العنصر");
+    const iconLabel = inferIconLabel(element);
+    if (iconLabel) {
+      element.setAttribute("aria-label", iconLabel);
     }
+  };
+
+  const hasExplicitLabel = (field) => {
+    if (field.labels?.length) {
+      return true;
+    }
+
+    const labelledBy = field.getAttribute("aria-labelledby");
+    if (labelledBy && document.getElementById(labelledBy)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const getFieldLabel = (field) => {
+    const directLabel = normalizeText(field.getAttribute("aria-label"));
+    if (directLabel) {
+      return directLabel;
+    }
+
+    const placeholder = normalizeText(field.getAttribute("placeholder"));
+    if (placeholder) {
+      return placeholder;
+    }
+
+    const name = normalizeText(field.getAttribute("name"));
+    if (name) {
+      return name;
+    }
+
+    if (field.type === "file") {
+      return "رفع ملف";
+    }
+
+    if (field.type === "search") {
+      return "البحث";
+    }
+
+    return "";
+  };
+
+  const ensureFormLabel = (field, index) => {
+    if (!field || field.type === "hidden" || hasExplicitLabel(field)) {
+      return;
+    }
+
+    const labelText = getFieldLabel(field);
+    if (!labelText) {
+      return;
+    }
+
+    if (!field.id) {
+      field.id = `brightai-field-${index + 1}`;
+    }
+
+    const label = document.createElement("label");
+    label.className = "sr-only";
+    label.setAttribute("for", field.id);
+    label.textContent = labelText;
+    field.insertAdjacentElement("beforebegin", label);
+  };
+
+  const syncDecorativeImages = () => {
+    document
+      .querySelectorAll("img[aria-hidden='true'], img[role='presentation'], img[role='none'], img.decorative")
+      .forEach((image) => {
+        image.setAttribute("alt", "");
+      });
+  };
+
+  const syncInteractiveImages = () => {
+    document.querySelectorAll("img[role='button'], img[tabindex='0'][data-full]").forEach((image) => {
+      const altText = normalizeText(image.getAttribute("alt"));
+      if (altText && !image.getAttribute("aria-label")) {
+        image.setAttribute("aria-label", `فتح معاينة: ${altText}`);
+      }
+
+      if (!image.dataset.a11yKeyBound) {
+        image.dataset.a11yKeyBound = "true";
+        image.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            image.click();
+          }
+        });
+      }
+    });
   };
 
   const hideDecorativeIcons = (scope = document) => {
@@ -244,7 +385,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("button, a").forEach((element) => {
     applyAccessibleLabel(element);
   });
+  document.querySelectorAll("input, select, textarea").forEach(ensureFormLabel);
 
+  syncDecorativeImages();
+  syncInteractiveImages();
   hideDecorativeIcons();
   syncTabs();
   syncFilters();

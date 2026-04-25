@@ -4,6 +4,13 @@
   --ba-ux-panel: rgba(15, 23, 42, 0.72);
   --ba-ux-border: rgba(148, 163, 184, 0.24);
   --ba-ux-radius: 16px;
+  --ba-ux-shadow: 0 18px 48px rgba(2, 6, 23, 0.24);
+}
+
+html,
+body {
+  max-inline-size: 100%;
+  overflow-x: clip;
 }
 
 :focus-visible {
@@ -11,6 +18,23 @@
   outline-offset: 3px;
   border-radius: 10px;
   box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.14);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:where(a, button, input, select, textarea, summary, [role="button"]):focus-visible {
+  outline: 3px solid var(--ba-ux-focus);
+  outline-offset: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -22,6 +46,15 @@
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
 }
 
 a,
@@ -42,6 +75,8 @@ input[type="submit"],
 input[type="reset"],
 summary {
   min-height: 48px;
+  min-inline-size: 48px;
+  touch-action: manipulation;
 }
 
 summary {
@@ -174,8 +209,34 @@ header .lead {
 
 .seo-intent-links a,
 .section-cta a,
-.ux-section-cta a {
+.ux-section-cta a,
+.hero-actions a,
+.hero-actions button,
+.nav-link,
+.search-trigger,
+.mobile-search-btn,
+.mobile-toggle,
+.chatbot-toggle,
+.chatbot-send,
+.chatbot-chip,
+.chatbot-mini-btn,
+.chatbot-icon-btn,
+.qty-control button,
+.close-btn,
+.floating-cart,
+.to-top,
+#bai-chat-fab,
+#bai-chat-close,
+#bai-chat-send {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 48px;
+  min-inline-size: 48px;
+}
+
+.section-cta a,
+.ux-section-cta a {
   padding: 0.75rem 1rem;
   border-radius: 12px;
   font-weight: 800;
@@ -231,17 +292,99 @@ header .lead {
   line-height: 1.85;
 }
 
+.hero .seo-answer-block,
+.hero-section .seo-answer-block,
+.hero-copy .seo-answer-block,
+.hero-content .seo-answer-block {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: min(64rem, calc(100vw - 32px));
+  margin-inline: auto;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(15, 23, 42, 0.72));
+  box-shadow: var(--ba-ux-shadow);
+  box-sizing: border-box;
+}
+
+.hero .seo-intent-section,
+.hero-section .seo-intent-section,
+.hero-copy .seo-intent-section,
+.hero-content .seo-intent-section {
+  inline-size: min(100%, 64rem);
+  max-inline-size: calc(100vw - 32px);
+  max-height: 11rem;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+}
+
+.hero-actions,
+.hero .flex.flex-col.sm\:flex-row,
+.hero-section .flex.flex-col.sm\:flex-row {
+  justify-content: center;
+}
+
+.hero-actions a:first-child,
+.hero-section .flex.flex-col.sm\:flex-row a:first-child,
+.hero .flex.flex-col.sm\:flex-row a:first-child {
+  box-shadow: 0 18px 42px rgba(14, 165, 233, 0.26), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.ux-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 18px;
+  border-block: 1px solid var(--ba-ux-border);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.62), rgba(2, 6, 23, 0.82));
+  text-align: start;
+}
+
+.ux-trust-card {
+  border: 1px solid var(--ba-ux-border);
+  border-radius: var(--ba-ux-radius);
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: 0 14px 34px rgba(2, 6, 23, 0.14);
+}
+
+.ux-trust-card strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-block-end: 0.35rem;
+}
+
+.ux-trust-card p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 0.93rem;
+  line-height: 1.85;
+}
+
 .responsive-table,
 .table-scroll,
 .geo-table,
+.compare-wrap,
+.table-wrapper,
+.comparison-table-wrapper,
 table {
   max-width: 100%;
 }
 
 .responsive-table,
-.table-scroll {
+.table-scroll,
+.geo-table,
+.compare-wrap,
+.table-wrapper,
+.comparison-table-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
 }
 
 table {
@@ -251,6 +394,15 @@ table {
 th,
 td {
   overflow-wrap: break-word;
+}
+
+.compare,
+.comparison-table,
+.automation-table,
+.geo-table table,
+.responsive-table table,
+.table-scroll table {
+  min-width: 720px;
 }
 
 @media (max-width: 768px) {
@@ -288,6 +440,8 @@ td {
   .ux-section-cta a,
   .conversion-cta a,
   .commercial-seo-ctas a,
+  .hero-actions a,
+  .hero-actions button,
   .btn,
   .btn-primary,
   .btn-secondary,
@@ -298,6 +452,18 @@ td {
     min-height: 48px;
     text-align: center;
     white-space: normal;
+  }
+
+  .hero .seo-intent-section,
+  .hero-section .seo-intent-section,
+  .hero-copy .seo-intent-section,
+  .hero-content .seo-intent-section {
+    display: none;
+  }
+
+  .ux-trust-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
   }
 
   .geo-table,

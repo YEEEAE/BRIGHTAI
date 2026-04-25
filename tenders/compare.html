@@ -268,7 +268,7 @@
       .risk-high { color: #fecaca; background: rgba(255,71,87,0.16); }
       .risk-medium { color: #fde68a; background: rgba(245,158,11,0.16); }
       .risk-low { color: #bbf7d0; background: rgba(34,197,94,0.16); }
-      .table-wrap { overflow: auto; }
+      .table-wrap { min-height: 230px; overflow: auto; contain: layout paint; }
       .table-actions { justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
       .toast-stack {
         position: fixed; top: 20px; left: 20px; z-index: 260; display: grid; gap: 12px;
@@ -814,8 +814,8 @@
   </div>
 </section>
 </main>
-<script src="/frontend/js/runtime-config.min.js"></script>
-<script src="/tenders/api-config.min.js"></script>
+<script defer src="/frontend/js/runtime-config.min.js"></script>
+<script defer src="/tenders/api-config.min.js"></script>
 <script>
       (function () {
         var authKey = "contractai-authenticated";

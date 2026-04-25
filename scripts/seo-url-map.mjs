@@ -45,6 +45,7 @@ const TRAILING_SLASH_ROUTE_PATTERNS = [
   /^\/en(?:\/.*)?\/?$/i,
   /^\/docs(?:\/.*)?\/?$/i,
   /^\/blog(?:\/.*)?\/?$/i,
+  /^\/services\/[^/]+\/?$/i,
   /^\/sectors\/[^/]+\/?$/i,
   /^\/tenders(?:\/.*)?\/?$/i,
   /^\/ai-bots\/[^/]+\/?$/i,
