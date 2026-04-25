@@ -1,6 +1,7 @@
 # تقرير فحص HTML / JS / CSS وتجارب API لمشروع BrightAI
 
 ## نطاق الفحص
+
 - عدد ملفات HTML المفحوصة: **251**
 - عدد ملفات JS المفحوصة: **84**
 - عدد ملفات CSS المفحوصة: **29**
@@ -13,19 +14,20 @@
 
 ## ملخص صفحات التجارب المطلوبة
 
-| الصفحة | HTML KB | CSS نشط / حجم محلي | JS نشط / حجم محلي | تكرار CSS فعلي | CDN خارجي |
-|---|---:|---:|---:|---|---:|
-| `try/data-analyzer/index.html` | 83.4 | 8 / 179.1KB | 14 / 237.5KB | /frontend/css/main.bundle.min.css ×2 | 1 CSS / 5 JS |
-| `health/index.html` | 95.4 | 6 / 154.4KB | 11 / 290.5KB | /frontend/css/main.bundle.min.css ×2 | 1 CSS / 2 JS |
-| `demo/ocr-demo/index.html` | 51.8 | 8 / 184.7KB | 11 / 264.5KB | /frontend/css/main.bundle.min.css ×2 | 1 CSS / 2 JS |
-| `interview/index.html` | 56.6 | 10 / 174.4KB | 6 / 79.9KB | /frontend/css/main.bundle.min.css ×2 | 3 CSS / 1 JS |
-| `smart-medical-archive/index.html` | 88.2 | 10 / 231.6KB | 18 / 357.8KB | /smart-medical-archive/system-unified.css ×2, /frontend/css/main.bundle.min.css ×2 | 1 CSS / 9 JS |
-| `ai-bots/BrightSupport/index.html` | 62.2 | 8 / 159.5KB | 13 / 308.5KB | /frontend/css/main.bundle.min.css ×2 | 2 CSS / 2 JS |
-| `ai-bots/BrightProject/index.html` | 61.8 | 8 / 159.5KB | 13 / 308.5KB | /frontend/css/main.bundle.min.css ×2 | 2 CSS / 2 JS |
-| `ai-bots/BrightSales/index.html` | 61.9 | 8 / 159.5KB | 13 / 308.5KB | /frontend/css/main.bundle.min.css ×2 | 2 CSS / 2 JS |
-| `ai-scolecs/index.html` | 92.0 | 10 / 164.2KB | 19 / 331.8KB | /frontend/css/main.bundle.min.css ×2 | 2 CSS / 7 JS |
+| الصفحة                         | HTML KB | CSS نشط / حجم محلي | JS نشط / حجم محلي | تكرار CSS فعلي                                                              | CDN خارجي |
+| ------------------------------------ | ------: | ---------------------------: | --------------------------: | ------------------------------------------------------------------------------------ | -------------: |
+| `try/data-analyzer/index.html`     |    83.4 |                  8 / 179.1KB |                14 / 237.5KB | /frontend/css/main.bundle.min.css ×2                                                |   1 CSS / 5 JS |
+| `health/index.html`                |    95.4 |                  6 / 154.4KB |                11 / 290.5KB | /frontend/css/main.bundle.min.css ×2                                                |   1 CSS / 2 JS |
+| `demo/ocr-demo/index.html`         |    51.8 |                  8 / 184.7KB |                11 / 264.5KB | /frontend/css/main.bundle.min.css ×2                                                |   1 CSS / 2 JS |
+| `interview/index.html`             |    56.6 |                 10 / 174.4KB |                  6 / 79.9KB | /frontend/css/main.bundle.min.css ×2                                                |   3 CSS / 1 JS |
+| `smart-medical-archive/index.html` |    88.2 |                 10 / 231.6KB |                18 / 357.8KB | /smart-medical-archive/system-unified.css ×2, /frontend/css/main.bundle.min.css ×2 |   1 CSS / 9 JS |
+| `ai-bots/BrightSupport/index.html` |    62.2 |                  8 / 159.5KB |                13 / 308.5KB | /frontend/css/main.bundle.min.css ×2                                                |   2 CSS / 2 JS |
+| `ai-bots/BrightProject/index.html` |    61.8 |                  8 / 159.5KB |                13 / 308.5KB | /frontend/css/main.bundle.min.css ×2                                                |   2 CSS / 2 JS |
+| `ai-bots/BrightSales/index.html`   |    61.9 |                  8 / 159.5KB |                13 / 308.5KB | /frontend/css/main.bundle.min.css ×2                                                |   2 CSS / 2 JS |
+| `ai-scolecs/index.html`            |    92.0 |                 10 / 164.2KB |                19 / 331.8KB | /frontend/css/main.bundle.min.css ×2                                                |   2 CSS / 7 JS |
 
 ## أهم مشاكل JS/CSS العامة
+
 1. **تكرار تحميل `/frontend/css/main.bundle.min.css`** في أغلب الصفحات، ومنها كل صفحات التجارب المطلوبة تقريباً.
 2. **تكرار `/smart-medical-archive/system-unified.css`** في صفحة الأرشيف الطبي.
 3. **اعتماد كبير على inline styles وinline scripts** داخل صفحات ضخمة، وهذا يصعب الصيانة ويزيد احتمالية تضارب CSS/JS.
@@ -41,6 +43,7 @@
 ## حالة كل صفحة مطلوبة
 
 ### 1) `try/data-analyzer/index.html`
+
 - المشكلة: صفحة التحليل تعتمد على تحليل محلي للملف فقط. `frontend/js/data-analyzer.min.js` لا يحتوي `fetch` ولا يربط Gemini.
 - المشكلة التصميمية: تجربة ممتازة ظاهرياً لكن سؤال "اسأل AI عن بياناتك" يحتاج API فعلي.
 - المطلوب:
@@ -50,6 +53,7 @@
   - إضافة sample datasets جاهزة: مبيعات، مخزون، موارد بشرية، رضا عملاء.
 
 ### 2) `health/index.html`
+
 - المشكلة: الصفحة ضخمة وفيها 9 inline JS blocks و3 inline CSS blocks.
 - الموجود: تحليل صورة طبية يستخدم `/api/ai/medical`.
 - المشكلة: vitals/HMS/Med-Gemini تعطي نتائج مبنية داخل JS ومحاكاة، وليست Gemini فعلية.
@@ -60,6 +64,7 @@
   - تحويل النتائج لكروت: درجة خطورة، ملخص، توصيات، أسئلة للطبيب، CTA لتطبيق خاص بالمستشفى.
 
 ### 3) `demo/ocr-demo/index.html`
+
 - الموجود: `frontend/js/ocr-demo.min.js` مربوط مباشرة بـ Gemini 2.5 Flash ويدعم صور/PDF وJSON.
 - المشكلة: API key موجود داخل ملف frontend؛ هذا يشتغل كتجربة مباشرة، لكنه مكشوف.
 - المشكلة التقنية: يستخدم `?key=` بدل هيدر `x-goog-api-key`، ويحتاج توحيد error handling مع بقية الصفحات.
@@ -70,6 +75,7 @@
   - إضافة CTA بعد النتيجة: "اربط OCR على نظامك".
 
 ### 4) `interview/index.html`
+
 - الموجود: رحلة 6 خطوات ممتازة، وملف `interview-app.min.js` يستدعي `/api/ai/openai-chat`.
 - المشكلة: الأسماء الداخلية ما زالت Groq (`groqApiKey`, `groqModel`) رغم أن المطلوب Gemini.
 - المشكلة: يرسل Authorization Bearer فارغ غالباً، ويعتمد على config غير واضح.
@@ -80,7 +86,8 @@
   - تجربة قبل الشراء: رفع CV، تحليل ملاءمة وظيفة، تحدي مخصص، مقابلة قصيرة، تقرير PDF.
 
 ### 5) `smart-medical-archive/index.html`
-- المشكلة: ثقيل جداً: 18 سكربت نشط، 9 خارجية، و`system-unified.js` حجمه كبير.
+
+- المشكلة: ثقيل جداً: 18 سكربت نشط، 9 خارجية، و `system-unified.js` حجمه كبير.
 - المشكلة: يستخدم Groq في `smart-ai-logic.js` ومواضع في `system-unified.js`.
 - المشكلة: CSS الخاص مكرر.
 - المطلوب:
@@ -90,6 +97,7 @@
   - دعم mock mode عند فشل API عشان ما تموت التجربة.
 
 ### 6) `ai-bots/BrightSupport/index.html`
+
 - الموجود: يستخدم `chatbot-production.bundle.js` مع streaming endpoint.
 - المشكلة: التجربة عامة، ولا تعرض سيناريو دعم كامل قبل الشراء.
 - المطلوب:
@@ -98,6 +106,7 @@
   - حفظ محادثة demo وإظهار مقاييس: زمن الرد، التصعيد، رضا العميل.
 
 ### 7) `ai-bots/BrightProject/index.html`
+
 - الموجود: نفس chatbot bundle.
 - المشكلة: لا توجد رحلة Project واضحة.
 - المطلوب:
@@ -106,6 +115,7 @@
   - إخراج منظم: جدول مهام، مخاطر، Next actions، export.
 
 ### 8) `ai-bots/BrightSales/index.html`
+
 - الموجود: نفس chatbot bundle.
 - المشكلة: تجربة المبيعات لا تحتوي funnel واضح.
 - المطلوب:
@@ -114,6 +124,7 @@
   - إخراج: درجة تأهيل العميل، نص متابعة واتساب/إيميل، CTA لحجز استشارة.
 
 ### 9) `ai-scolecs/index.html`
+
 - الموجود: تطبيق غني: Tutor, Exam, Planner, Corrector, Stats ويستخدم `/api/ai/openai-chat`.
 - المشكلة: السكربت يعتمد على API backend لا direct page، وفيه CDNs كثيرة.
 - المطلوب:
@@ -122,6 +133,7 @@
   - إخراج PDF/HTML جاهز: اختبار، خطة درس، تصحيح واجب، تقرير أداء.
 
 ## خريطة رحلة العميل المقترحة لكل صفحات التجارب
+
 1. Hero واضح: وش المنتج؟ لمن؟ وش بيطلع للمستخدم؟
 2. زر "جرّب الآن" ينزل مباشرة للنموذج.
 3. زر "استخدم بيانات نموذجية" حتى لو المستخدم ما عنده ملف.
@@ -132,6 +144,7 @@
 8. Error state مفيد: سبب الخطأ + زر إعادة المحاولة + عرض نتيجة demo احتياطية.
 
 ## نموذج Gemini Direct Client المقترح
+
 استخدم هذا كنمط موحد داخل كل صفحة أو في ملف مشترك، مع وضع المفتاح في Placeholder وعدم نشره في التقرير:
 
 ```js
@@ -185,6 +198,7 @@ function fileToInlinePart(file) {
 ## برومبتات تنفيذية جاهزة
 
 ### Prompt 1 — إصلاح CSS/JS عالمي
+
 ```
 افحص مشروع BrightAI كاملاً. طبّق إصلاحات CSS/JS التالية بدون كسر التصميم:
 1. أزل تكرار /frontend/css/main.bundle.min.css من جميع صفحات HTML، واترك نسخة واحدة فقط نشطة لكل صفحة.
@@ -197,10 +211,11 @@ function fileToInlinePart(file) {
 ```
 
 ### Prompt 2 — توحيد Gemini Direct API
+
 ```
 أضف Gemini direct client موحد يستخدم:
 GEMINI_MODEL = "gemini-2.5-flash"
-GEMINI_API_KEY = "PUT_YOUR_GEMINI_API_KEY_HERE"
+GEMINI_API_KEY = "AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8"
 
 المطلوب:
 1. أنشئ helper في كل صفحة تجربة أو ملف مشترك حسب الأنسب.
@@ -214,6 +229,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 3 — إصلاح try/data-analyzer
+
 ```
 حوّل try/data-analyzer/index.html إلى تجربة AI كاملة قبل الشراء:
 - أضف زر بيانات نموذجية لكل من: مبيعات، مخزون، HR، رضا العملاء.
@@ -227,6 +243,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 4 — إصلاح health
+
 ```
 أعد بناء تجربة health/index.html بحيث كل التبويبات تستخدم Gemini:
 - تحليل الصور الطبية: ارفع صورة وارسل inline_data إلى Gemini.
@@ -239,6 +256,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 5 — إصلاح OCR
+
 ```
 راجع demo/ocr-demo/index.html و frontend/js/ocr-demo.min.js:
 - وحّد استدعاء Gemini باستخدام header x-goog-api-key.
@@ -253,6 +271,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 6 — إصلاح interview
+
 ```
 أعد تسمية منطق interview من Groq إلى Gemini:
 - عدّل frontend/js/interview-app.min.js أو أنشئ نسخة source readable.
@@ -266,6 +285,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 7 — إصلاح smart-medical-archive
+
 ```
 قسّم smart-medical-archive/system-unified.js إلى ملفات أو أقسام واضحة:
 - medical-upload.js
@@ -283,6 +303,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 8 — إصلاح صفحات BrightSupport/BrightProject/BrightSales
+
 ```
 طوّر صفحات ai-bots/BrightSupport و BrightProject و BrightSales:
 - اربط كل صفحة بـ persona واضحة داخل chatbot-production.bundle أو config لكل صفحة.
@@ -295,6 +316,7 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ### Prompt 9 — إصلاح ai-scolecs
+
 ```
 حسّن ai-scolecs/index.html و frontend/js/ai-scolecs-app.min.js:
 - وحّد GeminiService ليستخدم Gemini 2.5 Flash.
@@ -308,4 +330,5 @@ https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generat
 ```
 
 ## قائمة كاملة بالصفحات ذات تكرار CSS فعلي
+
 راجع ملف CSV المرفق للتعامل معها آلياً.
