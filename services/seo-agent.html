@@ -225,6 +225,7 @@
     a { color:inherit; text-decoration:none; }
     .container { width:min(var(--container), calc(100% - 32px)); margin-inline:auto; }
     .unified-nav { position:fixed; top:0; left:0; right:0; height:var(--nav-height); z-index:1000; background:var(--nav-bg); backdrop-filter:blur(var(--nav-backdrop-blur)); -webkit-backdrop-filter:blur(var(--nav-backdrop-blur)); border-bottom:var(--nav-border); transition:transform .35s ease, background .4s ease, border-bottom .4s ease, box-shadow .4s ease; }
+    .unified-nav.nav-scrolled { background:var(--nav-bg-scrolled); border-bottom:var(--nav-border-scrolled); box-shadow:0 4px 30px rgba(0,0,0,.35); }
     .nav-container { max-width:1400px; margin:0 auto; height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 1.25rem; gap:.75rem; }
     .nav-logo { display:flex; align-items:center; gap:.625rem; text-decoration:none; flex-shrink:0; }
     .logo-box { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg,#4f46e5 0%, #8b5cf6 55%, #10b981 100%); box-shadow:0 8px 28px rgba(99,102,241,.28); }
@@ -488,5 +489,22 @@
   </main>
 
   <footer><div class="container">© Bright AI. صفحة وكيل تحسين محركات البحث SEO ضمن خدمات Bright AI في السعودية.</div></footer>
+  <script>
+    (function () {
+      var header = document.getElementById("main-header");
+      if (!header) return;
+
+      function syncHeaderState() {
+        if (window.scrollY > 24) {
+          header.classList.add("nav-scrolled");
+        } else {
+          header.classList.remove("nav-scrolled");
+        }
+      }
+
+      syncHeaderState();
+      window.addEventListener("scroll", syncHeaderState, { passive: true });
+    })();
+  </script>
 </body>
 </html>
