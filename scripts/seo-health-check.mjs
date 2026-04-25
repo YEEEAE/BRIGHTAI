@@ -153,14 +153,12 @@ function normalizeRobotsLines(content) {
 
 function checkRobots(content) {
   const lines = normalizeRobotsLines(content);
-  const disallowFrontendPages = lines.some((line) =>
-    /^disallow:\s*\/frontend\/pages\/?$/i.test(line)
-  );
+  const disallowLines = lines.filter((line) => /^disallow:\s*/i.test(line));
   const sitemapLine = lines.find((line) => /^sitemap:\s*/i.test(line)) || "";
   const hasSitemap = /sitemap\.xml(?:\s*)$/i.test(sitemapLine);
 
   return {
-    disallowFrontendPages,
+    disallowLines,
     hasSitemap,
     sitemapLine,
   };
@@ -292,10 +290,6 @@ async function auditHtmlFile(filePath, publicRegistry) {
     issues.push("h1_invalid");
   }
 
-  if (internal && !hasNoindex) {
-    issues.push("internal_missing_noindex");
-  }
-
   if (frontendPagesLink) {
     issues.push("frontend_pages_link");
   }
@@ -399,7 +393,6 @@ async function main() {
   const titleMissing = summarizeIssue(documentAudits, "title_missing");
   const descriptionMissing = summarizeIssue(documentAudits, "description_missing");
   const h1Invalid = summarizeIssue(documentAudits, "h1_invalid");
-  const internalMissingNoindex = summarizeIssue(documentAudits, "internal_missing_noindex");
   const frontendPagesLinks = summarizeIssue(documentAudits, "frontend_pages_link");
   const onrenderReferences = summarizeIssue(
     documentAudits,
@@ -426,9 +419,9 @@ async function main() {
 
   printSection("1) robots.txt");
   printResult(
-    robots.disallowFrontendPages,
-    "حظر المسار /frontend/pages/",
-    robots.disallowFrontendPages ? "" : "أضف Disallow: /frontend/pages/"
+    robots.disallowLines.length === 0,
+    "عدم وجود قواعد Disallow تمنع صفحات الموقع أو نماذج العملاء",
+    robots.disallowLines.length === 0 ? "" : takeSample(robots.disallowLines).join(" | ")
   );
   printResult(
     robots.hasSitemap,
@@ -495,11 +488,7 @@ async function main() {
     "وجود H1 واحد لكل صفحة",
     h1Invalid.length === 0 ? "" : takeSample(h1Invalid).join(" | ")
   );
-  printResult(
-    internalMissingNoindex.length === 0,
-    "الصفحات الداخلية تحتوي noindex",
-    internalMissingNoindex.length === 0 ? "" : takeSample(internalMissingNoindex).join(" | ")
-  );
+  console.log("✅ سياسة النماذج التجريبية: لا يتم فرض noindex على صفحات العملاء قبل الشراء.");
   printResult(
     frontendPagesLinks.length === 0,
     "عدم وجود روابط إلى /frontend/pages/",
@@ -537,7 +526,7 @@ async function main() {
   );
 
   const failureCount =
-    Number(!robots.disallowFrontendPages) +
+    Number(robots.disallowLines.length > 0) +
     Number(!robots.hasSitemap) +
     Number(!sitemap.ok) +
     Number(sitemapWithSpaces.length > 0) +
@@ -549,7 +538,6 @@ async function main() {
     Number(titleMissing.length > 0) +
     Number(descriptionMissing.length > 0) +
     Number(h1Invalid.length > 0) +
-    Number(internalMissingNoindex.length > 0) +
     Number(frontendPagesLinks.length > 0) +
     Number(onrenderReferences.length > 0) +
     Number(noindexHreflang.length > 0) +

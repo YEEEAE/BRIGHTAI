@@ -58,15 +58,8 @@ Allow: /interview/pages/dashboard/
 Allow: /interview/pages/support-ai/
 Allow: /interview/pages/Visitor-registration/
 
-# ── حظر المجلدات الداخلية والبنية البرمجية ──
-Disallow: /scripts/
-Disallow: /tmp/
-Disallow: /reports/
-Disallow: /venv/
-Disallow: /.git/
-Disallow: /.vscode/
-Disallow: /node_modules/
-Disallow: /tests/
+# لا توجد قواعد Disallow لصفحات الموقع أو نماذج العملاء التجريبية.
+# ملاحظة: robots.txt ليس طبقة حماية للملفات التقنية؛ أي حماية وصول يجب أن تكون من الخادم لا من robots.
 
 
 # AI search crawlers
@@ -86,7 +79,7 @@ User-agent: PerplexityBot
 Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 User-agent: Bytespider
-Disallow: /
+Allow: /

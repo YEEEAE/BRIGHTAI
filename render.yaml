@@ -64,44 +64,6 @@ services:
       - path: /**/*.html
         name: Cache-Control
         value: public, max-age=0, must-revalidate
-
-      - path: /interview/pages/admin
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/admin/
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/admin.html
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/Visitor-registration
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/Visitor-registration/
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/Visitor-registration/index.html
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/dashboard
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/dashboard/
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/dashboard/index.html
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/appointment
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/appointment/
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-      - path: /interview/pages/appointment/index.html
-        name: X-Robots-Tag
-        value: noindex, nofollow, noarchive
-
       - path: /*.css
         name: Cache-Control
         value: public, max-age=2592000, stale-while-revalidate=86400
