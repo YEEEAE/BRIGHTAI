@@ -56,49 +56,49 @@
       {
         "file": "blog/ai-manufacturing-digital-guide.html",
         "issues": [
-          "Canonical mismatch: 'https://brightai.site/blog/digital/' should be 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
-          "hreflang ar-SA points to 'https://brightai.site/blog/digital/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
-          "hreflang x-default points to 'https://brightai.site/blog/digital/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'"
+          "Canonical mismatch: 'https://brightai.site/blog/ai-manufacturing-digital-guide/' should be 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/ai-manufacturing-digital-guide/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/ai-manufacturing-digital-guide/' instead of 'https://brightai.site/blog/ai-manufacturing-digital-guide/'"
         ]
       },
       {
         "file": "blog/building-ai-agents-guide.html",
         "issues": [
-          "Canonical mismatch: 'https://brightai.site/blog/agint-bblog/' should be 'https://brightai.site/blog/building-ai-agents-guide/'",
-          "hreflang ar-SA points to 'https://brightai.site/blog/agint-bblog/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'",
-          "hreflang x-default points to 'https://brightai.site/blog/agint-bblog/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'"
+          "Canonical mismatch: 'https://brightai.site/blog/building-ai-agents-practical-guide/' should be 'https://brightai.site/blog/building-ai-agents-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/building-ai-agents-practical-guide/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/building-ai-agents-practical-guide/' instead of 'https://brightai.site/blog/building-ai-agents-guide/'"
         ]
       },
       {
         "file": "blog/data-analysis-best-practices.html",
         "issues": [
-          "Canonical mismatch: 'https://brightai.site/blog/analysy/' should be 'https://brightai.site/blog/data-analysis-best-practices/'",
-          "hreflang ar-SA points to 'https://brightai.site/blog/analysy/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'",
-          "hreflang x-default points to 'https://brightai.site/blog/analysy/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'"
+          "Canonical mismatch: 'https://brightai.site/blog/data-analysis-best-practices/' should be 'https://brightai.site/blog/data-analysis-best-practices/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/data-analysis-best-practices/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'",
+          "hreflang x-default points to 'https://brightai.site/blog/data-analysis-best-practices/' instead of 'https://brightai.site/blog/data-analysis-best-practices/'"
         ]
       },
       {
         "file": "blog/government-ai-solutions.html",
         "issues": [
-          "Canonical mismatch: 'https://brightai.site/blog/gov/' should be 'https://brightai.site/blog/government-ai-solutions/'",
-          "hreflang ar-SA points to 'https://brightai.site/blog/gov/' instead of 'https://brightai.site/blog/government-ai-solutions/'",
-          "hreflang x-default points to 'https://brightai.site/blog/gov/' instead of 'https://brightai.site/blog/government-ai-solutions/'"
+          "Canonical mismatch: 'https://brightai.site/blog/government-ai-solutions-saudi/ernment-ai-solutions-saudi/ernment-ai-solutions-saudi/' should be 'https://brightai.site/blog/government-ai-solutions-saudi/ernment-ai-solutions-saudi/ernment-ai-solutions/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/government-ai-solutions-saudi/ernment-ai-solutions-saudi/ernment-ai-solutions-saudi/' instead of 'https://brightai.site/blog/government-ai-solutions-saudi/ernment-ai-solutions-saudi/ernment-ai-solutions/'",
+          "hreflang x-default points to 'https://brightai.site/blog/government-ai-solutions-saudi/ernment-ai-solutions-saudi/ernment-ai-solutions-saudi/' instead of 'https://brightai.site/blog/government-ai-solutions-saudi/ernment-ai-solutions-saudi/ernment-ai-solutions/'"
         ]
       },
       {
         "file": "blog/industrial-automation-repetitive-tasks.html",
         "issues": [
-          "Canonical mismatch: 'https://brightai.site/blog/atou-job/' should be 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
-          "hreflang ar-SA points to 'https://brightai.site/blog/atou-job/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
-          "hreflang x-default points to 'https://brightai.site/blog/atou-job/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'"
+          "Canonical mismatch: 'https://brightai.site/blog/industrial-automation-repetitive-tasks/' should be 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/industrial-automation-repetitive-tasks/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'",
+          "hreflang x-default points to 'https://brightai.site/blog/industrial-automation-repetitive-tasks/' instead of 'https://brightai.site/blog/industrial-automation-repetitive-tasks/'"
         ]
       },
       {
         "file": "blog/workplace-automation-guide.html",
         "issues": [
-          "Canonical mismatch: 'https://brightai.site/blog/auto/' should be 'https://brightai.site/blog/workplace-automation-guide/'",
-          "hreflang ar-SA points to 'https://brightai.site/blog/auto/' instead of 'https://brightai.site/blog/workplace-automation-guide/'",
-          "hreflang x-default points to 'https://brightai.site/blog/auto/' instead of 'https://brightai.site/blog/workplace-automation-guide/'"
+          "Canonical mismatch: 'https://brightai.site/blog/workplace-automation-guide/' should be 'https://brightai.site/blog/workplace-automation-guide/'",
+          "hreflang ar-SA points to 'https://brightai.site/blog/workplace-automation-guide/' instead of 'https://brightai.site/blog/workplace-automation-guide/'",
+          "hreflang x-default points to 'https://brightai.site/blog/workplace-automation-guide/' instead of 'https://brightai.site/blog/workplace-automation-guide/'"
         ]
       },
       {

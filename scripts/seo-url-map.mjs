@@ -23,7 +23,21 @@ const ROOT_INDEX_DIRS = new Set([
   "what-is-ai",
 ]);
 
-const REL_PATH_ALIASES = new Map();
+const REL_PATH_ALIASES = new Map([
+  ["blog/Generative-artificial-intelligence.html", "blog/generative-artificial-intelligence/index.html"],
+  ["blog/agint-bblog.html", "blog/building-ai-agents-practical-guide/index.html"],
+  ["blog/ai-agent.html", "blog/ai-agents-business-guide/index.html"],
+  ["blog/ai.html", "blog/ai-business-performance/index.html"],
+  ["blog/analysy.html", "blog/data-analysis-best-practices/index.html"],
+  ["blog/atou-job.html", "blog/industrial-automation-repetitive-tasks/index.html"],
+  ["blog/auto.html", "blog/workplace-automation-guide/index.html"],
+  ["blog/automation/hr-automation-saudi/index.html", "blog/hr-automation-saudi/index.html"],
+  ["blog/cloude-opus-4.6.html", "blog/claude-opus-4-6-saudi-market/index.html"],
+  ["blog/data-analytics/kpi-dashboard-guide/index.html", "blog/kpi-dashboard-guide/index.html"],
+  ["blog/data-analytics/power-bi-saudi-guide/index.html", "blog/power-bi-saudi-guide/index.html"],
+  ["blog/digital.html", "blog/ai-manufacturing-digital-guide/index.html"],
+  ["blog/gov.html", "blog/government-ai-solutions-saudi/index.html"],
+]);
 const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^(404|500)\.html$/i,
   /^error\.html$/i,
@@ -165,8 +179,8 @@ export function relPathToSitePath(relPath) {
     return `/ai-bots/${path.basename(normalized, ".html")}/`;
   }
 
-  if (normalized.startsWith("frontend/pages/blog/automation/") && normalized.endsWith(".html")) {
-    return `/blog/automation/${path.basename(normalized, ".html")}/`;
+  if (normalized.startsWith("frontend/pages/blog/workplace-automation-guide/mation/") && normalized.endsWith(".html")) {
+    return `/blog/workplace-automation-guide/mation/${path.basename(normalized, ".html")}/`;
   }
 
   if (normalized.startsWith("frontend/pages/blog/data-analytics/") && normalized.endsWith(".html")) {

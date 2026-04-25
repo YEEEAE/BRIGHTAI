@@ -1,0 +1,228 @@
+# SEO URL Layer Fix Report
+
+- Sitemap URLs: 223
+- Sitemap URL local validation: 223/223 final URLs resolve to existing files.
+- Migration redirect targets: 13/13 resolve to existing files.
+- Canonical, og:url, and twitter:url validation: no exact Render redirect sources detected.
+
+## Redirect Mapping
+- /blog/Generative-artificial-intelligence/ -> /blog/generative-artificial-intelligence/
+- /blog/agint-bblog/ -> /blog/building-ai-agents-practical-guide/
+- /blog/ai-agent/ -> /blog/ai-agents-business-guide/
+- /blog/ai/ -> /blog/ai-business-performance/
+- /blog/analysy/ -> /blog/data-analysis-best-practices/
+- /blog/atou-job/ -> /blog/industrial-automation-repetitive-tasks/
+- /blog/auto/ -> /blog/workplace-automation-guide/
+- /blog/automation/hr-automation-saudi/ -> /blog/hr-automation-saudi/
+- /blog/cloude-opus-4.6/ -> /blog/claude-opus-4-6-saudi-market/
+- /blog/data-analytics/kpi-dashboard-guide/ -> /blog/kpi-dashboard-guide/
+- /blog/data-analytics/power-bi-saudi-guide/ -> /blog/power-bi-saudi-guide/
+- /blog/digital/ -> /blog/ai-manufacturing-digital-guide/
+- /blog/gov/ -> /blog/government-ai-solutions-saudi/
+
+## Full Changed Files
+- M _redirects
+-  M ai-agent/index.html
+-  M "backend/data/search-index 2.json"
+-  D blog/Generative-artificial-intelligence.html
+-  D blog/agint-bblog.html
+-  D blog/ai-agent.html
+-  M blog/ai-automation-project-analysis/index.html
+-  M blog/ai-data-analysis-tools/index.html
+-  D blog/ai-energy-saudi.html
+-  D blog/ai-finance-saudi.html
+-  D blog/ai-generative-content-industry-saudi-arabia.html
+-  D blog/ai-guide-saudi-business.html
+-  D blog/ai-healthcare-saudi.html
+-  D blog/ai-implementation-cost-guide.html
+-  D blog/ai-innovation-saudi-arabia.html
+-  D blog/ai-manufacturing-digital-guide.html
+-  M blog/ai-marketing-guide/index.html
+-  D blog/ai-transformation.html
+-  D blog/ai.html
+-  D blog/analysy.html
+-  D blog/atou-job.html
+-  D blog/auto.html
+-  D blog/automation/hr-automation-saudi/index.html
+-  D blog/big-data-analysis.html
+-  D blog/building-ai-agents-guide.html
+-  D blog/business-intelligence-data-analysis.html
+-  D blog/business-intelligence-saudi.html
+-  D blog/case-study-saudi-companies-ai-agents-customer-service.html
+-  D blog/chatgpt-vs-claude-vs-gemini-arabic.html
+-  D blog/choose-ai-company-saudi.html
+-  D blog/cloude-opus-4.6.html
+-  D blog/commerce-ministry-chatbot.html
+-  D blog/data-analysis-best-practices.html
+-  M blog/data-analysis-decision-making/index.html
+-  D blog/data-analytics/kpi-dashboard-guide/index.html
+-  D blog/data-analytics/power-bi-saudi-guide/index.html
+-  D blog/digital-banking-saudi.html
+-  D blog/digital-health-smart-archive.html
+-  M blog/digital-transformation-automation/index.html
+-  D blog/digital.html
+-  M blog/financial-hr-automation/index.html
+-  D blog/future-of-intelligent-data-analysis-finance-sector.html
+-  M blog/generative-artificial-intelligence/index.html
+-  D blog/gov.html
+-  D blog/government-ai-solutions.html
+-  D blog/hr-automation-case-study.html
+-  M blog/index.html
+-  M blog/industrial-automation-productivity/index.html
+-  D blog/industrial-automation-repetitive-tasks.html
+-  D blog/intelligent-data-analysis.html
+-  D blog/kfshrc-breast-cancer-ai.html
+-  D blog/ksu-adaptive-learning.html
+-  M blog/machine-learning-business/index.html
+-  M blog/machine-learning-computer-vision/index.html
+-  D blog/nca-ai-compliance-saudi.html
+-  D blog/nca-compliance.html
+-  D blog/private-hospital-scheduling-optimization.html
+-  M blog/process-automation-ai-efficiency/index.html
+-  D blog/process-automation.html
+-  D blog/riyadh-municipality-ai-license.html
+-  D blog/saudi-agritech-smart-farming.html
+-  D blog/saudi-bank-fraud-detection.html
+-  D blog/saudi-dates-quality-ai.html
+-  D blog/saudi-ecommerce-ai-growth.html
+-  D blog/saudi-edtech-personalized-learning.html
+-  D blog/saudi-energy-predictive-maintenance.html
+-  D blog/saudi-factory-ai-productivity.html
+-  D blog/saudi-hospitality-dynamic-pricing.html
+-  D blog/saudi-insurance-claims-ai.html
+-  D blog/saudi-logistics-route-optimization.html
+-  D blog/saudi-manufacturing-predictive-maintenance.html
+-  D blog/saudi-mining-ai-exploration.html
+-  D blog/saudi-petrochemical-ai-safety.html
+-  D blog/saudi-real-estate-ai-valuation.html
+-  D blog/saudi-renewable-energy-ai.html
+-  D blog/saudi-smart-city-traffic.html
+-  D blog/saudi-sports-analytics-ai.html
+-  D blog/saudi-tourism-ai-guide.html
+-  D blog/saudi-waste-management-ai.html
+-  D blog/smart-automation-benefits.html
+-  D blog/smart-crm-system.html
+-  D blog/smart-document-processing.html
+-  D blog/smart-inventory-management.html
+-  D blog/top-ai-tools-saudi-2025.html
+-  D blog/transport-logistics-solutions.html
+-  D blog/vision-2030-ai-opportunities.html
+-  D blog/workplace-automation-guide.html
+-  M case-studies/index.html
+-  M data-analysis/index.html
+-  M docs/ai-agent.html
+-  M docs/data-analysis.html
+-  M docs/smart-automation.html
+-  M docs/solutions-hr.html
+-  M docs/solutions-interview.html
+-  M en/ai-agent/index.html
+-  M en/data-analysis/index.html
+-  M en/index.html
+-  M en/smart-automation/index.html
+-  M en/tools/index.html
+-  M error.html
+-  M index.html
+-  M redirects.json
+-  M render.yaml
+-  M reports/internal-links/broken_links_before.json
+-  M reports/internal-links/broken_links_before.md
+-  M reports/prompts.md
+-  M scripts/generate-brightai-full-audit-report.mjs
+-  M scripts/seo-url-map.mjs
+-  M sectors/ecommerce-en.html
+-  M sectors/ecommerce.html
+-  M sectors/energy-en.html
+-  M sectors/energy.html
+-  M sectors/finance-en.html
+-  M sectors/finance.html
+-  M sectors/healthcare-en.html
+-  M sectors/healthcare.html
+-  M sectors/logistics-en.html
+-  M sectors/logistics.html
+-  M sectors/manufacturing-en.html
+-  M sectors/manufacturing.html
+-  M services/custom-ai-agent.html
+-  M services/index.html
+-  M sitemap.xml
+-  M sitemap/index.html
+-  M smart-automation/index.html
+-  M tmp/brightai_html_seo_governor.json
+-  M tmp/brightai_html_seo_governor.md
+-  M tmp/hreflang-fix-report.json
+-  M tmp/hreflang-fix-report.md
+-  M tmp/semrush_issues_raw.json
+-  M tmp/url_policy_after.json
+-  M tmp/url_policy_after.md
+-  M tmp/url_policy_report.json
+-  M tmp/url_policy_report.md
+-  M tools/index.html
+- ?? audit-report.md
+- ?? blog/ai-agents-business-guide/
+- ?? blog/ai-business-performance/
+- ?? blog/ai-energy-saudi/
+- ?? blog/ai-finance-saudi/
+- ?? blog/ai-generative-content-industry-saudi-arabia/
+- ?? blog/ai-guide-saudi-business/
+- ?? blog/ai-healthcare-saudi/
+- ?? blog/ai-implementation-cost-guide/
+- ?? blog/ai-innovation-saudi-arabia/
+- ?? blog/ai-manufacturing-digital-guide/
+- ?? blog/ai-transformation/
+- ?? blog/big-data-analysis/
+- ?? blog/building-ai-agents-guide/
+- ?? blog/building-ai-agents-practical-guide/
+- ?? blog/business-intelligence-data-analysis/
+- ?? blog/business-intelligence-saudi/
+- ?? blog/case-study-saudi-companies-ai-agents-customer-service/
+- ?? blog/chatgpt-vs-claude-vs-gemini-arabic/
+- ?? blog/choose-ai-company-saudi/
+- ?? blog/claude-opus-4-6-saudi-market/
+- ?? blog/commerce-ministry-chatbot/
+- ?? blog/data-analysis-best-practices/
+- ?? blog/digital-banking-saudi/
+- ?? blog/digital-health-smart-archive/
+- ?? blog/future-of-intelligent-data-analysis-finance-sector/
+- ?? blog/government-ai-solutions-saudi/
+- ?? blog/government-ai-solutions/
+- ?? blog/hr-automation-case-study/
+- ?? blog/hr-automation-saudi/
+- ?? blog/industrial-automation-repetitive-tasks/
+- ?? blog/intelligent-data-analysis/
+- ?? blog/kfshrc-breast-cancer-ai/
+- ?? blog/kpi-dashboard-guide/
+- ?? blog/ksu-adaptive-learning/
+- ?? blog/nca-ai-compliance-saudi/
+- ?? blog/nca-compliance/
+- ?? blog/power-bi-saudi-guide/
+- ?? blog/private-hospital-scheduling-optimization/
+- ?? blog/process-automation/
+- ?? blog/riyadh-municipality-ai-license/
+- ?? blog/saudi-agritech-smart-farming/
+- ?? blog/saudi-bank-fraud-detection/
+- ?? blog/saudi-dates-quality-ai/
+- ?? blog/saudi-ecommerce-ai-growth/
+- ?? blog/saudi-edtech-personalized-learning/
+- ?? blog/saudi-energy-predictive-maintenance/
+- ?? blog/saudi-factory-ai-productivity/
+- ?? blog/saudi-hospitality-dynamic-pricing/
+- ?? blog/saudi-insurance-claims-ai/
+- ?? blog/saudi-logistics-route-optimization/
+- ?? blog/saudi-manufacturing-predictive-maintenance/
+- ?? blog/saudi-mining-ai-exploration/
+- ?? blog/saudi-petrochemical-ai-safety/
+- ?? blog/saudi-real-estate-ai-valuation/
+- ?? blog/saudi-renewable-energy-ai/
+- ?? blog/saudi-smart-city-traffic/
+- ?? blog/saudi-sports-analytics-ai/
+- ?? blog/saudi-tourism-ai-guide/
+- ?? blog/saudi-waste-management-ai/
+- ?? blog/smart-automation-benefits/
+- ?? blog/smart-crm-system/
+- ?? blog/smart-document-processing/
+- ?? blog/smart-inventory-management/
+- ?? blog/top-ai-tools-saudi-2025/
+- ?? blog/transport-logistics-solutions/
+- ?? blog/vision-2030-ai-opportunities/
+- ?? blog/workplace-automation-guide/
+- ?? reports/blog-migration-map.json
+- ?? reports/blog-migration/

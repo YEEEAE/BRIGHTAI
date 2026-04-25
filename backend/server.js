@@ -36,6 +36,8 @@ const {
 const { getProviderStatus } = require('./services/aiGateway');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
+const ONE_HOUR_SECONDS = 60 * 60;
+const ONE_DAY_SECONDS = 24 * ONE_HOUR_SECONDS;
 
 const HTML_SECURITY_HEADERS = {
   'Content-Language': 'ar-SA',
@@ -314,23 +316,35 @@ function setupLiveWebSocket(server) {
  */
 function parseBody(req, maxSizeBytes = config.validation.maxBodyBytes) {
   return new Promise((resolve, reject) => {
-    let body = '';
     let size = 0;
+    const chunks = [];
+    let rejected = false;
+
     req.on('data', chunk => {
+      if (rejected) return;
+
       size += chunk.length;
-      body += chunk.toString();
-      // Limit body size
       if (size > maxSizeBytes) {
+        rejected = true;
         reject(new Error('Body too large'));
+        req.destroy();
+        return;
       }
+
+      chunks.push(chunk);
     });
+
     req.on('end', () => {
+      if (rejected) return;
+
       try {
+        const body = chunks.length ? Buffer.concat(chunks, size).toString('utf8') : '';
         resolve(body ? JSON.parse(body) : {});
       } catch (e) {
         reject(new Error('Invalid JSON'));
       }
     });
+
     req.on('error', reject);
   });
 }
@@ -472,8 +486,62 @@ function buildStaticHeaders(filePath, extraHeaders = {}) {
   return headers;
 }
 
+function getStaticCacheControl(filePath) {
+  const extension = path.extname(filePath).toLowerCase();
+  const basename = path.basename(filePath).toLowerCase();
+
+  if (basename === 'index.html' || extension === '.html') {
+    return 'public, max-age=0, must-revalidate';
+  }
+
+  if (['.woff', '.woff2', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico'].includes(extension)) {
+    return 'public, max-age=31536000, immutable';
+  }
+
+  if (['.js', '.css'].includes(extension)) {
+    return `public, max-age=${ONE_DAY_SECONDS}, stale-while-revalidate=${7 * ONE_DAY_SECONDS}`;
+  }
+
+  if (extension === '.xml') return `public, max-age=${ONE_HOUR_SECONDS}`;
+  if (extension === '.txt' || extension === '.json') return `public, max-age=${ONE_DAY_SECONDS}`;
+  return `public, max-age=${ONE_HOUR_SECONDS}`;
+}
+
+function buildEntityTag(stats) {
+  return `"${stats.size.toString(16)}-${Math.floor(stats.mtimeMs).toString(16)}"`;
+}
+
+function clientHasFreshStaticCopy(req, etag, lastModified) {
+  const noneMatch = req.headers['if-none-match'];
+  if (noneMatch && noneMatch.split(',').map(value => value.trim()).includes(etag)) {
+    return true;
+  }
+
+  const modifiedSince = req.headers['if-modified-since'];
+  if (!modifiedSince) return false;
+
+  const modifiedSinceMs = Date.parse(modifiedSince);
+  const lastModifiedMs = Date.parse(lastModified);
+  return Number.isFinite(modifiedSinceMs) && Number.isFinite(lastModifiedMs) && lastModifiedMs <= modifiedSinceMs;
+}
+
 function sendStaticFile(req, res, filePath, statusCode = 200, extraHeaders = {}) {
-  const headers = buildStaticHeaders(filePath, extraHeaders);
+  const stats = fs.statSync(filePath);
+  const lastModified = stats.mtime.toUTCString();
+  const etag = buildEntityTag(stats);
+  const headers = buildStaticHeaders(filePath, {
+    'Cache-Control': getStaticCacheControl(filePath),
+    'Last-Modified': lastModified,
+    ETag: etag,
+    ...extraHeaders
+  });
+
+  if (statusCode === 200 && clientHasFreshStaticCopy(req, etag, lastModified)) {
+    res.writeHead(304, headers);
+    res.end();
+    return;
+  }
+
   res.writeHead(statusCode, headers);
 
   if (req.method === 'HEAD') {

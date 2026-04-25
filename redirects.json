@@ -1,6 +1,162 @@
 {
   "redirects": [
     {
+      "from": "/blog/Generative-artificial-intelligence",
+      "to": "/blog/generative-artificial-intelligence/"
+    },
+    {
+      "from": "/blog/Generative-artificial-intelligence/",
+      "to": "/blog/generative-artificial-intelligence/"
+    },
+    {
+      "from": "/blog/Generative-artificial-intelligence.html",
+      "to": "/blog/generative-artificial-intelligence/"
+    },
+    {
+      "from": "/blog/agint-bblog",
+      "to": "/blog/building-ai-agents-practical-guide/"
+    },
+    {
+      "from": "/blog/agint-bblog/",
+      "to": "/blog/building-ai-agents-practical-guide/"
+    },
+    {
+      "from": "/blog/agint-bblog.html",
+      "to": "/blog/building-ai-agents-practical-guide/"
+    },
+    {
+      "from": "/blog/ai-agent",
+      "to": "/blog/ai-agents-business-guide/"
+    },
+    {
+      "from": "/blog/ai-agent/",
+      "to": "/blog/ai-agents-business-guide/"
+    },
+    {
+      "from": "/blog/ai-agent.html",
+      "to": "/blog/ai-agents-business-guide/"
+    },
+    {
+      "from": "/blog/ai",
+      "to": "/blog/ai-business-performance/"
+    },
+    {
+      "from": "/blog/ai/",
+      "to": "/blog/ai-business-performance/"
+    },
+    {
+      "from": "/blog/ai.html",
+      "to": "/blog/ai-business-performance/"
+    },
+    {
+      "from": "/blog/analysy",
+      "to": "/blog/data-analysis-best-practices/"
+    },
+    {
+      "from": "/blog/analysy/",
+      "to": "/blog/data-analysis-best-practices/"
+    },
+    {
+      "from": "/blog/analysy.html",
+      "to": "/blog/data-analysis-best-practices/"
+    },
+    {
+      "from": "/blog/atou-job",
+      "to": "/blog/industrial-automation-repetitive-tasks/"
+    },
+    {
+      "from": "/blog/atou-job/",
+      "to": "/blog/industrial-automation-repetitive-tasks/"
+    },
+    {
+      "from": "/blog/atou-job.html",
+      "to": "/blog/industrial-automation-repetitive-tasks/"
+    },
+    {
+      "from": "/blog/auto",
+      "to": "/blog/workplace-automation-guide/"
+    },
+    {
+      "from": "/blog/auto/",
+      "to": "/blog/workplace-automation-guide/"
+    },
+    {
+      "from": "/blog/auto.html",
+      "to": "/blog/workplace-automation-guide/"
+    },
+    {
+      "from": "/blog/automation/hr-automation-saudi",
+      "to": "/blog/hr-automation-saudi/"
+    },
+    {
+      "from": "/blog/automation/hr-automation-saudi/",
+      "to": "/blog/hr-automation-saudi/"
+    },
+    {
+      "from": "/blog/automation/hr-automation-saudi/index.html",
+      "to": "/blog/hr-automation-saudi/"
+    },
+    {
+      "from": "/blog/cloude-opus-4.6",
+      "to": "/blog/claude-opus-4-6-saudi-market/"
+    },
+    {
+      "from": "/blog/cloude-opus-4.6/",
+      "to": "/blog/claude-opus-4-6-saudi-market/"
+    },
+    {
+      "from": "/blog/cloude-opus-4.6.html",
+      "to": "/blog/claude-opus-4-6-saudi-market/"
+    },
+    {
+      "from": "/blog/data-analytics/kpi-dashboard-guide",
+      "to": "/blog/kpi-dashboard-guide/"
+    },
+    {
+      "from": "/blog/data-analytics/kpi-dashboard-guide/",
+      "to": "/blog/kpi-dashboard-guide/"
+    },
+    {
+      "from": "/blog/data-analytics/kpi-dashboard-guide/index.html",
+      "to": "/blog/kpi-dashboard-guide/"
+    },
+    {
+      "from": "/blog/data-analytics/power-bi-saudi-guide",
+      "to": "/blog/power-bi-saudi-guide/"
+    },
+    {
+      "from": "/blog/data-analytics/power-bi-saudi-guide/",
+      "to": "/blog/power-bi-saudi-guide/"
+    },
+    {
+      "from": "/blog/data-analytics/power-bi-saudi-guide/index.html",
+      "to": "/blog/power-bi-saudi-guide/"
+    },
+    {
+      "from": "/blog/digital",
+      "to": "/blog/ai-manufacturing-digital-guide/"
+    },
+    {
+      "from": "/blog/digital/",
+      "to": "/blog/ai-manufacturing-digital-guide/"
+    },
+    {
+      "from": "/blog/digital.html",
+      "to": "/blog/ai-manufacturing-digital-guide/"
+    },
+    {
+      "from": "/blog/gov",
+      "to": "/blog/government-ai-solutions-saudi/"
+    },
+    {
+      "from": "/blog/gov/",
+      "to": "/blog/government-ai-solutions-saudi/"
+    },
+    {
+      "from": "/blog/gov.html",
+      "to": "/blog/government-ai-solutions-saudi/"
+    },
+    {
       "from": "/index.html",
       "to": "/"
     },
@@ -506,7 +662,31 @@
     },
     {
       "from": "/blog/Generative artificial intelligence",
-      "to": "/blog/Generative-artificial-intelligence"
+      "to": "/blog/generative-artificial-intelligence/"
+    },
+    {
+      "from": "/blog/generative-artificial-intelligence/",
+      "to": "/blog/generative-artificial-intelligence/"
+    },
+    {
+      "from": "/blog/data-analysis-best-practices/",
+      "to": "/blog/data-analysis-best-practices/"
+    },
+    {
+      "from": "/blog/workplace-automation-guide/",
+      "to": "/blog/workplace-automation-guide/"
+    },
+    {
+      "from": "/blog/ai-manufacturing-digital-guide/",
+      "to": "/blog/ai-manufacturing-digital-guide/"
+    },
+    {
+      "from": "/blog/industrial-automation-repetitive-tasks/",
+      "to": "/blog/industrial-automation-repetitive-tasks/"
+    },
+    {
+      "from": "/blog/building-ai-agents-practical-guide/",
+      "to": "/blog/building-ai-agents-guide/"
     },
     {
       "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)",

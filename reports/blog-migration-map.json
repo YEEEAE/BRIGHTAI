@@ -1,0 +1,1167 @@
+{
+  "generated_at": "2026-04-25T22:23:38.028055",
+  "records": [
+    {
+      "old_path": "blog/Generative-artificial-intelligence.html",
+      "old_route": "/blog/Generative-artificial-intelligence/",
+      "old_url": "https://brightai.site/blog/Generative-artificial-intelligence/",
+      "slug": "generative-artificial-intelligence",
+      "new_route": "/blog/generative-artificial-intelligence/",
+      "new_url": "https://brightai.site/blog/generative-artificial-intelligence/",
+      "new_path": "blog/generative-artificial-intelligence/index.html"
+    },
+    {
+      "old_path": "blog/agint-bblog.html",
+      "old_route": "/blog/agint-bblog/",
+      "old_url": "https://brightai.site/blog/agint-bblog/",
+      "slug": "building-ai-agents-practical-guide",
+      "new_route": "/blog/building-ai-agents-practical-guide/",
+      "new_url": "https://brightai.site/blog/building-ai-agents-practical-guide/",
+      "new_path": "blog/building-ai-agents-practical-guide/index.html"
+    },
+    {
+      "old_path": "blog/ai-agent.html",
+      "old_route": "/blog/ai-agent/",
+      "old_url": "https://brightai.site/blog/ai-agent/",
+      "slug": "ai-agents-business-guide",
+      "new_route": "/blog/ai-agents-business-guide/",
+      "new_url": "https://brightai.site/blog/ai-agents-business-guide/",
+      "new_path": "blog/ai-agents-business-guide/index.html"
+    },
+    {
+      "old_path": "blog/ai-automation-project-analysis/index.html",
+      "old_route": "/blog/ai-automation-project-analysis/",
+      "old_url": "https://brightai.site/blog/ai-automation-project-analysis/",
+      "slug": "ai-automation-project-analysis",
+      "new_route": "/blog/ai-automation-project-analysis/",
+      "new_url": "https://brightai.site/blog/ai-automation-project-analysis/",
+      "new_path": "blog/ai-automation-project-analysis/index.html"
+    },
+    {
+      "old_path": "blog/ai-data-analysis-tools/index.html",
+      "old_route": "/blog/ai-data-analysis-tools/",
+      "old_url": "https://brightai.site/blog/ai-data-analysis-tools/",
+      "slug": "ai-data-analysis-tools",
+      "new_route": "/blog/ai-data-analysis-tools/",
+      "new_url": "https://brightai.site/blog/ai-data-analysis-tools/",
+      "new_path": "blog/ai-data-analysis-tools/index.html"
+    },
+    {
+      "old_path": "blog/ai-energy-saudi.html",
+      "old_route": "/blog/ai-energy-saudi/",
+      "old_url": "https://brightai.site/blog/ai-energy-saudi/",
+      "slug": "ai-energy-saudi",
+      "new_route": "/blog/ai-energy-saudi/",
+      "new_url": "https://brightai.site/blog/ai-energy-saudi/",
+      "new_path": "blog/ai-energy-saudi/index.html"
+    },
+    {
+      "old_path": "blog/ai-finance-saudi.html",
+      "old_route": "/blog/ai-finance-saudi/",
+      "old_url": "https://brightai.site/blog/ai-finance-saudi/",
+      "slug": "ai-finance-saudi",
+      "new_route": "/blog/ai-finance-saudi/",
+      "new_url": "https://brightai.site/blog/ai-finance-saudi/",
+      "new_path": "blog/ai-finance-saudi/index.html"
+    },
+    {
+      "old_path": "blog/ai-generative-content-industry-saudi-arabia.html",
+      "old_route": "/blog/ai-generative-content-industry-saudi-arabia/",
+      "old_url": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+      "slug": "ai-generative-content-industry-saudi-arabia",
+      "new_route": "/blog/ai-generative-content-industry-saudi-arabia/",
+      "new_url": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+      "new_path": "blog/ai-generative-content-industry-saudi-arabia/index.html"
+    },
+    {
+      "old_path": "blog/ai-guide-saudi-business.html",
+      "old_route": "/blog/ai-guide-saudi-business/",
+      "old_url": "https://brightai.site/blog/ai-guide-saudi-business/",
+      "slug": "ai-guide-saudi-business",
+      "new_route": "/blog/ai-guide-saudi-business/",
+      "new_url": "https://brightai.site/blog/ai-guide-saudi-business/",
+      "new_path": "blog/ai-guide-saudi-business/index.html"
+    },
+    {
+      "old_path": "blog/ai-healthcare-saudi.html",
+      "old_route": "/blog/ai-healthcare-saudi/",
+      "old_url": "https://brightai.site/blog/ai-healthcare-saudi/",
+      "slug": "ai-healthcare-saudi",
+      "new_route": "/blog/ai-healthcare-saudi/",
+      "new_url": "https://brightai.site/blog/ai-healthcare-saudi/",
+      "new_path": "blog/ai-healthcare-saudi/index.html"
+    },
+    {
+      "old_path": "blog/ai-implementation-cost-guide.html",
+      "old_route": "/blog/ai-implementation-cost-guide/",
+      "old_url": "https://brightai.site/blog/ai-implementation-cost-guide/",
+      "slug": "ai-implementation-cost-guide",
+      "new_route": "/blog/ai-implementation-cost-guide/",
+      "new_url": "https://brightai.site/blog/ai-implementation-cost-guide/",
+      "new_path": "blog/ai-implementation-cost-guide/index.html"
+    },
+    {
+      "old_path": "blog/ai-innovation-saudi-arabia.html",
+      "old_route": "/blog/ai-innovation-saudi-arabia/",
+      "old_url": "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+      "slug": "ai-innovation-saudi-arabia",
+      "new_route": "/blog/ai-innovation-saudi-arabia/",
+      "new_url": "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+      "new_path": "blog/ai-innovation-saudi-arabia/index.html"
+    },
+    {
+      "old_path": "blog/ai-manufacturing-digital-guide.html",
+      "old_route": "/blog/ai-manufacturing-digital-guide/",
+      "old_url": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+      "slug": "ai-manufacturing-digital-guide",
+      "new_route": "/blog/ai-manufacturing-digital-guide/",
+      "new_url": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+      "new_path": "blog/ai-manufacturing-digital-guide/index.html"
+    },
+    {
+      "old_path": "blog/ai-marketing-guide/index.html",
+      "old_route": "/blog/ai-marketing-guide/",
+      "old_url": "https://brightai.site/blog/ai-marketing-guide/",
+      "slug": "ai-marketing-guide",
+      "new_route": "/blog/ai-marketing-guide/",
+      "new_url": "https://brightai.site/blog/ai-marketing-guide/",
+      "new_path": "blog/ai-marketing-guide/index.html"
+    },
+    {
+      "old_path": "blog/ai-transformation.html",
+      "old_route": "/blog/ai-transformation/",
+      "old_url": "https://brightai.site/blog/ai-transformation/",
+      "slug": "ai-transformation",
+      "new_route": "/blog/ai-transformation/",
+      "new_url": "https://brightai.site/blog/ai-transformation/",
+      "new_path": "blog/ai-transformation/index.html"
+    },
+    {
+      "old_path": "blog/ai.html",
+      "old_route": "/blog/ai/",
+      "old_url": "https://brightai.site/blog/ai/",
+      "slug": "ai-business-performance",
+      "new_route": "/blog/ai-business-performance/",
+      "new_url": "https://brightai.site/blog/ai-business-performance/",
+      "new_path": "blog/ai-business-performance/index.html"
+    },
+    {
+      "old_path": "blog/analysy.html",
+      "old_route": "/blog/analysy/",
+      "old_url": "https://brightai.site/blog/analysy/",
+      "slug": "data-analysis-best-practices",
+      "new_route": "/blog/data-analysis-best-practices/",
+      "new_url": "https://brightai.site/blog/data-analysis-best-practices/",
+      "new_path": "blog/data-analysis-best-practices/index.html"
+    },
+    {
+      "old_path": "blog/atou-job.html",
+      "old_route": "/blog/atou-job/",
+      "old_url": "https://brightai.site/blog/atou-job/",
+      "slug": "industrial-automation-repetitive-tasks",
+      "new_route": "/blog/industrial-automation-repetitive-tasks/",
+      "new_url": "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+      "new_path": "blog/industrial-automation-repetitive-tasks/index.html"
+    },
+    {
+      "old_path": "blog/auto.html",
+      "old_route": "/blog/auto/",
+      "old_url": "https://brightai.site/blog/auto/",
+      "slug": "workplace-automation-guide",
+      "new_route": "/blog/workplace-automation-guide/",
+      "new_url": "https://brightai.site/blog/workplace-automation-guide/",
+      "new_path": "blog/workplace-automation-guide/index.html"
+    },
+    {
+      "old_path": "blog/automation/hr-automation-saudi/index.html",
+      "old_route": "/blog/automation/hr-automation-saudi/",
+      "old_url": "https://brightai.site/blog/automation/hr-automation-saudi/",
+      "slug": "hr-automation-saudi",
+      "new_route": "/blog/hr-automation-saudi/",
+      "new_url": "https://brightai.site/blog/hr-automation-saudi/",
+      "new_path": "blog/hr-automation-saudi/index.html"
+    },
+    {
+      "old_path": "blog/big-data-analysis.html",
+      "old_route": "/blog/big-data-analysis/",
+      "old_url": "https://brightai.site/blog/big-data-analysis/",
+      "slug": "big-data-analysis",
+      "new_route": "/blog/big-data-analysis/",
+      "new_url": "https://brightai.site/blog/big-data-analysis/",
+      "new_path": "blog/big-data-analysis/index.html"
+    },
+    {
+      "old_path": "blog/building-ai-agents-guide.html",
+      "old_route": "/blog/building-ai-agents-guide/",
+      "old_url": "https://brightai.site/blog/building-ai-agents-guide/",
+      "slug": "building-ai-agents-guide",
+      "new_route": "/blog/building-ai-agents-guide/",
+      "new_url": "https://brightai.site/blog/building-ai-agents-guide/",
+      "new_path": "blog/building-ai-agents-guide/index.html"
+    },
+    {
+      "old_path": "blog/business-intelligence-data-analysis.html",
+      "old_route": "/blog/business-intelligence-data-analysis/",
+      "old_url": "https://brightai.site/blog/business-intelligence-data-analysis/",
+      "slug": "business-intelligence-data-analysis",
+      "new_route": "/blog/business-intelligence-data-analysis/",
+      "new_url": "https://brightai.site/blog/business-intelligence-data-analysis/",
+      "new_path": "blog/business-intelligence-data-analysis/index.html"
+    },
+    {
+      "old_path": "blog/business-intelligence-saudi.html",
+      "old_route": "/blog/business-intelligence-saudi/",
+      "old_url": "https://brightai.site/blog/business-intelligence-saudi/",
+      "slug": "business-intelligence-saudi",
+      "new_route": "/blog/business-intelligence-saudi/",
+      "new_url": "https://brightai.site/blog/business-intelligence-saudi/",
+      "new_path": "blog/business-intelligence-saudi/index.html"
+    },
+    {
+      "old_path": "blog/case-study-saudi-companies-ai-agents-customer-service.html",
+      "old_route": "/blog/case-study-saudi-companies-ai-agents-customer-service/",
+      "old_url": "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+      "slug": "case-study-saudi-companies-ai-agents-customer-service",
+      "new_route": "/blog/case-study-saudi-companies-ai-agents-customer-service/",
+      "new_url": "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+      "new_path": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html"
+    },
+    {
+      "old_path": "blog/chatgpt-vs-claude-vs-gemini-arabic.html",
+      "old_route": "/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+      "old_url": "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+      "slug": "chatgpt-vs-claude-vs-gemini-arabic",
+      "new_route": "/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+      "new_url": "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+      "new_path": "blog/chatgpt-vs-claude-vs-gemini-arabic/index.html"
+    },
+    {
+      "old_path": "blog/choose-ai-company-saudi.html",
+      "old_route": "/blog/choose-ai-company-saudi/",
+      "old_url": "https://brightai.site/blog/choose-ai-company-saudi/",
+      "slug": "choose-ai-company-saudi",
+      "new_route": "/blog/choose-ai-company-saudi/",
+      "new_url": "https://brightai.site/blog/choose-ai-company-saudi/",
+      "new_path": "blog/choose-ai-company-saudi/index.html"
+    },
+    {
+      "old_path": "blog/cloude-opus-4.6.html",
+      "old_route": "/blog/cloude-opus-4.6/",
+      "old_url": "https://brightai.site/blog/cloude-opus-4.6/",
+      "slug": "claude-opus-4-6-saudi-market",
+      "new_route": "/blog/claude-opus-4-6-saudi-market/",
+      "new_url": "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
+      "new_path": "blog/claude-opus-4-6-saudi-market/index.html"
+    },
+    {
+      "old_path": "blog/commerce-ministry-chatbot.html",
+      "old_route": "/blog/commerce-ministry-chatbot/",
+      "old_url": "https://brightai.site/blog/commerce-ministry-chatbot/",
+      "slug": "commerce-ministry-chatbot",
+      "new_route": "/blog/commerce-ministry-chatbot/",
+      "new_url": "https://brightai.site/blog/commerce-ministry-chatbot/",
+      "new_path": "blog/commerce-ministry-chatbot/index.html"
+    },
+    {
+      "old_path": "blog/data-analysis-best-practices.html",
+      "old_route": "/blog/data-analysis-best-practices/",
+      "old_url": "https://brightai.site/blog/data-analysis-best-practices/",
+      "slug": "data-analysis-best-practices",
+      "new_route": "/blog/data-analysis-best-practices/",
+      "new_url": "https://brightai.site/blog/data-analysis-best-practices/",
+      "new_path": "blog/data-analysis-best-practices/index.html"
+    },
+    {
+      "old_path": "blog/data-analysis-decision-making/index.html",
+      "old_route": "/blog/data-analysis-decision-making/",
+      "old_url": "https://brightai.site/blog/data-analysis-decision-making/",
+      "slug": "data-analysis-decision-making",
+      "new_route": "/blog/data-analysis-decision-making/",
+      "new_url": "https://brightai.site/blog/data-analysis-decision-making/",
+      "new_path": "blog/data-analysis-decision-making/index.html"
+    },
+    {
+      "old_path": "blog/data-analytics/kpi-dashboard-guide/index.html",
+      "old_route": "/blog/data-analytics/kpi-dashboard-guide/",
+      "old_url": "https://brightai.site/blog/data-analytics/kpi-dashboard-guide/",
+      "slug": "kpi-dashboard-guide",
+      "new_route": "/blog/kpi-dashboard-guide/",
+      "new_url": "https://brightai.site/blog/kpi-dashboard-guide/",
+      "new_path": "blog/kpi-dashboard-guide/index.html"
+    },
+    {
+      "old_path": "blog/data-analytics/power-bi-saudi-guide/index.html",
+      "old_route": "/blog/data-analytics/power-bi-saudi-guide/",
+      "old_url": "https://brightai.site/blog/data-analytics/power-bi-saudi-guide/",
+      "slug": "power-bi-saudi-guide",
+      "new_route": "/blog/power-bi-saudi-guide/",
+      "new_url": "https://brightai.site/blog/power-bi-saudi-guide/",
+      "new_path": "blog/power-bi-saudi-guide/index.html"
+    },
+    {
+      "old_path": "blog/digital-banking-saudi.html",
+      "old_route": "/blog/digital-banking-saudi/",
+      "old_url": "https://brightai.site/blog/digital-banking-saudi/",
+      "slug": "digital-banking-saudi",
+      "new_route": "/blog/digital-banking-saudi/",
+      "new_url": "https://brightai.site/blog/digital-banking-saudi/",
+      "new_path": "blog/digital-banking-saudi/index.html"
+    },
+    {
+      "old_path": "blog/digital-health-smart-archive.html",
+      "old_route": "/blog/digital-health-smart-archive/",
+      "old_url": "https://brightai.site/blog/digital-health-smart-archive/",
+      "slug": "digital-health-smart-archive",
+      "new_route": "/blog/digital-health-smart-archive/",
+      "new_url": "https://brightai.site/blog/digital-health-smart-archive/",
+      "new_path": "blog/digital-health-smart-archive/index.html"
+    },
+    {
+      "old_path": "blog/digital-transformation-automation/index.html",
+      "old_route": "/blog/digital-transformation-automation/",
+      "old_url": "https://brightai.site/blog/digital-transformation-automation/",
+      "slug": "digital-transformation-automation",
+      "new_route": "/blog/digital-transformation-automation/",
+      "new_url": "https://brightai.site/blog/digital-transformation-automation/",
+      "new_path": "blog/digital-transformation-automation/index.html"
+    },
+    {
+      "old_path": "blog/digital.html",
+      "old_route": "/blog/digital/",
+      "old_url": "https://brightai.site/blog/digital/",
+      "slug": "ai-manufacturing-digital-guide",
+      "new_route": "/blog/ai-manufacturing-digital-guide/",
+      "new_url": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+      "new_path": "blog/ai-manufacturing-digital-guide/index.html"
+    },
+    {
+      "old_path": "blog/financial-hr-automation/index.html",
+      "old_route": "/blog/financial-hr-automation/",
+      "old_url": "https://brightai.site/blog/financial-hr-automation/",
+      "slug": "financial-hr-automation",
+      "new_route": "/blog/financial-hr-automation/",
+      "new_url": "https://brightai.site/blog/financial-hr-automation/",
+      "new_path": "blog/financial-hr-automation/index.html"
+    },
+    {
+      "old_path": "blog/future-of-intelligent-data-analysis-finance-sector.html",
+      "old_route": "/blog/future-of-intelligent-data-analysis-finance-sector/",
+      "old_url": "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+      "slug": "future-of-intelligent-data-analysis-finance-sector",
+      "new_route": "/blog/future-of-intelligent-data-analysis-finance-sector/",
+      "new_url": "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+      "new_path": "blog/future-of-intelligent-data-analysis-finance-sector/index.html"
+    },
+    {
+      "old_path": "blog/generative-artificial-intelligence/index.html",
+      "old_route": "/blog/generative-artificial-intelligence/",
+      "old_url": "https://brightai.site/blog/generative-artificial-intelligence/",
+      "slug": "generative-artificial-intelligence",
+      "new_route": "/blog/generative-artificial-intelligence/",
+      "new_url": "https://brightai.site/blog/generative-artificial-intelligence/",
+      "new_path": "blog/generative-artificial-intelligence/index.html"
+    },
+    {
+      "old_path": "blog/gov.html",
+      "old_route": "/blog/gov/",
+      "old_url": "https://brightai.site/blog/gov/",
+      "slug": "government-ai-solutions-saudi",
+      "new_route": "/blog/government-ai-solutions-saudi/",
+      "new_url": "https://brightai.site/blog/government-ai-solutions-saudi/",
+      "new_path": "blog/government-ai-solutions-saudi/index.html"
+    },
+    {
+      "old_path": "blog/government-ai-solutions.html",
+      "old_route": "/blog/government-ai-solutions/",
+      "old_url": "https://brightai.site/blog/government-ai-solutions/",
+      "slug": "government-ai-solutions",
+      "new_route": "/blog/government-ai-solutions/",
+      "new_url": "https://brightai.site/blog/government-ai-solutions/",
+      "new_path": "blog/government-ai-solutions/index.html"
+    },
+    {
+      "old_path": "blog/hr-automation-case-study.html",
+      "old_route": "/blog/hr-automation-case-study/",
+      "old_url": "https://brightai.site/blog/hr-automation-case-study/",
+      "slug": "hr-automation-case-study",
+      "new_route": "/blog/hr-automation-case-study/",
+      "new_url": "https://brightai.site/blog/hr-automation-case-study/",
+      "new_path": "blog/hr-automation-case-study/index.html"
+    },
+    {
+      "old_path": "blog/industrial-automation-productivity/index.html",
+      "old_route": "/blog/industrial-automation-productivity/",
+      "old_url": "https://brightai.site/blog/industrial-automation-productivity/",
+      "slug": "industrial-automation-productivity",
+      "new_route": "/blog/industrial-automation-productivity/",
+      "new_url": "https://brightai.site/blog/industrial-automation-productivity/",
+      "new_path": "blog/industrial-automation-productivity/index.html"
+    },
+    {
+      "old_path": "blog/industrial-automation-repetitive-tasks.html",
+      "old_route": "/blog/industrial-automation-repetitive-tasks/",
+      "old_url": "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+      "slug": "industrial-automation-repetitive-tasks",
+      "new_route": "/blog/industrial-automation-repetitive-tasks/",
+      "new_url": "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+      "new_path": "blog/industrial-automation-repetitive-tasks/index.html"
+    },
+    {
+      "old_path": "blog/intelligent-data-analysis.html",
+      "old_route": "/blog/intelligent-data-analysis/",
+      "old_url": "https://brightai.site/blog/intelligent-data-analysis/",
+      "slug": "intelligent-data-analysis",
+      "new_route": "/blog/intelligent-data-analysis/",
+      "new_url": "https://brightai.site/blog/intelligent-data-analysis/",
+      "new_path": "blog/intelligent-data-analysis/index.html"
+    },
+    {
+      "old_path": "blog/kfshrc-breast-cancer-ai.html",
+      "old_route": "/blog/kfshrc-breast-cancer-ai/",
+      "old_url": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+      "slug": "kfshrc-breast-cancer-ai",
+      "new_route": "/blog/kfshrc-breast-cancer-ai/",
+      "new_url": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+      "new_path": "blog/kfshrc-breast-cancer-ai/index.html"
+    },
+    {
+      "old_path": "blog/ksu-adaptive-learning.html",
+      "old_route": "/blog/ksu-adaptive-learning/",
+      "old_url": "https://brightai.site/blog/ksu-adaptive-learning/",
+      "slug": "ksu-adaptive-learning",
+      "new_route": "/blog/ksu-adaptive-learning/",
+      "new_url": "https://brightai.site/blog/ksu-adaptive-learning/",
+      "new_path": "blog/ksu-adaptive-learning/index.html"
+    },
+    {
+      "old_path": "blog/machine-learning-business/index.html",
+      "old_route": "/blog/machine-learning-business/",
+      "old_url": "https://brightai.site/blog/machine-learning-business/",
+      "slug": "machine-learning-business",
+      "new_route": "/blog/machine-learning-business/",
+      "new_url": "https://brightai.site/blog/machine-learning-business/",
+      "new_path": "blog/machine-learning-business/index.html"
+    },
+    {
+      "old_path": "blog/machine-learning-computer-vision/index.html",
+      "old_route": "/blog/machine-learning-computer-vision/",
+      "old_url": "https://brightai.site/blog/machine-learning-computer-vision/",
+      "slug": "machine-learning-computer-vision",
+      "new_route": "/blog/machine-learning-computer-vision/",
+      "new_url": "https://brightai.site/blog/machine-learning-computer-vision/",
+      "new_path": "blog/machine-learning-computer-vision/index.html"
+    },
+    {
+      "old_path": "blog/nca-ai-compliance-saudi.html",
+      "old_route": "/blog/nca-ai-compliance-saudi/",
+      "old_url": "https://brightai.site/blog/nca-ai-compliance-saudi/",
+      "slug": "nca-ai-compliance-saudi",
+      "new_route": "/blog/nca-ai-compliance-saudi/",
+      "new_url": "https://brightai.site/blog/nca-ai-compliance-saudi/",
+      "new_path": "blog/nca-ai-compliance-saudi/index.html"
+    },
+    {
+      "old_path": "blog/nca-compliance.html",
+      "old_route": "/blog/nca-compliance/",
+      "old_url": "https://brightai.site/blog/nca-compliance/",
+      "slug": "nca-compliance",
+      "new_route": "/blog/nca-compliance/",
+      "new_url": "https://brightai.site/blog/nca-compliance/",
+      "new_path": "blog/nca-compliance/index.html"
+    },
+    {
+      "old_path": "blog/private-hospital-scheduling-optimization.html",
+      "old_route": "/blog/private-hospital-scheduling-optimization/",
+      "old_url": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+      "slug": "private-hospital-scheduling-optimization",
+      "new_route": "/blog/private-hospital-scheduling-optimization/",
+      "new_url": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+      "new_path": "blog/private-hospital-scheduling-optimization/index.html"
+    },
+    {
+      "old_path": "blog/process-automation-ai-efficiency/index.html",
+      "old_route": "/blog/process-automation-ai-efficiency/",
+      "old_url": "https://brightai.site/blog/process-automation-ai-efficiency/",
+      "slug": "process-automation-ai-efficiency",
+      "new_route": "/blog/process-automation-ai-efficiency/",
+      "new_url": "https://brightai.site/blog/process-automation-ai-efficiency/",
+      "new_path": "blog/process-automation-ai-efficiency/index.html"
+    },
+    {
+      "old_path": "blog/process-automation.html",
+      "old_route": "/blog/process-automation/",
+      "old_url": "https://brightai.site/blog/process-automation/",
+      "slug": "process-automation",
+      "new_route": "/blog/process-automation/",
+      "new_url": "https://brightai.site/blog/process-automation/",
+      "new_path": "blog/process-automation/index.html"
+    },
+    {
+      "old_path": "blog/riyadh-municipality-ai-license.html",
+      "old_route": "/blog/riyadh-municipality-ai-license/",
+      "old_url": "https://brightai.site/blog/riyadh-municipality-ai-license/",
+      "slug": "riyadh-municipality-ai-license",
+      "new_route": "/blog/riyadh-municipality-ai-license/",
+      "new_url": "https://brightai.site/blog/riyadh-municipality-ai-license/",
+      "new_path": "blog/riyadh-municipality-ai-license/index.html"
+    },
+    {
+      "old_path": "blog/saudi-agritech-smart-farming.html",
+      "old_route": "/blog/saudi-agritech-smart-farming/",
+      "old_url": "https://brightai.site/blog/saudi-agritech-smart-farming/",
+      "slug": "saudi-agritech-smart-farming",
+      "new_route": "/blog/saudi-agritech-smart-farming/",
+      "new_url": "https://brightai.site/blog/saudi-agritech-smart-farming/",
+      "new_path": "blog/saudi-agritech-smart-farming/index.html"
+    },
+    {
+      "old_path": "blog/saudi-bank-fraud-detection.html",
+      "old_route": "/blog/saudi-bank-fraud-detection/",
+      "old_url": "https://brightai.site/blog/saudi-bank-fraud-detection/",
+      "slug": "saudi-bank-fraud-detection",
+      "new_route": "/blog/saudi-bank-fraud-detection/",
+      "new_url": "https://brightai.site/blog/saudi-bank-fraud-detection/",
+      "new_path": "blog/saudi-bank-fraud-detection/index.html"
+    },
+    {
+      "old_path": "blog/saudi-dates-quality-ai.html",
+      "old_route": "/blog/saudi-dates-quality-ai/",
+      "old_url": "https://brightai.site/blog/saudi-dates-quality-ai/",
+      "slug": "saudi-dates-quality-ai",
+      "new_route": "/blog/saudi-dates-quality-ai/",
+      "new_url": "https://brightai.site/blog/saudi-dates-quality-ai/",
+      "new_path": "blog/saudi-dates-quality-ai/index.html"
+    },
+    {
+      "old_path": "blog/saudi-ecommerce-ai-growth.html",
+      "old_route": "/blog/saudi-ecommerce-ai-growth/",
+      "old_url": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+      "slug": "saudi-ecommerce-ai-growth",
+      "new_route": "/blog/saudi-ecommerce-ai-growth/",
+      "new_url": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+      "new_path": "blog/saudi-ecommerce-ai-growth/index.html"
+    },
+    {
+      "old_path": "blog/saudi-edtech-personalized-learning.html",
+      "old_route": "/blog/saudi-edtech-personalized-learning/",
+      "old_url": "https://brightai.site/blog/saudi-edtech-personalized-learning/",
+      "slug": "saudi-edtech-personalized-learning",
+      "new_route": "/blog/saudi-edtech-personalized-learning/",
+      "new_url": "https://brightai.site/blog/saudi-edtech-personalized-learning/",
+      "new_path": "blog/saudi-edtech-personalized-learning/index.html"
+    },
+    {
+      "old_path": "blog/saudi-energy-predictive-maintenance.html",
+      "old_route": "/blog/saudi-energy-predictive-maintenance/",
+      "old_url": "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
+      "slug": "saudi-energy-predictive-maintenance",
+      "new_route": "/blog/saudi-energy-predictive-maintenance/",
+      "new_url": "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
+      "new_path": "blog/saudi-energy-predictive-maintenance/index.html"
+    },
+    {
+      "old_path": "blog/saudi-factory-ai-productivity.html",
+      "old_route": "/blog/saudi-factory-ai-productivity/",
+      "old_url": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+      "slug": "saudi-factory-ai-productivity",
+      "new_route": "/blog/saudi-factory-ai-productivity/",
+      "new_url": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+      "new_path": "blog/saudi-factory-ai-productivity/index.html"
+    },
+    {
+      "old_path": "blog/saudi-hospitality-dynamic-pricing.html",
+      "old_route": "/blog/saudi-hospitality-dynamic-pricing/",
+      "old_url": "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
+      "slug": "saudi-hospitality-dynamic-pricing",
+      "new_route": "/blog/saudi-hospitality-dynamic-pricing/",
+      "new_url": "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
+      "new_path": "blog/saudi-hospitality-dynamic-pricing/index.html"
+    },
+    {
+      "old_path": "blog/saudi-insurance-claims-ai.html",
+      "old_route": "/blog/saudi-insurance-claims-ai/",
+      "old_url": "https://brightai.site/blog/saudi-insurance-claims-ai/",
+      "slug": "saudi-insurance-claims-ai",
+      "new_route": "/blog/saudi-insurance-claims-ai/",
+      "new_url": "https://brightai.site/blog/saudi-insurance-claims-ai/",
+      "new_path": "blog/saudi-insurance-claims-ai/index.html"
+    },
+    {
+      "old_path": "blog/saudi-logistics-route-optimization.html",
+      "old_route": "/blog/saudi-logistics-route-optimization/",
+      "old_url": "https://brightai.site/blog/saudi-logistics-route-optimization/",
+      "slug": "saudi-logistics-route-optimization",
+      "new_route": "/blog/saudi-logistics-route-optimization/",
+      "new_url": "https://brightai.site/blog/saudi-logistics-route-optimization/",
+      "new_path": "blog/saudi-logistics-route-optimization/index.html"
+    },
+    {
+      "old_path": "blog/saudi-manufacturing-predictive-maintenance.html",
+      "old_route": "/blog/saudi-manufacturing-predictive-maintenance/",
+      "old_url": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+      "slug": "saudi-manufacturing-predictive-maintenance",
+      "new_route": "/blog/saudi-manufacturing-predictive-maintenance/",
+      "new_url": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+      "new_path": "blog/saudi-manufacturing-predictive-maintenance/index.html"
+    },
+    {
+      "old_path": "blog/saudi-mining-ai-exploration.html",
+      "old_route": "/blog/saudi-mining-ai-exploration/",
+      "old_url": "https://brightai.site/blog/saudi-mining-ai-exploration/",
+      "slug": "saudi-mining-ai-exploration",
+      "new_route": "/blog/saudi-mining-ai-exploration/",
+      "new_url": "https://brightai.site/blog/saudi-mining-ai-exploration/",
+      "new_path": "blog/saudi-mining-ai-exploration/index.html"
+    },
+    {
+      "old_path": "blog/saudi-petrochemical-ai-safety.html",
+      "old_route": "/blog/saudi-petrochemical-ai-safety/",
+      "old_url": "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+      "slug": "saudi-petrochemical-ai-safety",
+      "new_route": "/blog/saudi-petrochemical-ai-safety/",
+      "new_url": "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+      "new_path": "blog/saudi-petrochemical-ai-safety/index.html"
+    },
+    {
+      "old_path": "blog/saudi-real-estate-ai-valuation.html",
+      "old_route": "/blog/saudi-real-estate-ai-valuation/",
+      "old_url": "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
+      "slug": "saudi-real-estate-ai-valuation",
+      "new_route": "/blog/saudi-real-estate-ai-valuation/",
+      "new_url": "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
+      "new_path": "blog/saudi-real-estate-ai-valuation/index.html"
+    },
+    {
+      "old_path": "blog/saudi-renewable-energy-ai.html",
+      "old_route": "/blog/saudi-renewable-energy-ai/",
+      "old_url": "https://brightai.site/blog/saudi-renewable-energy-ai/",
+      "slug": "saudi-renewable-energy-ai",
+      "new_route": "/blog/saudi-renewable-energy-ai/",
+      "new_url": "https://brightai.site/blog/saudi-renewable-energy-ai/",
+      "new_path": "blog/saudi-renewable-energy-ai/index.html"
+    },
+    {
+      "old_path": "blog/saudi-smart-city-traffic.html",
+      "old_route": "/blog/saudi-smart-city-traffic/",
+      "old_url": "https://brightai.site/blog/saudi-smart-city-traffic/",
+      "slug": "saudi-smart-city-traffic",
+      "new_route": "/blog/saudi-smart-city-traffic/",
+      "new_url": "https://brightai.site/blog/saudi-smart-city-traffic/",
+      "new_path": "blog/saudi-smart-city-traffic/index.html"
+    },
+    {
+      "old_path": "blog/saudi-sports-analytics-ai.html",
+      "old_route": "/blog/saudi-sports-analytics-ai/",
+      "old_url": "https://brightai.site/blog/saudi-sports-analytics-ai/",
+      "slug": "saudi-sports-analytics-ai",
+      "new_route": "/blog/saudi-sports-analytics-ai/",
+      "new_url": "https://brightai.site/blog/saudi-sports-analytics-ai/",
+      "new_path": "blog/saudi-sports-analytics-ai/index.html"
+    },
+    {
+      "old_path": "blog/saudi-tourism-ai-guide.html",
+      "old_route": "/blog/saudi-tourism-ai-guide/",
+      "old_url": "https://brightai.site/blog/saudi-tourism-ai-guide/",
+      "slug": "saudi-tourism-ai-guide",
+      "new_route": "/blog/saudi-tourism-ai-guide/",
+      "new_url": "https://brightai.site/blog/saudi-tourism-ai-guide/",
+      "new_path": "blog/saudi-tourism-ai-guide/index.html"
+    },
+    {
+      "old_path": "blog/saudi-waste-management-ai.html",
+      "old_route": "/blog/saudi-waste-management-ai/",
+      "old_url": "https://brightai.site/blog/saudi-waste-management-ai/",
+      "slug": "saudi-waste-management-ai",
+      "new_route": "/blog/saudi-waste-management-ai/",
+      "new_url": "https://brightai.site/blog/saudi-waste-management-ai/",
+      "new_path": "blog/saudi-waste-management-ai/index.html"
+    },
+    {
+      "old_path": "blog/smart-automation-benefits.html",
+      "old_route": "/blog/smart-automation-benefits/",
+      "old_url": "https://brightai.site/blog/smart-automation-benefits/",
+      "slug": "smart-automation-benefits",
+      "new_route": "/blog/smart-automation-benefits/",
+      "new_url": "https://brightai.site/blog/smart-automation-benefits/",
+      "new_path": "blog/smart-automation-benefits/index.html"
+    },
+    {
+      "old_path": "blog/smart-crm-system.html",
+      "old_route": "/blog/smart-crm-system/",
+      "old_url": "https://brightai.site/blog/smart-crm-system/",
+      "slug": "smart-crm-system",
+      "new_route": "/blog/smart-crm-system/",
+      "new_url": "https://brightai.site/blog/smart-crm-system/",
+      "new_path": "blog/smart-crm-system/index.html"
+    },
+    {
+      "old_path": "blog/smart-document-processing.html",
+      "old_route": "/blog/smart-document-processing/",
+      "old_url": "https://brightai.site/blog/smart-document-processing/",
+      "slug": "smart-document-processing",
+      "new_route": "/blog/smart-document-processing/",
+      "new_url": "https://brightai.site/blog/smart-document-processing/",
+      "new_path": "blog/smart-document-processing/index.html"
+    },
+    {
+      "old_path": "blog/smart-inventory-management.html",
+      "old_route": "/blog/smart-inventory-management/",
+      "old_url": "https://brightai.site/blog/smart-inventory-management/",
+      "slug": "smart-inventory-management",
+      "new_route": "/blog/smart-inventory-management/",
+      "new_url": "https://brightai.site/blog/smart-inventory-management/",
+      "new_path": "blog/smart-inventory-management/index.html"
+    },
+    {
+      "old_path": "blog/top-ai-tools-saudi-2025.html",
+      "old_route": "/blog/top-ai-tools-saudi-2025/",
+      "old_url": "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+      "slug": "top-ai-tools-saudi-2025",
+      "new_route": "/blog/top-ai-tools-saudi-2025/",
+      "new_url": "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+      "new_path": "blog/top-ai-tools-saudi-2025/index.html"
+    },
+    {
+      "old_path": "blog/transport-logistics-solutions.html",
+      "old_route": "/blog/transport-logistics-solutions/",
+      "old_url": "https://brightai.site/blog/transport-logistics-solutions/",
+      "slug": "transport-logistics-solutions",
+      "new_route": "/blog/transport-logistics-solutions/",
+      "new_url": "https://brightai.site/blog/transport-logistics-solutions/",
+      "new_path": "blog/transport-logistics-solutions/index.html"
+    },
+    {
+      "old_path": "blog/vision-2030-ai-opportunities.html",
+      "old_route": "/blog/vision-2030-ai-opportunities/",
+      "old_url": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+      "slug": "vision-2030-ai-opportunities",
+      "new_route": "/blog/vision-2030-ai-opportunities/",
+      "new_url": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+      "new_path": "blog/vision-2030-ai-opportunities/index.html"
+    },
+    {
+      "old_path": "blog/workplace-automation-guide.html",
+      "old_route": "/blog/workplace-automation-guide/",
+      "old_url": "https://brightai.site/blog/workplace-automation-guide/",
+      "slug": "workplace-automation-guide",
+      "new_route": "/blog/workplace-automation-guide/",
+      "new_url": "https://brightai.site/blog/workplace-automation-guide/",
+      "new_path": "blog/workplace-automation-guide/index.html"
+    }
+  ],
+  "moved": [
+    {
+      "source": "blog/agint-bblog.html",
+      "dest": "blog/building-ai-agents-practical-guide/index.html"
+    },
+    {
+      "source": "blog/ai-agent.html",
+      "dest": "blog/ai-agents-business-guide/index.html"
+    },
+    {
+      "source": "blog/ai-energy-saudi.html",
+      "dest": "blog/ai-energy-saudi/index.html"
+    },
+    {
+      "source": "blog/ai-finance-saudi.html",
+      "dest": "blog/ai-finance-saudi/index.html"
+    },
+    {
+      "source": "blog/ai-generative-content-industry-saudi-arabia.html",
+      "dest": "blog/ai-generative-content-industry-saudi-arabia/index.html"
+    },
+    {
+      "source": "blog/ai-guide-saudi-business.html",
+      "dest": "blog/ai-guide-saudi-business/index.html"
+    },
+    {
+      "source": "blog/ai-healthcare-saudi.html",
+      "dest": "blog/ai-healthcare-saudi/index.html"
+    },
+    {
+      "source": "blog/ai-implementation-cost-guide.html",
+      "dest": "blog/ai-implementation-cost-guide/index.html"
+    },
+    {
+      "source": "blog/ai-innovation-saudi-arabia.html",
+      "dest": "blog/ai-innovation-saudi-arabia/index.html"
+    },
+    {
+      "source": "blog/ai-manufacturing-digital-guide.html",
+      "dest": "blog/ai-manufacturing-digital-guide/index.html"
+    },
+    {
+      "source": "blog/ai-transformation.html",
+      "dest": "blog/ai-transformation/index.html"
+    },
+    {
+      "source": "blog/ai.html",
+      "dest": "blog/ai-business-performance/index.html"
+    },
+    {
+      "source": "blog/data-analysis-best-practices.html",
+      "dest": "blog/data-analysis-best-practices/index.html"
+    },
+    {
+      "source": "blog/industrial-automation-repetitive-tasks.html",
+      "dest": "blog/industrial-automation-repetitive-tasks/index.html"
+    },
+    {
+      "source": "blog/workplace-automation-guide.html",
+      "dest": "blog/workplace-automation-guide/index.html"
+    },
+    {
+      "source": "blog/automation/hr-automation-saudi/index.html",
+      "dest": "blog/hr-automation-saudi/index.html"
+    },
+    {
+      "source": "blog/big-data-analysis.html",
+      "dest": "blog/big-data-analysis/index.html"
+    },
+    {
+      "source": "blog/building-ai-agents-guide.html",
+      "dest": "blog/building-ai-agents-guide/index.html"
+    },
+    {
+      "source": "blog/business-intelligence-data-analysis.html",
+      "dest": "blog/business-intelligence-data-analysis/index.html"
+    },
+    {
+      "source": "blog/business-intelligence-saudi.html",
+      "dest": "blog/business-intelligence-saudi/index.html"
+    },
+    {
+      "source": "blog/case-study-saudi-companies-ai-agents-customer-service.html",
+      "dest": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html"
+    },
+    {
+      "source": "blog/chatgpt-vs-claude-vs-gemini-arabic.html",
+      "dest": "blog/chatgpt-vs-claude-vs-gemini-arabic/index.html"
+    },
+    {
+      "source": "blog/choose-ai-company-saudi.html",
+      "dest": "blog/choose-ai-company-saudi/index.html"
+    },
+    {
+      "source": "blog/cloude-opus-4.6.html",
+      "dest": "blog/claude-opus-4-6-saudi-market/index.html"
+    },
+    {
+      "source": "blog/commerce-ministry-chatbot.html",
+      "dest": "blog/commerce-ministry-chatbot/index.html"
+    },
+    {
+      "source": "blog/data-analytics/kpi-dashboard-guide/index.html",
+      "dest": "blog/kpi-dashboard-guide/index.html"
+    },
+    {
+      "source": "blog/data-analytics/power-bi-saudi-guide/index.html",
+      "dest": "blog/power-bi-saudi-guide/index.html"
+    },
+    {
+      "source": "blog/digital-banking-saudi.html",
+      "dest": "blog/digital-banking-saudi/index.html"
+    },
+    {
+      "source": "blog/digital-health-smart-archive.html",
+      "dest": "blog/digital-health-smart-archive/index.html"
+    },
+    {
+      "source": "blog/future-of-intelligent-data-analysis-finance-sector.html",
+      "dest": "blog/future-of-intelligent-data-analysis-finance-sector/index.html"
+    },
+    {
+      "source": "blog/gov.html",
+      "dest": "blog/government-ai-solutions-saudi/index.html"
+    },
+    {
+      "source": "blog/government-ai-solutions.html",
+      "dest": "blog/government-ai-solutions/index.html"
+    },
+    {
+      "source": "blog/hr-automation-case-study.html",
+      "dest": "blog/hr-automation-case-study/index.html"
+    },
+    {
+      "source": "blog/intelligent-data-analysis.html",
+      "dest": "blog/intelligent-data-analysis/index.html"
+    },
+    {
+      "source": "blog/kfshrc-breast-cancer-ai.html",
+      "dest": "blog/kfshrc-breast-cancer-ai/index.html"
+    },
+    {
+      "source": "blog/ksu-adaptive-learning.html",
+      "dest": "blog/ksu-adaptive-learning/index.html"
+    },
+    {
+      "source": "blog/nca-ai-compliance-saudi.html",
+      "dest": "blog/nca-ai-compliance-saudi/index.html"
+    },
+    {
+      "source": "blog/nca-compliance.html",
+      "dest": "blog/nca-compliance/index.html"
+    },
+    {
+      "source": "blog/private-hospital-scheduling-optimization.html",
+      "dest": "blog/private-hospital-scheduling-optimization/index.html"
+    },
+    {
+      "source": "blog/process-automation.html",
+      "dest": "blog/process-automation/index.html"
+    },
+    {
+      "source": "blog/riyadh-municipality-ai-license.html",
+      "dest": "blog/riyadh-municipality-ai-license/index.html"
+    },
+    {
+      "source": "blog/saudi-agritech-smart-farming.html",
+      "dest": "blog/saudi-agritech-smart-farming/index.html"
+    },
+    {
+      "source": "blog/saudi-bank-fraud-detection.html",
+      "dest": "blog/saudi-bank-fraud-detection/index.html"
+    },
+    {
+      "source": "blog/saudi-dates-quality-ai.html",
+      "dest": "blog/saudi-dates-quality-ai/index.html"
+    },
+    {
+      "source": "blog/saudi-ecommerce-ai-growth.html",
+      "dest": "blog/saudi-ecommerce-ai-growth/index.html"
+    },
+    {
+      "source": "blog/saudi-edtech-personalized-learning.html",
+      "dest": "blog/saudi-edtech-personalized-learning/index.html"
+    },
+    {
+      "source": "blog/saudi-energy-predictive-maintenance.html",
+      "dest": "blog/saudi-energy-predictive-maintenance/index.html"
+    },
+    {
+      "source": "blog/saudi-factory-ai-productivity.html",
+      "dest": "blog/saudi-factory-ai-productivity/index.html"
+    },
+    {
+      "source": "blog/saudi-hospitality-dynamic-pricing.html",
+      "dest": "blog/saudi-hospitality-dynamic-pricing/index.html"
+    },
+    {
+      "source": "blog/saudi-insurance-claims-ai.html",
+      "dest": "blog/saudi-insurance-claims-ai/index.html"
+    },
+    {
+      "source": "blog/saudi-logistics-route-optimization.html",
+      "dest": "blog/saudi-logistics-route-optimization/index.html"
+    },
+    {
+      "source": "blog/saudi-manufacturing-predictive-maintenance.html",
+      "dest": "blog/saudi-manufacturing-predictive-maintenance/index.html"
+    },
+    {
+      "source": "blog/saudi-mining-ai-exploration.html",
+      "dest": "blog/saudi-mining-ai-exploration/index.html"
+    },
+    {
+      "source": "blog/saudi-petrochemical-ai-safety.html",
+      "dest": "blog/saudi-petrochemical-ai-safety/index.html"
+    },
+    {
+      "source": "blog/saudi-real-estate-ai-valuation.html",
+      "dest": "blog/saudi-real-estate-ai-valuation/index.html"
+    },
+    {
+      "source": "blog/saudi-renewable-energy-ai.html",
+      "dest": "blog/saudi-renewable-energy-ai/index.html"
+    },
+    {
+      "source": "blog/saudi-smart-city-traffic.html",
+      "dest": "blog/saudi-smart-city-traffic/index.html"
+    },
+    {
+      "source": "blog/saudi-sports-analytics-ai.html",
+      "dest": "blog/saudi-sports-analytics-ai/index.html"
+    },
+    {
+      "source": "blog/saudi-tourism-ai-guide.html",
+      "dest": "blog/saudi-tourism-ai-guide/index.html"
+    },
+    {
+      "source": "blog/saudi-waste-management-ai.html",
+      "dest": "blog/saudi-waste-management-ai/index.html"
+    },
+    {
+      "source": "blog/smart-automation-benefits.html",
+      "dest": "blog/smart-automation-benefits/index.html"
+    },
+    {
+      "source": "blog/smart-crm-system.html",
+      "dest": "blog/smart-crm-system/index.html"
+    },
+    {
+      "source": "blog/smart-document-processing.html",
+      "dest": "blog/smart-document-processing/index.html"
+    },
+    {
+      "source": "blog/smart-inventory-management.html",
+      "dest": "blog/smart-inventory-management/index.html"
+    },
+    {
+      "source": "blog/top-ai-tools-saudi-2025.html",
+      "dest": "blog/top-ai-tools-saudi-2025/index.html"
+    },
+    {
+      "source": "blog/transport-logistics-solutions.html",
+      "dest": "blog/transport-logistics-solutions/index.html"
+    },
+    {
+      "source": "blog/vision-2030-ai-opportunities.html",
+      "dest": "blog/vision-2030-ai-opportunities/index.html"
+    }
+  ],
+  "removed_duplicates": [
+    {
+      "source": "blog/Generative-artificial-intelligence.html",
+      "canonical": "blog/generative-artificial-intelligence/index.html"
+    },
+    {
+      "source": "blog/digital.html",
+      "canonical": "blog/ai-manufacturing-digital-guide/index.html"
+    },
+    {
+      "source": "blog/analysy.html",
+      "canonical": "blog/data-analysis-best-practices/index.html"
+    },
+    {
+      "source": "blog/atou-job.html",
+      "canonical": "blog/industrial-automation-repetitive-tasks/index.html"
+    },
+    {
+      "source": "blog/auto.html",
+      "canonical": "blog/workplace-automation-guide/index.html"
+    }
+  ],
+  "skipped": [],
+  "changed_files": [
+    "redirects.json",
+    "index.html",
+    "sitemap.xml",
+    "error.html",
+    "sectors/finance.html",
+    "sectors/healthcare-en.html",
+    "sectors/logistics.html",
+    "sectors/finance-en.html",
+    "sectors/manufacturing.html",
+    "sectors/logistics-en.html",
+    "sectors/energy.html",
+    "sectors/ecommerce-en.html",
+    "sectors/ecommerce.html",
+    "sectors/manufacturing-en.html",
+    "sectors/healthcare.html",
+    "sectors/energy-en.html",
+    "tools/index.html",
+    "smart-medical-archive/index.html",
+    "health/index.html",
+    "consultation/index.html",
+    "sitemap/index.html",
+    "backend/blog-slug-redirects.e2e.test.js",
+    "backend/server.js",
+    "about/index.html",
+    "docs/solutions-finance.html",
+    "docs/solutions-interview.html",
+    "docs/solutions-healthcare.html",
+    "docs/data-analysis.html",
+    "docs/solutions-hr.html",
+    "docs/solutions-ocr.html",
+    "blog/index.html",
+    "case-studies/index.html",
+    "smart-automation/index.html",
+    "scripts/seo-url-map.mjs",
+    "scripts/generate-brightai-full-audit-report.mjs",
+    "data-analysis/index.html",
+    "en/index.html",
+    "tmp/hreflang-fix-report.md",
+    "tmp/hreflang-fix-report.json",
+    "tmp/brightai_html_seo_governor.json",
+    "tmp/url_policy_report.json",
+    "tmp/url_policy_report.md",
+    "tmp/url_policy_after.json",
+    "tmp/brightai_html_seo_governor.md",
+    "tmp/url_policy_after.md",
+    "tmp/semrush_issues_raw.json",
+    "services/index.html",
+    "services/custom-ai-agent.html",
+    "services/marketing-automation.html",
+    "ai-agent/index.html",
+    "reports/internal-links/broken_links_before.json",
+    "reports/internal-links/broken_links_before.md",
+    "reports/blog-migration/blog-migration-map.json",
+    "reports/blog-migration/blog-migration-map.md",
+    "en/tools/index.html",
+    "en/smart-medical-archive/index.html",
+    "en/health/index.html",
+    "en/consultation/index.html",
+    "en/about/index.html",
+    "en/smart-automation/index.html",
+    "en/data-analysis/index.html",
+    "en/ai-agent/index.html",
+    "blog/industrial-automation-productivity/index.html",
+    "blog/nca-ai-compliance-saudi/index.html",
+    "blog/private-hospital-scheduling-optimization/index.html",
+    "blog/ai-guide-saudi-business/index.html",
+    "blog/ai-marketing-guide/index.html",
+    "blog/ai-manufacturing-digital-guide/index.html",
+    "blog/claude-opus-4-6-saudi-market/index.html",
+    "blog/digital-transformation-automation/index.html",
+    "blog/generative-artificial-intelligence/index.html",
+    "blog/industrial-automation-repetitive-tasks/index.html",
+    "blog/process-automation-ai-efficiency/index.html",
+    "blog/building-ai-agents-guide/index.html",
+    "blog/power-bi-saudi-guide/index.html",
+    "blog/top-ai-tools-saudi-2025/index.html",
+    "blog/ai-business-performance/index.html",
+    "blog/government-ai-solutions-saudi/index.html",
+    "blog/data-analysis-decision-making/index.html",
+    "blog/ai-automation-project-analysis/index.html",
+    "blog/business-intelligence-saudi/index.html",
+    "blog/ai-energy-saudi/index.html",
+    "blog/digital-banking-saudi/index.html",
+    "blog/kpi-dashboard-guide/index.html",
+    "blog/machine-learning-business/index.html",
+    "blog/ai-generative-content-industry-saudi-arabia/index.html",
+    "blog/ai-agents-business-guide/index.html",
+    "blog/saudi-insurance-claims-ai/index.html",
+    "blog/ai-implementation-cost-guide/index.html",
+    "blog/ai-healthcare-saudi/index.html",
+    "blog/choose-ai-company-saudi/index.html",
+    "blog/hr-automation-saudi/index.html",
+    "blog/ai-transformation/index.html",
+    "blog/chatgpt-vs-claude-vs-gemini-arabic/index.html",
+    "blog/ai-finance-saudi/index.html",
+    "blog/government-ai-solutions/index.html",
+    "blog/ai-data-analysis-tools/index.html",
+    "blog/financial-hr-automation/index.html",
+    "blog/machine-learning-computer-vision/index.html",
+    "blog/kfshrc-breast-cancer-ai/index.html",
+    "blog/digital-health-smart-archive/index.html",
+    "blog/smart-document-processing/index.html",
+    "blog/building-ai-agents-practical-guide/index.html",
+    "blog/nca-compliance/index.html",
+    "blog/vision-2030-ai-opportunities/index.html",
+    "blog/saudi-bank-fraud-detection/index.html",
+    "blog/ai-innovation-saudi-arabia/index.html",
+    "blog/commerce-ministry-chatbot/index.html",
+    "blog/transport-logistics-solutions/index.html",
+    "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+    "backend/data/search-index 2.json",
+    "frontend/js/article-ux-enhancements.min.js",
+    "frontend/js/article-ux-enhancements.js",
+    "sectors/energy-en/index.html",
+    "sectors/manufacturing-en/index.html",
+    "sectors/healthcare-en/index.html",
+    "sectors/ecommerce-en/index.html",
+    "sectors/finance-en/index.html",
+    "sectors/logistics-en/index.html",
+    "render.yaml"
+  ]
+}

@@ -15,6 +15,8 @@ const ERROR_MESSAGES = {
   INVALID_REQUEST: 'طلب غير صالح',
   API_ERROR: 'عذراً، حدث خطأ في البحث. حاول مرة ثانية'
 };
+const SEARCH_CACHE_HEADER = 'private, max-age=30, stale-while-revalidate=120';
+const ERROR_CACHE_HEADER = 'no-store';
 
 function resolveGeminiModel(req) {
   const body = req && req.body && typeof req.body === 'object' ? req.body : {};
@@ -26,6 +28,7 @@ function resolveGeminiModel(req) {
 async function searchHandler(req, res) {
   try {
     if (!req.body || typeof req.body.query !== 'string') {
+      res.setHeader('Cache-Control', ERROR_CACHE_HEADER);
       return res.status(400).json({
         error: ERROR_MESSAGES.INVALID_REQUEST,
         errorCode: 'INVALID_REQUEST',
@@ -36,6 +39,7 @@ async function searchHandler(req, res) {
 
     const rawQuery = req.body.query;
     if (!rawQuery || rawQuery.trim().length === 0) {
+      res.setHeader('Cache-Control', ERROR_CACHE_HEADER);
       return res.status(400).json({
         error: ERROR_MESSAGES.NO_QUERY,
         errorCode: 'NO_QUERY',
@@ -45,6 +49,7 @@ async function searchHandler(req, res) {
     }
 
     if (rawQuery.trim().length < 3) {
+      res.setHeader('Cache-Control', ERROR_CACHE_HEADER);
       return res.status(400).json({
         error: ERROR_MESSAGES.QUERY_TOO_SHORT,
         errorCode: 'QUERY_TOO_SHORT',
@@ -54,6 +59,7 @@ async function searchHandler(req, res) {
     }
 
     if (rawQuery.length > config.validation.maxInputLength) {
+      res.setHeader('Cache-Control', ERROR_CACHE_HEADER);
       return res.status(400).json({
         error: ERROR_MESSAGES.QUERY_TOO_LONG,
         errorCode: 'QUERY_TOO_LONG',
@@ -70,6 +76,7 @@ async function searchHandler(req, res) {
       model: geminiModel
     });
 
+    res.setHeader('Cache-Control', SEARCH_CACHE_HEADER);
     return res.status(200).json({
       query,
       answer: ragResult.answer || '',
@@ -83,6 +90,7 @@ async function searchHandler(req, res) {
     const statusCode = error.statusCode || 500;
     const arabicMessage = getArabicErrorMessage(error, statusCode);
 
+    res.setHeader('Cache-Control', ERROR_CACHE_HEADER);
     return res.status(statusCode).json({
       error: arabicMessage || ERROR_MESSAGES.API_ERROR,
       errorCode: error.code || 'API_ERROR',

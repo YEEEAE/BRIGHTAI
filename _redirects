@@ -163,24 +163,45 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/production-line/ /blog/industrial-automation-productivity/ 301
 
 # التحويلات الخاصة يجب أن تسبق قواعد /blog/:slug العامة لأن الاستضافة تطبق أول تطابق.
+/blog/Generative-artificial-intelligence.html /blog/generative-artificial-intelligence/ 301
+/blog/Generative-artificial-intelligence /blog/generative-artificial-intelligence/ 301
+/blog/Generative-artificial-intelligence/ /blog/generative-artificial-intelligence/ 301
 /blog/analysy.html /blog/data-analysis-best-practices/ 301
 /blog/analysy /blog/data-analysis-best-practices/ 301
 /blog/analysy/ /blog/data-analysis-best-practices/ 301
 /blog/auto.html /blog/workplace-automation-guide/ 301
 /blog/auto /blog/workplace-automation-guide/ 301
 /blog/auto/ /blog/workplace-automation-guide/ 301
-/blog/gov.html /blog/government-ai-solutions/ 301
-/blog/gov /blog/government-ai-solutions/ 301
-/blog/gov/ /blog/government-ai-solutions/ 301
+/blog/gov.html /blog/government-ai-solutions-saudi/ 301
+/blog/gov /blog/government-ai-solutions-saudi/ 301
+/blog/gov/ /blog/government-ai-solutions-saudi/ 301
 /blog/digital.html /blog/ai-manufacturing-digital-guide/ 301
 /blog/digital /blog/ai-manufacturing-digital-guide/ 301
 /blog/digital/ /blog/ai-manufacturing-digital-guide/ 301
 /blog/atou-job.html /blog/industrial-automation-repetitive-tasks/ 301
 /blog/atou-job /blog/industrial-automation-repetitive-tasks/ 301
 /blog/atou-job/ /blog/industrial-automation-repetitive-tasks/ 301
-/blog/agint-bblog.html /blog/building-ai-agents-guide/ 301
-/blog/agint-bblog /blog/building-ai-agents-guide/ 301
-/blog/agint-bblog/ /blog/building-ai-agents-guide/ 301
+/blog/agint-bblog.html /blog/building-ai-agents-practical-guide/ 301
+/blog/agint-bblog /blog/building-ai-agents-practical-guide/ 301
+/blog/agint-bblog/ /blog/building-ai-agents-practical-guide/ 301
+/blog/ai-agent.html /blog/ai-agents-business-guide/ 301
+/blog/ai-agent /blog/ai-agents-business-guide/ 301
+/blog/ai-agent/ /blog/ai-agents-business-guide/ 301
+/blog/ai.html /blog/ai-business-performance/ 301
+/blog/ai /blog/ai-business-performance/ 301
+/blog/ai/ /blog/ai-business-performance/ 301
+/blog/automation/hr-automation-saudi/index.html /blog/hr-automation-saudi/ 301
+/blog/automation/hr-automation-saudi /blog/hr-automation-saudi/ 301
+/blog/automation/hr-automation-saudi/ /blog/hr-automation-saudi/ 301
+/blog/cloude-opus-4.6.html /blog/claude-opus-4-6-saudi-market/ 301
+/blog/cloude-opus-4.6 /blog/claude-opus-4-6-saudi-market/ 301
+/blog/cloude-opus-4.6/ /blog/claude-opus-4-6-saudi-market/ 301
+/blog/data-analytics/kpi-dashboard-guide/index.html /blog/kpi-dashboard-guide/ 301
+/blog/data-analytics/kpi-dashboard-guide /blog/kpi-dashboard-guide/ 301
+/blog/data-analytics/kpi-dashboard-guide/ /blog/kpi-dashboard-guide/ 301
+/blog/data-analytics/power-bi-saudi-guide/index.html /blog/power-bi-saudi-guide/ 301
+/blog/data-analytics/power-bi-saudi-guide /blog/power-bi-saudi-guide/ 301
+/blog/data-analytics/power-bi-saudi-guide/ /blog/power-bi-saudi-guide/ 301
 
 /blog/:section/:slug.html /blog/:section/:slug/ 301
 /blog/:section/:slug/index.html /blog/:section/:slug/ 301
@@ -188,23 +209,3 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/:slug/index.html /blog/:slug/ 301
 /:section/:slug.html /:section/:slug/ 301
 /:slug.html /:slug/ 301
-
-# 301 redirects for renamed blog pages (bad filenames → descriptive URLs)
-/blog/analysy.html /blog/data-analysis-best-practices/ 301
-/blog/analysy /blog/data-analysis-best-practices/ 301
-/blog/analysy/ /blog/data-analysis-best-practices/ 301
-/blog/auto.html /blog/workplace-automation-guide/ 301
-/blog/auto /blog/workplace-automation-guide/ 301
-/blog/auto/ /blog/workplace-automation-guide/ 301
-/blog/gov.html /blog/government-ai-solutions/ 301
-/blog/gov /blog/government-ai-solutions/ 301
-/blog/gov/ /blog/government-ai-solutions/ 301
-/blog/digital.html /blog/ai-manufacturing-digital-guide/ 301
-/blog/digital /blog/ai-manufacturing-digital-guide/ 301
-/blog/digital/ /blog/ai-manufacturing-digital-guide/ 301
-/blog/atou-job.html /blog/industrial-automation-repetitive-tasks/ 301
-/blog/atou-job /blog/industrial-automation-repetitive-tasks/ 301
-/blog/atou-job/ /blog/industrial-automation-repetitive-tasks/ 301
-/blog/agint-bblog.html /blog/building-ai-agents-guide/ 301
-/blog/agint-bblog /blog/building-ai-agents-guide/ 301
-/blog/agint-bblog/ /blog/building-ai-agents-guide/ 301

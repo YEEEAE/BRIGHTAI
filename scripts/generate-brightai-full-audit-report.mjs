@@ -737,9 +737,9 @@ const topicalTable = [
   '| Cluster | الصفحة الأساسية | الصفحات الداعمة الحالية | صفحات جديدة مقترحة | الكلمات المفتاحية | روابط داخلية مقترحة |',
   '|---|---|---|---|---|---|',
   '| الذكاء الاصطناعي للمؤسسات | `/services/` | `/blog/ai-guide-saudi-business/`, `/blog/vision-2030-ai-opportunities/` | `/enterprise-ai-saudi/` | استشارات الذكاء الاصطناعي السعودية، شركة ذكاء اصطناعي في السعودية | من homepage والخدمات إلى المقالات ثم CTA |',
-  '| وكلاء الذكاء الاصطناعي | `/ai-agent/` | `/blog/ai-agent/`, `/blog/building-ai-agents-guide/` | `/ai-agent/governance/` | وكلاء ذكاء اصطناعي للمؤسسات | من bots إلى ai-agent والعكس |',
+  '| وكلاء الذكاء الاصطناعي | `/ai-agent/` | `/blog/ai-agents-business-guide/`, `/blog/building-ai-agents-guide/` | `/ai-agent/governance/` | وكلاء ذكاء اصطناعي للمؤسسات | من bots إلى ai-agent والعكس |',
   '| أتمتة الأعمال | `/smart-automation/` | `/blog/process-automation/`, `/blog/smart-automation-benefits/` | `/rpa-saudi/` | أتمتة العمليات الروبوتية RPA | من services وblog إلى smart-automation |',
-  '| تحليل البيانات | `/data-analysis/` | `/blog/business-intelligence-saudi/`, `/blog/data-analytics/power-bi-saudi-guide/` | `/data-governance-saudi/` | تحليل البيانات الضخمة السعودية، NDMO | من data-analysis إلى governance |',
+  '| تحليل البيانات | `/data-analysis/` | `/blog/business-intelligence-saudi/`, `/blog/power-bi-saudi-guide/` | `/data-governance-saudi/` | تحليل البيانات الضخمة السعودية، NDMO | من data-analysis إلى governance |',
   '| المناقصات والقطاع الحكومي | `/tenders/` | `/tenders/landing/`, `/tenders/reports/` | `/government-ai-procurement/` | تحليل المناقصات بالذكاء الاصطناعي، B2G | من homepage/footer إلى tenders |',
   '| الحوكمة والامتثال | `/data-analysis/` | `/blog/nca-ai-compliance-saudi/`, `/blog/nca-compliance/` | `/ai-governance-pdpl-ndmo/` | PDPL، NDMO، حوكمة البيانات | روابط من data/services/blog |',
 ].join('\n');

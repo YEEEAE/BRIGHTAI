@@ -268,6 +268,115 @@ services:
         destination: /blog/choose-ai-company-saudi/
 
       - type: redirect
+        source: /blog/analysy
+        destination: /blog/data-analysis-best-practices/
+      - type: redirect
+        source: /blog/analysy/
+        destination: /blog/data-analysis-best-practices/
+      - type: redirect
+        source: /blog/analysy.html
+        destination: /blog/data-analysis-best-practices/
+      - type: redirect
+        source: /blog/auto
+        destination: /blog/workplace-automation-guide/
+      - type: redirect
+        source: /blog/auto/
+        destination: /blog/workplace-automation-guide/
+      - type: redirect
+        source: /blog/auto.html
+        destination: /blog/workplace-automation-guide/
+      - type: redirect
+        source: /blog/gov
+        destination: /blog/government-ai-solutions-saudi/
+      - type: redirect
+        source: /blog/gov/
+        destination: /blog/government-ai-solutions-saudi/
+      - type: redirect
+        source: /blog/gov.html
+        destination: /blog/government-ai-solutions-saudi/
+      - type: redirect
+        source: /blog/digital
+        destination: /blog/ai-manufacturing-digital-guide/
+      - type: redirect
+        source: /blog/digital/
+        destination: /blog/ai-manufacturing-digital-guide/
+      - type: redirect
+        source: /blog/digital.html
+        destination: /blog/ai-manufacturing-digital-guide/
+      - type: redirect
+        source: /blog/atou-job
+        destination: /blog/industrial-automation-repetitive-tasks/
+      - type: redirect
+        source: /blog/atou-job/
+        destination: /blog/industrial-automation-repetitive-tasks/
+      - type: redirect
+        source: /blog/atou-job.html
+        destination: /blog/industrial-automation-repetitive-tasks/
+      - type: redirect
+        source: /blog/agint-bblog
+        destination: /blog/building-ai-agents-practical-guide/
+      - type: redirect
+        source: /blog/agint-bblog/
+        destination: /blog/building-ai-agents-practical-guide/
+      - type: redirect
+        source: /blog/agint-bblog.html
+        destination: /blog/building-ai-agents-practical-guide/
+      - type: redirect
+        source: /blog/ai-agent
+        destination: /blog/ai-agents-business-guide/
+      - type: redirect
+        source: /blog/ai-agent/
+        destination: /blog/ai-agents-business-guide/
+      - type: redirect
+        source: /blog/ai-agent.html
+        destination: /blog/ai-agents-business-guide/
+      - type: redirect
+        source: /blog/ai
+        destination: /blog/ai-business-performance/
+      - type: redirect
+        source: /blog/ai/
+        destination: /blog/ai-business-performance/
+      - type: redirect
+        source: /blog/ai.html
+        destination: /blog/ai-business-performance/
+      - type: redirect
+        source: /blog/automation/hr-automation-saudi
+        destination: /blog/hr-automation-saudi/
+      - type: redirect
+        source: /blog/automation/hr-automation-saudi/
+        destination: /blog/hr-automation-saudi/
+      - type: redirect
+        source: /blog/automation/hr-automation-saudi/index.html
+        destination: /blog/hr-automation-saudi/
+      - type: redirect
+        source: /blog/cloude-opus-4.6
+        destination: /blog/claude-opus-4-6-saudi-market/
+      - type: redirect
+        source: /blog/cloude-opus-4.6/
+        destination: /blog/claude-opus-4-6-saudi-market/
+      - type: redirect
+        source: /blog/cloude-opus-4.6.html
+        destination: /blog/claude-opus-4-6-saudi-market/
+      - type: redirect
+        source: /blog/data-analytics/kpi-dashboard-guide
+        destination: /blog/kpi-dashboard-guide/
+      - type: redirect
+        source: /blog/data-analytics/kpi-dashboard-guide/
+        destination: /blog/kpi-dashboard-guide/
+      - type: redirect
+        source: /blog/data-analytics/kpi-dashboard-guide/index.html
+        destination: /blog/kpi-dashboard-guide/
+      - type: redirect
+        source: /blog/data-analytics/power-bi-saudi-guide
+        destination: /blog/power-bi-saudi-guide/
+      - type: redirect
+        source: /blog/data-analytics/power-bi-saudi-guide/
+        destination: /blog/power-bi-saudi-guide/
+      - type: redirect
+        source: /blog/data-analytics/power-bi-saudi-guide/index.html
+        destination: /blog/power-bi-saudi-guide/
+
+      - type: redirect
         source: "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)"
         destination: /blog/ai-automation-project-analysis/
       - type: redirect
@@ -436,6 +545,217 @@ services:
       - type: redirect
         source: /blog/مقال-تحليل.html
         destination: /blog/ai-data-analysis-tools/
+
+      - type: redirect
+        source: /blog/ai-automation-project-analysis/index.html
+        destination: /blog/ai-automation-project-analysis/
+      - type: redirect
+        source: /blog/ai-data-analysis-tools/index.html
+        destination: /blog/ai-data-analysis-tools/
+      - type: redirect
+        source: /blog/ai-energy-saudi.html
+        destination: /blog/ai-energy-saudi/
+      - type: redirect
+        source: /blog/ai-finance-saudi.html
+        destination: /blog/ai-finance-saudi/
+      - type: redirect
+        source: /blog/ai-generative-content-industry-saudi-arabia.html
+        destination: /blog/ai-generative-content-industry-saudi-arabia/
+      - type: redirect
+        source: /blog/ai-guide-saudi-business.html
+        destination: /blog/ai-guide-saudi-business/
+      - type: redirect
+        source: /blog/ai-healthcare-saudi.html
+        destination: /blog/ai-healthcare-saudi/
+      - type: redirect
+        source: /blog/ai-implementation-cost-guide.html
+        destination: /blog/ai-implementation-cost-guide/
+      - type: redirect
+        source: /blog/ai-innovation-saudi-arabia.html
+        destination: /blog/ai-innovation-saudi-arabia/
+      - type: redirect
+        source: /blog/ai-manufacturing-digital-guide.html
+        destination: /blog/ai-manufacturing-digital-guide/
+      - type: redirect
+        source: /blog/ai-marketing-guide/index.html
+        destination: /blog/ai-marketing-guide/
+      - type: redirect
+        source: /blog/ai-transformation.html
+        destination: /blog/ai-transformation/
+      - type: redirect
+        source: /blog/big-data-analysis.html
+        destination: /blog/big-data-analysis/
+      - type: redirect
+        source: /blog/building-ai-agents-guide.html
+        destination: /blog/building-ai-agents-guide/
+      - type: redirect
+        source: /blog/business-intelligence-data-analysis.html
+        destination: /blog/business-intelligence-data-analysis/
+      - type: redirect
+        source: /blog/business-intelligence-saudi.html
+        destination: /blog/business-intelligence-saudi/
+      - type: redirect
+        source: /blog/case-study-saudi-companies-ai-agents-customer-service.html
+        destination: /blog/case-study-saudi-companies-ai-agents-customer-service/
+      - type: redirect
+        source: /blog/chatgpt-vs-claude-vs-gemini-arabic.html
+        destination: /blog/chatgpt-vs-claude-vs-gemini-arabic/
+      - type: redirect
+        source: /blog/choose-ai-company-saudi.html
+        destination: /blog/choose-ai-company-saudi/
+      - type: redirect
+        source: /blog/commerce-ministry-chatbot.html
+        destination: /blog/commerce-ministry-chatbot/
+      - type: redirect
+        source: /blog/data-analysis-best-practices.html
+        destination: /blog/data-analysis-best-practices/
+      - type: redirect
+        source: /blog/data-analysis-decision-making/index.html
+        destination: /blog/data-analysis-decision-making/
+      - type: redirect
+        source: /blog/digital-banking-saudi.html
+        destination: /blog/digital-banking-saudi/
+      - type: redirect
+        source: /blog/digital-health-smart-archive.html
+        destination: /blog/digital-health-smart-archive/
+      - type: redirect
+        source: /blog/digital-transformation-automation/index.html
+        destination: /blog/digital-transformation-automation/
+      - type: redirect
+        source: /blog/financial-hr-automation/index.html
+        destination: /blog/financial-hr-automation/
+      - type: redirect
+        source: /blog/future-of-intelligent-data-analysis-finance-sector.html
+        destination: /blog/future-of-intelligent-data-analysis-finance-sector/
+      - type: redirect
+        source: /blog/generative-artificial-intelligence/index.html
+        destination: /blog/generative-artificial-intelligence/
+      - type: redirect
+        source: /blog/government-ai-solutions.html
+        destination: /blog/government-ai-solutions/
+      - type: redirect
+        source: /blog/hr-automation-case-study.html
+        destination: /blog/hr-automation-case-study/
+      - type: redirect
+        source: /blog/industrial-automation-productivity/index.html
+        destination: /blog/industrial-automation-productivity/
+      - type: redirect
+        source: /blog/industrial-automation-repetitive-tasks.html
+        destination: /blog/industrial-automation-repetitive-tasks/
+      - type: redirect
+        source: /blog/intelligent-data-analysis.html
+        destination: /blog/intelligent-data-analysis/
+      - type: redirect
+        source: /blog/kfshrc-breast-cancer-ai.html
+        destination: /blog/kfshrc-breast-cancer-ai/
+      - type: redirect
+        source: /blog/ksu-adaptive-learning.html
+        destination: /blog/ksu-adaptive-learning/
+      - type: redirect
+        source: /blog/machine-learning-business/index.html
+        destination: /blog/machine-learning-business/
+      - type: redirect
+        source: /blog/machine-learning-computer-vision/index.html
+        destination: /blog/machine-learning-computer-vision/
+      - type: redirect
+        source: /blog/nca-ai-compliance-saudi.html
+        destination: /blog/nca-ai-compliance-saudi/
+      - type: redirect
+        source: /blog/nca-compliance.html
+        destination: /blog/nca-compliance/
+      - type: redirect
+        source: /blog/private-hospital-scheduling-optimization.html
+        destination: /blog/private-hospital-scheduling-optimization/
+      - type: redirect
+        source: /blog/process-automation-ai-efficiency/index.html
+        destination: /blog/process-automation-ai-efficiency/
+      - type: redirect
+        source: /blog/process-automation.html
+        destination: /blog/process-automation/
+      - type: redirect
+        source: /blog/riyadh-municipality-ai-license.html
+        destination: /blog/riyadh-municipality-ai-license/
+      - type: redirect
+        source: /blog/saudi-agritech-smart-farming.html
+        destination: /blog/saudi-agritech-smart-farming/
+      - type: redirect
+        source: /blog/saudi-bank-fraud-detection.html
+        destination: /blog/saudi-bank-fraud-detection/
+      - type: redirect
+        source: /blog/saudi-dates-quality-ai.html
+        destination: /blog/saudi-dates-quality-ai/
+      - type: redirect
+        source: /blog/saudi-ecommerce-ai-growth.html
+        destination: /blog/saudi-ecommerce-ai-growth/
+      - type: redirect
+        source: /blog/saudi-edtech-personalized-learning.html
+        destination: /blog/saudi-edtech-personalized-learning/
+      - type: redirect
+        source: /blog/saudi-energy-predictive-maintenance.html
+        destination: /blog/saudi-energy-predictive-maintenance/
+      - type: redirect
+        source: /blog/saudi-factory-ai-productivity.html
+        destination: /blog/saudi-factory-ai-productivity/
+      - type: redirect
+        source: /blog/saudi-hospitality-dynamic-pricing.html
+        destination: /blog/saudi-hospitality-dynamic-pricing/
+      - type: redirect
+        source: /blog/saudi-insurance-claims-ai.html
+        destination: /blog/saudi-insurance-claims-ai/
+      - type: redirect
+        source: /blog/saudi-logistics-route-optimization.html
+        destination: /blog/saudi-logistics-route-optimization/
+      - type: redirect
+        source: /blog/saudi-manufacturing-predictive-maintenance.html
+        destination: /blog/saudi-manufacturing-predictive-maintenance/
+      - type: redirect
+        source: /blog/saudi-mining-ai-exploration.html
+        destination: /blog/saudi-mining-ai-exploration/
+      - type: redirect
+        source: /blog/saudi-petrochemical-ai-safety.html
+        destination: /blog/saudi-petrochemical-ai-safety/
+      - type: redirect
+        source: /blog/saudi-real-estate-ai-valuation.html
+        destination: /blog/saudi-real-estate-ai-valuation/
+      - type: redirect
+        source: /blog/saudi-renewable-energy-ai.html
+        destination: /blog/saudi-renewable-energy-ai/
+      - type: redirect
+        source: /blog/saudi-smart-city-traffic.html
+        destination: /blog/saudi-smart-city-traffic/
+      - type: redirect
+        source: /blog/saudi-sports-analytics-ai.html
+        destination: /blog/saudi-sports-analytics-ai/
+      - type: redirect
+        source: /blog/saudi-tourism-ai-guide.html
+        destination: /blog/saudi-tourism-ai-guide/
+      - type: redirect
+        source: /blog/saudi-waste-management-ai.html
+        destination: /blog/saudi-waste-management-ai/
+      - type: redirect
+        source: /blog/smart-automation-benefits.html
+        destination: /blog/smart-automation-benefits/
+      - type: redirect
+        source: /blog/smart-crm-system.html
+        destination: /blog/smart-crm-system/
+      - type: redirect
+        source: /blog/smart-document-processing.html
+        destination: /blog/smart-document-processing/
+      - type: redirect
+        source: /blog/smart-inventory-management.html
+        destination: /blog/smart-inventory-management/
+      - type: redirect
+        source: /blog/top-ai-tools-saudi-2025.html
+        destination: /blog/top-ai-tools-saudi-2025/
+      - type: redirect
+        source: /blog/transport-logistics-solutions.html
+        destination: /blog/transport-logistics-solutions/
+      - type: redirect
+        source: /blog/vision-2030-ai-opportunities.html
+        destination: /blog/vision-2030-ai-opportunities/
+      - type: redirect
+        source: /blog/workplace-automation-guide.html
+        destination: /blog/workplace-automation-guide/
 
       - type: redirect
         source: /blog/:section/:slug.html

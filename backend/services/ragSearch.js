@@ -15,6 +15,8 @@ const CHUNK_SIZE = clampNumber(process.env.RAG_CHUNK_SIZE_CHARS, 900, 300, 1600)
 const CHUNK_OVERLAP = clampNumber(process.env.RAG_CHUNK_OVERLAP_CHARS, 180, 50, 500);
 const MIN_CHUNK_CHARS = clampNumber(process.env.RAG_MIN_CHUNK_CHARS, 130, 80, 600);
 const DEFAULT_RETRIEVAL_LIMIT = 10;
+const QUERY_CACHE_TTL_MS = clampNumber(process.env.RAG_QUERY_CACHE_TTL_MS, 45 * 1000, 5 * 1000, 10 * 60 * 1000);
+const QUERY_CACHE_MAX_ENTRIES = clampNumber(process.env.RAG_QUERY_CACHE_MAX_ENTRIES, 80, 10, 500);
 
 const SEARCH_SYSTEM_PROMPT = `
 أنت محرك بحث RAG لموقع BrightAI.
@@ -51,8 +53,10 @@ const SEARCH_SYSTEM_PROMPT = `
 let indexCache = {
   builtAt: 0,
   entries: [],
-  idf: new Map()
+  idf: new Map(),
+  invertedIndex: new Map()
 };
+const queryCache = new Map();
 
 function isGeminiConfigured() {
   return !!config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE';
@@ -299,11 +303,13 @@ function buildIndex() {
   }
 
   const idf = new Map();
+  const invertedIndex = new Map();
   if (!entries.length) {
     return {
       builtAt: Date.now(),
       entries: [],
-      idf
+      idf,
+      invertedIndex
     };
   }
 
@@ -332,10 +338,18 @@ function buildIndex() {
     entry.norm = Math.sqrt(normSq) || 1;
   }
 
+  entries.forEach((entry, index) => {
+    for (const term of entry.weights.keys()) {
+      if (!invertedIndex.has(term)) invertedIndex.set(term, []);
+      invertedIndex.get(term).push(index);
+    }
+  });
+
   return {
     builtAt: Date.now(),
     entries,
-    idf
+    idf,
+    invertedIndex
   };
 }
 
@@ -376,16 +390,30 @@ function retrieveRelevantChunks(query, options = {}) {
   const tokens = tokenize(safeQuery);
   if (!tokens.length) return [];
 
-  const { entries, idf } = getIndex();
+  const { entries, idf, invertedIndex } = getIndex();
   if (!entries.length) return [];
 
   const queryVector = buildQueryWeights(tokens, idf);
   if (!queryVector.weights.size) return [];
 
   const normalizedQuery = normalizeForSearch(safeQuery);
+  const candidateIndexes = new Set();
+  for (const term of queryVector.weights.keys()) {
+    const postings = invertedIndex.get(term);
+    if (!postings) continue;
+    for (const index of postings) {
+      candidateIndexes.add(index);
+    }
+  }
+
+  if (!candidateIndexes.size) return [];
+
   const scored = [];
 
-  for (const entry of entries) {
+  for (const entryIndex of candidateIndexes) {
+    const entry = entries[entryIndex];
+    if (!entry) continue;
+
     let dotProduct = 0;
     let matchedTokenCount = 0;
 
@@ -437,6 +465,42 @@ function retrieveRelevantChunks(query, options = {}) {
     snippet: item.snippet,
     score: Number(item.score.toFixed(5))
   }));
+}
+
+function getQueryCacheKey(query, options = {}) {
+  return JSON.stringify({
+    q: normalizeForSearch(query),
+    maxSources: options.maxSources || 5,
+    retrievalLimit: options.retrievalLimit || DEFAULT_RETRIEVAL_LIMIT,
+    model: options.model || config.gemini.model || '',
+    disableGeneration: options.disableGeneration === true,
+    generationAvailable: isGeminiConfigured()
+  });
+}
+
+function getCachedQueryResult(cacheKey) {
+  const cached = queryCache.get(cacheKey);
+  if (!cached) return null;
+
+  if (Date.now() - cached.createdAt > QUERY_CACHE_TTL_MS) {
+    queryCache.delete(cacheKey);
+    return null;
+  }
+
+  queryCache.delete(cacheKey);
+  queryCache.set(cacheKey, cached);
+  return JSON.parse(JSON.stringify(cached.value));
+}
+
+function setCachedQueryResult(cacheKey, value) {
+  queryCache.set(cacheKey, {
+    createdAt: Date.now(),
+    value
+  });
+
+  while (queryCache.size > QUERY_CACHE_MAX_ENTRIES) {
+    queryCache.delete(queryCache.keys().next().value);
+  }
 }
 
 function parseJsonFromText(text) {
@@ -622,6 +686,10 @@ async function generateAnswerWithGemini(query, matches, options = {}) {
 
 async function searchSiteWithRag(query, options = {}) {
   const safeQuery = sanitizeUserInput(query || '').slice(0, 700);
+  const cacheKey = getQueryCacheKey(safeQuery, options);
+  const cached = getCachedQueryResult(cacheKey);
+  if (cached) return cached;
+
   const activeGeminiModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
   const retrievalLimit = clampNumber(
     options.retrievalLimit,
@@ -633,17 +701,19 @@ async function searchSiteWithRag(query, options = {}) {
   const matches = retrieveRelevantChunks(safeQuery, { limit: retrievalLimit, maxPerUrl: 2 });
 
   if (!matches.length) {
-    return {
+    const result = {
       answer: 'ما ظهرت نتائج كافية داخل المحتوى الحالي. جرّب سؤال أدق أو كلمات مرتبطة بالخدمة المطلوبة.',
       sources: [],
       results: [],
       mode: 'no_matches',
       retrievalCount: 0
     };
+    setCachedQueryResult(cacheKey, result);
+    return result;
   }
 
   if (options.disableGeneration === true || !isGeminiConfigured()) {
-    return {
+    const result = {
       answer: fallbackAnswer(safeQuery, matches),
       sources: matches.slice(0, 4).map(item => ({
         sourceId: item.sourceId,
@@ -655,6 +725,8 @@ async function searchSiteWithRag(query, options = {}) {
       mode: 'retrieval_only',
       retrievalCount: matches.length
     };
+    setCachedQueryResult(cacheKey, result);
+    return result;
   }
 
   try {
@@ -662,13 +734,15 @@ async function searchSiteWithRag(query, options = {}) {
       model: activeGeminiModel
     });
     const normalized = sanitizeGeneratedPayload(generated, matches, safeQuery);
-    return {
+    const result = {
       ...normalized,
       mode: 'rag_gemini',
       retrievalCount: matches.length
     };
+    setCachedQueryResult(cacheKey, result);
+    return result;
   } catch (error) {
-    return {
+    const result = {
       answer: fallbackAnswer(safeQuery, matches),
       sources: matches.slice(0, 4).map(item => ({
         sourceId: item.sourceId,
@@ -681,6 +755,8 @@ async function searchSiteWithRag(query, options = {}) {
       retrievalCount: matches.length,
       warning: error?.statusCode === 429 ? 'RATE_LIMIT_EXCEEDED' : 'GENERATION_FAILED'
     };
+    setCachedQueryResult(cacheKey, result);
+    return result;
   }
 }
 
@@ -688,8 +764,10 @@ function invalidateRagIndex() {
   indexCache = {
     builtAt: 0,
     entries: [],
-    idf: new Map()
+    idf: new Map(),
+    invertedIndex: new Map()
   };
+  queryCache.clear();
 }
 
 module.exports = {

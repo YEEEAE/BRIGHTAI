@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-25T19:14:36.560Z",
+  "generatedAt": "2026-04-25T19:43:50.515Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 369,
-  "referencesScanned": 21836,
-  "internalReferences": 16490,
+  "filesScanned": 365,
+  "referencesScanned": 21418,
+  "internalReferences": 16168,
   "brokenReferences": 0,
   "fixableBrokenReferences": 0,
-  "normalizationCandidates": 90,
+  "normalizationCandidates": 84,
   "topBrokenFiles": [],
   "brokenRows": []
 }

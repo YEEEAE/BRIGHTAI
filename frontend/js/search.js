@@ -1,4 +1,581 @@
-var BrightSearch=class{constructor(){this.modal=null,this.input=null,this.resultsContainer=null,this.isOpen=!1,this.selectedIndex=-1,this.apiEndpoint="/api/ai/search",this.requestController=null,this.lastSearchToken=0,this.searchData=this.getSearchIndex(),this.debounceTimer=null,this.boundGlobalKeydown=this.handleGlobalKeydown.bind(this),this.init()}getSearchIndex(){return[{id:"smart-automation",type:"service",title:"الأتمتة الذكية",description:"أتمتة العمليات التشغيلية ورفع الكفاءة باستخدام الذكاء الاصطناعي",keywords:["أتمتة","RPA","تشغيل","كفاءة","عمليات"],url:"/smart-automation/",category:"الخدمات"},{id:"data-analysis",type:"service",title:"تحليل البيانات",description:"تحليلات متقدمة ولوحات مؤشرات تدعم القرار التجاري",keywords:["بيانات","تحليل","تقارير","مؤشرات","ذكاء أعمال"],url:"/data-analysis/",category:"الخدمات"},{id:"ai-agent",type:"service",title:"AI للمنشآت",description:"وكلاء ذكاء اصطناعي مخصصون للعمليات اليومية",keywords:["وكيل","Agent","منشآت","تشغيل","AIaaS"],url:"/ai-agent/",category:"الخدمات"},{id:"smart-medical-archive",type:"service",title:"الأرشيف الطبي الذكي",description:"نظام إدارة سجلات طبية ذكي للمستشفيات والمراكز الصحية",keywords:["طبي","صحي","مستشفيات","سجلات","أرشفة"],url:"/smart-medical-archive/",category:"الخدمات"},{id:"ai-workflows",type:"service",title:"سير العمل بالذكاء الاصطناعي",description:"بناء تدفقات ذكية تربط الفرق والأنظمة وتقلل زمن التنفيذ",keywords:["workflow","سير العمل","تدفق","إنتاجية"],url:"/ai-workflows/",category:"الخدمات"},{id:"consultation",type:"service",title:"الاستشارات التقنية",description:"خطة تحول عملية للذكاء الاصطناعي في السوق السعودي",keywords:["استشارات","تحول","خطة","تنفيذ"],url:"/consultation/",category:"الخدمات"},{id:"ai-bots",type:"solution",title:"روبوتات الذكاء الاصطناعي",description:"نماذج بوتات جاهزة لخدمة العملاء والمبيعات والتوظيف",keywords:["بوت","روبوت","محادثة","خدمة العملاء"],url:"/docs/ai-bots/",category:"الحلول"},{id:"our-products",type:"solution",title:"منتجات وخدمات Bright AI",description:"كتالوج حلول الذكاء الاصطناعي للشركات والمنشآت",keywords:["منتجات","خدمات","اشتراكات","حلول"],url:"/services/",category:"الحلول"},{id:"tools",type:"solution",title:"الأدوات الذكية",description:"أدوات مجانية وتجريبية للتحليل والتشغيل",keywords:["أدوات","مجانية","تحليل","تجربة"],url:"/tools/",category:"الحلول"},{id:"what-is-ai",type:"page",title:"ما هو الذكاء الاصطناعي؟",description:"دليل مبسط لفهم المفاهيم والتطبيقات في الأعمال",keywords:["تعريف","ذكاء اصطناعي","تعلم الآلة","AI"],url:"/what-is-ai/",category:"المعرفة"},{id:"about-us",type:"page",title:"من نحن",description:"تعرف على Bright AI وفريق العمل والرؤية",keywords:["شركة","فريق","رؤية","Bright AI"],url:"/about/",category:"الشركة"},{id:"contact",type:"page",title:"تواصل معنا",description:"احجز استشارة وتواصل مع فريق Bright AI",keywords:["اتصال","تواصل","واتساب","استشارة"],url:"/contact/",category:"الشركة"},{id:"blog",type:"page",title:"المكتبة الذكية",description:"مقالات ودراسات تطبيقية حول الذكاء الاصطناعي",keywords:["مدونة","مقالات","دراسات","محتوى"],url:"/blog/",category:"المعرفة"},{id:"docs",type:"page",title:"المستندات",description:"التوثيق الرسمي والواجهات الفنية",keywords:["docs","توثيق","دليل","API"],url:"/docs/",category:"المعرفة"},{id:"home",type:"page",title:"الصفحة الرئيسية",description:"بوابة Bright AI الرئيسية",keywords:["رئيسية","Bright AI","حلول","ذكاء اصطناعي"],url:"/",category:"الشركة"}].map(e=>({...e,url:this.normalizeUrl(e.url)}))}normalizeUrl(e){return e?/^https?:\/\//i.test(e)||e.startsWith("/")?e:`/${e.replace(/^\.?\/?/,"")}`:"/"}init(){this.injectStyles(),this.ensureSearchModal(),this.ensureSearchTriggers(),this.bindEvents(),this.showQuickActions()}injectStyles(){if(document.getElementById("bright-search-inline-style"))return;const e=document.createElement("style");e.id="bright-search-inline-style",e.textContent='\n      .search-trigger:not(.search-desktop) {\n        display: inline-flex;\n        align-items: center;\n        gap: 0.5rem;\n        min-width: 220px;\n        border: 1px solid rgba(255, 255, 255, 0.16);\n        background: rgba(15, 23, 42, 0.7);\n        color: #cbd5e1;\n        border-radius: 999px;\n        padding: 0.5rem 0.9rem;\n        font-size: 0.9rem;\n        cursor: pointer;\n      }\n\n      .search-trigger:not(.search-desktop):hover {\n        background: rgba(30, 41, 59, 0.92);\n        color: #f8fafc;\n      }\n\n      .search-shortcut {\n        margin-inline-start: auto;\n        border: 1px solid rgba(255, 255, 255, 0.2);\n        border-radius: 0.35rem;\n        font-size: 0.72rem;\n        padding: 0.1rem 0.45rem;\n        color: #94a3b8;\n      }\n\n      .mobile-search-btn:not(.search-mobile) {\n        display: none;\n        align-items: center;\n        justify-content: center;\n        width: 42px;\n        height: 42px;\n        border-radius: 999px;\n        border: 1px solid rgba(255, 255, 255, 0.16);\n        background: rgba(15, 23, 42, 0.7);\n        color: #e2e8f0;\n        cursor: pointer;\n        font-size: 1.05rem;\n      }\n\n      .mobile-search-btn:not(.search-mobile):hover {\n        background: rgba(30, 41, 59, 0.92);\n      }\n\n      .search-modal {\n        position: fixed;\n        inset: 0;\n        z-index: 9999;\n        display: flex;\n        align-items: flex-start;\n        justify-content: center;\n        padding-top: min(12vh, 88px);\n        opacity: 0;\n        visibility: hidden;\n        transition: opacity 0.25s ease, visibility 0.25s ease;\n      }\n\n      .search-modal[aria-hidden="false"],\n      .search-modal.active {\n        opacity: 1;\n        visibility: visible;\n      }\n\n      .search-modal-backdrop {\n        position: absolute;\n        inset: 0;\n        background: rgba(2, 6, 23, 0.86);\n        backdrop-filter: blur(6px);\n      }\n\n      .search-modal-content {\n        position: relative;\n        width: min(92vw, 760px);\n        background: #0f172a;\n        border: 1px solid rgba(148, 163, 184, 0.24);\n        border-radius: 20px;\n        overflow: hidden;\n        box-shadow: 0 30px 80px rgba(2, 6, 23, 0.55);\n        transform: translateY(-16px) scale(0.98);\n        transition: transform 0.25s ease;\n      }\n\n      .search-modal[aria-hidden="false"] .search-modal-content,\n      .search-modal.active .search-modal-content {\n        transform: translateY(0) scale(1);\n      }\n\n      .search-input-wrapper {\n        display: flex;\n        align-items: center;\n        gap: 0.8rem;\n        padding: 1rem 1.1rem;\n        border-bottom: 1px solid rgba(148, 163, 184, 0.2);\n      }\n\n      .search-icon {\n        color: #a5b4fc;\n        font-size: 1.12rem;\n      }\n\n      .search-input {\n        flex: 1;\n        background: transparent;\n        border: 0;\n        outline: 0;\n        color: #f8fafc;\n        font-size: 1rem;\n      }\n\n      .search-input::placeholder {\n        color: #94a3b8;\n      }\n\n      .search-close-btn {\n        border: 1px solid rgba(148, 163, 184, 0.24);\n        background: rgba(30, 41, 59, 0.7);\n        color: #cbd5e1;\n        border-radius: 0.6rem;\n        padding: 0.35rem 0.6rem;\n        font-family: inherit;\n        font-size: 0.74rem;\n        cursor: pointer;\n      }\n\n      .search-results {\n        max-height: min(62vh, 500px);\n        overflow-y: auto;\n        padding: 1rem;\n      }\n\n      .search-loading {\n        display: flex;\n        align-items: center;\n        gap: 0.55rem;\n        color: #cbd5e1;\n        font-size: 0.84rem;\n        margin-bottom: 0.9rem;\n      }\n\n      .search-loading-dot {\n        width: 8px;\n        height: 8px;\n        border-radius: 999px;\n        background: #60a5fa;\n        animation: bright-search-pulse 1s infinite ease-in-out;\n      }\n\n      .search-ai-card {\n        border: 1px solid rgba(96, 165, 250, 0.28);\n        background: linear-gradient(140deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.92));\n        border-radius: 0.9rem;\n        padding: 0.95rem 1rem;\n        margin-bottom: 0.95rem;\n      }\n\n      .search-ai-badge {\n        display: inline-flex;\n        align-items: center;\n        gap: 0.35rem;\n        font-size: 0.73rem;\n        color: #93c5fd;\n        margin-bottom: 0.55rem;\n      }\n\n      .search-ai-answer {\n        color: #e2e8f0;\n        font-size: 0.9rem;\n        line-height: 1.75;\n      }\n\n      .search-ai-sources {\n        margin-top: 0.8rem;\n        display: grid;\n        gap: 0.5rem;\n      }\n\n      .search-source-item {\n        display: block;\n        border: 1px solid rgba(148, 163, 184, 0.2);\n        background: rgba(15, 23, 42, 0.64);\n        border-radius: 0.75rem;\n        text-decoration: none;\n        padding: 0.58rem 0.7rem;\n      }\n\n      .search-source-item:hover {\n        border-color: rgba(96, 165, 250, 0.5);\n      }\n\n      .search-source-title {\n        color: #dbeafe;\n        font-size: 0.82rem;\n        margin-bottom: 0.2rem;\n      }\n\n      .search-source-quote {\n        color: #94a3b8;\n        font-size: 0.76rem;\n      }\n\n      .search-api-note {\n        color: #64748b;\n        font-size: 0.72rem;\n        margin-bottom: 0.8rem;\n      }\n\n      @keyframes bright-search-pulse {\n        0%, 100% { transform: scale(0.8); opacity: 0.6; }\n        50% { transform: scale(1.2); opacity: 1; }\n      }\n\n      .search-quick-title,\n      .search-category-title {\n        display: flex;\n        align-items: center;\n        gap: 0.5rem;\n        color: #94a3b8;\n        font-size: 0.78rem;\n        margin-bottom: 0.75rem;\n      }\n\n      .search-quick-links {\n        display: flex;\n        flex-wrap: wrap;\n        gap: 0.5rem;\n      }\n\n      .search-quick-link {\n        display: inline-flex;\n        align-items: center;\n        gap: 0.4rem;\n        border: 1px solid rgba(99, 102, 241, 0.3);\n        background: rgba(99, 102, 241, 0.14);\n        color: #c7d2fe;\n        text-decoration: none;\n        border-radius: 0.75rem;\n        padding: 0.55rem 0.75rem;\n        font-size: 0.82rem;\n      }\n\n      .search-quick-link:hover {\n        color: #f8fafc;\n        border-color: rgba(129, 140, 248, 0.6);\n      }\n\n      .search-category {\n        margin-top: 1rem;\n      }\n\n      .search-result-item {\n        display: grid;\n        grid-template-columns: 34px 1fr auto;\n        align-items: center;\n        gap: 0.7rem;\n        border: 1px solid rgba(148, 163, 184, 0.14);\n        background: rgba(15, 23, 42, 0.55);\n        color: #e2e8f0;\n        border-radius: 0.9rem;\n        text-decoration: none;\n        padding: 0.72rem 0.82rem;\n        margin-bottom: 0.55rem;\n      }\n\n      .search-result-item:hover,\n      .search-result-item.active {\n        border-color: rgba(129, 140, 248, 0.56);\n        background: rgba(30, 41, 59, 0.85);\n      }\n\n      .search-result-icon {\n        width: 34px;\n        height: 34px;\n        border-radius: 999px;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 0.95rem;\n        background: rgba(99, 102, 241, 0.2);\n        color: #c7d2fe;\n      }\n\n      .search-result-title {\n        color: #ffffff;\n        font-size: 0.92rem;\n        margin-bottom: 0.22rem;\n      }\n\n      .search-result-desc {\n        color: #94a3b8;\n        font-size: 0.8rem;\n      }\n\n      .search-result-meta {\n        margin-top: 0.35rem;\n        color: #64748b;\n        font-size: 0.72rem;\n      }\n\n      .search-result-arrow {\n        color: #64748b;\n        font-size: 1rem;\n      }\n\n      .search-no-results {\n        text-align: center;\n        color: #94a3b8;\n        padding: 2rem 0.7rem;\n      }\n\n      .search-no-results h4 {\n        margin-bottom: 0.4rem;\n        color: #f8fafc;\n        font-size: 1rem;\n      }\n\n      .search-footer {\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n        gap: 0.7rem;\n        border-top: 1px solid rgba(148, 163, 184, 0.16);\n        background: rgba(2, 6, 23, 0.5);\n        padding: 0.85rem 1rem;\n        color: #94a3b8;\n        font-size: 0.75rem;\n      }\n\n      .search-footer-nav {\n        display: flex;\n        gap: 0.8rem;\n      }\n\n      .search-footer-nav kbd {\n        border: 1px solid rgba(148, 163, 184, 0.22);\n        border-radius: 0.35rem;\n        padding: 0.05rem 0.3rem;\n        margin-inline-start: 0.15rem;\n      }\n\n      .search-footer-powered {\n        color: #a5b4fc;\n      }\n\n      mark {\n        background: rgba(250, 204, 21, 0.2);\n        color: #fde68a;\n        border-radius: 0.2rem;\n        padding: 0 0.1rem;\n      }\n\n      @media (max-width: 1023px) {\n        .search-trigger:not(.search-desktop) {\n          display: none;\n        }\n\n        .mobile-search-btn:not(.search-mobile) {\n          display: inline-flex;\n        }\n\n        .nav-actions .nav-btn {\n          display: none;\n        }\n      }\n\n      @media (max-width: 640px) {\n        .search-modal {\n          padding-top: 6vh;\n        }\n\n        .search-modal-content {\n          width: calc(100vw - 16px);\n          border-radius: 14px;\n        }\n\n        .search-footer {\n          flex-direction: column;\n          align-items: flex-start;\n          gap: 0.55rem;\n        }\n      }\n    ',document.head.appendChild(e)}ensureSearchModal(){let e=document.getElementById("searchModal");e||(e=document.createElement("div"),e.id="searchModal",e.className="search-modal",e.setAttribute("aria-hidden","true"),e.innerHTML=this.getModalTemplate(),document.body.appendChild(e)),this.modal=e,this.input=e.querySelector("#searchInput"),this.resultsContainer=e.querySelector("#searchResults"),this.input&&this.resultsContainer||(e.innerHTML=this.getModalTemplate(),this.input=e.querySelector("#searchInput"),this.resultsContainer=e.querySelector("#searchResults"))}getModalTemplate(){return'\n      <div class="search-modal-backdrop" data-search-close="true"></div>\n      <div class="search-modal-content" role="dialog" aria-modal="true" aria-label="بحث في الموقع">\n        <div class="search-input-wrapper">\n          <span class="search-icon" aria-hidden="true">⌕</span>\n          <input type="text" class="search-input" id="searchInput" placeholder="اسأل مثلاً: ما حلول الأتمتة للمستشفيات؟" autocomplete="off" />\n          <button class="search-close-btn" data-search-close="true" type="button" aria-label="إغلاق البحث">ESC</button>\n        </div>\n\n        <div class="search-results" id="searchResults"></div>\n\n        <div class="search-footer">\n          <div class="search-footer-nav">\n            <span><kbd>↑</kbd><kbd>↓</kbd> للتنقل</span>\n            <span><kbd>↵</kbd> للفتح</span>\n            <span><kbd>ESC</kbd> للإغلاق</span>\n          </div>\n          <div class="search-footer-powered">Bright AI RAG Search</div>\n        </div>\n      </div>\n    '}ensureSearchTriggers(){document.querySelectorAll(".nav-container").forEach(e=>{let n=e.querySelector(".search-trigger"),t=e.querySelector(".mobile-search-btn");n||(n=document.createElement("button"),n.className="search-trigger",n.type="button",n.setAttribute("aria-label","فتح البحث"),n.innerHTML='\n          <span aria-hidden="true">⌕</span>\n          <span>ابحث في الموقع...</span>\n          <span class="search-shortcut">⌘K</span>\n        '),t||(t=document.createElement("button"),t.className="mobile-search-btn",t.type="button",t.setAttribute("aria-label","فتح البحث"),t.textContent="⌕");const r=e.querySelector(".nav-actions"),i=e.querySelector(".nav-btn");r?(n.isConnected||r.insertAdjacentElement("afterbegin",n),t.isConnected||(i?i.insertAdjacentElement("beforebegin",t):r.appendChild(t))):i&&i.parentElement&&(n.isConnected||i.insertAdjacentElement("beforebegin",n),t.isConnected||i.insertAdjacentElement("beforebegin",t))}),document.querySelectorAll(".search-trigger, .mobile-search-btn").forEach(e=>{"true"!==e.dataset.searchBound&&(e.dataset.searchBound="true",e.addEventListener("click",()=>this.open()))})}bindEvents(){document.removeEventListener("keydown",this.boundGlobalKeydown),document.addEventListener("keydown",this.boundGlobalKeydown),this.modal.querySelectorAll("[data-search-close='true']").forEach(e=>{e.addEventListener("click",()=>this.close())}),this.input.addEventListener("input",e=>{this.debounceSearch(e.target.value||"")}),this.input.addEventListener("keydown",e=>{this.handleResultsKeyboard(e)}),this.resultsContainer.addEventListener("click",e=>{e.target.closest("a")&&this.close()})}handleGlobalKeydown(e){if((e.metaKey||e.ctrlKey)&&"k"===e.key.toLowerCase())return e.preventDefault(),void this.toggle();"Escape"===e.key&&this.isOpen&&this.close()}toggle(){this.isOpen?this.close():this.open()}open(){this.modal&&(this.isOpen=!0,this.modal.classList.add("active"),this.modal.setAttribute("aria-hidden","false"),document.body.style.overflow="hidden",window.setTimeout(()=>{this.input?.focus(),this.input?.select()},20),"function"==typeof window.gtag&&window.gtag("event","search_open",{event_category:"engagement",event_label:"Unified Search"}))}close(){this.modal&&(this.requestController&&(this.requestController.abort(),this.requestController=null),this.isOpen=!1,this.modal.classList.remove("active"),this.modal.setAttribute("aria-hidden","true"),document.body.style.overflow="",this.selectedIndex=-1,this.input&&(this.input.value=""),this.showQuickActions())}debounceSearch(e){window.clearTimeout(this.debounceTimer),this.debounceTimer=window.setTimeout(()=>{this.search(e)},220)}async search(e){const n=e.trim().toLowerCase();if(!n)return void this.showQuickActions();const t=n.split(/\s+/).filter(Boolean),r=this.getLocalResults(t,n);this.renderLoadingState();const i=Date.now();this.lastSearchToken=i;let s=null;n.length>=3&&(s=await this.fetchAiSearch(n).catch(()=>null)),this.lastSearchToken===i&&this.isOpen&&(s&&(s.answer||s.sources?.length||s.results?.length)?this.renderAiResults(s,t,r):this.renderResults(r,t),"function"==typeof window.gtag&&window.gtag("event","search",{search_term:n,results_count:Array.isArray(s?.results)?s.results.length:r.length}))}getLocalResults(e,n){return this.searchData.map(t=>({item:t,score:this.calculateScore(t,e,n)})).filter(e=>e.score>0).sort((e,n)=>n.score-e.score).map(e=>e.item)}async fetchAiSearch(e){if(!this.apiEndpoint||"function"!=typeof fetch)return null;this.requestController&&this.requestController.abort();const n=new AbortController;this.requestController=n;try{const t=await fetch(this.apiEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query:e}),signal:n.signal});if(!t.ok)return null;const r=await t.json();return r&&"object"==typeof r?r:null}catch(e){return null}finally{this.requestController===n&&(this.requestController=null)}}renderLoadingState(){this.resultsContainer&&(this.resultsContainer.innerHTML='\n      <div class="search-loading">\n        <span class="search-loading-dot" aria-hidden="true"></span>\n        <span>جاري تحليل السؤال واسترجاع أفضل مصادر الموقع...</span>\n      </div>\n    ',this.selectedIndex=-1)}renderAiResults(e,n,t){if(!this.resultsContainer)return;const r=String(e.answer||"").trim(),i=Array.isArray(e.sources)?e.sources.slice(0,5):[],s=(Array.isArray(e.results)?e.results.slice(0,6):[]).map((e,n)=>({id:`ai-related-${n+1}`,type:"page",title:e.title||"صفحة ذات صلة",description:e.description||"تفاصيل أكثر داخل الصفحة.",url:this.normalizeUrl(e.url||"/"),category:"نتائج مقترحة"})),a=s.length?s:t.slice(0,6);let o="";o+=`\n      <div class="search-ai-card">\n        <div class="search-ai-badge">✨ إجابة ذكية مدعومة بالمحتوى الداخلي</div>\n        <div class="search-ai-answer">${this.highlight(r||"تم العثور على نتائج مرتبطة بالسؤال.",n)}</div>\n      </div>\n    `,i.length&&(o+=`\n        <div class="search-api-note">المصادر المسترجعة من صفحات Bright AI:</div>\n        <div class="search-ai-sources">\n          ${i.map(e=>this.renderSourceItem(e,n)).join("")}\n        </div>\n      `),a.length&&(o+=`\n        <div class="search-category">\n          <div class="search-category-title">روابط مرتبطة</div>\n          ${a.map(e=>this.renderResultItem(e,n)).join("")}\n        </div>\n      `),this.resultsContainer.innerHTML=o,this.selectedIndex=-1}renderSourceItem(e,n){const t=this.highlight(String(e.title||"مصدر"),n),r=this.highlight(String(e.quote||"عرض الصفحة للتفاصيل الكاملة."),n);return`\n      <a class="search-source-item" href="${this.escapeAttribute(this.normalizeUrl(e.url||"/"))}">\n        <div class="search-source-title">${t}</div>\n        <div class="search-source-quote">${r}</div>\n      </a>\n    `}calculateScore(e,n,t){const r=e.title.toLowerCase(),i=e.description.toLowerCase(),s=e.keywords.join(" ").toLowerCase(),a=e.category.toLowerCase(),o=`${r} ${i} ${s} ${a}`;let c=0;return n.forEach(e=>{r.includes(e)&&(c+=7),i.includes(e)&&(c+=4),s.includes(e)&&(c+=3),a.includes(e)&&(c+=2)}),r.includes(t)&&(c+=10),o.includes(t)&&(c+=4),n.every(e=>o.includes(e))||(c-=12),c}renderResults(e,n){if(!this.resultsContainer)return;if(!e.length)return this.resultsContainer.innerHTML='\n        <div class="search-no-results">\n          <h4>لا توجد نتائج مطابقة</h4>\n          <p>جرّب كلمات بحث مختلفة أو اختر من الروابط الشائعة.</p>\n        </div>\n      ',void(this.selectedIndex=-1);const t=new Map;e.forEach(e=>{const n=e.category||"أخرى";t.has(n)||t.set(n,[]),t.get(n).push(e)});let r="";t.forEach((e,t)=>{r+=`\n        <div class="search-category">\n          <div class="search-category-title">${this.escapeHtml(t)}</div>\n          ${e.map(e=>this.renderResultItem(e,n)).join("")}\n        </div>\n      `}),this.resultsContainer.innerHTML=r,this.selectedIndex=-1}renderResultItem(e,n){const t={service:"⚡",solution:"◈",page:"•",article:"✦"}[e.type]||"•";return`\n      <a href="${this.escapeAttribute(e.url)}" class="search-result-item" data-id="${this.escapeAttribute(e.id)}">\n        <div class="search-result-icon">${t}</div>\n        <div class="search-result-content">\n          <div class="search-result-title">${this.highlight(e.title,n)}</div>\n          <div class="search-result-desc">${this.highlight(e.description,n)}</div>\n          <div class="search-result-meta">${this.escapeHtml(e.category)}</div>\n        </div>\n        <span class="search-result-arrow" aria-hidden="true">↵</span>\n      </a>\n    `}showQuickActions(){if(!this.resultsContainer)return;this.resultsContainer.innerHTML=`\n      <div class="search-quick-actions" id="quickActions">\n        <div class="search-quick-title">اكتب سؤالك وسنرجع لك إجابة مع مصادر</div>\n        <div class="search-quick-links">\n          ${[{title:"الأتمتة الذكية",url:"/smart-automation/"},{title:"تحليل البيانات",url:"/data-analysis/"},{title:"AI للمنشآت",url:"/ai-agent/"},{title:"سير العمل بالذكاء الاصطناعي",url:"/ai-workflows/"},{title:"الأدوات الذكية",url:"/tools/"},{title:"تواصل معنا",url:"/contact/"}].map(e=>`<a href="${this.escapeAttribute(e.url)}" class="search-quick-link">${this.escapeHtml(e.title)}</a>`).join("")}\n        </div>\n      </div>\n    `,this.selectedIndex=-1}handleResultsKeyboard(e){const n=this.resultsContainer.querySelectorAll(".search-result-item");if(n.length){if("ArrowDown"===e.key)return e.preventDefault(),this.selectedIndex=Math.min(this.selectedIndex+1,n.length-1),void this.updateSelection(n);if("ArrowUp"===e.key)return e.preventDefault(),this.selectedIndex=Math.max(this.selectedIndex-1,0),void this.updateSelection(n);if("Enter"===e.key&&this.selectedIndex>=0){e.preventDefault();const t=n[this.selectedIndex];t&&t.click()}}}updateSelection(e){e.forEach((e,n)=>{const t=n===this.selectedIndex;e.classList.toggle("active",t),t&&e.scrollIntoView({block:"nearest"})})}highlight(e,n){const t=this.escapeHtml(e);if(!n.length)return t;let r=t;return n.forEach(e=>{if(!e)return;const n=new RegExp(`(${this.escapeRegex(this.escapeHtml(e))})`,"gi");r=r.replace(n,"<mark>$1</mark>")}),r}escapeRegex(e){return e.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}escapeHtml(e){return String(e).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#39;")}escapeAttribute(e){return this.escapeHtml(e).replace(/`/g,"&#96;")}
+class BrightSearch {
+  constructor() {
+    this.modal = null;
+    this.input = null;
+    this.resultsContainer = null;
+    this.isOpen = false;
+    this.selectedIndex = -1;
+    this.apiEndpoint = "/api/ai/search";
+    this.requestController = null;
+    this.lastSearchToken = 0;
+    this.debounceTimer = null;
+    this.lastRenderedKey = "";
+    this.localResultCache = new Map();
+    this.searchData = this.getSearchIndex().map((item) => this.prepareSearchItem(item));
+    this.boundGlobalKeydown = this.handleGlobalKeydown.bind(this);
+    this.boundModalClick = this.handleModalClick.bind(this);
+    this.boundInput = (event) => this.debounceSearch(event.target.value || "");
+    this.boundInputKeydown = (event) => this.handleResultsKeyboard(event);
+    this.init();
+  }
+
+  getSearchIndex() {
+    return [
+      { id: "smart-automation", type: "service", title: "الأتمتة الذكية", description: "أتمتة العمليات التشغيلية ورفع الكفاءة باستخدام الذكاء الاصطناعي", keywords: ["أتمتة", "RPA", "تشغيل", "كفاءة", "عمليات"], url: "/smart-automation/", category: "الخدمات" },
+      { id: "data-analysis", type: "service", title: "تحليل البيانات", description: "تحليلات متقدمة ولوحات مؤشرات تدعم القرار التجاري", keywords: ["بيانات", "تحليل", "تقارير", "مؤشرات", "ذكاء أعمال"], url: "/data-analysis/", category: "الخدمات" },
+      { id: "ai-agent", type: "service", title: "AI للمنشآت", description: "وكلاء ذكاء اصطناعي مخصصون للعمليات اليومية", keywords: ["وكيل", "Agent", "منشآت", "تشغيل", "AIaaS"], url: "/ai-agent/", category: "الخدمات" },
+      { id: "smart-medical-archive", type: "service", title: "الأرشيف الطبي الذكي", description: "نظام إدارة سجلات طبية ذكي للمستشفيات والمراكز الصحية", keywords: ["طبي", "صحي", "مستشفيات", "سجلات", "أرشفة"], url: "/smart-medical-archive/", category: "الخدمات" },
+      { id: "ai-workflows", type: "service", title: "سير العمل بالذكاء الاصطناعي", description: "بناء تدفقات ذكية تربط الفرق والأنظمة وتقلل زمن التنفيذ", keywords: ["workflow", "سير العمل", "تدفق", "إنتاجية"], url: "/ai-workflows/", category: "الخدمات" },
+      { id: "consultation", type: "service", title: "الاستشارات التقنية", description: "خطة تحول عملية للذكاء الاصطناعي في السوق السعودي", keywords: ["استشارات", "تحول", "خطة", "تنفيذ"], url: "/consultation/", category: "الخدمات" },
+      { id: "ai-bots", type: "solution", title: "روبوتات الذكاء الاصطناعي", description: "نماذج بوتات جاهزة لخدمة العملاء والمبيعات والتوظيف", keywords: ["بوت", "روبوت", "محادثة", "خدمة العملاء"], url: "/docs/ai-bots/", category: "الحلول" },
+      { id: "our-products", type: "solution", title: "منتجات وخدمات Bright AI", description: "كتالوج حلول الذكاء الاصطناعي للشركات والمنشآت", keywords: ["منتجات", "خدمات", "اشتراكات", "حلول"], url: "/services/", category: "الحلول" },
+      { id: "tools", type: "solution", title: "الأدوات الذكية", description: "أدوات مجانية وتجريبية للتحليل والتشغيل", keywords: ["أدوات", "مجانية", "تحليل", "تجربة"], url: "/tools/", category: "الحلول" },
+      { id: "what-is-ai", type: "page", title: "ما هو الذكاء الاصطناعي؟", description: "دليل مبسط لفهم المفاهيم والتطبيقات في الأعمال", keywords: ["تعريف", "ذكاء اصطناعي", "تعلم الآلة", "AI"], url: "/what-is-ai/", category: "المعرفة" },
+      { id: "about-us", type: "page", title: "من نحن", description: "تعرف على Bright AI وفريق العمل والرؤية", keywords: ["شركة", "فريق", "رؤية", "Bright AI"], url: "/about/", category: "الشركة" },
+      { id: "contact", type: "page", title: "تواصل معنا", description: "احجز استشارة وتواصل مع فريق Bright AI", keywords: ["اتصال", "تواصل", "واتساب", "استشارة"], url: "/contact/", category: "الشركة" },
+      { id: "blog", type: "page", title: "المكتبة الذكية", description: "مقالات ودراسات تطبيقية حول الذكاء الاصطناعي", keywords: ["مدونة", "مقالات", "دراسات", "محتوى"], url: "/blog/", category: "المعرفة" },
+      { id: "docs", type: "page", title: "المستندات", description: "التوثيق الرسمي والواجهات الفنية", keywords: ["docs", "توثيق", "دليل", "API"], url: "/docs/", category: "المعرفة" },
+      { id: "home", type: "page", title: "الصفحة الرئيسية", description: "بوابة Bright AI الرئيسية", keywords: ["رئيسية", "Bright AI", "حلول", "ذكاء اصطناعي"], url: "/", category: "الشركة" }
+    ];
+  }
+
+  init() {
+    this.ensureSearchModal();
+    this.ensureSearchTriggers();
+    this.bindEvents();
+    this.showQuickActions();
+  }
+
+  normalizeUrl(value) {
+    if (!value) return "/";
+    return /^https?:\/\//i.test(value) || value.startsWith("/")
+      ? value
+      : `/${value.replace(/^\.?\/?/, "")}`;
+  }
+
+  normalizeText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[أإآٱ]/g, "ا")
+      .replace(/ى/g, "ي")
+      .replace(/ة/g, "ه")
+      .replace(/ؤ/g, "و")
+      .replace(/ئ/g, "ي")
+      .replace(/[\u064B-\u065F\u0670]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  prepareSearchItem(item) {
+    const url = this.normalizeUrl(item.url);
+    const searchableText = this.normalizeText([
+      item.title,
+      item.description,
+      item.category,
+      ...(Array.isArray(item.keywords) ? item.keywords : [])
+    ].join(" "));
+
+    return {
+      ...item,
+      url,
+      _title: this.normalizeText(item.title),
+      _description: this.normalizeText(item.description),
+      _category: this.normalizeText(item.category),
+      _keywords: this.normalizeText((item.keywords || []).join(" ")),
+      _searchableText: searchableText
+    };
+  }
+
+  ensureSearchModal() {
+    let modal = document.getElementById("searchModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "searchModal";
+      modal.className = "search-modal";
+      modal.setAttribute("aria-hidden", "true");
+      modal.innerHTML = this.getModalTemplate();
+      document.body.appendChild(modal);
+    }
+
+    this.modal = modal;
+    this.input = modal.querySelector("#searchInput");
+    this.resultsContainer = modal.querySelector("#searchResults");
+
+    if (!this.input || !this.resultsContainer) {
+      modal.innerHTML = this.getModalTemplate();
+      this.input = modal.querySelector("#searchInput");
+      this.resultsContainer = modal.querySelector("#searchResults");
+    }
+  }
+
+  getModalTemplate() {
+    return `
+      <div class="search-modal-backdrop" data-search-close="true"></div>
+      <div class="search-modal-content" role="dialog" aria-modal="true" aria-label="بحث في الموقع">
+        <div class="search-input-wrapper">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="text" class="search-input" id="searchInput" placeholder="اسأل مثلاً: ما حلول الأتمتة للمستشفيات؟" autocomplete="off" />
+          <button class="search-close-btn" data-search-close="true" type="button" aria-label="إغلاق البحث">ESC</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+        <div class="search-footer">
+          <div class="search-footer-nav">
+            <span><kbd>↑</kbd><kbd>↓</kbd> للتنقل</span>
+            <span><kbd>↵</kbd> للفتح</span>
+            <span><kbd>ESC</kbd> للإغلاق</span>
+          </div>
+          <div class="search-footer-powered">Bright AI RAG Search</div>
+        </div>
+      </div>
+    `;
+  }
+
+  ensureSearchTriggers() {
+    document.querySelectorAll(".nav-container").forEach((container) => {
+      let desktopTrigger = container.querySelector(".search-trigger");
+      let mobileTrigger = container.querySelector(".mobile-search-btn");
+
+      if (!desktopTrigger) {
+        desktopTrigger = document.createElement("button");
+        desktopTrigger.className = "search-trigger";
+        desktopTrigger.type = "button";
+        desktopTrigger.setAttribute("aria-label", "فتح البحث");
+        desktopTrigger.innerHTML = `
+          <span aria-hidden="true">⌕</span>
+          <span>ابحث في الموقع...</span>
+          <span class="search-shortcut">⌘K</span>
+        `;
+      }
+
+      if (!mobileTrigger) {
+        mobileTrigger = document.createElement("button");
+        mobileTrigger.className = "mobile-search-btn";
+        mobileTrigger.type = "button";
+        mobileTrigger.setAttribute("aria-label", "فتح البحث");
+        mobileTrigger.textContent = "⌕";
+      }
+
+      const actions = container.querySelector(".nav-actions");
+      const cta = container.querySelector(".nav-btn");
+      if (actions) {
+        if (!desktopTrigger.isConnected) actions.insertAdjacentElement("afterbegin", desktopTrigger);
+        if (!mobileTrigger.isConnected) {
+          cta ? cta.insertAdjacentElement("beforebegin", mobileTrigger) : actions.appendChild(mobileTrigger);
+        }
+      } else if (cta?.parentElement) {
+        if (!desktopTrigger.isConnected) cta.insertAdjacentElement("beforebegin", desktopTrigger);
+        if (!mobileTrigger.isConnected) cta.insertAdjacentElement("beforebegin", mobileTrigger);
+      }
+    });
+
+    document.querySelectorAll(".search-trigger, .mobile-search-btn").forEach((trigger) => {
+      if (trigger.dataset.searchBound === "true") return;
+      trigger.dataset.searchBound = "true";
+      trigger.addEventListener("click", () => this.open(), { passive: true });
+    });
+  }
+
+  bindEvents() {
+    document.removeEventListener("keydown", this.boundGlobalKeydown);
+    document.addEventListener("keydown", this.boundGlobalKeydown);
+
+    this.modal.removeEventListener("click", this.boundModalClick);
+    this.modal.addEventListener("click", this.boundModalClick);
+
+    this.input.removeEventListener("input", this.boundInput);
+    this.input.addEventListener("input", this.boundInput);
+
+    this.input.removeEventListener("keydown", this.boundInputKeydown);
+    this.input.addEventListener("keydown", this.boundInputKeydown);
+  }
+
+  handleModalClick(event) {
+    if (event.target.closest("[data-search-close='true']")) {
+      this.close();
+      return;
+    }
+
+    if (event.target.closest("a")) {
+      this.close();
+    }
+  }
+
+  handleGlobalKeydown(event) {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      this.toggle();
+      return;
+    }
+
+    if (event.key === "Escape" && this.isOpen) {
+      this.close();
+    }
+  }
+
+  toggle() {
+    this.isOpen ? this.close() : this.open();
+  }
+
+  open() {
+    if (!this.modal) return;
+
+    this.isOpen = true;
+    this.modal.classList.add("active");
+    this.modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    window.requestAnimationFrame(() => {
+      this.input?.focus();
+      this.input?.select();
+    });
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "search_open", {
+        event_category: "engagement",
+        event_label: "Unified Search"
+      });
+    }
+  }
+
+  close() {
+    if (!this.modal) return;
+
+    this.abortActiveRequest();
+    window.clearTimeout(this.debounceTimer);
+    this.isOpen = false;
+    this.modal.classList.remove("active");
+    this.modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    this.selectedIndex = -1;
+    this.lastRenderedKey = "";
+    if (this.input) this.input.value = "";
+    this.showQuickActions();
+  }
+
+  debounceSearch(value) {
+    window.clearTimeout(this.debounceTimer);
+    this.debounceTimer = window.setTimeout(() => {
+      this.search(value);
+    }, 180);
+  }
+
+  async search(value) {
+    const normalizedQuery = this.normalizeText(value);
+    if (!normalizedQuery) {
+      this.abortActiveRequest();
+      this.showQuickActions();
+      return;
+    }
+
+    const terms = normalizedQuery.split(/\s+/).filter(Boolean);
+    const localResults = this.getLocalResults(terms, normalizedQuery);
+    this.renderResults(localResults, terms, "local");
+
+    if (normalizedQuery.length < 3) return;
+
+    const searchToken = Date.now();
+    this.lastSearchToken = searchToken;
+    this.renderLoadingState(localResults.length);
+
+    const aiResult = await this.fetchAiSearch(normalizedQuery).catch(() => null);
+    if (this.lastSearchToken !== searchToken || !this.isOpen) return;
+
+    if (aiResult && (aiResult.answer || aiResult.sources?.length || aiResult.results?.length)) {
+      this.renderAiResults(aiResult, terms, localResults);
+    } else {
+      this.renderResults(localResults, terms, "final");
+    }
+
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "search", {
+        search_term: normalizedQuery,
+        results_count: Array.isArray(aiResult?.results) ? aiResult.results.length : localResults.length
+      });
+    }
+  }
+
+  getLocalResults(terms, normalizedQuery) {
+    const cacheKey = normalizedQuery;
+    if (this.localResultCache.has(cacheKey)) {
+      return this.localResultCache.get(cacheKey);
+    }
+
+    const results = this.searchData
+      .map((item) => ({ item, score: this.calculateScore(item, terms, normalizedQuery) }))
+      .filter((result) => result.score > 0)
+      .sort((first, second) => second.score - first.score)
+      .map((result) => result.item);
+
+    this.localResultCache.set(cacheKey, results);
+    if (this.localResultCache.size > 40) {
+      this.localResultCache.delete(this.localResultCache.keys().next().value);
+    }
+
+    return results;
+  }
+
+  calculateScore(item, terms, normalizedQuery) {
+    let score = 0;
+
+    for (const term of terms) {
+      if (item._title.includes(term)) score += 7;
+      if (item._description.includes(term)) score += 4;
+      if (item._keywords.includes(term)) score += 3;
+      if (item._category.includes(term)) score += 2;
+    }
+
+    if (item._title.includes(normalizedQuery)) score += 10;
+    if (item._searchableText.includes(normalizedQuery)) score += 4;
+    if (!terms.every((term) => item._searchableText.includes(term))) score -= 12;
+
+    return score;
+  }
+
+  abortActiveRequest() {
+    if (this.requestController) {
+      this.requestController.abort();
+      this.requestController = null;
+    }
+  }
+
+  async fetchAiSearch(query) {
+    if (!this.apiEndpoint || typeof fetch !== "function") return null;
+
+    this.abortActiveRequest();
+    const controller = new AbortController();
+    this.requestController = controller;
+
+    try {
+      const response = await fetch(this.apiEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+        signal: controller.signal,
+        keepalive: false
+      });
+
+      if (!response.ok) return null;
+      const payload = await response.json();
+      return payload && typeof payload === "object" ? payload : null;
+    } catch (error) {
+      return null;
+    } finally {
+      if (this.requestController === controller) {
+        this.requestController = null;
+      }
+    }
+  }
+
+  renderLoadingState(localCount) {
+    if (!this.resultsContainer) return;
+
+    const existing = localCount ? this.resultsContainer.innerHTML : "";
+    this.resultsContainer.innerHTML = `
+      <div class="search-loading">
+        <span class="search-loading-dot" aria-hidden="true"></span>
+        <span>جاري تحليل السؤال واسترجاع أفضل مصادر الموقع...</span>
+      </div>
+      ${existing}
+    `;
+    this.selectedIndex = -1;
+  }
+
+  renderAiResults(payload, terms, fallbackResults) {
+    if (!this.resultsContainer) return;
+
+    const answer = String(payload.answer || "").trim();
+    const sources = Array.isArray(payload.sources) ? payload.sources.slice(0, 5) : [];
+    const aiResults = (Array.isArray(payload.results) ? payload.results.slice(0, 6) : []).map((item, index) => ({
+      id: `ai-related-${index + 1}`,
+      type: "page",
+      title: item.title || "صفحة ذات صلة",
+      description: item.description || "تفاصيل أكثر داخل الصفحة.",
+      url: this.normalizeUrl(item.url || "/"),
+      category: "نتائج مقترحة"
+    }));
+    const relatedResults = aiResults.length ? aiResults : fallbackResults.slice(0, 6);
+    const html = `
+      <div class="search-ai-card">
+        <div class="search-ai-badge">إجابة ذكية مدعومة بالمحتوى الداخلي</div>
+        <div class="search-ai-answer">${this.highlight(answer || "تم العثور على نتائج مرتبطة بالسؤال.", terms)}</div>
+      </div>
+      ${sources.length ? `
+        <div class="search-api-note">المصادر المسترجعة من صفحات Bright AI:</div>
+        <div class="search-ai-sources">
+          ${sources.map((source) => this.renderSourceItem(source, terms)).join("")}
+        </div>
+      ` : ""}
+      ${relatedResults.length ? `
+        <div class="search-category">
+          <div class="search-category-title">روابط مرتبطة</div>
+          ${relatedResults.map((item) => this.renderResultItem(item, terms)).join("")}
+        </div>
+      ` : ""}
+    `;
+
+    this.renderHtml(html, `ai:${answer}:${sources.length}:${relatedResults.length}`);
+  }
+
+  renderSourceItem(source, terms) {
+    return `
+      <a class="search-source-item" href="${this.escapeAttribute(this.normalizeUrl(source.url || "/"))}">
+        <div class="search-source-title">${this.highlight(String(source.title || "مصدر"), terms)}</div>
+        <div class="search-source-quote">${this.highlight(String(source.quote || "عرض الصفحة للتفاصيل الكاملة."), terms)}</div>
+      </a>
+    `;
+  }
+
+  renderResults(results, terms, phase = "local") {
+    if (!this.resultsContainer) return;
+
+    if (!results.length) {
+      this.renderHtml(`
+        <div class="search-no-results">
+          <h4>لا توجد نتائج مطابقة</h4>
+          <p>جرّب كلمات بحث مختلفة أو اختر من الروابط الشائعة.</p>
+        </div>
+      `, `${phase}:empty`);
+      return;
+    }
+
+    const grouped = new Map();
+    for (const item of results) {
+      const category = item.category || "أخرى";
+      if (!grouped.has(category)) grouped.set(category, []);
+      grouped.get(category).push(item);
+    }
+
+    let html = "";
+    grouped.forEach((items, category) => {
+      html += `
+        <div class="search-category">
+          <div class="search-category-title">${this.escapeHtml(category)}</div>
+          ${items.map((item) => this.renderResultItem(item, terms)).join("")}
+        </div>
+      `;
+    });
+
+    this.renderHtml(html, `${phase}:${terms.join("|")}:${results.map((item) => item.id).join(",")}`);
+  }
+
+  renderResultItem(item, terms) {
+    const icon = { service: "⚡", solution: "◈", page: "•", article: "✦" }[item.type] || "•";
+    return `
+      <a href="${this.escapeAttribute(item.url)}" class="search-result-item" data-id="${this.escapeAttribute(item.id)}">
+        <div class="search-result-icon">${icon}</div>
+        <div class="search-result-content">
+          <div class="search-result-title">${this.highlight(item.title, terms)}</div>
+          <div class="search-result-desc">${this.highlight(item.description, terms)}</div>
+          <div class="search-result-meta">${this.escapeHtml(item.category)}</div>
+        </div>
+        <span class="search-result-arrow" aria-hidden="true">↵</span>
+      </a>
+    `;
+  }
+
+  showQuickActions() {
+    if (!this.resultsContainer) return;
+
+    const quickLinks = [
+      { title: "الأتمتة الذكية", url: "/smart-automation/" },
+      { title: "تحليل البيانات", url: "/data-analysis/" },
+      { title: "AI للمنشآت", url: "/ai-agent/" },
+      { title: "سير العمل بالذكاء الاصطناعي", url: "/ai-workflows/" },
+      { title: "الأدوات الذكية", url: "/tools/" },
+      { title: "تواصل معنا", url: "/contact/" }
+    ];
+
+    this.renderHtml(`
+      <div class="search-quick-actions" id="quickActions">
+        <div class="search-quick-title">اكتب سؤالك وسنرجع لك إجابة مع مصادر</div>
+        <div class="search-quick-links">
+          ${quickLinks.map((item) => `<a href="${this.escapeAttribute(item.url)}" class="search-quick-link">${this.escapeHtml(item.title)}</a>`).join("")}
+        </div>
+      </div>
+    `, "quick");
+  }
+
+  renderHtml(html, key) {
+    if (this.lastRenderedKey === key) return;
+    this.resultsContainer.innerHTML = html;
+    this.lastRenderedKey = key;
+    this.selectedIndex = -1;
+  }
+
+  handleResultsKeyboard(event) {
+    const results = this.resultsContainer.querySelectorAll(".search-result-item");
+    if (!results.length) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      this.selectedIndex = Math.min(this.selectedIndex + 1, results.length - 1);
+      this.updateSelection(results);
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
+      this.updateSelection(results);
+      return;
+    }
+
+    if (event.key === "Enter" && this.selectedIndex >= 0) {
+      event.preventDefault();
+      results[this.selectedIndex]?.click();
+    }
+  }
+
+  updateSelection(results) {
+    results.forEach((item, index) => {
+      const isActive = index === this.selectedIndex;
+      item.classList.toggle("active", isActive);
+      if (isActive) item.scrollIntoView({ block: "nearest" });
+    });
+  }
+
+  highlight(value, terms) {
+    const escaped = this.escapeHtml(value);
+    if (!terms.length) return escaped;
+
+    let output = escaped;
+    for (const term of terms) {
+      if (!term) continue;
+      const pattern = new RegExp(`(${this.escapeRegex(this.escapeHtml(term))})`, "gi");
+      output = output.replace(pattern, "<mark>$1</mark>");
+    }
+    return output;
+  }
+
+  escapeRegex(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  escapeAttribute(value) {
+    return this.escapeHtml(value).replace(/`/g, "&#96;");
+  }
 }
 
-function initBrightSearch(){window.brightSearch instanceof BrightSearch?window.brightSearch.ensureSearchTriggers():window.brightSearch=new BrightSearch}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",initBrightSearch,{once:!0}):initBrightSearch();
+function initBrightSearch() {
+  if (window.brightSearch instanceof BrightSearch) {
+    window.brightSearch.ensureSearchTriggers();
+    return;
+  }
+
+  window.brightSearch = new BrightSearch();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initBrightSearch, { once: true });
+} else {
+  initBrightSearch();
+}
