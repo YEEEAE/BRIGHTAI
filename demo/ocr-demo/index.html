@@ -749,12 +749,22 @@
 .field-row:hover{background:rgba(255,255,255,.02);border-radius:8px;padding-inline:6px}
 .ocr-processing{display:flex;align-items:center;gap:12px;color:#f59e0b;font-weight:600;font-size:.96rem}
 .ocr-error{color:#f87171;display:flex;align-items:center;gap:8px;font-weight:600}
+.ocr-progress{display:grid;gap:10px;margin:16px 0 0;padding:0;list-style:none}
+.ocr-progress li{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(148,163,184,.16);border-radius:12px;color:#94a3b8;background:rgba(15,23,42,.55);font-size:.9rem;font-weight:700}
+.ocr-progress li.is-active{border-color:rgba(245,158,11,.42);color:#fbbf24;background:rgba(245,158,11,.08)}
+.ocr-progress li.is-done{border-color:rgba(16,185,129,.32);color:#34d399;background:rgba(16,185,129,.07)}
+.field-confidence{display:inline-flex;align-items:center;margin-inline-start:8px;padding:2px 7px;border-radius:999px;background:rgba(147,197,253,.1);color:#93c5fd;font-size:.74rem;font-weight:800;vertical-align:middle}
+.review-chip{display:inline-flex;align-items:center;gap:5px;margin-inline-start:auto;padding:4px 9px;border-radius:999px;background:rgba(16,185,129,.1);color:#34d399;font-size:.75rem;font-weight:800}
+.review-chip.needs-review{background:rgba(245,158,11,.12);color:#fbbf24}
+.ocr-result-cta{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:18px;padding:14px;border:1px solid rgba(245,158,11,.2);border-radius:14px;background:rgba(245,158,11,.07);color:#f8fafc;font-weight:700}
+.ocr-result-cta .btn-primary{padding:10px 16px;min-height:44px;font-size:.88rem;white-space:nowrap}
 .drop-zone.drag-over{border-color:rgba(245,158,11,.6);background:rgba(245,158,11,.04);transform:scale(1.01)}
 #copy-json{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;font-size:.83rem;font-weight:700;border:1px solid rgba(147,197,253,.25);background:rgba(147,197,253,.06);color:#93c5fd;cursor:pointer;font-family:Cairo,sans-serif;transition:all .18s ease}
 #copy-json:hover{background:rgba(147,197,253,.14)}
 .result-box.done-pulse{animation:done-amber .5s ease forwards}
 @keyframes done-amber{0%{border-color:rgba(245,158,11,.6);box-shadow:0 0 24px rgba(245,158,11,.2)}100%{border-color:rgba(255,255,255,.07);box-shadow:none}}
 .json-box{direction:ltr;text-align:left;font-family:'Courier New',monospace;font-size:.85rem;color:#93c5fd}
+@media (max-width: 640px){.fields-header{align-items:flex-start;flex-wrap:wrap}.review-chip{margin-inline-start:0}.ocr-result-cta{align-items:stretch;flex-direction:column}.ocr-result-cta .btn-primary{width:100%;justify-content:center;white-space:normal}}
 </style>
 
 

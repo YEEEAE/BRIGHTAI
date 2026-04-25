@@ -40,6 +40,11 @@ const targets = [
     entry: "frontend/js/product-demo-enhancements.js",
     outfile: "frontend/js/product-demo-enhancements.min.js",
     type: "js"
+  },
+  {
+    entry: "frontend/js/ocr-demo.js",
+    outfile: "frontend/js/ocr-demo.min.js",
+    type: "js"
   }
   // runtime-config.min.js و text-ratio-fix.min.css مُصغّرتان مسبقاً — الأصول الأصلية محذوفة
   // ai-scolecs-app.min.js و ai-scolecs-inline.min.css مُصغّرتان مسبقاً — الأصول الأصلية محذوفة
