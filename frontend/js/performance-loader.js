@@ -3,6 +3,7 @@
 
   const currentScript = document.currentScript;
   if (!currentScript) return;
+  const BUILD_VERSION = '20260427-ui-safety';
 
   const config = {
     analytics: currentScript.dataset.analytics || 'interaction',
@@ -36,6 +37,13 @@
     document.head.appendChild(style);
   };
 
+  const addVersion = (src) => {
+    if (!src || /^https?:\/\//i.test(src) || src.includes('?v=') || src.includes('&v=')) return src;
+    if (!/\.(?:js|css)(?:$|\?)/.test(src)) return src;
+    const separator = src.includes('?') ? '&' : '?';
+    return `${src}${separator}v=${BUILD_VERSION}`;
+  };
+
   const loadScript = (src, attributes = {}) =>
     new Promise((resolve, reject) => {
       if (!src) {
@@ -43,21 +51,23 @@
         return;
       }
 
-      if (loadedScripts.has(src) || document.querySelector(`script[src="${src}"]`)) {
-        loadedScripts.add(src);
+      const versionedSrc = addVersion(src);
+
+      if (loadedScripts.has(versionedSrc) || document.querySelector(`script[src="${src}"],script[src="${versionedSrc}"]`)) {
+        loadedScripts.add(versionedSrc);
         resolve();
         return;
       }
 
       const script = document.createElement('script');
-      script.src = src;
+      script.src = versionedSrc;
       script.async = attributes.async !== false;
       if (attributes.defer) script.defer = true;
       if (attributes.crossorigin) script.crossOrigin = attributes.crossorigin;
       script.fetchPriority = attributes.fetchpriority || 'low';
       if (attributes.referrerpolicy) script.referrerPolicy = attributes.referrerpolicy;
       script.onload = () => {
-        loadedScripts.add(src);
+        loadedScripts.add(versionedSrc);
         resolve();
       };
       script.onerror = reject;
@@ -193,8 +203,12 @@
   };
 
   const loadLocalScripts = () => {
+    const seen = new Set();
     config.localScripts.forEach((src) => {
-      loadScript(src, { async: true, defer: true }).catch(() => {});
+      const versionedSrc = addVersion(src);
+      if (seen.has(versionedSrc)) return;
+      seen.add(versionedSrc);
+      loadScript(versionedSrc, { async: true, defer: true }).catch(() => {});
     });
   };
 

@@ -1,113 +1,15 @@
 {
-  "generatedAt": "2026-04-25T08:39:41.001Z",
+  "generatedAt": "2026-04-27T17:32:03.734Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 258,
-  "resourcesScanned": 3999,
-  "localResources": 3328,
+  "filesScanned": 252,
+  "resourcesScanned": 3683,
+  "localResources": 3066,
   "brokenResources": 0,
   "fixableBrokenResources": 0,
-  "duplicateResources": 8,
+  "duplicateResources": 0,
   "normalizationCandidates": 0,
   "topBrokenFiles": [],
-  "topDuplicateFiles": [
-    {
-      "file": "500.html",
-      "count": 1
-    },
-    {
-      "file": "case-studies/index.html",
-      "count": 1
-    },
-    {
-      "file": "docs.html",
-      "count": 1
-    },
-    {
-      "file": "en/docs/docs.html",
-      "count": 1
-    },
-    {
-      "file": "en/docs/index.html",
-      "count": 1
-    },
-    {
-      "file": "en/index.html",
-      "count": 1
-    },
-    {
-      "file": "interview/pages/Visitor-registration/index.html",
-      "count": 1
-    },
-    {
-      "file": "partners/index.html",
-      "count": 1
-    }
-  ],
+  "topDuplicateFiles": [],
   "brokenRows": [],
-  "duplicateRows": [
-    {
-      "file": "500.html",
-      "line": 257,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 42,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "case-studies/index.html",
-      "line": 79,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 78,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "docs.html",
-      "line": 354,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 61,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "en/docs/docs.html",
-      "line": 358,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 65,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "en/docs/index.html",
-      "line": 354,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 61,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "en/index.html",
-      "line": 781,
-      "kind": "style-preload",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 773,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "interview/pages/Visitor-registration/index.html",
-      "line": 60,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 41,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    },
-    {
-      "file": "partners/index.html",
-      "line": 79,
-      "kind": "style-sheet",
-      "reference": "/frontend/css/main.bundle.min.css",
-      "duplicateOfLine": 78,
-      "duplicateOfReference": "/frontend/css/main.bundle.min.css"
-    }
-  ]
+  "duplicateRows": []
 }

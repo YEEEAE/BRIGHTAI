@@ -13,20 +13,14 @@
     }
 }
 
-.unified-nav[style*="background"] {
-    background: var(--nav-bg) !important;
+.unified-nav {
+    background: var(--nav-bg);
+    box-shadow: none;
 }
 
-.unified-nav.nav-scrolled[style*="background"] {
-    background: var(--nav-bg-scrolled) !important;
-}
-
-.unified-nav[style*="box-shadow"] {
-    box-shadow: none !important;
-}
-
-.unified-nav.nav-scrolled[style*="box-shadow"] {
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35) !important;
+.unified-nav.nav-scrolled {
+    background: var(--nav-bg-scrolled, rgba(2, 6, 23, 0.92));
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
 }
 
 /* === CLS FIX: Compositor-only transitions === */
@@ -197,14 +191,12 @@ div.flow>div.steps>div.step> ::after {
 #faq,
 #contact-section,
 footer.site-footer {
-    content-visibility: auto;
     contain-intrinsic-size: auto 500px;
 }
 
 #bi,
 #aiaas,
 #workflows {
-    content-visibility: auto;
     contain-intrinsic-size: auto 700px;
 }
 
@@ -286,7 +278,11 @@ section#blog a.btn,
     }
 
     .hero-visual {
-        display: none !important;
+        display: block !important;
+        block-size: auto !important;
+        min-block-size: 0 !important;
+        max-block-size: 260px;
+        overflow: visible;
     }
 
     .hero-content .title,
@@ -328,8 +324,7 @@ section#blog a.btn,
     }
 
     .container {
-        padding-right: 1rem !important;
-        padding-left: 1rem !important;
+        padding-inline: 1rem !important;
     }
 
     .title {
@@ -395,9 +390,8 @@ section#blog a.btn,
 
     .chat {
         width: calc(100% - 2rem) !important;
-        left: 1rem !important;
-        right: 1rem !important;
-        bottom: 5rem !important;
+        inset-inline: 1rem !important;
+        inset-block-end: 5rem !important;
         height: 70vh !important;
         max-height: 500px !important;
     }
@@ -450,9 +444,8 @@ section#blog a.btn,
     }
 
     .cookies {
-        left: 0.5rem !important;
-        right: 0.5rem !important;
-        bottom: 0.5rem !important;
+        inset-inline: 0.5rem !important;
+        inset-block-end: 0.5rem !important;
     }
 }
 
@@ -499,8 +492,8 @@ section#blog a.btn,
 .hero-visual::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
     transform: translate(-50%, -50%);
     width: 340px;
     height: 340px;
@@ -1081,5 +1074,150 @@ button.btn.cta {
         opacity: 1;
         transform: none;
         transition: none !important;
+    }
+}
+
+/* === UI/UX SAFETY PATCH: responsive, RTL, and CWV guardrails === */
+html {
+    overflow-x: clip;
+    scroll-padding-block-start: calc(var(--nav-height, 72px) + 1rem);
+}
+
+body {
+    overflow-x: clip;
+    text-align: start;
+    line-height: 1.75;
+}
+
+img,
+video,
+canvas,
+svg {
+    max-inline-size: 100%;
+}
+
+img,
+video {
+    block-size: auto;
+}
+
+iframe {
+    max-inline-size: 100%;
+}
+
+:where(.container, .nav-container, .section, main, header, footer) {
+    max-inline-size: 100%;
+}
+
+:where(.grid, .grid-bento, .cards-4, .pricing, .robotics, .tri, .engines, .projects, .blog, .align, .kpi-grid, .values, .vm, .hero-grid) {
+    min-inline-size: 0;
+}
+
+:where(.grid, .grid-bento, .cards-4, .pricing, .robotics, .tri, .engines, .projects, .blog, .align, .kpi-grid, .values, .vm, .hero-grid) > * {
+    min-inline-size: 0;
+}
+
+:where(h1, h2, h3, h4, p, a, button, .btn, .title, .subtitle, .nav-link, .mobile-nav-link, .card, .bento, .tech-card, .kpi-card) {
+    overflow-wrap: anywhere;
+}
+
+:where(button, .btn, a[role="button"], input, select, textarea) {
+    min-block-size: 44px;
+}
+
+:where(button, .btn, a, input, select, textarea):focus-visible {
+    outline: 3px solid rgba(103, 232, 249, 0.72);
+    outline-offset: 3px;
+}
+
+:where([hidden], .hidden, [aria-hidden="true"]) {
+    content-visibility: visible;
+}
+
+:where(.hero, .hero-section, .section, .panel, .card, .bento, .tech-card, .kpi-card, .glass-card) {
+    overflow: visible;
+}
+
+:where(.table-wrap, .compare-wrap, .overflow-x-auto, table) {
+    max-inline-size: 100%;
+}
+
+:where(.table-wrap, .compare-wrap, .overflow-x-auto) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+:where(.unified-nav, .nav, header[role="banner"]) {
+    inset-inline: 0;
+}
+
+:where(.mobile-menu-drawer, .search-modal, .chat, .chat-window, .cookies, .back-to-top) {
+    max-inline-size: calc(100vw - 1rem);
+}
+
+[dir="rtl"] :where(ul, ol) {
+    padding-inline-start: 0;
+    padding-inline-end: 1.35em;
+}
+
+[dir="rtl"] :where(input, textarea, select) {
+    text-align: start;
+}
+
+[dir="ltr"] :where(input, textarea, select) {
+    text-align: start;
+}
+
+@media (max-width: 1024px) {
+    :where(.hero-grid, .grid-bento, .cards-4, .pricing, .robotics, .tri, .engines, .projects, .blog, .align, .kpi-grid, .values, .vm) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    :where(.section, main > section) {
+        padding-inline: 0;
+    }
+
+    :where(.hero-actions, .cta-actions, .form-actions, .nav-actions) {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 640px) {
+    :root {
+        --nav-height: 60px;
+    }
+
+    :where(.container, .nav-container) {
+        inline-size: min(100% - 1.25rem, var(--container, 1200px));
+        padding-inline: 0.625rem;
+    }
+
+    :where(.section, main > section) {
+        padding-block: clamp(2.5rem, 10vw, 4rem);
+    }
+
+    :where(.title, .section .title) {
+        font-size: clamp(1.65rem, 8vw, 2.35rem);
+        line-height: 1.28;
+    }
+
+    :where(.subtitle, .section .subtitle, p) {
+        line-height: 1.9;
+    }
+
+    :where(.btn, button, a[role="button"]) {
+        max-inline-size: 100%;
+        white-space: normal;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto;
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
     }
 }

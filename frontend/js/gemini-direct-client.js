@@ -48,6 +48,10 @@
   }
 
   async function fileToInlineData(file) {
+    if (typeof FileReader === "undefined") {
+      throw new GeminiDirectError("UNSUPPORTED_RUNTIME", "قراءة الملفات متاحة داخل المتصفح فقط.");
+    }
+
     if (!file) {
       throw new GeminiDirectError("INVALID_FILE", "لم يتم اختيار ملف صالح.");
     }
@@ -92,8 +96,12 @@
 
   async function generateContent(options) {
     const config = options || {};
+    if (!root || typeof root.fetch !== "function") {
+      throw new GeminiDirectError("UNSUPPORTED_RUNTIME", "تشغيل Gemini متاح داخل المتصفح فقط.");
+    }
+
     const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), config.timeoutMs || DEFAULT_TIMEOUT_MS);
+    const timeout = root.setTimeout(() => controller.abort(), config.timeoutMs || DEFAULT_TIMEOUT_MS);
 
     const parts = [buildTextPart(config.prompt)];
     const files = Array.isArray(config.files) ? config.files : [];
@@ -138,7 +146,7 @@
         : "تعذر الاتصال بخادم BrightAI. تحقق من الشبكة ثم أعد المحاولة.";
       throw new GeminiDirectError("NETWORK", message, error);
     } finally {
-      window.clearTimeout(timeout);
+      root.clearTimeout(timeout);
     }
 
     let data;

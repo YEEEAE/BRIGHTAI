@@ -28,6 +28,46 @@ const REPLACEMENTS = [
     replacement: "/frontend/js/runtime-config.min.js",
     label: "runtime-config.js"
   },
+  {
+    pattern: /\/frontend\/js\/index-theme\.js/g,
+    replacement: "/frontend/js/index-theme.min.js",
+    label: "index-theme.js"
+  },
+  {
+    pattern: /\/frontend\/js\/main\.bundle\.js/g,
+    replacement: "/frontend/js/main.bundle.min.js",
+    label: "main.bundle.js"
+  },
+  {
+    pattern: /\/frontend\/js\/navigation\.js/g,
+    replacement: "/frontend/js/navigation.min.js",
+    label: "navigation.js"
+  },
+  {
+    pattern: /\/frontend\/js\/search\.js/g,
+    replacement: "/frontend/js/search.min.js",
+    label: "search.js"
+  },
+  {
+    pattern: /\/frontend\/js\/performance-loader\.js/g,
+    replacement: "/frontend/js/performance-loader.min.js",
+    label: "performance-loader.js"
+  },
+  {
+    pattern: /\/frontend\/css\/index-theme\.css/g,
+    replacement: "/frontend/css/index-theme.min.css",
+    label: "index-theme.css"
+  },
+  {
+    pattern: /\/frontend\/css\/index-critical-overrides\.css/g,
+    replacement: "/frontend/css/index-critical-overrides.min.css",
+    label: "index-critical-overrides.css"
+  },
+  {
+    pattern: /\/frontend\/css\/main\.bundle\.css/g,
+    replacement: "/frontend/css/main.bundle.min.css",
+    label: "main.bundle.css"
+  },
   // text-ratio-fix.css → text-ratio-fix.min.css
   {
     pattern: /\/assets\/css\/text-ratio-fix\.css/g,
