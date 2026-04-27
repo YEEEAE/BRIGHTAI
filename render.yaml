@@ -810,7 +810,93 @@ services:
         destination: /services/
       - type: redirect
         source: /health-bright.html
-        destination: /health/
+        destination: /demo/smart-hospital-management/
+
+      - type: redirect
+        source: /ai-scolecs
+        destination: /demo/ai-scolecs/
+      - type: redirect
+        source: /ai-scolecs/
+        destination: /demo/ai-scolecs/
+      - type: redirect
+        source: /ai-scolecs/index.html
+        destination: /demo/ai-scolecs/
+
+      - type: redirect
+        source: /tenders
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /tenders/
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /tenders/dashboard
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /tenders/dashboard/
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /tenders/dashboard.html
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /tenders/compare
+        destination: /demo/ai-tenders-analysis/compare.html
+      - type: redirect
+        source: /tenders/compare/
+        destination: /demo/ai-tenders-analysis/compare.html
+      - type: redirect
+        source: /tenders/landing
+        destination: /demo/ai-tenders-analysis/landing.html
+      - type: redirect
+        source: /tenders/landing/
+        destination: /demo/ai-tenders-analysis/landing.html
+      - type: redirect
+        source: /tenders/reports
+        destination: /demo/ai-tenders-analysis/reports.html
+      - type: redirect
+        source: /tenders/reports/
+        destination: /demo/ai-tenders-analysis/reports.html
+      - type: redirect
+        source: /tenders/settings
+        destination: /demo/ai-tenders-analysis/settings.html
+      - type: redirect
+        source: /tenders/settings/
+        destination: /demo/ai-tenders-analysis/settings.html
+      - type: redirect
+        source: /tenders/templates
+        destination: /demo/ai-tenders-analysis/templates.html
+      - type: redirect
+        source: /tenders/templates/
+        destination: /demo/ai-tenders-analysis/templates.html
+
+      - type: redirect
+        source: /ai-bots/BrightProject
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /ai-bots/BrightProject/
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /ai-bots/BrightProject/index.html
+        destination: /demo/brightproject/
+
+      - type: redirect
+        source: /ai-bots/BrightSales
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /ai-bots/BrightSales/
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /ai-bots/BrightSales/index.html
+        destination: /demo/brightsales/
+
+      - type: redirect
+        source: /health
+        destination: /demo/smart-hospital-management/
+      - type: redirect
+        source: /health/
+        destination: /demo/smart-hospital-management/
+      - type: redirect
+        source: /health/index.html
+        destination: /demo/smart-hospital-management/
       - type: redirect
         source: "/Company%20performance%20monitoring%20tool.html"
         destination: /tools/
@@ -834,12 +920,103 @@ services:
       - type: rewrite
         source: /en/docs/
         destination: /en/docs/docs.html
-      - type: rewrite
+
+      - type: redirect
+        source: /en/tenders
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /en/tenders/
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /en/tenders/index.html
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
+        source: /en/tenders/dashboard
+        destination: /demo/ai-tenders-analysis/dashboard.html
+      - type: redirect
+        source: /en/tenders/dashboard/
+        destination: /demo/ai-tenders-analysis/dashboard.html
+      - type: redirect
+        source: /en/tenders/dashboard.html
+        destination: /demo/ai-tenders-analysis/dashboard.html
+      - type: redirect
+        source: /en/tenders/compare
+        destination: /demo/ai-tenders-analysis/compare.html
+      - type: redirect
+        source: /en/tenders/compare/
+        destination: /demo/ai-tenders-analysis/compare.html
+      - type: redirect
+        source: /en/tenders/compare.html
+        destination: /demo/ai-tenders-analysis/compare.html
+      - type: redirect
+        source: /en/tenders/landing
+        destination: /demo/ai-tenders-analysis/landing.html
+      - type: redirect
+        source: /en/tenders/landing/
+        destination: /demo/ai-tenders-analysis/landing.html
+      - type: redirect
+        source: /en/tenders/landing.html
+        destination: /demo/ai-tenders-analysis/landing.html
+      - type: redirect
+        source: /en/tenders/reports
+        destination: /demo/ai-tenders-analysis/reports.html
+      - type: redirect
+        source: /en/tenders/reports/
+        destination: /demo/ai-tenders-analysis/reports.html
+      - type: redirect
+        source: /en/tenders/reports.html
+        destination: /demo/ai-tenders-analysis/reports.html
+      - type: redirect
+        source: /en/tenders/settings
+        destination: /demo/ai-tenders-analysis/settings.html
+      - type: redirect
+        source: /en/tenders/settings/
+        destination: /demo/ai-tenders-analysis/settings.html
+      - type: redirect
+        source: /en/tenders/settings.html
+        destination: /demo/ai-tenders-analysis/settings.html
+      - type: redirect
+        source: /en/tenders/templates
+        destination: /demo/ai-tenders-analysis/templates.html
+      - type: redirect
+        source: /en/tenders/templates/
+        destination: /demo/ai-tenders-analysis/templates.html
+      - type: redirect
+        source: /en/tenders/templates.html
+        destination: /demo/ai-tenders-analysis/templates.html
+      - type: redirect
+        source: /en/health
+        destination: /demo/smart-hospital-management/
+      - type: redirect
+        source: /en/health/
+        destination: /demo/smart-hospital-management/
+      - type: redirect
+        source: /en/health/index.html
+        destination: /demo/smart-hospital-management/
+      - type: redirect
+        source: /en/ai-bots/BrightProject
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /en/ai-bots/BrightProject/
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /en/ai-bots/BrightProject/index.html
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /en/ai-bots/BrightSales
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /en/ai-bots/BrightSales/
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /en/ai-bots/BrightSales/index.html
+        destination: /demo/brightsales/
+      - type: redirect
         source: /en/tenders/:slug
-        destination: /en/tenders/:slug.html
-      - type: rewrite
+        destination: /demo/ai-tenders-analysis/
+      - type: redirect
         source: /en/tenders/:slug/
-        destination: /en/tenders/:slug.html
+        destination: /demo/ai-tenders-analysis/
       - type: rewrite
         source: /en/:slug
         destination: /en/:slug/index.html

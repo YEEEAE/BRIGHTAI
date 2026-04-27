@@ -1,0 +1,1222 @@
+<!DOCTYPE html><html dir="rtl" lang="ar-SA"><head>
+<meta charset="utf-8">
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+<link href="https://www.googletagmanager.com" rel="preconnect">
+<link href="https://www.googletagmanager.com" rel="dns-prefetch">
+<link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect">
+<link href="https://js.sentry-cdn.com" rel="dns-prefetch">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://brightai.site/demo/smart-hospital-management/">
+<meta property="og:url" content="https://brightai.site/demo/smart-hospital-management/" />
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/smart-hospital-management/" />
+<link rel="alternate" hreflang="en-SA" href="https://brightai.site/demo/smart-hospital-management/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/smart-hospital-management/" />
+<link href="https://brightai.site/sitemap.xml" rel="sitemap" type="application/xml">
+<script crossorigin="anonymous" defer="" src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"></script>
+<script type="text/javascript">
+    window.addEventListener('load', function() {
+        requestIdleCallback(function() {
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "voq2kb6voe");
+        });
+    });
+</script>
+<script defer="" src="/frontend/js/sentry-init.js"></script>
+<meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="theme-color" content="#0b1020">
+<title>نظام إدارة مستشفيات ذكي ولوحة مؤشرات تشغيلية | Bright AI</title>
+<meta content="نظام إدارة مستشفيات ذكي من Bright AI يحوّل مؤشرات التشغيل والجودة إلى قرارات أسرع، مع ربط HIS وEHR ولوحات BI للقطاع الصحي السعودي." name="description">
+<meta content="نظام إدارة مستشفيات ذكي, مؤشرات تشغيل المستشفى, لوحة مؤشرات مستشفى, HIS, EHR, جودة المستشفيات, إدارة الطوارئ, وقت الانتظار, إشغال الأسرة, تحليل بيانات المستشفيات, السعودية" name="keywords">
+<meta content="Bright AI" name="author">
+<meta content="website" property="og:type">
+<meta content="نظام إدارة مستشفيات ذكي ولوحة مؤشرات تشغيلية | Bright AI" property="og:title">
+<meta content="حوّل مؤشرات التشغيل والجودة في المستشفى إلى قرارات تنفيذية أسرع مع ربط HIS وEHR ولوحات BI." property="og:description">
+<meta content="https://brightai.site/assets/images/Gemini.png" property="og:image">
+<meta content="1200" property="og:image:width">
+<meta content="630" property="og:image:height">
+<meta content="شعار Bright AI وحلول الذكاء الاصطناعي للقطاع الصحي في السعودية" property="og:image:alt">
+<meta content="ar_SA" property="og:locale">
+<meta content="en_SA" property="og:locale:alternate">
+<meta content="summary_large_image" name="twitter:card">
+<meta content="نظام إدارة مستشفيات ذكي ولوحة مؤشرات تشغيلية | Bright AI" name="twitter:title">
+<meta content="حوّل مؤشرات التشغيل والجودة في المستشفى إلى قرارات تنفيذية أسرع مع ربط HIS وEHR ولوحات BI." name="twitter:description">
+<meta content="https://brightai.site/assets/images/Gemini.png" name="twitter:image">
+<meta content="شعار Bright AI وحلول الذكاء الاصطناعي للقطاع الصحي في السعودية" name="twitter:image:alt">
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["MedicalOrganization", "LocalBusiness"],
+    "name": "Bright AI",
+    "description": "حلول الذكاء الاصطناعي الطبية المتقدمة في السعودية",
+    "url": "https://brightai.site/",
+    "logo": "https://brightai.site/assets/images/Gemini.png",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "SA",
+      "addressLocality": "الرياض"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+966538229013",
+      "contactType": "customer service",
+      "availableLanguage": ["ar", "en"]
+    },
+    "sameAs": [
+      "https://api.whatsapp.com/send?phone=966538229013"
+    ]
+  }
+  </script>
+<link href="/frontend/css/health-demo.css" rel="stylesheet">
+<meta content="مُشرقة AI" property="og:site_name">
+<script>
+    (function () {
+      'use strict';
+      function loadCSS(href) {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        document.head.appendChild(link);
+      }
+      function loadScript(src, callback) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        if (callback) script.onload = callback;
+        document.body.appendChild(script);
+      }
+      function loadAnimations() {
+        loadCSS('/frontend/css/vendor/aos.css');
+        loadScript('/frontend/js/vendor/aos.js', function () {
+          if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
+        });
+}
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          setTimeout(loadAnimations, 100);
+        });
+      } else {
+        setTimeout(loadAnimations, 100);
+      }
+    })();
+  </script>
+<link as="style" href="/frontend/css/main.bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"><noscript><link href="/frontend/css/main.bundle.min.css" rel="stylesheet"/></noscript>
+<script defer="" src="/frontend/js/runtime-config.min.js"></script>
+<script defer="" src="/frontend/js/navigation.min.js"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<link as="style" href="/frontend/css/index-theme.min.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"><noscript><link href="/frontend/css/index-theme.min.css" rel="stylesheet"/></noscript>
+<script defer="" src="/frontend/js/iconify-preload.js" fetchpriority="low"></script>
+<script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
+<link href="/assets/images/Gemini.png" rel="icon" sizes="32x32" type="image/png">
+<link href="/assets/images/Gemini.png" rel="icon" sizes="16x16" type="image/png">
+<link href="/assets/images/Gemini.png" rel="apple-touch-icon" sizes="180x180">
+<link href="/frontend/css/unified-nav-search.css" rel="stylesheet">
+<link href="/assets/css/extracted-inline-styles.css" rel="stylesheet">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "headline": "نظام إدارة مستشفيات ذكي ولوحة مؤشرات تشغيلية | Bright AI السعودية",
+  "description": "منصة ذكاء اصطناعي لتحليل مؤشرات تشغيل المستشفى والجودة وربط HIS وEHR ولوحات BI.",
+  "image": "https://brightai.site/assets/images/Gemini.png",
+  "url": "https://brightai.site/demo/smart-hospital-management/"
+}</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://brightai.site/demo/smart-hospital-management/#service",
+  "name": "نظام إدارة مستشفيات ذكي لتحسين التشغيل والجودة",
+  "serviceType": "نظام إدارة مستشفيات ذكي ولوحة مؤشرات تشغيلية",
+  "description": "حلول الذكاء الاصطناعي للقطاع الصحي في السعودية لقراءة مؤشرات التشغيل والجودة ودعم القرار وربط HIS وEHR ولوحات BI.",
+  "url": "https://brightai.site/demo/smart-hospital-management/",
+  "mainEntityOfPage": "https://brightai.site/demo/smart-hospital-management/",
+  "inLanguage": "ar-SA",
+  "image": "https://brightai.site/assets/images/Gemini.png",
+  "provider": {
+    "@type": "Organization",
+    "@id": "https://brightai.site/#organization",
+    "name": "Bright AI",
+    "url": "https://brightai.site/"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Saudi Arabia"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "https://brightai.site/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "الذكاء الاصطناعي للقطاع الصحي في السعودية",
+      "item": "https://brightai.site/demo/smart-hospital-management/"
+    }
+  ]
+}
+</script>
+<script defer="" src="/frontend/js/analytics-events.js"></script>
+
+<meta name="seo:intent" content="sector_solution">
+<meta name="seo:secondary_intent" content="informational">
+<meta name="seo:primary_keyword" content="نظام إدارة مستشفيات ذكي">
+
+<script type="application/ld+json" data-seo-intent-schema="true">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://brightai.site/demo/smart-hospital-management/#intent",
+  "name": "نظام إدارة مستشفيات ذكي في السعودية",
+  "url": "https://brightai.site/demo/smart-hospital-management/",
+  "description": "نظام إدارة مستشفيات ذكي يربط مؤشرات التشغيل والجودة مع HIS وEHR ولوحات BI لدعم القرار في القطاع الصحي السعودي.",
+  "inLanguage": "ar-SA",
+  "provider": {
+    "@id": "https://brightai.site/#organization"
+  }
+}
+</script>
+<link rel="stylesheet" href="/frontend/css/demo-experience.css">
+<link rel="stylesheet" href="/assets/css/design-tokens.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/smart-hospital-management/#webpage",
+      "url": "https://brightai.site/demo/smart-hospital-management/",
+      "name": "نظام إدارة مستشفيات ذكي ولوحة مؤشرات تشغيلية | Bright AI",
+      "description": "نظام إدارة مستشفيات ذكي يربط مؤشرات التشغيل والجودة مع HIS وEHR ولوحات BI لدعم القرار في القطاع الصحي السعودي.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/smart-hospital-management/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "نظام إدارة مستشفيات ذكي",
+          "item": "https://brightai.site/demo/smart-hospital-management/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://brightai.site/demo/smart-hospital-management/#service",
+      "name": "نظام إدارة مستشفيات ذكي في السعودية",
+      "description": "نظام إدارة مستشفيات ذكي يربط مؤشرات التشغيل والجودة مع HIS وEHR ولوحات BI لدعم القرار في القطاع الصحي السعودي.",
+      "provider": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "areaServed": "Saudi Arabia",
+      "serviceType": "AI SaaS and automation services",
+      "url": "https://brightai.site/demo/smart-hospital-management/"
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+<style>
+.brightai-internal-links{background:#020617;color:#e5e7eb;border-top:1px solid rgba(148,163,184,.18);padding:32px 20px}
+.brightai-internal-links__inner{max-width:1120px;margin:0 auto}
+.brightai-internal-links h2{font-size:clamp(1.25rem,2vw,1.75rem);margin:0 0 8px;color:#fff;letter-spacing:0}
+.brightai-internal-links p{margin:0 0 18px;color:#94a3b8;line-height:1.8}
+.brightai-internal-links ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;list-style:none;padding:0;margin:0}
+.brightai-internal-links a{display:block;color:#c7d2fe;text-decoration:none;padding:10px 0;line-height:1.6}
+.brightai-internal-links a:hover{color:#fff;text-decoration:underline}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#home">تجاوز إلى المحتوى</a>
+<header class="unified-nav" id="main-header" role="banner">
+<div class="nav-container">
+<div class="flex-shrink-0">
+<a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
+<div class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+<span class="text-white font-black text-lg tracking-tighter">AI</span>
+</div>
+<div class="flex flex-col leading-none">
+<span class="text-lg font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">Bright<span class="text-indigo-400 group-hover:text-white transition-colors">AI</span></span>
+<span class="text-[9px] font-bold text-slate-500 tracking-[0.18em] uppercase">Saudi</span>
+</div>
+</a>
+</div>
+<nav class="nav-desktop" style="contain: layout;">
+<ul class="nav-links">
+<li class="nav-item">
+<a class="nav-link" href="/">الرئيسية</a>
+</li>
+<li class="nav-item group/dropdown relative">
+<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            الحلول الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
+</button>
+<div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+<div class="p-2 space-y-1">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/ai-tenders-analysis/landing.html">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+<iconify-icon icon="lucide:file-search" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                نظام تحليل العقود والمناقصات</div>
+<div class="text-xs text-slate-400">ContractAI للعقود والاعتمادات</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/services/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
+<iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
+                                                منصة Bright AI Agents</div>
+<div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/smart-automation/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
+<iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
+                                                الأتمتة الذكية</div>
+<div class="text-xs text-slate-400">وسير العمل المتقدم</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/ai-agent/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
+<iconify-icon icon="lucide:bot" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
+                                                AIaaS</div>
+<div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/contact/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
+<iconify-icon icon="lucide:users" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
+                                                استشارات</div>
+<div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/data-analysis/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
+<iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
+                                                تحليل البيانات</div>
+<div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+</li>
+<li class="nav-item group/dropdown relative">
+<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            النماذج الذكية
+                            <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
+</button>
+<div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+<div class="p-2 space-y-1">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/smart-medical-archive/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
+<iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
+                                                الأرشيف الطبي الذكي</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/interview/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
+<iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
+                                                منصة التوظيف الذكي</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/ai-scolecs/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
+<iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
+                                                المنصة التعليمية الذكية</div>
+</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-hospital-management/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
+<iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
+</div>
+<div>
+<div class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
+                                                إدارة المستشفيات الذكية</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+</li>
+<li class="nav-item group/dropdown relative">
+<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
+                            عن برايت
+                            <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
+</button>
+<div class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
+<div class="p-2 space-y-1">
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/about/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
+<iconify-icon icon="lucide:info" width="18"></iconify-icon>
+</div>
+<div class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
+                                            عن برايت</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/docs/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
+<iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
+</div>
+<div class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
+                                            المستندات</div>
+</div>
+</a>
+<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/blog/">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
+<iconify-icon icon="lucide:library" width="18"></iconify-icon>
+</div>
+<div class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
+                                            المكتبة الذكية</div>
+</div>
+</a>
+</div>
+</div>
+</li>
+</ul>
+</nav>
+<div class="nav-actions">
+<button aria-label="البحث في الموقع" class="search-trigger search-desktop">
+<iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors" icon="lucide:search"></iconify-icon>
+<span class="text-[13px] font-medium">بحث...</span>
+<kbd class="search-kbd">⌘K</kbd>
+</button>
+<button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
+<iconify-icon icon="lucide:search" width="18"></iconify-icon>
+</button>
+<a aria-label="الانتقال إلى النسخة الإنجليزية" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/demo/smart-hospital-management/" title="English Version">
+<iconify-icon icon="lucide:globe" width="16"></iconify-icon>
+<span class="tracking-wide">EN</span>
+</a>
+<a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب">
+<iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+<button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
+<span class="bar"></span>
+<span class="bar"></span>
+<span class="bar"></span>
+</button>
+</div>
+</div>
+</header>
+<div class="mobile-menu-drawer" id="mobileDrawer">
+<div class="flex flex-col h-full bai-inline-0001">
+<div class="flex items-center justify-between mb-8 pb-6" style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+<span class="text-white font-black text-sm">AI</span>
+</div>
+<span class="text-base font-bold text-white">القائمة</span>
+</div>
+<button aria-label="إغلاق القائمة" class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
+<iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
+</button>
+</div>
+<ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all" href="/">
+<iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
+                        الرئيسية
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all" href="/demo/smart-hospital-management/">
+<iconify-icon class="text-slate-500" icon="lucide:languages" width="18"></iconify-icon>
+                        النسخة الإنجليزية
+                    </a>
+</li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer" href="#">
+<span class="flex items-center gap-3">
+<iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
+                            الحلول والخدمات
+                        </span>
+<iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+</a>
+<div class="mobile-dropdown mt-1 mr-6 bai-inline-0002">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/services/">
+<iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
+                            منصة Bright AI Agents
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/smart-automation/">
+<iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
+                            الأتمتة الذكية
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/ai-agent/">
+<iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
+                            AIaaS — الذكاء كخدمة
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/demo/ai-tenders-analysis/landing.html">
+<iconify-icon class="text-slate-600" icon="lucide:file-search" width="15"></iconify-icon>
+    نظام تحليل العقود والمناقصات
+</a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/data-analysis/">
+<iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
+                            تحليل البيانات
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/contact/">
+<iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
+                            استشارات
+                        </a>
+</div>
+</li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer" href="#">
+<span class="flex items-center gap-3">
+<iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
+                            النماذج الذكية
+                        </span>
+<iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+</a>
+<div class="mobile-dropdown mt-1 mr-6 bai-inline-0003">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/smart-medical-archive/">
+<iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
+                            الأرشيف الطبي الذكي
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/interview/">
+<iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
+                            منصة التوظيف الذكي
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/demo/ai-scolecs/">
+<iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
+                            المنصة التعليمية الذكية
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/demo/smart-hospital-management/">
+<iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
+                            إدارة المستشفيات الذكية
+                        </a>
+</div>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all" href="/blog/">
+<iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
+                        المدونة التقنية
+                    </a>
+</li>
+<li>
+<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer" href="#">
+<span class="flex items-center gap-3">
+<iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
+                            عن برايت
+                        </span>
+<iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
+</a>
+<div class="mobile-dropdown mt-1 mr-6 bai-inline-0004">
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all" href="/about/">
+<iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
+                            من نحن
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all" href="/docs/">
+<iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
+                            المستندات
+                        </a>
+<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all" href="/blog/">
+<iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
+                            المكتبة الذكية
+                        </a>
+</div>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all" href="/contact/">
+<iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
+                        تواصل معنا
+                    </a>
+</li>
+</ul>
+<div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
+<a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+<iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
+                    ابدأ رحلة التحول
+                </a>
+<a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all" href="/try/">
+<iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
+                    جرّب النظام مجاناً
+                </a>
+</div>
+</div>
+</div>
+<div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+<div aria-hidden="true" class="nav-overlay"></div>
+<nav aria-label="مسار التنقل" class="breadcrumb-nav bai-inline-0174">
+<div class="breadcrumb-container bai-inline-0175">
+<ol class="breadcrumb-list bai-inline-0176" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+<li class="breadcrumb-item bai-inline-0177" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+<a class="bai-inline-0178" href="/" itemprop="item"><span itemprop="name">الرئيسية</span></a>
+<meta content="1" itemprop="position">
+</li>
+<li aria-hidden="true" class="breadcrumb-separator bai-inline-0179">›
+        </li>
+<li class="breadcrumb-item current bai-inline-0180" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+<span itemprop="name" style="padding: 0.25rem 0.5rem;">حلول الذكاء الاصطناعي الطبية</span>
+<meta content="2" itemprop="position">
+</li>
+</ol>
+</div>
+</nav>
+<main class="container" id="home">
+<section class="hero" data-aos="fade-up" style="content-visibility: auto;">
+<div class="card" data-aos="fade-right">
+<div class="badge">🏥 منصة تشغيل وجودة للمستشفيات السعودية</div>
+<h1 class="title">نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع.</h1>
+<section class="seo-answer-block" data-seo-intent-answer="true"><p>توضح هذه الصفحة كيف يساعد نظام إدارة المستشفيات الذكي المؤسسات السعودية على قراءة مؤشرات التشغيل والجودة، وتحويلها إلى قرارات قابلة للتنفيذ عبر ربط HIS وEHR ولوحات BI. المحتوى مناسب للقيادات وفرق التشغيل والجودة والتحول الرقمي.</p></section>
+<section class="seo-intent-section" data-seo-intent-section="true">
+<div class="seo-intent-group"><h2>تحديات القطاع</h2><h3>تحسين الكفاءة</h3><p>يربط هذا المحور مؤشرات المستشفى بقرار عملي: تحديد الضغط التشغيلي، فهم مصدر البيانات، ثم اختيار تدخل مناسب للوردية أو الأسبوع.</p><h3>إدارة المخاطر</h3><p>يساعد النظام على ترتيب تنبيهات الجودة حسب الشدة والمالك المسؤول دون تحويلها إلى قرار سريري نهائي.</p></div>
+<div class="seo-intent-group"><h2>حالات استخدام الذكاء الاصطناعي في القطاع</h2><h3>التنبؤ والمراقبة</h3><p>يتابع إشغال الأسرّة ووقت الانتظار وعبء الكوادر ومخاطر إعادة الدخول لدعم قرارات السعة والموارد.</p><h3>أتمتة التقارير</h3><p>يحوّل مخرجات المؤشرات إلى ملخص تنفيذي وتدخلات مقترحة قابلة للمشاركة مع الإدارة المناوبة.</p></div>
+<div class="seo-intent-group"><h2>البيانات والأنظمة المستخدمة</h2><h3>التكامل مع الأنظمة</h3><p>يعتمد على مصادر مثل HIS وEHR ولوحات BI، مع تحديد الصلاحيات ونطاق البيانات قبل الربط.</p><h3>جودة البيانات</h3><p>كل توصية تعتمد على اكتمال المؤشرات ودقة التوقيت والقسم والمالك التشغيلي.</p></div>
+<div class="seo-intent-group"><h2>الحوكمة والامتثال</h2><h3>مراجعة القرارات</h3><p>المخرجات تدعم القرار ولا تستبدل المختص أو بروتوكولات المنشأة، خصوصاً عند وجود حالة طبية.</p><h3>متطلبات السوق السعودي</h3><p>التجربة عربية RTL وتناسب فرق التشغيل والجودة في منشآت القطاع الصحي السعودي.</p></div>
+<div class="seo-intent-group"><h2>خدمات Bright AI المناسبة</h2><h3>الأتمتة والتحليل</h3><p>تشمل بناء لوحة مؤشرات للمستشفى، تحليل سيناريوهات التشغيل، وربط البيانات مع أنظمة المنشأة.</p><h3>الخطوة التالية</h3><p>ابدأ بربط HIS، أو اطلب لوحة مؤشرات، أو حلل مؤشرات منشأتك كنموذج أولي.</p></div>
+<div class="seo-intent-links"><h2>روابط تساعدك على الخطوة التالية</h2><ul><li><a href="/services/">خدمات الذكاء الاصطناعي</a></li><li><a href="/data-analysis/">تحليل البيانات</a></li><li><a href="/consultation/">احجز استشارة</a></li></ul></div>
+</section>
+
+
+
+
+
+
+
+<p class="subtitle">تجربة تنفيذية لقراءة مؤشرات التشغيل والجودة داخل المستشفى: إشغال الأسرّة، أوقات الانتظار، عبء الكوادر، إنذارات الجودة، وخطة تدخل قابلة للتنفيذ. النظام يدعم القرار ولا يقدم تشخيصاً أو علاجاً نهائياً.</p>
+<div class="actions">
+<a class="btn" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+            اربط النظام مع HIS
+          </a>
+<a class="btn secondary" href="#services">
+            اطلب لوحة مؤشرات للمستشفى
+          </a>
+<a class="btn secondary" href="#try">حلل مؤشرات منشأتك</a>
+</div>
+</div>
+<div class="card" data-aos="fade-left" data-aos-delay="200">
+<div class="grid cards-3">
+<div class="pill">إشغال الأسرّة</div>
+<div class="pill">وقت الانتظار</div>
+<div class="pill">مخاطر إعادة الدخول</div>
+<div class="pill">عبء الكوادر</div>
+<div class="pill">تنبيهات الجودة</div>
+<div class="pill">تدخلات مقترحة</div>
+</div>
+<div style="height:16px"></div>
+<div class="status ok">متوافق مع ربط HIS وEHR ولوحات BI مع حوكمة وصول وتدقيق</div>
+<div style="height:10px"></div>
+<div class="status">يعرض المؤشرات كلوحة إدارة تنفيذية لا كقرار طبي نهائي</div>
+<div style="height:10px"></div>
+<div class="status">أي حالة طبية تحتاج مراجعة مختص وبروتوكول المنشأة</div>
+</div>
+</section>
+<section class="section" data-aos="fade-up" id="stats" style="content-visibility: auto;">
+<h2>لوحة مؤشرات تشغيل المستشفى</h2>
+<div class="stats-grid">
+<div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+<div class="stat-number">86%</div>
+<div class="stat-label">Bed Occupancy</div>
+</div>
+<div class="stat-card">
+<div class="stat-number">74د</div>
+<div class="stat-label">Waiting Time</div>
+</div>
+<div class="stat-card">
+<div class="stat-number">21%</div>
+<div class="stat-label">Readmission Risk</div>
+</div>
+<div class="stat-card">
+<div class="stat-number">1.32x</div>
+<div class="stat-label">Staff Load</div>
+</div>
+<div class="stat-card">
+<div class="stat-number">7</div>
+<div class="stat-label">Quality Alerts</div>
+</div>
+<div class="stat-card">
+<div class="stat-number">12</div>
+<div class="stat-label">Recommended Interventions</div>
+</div>
+</div>
+</section>
+<section class="section" id="services" style="content-visibility: auto;">
+<h2>محاور نظام إدارة المستشفيات الذكي</h2>
+<p class="muted" style="margin-bottom:28px">التجربة مبنية لقيادات التشغيل والجودة والتحول الرقمي: قراءة مؤشرات، تفسير أسباب محتملة، تصعيد مسؤوليات، واقتراح تدخلات قابلة للقياس دون استبدال قرار المختص.
+</p><div class="grid cards-3">
+<div class="card">
+<h3>مؤشرات تشغيل المستشفى</h3>
+<p class="muted">قراءة موحدة لإشغال الأسرّة، زمن الانتظار، عبء التمريض، ضغط الطوارئ، ومخاطر تعثر التدفق بين الأقسام.
+</p><ul class="feature-list">
+<li>تجميع مؤشرات HIS وEHR وBI</li>
+<li>تصنيف الحالة: جيد، متابعة، خطر، حرج</li>
+<li>توقع ضغط السعة خلال 24 ساعة و7 أيام</li>
+<li>توصيات تدخل مرتبطة بالمالك التشغيلي</li>
+</ul>
+<a class="btn secondary" href="#ops-kpis">جرّب مؤشرات التشغيل</a>
+</div>
+<div class="card">
+<h3>دعم قرار الجودة</h3>
+<p class="muted">تحويل إنذارات الجودة إلى أدلة، مستوى شدة، مالك مسؤول، وخطوة متابعة واضحة للجان الجودة وسلامة المرضى.
+</p><ul class="feature-list">
+<li>مراجعة إعادة الدخول والانتظار والعدوى</li>
+<li>ربط التنبيه بالمصدر والوقت والقسم</li>
+<li>تصعيد آمن عند وجود حالة طبية</li>
+<li>ملخص تنفيذي قابل للمشاركة</li>
+</ul>
+<a class="btn secondary" href="#quality-decision">افتح دعم الجودة</a>
+</div>
+<div class="card">
+<h3>قراءة تقرير أو ملف طبي</h3>
+<p class="muted">تلخيص إداري آمن للتقارير والملفات لمساعدة الفرق على فهم السياق، لا لإصدار تشخيص أو علاج نهائي.
+</p><ul class="feature-list">
+<li>استخراج نقاط تحتاج مراجعة مختص</li>
+<li>تحديد معلومات ناقصة قبل القرار</li>
+<li>حماية الحدود السريرية للنظام</li>
+<li>ربط المخرجات بإجراءات تشغيلية</li>
+</ul>
+<a class="btn secondary" href="#report-reader">اقرأ ملفاً تجريبياً</a>
+</div>
+<div class="card">
+<h3>تحليل حالة تشغيلية لقسم</h3>
+<p class="muted">محاكاة ازدحام طوارئ، نقص كوادر، ارتفاع انتظار، أو انخفاض رضا المرضى مع تدخلات مرتبة حسب الأثر والاستعجال.
+</p><ul class="feature-list">
+<li>سيناريوهات جاهزة للمستشفى</li>
+<li>تحديد مالك القرار التشغيلي</li>
+<li>خطة تكامل مع HIS وEHR وBI</li>
+<li>ملخص واتساب للإدارة المناوبة</li>
+</ul>
+<a class="btn secondary" href="#department-case">حلل حالة قسم</a>
+</div>
+</div>
+</section>
+<section class="section" id="try" style="content-visibility: auto;">
+<h2>تجربة نظام إدارة مستشفيات ذكي</h2>
+<p class="muted" style="margin-bottom:24px">اختر تبويباً أو سيناريو جاهزاً، ثم اطلب من Gemini إخراج لوحة إدارة تنفيذية تتضمن مؤشرات التشغيل، مخاطر الجودة، توقع السعة، التدخلات الموصى بها، وخطة التكامل.
+</p><div class="medical-disclaimer" role="alert">
+<span aria-hidden="true">⚠️</span>
+<div><strong>تنبيه سلامة:</strong> النظام يدعم التشغيل والجودة ودعم القرار، ولا يقدم تشخيصاً أو علاجاً نهائياً. عند أي حالة طبية أو خطر على سلامة المريض يجب الرجوع إلى مختص وبروتوكولات المنشأة.</div>
+</div>
+<div class="scenario-panel" aria-label="سيناريوهات جاهزة">
+<button class="scenario-chip active" data-scenario="ازدحام طوارئ">ازدحام طوارئ</button>
+<button class="scenario-chip" data-scenario="ارتفاع وقت الانتظار">ارتفاع وقت الانتظار</button>
+<button class="scenario-chip" data-scenario="نقص كوادر في قسم">نقص كوادر في قسم</button>
+<button class="scenario-chip" data-scenario="انخفاض رضا المرضى">انخفاض رضا المرضى</button>
+<button class="scenario-chip" data-scenario="مؤشرات جودة تحتاج مراجعة">مؤشرات جودة تحتاج مراجعة</button>
+</div>
+<div aria-label="أقسام التجربة" class="tabs" role="tablist">
+<button class="active" data-tab="ops-kpis" role="tab">مؤشرات تشغيل المستشفى</button>
+<button data-tab="quality-decision" role="tab">دعم قرار الجودة</button>
+<button data-tab="report-reader" role="tab">قراءة تقرير أو ملف طبي</button>
+<button data-tab="department-case" role="tab">تحليل حالة تشغيلية لقسم</button>
+</div>
+<section aria-live="polite" class="card" id="ops-kpis" style="content-visibility: auto;">
+<h3>مؤشرات تشغيل المستشفى</h3>
+<p class="muted" style="margin-bottom:20px">أدخل لقطة تشغيلية ليحوّلها النظام إلى لوحة تنفيذية تشمل Bed Occupancy وWaiting Time وStaff Load والتنبيهات والتدخلات.
+</p><div class="row">
+<div>
+<div class="field">
+<label>القسم أو النطاق</label>
+<select id="opsDept" aria-label="القسم أو النطاق">
+<option>الطوارئ</option>
+<option>العيادات الخارجية</option>
+<option>العناية المركزة</option>
+<option>التنويم</option>
+<option>الأشعة والمختبر</option>
+</select>
+</div>
+<div class="field">
+<label>لقطة المؤشرات الحالية</label>
+<textarea id="opsContext" placeholder="مثال: إشغال الأسرّة 86%، متوسط انتظار الطوارئ 74 دقيقة، عبء التمريض 1.3x، 7 تنبيهات جودة، زيادة مراجعي الفرز الأصفر..." aria-label="لقطة المؤشرات الحالية"></textarea>
+</div>
+<div class="field">
+<label>السيناريو</label>
+<input id="opsScenario" value="ازدحام طوارئ" aria-label="السيناريو">
+</div>
+<div class="actions">
+<button class="btn" id="opsAnalyzeBtn">حلل مؤشرات منشأتك</button>
+<button class="btn secondary" id="opsClearBtn">إعادة الضبط</button>
+</div>
+</div>
+<div>
+<div class="field">
+<label>حالة النظام</label>
+<div class="status" id="opsStatus">في انتظار لقطة المؤشرات...</div>
+</div>
+<div class="field">
+<label>لوحة الإدارة التنفيذية</label>
+<div class="output" id="opsOutput">سيتم عرض مخرجات Gemini التشغيلية هنا...</div>
+</div>
+</div>
+</div>
+</section>
+<section aria-live="polite" class="card" hidden="" id="quality-decision" style="content-visibility: auto;">
+<h3>دعم قرار الجودة</h3>
+<p class="muted" style="margin-bottom:20px">حوّل مؤشرات الجودة إلى مخاطر مرتبة حسب الشدة مع أدلة ومالك مسؤول وخطوة متابعة.
+</p><div class="row">
+<div>
+<div class="field">
+<label>نطاق الجودة</label>
+<select id="qualityScope" aria-label="نطاق الجودة">
+<option>سلامة المرضى</option>
+<option>إعادة الدخول</option>
+<option>مكافحة العدوى</option>
+<option>تجربة المرضى</option>
+<option>التوثيق والامتثال</option>
+</select>
+</div>
+<div class="field">
+<label>مؤشرات أو ملاحظات الجودة</label>
+<textarea id="qualityContext" placeholder="مثال: ارتفاع إعادة الدخول خلال 7 أيام، شكاوى انتظار، نقص توثيق، تنبيه عدوى يحتاج مراجعة..." aria-label="مؤشرات أو ملاحظات الجودة"></textarea>
+</div>
+<div class="actions">
+<button class="btn" id="qualityAnalyzeBtn">حلل مخاطر الجودة</button>
+<button class="btn secondary" id="qualityClearBtn">إعادة الضبط</button>
+</div>
+</div>
+<div>
+<div class="field">
+<label>حالة النظام</label>
+<div class="status" id="qualityStatus">في انتظار مؤشرات الجودة...</div>
+</div>
+<div class="field">
+<label>مخرجات دعم الجودة</label>
+<div class="output" id="qualityOutput">سيتم عرض مخاطر الجودة والتدخلات هنا...</div>
+</div>
+</div>
+</div>
+</section>
+<section aria-live="polite" class="card" hidden="" id="report-reader" style="content-visibility: auto;">
+<h3>قراءة تقرير أو ملف طبي</h3>
+<p class="muted" style="margin-bottom:20px">ارفع أو الصق تقريراً ليتم تلخيصه كسياق تشغيلي آمن مع تنبيه مراجعة مختص عند وجود حالة طبية.
+</p><div class="row">
+<div>
+<div class="field">
+<label>نوع الملف</label>
+<select id="reportType" aria-label="نوع الملف">
+<option>تقرير خروج</option>
+<option>تقرير طوارئ</option>
+<option>نتائج مختبر</option>
+<option>ملف إحالة</option>
+<option>ملخص عيادة</option>
+</select>
+</div>
+<div class="field">
+<label>نص التقرير أو ملخصه</label>
+<textarea id="reportText" placeholder="الصق نص التقرير أو اكتب ملخصاً إدارياً. لا تدخل بيانات شخصية حساسة في التجربة العامة." aria-label="نص التقرير أو ملخصه"></textarea>
+</div>
+<div class="field">
+<label>رفع ملف اختياري</label>
+<div class="uploader" id="reportDrop" tabindex="0">
+                اسحب الملف هنا أو انقر للاختيار (PDF, DOC, TXT, JPG, PNG)
+                <input accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png" id="reportFile" style="display:none" type="file" aria-label="رفع ملف">
+</div>
+</div>
+<div class="actions">
+<button class="btn" id="reportAnalyzeBtn">اقرأ التقرير تشغيلياً</button>
+<button class="btn secondary" id="reportClearBtn">إعادة الضبط</button>
+</div>
+</div>
+<div>
+<div class="field">
+<label>حالة النظام</label>
+<div class="status" id="reportStatus">في انتظار تقرير أو ملف...</div>
+</div>
+<div class="field">
+<label>قراءة تنفيذية آمنة</label>
+<div class="output" id="reportOutput">سيتم عرض ملخص التقرير والتنبيهات هنا...</div>
+</div>
+</div>
+</div>
+</section>
+<section aria-live="polite" class="card" hidden="" id="department-case" style="content-visibility: auto;">
+<h3>تحليل حالة تشغيلية لقسم</h3>
+<p class="muted" style="margin-bottom:20px">اكتب حالة تشغيلية لقسم محدد، مثل ازدحام طوارئ أو نقص كوادر، للحصول على تدخلات مرتبة حسب الأثر والاستعجال.
+</p><div class="row">
+<div>
+<div class="field">
+<label>القسم</label>
+<select id="caseDept" aria-label="القسم">
+<option>الطوارئ</option>
+<option>العيادات الخارجية</option>
+<option>العناية المركزة</option>
+<option>التنويم</option>
+<option>المختبر والأشعة</option>
+</select>
+</div>
+<div class="field">
+<label>الحالة التشغيلية</label>
+<textarea id="caseContext" placeholder="مثال: خلال آخر 6 ساعات ارتفع عدد مراجعي الطوارئ، لا توجد أسرّة تنويم كافية، فريق الفرز يعمل فوق الطاقة، وتوجد شكاوى من الانتظار..." aria-label="الحالة التشغيلية"></textarea>
+</div>
+<div class="field">
+<label>هدف القرار</label>
+<input id="caseGoal" value="خفض الازدحام خلال الوردية الحالية مع حماية مؤشرات الجودة" aria-label="هدف القرار">
+</div>
+<div class="actions">
+<button class="btn" id="caseAnalyzeBtn">حلل الحالة التشغيلية</button>
+<button class="btn secondary" id="caseClearBtn">إعادة الضبط</button>
+</div>
+</div>
+<div>
+<div class="field">
+<label>حالة النظام</label>
+<div class="status" id="caseStatus">في انتظار وصف الحالة...</div>
+</div>
+<div class="field">
+<label>خطة تشغيلية تنفيذية</label>
+<div class="output" id="caseOutput">سيتم عرض الخطة التشغيلية هنا...</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="section" id="testimonials" style="content-visibility: auto;">
+<h2>كيف تقرأ الإدارة القيمة التشغيلية؟</h2>
+<p class="muted" style="margin-bottom:28px">أمثلة على النتائج التي تهتم بها فرق التشغيل والجودة عند ربط المؤشرات بلوحة تنفيذية موحدة.
+      
+</p><div class="grid cards-2">
+<div class="testimonial">
+<div class="testimonial-text">
+            "أصبح لدينا عرض يومي واحد لإشغال الأسرّة ووقت الانتظار وعبء الكوادر. القرارات التي كانت تحتاج اجتماعات طويلة أصبحت واضحة للمدير المناوب خلال دقائق."
+          </div>
+<div class="testimonial-author">
+<div class="testimonial-avatar"></div>
+<div class="testimonial-info">
+<h3>مدير التشغيل</h3>
+<p>مستشفى خاص، الرياض
+</p></div>
+</div>
+</div>
+<div class="testimonial">
+<div class="testimonial-text">
+            "ربط تنبيهات الجودة بالمؤشر والمالك المسؤول ساعدنا على تقليل التأخير في إغلاق البلاغات ومراجعة الحالات التي تحتاج مختصاً بسرعة أعلى."
+          </div>
+<div class="testimonial-author">
+<div class="testimonial-avatar"></div>
+<div class="testimonial-info">
+<h3>مسؤولة الجودة</h3>
+<p>مجمع طبي، جدة
+</p></div>
+</div>
+</div>
+<div class="testimonial">
+<div class="testimonial-text">
+            "سيناريوهات الازدحام ونقص الكوادر جعلت النقاش بين التمريض والطوارئ والتشغيل مبنياً على بيانات، وليس على انطباعات متفرقة."
+          </div>
+<div class="testimonial-author">
+<div class="testimonial-avatar"></div>
+<div class="testimonial-info">
+<h3>مشرف التمريض</h3>
+<p>مستشفى عام، الدمام
+</p></div>
+</div>
+</div>
+<div class="testimonial">
+<div class="testimonial-text">
+            "ملخص واتساب التنفيذي مفيد للوردية: المشكلة، المؤشر، المالك، والخطوة التالية بدون الدخول في تفاصيل سريرية غير لازمة للإدارة."
+          </div>
+<div class="testimonial-author">
+<div class="testimonial-avatar"></div>
+<div class="testimonial-info">
+<h3>مدير التحول الرقمي</h3>
+<p>شبكة عيادات، مكة المكرمة
+</p></div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="why" style="content-visibility: auto;">
+<h2>لماذا يناسب النظام المستشفيات السعودية؟</h2>
+<p class="muted" style="margin-bottom:28px">التركيز هنا على التشغيل والجودة والحوكمة: مؤشرات قابلة للمتابعة، مسؤوليات واضحة، وربط آمن مع الأنظمة الحالية.
+</p><div class="grid cards-3">
+<div class="card">
+<div class="badge">قراءة تنفيذية</div>
+<h3>مؤشرات مفهومة للمدير المناوب</h3>
+<p class="muted">يعرض النظام حالة كل مؤشر وسبب التصعيد والتدخل المقترح، حتى لا تضيع قرارات الوردية بين تقارير متعددة.
+</p></div>
+<div class="card">
+<div class="badge">تدخل أسرع</div>
+<h3>من التنبيه إلى مالك القرار</h3>
+<p class="muted">كل توصية ترتبط بمالك واضح مثل مدير الطوارئ أو مشرف التمريض أو مسؤول الجودة، مع توقيت تنفيذ مناسب.
+</p></div>
+<div class="card">
+<div class="badge">🔒 أمان وخصوصية</div>
+<h3>حوكمة بيانات صحية</h3>
+<p class="muted">يدعم التصميم فصل بيانات التشغيل عن البيانات الشخصية، وضبط الصلاحيات، وتوثيق الوصول عند التكامل مع الأنظمة.
+</p></div>
+<div class="card">
+<div class="badge">🇸🇦 متوافق محلياً</div>
+<h3>مصمم للسوق السعودي</h3>
+<p class="muted">واجهة عربية واتجاه RTL، ومخرجات مناسبة لاجتماعات التشغيل والجودة في السوق السعودي، مع مراعاة الحوكمة والامتثال.
+</p></div>
+<div class="card">
+<div class="badge">🤝 دعم متكامل</div>
+<h3>دعم فني ومتابعة مستمرة</h3>
+<p class="muted">نساعد الفرق على تعريف المؤشرات، ضبط الصلاحيات، تدريب المستخدمين، ومراجعة جودة المخرجات قبل الاعتماد التشغيلي.
+</p></div>
+<div class="card">
+<div class="badge">💰 عائد استثماري</div>
+<h3>تحسين الكفاءة والجودة</h3>
+<p class="muted">الهدف هو تقليل الهدر التشغيلي، تحسين تدفق المرضى، وتقصير زمن الاستجابة للتنبيهات التي تؤثر على الجودة.
+</p></div>
+</div>
+</section>
+<section class="section" id="faq" style="content-visibility: auto;">
+<h2>الأسئلة الشائعة حول نظام إدارة المستشفيات الذكي</h2>
+<p class="muted" style="margin-bottom:28px">إجابات مختصرة للفرق التي تريد ربط المؤشرات التشغيلية والجودة داخل منشأة صحية.
+</p><div class="grid cards-2">
+<div class="card">
+<h3>هل يقدم النظام تشخيصاً أو علاجاً؟</h3>
+<p class="muted">لا. التجربة مصممة لدعم التشغيل والجودة وقراءة المؤشرات. أي سياق طبي يظهر في المخرجات يجب أن يراجعه مختص وفق بروتوكولات المنشأة.
+</p></div>
+<div class="card">
+<h3>هل يمكن ربطه مع أنظمة المستشفى الحالية؟</h3>
+<p class="muted">نعم، يمكن تصميم التكامل مع HIS وEHR ولوحات BI حسب توفر الواجهات والصلاحيات وجودة البيانات داخل المنشأة.
+          
+</p></div>
+<div class="card">
+<h3>ما المؤشرات التي تظهر في اللوحة؟</h3>
+<p class="muted">تشمل اللوحة Bed Occupancy وWaiting Time وReadmission Risk وStaff Load وQuality Alerts وRecommended Interventions، ويمكن تخصيصها حسب القسم.
+</p></div>
+<div class="card">
+<h3>كيف تتعاملون مع البيانات الحساسة؟</h3>
+<p class="muted">يتم تحديد نطاق البيانات قبل الربط، وتقليل البيانات الشخصية قدر الإمكان، وتطبيق صلاحيات وتدقيق وصول بما يناسب سياسات المنشأة.
+</p></div>
+<div class="card">
+<h3>كيف تبدأ المنشأة؟</h3>
+<p class="muted">نبدأ بتحديد الأقسام والمؤشرات ومصادر البيانات، ثم نبني نموذج لوحة أولي ونراجع المخرجات مع التشغيل والجودة قبل التوسع.
+</p></div>
+<div class="card">
+<h3>من يستخدم النظام يومياً؟</h3>
+<p class="muted">مديرو التشغيل، الجودة، التمريض، التحول الرقمي، والإدارة التنفيذية. الفرق السريرية تراجع أي جزء طبي عند الحاجة فقط.
+</p></div>
+<div class="card">
+<h3>هل يمكن تخصيص السيناريوهات؟</h3>
+<p class="muted">نعم، يمكن تخصيص سيناريوهات الازدحام، الانتظار، نقص الكوادر، رضا المرضى، ومؤشرات الجودة حسب سياسات المنشأة.
+</p></div>
+<div class="card">
+<h3>ما الخطوة التالية بعد التجربة؟</h3>
+<p class="muted">اطلب ربط النظام مع HIS، أو لوحة مؤشرات للمستشفى، أو تحليل مؤشرات منشأتك كنموذج أولي قابل للعرض على الإدارة.
+          
+</p></div>
+</div>
+</section>
+<section class="section card" id="contact" style="content-visibility: auto;">
+<h3>ابدأ بلوحة مؤشرات تشغيلية للمستشفى</h3>
+<p class="muted" style="margin-bottom:24px">اختر الخطوة المناسبة: ربط HIS، طلب لوحة مؤشرات، أو تحليل مؤشرات منشأتك كنموذج أولي للإدارة.
+</p><div class="inline">
+<input id="contactName" placeholder="الاسم الكامل *" required="" aria-label="الاسم الكامل *">
+<input id="contactPhone" placeholder="رقم الجوال (مثال: 0501234567) *" required="" aria-label="رقم الجوال (مثال: 0501234567) *">
+</div>
+<div class="field">
+<input id="contactEmail" placeholder="البريد الإلكتروني (اختياري)" type="email" aria-label="البريد الإلكتروني (اختياري)">
+</div>
+<div class="field">
+<select id="contactService" aria-label="اختر الخدمة المهتم بها">
+<option value="">اختر الخدمة المهتم بها</option>
+<option>اربط النظام مع HIS</option>
+<option>اطلب لوحة مؤشرات للمستشفى</option>
+<option>حلل مؤشرات منشأتك</option>
+<option>دعم قرار الجودة</option>
+<option>تحليل حالة تشغيلية لقسم</option>
+<option>استشارة عامة</option>
+</select>
+</div>
+<div class="field">
+<textarea id="contactMsg" placeholder="رسالتك أو استفسارك (اختياري)" aria-label="رسالتك أو استفسارك (اختياري)"></textarea>
+</div>
+<div class="actions">
+<button class="btn" id="contactBtn">📧 إرسال الطلب</button>
+<a class="btn secondary" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+          💬 تواصل عبر واتساب
+        </a>
+</div>
+<div class="status" id="contactStatus" style="margin-top:16px">📝 املأ النموذج وسنتواصل معك خلال 24 ساعة</div>
+</section>
+<section class="related-services section bai-inline-0181">
+<div class="container" style="max-width: 1200px; margin: 0 auto;">
+<h2 class="bai-inline-0182">خدمات ذات صلة</h2>
+<p class="bai-inline-0183">
+          اكتشف المزيد من حلول الذكاء الاصطناعي المتكاملة لتعزيز أعمالك في المملكة العربية السعودية
+</p><div class="services-grid bai-inline-0165">
+<a class="service-link-card bai-inline-0184" href="/smart-medical-archive/">
+<h3 class="bai-inline-0185">🗂️ الأرشيف الطبي الذكي</h3>
+</a><p style="color: var(--muted); font-size: 0.9rem; margin: 0;"><a class="service-link-card bai-inline-0184" href="/smart-medical-archive/">من الملفات الطبية الخام إلى بحث ذكي وتكامل تشغيلي داخل المستشفى
+</a>
+<a class="service-link-card bai-inline-0184" href="/data-analysis/">
+</a></p><h3 class="bai-inline-0185"><a class="service-link-card bai-inline-0184" href="/data-analysis/">📊 تحليل البيانات</a></h3><a class="service-link-card bai-inline-0184" href="/data-analysis/">
+</a><p style="color: var(--muted); font-size: 0.9rem; margin: 0;"><a class="service-link-card bai-inline-0184" href="/data-analysis/">تحويل البيانات إلى رؤى قابلة للتنفيذ باستخدام
+              الذكاء الاصطناعي
+</a>
+<a class="service-link-card bai-inline-0184" href="/smart-automation/">
+</a></p><h3 class="bai-inline-0185"><a class="service-link-card bai-inline-0184" href="/smart-automation/">🤖 الأتمتة الذكية</a></h3><a class="service-link-card bai-inline-0184" href="/smart-automation/">
+</a><p style="color: var(--muted); font-size: 0.9rem; margin: 0;"><a class="service-link-card bai-inline-0184" href="/smart-automation/">أتمتة العمليات التجارية باستخدام الذكاء
+              الاصطناعي لزيادة الكفاءة
+</a>
+<a class="service-link-card bai-inline-0184" href="/docs/ai-bots/">
+</a></p><h3 class="bai-inline-0185"><a class="service-link-card bai-inline-0184" href="/docs/ai-bots/">💬 روبوتات المحادثة</a></h3><a class="service-link-card bai-inline-0184" href="/docs/ai-bots/">
+</a><p style="color: var(--muted); font-size: 0.9rem; margin: 0;"><a class="service-link-card bai-inline-0184" href="/docs/ai-bots/">شات بوت عربي ذكي لخدمة العملاء والمبيعات
+</a>
+</p></div>
+<div style="text-align: center; margin-top: 2rem;">
+<a class="btn" href="/consultation/" style="display: inline-block;">احصل على استشارة مجانية</a>
+</div>
+<div class="internal-linking-cta-wrap" style="margin-top:18px"><strong style="color:#fff">مسار صحي متكامل:</strong> <a class="internal-linking-inline" href="/smart-medical-archive/">الأرشيف الطبي الذكي</a>، <a class="internal-linking-inline" href="/docs/solutions-healthcare/">دليل حلول الرعاية الصحية</a>، <a class="internal-linking-inline" href="/docs/solutions-ocr/">دليل معالجة المستندات الصحية</a>، <a class="internal-linking-inline" href="/blog/ai-healthcare-saudi/">الذكاء الاصطناعي في القطاع الصحي السعودي</a>، <a class="internal-linking-inline" href="/blog/digital-health-smart-archive/">دراسة الأرشيف الطبي الذكي</a>، <a class="internal-linking-inline" href="/services/">الخدمات</a>، <a class="internal-linking-inline" href="/sectors/healthcare/">صفحة القطاع الصحي</a></div>
+</div>
+</section>
+<div class="footer">
+<p style="margin:0 0 12px;font-size:16px;color:var(--text)">© 2025 Bright AI - رائدون في حلول الذكاء الاصطناعي
+        الطبية في المملكة العربية السعودية</p>
+<p style="margin:0 0 16px;font-size:14px">نساهم في تحقيق رؤية السعودية 2030 للتحول الرقمي في القطاع الصحي</p>
+<div class="footer-links">
+<a href="/services/">خدماتنا</a>
+<a href="/data-analysis/">تحليل البيانات</a>
+<a href="/consultation/">الاستشارات</a>
+<a href="/blog/">المكتبة الذكية</a>
+<a href="/about/">عن الشركة</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">الدعم الفني</a>
+</div>
+<p style="margin:16px 0 0;font-size:13px">
+        📍 الرياض، المملكة العربية السعودية | 📞 +966 53 822 9013 | 📧 info@brightai.sa
+      </p>
+</div>
+</main>
+<script defer="" src="/frontend/js/gemini-direct-client.js"></script>
+<script defer="" src="/frontend/js/health-demo.js"></script>
+<!-- BRIGHTAI_INTERNAL_LINKS_START -->
+<section class="brightai-internal-links" aria-labelledby="brightai-internal-links-title" dir="rtl">
+  <div class="brightai-internal-links__inner">
+    <h2 id="brightai-internal-links-title">روابط داخلية مهمة</h2>
+    <p>روابط مختارة تساعد الزائر ومحركات البحث على الوصول إلى الصفحات الأساسية والمرتبطة بالسياق.</p>
+    <ul>
+        <li><a href="/">شركة ذكاء اصطناعي في السعودية</a></li>
+        <li><a href="/services/">خدمات الذكاء الاصطناعي للشركات</a></li>
+        <li><a href="/ai-agent/">وكلاء الذكاء الاصطناعي للأعمال</a></li>
+        <li><a href="/smart-automation/">أتمتة الأعمال بالذكاء الاصطناعي</a></li>
+        <li><a href="/data-analysis/">تحليل البيانات للشركات السعودية</a></li>
+        <li><a href="/bot/">مساعد Bright AI التجريبي</a></li>
+        <li><a href="/contact/">تواصل مع Bright AI لتنفيذ حلول AI</a></li>
+        <li><a href="/services/ai-automation-saudi/">أتمتة الذكاء الاصطناعي في السعودية</a></li>
+    </ul>
+  </div>
+</section>
+<!-- BRIGHTAI_INTERNAL_LINKS_END -->
+<footer class="border-t border-white/10 py-8 px-6 text-center">
+<div class="custom-seo-links-universal bai-inline-0011">
+<ul class="bai-inline-0012" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;list-style:none;padding:0;">
+<li><a href="/" style="color:#94a3b8;text-decoration:none;">الرئيسية</a></li>
+<li><a href="/services/" style="color:#94a3b8;text-decoration:none;">الخدمات</a></li>
+<li><a href="/about/" style="color:#94a3b8;text-decoration:none;">من نحن</a></li>
+<li><a href="/contact/" style="color:#94a3b8;text-decoration:none;">اتصل بنا</a></li>
+<li><a href="/privacy-cookies/" style="color:#94a3b8;text-decoration:none;">سياسة الخصوصية</a></li>
+<li><a href="/terms/" style="color:#94a3b8;text-decoration:none;">شروط الاستخدام</a></li>
+</ul>
+</div>
+<p class="text-slate-500 text-xs mt-4">© 2026 Bright AI - جميع الحقوق محفوظة</p>
+</footer>
+<script defer="" src="/frontend/js/main.bundle.min.js"></script>
+<script defer="" src="/frontend/js/index-theme.min.js"></script>
+<script defer="" src="/frontend/js/clarity-events.js"></script>
+<script defer src="/assets/js/demo-experience-loader.js"></script>
+<script defer src="/frontend/js/demo-experience.js"></script>
+
+
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+</body></html>

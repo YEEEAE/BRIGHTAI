@@ -61,7 +61,7 @@
     if (href.indexOf("/ai-bots/") === 0) return "ai_bots";
     if (href.indexOf("/ai-workflows/") === 0) return "ai_workflows";
     if (href.indexOf("/smart-medical-archive/") === 0) return "smart_medical_archive";
-    if (href.indexOf("/tenders/") === 0) return "contractai_tenders";
+    if (href.indexOf("/demo/ai-tenders-analysis/") === 0) return "contractai_tenders";
     if (href.indexOf("/services/") === 0) return "services";
     return undefined;
   }
@@ -76,8 +76,8 @@
     if (/^mailto:/i.test(href)) return "email_click";
     if (/whatsapp|wa\.me|api\.whatsapp/i.test(href)) return "whatsapp_click";
     if (href.indexOf("#pricing") === 0 || /pricing|price|التسعير|الأسعار/.test(lowerText)) return "pricing_click";
-    if (href.indexOf("/tenders/compare/") === 0) return "tender_compare_open";
-    if (href.indexOf("/tenders/landing/") === 0 || /demo|ديمو|عرض توضيحي|ابدأ مجاناً|جرب|جرّب/.test(lowerText)) return "request_demo";
+    if (href.indexOf("/demo/ai-tenders-analysis/compare.html") === 0) return "tender_compare_open";
+    if (href.indexOf("/demo/ai-tenders-analysis/landing.html") === 0 || /demo|ديمو|عرض توضيحي|ابدأ مجاناً|جرب|جرّب/.test(lowerText)) return "request_demo";
     if (href.indexOf("/consultation/") === 0 || /استشارة|جلسة/.test(lowerText)) return "consultation_request";
     if (href.indexOf("/contact/") === 0 || /تواصل|اتصل|مبيعات/.test(lowerText)) return "generate_lead";
     if (/^https?:\/\//i.test(href) && !href.includes("brightai.site")) return "outbound_click";

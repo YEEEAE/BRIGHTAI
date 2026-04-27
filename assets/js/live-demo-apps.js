@@ -213,7 +213,7 @@
     if (path.includes("/smart-medical-archive/")) return "smart-medical-archive";
     if (path.includes("/try/data-analyzer/")) return "data-analyzer";
     if (path.includes("/ai-scolecs/")) return "ai-scolecs";
-    if (path.includes("/health/")) return "health";
+    if (path.includes("/demo/smart-hospital-management/")) return "health";
     if (path.includes("/demo/ocr-demo/")) return "ocr";
     if (path.includes("/ai-bots/brightsupport/")) return "brightsupport";
     if (path.includes("/services/marketing-automation") || path.includes("/services/marketing-agent")) return "marketing";
