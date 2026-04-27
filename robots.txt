@@ -4,6 +4,7 @@ Allow: /assets/
 Allow: /frontend/css/
 Allow: /frontend/js/
 Allow: /services/
+Allow: /locations/
 Allow: /blog/
 Allow: /docs/
 Allow: /sectors/

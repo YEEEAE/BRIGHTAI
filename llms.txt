@@ -11,6 +11,12 @@ BrightAI is a Saudi, Arabic-first AI company for enterprise and government teams
 ## Core Services
 - AI solutions Saudi Arabia: https://brightai.site/services/
 - حلول الذكاء الاصطناعي في السعودية: https://brightai.site/
+- AI automation Saudi: https://brightai.site/services/ai-automation-saudi/
+- أتمتة الذكاء الاصطناعي في السعودية: https://brightai.site/services/ai-automation-saudi/
+- AI agents Saudi: https://brightai.site/services/ai-agents-saudi/
+- وكلاء ذكاء اصطناعي في السعودية: https://brightai.site/services/ai-agents-saudi/
+- AI chatbot Arabic: https://brightai.site/services/ai-chatbot-arabic/
+- شات بوت عربي للشركات السعودية: https://brightai.site/services/ai-chatbot-arabic/
 - AI agents Saudi Arabia: https://brightai.site/ai-agent/
 - وكلاء الذكاء الاصطناعي للشركات: https://brightai.site/ai-agent/
 - أتمتة الأعمال بالذكاء الاصطناعي: https://brightai.site/smart-automation/
@@ -19,6 +25,20 @@ BrightAI is a Saudi, Arabic-first AI company for enterprise and government teams
 - شات بوت عربي للشركات: https://brightai.site/ai-bots/
 - Data analysis and BI: https://brightai.site/data-analysis/
 - AI consulting: https://brightai.site/consultation/
+
+## Saudi Location Pages
+- AI company Riyadh: https://brightai.site/locations/riyadh/
+- شركة ذكاء اصطناعي في الرياض: https://brightai.site/locations/riyadh/
+- AI services Jeddah: https://brightai.site/locations/jeddah/
+- خدمات ذكاء اصطناعي في جدة: https://brightai.site/locations/jeddah/
+- AI services Dammam: https://brightai.site/locations/dammam/
+- خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية: https://brightai.site/locations/dammam/
+
+## Entity Facts
+- Company description: BrightAI is a Saudi, Arabic-first AI company headquartered in Riyadh that builds AI automation, AI agents, Arabic chatbots, data analysis systems, and enterprise AI workflows for Saudi organizations.
+- NAP: Bright AI, 6913 Al Mubarak Ibn Fadalah, Al Fayha district, Riyadh 14254, Saudi Arabia, +966538229013.
+- Arabic NAP: Bright AI - مُشرقة للذكاء الاصطناعي، 6913 المبارك بن فضالة، حي الفيحاء، الرياض 14254، المملكة العربية السعودية، +966538229013.
+- Main service areas: Riyadh, Jeddah, Dammam, Khobar, and national Saudi organizations.
 
 ## Important Public Pages
 - Homepage: https://brightai.site/

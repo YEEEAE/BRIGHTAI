@@ -1,8 +1,8 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-27T19:28:57.379Z
-- Total URLs in generated sitemap: 234
-- Included core pages: 142
+- Date: 2026-04-27T19:42:36.588Z
+- Total URLs in generated sitemap: 240
+- Included core pages: 148
 - Included sector pages: 13
 - Included blog articles: 79
 - Excluded analyzed pages: 6
@@ -28,7 +28,7 @@
 | Group | File | Words | URL |
 | --- | --- | ---: | --- |
 | core | index.html | 5008 | https://brightai.site/ |
-| core | about/index.html | 1898 | https://brightai.site/about/ |
+| core | about/index.html | 2031 | https://brightai.site/about/ |
 | core | ai-agent/index.html | 3404 | https://brightai.site/ai-agent/ |
 | core | ai-bots/index.html | 1380 | https://brightai.site/ai-bots/ |
 | core | ai-bots/BrightMath/index.html | 1492 | https://brightai.site/ai-bots/BrightMath/ |
@@ -203,6 +203,9 @@
 | core | interview/pages/dashboard/index.html | 428 | https://brightai.site/interview/pages/dashboard/ |
 | core | interview/pages/support-ai/index.html | 802 | https://brightai.site/interview/pages/support-ai/ |
 | core | interview/pages/Visitor-registration/index.html | 422 | https://brightai.site/interview/pages/Visitor-registration/ |
+| core | locations/dammam/index.html | 722 | https://brightai.site/locations/dammam/ |
+| core | locations/jeddah/index.html | 751 | https://brightai.site/locations/jeddah/ |
+| core | locations/riyadh/index.html | 726 | https://brightai.site/locations/riyadh/ |
 | core | machine-learning/index.html | 1882 | https://brightai.site/machine-learning/ |
 | core | partners/index.html | 1144 | https://brightai.site/partners/ |
 | core | privacy-cookies/index.html | 945 | https://brightai.site/privacy-cookies/ |
@@ -219,7 +222,10 @@
 | sector | sectors/logistics.html | 1715 | https://brightai.site/sectors/logistics/ |
 | sector | sectors/manufacturing-en/index.html | 1274 | https://brightai.site/sectors/manufacturing-en/ |
 | sector | sectors/manufacturing.html | 1725 | https://brightai.site/sectors/manufacturing/ |
-| core | services/index.html | 1725 | https://brightai.site/services/ |
+| core | services/index.html | 1848 | https://brightai.site/services/ |
+| core | services/ai-agents-saudi.html | 767 | https://brightai.site/services/ai-agents-saudi/ |
+| core | services/ai-automation-saudi.html | 806 | https://brightai.site/services/ai-automation-saudi/ |
+| core | services/ai-chatbot-arabic.html | 767 | https://brightai.site/services/ai-chatbot-arabic/ |
 | core | services/ai-consulting.html | 1248 | https://brightai.site/services/ai-consulting/ |
 | core | services/ai-scolecs/index.html | 115 | https://brightai.site/services/ai-scolecs/ |
 | core | services/ai-tenders-analysis/index.html | 120 | https://brightai.site/services/ai-tenders-analysis/ |

@@ -1319,6 +1319,27 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://brightai.site/locations/dammam/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/locations/dammam/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/locations/dammam/" />
+    <lastmod>2026-04-27</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/locations/jeddah/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/locations/jeddah/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/locations/jeddah/" />
+    <lastmod>2026-04-27</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/locations/riyadh/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/locations/riyadh/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/locations/riyadh/" />
+    <lastmod>2026-04-27</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://brightai.site/machine-learning/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/machine-learning/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/machine-learning/" />
@@ -1448,6 +1469,27 @@
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/" />
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/services/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/" />
+    <lastmod>2026-04-27</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/ai-agents-saudi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-agents-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-agents-saudi/" />
+    <lastmod>2026-04-27</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/ai-automation-saudi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-automation-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-automation-saudi/" />
+    <lastmod>2026-04-27</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/ai-chatbot-arabic/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-chatbot-arabic/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-chatbot-arabic/" />
     <lastmod>2026-04-27</lastmod>
     <priority>0.9</priority>
   </url>
