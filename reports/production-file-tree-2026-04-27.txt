@@ -1,0 +1,1142 @@
+BRIGHTAI/ (excluding node_modules, .git, .venv, build caches)
+├── _headers
+├── _redirects
+├── .agents/
+│   ├── .DS_Store
+│   ├── plugins/
+│   │   └── marketplace.json
+│   ├── scratch/
+│   └── skills/
+│       ├──  rtl-ui-guardian/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── references/
+│       │   │   ├── component-rtl-checklist.md
+│       │   │   ├── logical-properties-map.md
+│       │   │   ├── mixed-content-bidi.md
+│       │   │   └── react-nextjs-rtl.md
+│       │   └── SKILL.md
+│       ├── .DS_Store
+│       ├── awesome-design-md/
+│       │   ├── .github/
+│       │   │   ├── FUNDING.yml
+│       │   │   └── ISSUE_TEMPLATE/
+│       │   │       └── design-md-request.yml
+│       │   ├── .gitignore
+│       │   ├── agents/
+│       │   │   ├── gemini.yaml
+│       │   │   └── openai.yaml
+│       │   ├── CONTRIBUTING.md
+│       │   ├── design-md/
+│       │   │   ├── airbnb/
+│       │   │   │   └── README.md
+│       │   │   ├── airtable/
+│       │   │   │   └── README.md
+│       │   │   ├── apple/
+│       │   │   │   └── README.md
+│       │   │   ├── binance/
+│       │   │   │   └── README.md
+│       │   │   ├── bmw/
+│       │   │   │   └── README.md
+│       │   │   ├── bugatti/
+│       │   │   │   └── README.md
+│       │   │   ├── cal/
+│       │   │   │   └── README.md
+│       │   │   ├── claude/
+│       │   │   │   └── README.md
+│       │   │   ├── clay/
+│       │   │   │   └── README.md
+│       │   │   ├── clickhouse/
+│       │   │   │   └── README.md
+│       │   │   ├── cohere/
+│       │   │   │   └── README.md
+│       │   │   ├── coinbase/
+│       │   │   │   └── README.md
+│       │   │   ├── composio/
+│       │   │   │   └── README.md
+│       │   │   ├── cursor/
+│       │   │   │   └── README.md
+│       │   │   ├── elevenlabs/
+│       │   │   │   └── README.md
+│       │   │   ├── expo/
+│       │   │   │   └── README.md
+│       │   │   ├── ferrari/
+│       │   │   │   └── README.md
+│       │   │   ├── figma/
+│       │   │   │   └── README.md
+│       │   │   ├── framer/
+│       │   │   │   └── README.md
+│       │   │   ├── hashicorp/
+│       │   │   │   └── README.md
+│       │   │   ├── ibm/
+│       │   │   │   └── README.md
+│       │   │   ├── intercom/
+│       │   │   │   └── README.md
+│       │   │   ├── kraken/
+│       │   │   │   └── README.md
+│       │   │   ├── lamborghini/
+│       │   │   │   └── README.md
+│       │   │   ├── linear.app/
+│       │   │   │   └── README.md
+│       │   │   ├── lovable/
+│       │   │   │   └── README.md
+│       │   │   ├── mastercard/
+│       │   │   │   └── README.md
+│       │   │   ├── meta/
+│       │   │   │   └── README.md
+│       │   │   ├── minimax/
+│       │   │   │   └── README.md
+│       │   │   ├── mintlify/
+│       │   │   │   └── README.md
+│       │   │   ├── miro/
+│       │   │   │   └── README.md
+│       │   │   ├── mistral.ai/
+│       │   │   │   └── README.md
+│       │   │   ├── mongodb/
+│       │   │   │   └── README.md
+│       │   │   ├── nike/
+│       │   │   │   └── README.md
+│       │   │   ├── notion/
+│       │   │   │   └── README.md
+│       │   │   ├── nvidia/
+│       │   │   │   └── README.md
+│       │   │   ├── ollama/
+│       │   │   │   └── README.md
+│       │   │   ├── opencode.ai/
+│       │   │   │   └── README.md
+│       │   │   ├── pinterest/
+│       │   │   │   └── README.md
+│       │   │   ├── playstation/
+│       │   │   │   └── README.md
+│       │   │   ├── posthog/
+│       │   │   │   └── README.md
+│       │   │   ├── raycast/
+│       │   │   │   └── README.md
+│       │   │   ├── renault/
+│       │   │   │   └── README.md
+│       │   │   ├── replicate/
+│       │   │   │   └── README.md
+│       │   │   ├── resend/
+│       │   │   │   └── README.md
+│       │   │   ├── revolut/
+│       │   │   │   └── README.md
+│       │   │   ├── runwayml/
+│       │   │   │   └── README.md
+│       │   │   ├── sanity/
+│       │   │   │   └── README.md
+│       │   │   ├── semrush/
+│       │   │   │   └── README.md
+│       │   │   ├── sentry/
+│       │   │   │   └── README.md
+│       │   │   ├── shopify/
+│       │   │   │   └── README.md
+│       │   │   ├── spacex/
+│       │   │   │   └── README.md
+│       │   │   ├── spotify/
+│       │   │   │   └── README.md
+│       │   │   ├── starbucks/
+│       │   │   │   └── README.md
+│       │   │   ├── stripe/
+│       │   │   │   └── README.md
+│       │   │   ├── supabase/
+│       │   │   │   └── README.md
+│       │   │   ├── superhuman/
+│       │   │   │   └── README.md
+│       │   │   ├── tesla/
+│       │   │   │   └── README.md
+│       │   │   ├── theverge/
+│       │   │   │   └── README.md
+│       │   │   ├── together.ai/
+│       │   │   │   └── README.md
+│       │   │   ├── uber/
+│       │   │   │   └── README.md
+│       │   │   ├── vercel/
+│       │   │   │   └── README.md
+│       │   │   ├── vodafone/
+│       │   │   │   └── README.md
+│       │   │   ├── voltagent/
+│       │   │   │   └── README.md
+│       │   │   ├── warp/
+│       │   │   │   └── README.md
+│       │   │   ├── webflow/
+│       │   │   │   └── README.md
+│       │   │   ├── wired/
+│       │   │   │   └── README.md
+│       │   │   ├── wise/
+│       │   │   │   └── README.md
+│       │   │   ├── x.ai/
+│       │   │   │   └── README.md
+│       │   │   └── zapier/
+│       │   │       └── README.md
+│       │   ├── LICENSE
+│       │   ├── README.md
+│       │   ├── references/
+│       │   │   ├── catalog.md
+│       │   │   ├── CONTRIBUTING.md
+│       │   │   └── stitch-format.md
+│       │   ├── scripts/
+│       │   │   ├── create_design_md_dirs.py
+│       │   │   └── fetch_design_md.py
+│       │   ├── SKILL 2.md
+│       │   └── SKILL.md
+│       ├── design-md/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── examples/
+│       │   │   └── DESIGN.md
+│       │   ├── README.md
+│       │   └── SKILL.md
+│       ├── frontend-design/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── LICENSE.txt
+│       │   ├── references/
+│       │   │   ├── design-qa-checklist.md
+│       │   │   └── visual-directions.md
+│       │   └── SKILL.md
+│       ├── google-indexing-seo-guardian/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── references/
+│       │   │   └── google-indexing-checklist.md
+│       │   ├── scripts/
+│       │   │   └── google_indexing_audit.py
+│       │   └── SKILL.md
+│       ├── intelligent-content-reviewer-validator/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── internal-links-guardian/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── references/
+│       │   │   ├── coverage-and-escalation.md
+│       │   │   └── report-template.md
+│       │   └── SKILL.md
+│       ├── karpathy-guidelines/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── references/
+│       │   │   ├── upstream-cursor-rule.mdc
+│       │   │   ├── upstream-cursor.md
+│       │   │   ├── upstream-examples.md
+│       │   │   ├── upstream-plugin.json
+│       │   │   ├── upstream-readme.md
+│       │   │   ├── upstream-readme.zh.md
+│       │   │   └── upstream-SKILL.md
+│       │   └── SKILL.md
+│       ├── render-deploy/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── assets/
+│       │   │   ├── docker.yaml
+│       │   │   ├── go-api.yaml
+│       │   │   └── static-site.yaml
+│       │   ├── LICENSE.txt
+│       │   ├── references/
+│       │   │   ├── blueprint-spec.md
+│       │   │   ├── codebase-analysis.md
+│       │   │   ├── configuration-guide.md
+│       │   │   ├── deployment-details.md
+│       │   │   ├── direct-creation.md
+│       │   │   ├── error-patterns.md
+│       │   │   ├── post-deploy-checks.md
+│       │   │   ├── runtimes.md
+│       │   │   ├── service-types.md
+│       │   │   └── troubleshooting-basics.md
+│       │   └── SKILL.md
+│       ├── seo/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── LICENSE
+│       │   ├── references/
+│       │   │   ├── cwv-thresholds.md
+│       │   │   ├── eeat-framework.md
+│       │   │   ├── local-schema-types.md
+│       │   │   ├── local-seo-signals.md
+│       │   │   ├── quality-gates.md
+│       │   │   └── schema-types.md
+│       │   ├── requirements.txt
+│       │   ├── schema/
+│       │   │   └── templates.json
+│       │   ├── scripts/
+│       │   │   ├── fetch_page.py
+│       │   │   └── parse_html.py
+│       │   └── SKILL.md
+│       ├── seo-audit/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-content/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-geo/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-hreflang/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-images/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-local/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-page/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-plan/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   ├── assets/
+│       │   │   ├── agency.md
+│       │   │   ├── ecommerce.md
+│       │   │   ├── generic.md
+│       │   │   ├── local-service.md
+│       │   │   ├── publisher.md
+│       │   │   └── saas.md
+│       │   └── SKILL.md
+│       ├── seo-schema/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-sitemap/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       ├── seo-technical/
+│       │   ├── agents/
+│       │   │   └── openai.yaml
+│       │   └── SKILL.md
+│       └── vercel-react-best-practices/
+│           ├── agents/
+│           │   └── openai.yaml
+│           ├── AGENTS.md
+│           ├── README.md
+│           ├── rules/
+│           │   ├── advanced-event-handler-refs.md
+│           │   ├── advanced-init-once.md
+│           │   ├── advanced-use-latest.md
+│           │   ├── async-api-routes.md
+│           │   ├── async-defer-await.md
+│           │   ├── async-dependencies.md
+│           │   ├── async-parallel.md
+│           │   ├── async-suspense-boundaries.md
+│           │   ├── bundle-barrel-imports.md
+│           │   ├── bundle-conditional.md
+│           │   ├── bundle-defer-third-party.md
+│           │   ├── bundle-dynamic-imports.md
+│           │   ├── bundle-preload.md
+│           │   ├── client-event-listeners.md
+│           │   ├── client-localstorage-schema.md
+│           │   ├── client-passive-event-listeners.md
+│           │   ├── client-swr-dedup.md
+│           │   ├── js-batch-dom-css.md
+│           │   ├── js-cache-function-results.md
+│           │   ├── js-cache-property-access.md
+│           │   ├── js-cache-storage.md
+│           │   ├── js-combine-iterations.md
+│           │   ├── js-early-exit.md
+│           │   ├── js-hoist-regexp.md
+│           │   ├── js-index-maps.md
+│           │   ├── js-length-check-first.md
+│           │   ├── js-min-max-loop.md
+│           │   ├── js-set-map-lookups.md
+│           │   ├── js-tosorted-immutable.md
+│           │   ├── rendering-activity.md
+│           │   ├── rendering-animate-svg-wrapper.md
+│           │   ├── rendering-conditional-render.md
+│           │   ├── rendering-content-visibility.md
+│           │   ├── rendering-hoist-jsx.md
+│           │   ├── rendering-hydration-no-flicker.md
+│           │   ├── rendering-hydration-suppress-warning.md
+│           │   ├── rendering-svg-precision.md
+│           │   ├── rendering-usetransition-loading.md
+│           │   ├── rerender-defer-reads.md
+│           │   ├── rerender-dependencies.md
+│           │   ├── rerender-derived-state-no-effect.md
+│           │   ├── rerender-derived-state.md
+│           │   ├── rerender-functional-setstate.md
+│           │   ├── rerender-lazy-state-init.md
+│           │   ├── rerender-memo-with-default-value.md
+│           │   ├── rerender-memo.md
+│           │   ├── rerender-move-effect-to-event.md
+│           │   ├── rerender-simple-expression-in-memo.md
+│           │   ├── rerender-transitions.md
+│           │   ├── rerender-use-ref-transient-values.md
+│           │   ├── server-after-nonblocking.md
+│           │   ├── server-auth-actions.md
+│           │   ├── server-cache-lru.md
+│           │   ├── server-cache-react.md
+│           │   ├── server-dedup-props.md
+│           │   ├── server-hoist-static-io.md
+│           │   ├── server-parallel-fetching.md
+│           │   └── server-serialization.md
+│           └── SKILL.md
+├── .DS_Store
+├── .gitignore
+├── .htaccess
+├── .nojekyll
+├── .vscode/
+│   └── settings.json
+├── 06932e6c52144c44bb9ff0296e3da655.txt
+├── 404.html
+├── 500.html
+├── about/
+│   └── index.html
+├── ai-agent/
+│   └── index.html
+├── ai-bots/
+│   ├── BrightMath/
+│   │   └── index.html
+│   ├── BrightProject/
+│   │   └── index.html
+│   ├── BrightRecruiter/
+│   │   └── index.html
+│   ├── BrightSales/
+│   │   └── index.html
+│   ├── BrightSupport/
+│   │   └── index.html
+│   └── index.html
+├── ai-scolecs/
+│   └── index.html
+├── ai-workflows/
+│   └── index.html
+├── assets/
+│   ├── 3d-icons/
+│   │   ├── customer-robots-0.avif
+│   │   ├── customer-robots-0.webp
+│   │   ├── digital-twins-simulation-0.avif
+│   │   ├── digital-twins-simulation-0.webp
+│   │   ├── icon_1_3d_robot_artificial_intelligence_icon.avif
+│   │   ├── icon_1_3d_robot_artificial_intelligence_icon.webp
+│   │   ├── icon_1_3d_rocket_startup_icon.avif
+│   │   ├── icon_1_3d_rocket_startup_icon.webp
+│   │   ├── icon_2_3d_robot_artificial_intelligence_icon.avif
+│   │   ├── icon_2_3d_robot_artificial_intelligence_icon.webp
+│   │   ├── icon_3_3d_robot_artificial_intelligence_icon.avif
+│   │   ├── icon_3_3d_robot_artificial_intelligence_icon.webp
+│   │   ├── smart-drones-inspection-0.avif
+│   │   ├── smart-drones-inspection-0.webp
+│   │   ├── warehouse-automation-0.avif
+│   │   └── warehouse-automation-0.webp
+│   ├── css/
+│   │   ├── demo-experience.css
+│   │   ├── design-tokens.css
+│   │   ├── extracted-inline-styles.css
+│   │   ├── text-ratio-fix.min.css
+│   │   └── ux-audit-fixes.css
+│   ├── fonts/
+│   │   ├── IBMPlexSansArabic-Bold.ttf
+│   │   ├── IBMPlexSansArabic-Bold.woff2
+│   │   ├── IBMPlexSansArabic-Medium.ttf
+│   │   ├── IBMPlexSansArabic-Medium.woff2
+│   │   ├── IBMPlexSansArabic-Regular.ttf
+│   │   ├── IBMPlexSansArabic-Regular.woff2
+│   │   ├── IBMPlexSansArabic-SemiBold.ttf
+│   │   ├── IBMPlexSansArabic-SemiBold.woff2
+│   │   ├── ScheherazadeNew-Regular.ttf
+│   │   └── ScheherazadeNew-Regular.woff2
+│   ├── images/
+│   │   ├── chatbot.svg
+│   │   ├── Gemini.png
+│   │   ├── grid.svg
+│   │   ├── hero-brain.svg
+│   │   └── noise.png
+│   ├── js/
+│   │   ├── demo-experience-loader.js
+│   │   ├── gemini-demo-engine.js
+│   │   └── live-demo-apps.js
+│   └── svg/
+│       ├── inline-icon-20ad9f0ba8e6.svg
+│       ├── inline-icon-3effdab8a020.svg
+│       └── inline-icon-756421bc760e.svg
+├── backend/
+│   ├── .env.example
+│   ├── blog-slug-redirects.e2e.test.js
+│   ├── config/
+│   │   └── index.js
+│   ├── data/
+│   │   └── search-index 2.json
+│   ├── groq-stream.functional.test.js
+│   ├── middleware/
+│   │   ├── rateLimiter.js
+│   │   └── README.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── rag-search.functional.test.js
+│   ├── routes/
+│   │   ├── aiGateway.js
+│   │   ├── analytics.js
+│   │   ├── chat.js
+│   │   ├── gemini.js
+│   │   ├── groq.js
+│   │   ├── medical.js
+│   │   ├── search.js
+│   │   └── summary.js
+│   ├── ScheherazadeNew-Regular.ttf
+│   ├── server.js
+│   ├── services/
+│   │   ├── aiGateway.js
+│   │   ├── openaiCompatProvider.js
+│   │   └── ragSearch.js
+│   ├── static-seo-headers.e2e.test.js
+│   ├── stream-routes.e2e.test.js
+│   ├── utils/
+│   │   ├── cache.js
+│   │   ├── errorHandler.js
+│   │   ├── sanitizer.js
+│   │   └── sessionStore.js
+│   └── vitest.config.mjs
+├── BingSiteAuth.xml
+├── blog/
+│   ├── ai-agents-business-guide/
+│   │   └── index.html
+│   ├── ai-automation-project-analysis/
+│   │   └── index.html
+│   ├── ai-business-performance/
+│   │   └── index.html
+│   ├── ai-data-analysis-tools/
+│   │   └── index.html
+│   ├── ai-energy-saudi/
+│   │   └── index.html
+│   ├── ai-finance-saudi/
+│   │   └── index.html
+│   ├── ai-generative-content-industry-saudi-arabia/
+│   │   └── index.html
+│   ├── ai-guide-saudi-business/
+│   │   └── index.html
+│   ├── ai-healthcare-saudi/
+│   │   └── index.html
+│   ├── ai-implementation-cost-guide/
+│   │   └── index.html
+│   ├── ai-innovation-saudi-arabia/
+│   │   └── index.html
+│   ├── ai-manufacturing-digital-guide/
+│   │   └── index.html
+│   ├── ai-marketing-guide/
+│   │   └── index.html
+│   ├── ai-transformation/
+│   │   └── index.html
+│   ├── big-data-analysis/
+│   │   └── index.html
+│   ├── building-ai-agents-guide/
+│   │   └── index.html
+│   ├── building-ai-agents-practical-guide/
+│   │   └── index.html
+│   ├── business-intelligence-data-analysis/
+│   │   └── index.html
+│   ├── business-intelligence-saudi/
+│   │   └── index.html
+│   ├── case-study-saudi-companies-ai-agents-customer-service/
+│   │   └── index.html
+│   ├── chatgpt-vs-claude-vs-gemini-arabic/
+│   │   └── index.html
+│   ├── check-canonical.js
+│   ├── choose-ai-company-saudi/
+│   │   └── index.html
+│   ├── claude-opus-4-6-saudi-market/
+│   │   └── index.html
+│   ├── commerce-ministry-chatbot/
+│   │   └── index.html
+│   ├── data-analysis-best-practices/
+│   │   └── index.html
+│   ├── data-analysis-decision-making/
+│   │   └── index.html
+│   ├── digital-banking-saudi/
+│   │   └── index.html
+│   ├── digital-health-smart-archive/
+│   │   └── index.html
+│   ├── digital-transformation-automation/
+│   │   └── index.html
+│   ├── financial-hr-automation/
+│   │   └── index.html
+│   ├── future-of-intelligent-data-analysis-finance-sector/
+│   │   └── index.html
+│   ├── Gemini.png
+│   ├── generative-artificial-intelligence/
+│   │   └── index.html
+│   ├── government-ai-solutions/
+│   │   └── index.html
+│   ├── government-ai-solutions-saudi/
+│   │   └── index.html
+│   ├── hr-automation-case-study/
+│   │   └── index.html
+│   ├── hr-automation-saudi/
+│   │   └── index.html
+│   ├── index.html
+│   ├── industrial-automation-productivity/
+│   │   └── index.html
+│   ├── industrial-automation-repetitive-tasks/
+│   │   └── index.html
+│   ├── intelligent-data-analysis/
+│   │   └── index.html
+│   ├── kfshrc-breast-cancer-ai/
+│   │   └── index.html
+│   ├── kpi-dashboard-guide/
+│   │   └── index.html
+│   ├── ksu-adaptive-learning/
+│   │   └── index.html
+│   ├── machine-learning-business/
+│   │   └── index.html
+│   ├── machine-learning-computer-vision/
+│   │   └── index.html
+│   ├── nca-ai-compliance-saudi/
+│   │   └── index.html
+│   ├── nca-compliance/
+│   │   └── index.html
+│   ├── power-bi-saudi-guide/
+│   │   └── index.html
+│   ├── private-hospital-scheduling-optimization/
+│   │   └── index.html
+│   ├── process-automation/
+│   │   └── index.html
+│   ├── process-automation-ai-efficiency/
+│   │   └── index.html
+│   ├── riyadh-municipality-ai-license/
+│   │   └── index.html
+│   ├── saudi-agritech-smart-farming/
+│   │   └── index.html
+│   ├── saudi-bank-fraud-detection/
+│   │   └── index.html
+│   ├── saudi-dates-quality-ai/
+│   │   └── index.html
+│   ├── saudi-ecommerce-ai-growth/
+│   │   └── index.html
+│   ├── saudi-edtech-personalized-learning/
+│   │   └── index.html
+│   ├── saudi-energy-predictive-maintenance/
+│   │   └── index.html
+│   ├── saudi-factory-ai-productivity/
+│   │   └── index.html
+│   ├── saudi-hospitality-dynamic-pricing/
+│   │   └── index.html
+│   ├── saudi-insurance-claims-ai/
+│   │   └── index.html
+│   ├── saudi-logistics-route-optimization/
+│   │   └── index.html
+│   ├── saudi-manufacturing-predictive-maintenance/
+│   │   └── index.html
+│   ├── saudi-mining-ai-exploration/
+│   │   └── index.html
+│   ├── saudi-petrochemical-ai-safety/
+│   │   └── index.html
+│   ├── saudi-real-estate-ai-valuation/
+│   │   └── index.html
+│   ├── saudi-renewable-energy-ai/
+│   │   └── index.html
+│   ├── saudi-smart-city-traffic/
+│   │   └── index.html
+│   ├── saudi-sports-analytics-ai/
+│   │   └── index.html
+│   ├── saudi-tourism-ai-guide/
+│   │   └── index.html
+│   ├── saudi-waste-management-ai/
+│   │   └── index.html
+│   ├── smart-automation-benefits/
+│   │   └── index.html
+│   ├── smart-crm-system/
+│   │   └── index.html
+│   ├── smart-document-processing/
+│   │   └── index.html
+│   ├── smart-inventory-management/
+│   │   └── index.html
+│   ├── top-ai-tools-saudi-2025/
+│   │   └── index.html
+│   ├── transport-logistics-solutions/
+│   │   └── index.html
+│   ├── vision-2030-ai-opportunities/
+│   │   └── index.html
+│   └── workplace-automation-guide/
+│       └── index.html
+├── bot/
+│   └── index.html
+├── brightai_full_audit_report.md
+├── case-studies/
+│   └── index.html
+├── CNAME
+├── consultation/
+│   └── index.html
+├── contact/
+│   └── index.html
+├── data-analysis/
+│   └── index.html
+├── demo/
+│   ├── index.html
+│   ├── ocr-demo/
+│   │   └── index.html
+│   ├── pricing/
+│   │   └── index.html
+│   └── resources/
+│       └── report-ai-saudi-2026/
+│           └── index.html
+├── docs/
+│   ├── ai-agent-en.html
+│   ├── ai-agent.html
+│   ├── ai-bots-en.html
+│   ├── ai-bots.html
+│   ├── consultation-en.html
+│   ├── consultation.html
+│   ├── contact-en.html
+│   ├── contact.html
+│   ├── data-analysis-en.html
+│   ├── data-analysis.html
+│   ├── examples/
+│   │   └── .env-2.example
+│   ├── faq-en.html
+│   ├── faq.html
+│   ├── ga4-key-events.md
+│   ├── openapi.html
+│   ├── openapi.yaml
+│   ├── privacy-policy-en/
+│   │   └── index.html
+│   ├── privacy-policy-en.html
+│   ├── privacy-policy.html
+│   ├── seo-launch-checklist.md
+│   ├── services-overview-en.html
+│   ├── services-overview.html
+│   ├── smart-automation-en.html
+│   ├── smart-automation.html
+│   ├── solutions-bi-en.html
+│   ├── solutions-bi.html
+│   ├── solutions-crm-en.html
+│   ├── solutions-crm.html
+│   ├── solutions-finance-en.html
+│   ├── solutions-finance.html
+│   ├── solutions-healthcare-en.html
+│   ├── solutions-healthcare.html
+│   ├── solutions-hr-en.html
+│   ├── solutions-hr.html
+│   ├── solutions-interview-en.html
+│   ├── solutions-interview.html
+│   ├── solutions-logistics-en.html
+│   ├── solutions-logistics.html
+│   ├── solutions-ocr-en.html
+│   ├── solutions-ocr.html
+│   ├── solutions-retail-en.html
+│   ├── solutions-retail.html
+│   ├── solutions-supply-chain-en.html
+│   ├── solutions-supply-chain.html
+│   ├── terms-and-conditions-en.html
+│   └── terms-and-conditions.html
+├── docs.html
+├── en/
+│   ├── about/
+│   │   └── index.html
+│   ├── ai-agent/
+│   │   └── index.html
+│   ├── ai-bots/
+│   │   ├── BrightMath/
+│   │   │   └── index.html
+│   │   ├── BrightProject/
+│   │   │   └── index.html
+│   │   ├── BrightRecruiter/
+│   │   │   └── index.html
+│   │   ├── BrightSales/
+│   │   │   └── index.html
+│   │   ├── BrightSupport/
+│   │   │   └── index.html
+│   │   └── index.html
+│   ├── ai-workflows/
+│   │   └── index.html
+│   ├── consultation/
+│   │   └── index.html
+│   ├── contact/
+│   │   └── index.html
+│   ├── data-analysis/
+│   │   └── index.html
+│   ├── docs/
+│   │   ├── docs.html
+│   │   └── index.html
+│   ├── health/
+│   │   └── index.html
+│   ├── index.html
+│   ├── interview/
+│   │   └── index.html
+│   ├── privacy-cookies/
+│   │   └── index.html
+│   ├── services/
+│   │   └── index.html
+│   ├── smart-automation/
+│   │   └── index.html
+│   ├── smart-medical-archive/
+│   │   └── index.html
+│   ├── tenders/
+│   │   ├── compare.html
+│   │   ├── dashboard.html
+│   │   ├── index.html
+│   │   ├── landing.html
+│   │   ├── reports.html
+│   │   ├── settings.html
+│   │   └── templates.html
+│   ├── terms/
+│   │   └── index.html
+│   └── tools/
+│       └── index.html
+├── error.html
+├── frontend/
+│   ├── backend/
+│   │   └── package-lock.json
+│   ├── css/
+│   │   ├── ai-scolecs-inline.min.css
+│   │   ├── bundle-critical.css
+│   │   ├── bundle-pages.css
+│   │   ├── cyber-wave.css
+│   │   ├── demo-experience.css
+│   │   ├── demo-theme.min.css
+│   │   ├── docs.css
+│   │   ├── en-interview-inline.min.css
+│   │   ├── en-tenders-templates-inline.min.css
+│   │   ├── fonts.css
+│   │   ├── health-demo.css
+│   │   ├── index-critical-overrides.css
+│   │   ├── index-critical-overrides.min.css
+│   │   ├── index-theme.css
+│   │   ├── index-theme.min.css
+│   │   ├── interview-inline.min.css
+│   │   ├── main.bundle.css
+│   │   ├── main.bundle.min.css
+│   │   ├── ocr-demo-theme.min.css
+│   │   ├── product-demo-polish.css
+│   │   ├── product-demo-polish.min.css
+│   │   ├── tailwind-input.css
+│   │   ├── tailwind.local.min.css
+│   │   ├── tenders-index-inline.min.css
+│   │   ├── try-data-analyzer-inline.css
+│   │   ├── try-data-quality-inline.css
+│   │   ├── try-inline.css
+│   │   ├── try-text-analysis-inline.css
+│   │   ├── unified-nav-search.css
+│   │   └── vendor/
+│   │       ├── aos.css
+│   │       └── swiper-bundle.min.css
+│   ├── js/
+│   │   ├── accessibility.js
+│   │   ├── accessibility.min.js
+│   │   ├── ai-scolecs-app.min.js
+│   │   ├── analytics-events.js
+│   │   ├── api-gateway.min.js
+│   │   ├── api-preflight.min.js
+│   │   ├── article-ux-enhancements.js
+│   │   ├── article-ux-enhancements.min.js
+│   │   ├── chat-widget.js
+│   │   ├── chatbot-production.bundle.js
+│   │   ├── clarity-events.js
+│   │   ├── data-analyzer.min.js
+│   │   ├── demo-experience.js
+│   │   ├── demo-stream.min.js
+│   │   ├── docs-scripts.js
+│   │   ├── en-interview-app.min.js
+│   │   ├── en-tenders-templates-app.min.js
+│   │   ├── gemini-direct-client.js
+│   │   ├── groq-client.js
+│   │   ├── health-demo.js
+│   │   ├── iconify-preload.js
+│   │   ├── index-theme.js
+│   │   ├── index-theme.min.js
+│   │   ├── interview-app.js
+│   │   ├── interview-app.min.js
+│   │   ├── main.bundle.js
+│   │   ├── main.bundle.min.js
+│   │   ├── navigation.js
+│   │   ├── navigation.min.js
+│   │   ├── ocr-demo.js
+│   │   ├── ocr-demo.min.js
+│   │   ├── optimization.js
+│   │   ├── page-enhancements.js
+│   │   ├── page-enhancements.min.js
+│   │   ├── performance-loader.js
+│   │   ├── performance-loader.min.js
+│   │   ├── pricing-recommender.min.js
+│   │   ├── product-demo-enhancements.js
+│   │   ├── product-demo-enhancements.min.js
+│   │   ├── runtime-config.min.js
+│   │   ├── schema-loader.js
+│   │   ├── search 2.js
+│   │   ├── search.js
+│   │   ├── search.min.js
+│   │   ├── sentry-init.js
+│   │   ├── tenders-index-app.min.js
+│   │   ├── tovik-loader.js
+│   │   ├── tovik-loader.min.js
+│   │   ├── try-data-analyzer-app.js
+│   │   ├── try-data-quality-app.js
+│   │   ├── try-text-analysis-app.js
+│   │   └── vendor/
+│   │       ├── aos.js
+│   │       ├── iconify-icon.min.js
+│   │       ├── iconify.min.js
+│   │       └── swiper-bundle.min.js
+│   ├── package.json
+│   ├── scripts/
+│   │   └── dev-server.mjs
+│   └── tests/
+│       └── smoke.test.mjs
+├── health/
+│   └── index.html
+├── index.html
+├── interview/
+│   ├── index.html
+│   └── pages/
+│       ├── appointment/
+│       │   └── index.html
+│       ├── dashboard/
+│       │   └── index.html
+│       ├── support-ai/
+│       │   └── index.html
+│       ├── supportAI/
+│       │   └── index.html
+│       └── Visitor-registration/
+│           └── index.html
+├── llms.txt
+├── lottie-logo.json
+├── machine-learning/
+│   └── index.html
+├── mais-OBM/
+│   ├── index.html
+│   └── OBM-DATA .xlsx
+├── manifest.json
+├── package-lock.json
+├── package.json
+├── partners/
+│   └── index.html
+├── plugins/
+│   └── andrej-karpathy-skills/
+│       ├── .codex-plugin/
+│       │   └── plugin.json
+│       └── skills/
+│           └── karpathy-guidelines/
+│               ├── agents/
+│               │   └── openai.yaml
+│               ├── references/
+│               │   ├── upstream-cursor-rule.mdc
+│               │   ├── upstream-cursor.md
+│               │   ├── upstream-examples.md
+│               │   ├── upstream-plugin.json
+│               │   ├── upstream-readme.md
+│               │   ├── upstream-readme.zh.md
+│               │   └── upstream-SKILL.md
+│               └── SKILL.md
+├── privacy-cookies/
+│   └── index.html
+├── README.md
+├── redirects.json
+├── render.yaml
+├── reports/
+│   ├── AUDIT_DEMOS.md
+│   ├── audit-report.md
+│   ├── blog-migration/
+│   │   ├── blog-migration-map.json
+│   │   ├── blog-migration-map.md
+│   │   └── seo-layer-fix-report.md
+│   ├── blog-migration-map.json
+│   ├── brightai_full_seo_ai_audit_2026-04-25.md
+│   ├── indexable-pages-final.txt
+│   ├── indexnow_submit.py
+│   ├── internal-links/
+│   │   ├── broken_links_before.json
+│   │   └── broken_links_before.md
+│   ├── keyword-mapping-2026.md
+│   ├── keyword.md
+│   ├── keywords-eng.md
+│   ├── lighthouse-pr3/
+│   │   ├── index-desktop.json
+│   │   ├── index-mobile.json
+│   │   ├── services-desktop.json
+│   │   └── services-mobile.json
+│   ├── pr-2-summary.md
+│   ├── pr-3-performance-summary.md
+│   ├── production-system-audit-2026-04-27.md
+│   ├── prompts_orygnal.md
+│   ├── prompts.md
+│   ├── resource-paths/
+│   │   ├── resource_paths_after.json
+│   │   ├── resource_paths_after.md
+│   │   ├── resource_paths_before.json
+│   │   └── resource_paths_before.md
+│   └── sitemap-quality-report.md
+├── robots.txt
+├── schema-saudi-seo.json
+├── scripts/
+│   ├── analytics-qa.mjs
+│   ├── apply-full-audit-seo-fixes.mjs
+│   ├── apply-seo-intent-headings.mjs
+│   ├── archive/
+│   │   └── d.py
+│   ├── check-api-base-consistency.mjs
+│   ├── check-performance-budget.js
+│   ├── create-en-pages.mjs
+│   ├── fix-internal-links.mjs
+│   ├── fix-resource-paths.mjs
+│   ├── generate-brightai-full-audit-report.mjs
+│   ├── generate-related-articles.mjs
+│   ├── generate-service-product-pages.mjs
+│   ├── generate-sitemap-all-pages.mjs
+│   ├── high-confidence-sitemap-config.mjs
+│   ├── html-seo-governor.mjs
+│   ├── indexnow-submit.mjs
+│   ├── internal-links-audit.mjs
+│   ├── internal-links-common.mjs
+│   ├── local-secrets.mjs
+│   ├── minify-seo-assets.mjs
+│   ├── performance-budget.config.json
+│   ├── ping-search-engines.mjs
+│   ├── reorder_products.py
+│   ├── replace-unminified-refs.mjs
+│   ├── resource-paths-audit.mjs
+│   ├── resource-paths-common.mjs
+│   ├── run-monorepo-tests.mjs
+│   ├── seo-ci-check.mjs
+│   ├── seo-health-check.mjs
+│   ├── seo-hreflang-dirs.sh
+│   ├── seo-indexability-qa.mjs
+│   ├── seo-intent-headings-qa.mjs
+│   ├── seo-url-map.mjs
+│   ├── sitemap-audit-utils.mjs
+│   ├── smoke-test-api.mjs
+│   ├── smoke-test.js
+│   ├── submit-indexnow.mjs
+│   ├── validate-production.js
+│   ├── verify-all.mjs
+│   └── verify-clarity.mjs
+├── sectors/
+│   ├── ecommerce-en/
+│   │   └── index.html
+│   ├── ecommerce-en.html
+│   ├── ecommerce.html
+│   ├── energy-en/
+│   │   └── index.html
+│   ├── energy-en.html
+│   ├── energy.html
+│   ├── finance-en/
+│   │   └── index.html
+│   ├── finance-en.html
+│   ├── finance.html
+│   ├── healthcare-en/
+│   │   └── index.html
+│   ├── healthcare-en.html
+│   ├── healthcare.html
+│   ├── index.html
+│   ├── logistics-en/
+│   │   └── index.html
+│   ├── logistics-en.html
+│   ├── logistics.html
+│   ├── manufacturing-en/
+│   │   └── index.html
+│   ├── manufacturing-en.html
+│   └── manufacturing.html
+├── services/
+│   ├── ai-consulting.html
+│   ├── ai-scolecs/
+│   │   └── index.html
+│   ├── ai-scolecs.html
+│   ├── ai-tenders-analysis/
+│   │   └── index.html
+│   ├── ai-tenders-analysis.html
+│   ├── approvals-automation.html
+│   ├── brightproject/
+│   │   └── index.html
+│   ├── brightproject.html
+│   ├── brightsales/
+│   │   └── index.html
+│   ├── brightsales.html
+│   ├── competitor-analysis-agent.html
+│   ├── custom-ai-agent.html
+│   ├── customer-service-automation.html
+│   ├── data-analyst-agent.html
+│   ├── data-platform.html
+│   ├── document-automation.html
+│   ├── health-data-analysis.html
+│   ├── hr-automation.html
+│   ├── index.html
+│   ├── lead-hunter.html
+│   ├── marketing-agent.html
+│   ├── marketing-automation.html
+│   ├── medical-archive.html
+│   ├── operational-reports-automation.html
+│   ├── seo-agent.html
+│   ├── smart-hiring-system.html
+│   ├── smart-hospital-management/
+│   │   └── index.html
+│   ├── smart-hospital-management.html
+│   ├── social-data-analysis.html
+│   └── supply-chain-optimization.html
+├── sitemap/
+│   ├── blog/
+│   ├── docs/
+│   └── index.html
+├── sitemap.xml
+├── skills-lock.json
+├── smart-automation/
+│   └── index.html
+├── smart-medical-archive/
+│   ├── index.html
+│   ├── medical-dashboard.js
+│   ├── medical-extraction.js
+│   ├── medical-gemini-client.js
+│   ├── medical-search.js
+│   ├── medical-upload.js
+│   ├── smart-ai-logic.js
+│   ├── system-unified.css
+│   └── system-unified.js
+├── sw.js
+├── tailwind.config.cjs
+├── telegram-devto-bot/
+│   ├── .env
+│   ├── bot.py
+│   └── requirements.txt
+├── tenders/
+│   ├── api-config.js
+│   ├── api-config.min.js
+│   ├── compare.html
+│   ├── dashboard.html
+│   ├── index.html
+│   ├── landing.html
+│   ├── render-backend/
+│   │   ├── package.json
+│   │   ├── README.md
+│   │   ├── server 2.js
+│   │   └── server.js
+│   ├── reports.html
+│   ├── settings.html
+│   └── templates.html
+├── terms/
+│   └── index.html
+├── tests/
+│   └── aiGateway.test.js
+├── tmp/
+│   ├── blog-canonical-report.json
+│   ├── blog-canonical-report.md
+│   ├── brightai_html_seo_governor.json
+│   ├── brightai_html_seo_governor.md
+│   ├── brightai-seo-governor.json
+│   ├── brightai-seo-governor.md
+│   ├── hreflang-fix-report.json
+│   ├── hreflang-fix-report.md
+│   ├── html-seo.json
+│   ├── semrush_issues_raw.json
+│   ├── service-pages-html-seo-governor.json
+│   ├── service-pages-html-seo-governor.md
+│   ├── url_policy_after.json
+│   ├── url_policy_after.md
+│   ├── url_policy_report.json
+│   └── url_policy_report.md
+├── tools/
+│   └── index.html
+├── try/
+│   ├── data-analyzer/
+│   │   └── index.html
+│   ├── data-quality/
+│   │   └── index.html
+│   ├── index.html
+│   └── text-analysis/
+│       └── index.html
+├── vitest.config.js
+└── what-is-ai/
+    └── index.html
