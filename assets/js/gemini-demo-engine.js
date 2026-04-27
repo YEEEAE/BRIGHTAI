@@ -34,10 +34,10 @@
       return true;
     }
 
-    async generate({ prompt, file, schema, temperature = 0.35 }) {
+    async generate({ prompt, file, schema, schemaName, domain, safetySettings, fallback, temperature = 0.35 }) {
       if (!this.checkUsageLimit()) return null;
 
-      this.trackUsage("demo_input_submitted");
+      this.trackUsage("demo_started");
       const parts = [{ type: "text", text: prompt }];
       if (file && file.base64 && file.mimeType) {
         parts.push({
@@ -52,7 +52,10 @@
         messages: [{ role: "user", content: parts }],
         temperature,
         max_tokens: 4096,
-        response_format: schema ? { type: "json_object" } : undefined
+        response_format: schema ? { type: "json_schema", json_schema: { name: schemaName || `${this.demoId}Schema`, schema } } : undefined,
+        responseSchema: schema || undefined,
+        demoDomain: domain || this.demoId,
+        safetySettings: safetySettings || undefined
       };
 
       const controller = new AbortController();
@@ -72,12 +75,12 @@
         if (!res.ok) throw new Error(`API Error: ${res.status}`);
         const data = await res.json();
         const text = data?.choices?.[0]?.message?.content || data?.answer || "";
-        this.trackUsage("demo_result_generated");
+        this.trackUsage("ai_result_generated");
         return schema ? this.parseJson(text) : text;
       } catch (error) {
         this.trackUsage("demo_error", error.message);
         this.showErrorFallback();
-        return null;
+        return fallback || null;
       } finally {
         window.clearTimeout(timer);
       }
@@ -130,6 +133,11 @@
       if (typeof window.gtag === "function") {
         const namedEvents = new Set([
           "demo_started",
+          "sample_loaded",
+          "ai_result_generated",
+          "report_downloaded",
+          "whatsapp_clicked",
+          "lead_submitted",
           "demo_input_submitted",
           "demo_result_generated",
           "demo_limit_reached",

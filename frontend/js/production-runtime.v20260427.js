@@ -102,6 +102,62 @@
     });
   }
 
+  function normalizeText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function humanizePath(value) {
+    var clean = String(value || "")
+      .replace(/^https?:\/\/[^/]+/i, "")
+      .split("#")[0]
+      .split("?")[0]
+      .replace(/^\/+|\/+$/g, "");
+    if (!clean) return "";
+    var last = clean.split("/").filter(Boolean).pop() || clean;
+    return last.replace(/[-_]+/g, " ").trim();
+  }
+
+  function inferInteractiveLabel(element) {
+    var href = element.tagName === "A" ? element.getAttribute("href") || "" : "";
+    var descriptor = [
+      element.id,
+      element.className,
+      href,
+      element.getAttribute("data-label"),
+      element.getAttribute("data-title"),
+      element.querySelector && element.querySelector("img[alt]") ? element.querySelector("img[alt]").getAttribute("alt") : "",
+      element.querySelector && element.querySelector("iconify-icon") ? element.querySelector("iconify-icon").getAttribute("icon") : ""
+    ].join(" ").toLowerCase();
+
+    if (/whatsapp|api\.whatsapp|wa\.me/.test(descriptor)) return "التواصل عبر واتساب";
+    if (/mailto:|mail/.test(descriptor)) return "إرسال بريد إلكتروني";
+    if (/x\.com|twitter/.test(descriptor)) return "زيارة حساب Bright AI على منصة إكس";
+    if (/linkedin/.test(descriptor)) return "زيارة صفحة Bright AI على لينكدإن";
+    if (/youtube/.test(descriptor)) return "زيارة قناة Bright AI على يوتيوب";
+    if (/search/.test(descriptor)) return "البحث في الموقع";
+    if (/menu|hamburger|mobile-toggle/.test(descriptor)) return "فتح القائمة";
+    if (/close|times|xmark/.test(descriptor)) return "إغلاق";
+    if (/filter/.test(descriptor)) return "تصفية النتائج";
+    if (/share/.test(descriptor)) return "مشاركة";
+    if (href && href !== "#") return "فتح " + humanizePath(href);
+    return "";
+  }
+
+  function enhanceInteractiveLabels() {
+    document.querySelectorAll("a, button, [role='button']").forEach(function (element) {
+      if (element.getAttribute("aria-label") || element.getAttribute("aria-labelledby")) return;
+      var text = normalizeText(element.textContent || element.value || element.title);
+      if (text) return;
+      var label = inferInteractiveLabel(element);
+      if (label) element.setAttribute("aria-label", label);
+    });
+
+    document.querySelectorAll("button svg, button iconify-icon, button i, a svg, a iconify-icon, a i").forEach(function (icon) {
+      icon.setAttribute("aria-hidden", "true");
+      icon.setAttribute("focusable", "false");
+    });
+  }
+
   function wrapTables() {
     document.querySelectorAll("table").forEach(function (table) {
       if (table.closest(".responsive-table, .table-wrap")) return;
@@ -167,9 +223,11 @@
   function init() {
     document.documentElement.classList.add("brightai-production-ready");
     enhanceMedia();
+    enhanceInteractiveLabels();
     wrapTables();
     bindLoadingStates();
     bindGlobalErrorState();
+    window.requestAnimationFrame(enhanceInteractiveLabels);
   }
 
   if (document.readyState === "loading") {

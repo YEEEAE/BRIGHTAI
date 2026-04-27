@@ -1,3 +1,1157 @@
+
+
+حللت المشروع مبدئياً من الملفات المرفوعة، والنتيجة الواضحة: عندك أساس قوي، لكن التجارب حالياً أقرب إلى** ** **صفحات تسويقية + ديموهات AI متفرقة** . المطلوب لتحويلها إلى مستوى عالمي هو توحيدها كـ** ** **Product Demo Funnel** : تجربة تفاعلية قصيرة، ذكية، مقنعة، تُظهر قيمة تجارية واضحة، ثم تقود العميل مباشرة إلى واتساب/طلب عرض/حجز ديمو.
+
+ملاحظة مهمة: المسار الذي كتبته** **`mart-medical-archive/` غير موجود بهذا الاسم في المشروع، والموجود فعلياً هو:
+
+```txt
+smart-medical-archive/
+```
+
+## التشخيص المبدئي للمشروع
+
+المشروع ليس Next.js أو React، بل موقع Static HTML/JS مع Backend Node. يوجد بالفعل تكامل AI جيد مبدئياً:
+
+```txt
+backend/server.js
+backend/services/aiGateway.js
+assets/js/gemini-demo-engine.js
+assets/js/live-demo-apps.js
+frontend/js/demo-experience.js
+```
+
+في الخلفية يوجد Gateway موحّد يستخدم Gemini كخيار أساسي عبر مسارات مثل:
+
+```txt
+/api/ai/chat/completions
+/api/ai/chat/stream
+/api/ai/openai-chat
+/api/ai/ocr
+/api/ai/medical
+/api/ai/medical-agent
+/api/ai/extract-text
+/api/ai/transcribe
+```
+
+كما أن بعض التجارب تستخدم** **`gemini-2.5-flash` وتطلب JSON structured output. وهذا ممتاز كبداية، لكن يحتاج إلى رفع المستوى لأن Gemini API يدعم إخراجاً منظماً عبر JSON Schema، وهذا أنسب بكثير للنماذج التجارية الجادة لأنه يعطي نتائج قابلة للعرض والتحقق بدل نصوص متغيرة وغير مضمونة. ([Google AI for Developers](https://ai.google.dev/gemini-api/docs/structured-output?utm_source=chatgpt.com "Structured outputs | Gemini API | Google AI for Developers"))
+
+كذلك، بما أن عدة تجارب تعتمد على ملفات PDF وصور ومستندات، الأفضل نقل معالجة الملفات الكبيرة أو المتكررة إلى Backend واستخدام Files API أو مسار رفع آمن، لأن Gemini يدعم العمل مع ملفات متعددة الأنواع، كما أن فهم المستندات في Gemini موجه خصوصاً لملفات PDF والوسائط. ([Google AI for Developers](https://ai.google.dev/gemini-api/docs/document-processing?utm_source=chatgpt.com "Document understanding | Gemini API | Google AI for Developers"))
+
+أما من ناحية معيار التصميم، فقد تعاملت مع “ADE” كمرجع لتجربة Premium عالية الإخراج: تصميم بصري قوي، وضوح عرض القيمة، دمج الجمال بالوظيفة، وتجربة تقود للتحويل التجاري، لا مجرد واجهة جميلة. موقع ADE نفسه يضع نفسه كمعيار عالمي للابتكار التصميمي والجمع بين الجمال الوظيفي والحلول القابلة للتوسع. ([ADE Design Labs](https://adedesignlabs.com/?utm_source=chatgpt.com "ADE Design Labs | Premium Branding, UI/UX &amp; Digital Agency"))
+
+---
+
+# البرومبت الرئيسي الشامل لتحسين كل التجارب
+
+انسخ هذا البرومبت كما هو إلى Cursor / Claude Code / Gemini / أي وكيل برمجي يعمل على المشروع:
+
+```txt
+أنت Principal AI Product Engineer + Senior UX Director + Conversion Optimization Specialist.
+
+أعمل على مشروع Bright AI الموجود كبنية Static HTML/CSS/JS مع Backend Node.js. المطلوب ليس إعادة بناء المشروع من الصفر، بل تحويل كل صفحات التجارب الحالية إلى ديموهات عالمية Premium تشبه جودة وكالات UX عالمية مثل ADE: تصميم راقٍ، تجربة واضحة، نتائج AI قوية، عرض قيمة تجاري مباشر، وثقة عالية تجعل العميل يطلب الشراء أو الديمو فوراً.
+
+المسارات المطلوب تحسينها:
+
+1) interview/
+   نظام الاستقطاب والتوظيف الذكي.
+
+2) smart-medical-archive/
+   نظام أرشفة السجلات الطبية الذكي.
+   ملاحظة: لا تستخدم mart-medical-archive لأنه خطأ كتابي، المسار الصحيح في المشروع smart-medical-archive.
+
+3) try/data-analyzer/
+   منصة البيانات والتحليل المؤسسي.
+
+4) ai-scolecs/
+   منصة تعليمية ذكية متكاملة.
+
+5) health/
+   نظام إدارة المستشفيات الذكية ومؤشرات الجودة.
+
+6) demo/ocr-demo/
+   أتمتة إدارة البيانات والوثائق و OCR.
+
+7) ai-bots/BrightSupport/
+   أتمتة خدمة العملاء الذكية.
+
+8) services/marketing-automation.html
+   و services/marketing-agent.html إن وجدت.
+   نظام التسويق الذكي وأتمتة الحملات.
+
+9) services/supply-chain-optimization.html
+   أتمتة تحسين سلسلة التوريد.
+
+الهدف النهائي:
+تحويل كل تجربة إلى Sales-ready AI Demo:
+- العميل يفهم القيمة خلال أقل من 30 ثانية.
+- العميل يرى نتيجة AI عملية وليس كلاماً عاماً.
+- النتيجة تظهر ROI أو أثر تجاري واضح.
+- كل تجربة تنتهي بزر واضح: اطلب عرض سعر / احجز ديمو / أرسل النتيجة عبر واتساب.
+- كل نموذج يستخدم Gemini API من خلال Backend فقط، ولا يتم كشف GEMINI_API_KEY في المتصفح.
+- كل مخرجات AI تكون JSON Structured Output قابلة للتحقق والعرض.
+- كل تجربة تدعم بيانات تجريبية جاهزة Sample Data لمن لا يريد رفع ملف.
+- كل تجربة تحتوي على وضعين:
+  1. تجربة سريعة للعميل غير التقني.
+  2. تجربة احترافية لصاحب القرار أو المدير التقني.
+- كل تجربة تعرض الثقة: الخصوصية، صلاحيات الوصول، Audit Trail، قابلية الربط، جودة البيانات، وتنبيه بأن المخرجات AI Assistive وليست قراراً نهائياً في المجالات الحساسة.
+
+المشروع الحالي يحتوي على:
+- backend/services/aiGateway.js
+- backend/server.js
+- assets/js/gemini-demo-engine.js
+- assets/js/live-demo-apps.js
+- frontend/js/demo-experience.js
+- صفحات HTML ثابتة لكل مسار تقريباً.
+
+المطلوب تنفيذياً:
+
+أولاً: توحيد طبقة Gemini
+1. استخدم /api/ai/chat/completions كنقطة موحدة لكل الديموهات.
+2. لا تضع مفاتيح Gemini في الواجهة.
+3. أضف دعماً حقيقياً لـ JSON Schema / responseSchema في backend/services/aiGateway.js بدلاً من الاكتفاء بـ responseMimeType فقط.
+4. لكل Demo أنشئ schema واضحاً باسم:
+   - recruitmentSchema
+   - medicalArchiveSchema
+   - dataPlatformSchema
+   - educationSchema
+   - hospitalOpsSchema
+   - documentAutomationSchema
+   - customerSupportSchema
+   - marketingAutomationSchema
+   - supplyChainSchema
+5. أضف validation في الواجهة:
+   - إن رجع JSON ناقص، اعرض نتيجة آمنة جزئية.
+   - إن فشل AI، اعرض fallback demo result.
+   - لا تعرض JSON raw للعميل؛ اعرض Cards و Charts و Action Plan.
+6. أضف safetySettings مناسبة حسب المجال:
+   - health و medical archive: أكثر تحفظاً مع disclaimers.
+   - recruitment: منع التحيز والتمييز.
+   - education: حماية الطلاب والخصوصية.
+   - customer support: منع الوعود غير المؤكدة.
+7. استخدم streaming في الردود النصية الطويلة فقط، أما تقارير JSON فلتكن non-stream حتى يسهل التحقق.
+
+ثانياً: تحسين تجربة المستخدم العامة
+لكل صفحة Demo:
+1. أضف Hero Section واضح:
+   - العنوان التجاري.
+   - وعد القيمة في سطر واحد.
+   - 3 أرقام أثر افتراضية قابلة للتخصيص، مثل:
+     - تقليل وقت الفرز 70%
+     - رفع سرعة الرد 85%
+     - تقليل الأخطاء اليدوية 60%
+   اجعل الأرقام بصيغة "تقديرية حسب بيانات العميل" ولا تقدمها كحقيقة مطلقة.
+2. أضف Demo Stepper:
+   - اختر السيناريو.
+   - أدخل البيانات أو استخدم عينة.
+   - شغّل الذكاء الاصطناعي.
+   - شاهد التقرير.
+   - اطلب الربط أو العرض.
+3. أضف Sample Data Buttons لكل نموذج.
+4. أضف Result Dashboard:
+   - Executive Summary.
+   - Score أو Readiness Index.
+   - Key Insights.
+   - Recommended Actions.
+   - Risks.
+   - Integration Plan.
+   - ROI Estimate.
+   - CTA.
+5. أضف Download Report كملف PDF أو HTML Printable.
+6. أضف WhatsApp CTA يرسل ملخص النتيجة تلقائياً إلى رقم الشركة الموجود في المشروع.
+7. أضف GA4 events:
+   - demo_started
+   - sample_loaded
+   - ai_result_generated
+   - report_downloaded
+   - whatsapp_clicked
+   - lead_submitted
+8. حسّن RTL، spacing، cards، skeleton loading، error states، empty states، mobile responsiveness.
+9. أزل أو أعد صياغة النصوص المتكررة والحشو، خصوصاً العبارات المتكررة في صفحات SEO مثل "يربط هذا المحور..." لأنها تقلل الإحساس بالجودة.
+10. وحّد نبرة المحتوى:
+   - عربي سعودي/خليجي احترافي.
+   - واضح لصاحب القرار.
+   - بدون مبالغة تقنية.
+   - ركّز على النتيجة التجارية.
+
+ثالثاً: معايير الأمان والثقة
+1. أضف Privacy Notice مصغر داخل كل Demo:
+   - "لا يتم استخدام بياناتك إلا لتوليد النتيجة التجريبية."
+   - "لا ترفع بيانات حساسة حقيقية في النسخة التجريبية العامة."
+2. في المجالات الصحية والطبية:
+   - أضف Disclaimer واضح بأن النظام لا يقدم تشخيصاً طبياً ولا يستبدل الطبيب.
+3. في التوظيف:
+   - أضف Anti-bias Notice.
+   - لا تستخدم الجنس، العمر، الجنسية، أو أي بيانات حساسة لتقييم المرشح.
+4. أضف Audit Trail افتراضي في واجهات النتائج:
+   - وقت التحليل.
+   - نوع البيانات.
+   - النموذج المستخدم.
+   - مستوى الثقة.
+   - آخر إجراء مقترح.
+5. أضف Integration Readiness:
+   - API-ready
+   - ERP/CRM/HIS/LMS-ready حسب المجال
+   - Role-based access
+   - Export options
+
+رابعاً: مخرجات مطلوبة من التعديل
+بعد تنفيذ التحسينات، أعطني:
+1. قائمة الملفات المعدلة.
+2. ملخص لكل Demo: قبل / بعد.
+3. شرح كيف صار متصلاً بـ Gemini API.
+4. schemas المستخدمة لكل Demo.
+5. قائمة acceptance criteria.
+6. خطوات التشغيل والاختبار محلياً.
+7. أي مشاكل أو ملفات ناقصة أو ديون تقنية تم اكتشافها.
+
+خامساً: لا تفعل الآتي
+- لا تكشف API keys في frontend.
+- لا تحذف صفحات SEO الحالية، بل حسّنها.
+- لا تكتب نتائج طبية أو مالية أو توظيفية كقرارات نهائية.
+- لا تجعل AI يرد بنص طويل غير منظم.
+- لا تجعل تجربة العميل تبدأ بنموذج طويل وممل.
+- لا تضف framework ضخم إن لم يكن ضرورياً.
+- لا تكسر المسارات الحالية.
+```
+
+---
+
+# برومبتات تحسين كل تجربة على حدة
+
+استخدم البرومبت الرئيسي أولاً، ثم أضف البرومبت المناسب لكل مسار حسب الصفحة التي تعمل عليها.
+
+---
+
+## 1) برومبت تحسين** **`interview/` — نظام الاستقطاب والتوظيف الذكي
+
+```txt
+حسّن تجربة interview/ لتصبح منصة توظيف ذكي Premium موجهة لمدير الموارد البشرية وصاحب القرار.
+
+المطلوب:
+حوّل الصفحة من نموذج تحليل مرشح فقط إلى تجربة كاملة بعنوان:
+"اختَر أفضل المرشحين خلال دقائق، مع فرز ذكي ومقابلات أولية وتقارير مقارنة."
+
+تجربة المستخدم:
+1. Hero واضح:
+   - "نظام توظيف ذكي يقلل وقت الفرز ويرفع جودة الاختيار."
+   - أزرار: جرّب بمرشح تجريبي / ارفع سيرة ذاتية / اطلب عرض للمنشأة.
+2. Stepper:
+   - اختر الوظيفة.
+   - ارفع CV أو استخدم مرشح تجريبي.
+   - أدخل وصف الوظيفة.
+   - شغّل التحليل.
+   - شاهد تقرير المطابقة والمقابلة.
+3. أضف 3 شخصيات:
+   - HR Manager.
+   - Recruitment Agency.
+   - Enterprise Talent Team.
+4. أضف جدول مقارنة مرشحين، حتى لو ببيانات تجريبية.
+5. أضف "Candidate Fit Score" واضح من 100.
+6. أضف "Interview Kit" يتم توليده تلقائياً.
+7. أضف "Hiring Risk Flags" بدون تمييز أو تحيز.
+8. أضف CTA بعد النتيجة:
+   - "اربط النظام مع ATS الحالي"
+   - "اطلب نسخة مخصصة للشركة"
+   - "أرسل تقرير المرشح عبر واتساب"
+
+استخدم Gemini API عبر /api/ai/chat/completions فقط.
+
+اجعل مخرجات Gemini JSON بهذا الشكل:
+
+{
+  "candidate_fit_score": number,
+  "decision_summary_ar": string,
+  "role_match": {
+    "matched_requirements": string[],
+    "missing_requirements": string[],
+    "transferable_skills": string[]
+  },
+  "score_breakdown": {
+    "experience": number,
+    "skills": number,
+    "education": number,
+    "communication": number,
+    "job_stability": number,
+    "culture_add": number
+  },
+  "interview_kit": {
+    "opening_script_ar": string,
+    "technical_questions": string[],
+    "behavioral_questions": string[],
+    "case_study_prompt": string,
+    "evaluation_rubric": string[]
+  },
+  "risk_flags": [
+    {
+      "flag": string,
+      "severity": "low|medium|high",
+      "evidence": string,
+      "safe_followup_question": string
+    }
+  ],
+  "anti_bias_notice_ar": string,
+  "recommended_next_step": "shortlist|interview|hold|reject",
+  "whatsapp_summary_ar": string,
+  "enterprise_value_ar": string
+}
+
+قواعد مهمة:
+- لا تستخدم العمر أو الجنس أو الجنسية أو الحالة الاجتماعية أو أي بيانات حساسة في التقييم.
+- قيّم فقط على متطلبات الوظيفة والخبرة والمهارات.
+- لا تعرض JSON خام، اعرضه كـ dashboard جميل.
+- أضف زر "قارن مع مرشح آخر".
+- أضف زر "تحميل تقرير التوظيف".
+```
+
+---
+
+## 2) برومبت تحسين** **`smart-medical-archive/` — الأرشيف الطبي الذكي
+
+```txt
+حسّن smart-medical-archive/ ليصبح ديمو عالمي لنظام أرشفة سجلات طبية ذكي موجه للمستشفيات والمجمعات الطبية.
+
+العنوان المقترح:
+"أرشيف طبي ذكي يحوّل الملفات الطبية إلى بيانات سريرية قابلة للبحث والربط."
+
+المطلوب:
+1. لا تطلب من المستخدم إدخال Gemini API Key في الواجهة في نسخة الإنتاج.
+2. استخدم Backend فقط للاتصال بـ Gemini.
+3. اجعل الديمو يبدأ بـ 3 سيناريوهات:
+   - أرشفة تقرير طبي PDF.
+   - استخراج بيانات سريرية من تقرير نصي.
+   - بحث ذكي داخل سجل مريض.
+4. أضف Sample Reports:
+   - تقرير مختبر.
+   - تقرير أشعة.
+   - ملخص خروج.
+   - وصفة طبية.
+5. أضف واجهة نتيجة فيها:
+   - Patient Snapshot.
+   - Clinical Entities.
+   - Diagnoses.
+   - Medications.
+   - Lab Values.
+   - Alerts.
+   - Department Routing.
+   - FHIR Mapping Preview.
+   - Privacy Flags.
+   - Audit Trail.
+6. أضف "Semantic Search" واضح:
+   - سؤال المستخدم: "اعرض مرضى لديهم سكر مرتفع وأدوية ضغط"
+   - النتيجة: سجلات مطابقة + سبب المطابقة.
+7. أضف CTA:
+   - "اربط الأرشيف مع HIS/EHR"
+   - "اطلب تجربة على بيانات منشأتك"
+   - "احصل على عرض سعر للمستشفى"
+
+مخرجات Gemini المطلوبة:
+
+{
+  "document_classification": {
+    "type": "lab_report|radiology_report|discharge_summary|prescription|referral|unknown",
+    "confidence": number,
+    "language": "ar|en|mixed"
+  },
+  "patient_snapshot": {
+    "patient_name": string,
+    "medical_record_number": string,
+    "age": string,
+    "gender": string,
+    "visit_date": string,
+    "department": string
+  },
+  "clinical_entities": {
+    "diagnoses": string[],
+    "symptoms": string[],
+    "medications": string[],
+    "allergies": string[],
+    "lab_values": [
+      {
+        "name": string,
+        "value": string,
+        "unit": string,
+        "status": "normal|high|low|critical|unknown"
+      }
+    ],
+    "procedures": string[]
+  },
+  "risk_alerts": [
+    {
+      "alert": string,
+      "severity": "low|medium|high|critical",
+      "reason": string,
+      "recommended_review_by": string
+    }
+  ],
+  "department_routing": {
+    "primary_department": string,
+    "secondary_departments": string[],
+    "routing_reason": string
+  },
+  "fhir_mapping_preview": {
+    "patient": object,
+    "observation": object[],
+    "condition": object[],
+    "medication_statement": object[]
+  },
+  "privacy_flags": string[],
+  "search_index_hints": string[],
+  "audit_trail": {
+    "ai_model": string,
+    "analysis_time": string,
+    "confidence_summary": string
+  },
+  "disclaimer_ar": string,
+  "executive_summary_ar": string,
+  "next_action_ar": string
+}
+
+قواعد:
+- لا تقدم تشخيصاً طبياً نهائياً.
+- اكتب "يتطلب مراجعة مختص" عند وجود نتائج حساسة.
+- أبرز الحماية والخصوصية وصلاحيات الوصول.
+- اجعل النتيجة تبدو كنظام مؤسسي وليس مجرد OCR.
+```
+
+---
+
+## 3) برومبت تحسين** **`try/data-analyzer/` — منصة البيانات والتحليل
+
+```txt
+حسّن try/data-analyzer/ لتصبح تجربة منصة بيانات مؤسسية موحدة، لا مجرد محلل ملف Excel.
+
+العنوان المقترح:
+"منصة بيانات موحّدة تمنح الإدارة رؤية فورية على الأداء والمخاطر والفرص."
+
+المطلوب:
+1. ابدأ الصفحة بثلاثة سيناريوهات:
+   - تحليل مبيعات.
+   - تحليل مخزون.
+   - تحليل رضا العملاء.
+   - تحليل موارد بشرية.
+2. أضف خيار رفع ملف CSV/XLSX أو استخدام بيانات تجريبية.
+3. بعد التحليل، اعرض:
+   - Data Quality Score.
+   - Executive KPIs.
+   - Trends.
+   - Anomalies.
+   - Forecast.
+   - Recommended Actions.
+   - Dashboard Blueprint.
+   - Role-based Views.
+4. أضف "اسأل بياناتك" كواجهة Chat فوق النتائج.
+5. أضف "لوحة المدير التنفيذي" و"لوحة المالية" و"لوحة العمليات".
+6. أضف CTA:
+   - "اربط مصادر بيانات شركتك"
+   - "ابنِ مستودع بيانات موحّد"
+   - "اطلب Dashboard مخصص"
+
+مخرجات Gemini:
+
+{
+  "data_quality_score": number,
+  "data_quality_issues": [
+    {
+      "issue": string,
+      "severity": "low|medium|high",
+      "fix": string
+    }
+  ],
+  "executive_summary_ar": string,
+  "kpis": [
+    {
+      "name": string,
+      "value": string,
+      "trend": "up|down|stable",
+      "business_meaning_ar": string
+    }
+  ],
+  "anomalies": [
+    {
+      "metric": string,
+      "description_ar": string,
+      "possible_causes": string[],
+      "recommended_action": string
+    }
+  ],
+  "forecast": {
+    "next_period_expectation_ar": string,
+    "confidence": number,
+    "assumptions": string[]
+  },
+  "role_based_views": {
+    "ceo": string[],
+    "finance": string[],
+    "operations": string[],
+    "sales": string[]
+  },
+  "dashboard_blueprint": {
+    "charts": [
+      {
+        "title": string,
+        "type": "line|bar|pie|table|kpi",
+        "why_it_matters_ar": string
+      }
+    ]
+  },
+  "governance_recommendations": string[],
+  "roi_estimate_ar": string,
+  "next_actions": string[],
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- لا تعرض فقط إحصاءات؛ اربط كل نتيجة بقرار إداري.
+- اجعل التجربة تبدو كمنصة بيانات Enterprise فيها Governance وصلاحيات.
+- أضف Skeleton Loading ونتائج مرئية جذابة.
+```
+
+---
+
+## 4) برومبت تحسين** **`ai-scolecs/` — المنصة التعليمية الذكية
+
+```txt
+حسّن ai-scolecs/ لتصبح منصة تعليمية ذكية متكاملة للمدارس والمعاهد والجهات التدريبية.
+
+العنوان المقترح:
+"منصة تعليمية ذكية تتابع الطلاب، تخصص التعلم، وتساعد المعلمين والإدارة في اتخاذ القرار."
+
+المطلوب:
+1. أضف اختيار الدور:
+   - مدير مدرسة.
+   - معلم.
+   - طالب.
+   - ولي أمر.
+   - مشرف تدريبي.
+2. أضف سيناريوهات:
+   - إنشاء درس.
+   - توليد اختبار.
+   - تحليل أداء طالب.
+   - خطة علاجية لطالب متعثر.
+   - تقرير إدارة عن فصل كامل.
+3. لا تجعل التجربة مجرد شات.
+4. اعرض Dashboard تعليمي:
+   - Student Progress.
+   - Risk Students.
+   - Personalized Learning Path.
+   - Assessment Rubric.
+   - Teacher Actions.
+   - Parent Summary.
+5. أضف CTA:
+   - "اطلب نسخة للمدرسة"
+   - "اربط المنصة مع LMS"
+   - "جرّب تحليل فصل كامل"
+
+مخرجات Gemini:
+
+{
+  "selected_role": "admin|teacher|student|parent|trainer",
+  "learning_context": {
+    "grade": string,
+    "subject": string,
+    "topic": string,
+    "level": "beginner|intermediate|advanced"
+  },
+  "student_profile": {
+    "strengths": string[],
+    "weaknesses": string[],
+    "learning_style_hypothesis": string,
+    "risk_level": "low|medium|high"
+  },
+  "personalized_learning_path": [
+    {
+      "step": string,
+      "activity": string,
+      "duration": string,
+      "success_metric": string
+    }
+  ],
+  "assessment_plan": {
+    "questions": string[],
+    "rubric": string[],
+    "grading_notes": string[]
+  },
+  "teacher_recommendations": string[],
+  "admin_insights": string[],
+  "parent_summary_ar": string,
+  "content_to_generate": {
+    "lesson_outline": string[],
+    "quiz": string[],
+    "homework": string[]
+  },
+  "privacy_and_child_safety_notice_ar": string,
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- لا تحكم على الطالب بشكل نهائي.
+- استخدم لغة تربوية داعمة.
+- اجعل النتيجة قابلة للطباعة أو المشاركة مع ولي الأمر.
+- أظهر قيمة المنصة للإدارة، وليس فقط للطالب.
+```
+
+---
+
+## 5) برومبت تحسين** **`health/` — إدارة المستشفيات الذكية
+
+```txt
+حسّن health/ لتصبح تجربة نظام إدارة مستشفيات ذكي يدعم قراءة المؤشرات وتحسين العمليات والجودة.
+
+العنوان المقترح:
+"نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع."
+
+المطلوب:
+1. افصل التجربة إلى 4 تبويبات:
+   - مؤشرات تشغيل المستشفى.
+   - دعم قرار الجودة.
+   - قراءة تقرير أو ملف طبي.
+   - تحليل حالة تشغيلية لقسم.
+2. أضف Sample Scenarios:
+   - ازدحام طوارئ.
+   - ارتفاع وقت الانتظار.
+   - نقص كوادر في قسم.
+   - انخفاض رضا المرضى.
+   - مؤشرات جودة تحتاج مراجعة.
+3. أضف Dashboard:
+   - Bed Occupancy.
+   - Waiting Time.
+   - Readmission Risk.
+   - Staff Load.
+   - Quality Alerts.
+   - Recommended Interventions.
+4. أضف CTA:
+   - "اربط النظام مع HIS"
+   - "اطلب لوحة مؤشرات للمستشفى"
+   - "حلل مؤشرات منشأتك"
+
+مخرجات Gemini:
+
+{
+  "hospital_snapshot": {
+    "department": string,
+    "case_type": string,
+    "operational_context_ar": string
+  },
+  "ops_kpis": [
+    {
+      "name": string,
+      "status": "good|watch|risk|critical",
+      "value": string,
+      "interpretation_ar": string
+    }
+  ],
+  "quality_risks": [
+    {
+      "risk": string,
+      "severity": "low|medium|high|critical",
+      "evidence": string,
+      "recommended_owner": string
+    }
+  ],
+  "capacity_forecast": {
+    "next_24h_ar": string,
+    "next_7d_ar": string,
+    "confidence": number
+  },
+  "recommended_interventions": [
+    {
+      "action": string,
+      "impact": "low|medium|high",
+      "urgency": "now|today|this_week",
+      "owner": string
+    }
+  ],
+  "executive_summary_ar": string,
+  "clinical_safety_disclaimer_ar": string,
+  "integration_plan": {
+    "his": string,
+    "ehr": string,
+    "bi_dashboard": string
+  },
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- لا يقدم تشخيصاً أو علاجاً نهائياً.
+- ركّز على التشغيل والجودة ودعم القرار.
+- أضف تنبيه مراجعة مختص عند أي حالة طبية.
+- اعرض النتائج كلوحة إدارة تنفيذية.
+```
+
+---
+
+## 6) برومبت تحسين** **`demo/ocr-demo/` — أتمتة الوثائق والبيانات
+
+```txt
+حسّن demo/ocr-demo/ ليصبح ديمو أتمتة وثائق مؤسسي، وليس OCR فقط.
+
+العنوان المقترح:
+"حوّل مستنداتك إلى بيانات ذكية قابلة للبحث والاعتماد والربط."
+
+المطلوب:
+1. أضف أنواع مستندات:
+   - فاتورة.
+   - عقد.
+   - هوية.
+   - أمر شراء.
+   - تقرير.
+   - نموذج داخلي.
+2. أضف Sample Documents إن لم يرفع العميل ملفاً.
+3. بعد رفع الملف، اعرض:
+   - Document Type.
+   - Extracted Fields.
+   - Tables.
+   - Confidence Score.
+   - Missing Fields.
+   - Validation Errors.
+   - Approval Workflow.
+   - Export Preview.
+4. أضف أزرار:
+   - Export to Excel.
+   - Send to ERP.
+   - Create Approval Task.
+   - Download Report.
+5. أضف CTA:
+   - "اربط الأرشفة مع نظامك"
+   - "أتمتة 1000 مستند شهرياً"
+   - "اطلب تجربة على مستندات شركتك"
+
+مخرجات Gemini:
+
+{
+  "document_classification": {
+    "type": "invoice|contract|purchase_order|id|report|form|unknown",
+    "confidence": number,
+    "language": "ar|en|mixed"
+  },
+  "extracted_fields": [
+    {
+      "field_name": string,
+      "value": string,
+      "confidence": number,
+      "needs_review": boolean
+    }
+  ],
+  "extracted_tables": [
+    {
+      "table_name": string,
+      "columns": string[],
+      "rows": object[]
+    }
+  ],
+  "validation": {
+    "missing_fields": string[],
+    "inconsistencies": string[],
+    "duplicate_risk": string,
+    "recommended_review": string[]
+  },
+  "automation_workflow": [
+    {
+      "step": string,
+      "system": string,
+      "status": "ready|needs_config|manual_review"
+    }
+  ],
+  "export_payload_preview": object,
+  "business_impact_ar": string,
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- أظهر confidence لكل حقل.
+- لا تجعل النتيجة تبدو كنسخ نص فقط.
+- اجعلها تبدو كنظام أتمتة مستندات كامل مع Workflow.
+```
+
+---
+
+## 7) برومبت تحسين** **`ai-bots/BrightSupport/` — خدمة العملاء الذكية
+
+```txt
+حسّن ai-bots/BrightSupport/ ليصبح ديمو مركز خدمة عملاء ذكي متعدد القنوات.
+
+العنوان المقترح:
+"ردود فورية، تصعيد ذكي، وتقارير رضا عملاء من واتساب والموقع والبريد."
+
+المطلوب:
+1. أضف اختيار قناة:
+   - WhatsApp.
+   - Website Chat.
+   - Email.
+   - Call Center Notes.
+2. أضف سيناريوهات جاهزة:
+   - عميل غاضب.
+   - طلب استرجاع.
+   - مشكلة تقنية.
+   - سؤال عن منتج.
+   - شكوى متأخرة.
+3. اجعل Gemini لا يرد فقط، بل يحلل:
+   - Intent.
+   - Sentiment.
+   - Urgency.
+   - SLA.
+   - Suggested Reply.
+   - Escalation Decision.
+   - Ticket Fields.
+   - Knowledge Gap.
+4. أضف Dashboard:
+   - Customer Mood.
+   - Priority.
+   - Auto Reply.
+   - Escalation Path.
+   - Ticket Preview.
+   - CSAT Follow-up.
+5. أضف CTA:
+   - "اربط البوت مع واتساب"
+   - "اربط CRM"
+   - "اطلب بوت مخصص لخدمة العملاء"
+
+مخرجات Gemini:
+
+{
+  "customer_message_summary_ar": string,
+  "intent": string,
+  "sentiment": "positive|neutral|negative|angry|confused",
+  "urgency": "low|medium|high|critical",
+  "sla_recommendation": string,
+  "suggested_reply_ar": string,
+  "suggested_reply_tone": "formal|friendly|apologetic|technical",
+  "escalation": {
+    "needed": boolean,
+    "department": string,
+    "reason": string,
+    "priority": "p1|p2|p3|p4"
+  },
+  "ticket_preview": {
+    "title": string,
+    "category": string,
+    "tags": string[],
+    "required_fields": string[]
+  },
+  "knowledge_base_gap": string[],
+  "csat_followup_ar": string,
+  "automation_roi_ar": string,
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- لا تعد العميل بشيء غير مؤكد.
+- لا تغلق الحالات الحساسة تلقائياً.
+- اجعل التصعيد واضحاً.
+- أظهر قيمة البوت للإدارة: سرعة حل، رضا، تقليل ضغط الفريق.
+```
+
+---
+
+## 8) برومبت تحسين التسويق —** **`services/marketing-automation.html`
+
+```txt
+حوّل services/marketing-automation.html من صفحة خدمة ثابتة إلى ديمو تفاعلي لنظام تسويق ذكي.
+
+العنوان المقترح:
+"نظام تسويق ذكي يخطط الحملات، يكتب المحتوى، ويتوقع العائد."
+
+المطلوب:
+1. أضف Live Demo داخل الصفحة.
+2. أضف مدخلات بسيطة:
+   - نوع النشاط.
+   - الجمهور المستهدف.
+   - الهدف: مبيعات / وعي / عملاء محتملون / إعادة استهداف.
+   - الميزانية.
+   - القنوات: Instagram / TikTok / Google / Email / WhatsApp.
+3. أضف زر "استخدم مثال جاهز".
+4. Gemini يولّد:
+   - Campaign Strategy.
+   - Audience Segments.
+   - Content Calendar.
+   - Ad Copies.
+   - WhatsApp Follow-up.
+   - Retargeting Plan.
+   - KPI Forecast.
+   - ROAS Estimate.
+5. أضف CTA:
+   - "اطلب حملة جاهزة"
+   - "اربط النظام مع متجرك"
+   - "احصل على خطة تسويق شهرية"
+
+مخرجات Gemini:
+
+{
+  "campaign_name_ar": string,
+  "business_goal": string,
+  "audience_segments": [
+    {
+      "segment_name": string,
+      "pain_points": string[],
+      "message_angle": string
+    }
+  ],
+  "channel_strategy": [
+    {
+      "channel": string,
+      "objective": string,
+      "content_type": string,
+      "budget_share": string
+    }
+  ],
+  "content_calendar": [
+    {
+      "day": string,
+      "post_idea": string,
+      "caption_ar": string,
+      "cta": string
+    }
+  ],
+  "ad_copies": [
+    {
+      "platform": string,
+      "headline": string,
+      "body": string,
+      "cta": string
+    }
+  ],
+  "retargeting_plan": string[],
+  "kpi_forecast": {
+    "leads": string,
+    "conversion_rate": string,
+    "roas_estimate": string,
+    "assumptions": string[]
+  },
+  "experiments": string[],
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- لا تقدم أرقام عائد كضمان.
+- اكتب أنها تقديرات مبنية على المدخلات.
+- اجعل النتيجة تبدو كخطة تنفيذية قابلة للبيع فوراً.
+```
+
+---
+
+## 9) برومبت تحسين سلسلة التوريد —** **`services/supply-chain-optimization.html`
+
+```txt
+حوّل services/supply-chain-optimization.html إلى ديمو تفاعلي لنظام تحسين سلسلة الإمداد بالذكاء الاصطناعي.
+
+العنوان المقترح:
+"تنبؤ مبكر بالطلب، إعادة طلب ذكية، وتقليل نفاد المخزون."
+
+المطلوب:
+1. أضف Live Demo داخل الصفحة.
+2. أضف مدخلات:
+   - القطاع.
+   - عدد الفروع أو المستودعات.
+   - معدل الطلب.
+   - مستوى المخزون الحالي.
+   - مدة التوريد Lead Time.
+   - تكلفة التخزين.
+   - المنتجات الأكثر مبيعاً.
+3. أضف Sample Scenario:
+   - شركة تجزئة في السعودية.
+   - مستودع أدوية.
+   - مطعم وسلاسل أغذية.
+   - موزع مواد بناء.
+4. Gemini يولّد:
+   - Demand Forecast.
+   - Stockout Risk.
+   - Reorder Point.
+   - EOQ Estimate.
+   - Supplier Risk.
+   - Distribution Action Plan.
+   - Cost Saving Estimate.
+5. أضف CTA:
+   - "اربط النظام مع ERP"
+   - "حلل مخزون شركتك"
+   - "اطلب نموذج توقع الطلب"
+
+مخرجات Gemini:
+
+{
+  "supply_chain_snapshot": {
+    "sector": string,
+    "locations": string,
+    "inventory_context_ar": string
+  },
+  "demand_forecast": {
+    "next_7_days": string,
+    "next_30_days": string,
+    "seasonality_notes": string[],
+    "confidence": number
+  },
+  "stockout_risks": [
+    {
+      "item": string,
+      "risk_level": "low|medium|high|critical",
+      "days_until_stockout": string,
+      "reason": string
+    }
+  ],
+  "reorder_recommendations": [
+    {
+      "item": string,
+      "reorder_point": string,
+      "recommended_quantity": string,
+      "priority": "low|medium|high"
+    }
+  ],
+  "supplier_risks": [
+    {
+      "supplier_or_category": string,
+      "risk": string,
+      "mitigation": string
+    }
+  ],
+  "warehouse_actions": string[],
+  "distribution_plan": string[],
+  "cost_saving_estimate_ar": string,
+  "integration_plan": {
+    "erp": string,
+    "pos": string,
+    "warehouse_management": string
+  },
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+قواعد:
+- لا تقدم توقعات كحقيقة مؤكدة.
+- اربط كل توصية بتقليل نفاد المخزون أو خفض تكلفة التخزين.
+- اجعل الصفحة تعرض الفرق بين "قبل الذكاء الاصطناعي" و"بعد الذكاء الاصطناعي".
+```
+
+---
+
+# أهم التعديلات التي أنصح بتنفيذها أولاً
+
+## الأولوية 1: توحيد Gemini و Structured Output
+
+ابدأ من:
+
+```txt
+backend/services/aiGateway.js
+backend/server.js
+assets/js/gemini-demo-engine.js
+assets/js/live-demo-apps.js
+```
+
+المطلوب أن كل Demo يرسل:
+
+```js
+{
+  model: "gemini-2.5-flash",
+  messages: [...],
+  response_format: {
+    type: "json_schema",
+    json_schema: {
+      name: "demo_schema_name",
+      schema: { ... }
+    }
+  },
+  temperature: 0.2
+}
+```
+
+ثم يحولها Backend إلى إعدادات Gemini المناسبة. هذا مهم لأن Gemini يدعم النتائج المنظمة بـ JSON Schema، وهي أفضل طريقة لبناء واجهات نتائج موثوقة وقابلة للتحويل إلى Cards وCharts. ([Google AI for Developers](https://ai.google.dev/gemini-api/docs/structured-output?utm_source=chatgpt.com "Structured outputs | Gemini API | Google AI for Developers"))
+
+## الأولوية 2: إضافة ديموهات حقيقية للتسويق وسلسلة التوريد
+
+حالياً التسويق وسلسلة التوريد أقرب إلى صفحات خدمة ثابتة. اجعلها تستخدم نفس Engine الموجود في:
+
+```txt
+assets/js/live-demo-apps.js
+frontend/js/demo-experience.js
+```
+
+وأضف لها Config مستقل بدلاً من تركها صفحات معلومات فقط.
+
+## الأولوية 3: إزالة الإحساس “التجريبي الخام”
+
+الواجهات يجب أن تعرض:
+
+```txt
+Executive Summary
+Score
+Risks
+Recommended Actions
+ROI Estimate
+Integration Readiness
+Download Report
+WhatsApp CTA
+```
+
+وليس مجرد رد AI.
+
+## الأولوية 4: معالجة الملفات من Backend
+
+في OCR والأرشيف الطبي والصحة وتحليل البيانات، لا تجعل المتصفح يحمل عبء الملفات الحساسة أو الكبيرة. استخدم Backend upload route، ثم مرر المحتوى إلى Gemini بطريقة آمنة. لملفات PDF والوسائط، وثائق Gemini توضّح أن Files API مناسب لرفع الملفات والعمل عليها عبر الطلبات، وأن فهم المستندات يدعم PDF بشكل واضح. ([Google AI for Developers](https://ai.google.dev/gemini-api/docs/files?utm_source=chatgpt.com "Files API | Gemini API | Google AI for Developers"))
+
+## الأولوية 5: Safety و Trust
+
+أضف Safety Settings حسب المجال، خصوصاً الصحة والطب والتوظيف والتعليم. Gemini API يوفر إعدادات أمان قابلة للضبط أثناء التطوير ويمكن استخدامها لتحديد مستوى التقييد المناسب للتطبيق. ([Google AI for Developers](https://ai.google.dev/gemini-api/docs/safety-settings?utm_source=chatgpt.com "Safety settings | Gemini API | Google AI for Developers"))
+
+---
+
+# صيغة CTA موحدة لكل التجارب
+
+أضف هذا النمط في نهاية كل نتيجة AI:
+
+```txt
+هل تريد تحويل هذه التجربة إلى نظام يعمل على بيانات منشأتك؟
+
+[اطلب عرض سعر]
+[احجز ديمو مباشر]
+[أرسل التقرير عبر واتساب]
+[حمّل التقرير PDF]
+```
+
+وملخص واتساب يكون مثل:
+
+```txt
+مرحباً Bright AI،
+جرّبت ديمو [اسم النظام] وظهرت لي النتيجة التالية:
+- المجال:
+- النتيجة/Score:
+- أهم توصية:
+- أرغب في ربط النظام مع:
+```
+
+---
+
+# الخلاصة التنفيذية
+
+عندك بنية جيدة جداً كبداية، خاصة وجود Backend AI Gateway وتكامل Gemini مبدئي. لكن التحسين الحقيقي ليس في “تجميل الصفحات” فقط، بل في تحويل كل صفحة إلى:
+
+```txt
+AI Product Experience
+→ يفهم مشكلة العميل
+→ يشغل سيناريو واقعي
+→ ينتج تقريراً منظماً
+→ يعرض قيمة مالية/تشغيلية
+→ يقود إلى طلب شراء أو ديمو
+```
+
+ابدأ بالبرومبت الرئيسي، ثم طبّق برومبت كل مسار حسب الأولوية التالية:
+
+```txt
+1. interview/
+2. smart-medical-archive/
+3. try/data-analyzer/
+4. demo/ocr-demo/
+5. ai-bots/BrightSupport/
+6. health/
+7. ai-scolecs/
+8. services/marketing-automation.html
+9. services/supply-chain-optimization.html
+```
+
+الأثر الأكبر سيكون من: توحيد JSON Schema، إضافة نتائج Dashboard احترافية، جعل التسويق وسلسلة التوريد ديموهات حقيقية، وإضافة CTA ذكي يحمل نتيجة العميل مباشرة إلى واتساب أو طلب عرض.
+
 أكيد أ.يزيد. انسخ كل برومبت لحاله لـ Codex، والأفضل تشغلهم بالترتيب. Codex يقدر يقرأ ويعدل ويشغل أوامر داخل الريبو، فخلّه يشتغل task-by-task بدل برومبت واحد ضخم يخبص عليك التغييرات. ([developers.openai.com](https://developers.openai.com/codex/cli?utm_source=chatgpt.com "Codex CLI"))
 وبرضه الأفضل يكون عندك** **`AGENTS.md` فيه أوامر البناء والاختبار وقواعد المشروع، لأن OpenAI تنصح بهذا كجزء من تجهيز الريبو لـ Codex. ([developers.openai.com](https://developers.openai.com/codex/learn/best-practices?utm_source=chatgpt.com "Best practices – Codex"))
 
@@ -387,10 +1541,6 @@ npm run smoke-test
 ```
 
 نصيحتي العملية: شغّل** ****البرومبت 1 أولًا** لأنه يمنع أخطر مشاكل الإنتاج، بعدها** ****البرومبت 2** للفهرسة والتصدر، ثم** ****البرومبت 3** للتصميم والواجهة. Codex prompting guide نفسه يركّز على الاستقلالية، استكشاف الكود، استخدام الأدوات، وجودة الواجهة في مهام الكود الكبيرة. ([developers.openai.com](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide?utm_source=chatgpt.com "Codex Prompting Guide"))
-
-
-
-
 
 أكيد أ. يزيد — الأفضل لـ Codex إنك تعطيه** ****برومبتات صغيرة متسلسلة** بدل برومبت واحد ضخم. خله يشتغل مرحلة مرحلة عشان يعطيك diffs نظيفة وما يخرب المشروع. OpenAI نفسها تنصح إن التعليمات تكون واضحة ومحددة وفي البداية، وهذا بالضبط اللي سويته هنا. ([OpenAI Help Center](https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api?utm_source=chatgpt.com "Best practices for prompt engineering with the OpenAI API"))
 

@@ -93,8 +93,8 @@ function resolveModel() {
   return String(config.gemini.model || process.env.GEMINI_MODEL || 'gemini-2.5-flash').trim() || 'gemini-2.5-flash';
 }
 
-function buildGeminiGenerateUrl() {
-  const model = resolveModel();
+function buildGeminiGenerateUrl(modelOverride) {
+  const model = String(modelOverride || resolveModel()).trim() || resolveModel();
   const base = `${config.gemini.endpoint}/${model}:generateContent`;
   const apiKey = resolveApiKey();
   if (apiKey) {
@@ -103,8 +103,8 @@ function buildGeminiGenerateUrl() {
   return base;
 }
 
-function buildGeminiStreamUrl() {
-  const model = resolveModel();
+function buildGeminiStreamUrl(modelOverride) {
+  const model = String(modelOverride || resolveModel()).trim() || resolveModel();
   const base = `${config.gemini.endpoint}/${model}:streamGenerateContent`;
   const params = new URLSearchParams();
   params.set('alt', 'sse');
@@ -264,13 +264,70 @@ function validateChatRequest(req) {
   return { sanitizedMessage, activeSessionId, history };
 }
 
-async function callGemini(contents) {
+function normalizeGeminiSchema(schema) {
+  if (!schema || typeof schema !== 'object') return null;
+  const copy = Array.isArray(schema) ? schema.map(normalizeGeminiSchema) : { ...schema };
+  if (copy.type && typeof copy.type === 'string') copy.type = copy.type.toUpperCase();
+  if (copy.properties && typeof copy.properties === 'object') {
+    copy.properties = Object.fromEntries(
+      Object.entries(copy.properties).map(([key, value]) => [key, normalizeGeminiSchema(value)])
+    );
+  }
+  if (copy.items) copy.items = normalizeGeminiSchema(copy.items);
+  if (Array.isArray(copy.anyOf)) copy.anyOf = copy.anyOf.map(normalizeGeminiSchema);
+  if (Array.isArray(copy.oneOf)) copy.oneOf = copy.oneOf.map(normalizeGeminiSchema);
+  if (Array.isArray(copy.allOf)) copy.allOf = copy.allOf.map(normalizeGeminiSchema);
+  delete copy.additionalProperties;
+  delete copy.$schema;
+  return copy;
+}
+
+function resolveResponseSchema(body) {
+  const responseFormat = body?.response_format || body?.responseFormat || {};
+  return normalizeGeminiSchema(
+    body?.responseSchema ||
+    body?.response_schema ||
+    responseFormat?.json_schema?.schema ||
+    responseFormat?.schema
+  );
+}
+
+function resolveSafetySettings(body) {
+  if (Array.isArray(body?.safetySettings)) return body.safetySettings;
+  if (Array.isArray(body?.safety_settings)) return body.safety_settings;
+
+  const domain = String(body?.domain || body?.demoDomain || '').toLowerCase();
+  const threshold = (domain === 'health' || domain === 'medical' || domain === 'medical_archive')
+    ? 'BLOCK_LOW_AND_ABOVE'
+    : 'BLOCK_MEDIUM_AND_ABOVE';
+
+  return [
+    { category: 'HARM_CATEGORY_HARASSMENT', threshold },
+    { category: 'HARM_CATEGORY_HATE_SPEECH', threshold },
+    { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold },
+    { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold }
+  ];
+}
+
+async function callGemini(contents, options = {}) {
   return retryWithBackoff(async () => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(new Error('TIMEOUT')), REQUEST_TIMEOUT_MS);
 
     try {
-      const response = await fetch(buildGeminiGenerateUrl(), {
+      const generationConfig = {
+        temperature: Number.isFinite(Number(options.temperature)) ? Number(options.temperature) : 0.55,
+        maxOutputTokens: Number.isFinite(Number(options.maxOutputTokens)) ? Number(options.maxOutputTokens) : 900
+      };
+      const responseSchema = normalizeGeminiSchema(options.responseSchema);
+      if (responseSchema) {
+        generationConfig.responseMimeType = 'application/json';
+        generationConfig.responseSchema = responseSchema;
+      } else if (options.responseMimeType) {
+        generationConfig.responseMimeType = options.responseMimeType;
+      }
+
+      const response = await fetch(buildGeminiGenerateUrl(options.model), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -278,7 +335,8 @@ async function callGemini(contents) {
         },
         body: JSON.stringify({
           contents,
-          generationConfig: { temperature: 0.55, maxOutputTokens: 900 }
+          generationConfig,
+          safetySettings: Array.isArray(options.safetySettings) ? options.safetySettings : undefined
         }),
         signal: controller.signal
       });
@@ -556,9 +614,13 @@ async function openAiCompatChat(req) {
   }
 
   const activeModel = String(model || resolveModel()).trim() || resolveModel();
-  const wantsJson = body.response_format?.type === 'json_object';
+  const wantsJson = body.response_format?.type === 'json_object' || body.response_format?.type === 'json_schema' || body.responseFormat?.type === 'json_schema';
+  const responseSchema = resolveResponseSchema(body);
   const generationConfig = { temperature, maxOutputTokens: maxTokens };
-  if (wantsJson) {
+  if (responseSchema) {
+    generationConfig.responseMimeType = 'application/json';
+    generationConfig.responseSchema = responseSchema;
+  } else if (wantsJson) {
     generationConfig.responseMimeType = 'application/json';
   }
 
@@ -570,7 +632,8 @@ async function openAiCompatChat(req) {
     },
     body: JSON.stringify({
       contents,
-      generationConfig
+      generationConfig,
+      safetySettings: resolveSafetySettings(body)
     })
   });
 

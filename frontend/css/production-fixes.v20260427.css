@@ -15,6 +15,7 @@ html {
 
 body {
   min-width: 0;
+  overflow-x: clip;
 }
 
 body.modal-open,
@@ -71,6 +72,58 @@ iframe {
 
 img {
   block-size: auto;
+}
+
+a,
+button,
+[role="button"],
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+a,
+button,
+[role="button"] {
+  min-inline-size: 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+dt,
+dd,
+blockquote,
+.card,
+.glass-card,
+.btn,
+.btn-main,
+.btn-outline,
+.cta-button {
+  overflow-wrap: anywhere;
+}
+
+[dir="rtl"] .mobile-menu,
+[dir="rtl"] .mobile-menu-drawer,
+[dir="rtl"] .drawer,
+[dir="rtl"] .sidebar {
+  text-align: start;
 }
 
 table {
@@ -237,6 +290,7 @@ code,
   button,
   [role="button"] {
     min-block-size: 44px;
+    white-space: normal;
   }
 
   .search-modal-content,

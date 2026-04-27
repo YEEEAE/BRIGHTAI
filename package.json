@@ -58,6 +58,7 @@
     "analytics:qa": "node scripts/analytics-qa.mjs",
     "internal-links:fix": "node scripts/fix-internal-links.mjs",
     "smoke-test:config": "node scripts/check-api-base-consistency.mjs",
+    "ui:audit": "node scripts/ui-audit.mjs",
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",
