@@ -323,6 +323,60 @@
     @media (min-width:1024px) { .nav-container { padding:0 2rem; gap:1.5rem; } .nav-desktop { display:flex; align-items:center; } .nav-links { display:flex; align-items:center; } .nav-cta { display:inline-flex; } }
     @media (max-width:1023px) { :root { --nav-height:64px; } .hero { padding-top:148px; } }
 	    @media (max-width:900px) { .hero-grid,.grid-2,.grid-3,.faq-grid,.feature-strip,.link-grid { grid-template-columns:1fr; } .table-wrap { overflow-x:auto; } .services-bar-inner { padding-top:10px; } .logo-copy small { display:none; } }
+    .demo-shell{display:grid;grid-template-columns:1fr 1.4fr;gap:22px;align-items:start}
+    .form-shell,.result-shell{border:1px solid var(--line);background:linear-gradient(180deg,rgba(15,23,42,.84),rgba(15,23,42,.58));box-shadow:0 24px 80px rgba(0,0,0,.28);backdrop-filter:blur(16px);border-radius:28px;padding:clamp(20px,3vw,36px)}
+    .form-shell form{display:grid;gap:16px}
+    .field-group{display:grid;gap:6px}
+    .field-group label{font-weight:900;color:#c7d2fe;font-size:14px}
+    .field-group input,.field-group select,.field-group textarea{width:100%;padding:10px 14px;border-radius:12px;border:1px solid rgba(148,163,184,.22);background:rgba(255,255,255,.05);color:#f8fafc;font-family:inherit;font-size:15px;outline:none;transition:border-color .2s}
+    .field-group input:focus,.field-group select:focus,.field-group textarea:focus{border-color:rgba(129,140,248,.5)}
+    .field-group textarea{resize:vertical;min-height:60px;direction:auto}
+    .field-help{color:#64748b;font-size:12px}
+    .scenario-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+    .scenario-chip{padding:10px 16px;border-radius:999px;border:1px solid rgba(148,163,184,.16);background:rgba(255,255,255,.04);color:#cbd5e1;font-size:14px;font-weight:850;cursor:pointer;transition:all .2s}
+    .scenario-chip:hover{border-color:rgba(129,140,248,.34);color:#fff;background:rgba(99,102,241,.12)}
+    .scenario-chip.active{color:#fff;background:linear-gradient(135deg,rgba(99,102,241,.3),rgba(16,185,129,.18));border-color:rgba(129,140,248,.42);box-shadow:0 14px 32px rgba(99,102,241,.18)}
+    .action-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+    .sc-loading{display:none;align-items:center;gap:10px;padding:14px;border-radius:14px;background:rgba(99,102,241,.1);color:#c7d2fe;font-size:14px;margin-top:12px}
+    .sc-loading.show{display:flex}
+    .sc-loading i{width:18px;height:18px;border:2px solid rgba(99,102,241,.3);border-top-color:#6366f1;border-radius:50%;animation:sc-spin .8s linear infinite}
+    @keyframes sc-spin{to{transform:rotate(360deg)}}
+    .sc-notice{margin-top:12px;padding:12px;border-radius:12px;background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.2);color:#fde68a;font-size:13px;line-height:1.7}
+    .result-topbar{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+    .result-title-wrap h2{margin:0;font-size:clamp(20px,2.5vw,28px)}
+    .result-title-wrap p{margin:4px 0 0;color:#94a3b8;font-size:14px}
+    .status-pill{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:900;white-space:nowrap}
+    .status-pill[data-mode="demo"]{background:rgba(99,102,241,.14);color:#c7d2fe;border:1px solid rgba(129,140,248,.24)}
+    .status-pill[data-mode="live"]{background:rgba(16,185,129,.14);color:#86efac;border:1px solid rgba(16,185,129,.24)}
+    .sc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+    .sc-stat{padding:14px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}
+    .sc-stat span{display:block;color:#94a3b8;font-size:12px;margin-bottom:4px}
+    .sc-stat strong{display:block;color:#fff;font-size:15px;line-height:1.5}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+    .compare-col{padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.07)}
+    .compare-col.before{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.18)}
+    .compare-col.after{background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.18)}
+    .compare-label{display:block;font-weight:950;font-size:13px;margin-bottom:10px}
+    .compare-col.before .compare-label{color:#fca5a5}
+    .compare-col.after .compare-label{color:#86efac}
+    .compare-col ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+    .compare-col li{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04);font-size:13px;color:#cbd5e1}
+    .sc-output{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .sc-card{padding:16px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}
+    .sc-card h3{margin:0 0 8px;color:#c7d2fe;font-size:17px}
+    .sc-card p,.sc-card li{color:#cbd5e1;font-size:14px;line-height:1.7}
+    .sc-card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+    .sc-kicker{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(99,102,241,.14);color:#c7d2fe;font-size:11px;font-weight:950;margin-bottom:10px}
+    .sc-int-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .sc-int-card{padding:12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+    .sc-int-card strong{display:block;color:#fff;font-size:13px;margin-bottom:4px}
+    .sc-int-card span{color:#94a3b8;font-size:12px;line-height:1.6}
+    .risk-low{color:#86efac}.risk-medium{color:#fde68a}.risk-high{color:#fca5a5}.risk-critical{color:#ef4444;font-weight:900}
+    .sc-cta-panel{border-radius:28px;padding:34px;background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(16,185,129,.12));border:1px solid rgba(129,140,248,.24);text-align:center;margin-top:22px}
+    .sc-cta-panel h2{margin:0 0 8px}
+    .sc-cta-panel p{color:#cbd5e1;margin:0 0 22px}
+    .sc-cta-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+    @media(max-width:900px){.demo-shell{grid-template-columns:1fr}.sc-stats{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}.sc-output{grid-template-columns:1fr}.sc-int-grid{grid-template-columns:1fr}}
   </style>
   <script id="brightai-production-schema" type="application/ld+json">
 {
@@ -568,17 +622,166 @@
       </div>
     </section>
 
-    
-    <section>
+
+    <section id="live-demo">
       <div class="container">
-        <article class="card prose">
-          <h2>جرّب النموذج الأولي قبل الشراء</h2>
-          <p>تقدر تستكشف نموذج أولي للمنتج قبل طلب التنفيذ الكامل، حتى تشوف طريقة العمل وتجربة الاستخدام بشكل عملي.</p>
-          
-          <div class="hero-actions">
-            <a class="btn btn-soft" href="https://brightai.site/sectors/manufacturing/">جرّب نموذج تحسين سلسلة التوريد</a>
-          </div>
-        </article>
+        <div class="section-head">
+          <h2>تنبؤ مبكر بالطلب، إعادة طلب ذكية، وتقليل نفاد المخزون</h2>
+          <p>جرّب النظام مباشرة: أدخل بيانات سلسلة الإمداد أو اختر سيناريو جاهز.</p>
+        </div>
+        <div class="scenario-row">
+          <button class="scenario-chip active" data-scenario="retail" type="button">شركة تجزئة في السعودية</button>
+          <button class="scenario-chip" data-scenario="pharma" type="button">مستودع أدوية</button>
+          <button class="scenario-chip" data-scenario="food" type="button">مطعم وسلاسل أغذية</button>
+          <button class="scenario-chip" data-scenario="construction" type="button">موزع مواد بناء</button>
+        </div>
+        <div class="demo-shell">
+          <article class="form-shell">
+            <form id="supplyChainDemoForm">
+              <div class="field-group">
+                <label for="scSector">القطاع</label>
+                <select id="scSector">
+                  <option value="التجزئة">التجزئة</option>
+                  <option value="الأدوية">الأدوية</option>
+                  <option value="الأغذية والمطاعم">الأغذية والمطاعم</option>
+                  <option value="مواد البناء">مواد البناء</option>
+                  <option value="التجارة الإلكترونية">التجارة الإلكترونية</option>
+                  <option value="التصنيع">التصنيع</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="scLocations">عدد الفروع أو المستودعات</label>
+                <input type="number" id="scLocations" min="1" value="12" />
+                <span class="field-help">عدد المواقع التي توزّع عليها المخزون.</span>
+              </div>
+              <div class="field-group">
+                <label for="scDemandRate">معدل الطلب (وحدة/يوم)</label>
+                <input type="number" id="scDemandRate" min="1" value="150" />
+              </div>
+              <div class="field-group">
+                <label for="scInventoryLevel">مستوى المخزون الحالي (وحدة)</label>
+                <input type="number" id="scInventoryLevel" min="0" value="320" />
+              </div>
+              <div class="field-group">
+                <label for="scLeadTime">مدة التوريد Lead Time (أيام)</label>
+                <input type="number" id="scLeadTime" min="1" value="7" />
+                <span class="field-help">الوقت من طلب المورد حتى استلام البضاعة.</span>
+              </div>
+              <div class="field-group">
+                <label for="scStorageCost">تكلفة التخزين (ريال/وحدة/شهر)</label>
+                <input type="number" id="scStorageCost" min="0" value="8" step="0.5" />
+              </div>
+              <div class="field-group">
+                <label for="scTopProducts">المنتجات الأكثر مبيعاً</label>
+                <textarea id="scTopProducts" rows="3">حليب أطفال، أدوية مسكنات، معجون طماطم، أرز بسمتي</textarea>
+                <span class="field-help">افصل بين المنتجات بفاصلة.</span>
+              </div>
+              <div class="action-row">
+                <button class="btn btn-primary" type="submit">حلّل سلسلة الإمداد</button>
+                <button class="btn btn-soft" type="button" id="useExample">استخدم المثال الجاهز</button>
+              </div>
+              <div class="sc-loading" id="demoLoading"><i></i><span>جارٍ تحليل سلسلة الإمداد عبر Gemini...</span></div>
+              <div class="sc-notice">المخرجات التالية تقديرات مبنية على المدخلات وسياق الاستخدام المتوقع. لا تقدم كحقيقة مؤكدة. كل توصية مرتبطة بتقليل نفاد المخزون أو خفض تكلفة التخزين.</div>
+            </form>
+          </article>
+          <article class="result-shell">
+            <div class="result-topbar">
+              <div class="result-title-wrap">
+                <h2 id="resultTitle">تحليل سلسلة الإمداد بالذكاء الاصطناعي</h2>
+                <p id="resultSubtitle">أدخل التفاصيل أو استخدم المثال الجاهز لتوليد التحليل.</p>
+              </div>
+              <span class="status-pill" id="generationMode" data-mode="demo">وضع العرض</span>
+            </div>
+            <div class="sc-stats" id="topStats">
+              <div class="sc-stat"><span>توقع الطلب 7 أيام</span><strong>بانتظار المدخلات</strong></div>
+              <div class="sc-stat"><span>مخاطر النفاد</span><strong>بانتظار المدخلات</strong></div>
+              <div class="sc-stat"><span>توفير تقديري</span><strong>بانتظار المدخلات</strong></div>
+            </div>
+            <div class="compare-grid" id="compareSection">
+              <div class="compare-col before">
+                <span class="compare-label">قبل الذكاء الاصطناعي</span>
+                <ul id="beforeAiList">
+                  <li>قرارات الطلب تعتمد على تقديرات يدوية</li>
+                  <li>نفاد المخزون يُكتشف متأخراً</li>
+                  <li>تكاليف التخزين غير مُحسّنة</li>
+                </ul>
+              </div>
+              <div class="compare-col after">
+                <span class="compare-label">بعد الذكاء الاصطناعي</span>
+                <ul id="afterAiList">
+                  <li>تنبؤ بالطلب مبني على البيانات والمواسم</li>
+                  <li>تنبيه مبكر قبل نفاد المخزون</li>
+                  <li>توصيات إعادة طلب تلقائية (EOQ + ROP)</li>
+                </ul>
+              </div>
+            </div>
+            <div class="sc-output">
+              <section class="sc-card">
+                <span class="sc-kicker">توقع الطلب</span>
+                <h3>Demand Forecast</h3>
+                <div id="demandForecast"><p>سيظهر هنا توقع الطلب لـ 7 و 30 يوماً مع ملاحظات الموسمية.</p></div>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">مخاطر النفاد</span>
+                <h3>Stockout Risk</h3>
+                <ul id="stockoutRisks"><li>سيظهر هنا تحليل مخاطر نفاد المخزون لكل منتج.</li></ul>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">توصيات إعادة الطلب</span>
+                <h3>Reorder Point & EOQ</h3>
+                <ul id="reorderRecs"><li>سيظهر هنا نقطة إعادة الطلب والكمية الموصى بها لكل منتج.</li></ul>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">مخاطر الموردين</span>
+                <h3>Supplier Risk</h3>
+                <ul id="supplierRisks"><li>سيظهر هنا تحليل مخاطر الموردين وتخفيفاتها.</li></ul>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">إجراءات المستودع</span>
+                <h3>Warehouse Actions</h3>
+                <ul id="warehouseActions"><li>سيظهر هنا إجراءات المستودع المقترحة.</li></ul>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">خطة التوزيع</span>
+                <h3>Distribution Action Plan</h3>
+                <ul id="distributionPlan"><li>سيظهر هنا خطة التوزيع المقترحة.</li></ul>
+              </section>
+              <section class="sc-card" style="grid-column:1 / -1;">
+                <span class="sc-kicker">توفير التكاليف</span>
+                <h3>Cost Saving Estimate</h3>
+                <p id="costSaving">سيظهر هنا تقدير التوفير في التكاليف.</p>
+              </section>
+              <section class="sc-card" style="grid-column:1 / -1;">
+                <span class="sc-kicker">خطة التكامل</span>
+                <h3>Integration Plan</h3>
+                <div class="sc-int-grid" id="integrationPlan">
+                  <div class="sc-int-card"><strong>ERP</strong><span>بانتظار التحليل</span></div>
+                  <div class="sc-int-card"><strong>POS</strong><span>بانتظار التحليل</span></div>
+                  <div class="sc-int-card"><strong>إدارة المستودعات</strong><span>بانتظار التحليل</span></div>
+                </div>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">الخطوة التالية</span>
+                <h3>قرار التنفيذ</h3>
+                <p id="nextAction">بعد التحليل، ستظهر هنا الخطوة الأنسب للانتقال من الديمو إلى التنفيذ.</p>
+              </section>
+              <section class="sc-card">
+                <span class="sc-kicker">ملخص واتساب</span>
+                <h3>رسالة مختصرة</h3>
+                <p id="whatsappSummary">سيولد النظام ملخصاً قصيراً يمكن إرساله عبر واتساب.</p>
+              </section>
+            </div>
+            <div class="sc-cta-panel">
+              <h2>حوّل التحليل إلى نظام فعلي</h2>
+              <p>إذا كانت المخرجات قريبة مما يحتاجه فريقك، فالخطوة الصحيحة الآن هي نقلها من ديمو داخل الصفحة إلى تشغيل فعلي.</p>
+              <div class="sc-cta-actions">
+                <a class="btn btn-primary" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%B1%D8%A8%D8%B7%20%D9%86%D8%B8%D8%A7%D9%85%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%B3%D9%84%D8%B3%D9%84%D8%A9%20%D8%A7%D9%84%D8%A5%D9%85%D8%AF%D8%A7%D8%AF%20%D9%85%D8%B9%20ERP">اربط النظام مع ERP</a>
+                <a class="btn btn-soft" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D9%85%D8%AE%D8%B2%D9%88%D9%86%20%D8%B4%D8%B1%D9%83%D8%AA%D9%8A">حلّل مخزون شركتك</a>
+                <a class="btn btn-wa" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%86%D9%85%D9%88%D8%B0%D8%AC%20%D8%AA%D9%88%D9%82%D8%B9%20%D8%A7%D9%84%D8%B7%D9%84%D8%A8%20%D9%84%D8%B3%D9%84%D8%B3%D9%84%D8%A9%20%D8%A5%D9%85%D8%AF%D8%A7%D8%AF%D9%8A">اطلب نموذج توقع الطلب</a>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -637,9 +840,11 @@
     <section>
       <div class="container final">
         <h2>ناقش احتياج شركتك في أتمتة تحسين سلسلة التوريد</h2>
-        <p>أرسل لنا وصفاً مختصراً للعملية أو البيانات أو المشكلة، وسنقترح مساراً عملياً يناسب شركتك في السعودية. إذا اتضح أن احتياجك يتقاطع مع أتمتة التقارير التشغيلية أو نظام التحليل (منصة بيانات) فسنوضح ذلك من البداية بدل توسيع النطاق بشكل ضبابي.</p>
-        <div class="hero-actions" style="justify-content:center">
-          <a class="btn btn-wa" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%B3%D9%84%D8%B3%D9%84%D8%A9%20%D8%A7%D9%84%D8%AA%D9%88%D8%B1%D9%8A%D8%AF%20%D9%84%D8%B4%D8%B1%D9%83%D8%AA%D9%8A.">تواصل عبر واتساب</a>
+        <p>جرّبت الديمو؟ الآن حوّل المخرجات إلى نظام فعلي مربوط ببياناتك. أرسل لنا وصفاً مختصراً للعملية أو المشكلة، وسنقترح مساراً عملياً يناسب شركتك في السعودية. إذا اتضح أن احتياجك يتقاطع مع أتمتة التقارير التشغيلية أو نظام التحليل (منصة بيانات) فسنوضح ذلك من البداية.</p>
+        <div class="hero-actions" style="justify-content:center;flex-wrap:wrap;">
+          <a class="btn btn-primary" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%B1%D8%A8%D8%B7%20%D9%86%D8%B8%D8%A7%D9%85%20%D8%AA%D8%AD%D8%B3%D9%8A%D9%86%20%D8%B3%D9%84%D8%B3%D9%84%D8%A9%20%D8%A7%D9%84%D8%A5%D9%85%D8%AF%D8%A7%D8%AF%20%D9%85%D8%B9%20ERP">اربط النظام مع ERP</a>
+          <a class="btn btn-soft" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D9%85%D8%AE%D8%B2%D9%88%D9%86%20%D8%B4%D8%B1%D9%83%D8%AA%D9%8A">حلّل مخزون شركتك</a>
+          <a class="btn btn-wa" href="https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%86%D9%85%D9%88%D8%B0%D8%AC%20%D8%AA%D9%88%D9%82%D8%B9%20%D8%A7%D9%84%D8%B7%D9%84%D8%A8%20%D9%84%D8%B3%D9%84%D8%B3%D9%84%D8%A9%20%D8%A5%D9%85%D8%AF%D8%A7%D8%AF%D9%8A">اطلب نموذج توقع الطلب</a>
           <a class="btn btn-soft" href="/services/">استكشف كل الحلول</a>
         </div>
       </div>
@@ -680,6 +885,421 @@
 
       syncHeaderState();
       window.addEventListener("scroll", syncHeaderState, { passive: true });
+    })();
+  </script>
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+
+      var scenarioTemplates = {
+        retail: {
+          sector: "التجزئة",
+          locations: 12,
+          demandRate: 150,
+          inventoryLevel: 320,
+          leadTime: 7,
+          storageCost: 8,
+          topProducts: "حليب أطفال، أدوية مسكنات، معجون طماطم، أرز بسمتي"
+        },
+        pharma: {
+          sector: "الأدوية",
+          locations: 4,
+          demandRate: 80,
+          inventoryLevel: 180,
+          leadTime: 14,
+          storageCost: 15,
+          topProducts: "أدوية مسكنات، مضادات حيوية، أدوية ضغط، مستلزمات طبية"
+        },
+        food: {
+          sector: "الأغذية والمطاعم",
+          locations: 22,
+          demandRate: 300,
+          inventoryLevel: 500,
+          leadTime: 3,
+          storageCost: 5,
+          topProducts: "لحم بقر مجمد، خضار طازجة، زيت طبخ، أرز بسمتي"
+        },
+        construction: {
+          sector: "مواد البناء",
+          locations: 8,
+          demandRate: 60,
+          inventoryLevel: 450,
+          leadTime: 21,
+          storageCost: 12,
+          topProducts: "أسمنت، حديد تسليح، طوب، دهانات"
+        }
+      };
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      function applyScenario(name) {
+        var t = scenarioTemplates[name];
+        if (!t) return;
+        $("scSector").value = t.sector;
+        $("scLocations").value = t.locations;
+        $("scDemandRate").value = t.demandRate;
+        $("scInventoryLevel").value = t.inventoryLevel;
+        $("scLeadTime").value = t.leadTime;
+        $("scStorageCost").value = t.storageCost;
+        $("scTopProducts").value = t.topProducts;
+        document.querySelectorAll(".scenario-chip").forEach(function (chip) {
+          chip.classList.toggle("active", chip.dataset.scenario === name);
+        });
+      }
+
+      function collectInput() {
+        return {
+          sector: $("scSector").value,
+          locations: Number($("scLocations").value) || 1,
+          demandRate: Number($("scDemandRate").value) || 1,
+          inventoryLevel: Number($("scInventoryLevel").value) || 0,
+          leadTime: Number($("scLeadTime").value) || 1,
+          storageCost: Number($("scStorageCost").value) || 0,
+          topProducts: $("scTopProducts").value.trim()
+        };
+      }
+
+      function resolveEndpoint() {
+        try {
+          if (window.BrightAIRuntimeConfig && typeof window.BrightAIRuntimeConfig.buildUrl === "function") {
+            return window.BrightAIRuntimeConfig.buildUrl("/api/ai/chat/completions");
+          }
+        } catch (e) {}
+        return "/api/ai/chat/completions";
+      }
+
+      function extractJson(text) {
+        var fenced = text.match(/```json\s*([\s\S]*?)\s*```/i);
+        var raw = fenced ? fenced[1] : text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
+        return JSON.parse(raw);
+      }
+
+      function buildPrompt(input) {
+        return [
+          "أنت مستشار سلاسل إمداد وذكاء اصطناعي للشركات في السعودية.",
+          "أعد JSON صالحاً فقط، من دون Markdown أو شرح إضافي، وبهذا الشكل الحرفي:",
+          "{",
+          '  "supply_chain_snapshot": {',
+          '    "sector": string,',
+          '    "locations": string,',
+          '    "inventory_context_ar": string',
+          "  },",
+          '  "demand_forecast": {',
+          '    "next_7_days": string,',
+          '    "next_30_days": string,',
+          '    "seasonality_notes": string[],',
+          '    "confidence": number',
+          "  },",
+          '  "stockout_risks": [',
+          "    {",
+          '      "item": string,',
+          '      "risk_level": "low|medium|high|critical",',
+          '      "days_until_stockout": string,',
+          '      "reason": string',
+          "    }",
+          "  ],",
+          '  "reorder_recommendations": [',
+          "    {",
+          '      "item": string,',
+          '      "reorder_point": string,',
+          '      "recommended_quantity": string,',
+          '      "priority": "low|medium|high"',
+          "    }",
+          "  ],",
+          '  "supplier_risks": [',
+          "    {",
+          '      "supplier_or_category": string,',
+          '      "risk": string,',
+          '      "mitigation": string',
+          "    }",
+          "  ],",
+          '  "warehouse_actions": string[],',
+          '  "distribution_plan": string[],',
+          '  "cost_saving_estimate_ar": string,',
+          '  "integration_plan": {',
+          '    "erp": string,',
+          '    "pos": string,',
+          '    "warehouse_management": string',
+          "  },",
+          '  "next_action_ar": string,',
+          '  "whatsapp_summary_ar": string',
+          "}",
+          "",
+          "القواعد الإلزامية:",
+          "1) لا تقدم توقعات كحقيقة مؤكدة.",
+          "2) اربط كل توصية بتقليل نفاد المخزون أو خفض تكلفة التخزين.",
+          "3) اجعل المخرجات عملية وقابلة للتنفيذ في السياق السعودي.",
+          "4) اكتب كل النصوص بالعربية.",
+          "",
+          "المدخلات:",
+          "القطاع: " + input.sector,
+          "عدد الفروع/المستودعات: " + input.locations,
+          "معدل الطلب: " + input.demandRate + " وحدة/يوم",
+          "مستوى المخزون الحالي: " + input.inventoryLevel + " وحدة",
+          "مدة التوريد: " + input.leadTime + " أيام",
+          "تكلفة التخزين: " + input.storageCost + " ريال/وحدة/شهر",
+          "المنتجات الأكثر مبيعاً: " + input.topProducts
+        ].join("\n");
+      }
+
+      async function callGemini(input) {
+        var endpoint = resolveEndpoint();
+        var prompt = buildPrompt(input);
+        var response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            provider: "gemini",
+            model: "gemini-2.5-flash",
+            messages: [
+              { role: "system", content: "Return one valid JSON object only. No markdown. No commentary." },
+              { role: "user", content: prompt }
+            ],
+            temperature: 0.25,
+            max_tokens: 4096,
+            response_format: { type: "json_object" }
+          })
+        });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        var data = await response.json();
+        var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        return typeof content === "string" ? extractJson(content) : content;
+      }
+
+      function fallbackGenerate(input) {
+        var daysOfInventory = input.inventoryLevel / Math.max(input.demandRate, 1);
+        var reorderPoint = Math.round(input.demandRate * input.leadTime * 1.2);
+        var eoq = Math.round(Math.sqrt(2 * input.demandRate * 30 * 150 / Math.max(input.storageCost, 0.5)));
+        var products = input.topProducts.split(/[,،]/).map(function (p) { return p.trim(); }).filter(Boolean);
+        var highRisk = daysOfInventory < input.leadTime * 1.5;
+        var medRisk = daysOfInventory < input.leadTime * 3;
+
+        var stockoutRisks = products.slice(0, 4).map(function (product, i) {
+          var riskLevel = i === 0 ? (highRisk ? "critical" : "high") : i === 1 ? (medRisk ? "high" : "medium") : i === 2 ? "medium" : "low";
+          var daysLeft = Math.max(1, Math.round(input.inventoryLevel / Math.max(input.demandRate / products.length, 1) * (1 - i * 0.15)));
+          return {
+            item: product,
+            risk_level: riskLevel,
+            days_until_stockout: daysLeft + " يوم",
+            reason: riskLevel === "critical" ? "المخزون الحالي لا يكفي تغطية مدة التوريد" : riskLevel === "high" ? "معدل الطلب يقترب من المخزون المتاح" : "المخزون كافٍ حالياً لكن يحتاج متابعة"
+          };
+        });
+
+        var reorderRecs = products.slice(0, 4).map(function (product, i) {
+          return {
+            item: product,
+            reorder_point: Math.round(reorderPoint * (1 - i * 0.1)) + " وحدة",
+            recommended_quantity: Math.round(eoq * (1 - i * 0.08)) + " وحدة",
+            priority: i < 2 ? "high" : "medium"
+          };
+        });
+
+        return {
+          supply_chain_snapshot: {
+            sector: input.sector,
+            locations: input.locations + " فرع/مستودع",
+            inventory_context_ar: "قطاع " + input.sector + " بمعدل طلب " + input.demandRate + " وحدة/يوم ومخزون حالي " + input.inventoryLevel + " وحدة ومدة توريد " + input.leadTime + " أيام."
+          },
+          demand_forecast: {
+            next_7_days: "توقع طلب تقديري: " + Math.round(input.demandRate * 7) + " وحدة خلال 7 أيام.",
+            next_30_days: "توقع طلب تقديري: " + Math.round(input.demandRate * 30) + " وحدة خلال 30 يوماً.",
+            seasonality_notes: [
+              "ارتفاع متوقع في الطلب خلال المواسم والعروض.",
+              "تأثير محتمل لشهر رمضان وموسم العودة للمدارس على بعض الفئات.",
+              "يحتاج ربط ببيانات تاريخية لتحسين دقة التوقع."
+            ],
+            confidence: 0.68
+          },
+          stockout_risks: stockoutRisks,
+          reorder_recommendations: reorderRecs,
+          supplier_risks: [
+            { supplier_or_category: "مورد محلي — " + (products[0] || "منتج رئيسي"), risk: "تأخر محتمل في التوريد خلال المواسم", mitigation: "تفاوض على عقد توريد مرن مع بديل احتياطي" },
+            { supplier_or_category: "مورد دولي — مواد خام", risk: "تأثر محتمل بسلاسل الشحن العالمية", mitigation: "خزّن مخزون احتياطي يكفي دورة توريد إضافية" }
+          ],
+          warehouse_actions: [
+            "أعد توزيع المخزون بين الفروع حسب معدل الطلب الفعلي.",
+            "فعّل تنبيهات تلقائية عند وصول المخزون لنقطة إعادة الطلب.",
+            "راجع ترتيب المستودع لتسهيل الوصول للمنتجات الأسرع مبيعاً.",
+            "قيّم إمكانية دمج شحنات التوريد لتقليل تكلفة النقل."
+          ],
+          distribution_plan: [
+            "وجّه المخزون الفائض من الفروع الأقل طلباً إلى الأعلى طلباً.",
+            "أنشئ مسار نقل داخلي بين المستودعات الرئيسية والفروع.",
+            "حدّد أولوية توزيع المنتجات عالية المخاطر أولاً.",
+            "اربط خطة التوزيع ببيانات المبيعات اليومية من POS."
+          ],
+          cost_saving_estimate_ar: "تقدير توفير سنوي: بين " + Math.round(input.storageCost * input.inventoryLevel * 0.22) + " و " + Math.round(input.storageCost * input.inventoryLevel * 0.38) + " ريال من خفض تكلفة التخزين، مع تقليل نفاد المخزون بنسبة تقديرية 18-35%.",
+          integration_plan: {
+            erp: "ربط أوامر الشراء والمخزون تلقائياً من ERP لتقليل الإدخال اليدوي.",
+            pos: "تغذية بيانات المبيعات الفورية من POS لتحديث توقع الطلب يومياً.",
+            warehouse_management: "مزامنة مستويات المخزون والتنبيهات مع نظام إدارة المستودعات."
+          },
+          next_action_ar: "ابدأ بربط بيانات المبيعات من POS مع نقطة إعادة الطلب لمنتج واحد، ثم توسع تدريجياً.",
+          whatsapp_summary_ar: "تحليل سلسلة إمداد لقطاع " + input.sector + ": معدل الطلب " + input.demandRate + " وحدة/يوم، مخزون " + input.inventoryLevel + " وحدة، مدة توريد " + input.leadTime + " أيام. يوجد مخاطر نفاد على بعض المنتجات. التوصية: فعّل نقطة إعادة الطلب واربط POS. التقديرات أولية وليست مؤكدة."
+        };
+      }
+
+      function riskClass(level) {
+        return { low: "risk-low", medium: "risk-medium", high: "risk-high", critical: "risk-critical" }[level] || "risk-medium";
+      }
+
+      function priorityLabel(p) {
+        return { low: "منخفضة", medium: "متوسطة", high: "عالية" }[p] || p;
+      }
+
+      function renderDemandForecast(forecast) {
+        if (!forecast) return;
+        $("demandForecast").innerHTML =
+          "<p><strong>7 أيام:</strong> " + escapeHtml(forecast.next_7_days) + "</p>" +
+          "<p><strong>30 يوماً:</strong> " + escapeHtml(forecast.next_30_days) + "</p>" +
+          "<p style='margin-top:8px'><strong>ملاحظات الموسمية:</strong></p>" +
+          "<ul>" + (forecast.seasonality_notes || []).map(function (n) { return "<li>" + escapeHtml(n) + "</li>"; }).join("") + "</ul>" +
+          "<p style='margin-top:8px;color:#94a3b8;font-size:12px'>مستوى الثقة: " + (Number(forecast.confidence) * 100).toFixed(0) + "%</p>";
+      }
+
+      function renderStockoutRisks(risks) {
+        if (!risks || !risks.length) return;
+        $("stockoutRisks").innerHTML = risks.map(function (r) {
+          return "<li><strong class='" + riskClass(r.risk_level) + "'>" + escapeHtml(r.item) + "</strong> — " +
+            "<span class='" + riskClass(r.risk_level) + "'>" + escapeHtml(r.risk_level) + "</span> — " +
+            "ينفد خلال " + escapeHtml(r.days_until_stockout) + " — " +
+            escapeHtml(r.reason) + "</li>";
+        }).join("");
+      }
+
+      function renderReorderRecs(recs) {
+        if (!recs || !recs.length) return;
+        $("reorderRecs").innerHTML = recs.map(function (r) {
+          return "<li><strong>" + escapeHtml(r.item) + "</strong> — نقطة إعادة الطلب: " +
+            escapeHtml(r.reorder_point) + " — الكمية الموصى بها: " +
+            escapeHtml(r.recommended_quantity) + " — أولوية: " +
+            "<span class='" + (r.priority === "high" ? "risk-high" : r.priority === "low" ? "risk-low" : "risk-medium") + "'>" + priorityLabel(r.priority) + "</span></li>";
+        }).join("");
+      }
+
+      function renderSupplierRisks(risks) {
+        if (!risks || !risks.length) return;
+        $("supplierRisks").innerHTML = risks.map(function (r) {
+          return "<li><strong>" + escapeHtml(r.supplier_or_category) + "</strong> — الخطر: " +
+            escapeHtml(r.risk) + " — التخفيف: " + escapeHtml(r.mitigation) + "</li>";
+        }).join("");
+      }
+
+      function renderList(id, items) {
+        if (!items || !items.length) return;
+        $(id).innerHTML = items.map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+      }
+
+      function renderIntegration(plan) {
+        if (!plan) return;
+        $("integrationPlan").innerHTML =
+          "<div class='sc-int-card'><strong>ERP</strong><span>" + escapeHtml(plan.erp) + "</span></div>" +
+          "<div class='sc-int-card'><strong>POS</strong><span>" + escapeHtml(plan.pos) + "</span></div>" +
+          "<div class='sc-int-card'><strong>إدارة المستودعات</strong><span>" + escapeHtml(plan.warehouse_management) + "</span></div>";
+      }
+
+      function renderCompare(report) {
+        var before = [
+          "قرارات الطلب تعتمد على تقديرات يدوية ورد فعل متأخر.",
+          "نفاد المخزون يُكتشف بعد فوات الأوان.",
+          "تكاليف التخزين غير مُحسّنة والفائض يتراكم.",
+          "لا توجد رؤية واضحة لمخاطر الموردين.",
+          "التوزيع بين الفروع يعتمد على الخبرة الفردية."
+        ];
+        var after = [
+          "تنبؤ بالطلب مبني على البيانات والمواسم مع مستوى ثقة واضح.",
+          "تنبيه مبكر قبل نفاد المخزون بعدة أيام.",
+          "توصيات EOQ وROP تلقائية تقلل التكلفة والهدر.",
+          "تحليل مخاطر الموردين مع خطط تخفيف واضحة.",
+          "خطة توزيع مبنية على معدل الطلب الفعلي لكل فرع."
+        ];
+        if (report && report.stockout_risks) {
+          var criticalCount = report.stockout_risks.filter(function (r) { return r.risk_level === "critical" || r.risk_level === "high"; }).length;
+          if (criticalCount > 0) {
+            before.unshift("يوجد " + criticalCount + " منتجات معرضة للنفاد قريباً بدون تنبيه.");
+            after.unshift("النظام نبّهك مبكراً عن " + criticalCount + " منتجات واقترح إعادة طلب فوري.");
+          }
+        }
+        $("beforeAiList").innerHTML = before.map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+        $("afterAiList").innerHTML = after.map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("");
+      }
+
+      function renderTopStats(report) {
+        var forecast = report.demand_forecast || {};
+        var risks = report.stockout_risks || [];
+        var highRisks = risks.filter(function (r) { return r.risk_level === "critical" || r.risk_level === "high"; }).length;
+        var savingShort = report.cost_saving_estimate_ar ? report.cost_saving_estimate_ar.split("،")[0] : "غير محدد";
+        $("topStats").innerHTML =
+          "<div class='sc-stat'><span>توقع الطلب 7 أيام</span><strong>" + escapeHtml(forecast.next_7_days || "غير محدد") + "</strong></div>" +
+          "<div class='sc-stat'><span>مخاطر النفاد</span><strong class='" + (highRisks > 0 ? "risk-high" : "risk-low") + "'>" + highRisks + " منتج عالي المخاطر</strong></div>" +
+          "<div class='sc-stat'><span>توفير تقديري</span><strong>" + escapeHtml(savingShort) + "</strong></div>";
+      }
+
+      function renderReport(report, mode) {
+        var liveMode = mode === "live";
+        var snapshot = report.supply_chain_snapshot || {};
+        $("resultTitle").textContent = "تحليل سلسلة الإمداد — " + (snapshot.sector || "");
+        $("resultSubtitle").textContent = snapshot.inventory_context_ar || "";
+        $("generationMode").textContent = liveMode ? "توليد حي" : "وضع العرض";
+        $("generationMode").dataset.mode = liveMode ? "live" : "demo";
+
+        renderTopStats(report);
+        renderCompare(report);
+        renderDemandForecast(report.demand_forecast);
+        renderStockoutRisks(report.stockout_risks);
+        renderReorderRecs(report.reorder_recommendations);
+        renderSupplierRisks(report.supplier_risks);
+        renderList("warehouseActions", report.warehouse_actions);
+        renderList("distributionPlan", report.distribution_plan);
+        $("costSaving").textContent = report.cost_saving_estimate_ar || "";
+        renderIntegration(report.integration_plan);
+        $("nextAction").textContent = report.next_action_ar || "";
+        $("whatsappSummary").textContent = report.whatsapp_summary_ar || "";
+      }
+
+      async function generate(useLive) {
+        var input = collectInput();
+        if (!input.sector || !input.topProducts) return;
+
+        $("demoLoading").classList.add("show");
+
+        try {
+          if (useLive) {
+            var liveReport = await callGemini(input);
+            renderReport(liveReport, "live");
+          } else {
+            renderReport(fallbackGenerate(input), "demo");
+          }
+        } catch (error) {
+          console.error("Supply chain demo generation failed:", error);
+          renderReport(fallbackGenerate(input), "demo");
+        } finally {
+          $("demoLoading").classList.remove("show");
+        }
+      }
+
+      document.querySelectorAll(".scenario-chip").forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          applyScenario(chip.dataset.scenario);
+        });
+      });
+
+      $("useExample") && $("useExample").addEventListener("click", function () {
+        applyScenario("retail");
+        generate(false);
+      });
+
+      $("supplyChainDemoForm") && $("supplyChainDemoForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        generate(true);
+      });
+
+      applyScenario("retail");
+      renderReport(fallbackGenerate(scenarioTemplates.retail), "demo");
     })();
   </script>
   <script defer src="/assets/js/demo-experience-loader.js"></script>
