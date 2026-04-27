@@ -33,6 +33,7 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
   /^frontend\/pages\//i,
+  /^interview\/pages\//i,
   /^mais-OBM\/index\.html$/i,
   /^interview\/pages\/supportAI\/index\.html$/i,
   /^tenders\/index 2\.html$/i,
