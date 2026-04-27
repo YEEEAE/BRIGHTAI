@@ -173,7 +173,7 @@ function filePathPriority(filePath) {
 
   if (normalized.includes('/sectors/')) score += 10;
   if (normalized.includes('/docs/')) score += 8;
-  if (normalized.includes('/smart-medical-archive/')) score += 9;
+  if (normalized.includes('/demo/smart-medical-archive/')) score += 9;
   if (normalized.includes('/smart-automation/')) score += 8;
   if (normalized.includes('/ai-agent/')) score += 8;
   if (normalized.includes('/consultation/')) score += 7;

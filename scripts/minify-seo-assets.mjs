@@ -2,8 +2,8 @@ import { build } from "esbuild";
 
 const targets = [
   {
-    entry: "tenders/api-config.js",
-    outfile: "tenders/api-config.min.js",
+    entry: "demo/ai-tenders-analysis/api-config.js",
+    outfile: "demo/ai-tenders-analysis/api-config.min.js",
     type: "js"
   },
   {

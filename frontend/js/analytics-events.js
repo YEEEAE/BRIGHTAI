@@ -60,7 +60,7 @@
     if (href.indexOf("/data-analysis/") === 0) return "data_analysis";
     if (href.indexOf("/ai-bots/") === 0) return "ai_bots";
     if (href.indexOf("/ai-workflows/") === 0) return "ai_workflows";
-    if (href.indexOf("/smart-medical-archive/") === 0) return "smart_medical_archive";
+    if (href.indexOf("/demo/smart-medical-archive/") === 0) return "smart_medical_archive";
     if (href.indexOf("/demo/ai-tenders-analysis/") === 0) return "contractai_tenders";
     if (href.indexOf("/services/") === 0) return "services";
     return undefined;

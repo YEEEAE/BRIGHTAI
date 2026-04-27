@@ -813,6 +813,16 @@ services:
         destination: /demo/smart-hospital-management/
 
       - type: redirect
+        source: /smart-medical-archive
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /smart-medical-archive/
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /smart-medical-archive/index.html
+        destination: /demo/smart-medical-archive/
+
+      - type: redirect
         source: /ai-scolecs
         destination: /demo/ai-scolecs/
       - type: redirect
@@ -993,6 +1003,15 @@ services:
       - type: redirect
         source: /en/health/index.html
         destination: /demo/smart-hospital-management/
+      - type: redirect
+        source: /en/smart-medical-archive
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /en/smart-medical-archive/
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /en/smart-medical-archive/index.html
+        destination: /demo/smart-medical-archive/
       - type: redirect
         source: /en/ai-bots/BrightProject
         destination: /demo/brightproject/

@@ -1,24 +1,24 @@
 # Full Internal Links Inventory
 
-- Date: 2026-04-27T23:30:33.072Z
-- Files scanned: 263
-- Pages discovered: 263
-- Indexable pages: 237
-- Internal links discovered: 6649
-- Orphan pages: 0
+- Date: 2026-04-27T23:49:15.633Z
+- Files scanned: 262
+- Pages discovered: 262
+- Indexable pages: 252
+- Internal links discovered: 6611
+- Orphan pages: 17
 - Broken links: 0
 - Pages outside sitemap: 0
 - Weak anchors: 0
 - Links without href: 0
-- Canonical issues: 16
+- Canonical issues: 0
 
 ## Page / URL / Source File / Route Type / Incoming Internal Links / Outgoing Internal Links / Is Orphan? / In Sitemap? / Canonical / Indexable? / Problem / Severity / Fix
 
 | Page | URL | Source File | Route Type | Incoming | Outgoing | Orphan | Sitemap | Canonical | Indexable | Problem | Severity | Fix |
 | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |
-| شركة ذكاء اصطناعي وطنية في الرياض | https://brightai.site/about/ | about/index.html | static-index-route | 151 | 43 | No | Yes | https://brightai.site/about/ | Yes | None | None | None |
-| وكلاء ذكاء اصطناعي للمؤسسات في السعودية | https://brightai.site/ai-agent/ | ai-agent/index.html | static-index-route | 190 | 51 | No | Yes | https://brightai.site/ai-agent/ | Yes | None | None | None |
-| BrightMath - مساعد الرياضيات الذكي في السعودية | https://brightai.site/ai-bots/BrightMath/ | ai-bots/BrightMath/index.html | static-index-route | 3 | 20 | No | Yes | https://brightai.site/ai-bots/BrightMath/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي وطنية في الرياض | https://brightai.site/about/ | about/index.html | static-index-route | 152 | 43 | No | Yes | https://brightai.site/about/ | Yes | None | None | None |
+| وكلاء ذكاء اصطناعي للمؤسسات في السعودية | https://brightai.site/ai-agent/ | ai-agent/index.html | static-index-route | 189 | 51 | No | Yes | https://brightai.site/ai-agent/ | Yes | None | None | None |
+| BrightMath - مساعد الرياضيات الذكي في السعودية | https://brightai.site/ai-bots/BrightMath/ | ai-bots/BrightMath/index.html | static-index-route | 4 | 20 | No | Yes | https://brightai.site/ai-bots/BrightMath/ | Yes | None | None | None |
 | BrightRecruiter - روبوت التوظيف الذكي في السعودية | https://brightai.site/ai-bots/BrightRecruiter/ | ai-bots/BrightRecruiter/index.html | static-index-route | 5 | 18 | No | Yes | https://brightai.site/ai-bots/BrightRecruiter/ | Yes | None | None | None |
 | ردود فورية، تصعيد ذكي، وتقارير رضا عملاء من واتساب والموقع والبريد. | https://brightai.site/ai-bots/BrightSupport/ | ai-bots/BrightSupport/index.html | static-index-route | 9 | 18 | No | Yes | https://brightai.site/ai-bots/BrightSupport/ | Yes | None | None | None |
 | روبوتات ذكاء اصطناعي جاهزة لفرقك التشغيلية | https://brightai.site/ai-bots/ | ai-bots/index.html | static-index-route | 7 | 19 | No | Yes | https://brightai.site/ai-bots/ | Yes | None | None | None |
@@ -59,11 +59,11 @@
 | حلول الذكاء الاصطناعي للقطاع الحكومي في السعودية - دليل: شرح عملي | https://brightai.site/blog/government-ai-solutions-saudi/ | blog/government-ai-solutions-saudi/index.html | static-index-route | 1 | 23 | No | Yes | https://brightai.site/blog/government-ai-solutions-saudi/ | Yes | None | None | None |
 | الأتمتة الذكية للموارد البشرية: كيف وفّرت شركة | https://brightai.site/blog/hr-automation-case-study/ | blog/hr-automation-case-study/index.html | static-index-route | 8 | 16 | No | Yes | https://brightai.site/blog/hr-automation-case-study/ | Yes | None | None | None |
 | أتمتة الموارد البشرية: وفر 60% من وقت فريقك: شرح عملي | https://brightai.site/blog/hr-automation-saudi/ | blog/hr-automation-saudi/index.html | static-index-route | 11 | 28 | No | Yes | https://brightai.site/blog/hr-automation-saudi/ | Yes | None | None | None |
-| مدونة الذكاء الاصطناعي والأتمتة في السعودية: شرح عملي | https://brightai.site/blog/ | blog/index.html | static-index-route | 170 | 106 | No | Yes | https://brightai.site/blog/ | Yes | None | None | None |
+| مدونة الذكاء الاصطناعي والأتمتة في السعودية: شرح عملي | https://brightai.site/blog/ | blog/index.html | static-index-route | 172 | 106 | No | Yes | https://brightai.site/blog/ | Yes | None | None | None |
 | الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية | https://brightai.site/blog/industrial-automation-productivity/ | blog/industrial-automation-productivity/index.html | static-index-route | 12 | 23 | No | Yes | https://brightai.site/blog/industrial-automation-productivity/ | Yes | None | None | None |
 | الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية | https://brightai.site/blog/industrial-automation-repetitive-tasks/ | blog/industrial-automation-repetitive-tasks/index.html | static-index-route | 5 | 20 | No | Yes | https://brightai.site/blog/industrial-automation-repetitive-tasks/ | Yes | None | None | None |
 | دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي | https://brightai.site/blog/intelligent-data-analysis/ | blog/intelligent-data-analysis/index.html | static-index-route | 12 | 22 | No | Yes | https://brightai.site/blog/intelligent-data-analysis/ | Yes | None | None | None |
-| دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | blog/kfshrc-breast-cancer-ai/index.html | static-index-route | 11 | 27 | No | Yes | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | Yes | None | None | None |
+| دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | blog/kfshrc-breast-cancer-ai/index.html | static-index-route | 10 | 27 | No | Yes | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | Yes | None | None | None |
 | كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة | https://brightai.site/blog/kpi-dashboard-guide/ | blog/kpi-dashboard-guide/index.html | static-index-route | 12 | 23 | No | Yes | https://brightai.site/blog/kpi-dashboard-guide/ | Yes | None | None | None |
 | دراسة حالة: جامعة الملك سعود - منصة تعلم تكيفي ترفع معدلات: شرح عملي | https://brightai.site/blog/ksu-adaptive-learning/ | blog/ksu-adaptive-learning/index.html | static-index-route | 5 | 23 | No | Yes | https://brightai.site/blog/ksu-adaptive-learning/ | Yes | None | None | None |
 | تعلم الآلة: المفتاح لتحقيق النجاح في الأعمال الحديثة | https://brightai.site/blog/machine-learning-business/ | blog/machine-learning-business/index.html | static-index-route | 6 | 25 | No | Yes | https://brightai.site/blog/machine-learning-business/ | Yes | None | None | None |
@@ -71,7 +71,7 @@
 | الامتثال لـ NCA ومتطلبات AI في السعودية: شرح عملي | https://brightai.site/blog/nca-ai-compliance-saudi/ | blog/nca-ai-compliance-saudi/index.html | static-index-route | 9 | 19 | No | Yes | https://brightai.site/blog/nca-ai-compliance-saudi/ | Yes | None | None | None |
 | الامتثال لمعايير الأمن السيبراني (NCA) في السعودية - الدليل: شرح عملي | https://brightai.site/blog/nca-compliance/ | blog/nca-compliance/index.html | static-index-route | 8 | 23 | No | Yes | https://brightai.site/blog/nca-compliance/ | Yes | None | None | None |
 | Power BI للشركات السعودية: دليل البداية الشامل | https://brightai.site/blog/power-bi-saudi-guide/ | blog/power-bi-saudi-guide/index.html | static-index-route | 12 | 23 | No | Yes | https://brightai.site/blog/power-bi-saudi-guide/ | Yes | None | None | None |
-| دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي | https://brightai.site/blog/private-hospital-scheduling-optimization/ | blog/private-hospital-scheduling-optimization/index.html | static-index-route | 12 | 27 | No | Yes | https://brightai.site/blog/private-hospital-scheduling-optimization/ | Yes | None | None | None |
+| دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي | https://brightai.site/blog/private-hospital-scheduling-optimization/ | blog/private-hospital-scheduling-optimization/index.html | static-index-route | 11 | 27 | No | Yes | https://brightai.site/blog/private-hospital-scheduling-optimization/ | Yes | None | None | None |
 | أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي | https://brightai.site/blog/process-automation/ | blog/process-automation/index.html | static-index-route | 10 | 24 | No | Yes | https://brightai.site/blog/process-automation/ | Yes | None | None | None |
 | أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية | https://brightai.site/blog/process-automation-ai-efficiency/ | blog/process-automation-ai-efficiency/index.html | static-index-route | 14 | 24 | No | Yes | https://brightai.site/blog/process-automation-ai-efficiency/ | Yes | None | None | None |
 | دراسة حالة: كيف خفّضت بلدية الرياض وقت التراخيص 70% بالذكاء: شرح عملي | https://brightai.site/blog/riyadh-municipality-ai-license/ | blog/riyadh-municipality-ai-license/index.html | static-index-route | 3 | 21 | No | Yes | https://brightai.site/blog/riyadh-municipality-ai-license/ | Yes | None | None | None |
@@ -103,30 +103,37 @@
 | رؤية 2030 والذكاء الاصطناعي: فرص الشركات | https://brightai.site/blog/vision-2030-ai-opportunities/ | blog/vision-2030-ai-opportunities/index.html | static-index-route | 18 | 14 | No | Yes | https://brightai.site/blog/vision-2030-ai-opportunities/ | Yes | None | None | None |
 | الأتمتة في مكان العمل: كيف تبدأ؟ | https://brightai.site/blog/workplace-automation-guide/ | blog/workplace-automation-guide/index.html | static-index-route | 7 | 23 | No | Yes | https://brightai.site/blog/workplace-automation-guide/ | Yes | None | None | None |
 | ✦ Bright AI | https://brightai.site/bot/ | bot/index.html | static-index-route | 153 | 8 | No | Yes | https://brightai.site/bot/ | Yes | None | None | None |
-| دراسات حالة الذكاء الاصطناعي في السعودية | https://brightai.site/case-studies/ | case-studies/index.html | static-index-route | 90 | 19 | No | Yes | https://brightai.site/case-studies/ | Yes | None | None | None |
-| استشارات الذكاء الاصطناعي السعودية | https://brightai.site/consultation/ | consultation/index.html | static-index-route | 172 | 27 | No | Yes | https://brightai.site/consultation/ | Yes | None | None | None |
+| دراسات حالة الذكاء الاصطناعي في السعودية | https://brightai.site/case-studies/ | case-studies/index.html | static-index-route | 93 | 19 | No | Yes | https://brightai.site/case-studies/ | Yes | None | None | None |
+| استشارات الذكاء الاصطناعي السعودية | https://brightai.site/consultation/ | consultation/index.html | static-index-route | 179 | 27 | No | Yes | https://brightai.site/consultation/ | Yes | None | None | None |
 | تواصل مع شركة ذكاء اصطناعي في السعودية | https://brightai.site/contact/ | contact/index.html | static-index-route | 233 | 29 | No | Yes | https://brightai.site/contact/ | Yes | None | None | None |
-| تحليل البيانات للشركات السعودية | https://brightai.site/data-analysis/ | data-analysis/index.html | static-index-route | 206 | 42 | No | Yes | https://brightai.site/data-analysis/ | Yes | None | None | None |
-| منصة تعليمية ذكية تتابع الطلاب، تخصص التعلم، وتساعد المعلمين والإدارة في اتخاذ القرار. | https://brightai.site/demo/ai-scolecs/ | demo/ai-scolecs/index.html | static-index-route | 159 | 19 | No | Yes | https://brightai.site/demo/ai-scolecs/ | Yes | None | None | None |
-| نظام تحليل المناقصات بالذكاء الاصطناعي | https://brightai.site/demo/ai-tenders-analysis/ | demo/ai-tenders-analysis/index.html | static-index-route | 20 | 25 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/ | Yes | None | None | None |
+| تحليل البيانات للشركات السعودية | https://brightai.site/data-analysis/ | data-analysis/index.html | static-index-route | 214 | 42 | No | Yes | https://brightai.site/data-analysis/ | Yes | None | None | None |
+| منصة تعليمية ذكية تتابع الطلاب، تخصص التعلم، وتساعد المعلمين والإدارة في اتخاذ القرار. | https://brightai.site/demo/ai-scolecs/ | demo/ai-scolecs/index.html | static-index-route | 161 | 19 | No | Yes | https://brightai.site/demo/ai-scolecs/ | Yes | None | None | None |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/compare/ | demo/ai-tenders-analysis/compare.html | static-html-route | 0 | 19 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/compare/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | demo/ai-tenders-analysis/dashboard.html | static-html-route | 0 | 16 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| نظام تحليل المناقصات بالذكاء الاصطناعي | https://brightai.site/demo/ai-tenders-analysis/ | demo/ai-tenders-analysis/index.html | static-index-route | 27 | 25 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/ | Yes | None | None | None |
+| محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية | https://brightai.site/demo/ai-tenders-analysis/landing/ | demo/ai-tenders-analysis/landing.html | static-html-route | 0 | 20 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/landing/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/reports/ | demo/ai-tenders-analysis/reports.html | static-html-route | 0 | 16 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/reports/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/settings/ | demo/ai-tenders-analysis/settings.html | static-html-route | 0 | 16 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/settings/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/templates/ | demo/ai-tenders-analysis/templates.html | static-html-route | 0 | 18 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/templates/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | BrightProject - روبوت إدارة المشاريع الذكي في السعودية | https://brightai.site/demo/brightproject/ | demo/brightproject/index.html | static-index-route | 7 | 20 | No | Yes | https://brightai.site/demo/brightproject/ | Yes | None | None | None |
 | BrightSales - روبوت المبيعات الذكي في السعودية | https://brightai.site/demo/brightsales/ | demo/brightsales/index.html | static-index-route | 10 | 18 | No | Yes | https://brightai.site/demo/brightsales/ | Yes | None | None | None |
 | ديمو وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية | https://brightai.site/demo/competitor-analysis-agent/ | demo/competitor-analysis-agent/index.html | static-index-route | 2 | 5 | No | Yes | https://brightai.site/demo/competitor-analysis-agent/ | Yes | None | None | None |
-| ديمو وكيل ذكاء اصطناعي مخصص يعمل بهوية شركتك وأساليبك التشغيلية | https://brightai.site/demo/custom-ai-agent/ | demo/custom-ai-agent/index.html | static-index-route | 2 | 5 | No | Yes | https://brightai.site/demo/custom-ai-agent/ | Yes | None | None | None |
+| صمّم وكيل شركتك خلال دقيقة | https://brightai.site/demo/custom-ai-agent/ | demo/custom-ai-agent/index.html | static-index-route | 0 | 4 | Yes | Yes | https://brightai.site/demo/custom-ai-agent/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | ديمو حلول الذكاء الاصطناعي | https://brightai.site/demo/ | demo/index.html | static-index-route | 66 | 23 | No | Yes | https://brightai.site/demo/ | Yes | None | None | None |
 | ديمو وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات | https://brightai.site/demo/marketing-ai-agent/ | demo/marketing-ai-agent/index.html | static-index-route | 1 | 5 | No | Yes | https://brightai.site/demo/marketing-ai-agent/ | Yes | None | None | None |
 | نظام تسويق ذكي يخطط الحملات، يكتب المحتوى، ويتوقع العائد. | https://brightai.site/demo/marketing-automation/ | demo/marketing-automation/index.html | static-index-route | 2 | 34 | No | Yes | https://brightai.site/demo/marketing-automation/ | Yes | None | None | None |
-| حوّل مستنداتك إلى بيانات ذكية قابلة للبحث والاعتماد والربط. | https://brightai.site/demo/ocr-demo/ | demo/ocr-demo/index.html | static-index-route | 10 | 19 | No | Yes | https://brightai.site/demo/ocr-demo/ | Yes | None | None | None |
+| حوّل مستنداتك إلى بيانات ذكية قابلة للبحث والاعتماد والربط. | https://brightai.site/demo/ocr-demo/ | demo/ocr-demo/index.html | static-index-route | 9 | 19 | No | Yes | https://brightai.site/demo/ocr-demo/ | Yes | None | None | None |
 | ديمو وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع | https://brightai.site/demo/opportunity-discovery-agent/ | demo/opportunity-discovery-agent/index.html | static-index-route | 1 | 5 | No | Yes | https://brightai.site/demo/opportunity-discovery-agent/ | Yes | None | None | None |
 | أسعار حلول الذكاء الاصطناعي | https://brightai.site/demo/pricing/ | demo/pricing/index.html | static-index-route | 13 | 19 | No | Yes | https://brightai.site/demo/pricing/ | Yes | None | None | None |
 | تقرير الذكاء الاصطناعي في السعودية 2026 | https://brightai.site/demo/resources/report-ai-saudi-2026/ | demo/resources/report-ai-saudi-2026/index.html | static-index-route | 7 | 20 | No | Yes | https://brightai.site/demo/resources/report-ai-saudi-2026/ | Yes | None | None | None |
 | ديمو وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات | https://brightai.site/demo/seo-ai-agent/ | demo/seo-ai-agent/index.html | static-index-route | 2 | 5 | No | Yes | https://brightai.site/demo/seo-ai-agent/ | Yes | None | None | None |
-| نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع. | https://brightai.site/demo/smart-hospital-management/ | demo/smart-hospital-management/index.html | static-index-route | 161 | 26 | No | Yes | https://brightai.site/demo/smart-hospital-management/ | Yes | None | None | None |
+| نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع. | https://brightai.site/demo/smart-hospital-management/ | demo/smart-hospital-management/index.html | static-index-route | 163 | 26 | No | Yes | https://brightai.site/demo/smart-hospital-management/ | Yes | None | None | None |
+| أرشيف طبي ذكي يحوّل الملفات الطبية إلى بيانات سريرية قابلة للبحث والربط. | https://brightai.site/demo/smart-medical-archive/ | demo/smart-medical-archive/index.html | static-index-route | 166 | 26 | No | Yes | https://brightai.site/demo/smart-medical-archive/ | Yes | None | None | None |
 | تحسين سلسلة الإمداد في السعودية \| أتمتة Supply Chain بالذكاء الاصطناعي | https://brightai.site/demo/supply-chain-optimization/ | demo/supply-chain-optimization/index.html | static-index-route | 2 | 35 | No | Yes | https://brightai.site/demo/supply-chain-optimization/ | Yes | None | None | None |
 | AI Agents for Saudi Enterprises | https://brightai.site/docs/ai-agent-en/ | docs/ai-agent-en.html | static-html-route | 7 | 13 | No | Yes | https://brightai.site/docs/ai-agent-en/ | Yes | None | None | None |
 | دليل وكلاء الذكاء الاصطناعي للشركات السعودية | https://brightai.site/docs/ai-agent/ | docs/ai-agent.html | static-html-route | 16 | 23 | No | Yes | https://brightai.site/docs/ai-agent/ | Yes | None | None | None |
 | Arabic AI Chatbots for Saudi Teams | https://brightai.site/docs/ai-bots-en/ | docs/ai-bots-en.html | static-html-route | 5 | 14 | No | Yes | https://brightai.site/docs/ai-bots-en/ | Yes | None | None | None |
-| دليل الشات بوت العربي للشركات | https://brightai.site/docs/ai-bots/ | docs/ai-bots.html | static-html-route | 36 | 22 | No | Yes | https://brightai.site/docs/ai-bots/ | Yes | None | None | None |
+| دليل الشات بوت العربي للشركات | https://brightai.site/docs/ai-bots/ | docs/ai-bots.html | static-html-route | 38 | 22 | No | Yes | https://brightai.site/docs/ai-bots/ | Yes | None | None | None |
 | AI Consulting for Saudi Enterprises | https://brightai.site/docs/consultation-en/ | docs/consultation-en.html | static-html-route | 8 | 11 | No | Yes | https://brightai.site/docs/consultation-en/ | Yes | None | None | None |
 | دليل استشارات الذكاء الاصطناعي في السعودية | https://brightai.site/docs/consultation/ | docs/consultation.html | static-html-route | 12 | 20 | No | Yes | https://brightai.site/docs/consultation/ | Yes | None | None | None |
 | BrightAI Contact and Support | https://brightai.site/docs/contact-en/ | docs/contact-en.html | static-html-route | 5 | 15 | No | Yes | https://brightai.site/docs/contact-en/ | Yes | None | None | None |
@@ -150,7 +157,7 @@
 | Finance AI Solutions Documentation | https://brightai.site/docs/solutions-finance-en/ | docs/solutions-finance-en.html | static-html-route | 5 | 14 | No | Yes | https://brightai.site/docs/solutions-finance-en/ | Yes | None | None | None |
 | دليل حلول الذكاء الاصطناعي للقطاع المالي | https://brightai.site/docs/solutions-finance/ | docs/solutions-finance.html | static-html-route | 11 | 26 | No | Yes | https://brightai.site/docs/solutions-finance/ | Yes | None | None | None |
 | Healthcare AI Solutions Documentation | https://brightai.site/docs/solutions-healthcare-en/ | docs/solutions-healthcare-en.html | static-html-route | 7 | 15 | No | Yes | https://brightai.site/docs/solutions-healthcare-en/ | Yes | None | None | None |
-| دليل حلول الذكاء الاصطناعي للرعاية الصحية | https://brightai.site/docs/solutions-healthcare/ | docs/solutions-healthcare.html | static-html-route | 12 | 26 | No | Yes | https://brightai.site/docs/solutions-healthcare/ | Yes | None | None | None |
+| دليل حلول الذكاء الاصطناعي للرعاية الصحية | https://brightai.site/docs/solutions-healthcare/ | docs/solutions-healthcare.html | static-html-route | 13 | 26 | No | Yes | https://brightai.site/docs/solutions-healthcare/ | Yes | None | None | None |
 | HR Automation Documentation | https://brightai.site/docs/solutions-hr-en/ | docs/solutions-hr-en.html | static-html-route | 8 | 17 | No | Yes | https://brightai.site/docs/solutions-hr-en/ | Yes | None | None | None |
 | دليل أتمتة الموارد البشرية والتوظيف | https://brightai.site/docs/solutions-hr/ | docs/solutions-hr.html | static-html-route | 8 | 26 | No | Yes | https://brightai.site/docs/solutions-hr/ | Yes | None | None | None |
 | Smart Hiring Documentation | https://brightai.site/docs/solutions-interview-en/ | docs/solutions-interview-en.html | static-html-route | 7 | 15 | No | Yes | https://brightai.site/docs/solutions-interview-en/ | Yes | None | None | None |
@@ -165,31 +172,40 @@
 | دليل حلول سلسلة الإمداد الذكية | https://brightai.site/docs/solutions-supply-chain/ | docs/solutions-supply-chain.html | static-html-route | 12 | 26 | No | Yes | https://brightai.site/docs/solutions-supply-chain/ | Yes | None | None | None |
 | BrightAI Terms and Conditions | https://brightai.site/docs/terms-and-conditions-en/ | docs/terms-and-conditions-en.html | static-html-route | 9 | 10 | No | Yes | https://brightai.site/docs/terms-and-conditions-en/ | Yes | None | None | None |
 | الشروط والأحكام في BrightAI | https://brightai.site/docs/terms-and-conditions/ | docs/terms-and-conditions.html | static-html-route | 18 | 18 | No | Yes | https://brightai.site/docs/terms-and-conditions/ | Yes | None | None | None |
-| مركز وثائق BrightAI للشركات السعودية | https://brightai.site/docs/ | docs.html | static-html-route | 173 | 59 | No | Yes | https://brightai.site/docs/ | Yes | None | None | None |
-| National AI Company In Riyadh | https://brightai.site/en/about/ | en/about/index.html | static-index-route | 21 | 41 | No | Yes | https://brightai.site/en/about/ | Yes | None | None | None |
-| AI Agents For Enterprises in Saudi Arabia | https://brightai.site/en/ai-agent/ | en/ai-agent/index.html | static-index-route | 31 | 52 | No | Yes | https://brightai.site/en/ai-agent/ | Yes | None | None | None |
+| مركز وثائق BrightAI للشركات السعودية | https://brightai.site/docs/ | docs.html | static-html-route | 176 | 59 | No | Yes | https://brightai.site/docs/ | Yes | None | None | None |
+| National AI Company In Riyadh | https://brightai.site/en/about/ | en/about/index.html | static-index-route | 20 | 41 | No | Yes | https://brightai.site/en/about/ | Yes | None | None | None |
+| AI Agents For Enterprises in Saudi Arabia | https://brightai.site/en/ai-agent/ | en/ai-agent/index.html | static-index-route | 30 | 52 | No | Yes | https://brightai.site/en/ai-agent/ | Yes | None | None | None |
 | BrightMath - مساعد الرياضيات الذكي | https://brightai.site/en/ai-bots/BrightMath/ | en/ai-bots/BrightMath/index.html | static-index-route | 1 | 21 | No | Yes | https://brightai.site/en/ai-bots/BrightMath/ | Yes | None | None | None |
+| BrightProject - روبوت إدارة المشاريع الذكي | https://brightai.site/en/ai-bots/BrightProject/ | en/ai-bots/BrightProject/index.html | static-index-route | 0 | 21 | Yes | Yes | https://brightai.site/en/ai-bots/BrightProject/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | BrightRecruiter - روبوت التوظيف الذكي | https://brightai.site/en/ai-bots/BrightRecruiter/ | en/ai-bots/BrightRecruiter/index.html | static-index-route | 1 | 19 | No | Yes | https://brightai.site/en/ai-bots/BrightRecruiter/ | Yes | None | None | None |
+| BrightSales - روبوت المبيعات الذكي | https://brightai.site/en/ai-bots/BrightSales/ | en/ai-bots/BrightSales/index.html | static-index-route | 0 | 19 | Yes | Yes | https://brightai.site/en/ai-bots/BrightSales/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | BrightSupport - خدمة العملاء الذكية | https://brightai.site/en/ai-bots/BrightSupport/ | en/ai-bots/BrightSupport/index.html | static-index-route | 1 | 19 | No | Yes | https://brightai.site/en/ai-bots/BrightSupport/ | Yes | None | None | None |
 | AI bots ready for enterprise teams | https://brightai.site/en/ai-bots/ | en/ai-bots/index.html | static-index-route | 1 | 14 | No | Yes | https://brightai.site/en/ai-bots/ | Yes | None | None | None |
 | AI Workflow Automation in Saudi Arabia | https://brightai.site/en/ai-workflows/ | en/ai-workflows/index.html | static-index-route | 5 | 25 | No | Yes | https://brightai.site/en/ai-workflows/ | Yes | None | None | None |
-| AI Consulting In Saudi Arabia | https://brightai.site/en/consultation/ | en/consultation/index.html | static-index-route | 15 | 26 | No | Yes | https://brightai.site/en/consultation/ | Yes | None | None | None |
-| اتصل بنا | https://brightai.site/en/contact/ | en/contact/index.html | static-index-route | 29 | 29 | No | Yes | https://brightai.site/en/contact/ | Yes | None | None | None |
-| Data Analysis For Saudi Companies in Saudi Arabia | https://brightai.site/en/data-analysis/ | en/data-analysis/index.html | static-index-route | 32 | 42 | No | Yes | https://brightai.site/en/data-analysis/ | Yes | None | None | None |
-| BrightAI Documentation for Saudi Teams | https://brightai.site/en/docs/ | en/docs/index.html | static-index-route | 21 | 62 | No | Yes | https://brightai.site/en/docs/ | Yes | None | None | None |
-| Artificial Intelligence Company In Saudi Arabia | https://brightai.site/en/ | en/index.html | static-index-route | 31 | 57 | No | Yes | https://brightai.site/en/ | Yes | None | None | None |
-| AI Recruitment Platform | https://brightai.site/en/interview/ | en/interview/index.html | static-index-route | 22 | 24 | No | Yes | https://brightai.site/en/interview/ | Yes | None | None | None |
-| سياسة الخصوصية | https://brightai.site/en/privacy-cookies/ | en/privacy-cookies/index.html | static-index-route | 28 | 18 | No | Yes | https://brightai.site/en/privacy-cookies/ | Yes | None | None | None |
-| AI delivery paths built for real operating teams. | https://brightai.site/en/services/ | en/services/index.html | static-index-route | 47 | 12 | No | Yes | https://brightai.site/en/services/ | Yes | None | None | None |
-| AI Automation For Businesses in Saudi Arabia | https://brightai.site/en/smart-automation/ | en/smart-automation/index.html | static-index-route | 31 | 38 | No | Yes | https://brightai.site/en/smart-automation/ | Yes | None | None | None |
-| AI Medical Archive in Saudi Arabia | https://brightai.site/en/smart-medical-archive/ | en/smart-medical-archive/index.html | static-index-route | 20 | 30 | No | Yes | https://brightai.site/en/smart-medical-archive/ | Yes | None | None | None |
-| الشروط والأحكام | https://brightai.site/en/terms/ | en/terms/index.html | static-index-route | 28 | 20 | No | Yes | https://brightai.site/en/terms/ | Yes | None | None | None |
+| AI Consulting In Saudi Arabia | https://brightai.site/en/consultation/ | en/consultation/index.html | static-index-route | 14 | 26 | No | Yes | https://brightai.site/en/consultation/ | Yes | None | None | None |
+| اتصل بنا | https://brightai.site/en/contact/ | en/contact/index.html | static-index-route | 28 | 29 | No | Yes | https://brightai.site/en/contact/ | Yes | None | None | None |
+| Data Analysis For Saudi Companies in Saudi Arabia | https://brightai.site/en/data-analysis/ | en/data-analysis/index.html | static-index-route | 31 | 42 | No | Yes | https://brightai.site/en/data-analysis/ | Yes | None | None | None |
+| BrightAI Documentation for Saudi Teams | https://brightai.site/en/docs/ | en/docs/index.html | static-index-route | 20 | 62 | No | Yes | https://brightai.site/en/docs/ | Yes | None | None | None |
+| Digital Transformation In Healthcare in Saudi Arabia | https://brightai.site/en/health/ | en/health/index.html | static-index-route | 0 | 30 | Yes | Yes | https://brightai.site/en/health/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| Artificial Intelligence Company In Saudi Arabia | https://brightai.site/en/ | en/index.html | static-index-route | 30 | 57 | No | Yes | https://brightai.site/en/ | Yes | None | None | None |
+| AI Recruitment Platform | https://brightai.site/en/interview/ | en/interview/index.html | static-index-route | 21 | 24 | No | Yes | https://brightai.site/en/interview/ | Yes | None | None | None |
+| سياسة الخصوصية | https://brightai.site/en/privacy-cookies/ | en/privacy-cookies/index.html | static-index-route | 27 | 18 | No | Yes | https://brightai.site/en/privacy-cookies/ | Yes | None | None | None |
+| AI delivery paths built for real operating teams. | https://brightai.site/en/services/ | en/services/index.html | static-index-route | 46 | 12 | No | Yes | https://brightai.site/en/services/ | Yes | None | None | None |
+| AI Automation For Businesses in Saudi Arabia | https://brightai.site/en/smart-automation/ | en/smart-automation/index.html | static-index-route | 30 | 38 | No | Yes | https://brightai.site/en/smart-automation/ | Yes | None | None | None |
+| ContractAI | https://brightai.site/en/tenders/compare/ | en/tenders/compare.html | static-html-route | 0 | 23 | Yes | Yes | https://brightai.site/en/tenders/compare/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/en/tenders/dashboard/ | en/tenders/dashboard.html | static-html-route | 0 | 19 | Yes | Yes | https://brightai.site/en/tenders/dashboard/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| AI tender and contract analysis for Saudi procurement teams. | https://brightai.site/en/tenders/ | en/tenders/index.html | static-index-route | 0 | 18 | Yes | Yes | https://brightai.site/en/tenders/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI for Saudi Contracts, Tenders, and Procurement Reviews | https://brightai.site/en/tenders/landing/ | en/tenders/landing.html | static-html-route | 0 | 25 | Yes | Yes | https://brightai.site/en/tenders/landing/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/en/tenders/reports/ | en/tenders/reports.html | static-html-route | 0 | 19 | Yes | Yes | https://brightai.site/en/tenders/reports/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/en/tenders/settings/ | en/tenders/settings.html | static-html-route | 0 | 19 | Yes | Yes | https://brightai.site/en/tenders/settings/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/en/tenders/templates/ | en/tenders/templates.html | static-html-route | 0 | 23 | Yes | Yes | https://brightai.site/en/tenders/templates/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| الشروط والأحكام | https://brightai.site/en/terms/ | en/terms/index.html | static-index-route | 27 | 20 | No | Yes | https://brightai.site/en/terms/ | Yes | None | None | None |
 | AI Data Analysis Tools | https://brightai.site/en/tools/ | en/tools/index.html | static-index-route | 5 | 44 | No | Yes | https://brightai.site/en/tools/ | Yes | None | None | None |
-| شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 241 | 58 | No | Yes | https://brightai.site/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 248 | 58 | No | Yes | https://brightai.site/ | Yes | None | None | None |
 | اختَر أفضل المرشحين خلال دقائق، مع فرز ذكي ومقابلات أولية وتقارير مقارنة. | https://brightai.site/interview/ | interview/index.html | static-index-route | 149 | 21 | No | Yes | https://brightai.site/interview/ | Yes | None | None | None |
 | خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية | https://brightai.site/locations/dammam/ | locations/dammam/index.html | static-index-route | 20 | 14 | No | Yes | https://brightai.site/locations/dammam/ | Yes | None | None | None |
-| خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 23 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
-| شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 44 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
+| خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 24 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 45 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
 | تطوير نماذج تعلم الآلة السعودية | https://brightai.site/machine-learning/ | machine-learning/index.html | static-index-route | 8 | 27 | No | Yes | https://brightai.site/machine-learning/ | Yes | None | None | None |
 | شراكات الذكاء الاصطناعي في السعودية | https://brightai.site/partners/ | partners/index.html | static-index-route | 8 | 16 | No | Yes | https://brightai.site/partners/ | Yes | None | None | None |
 | سياسة الخصوصية | https://brightai.site/privacy-cookies/ | privacy-cookies/index.html | static-index-route | 21 | 17 | No | Yes | https://brightai.site/privacy-cookies/ | Yes | None | None | None |
@@ -212,30 +228,14 @@
 | Enterprise AI Solutions for the Saudi Manufacturing Sector | https://brightai.site/sectors/manufacturing-en/ | sectors/manufacturing-en/index.html | static-index-route | 3 | 36 | No | Yes | https://brightai.site/sectors/manufacturing-en/ | Yes | None | None | None |
 | AI Solutions For Saudi Manufacturing In Saudi Arabia | https://brightai.site/sectors/manufacturing-en/ | sectors/manufacturing-en.html | static-html-route | 3 | 36 | No | Yes | https://brightai.site/sectors/manufacturing-en/ | Yes | None | None | None |
 | الذكاء الاصطناعي في المصانع في السعودية | https://brightai.site/sectors/manufacturing/ | sectors/manufacturing.html | static-html-route | 13 | 35 | No | Yes | https://brightai.site/sectors/manufacturing/ | Yes | None | None | None |
-| وكلاء ذكاء اصطناعي للشركات السعودية | https://brightai.site/services/ai-agents-saudi/ | services/ai-agents-saudi.html | static-html-route | 37 | 14 | No | Yes | https://brightai.site/services/ai-agents-saudi/ | Yes | None | None | None |
-| أتمتة الذكاء الاصطناعي للشركات في السعودية | https://brightai.site/services/ai-automation-saudi/ | services/ai-automation-saudi.html | static-html-route | 105 | 14 | No | Yes | https://brightai.site/services/ai-automation-saudi/ | Yes | None | None | None |
-| شات بوت عربي يفهم العملاء والعمليات في السعودية | https://brightai.site/services/ai-chatbot-arabic/ | services/ai-chatbot-arabic.html | static-html-route | 29 | 14 | No | Yes | https://brightai.site/services/ai-chatbot-arabic/ | Yes | None | None | None |
+| وكلاء ذكاء اصطناعي للشركات السعودية | https://brightai.site/services/ai-agents-saudi/ | services/ai-agents-saudi.html | static-html-route | 38 | 14 | No | Yes | https://brightai.site/services/ai-agents-saudi/ | Yes | None | None | None |
+| أتمتة الذكاء الاصطناعي للشركات في السعودية | https://brightai.site/services/ai-automation-saudi/ | services/ai-automation-saudi.html | static-html-route | 106 | 14 | No | Yes | https://brightai.site/services/ai-automation-saudi/ | Yes | None | None | None |
+| شات بوت عربي يفهم العملاء والعمليات في السعودية | https://brightai.site/services/ai-chatbot-arabic/ | services/ai-chatbot-arabic.html | static-html-route | 30 | 14 | No | Yes | https://brightai.site/services/ai-chatbot-arabic/ | Yes | None | None | None |
 | استشارة ذكاء اصطناعي لتحديد أفضل حل يناسب عملك | https://brightai.site/services/ai-consulting/ | services/ai-consulting.html | static-html-route | 30 | 36 | No | Yes | https://brightai.site/services/ai-consulting/ | Yes | None | None | None |
 | منصة تعليمية ذكية متكاملة بالذكاء الاصطناعي | https://brightai.site/services/ai-scolecs/ | services/ai-scolecs.html | static-html-route | 24 | 36 | No | Yes | https://brightai.site/services/ai-scolecs/ | Yes | None | None | None |
 | نظام تحليل المناقصات بالذكاء الاصطناعي للقطاع المالي والمشتريات | https://brightai.site/services/ai-tenders-analysis/ | services/ai-tenders-analysis.html | static-html-route | 24 | 35 | No | Yes | https://brightai.site/services/ai-tenders-analysis/ | Yes | None | None | None |
 | نظام موافقات ذكي \| أتمتة كاملة للإجراءات الإدارية | https://brightai.site/services/approvals-automation/ | services/approvals-automation.html | static-html-route | 25 | 34 | No | Yes | https://brightai.site/services/approvals-automation/ | Yes | None | None | None |
 | BrightProject لإدارة المشاريع الذكية في السعودية | https://brightai.site/services/brightproject/ | services/brightproject.html | static-html-route | 24 | 36 | No | Yes | https://brightai.site/services/brightproject/ | Yes | None | None | None |
-| BrightSales روبوت المبيعات الذكي للشركات في السعودية | https://brightai.site/services/brightsales/ | services/brightsales.html | static-html-route | 25 | 36 | No | Yes | https://brightai.site/services/brightsales/ | Yes | None | None | None |
-| وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية | https://brightai.site/services/competitor-analysis-agent/ | services/competitor-analysis-agent.html | static-html-route | 28 | 14 | No | Yes | https://brightai.site/services/competitor-analysis-agent/ | Yes | None | None | None |
-| وكيل ذكاء اصطناعي مخصص يعمل بهوية شركتك وأساليبك التشغيلية | https://brightai.site/services/custom-ai-agent/ | services/custom-ai-agent.html | static-html-route | 43 | 17 | No | Yes | https://brightai.site/services/custom-ai-agent/ | Yes | None | None | None |
-| أتمتة خدمة العملاء الذكية لرفع الرضا وتسريع الحلول | https://brightai.site/services/customer-service-automation/ | services/customer-service-automation.html | static-html-route | 32 | 36 | No | Yes | https://brightai.site/services/customer-service-automation/ | Yes | None | None | None |
-| وكيل تحليل بيانات يحوّل أرقامك إلى قرارات دقيقة وفورية | https://brightai.site/services/data-analyst-agent/ | services/data-analyst-agent.html | static-html-route | 26 | 36 | No | Yes | https://brightai.site/services/data-analyst-agent/ | Yes | None | None | None |
-| منصة بيانات موحّدة \| تحكم كامل في بيانات شركتك | https://brightai.site/services/data-platform/ | services/data-platform.html | static-html-route | 45 | 37 | No | Yes | https://brightai.site/services/data-platform/ | Yes | None | None | None |
-| حوّل مستنداتك إلى بيانات ذكية \| أتمتة كاملة لإدارة الوثائق | https://brightai.site/services/document-automation/ | services/document-automation.html | static-html-route | 26 | 35 | No | Yes | https://brightai.site/services/document-automation/ | Yes | None | None | None |
-| وكيل تحليل البيانات الصحية لتحسين الرعاية واتخاذ قرارات دقيقة | https://brightai.site/services/health-data-analysis/ | services/health-data-analysis.html | static-html-route | 25 | 35 | No | Yes | https://brightai.site/services/health-data-analysis/ | Yes | None | None | None |
-| حلّ شامل لأتمتة إدارة الموارد البشرية وتسريع عمليات الـ HR بدون تعقيد | https://brightai.site/services/hr-automation/ | services/hr-automation.html | static-html-route | 28 | 34 | No | Yes | https://brightai.site/services/hr-automation/ | Yes | None | None | None |
-| خدمات ذكاء اصطناعي وأتمتة أعمال تساعد فريقك يشتغل أسرع وبقرار أوضح | https://brightai.site/services/ | services/index.html | static-index-route | 242 | 52 | No | Yes | https://brightai.site/services/ | Yes | None | None | None |
-| وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع | https://brightai.site/services/lead-hunter/ | services/lead-hunter.html | static-html-route | 23 | 35 | No | Yes | https://brightai.site/services/lead-hunter/ | Yes | None | None | None |
-| وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات | https://brightai.site/services/marketing-agent/ | services/marketing-agent.html | static-html-route | 23 | 35 | No | Yes | https://brightai.site/services/marketing-agent/ | Yes | None | None | None |
-| وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات | https://brightai.site/services/marketing-ai-agent/ | services/marketing-ai-agent.html | static-html-route | 4 | 14 | No | Yes | https://brightai.site/services/marketing-ai-agent/ | Yes | None | None | None |
-| نظام تسويق ذكي يخطط الحملات، يكتب المحتوى، ويتوقع العائد. | https://brightai.site/services/marketing-automation/ | services/marketing-automation.html | static-html-route | 25 | 34 | No | Yes | https://brightai.site/services/marketing-automation/ | Yes | None | None | None |
-| نظام أرشفة السجلات الطبية \| تنظيم ذكي وحماية عالية للبيانات | https://brightai.site/services/medical-archive/ | services/medical-archive.html | static-html-route | 28 | 37 | No | Yes | https://brightai.site/services/medical-archive/ | Yes | None | None | None |
-| تقارير تشغيلية تلقائية 100% \| أتمتة وتحليل فوري لبيانات شركتك | https://brightai.site/services/operational-reports-automation/ | services/operational-reports-automation.html | static-html-route | 39 | 34 | No | Yes | https://brightai.site/services/operational-reports-automation/ | Yes | None | None | None |
 
 ## Problems
 
@@ -243,22 +243,23 @@
 | --- | --- | --- | --- |
 | 404.html | https://brightai.site/404 | owner_decision_needed | Medium |
 | 500.html | https://brightai.site/500 | owner_decision_needed | Medium |
-| demo/ai-tenders-analysis/compare.html | https://brightai.site/demo/ai-tenders-analysis/compare.html/ | canonical_mismatch | High |
-| demo/ai-tenders-analysis/dashboard.html | https://brightai.site/demo/ai-tenders-analysis/dashboard.html/ | canonical_mismatch | High |
-| demo/ai-tenders-analysis/landing.html | https://brightai.site/demo/ai-tenders-analysis/landing.html/ | canonical_mismatch | High |
-| demo/ai-tenders-analysis/reports.html | https://brightai.site/demo/ai-tenders-analysis/reports.html/ | canonical_mismatch | High |
-| demo/ai-tenders-analysis/settings.html | https://brightai.site/demo/ai-tenders-analysis/settings.html/ | canonical_mismatch | High |
-| demo/ai-tenders-analysis/templates.html | https://brightai.site/demo/ai-tenders-analysis/templates.html/ | canonical_mismatch | High |
-| en/ai-bots/BrightProject/index.html | https://brightai.site/demo/brightproject/ | canonical_mismatch | High |
-| en/ai-bots/BrightSales/index.html | https://brightai.site/demo/brightsales/ | canonical_mismatch | High |
-| en/health/index.html | https://brightai.site/demo/smart-hospital-management/ | canonical_mismatch | High |
-| en/tenders/compare.html | https://brightai.site/demo/ai-tenders-analysis/compare.html/ | canonical_mismatch | High |
-| en/tenders/dashboard.html | https://brightai.site/demo/ai-tenders-analysis/dashboard.html/ | canonical_mismatch | High |
-| en/tenders/index.html | https://brightai.site/demo/ai-tenders-analysis/ | canonical_mismatch | High |
-| en/tenders/landing.html | https://brightai.site/demo/ai-tenders-analysis/landing.html/ | canonical_mismatch | High |
-| en/tenders/reports.html | https://brightai.site/demo/ai-tenders-analysis/reports.html/ | canonical_mismatch | High |
-| en/tenders/settings.html | https://brightai.site/demo/ai-tenders-analysis/settings.html/ | canonical_mismatch | High |
-| en/tenders/templates.html | https://brightai.site/demo/ai-tenders-analysis/templates.html/ | canonical_mismatch | High |
+| demo/ai-tenders-analysis/compare.html | https://brightai.site/demo/ai-tenders-analysis/compare/ | orphan_page | High |
+| demo/ai-tenders-analysis/dashboard.html | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | orphan_page | High |
+| demo/ai-tenders-analysis/landing.html | https://brightai.site/demo/ai-tenders-analysis/landing/ | orphan_page | High |
+| demo/ai-tenders-analysis/reports.html | https://brightai.site/demo/ai-tenders-analysis/reports/ | orphan_page | High |
+| demo/ai-tenders-analysis/settings.html | https://brightai.site/demo/ai-tenders-analysis/settings/ | orphan_page | High |
+| demo/ai-tenders-analysis/templates.html | https://brightai.site/demo/ai-tenders-analysis/templates/ | orphan_page | High |
+| demo/custom-ai-agent/index.html | https://brightai.site/demo/custom-ai-agent/ | orphan_page | High |
+| en/ai-bots/BrightProject/index.html | https://brightai.site/en/ai-bots/BrightProject/ | orphan_page | High |
+| en/ai-bots/BrightSales/index.html | https://brightai.site/en/ai-bots/BrightSales/ | orphan_page | High |
+| en/health/index.html | https://brightai.site/en/health/ | orphan_page | High |
+| en/tenders/compare.html | https://brightai.site/en/tenders/compare/ | orphan_page | High |
+| en/tenders/dashboard.html | https://brightai.site/en/tenders/dashboard/ | orphan_page | High |
+| en/tenders/index.html | https://brightai.site/en/tenders/ | orphan_page | High |
+| en/tenders/landing.html | https://brightai.site/en/tenders/landing/ | orphan_page | High |
+| en/tenders/reports.html | https://brightai.site/en/tenders/reports/ | orphan_page | High |
+| en/tenders/settings.html | https://brightai.site/en/tenders/settings/ | orphan_page | High |
+| en/tenders/templates.html | https://brightai.site/en/tenders/templates/ | orphan_page | High |
 | error.html | https://brightai.site/error | owner_decision_needed | Medium |
 | interview/pages/Visitor-registration/index.html | https://brightai.site/interview/pages/Visitor-registration/ | owner_decision_needed | Medium |
 | interview/pages/appointment/index.html | https://brightai.site/interview/pages/appointment/ | owner_decision_needed | Medium |

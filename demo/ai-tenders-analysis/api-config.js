@@ -5,7 +5,7 @@
 function getBrightAIRuntimeConfig() {
   if (!window.BrightAIRuntimeConfig || typeof window.BrightAIRuntimeConfig.buildApiUrl !== "function") {
     throw new Error(
-      "ملف runtime-config.js غير محمل. يجب تحميل /frontend/js/runtime-config.js قبل tenders/api-config.js."
+      "ملف runtime-config.js غير محمل. يجب تحميل /frontend/js/runtime-config.js قبل demo/ai-tenders-analysis/api-config.js."
     );
   }
 

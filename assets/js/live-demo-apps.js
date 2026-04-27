@@ -210,7 +210,7 @@
   function getCurrentDemoId() {
     const path = location.pathname.toLowerCase();
     if (path.includes("/interview/")) return "interview";
-    if (path.includes("/smart-medical-archive/")) return "smart-medical-archive";
+    if (path.includes("/demo/smart-medical-archive/")) return "smart-medical-archive";
     if (path.includes("/try/data-analyzer/")) return "data-analyzer";
     if (path.includes("/ai-scolecs/")) return "ai-scolecs";
     if (path.includes("/demo/smart-hospital-management/")) return "health";

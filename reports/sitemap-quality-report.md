@@ -1,8 +1,8 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-27T20:05:47.260Z
-- Total URLs in generated sitemap: 236
-- Included core pages: 144
+- Date: 2026-04-27T23:48:30.056Z
+- Total URLs in generated sitemap: 245
+- Included core pages: 153
 - Included sector pages: 13
 - Included blog articles: 79
 - Excluded analyzed pages: 10
@@ -32,11 +32,8 @@
 | core | ai-agent/index.html | 3458 | https://brightai.site/ai-agent/ |
 | core | ai-bots/index.html | 1433 | https://brightai.site/ai-bots/ |
 | core | ai-bots/BrightMath/index.html | 1545 | https://brightai.site/ai-bots/BrightMath/ |
-| core | ai-bots/BrightProject/index.html | 1586 | https://brightai.site/ai-bots/BrightProject/ |
 | core | ai-bots/BrightRecruiter/index.html | 1801 | https://brightai.site/ai-bots/BrightRecruiter/ |
-| core | ai-bots/BrightSales/index.html | 1513 | https://brightai.site/ai-bots/BrightSales/ |
-| core | ai-bots/BrightSupport/index.html | 1590 | https://brightai.site/ai-bots/BrightSupport/ |
-| core | ai-scolecs/index.html | 2249 | https://brightai.site/ai-scolecs/ |
+| core | ai-bots/BrightSupport/index.html | 1472 | https://brightai.site/ai-bots/BrightSupport/ |
 | core | ai-workflows/index.html | 3114 | https://brightai.site/ai-workflows/ |
 | blog | blog/index.html | 2573 | https://brightai.site/blog/ |
 | blog | blog/ai-agents-business-guide/index.html | 1782 | https://brightai.site/blog/ai-agents-business-guide/ |
@@ -122,10 +119,29 @@
 | core | consultation/index.html | 1663 | https://brightai.site/consultation/ |
 | core | contact/index.html | 1964 | https://brightai.site/contact/ |
 | core | data-analysis/index.html | 2638 | https://brightai.site/data-analysis/ |
-| core | demo/index.html | 1641 | https://brightai.site/demo/ |
-| core | demo/ocr-demo/index.html | 1617 | https://brightai.site/demo/ocr-demo/ |
+| core | demo/index.html | 1657 | https://brightai.site/demo/ |
+| core | demo/ai-scolecs/index.html | 2577 | https://brightai.site/demo/ai-scolecs/ |
+| core | demo/ai-tenders-analysis/index.html | 4217 | https://brightai.site/demo/ai-tenders-analysis/ |
+| core | demo/ai-tenders-analysis/compare.html | 2109 | https://brightai.site/demo/ai-tenders-analysis/compare/ |
+| core | demo/ai-tenders-analysis/dashboard.html | 1015 | https://brightai.site/demo/ai-tenders-analysis/dashboard/ |
+| core | demo/ai-tenders-analysis/landing.html | 2324 | https://brightai.site/demo/ai-tenders-analysis/landing/ |
+| core | demo/ai-tenders-analysis/reports.html | 1029 | https://brightai.site/demo/ai-tenders-analysis/reports/ |
+| core | demo/ai-tenders-analysis/settings.html | 1021 | https://brightai.site/demo/ai-tenders-analysis/settings/ |
+| core | demo/ai-tenders-analysis/templates.html | 1870 | https://brightai.site/demo/ai-tenders-analysis/templates/ |
+| core | demo/brightproject/index.html | 1586 | https://brightai.site/demo/brightproject/ |
+| core | demo/brightsales/index.html | 1513 | https://brightai.site/demo/brightsales/ |
+| core | demo/competitor-analysis-agent/index.html | 77 | https://brightai.site/demo/competitor-analysis-agent/ |
+| core | demo/custom-ai-agent/index.html | 148 | https://brightai.site/demo/custom-ai-agent/ |
+| core | demo/marketing-ai-agent/index.html | 83 | https://brightai.site/demo/marketing-ai-agent/ |
+| core | demo/marketing-automation/index.html | 664 | https://brightai.site/demo/marketing-automation/ |
+| core | demo/ocr-demo/index.html | 510 | https://brightai.site/demo/ocr-demo/ |
+| core | demo/opportunity-discovery-agent/index.html | 79 | https://brightai.site/demo/opportunity-discovery-agent/ |
 | core | demo/pricing/index.html | 1231 | https://brightai.site/demo/pricing/ |
 | core | demo/resources/report-ai-saudi-2026/index.html | 1243 | https://brightai.site/demo/resources/report-ai-saudi-2026/ |
+| core | demo/seo-ai-agent/index.html | 69 | https://brightai.site/demo/seo-ai-agent/ |
+| core | demo/smart-hospital-management/index.html | 1774 | https://brightai.site/demo/smart-hospital-management/ |
+| core | demo/smart-medical-archive/index.html | 2484 | https://brightai.site/demo/smart-medical-archive/ |
+| core | demo/supply-chain-optimization/index.html | 1238 | https://brightai.site/demo/supply-chain-optimization/ |
 | core | docs.html | 1789 | https://brightai.site/docs/ |
 | core | docs/ai-agent-en.html | 1312 | https://brightai.site/docs/ai-agent-en/ |
 | core | docs/ai-agent.html | 1458 | https://brightai.site/docs/ai-agent/ |
@@ -187,7 +203,6 @@
 | core | en/privacy-cookies/index.html | 1006 | https://brightai.site/en/privacy-cookies/ |
 | core | en/services/index.html | 711 | https://brightai.site/en/services/ |
 | core | en/smart-automation/index.html | 2712 | https://brightai.site/en/smart-automation/ |
-| core | en/smart-medical-archive/index.html | 2083 | https://brightai.site/en/smart-medical-archive/ |
 | core | en/tenders/index.html | 803 | https://brightai.site/en/tenders/ |
 | core | en/tenders/compare.html | 1731 | https://brightai.site/en/tenders/compare/ |
 | core | en/tenders/dashboard.html | 1157 | https://brightai.site/en/tenders/dashboard/ |
@@ -197,8 +212,7 @@
 | core | en/tenders/templates.html | 1704 | https://brightai.site/en/tenders/templates/ |
 | core | en/terms/index.html | 1349 | https://brightai.site/en/terms/ |
 | core | en/tools/index.html | 1936 | https://brightai.site/en/tools/ |
-| core | health/index.html | 2386 | https://brightai.site/health/ |
-| core | interview/index.html | 2021 | https://brightai.site/interview/ |
+| core | interview/index.html | 2352 | https://brightai.site/interview/ |
 | core | locations/dammam/index.html | 774 | https://brightai.site/locations/dammam/ |
 | core | locations/jeddah/index.html | 803 | https://brightai.site/locations/jeddah/ |
 | core | locations/riyadh/index.html | 778 | https://brightai.site/locations/riyadh/ |
@@ -218,18 +232,18 @@
 | sector | sectors/logistics.html | 1763 | https://brightai.site/sectors/logistics/ |
 | sector | sectors/manufacturing-en/index.html | 1322 | https://brightai.site/sectors/manufacturing-en/ |
 | sector | sectors/manufacturing.html | 1773 | https://brightai.site/sectors/manufacturing/ |
-| core | services/index.html | 1900 | https://brightai.site/services/ |
+| core | services/index.html | 2029 | https://brightai.site/services/ |
 | core | services/ai-agents-saudi.html | 864 | https://brightai.site/services/ai-agents-saudi/ |
 | core | services/ai-automation-saudi.html | 904 | https://brightai.site/services/ai-automation-saudi/ |
 | core | services/ai-chatbot-arabic.html | 868 | https://brightai.site/services/ai-chatbot-arabic/ |
 | core | services/ai-consulting.html | 1304 | https://brightai.site/services/ai-consulting/ |
-| core | services/ai-scolecs/index.html | 169 | https://brightai.site/services/ai-scolecs/ |
-| core | services/ai-tenders-analysis/index.html | 174 | https://brightai.site/services/ai-tenders-analysis/ |
+| core | services/ai-scolecs.html | 1324 | https://brightai.site/services/ai-scolecs/ |
+| core | services/ai-tenders-analysis.html | 1362 | https://brightai.site/services/ai-tenders-analysis/ |
 | core | services/approvals-automation.html | 1243 | https://brightai.site/services/approvals-automation/ |
-| core | services/brightproject/index.html | 166 | https://brightai.site/services/brightproject/ |
-| core | services/brightsales/index.html | 165 | https://brightai.site/services/brightsales/ |
-| core | services/competitor-analysis-agent.html | 1322 | https://brightai.site/services/competitor-analysis-agent/ |
-| core | services/custom-ai-agent.html | 1403 | https://brightai.site/services/custom-ai-agent/ |
+| core | services/brightproject.html | 1362 | https://brightai.site/services/brightproject/ |
+| core | services/brightsales.html | 1345 | https://brightai.site/services/brightsales/ |
+| core | services/competitor-analysis-agent.html | 554 | https://brightai.site/services/competitor-analysis-agent/ |
+| core | services/custom-ai-agent.html | 1325 | https://brightai.site/services/custom-ai-agent/ |
 | core | services/customer-service-automation.html | 1335 | https://brightai.site/services/customer-service-automation/ |
 | core | services/data-analyst-agent.html | 1451 | https://brightai.site/services/data-analyst-agent/ |
 | core | services/data-platform.html | 1343 | https://brightai.site/services/data-platform/ |
@@ -238,28 +252,23 @@
 | core | services/hr-automation.html | 1282 | https://brightai.site/services/hr-automation/ |
 | core | services/lead-hunter.html | 1288 | https://brightai.site/services/lead-hunter/ |
 | core | services/marketing-agent.html | 1285 | https://brightai.site/services/marketing-agent/ |
-| core | services/marketing-automation.html | 1364 | https://brightai.site/services/marketing-automation/ |
+| core | services/marketing-ai-agent.html | 546 | https://brightai.site/services/marketing-ai-agent/ |
+| core | services/marketing-automation.html | 810 | https://brightai.site/services/marketing-automation/ |
 | core | services/medical-archive.html | 1359 | https://brightai.site/services/medical-archive/ |
 | core | services/operational-reports-automation.html | 1263 | https://brightai.site/services/operational-reports-automation/ |
+| core | services/opportunity-discovery-agent.html | 559 | https://brightai.site/services/opportunity-discovery-agent/ |
 | core | services/seo-agent.html | 1327 | https://brightai.site/services/seo-agent/ |
+| core | services/seo-ai-agent.html | 537 | https://brightai.site/services/seo-ai-agent/ |
 | core | services/smart-hiring-system.html | 1338 | https://brightai.site/services/smart-hiring-system/ |
-| core | services/smart-hospital-management/index.html | 162 | https://brightai.site/services/smart-hospital-management/ |
+| core | services/smart-hospital-management.html | 1314 | https://brightai.site/services/smart-hospital-management/ |
 | core | services/social-data-analysis.html | 1343 | https://brightai.site/services/social-data-analysis/ |
-| core | services/supply-chain-optimization.html | 1323 | https://brightai.site/services/supply-chain-optimization/ |
+| core | services/supply-chain-optimization.html | 1345 | https://brightai.site/services/supply-chain-optimization/ |
 | core | sitemap/index.html | 753 | https://brightai.site/sitemap/ |
 | core | smart-automation/index.html | 3155 | https://brightai.site/smart-automation/ |
-| core | smart-medical-archive/index.html | 2359 | https://brightai.site/smart-medical-archive/ |
-| core | tenders/index.html | 4217 | https://brightai.site/tenders/ |
-| core | tenders/compare.html | 2109 | https://brightai.site/tenders/compare/ |
-| core | tenders/dashboard.html | 1015 | https://brightai.site/tenders/dashboard/ |
-| core | tenders/landing.html | 2324 | https://brightai.site/tenders/landing/ |
-| core | tenders/reports.html | 1029 | https://brightai.site/tenders/reports/ |
-| core | tenders/settings.html | 1021 | https://brightai.site/tenders/settings/ |
-| core | tenders/templates.html | 1870 | https://brightai.site/tenders/templates/ |
 | core | terms/index.html | 1334 | https://brightai.site/terms/ |
 | core | tools/index.html | 1950 | https://brightai.site/tools/ |
 | core | try/index.html | 1392 | https://brightai.site/try/ |
-| core | try/data-analyzer/index.html | 2293 | https://brightai.site/try/data-analyzer/ |
+| core | try/data-analyzer/index.html | 2390 | https://brightai.site/try/data-analyzer/ |
 | core | try/data-quality/index.html | 1921 | https://brightai.site/try/data-quality/ |
 | core | try/text-analysis/index.html | 2372 | https://brightai.site/try/text-analysis/ |
 | core | what-is-ai/index.html | 1172 | https://brightai.site/what-is-ai/ |

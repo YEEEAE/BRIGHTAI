@@ -25,7 +25,7 @@ const apiGatewaySource = readExistingSource([
   "frontend/js/api-gateway.min.js"
 ]);
 const tendersConfigSource = fs.readFileSync(
-  path.join(repoRoot, "tenders/api-config.js"),
+  path.join(repoRoot, "demo/ai-tenders-analysis/api-config.js"),
   "utf8"
 );
 

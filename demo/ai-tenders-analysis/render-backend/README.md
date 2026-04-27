@@ -31,6 +31,6 @@ npm start
 ## ملاحظة مهمة
 
 لم يعد هناك `proxyUrl` ثابت داخل الواجهة.  
-الواجهة تستخدم الآن `/api` من نفس الدومين عبر [api-config.js](/Users/yzydalshmry/Desktop/BRIGHTAI/tenders/api-config.js)، وRender يتكفل بإعادة التوجيه إلى خدمة `brightai-api`.
+الواجهة تستخدم الآن `/api` من نفس الدومين عبر [api-config.js](../api-config.js)، وRender يتكفل بإعادة التوجيه إلى خدمة `brightai-api`.
 
 وسيتم أخذ نموذج DeepSeek من `DEEPSEEKAI_MODEL` على مستوى الخادم مباشرة، مع استخدام `NVIDIA_API_KEY` عندما يكون المزود المطلوب هو `nvidia`.
