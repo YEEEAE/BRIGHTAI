@@ -49,6 +49,144 @@
     }
   };
 
+  const HOSPITAL_OPS_SCHEMA = {
+    type: "object",
+    required: ["hospital_snapshot", "ops_kpis", "quality_risks", "capacity_forecast", "recommended_interventions", "executive_summary_ar", "clinical_safety_disclaimer_ar", "integration_plan", "next_action_ar", "whatsapp_summary_ar"],
+    properties: {
+      hospital_snapshot: {
+        type: "object",
+        required: ["department", "case_type", "operational_context_ar"],
+        properties: {
+          department: { type: "string" },
+          case_type: { type: "string" },
+          operational_context_ar: { type: "string" }
+        }
+      },
+      ops_kpis: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            name: { type: "string" },
+            status: { type: "string" },
+            value: { type: "string" },
+            interpretation_ar: { type: "string" }
+          }
+        }
+      },
+      quality_risks: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            risk: { type: "string" },
+            severity: { type: "string" },
+            evidence: { type: "string" },
+            recommended_owner: { type: "string" }
+          }
+        }
+      },
+      capacity_forecast: {
+        type: "object",
+        required: ["next_24h_ar", "next_7d_ar", "confidence"],
+        properties: {
+          next_24h_ar: { type: "string" },
+          next_7d_ar: { type: "string" },
+          confidence: { type: "number" }
+        }
+      },
+      recommended_interventions: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            action: { type: "string" },
+            impact: { type: "string" },
+            urgency: { type: "string" },
+            owner: { type: "string" }
+          }
+        }
+      },
+      executive_summary_ar: { type: "string" },
+      clinical_safety_disclaimer_ar: { type: "string" },
+      integration_plan: {
+        type: "object",
+        required: ["his", "ehr", "bi_dashboard"],
+        properties: {
+          his: { type: "string" },
+          ehr: { type: "string" },
+          bi_dashboard: { type: "string" }
+        }
+      },
+      next_action_ar: { type: "string" },
+      whatsapp_summary_ar: { type: "string" }
+    }
+  };
+
+  function getEngine() {
+    if (!window.GeminiDemoEngine) {
+      throw new Error("GeminiDemoEngine is not loaded");
+    }
+    if (!getEngine._instance) {
+      getEngine._instance = new window.GeminiDemoEngine({
+        demoId: "health",
+        usageLimit: 10,
+        timeoutMs: 20000
+      });
+    }
+    return getEngine._instance;
+  }
+
+  function errorMessage(error) {
+    return error?.message || "تعذر الاتصال بالخدمة حالياً.";
+  }
+
+  async function toInlineData(file) {
+    if (!file) throw new Error("لم يتم اختيار ملف.");
+    if (file.size > MAX_INLINE_FILE_SIZE) throw new Error("حجم الملف أكبر من 10MB. اختر ملفاً أصغر للتجربة.");
+    if (!window.BrightAIDemoUtils?.fileToInlineData) {
+      throw new Error("أداة تحويل الملف غير متاحة.");
+    }
+    return window.BrightAIDemoUtils.fileToInlineData(file);
+  }
+
+  function inferMimeType(file) {
+    const name = String(file?.name || "").toLowerCase();
+    if (name.endsWith(".png")) return "image/png";
+    if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "image/jpeg";
+    if (name.endsWith(".pdf")) return "application/pdf";
+    if (name.endsWith(".txt")) return "text/plain";
+    if (name.endsWith(".doc")) return "application/msword";
+    if (name.endsWith(".docx")) return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    return file?.type || "application/octet-stream";
+  }
+
+  async function geminiPrompt(prompt, options = {}) {
+    const engine = getEngine();
+    const fileData = options.fileData || null;
+    const result = await engine.generate({
+      prompt,
+      file: fileData,
+      schema: HOSPITAL_OPS_SCHEMA,
+      schemaName: "hospitalOpsDetailedSchema",
+      domain: "health",
+      temperature: 0.18,
+      safetySettings: [
+        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_LOW_AND_ABOVE" },
+        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_LOW_AND_ABOVE" },
+        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_LOW_AND_ABOVE" }
+      ]
+    });
+    if (!result) throw new Error("لم يتم الحصول على نتيجة من الخدمة.");
+    return result;
+  }
+
+  function renderExecutiveBoard(data) {
+    const normalized = normalizeHospitalOutput(data);
+    return JSON.stringify(normalized, null, 2);
+  }
+
   let selectedReportFile = null;
 
   const scenarioTemplates = {
@@ -97,66 +235,6 @@
     button.innerHTML = busy ? `${busyLabel} <span class="spinner" aria-hidden="true"></span>` : idleLabel;
   }
 
-  function getGemini() {
-    const gemini = window.BrightAIGemini;
-    if (!gemini || typeof gemini.generateContent !== "function") {
-      throw new Error("Gemini client is not loaded");
-    }
-    return gemini;
-  }
-
-  function errorMessage(error) {
-    return window.BrightAIGemini?.getErrorMessage?.(error) || error?.message || "تعذر الاتصال بـ Gemini حالياً.";
-  }
-
-  async function toInlineData(file) {
-    if (!file) throw new Error("لم يتم اختيار ملف.");
-    if (file.size > MAX_INLINE_FILE_SIZE) throw new Error("حجم الملف أكبر من 10MB. اختر ملفاً أصغر للتجربة.");
-    const inline = await getGemini().fileToInlineData(file);
-    if (!inline.mime_type || inline.mime_type === "application/octet-stream") inline.mime_type = inferMimeType(file);
-    return inline;
-  }
-
-  function inferMimeType(file) {
-    const name = String(file?.name || "").toLowerCase();
-    if (name.endsWith(".png")) return "image/png";
-    if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "image/jpeg";
-    if (name.endsWith(".pdf")) return "application/pdf";
-    if (name.endsWith(".txt")) return "text/plain";
-    if (name.endsWith(".doc")) return "application/msword";
-    if (name.endsWith(".docx")) return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    return file?.type || "application/octet-stream";
-  }
-
-  async function geminiPrompt(prompt, options = {}) {
-    const response = await getGemini().generateContent({
-      prompt,
-      files: options.files || [],
-      temperature: 0.18,
-      maxOutputTokens: 1800,
-      generationConfig: {
-        temperature: 0.18,
-        maxOutputTokens: 1800,
-        responseMimeType: "application/json"
-      }
-    });
-    return response.text.trim();
-  }
-
-  function parseJsonResponse(text) {
-    const clean = String(text || "")
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/```$/i, "")
-      .trim();
-    return JSON.parse(clean);
-  }
-
-  function renderExecutiveBoard(data) {
-    const normalized = normalizeHospitalOutput(data);
-    return JSON.stringify(normalized, null, 2);
-  }
-
   function hospitalPrompt(payload) {
     return `أنت مستشار تشغيل وجودة مستشفيات في السعودية. حلل المدخلات كدعم قرار تشغيلي فقط.
 
@@ -164,52 +242,7 @@
 - لا تقدم تشخيصاً أو علاجاً نهائياً.
 - ركز على التشغيل والجودة والسعة ودعم القرار.
 - أضف تنبيه مراجعة مختص عند أي حالة طبية.
-- أعد JSON صالحاً فقط بلا Markdown وبنفس البنية التالية:
-{
-  "hospital_snapshot": {
-    "department": string,
-    "case_type": string,
-    "operational_context_ar": string
-  },
-  "ops_kpis": [
-    {
-      "name": string,
-      "status": "good|watch|risk|critical",
-      "value": string,
-      "interpretation_ar": string
-    }
-  ],
-  "quality_risks": [
-    {
-      "risk": string,
-      "severity": "low|medium|high|critical",
-      "evidence": string,
-      "recommended_owner": string
-    }
-  ],
-  "capacity_forecast": {
-    "next_24h_ar": string,
-    "next_7d_ar": string,
-    "confidence": number
-  },
-  "recommended_interventions": [
-    {
-      "action": string,
-      "impact": "low|medium|high",
-      "urgency": "now|today|this_week",
-      "owner": string
-    }
-  ],
-  "executive_summary_ar": string,
-  "clinical_safety_disclaimer_ar": string,
-  "integration_plan": {
-    "his": string,
-    "ehr": string,
-    "bi_dashboard": string
-  },
-  "next_action_ar": string,
-  "whatsapp_summary_ar": string
-}
+- أعد JSON صالحاً يتبع الـ Schema المحدد.
 
 المدخلات:
 ${JSON.stringify(payload, null, 2)}`;
@@ -363,17 +396,17 @@ ${JSON.stringify(payload, null, 2)}`;
 
   async function runAnalysis(ui, payload, idleLabel) {
     setBusy(ui.analyze, true, "جاري إنشاء لوحة تنفيذية...", idleLabel);
-    setStatus(ui.status, "جاري إرسال السياق إلى Gemini...", "");
+    setStatus(ui.status, "جاري إرسال السياق عبر Gemini Structured Output...", "");
     ui.output.textContent = "جاري المعالجة...";
     try {
-      const files = payload.file ? [{ inline_data: await toInlineData(payload.file) }] : [];
-      const text = await geminiPrompt(hospitalPrompt(payload), { files });
-      const json = normalizeHospitalOutput(parseJsonResponse(text));
-      setStatus(ui.status, "تم إنشاء لوحة الإدارة التنفيذية عبر Gemini.", "ok");
+      const fileData = payload.file ? await toInlineData(payload.file) : null;
+      const result = await geminiPrompt(hospitalPrompt(payload), { fileData });
+      const json = normalizeHospitalOutput(result);
+      setStatus(ui.status, "تم إنشاء لوحة الإدارة التنفيذية عبر Gemini Structured Output.", "ok");
       ui.output.textContent = renderExecutiveBoard(json);
     } catch (error) {
       console.error(error);
-      setStatus(ui.status, "تعذر الاتصال بـ Gemini. تم عرض نموذج تشغيلي محلي.", "err");
+      setStatus(ui.status, "تعذر الاتصال. تم عرض نموذج تشغيلي محلي.", "err");
       ui.output.textContent = renderExecutiveBoard(fallbackOutput(error, payload));
     } finally {
       setBusy(ui.analyze, false, "", idleLabel);

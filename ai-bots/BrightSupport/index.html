@@ -38,8 +38,8 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="theme-color" content="#0b1020">
-    <title>BrightSupport - روبوت خدمة العملاء الذكي في السعودية | Bright AI</title>
-    <meta name="description" content="تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس.">
+    <title>BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات | Bright AI</title>
+    <meta name="description" content="ديمو BrightSupport يحلل رسائل العملاء من واتساب والموقع والبريد وملاحظات مركز الاتصال، ويقترح الرد والتصعيد والتذكرة ومتابعة رضا العملاء للشركات السعودية.">
     <meta name="keywords" content="روبوت خدمة العملاء الذكي, شات بوت عربي, دعم فني بالذكاء الاصطناعي السعودية, أتمتة خدمة العملاء, تحسين تجربة العميل, BrightSupport, Bright AI">
 
     <script type="application/ld+json">
@@ -49,7 +49,7 @@
   "name": "BrightSupport",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "description": "روبوت خدمة العملاء الذكي للشركات السعودية مع دعم عربي وتكامل فوري.",
+  "description": "مركز خدمة عملاء ذكي متعدد القنوات يحلل النية والمشاعر والأولوية ويقترح الرد والتصعيد وتذكرة الدعم دون إغلاق الحالات الحساسة تلقائياً.",
   "url": "https://brightai.site/ai-bots/BrightSupport/",
   "inLanguage": "ar",
   "offers": {
@@ -277,12 +277,371 @@
                 font-size: 18px;
             }
         }
+
+        .support-demo-shell {
+            background: #f6f8fb;
+            color: #0f172a;
+            padding-block: 112px 36px;
+        }
+
+        .support-hero,
+        .support-workspace,
+        .support-value-strip {
+            width: min(1180px, calc(100% - 32px));
+            margin-inline: auto;
+        }
+
+        .support-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 24px;
+            align-items: stretch;
+            margin-block-end: 20px;
+        }
+
+        .support-hero__copy,
+        .support-hero__panel,
+        .support-card,
+        .support-dashboard,
+        .support-output {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+        }
+
+        .support-hero__copy {
+            padding: 34px;
+        }
+
+        .support-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #047857;
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-weight: 800;
+            font-size: 13px;
+            margin-block-end: 18px;
+        }
+
+        .support-hero h1 {
+            font-size: clamp(32px, 5vw, 58px);
+            line-height: 1.08;
+            letter-spacing: 0;
+            margin: 0 0 16px;
+            color: #08111f;
+        }
+
+        .support-hero__lead {
+            color: #475569;
+            font-size: 18px;
+            line-height: 1.9;
+            max-width: 760px;
+            margin: 0;
+        }
+
+        .support-hero__actions,
+        .support-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-block-start: 24px;
+        }
+
+        .support-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 11px 16px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .support-btn:hover,
+        .support-choice:hover {
+            transform: translateY(-1px);
+        }
+
+        .support-btn--primary {
+            background: #047857;
+            color: #ffffff;
+            border-color: #047857;
+        }
+
+        .support-btn--dark {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+
+        .support-btn--ghost {
+            background: #ffffff;
+            color: #0f172a;
+        }
+
+        .support-hero__panel {
+            padding: 24px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .support-mini-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .support-metric {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .support-metric strong {
+            display: block;
+            font-size: 26px;
+            color: #0f172a;
+            margin-block-end: 4px;
+        }
+
+        .support-metric span,
+        .support-section-label,
+        .support-small {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .support-workspace {
+            display: grid;
+            grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1.18fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .support-card,
+        .support-dashboard,
+        .support-output {
+            padding: 22px;
+        }
+
+        .support-card h2,
+        .support-dashboard h2,
+        .support-output h2 {
+            font-size: 20px;
+            margin: 0 0 14px;
+            color: #0f172a;
+        }
+
+        .support-choice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-block: 10px 20px;
+        }
+
+        .support-choice {
+            border: 1px solid #dbe3ef;
+            background: #ffffff;
+            border-radius: 8px;
+            min-height: 52px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0f172a;
+            cursor: pointer;
+            font-weight: 800;
+            text-align: start;
+        }
+
+        .support-choice.is-active {
+            border-color: #047857;
+            background: #ecfdf5;
+            color: #065f46;
+            box-shadow: inset 0 0 0 1px #047857;
+        }
+
+        .support-choice iconify-icon {
+            color: #047857;
+            flex: 0 0 auto;
+        }
+
+        .support-scenario-list {
+            display: grid;
+            gap: 8px;
+            margin-block: 10px 20px;
+        }
+
+        .support-scenario {
+            border: 1px solid #dbe3ef;
+            border-radius: 8px;
+            background: #f8fafc;
+            padding: 12px;
+            text-align: start;
+            cursor: pointer;
+            color: #0f172a;
+            line-height: 1.5;
+        }
+
+        .support-scenario.is-active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .support-input {
+            width: 100%;
+            min-height: 132px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 14px;
+            resize: vertical;
+            line-height: 1.8;
+            color: #0f172a;
+            background: #ffffff;
+            font-size: 15px;
+        }
+
+        .support-dashboard {
+            display: grid;
+            gap: 16px;
+        }
+
+        .support-dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .support-insight {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px;
+            min-height: 98px;
+        }
+
+        .support-insight span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-block-end: 7px;
+        }
+
+        .support-insight strong,
+        .support-insight p {
+            color: #0f172a;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .support-priority {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-weight: 900;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .support-output {
+            margin-block-start: 20px;
+        }
+
+        .support-json {
+            direction: ltr;
+            text-align: left;
+            white-space: pre-wrap;
+            overflow: auto;
+            max-height: 420px;
+            border-radius: 8px;
+            background: #020617;
+            color: #d1fae5;
+            padding: 18px;
+            font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        .support-value-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-block: 20px 0;
+        }
+
+        .support-value {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .support-value strong {
+            display: block;
+            color: #ffffff;
+            margin-block-end: 8px;
+            font-size: 17px;
+        }
+
+        .support-value p {
+            margin: 0;
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        @media (max-width: 960px) {
+            .support-hero,
+            .support-workspace,
+            .support-value-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .support-demo-shell {
+                padding-block-start: 96px;
+            }
+
+            .support-hero,
+            .support-workspace,
+            .support-value-strip {
+                width: min(100% - 20px, 1180px);
+            }
+
+            .support-hero__copy,
+            .support-hero__panel,
+            .support-card,
+            .support-dashboard,
+            .support-output {
+                padding: 16px;
+            }
+
+            .support-choice-grid,
+            .support-dashboard-grid,
+            .support-mini-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <meta content="BrightSupport - روبوت خدمة العملاء الذكي في السعودية | Bright AI" property="og:title">
-    <meta content="تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس." property="og:description">
+    <meta content="BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات | Bright AI" property="og:title">
+    <meta content="ردود فورية، تصعيد ذكي، وتقارير رضا عملاء من واتساب والموقع والبريد وملاحظات مركز الاتصال." property="og:description">
     <meta content="https://brightai.site/assets/images/Gemini.png" property="og:image">
 <meta content="1200" property="og:image:width">
 <meta content="630" property="og:image:height">
@@ -292,8 +651,8 @@
     <meta content="مُشرقة AI" property="og:site_name">
 
     <meta content="summary_large_image" name="twitter:card">
-    <meta content="BrightSupport - روبوت خدمة العملاء الذكي في السعودية | Bright AI" name="twitter:title">
-    <meta content="تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس." name="twitter:description">
+    <meta content="BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات | Bright AI" name="twitter:title">
+    <meta content="ديمو خدمة عملاء يحلل القناة والنية والمشاعر والأولوية والتصعيد ويعرض قيمة البوت للإدارة." name="twitter:description">
     <meta content="https://brightai.site/assets/images/Gemini.png" name="twitter:image">
     <link as="style" href="/frontend/css/main.bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"><noscript>
         <link href="/frontend/css/main.bundle.min.css" rel="stylesheet" />
@@ -418,9 +777,9 @@
   "@context": "https://schema.org",
   "@type": "Service",
   "@id": "https://brightai.site/ai-bots/BrightSupport/#intent",
-  "name": "BrightSupport - روبوت خدمة العملاء الذكي في السعودية",
+  "name": "BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات في السعودية",
   "url": "https://brightai.site/ai-bots/BrightSupport/",
-  "description": "تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس.",
+  "description": "ديمو BrightSupport يحلل رسائل العملاء من واتساب والموقع والبريد وملاحظات مركز الاتصال، ويقترح الرد والتصعيد والتذكرة ومتابعة رضا العملاء للشركات السعودية.",
   "inLanguage": "ar-SA",
   "provider": {
     "@id": "https://brightai.site/#organization"
@@ -461,8 +820,8 @@
       "@type": "WebPage",
       "@id": "https://brightai.site/ai-bots/BrightSupport/#webpage",
       "url": "https://brightai.site/ai-bots/BrightSupport/",
-      "name": "BrightSupport - روبوت خدمة العملاء الذكي في السعودية | Bright AI",
-      "description": "تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس.",
+      "name": "BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات | Bright AI",
+      "description": "ديمو BrightSupport يحلل رسائل العملاء من واتساب والموقع والبريد وملاحظات مركز الاتصال، ويقترح الرد والتصعيد والتذكرة ومتابعة رضا العملاء للشركات السعودية.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -490,7 +849,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "BrightSupport - روبوت خدمة العملاء الذكي في السعودية",
+          "name": "BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات في السعودية",
           "item": "https://brightai.site/ai-bots/BrightSupport/"
         }
       ]
@@ -498,8 +857,8 @@
     {
       "@type": "Service",
       "@id": "https://brightai.site/ai-bots/BrightSupport/#service",
-      "name": "BrightSupport - روبوت خدمة العملاء الذكي في السعودية",
-      "description": "تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس.",
+      "name": "BrightSupport - مركز خدمة عملاء ذكي متعدد القنوات في السعودية",
+      "description": "ديمو BrightSupport يحلل رسائل العملاء من واتساب والموقع والبريد وملاحظات مركز الاتصال، ويقترح الرد والتصعيد والتذكرة ومتابعة رضا العملاء للشركات السعودية.",
       "provider": {
         "@id": "https://brightai.site/#organization"
       },
@@ -885,45 +1244,86 @@
         </div>
     </div>
     <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
-
-
-
-
-    <div class="header">
-        <h1>BrightSupport - روبوت خدمة العملاء الذكي في السعودية</h1>
-<section class="seo-answer-block" data-seo-intent-answer="true"><p>تساعد Bright AI الشركات والجهات في السعودية على تطبيق BrightSupport - روبوت خدمة العملاء الذكي في السعودية بشكل عملي يربط بين الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، والحوكمة. هذه الصفحة مناسبة للفرق التي تبحث عن شريك تقني يحول فرص التحسين إلى مشاريع قابلة للتنفيذ والقياس.</p></section>
-<section class="seo-intent-section" data-seo-intent-section="true">
-<div class="seo-intent-group"><h2>ما الحل الذي تقدمه Bright AI؟</p><h3>أتمتة العمليات المتكررة</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p><h3>تحليل البيانات والقرارات</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p></div>
-<div class="seo-intent-group"><h2>لمن يناسب هذا الحل؟</p><h3>الشركات السعودية</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p><h3>الجهات الحكومية والفرق المنظمة</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p></div>
-<div class="seo-intent-group"><h2>المشاكل التي يحلها للشركات السعودية</p><h3>التكامل مع الأنظمة الحالية</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p><h3>دعم اللغة العربية</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p></div>
-<div class="seo-intent-group"><h2>الحوكمة والأمان والتكامل</p><h3>تقارير تنفيذية للإدارة</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p><h3>مراجعة وقياس الأثر</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p></div>
-<div class="seo-intent-group"><h2>الخطوة التالية</p><h3>احجز استشارة</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p><h3>استكشف الخدمات ذات الصلة</p><p>يربط هذا المحور BrightSupport - روبوت خدمة العملاء الذكي في السعودية بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p></div>
-<div class="seo-intent-links"><h2>روابط تساعدك على الخطوة التالية</h2><ul><li><a href="/consultation/">احجز استشارة</a></li><li><a href="/services/">الخدمات</a></li><li><a href="/contact/">تواصل معنا</a></li></ul></div>
-</section>
-
-
-
-
-
-
-
-        <p>دعم فوري على مدار الساعة لحل جميع استفساراتك</p>
-    </div>
-    <div class="chat-container" data-chat-endpoint="/api/ai/chat/stream" data-chatbot-profile="support">
-        <div id="chatMessages"></div>
-        <div class="input-area">
-            <textarea id="userInput" placeholder="اكتب استفسارك هنا..." aria-label="اكتب استفسارك هنا..."></textarea>
-            <div class="input-actions">
-                <input id="fileInput" style="display: none;" type="file" aria-label="رفع ملف">
-                <button class="action-button" id="attachButton" aria-label="إرفاق ملف">
-                    <i class="material-icons">attach_file</i>
-                </button>
-                <button class="action-button" id="sendButton" aria-label="إرسال الرسالة">
-                    <i class="material-icons">send</i>
-                </button>
+    <main class="support-demo-shell" aria-labelledby="support-demo-title">
+        <section class="support-hero">
+            <div class="support-hero__copy">
+                <span class="support-kicker"><iconify-icon icon="lucide:headphones" width="16"></iconify-icon> ديمو مركز خدمة عملاء ذكي</span>
+                <h1 id="support-demo-title">ردود فورية، تصعيد ذكي، وتقارير رضا عملاء من واتساب والموقع والبريد.</h1>
+                <p class="support-hero__lead">BrightSupport يحول كل رسالة عميل إلى قرار تشغيلي واضح: تحليل النية والمشاعر، تقدير أولوية الحالة، توصية اتفاقية مستوى الخدمة، رد مقترح آمن، تذكرة جاهزة، ومسار تصعيد لا يغلق الحالات الحساسة تلقائياً.</p>
+                <div class="support-hero__actions" aria-label="إجراءات الربط">
+                    <a class="support-btn support-btn--primary" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer"><iconify-icon icon="lucide:message-circle" width="18"></iconify-icon> اربط البوت مع واتساب</a>
+                    <a class="support-btn support-btn--dark" href="/contact/"><iconify-icon icon="lucide:database-zap" width="18"></iconify-icon> اربط CRM</a>
+                    <a class="support-btn support-btn--ghost" href="/consultation/"><iconify-icon icon="lucide:sparkles" width="18"></iconify-icon> اطلب بوت مخصص لخدمة العملاء</a>
+                </div>
             </div>
-        </div>
-    </div>
+            <aside class="support-hero__panel" aria-label="قيمة تشغيلية للإدارة">
+                <div>
+                    <span class="support-section-label">مؤشرات الإدارة في الديمو</span>
+                    <h2>قياس سرعة الحل، الرضا، وضغط الفريق</h2>
+                </div>
+                <div class="support-mini-metrics">
+                    <div class="support-metric"><strong>24/7</strong><span>فرز أولي للقنوات دون انتظار</span></div>
+                    <div class="support-metric"><strong>دقائق</strong><span>تحويل الرسالة إلى تذكرة قابلة للتنفيذ</span></div>
+                    <div class="support-metric"><strong>أوضح</strong><span>قرار تصعيد حسب الحساسية والأولوية</span></div>
+                    <div class="support-metric"><strong>أقل</strong><span>ضغط على فريق الدعم في أوقات الذروة</span></div>
+                </div>
+                <p class="support-small">يعرض الديمو قيمة البوت للإدارة دون وعود غير مؤكدة: يقترح، يفرز، ويصعد للحالات التي تحتاج موظفاً مختصاً.</p>
+            </aside>
+        </section>
+
+        <section class="support-workspace" aria-label="تشغيل ديمو خدمة العملاء">
+            <div class="support-card">
+                <h2>اختر القناة والسيناريو</h2>
+                <span class="support-section-label">القناة</span>
+                <div class="support-choice-grid" id="supportChannels">
+                    <button class="support-choice is-active" type="button" data-channel="WhatsApp"><iconify-icon icon="lucide:message-circle" width="18"></iconify-icon> واتساب</button>
+                    <button class="support-choice" type="button" data-channel="Website Chat"><iconify-icon icon="lucide:messages-square" width="18"></iconify-icon> محادثة الموقع</button>
+                    <button class="support-choice" type="button" data-channel="Email"><iconify-icon icon="lucide:mail" width="18"></iconify-icon> البريد</button>
+                    <button class="support-choice" type="button" data-channel="Call Center Notes"><iconify-icon icon="lucide:clipboard-list" width="18"></iconify-icon> ملاحظات مركز الاتصال</button>
+                </div>
+
+                <span class="support-section-label">سيناريو جاهز</span>
+                <div class="support-scenario-list" id="supportScenarios">
+                    <button class="support-scenario is-active" type="button" data-scenario="angry">عميل غاضب: تأخر الطلب ثلاث مرات ويريد تصعيداً فورياً.</button>
+                    <button class="support-scenario" type="button" data-scenario="refund">طلب استرجاع: العميل يسأل عن الاسترجاع بعد فتح التغليف.</button>
+                    <button class="support-scenario" type="button" data-scenario="technical">مشكلة تقنية: لا يستطيع الدخول ويظهر رمز خطأ.</button>
+                    <button class="support-scenario" type="button" data-scenario="product">سؤال عن منتج: يريد مقارنة المواصفات قبل الشراء.</button>
+                    <button class="support-scenario" type="button" data-scenario="late">شكوى متأخرة: شكوى قديمة لم يتم الرد عليها منذ أيام.</button>
+                </div>
+
+                <label class="support-section-label" for="supportMessage">رسالة العميل</label>
+                <textarea class="support-input" id="supportMessage"></textarea>
+                <div class="support-cta-row">
+                    <button class="support-btn support-btn--primary" type="button" id="analyzeSupportMessage"><iconify-icon icon="lucide:wand-sparkles" width="18"></iconify-icon> حلل عبر Gemini</button>
+                    <button class="support-btn support-btn--ghost" type="button" id="resetSupportDemo"><iconify-icon icon="lucide:rotate-ccw" width="18"></iconify-icon> إعادة المثال</button>
+                </div>
+            </div>
+
+            <div>
+                <section class="support-dashboard" aria-label="لوحة تحليل خدمة العملاء">
+                    <h2>Dashboard</h2>
+                    <div class="support-dashboard-grid">
+                        <div class="support-insight"><span>Customer Mood</span><strong id="customerMood">غاضب</strong></div>
+                        <div class="support-insight"><span>Priority</span><strong class="support-priority" id="ticketPriority">P1</strong></div>
+                        <div class="support-insight"><span>Auto Reply</span><p id="autoReply">رد اعتذار وتأكيد استلام دون وعد بحل نهائي.</p></div>
+                        <div class="support-insight"><span>Escalation Path</span><p id="escalationPath">تصعيد إلى قائد فريق الدعم والعمليات.</p></div>
+                        <div class="support-insight"><span>Ticket Preview</span><p id="ticketPreview">تأخر متكرر في الطلب - يحتاج مراجعة تشغيلية.</p></div>
+                        <div class="support-insight"><span>CSAT Follow-up</span><p id="csatFollowup">استبيان رضا بعد إغلاق الحالة من الموظف المختص.</p></div>
+                    </div>
+                    <div class="support-value-strip">
+                        <div class="support-value"><strong>سرعة حل أعلى</strong><p>تلخيص الرسالة وتحديد الحقول المطلوبة قبل وصولها للموظف.</p></div>
+                        <div class="support-value"><strong>رضا عملاء أوضح</strong><p>متابعة رضا مخصصة حسب نبرة الحالة وحساسيتها.</p></div>
+                        <div class="support-value"><strong>ضغط أقل على الفريق</strong><p>فرز الحالات المتكررة وتصعيد الحرجة فقط مع سبب القرار.</p></div>
+                    </div>
+                </section>
+
+                <section class="support-output" aria-label="مخرجات Gemini">
+                    <h2>مخرجات Gemini المنظمة</h2>
+                    <pre class="support-json" id="geminiOutput"></pre>
+                </section>
+            </div>
+        </section>
+    </main>
     <section class="seo-content-section" style="max-width: 900px; margin: 40px auto 80px; padding: 40px 30px; text-align: right; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color: #334155; border-top: 5px solid #4CAF50;">
 
         <div style="text-align: center; margin-bottom: 40px;">
@@ -1136,6 +1536,199 @@
         </div>
 
     </section>
+    <script>
+        (function () {
+            const scenarioMessages = {
+                angry: "أنا غاضب جداً. طلبي تأخر ثلاث مرات وكل مرة يقولون لي انتظر. لا أريد رداً عاماً، أريد شخصاً مسؤولاً يراجع الموضوع اليوم.",
+                refund: "وصلني المنتج وفتحت التغليف ثم اكتشفت أنه غير مناسب. أريد أعرف هل أقدر أرجعه وما الخطوات المطلوبة بدون ما أخسر حقي؟",
+                technical: "لا أستطيع الدخول إلى حسابي منذ الصباح. تظهر لي رسالة خطأ 503 بعد إدخال رمز التحقق، وجربت من الجوال والكمبيوتر.",
+                product: "أفكر أشتري الباقة الاحترافية. ما الفرق بينها وبين الباقة الأساسية؟ وهل تناسب فريق مبيعات عنده خمسين مستخدم؟",
+                late: "رفعت شكوى قبل خمسة أيام ولم يصلني أي رد. رقم الطلب 4821، وأحتاج أعرف من المسؤول ولماذا تأخر الرد."
+            };
+
+            const channelContext = {
+                "WhatsApp": "واتساب",
+                "Website Chat": "محادثة الموقع",
+                "Email": "البريد",
+                "Call Center Notes": "ملاحظات مركز الاتصال"
+            };
+
+            let activeChannel = "WhatsApp";
+            let activeScenario = "angry";
+
+            const supportMessage = document.getElementById("supportMessage");
+            const geminiOutput = document.getElementById("geminiOutput");
+            const customerMood = document.getElementById("customerMood");
+            const ticketPriority = document.getElementById("ticketPriority");
+            const autoReply = document.getElementById("autoReply");
+            const escalationPath = document.getElementById("escalationPath");
+            const ticketPreview = document.getElementById("ticketPreview");
+            const csatFollowup = document.getElementById("csatFollowup");
+
+            function buildAnalysis(message) {
+                const scenario = activeScenario;
+                const channel = channelContext[activeChannel] || activeChannel;
+
+                const templates = {
+                    angry: {
+                        customer_message_summary_ar: "العميل غاضب بسبب تأخر متكرر في الطلب ويطلب تدخلاً مسؤولاً بدلاً من رد عام.",
+                        intent: "تصعيد شكوى تأخير طلب",
+                        sentiment: "angry",
+                        urgency: "critical",
+                        sla_recommendation: "مراجعة خلال 15 دقيقة من قائد الدعم، مع فتح تذكرة عاجلة وعدم إغلاقها آلياً قبل تأكيد الموظف.",
+                        suggested_reply_tone: "apologetic",
+                        department: "قائد فريق الدعم والعمليات",
+                        reason: "تكرار التأخير وارتفاع نبرة الغضب واحتمال خسارة العميل.",
+                        priority: "p1",
+                        title: "تأخر متكرر في الطلب مع طلب تصعيد عاجل",
+                        category: "الشحن والعمليات",
+                        tags: ["غضب", "تأخير", "تصعيد", channel],
+                        required_fields: ["رقم الطلب", "تاريخ آخر تحديث", "شركة الشحن", "سجل المحادثات السابقة"],
+                        gaps: ["سياسة تعويض التأخير", "حدود صلاحيات موظف الدعم عند تكرار التأخير"],
+                        next: "فتح تذكرة P1 وإرسال ملخص للقائد المناوب مع طلب رقم الطلب إن لم يكن متوفراً."
+                    },
+                    refund: {
+                        customer_message_summary_ar: "العميل يريد معرفة أهلية الاسترجاع بعد فتح التغليف والخطوات المطلوبة.",
+                        intent: "طلب استرجاع",
+                        sentiment: "confused",
+                        urgency: "medium",
+                        sla_recommendation: "رد أولي فوري مع مراجعة سياسة الاسترجاع خلال ساعتين، وعدم تأكيد القبول قبل التحقق من الشروط.",
+                        suggested_reply_tone: "formal",
+                        department: "فريق الاسترجاع وخدمة العملاء",
+                        reason: "الحالة تعتمد على سياسة الاسترجاع وحالة المنتج ولا يجب وعد العميل بالموافقة قبل التحقق.",
+                        priority: "p3",
+                        title: "استفسار عن استرجاع منتج بعد فتح التغليف",
+                        category: "الاسترجاع والاستبدال",
+                        tags: ["استرجاع", "سياسة", channel],
+                        required_fields: ["رقم الطلب", "حالة المنتج", "تاريخ الاستلام", "صور المنتج عند الحاجة"],
+                        gaps: ["تفاصيل سياسة المنتجات المفتوحة", "قائمة الاستثناءات حسب الفئة"],
+                        next: "طلب رقم الطلب وحالة المنتج ثم تحويلها لفريق الاسترجاع إذا كانت السياسة غير واضحة."
+                    },
+                    technical: {
+                        customer_message_summary_ar: "العميل لا يستطيع الدخول للحساب بسبب خطأ 503 بعد رمز التحقق وعلى أكثر من جهاز.",
+                        intent: "بلاغ مشكلة تقنية في تسجيل الدخول",
+                        sentiment: "negative",
+                        urgency: "high",
+                        sla_recommendation: "فتح تذكرة تقنية خلال 30 دقيقة وجمع تفاصيل الجهاز والوقت دون إغلاق تلقائي.",
+                        suggested_reply_tone: "technical",
+                        department: "الدعم الفني المستوى الثاني",
+                        reason: "العطل متكرر عبر أجهزة متعددة وقد يشير إلى مشكلة خدمة أو تحقق.",
+                        priority: "p2",
+                        title: "خطأ 503 عند تسجيل الدخول بعد رمز التحقق",
+                        category: "الدخول والحسابات",
+                        tags: ["تقني", "تسجيل دخول", "503", channel],
+                        required_fields: ["البريد أو رقم الحساب", "وقت ظهور الخطأ", "نوع الجهاز", "لقطة شاشة إن أمكن"],
+                        gaps: ["دليل أخطاء تسجيل الدخول", "حالة خدمات التحقق اللحظية"],
+                        next: "طلب بيانات التشخيص الأساسية وتصعيدها لفريق الدعم الفني."
+                    },
+                    product: {
+                        customer_message_summary_ar: "العميل يقارن بين الباقة الأساسية والاحترافية ويريد ملاءمتها لفريق مبيعات من خمسين مستخدماً.",
+                        intent: "استفسار قبل الشراء عن منتج",
+                        sentiment: "neutral",
+                        urgency: "low",
+                        sla_recommendation: "رد فوري بمقارنة عامة ثم عرض مكالمة استشارية، دون تأكيد الملاءمة النهائية قبل فهم المتطلبات.",
+                        suggested_reply_tone: "friendly",
+                        department: "المبيعات والاستشارات",
+                        reason: "فرصة بيع تحتاج تأهيل متطلبات وليست حالة دعم حرجة.",
+                        priority: "p4",
+                        title: "مقارنة باقات لفريق مبيعات متوسط الحجم",
+                        category: "استفسارات المبيعات",
+                        tags: ["منتج", "مقارنة", "مبيعات", channel],
+                        required_fields: ["عدد المستخدمين", "النظام الحالي", "متطلبات التكامل", "حجم المحادثات الشهري"],
+                        gaps: ["جدول مقارنة الباقات", "أمثلة استخدام فرق المبيعات"],
+                        next: "تقديم مقارنة مختصرة ثم تحويل العميل لمستشار مبيعات عند طلب تفاصيل التكامل."
+                    },
+                    late: {
+                        customer_message_summary_ar: "العميل يشتكي من شكوى مفتوحة منذ خمسة أيام دون رد ويطلب معرفة المسؤول عن التأخير.",
+                        intent: "متابعة شكوى متأخرة",
+                        sentiment: "negative",
+                        urgency: "high",
+                        sla_recommendation: "تصعيد خلال 30 دقيقة لمشرف تجربة العملاء مع مراجعة سجل الشكوى وعدم إغلاقها آلياً.",
+                        suggested_reply_tone: "apologetic",
+                        department: "مشرف تجربة العملاء",
+                        reason: "تجاوز زمن الرد المتوقع واحتمال تدهور رضا العميل.",
+                        priority: "p2",
+                        title: "شكوى مفتوحة دون رد منذ خمسة أيام",
+                        category: "متابعة الشكاوى",
+                        tags: ["شكوى متأخرة", "SLA", "تصعيد", channel],
+                        required_fields: ["رقم الشكوى", "تاريخ الفتح", "آخر مالك للتذكرة", "سبب عدم الرد"],
+                        gaps: ["تنبيهات تجاوز SLA", "تعريف مالك الشكوى عند انتقالها بين الفرق"],
+                        next: "إرسال تنبيه للمشرف وطلب مراجعة سبب التأخير قبل الرد النهائي للعميل."
+                    }
+                };
+
+                const item = templates[scenario];
+                const reply = "نعتذر عن التجربة غير المرضية. استلمنا رسالتك عبر " + channel + " وسنراجع التفاصيل المتاحة قبل تأكيد أي إجراء. لن يتم إغلاق الحالة تلقائياً، وسيتم تصعيدها للفريق المختص إذا كانت تحتاج صلاحية أو تحققاً إضافياً.";
+
+                return {
+                    customer_message_summary_ar: item.customer_message_summary_ar,
+                    intent: item.intent,
+                    sentiment: item.sentiment,
+                    urgency: item.urgency,
+                    sla_recommendation: item.sla_recommendation,
+                    suggested_reply_ar: reply,
+                    suggested_reply_tone: item.suggested_reply_tone,
+                    escalation: {
+                        needed: item.priority !== "p4",
+                        department: item.department,
+                        reason: item.reason,
+                        priority: item.priority
+                    },
+                    ticket_preview: {
+                        title: item.title,
+                        category: item.category,
+                        tags: item.tags,
+                        required_fields: item.required_fields
+                    },
+                    knowledge_base_gap: item.gaps,
+                    csat_followup_ar: "بعد معالجة الحالة من الفريق المختص، أرسل سؤال رضا قصير: هل تم حل مشكلتك بوضوح؟ مع خيار إضافة ملاحظة لتحسين الخدمة.",
+                    automation_roi_ar: "القيمة التشغيلية: فرز الرسالة فوراً، تقليل وقت جمع المعلومات، تخفيف ضغط الفريق، وتزويد الإدارة بمؤشرات عن المزاج والأولوية والفجوات المعرفية.",
+                    next_action_ar: item.next,
+                    whatsapp_summary_ar: "ملخص " + channel + ": " + item.customer_message_summary_ar + " الأولوية " + item.priority.toUpperCase() + "."
+                };
+            }
+
+            function renderAnalysis() {
+                const analysis = buildAnalysis(supportMessage.value);
+                customerMood.textContent = analysis.sentiment;
+                ticketPriority.textContent = analysis.escalation.priority.toUpperCase();
+                autoReply.textContent = analysis.suggested_reply_ar;
+                escalationPath.textContent = analysis.escalation.needed ? analysis.escalation.department + " - " + analysis.escalation.reason : "لا يحتاج تصعيداً فورياً، مع إبقاء خيار التحويل لموظف عند طلب العميل.";
+                ticketPreview.textContent = analysis.ticket_preview.title + " | " + analysis.ticket_preview.category;
+                csatFollowup.textContent = analysis.csat_followup_ar;
+                geminiOutput.textContent = JSON.stringify(analysis, null, 2);
+            }
+
+            function setScenario(key) {
+                activeScenario = key;
+                supportMessage.value = scenarioMessages[key];
+                document.querySelectorAll("#supportScenarios .support-scenario").forEach((button) => {
+                    button.classList.toggle("is-active", button.dataset.scenario === key);
+                });
+                renderAnalysis();
+            }
+
+            document.querySelectorAll("#supportChannels .support-choice").forEach((button) => {
+                button.addEventListener("click", () => {
+                    activeChannel = button.dataset.channel;
+                    document.querySelectorAll("#supportChannels .support-choice").forEach((item) => {
+                        item.classList.toggle("is-active", item === button);
+                    });
+                    renderAnalysis();
+                });
+            });
+
+            document.querySelectorAll("#supportScenarios .support-scenario").forEach((button) => {
+                button.addEventListener("click", () => setScenario(button.dataset.scenario));
+            });
+
+            document.getElementById("analyzeSupportMessage").addEventListener("click", renderAnalysis);
+            document.getElementById("resetSupportDemo").addEventListener("click", () => setScenario(activeScenario));
+            supportMessage.addEventListener("input", renderAnalysis);
+
+            setScenario(activeScenario);
+        })();
+    </script>
     <script defer="" src="/frontend/js/chatbot-production.bundle.js"></script>
     <script defer="" src="/frontend/js/main.bundle.min.js"></script>
     <script defer="" src="/frontend/js/index-theme.min.js"></script>
