@@ -178,7 +178,7 @@ describe('AI Gateway — Config Security', () => {
   it('config has no hardcoded Gemini API key', () => {
     const fs = require('fs');
     const src = fs.readFileSync(require('path').resolve(__dirname, '../backend/config/index.js'), 'utf8');
-    expect(src).not.toContain('AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8');
+    expect(src).not.toMatch(/AIza[0-9A-Za-z_-]{20,}/);
   });
 
   it('dotenv is optional (try/catch)', () => {

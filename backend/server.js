@@ -63,11 +63,17 @@ const MIME_TYPES = {
   '.xml': 'application/xml; charset=utf-8'
 };
 
+const PRODUCTION_ALLOWED_ORIGINS = new Set([
+  'https://brightai.site',
+  'https://www.brightai.site'
+]);
+const DEVELOPMENT_ALLOWED_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1']);
+
 // CORS headers for API responses
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
+const BASE_CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, X-BrightAI-Analytics-Key, Authorization',
+  Vary: 'Origin',
   'Content-Type': 'application/json'
 };
 
@@ -75,6 +81,11 @@ const STREAM_ROUTE_ALIASES = new Set(['/api/ai/stream', '/api/groq/stream']);
 const CHAT_ROUTE_ALIASES = new Set(['/api/gemini/chat']);
 const CHAT_STREAM_ROUTE_ALIASES = new Set(['/api/gemini/chat/stream']);
 const OPENAI_COMPAT_ROUTE_ALIASES = new Set(['/api/ai/openai-chat', '/api/ai/chat/completions']);
+const STATIC_ROUTE_REDIRECTS = new Map([
+  ['/interview/pages/supportAI', '/interview/pages/support-ai/'],
+  ['/interview/pages/supportAI/', '/interview/pages/support-ai/'],
+  ['/interview/pages/supportAI/index.html', '/interview/pages/support-ai/']
+]);
 const BLOG_SLUG_REDIRECTS = new Map([
   [
     '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1',
@@ -239,6 +250,52 @@ function createLivePayload() {
   };
 }
 
+function getCorsOrigin(req) {
+  const origin = String(req.headers.origin || '').trim();
+  if (!origin) return '';
+
+  let parsed;
+  try {
+    parsed = new URL(origin);
+  } catch (_error) {
+    return '';
+  }
+
+  if (config.server.nodeEnv === 'production') {
+    return PRODUCTION_ALLOWED_ORIGINS.has(origin) ? origin : '';
+  }
+
+  return DEVELOPMENT_ALLOWED_HOSTS.has(parsed.hostname) ? origin : '';
+}
+
+function buildCorsHeaders(req) {
+  const allowedOrigin = getCorsOrigin(req);
+  return {
+    ...BASE_CORS_HEADERS,
+    ...(allowedOrigin ? { 'Access-Control-Allow-Origin': allowedOrigin } : {})
+  };
+}
+
+function getClientIp(req) {
+  const forwardedFor = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  if (forwardedFor) return forwardedFor;
+  return req.socket?.remoteAddress || '';
+}
+
+function findBackendRuntimeFilesWithSpaces() {
+  const offenders = [];
+  const runtimeDirs = [path.join(__dirname, 'routes'), path.join(__dirname, 'utils'), path.join(__dirname, 'services')];
+  for (const dir of runtimeDirs) {
+    if (!fs.existsSync(dir)) continue;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isFile() && /\s/.test(entry.name)) {
+        offenders.push(path.relative(__dirname, path.join(dir, entry.name)));
+      }
+    }
+  }
+  return offenders;
+}
+
 function setupLiveWebSocket(server) {
   const wss = new WebSocketServer({ noServer: true });
   const clients = new Set();
@@ -352,11 +409,11 @@ function parseBody(req, maxSizeBytes = config.validation.maxBodyBytes) {
 /**
  * Create Express-like request/response objects
  */
-function createContext(req, res) {
+function createContext(req, res, corsHeaders = buildCorsHeaders(req)) {
   // Enhanced response object
   const enhancedRes = {
     statusCode: 200,
-    headers: { ...CORS_HEADERS },
+    headers: { ...corsHeaders },
 
     status(code) {
       this.statusCode = code;
@@ -392,7 +449,8 @@ function createContext(req, res) {
   const enhancedReq = {
     ...req,
     body: null,
-    ip: req.socket?.remoteAddress,
+    corsHeaders,
+    ip: getClientIp(req),
     connection: req.socket,
     on: req.on.bind(req),
     once: req.once ? req.once.bind(req) : undefined,
@@ -688,7 +746,7 @@ async function handleRequest(req, res) {
   }
 
   const redirectTarget = (method === 'GET' || method === 'HEAD')
-    ? getStaticRedirectTarget(url)
+    ? (STATIC_ROUTE_REDIRECTS.get(url) || getStaticRedirectTarget(url))
     : null;
   if (redirectTarget) {
     res.writeHead(301, {
@@ -700,7 +758,7 @@ async function handleRequest(req, res) {
 
   // Handle CORS preflight
   if (method === 'OPTIONS') {
-    res.writeHead(204, CORS_HEADERS);
+    res.writeHead(204, buildCorsHeaders(req));
     res.end();
     return;
   }
@@ -809,8 +867,8 @@ async function handleRequest(req, res) {
         const yamlPath = path.join(__dirname, '../docs/openapi.yaml');
         const yamlContent = fs.readFileSync(yamlPath, 'utf8');
         res.writeHead(200, {
-          'Content-Type': 'text/yaml; charset=utf-8',
-          'Access-Control-Allow-Origin': '*'
+          ...buildCorsHeaders(req),
+          'Content-Type': 'text/yaml; charset=utf-8'
         });
         res.end(yamlContent);
         return;
@@ -869,6 +927,11 @@ async function handleRequest(req, res) {
  * Start the server
  */
 function startServer() {
+  const spacedRuntimeFiles = findBackendRuntimeFilesWithSpaces();
+  if (spacedRuntimeFiles.length > 0) {
+    throw new Error(`Backend runtime filenames must not contain spaces: ${spacedRuntimeFiles.join(', ')}`);
+  }
+
   // Validate configuration
   if (!validateConfig()) {
     console.warn('Warning: Server starting with incomplete configuration');

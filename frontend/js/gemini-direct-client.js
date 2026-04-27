@@ -2,8 +2,7 @@
   "use strict";
 
   const GEMINI_MODEL = "gemini-2.5-flash";
-  const GEMINI_API_KEY = "AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8";
-  const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+  const GEMINI_ENDPOINT = "/api/ai/chat/completions";
   const DEFAULT_TIMEOUT_MS = 45000;
 
   class GeminiDirectError extends Error {
@@ -20,20 +19,32 @@
     if (!text) {
       throw new GeminiDirectError("EMPTY_PROMPT", "أدخل نصاً قبل بدء التحليل.");
     }
-    return { text };
+    return { type: "text", text };
   }
 
   function buildInlineDataPart(filePart) {
     if (!filePart) return null;
-    if (filePart.inline_data) return { inline_data: filePart.inline_data };
-    if (filePart.inlineData) return { inline_data: filePart.inlineData };
+    if (filePart.inline_data) {
+      return {
+        type: "input_file",
+        mime_type: filePart.inline_data.mime_type,
+        data: filePart.inline_data.data
+      };
+    }
+    if (filePart.inlineData) {
+      return {
+        type: "input_file",
+        mime_type: filePart.inlineData.mime_type || filePart.inlineData.mimeType,
+        data: filePart.inlineData.data
+      };
+    }
 
     const mimeType = filePart.mimeType || filePart.mime_type || filePart.type;
     const data = filePart.data || filePart.base64;
     if (!mimeType || !data) {
       throw new GeminiDirectError("INVALID_FILE", "بيانات الملف غير مكتملة.");
     }
-    return { inline_data: { mime_type: mimeType, data } };
+    return { type: "input_file", mime_type: mimeType, data };
   }
 
   async function fileToInlineData(file) {
@@ -91,29 +102,40 @@
       if (inlinePart) parts.push(inlinePart);
     });
 
+    const generationConfig = config.generationConfig || {};
     const body = {
-      contents: [{ role: "user", parts }],
-      generationConfig: config.generationConfig || {
-        temperature: config.temperature ?? 0.7,
-        maxOutputTokens: config.maxOutputTokens || 700
-      }
+      model: config.model || GEMINI_MODEL,
+      messages: [{ role: "user", content: parts }],
+      temperature: generationConfig.temperature ?? config.temperature ?? 0.7,
+      max_tokens: generationConfig.maxOutputTokens || config.maxOutputTokens || 700
     };
+    if (generationConfig.responseMimeType) {
+      body.response_format = generationConfig.responseMimeType === "application/json"
+        ? { type: "json_object" }
+        : { type: generationConfig.responseMimeType };
+    }
 
     let response;
     try {
-      response = await fetch(GEMINI_ENDPOINT, {
+      const request = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": GEMINI_API_KEY
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
         signal: controller.signal
-      });
+      };
+      const gateway = root.BrightAIGateway;
+      if (gateway && typeof gateway.apiFetch === "function") {
+        response = await gateway.apiFetch(GEMINI_ENDPOINT, request, config.timeoutMs || DEFAULT_TIMEOUT_MS);
+      } else {
+        const apiUrl = root.BrightAIRuntimeConfig && typeof root.BrightAIRuntimeConfig.buildApiUrl === "function"
+          ? root.BrightAIRuntimeConfig.buildApiUrl(GEMINI_ENDPOINT)
+          : GEMINI_ENDPOINT;
+        response = await fetch(apiUrl, request);
+      }
     } catch (error) {
       const message = error?.name === "AbortError"
-        ? "انتهت مهلة الاتصال بـ Gemini. حاول مرة أخرى."
-        : "تعذر الاتصال بـ Gemini. تحقق من الشبكة ثم أعد المحاولة.";
+        ? "انتهت مهلة الاتصال بخادم BrightAI. حاول مرة أخرى."
+        : "تعذر الاتصال بخادم BrightAI. تحقق من الشبكة ثم أعد المحاولة.";
       throw new GeminiDirectError("NETWORK", message, error);
     } finally {
       window.clearTimeout(timeout);
@@ -130,8 +152,9 @@
       throw normalizeHttpError(response.status, data);
     }
 
+    const text = data?.choices?.[0]?.message?.content || data?.answer || data?.reply || getResponseText(data);
     return {
-      text: getResponseText(data),
+      text,
       raw: data,
       model: GEMINI_MODEL
     };

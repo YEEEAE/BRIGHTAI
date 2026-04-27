@@ -59,7 +59,7 @@ async function unifiedChatHandler(req, res) {
   } catch (error) {
     const statusCode = normalizeStatusCode(error);
 
-    if ([401, 403, 429, 500, 502, 503].includes(statusCode)) {
+    if ([401, 403, 429, 500, 502, 503].includes(statusCode) || (statusCode === 400 && /^GEMINI_API_/.test(String(error?.code || '')))) {
       const fallbackReply = await buildLocalSupportReply(req?.body?.message || '');
       return res.status(200).json({
         reply: fallbackReply,

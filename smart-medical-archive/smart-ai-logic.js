@@ -1,18 +1,15 @@
 "use strict";
 
 const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
-const GEMINI_ENDPOINT = "/api/ai/gemini-chat";
+const GEMINI_ENDPOINT = "/api/ai/chat/completions";
 
 function getGeminiConfig() {
   const env = window.BRIGHTAI_ENV || {};
-  const localKey = readStorage("brightai.medicalArchive.geminiApiKey");
   const localModel = readStorage("brightai.medicalArchive.geminiModel");
-  const keyInput = document.getElementById("geminiApiKeyInput");
   const modelInput = document.getElementById("geminiModelInput");
 
   return {
     API_URL: GEMINI_ENDPOINT,
-    API_KEY: env.GEMINI_API_KEY || keyInput?.value?.trim() || localKey || "",
     MODEL: env.GEMINI_MODEL || modelInput?.value?.trim() || localModel || DEFAULT_GEMINI_MODEL,
     DEFAULT_HEADERS: { "Content-Type": "application/json" }
   };
@@ -28,21 +25,14 @@ function readStorage(key) {
 
 async function callGeminiAPI(messages, options = {}) {
   const config = getGeminiConfig();
-  if (!config.API_KEY) {
-    throw new Error("مفتاح Gemini API غير متوفر. أدخل المفتاح في إعداد الاتصال أو استخدم الخادم الموحد.");
-  }
-
   const controller = new AbortController();
   const timeoutMs = options.timeout || 6e4;
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await fetch(config.API_URL, {
+    const request = {
       method: "POST",
-      headers: {
-        ...config.DEFAULT_HEADERS,
-        Authorization: `Bearer ${config.API_KEY}`
-      },
+      headers: config.DEFAULT_HEADERS,
       body: JSON.stringify({
         model: options.model || config.MODEL,
         messages,
@@ -51,7 +41,10 @@ async function callGeminiAPI(messages, options = {}) {
         response_format: options.json_mode ? { type: "json_object" } : undefined
       }),
       signal: controller.signal
-    });
+    };
+    const response = window.BrightAIGateway?.apiFetch
+      ? await window.BrightAIGateway.apiFetch(config.API_URL, request, timeoutMs)
+      : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(config.API_URL) : config.API_URL, request);
 
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {

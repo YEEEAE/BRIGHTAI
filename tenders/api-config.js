@@ -15,10 +15,10 @@ function getBrightAIRuntimeConfig() {
 const API_CONFIG = {
   // Gemini API Configuration عبر بروكسي BrightAI الخلفي
   gemini: {
-    baseUrl: "https://generativelanguage.googleapis.com/v1beta/models",
+    baseUrl: "",
     endpoints: {
-      chat: "/generateContent",
-      stream: "/streamGenerateContent"
+      chat: "/api/ai/chat/completions",
+      stream: "/api/ai/chat/completions"
     },
     model: "gemini-2.5-flash",
     provider: "gemini",

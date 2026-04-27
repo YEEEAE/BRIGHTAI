@@ -11,6 +11,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: 22
       - key: GEMINI_API_KEY
         sync: false
       - key: GEMINI_MODEL
@@ -41,7 +43,7 @@ services:
       bash scripts/seo-hreflang-dirs.sh
       rm -rf .render-static
       mkdir -p .render-static
-      rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='.render-static' ./ .render-static/
+      rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='.render-static' --exclude='.agents' --exclude='plugins' --exclude='reports' --exclude='tmp' --exclude='*.md' ./ .render-static/
       node <<'NODE'
       const fs = require("fs");
       const path = require("path");
@@ -127,7 +129,7 @@ services:
         value: camera=(), microphone=(), geolocation=()
       - path: /*
         name: Content-Security-Policy
-        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://www.clarity.ms https://cdnjs.cloudflare.com https://tovik.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://generativelanguage.googleapis.com https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://api.contractai.sa https://tovik.app; frame-src 'self' https://tovik.app; worker-src 'self' blob:; manifest-src 'self'"
+        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://js.sentry-cdn.com https://www.clarity.ms https://cdnjs.cloudflare.com https://tovik.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://api.contractai.sa https://tovik.app; frame-src 'self' https://tovik.app; worker-src 'self' blob:; manifest-src 'self'"
       - path: /*
         name: Cache-Control
         value: public, max-age=0, must-revalidate
@@ -193,6 +195,15 @@ services:
       - type: redirect
         source: /blogger/*
         destination: /blog/:splat
+      - type: redirect
+        source: /interview/pages/supportAI
+        destination: /interview/pages/support-ai/
+      - type: redirect
+        source: /interview/pages/supportAI/
+        destination: /interview/pages/support-ai/
+      - type: redirect
+        source: /interview/pages/supportAI/index.html
+        destination: /interview/pages/support-ai/
 
       - type: redirect
         source: /index.html

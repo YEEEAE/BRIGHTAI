@@ -148,6 +148,51 @@ function parseGeminiText(payload) {
     .trim();
 }
 
+function normalizeGeminiPart(part) {
+  if (!part || typeof part !== 'object') return null;
+  if (typeof part.text === 'string') return { text: part.text };
+  if (part.type === 'text' && typeof part.text === 'string') return { text: part.text };
+  if (part.inline_data && part.inline_data.mime_type && part.inline_data.data) {
+    return { inline_data: { mime_type: part.inline_data.mime_type, data: part.inline_data.data } };
+  }
+  if (part.inlineData && (part.inlineData.mime_type || part.inlineData.mimeType) && part.inlineData.data) {
+    return {
+      inline_data: {
+        mime_type: part.inlineData.mime_type || part.inlineData.mimeType,
+        data: part.inlineData.data
+      }
+    };
+  }
+  if ((part.type === 'input_file' || part.type === 'file') && (part.mime_type || part.mimeType) && part.data) {
+    return {
+      inline_data: {
+        mime_type: part.mime_type || part.mimeType,
+        data: part.data
+      }
+    };
+  }
+  if (part.type === 'image_url' && part.image_url && typeof part.image_url.url === 'string') {
+    const match = part.image_url.url.match(/^data:([^;,]+);base64,(.+)$/);
+    if (match) return { inline_data: { mime_type: match[1], data: match[2] } };
+  }
+  return null;
+}
+
+function buildGeminiPartsFromContent(content) {
+  if (typeof content === 'string') {
+    const text = content.trim();
+    return text ? [{ text }] : [];
+  }
+
+  if (!Array.isArray(content)) return [];
+  const parts = [];
+  for (const item of content) {
+    const part = normalizeGeminiPart(item);
+    if (part) parts.push(part);
+  }
+  return parts;
+}
+
 function splitReplyAndSuggestions(rawText) {
   const text = String(rawText || '').trim();
   if (!text) {
@@ -406,10 +451,10 @@ async function chatStream(req, rawRes) {
   const { sanitizedMessage, activeSessionId, history } = chatContext;
 
   streamRes.writeHead(200, {
+    ...(req.corsHeaders || {}),
     'Content-Type': 'text/event-stream; charset=utf-8',
     'Cache-Control': 'no-cache, no-transform',
-    Connection: 'keep-alive',
-    'Access-Control-Allow-Origin': '*'
+    Connection: 'keep-alive'
   });
   writeSse(streamRes, { type: 'session', sessionId: activeSessionId });
 
@@ -495,11 +540,11 @@ async function openAiCompatChat(req) {
   const contents = [];
   for (const msg of messages) {
     if (!msg || typeof msg !== 'object') continue;
-    const content = typeof msg.content === 'string' ? msg.content : '';
-    if (!content.trim()) continue;
+    const parts = buildGeminiPartsFromContent(msg.content);
+    if (!parts.length) continue;
     contents.push({
       role: mapSessionRole(msg.role),
-      parts: [{ text: content }]
+      parts
     });
   }
 

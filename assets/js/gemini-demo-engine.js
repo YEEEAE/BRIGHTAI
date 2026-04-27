@@ -1,14 +1,13 @@
 (function () {
   "use strict";
 
-  const DEFAULT_API_KEY = "AIzaSyBfPwQRy8veLdTwQ_Oo-v-N0mLPWlma3Dg";
+  const AI_COMPLETIONS_PATH = "/api/ai/chat/completions";
   const WHATSAPP_NUMBER = "966538229013";
 
   class GeminiDemoEngine {
     constructor(config) {
-      this.apiKey = config.apiKey || DEFAULT_API_KEY;
       this.model = config.model || "gemini-2.5-flash";
-      this.endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent`;
+      this.endpoint = config.endpoint || AI_COMPLETIONS_PATH;
       this.usageLimit = config.usageLimit || 3;
       this.demoId = config.demoId || "general";
       this.timeoutMs = config.timeoutMs || 8000;
@@ -39,42 +38,40 @@
       if (!this.checkUsageLimit()) return null;
 
       this.trackUsage("demo_input_submitted");
-      const parts = [{ text: prompt }];
+      const parts = [{ type: "text", text: prompt }];
       if (file && file.base64 && file.mimeType) {
         parts.push({
-          inline_data: {
-            mime_type: file.mimeType,
-            data: file.base64
-          }
+          type: "input_file",
+          mime_type: file.mimeType,
+          data: file.base64
         });
       }
 
       const body = {
-        contents: [{ role: "user", parts }],
-        generationConfig: {
-          temperature,
-          maxOutputTokens: 4096,
-          responseMimeType: schema ? "application/json" : "text/plain"
-        }
+        model: this.model,
+        messages: [{ role: "user", content: parts }],
+        temperature,
+        max_tokens: 4096,
+        response_format: schema ? { type: "json_object" } : undefined
       };
 
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), this.timeoutMs);
 
       try {
-        const res = await fetch(this.endpoint, {
+        const request = {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-goog-api-key": this.apiKey
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
           signal: controller.signal
-        });
+        };
+        const res = window.BrightAIGateway?.apiFetch
+          ? await window.BrightAIGateway.apiFetch(this.endpoint, request, this.timeoutMs)
+          : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(this.endpoint) : this.endpoint, request);
 
         if (!res.ok) throw new Error(`API Error: ${res.status}`);
         const data = await res.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        const text = data?.choices?.[0]?.message?.content || data?.answer || "";
         this.trackUsage("demo_result_generated");
         return schema ? this.parseJson(text) : text;
       } catch (error) {

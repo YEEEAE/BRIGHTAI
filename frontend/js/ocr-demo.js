@@ -1,10 +1,9 @@
-/* BrightAI OCR Demo — Gemini 2.5 Flash Vision | brightai.site */
+/* BrightAI OCR Demo — backend AI gateway | brightai.site */
 (function () {
   'use strict';
 
-  const GEMINI_API_KEY = 'AIzaSyBFMmyO7sgXaSbF47zd3rbO6I9MfhbYLK8';
   const GEMINI_MODEL = 'gemini-2.5-flash';
-  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+  const AI_COMPLETIONS_PATH = '/api/ai/chat/completions';
   const MAX_BYTES = 4 * 1024 * 1024;
   const ALLOWED_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
   const REVIEW_CONFIDENCE_THRESHOLD = 0.72;
@@ -428,29 +427,33 @@
 
   function buildGeminiRequest(mimeType, data) {
     return {
-      contents: [{
-        parts: [
-          { text: OCR_PROMPT },
-          { inline_data: { mime_type: mimeType, data } }
+      model: GEMINI_MODEL,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'text', text: OCR_PROMPT },
+          { type: 'input_file', mime_type: mimeType, data }
         ]
       }],
-      generationConfig: {
-        temperature: 0.1,
-        maxOutputTokens: 2048,
-        responseMimeType: 'application/json'
-      }
+      temperature: 0.1,
+      max_tokens: 2048,
+      response_format: { type: 'json_object' }
     };
   }
 
   async function callGemini(body) {
-    return fetch(GEMINI_URL, {
+    const request = {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': GEMINI_API_KEY
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
-    });
+    };
+    if (window.BrightAIGateway?.apiFetch) {
+      return window.BrightAIGateway.apiFetch(AI_COMPLETIONS_PATH, request, 45000);
+    }
+    const url = window.BrightAIRuntimeConfig?.buildApiUrl
+      ? window.BrightAIRuntimeConfig.buildApiUrl(AI_COMPLETIONS_PATH)
+      : AI_COMPLETIONS_PATH;
+    return fetch(url, request);
   }
 
   function parseGeminiJSON(raw) {
@@ -500,7 +503,7 @@
 
       renderProgress('extract', ['read', 'send']);
       const data = await res.json();
-      const raw = data?.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+      const raw = data?.choices?.[0]?.message?.content || data?.answer || '{}';
       const parsed = parseGeminiJSON(raw);
 
       renderProgress('review', ['read', 'send', 'extract']);
