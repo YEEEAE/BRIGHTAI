@@ -71,7 +71,7 @@
       return e >= 0 && i > e ? u.slice(e, i + 1).trim() : u.trim();
     }, this.callGeminiAPI = async (u, t = "structured-json") => {
       var e, i, a, n, s;
-      const r = typeof window < "u" && window.BrightAIRuntimeConfig || null, l = typeof window < "u" && window.BrightAIGateway || null, g = r && typeof r.buildApiUrl == "function" ? r.buildApiUrl("/api/ai/openai-chat") : l && typeof l.buildUrl == "function" ? l.buildUrl("/api/ai/openai-chat") : (() => {
+      const r = typeof window < "u" && window.BrightAIRuntimeConfig || null, l = typeof window < "u" && window.BrightAIGateway || null, g = r && typeof r.buildApiUrl == "function" ? r.buildApiUrl("/api/ai/chat/completions") : l && typeof l.buildUrl == "function" ? l.buildUrl("/api/ai/chat/completions") : (() => {
         throw new Error("تعذر تحديد عنوان BrightAI API. تأكد من تحميل runtime-config.js قبل interview-app.js.");
       })(), y = { messages: [{ role: "system", content: "Respond with one valid JSON object only. Do not include Markdown fences or commentary." }, { role: "user", content: u }], provider: "gemini", model: this.config.geminiModel, task: t, temperature: 0.25, max_tokens: 4096, top_p: 1, stream: false, response_format: { type: "json_object" } }, d = await fetch(g, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(y) });
       if (!d.ok) {

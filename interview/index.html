@@ -300,6 +300,582 @@
 .brightai-internal-links a{display:block;color:#c7d2fe;text-decoration:none;padding:10px 0;line-height:1.6}
 .brightai-internal-links a:hover{color:#fff;text-decoration:underline}
 </style>
+<style>
+  .hero-container,
+  .container > .page-header,
+  .container > .main-content {
+    display: none !important;
+  }
+
+  .premium-hiring {
+    --hire-bg: #06110f;
+    --hire-panel: #0d1b18;
+    --hire-panel-2: #12231f;
+    --hire-line: rgba(185, 214, 202, .16);
+    --hire-text: #f4fbf8;
+    --hire-muted: #a8b8b0;
+    --hire-green: #2ee59d;
+    --hire-cyan: #67e8f9;
+    --hire-gold: #f6c85f;
+    --hire-red: #fb7185;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(46, 229, 157, .14), transparent 32rem),
+      radial-gradient(circle at 82% 18%, rgba(103, 232, 249, .11), transparent 30rem),
+      linear-gradient(180deg, #06110f 0%, #081613 52%, #f6f7f4 52%, #f6f7f4 100%);
+    color: var(--hire-text);
+    font-family: "Tajawal", "IBM Plex Sans Arabic", system-ui, sans-serif;
+    padding-block: 118px 56px;
+  }
+
+  .premium-hiring * {
+    box-sizing: border-box;
+  }
+
+  .hire-shell {
+    width: min(1180px, calc(100% - 32px));
+    margin-inline: auto;
+  }
+
+  .hire-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, .95fr);
+    gap: 28px;
+    align-items: stretch;
+    min-height: 520px;
+  }
+
+  .hire-eyebrow,
+  .hire-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    border: 1px solid var(--hire-line);
+    border-radius: 999px;
+    padding: 8px 12px;
+    color: #d7fff0;
+    background: rgba(255, 255, 255, .045);
+    font-size: .86rem;
+    font-weight: 800;
+  }
+
+  .hire-hero-copy {
+    padding-block: 38px 20px;
+  }
+
+  .hire-hero h1 {
+    max-width: 820px;
+    margin: 18px 0 18px;
+    color: #fff;
+    font-size: clamp(2.25rem, 4.7vw, 4.8rem);
+    line-height: 1.12;
+    letter-spacing: 0;
+    font-weight: 900;
+  }
+
+  .hire-hero-lead {
+    max-width: 760px;
+    margin: 0 0 24px;
+    color: #c7d8d1;
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    line-height: 1.9;
+  }
+
+  .hire-actions,
+  .hire-result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hire-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 46px;
+    border: 1px solid var(--hire-line);
+    border-radius: 10px;
+    padding: 11px 16px;
+    color: #eefdf7;
+    background: rgba(255, 255, 255, .07);
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+
+  .hire-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(46, 229, 157, .45);
+    background: rgba(255, 255, 255, .11);
+  }
+
+  .hire-btn.primary {
+    color: #04100d;
+    background: linear-gradient(135deg, var(--hire-green), #b6f4c9);
+    border-color: transparent;
+  }
+
+  .hire-btn.dark {
+    color: #fff;
+    background: #0c1715;
+  }
+
+  .hire-btn.gold {
+    color: #10100b;
+    background: linear-gradient(135deg, var(--hire-gold), #fbe7a1);
+    border-color: transparent;
+  }
+
+  .hire-section .hire-btn:not(.primary):not(.gold):not(.dark) {
+    color: #0c1715;
+    background: #fff;
+    border-color: rgba(12, 23, 21, .16);
+  }
+
+  .hire-section .hire-btn:not(.primary):not(.gold):not(.dark):hover {
+    background: #eef8f2;
+    border-color: rgba(11, 143, 97, .34);
+  }
+
+  .hire-hero-panel {
+    border: 1px solid var(--hire-line);
+    border-radius: 8px;
+    padding: 18px;
+    background: rgba(13, 27, 24, .82);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .32);
+  }
+
+  .hire-panel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .hire-score-card {
+    display: grid;
+    grid-template-columns: 138px 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 16px;
+    border: 1px solid var(--hire-line);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(46, 229, 157, .12), rgba(255, 255, 255, .04));
+  }
+
+  .hire-score-ring {
+    width: 132px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: conic-gradient(var(--hire-green) calc(var(--score, 86) * 1%), rgba(255, 255, 255, .1) 0);
+    position: relative;
+  }
+
+  .hire-score-ring::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    background: #081613;
+  }
+
+  .hire-score-ring strong {
+    position: relative;
+    color: #fff;
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .hire-score-ring span {
+    position: relative;
+    color: var(--hire-muted);
+    font-size: .82rem;
+    font-weight: 800;
+  }
+
+  .hire-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .hire-mini {
+    border: 1px solid var(--hire-line);
+    border-radius: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, .045);
+  }
+
+  .hire-mini span,
+  .hire-muted {
+    color: var(--hire-muted);
+    font-size: .88rem;
+  }
+
+  .hire-mini strong {
+    display: block;
+    margin-top: 4px;
+    color: #fff;
+    font-size: 1.12rem;
+  }
+
+  .hire-main {
+    margin-top: 34px;
+    color: #11211d;
+  }
+
+  .hire-section {
+    margin-top: 22px;
+    border: 1px solid rgba(12, 23, 21, .1);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 20px 60px rgba(8, 22, 19, .08);
+    overflow: hidden;
+  }
+
+  .hire-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    padding: 22px;
+    border-bottom: 1px solid rgba(12, 23, 21, .1);
+  }
+
+  .hire-section h2,
+  .hire-section h3 {
+    color: #0c1715;
+    letter-spacing: 0;
+  }
+
+  .hire-section h2 {
+    margin: 0;
+    font-size: clamp(1.35rem, 2vw, 2rem);
+  }
+
+  .hire-section p {
+    color: #52645d;
+  }
+
+  .hire-stepper,
+  .hire-personas,
+  .hire-form-grid,
+  .hire-dashboard-grid,
+  .hire-kit-grid,
+  .hire-breakdown {
+    display: grid;
+    gap: 14px;
+  }
+
+  .hire-stepper {
+    grid-template-columns: repeat(5, 1fr);
+    padding: 18px 22px 24px;
+  }
+
+  .hire-step {
+    min-height: 116px;
+    border: 1px solid rgba(12, 23, 21, .12);
+    border-radius: 8px;
+    padding: 14px;
+    background: #f8faf7;
+  }
+
+  .hire-step b {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #04100d;
+    background: #d9fbe9;
+  }
+
+  .hire-personas {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 22px;
+  }
+
+  .hire-persona {
+    border: 1px solid rgba(12, 23, 21, .1);
+    border-radius: 8px;
+    padding: 18px;
+    background: #fbfcfa;
+  }
+
+  .hire-persona iconify-icon {
+    color: #0b8f61;
+  }
+
+  .hire-workspace {
+    display: grid;
+    grid-template-columns: minmax(320px, .82fr) minmax(0, 1.18fr);
+    gap: 18px;
+    padding: 22px;
+  }
+
+  .hire-form-card,
+  .hire-result-card {
+    border: 1px solid rgba(12, 23, 21, .1);
+    border-radius: 8px;
+    padding: 18px;
+    background: #fbfcfa;
+  }
+
+  .hire-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hire-field {
+    display: grid;
+    gap: 7px;
+  }
+
+  .hire-field label {
+    color: #243631;
+    font-weight: 900;
+    font-size: .92rem;
+  }
+
+  .hire-field input,
+  .hire-field select,
+  .hire-field textarea {
+    width: 100%;
+    border: 1px solid rgba(12, 23, 21, .16);
+    border-radius: 8px;
+    padding: 12px;
+    color: #0c1715;
+    background: #fff;
+    font: inherit;
+  }
+
+  .hire-field textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .hire-upload {
+    display: grid;
+    gap: 8px;
+    place-items: center;
+    border: 1px dashed rgba(12, 23, 21, .25);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    background: #f4f8f5;
+    cursor: pointer;
+  }
+
+  .hire-dashboard-grid {
+    grid-template-columns: 190px 1fr;
+  }
+
+  .hire-summary-box,
+  .hire-list-box {
+    border: 1px solid rgba(12, 23, 21, .1);
+    border-radius: 8px;
+    padding: 14px;
+    background: #fff;
+  }
+
+  .hire-list {
+    display: grid;
+    gap: 8px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hire-list li {
+    padding: 9px 10px;
+    border-radius: 8px;
+    color: #243631;
+    background: #f3f7f4;
+  }
+
+  .hire-breakdown {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hire-meter {
+    display: grid;
+    gap: 7px;
+  }
+
+  .hire-meter-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #e4ebe7;
+    overflow: hidden;
+  }
+
+  .hire-meter-bar i {
+    display: block;
+    height: 100%;
+    width: var(--w, 70%);
+    background: linear-gradient(90deg, #0b8f61, #67e8f9);
+  }
+
+  .hire-table-wrap {
+    overflow-x: auto;
+    padding: 0 22px 22px;
+  }
+
+  .hire-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    color: #0c1715;
+  }
+
+  .hire-table th,
+  .hire-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid rgba(12, 23, 21, .1);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .hire-table th {
+    color: #52645d;
+    font-size: .9rem;
+    background: #f5f8f6;
+  }
+
+  .hire-badge {
+    display: inline-flex;
+    border-radius: 999px;
+    padding: 5px 9px;
+    color: #063f2d;
+    background: #dcfce7;
+    font-weight: 900;
+    font-size: .82rem;
+  }
+
+  .hire-badge.medium {
+    color: #7a4b04;
+    background: #fef3c7;
+  }
+
+  .hire-badge.high {
+    color: #8a1230;
+    background: #ffe4e6;
+  }
+
+  .hire-kit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hire-risk {
+    border-inline-start: 4px solid var(--hire-gold);
+  }
+
+  .hire-empty {
+    display: grid;
+    place-items: center;
+    min-height: 360px;
+    text-align: center;
+    color: #52645d;
+    border: 1px dashed rgba(12, 23, 21, .18);
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .hire-loading {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    color: #0b6f50;
+    font-weight: 900;
+  }
+
+  .hire-loading.show {
+    display: flex;
+  }
+
+  .hire-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #cfe9de;
+    border-top-color: #0b8f61;
+    border-radius: 50%;
+    animation: hire-spin .8s linear infinite;
+  }
+
+  @keyframes hire-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .hire-notice {
+    margin-top: 14px;
+    padding: 13px;
+    border-radius: 8px;
+    color: #24413a;
+    background: #eef8f2;
+    border: 1px solid #d4eddf;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 980px) {
+    .hire-hero,
+    .hire-workspace,
+    .hire-dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hire-stepper,
+    .hire-personas,
+    .hire-breakdown,
+    .hire-kit-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .premium-hiring {
+      padding-block-start: 96px;
+    }
+
+    .hire-shell {
+      width: min(100% - 20px, 1180px);
+    }
+
+    .hire-stepper,
+    .hire-personas,
+    .hire-breakdown,
+    .hire-kit-grid,
+    .hire-mini-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hire-score-card {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .hire-section-head,
+    .hire-panel-top {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .hire-actions,
+    .hire-result-actions {
+      flex-direction: column;
+    }
+
+    .hire-btn {
+      width: 100%;
+    }
+  }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى</a>
@@ -658,6 +1234,152 @@
 </div>
 </div>
 <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+<main class="premium-hiring" id="main-content">
+  <section class="hire-shell hire-hero" aria-labelledby="hire-hero-title">
+    <div class="hire-hero-copy">
+      <span class="hire-eyebrow"><iconify-icon icon="lucide:sparkles" width="17"></iconify-icon> BrightRecruiter للمنشآت السعودية</span>
+      <h1 id="hire-hero-title">اختَر أفضل المرشحين خلال دقائق، مع فرز ذكي ومقابلات أولية وتقارير مقارنة.</h1>
+      <p class="hire-hero-lead">نظام توظيف ذكي يقلل وقت الفرز ويرفع جودة الاختيار. صممناه لمدير الموارد البشرية وصاحب القرار الذي يحتاج صورة تنفيذية عادلة عن المطابقة، المخاطر المهنية، وأسئلة المقابلة التالية.</p>
+      <div class="hire-actions">
+        <button class="hire-btn primary" id="hireDemoBtn" type="button"><iconify-icon icon="lucide:user-check" width="18"></iconify-icon> جرّب بمرشح تجريبي</button>
+        <button class="hire-btn" id="hireUploadBtn" type="button"><iconify-icon icon="lucide:upload" width="18"></iconify-icon> ارفع سيرة ذاتية</button>
+        <a class="hire-btn" href="/contact/"><iconify-icon icon="lucide:building-2" width="18"></iconify-icon> اطلب عرض للمنشأة</a>
+      </div>
+    </div>
+    <aside class="hire-hero-panel" aria-label="لوحة معاينة التوظيف الذكي">
+      <div class="hire-panel-top">
+        <div>
+          <span class="hire-muted">Candidate Fit Score</span>
+          <h2 style="margin:4px 0 0;color:#fff;">تقرير مدير التوظيف</h2>
+        </div>
+        <span class="hire-chip"><iconify-icon icon="lucide:shield-check" width="16"></iconify-icon> Anti-bias scoring</span>
+      </div>
+      <div class="hire-score-card">
+        <div class="hire-score-ring" style="--score:86">
+          <div style="display:grid;place-items:center;position:relative;">
+            <strong>86</strong>
+            <span>من 100</span>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 8px;color:#fff;">مطابقة قوية للدور</h3>
+          <p style="margin:0;color:#bfd0ca;line-height:1.8;">المرشح يغطي معظم متطلبات الدور مع فجوة قابلة للتحقق في عمق التكاملات وسجل الاستقرار الوظيفي.</p>
+        </div>
+      </div>
+      <div class="hire-mini-grid">
+        <div class="hire-mini"><span>وقت الفرز</span><strong>دقائق</strong></div>
+        <div class="hire-mini"><span>Interview Kit</span><strong>جاهز</strong></div>
+        <div class="hire-mini"><span>قرار أولي</span><strong>Interview</strong></div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="hire-shell hire-main" aria-label="مسار التوظيف الذكي">
+    <div class="hire-section">
+      <div class="hire-section-head">
+        <div>
+          <h2>رحلة الفرز من الطلب إلى قرار المقابلة</h2>
+          <p style="margin:8px 0 0;">خمس خطوات واضحة لفريق الموارد البشرية قبل المقابلة النهائية.</p>
+        </div>
+      </div>
+      <div class="hire-stepper">
+        <div class="hire-step"><b>1</b><strong>اختر الوظيفة.</strong><p>حدد الدور والمستوى المطلوب.</p></div>
+        <div class="hire-step"><b>2</b><strong>ارفع CV أو استخدم مرشح تجريبي.</strong><p>يدعم التحليل النصي المباشر.</p></div>
+        <div class="hire-step"><b>3</b><strong>أدخل وصف الوظيفة.</strong><p>حوّل المتطلبات إلى معيار تقييم.</p></div>
+        <div class="hire-step"><b>4</b><strong>شغّل التحليل.</strong><p>Gemini يعيد JSON منظماً للوحة.</p></div>
+        <div class="hire-step"><b>5</b><strong>شاهد تقرير المطابقة والمقابلة.</strong><p>قرار قابل للمراجعة والمشاركة.</p></div>
+      </div>
+    </div>
+
+    <div class="hire-section">
+      <div class="hire-section-head">
+        <div>
+          <h2>مصمم لثلاث شخصيات في قرار التوظيف</h2>
+          <p style="margin:8px 0 0;">نفس المحرك، لكن مخرجاته قابلة للاستخدام حسب السياق التشغيلي.</p>
+        </div>
+      </div>
+      <div class="hire-personas">
+        <article class="hire-persona"><iconify-icon icon="lucide:user-cog" width="28"></iconify-icon><h3>HR Manager</h3><p>فرز أولي سريع، نقاط مطابقة واضحة، وأسئلة مقابلة موحدة لكل دور.</p></article>
+        <article class="hire-persona"><iconify-icon icon="lucide:briefcase-business" width="28"></iconify-icon><h3>Recruitment Agency</h3><p>مقارنة مرشحين لعدة عملاء مع ملخص واتساب مختصر وسهل المشاركة.</p></article>
+        <article class="hire-persona"><iconify-icon icon="lucide:network" width="28"></iconify-icon><h3>Enterprise Talent Team</h3><p>حوكمة، تكامل ATS، ومؤشرات مخاطر مهنية بدون استخدام بيانات حساسة.</p></article>
+      </div>
+    </div>
+
+    <div class="hire-section" id="hireAnalyzer">
+      <div class="hire-section-head">
+        <div>
+          <h2>محرك تحليل المرشح</h2>
+          <p style="margin:8px 0 0;">لا يتم تقييم العمر أو الجنس أو الجنسية أو الحالة الاجتماعية أو أي بيانات حساسة.</p>
+        </div>
+        <div class="hire-loading" id="hireLoading"><span class="hire-spinner"></span> جاري توليد التقرير...</div>
+      </div>
+      <div class="hire-workspace">
+        <form class="hire-form-card" id="hireForm">
+          <div class="hire-form-grid">
+            <div class="hire-field">
+              <label for="hireRole">اختر الوظيفة</label>
+              <select id="hireRole" required>
+                <option value="مدير منتج تقني">مدير منتج تقني</option>
+                <option value="محلل بيانات">محلل بيانات</option>
+                <option value="أخصائي موارد بشرية">أخصائي موارد بشرية</option>
+                <option value="مهندس برمجيات">مهندس برمجيات</option>
+              </select>
+            </div>
+            <label class="hire-upload" for="hireCvFile">
+              <iconify-icon icon="lucide:file-up" width="30"></iconify-icon>
+              <strong>ارفع سيرة ذاتية</strong>
+              <span id="hireFileLabel">PDF, DOCX, TXT أو الصق النص أدناه</span>
+              <input id="hireCvFile" type="file" accept=".txt,.md,.pdf,.doc,.docx" hidden>
+            </label>
+            <div class="hire-field">
+              <label for="hireCvText">نص السيرة الذاتية</label>
+              <textarea id="hireCvText" placeholder="الصق خبرة المرشح، المهارات، التعليم، المشاريع، والإنجازات المهنية هنا..." required></textarea>
+            </div>
+            <div class="hire-field">
+              <label for="hireJobDescription">وصف الوظيفة</label>
+              <textarea id="hireJobDescription" placeholder="اكتب المسؤوليات، المهارات المطلوبة، مستوى الخبرة، وأي متطلبات مهنية قابلة للقياس..." required></textarea>
+            </div>
+            <div class="hire-actions">
+              <button class="hire-btn primary" type="submit"><iconify-icon icon="lucide:brain-circuit" width="18"></iconify-icon> شغّل التحليل</button>
+              <button class="hire-btn" id="hireCompareBtn" type="button"><iconify-icon icon="lucide:git-compare" width="18"></iconify-icon> قارن مع مرشح آخر</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="hire-result-card" id="hireResult">
+          <div class="hire-empty">
+            <div>
+              <iconify-icon icon="lucide:layout-dashboard" width="46"></iconify-icon>
+              <h3>Dashboard تقرير التوظيف سيظهر هنا</h3>
+              <p>ابدأ بمرشح تجريبي أو ارفع سيرة ذاتية وشغل التحليل.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hire-section">
+      <div class="hire-section-head">
+        <div>
+          <h2>جدول مقارنة المرشحين</h2>
+          <p style="margin:8px 0 0;">بيانات تجريبية قابلة للتحديث بعد كل تحليل.</p>
+        </div>
+      </div>
+      <div class="hire-table-wrap">
+        <table class="hire-table">
+          <thead>
+            <tr><th>المرشح</th><th>الدور</th><th>Fit Score</th><th>نقاط قوة</th><th>فجوات مهنية</th><th>الخطوة التالية</th></tr>
+          </thead>
+          <tbody id="hireComparisonRows">
+            <tr><td>سارة أ.</td><td>مدير منتج تقني</td><td><span class="hire-badge">86/100</span></td><td>منتجات SaaS، قيادة فرق</td><td>تحقق من خبرة التكاملات</td><td>Interview</td></tr>
+            <tr><td>خالد م.</td><td>محلل بيانات</td><td><span class="hire-badge medium">74/100</span></td><td>SQL، لوحات BI</td><td>تجربة محدودة في النمذجة</td><td>Hold</td></tr>
+            <tr><td>نورة س.</td><td>أخصائي موارد بشرية</td><td><span class="hire-badge">82/100</span></td><td>استقطاب، تواصل</td><td>تحتاج أمثلة رقمية أكثر</td><td>Shortlist</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
 <div class="hero-container">
 <div class="aurora-bg"></div>
 <div class="hero-content">
@@ -710,7 +1432,7 @@
 </div>
 </div>
 </header>
-<main id="main-content" class="main-content">
+<main id="legacy-main-content" class="main-content">
 <div class="progress-container">
 <div class="progress-bar">
 </div>
@@ -976,6 +1698,249 @@
 <div class="modal-content" id="interviewModalContent">
 </div>
 </div>
+<script>
+(() => {
+  const endpoint = '/api/ai/chat/completions';
+  const model = 'gemini-2.5-flash';
+  const sampleCandidate = `الاسم: مرشح تجريبي
+الخبرة: 7 سنوات في إدارة المنتجات الرقمية ومنصات SaaS.
+الإنجازات: قاد إطلاق منصة B2B رفعت تفعيل العملاء 28% خلال 6 أشهر، بنى خارطة طريق ربع سنوية، عمل مع فرق هندسة وتصميم ومبيعات.
+المهارات: Product Discovery, Roadmapping, SQL basics, Stakeholder Management, Agile, API integrations.
+التعليم: بكالوريوس نظم معلومات.
+ملاحظات مهنية: تنقل بين 3 شركات خلال 5 سنوات لأسباب نمو ومسؤوليات أوسع.`;
+  const sampleJob = `نبحث عن مدير منتج تقني لمنصة SaaS مؤسسية. المتطلبات: 5+ سنوات في إدارة المنتجات، خبرة في فرق متعددة التخصصات، فهم APIs والتكاملات، قدرة على تحليل البيانات، كتابة PRD، إدارة أولويات، تواصل تنفيذي واضح، وتجربة في إطلاق منتجات B2B.`;
+
+  const fallbackReport = {
+    candidate_fit_score: 86,
+    decision_summary_ar: 'المرشح مناسب للانتقال إلى مقابلة أولية مركزة. لديه خبرة قوية في منتجات SaaS وقيادة فرق متعددة، مع حاجة للتحقق من عمق خبرته في التكاملات التقنية وسجل الاستقرار الوظيفي من منظور مهني فقط.',
+    role_match: {
+      matched_requirements: ['خبرة تتجاوز 5 سنوات في إدارة المنتجات', 'قيادة فرق متعددة التخصصات', 'خبرة في منتجات B2B SaaS', 'قدرة على ربط القرار بالبيانات'],
+      missing_requirements: ['أمثلة تفصيلية أكثر عن إدارة تكاملات API معقدة', 'تفصيل أعمق عن إدارة الميزانية أو الربحية'],
+      transferable_skills: ['إدارة أصحاب المصلحة', 'كتابة خارطة الطريق', 'تحليل مؤشرات التفعيل والاحتفاظ']
+    },
+    score_breakdown: { experience: 88, skills: 84, education: 78, communication: 90, job_stability: 72, culture_add: 86 },
+    interview_kit: {
+      opening_script_ar: 'نشكر لك وقتك. سنركز اليوم على أمثلة عملية من خبرتك في إدارة المنتج، وكيف تتخذ قرارات الأولوية، وكيف تتعاون مع الفرق التقنية والتجارية.',
+      technical_questions: ['اشرح منتج SaaS أطلقته من الاكتشاف إلى الإطلاق.', 'كيف تقيّم أثر تكامل API على خارطة الطريق؟', 'ما المؤشرات التي تراجعها قبل تغيير أولوية ميزة رئيسية؟'],
+      behavioral_questions: ['حدثنا عن موقف اختلفت فيه مع فريق هندسي وكيف عالجته.', 'كيف تتعامل مع طلب تنفيذي عاجل يتعارض مع أولويات العملاء؟', 'صف قراراً غير شعبي اتخذته بناءً على البيانات.'],
+      case_study_prompt: 'لديك انخفاض في تفعيل العملاء الجدد بنسبة 18% خلال شهرين. صمم خطة تشخيص لمدة أسبوعين وخارطة تدخلات لمدة شهر.',
+      evaluation_rubric: ['وضوح التفكير المنتج', 'الربط بين البيانات والقرار', 'جودة التعاون مع الفرق', 'واقعية خطة التنفيذ', 'القدرة على التواصل التنفيذي']
+    },
+    risk_flags: [
+      { flag: 'تنقل وظيفي يحتاج توضيحاً مهنياً', severity: 'medium', evidence: '3 شركات خلال 5 سنوات كما ورد في السيرة.', safe_followup_question: 'ما العوامل المهنية التي دفعتك للانتقال بين الأدوار السابقة، وما الذي تبحث عنه للاستقرار في الدور القادم؟' },
+      { flag: 'عمق التكاملات غير مثبت بما يكفي', severity: 'low', evidence: 'ذُكرت API integrations دون أمثلة تفصيلية.', safe_followup_question: 'اذكر مثالاً محدداً لتكامل تقني أثّر على تجربة العميل أو مؤشرات المنتج.' }
+    ],
+    anti_bias_notice_ar: 'تمت صياغة هذا التقرير ليقيّم متطلبات الوظيفة والخبرة والمهارات فقط، دون استخدام العمر أو الجنس أو الجنسية أو الحالة الاجتماعية أو أي بيانات حساسة.',
+    recommended_next_step: 'interview',
+    whatsapp_summary_ar: 'تقرير مختصر: Fit Score 86/100. التوصية: مقابلة أولية. نقاط القوة: SaaS، قيادة الفرق، قرارات مبنية على البيانات. التحقق المطلوب: عمق التكاملات وسياق التنقل المهني.',
+    enterprise_value_ar: 'يساعد هذا التقرير فريق التوظيف على تقليل وقت الفرز، توحيد أسئلة المقابلة، وتوثيق سبب التوصية قبل الانتقال إلى مرحلة القرار البشري.'
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+  const list = (items) => `<ul class="hire-list">${(items || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+  const nextStepLabel = { shortlist: 'Shortlist', interview: 'Interview', hold: 'Hold', reject: 'Reject' };
+  const severityClass = { low: '', medium: 'medium', high: 'high' };
+  let lastReport = fallbackReport;
+
+  function extractJson(text) {
+    const fenced = text.match(/```json\s*([\s\S]*?)\s*```/i);
+    const raw = fenced ? fenced[1] : text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1);
+    return JSON.parse(raw);
+  }
+
+  async function readFileAsText(file) {
+    if (!file) return '';
+    if (file.type === 'text/plain' || file.name.endsWith('.md') || file.name.endsWith('.txt')) {
+      return file.text();
+    }
+    return `تم رفع الملف: ${file.name}. إذا لم يكن الخادم يقرأ الملف مباشرة، استخدم النص الملصق في حقل السيرة.`;
+  }
+
+  async function callGemini({ role, cv, jobDescription }) {
+    const prompt = `أنت محلل توظيف مؤسسي عربي. قيّم المرشح فقط على متطلبات الوظيفة والخبرة والمهارات والتعليم والتواصل والاستقرار المهني وإضافة الفريق.
+ممنوع استخدام العمر أو الجنس أو الجنسية أو الحالة الاجتماعية أو أي بيانات حساسة في التقييم أو الاستنتاج.
+أعد JSON صالحاً فقط، بدون Markdown، وبهذا الشكل الحرفي:
+{
+  "candidate_fit_score": number,
+  "decision_summary_ar": string,
+  "role_match": {
+    "matched_requirements": string[],
+    "missing_requirements": string[],
+    "transferable_skills": string[]
+  },
+  "score_breakdown": {
+    "experience": number,
+    "skills": number,
+    "education": number,
+    "communication": number,
+    "job_stability": number,
+    "culture_add": number
+  },
+  "interview_kit": {
+    "opening_script_ar": string,
+    "technical_questions": string[],
+    "behavioral_questions": string[],
+    "case_study_prompt": string,
+    "evaluation_rubric": string[]
+  },
+  "risk_flags": [
+    {
+      "flag": string,
+      "severity": "low|medium|high",
+      "evidence": string,
+      "safe_followup_question": string
+    }
+  ],
+  "anti_bias_notice_ar": string,
+  "recommended_next_step": "shortlist|interview|hold|reject",
+  "whatsapp_summary_ar": string,
+  "enterprise_value_ar": string
+}
+
+الدور: ${role}
+وصف الوظيفة:
+${jobDescription}
+
+بيانات السيرة:
+${cv}`;
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        provider: 'gemini',
+        model,
+        messages: [
+          { role: 'system', content: 'Return one valid JSON object only. No markdown. No raw commentary.' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.2,
+        max_tokens: 4096,
+        response_format: { type: 'json_object' }
+      })
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    const content = data?.choices?.[0]?.message?.content || JSON.stringify(data);
+    return typeof content === 'string' ? extractJson(content) : content;
+  }
+
+  function renderReport(report) {
+    lastReport = report;
+    const score = Math.max(0, Math.min(100, Number(report.candidate_fit_score || 0)));
+    const breakdown = report.score_breakdown || {};
+    const meters = Object.entries({
+      experience: 'الخبرة',
+      skills: 'المهارات',
+      education: 'التعليم',
+      communication: 'التواصل',
+      job_stability: 'الاستقرار المهني',
+      culture_add: 'إضافة للفريق'
+    }).map(([key, label]) => {
+      const value = Math.max(0, Math.min(100, Number(breakdown[key] || 0)));
+      return `<div class="hire-meter"><strong>${label}: ${value}</strong><div class="hire-meter-bar"><i style="--w:${value}%"></i></div></div>`;
+    }).join('');
+
+    $('hireResult').innerHTML = `
+      <div id="hirePrintableReport">
+        <div class="hire-dashboard-grid">
+          <div class="hire-score-ring" style="--score:${score}"><div style="display:grid;place-items:center;position:relative;"><strong>${score}</strong><span>من 100</span></div></div>
+          <div class="hire-summary-box">
+            <span class="hire-badge">${escapeHtml(nextStepLabel[report.recommended_next_step] || report.recommended_next_step)}</span>
+            <h3>Candidate Fit Score</h3>
+            <p>${escapeHtml(report.decision_summary_ar)}</p>
+          </div>
+        </div>
+        <div class="hire-notice">${escapeHtml(report.anti_bias_notice_ar)}</div>
+        <div class="hire-breakdown" style="margin-top:14px;">${meters}</div>
+        <div class="hire-kit-grid" style="margin-top:14px;">
+          <div class="hire-list-box"><h3>متطلبات مطابقة</h3>${list(report.role_match?.matched_requirements)}</div>
+          <div class="hire-list-box"><h3>متطلبات ناقصة</h3>${list(report.role_match?.missing_requirements)}</div>
+          <div class="hire-list-box"><h3>مهارات قابلة للنقل</h3>${list(report.role_match?.transferable_skills)}</div>
+          <div class="hire-list-box"><h3>قيمة مؤسسية</h3><p>${escapeHtml(report.enterprise_value_ar)}</p></div>
+        </div>
+        <div class="hire-kit-grid" style="margin-top:14px;">
+          <div class="hire-list-box"><h3>Interview Kit</h3><p>${escapeHtml(report.interview_kit?.opening_script_ar)}</p><h4>أسئلة تقنية</h4>${list(report.interview_kit?.technical_questions)}<h4>أسئلة سلوكية</h4>${list(report.interview_kit?.behavioral_questions)}</div>
+          <div class="hire-list-box"><h3>Case Study & Rubric</h3><p>${escapeHtml(report.interview_kit?.case_study_prompt)}</p>${list(report.interview_kit?.evaluation_rubric)}</div>
+        </div>
+        <div class="hire-list-box hire-risk" style="margin-top:14px;">
+          <h3>Hiring Risk Flags</h3>
+          ${(report.risk_flags || []).map((risk) => `<div class="hire-summary-box" style="margin-top:10px;"><span class="hire-badge ${severityClass[risk.severity] || ''}">${escapeHtml(risk.severity)}</span><h4>${escapeHtml(risk.flag)}</h4><p><strong>الدليل:</strong> ${escapeHtml(risk.evidence)}</p><p><strong>سؤال متابعة آمن:</strong> ${escapeHtml(risk.safe_followup_question)}</p></div>`).join('')}
+        </div>
+      </div>
+      <div class="hire-result-actions" style="margin-top:16px;">
+        <a class="hire-btn dark" href="/contact/"><iconify-icon icon="lucide:plug-zap" width="18"></iconify-icon> اربط النظام مع ATS الحالي</a>
+        <a class="hire-btn dark" href="/contact/"><iconify-icon icon="lucide:building-2" width="18"></iconify-icon> اطلب نسخة مخصصة للشركة</a>
+        <a class="hire-btn gold" target="_blank" rel="noopener noreferrer" href="https://wa.me/966538229013?text=${encodeURIComponent(report.whatsapp_summary_ar || '')}"><iconify-icon icon="lucide:message-circle" width="18"></iconify-icon> أرسل تقرير المرشح عبر واتساب</a>
+        <button class="hire-btn" id="hireDownloadReport" type="button"><iconify-icon icon="lucide:download" width="18"></iconify-icon> تحميل تقرير التوظيف</button>
+      </div>`;
+
+    $('hireDownloadReport')?.addEventListener('click', downloadReport);
+    addComparisonRow(report);
+  }
+
+  function addComparisonRow(report) {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>مرشح محلل الآن</td><td>${escapeHtml($('hireRole').value)}</td><td><span class="hire-badge">${escapeHtml(report.candidate_fit_score)}/100</span></td><td>${escapeHtml((report.role_match?.matched_requirements || []).slice(0, 2).join('، '))}</td><td>${escapeHtml((report.role_match?.missing_requirements || []).slice(0, 2).join('، '))}</td><td>${escapeHtml(nextStepLabel[report.recommended_next_step] || report.recommended_next_step)}</td>`;
+    $('hireComparisonRows').prepend(row);
+  }
+
+  function downloadReport() {
+    const blob = new Blob([JSON.stringify(lastReport, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'brightai-hiring-report.json';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function analyze(useFallbackOnError = true) {
+    $('hireLoading').classList.add('show');
+    try {
+      const fileText = await readFileAsText($('hireCvFile').files?.[0]);
+      const cv = `${fileText}\n${$('hireCvText').value}`.trim();
+      const report = await callGemini({ role: $('hireRole').value, cv, jobDescription: $('hireJobDescription').value });
+      renderReport(report);
+    } catch (error) {
+      console.error('Hiring analysis failed:', error);
+      if (useFallbackOnError) renderReport(fallbackReport);
+    } finally {
+      $('hireLoading').classList.remove('show');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    $('hireDemoBtn')?.addEventListener('click', () => {
+      $('hireRole').value = 'مدير منتج تقني';
+      $('hireCvText').value = sampleCandidate;
+      $('hireJobDescription').value = sampleJob;
+      document.querySelector('#hireAnalyzer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      analyze();
+    });
+    $('hireUploadBtn')?.addEventListener('click', () => {
+      document.querySelector('#hireAnalyzer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('hireCvFile')?.click();
+    });
+    $('hireCvFile')?.addEventListener('change', () => {
+      const file = $('hireCvFile').files?.[0];
+      $('hireFileLabel').textContent = file ? file.name : 'PDF, DOCX, TXT أو الصق النص أدناه';
+    });
+    $('hireCompareBtn')?.addEventListener('click', () => {
+      $('hireCvText').value = '';
+      $('hireCvText').focus();
+      $('hireResult').innerHTML = '<div class="hire-empty"><div><iconify-icon icon="lucide:user-plus" width="42"></iconify-icon><h3>أدخل بيانات المرشح الآخر</h3><p>سيبقى جدول المقارنة محتفظاً بالنتائج السابقة.</p></div></div>';
+    });
+    $('hireForm')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      analyze();
+    });
+  });
+})();
+</script>
 <script defer="" src="/frontend/js/interview-app.min.js"></script>
 <script defer src="/frontend/js/demo-experience.js"></script>
 
