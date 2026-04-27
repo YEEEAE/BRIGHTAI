@@ -3,8 +3,8 @@
     <link href="https://www.googletagmanager.com" rel="dns-prefetch">
     <link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect">
     <link href="https://js.sentry-cdn.com" rel="dns-prefetch">
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots">
-<link rel="canonical" href="https://brightai.site/en/health/" />
+    <meta name="robots" content="index, follow">
+<link rel="canonical" href="https://brightai.site/en/health/">
 <meta property="og:url" content="https://brightai.site/en/health/" />
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/health/" />
 <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/health/" />
@@ -1046,6 +1046,89 @@
   }
 }
 </script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/en/health/#webpage",
+      "url": "https://brightai.site/en/health/",
+      "name": "Digital Transformation In Healthcare in Saudi Arabia | Bright AI",
+      "description": "Bright AI helps Saudi enterprises and government teams evaluate digital transformation in healthcare with practical automation, data analysis, governance, and implementation support.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "en-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/en/health/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "en",
+          "item": "https://brightai.site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Digital Transformation In Healthcare in Saudi Arabia",
+          "item": "https://brightai.site/en/health/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://brightai.site/en/health/#service",
+      "name": "Digital Transformation In Healthcare in Saudi Arabia",
+      "description": "Bright AI helps Saudi enterprises and government teams evaluate digital transformation in healthcare with practical automation, data analysis, governance, and implementation support.",
+      "provider": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "areaServed": "Saudi Arabia",
+      "serviceType": "AI SaaS and automation services",
+      "url": "https://brightai.site/en/health/"
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 
 <body>
@@ -2562,4 +2645,5 @@ ${mgSelectedFile ? `\n\nI also read the file: ${mgSelectedFile.name}` : ''}
 
 
 
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body></html>

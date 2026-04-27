@@ -1,5 +1,5 @@
 /* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-04-14-1';
+const CACHE_VERSION = '2026-04-27-1';
 const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
 const RECENT_ARTICLES_CACHE = `brightai-recent-articles-${CACHE_VERSION}`;
@@ -8,14 +8,16 @@ const MAX_RECENT_ARTICLES = 30;
 const STATIC_ASSETS = [
   '/',
   '/frontend/css/bundle-critical.css',
-  '/frontend/css/main.bundle.css',
-  '/frontend/js/main.bundle.js?v=20260206',
+  '/frontend/css/main.bundle.min.css',
+  '/frontend/css/production-fixes.v20260427.css',
+  '/frontend/js/main.bundle.min.js',
   '/frontend/js/runtime-config.min.js',
-  '/frontend/js/navigation.js',
-  '/frontend/js/article-ux-enhancements.js',
-  '/frontend/js/page-enhancements.js',
+  '/frontend/js/production-runtime.v20260427.js',
+  '/frontend/js/navigation.min.js',
+  '/frontend/js/article-ux-enhancements.min.js',
+  '/frontend/js/page-enhancements.min.js',
   '/frontend/js/schema-loader.js?v=20260206',
-  '/frontend/js/search.js?v=20260206',
+  '/frontend/js/search.min.js',
   '/frontend/js/chat-widget.js?v=20260206',
   '/assets/images/Gemini.png',
   '/assets/images/hero-brain.svg',
@@ -70,6 +72,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 async function cacheFirst(req) {
+  if (req.url.includes('/api/')) return fetch(req);
   const cached = await caches.match(req);
   if (cached) return cached;
   const res = await fetch(req);

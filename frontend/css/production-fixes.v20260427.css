@@ -1,0 +1,259 @@
+/* BrightAI production hardening layer - 2026-04-27 */
+:root {
+  --brightai-layer-base: 0;
+  --brightai-layer-sticky: 100;
+  --brightai-layer-overlay: 900;
+  --brightai-layer-modal: 1000;
+  --brightai-layer-toast: 1100;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 88px;
+}
+
+body {
+  min-width: 0;
+}
+
+body.modal-open,
+body.menu-open,
+body.search-open,
+body.chat-open {
+  overflow: hidden;
+}
+
+main,
+section,
+article,
+aside,
+header,
+footer,
+.container,
+.site-wrap,
+.page-shell,
+.hero,
+.hero-grid,
+.grid,
+.cards,
+.bento-grid,
+.dashboard-shell,
+.console-panel,
+.glass-card,
+.panel,
+.card {
+  min-width: 0;
+}
+
+section,
+article,
+.section,
+.lazy-section,
+[data-lazy-section] {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+section:empty,
+[data-lazy-section]:empty {
+  content-visibility: visible;
+  min-block-size: 180px;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-inline-size: 100%;
+}
+
+img {
+  block-size: auto;
+}
+
+table {
+  max-inline-size: 100%;
+}
+
+table:not(.no-responsive),
+.responsive-table,
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+pre,
+code,
+.terminal,
+.terminal-body,
+.code-block,
+.json-output {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.nav,
+.site-nav,
+.unified-nav,
+.main-nav,
+[data-sticky],
+.sticky {
+  z-index: var(--brightai-layer-sticky);
+}
+
+.backdrop-overlay,
+.chat-overlay,
+.modal-overlay,
+.drawer-backdrop {
+  z-index: var(--brightai-layer-overlay);
+}
+
+.search-modal,
+.modal,
+[role="dialog"],
+.mobile-menu-drawer,
+.chat-widget,
+.chat-window {
+  z-index: var(--brightai-layer-modal);
+}
+
+.toast-container,
+.toast-stack,
+.demo-api-badge,
+.skip-link {
+  z-index: var(--brightai-layer-toast);
+}
+
+.hidden[aria-hidden="false"],
+[hidden].is-visible,
+[hidden].active {
+  display: revert;
+}
+
+[aria-busy="true"] {
+  cursor: progress;
+}
+
+.brightai-loading-state,
+.brightai-error-state {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.brightai-loading-state {
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.brightai-error-state {
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.22);
+  border-color: rgba(248, 113, 113, 0.34);
+}
+
+.answer-block {
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 24px);
+  background: rgba(15, 23, 42, 0.42);
+  margin-block: clamp(18px, 4vw, 36px);
+}
+
+.answer-block h2,
+.answer-block h3 {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.5;
+  margin-block-end: 0.55rem;
+}
+
+.answer-block p {
+  margin: 0;
+  line-height: 1.9;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+
+  .container,
+  .site-wrap,
+  .page-shell,
+  .hero-container,
+  .nav-container {
+    inline-size: min(100% - 24px, 100%);
+    margin-inline: auto;
+  }
+
+  .hero,
+  .section,
+  section {
+    padding-inline: max(12px, env(safe-area-inset-left));
+    padding-inline-end: max(12px, env(safe-area-inset-right));
+  }
+
+  .hero-grid,
+  .dashboard-grid,
+  .console-grid,
+  .cards-4,
+  .pricing,
+  .robotics,
+  .tri,
+  .problem-grid,
+  .capabilities {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-actions,
+  .cta-container,
+  .action-row,
+  .button-row {
+    align-items: stretch;
+  }
+
+  .hero-actions > *,
+  .cta-container > *,
+  .action-row > *,
+  .button-row > * {
+    max-inline-size: 100%;
+  }
+
+  .btn,
+  .btn-main,
+  .btn-outline,
+  .btn-sub,
+  .cta-button,
+  button,
+  [role="button"] {
+    min-block-size: 44px;
+  }
+
+  .search-modal-content,
+  .chat-widget,
+  .chat-window {
+    max-inline-size: calc(100vw - 24px);
+    max-block-size: calc(100dvh - 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -25,9 +25,10 @@
     "vitest": "^1.0.0"
   },
   "scripts": {
-    "build": "npm run assets:minify && npm run performance:budget",
+    "build": "npm run assets:minify && npm run assets:replace-refs && npm run production:fixes && npm run sitemap:all && npm run performance:budget",
     "assets:minify": "node scripts/minify-seo-assets.mjs",
     "assets:replace-refs": "node scripts/replace-unminified-refs.mjs",
+    "production:fixes": "node scripts/apply-production-audit-fixes.mjs",
     "build:minify-all": "node scripts/minify-seo-assets.mjs && node scripts/replace-unminified-refs.mjs",
     "dev:frontend": "npm run start --workspace frontend",
     "dev:backend": "npm run start --workspace backend",

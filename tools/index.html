@@ -4,8 +4,8 @@
 <link rel="preconnect" href="https://js.sentry-cdn.com" crossorigin="">
 <link rel="dns-prefetch" href="https://js.sentry-cdn.com">
 
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<link rel="canonical" href="https://brightai.site/tools/" />
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://brightai.site/tools/">
 <meta property="og:url" content="https://brightai.site/tools/" />
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tools/" />
 <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/tools/" />
@@ -285,6 +285,71 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 }
 </script>
 <link rel="stylesheet" href="/assets/css/design-tokens.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/tools/#webpage",
+      "url": "https://brightai.site/tools/",
+      "name": "أدوات تحليل البيانات بالذكاء الاصطناعي | Bright AI",
+      "description": "تساعد Bright AI الشركات والجهات في السعودية على تطبيق أدوات تحليل البيانات بالذكاء الاصطناعي عبر الأتمتة، تحليل البيانات، وكلاء الذكاء الاصطناعي، وحوكمة تنفيذية قابلة للقياس.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/tools/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "أدوات تحليل البيانات بالذكاء الاصطناعي",
+          "item": "https://brightai.site/tools/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى</a>
@@ -992,4 +1057,5 @@ loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&d
 <div class="internal-linking-cta-wrap"><h3 style="color:#fff;margin:0 0 8px">أداة OCR</p><p style="color:#94a3b8;margin:0 0 10px">استخراج النصوص والبيانات من المستندات العربية.</p><a class="internal-linking-cta" href="/demo/ocr-demo/" data-analytics-event="request_demo" data-cta-location="tools">جرّب OCR على مستندك</a></div>
 
 
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body></html>

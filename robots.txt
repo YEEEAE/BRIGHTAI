@@ -1,11 +1,16 @@
-# BrightAI robots.txt
-# النطاق الأساسي للفهرسة: https://brightai.site
-
 User-agent: *
 Allow: /
 Allow: /assets/
 Allow: /frontend/css/
 Allow: /frontend/js/
+Allow: /services/
+Allow: /blog/
+Allow: /docs/
+Allow: /sectors/
+Allow: /tenders/
+Allow: /try/
+Allow: /demo/
+Allow: /ai-bots/
 Allow: /llms.txt
 
 User-agent: GPTBot

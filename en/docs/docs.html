@@ -6,8 +6,8 @@
     <link href="https://www.googletagmanager.com" rel="dns-prefetch" />
     <link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect" />
     <link href="https://js.sentry-cdn.com" rel="dns-prefetch" />
-    <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots" />
-    <link rel="canonical" href="https://brightai.site/en/docs/" />
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://brightai.site/en/docs/docs/">
 <link href="https://brightai.site/sitemap.xml" rel="sitemap" type="application/xml" />
     <script crossorigin="anonymous" defer=""
         src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js"></script>
@@ -434,6 +434,97 @@
 </script>
 
 <script defer src="/frontend/js/analytics-events.js"></script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/en/docs/docs/#webpage",
+      "url": "https://brightai.site/en/docs/docs/",
+      "name": "Bright AI Docs for Saudi Enterprises | Guides & API",
+      "description": "Official Bright AI documentation. Deep dives into services, ai tools, saas solutions, tech integrations, and OpenAPI.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "en-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/en/docs/docs/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "en",
+          "item": "https://brightai.site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "docs",
+          "item": "https://brightai.site/en/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Bright AI Docs for Saudi Enterprises | Guides & API",
+          "item": "https://brightai.site/en/docs/docs/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/en/docs/docs/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why use local APIs instead of global giants?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Devs often ask: \"Why use Bright AI instead of the big global names?\" The answer is simple: Saudi Context & Vibe: Our models are trained on local dialects (Saudi & Khaleeji) that global models just don't get. This makes your chatbots feel human and relatable. Ultra-Low Latency: Since our servers are in KSA, your API calls happen in milliseconds. No trans-oceanic lag, which is huge for finance or medical apps. Total Compliance: We show you how your data (like patient files or bank accounts) is enc"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight">
@@ -1386,6 +1477,7 @@
         });
     </script>
     <script defer="" src="/frontend/js/clarity-events.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 
 </html>

@@ -5,8 +5,8 @@
 <link href="https://www.googletagmanager.com" rel="dns-prefetch">
 <link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect">
 <link href="https://js.sentry-cdn.com" rel="dns-prefetch">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<link rel="canonical" href="https://brightai.site/tenders/" />
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://brightai.site/tenders/">
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/tenders/" />
 <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/tenders/" />
 <link rel="alternate" hreflang="x-default" href="https://brightai.site/tenders/" />
@@ -318,6 +318,83 @@
 </script>
 <link rel="stylesheet" href="/frontend/css/product-demo-polish.min.css">
 <link rel="stylesheet" href="/assets/css/design-tokens.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/tenders/#webpage",
+      "url": "https://brightai.site/tenders/",
+      "name": "نظام تحليل المناقصات بالذكاء الاصطناعي | Bright AI",
+      "description": "تعرض Bright AI نظام تحليل المناقصات بالذكاء الاصطناعي لفرق المشتريات والعقود في السعودية، مع تحليل مستندات المنافسات، مقارنة العروض، رصد المخاطر، وتقارير تنفيذية قابلة للمراجعة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/tenders/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "نظام تحليل المناقصات بالذكاء الاصطناعي",
+          "item": "https://brightai.site/tenders/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://brightai.site/tenders/#service",
+      "name": "نظام تحليل المناقصات بالذكاء الاصطناعي",
+      "description": "تعرض Bright AI نظام تحليل المناقصات بالذكاء الاصطناعي لفرق المشتريات والعقود في السعودية، مع تحليل مستندات المنافسات، مقارنة العروض، رصد المخاطر، وتقارير تنفيذية قابلة للمراجعة.",
+      "provider": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "areaServed": "Saudi Arabia",
+      "serviceType": "AI SaaS and automation services",
+      "url": "https://brightai.site/tenders/"
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -2013,4 +2090,5 @@
 
 <script defer src="/assets/js/demo-experience-loader.js"></script>
 <script defer src="/frontend/js/product-demo-enhancements.min.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body></html>

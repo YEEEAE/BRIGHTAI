@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://js.sentry-cdn.com" crossorigin />
 <link rel="dns-prefetch" href="https://js.sentry-cdn.com" />
 
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-<link rel="canonical" href="https://brightai.site/en/ai-bots/BrightMath/" />
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://brightai.site/en/ai-bots/BrightMath/">
 <meta property="og:url" content="https://brightai.site/en/ai-bots/BrightMath/" />
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/BrightMath/" />
 <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/ai-bots/BrightMath/" />
@@ -422,6 +422,95 @@
 }
 </script>
 <script defer src="/frontend/js/analytics-events.js"></script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/en/ai-bots/BrightMath/#webpage",
+      "url": "https://brightai.site/en/ai-bots/BrightMath/",
+      "name": "BrightMath | Smart Math Assistant in Saudi Arabia",
+      "description": "BrightMath - AI-powered smart math assistant by Bright AI. Solve complex math problems, analyze data, and enhance education in Saudi Arabia with clear, accurate steps.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "en-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/en/ai-bots/BrightMath/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "en",
+          "item": "https://brightai.site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ai bots",
+          "item": "https://brightai.site/en/ai-bots/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "BrightMath | Smart Math Assistant in Saudi Arabia",
+          "item": "https://brightai.site/en/ai-bots/BrightMath/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://brightai.site/en/ai-bots/BrightMath/#service",
+      "name": "BrightMath | Smart Math Assistant in Saudi Arabia",
+      "description": "BrightMath - AI-powered smart math assistant by Bright AI. Solve complex math problems, analyze data, and enhance education in Saudi Arabia with clear, accurate steps.",
+      "provider": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "areaServed": "Saudi Arabia",
+      "serviceType": "AI SaaS and automation services",
+      "url": "https://brightai.site/en/ai-bots/BrightMath/"
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 
 <body>
@@ -872,6 +961,11 @@
 
     <div class="header">
         <h1>BrightMath - مساعد الرياضيات الذكي</h1>
+<section class="answer-block" aria-labelledby="answer-title-en-ai-bots-BrightMath-index-html">
+    <h2 id="answer-title-en-ai-bots-BrightMath-index-html">Short Answer</h2>
+    <p>Bright AI helps Saudi organizations turn BrightMath - مساعد الرياضيات الذكي into measurable workflows through AI automation, data readiness, secure integration, and operational dashboards. The page explains when the solution fits, what data is required, and how teams can start safely.</p>
+  </section>
+
         <p>مساعدك الشخصي في تعلم الرياضيات وحل المسائل</p>
     </div>
     <div class="chat-container" data-chat-endpoint="/api/ai/chat/stream" data-chatbot-profile="math">
@@ -1120,6 +1214,7 @@
     <script defer="" src="/frontend/js/main.bundle.min.js"></script>
     <script defer="" src="/frontend/js/index-theme.min.js"></script>
     <script src="/frontend/js/clarity-events.js" defer></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 
 </html>

@@ -39,6 +39,8 @@ services:
       npm ci --include=dev --no-audit --no-fund
       npm run assets:minify
       npm run assets:replace-refs
+      npm run production:fixes
+      npm run sitemap:all
       npm run seo:gate
       rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js
       bash scripts/seo-hreflang-dirs.sh
@@ -139,16 +141,28 @@ services:
         value: no-store
       - path: /*.css
         name: Cache-Control
-        value: public, max-age=2592000, stale-while-revalidate=86400
+        value: public, max-age=86400, stale-while-revalidate=604800
       - path: /**/*.css
         name: Cache-Control
-        value: public, max-age=2592000, stale-while-revalidate=86400
+        value: public, max-age=86400, stale-while-revalidate=604800
       - path: /*.js
         name: Cache-Control
-        value: public, max-age=2592000, stale-while-revalidate=86400
+        value: public, max-age=86400, stale-while-revalidate=604800
       - path: /**/*.js
         name: Cache-Control
-        value: public, max-age=2592000, stale-while-revalidate=86400
+        value: public, max-age=86400, stale-while-revalidate=604800
+      - path: /*.v*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.v*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.v*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.v*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
       - path: /*.woff2
         name: Cache-Control
         value: public, max-age=2592000, stale-while-revalidate=86400
