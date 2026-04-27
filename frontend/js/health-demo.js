@@ -1,61 +1,88 @@
 (function () {
   "use strict";
 
-  const TAB_IDS = ["image-ai", "remote", "hms", "med-gemini"];
+  const TAB_IDS = ["ops-kpis", "quality-decision", "report-reader", "department-case"];
   const MAX_INLINE_FILE_SIZE = 10 * 1024 * 1024;
-  const DISCLAIMER = "تنبيه طبي مهم: النتائج توضيحية ومساندة للفهم فقط، ولا تغني عن تقييم الطبيب أو الطوارئ أو البروتوكولات الطبية المعتمدة.";
+  const SAFETY_NOTE = "تنبيه سلامة: هذه المخرجات لدعم التشغيل والجودة واتخاذ القرار الإداري، ولا تقدم تشخيصاً أو علاجاً نهائياً. عند وجود حالة طبية أو خطر على سلامة المريض يجب الرجوع إلى مختص وبروتوكولات المنشأة.";
 
-  const $ = (selector) => document.querySelector(selector);
   const byId = (id) => document.getElementById(id);
 
   const els = {
     tabs: Array.from(document.querySelectorAll(".tabs button")),
     sections: Object.fromEntries(TAB_IDS.map((id) => [id, byId(id)])),
-    image: {
-      type: byId("imgType"),
-      drop: byId("imgDrop"),
-      file: byId("imgFile"),
-      notes: byId("imgNotes"),
-      status: byId("imgStatus"),
-      output: byId("imgOutput"),
-      analyze: byId("analyzeImageBtn"),
-      clear: byId("clearImageBtn")
+    scenarioButtons: Array.from(document.querySelectorAll(".scenario-chip")),
+    ops: {
+      dept: byId("opsDept"),
+      context: byId("opsContext"),
+      scenario: byId("opsScenario"),
+      status: byId("opsStatus"),
+      output: byId("opsOutput"),
+      analyze: byId("opsAnalyzeBtn"),
+      clear: byId("opsClearBtn")
     },
-    vitals: {
-      hr: byId("hr"),
-      bp: byId("bp"),
-      spo2: byId("spo2"),
-      glucose: byId("glucose"),
-      symptoms: byId("symptoms"),
-      status: byId("vitalsStatus"),
-      output: byId("vitalsOutput"),
-      analyze: byId("analyzeVitalsBtn"),
-      clear: byId("clearVitalsBtn")
+    quality: {
+      scope: byId("qualityScope"),
+      context: byId("qualityContext"),
+      status: byId("qualityStatus"),
+      output: byId("qualityOutput"),
+      analyze: byId("qualityAnalyzeBtn"),
+      clear: byId("qualityClearBtn")
     },
-    hms: {
-      dept: byId("dept"),
-      age: byId("age"),
-      gender: byId("gender"),
-      desc: byId("caseDesc"),
-      status: byId("hmsStatus"),
-      output: byId("hmsOutput"),
-      analyze: byId("hmsAnalyzeBtn"),
-      clear: byId("hmsClearBtn")
+    report: {
+      type: byId("reportType"),
+      text: byId("reportText"),
+      drop: byId("reportDrop"),
+      file: byId("reportFile"),
+      status: byId("reportStatus"),
+      output: byId("reportOutput"),
+      analyze: byId("reportAnalyzeBtn"),
+      clear: byId("reportClearBtn")
     },
-    med: {
-      type: byId("mgType"),
-      query: byId("mgQuery"),
-      drop: byId("mgDrop"),
-      file: byId("mgFile"),
-      status: byId("mgStatus"),
-      output: byId("mgOutput"),
-      analyze: byId("mgAnalyzeBtn"),
-      clear: byId("mgClearBtn")
+    deptCase: {
+      dept: byId("caseDept"),
+      context: byId("caseContext"),
+      goal: byId("caseGoal"),
+      status: byId("caseStatus"),
+      output: byId("caseOutput"),
+      analyze: byId("caseAnalyzeBtn"),
+      clear: byId("caseClearBtn")
     }
   };
 
-  let selectedImageFile = null;
-  let selectedMedFile = null;
+  let selectedReportFile = null;
+
+  const scenarioTemplates = {
+    "ازدحام طوارئ": {
+      dept: "الطوارئ",
+      context: "ازدحام في الطوارئ خلال الوردية الحالية. إشغال الأسرّة 86%، متوسط الانتظار 74 دقيقة، 18 حالة فرز أصفر، عبء التمريض 1.32x، و7 تنبيهات جودة مرتبطة بالتوثيق وتأخر النقل للتنويم.",
+      quality: "تأخر فرز بعض الحالات، شكاوى انتظار، واحتمال ارتفاع مخاطر سلامة المرضى عند استمرار الازدحام.",
+      goal: "خفض الازدحام خلال الوردية الحالية مع حماية مؤشرات الجودة."
+    },
+    "ارتفاع وقت الانتظار": {
+      dept: "العيادات الخارجية",
+      context: "متوسط وقت الانتظار 92 دقيقة في العيادات، تأخر حضور بعض الأطباء، ضغط على التسجيل، وانخفاض معدل الالتزام بالمواعيد.",
+      quality: "تزايد شكاوى تجربة المرضى وانخفاض الرضا في نقاط التسجيل والانتظار.",
+      goal: "تقليل وقت الانتظار خلال اليوم وتحسين تجربة المرضى."
+    },
+    "نقص كوادر في قسم": {
+      dept: "العناية المركزة",
+      context: "نقص تمريض في العناية المركزة، نسبة المرضى لكل ممرض أعلى من المخطط، ضغط على المناوبة الليلية، وزيادة طلبات النقل الداخلي.",
+      quality: "مخاطر إرهاق الكوادر وتأخر التوثيق والمتابعة التمريضية تحتاج مراجعة مسؤول التمريض والجودة.",
+      goal: "إعادة توزيع الموارد دون خفض سلامة المرضى."
+    },
+    "انخفاض رضا المرضى": {
+      dept: "العيادات الخارجية",
+      context: "انخفاض رضا المرضى إلى 72%، شكاوى حول الانتظار والشرح قبل المغادرة، وتباين في زمن إغلاق البلاغات.",
+      quality: "مؤشرات تجربة المرضى تحتاج تحليل سبب جذري وخطة متابعة أسبوعية.",
+      goal: "رفع الرضا وتحسين نقاط الاحتكاك عالية الأثر."
+    },
+    "مؤشرات جودة تحتاج مراجعة": {
+      dept: "التنويم",
+      context: "ارتفاع مخاطر إعادة الدخول خلال 7 أيام إلى 21%، تنبيهات توثيق غير مكتمل، وتأخر في خطط الخروج لبعض المرضى.",
+      quality: "مؤشرات إعادة الدخول وخطة الخروج تحتاج مراجعة جودة ومراجعة مختص للحالات الطبية ذات الصلة.",
+      goal: "تقليل مخاطر إعادة الدخول وتحسين اكتمال خطة الخروج."
+    }
+  };
 
   function setStatus(el, message, type = "") {
     if (!el) return;
@@ -67,9 +94,7 @@
   function setBusy(button, busy, busyLabel, idleLabel) {
     if (!button) return;
     button.disabled = busy;
-    button.innerHTML = busy
-      ? `${busyLabel} <span class="spinner" aria-hidden="true"></span>`
-      : idleLabel;
+    button.innerHTML = busy ? `${busyLabel} <span class="spinner" aria-hidden="true"></span>` : idleLabel;
   }
 
   function getGemini() {
@@ -80,16 +105,15 @@
     return gemini;
   }
 
+  function errorMessage(error) {
+    return window.BrightAIGemini?.getErrorMessage?.(error) || error?.message || "تعذر الاتصال بـ Gemini حالياً.";
+  }
+
   async function toInlineData(file) {
     if (!file) throw new Error("لم يتم اختيار ملف.");
-    if (file.size > MAX_INLINE_FILE_SIZE) {
-      throw new Error("حجم الملف أكبر من 10MB. اختر ملفاً أصغر للتجربة.");
-    }
-
+    if (file.size > MAX_INLINE_FILE_SIZE) throw new Error("حجم الملف أكبر من 10MB. اختر ملفاً أصغر للتجربة.");
     const inline = await getGemini().fileToInlineData(file);
-    if (!inline.mime_type || inline.mime_type === "application/octet-stream") {
-      inline.mime_type = inferMimeType(file);
-    }
+    if (!inline.mime_type || inline.mime_type === "application/octet-stream") inline.mime_type = inferMimeType(file);
     return inline;
   }
 
@@ -99,7 +123,6 @@
     if (name.endsWith(".jpg") || name.endsWith(".jpeg")) return "image/jpeg";
     if (name.endsWith(".pdf")) return "application/pdf";
     if (name.endsWith(".txt")) return "text/plain";
-    if (name.endsWith(".dcm") || name.endsWith(".dicom")) return "application/dicom";
     if (name.endsWith(".doc")) return "application/msword";
     if (name.endsWith(".docx")) return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     return file?.type || "application/octet-stream";
@@ -109,19 +132,15 @@
     const response = await getGemini().generateContent({
       prompt,
       files: options.files || [],
-      temperature: options.temperature ?? 0.25,
-      maxOutputTokens: options.maxOutputTokens || 1400,
-      generationConfig: options.generationConfig
+      temperature: 0.18,
+      maxOutputTokens: 1800,
+      generationConfig: {
+        temperature: 0.18,
+        maxOutputTokens: 1800,
+        responseMimeType: "application/json"
+      }
     });
     return response.text.trim();
-  }
-
-  function errorMessage(error) {
-    return window.BrightAIGemini?.getErrorMessage?.(error) || error?.message || "تعذر الاتصال بـ Gemini حالياً.";
-  }
-
-  function withDisclaimer(text) {
-    return `${text.trim()}\n\n${DISCLAIMER}`;
   }
 
   function parseJsonResponse(text) {
@@ -133,13 +152,141 @@
     return JSON.parse(clean);
   }
 
-  function renderJson(data) {
-    return JSON.stringify(data, null, 2);
+  function renderExecutiveBoard(data) {
+    const normalized = normalizeHospitalOutput(data);
+    return JSON.stringify(normalized, null, 2);
+  }
+
+  function hospitalPrompt(payload) {
+    return `أنت مستشار تشغيل وجودة مستشفيات في السعودية. حلل المدخلات كدعم قرار تشغيلي فقط.
+
+القواعد:
+- لا تقدم تشخيصاً أو علاجاً نهائياً.
+- ركز على التشغيل والجودة والسعة ودعم القرار.
+- أضف تنبيه مراجعة مختص عند أي حالة طبية.
+- أعد JSON صالحاً فقط بلا Markdown وبنفس البنية التالية:
+{
+  "hospital_snapshot": {
+    "department": string,
+    "case_type": string,
+    "operational_context_ar": string
+  },
+  "ops_kpis": [
+    {
+      "name": string,
+      "status": "good|watch|risk|critical",
+      "value": string,
+      "interpretation_ar": string
+    }
+  ],
+  "quality_risks": [
+    {
+      "risk": string,
+      "severity": "low|medium|high|critical",
+      "evidence": string,
+      "recommended_owner": string
+    }
+  ],
+  "capacity_forecast": {
+    "next_24h_ar": string,
+    "next_7d_ar": string,
+    "confidence": number
+  },
+  "recommended_interventions": [
+    {
+      "action": string,
+      "impact": "low|medium|high",
+      "urgency": "now|today|this_week",
+      "owner": string
+    }
+  ],
+  "executive_summary_ar": string,
+  "clinical_safety_disclaimer_ar": string,
+  "integration_plan": {
+    "his": string,
+    "ehr": string,
+    "bi_dashboard": string
+  },
+  "next_action_ar": string,
+  "whatsapp_summary_ar": string
+}
+
+المدخلات:
+${JSON.stringify(payload, null, 2)}`;
+  }
+
+  function normalizeHospitalOutput(value) {
+    return {
+      hospital_snapshot: {
+        department: value?.hospital_snapshot?.department || "غير محدد",
+        case_type: value?.hospital_snapshot?.case_type || "تحليل تشغيلي",
+        operational_context_ar: value?.hospital_snapshot?.operational_context_ar || "سياق تشغيلي يحتاج استكمال بيانات."
+      },
+      ops_kpis: Array.isArray(value?.ops_kpis) ? value.ops_kpis : [],
+      quality_risks: Array.isArray(value?.quality_risks) ? value.quality_risks : [],
+      capacity_forecast: {
+        next_24h_ar: value?.capacity_forecast?.next_24h_ar || "توقع أولي يحتاج بيانات تاريخية.",
+        next_7d_ar: value?.capacity_forecast?.next_7d_ar || "توقع أسبوعي يحتاج ربطاً بلوحة BI.",
+        confidence: Number(value?.capacity_forecast?.confidence ?? 0.62)
+      },
+      recommended_interventions: Array.isArray(value?.recommended_interventions) ? value.recommended_interventions : [],
+      executive_summary_ar: value?.executive_summary_ar || "ملخص تنفيذي غير مكتمل.",
+      clinical_safety_disclaimer_ar: value?.clinical_safety_disclaimer_ar || SAFETY_NOTE,
+      integration_plan: {
+        his: value?.integration_plan?.his || "ربط بيانات التسجيل، التنويم، المواعيد، والأسرّة من HIS.",
+        ehr: value?.integration_plan?.ehr || "قراءة سياق الحالة من EHR مع إخفاء البيانات الحساسة في التجربة.",
+        bi_dashboard: value?.integration_plan?.bi_dashboard || "نشر مؤشرات تشغيل وجودة في لوحة BI للإدارة."
+      },
+      next_action_ar: value?.next_action_ar || "ابدأ بمراجعة المؤشرات الحرجة وتحديد مالك لكل تدخل.",
+      whatsapp_summary_ar: value?.whatsapp_summary_ar || "ملخص واتساب يحتاج توليداً من البيانات."
+    };
+  }
+
+  function fallbackOutput(error, payload) {
+    const context = `${payload.context || payload.quality_context || payload.report_text || ""}`;
+    const isCritical = /حرج|طوارئ|ازدحام|نقص|عدوى|إعادة الدخول|انتظار|سلامة/.test(context);
+    return normalizeHospitalOutput({
+      hospital_snapshot: {
+        department: payload.department || payload.scope || "غير محدد",
+        case_type: payload.case_type || payload.scenario || "تحليل تشغيلي",
+        operational_context_ar: context || "لم يتم إدخال سياق كاف."
+      },
+      ops_kpis: [
+        { name: "Bed Occupancy", status: isCritical ? "risk" : "watch", value: "86%", interpretation_ar: "الإشغال قريب من مستوى الضغط ويحتاج متابعة السعة." },
+        { name: "Waiting Time", status: isCritical ? "critical" : "watch", value: "74 دقيقة", interpretation_ar: "وقت الانتظار يؤثر على تجربة المرضى وقد يزيد مخاطر التصعيد." },
+        { name: "Readmission Risk", status: "watch", value: "21%", interpretation_ar: "المؤشر يحتاج مراجعة جودة وخطة خروج أدق." },
+        { name: "Staff Load", status: "risk", value: "1.32x", interpretation_ar: "عبء الكوادر فوق الطبيعي ويحتاج إعادة توزيع مناوبات." },
+        { name: "Quality Alerts", status: "risk", value: "7", interpretation_ar: "توجد تنبيهات جودة يجب إسنادها إلى مالك مسؤول." }
+      ],
+      quality_risks: [
+        { risk: "تأخر الفرز أو الخدمة", severity: isCritical ? "high" : "medium", evidence: "مؤشرات الانتظار والضغط التشغيلي في المدخلات.", recommended_owner: "مدير التشغيل المناوب" },
+        { risk: "تأثير محتمل على سلامة المرضى", severity: "medium", evidence: "وجود سياق طبي أو مؤشرات جودة تحتاج مراجعة.", recommended_owner: "مسؤول الجودة وسلامة المرضى" }
+      ],
+      capacity_forecast: {
+        next_24h_ar: "قد يستمر الضغط خلال 24 ساعة إذا لم تتم إعادة توزيع الأسرة والكوادر.",
+        next_7d_ar: "يلزم تحليل بيانات تاريخية ومواسم مراجعين لبناء توقع أسبوعي موثوق.",
+        confidence: 0.66
+      },
+      recommended_interventions: [
+        { action: "فتح مسار سريع للحالات منخفضة التعقيد وفق بروتوكول المنشأة.", impact: "high", urgency: "now", owner: "مدير الطوارئ" },
+        { action: "إعادة توزيع التمريض بين نقاط الضغط لمدة الوردية الحالية.", impact: "medium", urgency: "today", owner: "مشرف التمريض" },
+        { action: "مراجعة تنبيهات الجودة وإغلاق البلاغات عالية الشدة.", impact: "medium", urgency: "today", owner: "مسؤول الجودة" },
+        { action: "ربط المؤشرات بلوحة BI يومية للإدارة التنفيذية.", impact: "high", urgency: "this_week", owner: "فريق التحول الرقمي" }
+      ],
+      executive_summary_ar: `تعذر الوصول إلى Gemini: ${errorMessage(error)}. تم عرض تحليل fallback تشغيلي مبسط لتوضيح شكل لوحة الإدارة التنفيذية.`,
+      clinical_safety_disclaimer_ar: SAFETY_NOTE,
+      integration_plan: {
+        his: "ربط بيانات الأسرّة، التسجيل، الانتظار، والمواعيد من HIS.",
+        ehr: "استخدام EHR كسياق فقط مع مراجعة مختص لأي حالة طبية.",
+        bi_dashboard: "بناء لوحة Bed Occupancy وWaiting Time وReadmission Risk وStaff Load وQuality Alerts."
+      },
+      next_action_ar: "ابدأ بالمؤشر الأعلى خطورة وحدد مالكاً تنفيذياً وتوقيت متابعة.",
+      whatsapp_summary_ar: "تنبيه تشغيلي: توجد مؤشرات ضغط تحتاج تدخل مدير التشغيل والجودة اليوم. راجع لوحة المؤشرات وحدد إجراءات الوردية."
+    });
   }
 
   function wireDropZone(zone, input, onFile) {
     if (!zone || !input) return;
-
     zone.addEventListener("click", () => input.click());
     zone.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
@@ -164,6 +311,19 @@
     });
   }
 
+  function activateTab(tab, updateHash) {
+    if (!TAB_IDS.includes(tab)) return;
+    els.tabs.forEach((button) => {
+      const active = button.dataset.tab === tab;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    Object.entries(els.sections).forEach(([id, section]) => {
+      if (section) section.hidden = id !== tab;
+    });
+    if (updateHash) history.replaceState(null, "", `#${tab}`);
+  }
+
   function initTabs() {
     els.tabs.forEach((button) => {
       const tab = button.dataset.tab;
@@ -171,402 +331,168 @@
       button.setAttribute("aria-selected", button.classList.contains("active") ? "true" : "false");
       button.addEventListener("click", () => activateTab(tab, true));
     });
-
     TAB_IDS.forEach((id) => {
       const section = els.sections[id];
-      if (section) {
-        section.setAttribute("role", "tabpanel");
-        section.setAttribute("tabindex", "-1");
-      }
+      if (!section) return;
+      section.setAttribute("role", "tabpanel");
+      section.setAttribute("tabindex", "-1");
     });
-
     const hash = window.location.hash.replace("#", "");
-    if (TAB_IDS.includes(hash)) {
-      activateTab(hash, false);
+    if (TAB_IDS.includes(hash)) activateTab(hash, false);
+  }
+
+  function applyScenario(name) {
+    const template = scenarioTemplates[name];
+    if (!template) return;
+    els.scenarioButtons.forEach((button) => button.classList.toggle("active", button.dataset.scenario === name));
+    if (els.ops.dept) els.ops.dept.value = template.dept;
+    if (els.ops.context) els.ops.context.value = template.context;
+    if (els.ops.scenario) els.ops.scenario.value = name;
+    if (els.quality.context) els.quality.context.value = template.quality;
+    if (els.deptCase.dept) els.deptCase.dept.value = template.dept;
+    if (els.deptCase.context) els.deptCase.context.value = template.context;
+    if (els.deptCase.goal) els.deptCase.goal.value = template.goal;
+  }
+
+  function initScenarios() {
+    els.scenarioButtons.forEach((button) => {
+      button.addEventListener("click", () => applyScenario(button.dataset.scenario));
+    });
+    applyScenario("ازدحام طوارئ");
+  }
+
+  async function runAnalysis(ui, payload, idleLabel) {
+    setBusy(ui.analyze, true, "جاري إنشاء لوحة تنفيذية...", idleLabel);
+    setStatus(ui.status, "جاري إرسال السياق إلى Gemini...", "");
+    ui.output.textContent = "جاري المعالجة...";
+    try {
+      const files = payload.file ? [{ inline_data: await toInlineData(payload.file) }] : [];
+      const text = await geminiPrompt(hospitalPrompt(payload), { files });
+      const json = normalizeHospitalOutput(parseJsonResponse(text));
+      setStatus(ui.status, "تم إنشاء لوحة الإدارة التنفيذية عبر Gemini.", "ok");
+      ui.output.textContent = renderExecutiveBoard(json);
+    } catch (error) {
+      console.error(error);
+      setStatus(ui.status, "تعذر الاتصال بـ Gemini. تم عرض نموذج تشغيلي محلي.", "err");
+      ui.output.textContent = renderExecutiveBoard(fallbackOutput(error, payload));
+    } finally {
+      setBusy(ui.analyze, false, "", idleLabel);
     }
   }
 
-  function activateTab(tab, updateHash) {
-    if (!TAB_IDS.includes(tab)) return;
-
-    els.tabs.forEach((button) => {
-      const isActive = button.dataset.tab === tab;
-      button.classList.toggle("active", isActive);
-      button.setAttribute("aria-selected", isActive ? "true" : "false");
-    });
-
-    Object.entries(els.sections).forEach(([id, section]) => {
-      if (section) section.hidden = id !== tab;
-    });
-
-    if (updateHash) {
-      history.replaceState(null, "", `#${tab}`);
-      scrollToElement(els.sections[tab]);
-    }
-  }
-
-  function scrollToElement(element) {
-    if (element && typeof element.scrollIntoView === "function") {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  function initAnchorTabs() {
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", (event) => {
-        const targetId = anchor.getAttribute("href").slice(1);
-        if (!targetId) return;
-
-        const target = byId(targetId);
-        if (!target) return;
-
-        event.preventDefault();
-        if (TAB_IDS.includes(targetId)) activateTab(targetId, false);
-        scrollToElement(target);
-        history.replaceState(null, "", `#${targetId}`);
-      });
-    });
-  }
-
-  function initImageTab() {
-    const ui = els.image;
-
-    wireDropZone(ui.drop, ui.file, (file) => {
-      const supported = /\.(jpe?g|png|dcm|dicom)$/i.test(file.name);
-      if (!supported) {
-        setStatus(ui.status, "صيغة غير مدعومة. استخدم JPG أو PNG أو DICOM.", "err");
-        return;
-      }
-      selectedImageFile = file;
-      setStatus(ui.status, `تم اختيار الملف: ${file.name} (${Math.round(file.size / 1024)} كيلوبايت)`, "ok");
-    });
-
-    ui.analyze?.addEventListener("click", async () => {
-      if (!selectedImageFile) {
-        setStatus(ui.status, "ارفع صورة طبية أولاً.", "warn");
-        return;
-      }
-
-      setBusy(ui.analyze, true, "جاري إرسال الصورة إلى Gemini...", "تحليل الصورة الطبية بالذكاء الاصطناعي");
-      setStatus(ui.status, "جاري تحليل الصورة عبر Gemini inline_data...", "");
-      ui.output.textContent = "جاري المعالجة...";
-
-      try {
-        const inlineData = await toInlineData(selectedImageFile);
-        const prompt = `أنت مساعد توضيحي لتحليل صور طبية داخل عرض Bright AI. حلل الصورة المرفقة من نوع ${ui.type.value}.
-
-الملاحظات السريرية:
-${ui.notes.value.trim() || "لا توجد ملاحظات إضافية."}
-
-أجب بالعربية وبصيغة منظمة تتضمن:
-1. وصفاً لما يظهر في الصورة وحدود الثقة.
-2. الملاحظات المحتملة دون جزم تشخيصي.
-3. إشارات تستدعي مراجعة الطبيب أو الطوارئ.
-4. فحوصات أو معلومات إضافية قد تساعد الطبيب.
-5. ملاحظة جودة الصورة إن أمكن.
-
-لا تقدم تشخيصاً نهائياً ولا خطة علاجية ملزمة.`;
-
-        const text = await geminiPrompt(prompt, {
-          files: [{ inline_data: inlineData }],
-          temperature: 0.2,
-          maxOutputTokens: 1600
-        });
-        setStatus(ui.status, "تم التحليل عبر Gemini.", "ok");
-        ui.output.textContent = withDisclaimer(text);
-      } catch (error) {
-        console.error(error);
-        setStatus(ui.status, "فشل الاتصال بـ Gemini. تم عرض fallback توضيحي.", "err");
-        ui.output.textContent = imageFallback(error, selectedImageFile, ui.type.value);
-      } finally {
-        setBusy(ui.analyze, false, "", "تحليل الصورة الطبية بالذكاء الاصطناعي");
-      }
-    });
-
-    ui.clear?.addEventListener("click", () => {
-      selectedImageFile = null;
-      ui.file.value = "";
-      ui.notes.value = "";
-      ui.output.textContent = "سيتم عرض التحليل الشامل هنا بعد رفع الصورة...";
-      setStatus(ui.status, "تمت إعادة الضبط. ارفع صورة جديدة.", "");
-    });
-  }
-
-  function initVitalsTab() {
-    const ui = els.vitals;
-
-    ui.analyze?.addEventListener("click", async () => {
+  function initOpsTab() {
+    const ui = els.ops;
+    ui.analyze?.addEventListener("click", () => {
       const payload = {
-        heart_rate_bpm: ui.hr.value.trim(),
-        blood_pressure: ui.bp.value.trim(),
-        spo2_percent: ui.spo2.value.trim(),
-        glucose_mg_dl: ui.glucose.value.trim(),
-        symptoms: ui.symptoms.value.trim()
-      };
-
-      if (!Object.values(payload).some(Boolean)) {
-        setStatus(ui.status, "أدخل قراءة واحدة على الأقل أو صف الأعراض.", "warn");
-        return;
-      }
-
-      setBusy(ui.analyze, true, "جاري تحليل المؤشرات عبر Gemini...", "تحليل البيانات الحيوية");
-      setStatus(ui.status, "جاري إرسال القراءات والأعراض إلى Gemini...", "");
-      ui.output.textContent = "جاري المعالجة...";
-
-      try {
-        const prompt = `أنت نظام triage توضيحي للمؤشرات الحيوية. أعد JSON صالحاً فقط بلا Markdown وبالمفاتيح الإنجليزية التالية:
-triage_level: one of ["routine","monitor","urgent","emergency"],
-risk_summary_ar: string,
-red_flags_ar: array of strings,
-recommended_actions_ar: array of strings,
-questions_for_clinician_ar: array of strings,
-monitoring_plan_ar: array of strings,
-disclaimer_ar: string.
-
-اعتمد فقط على القراءات والأعراض التالية، ولا تقدم تشخيصاً نهائياً:
-${JSON.stringify(payload, null, 2)}`;
-
-        const text = await geminiPrompt(prompt, {
-          temperature: 0.15,
-          maxOutputTokens: 1100,
-          generationConfig: {
-            temperature: 0.15,
-            maxOutputTokens: 1100,
-            responseMimeType: "application/json"
-          }
-        });
-        const json = normalizeTriage(parseJsonResponse(text));
-        setStatus(ui.status, "تم إنشاء triage JSON عبر Gemini.", "ok");
-        ui.output.textContent = `${renderJson(json)}\n\n${DISCLAIMER}`;
-      } catch (error) {
-        console.error(error);
-        setStatus(ui.status, "فشل الاتصال بـ Gemini. تم عرض fallback محلي.", "err");
-        ui.output.textContent = `${renderJson(vitalsFallback(error, payload))}\n\n${DISCLAIMER}`;
-      } finally {
-        setBusy(ui.analyze, false, "", "تحليل البيانات الحيوية");
-      }
-    });
-
-    ui.clear?.addEventListener("click", () => {
-      ui.hr.value = "";
-      ui.bp.value = "";
-      ui.spo2.value = "";
-      ui.glucose.value = "";
-      ui.symptoms.value = "";
-      ui.output.textContent = "سيتم عرض التقييم الصحي الشامل هنا...";
-      setStatus(ui.status, "تمت إعادة الضبط.", "");
-    });
-  }
-
-  function initHospitalTab() {
-    const ui = els.hms;
-
-    ui.analyze?.addEventListener("click", async () => {
-      const payload = {
+        case_type: "مؤشرات تشغيل المستشفى",
         department: ui.dept.value,
-        age: ui.age.value.trim(),
-        gender: ui.gender.value,
-        case_description: ui.desc.value.trim()
+        scenario: ui.scenario.value.trim(),
+        context: ui.context.value.trim()
       };
-
-      if (!payload.case_description) {
-        setStatus(ui.status, "أدخل وصف الحالة قبل طلب التوصيات.", "warn");
+      if (!payload.context) {
+        setStatus(ui.status, "أدخل لقطة المؤشرات أو اختر سيناريو جاهزاً.", "warn");
         return;
       }
-
-      setBusy(ui.analyze, true, "جاري توليد التوصيات عبر Gemini...", "معالجة البيانات وتقديم التوصيات");
-      setStatus(ui.status, "جاري إرسال وصف الحالة إلى Gemini...", "");
-      ui.output.textContent = "جاري المعالجة...";
-
-      try {
-        const prompt = `أنت مستشار تشغيل مستشفيات في السعودية. حلل الحالة التالية وقدّم توصيات تشغيلية لا تشخيصية.
-
-بيانات الحالة:
-${JSON.stringify(payload, null, 2)}
-
-أجب بالعربية في أقسام واضحة:
-- أولوية تشغيلية مبدئية.
-- مسار استقبال أو فرز مقترح.
-- الموارد المطلوبة: سرير، تمريض، طبيب، أجهزة، مختبر أو أشعة.
-- مخاطر تشغيلية يجب مراقبتها.
-- أسئلة ناقصة يجب جمعها قبل القرار.
-- حدود النتيجة وأنها لا تستبدل الطبيب أو بروتوكول المنشأة.`;
-
-        const text = await geminiPrompt(prompt, { temperature: 0.25, maxOutputTokens: 1400 });
-        setStatus(ui.status, "تم توليد التوصيات عبر Gemini.", "ok");
-        ui.output.textContent = withDisclaimer(text);
-      } catch (error) {
-        console.error(error);
-        setStatus(ui.status, "فشل الاتصال بـ Gemini. تم عرض fallback تشغيلي.", "err");
-        ui.output.textContent = hospitalFallback(error, payload);
-      } finally {
-        setBusy(ui.analyze, false, "", "معالجة البيانات وتقديم التوصيات");
-      }
+      runAnalysis(ui, payload, "حلل مؤشرات منشأتك");
     });
-
     ui.clear?.addEventListener("click", () => {
-      ui.age.value = "";
-      ui.gender.value = "";
-      ui.desc.value = "";
-      ui.output.textContent = "سيتم عرض التوصيات الشاملة هنا...";
+      ui.context.value = "";
+      ui.scenario.value = "";
+      ui.output.textContent = "سيتم عرض مخرجات Gemini التشغيلية هنا...";
       setStatus(ui.status, "تمت إعادة الضبط.", "");
     });
   }
 
-  function initMedGeminiTab() {
-    const ui = els.med;
+  function initQualityTab() {
+    const ui = els.quality;
+    ui.analyze?.addEventListener("click", () => {
+      const payload = {
+        case_type: "دعم قرار الجودة",
+        scope: ui.scope.value,
+        department: ui.scope.value,
+        quality_context: ui.context.value.trim()
+      };
+      if (!payload.quality_context) {
+        setStatus(ui.status, "أدخل مؤشرات الجودة أو اختر سيناريو جاهزاً.", "warn");
+        return;
+      }
+      runAnalysis(ui, payload, "حلل مخاطر الجودة");
+    });
+    ui.clear?.addEventListener("click", () => {
+      ui.context.value = "";
+      ui.output.textContent = "سيتم عرض مخاطر الجودة والتدخلات هنا...";
+      setStatus(ui.status, "تمت إعادة الضبط.", "");
+    });
+  }
 
+  function initReportTab() {
+    const ui = els.report;
     wireDropZone(ui.drop, ui.file, (file) => {
-      selectedMedFile = file;
+      selectedReportFile = file;
       setStatus(ui.status, `تم رفع الملف: ${file.name} (${Math.round(file.size / 1024)} كيلوبايت)`, "ok");
     });
-
-    ui.analyze?.addEventListener("click", async () => {
-      const query = ui.query.value.trim();
-      if (!query && !selectedMedFile) {
-        setStatus(ui.status, "اكتب سؤالاً أو ارفع ملفاً طبياً.", "warn");
+    ui.analyze?.addEventListener("click", () => {
+      const payload = {
+        case_type: "قراءة تقرير أو ملف طبي",
+        department: ui.type.value,
+        report_type: ui.type.value,
+        report_text: ui.text.value.trim(),
+        context: ui.text.value.trim(),
+        file: selectedReportFile
+      };
+      if (!payload.report_text && !payload.file) {
+        setStatus(ui.status, "الصق نص التقرير أو ارفع ملفاً.", "warn");
         return;
       }
-
-      setBusy(ui.analyze, true, "جاري تحليل الطلب عبر Gemini...", "الحصول على تحليل Med-Gemini");
-      setStatus(ui.status, "جاري إرسال السؤال أو الملف إلى Gemini...", "");
-      ui.output.textContent = "جاري المعالجة...";
-
-      try {
-        const files = selectedMedFile ? [{ inline_data: await toInlineData(selectedMedFile) }] : [];
-        const prompt = `أنت Med-Gemini توضيحي داخل عرض Bright AI. نوع الطلب: ${ui.type.value}.
-
-سؤال المستخدم أو نص التقرير:
-${query || "لا يوجد نص مكتوب. اعتمد على الملف المرفق فقط."}
-
-إن وجد ملف مرفق فحلله على قدر ما تسمح به صيغة الملف. أجب بالعربية في ملخص واضح يتضمن:
-1. ملخصاً توضيحياً للحالة أو السؤال.
-2. النقاط المهمة التي يجب أن يراجعها الطبيب.
-3. الأسئلة الناقصة أو المعلومات غير المتوفرة.
-4. خطوات متابعة آمنة وغير علاجية.
-5. تحذير واضح بأن الإجابة لا تغني عن الطبيب.`;
-
-        const text = await geminiPrompt(prompt, { files, temperature: 0.25, maxOutputTokens: 1500 });
-        setStatus(ui.status, "تم تحليل الطلب عبر Gemini.", "ok");
-        ui.output.textContent = withDisclaimer(text);
-      } catch (error) {
-        console.error(error);
-        setStatus(ui.status, "فشل الاتصال بـ Gemini. تم عرض fallback توضيحي.", "err");
-        ui.output.textContent = medFallback(error, query, selectedMedFile, ui.type.value);
-      } finally {
-        setBusy(ui.analyze, false, "", "الحصول على تحليل Med-Gemini");
-      }
+      runAnalysis(ui, payload, "اقرأ التقرير تشغيلياً");
     });
-
     ui.clear?.addEventListener("click", () => {
-      ui.query.value = "";
+      ui.text.value = "";
       ui.file.value = "";
-      selectedMedFile = null;
-      ui.output.textContent = "سيتم عرض التحليل الطبي الشامل هنا...";
+      selectedReportFile = null;
+      ui.output.textContent = "سيتم عرض ملخص التقرير والتنبيهات هنا...";
       setStatus(ui.status, "تمت إعادة الضبط.", "");
     });
   }
 
-  function normalizeTriage(value) {
-    return {
-      triage_level: value.triage_level || "monitor",
-      risk_summary_ar: value.risk_summary_ar || "تقييم توضيحي يحتاج مراجعة مختص.",
-      red_flags_ar: Array.isArray(value.red_flags_ar) ? value.red_flags_ar : [],
-      recommended_actions_ar: Array.isArray(value.recommended_actions_ar) ? value.recommended_actions_ar : [],
-      questions_for_clinician_ar: Array.isArray(value.questions_for_clinician_ar) ? value.questions_for_clinician_ar : [],
-      monitoring_plan_ar: Array.isArray(value.monitoring_plan_ar) ? value.monitoring_plan_ar : [],
-      disclaimer_ar: value.disclaimer_ar || DISCLAIMER
-    };
-  }
-
-  function vitalsFallback(error, payload) {
-    const redFlags = [];
-    const actions = ["إعادة قياس القراءات والتأكد من الجهاز وطريقة القياس.", "مشاركة القراءات مع طبيب أو ممرض مختص."];
-    const hr = Number(payload.heart_rate_bpm);
-    const spo2 = Number(payload.spo2_percent);
-    const glucose = Number(payload.glucose_mg_dl);
-    const bpMatch = String(payload.blood_pressure || "").match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
-    const systolic = bpMatch ? Number(bpMatch[1]) : null;
-    const symptoms = String(payload.symptoms || "");
-
-    if (spo2 && spo2 < 92) redFlags.push("تشبع الأكسجين منخفض وقد يستدعي تواصلاً عاجلاً مع الرعاية الصحية.");
-    if (hr && (hr > 120 || hr < 45)) redFlags.push("معدل القلب خارج النطاق المعتاد ويحتاج تقييم مختص.");
-    if (systolic && systolic >= 180) redFlags.push("ضغط انقباضي مرتفع جداً ويحتاج مراجعة عاجلة.");
-    if (glucose && (glucose > 300 || glucose < 60)) redFlags.push("قراءة السكر خارج النطاق الآمن غالباً وتحتاج إرشاداً طبياً.");
-    if (/ألم|صدر|تنفس|إغماء|دوخة شديدة/.test(symptoms)) redFlags.push("الأعراض المذكورة قد تكون مهمة سريرياً وتحتاج فرزاً طبياً.");
-
-    return {
-      triage_level: redFlags.length >= 2 ? "urgent" : redFlags.length ? "monitor" : "routine",
-      risk_summary_ar: `تعذر الوصول إلى Gemini: ${errorMessage(error)} تم توليد تقييم fallback مبسط من القراءات المدخلة.`,
-      red_flags_ar: redFlags,
-      recommended_actions_ar: redFlags.length ? actions.concat("عند وجود ألم صدر أو ضيق تنفس أو تدهور سريع، تواصل مع الطوارئ فوراً.") : actions,
-      questions_for_clinician_ar: ["ما عمر المريض؟", "هل لديه أمراض مزمنة أو أدوية حالية؟", "متى بدأت الأعراض؟"],
-      monitoring_plan_ar: ["تسجيل القراءات مع الوقت.", "إعادة القياس بعد راحة قصيرة إذا لم توجد أعراض خطرة.", "تصعيد الحالة عند تدهور الأعراض."],
-      disclaimer_ar: DISCLAIMER
-    };
-  }
-
-  function imageFallback(error, file, imageType) {
-    return withDisclaimer(`تعذر تحليل الصورة عبر Gemini: ${errorMessage(error)}
-
-Fallback توضيحي:
-- تم اختيار ملف: ${file?.name || "غير محدد"}.
-- نوع الصورة المختار: ${imageType}.
-- لا يمكن تقديم قراءة صورية فعلية بدون استجابة Gemini.
-- راجع جودة الصورة، وحجم الملف، واتصال الشبكة، ثم أعد المحاولة.
-- لأي اشتباه سريري أو أعراض حادة، يجب الرجوع للطبيب أو قسم الطوارئ.`);
-  }
-
-  function hospitalFallback(error, payload) {
-    return withDisclaimer(`تعذر توليد توصيات Gemini: ${errorMessage(error)}
-
-Fallback تشغيلي مبسط:
-- القسم: ${payload.department}
-- العمر: ${payload.age || "غير محدد"}
-- الجنس: ${payload.gender || "غير محدد"}
-- الوصف: ${payload.case_description}
-
-توصيات تشغيلية عامة:
-1. تطبيق بروتوكول الفرز المعتمد داخل المنشأة.
-2. جمع العلامات الحيوية والحساسية والأدوية الحالية قبل القرار.
-3. توفير تقييم تمريضي أولي ثم تصعيد للطبيب المناوب حسب شدة الأعراض.
-4. تجهيز موارد المختبر أو الأشعة فقط عند طلبها من الفريق السريري.
-5. توثيق وقت الوصول، وقت الفرز، وسبب التصعيد إن وجد.`);
-  }
-
-  function medFallback(error, query, file, type) {
-    return withDisclaimer(`تعذر تحليل الطلب عبر Gemini: ${errorMessage(error)}
-
-Fallback توضيحي:
-- نوع الطلب: ${type}
-- السؤال: ${query || "لم يتم إدخال سؤال نصي."}
-- الملف: ${file?.name || "لا يوجد ملف."}
-
-لا يمكن إنشاء ملخص طبي فعلي بدون استجابة Gemini. أعد المحاولة بعد التأكد من الاتصال وصيغة الملف. إذا كان الطلب متعلقاً بأعراض حادة أو قرار علاجي، تواصل مع طبيب مختص.`);
+  function initCaseTab() {
+    const ui = els.deptCase;
+    ui.analyze?.addEventListener("click", () => {
+      const payload = {
+        case_type: "تحليل حالة تشغيلية لقسم",
+        department: ui.dept.value,
+        context: ui.context.value.trim(),
+        decision_goal: ui.goal.value.trim()
+      };
+      if (!payload.context) {
+        setStatus(ui.status, "اكتب الحالة التشغيلية أو اختر سيناريو جاهزاً.", "warn");
+        return;
+      }
+      runAnalysis(ui, payload, "حلل الحالة التشغيلية");
+    });
+    ui.clear?.addEventListener("click", () => {
+      ui.context.value = "";
+      ui.goal.value = "";
+      ui.output.textContent = "سيتم عرض الخطة التشغيلية هنا...";
+      setStatus(ui.status, "تمت إعادة الضبط.", "");
+    });
   }
 
   function initContactForm() {
-    byId("contactBtn")?.addEventListener("click", async () => {
+    byId("contactBtn")?.addEventListener("click", () => {
       const name = byId("contactName")?.value.trim();
       const phone = byId("contactPhone")?.value.trim();
-      const email = byId("contactEmail")?.value.trim();
-      const service = byId("contactService")?.value;
-      const msg = byId("contactMsg")?.value.trim();
       const status = byId("contactStatus");
-
       if (!name || !phone) {
         setStatus(status, "الرجاء إدخال الاسم ورقم الجوال.", "warn");
         return;
       }
-
       if (!/^05\d{8}$/.test(phone.replace(/\s/g, ""))) {
         setStatus(status, "رقم الجوال غير صحيح. يجب أن يبدأ بـ 05 ويتكون من 10 أرقام.", "warn");
         return;
       }
-
-      console.info("Contact Form Submission:", { name, phone, email, service, msg });
-      setStatus(status, "تم استلام طلبك بنجاح. سنتواصل معك خلال 24 ساعة.", "ok");
-      ["contactName", "contactPhone", "contactEmail", "contactService", "contactMsg"].forEach((id) => {
+      setStatus(status, "تم استلام طلبك. سنتواصل معك لربط HIS أو إعداد لوحة المؤشرات.", "ok");
+      ["contactName", "contactPhone", "contactEmail", "contactMsg"].forEach((id) => {
         const input = byId(id);
         if (input) input.value = "";
       });
@@ -574,7 +500,7 @@ Fallback توضيحي:
   }
 
   function initOutputFocus() {
-    [els.image.output, els.vitals.output, els.hms.output, els.med.output].forEach((output) => {
+    [els.ops.output, els.quality.output, els.report.output, els.deptCase.output].forEach((output) => {
       if (!output) return;
       const observer = new MutationObserver(() => {
         output.setAttribute("tabindex", "-1");
@@ -586,13 +512,13 @@ Fallback توضيحي:
   }
 
   function boot() {
-    if (!$(".tabs")) return;
+    if (!document.querySelector(".tabs")) return;
     initTabs();
-    initAnchorTabs();
-    initImageTab();
-    initVitalsTab();
-    initHospitalTab();
-    initMedGeminiTab();
+    initScenarios();
+    initOpsTab();
+    initQualityTab();
+    initReportTab();
+    initCaseTab();
     initContactForm();
     initOutputFocus();
   }

@@ -423,14 +423,21 @@ class DataAnalyzerPage {
       sampleRows: this.localSummary.previewRows.slice(0, 8)
     };
 
-    return `أنت مستشار تحليل بيانات تنفيذي لشركة سعودية. حلل ملخص dataset التالي فقط دون اختلاق حقائق خارجية.
-أعد JSON صالحاً فقط بلا Markdown وبالمفاتيح الإنجليزية التالية:
-executive_summary: string عربي موجز،
-anomalies: array of strings،
-opportunities: array of strings،
-recommended_charts: array of strings،
-follow_up_questions: array of strings،
-cta_message: string عربي يدعو للخطوة التالية مع Bright AI.
+    return `أنت مستشار منصة بيانات مؤسسية لشركة سعودية. حلل ملخص dataset التالي فقط دون اختلاق حقائق خارجية.
+اربط كل نتيجة بقرار إداري واضح للإدارة التنفيذية والمالية والعمليات.
+أعد JSON صالحاً فقط بلا Markdown وبالمفاتيح الإنجليزية التالية تماماً:
+data_quality_score: number,
+data_quality_issues: [{ issue: string, severity: "low"|"medium"|"high", fix: string }],
+executive_summary_ar: string,
+kpis: [{ name: string, value: string, trend: "up"|"down"|"stable", business_meaning_ar: string }],
+anomalies: [{ metric: string, description_ar: string, possible_causes: string[], recommended_action: string }],
+forecast: { next_period_expectation_ar: string, confidence: number, assumptions: string[] },
+role_based_views: { ceo: string[], finance: string[], operations: string[], sales: string[] },
+dashboard_blueprint: { charts: [{ title: string, type: "line"|"bar"|"pie"|"table"|"kpi", why_it_matters_ar: string }] },
+governance_recommendations: string[],
+roi_estimate_ar: string,
+next_actions: string[],
+whatsapp_summary_ar: string.
 
 ملخص البيانات:
 ${JSON.stringify(summaryForModel, null, 2)}`;
@@ -444,20 +451,7 @@ ${JSON.stringify(summaryForModel, null, 2)}`;
 
     if (status) status.textContent = hasError ? "تعذر الاتصال" : "جاهز";
 
-    if (container) {
-      container.innerHTML = `
-        <li class="ai-report-item">
-          <strong>الملخص التنفيذي</strong>
-          <span>${escapeHtml(report.executive_summary)}</span>
-        </li>
-        ${report.anomalies.map((item) => this.renderInsightItem("fa-triangle-exclamation", "شذوذ", item)).join("")}
-        ${report.opportunities.map((item) => this.renderInsightItem("fa-arrow-trend-up", "فرصة", item)).join("")}
-        <li class="ai-report-item cta">
-          <strong>الخطوة التالية</strong>
-          <span>${escapeHtml(report.cta_message)}</span>
-        </li>
-      `;
-    }
+    if (container) container.innerHTML = this.renderReportPanel(report);
 
     if (jsonView) {
       jsonView.innerHTML = `<pre>${escapeHtml(JSON.stringify(report, null, 2))}</pre>`;
@@ -474,18 +468,129 @@ ${JSON.stringify(summaryForModel, null, 2)}`;
     `;
   }
 
+  renderReportPanel(report) {
+    return `
+      <li class="ai-report-item executive">
+        <strong>ملخص تنفيذي مرتبط بالقرار</strong>
+        <span>${escapeHtml(report.executive_summary_ar)}</span>
+      </li>
+      <li class="enterprise-quality-card">
+        <div>
+          <strong>Data Quality Score</strong>
+          <span>${formatNumber(report.data_quality_score)}%</span>
+        </div>
+        <p>قرار إداري: ${escapeHtml(report.data_quality_score >= 85 ? "البيانات مناسبة لبناء لوحة تشغيلية أولية." : "ابدأ بتحسين جودة البيانات قبل اعتمادها في قرارات شهرية.")}</p>
+        <ul>${report.data_quality_issues.map((item) => `<li>${severityLabel(item.severity)}: ${escapeHtml(item.issue)} — ${escapeHtml(item.fix)}</li>`).join("")}</ul>
+      </li>
+      <li class="enterprise-section">
+        <strong>Executive KPIs</strong>
+        <div class="enterprise-mini-grid">
+          ${report.kpis.map((item) => `
+            <article>
+              <small>${escapeHtml(item.name)}</small>
+              <b>${escapeHtml(item.value)}</b>
+              <span>${trendLabel(item.trend)} · ${escapeHtml(item.business_meaning_ar)}</span>
+            </article>
+          `).join("")}
+        </div>
+      </li>
+      <li class="enterprise-section">
+        <strong>Trends و Forecast</strong>
+        <p>${escapeHtml(report.forecast.next_period_expectation_ar)}</p>
+        <small>الثقة: ${formatNumber(report.forecast.confidence)}%</small>
+      </li>
+      <li class="enterprise-section">
+        <strong>Anomalies</strong>
+        ${report.anomalies.map((item) => `
+          <article class="decision-line">
+            <b>${escapeHtml(item.metric)}</b>
+            <span>${escapeHtml(item.description_ar)}</span>
+            <small>الإجراء: ${escapeHtml(item.recommended_action)}</small>
+          </article>
+        `).join("")}
+      </li>
+      <li class="enterprise-section">
+        <strong>Recommended Actions</strong>
+        <ul>${report.next_actions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </li>
+      <li class="enterprise-section">
+        <strong>Governance و ROI</strong>
+        <p>${escapeHtml(report.roi_estimate_ar)}</p>
+        <ul>${report.governance_recommendations.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </li>
+      <li class="enterprise-section">
+        <strong>Dashboard Blueprint</strong>
+        <div class="enterprise-mini-grid">
+          ${report.dashboard_blueprint.charts.map((chart) => `
+            <article>
+              <small>${chartTypeLabel(chart.type)}</small>
+              <b>${escapeHtml(chart.title)}</b>
+              <span>${escapeHtml(chart.why_it_matters_ar)}</span>
+            </article>
+          `).join("")}
+        </div>
+      </li>
+      <li class="enterprise-section">
+        <strong>Role-based Views</strong>
+        ${renderRoleViews(report.role_based_views)}
+      </li>
+      <li class="ai-report-item cta">
+        <strong>ملخص واتساب</strong>
+        <span>${escapeHtml(report.whatsapp_summary_ar)}</span>
+      </li>
+    `;
+  }
+
   buildFallbackReport(error) {
     const message = window.BrightAIGemini?.getErrorMessage?.(error) || "تعذر توليد تحليل Gemini حالياً.";
     return {
-      executive_summary: `${message} تم عرض الإحصاءات المحلية كبديل مؤقت.`,
+      data_quality_score: this.localSummary.qualityScore,
+      data_quality_issues: this.localSummary.missingRate > 0 ? [{
+        issue: `نسبة القيم المفقودة ${this.localSummary.missingRate}%`,
+        severity: this.localSummary.missingRate > 10 ? "high" : "medium",
+        fix: "توحيد الحقول الإلزامية وتنظيف القيم قبل اعتماد لوحة الإدارة."
+      }] : [{
+        issue: "لا توجد فجوات واضحة في العينة.",
+        severity: "low",
+        fix: "استمر في مراقبة جودة الإدخال عند ربط المصادر الحية."
+      }],
+      executive_summary_ar: `${message} تم عرض الإحصاءات المحلية كبديل مؤقت وربطها بقرارات تشغيلية أولية.`,
+      kpis: [
+        { name: "السجلات", value: formatNumber(this.localSummary.totalRows), trend: "stable", business_meaning_ar: "حجم العينة يكفي لفحص أولي قبل بناء لوحة دورية." },
+        { name: "الأعمدة الرقمية", value: formatNumber(this.localSummary.numericColumnCount), trend: "stable", business_meaning_ar: "توفر مؤشرات قابلة للقياس والمقارنة." },
+        { name: "جودة البيانات", value: `${formatNumber(this.localSummary.qualityScore)}%`, trend: this.localSummary.qualityScore >= 85 ? "up" : "down", business_meaning_ar: "تحدد مدى جاهزية البيانات لقرارات الإدارة." }
+      ],
       anomalies: this.localSummary.columns
         .filter((column) => column.type === "numeric" && column.outliers > 0)
         .slice(0, 3)
-        .map((column) => `العمود ${column.name} يحتوي على ${column.outliers} قيمة شاذة محتملة.`),
-      opportunities: this.localSummary.localInsights.slice(0, 3),
-      recommended_charts: ["مخطط أعمدة للأعمدة الرقمية", "مخطط دائري لأكثر الفئات تكراراً"],
-      follow_up_questions: ["ما المؤشر التجاري الأهم الذي تريد تحسينه؟", "هل تريد ربط هذه البيانات بلوحة مؤشرات دورية؟"],
-      cta_message: "يمكن لفريق Bright AI تحويل هذا التحليل الأولي إلى لوحة مؤشرات مؤسسية وربط مباشر مع أنظمة العمل."
+        .map((column) => ({
+          metric: column.name,
+          description_ar: `العمود يحتوي على ${column.outliers} قيمة شاذة محتملة.`,
+          possible_causes: ["خطأ إدخال", "موسمية تشغيلية", "صفقة أو حدث استثنائي"],
+          recommended_action: "راجع السجلات الشاذة قبل اعتماد التقرير التنفيذي."
+        })),
+      forecast: {
+        next_period_expectation_ar: "التوقع الأولي يحتاج ربط بيانات تاريخية أطول، لكن العينة الحالية تكشف مؤشرات قابلة للمتابعة.",
+        confidence: Math.min(85, Math.max(45, this.localSummary.qualityScore - 10)),
+        assumptions: ["العينة تمثل الفترة الحالية", "الأعمدة الرقمية تعكس مؤشرات تشغيلية فعلية"]
+      },
+      role_based_views: {
+        ceo: ["ملخص النمو والمخاطر", "مؤشرات الجودة والفرص", "الأثر المتوقع على القرار"],
+        finance: ["المؤشرات الرقمية", "الشذوذ المالي المحتمل", "تقدير العائد"],
+        operations: ["نقاط الاختناق", "جودة الإدخال", "إجراءات التحسين"],
+        sales: ["الأداء حسب القناة أو المنطقة", "الفرص الأعلى أولوية", "أسئلة المتابعة"]
+      },
+      dashboard_blueprint: {
+        charts: [
+          { title: "مؤشرات تنفيذية رئيسية", type: "kpi", why_it_matters_ar: "تختصر الحالة للإدارة في أول الشاشة." },
+          { title: "اتجاه المؤشرات الرقمية", type: "line", why_it_matters_ar: "يكشف التحسن أو التراجع قبل نهاية الفترة." },
+          { title: "توزيع الفئات الأعلى أثراً", type: "bar", why_it_matters_ar: "يساعد على توجيه الموارد للفرص الأكبر." }
+        ]
+      },
+      governance_recommendations: ["تحديد مالك لكل مصدر بيانات", "تعريف صلاحيات CEO/Finance/Operations", "توثيق قاموس مؤشرات موحد"],
+      roi_estimate_ar: "العائد المتوقع يبدأ من تقليل وقت إعداد التقارير وتحسين سرعة اكتشاف المخاطر.",
+      next_actions: ["اربط مصادر البيانات المتكررة", "أنشئ قاموس مؤشرات موحد", "حوّل العينة إلى لوحة تنفيذية دورية"],
+      whatsapp_summary_ar: "تم تحليل عينة البيانات واكتشاف مؤشرات جودة وشذوذ وفرص تحتاج لوحة مؤسسية وربط مصادر."
     };
   }
 
@@ -578,16 +683,16 @@ ${JSON.stringify(this.geminiReport, null, 2)}
 
     const text = [
       "الملخص التنفيذي:",
-      this.geminiReport.executive_summary,
+      this.geminiReport.executive_summary_ar,
       "",
       "الشذوذ:",
-      ...this.geminiReport.anomalies.map((item) => `- ${item}`),
+      ...this.geminiReport.anomalies.map((item) => `- ${item.metric}: ${item.recommended_action}`),
       "",
-      "الفرص:",
-      ...this.geminiReport.opportunities.map((item) => `- ${item}`),
+      "الإجراءات المقترحة:",
+      ...this.geminiReport.next_actions.map((item) => `- ${item}`),
       "",
-      "الخطوة التالية:",
-      this.geminiReport.cta_message
+      "ملخص واتساب:",
+      this.geminiReport.whatsapp_summary_ar
     ].join("\n");
 
     try {
@@ -628,18 +733,121 @@ function parseGeminiJson(text) {
 
 function normalizeGeminiReport(report) {
   return {
-    executive_summary: String(report.executive_summary || "لم يرجع Gemini ملخصاً تنفيذياً واضحاً."),
-    anomalies: normalizeStringArray(report.anomalies),
-    opportunities: normalizeStringArray(report.opportunities),
-    recommended_charts: normalizeStringArray(report.recommended_charts),
-    follow_up_questions: normalizeStringArray(report.follow_up_questions),
-    cta_message: String(report.cta_message || "احجز جلسة مع Bright AI لتحويل العينة إلى تحليل مؤسسي قابل للتنفيذ.")
+    data_quality_score: Number.isFinite(Number(report.data_quality_score)) ? Number(report.data_quality_score) : 0,
+    data_quality_issues: normalizeQualityIssues(report.data_quality_issues),
+    executive_summary_ar: String(report.executive_summary_ar || report.executive_summary || "لم يرجع Gemini ملخصاً تنفيذياً واضحاً."),
+    kpis: normalizeKpis(report.kpis),
+    anomalies: normalizeAnomalies(report.anomalies),
+    forecast: normalizeForecast(report.forecast),
+    role_based_views: normalizeRoleViews(report.role_based_views),
+    dashboard_blueprint: normalizeDashboardBlueprint(report.dashboard_blueprint),
+    governance_recommendations: normalizeStringArray(report.governance_recommendations),
+    roi_estimate_ar: String(report.roi_estimate_ar || "يحتاج تقدير العائد ربط البيانات بتكلفة التشغيل والإيرادات."),
+    next_actions: normalizeStringArray(report.next_actions),
+    whatsapp_summary_ar: String(report.whatsapp_summary_ar || "تم توليد تحليل بيانات أولي من Bright AI يحتاج مراجعة تنفيذية.")
+  };
+}
+
+function normalizeQualityIssues(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => ({
+    issue: String(item?.issue || "").trim(),
+    severity: ["low", "medium", "high"].includes(item?.severity) ? item.severity : "medium",
+    fix: String(item?.fix || "").trim()
+  })).filter((item) => item.issue || item.fix);
+}
+
+function normalizeKpis(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => ({
+    name: String(item?.name || "").trim(),
+    value: String(item?.value || "").trim(),
+    trend: ["up", "down", "stable"].includes(item?.trend) ? item.trend : "stable",
+    business_meaning_ar: String(item?.business_meaning_ar || "").trim()
+  })).filter((item) => item.name || item.value);
+}
+
+function normalizeAnomalies(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => {
+    if (typeof item === "string") {
+      return {
+        metric: "مؤشر",
+        description_ar: item,
+        possible_causes: [],
+        recommended_action: "راجع السبب قبل اتخاذ القرار."
+      };
+    }
+    return {
+      metric: String(item?.metric || "مؤشر").trim(),
+      description_ar: String(item?.description_ar || "").trim(),
+      possible_causes: normalizeStringArray(item?.possible_causes),
+      recommended_action: String(item?.recommended_action || "").trim()
+    };
+  }).filter((item) => item.description_ar || item.recommended_action);
+}
+
+function normalizeForecast(value) {
+  return {
+    next_period_expectation_ar: String(value?.next_period_expectation_ar || "لا توجد بيانات كافية لتوقع موثوق للفترة القادمة.").trim(),
+    confidence: Number.isFinite(Number(value?.confidence)) ? Number(value.confidence) : 50,
+    assumptions: normalizeStringArray(value?.assumptions)
+  };
+}
+
+function normalizeRoleViews(value) {
+  return {
+    ceo: normalizeStringArray(value?.ceo),
+    finance: normalizeStringArray(value?.finance),
+    operations: normalizeStringArray(value?.operations),
+    sales: normalizeStringArray(value?.sales)
+  };
+}
+
+function normalizeDashboardBlueprint(value) {
+  const charts = Array.isArray(value?.charts) ? value.charts : [];
+  return {
+    charts: charts.map((chart) => ({
+      title: String(chart?.title || "").trim(),
+      type: ["line", "bar", "pie", "table", "kpi"].includes(chart?.type) ? chart.type : "table",
+      why_it_matters_ar: String(chart?.why_it_matters_ar || "").trim()
+    })).filter((chart) => chart.title)
   };
 }
 
 function normalizeStringArray(value) {
   if (!Array.isArray(value)) return [];
   return value.map((item) => String(item || "").trim()).filter(Boolean);
+}
+
+function trendLabel(trend) {
+  const labels = { up: "صاعد", down: "هابط", stable: "مستقر" };
+  return labels[trend] || labels.stable;
+}
+
+function chartTypeLabel(type) {
+  const labels = { line: "خط زمني", bar: "أعمدة", pie: "دائري", table: "جدول", kpi: "مؤشر" };
+  return labels[type] || "مخطط";
+}
+
+function severityLabel(severity) {
+  const labels = { low: "منخفض", medium: "متوسط", high: "عال" };
+  return labels[severity] || labels.medium;
+}
+
+function renderRoleViews(views) {
+  const labels = {
+    ceo: "لوحة المدير التنفيذي",
+    finance: "لوحة المالية",
+    operations: "لوحة العمليات",
+    sales: "لوحة المبيعات"
+  };
+  return Object.entries(labels).map(([key, label]) => `
+    <article class="role-view-card">
+      <b>${label}</b>
+      <ul>${(views[key] || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    </article>
+  `).join("");
 }
 
 function frequency(values) {
@@ -697,23 +905,23 @@ function buildPrintableReport(report) {
   <p class="meta">الملف: ${escapeHtml(report.dataset.filename)} | السجلات: ${formatNumber(report.dataset.rows)} | الأعمدة: ${formatNumber(report.dataset.columns)} | جودة البيانات: ${formatNumber(report.dataset.qualityScore)}%</p>
   <section>
     <h2>الملخص التنفيذي</h2>
-    <p>${escapeHtml(gemini.executive_summary || "")}</p>
+    <p>${escapeHtml(gemini.executive_summary_ar || "")}</p>
   </section>
   <section>
     <h2>الشذوذ المحتمل</h2>
-    <ul>${(gemini.anomalies || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <ul>${(gemini.anomalies || []).map((item) => `<li>${escapeHtml(item.metric || "مؤشر")}: ${escapeHtml(item.description_ar || "")} — ${escapeHtml(item.recommended_action || "")}</li>`).join("")}</ul>
   </section>
   <section>
-    <h2>الفرص</h2>
-    <ul>${(gemini.opportunities || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <h2>المؤشرات التنفيذية</h2>
+    <ul>${(gemini.kpis || []).map((item) => `<li>${escapeHtml(item.name || "")}: ${escapeHtml(item.value || "")} — ${escapeHtml(item.business_meaning_ar || "")}</li>`).join("")}</ul>
   </section>
   <section>
     <h2>الرسوم المقترحة</h2>
-    <ul>${(gemini.recommended_charts || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <ul>${(gemini.dashboard_blueprint?.charts || []).map((item) => `<li>${escapeHtml(item.title || "")}: ${escapeHtml(item.why_it_matters_ar || "")}</li>`).join("")}</ul>
   </section>
   <section>
-    <h2>أسئلة متابعة</h2>
-    <ul>${(gemini.follow_up_questions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    <h2>الإجراءات التالية</h2>
+    <ul>${(gemini.next_actions || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
   </section>
   <section>
     <h2>معاينة البيانات</h2>

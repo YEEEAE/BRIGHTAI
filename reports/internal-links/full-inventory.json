@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T19:58:57.487Z",
+  "generatedAt": "2026-04-27T21:15:05.381Z",
   "filesScanned": 258,
   "pages": [
     {
@@ -2912,7 +2912,7 @@
       "url": "https://brightai.site/ai-scolecs/",
       "expectedCanonical": "https://brightai.site/ai-scolecs/",
       "canonical": "https://brightai.site/ai-scolecs/",
-      "title": "المنصة التعليمية الذكية في السعودية",
+      "title": "منصة تعليمية ذكية تتابع الطلاب، تخصص التعلم، وتساعد المعلمين والإدارة في اتخاذ القرار.",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -3078,6 +3078,22 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة للمدرسة"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "اربط المنصة مع LMS"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة للمدرسة"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "اربط المنصة مع LMS"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -16230,7 +16246,6 @@
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/en/health/",
         "https://brightai.site/en/smart-medical-archive/",
-        "https://brightai.site/health/",
         "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sitemap/",
@@ -51407,7 +51422,7 @@
       "url": "https://brightai.site/health/",
       "expectedCanonical": "https://brightai.site/health/",
       "canonical": "https://brightai.site/health/",
-      "title": "التحول الرقمي في الرعاية الصحية في السعودية",
+      "title": "نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع.",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -51420,7 +51435,6 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-healthcare-saudi/",
         "https://brightai.site/blog/digital-health-smart-archive/",
-        "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -51489,7 +51503,7 @@
         },
         {
           "href": "https://brightai.site/health/",
-          "text": "حلول AI الطبية المتقدمة"
+          "text": "إدارة المستشفيات الذكية"
         },
         {
           "href": "https://brightai.site/about/",
@@ -51553,7 +51567,7 @@
         },
         {
           "href": "https://brightai.site/health/",
-          "text": "حلول AI الطبية المتقدمة"
+          "text": "إدارة المستشفيات الذكية"
         },
         {
           "href": "https://brightai.site/blog/",
@@ -51665,19 +51679,15 @@
         },
         {
           "href": "https://brightai.site/docs/solutions-ocr/",
-          "text": "دليل OCR الطبي"
+          "text": "دليل معالجة المستندات الصحية"
         },
         {
           "href": "https://brightai.site/blog/ai-healthcare-saudi/",
-          "text": "AI في القطاع الصحي السعودي"
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي"
         },
         {
           "href": "https://brightai.site/blog/digital-health-smart-archive/",
           "text": "دراسة الأرشيف الطبي الذكي"
-        },
-        {
-          "href": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
-          "text": "حالة استخدام تشخيصية"
         },
         {
           "href": "https://brightai.site/services/",
@@ -52948,7 +52958,7 @@
       "url": "https://brightai.site/interview/",
       "expectedCanonical": "https://brightai.site/interview/",
       "canonical": "https://brightai.site/interview/",
-      "title": "منصة توظيف بالذكاء الاصطناعي",
+      "title": "اختَر أفضل المرشحين خلال دقائق، مع فرز ذكي ومقابلات أولية وتقارير مقارنة.",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -53112,6 +53122,10 @@
         {
           "href": "https://brightai.site/try/",
           "text": "جرّب النظام مجاناً"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب عرض للمنشأة"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -72999,7 +73013,7 @@
       "url": "https://brightai.site/smart-medical-archive/",
       "expectedCanonical": "https://brightai.site/smart-medical-archive/",
       "canonical": "https://brightai.site/smart-medical-archive/",
-      "title": "الأرشيف الطبي الذكي بالذكاء الاصطناعي في السعودية",
+      "title": "أرشيف طبي ذكي يحوّل الملفات الطبية إلى بيانات سريرية قابلة للبحث والربط.",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -73191,12 +73205,8 @@
           "text": "تواصل معنا"
         },
         {
-          "href": "https://brightai.site/consultation/",
-          "text": "قيّم جاهزية الأرشيف الطبي"
-        },
-        {
           "href": "https://brightai.site/contact/",
-          "text": "تحدث مع فريق الحلول الصحية"
+          "text": "اطلب تجربة على بيانات منشأتك"
         },
         {
           "href": "https://brightai.site/sectors/healthcare/",
@@ -75857,7 +75867,7 @@
       "url": "https://brightai.site/try/data-analyzer/",
       "expectedCanonical": "https://brightai.site/try/data-analyzer/",
       "canonical": "https://brightai.site/try/data-analyzer/",
-      "title": "تحليل بيانات مجاني",
+      "title": "منصة بيانات موحّدة تمنح الإدارة رؤية فورية على الأداء والمخاطر والفرص.",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -76021,6 +76031,14 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اربط مصادر بيانات شركتك"
+        },
+        {
+          "href": "https://brightai.site/data-analysis/",
+          "text": "ابنِ مستودع بيانات موحّد"
         },
         {
           "href": "https://brightai.site/services/",
@@ -77252,7 +77270,7 @@
   "summary": {
     "pagesDiscovered": 258,
     "indexablePages": 248,
-    "internalLinksDiscovered": 6609,
+    "internalLinksDiscovered": 6608,
     "orphanPages": 0,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 0,

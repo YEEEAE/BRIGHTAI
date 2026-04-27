@@ -1,10 +1,10 @@
 # Full Internal Links Inventory
 
-- Date: 2026-04-27T19:58:57.487Z
+- Date: 2026-04-27T21:15:05.381Z
 - Files scanned: 258
 - Pages discovered: 258
 - Indexable pages: 248
-- Internal links discovered: 6609
+- Internal links discovered: 6608
 - Orphan pages: 0
 - Broken links: 0
 - Pages outside sitemap: 0
@@ -24,7 +24,7 @@
 | BrightSales - روبوت المبيعات الذكي في السعودية | https://brightai.site/ai-bots/BrightSales/ | ai-bots/BrightSales/index.html | static-index-route | 8 | 18 | No | Yes | https://brightai.site/ai-bots/BrightSales/ | Yes | None | None | None |
 | BrightSupport - روبوت خدمة العملاء الذكي في السعودية | https://brightai.site/ai-bots/BrightSupport/ | ai-bots/BrightSupport/index.html | static-index-route | 9 | 18 | No | Yes | https://brightai.site/ai-bots/BrightSupport/ | Yes | None | None | None |
 | روبوتات ذكاء اصطناعي جاهزة لفرقك التشغيلية | https://brightai.site/ai-bots/ | ai-bots/index.html | static-index-route | 7 | 19 | No | Yes | https://brightai.site/ai-bots/ | Yes | None | None | None |
-| المنصة التعليمية الذكية في السعودية | https://brightai.site/ai-scolecs/ | ai-scolecs/index.html | static-index-route | 161 | 19 | No | Yes | https://brightai.site/ai-scolecs/ | Yes | None | None | None |
+| منصة تعليمية ذكية تتابع الطلاب، تخصص التعلم، وتساعد المعلمين والإدارة في اتخاذ القرار. | https://brightai.site/ai-scolecs/ | ai-scolecs/index.html | static-index-route | 161 | 19 | No | Yes | https://brightai.site/ai-scolecs/ | Yes | None | None | None |
 | أتمتة سير العمل في السعودية | https://brightai.site/ai-workflows/ | ai-workflows/index.html | static-index-route | 10 | 24 | No | Yes | https://brightai.site/ai-workflows/ | Yes | None | None | None |
 | دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي | https://brightai.site/blog/ai-agents-business-guide/ | blog/ai-agents-business-guide/index.html | static-index-route | 12 | 23 | No | Yes | https://brightai.site/blog/ai-agents-business-guide/ | Yes | None | None | None |
 | أتمتة الذكاء الاصطناعي: حلول مخصصة لتحليل المشاريع وتحسين محركات البحث | https://brightai.site/blog/ai-automation-project-analysis/ | blog/ai-automation-project-analysis/index.html | static-index-route | 9 | 25 | No | Yes | https://brightai.site/blog/ai-automation-project-analysis/ | Yes | None | None | None |
@@ -66,7 +66,7 @@
 | الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية | https://brightai.site/blog/industrial-automation-productivity/ | blog/industrial-automation-productivity/index.html | static-index-route | 12 | 23 | No | Yes | https://brightai.site/blog/industrial-automation-productivity/ | Yes | None | None | None |
 | الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية | https://brightai.site/blog/industrial-automation-repetitive-tasks/ | blog/industrial-automation-repetitive-tasks/index.html | static-index-route | 5 | 20 | No | Yes | https://brightai.site/blog/industrial-automation-repetitive-tasks/ | Yes | None | None | None |
 | دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي | https://brightai.site/blog/intelligent-data-analysis/ | blog/intelligent-data-analysis/index.html | static-index-route | 12 | 22 | No | Yes | https://brightai.site/blog/intelligent-data-analysis/ | Yes | None | None | None |
-| دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | blog/kfshrc-breast-cancer-ai/index.html | static-index-route | 12 | 27 | No | Yes | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | Yes | None | None | None |
+| دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | blog/kfshrc-breast-cancer-ai/index.html | static-index-route | 11 | 27 | No | Yes | https://brightai.site/blog/kfshrc-breast-cancer-ai/ | Yes | None | None | None |
 | كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة | https://brightai.site/blog/kpi-dashboard-guide/ | blog/kpi-dashboard-guide/index.html | static-index-route | 12 | 23 | No | Yes | https://brightai.site/blog/kpi-dashboard-guide/ | Yes | None | None | None |
 | دراسة حالة: جامعة الملك سعود - منصة تعلم تكيفي ترفع معدلات: شرح عملي | https://brightai.site/blog/ksu-adaptive-learning/ | blog/ksu-adaptive-learning/index.html | static-index-route | 5 | 23 | No | Yes | https://brightai.site/blog/ksu-adaptive-learning/ | Yes | None | None | None |
 | تعلم الآلة: المفتاح لتحقيق النجاح في الأعمال الحديثة | https://brightai.site/blog/machine-learning-business/ | blog/machine-learning-business/index.html | static-index-route | 6 | 25 | No | Yes | https://brightai.site/blog/machine-learning-business/ | Yes | None | None | None |
@@ -186,9 +186,9 @@
 | ContractAI | https://brightai.site/en/tenders/templates/ | en/tenders/templates.html | static-html-route | 9 | 23 | No | Yes | https://brightai.site/en/tenders/templates/ | Yes | None | None | None |
 | الشروط والأحكام | https://brightai.site/en/terms/ | en/terms/index.html | static-index-route | 28 | 20 | No | Yes | https://brightai.site/en/terms/ | Yes | None | None | None |
 | AI Data Analysis Tools | https://brightai.site/en/tools/ | en/tools/index.html | static-index-route | 5 | 44 | No | Yes | https://brightai.site/en/tools/ | Yes | None | None | None |
-| التحول الرقمي في الرعاية الصحية في السعودية | https://brightai.site/health/ | health/index.html | static-index-route | 144 | 28 | No | Yes | https://brightai.site/health/ | Yes | None | None | None |
+| نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع. | https://brightai.site/health/ | health/index.html | static-index-route | 144 | 27 | No | Yes | https://brightai.site/health/ | Yes | None | None | None |
 | شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 239 | 58 | No | Yes | https://brightai.site/ | Yes | None | None | None |
-| منصة توظيف بالذكاء الاصطناعي | https://brightai.site/interview/ | interview/index.html | static-index-route | 149 | 21 | No | Yes | https://brightai.site/interview/ | Yes | None | None | None |
+| اختَر أفضل المرشحين خلال دقائق، مع فرز ذكي ومقابلات أولية وتقارير مقارنة. | https://brightai.site/interview/ | interview/index.html | static-index-route | 149 | 21 | No | Yes | https://brightai.site/interview/ | Yes | None | None | None |
 | خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية | https://brightai.site/locations/dammam/ | locations/dammam/index.html | static-index-route | 20 | 14 | No | Yes | https://brightai.site/locations/dammam/ | Yes | None | None | None |
 | خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 23 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
 | شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 44 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |

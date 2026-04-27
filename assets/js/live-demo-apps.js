@@ -362,7 +362,7 @@ ${values.input || ""}
         schemaName: config.schemaName,
         domain: config.domain,
         fallback: config.fallback,
-        temperature: 0.25
+        temperature: 0.2
       });
       limit.textContent = `متبقي ${engine.getRemainingUses()} من 3 محاولات`;
       const safe = withAudit(result, config);

@@ -283,13 +283,30 @@ function normalizeGeminiSchema(schema) {
 }
 
 function resolveResponseSchema(body) {
-  const responseFormat = body?.response_format || body?.responseFormat || {};
-  return normalizeGeminiSchema(
-    body?.responseSchema ||
-    body?.response_schema ||
-    responseFormat?.json_schema?.schema ||
-    responseFormat?.schema
-  );
+  const responseFormat = body?.response_format || body?.responseFormat;
+  if (!responseFormat || typeof responseFormat !== 'object') {
+    // Legacy fallback: direct responseSchema / response_schema on body
+    return normalizeGeminiSchema(body?.responseSchema || body?.response_schema || null);
+  }
+
+  // Unified standard: response_format.json_schema.schema
+  const jsonSchema = responseFormat.json_schema || responseFormat.jsonSchema;
+  if (jsonSchema && typeof jsonSchema === 'object' && jsonSchema.schema) {
+    return normalizeGeminiSchema(jsonSchema.schema);
+  }
+
+  // Fallback: response_format.schema (shorthand)
+  if (responseFormat.schema) {
+    return normalizeGeminiSchema(responseFormat.schema);
+  }
+
+  return null;
+}
+
+function resolveSchemaName(body) {
+  const responseFormat = body?.response_format || body?.responseFormat;
+  const jsonSchema = responseFormat?.json_schema || responseFormat?.jsonSchema;
+  return String(jsonSchema?.name || body?.schemaName || 'unnamed_schema');
 }
 
 function resolveSafetySettings(body) {
@@ -567,8 +584,8 @@ async function openAiCompatChat(req) {
   const body = req && req.body && typeof req.body === 'object' ? req.body : {};
   const provider = pickProvider(body);
   const model = String(body.model || '').trim() || resolveModel();
-  const temperature = Number.isFinite(Number(body.temperature)) ? Number(body.temperature) : 0.4;
-  const maxTokens = Number.isFinite(Number(body.max_tokens || body.maxTokens)) ? Number(body.max_tokens || body.maxTokens) : 900;
+  const temperature = Number.isFinite(Number(body.temperature)) ? Number(body.temperature) : 0.2;
+  const maxTokens = Number.isFinite(Number(body.max_tokens || body.maxTokens)) ? Number(body.max_tokens || body.maxTokens) : 4096;
 
   const messages = Array.isArray(body.messages)
     ? body.messages
@@ -616,6 +633,7 @@ async function openAiCompatChat(req) {
   const activeModel = String(model || resolveModel()).trim() || resolveModel();
   const wantsJson = body.response_format?.type === 'json_object' || body.response_format?.type === 'json_schema' || body.responseFormat?.type === 'json_schema';
   const responseSchema = resolveResponseSchema(body);
+  const schemaName = resolveSchemaName(body);
   const generationConfig = { temperature, maxOutputTokens: maxTokens };
   if (responseSchema) {
     generationConfig.responseMimeType = 'application/json';
@@ -650,7 +668,8 @@ async function openAiCompatChat(req) {
   return {
     choices: [{ message: { role: 'assistant', content: text }, finish_reason: 'stop' }],
     provider: 'gemini',
-    activeModel
+    activeModel,
+    schemaName: responseSchema ? schemaName : undefined
   };
 }
 
@@ -695,6 +714,7 @@ module.exports = {
   splitReplyAndSuggestions,
   resolveApiKey,
   resolveModel,
+  resolveSchemaName,
   normalizeStatusCode,
   getProviderStatus,
   CHAT_SYSTEM_PROMPT,

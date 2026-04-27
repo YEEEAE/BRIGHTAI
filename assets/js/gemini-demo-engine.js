@@ -34,7 +34,7 @@
       return true;
     }
 
-    async generate({ prompt, file, schema, schemaName, domain, safetySettings, fallback, temperature = 0.35 }) {
+    async generate({ prompt, file, schema, schemaName, domain, safetySettings, fallback, temperature = 0.2 }) {
       if (!this.checkUsageLimit()) return null;
 
       this.trackUsage("demo_started");
@@ -52,8 +52,9 @@
         messages: [{ role: "user", content: parts }],
         temperature,
         max_tokens: 4096,
-        response_format: schema ? { type: "json_schema", json_schema: { name: schemaName || `${this.demoId}Schema`, schema } } : undefined,
-        responseSchema: schema || undefined,
+        response_format: schema
+          ? { type: "json_schema", json_schema: { name: schemaName || `${this.demoId}_schema`, schema } }
+          : undefined,
         demoDomain: domain || this.demoId,
         safetySettings: safetySettings || undefined
       };
