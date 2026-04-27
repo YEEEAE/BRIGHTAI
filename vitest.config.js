@@ -6,6 +6,6 @@ export default defineConfig({
     globals: true,
     setupFiles: [],
     include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts}'],
-    exclude: ['frontend/**', 'backend/**', 'brightai-platform/**'],
+    exclude: ['frontend/**', 'backend/**'],
   },
 });

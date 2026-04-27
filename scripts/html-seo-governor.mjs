@@ -26,8 +26,7 @@ const IGNORE_PATTERNS = [
 const SEO_EXEMPT_ERROR_PAGES = new Set([
   "404.html",
   "500.html",
-  "brightai-platform/public/404.html",
-  "brightai-platform/public/500.html",
+
   "frontend/pages/blogger/agint-bblog.html",
   "frontend/pages/blogger/atou-job.html",
   "frontend/pages/blogger/auto.html",

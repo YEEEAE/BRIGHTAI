@@ -27,7 +27,6 @@ Security action items
 
 - `frontend/`: ملفات الواجهة والصفحات الثابتة.
 - `backend/`: خادم Node المسؤول عن `Gemini/Groq` وبقية مسارات `/api`.
-- `brightai-platform/`: منصة React الداخلية.
 
 ## مهارات الوكلاء داخل المشروع
 
@@ -54,11 +53,6 @@ npm run dev:frontend
 npm run dev:backend
 ```
 
-### المنصة
-
-```bash
-npm run dev:platform
-```
 
 ## الاختبارات
 
@@ -70,7 +64,6 @@ npm test
 
 - `npm run test:frontend`
 - `npm run test:backend`
-- `npm run test:platform`
 
 ## النشر الحالي
 

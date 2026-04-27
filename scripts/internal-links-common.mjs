@@ -15,7 +15,6 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/node_modules/**",
   "aimais/**",
   "backend/**",
-  "brightai-platform/**",
   "**/prisma/generated/**",
   "scripts/**",
   "reports/**",

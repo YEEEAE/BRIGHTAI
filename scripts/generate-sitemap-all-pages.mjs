@@ -22,7 +22,6 @@ const IGNORED_SCAN_DIRS = new Set([
   ".git",
   "node_modules",
   "aimais",
-  "brightai-platform",
   "coverage",
   "dist",
   "build",

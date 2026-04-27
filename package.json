@@ -3,8 +3,7 @@
   "private": true,
   "workspaces": [
     "frontend",
-    "backend",
-    "brightai-platform"
+    "backend"
   ],
   "dependencies": {
     "@sentry/react": "^10.38.0",
@@ -29,13 +28,13 @@
     "build:minify-all": "node scripts/minify-seo-assets.mjs && node scripts/replace-unminified-refs.mjs",
     "dev:frontend": "npm run start --workspace frontend",
     "dev:backend": "npm run start --workspace backend",
-    "dev:platform": "npm run start --workspace brightai-platform",
+
     "test:setup:backend": "npm --prefix backend ci --include=dev --no-audit --no-fund",
-    "test:setup:platform": "npm --prefix brightai-platform ci --include=dev --no-audit --no-fund",
+
     "test:all": "node scripts/run-monorepo-tests.mjs",
     "test:frontend": "npm run test --workspace frontend",
     "test:backend": "npm run test --workspace backend",
-    "test:platform": "npm run test --workspace brightai-platform",
+
     "performance:budget": "node scripts/check-performance-budget.js",
     "validate:production": "node scripts/validate-production.js",
     "sitemap:all": "node scripts/generate-sitemap-all-pages.mjs",

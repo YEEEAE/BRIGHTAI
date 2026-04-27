@@ -24,7 +24,7 @@ function logStatus(status, message) {
 
 // دالة لجلب جميع ملفات HTML في المشروع (باستثناء بعض المجلدات)
 function getAllHtmlFiles(dir, fileList = []) {
-  const IGNORED_DIRS = ['brightai-platform', 'eng-abdrahman', 'node_modules', '.git', 'backup-sectors', 'reports'];
+  const IGNORED_DIRS = ['eng-abdrahman', 'node_modules', '.git', 'backup-sectors', 'reports'];
   if (!fs.existsSync(dir)) return fileList;
   
   const files = fs.readdirSync(dir);

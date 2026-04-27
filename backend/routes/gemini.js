@@ -35,7 +35,7 @@ const GEMINI_SYSTEM_PROMPT = `
 - الأتمتة الذكية (RPA): /smart-automation
 - تحليل البيانات: /data-analysis
 - الاستشارات: /consultation
-- المنصة التفاعلية: /brightai-platform/
+- المنصة التفاعلية: /demo/
 - حلول مخصصة للقطاعات السعودية: حكومي، صحي، تجزئة، لوجستيات، صناعة
 
 ## سيناريوهات إلزامية:

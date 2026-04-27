@@ -6,8 +6,7 @@ const repoRoot = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 
 const workspaces = [
   { name: 'frontend', path: 'frontend', installHint: 'npm install --workspace frontend', setup: false },
-  { name: 'backend', path: 'backend', installHint: 'npm install --workspace backend', setup: true },
-  { name: 'brightai-platform', path: 'brightai-platform', installHint: 'npm install --workspace brightai-platform', setup: true }
+  { name: 'backend', path: 'backend', installHint: 'npm install --workspace backend', setup: true }
 ];
 
 function explainFailure(output, error, workspace) {
