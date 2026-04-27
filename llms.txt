@@ -1,26 +1,54 @@
-# Bright AI
+# BrightAI
 
-Bright AI is a Saudi AI company serving enterprise and government teams in Saudi Arabia. This file lists strategic public pages for AI search crawlers.
+BrightAI is a Saudi, Arabic-first AI company for enterprise and government teams in Saudi Arabia. BrightAI builds AI automation, Arabic chatbots, AI agents, data analysis systems, document automation, customer service automation, and sector-specific AI solutions for Saudi organizations.
 
-## Strategic pages
-- https://brightai.site/ — شركة ذكاء اصطناعي في السعودية
-- https://brightai.site/ai-agent/ — وكلاء ذكاء اصطناعي للمؤسسات
-- https://brightai.site/consultation/ — استشارات الذكاء الاصطناعي السعودية
-- https://brightai.site/contact/ — تواصل مع شركة ذكاء اصطناعي في السعودية
-- https://brightai.site/data-analysis/ — تحليل البيانات للشركات السعودية
-- https://brightai.site/en/ — artificial intelligence company in Saudi Arabia
-- https://brightai.site/en/ai-agent/ — AI agents for enterprises
-- https://brightai.site/en/data-analysis/ — data analysis for Saudi companies
-- https://brightai.site/en/tools/ — AI data analysis tools
-- https://brightai.site/sectors/finance/ — الذكاء الاصطناعي في القطاع المالي
-- https://brightai.site/sectors/healthcare/ — الذكاء الاصطناعي في الرعاية الصحية
-- https://brightai.site/sectors/logistics/ — الذكاء الاصطناعي في الخدمات اللوجستية
-- https://brightai.site/sectors/manufacturing/ — الذكاء الاصطناعي في المصانع
-- https://brightai.site/services/ — حلول ذكاء اصطناعي للشركات
-- https://brightai.site/smart-automation/ — أتمتة العمليات بالذكاء الاصطناعي
-- https://brightai.site/tenders/ — نظام تحليل المناقصات بالذكاء الاصطناعي
+## Market
+- Primary market: Saudi Arabia
+- Primary language: Arabic (`ar-SA`)
+- Secondary language: English for Saudi enterprise discovery (`en-SA`)
+- Target cities and regions: Riyadh, Jeddah, Dammam, Khobar, and national Saudi organizations
 
-## Notes
-- Arabic pages use ar-SA and are the primary market pages.
-- English pages use en-SA and support Saudi enterprise discovery.
-- Public tender pages are demo and lead-generation pages, not admin-only routes.
+## Core Services
+- AI solutions Saudi Arabia: https://brightai.site/services/
+- حلول الذكاء الاصطناعي في السعودية: https://brightai.site/
+- AI agents Saudi Arabia: https://brightai.site/ai-agent/
+- وكلاء الذكاء الاصطناعي للشركات: https://brightai.site/ai-agent/
+- أتمتة الأعمال بالذكاء الاصطناعي: https://brightai.site/smart-automation/
+- AI automation Saudi Arabia: https://brightai.site/en/smart-automation/
+- Arabic AI chatbot: https://brightai.site/ai-bots/
+- شات بوت عربي للشركات: https://brightai.site/ai-bots/
+- Data analysis and BI: https://brightai.site/data-analysis/
+- AI consulting: https://brightai.site/consultation/
+
+## Important Public Pages
+- Homepage: https://brightai.site/
+- English homepage: https://brightai.site/en/
+- Services hub: https://brightai.site/services/
+- English services hub: https://brightai.site/en/services/
+- Documentation hub: https://brightai.site/docs/
+- API documentation: https://brightai.site/docs/openapi/
+- Contact: https://brightai.site/contact/
+- Privacy policy: https://brightai.site/docs/privacy-policy/
+- Terms: https://brightai.site/docs/terms-and-conditions/
+- HTML sitemap: https://brightai.site/sitemap/
+- XML sitemap: https://brightai.site/sitemap.xml
+
+## Sector Pages
+- Healthcare AI: https://brightai.site/sectors/healthcare/
+- Finance AI: https://brightai.site/sectors/finance/
+- Logistics AI: https://brightai.site/sectors/logistics/
+- Manufacturing AI: https://brightai.site/sectors/manufacturing/
+- Ecommerce AI: https://brightai.site/sectors/ecommerce/
+- Energy AI: https://brightai.site/sectors/energy/
+
+## Public Demo and Tool Pages
+- Demo hub: https://brightai.site/demo/
+- Pricing demo: https://brightai.site/demo/pricing/
+- AI tools hub: https://brightai.site/try/
+- Data analyzer: https://brightai.site/try/data-analyzer/
+- Interview solution: https://brightai.site/interview/
+- Support AI page: https://brightai.site/interview/pages/support-ai/
+- Customer assistant bot: https://brightai.site/bot/
+
+## Crawling Guidance
+Useful AI search crawlers are allowed in `robots.txt`, including GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, and PerplexityBot. Public HTML pages are intended to be indexable unless a future owner decision protects a sensitive app or admin route at the server level.

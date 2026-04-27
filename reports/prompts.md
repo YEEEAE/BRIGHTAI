@@ -1,3 +1,1387 @@
+أكيد أ.يزيد. انسخ كل برومبت لحاله لـ Codex، والأفضل تشغلهم بالترتيب. Codex يقدر يقرأ ويعدل ويشغل أوامر داخل الريبو، فخلّه يشتغل task-by-task بدل برومبت واحد ضخم يخبص عليك التغييرات. ([developers.openai.com](https://developers.openai.com/codex/cli?utm_source=chatgpt.com "Codex CLI"))
+وبرضه الأفضل يكون عندك** **`AGENTS.md` فيه أوامر البناء والاختبار وقواعد المشروع، لأن OpenAI تنصح بهذا كجزء من تجهيز الريبو لـ Codex. ([developers.openai.com](https://developers.openai.com/codex/learn/best-practices?utm_source=chatgpt.com "Best practices – Codex"))
+
+## البرومبت 1 — إصلاحات P0/P1: الأمان، Runtime، Render، API
+
+```text
+أنت Senior Full-Stack Engineer + Render Deployment Auditor + Security Auditor.
+
+اشتغل على مشروع BRIGHTAI بالكامل داخل الريبو الحالي. لا تشرح كثير، نفّذ التعديلات فعليًا. لا تسألني إلا إذا وصلت لشيء مستحيل بدون معلومة خارجية. افحص الملفات قبل التعديل، ثم عدّل، ثم شغّل أوامر التحقق المتاحة.
+
+المطلوب تنفيذ كل إصلاحات P0/P1 التالية من تقرير التدقيق:
+
+1) إزالة مفتاح Gemini المكشوف من الواجهة:
+- افحص frontend/js/gemini-direct-client.js وكل ملفات JS/HTML بحثًا عن أي API key أو hardcoded secret.
+- ممنوع وجود أي مفتاح Gemini أو Google AI أو secret داخل frontend أو HTML أو public assets.
+- استبدل frontend/js/gemini-direct-client.js بالكامل بحيث يستدعي backend فقط عبر BrightAIGateway.apiFetch أو fetch آمن إلى:
+  /api/ai/chat/completions
+- إذا endpoint غير موجود في backend، أنشئه.
+- اجعل backend يقرأ GEMINI_API_KEY من env فقط.
+- أضف handling للأخطاء والtimeout والرد الموحد:
+  { choices: [{ message: { content } }] }
+  أو { answer }
+- لا تكسر الواجهات التي تعتمد على GeminiDirectClient.generateContent.
+
+2) إصلاح API base/runtime config:
+- افحص frontend/js/runtime-config.min.js وأي source مرتبط به.
+- لا تجعل production يعتمد على "/" إذا API موجود كخدمة Render منفصلة إلا إذا يوجد proxy واضح.
+- أضف طريقة واضحة وآمنة:
+  window.BRIGHTAI_API_BASE
+  مع fallback منطقي.
+- تأكد أن كل fetch/API calls تستخدم gateway موحد.
+- افحص hardcoded URLs وbase paths.
+
+3) إصلاح backend/server.js:
+- استبدل CORS "*" في production بـ allowlist:
+  https://brightai.site
+  https://www.brightai.site
+  وأي localhost للتطوير فقط.
+- أضف trust proxy المناسب خلف Render/Cloudflare.
+- تأكد من /api/health.
+- تأكد أن API يرجع JSON errors واضحة.
+- لا تكسر routes الموجودة.
+
+4) إصلاح render.yaml:
+- افحص buildCommand/staticPublishPath/services.
+- استبعد من النشر:
+  .git
+  node_modules
+  .render-static
+  .agents
+  plugins
+  reports
+  tmp
+  *.md غير الضرورية إن كانت تُنشر كملفات عامة
+- لا تستبعد ملفات SEO المهمة مثل robots.txt وsitemap.xml وllms.txt.
+- أضف/ثبّت Node engine إن كان مناسبًا في package.json:
+  Node 22 LTS أو النسخة المستخدمة فعليًا.
+- تأكد أن SPA/static refresh routes لا تكسر صفحات HTML.
+- تأكد من headers للـ assets وHTML بدون كاش عدواني.
+
+5) إصلاح duplicate route:
+- افحص interview/pages/supportAI و interview/pages/support-ai.
+- خلي canonical واحد فقط.
+- اجعل supportAI redirect 301 إلى support-ai أو احذف نسخة النشر المكررة بطريقة آمنة.
+- لا تترك صفحتين indexable لنفس المحتوى بحروف مختلفة.
+
+6) تنظيف duplicated backend files:
+- افحص:
+  backend/routes/search 2.js
+  backend/routes/search 3.js
+  backend/utils/cache 2.js
+- إذا هي نسخ مكررة وغير مستخدمة، انقلها لأرشيف غير منشور أو احذفها.
+- تأكد imports لا تعتمد عليها.
+- أضف فحص يمنع filenames فيها spaces داخل backend runtime.
+
+7) إصلاح manifest.json:
+- اجعل id/start_url إلى "/".
+- أصلح shortcuts لتستخدم trailing slash حيث يلزم.
+- تأكد أن manifest لا يشير إلى /index.html كـ canonical start.
+
+8) تحقق بعد التعديل:
+شغّل المتاح من الأوامر التالية، ولا تفشل بصمت:
+npm ci --include=dev --no-audit --no-fund
+npm run build
+npm run test
+npm run verify:all
+npm run validate:production
+npm run seo:qa
+npm run seo:gate
+npm run smoke-test
+npm run smoke-test:api
+
+إذا أمر غير موجود، اذكره في التقرير النهائي فقط ولا تعتبره فشل.
+إذا فشل بسبب dependency ناقص، أصلح package.json/package-lock إن كان السبب واضح.
+إذا فشل بسبب مشكلة حقيقية في الكود، أصلحها.
+
+المخرجات المطلوبة:
+- عدّل الملفات فعليًا.
+- أعطني ملخص تغييرات مختصر.
+- أعطني قائمة الملفات المعدلة.
+- أعطني أوامر التحقق ونتائجها.
+- أعطني أي أمور Owner Decision Needed فقط إذا بقي شيء حساس مثل admin/API/demo pages.
+```
+
+## البرومبت 2 — إصلاح SEO، Indexability، AEO، AI Search، Google السعودية
+
+```text
+أنت Technical SEO Auditor + Google Indexing Specialist + AEO/HEO/AI Search Optimization Specialist.
+
+اشتغل على مشروع BRIGHTAI كاملًا. المطلوب تنفيذ إصلاحات SEO/indexability/AEO/AI Search المذكورة في تقرير التدقيق، وليس كتابة تقرير فقط. عدّل الملفات والسكربتات والصفحات فعليًا.
+
+قواعد حاسمة:
+- لا تضف noindex لأي صفحة عامة أو داخلية.
+- لا تمنع أي صفحة عامة من robots.txt.
+- الاستثناء فقط صفحات admin أو API أو صفحات حساسة، وهذه ضعها في Owner Decision Needed ولا تمنعها من نفسك إلا إذا كانت API endpoints وليست HTML page.
+- كل صفحة HTML عامة أو داخلية لازم تكون:
+  indexable
+  لها canonical صحيح
+  موجودة في sitemap إذا تقرر أنها قابلة للفهرسة
+  مربوطة داخليًا قدر الإمكان
+- لا تعتمد على عينة. افحص كل صفحات HTML.
+
+المهام:
+
+1) sitemap شامل:
+- افحص كل صفحات HTML في المشروع بعد استبعاد build/dist الناتج إن لم يكن مصدر النشر.
+- حدّث scripts/generate-sitemap-all-pages.mjs أو أنشئ source of truth واضح.
+- أضف كل canonical URLs الناقصة التي كشفها التقرير، خصوصًا docs/legal/interview/privacy/terms/sitemap/bot/demo pages إذا كانت عامة.
+- لا تترك canonical URL خارج sitemap إلا إذا في Owner Decision Needed.
+- شغّل توليد sitemap النهائي.
+- تأكد أن sitemap.xml لا يحتوي duplicates أو URLs بحروف مختلفة لنفس الصفحة.
+- تأكد من lastmod إن كان السكربت يدعمه.
+
+2) robots.txt:
+- اجعله مفتوحًا للصفحات العامة:
+  User-agent: *
+  Allow: /
+  Sitemap: https://brightai.site/sitemap.xml
+- اسمح بملفات CSS/JS/assets.
+- أضف allow لمحركات AI المفيدة إذا موجود llms.txt:
+  GPTBot
+  OAI-SearchBot
+  ChatGPT-User
+  ClaudeBot
+  PerplexityBot
+- لا تضف Disallow للصفحات العامة.
+
+3) canonical strategy:
+- كل صفحة HTML لها canonical self-reference صحيح.
+- أصلح canonical الصفحات المكررة مثل supportAI/support-ai.
+- عالج trailing slash consistency.
+- عالج www/non-www consistency لصالح:
+  https://brightai.site
+- لا تجعل صفحة داخلية canonical إلى home إلا إذا هي duplicate حقيقي.
+- افحص slug casing.
+
+4) docs titles/meta:
+- أصلح مشكلة تكرار:
+  "توثيق توثيق توثيق..."
+  و
+  "Documentation for Bright AI..."
+- اجعل title فريد لكل docs page.
+- اجعل meta description فريدة ومختصرة.
+- تأكد H1 واحد وواضح.
+
+5) internal linking:
+- عالج صفحات orphan التي ظهرت في التقرير، خصوصًا docs/legal/privacy/terms/demos/interview/bot pages.
+- أضف footer links أو docs hub أو sitemap HTML page حسب الأنسب.
+- لا تكدّس روابط عشوائية؛ اجعل الربط منطقي.
+- أضف breadcrumbs للصفحات المناسبة إن أمكن.
+
+6) schema / JSON-LD:
+أضف أو أصلح:
+- Organization schema.
+- LocalBusiness schema للسعودية.
+- Service schema لصفحات الخدمات.
+- FAQPage schema لصفحات services/sectors المهمة.
+- BreadcrumbList schema للصفحات الداخلية.
+- WebSite schema مع SearchAction إذا مناسب.
+- اجعل اسم الشركة ثابتًا: BrightAI أو Bright AI حسب الاستخدام الحالي، ثم وحّد الاستخدام.
+- أضف serviceArea للسعودية ومدن: Riyadh, Jeddah, Dammam, Khobar إذا مناسبة.
+- لا تضف معلومات وهمية مثل عنوان شارع أو رقم جوال غير موجود في المشروع.
+
+7) AEO/AI Search:
+- أضف direct answer blocks/TL;DR في صفحات الخدمات الأساسية.
+- أضف FAQ عربي/إنجليزي حيث يوجد صفحات إنجليزية.
+- اجعل المحتوى قابل للاقتباس لمحركات الإجابات.
+- أضف/حدّث llms.txt كامل:
+  - تعريف الشركة
+  - أهم الخدمات
+  - أهم الصفحات
+  - السوق المستهدف: Saudi Arabia
+  - روابط sitemap والصفحات الرئيسية
+- لا تمنع AI crawlers المفيدة في robots.
+
+8) Google السعودية:
+أنشئ أو حسّن mapping للكلمات التالية داخل الصفحات المناسبة بدون حشو:
+- حلول الذكاء الاصطناعي في السعودية
+- شركة ذكاء اصطناعي السعودية
+- شركة ذكاء اصطناعي في الرياض
+- أتمتة الأعمال بالذكاء الاصطناعي
+- وكلاء الذكاء الاصطناعي للشركات
+- شات بوت عربي للشركات
+- شات بوت ذكاء اصطناعي السعودية
+- أتمتة خدمة العملاء بالذكاء الاصطناعي
+- حلول AI للشركات السعودية
+- AI automation Saudi Arabia
+- AI agents Saudi Arabia
+- Arabic AI chatbot
+- AI chatbot Saudi Arabia
+- AI solutions Saudi Arabia
+
+9) اختبارات:
+شغّل أو أصلح السكربتات:
+npm run sitemap:all
+npm run seo:check
+npm run seo:qa
+npm run seo:gate
+npm run seo:html:check
+npm run internal-links:audit
+npm run validate:production
+
+إذا cheerio أو dependency ناقص، أصلح dependency في package.json/package-lock.
+
+المخرجات المطلوبة:
+- عدّل الملفات فعليًا.
+- أعطني جدول مختصر:
+  File / Change / Reason
+- أعطني قائمة صفحات بقيت Owner Decision Needed.
+- أعطني نتائج أوامر SEO.
+- لا تعطيني توصيات عامة فقط؛ لازم يكون فيه تغييرات فعلية.
+```
+
+## البرومبت 3 — إصلاح UI/UX، CSS، Responsive، RTL، Performance، Broken UI
+
+```text
+أنت Senior Frontend Engineer + UI/UX Designer + Performance/Core Web Vitals Specialist.
+
+اشتغل على مشروع BRIGHTAI بالكامل، خصوصًا frontend/css وfrontend/js وصفحات HTML والcomponents/assets. المطلوب تنفيذ إصلاحات UI/UX وCSS وJS runtime من تقرير التدقيق.
+
+لا تحلل عينة. افحص كل صفحات HTML المهمة، وكل ملفات CSS/JS المرتبطة بها. نفّذ إصلاحات فعلية، ثم شغّل build/validation.
+
+الأهداف:
+- منع اختفاء الأقسام.
+- منع كسر layout.
+- إصلاح responsive للجوال والتابلت.
+- تحسين RTL/Arabic UX.
+- تخفيف !important والـ CSS emergency overrides.
+- منع JS runtime errors.
+- تحسين تحميل الخطوط والصور والأصول.
+- رفع جاهزية Core Web Vitals بدون كسر التصميم.
+
+المهام:
+
+1) CSS audit وتنفيذ الإصلاح:
+افحص كل ملفات:
+frontend/css/**/*.css
+وأي CSS في public/static أو HTML inline.
+
+ركّز على:
+- frontend/css/index-critical-overrides.css
+- frontend/css/index-theme.css
+- frontend/css/main.bundle.css
+- أي ملفات minified/unminified مرتبطة بالصفحات.
+
+نفّذ:
+- قلّل استخدام !important قدر الإمكان، خصوصًا الملف الذي يحتوي overrides كثيرة.
+- لا تحذف override إلا بعد معرفة سبب وجوده.
+- استبدل fixed heights بـ min-height / auto / clamp حيث يلزم.
+- عالج hardcoded widths التي تسبب horizontal scroll.
+- عالج overflow:hidden الذي قد يخفي المحتوى.
+- عالج z-index/absolute/fixed التي تخفي buttons أو sections.
+- أضف logical CSS properties لدعم RTL:
+  margin-inline
+  padding-inline
+  inset-inline
+  text-align:start/end
+- أصلح mobile breakpoints الناقصة.
+- حسّن spacing والline-height وtypography للغة العربية.
+- لا تغيّر الهوية البصرية جذريًا.
+
+2) Responsive/RTL:
+- افحص الصفحات الرئيسية والخدمات والديمو/docs/legal/contact/about.
+- تأكد من:
+  header/nav
+  hero
+  CTA buttons
+  cards
+  forms
+  pricing إن وجد
+  footer
+- عالج:
+  text overflow
+  clipped content
+  buttons خارج الشاشة
+  cards مكسورة
+  grid/flex overflow
+  sticky/fixed header يغطي المحتوى
+  RTL/LTR mixed text
+- أضف CSS عام آمن:
+  img, video { max-width: 100%; height: auto; }
+  containers لا تتجاوز العرض.
+- استخدم prefers-reduced-motion لتخفيف الأنيميشن.
+
+3) JS/TS runtime:
+افحص كل:
+frontend/js/**/*.js
+backend/**/*.js
+scripts/**/*.mjs
+وأي TS/TSX/JSX إن وجد.
+
+ابحث وأصلح:
+- wrong imports/paths.
+- case-sensitive imports التي تفشل على Linux/Render.
+- document/window بدون guard إذا الملف ممكن يشتغل SSR/build.
+- map over undefined.
+- null access.
+- event handlers للأزرار والفورمز.
+- failed API calls بدون loading/error states.
+- broken navigation.
+- duplicate scripts.
+- صفحات تعتمد على index-theme.js بينما render يحذف unminified file.
+- تأكد أن HTML references تستخدم minified أو موجود فعليًا بعد build.
+- لا تترك console errors واضحة.
+
+4) Assets:
+- افحص كل img/script/link href/src في HTML.
+- تأكد كل asset موجود.
+- أصلح paths الخاطئة.
+- أضف alt للصور المهمة.
+- أضف width/height أو CSS aspect-ratio للصور الأساسية لتقليل CLS.
+- حسّن font loading:
+  preload للخطوط المهمة فقط.
+  font-display: swap.
+  fallback fonts عربية مناسبة.
+- لا تنقل assets بطريقة تكسر relative paths.
+
+5) Cloudflare/Render UI safety:
+- تأكد أن أسماء ملفات CSS/JS لا تتأثر بـ Cloudflare cache القديم.
+- إن كان المشروع لا يستخدم hashing، أضف query version أو build version strategy إن كان بسيط وآمن.
+- لا تجعل HTML cached aggressively.
+- assets الثابتة ممكن immutable إذا لها hash/version.
+- أضف headers مناسبة في _headers أو render.yaml حسب الموجود.
+
+6) Forms/CTA:
+- تأكد أن كل CTA إما:
+  رابط صحيح
+  أو handler صحيح
+  أو aria-disabled واضح إذا غير متاح
+- لا تترك buttons بلا action في صفحات conversion.
+- أضف focus states واضحة.
+- لا تزل outline بدون بديل.
+- حسّن accessibility labels للروابط والأزرار الغامضة.
+
+7) Performance:
+- لا تضف مكتبات كبيرة.
+- قلّل CSS المتكرر.
+- لا تكرر تحميل نفس script/css.
+- عالج lazy loading إذا يخفي محتوى مهم فوق fold.
+- hero image لا تكون lazy إذا هي LCP.
+- أضف loading="lazy" للصور الثانوية فقط.
+- لا تعتمد على Lighthouse فقط، لكن شغّل performance budget إن موجود.
+
+8) اختبارات:
+شغّل:
+npm ci --include=dev --no-audit --no-fund
+npm run build
+npm run lint
+npm run typecheck
+npm run verify:all
+npm run performance:budget
+npm run resource:audit:before
+npm run smoke-test
+
+إذا الأوامر غير موجودة، لا تخترعها، فقط اذكر أنها غير موجودة.
+إذا فشلت بسبب مشكلة واضحة، أصلحها.
+
+المخرجات المطلوبة:
+- عدّل الملفات فعليًا.
+- أعطني:
+  1. Summary مختصر.
+  2. Files changed.
+  3. أهم UI/CSS/JS bugs التي أصلحتها.
+  4. أوامر التحقق ونتائجها.
+  5. أي مخاطر متبقية.
+- لا تعطيني تقرير طويل فقط. المطلوب patches حقيقية.
+```
+
+نصيحتي العملية: شغّل** ****البرومبت 1 أولًا** لأنه يمنع أخطر مشاكل الإنتاج، بعدها** ****البرومبت 2** للفهرسة والتصدر، ثم** ****البرومبت 3** للتصميم والواجهة. Codex prompting guide نفسه يركّز على الاستقلالية، استكشاف الكود، استخدام الأدوات، وجودة الواجهة في مهام الكود الكبيرة. ([developers.openai.com](https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide?utm_source=chatgpt.com "Codex Prompting Guide"))
+
+
+
+
+
+أكيد أ. يزيد — الأفضل لـ Codex إنك تعطيه** ****برومبتات صغيرة متسلسلة** بدل برومبت واحد ضخم. خله يشتغل مرحلة مرحلة عشان يعطيك diffs نظيفة وما يخرب المشروع. OpenAI نفسها تنصح إن التعليمات تكون واضحة ومحددة وفي البداية، وهذا بالضبط اللي سويته هنا. ([OpenAI Help Center](https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api?utm_source=chatgpt.com "Best practices for prompt engineering with the OpenAI API"))
+
+## 1) برومبت فحص المشروع فقط
+
+```text
+أنت Senior Full-Stack Auditor.
+
+افحص هذا المشروع بدون تعديل أي ملف.
+
+المطلوب:
+1. حلل بنية المشروع.
+2. افحص هذه المسارات:
+   - interview/
+   - smart-medical-archive/
+   - try/data-analyzer/
+   - ai-scolecs/
+   - health/
+   - demo/ocr-demo/
+   - ai-bots/BrightSupport/
+   - services/marketing-automation.html
+   - services/supply-chain-optimization.html
+
+ملاحظة:
+المستخدم كتب mart-medical-archive لكن المسار الصحيح في المشروع هو smart-medical-archive.
+
+ركّز على:
+- ملفات HTML/JS/CSS المرتبطة بكل تجربة.
+- هل التجربة تفاعلية فعلاً أو صفحة تسويقية فقط؟
+- هل فيه اتصال مباشر بـ Gemini من المتصفح؟
+- هل فيه API keys مكشوفة؟
+- هل فيه mock/fallback/localStorage/random logic بدل AI حقيقي؟
+- هل فيه أخطاء UX أو تحويل بيعي؟
+- هل المسارات مربوطة صح؟
+
+أنشئ ملف:
+reports/demo-ai-upgrade-audit.md
+
+لا تعدّل أي كود الآن.
+فقط اكتب تقرير واضح فيه:
+- المشاكل الأمنية.
+- مشاكل تجربة المستخدم.
+- مشاكل الربط مع Gemini.
+- الملفات الحرجة.
+- خطة تنفيذ مختصرة مرتبة حسب الأولوية.
+```
+
+---
+
+## 2) برومبت إصلاح أمان Gemini والمفاتيح
+
+```text
+أنت Senior Security Engineer.
+
+نفّذ إصلاح أمني فقط بدون تحسينات UX الآن.
+
+المطلوب:
+1. ابحث في المشروع كله عن أي Gemini API keys أو مفاتيح تبدأ بـ AIzaSy.
+2. أزل أي hardcoded API keys من frontend وHTML وJS.
+3. لا تضع أي مفتاح بديل.
+4. اجعل كل مفاتيح Gemini تقرأ فقط من environment variables في backend.
+5. حدّث .env.example بالقيم التالية:
+   GEMINI_API_KEY=
+   GEMINI_MODEL=gemini-2.5-flash
+   AI_GATEWAY_TIMEOUT_MS=30000
+
+6. امنع أي direct browser call إلى:
+   generativelanguage.googleapis.com
+
+7. لو وجدت ملفات مثل:
+   - frontend/js/gemini-direct-client.js
+   - frontend/js/ocr-demo.js
+   - frontend/js/ocr-demo.min.js
+   - assets/js/gemini-demo-engine.js
+   - frontend/js/pricing-recommender.min.js
+   - bot/index.html
+   - mais-OBM/index.html
+   - services/index.html
+
+   افحصها ونظّفها من المفاتيح والاستدعاءات المباشرة.
+
+8. أضف اختبار أمني يمنع وجود:
+   - AIzaSy
+   - x-goog-api-key داخل frontend
+   - generativelanguage.googleapis.com داخل frontend
+
+9. لا تكسر الواجهات. إذا كان فيه كود يحتاج AI، خله يستدعي backend placeholder endpoint بدل Gemini مباشرة.
+
+بعد التنفيذ:
+- اكتب ملخص في reports/security-ai-cleanup-summary.md
+- اذكر الملفات المعدلة.
+- اذكر أي مفاتيح يجب تدويرها في Google AI Studio بدون كتابة المفتاح نفسه.
+```
+
+---
+
+## 3) برومبت بناء AI Gateway موحد
+
+```text
+أنت Principal Backend Engineer.
+
+ابنِ AI Gateway موحد في backend لاستخدام Gemini API بشكل آمن لكل الديموهات.
+
+قبل التعديل:
+- افحص backend/server.js
+- افحص backend/config/index.js
+- افحص backend/routes/*
+- افحص backend/services/*
+
+المطلوب:
+1. لا تستخدم Gemini من frontend نهائياً.
+2. استخدم GEMINI_API_KEY من process.env فقط.
+3. أنشئ أو حسّن routes التالية:
+
+POST /api/ai/demo/recruitment
+POST /api/ai/demo/medical-archive
+POST /api/ai/demo/data-analyzer
+POST /api/ai/demo/education
+POST /api/ai/demo/hospital
+POST /api/ai/demo/ocr
+POST /api/ai/demo/support
+POST /api/ai/demo/marketing
+POST /api/ai/demo/supply-chain
+
+4. كل endpoint يرجع JSON موحد:
+{
+  "ok": true,
+  "domain": "",
+  "summary_ar": "",
+  "confidence": 0.0,
+  "recommendations": [],
+  "kpis": {},
+  "risks": [],
+  "next_best_actions": [],
+  "sales_cta": {
+    "title": "",
+    "message": "",
+    "url": "/consultation/"
+  },
+  "demo_disclaimer": ""
+}
+
+5. في الخطأ يرجع:
+{
+  "ok": false,
+  "errorCode": "",
+  "message_ar": "",
+  "retryable": true
+}
+
+6. أضف timeout.
+7. أضف retry محدود.
+8. أضف rate limiting بسيط إن كان موجود نمط له بالمشروع.
+9. أضف validation للمدخلات.
+10. أضف sanitization للمخرجات قدر الإمكان.
+11. اجعل prompts الخاصة بكل تجربة في ملف منفصل:
+backend/services/demoPrompts.js
+
+12. استخدم Gemini Structured JSON output قدر الإمكان.
+13. لا تكشف stack traces في production responses.
+14. لا تطبع API keys أو secrets في logs.
+
+بعد التنفيذ:
+- أضف tests للـ endpoints.
+- حدّث reports/ai-gateway-summary.md
+- اكتب طريقة التشغيل محلياً.
+```
+
+---
+
+## 4) برومبت توحيد Frontend API Client
+
+```text
+أنت Senior Frontend Engineer.
+
+المطلوب الآن فقط:
+توحيد طريقة اتصال الواجهات مع backend AI Gateway.
+
+لا تحسّن التصميم الآن.
+لا تغيّر تجربة المستخدم بشكل كبير.
+فقط أصلح الربط.
+
+المطلوب:
+1. أنشئ أو حسّن client موحد:
+frontend/js/ai-demo-client.js
+
+2. هذا client يحتوي:
+- postDemo(domain, payload, options)
+- timeout عبر AbortController
+- handling واضح للأخطاء
+- loading callbacks إن احتاج
+- no API keys
+- no direct Gemini calls
+- no localStorage secrets
+
+3. اربط الديموهات التالية بالـ client:
+- interview/
+- smart-medical-archive/
+- try/data-analyzer/
+- ai-scolecs/
+- health/
+- demo/ocr-demo/
+- ai-bots/BrightSupport/
+
+4. اربط كل تجربة بالendpoint المناسب:
+interview -> /api/ai/demo/recruitment
+smart-medical-archive -> /api/ai/demo/medical-archive
+try/data-analyzer -> /api/ai/demo/data-analyzer
+ai-scolecs -> /api/ai/demo/education
+health -> /api/ai/demo/hospital
+demo/ocr-demo -> /api/ai/demo/ocr
+ai-bots/BrightSupport -> /api/ai/demo/support
+
+5. أزل أي اعتماد على:
+- GeminiDirectClient
+- window.GeminiDirectClient
+- إدخال API key من المستخدم
+- generativelanguage.googleapis.com من frontend
+
+6. حافظ على fallback demo data فقط إذا backend غير متاح، لكن اكتب بوضوح في UI:
+"بيانات تجريبية مؤقتة"
+
+7. أضف escapeHTML أو sanitizer عند عرض مخرجات AI.
+
+بعد التنفيذ:
+- حدّث reports/frontend-ai-client-summary.md
+- اذكر الملفات المعدلة.
+- اذكر أي تجربة لم تستطع ربطها ولماذا.
+```
+
+---
+
+## 5) برومبت تحسين interview/
+
+```text
+أنت Senior Product Engineer + UX Designer متخصص في HR SaaS.
+
+حسّن تجربة:
+interview/
+
+الهدف:
+تحويلها إلى تجربة ATS ذكية عالمية تقنع العميل بشراء نظام توظيف ذكي.
+
+المطلوب:
+1. افحص ملفات interview/ المرتبطة.
+2. حافظ على RTL والعربية.
+3. اربط الذكاء الاصطناعي عبر:
+POST /api/ai/demo/recruitment
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- إدخال وصف الوظيفة.
+- رفع أو لصق CV.
+- زر "استخدم بيانات تجريبية".
+- تحليل AI للمرشح.
+- Match Score.
+- مقارنة متطلبات الوظيفة مع مهارات المرشح.
+- استخراج:
+  candidate_profile
+  skills
+  experience_years
+  education
+  missing_requirements
+  red_flags
+  match_score
+  recommended_stage
+  interview_questions
+  suggested_email
+
+واجهة النتائج:
+- بطاقة ملخص تنفيذي.
+- score واضح.
+- أسباب الترشيح.
+- نواقص المرشح.
+- أسئلة مقابلة مخصصة.
+- قرار مقترح:
+  "ينتقل للمقابلة"
+  "يحتاج مراجعة"
+  "غير مناسب حالياً"
+- CTA قوي:
+  "فعّل نظام الفرز الذكي لشركتك"
+
+قيود مهمة:
+- لا تستخدم العمر، الجنس، الجنسية، الحالة الاجتماعية كمعايير تقييم.
+- أضف تنبيه أن النتيجة دعم قرار وليست قرار توظيف نهائي.
+- أضف loading/error states.
+- أضف export JSON أو PDF إن كان سهل.
+- أضف analytics events إن كان عند المشروع نظام analytics.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/interview-demo-upgrade.md
+```
+
+---
+
+## 6) برومبت تحسين smart-medical-archive/
+
+```text
+أنت Senior Healthcare SaaS Engineer + UX Designer.
+
+حسّن تجربة:
+smart-medical-archive/
+
+الهدف:
+تحويلها إلى نظام أرشفة سجلات طبية ذكي بمستوى Enterprise.
+
+المطلوب:
+1. افحص ملفات smart-medical-archive/.
+2. اربط AI عبر:
+POST /api/ai/demo/medical-archive
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- رفع ملف PDF/Image أو لصق نص سجل طبي.
+- زر "استخدم سجل طبي تجريبي".
+- استخراج بيانات منظمة:
+  patient
+  mrn
+  encounter_date
+  department
+  diagnoses
+  medications
+  labs
+  procedures
+  risk_flags
+  follow_up_actions
+  missing_fields
+  confidence
+- إنشاء patient timeline.
+- تصنيف تلقائي للسجل.
+- بحث دلالي تجريبي داخل السجلات.
+- human review queue.
+- masking للهوية الحساسة.
+- audit trail UI.
+
+واجهة النتائج:
+- ملخص السجل.
+- الحقول المستخرجة.
+- مؤشرات تحتاج مراجعة.
+- جودة الاستخراج.
+- Timeline.
+- CTA:
+  "ابنِ أرشيف طبي ذكي لمنشأتك"
+
+قيود طبية:
+- لا تقدم تشخيص نهائي.
+- استخدم عبارات مثل:
+  "مؤشر يحتاج مراجعة بشرية"
+  "دعم قرار"
+  "ليس بديلاً عن الطبيب"
+- لا تعرض بيانات مرضى حقيقية.
+- أضف demo disclaimer.
+
+أصلح أي endpoint قديم مثل:
+/api/ai/gemini-chat
+واستبدله بالمسار الموحد.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/medical-archive-demo-upgrade.md
+```
+
+---
+
+## 7) برومبت تحسين try/data-analyzer/
+
+```text
+أنت Senior Data Platform Engineer + BI UX Designer.
+
+حسّن تجربة:
+try/data-analyzer/
+
+الهدف:
+تحويلها إلى منصة بيانات موحدة تقنع العميل أن BrightAI يقدر يجمع بياناته ويطلع منها قرارات.
+
+المطلوب:
+1. افحص ملفات try/data-analyzer/.
+2. اربط AI عبر:
+POST /api/ai/demo/data-analyzer
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- رفع CSV/XLSX إن كان مدعوم.
+- لصق جدول أو بيانات.
+- زر "استخدم بيانات تجريبية".
+- Data profiling:
+  rows
+  columns
+  missing values
+  duplicates
+  outliers
+  data_quality_score
+- Gemini يعطي:
+  executive_summary
+  business_insights
+  recommended_charts
+  anomalies
+  forecast_opportunities
+  next_questions
+  recommendations
+
+واجهة النتائج:
+- Executive summary.
+- Data quality score.
+- Insights cards.
+- Recommended charts.
+- Anomaly alerts.
+- Q&A على الداتاست.
+- Export report.
+- CTA:
+  "اربط مصادر بيانات شركتك في منصة واحدة"
+
+مهم:
+- لا تعتمد على GeminiDirectClient.
+- لا ترسل ملفات ضخمة مباشرة بدون validation.
+- أضف max file size.
+- أضف loading/error states.
+- أضف sanitizer للمخرجات.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/data-analyzer-demo-upgrade.md
+```
+
+---
+
+## 8) برومبت تحسين ai-scolecs/
+
+```text
+أنت Senior EdTech Product Engineer + UX Designer.
+
+حسّن تجربة:
+ai-scolecs/
+
+الهدف:
+تحويلها إلى منصة تعليمية ذكية متكاملة بالذكاء الاصطناعي.
+
+المطلوب:
+1. افحص ملفات ai-scolecs/.
+2. اربط AI عبر:
+POST /api/ai/demo/education
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- اختيار دور المستخدم:
+  مدير مدرسة
+  معلم
+  طالب
+  ولي أمر
+- زر "استخدم سيناريو تجريبي".
+- أدوات AI:
+  1. توليد خطة درس.
+  2. توليد اختبار.
+  3. تصحيح واجب نصي.
+  4. تحليل أداء طالب.
+  5. توصية مسار تعلم.
+
+مخرجات AI:
+- lesson_plan
+- quiz
+- rubric_feedback
+- student_level
+- weak_skills
+- suggested_intervention
+- learning_path
+- teacher_actions
+- parent_summary
+
+واجهة النتائج:
+- Dashboard أداء.
+- نقاط ضعف.
+- تدخلات مقترحة.
+- مهام المعلم القادمة.
+- تقرير مختصر لولي الأمر.
+- CTA:
+  "فعّل منصة تعليمية ذكية لمدرستك أو معهدك"
+
+قيود:
+- لا تعرض نتائج الطالب كحكم نهائي.
+- اجعلها توصيات تعليمية قابلة للمراجعة.
+- حافظ على اللغة العربية وRTL.
+- أضف loading/error states.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/education-demo-upgrade.md
+```
+
+---
+
+## 9) برومبت تحسين health/
+
+```text
+أنت Senior Healthcare Operations Product Engineer.
+
+حسّن تجربة:
+health/
+
+الهدف:
+تحويلها إلى نظام إدارة مستشفيات ذكية بالذكاء الاصطناعي يركز على التشغيل والجودة والتقارير.
+
+المطلوب:
+1. افحص ملفات health/.
+2. اربط AI عبر:
+POST /api/ai/demo/hospital
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- لوحة تشغيل مستشفى.
+- إدخال أو تحميل بيانات تشغيلية تجريبية.
+- زر "استخدم بيانات مستشفى تجريبية".
+- مؤشرات:
+  bed_occupancy
+  er_waiting_time
+  staffing_pressure
+  patient_flow
+  quality_incidents
+  readmission_indicator
+  supply_pressure
+
+Gemini يحلل:
+- operational_summary
+- bottlenecks
+- risk_level
+- quality_notes
+- recommended_actions
+- executive_brief
+- next_best_actions
+
+واجهة النتائج:
+- Tabs:
+  الطوارئ
+  التنويم
+  الجودة
+  الموارد
+  التقارير
+- Executive dashboard.
+- Risk alerts.
+- توصيات تشغيلية.
+- تقرير مدير تنفيذي.
+- CTA:
+  "ابنِ لوحة تشغيل ذكية لمنشأتك الصحية"
+
+قيود:
+- لا تجعلها تشخيص طبي.
+- لا تقدم نصائح علاجية.
+- استخدم صياغة "دعم قرارات تشغيلية وجودة".
+- أضف disclaimer واضح.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/hospital-demo-upgrade.md
+```
+
+---
+
+## 10) برومبت تحسين demo/ocr-demo/
+
+```text
+أنت Senior Document Automation Engineer + UX Designer.
+
+حسّن تجربة:
+demo/ocr-demo/
+
+الهدف:
+تحويلها إلى Document Automation Hub احترافي.
+
+المطلوب:
+1. افحص ملفات demo/ocr-demo/.
+2. افحص frontend/js/ocr-demo.js إن كان مستخدم.
+3. اربط AI عبر:
+POST /api/ai/demo/ocr
+
+لا تستخدم Gemini مباشرة من المتصفح.
+لا تستخدم API key في frontend.
+
+التجربة المطلوبة:
+- رفع PDF/Image.
+- لصق نص وثيقة.
+- زر "استخدم فاتورة/عقد تجريبي".
+- تصنيف نوع الوثيقة:
+  invoice
+  contract
+  ID
+  medical_report
+  receipt
+  purchase_order
+  other
+- استخراج:
+  fields
+  confidence_per_field
+  missing_fields
+  validation_errors
+  document_type
+  suggested_workflow
+  needs_review
+
+واجهة النتائج:
+- Preview للوثيقة إن أمكن.
+- جدول الحقول المستخرجة.
+- confidence badges.
+- validation warnings.
+- human review queue.
+- copy JSON.
+- export CSV/JSON.
+- CTA:
+  "اربط أتمتة الوثائق مع ERP/CRM/SharePoint"
+
+مهم:
+- max file size validation.
+- loading progress.
+- error states.
+- sanitizer.
+- لا تخزن ملفات المستخدم في localStorage.
+- fallback data مسموح فقط مع توضيح أنه demo.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/ocr-demo-upgrade.md
+```
+
+---
+
+## 11) برومبت تحسين ai-bots/BrightSupport/
+
+```text
+أنت Senior Conversational AI Product Engineer + CX UX Designer.
+
+حسّن تجربة:
+ai-bots/BrightSupport/
+
+الهدف:
+تحويلها إلى تجربة مركز دعم عملاء ذكي تبيع نفسها.
+
+المطلوب:
+1. افحص ملفات ai-bots/BrightSupport/.
+2. اربط AI عبر:
+POST /api/ai/demo/support
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- واجهة Chat جميلة.
+- زر "استخدم محادثة عميل تجريبية".
+- إدخال رسالة عميل.
+- Gemini يرجع:
+  intent
+  sentiment
+  urgency
+  sla_priority
+  suggested_reply
+  escalation_required
+  escalation_reason
+  customer_satisfaction_prediction
+  knowledge_base_answer
+  recommended_actions
+
+واجهة النتائج:
+- محادثة مباشرة.
+- بطاقة تحليل نية العميل.
+- sentiment score.
+- SLA priority.
+- هل يتم التصعيد أو لا.
+- رد مقترح للموظف.
+- Dashboard مصغر:
+  tickets_resolved
+  avg_response_time
+  escalation_rate
+  csat_prediction
+- Multi-channel badges:
+  WhatsApp
+  Website
+  Email
+- CTA:
+  "فعّل بوت دعم ذكي خلال أيام"
+
+مهم:
+- لا تجعل البوت يخترع سياسات شركة حقيقية.
+- أضف مصادر معرفة تجريبية داخلية.
+- أضف fallback واضح.
+- أضف loading/error states.
+- sanitize AI outputs.
+
+بعد التنفيذ:
+- اختبر الصفحة.
+- أصلح console errors.
+- اكتب تقرير:
+reports/brightsupport-demo-upgrade.md
+```
+
+---
+
+## 12) برومبت إنشاء ديمو التسويق الذكي
+
+```text
+أنت Senior Marketing Automation SaaS Engineer + Growth UX Designer.
+
+أنشئ أو حسّن Demo تفاعلي لخدمة:
+أتمتة التسويق بالذكاء الاصطناعي.
+
+المسارات:
+- services/marketing-automation.html موجود كصفحة خدمة.
+- أنشئ ديمو تفاعلي جديد إن لم يوجد:
+  demo/marketing-automation/index.html
+  demo/marketing-automation/app.js
+  demo/marketing-automation/styles.css
+أو اتبع نمط المشروع الحالي إن كان مختلف.
+
+اربط صفحة الخدمة بالديمو الجديد عبر CTA واضح.
+
+اربط AI عبر:
+POST /api/ai/demo/marketing
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- يدخل المستخدم:
+  business_type
+  campaign_goal
+  audience
+  budget
+  channels
+  offer
+  campaign_duration
+- زر "استخدم حملة تجريبية".
+- Gemini يرجع:
+  campaign_strategy
+  audience_segments
+  content_calendar
+  ad_copy_variants
+  email_sequence
+  retargeting_rules
+  expected_kpis
+  risks
+  next_best_actions
+
+واجهة النتائج:
+- Campaign strategy summary.
+- Audience segments.
+- Content calendar.
+- Ad copy variants.
+- Email sequence.
+- Retargeting flow.
+- ROI scenario.
+- Funnel visualization إن أمكن.
+- CTA:
+  "ابنِ نظام تسويق ذكي لشركتك"
+
+مهم:
+- لا تعد بأرباح مؤكدة.
+- اجعل KPIs تقديرية.
+- أضف disclaimer.
+- حافظ على RTL والعربية.
+- أضف loading/error states.
+- أضف export campaign plan.
+
+بعد التنفيذ:
+- اربط services/marketing-automation.html بالديمو.
+- اختبر المسار.
+- اكتب تقرير:
+reports/marketing-demo-upgrade.md
+```
+
+---
+
+## 13) برومبت إنشاء ديمو سلسلة التوريد
+
+```text
+أنت Senior Supply Chain SaaS Engineer + Operations UX Designer.
+
+أنشئ أو حسّن Demo تفاعلي لخدمة:
+أتمتة تحسين سلسلة التوريد.
+
+المسارات:
+- services/supply-chain-optimization.html موجود كصفحة خدمة.
+- أنشئ ديمو تفاعلي جديد إن لم يوجد:
+  demo/supply-chain-optimization/index.html
+  demo/supply-chain-optimization/app.js
+  demo/supply-chain-optimization/styles.css
+أو اتبع نمط المشروع الحالي إن كان مختلف.
+
+اربط صفحة الخدمة بالديمو الجديد عبر CTA واضح.
+
+اربط AI عبر:
+POST /api/ai/demo/supply-chain
+
+لا تستخدم Gemini مباشرة من المتصفح.
+
+التجربة المطلوبة:
+- يدخل المستخدم:
+  sku
+  current_stock
+  average_daily_demand
+  lead_time_days
+  supplier_reliability
+  seasonality
+  storage_cost
+  target_service_level
+- زر "استخدم بيانات SKU تجريبية".
+- Gemini يرجع:
+  demand_forecast_summary
+  reorder_recommendation
+  reorder_point
+  stockout_risk
+  overstock_risk
+  supplier_risk
+  distribution_notes
+  cost_saving_opportunities
+  next_best_actions
+
+واجهة النتائج:
+- Inventory risk card.
+- Reorder recommendation.
+- Forecast summary.
+- Supplier alerts.
+- Cost saving opportunities.
+- Next best actions.
+- CTA:
+  "قلل نفاد المخزون وارفع كفاءة التوزيع"
+
+مهم:
+- لا تعد بتخفيضات تكلفة مؤكدة.
+- اجعل النتائج تقديرية.
+- أضف disclaimer.
+- حافظ على RTL والعربية.
+- أضف loading/error states.
+- أضف export report.
+
+بعد التنفيذ:
+- اربط services/supply-chain-optimization.html بالديمو.
+- اختبر المسار.
+- اكتب تقرير:
+reports/supply-chain-demo-upgrade.md
+```
+
+---
+
+## 14) برومبت توحيد التصميم والـ CTA بعد كل الديموهات
+
+```text
+أنت Senior UX/UI Designer + Conversion Rate Optimization Expert.
+
+بعد أن أصبحت كل الديموهات مربوطة بالـ AI Gateway، وحّد تجربة المستخدم والهوية البصرية.
+
+المسارات:
+- interview/
+- smart-medical-archive/
+- try/data-analyzer/
+- ai-scolecs/
+- health/
+- demo/ocr-demo/
+- ai-bots/BrightSupport/
+- demo/marketing-automation/
+- demo/supply-chain-optimization/
+
+المطلوب:
+1. لا تغيّر منطق AI الأساسي.
+2. حسّن الواجهة فقط.
+3. اجعل كل ديمو يحتوي:
+   - Hero واضح.
+   - مشكلة العميل.
+   - Demo console فوق الصفحة.
+   - زر "استخدم بيانات تجريبية".
+   - نتيجة AI ملموسة.
+   - Dashboard أو Report.
+   - مقارنة قبل/بعد BrightAI.
+   - Trust badges:
+     آمن
+     قابل للربط
+     مناسب للسوق السعودي
+     مدعوم عبر API
+     تقارير قابلة للتصدير
+   - CTA نهائي:
+     "اطلب تطبيق هذا النظام لجهتك"
+
+4. حسّن:
+   - loading states
+   - empty states
+   - error states
+   - mobile responsiveness
+   - RTL spacing
+   - typography
+   - cards
+   - buttons
+   - result summaries
+
+5. أضف microcopy قوي:
+   - "شاهد القرار قبل وبعد الذكاء الاصطناعي"
+   - "جرّب ببيانات نموذجية"
+   - "صدّر تقرير جاهز للإدارة"
+   - "اطلب ربطه بأنظمتك"
+
+6. لا تستخدم وعود مبالغ فيها.
+7. لا تذكر أرقام ROI مؤكدة.
+8. لا تكسر SEO أو canonical links.
+
+بعد التنفيذ:
+- اختبر الصفحات على desktop/mobile.
+- أصلح console errors.
+- اكتب تقرير:
+reports/demo-ux-conversion-upgrade.md
+```
+
+---
+
+## 15) برومبت الاختبارات والتنظيف النهائي
+
+```text
+أنت Senior QA Automation Engineer.
+
+نفّذ فحص نهائي للمشروع بعد كل التعديلات.
+
+المطلوب:
+1. شغّل:
+   npm ci
+   npm run test:backend
+   npm run test:frontend
+   npm run smoke-test
+   npm run smoke-test:api
+   npm run validate:production
+
+2. إذا فشل أي أمر:
+   - اقرأ الخطأ.
+   - أصلح السبب.
+   - لا تتجاهله.
+   - لا تحذف الاختبارات للهروب من المشكلة.
+
+3. افحص أمنياً:
+   - لا يوجد AIzaSy في frontend.
+   - لا يوجد hardcoded API keys.
+   - لا يوجد direct Gemini browser call.
+   - لا توجد secrets في logs.
+   - لا توجد مخرجات AI raw داخل innerHTML بدون sanitize.
+
+4. افحص UX:
+   - كل ديمو فيه زر بيانات تجريبية.
+   - كل ديمو فيه loading state.
+   - كل ديمو فيه error state.
+   - كل ديمو فيه نتيجة واضحة.
+   - كل ديمو فيه CTA شراء/استشارة.
+   - كل ديمو responsive.
+
+5. أنشئ تقرير نهائي:
+reports/final-demo-ai-upgrade-report.md
+
+التقرير يحتوي:
+- ما تم إنجازه.
+- الملفات المعدلة.
+- endpoints الجديدة.
+- طريقة تشغيل المشروع.
+- متغيرات البيئة المطلوبة.
+- الاختبارات التي نجحت.
+- الاختبارات التي فشلت إن وجدت وسببها.
+- الأعمال المؤجلة.
+```
+
+---
+
+## الترتيب اللي أنصحك تمشي عليه
+
+ابدأ بهذا الترتيب بالضبط:
+
+1. فحص المشروع
+2. تنظيف مفاتيح Gemini
+3. بناء AI Gateway
+4. توحيد Frontend API Client
+5. تحسين كل ديمو واحد واحد
+6. إنشاء ديمو التسويق
+7. إنشاء ديمو سلسلة التوريد
+8. توحيد التصميم والتحويل
+9. اختبارات نهائية
+
+لا تعطي Codex كل البرومبتات مرة وحدة. عطه واحد، خله يخلص، راجع الـ diff، بعدها اللي بعده.
 
 PR-4 — Technical SEO
 

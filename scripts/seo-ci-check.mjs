@@ -28,7 +28,7 @@ const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
 const OG_IMAGE_URL = `${BASE_URL}/assets/images/Gemini.png`;
 const HTML_IGNORE_DIRS = new Set([".git", "node_modules", "dist", "build", "coverage", ".next", ".nuxt"]);
 const INTERNAL_PAGE_PATTERN =
-  /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^frontend\/pages\/interview\/|(^|\/)(admin|dashboard|settings|analytics|reports|operations|scorecard|copilot|executive|appointment)(\/|\.|$)/i;
+  /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^frontend\/pages\/interview\/|^mais-OBM\/index\.html$|(^|\/)(admin|settings|analytics|reports|operations|scorecard|copilot|executive)(\/|\.|$)/i;
 const PUBLIC_TENDERS_DEMO_PATTERN = /^(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i;
 const PUBLIC_TENDERS_DEMO_URL_PATTERN = /^https:\/\/brightai\.site\/(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\/$/i;
 

@@ -41,17 +41,14 @@ const REL_PATH_ALIASES = new Map([
 const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^(404|500)\.html$/i,
   /^error\.html$/i,
-  /^privacy-cookies\/index\.html$/i,
-  /^terms\/index\.html$/i,
-  /^sitemap\/index\.html$/i,
   /^en\/docs\/docs\.html$/i,
   /^blog\/(ai-automation-project-analysis|digital-transformation-automation|financial-hr-automation|industrial-automation-productivity|machine-learning-computer-vision|process-automation-ai-efficiency)\.html$/i,
   /^aimais\/public\//i,
   /^frontend\/pages\//i,
-  /^interview\/pages\//i,
+  /^mais-OBM\/index\.html$/i,
+  /^interview\/pages\/supportAI\/index\.html$/i,
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
-  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i,
 ];
 
 const TRAILING_SLASH_ROUTE_PATTERNS = [
@@ -64,6 +61,7 @@ const TRAILING_SLASH_ROUTE_PATTERNS = [
   /^\/tenders(?:\/.*)?\/?$/i,
   /^\/ai-bots\/[^/]+\/?$/i,
   /^\/(?:ai-workflows|ai-scolecs|smart-medical-archive|privacy-cookies|job\.MAISco|sitemap|terms|offline)\/?$/i,
+  /^\/bot\/?$/i,
   /^\/(?:try|demo|interview)(?:\/.*)?\/?$/i,
 ];
 
@@ -137,13 +135,10 @@ export function relPathToSitePath(relPath) {
   if (normalized === "docs/index.html") return "/docs/";
   if (normalized === "docs.html") return "/docs/";
 
-  if (normalized.startsWith("docs/") && normalized.endsWith(".html")) {
-    return `/docs/${path.basename(normalized, ".html")}/`;
-  }
-
   if (normalized.endsWith("/index.html")) {
     const dir = normalized.replace(/\/index\.html$/, "");
 
+    if (dir.startsWith("docs/")) return `/${dir}/`;
     if (ROOT_INDEX_DIRS.has(dir)) return `/${dir}/`;
     if (dir === "frontend/pages/ai-workflows") return "/ai-workflows/";
     if (dir === "frontend/pages/ai-scolecs") return "/ai-scolecs/";
@@ -169,6 +164,10 @@ export function relPathToSitePath(relPath) {
     }
 
     return `/${dir}/`;
+  }
+
+  if (normalized.startsWith("docs/") && normalized.endsWith(".html")) {
+    return `/docs/${path.basename(normalized, ".html")}/`;
   }
 
   if (normalized.startsWith("frontend/pages/blogger/") && normalized.endsWith(".html")) {

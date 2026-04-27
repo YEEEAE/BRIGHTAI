@@ -209,3 +209,5 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/:slug/index.html /blog/:slug/ 301
 /:section/:slug.html /:section/:slug/ 301
 /:slug.html /:slug/ 301
+/interview/pages/supportAI/ /interview/pages/support-ai/ 301
+/interview/pages/supportAI/index.html /interview/pages/support-ai/ 301

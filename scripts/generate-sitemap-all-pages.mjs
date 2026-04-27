@@ -25,24 +25,19 @@ const IGNORED_SCAN_DIRS = new Set([
   "coverage",
   "dist",
   "build",
+  "reports",
+  "tmp",
 ]);
 const EXCLUDED_REL_PATH_PATTERNS = [
   /^(404|500)\.html$/i,
-  /^privacy-cookies\/index\.html$/i,
-  /^terms\/index\.html$/i,
-  /^sitemap\/index\.html$/i,
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
-  /^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i,
   /^frontend\/pages\//i,
-  /^interview\/pages\//i,
+  /^mais-OBM\/index\.html$/i,
+  /^interview\/pages\/supportAI\/index\.html$/i,
   /^tenders\/index 2\.html$/i,
 ];
-const MIN_WORDS_BY_GROUP = {
-  core: 120,
-  sector: 300,
-  blog: 450,
-};
+const MIN_WORDS_BY_GROUP = {};
 
 function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
@@ -94,11 +89,7 @@ function detectExplicitExclusionFamily(relPath) {
   if (/^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i.test(normalized)) {
     return "legal docs already noindexed";
   }
-  if (/^(privacy-cookies|terms|sitemap)\/index\.html$/i.test(normalized)) return "utility and legal pages";
   if (normalized.startsWith("frontend/pages/")) return "frontend source files";
-  if (normalized.startsWith("interview/pages/")) {
-    return "interview app internal routes";
-  }
   if (/^tenders\/index 2\.html$/i.test(normalized)) return "duplicate tender entry";
   return "quality or canonical exclusion";
 }
