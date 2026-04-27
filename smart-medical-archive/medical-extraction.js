@@ -1,3 +1,24 @@
+function normalizeMedicalArchiveResult(e2) {
+  if (!e2 || "object" != typeof e2) return e2;
+  const t2 = e2.patient_snapshot && "object" == typeof e2.patient_snapshot ? e2.patient_snapshot : null, n2 = e2.clinical_entities && "object" == typeof e2.clinical_entities ? e2.clinical_entities : null, r2 = e2.department_routing && "object" == typeof e2.department_routing ? e2.department_routing : null;
+  if (!t2 && !n2 && !e2.document_classification) return e2;
+  const a2 = Object.assign({}, e2);
+  a2.patient = a2.patient || { name: t2 && t2.patient_name || "غير محدد", age: t2 && t2.age || "غير محدد", gender: t2 && t2.gender || "غير محدد", city: "", hospital: ee().hospitalName || "" };
+  a2.encounter = a2.encounter || { date: t2 && t2.visit_date || "", department: t2 && t2.department || r2 && r2.primary_department || "" };
+  a2.diagnoses = a2.diagnoses || J(n2 && n2.diagnoses);
+  a2.symptoms = a2.symptoms || J(n2 && n2.symptoms);
+  a2.medications = a2.medications || J(n2 && n2.medications).map(function(e3) {
+    return "string" == typeof e3 ? { name: e3, dose: null, frequency: null } : e3;
+  });
+  a2.labs = a2.labs || J(n2 && n2.lab_values).map(function(e3) {
+    return { name: e3.name, value: e3.value, unit: e3.unit, status: e3.status };
+  });
+  a2.alerts = a2.alerts || J(e2.risk_alerts).map(function(e3) {
+    return { type: e3.severity || "risk", message: [e3.alert, e3.reason, e3.recommended_review_by ? "يتطلب مراجعة مختص: " + e3.recommended_review_by : ""].filter(Boolean).join(" - ") };
+  });
+  a2.summary = a2.summary || { problem: e2.executive_summary_ar || "", plan: e2.next_action_ar || "", nextStep: e2.disclaimer_ar || "لا تقدم هذه النتيجة تشخيصاً طبياً نهائياً." };
+  return a2;
+}
 function de() {
   R.recordsCount && (R.recordsCount.textContent = String(j.records.length)), R.extractedCount && (R.extractedCount.textContent = j.lastExtract ? "1" : "0"), R.riskCount && (R.riskCount.textContent = String(function(e2) {
     let t2 = 0;
@@ -33,7 +54,8 @@ function pe(e2) {
 function he(e2) {
   if (!R.extractResult) return;
   if (!e2 || "object" != typeof e2) return void (R.extractResult.innerHTML = "<p>لا توجد نتيجة حتى الآن.</p>");
-  const t2 = e2.patient && "object" == typeof e2.patient ? e2.patient : {}, n2 = e2.summary && "object" == typeof e2.summary ? e2.summary : {}, r2 = ge(e2.diagnoses), a2 = ge(e2.alerts), o2 = me(e2.medications), i2 = pe(e2.labs), s2 = r2.length ? r2.map(function(e3) {
+  e2 = normalizeMedicalArchiveResult(e2);
+  const c0 = e2.document_classification || {}, ps = e2.patient_snapshot || {}, ce0 = e2.clinical_entities || {}, dr = e2.department_routing || {}, fm = e2.fhir_mapping_preview || {}, at0 = e2.audit_trail || {}, privacy = J(e2.privacy_flags), t2 = e2.patient && "object" == typeof e2.patient ? e2.patient : {}, n2 = e2.summary && "object" == typeof e2.summary ? e2.summary : {}, r2 = ge(e2.diagnoses), a2 = ge(e2.alerts), o2 = me(e2.medications), i2 = pe(e2.labs), s2 = r2.length ? r2.map(function(e3) {
     return `<li>${_(e3)}</li>`;
   }).join("") : "<li>لا يوجد تشخيص واضح في النص</li>", c2 = a2.length ? a2.map(function(e3) {
     return `<li>${_(e3)}</li>`;
@@ -47,34 +69,65 @@ function he(e2) {
   R.extractResult.innerHTML = `
   <div class="result-grid">
     <div class="result-item">
-      <strong>بيانات المريض</strong>
-      <div>${_(t2.name || "غير محدد")}</div>
-      <div>العمر: ${_(null != t2.age ? String(t2.age) : "غير محدد")}</div>
+      <strong>Patient Snapshot</strong>
+      <div>${_(ps.patient_name || t2.name || "غير محدد")}</div>
+      <div>MRN: ${_(ps.medical_record_number || "غير محدد")}</div>
+      <div>العمر: ${_(ps.age || (null != t2.age ? String(t2.age) : "غير محدد"))}</div>
       <div>الجنس: ${_(t2.gender || "غير محدد")}</div>
-      <div>المدينة: ${_(t2.city || "غير محدد")}</div>
+      <div>القسم: ${_(ps.department || e2.encounter && e2.encounter.department || "غير محدد")}</div>
     </div>
     <div class="result-item">
-      <strong>ملخص الحالة</strong>
-      <div>${_(n2.problem || "لا يوجد ملخص")}</div>
-      <div>${_(n2.plan || "")}</div>
-      <div>${_(n2.nextStep || "")}</div>
+      <strong>Document Classification</strong>
+      <div>النوع: ${_(c0.type || "unknown")}</div>
+      <div>الثقة: ${_(String(c0.confidence || "غير محدد"))}</div>
+      <div>اللغة: ${_(c0.language || "mixed")}</div>
     </div>
   </div>
   <div class="result-item" style="margin-top:10px;">
-    <strong>التشخيصات المستخرجة</strong>
+    <strong>Clinical Entities - Diagnoses</strong>
     <ul class="mini-list">${s2}</ul>
   </div>
   <div class="result-item" style="margin-top:10px;">
-    <strong>الأدوية المستخرجة</strong>
+    <strong>Medications</strong>
     <ul class="mini-list">${u2}</ul>
   </div>
   <div class="result-item" style="margin-top:10px;">
-    <strong>نتائج المختبر</strong>
+    <strong>Lab Values</strong>
     <ul class="mini-list">${l2}</ul>
   </div>
   <div class="result-item" style="margin-top:10px;">
-    <strong>تنبيهات سريرية</strong>
+    <strong>Alerts - يتطلب مراجعة مختص عند الحساسية</strong>
     <ul class="mini-list">${c2}</ul>
+  </div>
+  <div class="result-grid" style="margin-top:10px;">
+    <div class="result-item">
+      <strong>Department Routing</strong>
+      <div>${_(dr.primary_department || "غير محدد")}</div>
+      <div>${_(dr.routing_reason || "")}</div>
+      <div>${_(J(dr.secondary_departments).join("، "))}</div>
+    </div>
+    <div class="result-item">
+      <strong>Privacy Flags</strong>
+      <ul class="mini-list">${privacy.length ? privacy.map(function(e3) { return `<li>${_(e3)}</li>`; }).join("") : "<li>صلاحيات الوصول مطلوبة حسب الدور والقسم</li>"}</ul>
+    </div>
+  </div>
+  <div class="result-grid" style="margin-top:10px;">
+    <div class="result-item">
+      <strong>FHIR Mapping Preview</strong>
+      <pre class="code-preview">${_(JSON.stringify({ patient: fm.patient || {}, observation: J(fm.observation).slice(0, 2), condition: J(fm.condition).slice(0, 2), medication_statement: J(fm.medication_statement).slice(0, 2) }, null, 2))}</pre>
+    </div>
+    <div class="result-item">
+      <strong>Audit Trail</strong>
+      <div>Model: ${_(at0.ai_model || "Gemini via backend")}</div>
+      <div>Analysis time: ${_(at0.analysis_time || new Date().toLocaleString("ar-SA"))}</div>
+      <div>${_(at0.confidence_summary || "ثقة قابلة للمراجعة البشرية")}</div>
+    </div>
+  </div>
+  <div class="result-item" style="margin-top:10px;">
+    <strong>Executive Summary</strong>
+    <div>${_(n2.problem || "لا يوجد ملخص")}</div>
+    <div>${_(n2.plan || "")}</div>
+    <div>${_(n2.nextStep || "لا تقدم النتيجة تشخيصاً طبياً نهائياً.")}</div>
   </div>
 `;
 }
@@ -105,7 +158,7 @@ async function ve() {
   try {
     const n2 = await ce({ action: "extract", reportText: e2, hospitalProfile: ee() });
     if (!n2 || !n2.result) throw new Error("لم تصل نتيجة صالحة من الخدمة");
-    j.lastExtract = n2.result, R.saveRecordBtn && (R.saveRecordBtn.disabled = false), he(n2.result), de(), Z(R.extractStatus, `تم التحليل بنجاح عبر نموذج ${n2.model || "Gemini"}. احفظ السجل لإتاحته في البحث والتحليلات.`, "success"), at("analysis", { success: true, durationMs: Math.round(performance.now() - t2), model: n2.model || "Gemini", size: e2.length });
+    j.lastExtract = normalizeMedicalArchiveResult(n2.result), R.saveRecordBtn && (R.saveRecordBtn.disabled = false), he(j.lastExtract), de(), Z(R.extractStatus, `تم التحليل بنجاح عبر نموذج ${n2.model || "Gemini"} من خلال Backend. احفظ السجل لإتاحته في البحث والتحليلات.`, "success"), at("analysis", { success: true, durationMs: Math.round(performance.now() - t2), model: n2.model || "Gemini", size: e2.length });
   } catch (e3) {
     Z(R.extractStatus, N(e3, "تعذر تحليل التقرير حالياً"), "error"), at("analysis", { success: false, durationMs: Math.round(performance.now() - t2), reason: String(e3 && e3.message ? e3.message : "error") });
   } finally {

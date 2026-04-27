@@ -362,9 +362,9 @@ async function Bt() {
         e2 = await ce({ action: "insights", records: j.records, hospitalProfile: ee() });
       } catch (t2) {
         if (!Q()) throw t2;
-        Z(R.insightsStatus, "الخادم غير متاح، يتم التحليل عبر Gemini المباشر...", ""), e2 = await async function(e3) {
+        Z(R.insightsStatus, "الخادم غير متاح، يتم عرض تحليل ديمو بدون كشف مفاتيح Gemini.", ""), e2 = await async function(e3) {
           var t3 = K();
-          if (!t3.key) throw new Error("مفتاح Gemini API غير متوفر لتوليد التحليلات.");
+          if (!t3.key) throw new Error("Backend Gemini غير متوفر لتوليد التحليلات.");
           var n2 = e3 && e3.records ? e3.records : [], r2 = e3 && e3.hospitalProfile ? e3.hospitalProfile : {}, a2 = n2.slice(0, 30).map(function(e4) {
             return { recordId: e4.recordId, patient: e4.patient, diagnoses: e4.diagnoses, medications: e4.medications, severity: e4.severity, alerts: e4.alerts, hospital_department: e4.hospital_department };
           }), o2 = await D(S, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + t3.key }, body: JSON.stringify({ model: t3.model, messages: [{ role: "system", content: "أنت محلل بيانات طبية ذكي متخصص بالمستشفيات السعودية.\nحلل السجلات الطبية المقدمة وأنتج تقريراً تشغيلياً يتضمن:\n1. مؤشرات المخاطر الرئيسية\n2. أنماط التشخيصات والأدوية الشائعة\n3. توصيات تنفيذية للإدارة الطبية\n4. نقاط تحسين تشغيلية قابلة للقياس\nاستخدم لغة عربية مهنية واضحة." }, { role: "user", content: "السجلات (" + n2.length + " سجل):\n" + JSON.stringify(a2, null, 1) + "\n\nالمنشأة: " + (r2.hospitalName || "غير محدد") }], temperature: 0.3, max_tokens: 4096 }) }, w);
@@ -375,7 +375,7 @@ async function Bt() {
             } catch (e4) {
             }
             var s2 = i2 && i2.error && i2.error.message || "";
-            if (401 === o2.status) throw new Error("مفتاح Gemini غير صالح.");
+            if (401 === o2.status) throw new Error("اعتماد Backend Gemini غير صالح.");
             if (429 === o2.status) throw new Error("تم تجاوز حد الطلبات. انتظر قليلاً.");
             throw new Error(s2 || "خطأ من Gemini API (" + o2.status + ")");
           }
@@ -446,9 +446,9 @@ async function Vt() {
       r2 = await ue("/api/ai/medical-agent", { question: e2, records: j.records, hospitalProfile: ee(), batchReport: t2 });
     } catch (t3) {
       if (!Q()) throw t3;
-      Z(R.agentStatus, "الخادم غير متاح، يتم التحليل عبر Gemini المباشر...", ""), r2 = await async function(e3) {
+      Z(R.agentStatus, "الخادم غير متاح، يتم عرض توصيات ديمو بدون كشف مفاتيح Gemini.", ""), r2 = await async function(e3) {
         var t4 = K();
-        if (!t4.key) return buildGeminiDemoAgentResponse(e3, new Error("مفتاح Gemini API غير متوفر للوكيل الذكي."));
+        if (!t4.key) return buildGeminiDemoAgentResponse(e3, new Error("Backend Gemini غير متوفر للوكيل الذكي."));
         var n3 = e3 && e3.question ? e3.question : "", r3 = e3 && e3.records ? e3.records : [], a2 = e3 && e3.hospitalProfile ? e3.hospitalProfile : {}, o2 = r3.slice(0, 20).map(function(e4) {
           return { recordId: e4.recordId, patient: e4.patient, diagnoses: e4.diagnoses, medications: e4.medications, severity: e4.severity, alerts: e4.alerts };
         }), i2 = "السجلات الطبية المتاحة (" + r3.length + " سجل):\n" + JSON.stringify(o2, null, 1) + "\n\nالمنشأة: " + (a2.hospitalName || "غير محدد") + " - " + (a2.city || "") + "\n\nسؤال الإدارة:\n" + n3, s2 = await D(S, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + t4.key }, body: JSON.stringify({ model: t4.model, messages: [{ role: "system", content: "أنت مستشار تشغيلي ذكي للمستشفيات السعودية مدمج في نظام الأرشيف الطبي.\nقدّم توصيات تنفيذية عملية بناءً على السجلات الطبية المتاحة والسياق المؤسسي.\nلا تخترع بيانات غير موجودة في السجلات.\nاستخدم مصطلحات طبية مهنية عربية دقيقة.\nنسّق الإجابة بنقاط واضحة مع أرقام." }, { role: "user", content: i2 }], temperature: 0.4, max_tokens: 4096 }) }, w);
@@ -459,7 +459,7 @@ async function Vt() {
           } catch (e4) {
           }
           var u2 = c2 && c2.error && c2.error.message || "";
-          if (401 === s2.status) throw new Error("مفتاح Gemini غير صالح.");
+          if (401 === s2.status) throw new Error("اعتماد Backend Gemini غير صالح.");
           if (429 === s2.status) throw new Error("تم تجاوز حد الطلبات. انتظر قليلاً.");
           return buildGeminiDemoAgentResponse(e3, new Error(u2 || "خطأ من Gemini API (" + s2.status + ")"));
         }
@@ -561,6 +561,12 @@ function sn(e2, t2, n2) {
   const r2 = new Blob([n2], { type: t2 }), a2 = URL.createObjectURL(r2), o2 = document.createElement("a");
   o2.href = a2, o2.download = e2, document.body.appendChild(o2), o2.click(), document.body.removeChild(o2), URL.revokeObjectURL(a2);
 }
+Object.assign(T, {
+  lab: "تقرير مختبر - مستشفى الملك فهد\nالمريض: أحمد محمد سالم\nرقم الملف: MRN-22918\nالعمر: 58 سنة\nالجنس: ذكر\nالتاريخ: 2026-04-14\nالقسم: عيادة السكري\nالتشخيص المعروف: داء سكري نوع ثاني وارتفاع ضغط الدم.\nنتائج المختبر: HbA1c = 9.4% (مرتفع)، Glucose fasting = 186 mg/dL (مرتفع)، LDL = 142 mg/dL (مرتفع)، كرياتينين = 1.1 mg/dL.\nالأدوية الحالية: Metformin 1000mg مرتين يومياً، Amlodipine 5mg يومياً، Lisinopril 10mg يومياً.\nملاحظة: سكر مرتفع مع أدوية ضغط. يتطلب مراجعة مختص قبل تعديل الخطة.",
+  radiology: "تقرير أشعة - قسم الأشعة\nالمريضة: نورة عبدالرحمن\nرقم الملف: MRN-44210\nالعمر: 46 سنة\nالتاريخ: 2026-04-12\nالفحص: CT Chest\nالنتيجة: ارتشاحات رئوية خفيفة في الفص السفلي الأيمن، لا توجد كتلة واضحة، لا يوجد انصباب جنبي.\nالانطباع: تغيرات التهابية تحتاج ربطاً مع الأعراض والفحوصات المخبرية.\nالتوصية: مراجعة طبيب الصدرية إذا استمرت الأعراض. لا تقدم النتيجة تشخيصاً نهائياً.",
+  discharge: "ملخص خروج - قسم الباطنة\nالمريض: خالد عبدالله الحربي\nرقم الملف: MRN-77102\nالعمر: 64 سنة\nالتاريخ: 2026-04-10\nسبب التنويم: ألم صدري وضيق نفس مع تاريخ ارتفاع ضغط وسكري.\nالتشخيصات عند الخروج: ارتفاع ضغط الدم، داء سكري نوع ثاني، اشتباه ذبحة مستقرة بعد استبعاد مؤشرات حرجة.\nالأدوية عند الخروج: Aspirin 81mg يومياً، Atorvastatin 20mg ليلاً، Metformin 500mg مرتين يومياً، Amlodipine 5mg يومياً.\nالخطة: متابعة القلب خلال أسبوعين، ضبط السكر والضغط، مراجعة الطوارئ عند ألم صدري شديد. يتطلب مراجعة مختص.",
+  prescription: "وصفة طبية - عيادة القلب\nالمريض: صالح محمد العتيبي\nرقم الملف: MRN-33880\nالعمر: 61 سنة\nالتاريخ: 2026-04-16\nالتشخيص: ارتفاع ضغط الدم مع سكري نوع ثاني.\nالأدوية المصروفة: Lisinopril 10mg مرة يومياً، Amlodipine 5mg مرة يومياً، Metformin 1000mg مرتين يومياً.\nتنبيهات: مراجعة وظائف الكلى والبوتاسيوم خلال 4 أسابيع، ومراجعة مختص عند الدوخة أو هبوط الضغط.\nملاحظات الخصوصية: تحتوي الوصفة على بيانات صحية شخصية وتتطلب صلاحيات وصول حسب الدور."
+});
 function cn() {
   return j.lastExtract ? j.lastExtract : j.records.length ? j.records[j.records.length - 1] : null;
 }
@@ -601,23 +607,38 @@ function mn(e2) {
   const t2 = T[e2];
   t2 && R.reportInput && (R.reportInput.value = t2, Z(R.extractStatus, "تم تحميل تقرير نموذجي. يمكنك التعديل ثم بدء التحليل.", "success"));
 }
+function seedMedicalDemoRecords() {
+  if (j.records.length || "function" != typeof buildGeminiDemoExtract) return;
+  ["lab", "prescription", "discharge"].forEach(function(e2) {
+    const t2 = T[e2];
+    if (!t2) return;
+    const n2 = "function" == typeof normalizeMedicalArchiveResult ? normalizeMedicalArchiveResult(buildGeminiDemoExtract(t2)) : buildGeminiDemoExtract(t2);
+    n2.recordId = `demo-${e2}`;
+    n2.savedAt = (/* @__PURE__ */ new Date()).toLocaleString("ar-SA");
+    n2.sourceHospital = ee().hospitalName || "مستشفى الملك فهد";
+    n2.sourceFile = `${e2}-sample-report.txt`;
+    j.records.push(n2);
+  });
+  fe(), de();
+}
 function pn() {
   const e2 = R.leadHospital ? R.leadHospital.value.trim() : "", t2 = R.leadName ? R.leadName.value.trim() : "", n2 = R.leadPhone ? R.leadPhone.value.trim() : "";
   if (!e2 || !t2 || !n2) return void Z(R.leadStatus, "أدخل اسم المستشفى واسم المسؤول ورقم التواصل.", "error");
-  const r2 = ee(), a2 = ["مرحباً فريق Bright AI", "أرغب بتفعيل تجربة نظام الأرشيف الطبي الذكي للمستشفى.", `اسم المستشفى: ${e2}`, `اسم المسؤول: ${t2}`, `رقم التواصل: ${n2}`, `المدينة: ${r2.city || "غير محدد"}`, `القسم: ${r2.department || "غير محدد"}`, `عدد السجلات المجربة حالياً: ${j.records.length}`].join("\n"), o2 = `https://api.whatsapp.com/send?phone=966538229013&text=${encodeURIComponent(a2)}`;
+  const requestType = document.getElementById("leadRequestType") ? document.getElementById("leadRequestType").value : "اطلب تجربة على بيانات منشأتك";
+  const r2 = ee(), a2 = ["مرحباً فريق Bright AI", requestType, "أرغب بتفعيل نظام الأرشيف الطبي الذكي للمستشفى.", `اسم المستشفى: ${e2}`, `اسم المسؤول: ${t2}`, `رقم التواصل: ${n2}`, `المدينة: ${r2.city || "غير محدد"}`, `القسم: ${r2.department || "غير محدد"}`, `عدد السجلات المجربة حالياً: ${j.records.length}`].join("\n"), o2 = `https://api.whatsapp.com/send?phone=966538229013&text=${encodeURIComponent(a2)}`;
   window.open(o2, "_blank", "noopener,noreferrer"), Z(R.leadStatus, "تم فتح واتساب وإعداد رسالة طلب التجربة للمستشفى.", "success"), at("lead", { success: true, hospital: e2 });
 }
 function hn(e2, t2) {
   Z(R.connectionStatus, e2, t2);
 }
 function fn() {
-  H(), j.apiBase || Q() ? Q() ? hn("تم حفظ الإعدادات. مسار مباشر Gemini مفعل كاحتياطي بالإضافة إلى API Base.", "success") : hn("تم حفظ إعدادات API Base. إذا كان الخادم غير متاح يمكنك إضافة مفتاح Gemini كمسار مباشر.", "success") : hn("لم يتم إدخال API Base أو مفتاح Gemini. أدخل أحدهما على الأقل ثم اختبر الاتصال.", "error");
+  H(), j.apiBase ? hn("تم حفظ إعدادات Backend. مفاتيح Gemini تبقى على الخادم فقط.", "success") : hn("تم حفظ وضع الديمو. أضف API Base للخادم عند التشغيل الإنتاجي.", "success");
 }
 async function vn() {
-  H(), X(R.testConnectionBtn, true, "جاري اختبار الاتصال..."), hn("يتم الآن اختبار الاتصال بالخادم أو Gemini المباشر...", "");
+  H(), X(R.testConnectionBtn, true, "جاري اختبار الاتصال..."), hn("يتم الآن اختبار اتصال Backend فقط...", "");
   try {
     const e2 = await le();
-    "backend" === e2.mode ? hn(`نجح الاتصال بخادم BrightAI على: ${e2.base}`, "success") : "direct" === e2.mode ? hn("الخادم غير متاح، وتم تفعيل وضع Gemini المباشر بنجاح.", "success") : hn("فشل اختبار الاتصال. أدخل API Base صحيح أو أضف مفتاح Gemini مباشر.", "error");
+    "backend" === e2.mode ? hn(`نجح الاتصال بخادم BrightAI على: ${e2.base}`, "success") : hn("لم يتم العثور على Backend حالياً. سيعمل الديمو بعينات محلية بدون كشف مفاتيح Gemini.", "success");
   } catch (e2) {
     hn(N(e2, "تعذر اختبار الاتصال حالياً."), "error");
   } finally {
@@ -689,8 +710,9 @@ function Sn() {
   }(), function() {
     const e2 = P(O(r));
     e2 && (j.apiBase = e2, R.apiBaseInput && (R.apiBaseInput.value = e2));
-    const t2 = O(v).trim(), n2 = O(y).trim();
-    t2 && (j.geminiApiKey = t2, R.geminiApiKeyInput && (R.geminiApiKeyInput.value = t2)), n2 && (j.geminiModel = n2, R.geminiModelInput && (R.geminiModelInput.value = n2));
+    F(v, "");
+    const n2 = O(y).trim();
+    n2 && (j.geminiModel = n2, R.geminiModelInput && (R.geminiModelInput.value = n2));
     const S2 = O(a).trim(), E2 = O(o).trim(), w2 = O(i).trim();
     S2 && (j.storageProvider = S2, R.storageProvider && (R.storageProvider.value = S2)), E2 && (j.storageEndpoint = E2, R.storageEndpoint && (R.storageEndpoint.value = E2)), w2 && (j.storageToken = w2, R.storageToken && (R.storageToken.value = w2));
     const b2 = O(c).trim(), I2 = O(u).trim(), x2 = O(l).trim(), $2 = O(d).trim(), A2 = O(g).trim(), k2 = O(s).trim();
@@ -745,7 +767,7 @@ function Sn() {
         a2 && o2 && (R.dashboardWidgets.insertBefore(a2, o2), Et(), vt(), bt("تم تحديث ترتيب الودجت."));
       });
     });
-  }(), ft(), ht(), he(null), fe(), se(), ie(), oe(), Pe([]), De(null), Ne([], {}), Ke(), ut(), de(), mn("diabetes"), R.storageProvider && j.storageProvider && (R.storageProvider.value = j.storageProvider), R.storageEndpoint && j.storageEndpoint && (R.storageEndpoint.value = j.storageEndpoint), R.storageToken && j.storageToken && (R.storageToken.value = j.storageToken), "none" !== (j.storageProvider || "none") && Z(R.storageStatus, `إعداد التخزين المحفوظ: ${j.storageProvider}`, "success"), R.searchEngineProvider && j.searchProvider && (R.searchEngineProvider.value = j.searchProvider), R.searchEngineEndpoint && j.searchEndpoint && (R.searchEngineEndpoint.value = j.searchEndpoint), R.searchEngineIndex && j.searchIndex && (R.searchEngineIndex.value = j.searchIndex), R.searchEngineApiKey && j.searchApiKey && (R.searchEngineApiKey.value = j.searchApiKey), R.searchEngineAppId && j.searchAppId && (R.searchEngineAppId.value = j.searchAppId), R.dashboardRoleSelect && (R.dashboardRoleSelect.value = j.dashboardRole || "director"), bt("تم تحميل لوحة التحكم التفاعلية."), mt(false), le().then(function(e2) {
-    return "backend" === e2.mode ? (Z(R.extractStatus, "الخدمة جاهزة. يمكنك تحليل التقرير عبر Gemini الآن.", "success"), void hn(`متصل بخادم BrightAI: ${e2.base}`, "success")) : "direct" === e2.mode ? (Z(R.extractStatus, "الخادم غير متاح، لكن وضع Gemini المباشر مفعل ويمكنك التحليل الآن.", "success"), void hn("وضع Gemini المباشر مفعل. سيتم التحليل بدون خادم محلي.", "success")) : (Z(R.extractStatus, "تنبيه: لا يوجد اتصال بالخادم ولا إعداد مباشر لـ Gemini. راجع قسم إعداد الاتصال أعلى الصفحة.", "error"), void hn("لا يوجد اتصال صالح حالياً. أدخل API Base صحيح أو أضف مفتاح Gemini ثم اضغط اختبار الاتصال.", "error"));
+  }(), ft(), ht(), he(null), fe(), se(), ie(), oe(), Pe([]), De(null), Ne([], {}), Ke(), ut(), de(), seedMedicalDemoRecords(), mn("lab"), R.searchQuery && (R.searchQuery.value = "اعرض مرضى لديهم سكر مرتفع وأدوية ضغط"), "function" == typeof Fe && setTimeout(function() { Fe(); }, 250), R.storageProvider && j.storageProvider && (R.storageProvider.value = j.storageProvider), R.storageEndpoint && j.storageEndpoint && (R.storageEndpoint.value = j.storageEndpoint), R.storageToken && j.storageToken && (R.storageToken.value = j.storageToken), "none" !== (j.storageProvider || "none") && Z(R.storageStatus, `إعداد التخزين المحفوظ: ${j.storageProvider}`, "success"), R.searchEngineProvider && j.searchProvider && (R.searchEngineProvider.value = j.searchProvider), R.searchEngineEndpoint && j.searchEndpoint && (R.searchEngineEndpoint.value = j.searchEndpoint), R.searchEngineIndex && j.searchIndex && (R.searchEngineIndex.value = j.searchIndex), R.searchEngineApiKey && j.searchApiKey && (R.searchEngineApiKey.value = j.searchApiKey), R.searchEngineAppId && j.searchAppId && (R.searchEngineAppId.value = j.searchAppId), R.dashboardRoleSelect && (R.dashboardRoleSelect.value = j.dashboardRole || "director"), bt("تم تحميل لوحة التحكم التفاعلية."), mt(false), le().then(function(e2) {
+    return "backend" === e2.mode ? (Z(R.extractStatus, "الخدمة جاهزة. تحليل Gemini يعمل عبر Backend فقط.", "success"), void hn(`متصل بخادم BrightAI: ${e2.base}`, "success")) : (Z(R.extractStatus, "وضع الديمو جاهز. عند الإنتاج يجب تشغيل Backend للاتصال بـ Gemini دون كشف المفاتيح في الواجهة.", "success"), void hn("اتصال Gemini المباشر معطل في الواجهة الإنتاجية.", "success"));
   });
 }

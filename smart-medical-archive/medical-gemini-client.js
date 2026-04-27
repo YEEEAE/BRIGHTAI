@@ -41,14 +41,14 @@ function F(e2, t2) {
   }
 }
 function H() {
-  const e2 = P(R.apiBaseInput ? R.apiBaseInput.value : ""), t2 = R.geminiApiKeyInput ? R.geminiApiKeyInput.value.trim() : "", n2 = R.geminiModelInput ? R.geminiModelInput.value.trim() : "";
-  j.apiBase = e2 || null, j.geminiApiKey = t2, j.geminiModel = n2 || E, F(r, j.apiBase || ""), F(v, j.geminiApiKey), F(y, j.geminiModel);
+  const e2 = P(R.apiBaseInput ? R.apiBaseInput.value : ""), n2 = R.geminiModelInput ? R.geminiModelInput.value.trim() : "";
+  j.apiBase = e2 || null, j.geminiApiKey = "", j.geminiModel = n2 || E, F(r, j.apiBase || ""), F(v, ""), F(y, j.geminiModel);
 }
 function Q() {
-  return !!j.geminiApiKey || (!(!R.geminiApiKeyInput || !R.geminiApiKeyInput.value.trim()) || !!O(v));
+  return false;
 }
 function K() {
-  return { key: j.geminiApiKey || (R.geminiApiKeyInput ? R.geminiApiKeyInput.value.trim() : "") || O(v) || "", model: j.geminiModel || (R.geminiModelInput ? R.geminiModelInput.value.trim() : "") || O(y) || E };
+  return { key: "", model: j.geminiModel || (R.geminiModelInput ? R.geminiModelInput.value.trim() : "") || O(y) || E };
 }
 function W() {
   const e2 = R.storageProvider ? R.storageProvider.value.trim() : "none", t2 = R.storageEndpoint ? R.storageEndpoint.value.trim() : "", n2 = R.storageToken ? R.storageToken.value.trim() : "";
@@ -60,7 +60,7 @@ function G() {
 }
 function U() {
   const e2 = P(R.apiBaseInput ? R.apiBaseInput.value : "");
-  e2 && (j.apiBase = e2), R.geminiApiKeyInput && R.geminiApiKeyInput.value.trim() && (j.geminiApiKey = R.geminiApiKeyInput.value.trim()), R.geminiModelInput && R.geminiModelInput.value.trim() && (j.geminiModel = R.geminiModelInput.value.trim()), R.storageProvider && R.storageProvider.value && (j.storageProvider = R.storageProvider.value.trim()), R.storageEndpoint && R.storageEndpoint.value && (j.storageEndpoint = R.storageEndpoint.value.trim()), R.storageToken && R.storageToken.value && (j.storageToken = R.storageToken.value.trim()), R.searchEngineProvider && R.searchEngineProvider.value && (j.searchProvider = R.searchEngineProvider.value.trim()), R.searchEngineEndpoint && R.searchEngineEndpoint.value && (j.searchEndpoint = R.searchEngineEndpoint.value.trim()), R.searchEngineIndex && R.searchEngineIndex.value && (j.searchIndex = R.searchEngineIndex.value.trim()), R.searchEngineApiKey && R.searchEngineApiKey.value && (j.searchApiKey = R.searchEngineApiKey.value.trim()), R.searchEngineAppId && R.searchEngineAppId.value && (j.searchAppId = R.searchEngineAppId.value.trim());
+  e2 && (j.apiBase = e2), j.geminiApiKey = "", R.geminiModelInput && R.geminiModelInput.value.trim() && (j.geminiModel = R.geminiModelInput.value.trim()), R.storageProvider && R.storageProvider.value && (j.storageProvider = R.storageProvider.value.trim()), R.storageEndpoint && R.storageEndpoint.value && (j.storageEndpoint = R.storageEndpoint.value.trim()), R.storageToken && R.storageToken.value && (j.storageToken = R.storageToken.value.trim()), R.searchEngineProvider && R.searchEngineProvider.value && (j.searchProvider = R.searchEngineProvider.value.trim()), R.searchEngineEndpoint && R.searchEngineEndpoint.value && (j.searchEndpoint = R.searchEngineEndpoint.value.trim()), R.searchEngineIndex && R.searchEngineIndex.value && (j.searchIndex = R.searchEngineIndex.value.trim()), R.searchEngineApiKey && R.searchEngineApiKey.value && (j.searchApiKey = R.searchEngineApiKey.value.trim()), R.searchEngineAppId && R.searchEngineAppId.value && (j.searchAppId = R.searchEngineAppId.value.trim());
 }
 function z(e2) {
   if (!e2 || "string" != typeof e2) return null;
@@ -203,27 +203,53 @@ function buildGeminiDemoExtract(reportText) {
     const match = text.match(pattern);
     return match && match[1] ? match[1].trim() : fallback;
   };
+  const isRadiology = /أشعة|تصوير|CT|MRI|X-ray|radiology/i.test(text), isPrescription = /وصفة|الأدوية المصروفة|Prescription|Rx/i.test(text), isDischarge = /خروج|ملخص خروج|Discharge/i.test(text), isLab = /مختبر|HbA1c|LDL|كرياتينين|Lab/i.test(text);
   const diagnoses = [];
   if (/سكري|Diabetes/i.test(text)) diagnoses.push("داء سكري نوع ثاني");
   if (/ضغط|Hypertension/i.test(text)) diagnoses.push("ارتفاع ضغط الدم");
   if (/قلب|صدري|Troponin|Cardiac/i.test(text)) diagnoses.push("اشتباه حالة قلبية تحتاج متابعة");
   if (/سرطان|ورم|oncology|breast/i.test(text)) diagnoses.push("متابعة أورام");
-  const meds = ["Metformin", "Insulin", "Atorvastatin", "Tamoxifen", "Ondansetron", "Furosemide"].filter((name) => text.toLowerCase().includes(name.toLowerCase())).map((name) => ({ name, dose: null, frequency: null }));
+  const meds = ["Metformin", "Insulin", "Atorvastatin", "Amlodipine", "Lisinopril", "Tamoxifen", "Ondansetron", "Furosemide", "Aspirin"].filter((name) => text.toLowerCase().includes(name.toLowerCase()));
+  const labs = [];
+  if (/HbA1c/i.test(text)) labs.push({ name: "HbA1c", value: pick(/HbA1c\s*=?\s*([0-9.]+%?)/i, "9.1%"), unit: "%", status: "high" });
+  if (/LDL/i.test(text)) labs.push({ name: "LDL", value: pick(/LDL\s*=?\s*([0-9.]+)/i, "142"), unit: "mg/dL", status: "high" });
+  if (/كرياتينين|Creatinine/i.test(text)) labs.push({ name: "Creatinine", value: pick(/(?:كرياتينين|Creatinine)\s*=?\s*([0-9.]+)/i, "1.1"), unit: "mg/dL", status: "normal" });
+  if (/Troponin/i.test(text)) labs.push({ name: "Troponin", value: "positive", unit: "", status: "critical" });
+  const patientName = pick(/(?:المريض|المريضة)[:：]\s*([^\n]+)/, "مريض تجريبي"), mrn = pick(/(?:رقم الملف|MRN|رقم السجل)[:：]?\s*([A-Z0-9-]+)/i, "MRN-DEMO-1024"), department = isRadiology ? "الأشعة" : isPrescription ? "الصيدلية السريرية" : isDischarge ? "التنويم" : diagnoses.some((item) => /سكري/.test(item)) ? "الغدد والسكري" : "الطب الباطني";
+  const docType = isRadiology ? "radiology_report" : isPrescription ? "prescription" : isDischarge ? "discharge_summary" : isLab ? "lab_report" : "unknown";
+  const highRisk = /Troponin|89%|حرج|critical|حاد|عناية مركزة|سكر مرتفع|HbA1c\s*=?\s*9/i.test(text);
   return {
-    patient: {
-      name: pick(/(?:المريض|المريضة)[:：]\s*([^\n]+)/, "مريض تجريبي"),
+    document_classification: { type: docType, confidence: .91, language: /[A-Za-z]/.test(text) && /[\u0600-\u06FF]/.test(text) ? "mixed" : "ar" },
+    patient_snapshot: {
+      patient_name: patientName,
+      medical_record_number: mrn,
       age: pick(/العمر[:：]\s*([^\n]+)/, "غير محدد"),
       gender: /المريضة/.test(text) ? "أنثى" : /المريض/.test(text) ? "ذكر" : "غير محدد",
-      city: pick(/المدينة[:：]\s*([^\n]+)/, "الرياض")
+      visit_date: pick(/(?:التاريخ|تاريخ الزيارة)[:：]\s*([^\n]+)/, new Date().toISOString().slice(0, 10)),
+      department
     },
-    diagnoses: diagnoses.length ? diagnoses : ["حالة مستخرجة تجريبياً من التقرير"],
-    symptoms: /ضيق نفس|ألم|خفقان|إجهاد/.test(text) ? ["أعراض مذكورة في التقرير تحتاج مراجعة سريرية"] : [],
-    medications: meds.length ? meds : [{ name: "لا توجد أدوية واضحة", dose: null, frequency: null }],
-    labs: /HbA1c|Troponin|LDL|كرياتينين/.test(text) ? [{ test: "مؤشرات مختبرية مذكورة", result: "مستخرجة من النص", unit: null, status: "تحتاج مراجعة" }] : [],
-    recommendations: "هذه نتيجة demo fallback بعد فشل API. راجع البيانات سريرياً قبل أي استخدام تشغيلي.",
-    severity: /حرج|Troponin|89%|عناية مركزة|حاد/.test(text) ? "مرتفع" : "متوسط",
-    alerts: [{ type: "demo", message: "تم استخدام fallback demo لأن Gemini API أو الخادم الموحد لم يستجب." }],
-    hospital_department: pick(/قسم[:：]\s*([^\n]+)/, "غير محدد")
+    clinical_entities: {
+      diagnoses: diagnoses.length ? diagnoses : ["حالة مستخرجة من التقرير التجريبي"],
+      symptoms: /ضيق نفس|ألم|خفقان|إجهاد/.test(text) ? ["أعراض مذكورة في التقرير تحتاج مراجعة سريرية"] : [],
+      medications: meds.length ? meds : ["لا توجد أدوية واضحة"],
+      allergies: /حساسية/.test(text) ? [pick(/حساسية[:：]\s*([^\n]+)/, "حساسية مذكورة")] : [],
+      lab_values: labs.length ? labs : [{ name: "مؤشرات سريرية", value: "مذكورة في النص", unit: "", status: "unknown" }],
+      procedures: isRadiology ? ["تصوير طبي"] : isDischarge ? ["تنويم ومتابعة خروج"] : []
+    },
+    risk_alerts: [{ alert: highRisk ? "نتيجة حساسة أو عالية الخطورة - يتطلب مراجعة مختص" : "نتيجة أولية لا تمثل تشخيصاً نهائياً", severity: highRisk ? "high" : "medium", reason: highRisk ? "وجود مؤشرات مثل Troponin أو HbA1c مرتفع أو نقص أكسجة" : "التحليل آلي ويحتاج اعتماد سريري", recommended_review_by: highRisk ? "استشاري القسم المختص" : "طبيب مسؤول" }],
+    department_routing: { primary_department: department, secondary_departments: highRisk ? ["الجودة وسلامة المرضى", "التمريض"] : ["السجلات الطبية"], routing_reason: "تم التوجيه بناءً على نوع الوثيقة والكيانات السريرية المستخرجة." },
+    fhir_mapping_preview: {
+      patient: { resourceType: "Patient", identifier: [{ value: mrn }], name: [{ text: patientName }] },
+      observation: labs.map((lab) => ({ resourceType: "Observation", code: { text: lab.name }, valueString: `${lab.value} ${lab.unit}`.trim(), interpretation: [{ text: lab.status }] })),
+      condition: (diagnoses.length ? diagnoses : ["حالة مستخرجة"]).map((name) => ({ resourceType: "Condition", code: { text: name } })),
+      medication_statement: meds.map((name) => ({ resourceType: "MedicationStatement", medicationCodeableConcept: { text: name } }))
+    },
+    privacy_flags: ["PHI detected", "Role-based access required", "Audit logging enabled", "Mask MRN for غير المخولين"],
+    search_index_hints: ["diabetes", "hypertension", "high glucose", "blood pressure medications", department],
+    audit_trail: { ai_model: E + " via backend demo", analysis_time: new Date().toLocaleString("ar-SA"), confidence_summary: "استخراج تجريبي بثقة متوسطة إلى عالية ويتطلب مراجعة مختص." },
+    disclaimer_ar: "لا تقدم هذه النتيجة تشخيصاً طبياً نهائياً. يتطلب مراجعة مختص عند وجود نتائج حساسة.",
+    executive_summary_ar: diagnoses.length ? `تم استخراج ${diagnoses.join("، ")} مع ${meds.length} دواء و${labs.length} قيمة مختبرية.` : "تم تحويل الوثيقة إلى سجل سريري قابل للبحث والربط.",
+    next_action_ar: highRisk ? "تحويل للمراجعة السريرية العاجلة حسب صلاحيات القسم." : "مراجعة السجل واعتماده قبل الربط النهائي مع HIS/EHR."
   };
 }
 function buildGeminiDemoInsights(records) {
@@ -248,7 +274,7 @@ function buildGeminiDemoAgentResponse(payload, cause) {
   return {
     result: {
       summary: "تم تشغيل وضع demo fallback لأن خدمة Gemini أو الخادم الموحد لم يستجب.",
-      actions: ["راجع السجلات عالية الخطورة أولاً", "ثبّت مفتاح Gemini أو endpoint موحد قبل العرض الإنتاجي", "اختبر مسار رفع تقرير ثم استخراج ثم حفظ ثم بحث"],
+      actions: ["راجع السجلات عالية الخطورة أولاً", "فعّل Backend موحد يحتوي مفاتيح Gemini قبل العرض الإنتاجي", "اختبر مسار رفع تقرير ثم استخراج ثم حفظ ثم بحث"],
       risks: records.length ? ["النتائج التجريبية لا تغني عن مراجعة سريرية"] : ["لا توجد سجلات كافية لبناء توصيات دقيقة"],
       kpis: [{ name: "السجلات المتاحة", value: records.length }]
     },
@@ -259,6 +285,7 @@ function buildGeminiDemoAgentResponse(payload, cause) {
 }
 async function ce(e2) {
   U();
+  e2 = Object.assign({ expected_schema: "smart_medical_archive_v2", production_rule: "Gemini must be called from backend only; never request API keys from browser UI." }, e2 || {});
   const t2 = (j.apiBase ? [j.apiBase] : []).concat(q().filter(function(e3) {
     return e3 !== j.apiBase;
   }));
@@ -279,10 +306,10 @@ async function ce(e2) {
     r2 = e3;
     continue;
   }
-  try {
+  if (window.BRIGHTAI_ALLOW_DIRECT_GEMINI === true) try {
     const t3 = await async function(e3) {
       var t4 = K();
-      if (!t4.key) throw new Error("مفتاح Gemini API غير متوفر. أدخل المفتاح في إعدادات الاتصال.");
+      if (!t4.key) throw new Error("Backend Gemini غير متوفر. لا تُدخل مفاتيح Gemini في الواجهة.");
       var n2 = e3 && e3.action ? e3.action : "extract", r3 = e3 && e3.reportText ? e3.reportText : "", a2 = e3 && e3.hospitalProfile ? e3.hospitalProfile : {}, o2 = "", i2 = "";
       if ("extract" === n2) o2 = 'أنت طبيب استشاري سعودي وخبير في تحليل البيانات الطبية (Clinical Data Extractor).\nمهمتك: قراءة التقرير الطبي المرفق واستخراج البيانات منه بدقة مطلقة لدمجها في نظام EHR.\nيجب أن يكون المخرج حصراً بصيغة JSON (Structured Data)، دون أي مقدمات أو نصوص إضافية.\nالهيكل المطلوب:\n{"patient":{"name":"...","age":"...","gender":"ذكر/أنثى/غير محدد","city":"..."},"diagnoses":["تشخيص 1","تشخيص 2"],"symptoms":["عرض 1","عرض 2"],"medications":[{"name":"الدواء","dose":"الجرعة","frequency":"التكرار"}],"labs":[{"test":"الفحص","result":"النتيجة","unit":"الوحدة","status":"طبيعي/مرتفع/منخفض"}],"recommendations":"التوصيات الطبية","severity":"منخفض/متوسط/مرتفع/حرج","alerts":[{"type":"risk/interaction/critical","message":"الرسالة"}],"hospital_department":"القسم الطبي المناسب"}', i2 = "التقرير الطبي المطلوب تحليله:\n\n" + r3, a2.hospitalName && (i2 += "\n\nالمنشأة: " + a2.hospitalName + " - " + (a2.city || "") + " - قسم: " + (a2.department || ""));
       else if ("search" === n2) {
@@ -306,7 +333,7 @@ async function ce(e2) {
         } catch (e4) {
         }
         var m2 = g2 && g2.error && g2.error.message || "";
-        if (401 === u2.status) throw new Error("مفتاح Gemini API غير صالح. تحقق من المفتاح في إعدادات الاتصال.");
+        if (401 === u2.status) throw new Error("اعتماد Backend Gemini غير صالح. راجع إعدادات الخادم.");
         if (429 === u2.status) throw new Error("تم تجاوز حد الطلبات المسموح من Gemini. انتظر قليلاً ثم حاول مرة أخرى.");
         if (413 === u2.status) throw new Error("النص طويل جداً لمعالجة Gemini. قلّل حجم التقرير وحاول مجدداً.");
         if (u2.status >= 500) throw new Error("خلل مؤقت في خوادم Gemini (" + u2.status + "). حاول بعد قليل.");
@@ -326,10 +353,11 @@ async function ce(e2) {
       }
       return "search" === n2 ? { result: z(p2) || { matchedRecordIds: [], whyMatched: [], topDiagnoses: [], topMedications: [] }, model: h2, usage: l2.usage || null } : { result: p2, model: h2, usage: l2.usage || null };
     }(e2);
-    return R.connectionStatus && Z(R.connectionStatus, "تم التحويل إلى وضع Gemini المباشر بنجاح (بدون خادم محلي).", "success"), t3;
+    return R.connectionStatus && Z(R.connectionStatus, "تم تنفيذ اتصال Gemini المباشر في وضع تطوير مصرح فقط.", "success"), t3;
   } catch (e3) {
     return buildGeminiDemoResponse(e2, e3 || r2);
   }
+  return buildGeminiDemoResponse(e2, r2 || new Error("اتصال Gemini المباشر معطل في واجهة الإنتاج. استخدم Backend فقط."));
 }
 async function ue(e2, t2, r2) {
   U();
@@ -358,5 +386,5 @@ async function le() {
   } catch (e3) {
     continue;
   }
-  return Q() ? { mode: "direct", base: "/api/ai" } : { mode: "none", base: "" };
+  return { mode: "none", base: "" };
 }

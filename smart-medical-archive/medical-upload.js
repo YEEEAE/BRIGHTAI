@@ -205,7 +205,7 @@ function Gt() {
   }), se(), kt(e2 ? `تم تحويل ${e2} ملف إلى وضع الانتظار للاستئناف.` : "لا توجد ملفات متوقفة لاستئنافها.", e2 ? "success" : "error");
 }
 function Ut(e2, t2) {
-  const n2 = JSON.parse(JSON.stringify(e2 || {}));
+  const n2 = JSON.parse(JSON.stringify("function" == typeof normalizeMedicalArchiveResult ? normalizeMedicalArchiveResult(e2) : e2 || {}));
   return n2.recordId = n2.recordId || `rec-${Date.now()}-${j.records.length + 1}`, n2.savedAt = (/* @__PURE__ */ new Date()).toLocaleString("ar-SA"), n2.sourceHospital = ee().hospitalName || null, n2.sourceFile = t2 || (j.lastFileMeta ? j.lastFileMeta.name : null), j.records.push(n2), fe(), de(), n2.recordId;
 }
 async function zt() {
@@ -225,7 +225,7 @@ async function zt() {
         At(o3, { message: "جاري التحليل الطبي عبر Gemini...", progress: 70 });
         const e3 = await ce({ action: "extract", reportText: o3.extractedText, hospitalProfile: ee() });
         if (!e3 || !e3.result) throw new Error("نتيجة التحليل غير صالحة.");
-        o3.analyzed = true, o3.savedRecordId = Ut(e3.result, o3.name), At(o3, { progress: 100, message: "اكتمل التحليل وتم حفظ السجل الطبي." }), r2 += 1;
+        o3.analyzed = true, o3.savedRecordId = Ut(e3.result, o3.name), At(o3, { progress: 100, message: "اكتمل التحليل عبر Backend وتم حفظ السجل الطبي." }), r2 += 1;
       } catch (e3) {
         a2 += 1, At(o3, { status: "error", message: N(e3, "فشل تحليل الملف.") });
       }
