@@ -105,7 +105,7 @@ services:
         if (fs.existsSync(sourceFile)) fs.rmSync(sourceFile);
       }
 
-      for (const dir of ["blog", "services", "docs", "sectors", "tenders"]) {
+      for (const dir of ["blog", "services", "docs", "sectors", "tenders", "en/tenders", "demo/ai-tenders-analysis"]) {
         walk(path.join(root, dir), moveHtmlToIndex);
       }
 
@@ -208,8 +208,134 @@ services:
         destination: https://brightai-api.onrender.com/ws/*
 
       - type: redirect
-        source: /frontend/pages/*
-        destination: /
+        source: /frontend/pages/about-us
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/about-us/
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/about-us/index.html
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/ai-agent
+        destination: /ai-agent/
+      - type: redirect
+        source: /frontend/pages/ai-agent/
+        destination: /ai-agent/
+      - type: redirect
+        source: /frontend/pages/ai-agent/index.html
+        destination: /ai-agent/
+      - type: redirect
+        source: /frontend/pages/ai-bots
+        destination: /ai-bots/
+      - type: redirect
+        source: /frontend/pages/ai-bots/
+        destination: /ai-bots/
+      - type: redirect
+        source: /frontend/pages/ai-bots/index.html
+        destination: /ai-bots/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightProject
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightProject/
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightProject/index.html
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightSales
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightSales/
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightSales/index.html
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightRecruiter
+        destination: /ai-bots/BrightRecruiter/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightRecruiter/
+        destination: /ai-bots/BrightRecruiter/
+      - type: redirect
+        source: /frontend/pages/ai-bots/BrightRecruiter/index.html
+        destination: /ai-bots/BrightRecruiter/
+      - type: redirect
+        source: /frontend/pages/ai-workflows
+        destination: /ai-workflows/
+      - type: redirect
+        source: /frontend/pages/ai-workflows/
+        destination: /ai-workflows/
+      - type: redirect
+        source: /frontend/pages/ai-workflows/index.html
+        destination: /ai-workflows/
+      - type: redirect
+        source: /frontend/pages/blogger/nca-compliance
+        destination: /blog/nca-compliance/
+      - type: redirect
+        source: /frontend/pages/consultation
+        destination: /consultation/
+      - type: redirect
+        source: /frontend/pages/consultation/
+        destination: /consultation/
+      - type: redirect
+        source: /frontend/pages/consultation/index.html
+        destination: /consultation/
+      - type: redirect
+        source: /frontend/pages/contact
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/contact/
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/contact/index.html
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/data-analysis
+        destination: /data-analysis/
+      - type: redirect
+        source: /frontend/pages/data-analysis/
+        destination: /data-analysis/
+      - type: redirect
+        source: /frontend/pages/data-analysis/index.html
+        destination: /data-analysis/
+      - type: redirect
+        source: /frontend/pages/our-products
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/our-products/
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/our-products/index.html
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/smart-automation
+        destination: /smart-automation/
+      - type: redirect
+        source: /frontend/pages/smart-automation/
+        destination: /smart-automation/
+      - type: redirect
+        source: /frontend/pages/smart-automation/index.html
+        destination: /smart-automation/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/index.html
+        destination: /demo/smart-medical-archive/
+      - type: redirect
+        source: /frontend/pages/try
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /frontend/pages/try/
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /frontend/pages/try/index.html
+        destination: /demo/data-analyzer/
       - type: redirect
         source: /blogger/*
         destination: /blog/:splat
@@ -858,34 +984,34 @@ services:
         destination: /demo/ai-tenders-analysis/
       - type: redirect
         source: /tenders/compare
-        destination: /demo/ai-tenders-analysis/compare.html
+        destination: /demo/ai-tenders-analysis/compare/
       - type: redirect
         source: /tenders/compare/
-        destination: /demo/ai-tenders-analysis/compare.html
+        destination: /demo/ai-tenders-analysis/compare/
       - type: redirect
         source: /tenders/landing
-        destination: /demo/ai-tenders-analysis/landing.html
+        destination: /demo/ai-tenders-analysis/landing/
       - type: redirect
         source: /tenders/landing/
-        destination: /demo/ai-tenders-analysis/landing.html
+        destination: /demo/ai-tenders-analysis/landing/
       - type: redirect
         source: /tenders/reports
-        destination: /demo/ai-tenders-analysis/reports.html
+        destination: /demo/ai-tenders-analysis/reports/
       - type: redirect
         source: /tenders/reports/
-        destination: /demo/ai-tenders-analysis/reports.html
+        destination: /demo/ai-tenders-analysis/reports/
       - type: redirect
         source: /tenders/settings
-        destination: /demo/ai-tenders-analysis/settings.html
+        destination: /demo/ai-tenders-analysis/settings/
       - type: redirect
         source: /tenders/settings/
-        destination: /demo/ai-tenders-analysis/settings.html
+        destination: /demo/ai-tenders-analysis/settings/
       - type: redirect
         source: /tenders/templates
-        destination: /demo/ai-tenders-analysis/templates.html
+        destination: /demo/ai-tenders-analysis/templates/
       - type: redirect
         source: /tenders/templates/
-        destination: /demo/ai-tenders-analysis/templates.html
+        destination: /demo/ai-tenders-analysis/templates/
 
       - type: redirect
         source: /ai-bots/BrightProject
@@ -957,6 +1083,22 @@ services:
         source: /try/text-analysis/index.html
         destination: /demo/text-analysis/
 
+      - type: redirect
+        source: /blog/:section/:slug
+        destination: /blog/:section/:slug/
+      - type: redirect
+        source: /blog/:slug
+        destination: /blog/:slug/
+      - type: redirect
+        source: /docs/:slug
+        destination: /docs/:slug/
+      - type: redirect
+        source: /sectors/:slug
+        destination: /sectors/:slug/
+      - type: redirect
+        source: /services/:slug
+        destination: /services/:slug/
+
       - type: rewrite
         source: /blog/:section/:slug
         destination: /blog/:section/:slug/index.html
@@ -979,67 +1121,46 @@ services:
 
       - type: redirect
         source: /en/tenders
-        destination: /demo/ai-tenders-analysis/
-      - type: redirect
-        source: /en/tenders/
-        destination: /demo/ai-tenders-analysis/
+        destination: /en/tenders/
       - type: redirect
         source: /en/tenders/index.html
-        destination: /demo/ai-tenders-analysis/
+        destination: /en/tenders/
       - type: redirect
         source: /en/tenders/dashboard
-        destination: /demo/ai-tenders-analysis/dashboard.html
-      - type: redirect
-        source: /en/tenders/dashboard/
-        destination: /demo/ai-tenders-analysis/dashboard.html
+        destination: /en/tenders/dashboard/
       - type: redirect
         source: /en/tenders/dashboard.html
-        destination: /demo/ai-tenders-analysis/dashboard.html
+        destination: /en/tenders/dashboard/
       - type: redirect
         source: /en/tenders/compare
-        destination: /demo/ai-tenders-analysis/compare.html
-      - type: redirect
-        source: /en/tenders/compare/
-        destination: /demo/ai-tenders-analysis/compare.html
+        destination: /en/tenders/compare/
       - type: redirect
         source: /en/tenders/compare.html
-        destination: /demo/ai-tenders-analysis/compare.html
+        destination: /en/tenders/compare/
       - type: redirect
         source: /en/tenders/landing
-        destination: /demo/ai-tenders-analysis/landing.html
-      - type: redirect
-        source: /en/tenders/landing/
-        destination: /demo/ai-tenders-analysis/landing.html
+        destination: /en/tenders/landing/
       - type: redirect
         source: /en/tenders/landing.html
-        destination: /demo/ai-tenders-analysis/landing.html
+        destination: /en/tenders/landing/
       - type: redirect
         source: /en/tenders/reports
-        destination: /demo/ai-tenders-analysis/reports.html
-      - type: redirect
-        source: /en/tenders/reports/
-        destination: /demo/ai-tenders-analysis/reports.html
+        destination: /en/tenders/reports/
       - type: redirect
         source: /en/tenders/reports.html
-        destination: /demo/ai-tenders-analysis/reports.html
+        destination: /en/tenders/reports/
       - type: redirect
         source: /en/tenders/settings
-        destination: /demo/ai-tenders-analysis/settings.html
-      - type: redirect
-        source: /en/tenders/settings/
-        destination: /demo/ai-tenders-analysis/settings.html
+        destination: /en/tenders/settings/
       - type: redirect
         source: /en/tenders/settings.html
-        destination: /demo/ai-tenders-analysis/settings.html
+        destination: /en/tenders/settings/
       - type: redirect
         source: /en/tenders/templates
-        destination: /demo/ai-tenders-analysis/templates.html
-      - type: redirect
-        source: /en/tenders/templates/
-        destination: /demo/ai-tenders-analysis/templates.html
+        destination: /en/tenders/templates/
       - type: redirect
         source: /en/tenders/templates.html
-        destination: /demo/ai-tenders-analysis/templates.html
+        destination: /en/tenders/templates/
       - type: redirect
         source: /en/health
         destination: /demo/smart-hospital-management/
@@ -1078,10 +1199,10 @@ services:
         destination: /demo/brightsales/
       - type: redirect
         source: /en/tenders/:slug
-        destination: /demo/ai-tenders-analysis/
+        destination: /en/tenders/:slug/
       - type: redirect
-        source: /en/tenders/:slug/
-        destination: /demo/ai-tenders-analysis/
+        source: /en/:slug
+        destination: /en/:slug/
       - type: rewrite
         source: /en/:slug
         destination: /en/:slug/index.html
@@ -1107,6 +1228,16 @@ services:
       - type: rewrite
         source: /interview/
         destination: /interview/index.html
+
+      - type: redirect
+        source: /:section/:subsection/:slug
+        destination: /:section/:subsection/:slug/
+      - type: redirect
+        source: /:section/:slug
+        destination: /:section/:slug/
+      - type: redirect
+        source: /:slug
+        destination: /:slug/
 
       - type: rewrite
         source: /:section/:subsection/:slug
