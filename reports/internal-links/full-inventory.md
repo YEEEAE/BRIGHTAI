@@ -1,6 +1,6 @@
 # Full Internal Links Inventory
 
-- Date: 2026-04-28T03:50:09.764Z
+- Date: 2026-04-28T04:02:22.402Z
 - Files scanned: 268
 - Pages discovered: 268
 - Indexable pages: 263

@@ -5,9 +5,9 @@
  * schema JSON-LD, og/twitter meta, navigation text, and font swaps.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
-const ROOT = '/Users/yzydalshmry/Desktop/BRIGHTAI';
+const repoRoot = process.cwd();
 
 const pages = [
   {
@@ -288,8 +288,8 @@ function transformHtml(html, page) {
 
 // Process each page
 for (const page of pages) {
-  const srcPath = `${ROOT}/${page.src}`;
-  const destPath = `${ROOT}/${page.dest}`;
+  const srcPath = join(repoRoot, page.src);
+  const destPath = join(repoRoot, page.dest);
 
   if (!existsSync(srcPath)) {
     console.error(`❌ Source not found: ${srcPath}`);

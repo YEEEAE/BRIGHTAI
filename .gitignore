@@ -21,6 +21,10 @@ env.js
 node_modules/
 **/node_modules/
 
+# Python environments
+.venv/
+**/.venv/
+
 # Logs
 logs
 *.log
@@ -39,11 +43,14 @@ Thumbs.db
 # Build outputs
 dist/
 build/
+.render-static/
 # Note: .min.js and .min.css files are now included in git (needed for production)
 
 # Cache
 .cache/
 .parcel-cache/
+tmp/
+reports/
 
 # Demo/Development directories (contain exposed API keys)
 h/

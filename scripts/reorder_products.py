@@ -8,8 +8,10 @@ reorder_products.py
 import re
 import json
 import sys
+from pathlib import Path
 
-FILE_PATH = "/Users/yzydalshmry/Desktop/BRIGHTAI/services/index.html"
+REPO_ROOT = Path.cwd()
+FILE_PATH = REPO_ROOT / "services" / "index.html"
 
 # الترتيب المطلوب للتصنيفات
 CATEGORY_ORDER = ["أنظمة", "أتمتة", "وكيل", "تحليل", "القطاع المالي", "استشارات"]

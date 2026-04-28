@@ -11,7 +11,11 @@ HTML pages, the supported automation path is:
 Authentication options:
   - GOOGLE_ACCESS_TOKEN or GSC_ACCESS_TOKEN environment variable.
   - --access-token TOKEN
-  - --token-command "gcloud auth print-access-token"
+  - --token-command "gcloud auth application-default print-access-token"
+
+Important:
+  - When using local ADC tokens, Google Search Console API requires a quota project.
+  - This script sends X-Goog-User-Project header.
 """
 
 import argparse
@@ -37,6 +41,7 @@ URL_FILE = SCRIPT_DIR / "indexable-pages-final.txt"
 DEFAULT_REPORT_FILE = SCRIPT_DIR / "google-url-inspection-report.csv"
 
 WEBMASTERS_SCOPE = "https://www.googleapis.com/auth/webmasters"
+DEFAULT_QUOTA_PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "bright-gsc-yazeed")
 
 
 def is_canonical_url(url):
@@ -114,17 +119,22 @@ def get_access_token(args):
         "استخدم أحد الخيارات التالية:\n"
         "  GSC_ACCESS_TOKEN=... python3 reports/google_search_console_submit.py --submit-sitemap\n"
         "  python3 reports/google_search_console_submit.py --access-token TOKEN --submit-sitemap\n"
-        "  python3 reports/google_search_console_submit.py --token-command \"gcloud auth print-access-token\" --submit-sitemap\n\n"
+        "  python3 reports/google_search_console_submit.py --token-command \"gcloud auth application-default print-access-token\" --submit-sitemap\n\n"
         f"يجب أن يكون الرمز مخولاً بنطاق: {WEBMASTERS_SCOPE}"
     )
 
 
-def request_json(method, url, token, body=None):
+def request_json(method, url, token, body=None, quota_project=None):
     data = None
+    quota_project = quota_project or DEFAULT_QUOTA_PROJECT
+
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/json",
     }
+
+    if quota_project:
+        headers["X-Goog-User-Project"] = quota_project
 
     if body is not None:
         data = json.dumps(body, ensure_ascii=False).encode("utf-8")
@@ -149,7 +159,7 @@ def request_json(method, url, token, body=None):
         return None, {"error": str(exc.reason)}
 
 
-def submit_sitemap(site_url, sitemap_url, token, dry_run):
+def submit_sitemap(site_url, sitemap_url, token, dry_run, quota_project=None):
     encoded_site = urllib.parse.quote(site_url, safe="")
     encoded_sitemap = urllib.parse.quote(sitemap_url, safe="")
     endpoint = f"https://www.googleapis.com/webmasters/v3/sites/{encoded_site}/sitemaps/{encoded_sitemap}"
@@ -157,9 +167,10 @@ def submit_sitemap(site_url, sitemap_url, token, dry_run):
     if dry_run:
         print("وضع التحقق فقط: سيتم إرسال خريطة الموقع إلى:")
         print(f"  {endpoint}")
+        print(f"  Quota project: {quota_project or DEFAULT_QUOTA_PROJECT}")
         return True
 
-    status, response = request_json("PUT", endpoint, token)
+    status, response = request_json("PUT", endpoint, token, quota_project=quota_project)
     if status in (200, 204):
         print("تم إرسال خريطة الموقع إلى Google Search Console بنجاح.")
         return True
@@ -169,7 +180,7 @@ def submit_sitemap(site_url, sitemap_url, token, dry_run):
     return False
 
 
-def inspect_url(site_url, inspection_url, token, language_code):
+def inspect_url(site_url, inspection_url, token, language_code, quota_project=None):
     endpoint = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect"
     body = {
         "inspectionUrl": inspection_url,
@@ -178,7 +189,7 @@ def inspect_url(site_url, inspection_url, token, language_code):
     if language_code:
         body["languageCode"] = language_code
 
-    status, response = request_json("POST", endpoint, token, body=body)
+    status, response = request_json("POST", endpoint, token, body=body, quota_project=quota_project)
     return status, response
 
 
@@ -246,7 +257,8 @@ def parse_args():
     parser.add_argument("--language-code", default="ar-SA", help="رمز اللغة المستخدم في طلب الفحص.")
     parser.add_argument("--report-file", default=str(DEFAULT_REPORT_FILE), help="مسار تقرير فحص الروابط.")
     parser.add_argument("--access-token", default="", help="رمز وصول OAuth لجوجل.")
-    parser.add_argument("--token-command", default="", help="أمر يرجع رمز الوصول مثل gcloud auth print-access-token.")
+    parser.add_argument("--token-command", default="", help="أمر يرجع رمز الوصول مثل gcloud auth application-default print-access-token.")
+    parser.add_argument("--quota-project", default=DEFAULT_QUOTA_PROJECT, help="Google Cloud quota project.")
     parser.add_argument("--dry-run", action="store_true", help="تحقق فقط بدون إرسال طلبات إلى جوجل.")
     return parser.parse_args()
 
@@ -263,6 +275,7 @@ def main():
     print(f"  خاصية Search Console: {args.site_url}")
     print(f"  خريطة الموقع: {args.sitemap_url}")
     print(f"  ملف الروابط: {url_file}")
+    print(f"  Quota project: {args.quota_project}")
 
     urls = load_urls(url_file)
     print(f"  الروابط القانونية الجاهزة: {len(urls)}")
@@ -279,7 +292,13 @@ def main():
     if args.submit_sitemap:
         print()
         print("إرسال خريطة الموقع:")
-        submit_sitemap(args.site_url, args.sitemap_url, token, args.dry_run)
+        submit_sitemap(
+            site_url=args.site_url,
+            sitemap_url=args.sitemap_url,
+            token=token,
+            dry_run=args.dry_run,
+            quota_project=args.quota_project,
+        )
 
     if args.inspect:
         selected_urls = urls[: args.limit] if args.limit and args.limit > 0 else urls
@@ -295,7 +314,13 @@ def main():
         rows = []
         for index, url in enumerate(selected_urls, start=1):
             print(f"  [{index}/{len(selected_urls)}] {url}")
-            status, response = inspect_url(args.site_url, url, token, args.language_code)
+            status, response = inspect_url(
+                site_url=args.site_url,
+                inspection_url=url,
+                token=token,
+                language_code=args.language_code,
+                quota_project=args.quota_project,
+            )
             rows.append(summarize_inspection(url, status, response))
             if args.delay > 0 and index < len(selected_urls):
                 time.sleep(args.delay)
