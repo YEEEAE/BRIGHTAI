@@ -20,6 +20,7 @@ const DEFAULT_SUGGESTIONS = [
   'أريد استشارة تقنية',
   'كيف أبدأ معكم؟'
 ];
+const AI_GATEWAY_MOCK_MODE = process.env.AI_GATEWAY_MOCK_MODE === '1';
 
 const BASE_DEMO_SCHEMA = {
   type: 'object',
@@ -232,6 +233,68 @@ const schemaAliases = {
   demo_index_schema: 'genericDemoSchema'
 };
 
+const MOCK_SCHEMA_EXTRAS = {
+  smartHiringSchema: {
+    candidate_fit: 84,
+    shortlist_notes: ['الخبرة مناسبة للمتطلبات الأساسية.', 'تحتاج المقابلة إلى أسئلة تحقق عملية.']
+  },
+  dataAnalyzerSchema: {
+    anomalies: ['ارتفاع غير معتاد في الطلبات المسائية.', 'انخفاض التحويل في قناة واحدة.'],
+    dashboard_recommendations: ['إضافة مؤشر يومي للتحويل.', 'تقسيم النتائج حسب المدينة والقناة.']
+  },
+  customerSupportSchema: {
+    intent: 'طلب دعم ومتابعة',
+    ticket_priority: 'متوسطة',
+    reply_templates: ['تم استلام طلبك وسنراجع التفاصيل.', 'نحتاج رقم الطلب لتسريع المعالجة.']
+  },
+  customAiAgentSchema: {
+    agent_blueprint: { role: 'مساعد تشغيلي', channels: ['الموقع', 'واتساب'], guardrails: ['تصعيد الحالات الحساسة'] },
+    handoff_rules: ['تصعيد الشكاوى عالية الحساسية.', 'طلب موافقة بشرية قبل تغيير بيانات العميل.']
+  },
+  competitorAnalysisAgentSchema: {
+    competitor_gaps: ['ضعف وضوح العرض المحلي.', 'فرصة لتحسين صفحة الخدمة الأساسية.'],
+    positioning_moves: ['إبراز سرعة التنفيذ.', 'تقديم مقارنة قيمة بدل تخفيض السعر.']
+  },
+  seoAgentSchema: {
+    technical_seo_actions: ['مراجعة العناوين والـ canonical.', 'تحسين الروابط الداخلية للصفحات التجارية.'],
+    content_opportunities: ['صفحة خدمة محلية للرياض.', 'دليل أسئلة شائعة للسوق السعودي.']
+  },
+  marketingAgentSchema: {
+    audience_segments: ['مديرو العمليات في الشركات المتوسطة.', 'فرق التسويق التي تحتاج أتمتة المتابعة.'],
+    message_angles: ['تقليل الوقت اليدوي.', 'تحويل بيانات العملاء إلى قرارات قابلة للقياس.']
+  },
+  opportunityDiscoveryAgentSchema: {
+    lead_segments: ['شركات خدمات مهنية متوسطة.', 'منشآت صحية تحتاج أتمتة خدمة العملاء.'],
+    scoring_rules: ['+20 عند وجود نظام CRM.', '+15 عند وجود طلبات متكررة قابلة للأتمتة.']
+  },
+  marketingAutomationSchema: {
+    campaign_plan: ['رسالة ترحيب بعد التسجيل.', 'متابعة بعد 24 ساعة حسب الاهتمام.'],
+    channel_mix: [{ channel: 'واتساب', role: 'متابعة مؤهلة' }, { channel: 'البريد', role: 'محتوى تثقيفي' }]
+  },
+  supplyChainSchema: {
+    supply_actions: ['تحديد نقاط إعادة الطلب.', 'مراجعة الموردين ذوي التأخير المتكرر.'],
+    stock_risks: ['نفاد مخزون في الأصناف سريعة الحركة.', 'اعتماد زائد على مورد واحد.']
+  },
+  documentAutomationSchema: {
+    extracted_fields: [{ name: 'رقم الوثيقة', confidence: 'مرتفع' }, { name: 'تاريخ الإصدار', confidence: 'متوسط' }],
+    validation_checks: ['التحقق من اكتمال الحقول الإلزامية.', 'مطابقة التاريخ مع سياسة الأرشفة.']
+  },
+  medicalArchiveSchema: {
+    extracted_record: { patient_id: 'DEMO-001', document_type: 'ملخص زيارة', privacy_level: 'عال' },
+    quality_flags: ['بيانات تجريبية فقط.', 'تحتاج مراجعة مختص قبل الاعتماد.']
+  },
+  hospitalOpsSchema: {
+    operational_kpis: [
+      { label: 'وقت الانتظار', value: 'متوسط', status: 'يحتاج متابعة' },
+      { label: 'استغلال الأسرة', value: 'جيد', status: 'مستقر' }
+    ]
+  },
+  educationSchema: {
+    learning_plan: ['تقسيم الدرس إلى أهداف قصيرة.', 'إضافة نشاط تقييم سريع بعد كل محور.'],
+    assessment_items: ['سؤال فهم مباشر.', 'تمرين تطبيقي مرتبط بالمهارة.']
+  }
+};
+
 const safetyProfiles = {
   healthcare: 'لا تقدم تشخيصاً طبياً نهائياً، ولا توصية علاجية فردية، واطلب مراجعة مختص مرخص عند وجود مخاطر صحية.',
   recruitment: 'تجنب أي استنتاجات أو قرارات مبنية على العمر أو الجنس أو الجنسية أو الحالة الاجتماعية أو أي سمة محمية.',
@@ -359,6 +422,55 @@ function createSafeAiError(code = 'AI_PROVIDER_UNAVAILABLE', statusCode = 503) {
       code,
       message_ar: 'تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.'
     }
+  };
+}
+
+function normalizeSafeProviderErrorCode(code, statusCode) {
+  const raw = String(code || '').toUpperCase();
+  if (statusCode === 429 || raw.includes('429') || raw.includes('RATE_LIMIT') || raw.includes('RESOURCE_EXHAUSTED')) {
+    return 'AI_PROVIDER_RATE_LIMITED';
+  }
+  if (statusCode === 408 || raw.includes('TIMEOUT')) return 'AI_PROVIDER_TIMEOUT';
+  return 'AI_PROVIDER_UNAVAILABLE';
+}
+
+function isAiGatewayMockModeEnabled() {
+  return AI_GATEWAY_MOCK_MODE && config.server.nodeEnv !== 'production';
+}
+
+function createMockDemoData(schemaName, demoType) {
+  const activeSchemaName = resolveDemoSchema(schemaName) ? String(schemaName || 'genericDemoSchema') : 'genericDemoSchema';
+  const title = String(demoType || activeSchemaName || 'الديمو').replace(/[_-]+/g, ' ');
+  const base = {
+    executive_summary_ar: `نتيجة محاكاة آمنة لاختبار بوابة Bright AI لنوع ${title}.`,
+    readiness_score: 82,
+    score: 82,
+    key_insights: [
+      'الطلب وصل إلى بوابة الذكاء الاصطناعي الموحدة بنجاح.',
+      'تم توليد بيانات منظمة دون استدعاء مزود خارجي.',
+      'المخرجات مناسبة لاختبار الربط والعرض وليست نتيجة تشغيل حي.'
+    ],
+    risks: [
+      'هذه بيانات محاكاة ولا تمثل تحليلاً فعلياً.',
+      'يلزم اختبار حي بمفتاح Gemini قبل الاعتماد الإنتاجي.'
+    ],
+    recommended_actions: [
+      'تحقق من ظهور الحقول الأساسية في الواجهة.',
+      'شغّل الاختبار الحي عند توفر GEMINI_API_KEY.',
+      'راجع الرسائل النهائية للمستخدم عند فشل المزود.'
+    ],
+    business_impact_ar: 'يوفر وضع المحاكاة اختباراً مستقراً لمسار البوابة وتجربة المستخدم دون تكلفة أو اعتماد على مزود خارجي.',
+    integration_readiness: ['Unified endpoint', 'JSON schema contract', 'Arabic fallback UX'],
+    next_action_ar: 'أعد تشغيل الاختبار الحي بعد إعداد مفتاح Gemini.',
+    whatsapp_summary_ar: `تم اختبار ${title} بوضع المحاكاة بنجاح.`
+  };
+
+  const canonicalName = demoSchemas[schemaName]
+    ? schemaName
+    : (schemaAliases[normalizeSchemaKey(schemaName).toLowerCase()] || schemaAliases[normalizeSchemaKey(demoType).toLowerCase()] || activeSchemaName);
+  return {
+    ...base,
+    ...(MOCK_SCHEMA_EXTRAS[canonicalName] || {})
   };
 }
 
@@ -606,6 +718,38 @@ async function runGeminiCompletion({
   const normalizedResponse = normalizeResponseFormat(responseFormat || response_format || null, activeSchemaName, schema);
 
   try {
+    if (AI_GATEWAY_MOCK_MODE && config.server.nodeEnv === 'production') {
+      return {
+        ...createSafeAiError('MOCK_MODE_DISABLED_IN_PRODUCTION', 500),
+        requestId,
+        provider: 'gemini',
+        model: model || resolveModel()
+      };
+    }
+
+    if (isAiGatewayMockModeEnabled()) {
+      const data = createMockDemoData(normalizedResponse.schemaName, demoType);
+      safeGatewayLog('completion_mock', {
+        requestId,
+        demoType,
+        agentType,
+        schemaName: normalizedResponse.schemaName,
+        sourcePage,
+        latency: Date.now() - startedAt,
+        success: true
+      });
+      return {
+        ok: true,
+        provider: 'mock-gemini',
+        model: 'mock',
+        requestId,
+        data,
+        text: JSON.stringify(data),
+        schemaName: normalizedResponse.schemaName,
+        safetyProfile: profileName
+      };
+    }
+
     if (!resolveApiKey()) {
       const unavailable = createSafeAiError('AI_PROVIDER_UNAVAILABLE', 503);
       safeGatewayLog('completion', {
@@ -702,8 +846,9 @@ async function runGeminiCompletion({
       latency: Date.now() - startedAt,
       success: false
     });
+    const safeStatusCode = statusCode >= 400 && statusCode < 600 ? statusCode : 503;
     return {
-      ...createSafeAiError(error?.code || 'AI_PROVIDER_UNAVAILABLE', statusCode >= 400 && statusCode < 600 ? statusCode : 503),
+      ...createSafeAiError(normalizeSafeProviderErrorCode(error?.code, safeStatusCode), safeStatusCode),
       requestId,
       provider: 'gemini',
       model: String(model || resolveModel()).trim() || resolveModel()
@@ -1124,7 +1269,7 @@ async function openAiCompatChat(req) {
   const content = typeof result.data === 'string' ? result.data : JSON.stringify(result.data);
   return {
     ok: true,
-    provider: 'gemini',
+    provider: result.provider || 'gemini',
     model: result.model,
     activeModel: result.model,
     requestId: result.requestId,
@@ -1163,6 +1308,19 @@ function getProviderStatus() {
   };
 }
 
+function getSafeAiStatus() {
+  return {
+    ok: true,
+    providers: {
+      gemini: {
+        configured: isApiKeyConfigured(),
+        model: resolveModel(),
+        status: isApiKeyConfigured() ? 'ready' : 'missing_key'
+      }
+    }
+  };
+}
+
 module.exports = {
   chat,
   chatStream,
@@ -1181,8 +1339,11 @@ module.exports = {
   demoSchemas,
   schemaAliases,
   safetyProfiles,
+  isAiGatewayMockModeEnabled,
+  createMockDemoData,
   normalizeStatusCode,
   getProviderStatus,
+  getSafeAiStatus,
   CHAT_SYSTEM_PROMPT,
   STREAM_SYSTEM_PROMPT,
   DEFAULT_SUGGESTIONS,

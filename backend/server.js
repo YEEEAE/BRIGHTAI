@@ -33,7 +33,7 @@ const {
   unifiedChatStreamHandler,
   unifiedOpenAiCompatHandler
 } = require('./routes/aiGateway');
-const { getProviderStatus } = require('./services/aiGateway');
+const { getProviderStatus, getSafeAiStatus } = require('./services/aiGateway');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const ONE_HOUR_SECONDS = 60 * 60;
@@ -851,6 +851,8 @@ async function handleRequest(req, res) {
       await groqMedicalArchiveHandler(ctx.req, ctx.res);
     } else if (method === 'GET' && url === '/api/health/ai') {
       await groqHealthHandler(ctx.req, ctx.res);
+    } else if (method === 'GET' && url === '/api/ai/status') {
+      ctx.res.status(200).json(getSafeAiStatus());
     } else if (method === 'POST' && url === '/api/analytics/ga4/conversion') {
       await ga4ConversionHandler(ctx.req, ctx.res);
     } else if (method === 'GET' && url === '/api/docs') {
@@ -937,6 +939,10 @@ function startServer() {
     throw new Error(`Backend runtime filenames must not contain spaces: ${spacedRuntimeFiles.join(', ')}`);
   }
 
+  if (config.server.nodeEnv === 'production' && process.env.AI_GATEWAY_MOCK_MODE === '1') {
+    throw new Error('AI_GATEWAY_MOCK_MODE must not be enabled in production');
+  }
+
   // Validate configuration
   if (!validateConfig()) {
     console.warn('Warning: Server starting with incomplete configuration');
@@ -958,6 +964,7 @@ function startServer() {
     console.log('  POST /api/ai/summary - Text summarization');
     console.log('  POST /api/ai/openai-chat - OpenAI-compatible chat payload (supports NVIDIA/DeepSeek/Groq)');
     console.log('  POST /api/ai/chat/completions - OpenAI-compatible alias for tenders/chat systems');
+    console.log('  GET  /api/ai/status - Safe AI provider readiness');
     console.log('  GET  /api/ai/models - Model catalog');
     console.log('  POST /api/ai/stream   - Streaming AI responses');
     console.log('  POST /api/ai/ocr      - OCR JSON extraction');

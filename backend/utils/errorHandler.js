@@ -207,7 +207,7 @@ async function retryWithBackoff(fn, options = {}) {
       // Log retry attempt
       console.warn(
         `Retry attempt ${attempt + 1}/${maxRetries} after ${delay}ms`,
-        { error: error.message, statusCode }
+        { errorCode: error.code || 'TRANSIENT_ERROR', statusCode }
       );
       
       // Call onRetry callback if provided

@@ -104,8 +104,13 @@ const config = {
  */
 function validateConfig() {
   const errors = [];
+  const mockMode = process.env.AI_GATEWAY_MOCK_MODE === '1';
 
-  if (!config.gemini.apiKey && !config.groq.apiKey && !config.nvidia.apiKey && !config.deepseek.apiKey) {
+  if (mockMode && config.server.nodeEnv === 'production') {
+    errors.push('AI_GATEWAY_MOCK_MODE must not be enabled in production');
+  }
+
+  if (!mockMode && !config.gemini.apiKey && !config.groq.apiKey && !config.nvidia.apiKey && !config.deepseek.apiKey) {
     errors.push('At least one provider key is required (GEMINI_API_KEY, GROQ_API_KEY, NVIDIA_API_KEY, or DEEPSEEK_API_KEY)');
   }
 
