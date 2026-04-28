@@ -1,11 +1,11 @@
 # Full Internal Links Inventory
 
-- Date: 2026-04-27T23:49:15.633Z
+- Date: 2026-04-28T00:54:07.474Z
 - Files scanned: 262
 - Pages discovered: 262
 - Indexable pages: 252
-- Internal links discovered: 6611
-- Orphan pages: 17
+- Internal links discovered: 6619
+- Orphan pages: 16
 - Broken links: 0
 - Pages outside sitemap: 0
 - Weak anchors: 0
@@ -16,7 +16,7 @@
 
 | Page | URL | Source File | Route Type | Incoming | Outgoing | Orphan | Sitemap | Canonical | Indexable | Problem | Severity | Fix |
 | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |
-| شركة ذكاء اصطناعي وطنية في الرياض | https://brightai.site/about/ | about/index.html | static-index-route | 152 | 43 | No | Yes | https://brightai.site/about/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي وطنية في الرياض | https://brightai.site/about/ | about/index.html | static-index-route | 153 | 43 | No | Yes | https://brightai.site/about/ | Yes | None | None | None |
 | وكلاء ذكاء اصطناعي للمؤسسات في السعودية | https://brightai.site/ai-agent/ | ai-agent/index.html | static-index-route | 189 | 51 | No | Yes | https://brightai.site/ai-agent/ | Yes | None | None | None |
 | BrightMath - مساعد الرياضيات الذكي في السعودية | https://brightai.site/ai-bots/BrightMath/ | ai-bots/BrightMath/index.html | static-index-route | 4 | 20 | No | Yes | https://brightai.site/ai-bots/BrightMath/ | Yes | None | None | None |
 | BrightRecruiter - روبوت التوظيف الذكي في السعودية | https://brightai.site/ai-bots/BrightRecruiter/ | ai-bots/BrightRecruiter/index.html | static-index-route | 5 | 18 | No | Yes | https://brightai.site/ai-bots/BrightRecruiter/ | Yes | None | None | None |
@@ -117,16 +117,16 @@
 | ContractAI | https://brightai.site/demo/ai-tenders-analysis/templates/ | demo/ai-tenders-analysis/templates.html | static-html-route | 0 | 18 | Yes | Yes | https://brightai.site/demo/ai-tenders-analysis/templates/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | BrightProject - روبوت إدارة المشاريع الذكي في السعودية | https://brightai.site/demo/brightproject/ | demo/brightproject/index.html | static-index-route | 7 | 20 | No | Yes | https://brightai.site/demo/brightproject/ | Yes | None | None | None |
 | BrightSales - روبوت المبيعات الذكي في السعودية | https://brightai.site/demo/brightsales/ | demo/brightsales/index.html | static-index-route | 10 | 18 | No | Yes | https://brightai.site/demo/brightsales/ | Yes | None | None | None |
-| ديمو وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية | https://brightai.site/demo/competitor-analysis-agent/ | demo/competitor-analysis-agent/index.html | static-index-route | 2 | 5 | No | Yes | https://brightai.site/demo/competitor-analysis-agent/ | Yes | None | None | None |
-| صمّم وكيل شركتك خلال دقيقة | https://brightai.site/demo/custom-ai-agent/ | demo/custom-ai-agent/index.html | static-index-route | 0 | 4 | Yes | Yes | https://brightai.site/demo/custom-ai-agent/ | Yes | orphan_page | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| حلّل منافسيك خلال دقيقة | https://brightai.site/demo/competitor-analysis-agent/ | demo/competitor-analysis-agent/index.html | static-index-route | 3 | 4 | No | Yes | https://brightai.site/demo/competitor-analysis-agent/ | Yes | None | None | None |
+| صمّم وكيل شركتك خلال دقيقة | https://brightai.site/demo/custom-ai-agent/ | demo/custom-ai-agent/index.html | static-index-route | 2 | 4 | No | Yes | https://brightai.site/demo/custom-ai-agent/ | Yes | None | None | None |
 | ديمو حلول الذكاء الاصطناعي | https://brightai.site/demo/ | demo/index.html | static-index-route | 66 | 23 | No | Yes | https://brightai.site/demo/ | Yes | None | None | None |
-| ديمو وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات | https://brightai.site/demo/marketing-ai-agent/ | demo/marketing-ai-agent/index.html | static-index-route | 1 | 5 | No | Yes | https://brightai.site/demo/marketing-ai-agent/ | Yes | None | None | None |
+| ابنِ حملة تسويقية كاملة خلال دقيقة | https://brightai.site/demo/marketing-ai-agent/ | demo/marketing-ai-agent/index.html | static-index-route | 2 | 5 | No | Yes | https://brightai.site/demo/marketing-ai-agent/ | Yes | None | None | None |
 | نظام تسويق ذكي يخطط الحملات، يكتب المحتوى، ويتوقع العائد. | https://brightai.site/demo/marketing-automation/ | demo/marketing-automation/index.html | static-index-route | 2 | 34 | No | Yes | https://brightai.site/demo/marketing-automation/ | Yes | None | None | None |
 | حوّل مستنداتك إلى بيانات ذكية قابلة للبحث والاعتماد والربط. | https://brightai.site/demo/ocr-demo/ | demo/ocr-demo/index.html | static-index-route | 9 | 19 | No | Yes | https://brightai.site/demo/ocr-demo/ | Yes | None | None | None |
-| ديمو وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع | https://brightai.site/demo/opportunity-discovery-agent/ | demo/opportunity-discovery-agent/index.html | static-index-route | 1 | 5 | No | Yes | https://brightai.site/demo/opportunity-discovery-agent/ | Yes | None | None | None |
+| اكتشف أفضل فرص البيع خلال دقيقة | https://brightai.site/demo/opportunity-discovery-agent/ | demo/opportunity-discovery-agent/index.html | static-index-route | 2 | 4 | No | Yes | https://brightai.site/demo/opportunity-discovery-agent/ | Yes | None | None | None |
 | أسعار حلول الذكاء الاصطناعي | https://brightai.site/demo/pricing/ | demo/pricing/index.html | static-index-route | 13 | 19 | No | Yes | https://brightai.site/demo/pricing/ | Yes | None | None | None |
 | تقرير الذكاء الاصطناعي في السعودية 2026 | https://brightai.site/demo/resources/report-ai-saudi-2026/ | demo/resources/report-ai-saudi-2026/index.html | static-index-route | 7 | 20 | No | Yes | https://brightai.site/demo/resources/report-ai-saudi-2026/ | Yes | None | None | None |
-| ديمو وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات | https://brightai.site/demo/seo-ai-agent/ | demo/seo-ai-agent/index.html | static-index-route | 2 | 5 | No | Yes | https://brightai.site/demo/seo-ai-agent/ | Yes | None | None | None |
+| حلّل صفحة موقعك واحصل على خطة SEO خلال دقيقة | https://brightai.site/demo/seo-ai-agent/ | demo/seo-ai-agent/index.html | static-index-route | 3 | 4 | No | Yes | https://brightai.site/demo/seo-ai-agent/ | Yes | None | None | None |
 | نظام إدارة مستشفيات ذكي يحوّل المؤشرات الصحية إلى قرارات تشغيلية أسرع. | https://brightai.site/demo/smart-hospital-management/ | demo/smart-hospital-management/index.html | static-index-route | 163 | 26 | No | Yes | https://brightai.site/demo/smart-hospital-management/ | Yes | None | None | None |
 | أرشيف طبي ذكي يحوّل الملفات الطبية إلى بيانات سريرية قابلة للبحث والربط. | https://brightai.site/demo/smart-medical-archive/ | demo/smart-medical-archive/index.html | static-index-route | 166 | 26 | No | Yes | https://brightai.site/demo/smart-medical-archive/ | Yes | None | None | None |
 | تحسين سلسلة الإمداد في السعودية \| أتمتة Supply Chain بالذكاء الاصطناعي | https://brightai.site/demo/supply-chain-optimization/ | demo/supply-chain-optimization/index.html | static-index-route | 2 | 35 | No | Yes | https://brightai.site/demo/supply-chain-optimization/ | Yes | None | None | None |
@@ -204,8 +204,8 @@
 | شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 248 | 58 | No | Yes | https://brightai.site/ | Yes | None | None | None |
 | اختَر أفضل المرشحين خلال دقائق، مع فرز ذكي ومقابلات أولية وتقارير مقارنة. | https://brightai.site/interview/ | interview/index.html | static-index-route | 149 | 21 | No | Yes | https://brightai.site/interview/ | Yes | None | None | None |
 | خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية | https://brightai.site/locations/dammam/ | locations/dammam/index.html | static-index-route | 20 | 14 | No | Yes | https://brightai.site/locations/dammam/ | Yes | None | None | None |
-| خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 24 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
-| شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 45 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
+| خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 25 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 46 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
 | تطوير نماذج تعلم الآلة السعودية | https://brightai.site/machine-learning/ | machine-learning/index.html | static-index-route | 8 | 27 | No | Yes | https://brightai.site/machine-learning/ | Yes | None | None | None |
 | شراكات الذكاء الاصطناعي في السعودية | https://brightai.site/partners/ | partners/index.html | static-index-route | 8 | 16 | No | Yes | https://brightai.site/partners/ | Yes | None | None | None |
 | سياسة الخصوصية | https://brightai.site/privacy-cookies/ | privacy-cookies/index.html | static-index-route | 21 | 17 | No | Yes | https://brightai.site/privacy-cookies/ | Yes | None | None | None |
@@ -229,8 +229,8 @@
 | AI Solutions For Saudi Manufacturing In Saudi Arabia | https://brightai.site/sectors/manufacturing-en/ | sectors/manufacturing-en.html | static-html-route | 3 | 36 | No | Yes | https://brightai.site/sectors/manufacturing-en/ | Yes | None | None | None |
 | الذكاء الاصطناعي في المصانع في السعودية | https://brightai.site/sectors/manufacturing/ | sectors/manufacturing.html | static-html-route | 13 | 35 | No | Yes | https://brightai.site/sectors/manufacturing/ | Yes | None | None | None |
 | وكلاء ذكاء اصطناعي للشركات السعودية | https://brightai.site/services/ai-agents-saudi/ | services/ai-agents-saudi.html | static-html-route | 38 | 14 | No | Yes | https://brightai.site/services/ai-agents-saudi/ | Yes | None | None | None |
-| أتمتة الذكاء الاصطناعي للشركات في السعودية | https://brightai.site/services/ai-automation-saudi/ | services/ai-automation-saudi.html | static-html-route | 106 | 14 | No | Yes | https://brightai.site/services/ai-automation-saudi/ | Yes | None | None | None |
-| شات بوت عربي يفهم العملاء والعمليات في السعودية | https://brightai.site/services/ai-chatbot-arabic/ | services/ai-chatbot-arabic.html | static-html-route | 30 | 14 | No | Yes | https://brightai.site/services/ai-chatbot-arabic/ | Yes | None | None | None |
+| أتمتة الذكاء الاصطناعي للشركات في السعودية | https://brightai.site/services/ai-automation-saudi/ | services/ai-automation-saudi.html | static-html-route | 107 | 14 | No | Yes | https://brightai.site/services/ai-automation-saudi/ | Yes | None | None | None |
+| شات بوت عربي يفهم العملاء والعمليات في السعودية | https://brightai.site/services/ai-chatbot-arabic/ | services/ai-chatbot-arabic.html | static-html-route | 31 | 14 | No | Yes | https://brightai.site/services/ai-chatbot-arabic/ | Yes | None | None | None |
 | استشارة ذكاء اصطناعي لتحديد أفضل حل يناسب عملك | https://brightai.site/services/ai-consulting/ | services/ai-consulting.html | static-html-route | 30 | 36 | No | Yes | https://brightai.site/services/ai-consulting/ | Yes | None | None | None |
 | منصة تعليمية ذكية متكاملة بالذكاء الاصطناعي | https://brightai.site/services/ai-scolecs/ | services/ai-scolecs.html | static-html-route | 24 | 36 | No | Yes | https://brightai.site/services/ai-scolecs/ | Yes | None | None | None |
 | نظام تحليل المناقصات بالذكاء الاصطناعي للقطاع المالي والمشتريات | https://brightai.site/services/ai-tenders-analysis/ | services/ai-tenders-analysis.html | static-html-route | 24 | 35 | No | Yes | https://brightai.site/services/ai-tenders-analysis/ | Yes | None | None | None |
@@ -249,7 +249,6 @@
 | demo/ai-tenders-analysis/reports.html | https://brightai.site/demo/ai-tenders-analysis/reports/ | orphan_page | High |
 | demo/ai-tenders-analysis/settings.html | https://brightai.site/demo/ai-tenders-analysis/settings/ | orphan_page | High |
 | demo/ai-tenders-analysis/templates.html | https://brightai.site/demo/ai-tenders-analysis/templates/ | orphan_page | High |
-| demo/custom-ai-agent/index.html | https://brightai.site/demo/custom-ai-agent/ | orphan_page | High |
 | en/ai-bots/BrightProject/index.html | https://brightai.site/en/ai-bots/BrightProject/ | orphan_page | High |
 | en/ai-bots/BrightSales/index.html | https://brightai.site/en/ai-bots/BrightSales/ | orphan_page | High |
 | en/health/index.html | https://brightai.site/en/health/ | orphan_page | High |

@@ -34,10 +34,25 @@
       return true;
     }
 
-    async generate({ prompt, file, schema, schemaName, domain, safetySettings, fallback, temperature = 0.2 }) {
+    async generate({
+      prompt,
+      file,
+      schema,
+      schemaName,
+      domain,
+      agentType,
+      locale = "ar-SA",
+      sourcePage,
+      systemPrompt,
+      userPrompt,
+      messages,
+      safetySettings,
+      fallback,
+      temperature = 0.2
+    }) {
       if (!this.checkUsageLimit()) return null;
 
-      this.trackUsage("demo_started");
+      this.trackUsage("agent_demo_started");
       const parts = [{ type: "text", text: prompt }];
       if (file && file.base64 && file.mimeType) {
         parts.push({
@@ -47,17 +62,31 @@
         });
       }
 
+      const requestMessages = Array.isArray(messages) && messages.length
+        ? messages
+        : systemPrompt || userPrompt
+          ? [
+              { role: "system", content: systemPrompt || "أنت مساعد Bright AI. أعد نتيجة عربية منظمة حسب المخطط المطلوب فقط." },
+              { role: "user", content: userPrompt || prompt || "" }
+            ]
+          : [{ role: "user", content: file ? parts : prompt }];
+
       const body = {
         model: this.model,
-        messages: [{ role: "user", content: parts }],
+        agentType: agentType || domain || this.demoId,
+        locale,
+        sourcePage: sourcePage || window.location.pathname,
+        messages: requestMessages,
         temperature,
-        max_tokens: 4096,
         response_format: schema
           ? { type: "json_schema", json_schema: { name: schemaName || `${this.demoId}_schema`, schema } }
-          : undefined,
-        demoDomain: domain || this.demoId,
-        safetySettings: safetySettings || undefined
+          : undefined
       };
+      if (!agentType) {
+        body.max_tokens = 4096;
+        body.demoDomain = domain || this.demoId;
+        body.safetySettings = safetySettings || undefined;
+      }
 
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), this.timeoutMs);
@@ -76,7 +105,7 @@
         if (!res.ok) throw new Error(`API Error: ${res.status}`);
         const data = await res.json();
         const text = data?.choices?.[0]?.message?.content || data?.answer || "";
-        this.trackUsage("ai_result_generated");
+        this.trackUsage("agent_result_generated");
         return schema ? this.parseJson(text) : text;
       } catch (error) {
         this.trackUsage("demo_error", error.message);
@@ -131,8 +160,24 @@
     }
 
     trackUsage(status, error) {
+      const eventMap = {
+        demo_started: "agent_demo_started",
+        sample_loaded: "agent_sample_loaded",
+        ai_result_generated: "agent_result_generated",
+        report_downloaded: "agent_report_downloaded",
+        whatsapp_clicked: "agent_whatsapp_clicked",
+        lead_submitted: "agent_lead_submitted",
+        demo_to_whatsapp: "agent_whatsapp_clicked"
+      };
+      const eventName = eventMap[status] || status;
       if (typeof window.gtag === "function") {
         const namedEvents = new Set([
+          "agent_demo_started",
+          "agent_sample_loaded",
+          "agent_result_generated",
+          "agent_report_downloaded",
+          "agent_whatsapp_clicked",
+          "agent_lead_submitted",
           "demo_started",
           "sample_loaded",
           "ai_result_generated",
@@ -145,12 +190,19 @@
           "demo_to_whatsapp",
           "demo_to_purchase"
         ]);
-        window.gtag("event", namedEvents.has(status) ? status : "demo_interaction", {
+        window.gtag("event", namedEvents.has(eventName) ? eventName : "demo_interaction", {
           demo_id: this.demoId,
-          status,
+          status: eventName,
           error: error || undefined
         });
       }
+      window.dispatchEvent(new CustomEvent("bai-demo-track", {
+        detail: {
+          event: eventName,
+          demoId: this.demoId,
+          error: error || undefined
+        }
+      }));
     }
   }
 

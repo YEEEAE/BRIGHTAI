@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T23:49:15.633Z",
+  "generatedAt": "2026-04-28T00:54:07.474Z",
   "filesScanned": 262,
   "pages": [
     {
@@ -785,6 +785,7 @@
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/smart-automation/",
         "https://brightai.site/terms/",
@@ -6412,8 +6413,8 @@
         "https://brightai.site/demo/marketing-automation/",
         "https://brightai.site/en/",
         "https://brightai.site/error",
+        "https://brightai.site/services/competitor-analysis-agent/",
         "https://brightai.site/services/marketing-automation/",
-        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
@@ -30526,7 +30527,7 @@
       "url": "https://brightai.site/demo/competitor-analysis-agent/",
       "expectedCanonical": "https://brightai.site/demo/competitor-analysis-agent/",
       "canonical": "https://brightai.site/demo/competitor-analysis-agent/",
-      "title": "ديمو وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية",
+      "title": "حلّل منافسيك خلال دقيقة",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -30535,21 +30536,20 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/services/",
         "https://brightai.site/services/competitor-analysis-agent.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "BrightAI"
+          "text": "AI Bright AI"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/services/competitor-analysis-agent.html/",
           "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "كل الخدمات"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -30558,10 +30558,23 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
+          "text": "← صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل معنا"
         }
       ],
       "incoming": [
         "https://brightai.site/demo/",
+        "https://brightai.site/services/",
         "https://brightai.site/services/competitor-analysis-agent/"
       ],
       "isOrphan": false,
@@ -30618,10 +30631,13 @@
           "text": "تواصل معنا"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/services/",
+        "https://brightai.site/services/custom-ai-agent/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/index.html",
@@ -30949,7 +30965,7 @@
       "url": "https://brightai.site/demo/marketing-ai-agent/",
       "expectedCanonical": "https://brightai.site/demo/marketing-ai-agent/",
       "canonical": "https://brightai.site/demo/marketing-ai-agent/",
-      "title": "ديمو وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات",
+      "title": "ابنِ حملة تسويقية كاملة خلال دقيقة",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -30981,9 +30997,22 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-ai-agent.html/",
+          "text": "← صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-ai-agent.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل معنا"
         }
       ],
       "incoming": [
+        "https://brightai.site/services/",
         "https://brightai.site/services/marketing-ai-agent/"
       ],
       "isOrphan": false,
@@ -31459,7 +31488,7 @@
       "url": "https://brightai.site/demo/opportunity-discovery-agent/",
       "expectedCanonical": "https://brightai.site/demo/opportunity-discovery-agent/",
       "canonical": "https://brightai.site/demo/opportunity-discovery-agent/",
-      "title": "ديمو وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع",
+      "title": "اكتشف أفضل فرص البيع خلال دقيقة",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -31468,21 +31497,20 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/services/",
         "https://brightai.site/services/opportunity-discovery-agent.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "BrightAI"
+          "text": "AI Bright AI"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
           "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "كل الخدمات"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -31491,9 +31519,22 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
+          "text": "← صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل معنا"
         }
       ],
       "incoming": [
+        "https://brightai.site/services/",
         "https://brightai.site/services/opportunity-discovery-agent/"
       ],
       "isOrphan": false,
@@ -32008,7 +32049,7 @@
       "url": "https://brightai.site/demo/seo-ai-agent/",
       "expectedCanonical": "https://brightai.site/demo/seo-ai-agent/",
       "canonical": "https://brightai.site/demo/seo-ai-agent/",
-      "title": "ديمو وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات",
+      "title": "حلّل صفحة موقعك واحصل على خطة SEO خلال دقيقة",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -32017,21 +32058,20 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/services/",
         "https://brightai.site/services/seo-ai-agent.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "BrightAI"
+          "text": "AI Bright AI"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/services/seo-ai-agent.html/",
           "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "كل الخدمات"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -32040,10 +32080,23 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
+          "text": "← صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل معنا"
         }
       ],
       "incoming": [
         "https://brightai.site/demo/",
+        "https://brightai.site/services/",
         "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
@@ -56734,7 +56787,8 @@
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
-        "https://brightai.site/services/data-platform/"
+        "https://brightai.site/services/data-platform/",
+        "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -56918,6 +56972,7 @@
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -65459,6 +65514,7 @@
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -65639,6 +65695,7 @@
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -67382,7 +67439,6 @@
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
-        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
@@ -67398,21 +67454,25 @@
       "url": "https://brightai.site/services/competitor-analysis-agent/",
       "expectedCanonical": "https://brightai.site/services/competitor-analysis-agent/",
       "canonical": "https://brightai.site/services/competitor-analysis-agent/",
-      "title": "وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية",
+      "title": "وكيل تحليل المنافسين بالذكاء الاصطناعي للسوق السعودي",
       "routeType": "static-html-route",
       "indexable": true,
       "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/competitor-analysis-agent/",
         "https://brightai.site/services/",
         "https://brightai.site/services/competitor-analysis-agent.html/",
         "https://brightai.site/services/custom-ai-agent.html/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/marketing-ai-agent.html/",
         "https://brightai.site/services/marketing-ai-agent/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/opportunity-discovery-agent.html/",
         "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-ai-agent.html/",
@@ -67446,7 +67506,11 @@
         },
         {
           "href": "https://brightai.site/demo/competitor-analysis-agent/",
-          "text": "جرّب الآن"
+          "text": "جرّب تحليل منافس"
+        },
+        {
+          "href": "https://brightai.site/demo/competitor-analysis-agent/",
+          "text": "جرّب تحليل منافس"
         },
         {
           "href": "https://brightai.site/demo/competitor-analysis-agent/",
@@ -67454,23 +67518,43 @@
         },
         {
           "href": "https://brightai.site/services/seo-ai-agent.html/",
-          "text": "وكيل SEOاستكشف كيف يكمل هذا المسار وكيل تحليل المنافسين."
+          "text": "وكيل SEOاستكشف كيف يكمل تحليل المنافسين استراتيجية SEO."
         },
         {
           "href": "https://brightai.site/services/marketing-ai-agent.html/",
-          "text": "وكيل تسويقاستكشف كيف يكمل هذا المسار وكيل تحليل المنافسين."
+          "text": "وكيل تسويقحلّل المنافسين ثم ابنِ حملات مضادة."
         },
         {
           "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
-          "text": "وكيل اكتشاف الفرصاستكشف كيف يكمل هذا المسار وكيل تحليل المنافسين."
+          "text": "وكيل اكتشاف الفرصاكتشف الفرص من بيانات السوق والمنافسين."
+        },
+        {
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقميأتمتة النشر وإعادة الاستهداف وقياس العائد."
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة العملاءخدمة عملاء أسرع عبر واتساب والموقع."
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل بياناتتقارير فورية واكتشاف أنماط الأداء."
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "وكيل ذكاء اصطناعي مخصصابنِ وكيلاً مخصصاً يجمع بين التحليل والتنفيذ."
         },
         {
           "href": "https://brightai.site/services/social-data-analysis/",
-          "text": "تحليل السوشيال ميديااستكشف كيف يكمل هذا المسار وكيل تحليل المنافسين."
+          "text": "تحليل بيانات التواصلحلّل المحادثات والتفاعلات العامة."
+        },
+        {
+          "href": "https://brightai.site/blog/ai-marketing-guide/",
+          "text": "دليل التسويق بالذكاء الاصطناعيتعلم كيف تستخدم AI في التسويق."
         },
         {
           "href": "https://brightai.site/demo/competitor-analysis-agent/",
-          "text": "جرّب الآن"
+          "text": "جرّب تحليل منافس"
         },
         {
           "href": "https://brightai.site/services/",
@@ -67514,11 +67598,9 @@
         "https://brightai.site/services/hr-automation/",
         "https://brightai.site/services/lead-hunter/",
         "https://brightai.site/services/marketing-agent/",
-        "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
-        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
         "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
@@ -67544,6 +67626,7 @@
         "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/contact/",
+        "https://brightai.site/demo/custom-ai-agent/",
         "https://brightai.site/llms.txt",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
@@ -67551,7 +67634,10 @@
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/custom-ai-agent/"
+        "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/document-automation/"
       ],
       "outgoingAnchors": [
         {
@@ -67587,6 +67673,10 @@
           "text": "جرّب الديمو"
         },
         {
+          "href": "https://brightai.site/demo/custom-ai-agent/",
+          "text": "جرّب الديمو"
+        },
+        {
           "href": "https://brightai.site/services/ai-agents-saudi/",
           "text": "وكلاء ذكاء اصطناعي في السعوديةAI agents Saudi"
         },
@@ -67617,6 +67707,18 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل مع Bright AIContact Bright AI"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة العملاءتقلل وقت الانتظار وتوفر خدمة أسرع"
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل بياناتتقارير فورية واكتشاف الأنماط"
+        },
+        {
+          "href": "https://brightai.site/services/document-automation/",
+          "text": "أتمتة إدارة البيانات والوثائقأرشفة واستخراج بيانات بسرعة"
         },
         {
           "href": "https://brightai.site/services/custom-ai-agent/",
@@ -67681,7 +67783,6 @@
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
-        "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -67697,11 +67798,9 @@
         "https://brightai.site/services/hr-automation/",
         "https://brightai.site/services/lead-hunter/",
         "https://brightai.site/services/marketing-agent/",
-        "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
-        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
         "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
@@ -67991,6 +68090,8 @@
         "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/services/brightproject/",
         "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/competitor-analysis-agent/",
+        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/document-automation/",
@@ -67998,11 +68099,13 @@
         "https://brightai.site/services/hr-automation/",
         "https://brightai.site/services/lead-hunter/",
         "https://brightai.site/services/marketing-agent/",
+        "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -68285,6 +68388,8 @@
         "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/services/brightproject/",
         "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/competitor-analysis-agent/",
+        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/document-automation/",
@@ -68292,10 +68397,13 @@
         "https://brightai.site/services/hr-automation/",
         "https://brightai.site/services/lead-hunter/",
         "https://brightai.site/services/marketing-agent/",
+        "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -68891,6 +68999,7 @@
         "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/services/brightproject/",
         "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
@@ -68898,10 +69007,13 @@
         "https://brightai.site/services/hr-automation/",
         "https://brightai.site/services/lead-hunter/",
         "https://brightai.site/services/marketing-agent/",
+        "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -69515,7 +69627,12 @@
         "https://brightai.site/demo/ai-tenders-analysis/landing.html/",
         "https://brightai.site/demo/brightproject/",
         "https://brightai.site/demo/brightsales/",
+        "https://brightai.site/demo/competitor-analysis-agent/",
+        "https://brightai.site/demo/custom-ai-agent/",
+        "https://brightai.site/demo/marketing-ai-agent/",
+        "https://brightai.site/demo/opportunity-discovery-agent/",
         "https://brightai.site/demo/pricing/",
+        "https://brightai.site/demo/seo-ai-agent/",
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/interview/",
@@ -69534,7 +69651,6 @@
         "https://brightai.site/services/brightsales/",
         "https://brightai.site/services/competitor-analysis-agent.html/",
         "https://brightai.site/services/custom-ai-agent.html/",
-        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
@@ -69615,8 +69731,24 @@
           "text": "وكيل مخصص"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
+          "href": "https://brightai.site/demo/custom-ai-agent/",
           "text": "ديمو وكيل مخصص"
+        },
+        {
+          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
+          "text": "تحليل المنافسين"
+        },
+        {
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
+          "text": "وكيل SEO"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-ai-agent.html/",
+          "text": "وكيل تسويق"
+        },
+        {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
+          "text": "اكتشاف الفرص"
         },
         {
           "href": "https://brightai.site/services/marketing-automation/",
@@ -69649,6 +69781,26 @@
         {
           "href": "https://brightai.site/services/",
           "text": "🤖 منصة Bright AI Agents"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "🤖 وكيل مخصص"
+        },
+        {
+          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
+          "text": "🛰️ تحليل المنافسين"
+        },
+        {
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
+          "text": "🔍 وكيل SEO"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-ai-agent.html/",
+          "text": "📣 وكيل تسويق"
+        },
+        {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
+          "text": "🎯 اكتشاف الفرص"
         },
         {
           "href": "https://brightai.site/smart-automation/",
@@ -69755,6 +69907,10 @@
           "text": "وكيل تسويقيساعدك على إدارة الحملات، توليد المحتوى، وتحسين الوصول والتحويلات بأقل وقت وجهد."
         },
         {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
+          "text": "وكيل اكتشاف الفرص والعملاءيفيد فرق المبيعات التي تحتاج تدفق عملاء محتملين وفرص تجارية قابلة للمتابعة."
+        },
+        {
           "href": "https://brightai.site/services/document-automation/",
           "text": "أتمتة إدارة البيانات والوثائقمناسب للإدارات التي تتعامل مع عقود وفواتير وملفات كثيرة وتحتاج أرشفة واستخراج بيانات بسرعة."
         },
@@ -69769,10 +69925,6 @@
         {
           "href": "https://brightai.site/services/data-platform/",
           "text": "نظام التحليل (منصة بيانات)تجمع بيانات الشركة في مكان واحد وتمنح الإدارة رؤية موحدة للأداء والصلاحيات."
-        },
-        {
-          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
-          "text": "وكيل اكتشاف الفرص والعملاءيفيد فرق المبيعات التي تحتاج تدفق عملاء محتملين وفرص تجارية قابلة للمتابعة."
         },
         {
           "href": "https://brightai.site/services/customer-service-automation/",
@@ -69843,24 +69995,64 @@
           "text": "جرّب ديمو إدارة المستشفياتنموذج تجريبي منفصل عن صفحة الخدمة الرسمية."
         },
         {
+          "href": "https://brightai.site/demo/custom-ai-agent/",
+          "text": "جرّب ديمو الوكيل المخصصصمّم وكيل شركتك خلال دقيقة."
+        },
+        {
+          "href": "https://brightai.site/demo/competitor-analysis-agent/",
+          "text": "جرّب ديمو تحليل المنافسينشاهد كيف يرصد السوق ويستخرج الفرص."
+        },
+        {
+          "href": "https://brightai.site/demo/seo-ai-agent/",
+          "text": "جرّب ديمو وكيل SEOخطط كلماتك وصفحاتك بذكاء."
+        },
+        {
+          "href": "https://brightai.site/demo/marketing-ai-agent/",
+          "text": "جرّب ديمو وكيل التسويقأنشئ حملات ومحتوى بضغطة."
+        },
+        {
+          "href": "https://brightai.site/demo/opportunity-discovery-agent/",
+          "text": "جرّب ديمو اكتشاف الفرصاكتشف عملاء محتملين وفرص بيع."
+        },
+        {
           "href": "https://brightai.site/services/custom-ai-agent.html/",
-          "text": "وكيل ذكاء اصطناعي مخصصيعمل بهوية شركتك وأساليبك التشغيلية."
+          "text": "استكشف الخدمة"
+        },
+        {
+          "href": "https://brightai.site/demo/custom-ai-agent/",
+          "text": "جرّب الديمو"
         },
         {
           "href": "https://brightai.site/services/competitor-analysis-agent.html/",
-          "text": "وكيل تحليل المنافسينيرصد السوق والحملات ويستخرج فرص التفوق."
+          "text": "استكشف الخدمة"
+        },
+        {
+          "href": "https://brightai.site/demo/competitor-analysis-agent/",
+          "text": "جرّب الديمو"
         },
         {
           "href": "https://brightai.site/services/seo-ai-agent.html/",
-          "text": "وكيل SEOمصمم لتحسين الظهور العضوي وتقليل الهدر الإعلاني."
+          "text": "استكشف الخدمة"
+        },
+        {
+          "href": "https://brightai.site/demo/seo-ai-agent/",
+          "text": "جرّب الديمو"
         },
         {
           "href": "https://brightai.site/services/marketing-ai-agent.html/",
-          "text": "وكيل تسويقيخطط الحملات ويحلل الأداء ويرفع فرص التحويل."
+          "text": "استكشف الخدمة"
+        },
+        {
+          "href": "https://brightai.site/demo/marketing-ai-agent/",
+          "text": "جرّب الديمو"
         },
         {
           "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
-          "text": "وكيل اكتشاف الفرص والعملاءيصنف العملاء المحتملين ويجهزهم لفريق المبيعات."
+          "text": "استكشف الخدمة"
+        },
+        {
+          "href": "https://brightai.site/demo/opportunity-discovery-agent/",
+          "text": "جرّب الديمو"
         },
         {
           "href": "https://brightai.site/locations/riyadh/",
@@ -70037,14 +70229,11 @@
         "https://brightai.site/demo/ai-tenders-analysis/templates/",
         "https://brightai.site/demo/brightproject/",
         "https://brightai.site/demo/brightsales/",
-        "https://brightai.site/demo/competitor-analysis-agent/",
         "https://brightai.site/demo/marketing-ai-agent/",
         "https://brightai.site/demo/marketing-automation/",
         "https://brightai.site/demo/ocr-demo/",
-        "https://brightai.site/demo/opportunity-discovery-agent/",
         "https://brightai.site/demo/pricing/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
-        "https://brightai.site/demo/seo-ai-agent/",
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/demo/supply-chain-optimization/",
@@ -70752,7 +70941,7 @@
       "url": "https://brightai.site/services/marketing-ai-agent/",
       "expectedCanonical": "https://brightai.site/services/marketing-ai-agent/",
       "canonical": "https://brightai.site/services/marketing-ai-agent/",
-      "title": "وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات",
+      "title": "وكيل تسويق ذكي يخطط وينفذ ويحلل حملاتك الرقمية",
       "routeType": "static-html-route",
       "indexable": true,
       "inSitemap": true,
@@ -70763,15 +70952,14 @@
         "https://brightai.site/demo/marketing-ai-agent/",
         "https://brightai.site/services/",
         "https://brightai.site/services/competitor-analysis-agent.html/",
-        "https://brightai.site/services/competitor-analysis-agent/",
         "https://brightai.site/services/custom-ai-agent.html/",
-        "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/document-automation/",
         "https://brightai.site/services/marketing-ai-agent.html/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/opportunity-discovery-agent.html/",
-        "https://brightai.site/services/opportunity-discovery-agent/",
-        "https://brightai.site/services/seo-ai-agent.html/",
-        "https://brightai.site/services/seo-ai-agent/"
+        "https://brightai.site/services/seo-ai-agent.html/"
       ],
       "outgoingAnchors": [
         {
@@ -70799,51 +70987,79 @@
           "text": "وكيل اكتشاف الفرص والعملاء"
         },
         {
-          "href": "https://brightai.site/demo/marketing-ai-agent/",
-          "text": "جرّب الآن"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
         },
         {
           "href": "https://brightai.site/demo/marketing-ai-agent/",
-          "text": "فتح ديمو وكيل تسويق"
+          "text": "جرّب توليد حملة"
+        },
+        {
+          "href": "https://brightai.site/demo/marketing-ai-agent/",
+          "text": "جرّب الديمو"
         },
         {
           "href": "https://brightai.site/services/seo-ai-agent.html/",
-          "text": "وكيل SEOاستكشف كيف يكمل هذا المسار وكيل تسويق."
+          "text": "وكيل SEOحسّن ظهورك في محركات البحث بالتوازي مع حملاتك التسويقية."
         },
         {
           "href": "https://brightai.site/services/competitor-analysis-agent.html/",
-          "text": "وكيل تحليل المنافسيناستكشف كيف يكمل هذا المسار وكيل تسويق."
+          "text": "وكيل تحليل المنافسينافهم ما يفعله منافسوك قبل إطلاق حملتك."
         },
         {
-          "href": "https://brightai.site/services/marketing-automation/",
-          "text": "أتمتة التسويق الرقمياستكشف كيف يكمل هذا المسار وكيل تسويق."
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "وكيل ذكاء اصطناعي مخصصوكيل يعمل بهوية شركتك في أي مجال."
         },
         {
           "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
-          "text": "وكيل اكتشاف العملاءاستكشف كيف يكمل هذا المسار وكيل تسويق."
+          "text": "وكيل اكتشاف الفرص والعملاءاكتشف فرصاً تجارية وعملاء جدد قبل الحملات."
+        },
+        {
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقميأتمتة النشر وإعادة الاستهداف وقياس العائد."
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة العملاءخدمة عملاء أسرع عبر واتساب والموقع."
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل بياناتتقارير فورية واكتشاف أنماط الأداء."
+        },
+        {
+          "href": "https://brightai.site/services/document-automation/",
+          "text": "أتمتة إدارة البيانات والوثائقأرشفة واستخراج بيانات بسرعة."
         },
         {
           "href": "https://brightai.site/demo/marketing-ai-agent/",
-          "text": "جرّب الآن"
+          "text": "جرّب توليد حملة"
         },
         {
           "href": "https://brightai.site/services/",
           "text": "كل الخدمات"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
           "text": "وكيل ذكاء اصطناعي مخصص"
         },
         {
-          "href": "https://brightai.site/services/competitor-analysis-agent/",
+          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
           "text": "وكيل تحليل المنافسين"
         },
         {
-          "href": "https://brightai.site/services/seo-ai-agent/",
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
           "text": "وكيل SEO"
         },
         {
-          "href": "https://brightai.site/services/opportunity-discovery-agent/",
+          "href": "https://brightai.site/services/marketing-ai-agent.html/",
+          "text": "وكيل تسويق"
+        },
+        {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
           "text": "وكيل اكتشاف الفرص والعملاء"
         },
         {
@@ -70853,7 +71069,6 @@
       ],
       "incoming": [
         "https://brightai.site/services/competitor-analysis-agent/",
-        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
@@ -71118,6 +71333,7 @@
         "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/services/brightproject/",
         "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/competitor-analysis-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
@@ -71129,7 +71345,9 @@
         "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/opportunity-discovery-agent/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -71742,7 +71960,7 @@
       "url": "https://brightai.site/services/opportunity-discovery-agent/",
       "expectedCanonical": "https://brightai.site/services/opportunity-discovery-agent/",
       "canonical": "https://brightai.site/services/opportunity-discovery-agent/",
-      "title": "وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع",
+      "title": "وكيل اكتشاف فرص ومبيعات يزوّد فريقك بعملاء أكثر جاهزية",
       "routeType": "static-html-route",
       "indexable": true,
       "inSitemap": true,
@@ -71752,17 +71970,15 @@
         "https://brightai.site/contact/",
         "https://brightai.site/demo/opportunity-discovery-agent/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/brightsales/",
         "https://brightai.site/services/competitor-analysis-agent.html/",
-        "https://brightai.site/services/competitor-analysis-agent/",
         "https://brightai.site/services/custom-ai-agent.html/",
-        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/document-automation/",
         "https://brightai.site/services/marketing-ai-agent.html/",
-        "https://brightai.site/services/marketing-ai-agent/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/opportunity-discovery-agent.html/",
-        "https://brightai.site/services/seo-ai-agent.html/",
-        "https://brightai.site/services/seo-ai-agent/"
+        "https://brightai.site/services/seo-ai-agent.html/"
       ],
       "outgoingAnchors": [
         {
@@ -71790,52 +72006,80 @@
           "text": "وكيل اكتشاف الفرص والعملاء"
         },
         {
-          "href": "https://brightai.site/demo/opportunity-discovery-agent/",
-          "text": "جرّب الآن"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
         },
         {
           "href": "https://brightai.site/demo/opportunity-discovery-agent/",
-          "text": "فتح ديمو وكيل اكتشاف الفرص والعملاء"
+          "text": "جرّب اكتشاف فرصة"
+        },
+        {
+          "href": "https://brightai.site/demo/opportunity-discovery-agent/",
+          "text": "جرّب اكتشاف فرصة"
         },
         {
           "href": "https://brightai.site/services/marketing-ai-agent.html/",
-          "text": "وكيل تسويقاستكشف كيف يكمل هذا المسار وكيل اكتشاف الفرص والعملاء."
+          "text": "وكيل تسويقاكتشف العملاء ثم شغّل حملات تسويقية موجهة لهم."
         },
         {
           "href": "https://brightai.site/services/competitor-analysis-agent.html/",
-          "text": "وكيل تحليل المنافسيناستكشف كيف يكمل هذا المسار وكيل اكتشاف الفرص والعملاء."
+          "text": "وكيل تحليل المنافسينافهم ما يفعله منافسوك قبل التوجه للعملاء المحتملين."
         },
         {
-          "href": "https://brightai.site/services/brightsales/",
-          "text": "BrightSalesاستكشف كيف يكمل هذا المسار وكيل اكتشاف الفرص والعملاء."
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "وكيل ذكاء اصطناعي مخصصوكيل يعمل بهوية شركتك في أي مجال."
+        },
+        {
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
+          "text": "وكيل SEOحسّن ظهورك في محركات البحث ليصلك عملاء أكثر عضوياً."
+        },
+        {
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقميأتمتة النشر وإعادة الاستهداف وقياس العائد."
         },
         {
           "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاءاستكشف كيف يكمل هذا المسار وكيل اكتشاف الفرص والعملاء."
+          "text": "أتمتة خدمة العملاءخدمة عملاء أسرع عبر واتساب والموقع."
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل بياناتتقارير فورية واكتشاف أنماط الأداء."
+        },
+        {
+          "href": "https://brightai.site/services/document-automation/",
+          "text": "أتمتة إدارة البيانات والوثائقأرشفة واستخراج بيانات بسرعة."
         },
         {
           "href": "https://brightai.site/demo/opportunity-discovery-agent/",
-          "text": "جرّب الآن"
+          "text": "جرّب اكتشاف فرصة"
         },
         {
           "href": "https://brightai.site/services/",
           "text": "كل الخدمات"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
           "text": "وكيل ذكاء اصطناعي مخصص"
         },
         {
-          "href": "https://brightai.site/services/competitor-analysis-agent/",
+          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
           "text": "وكيل تحليل المنافسين"
         },
         {
-          "href": "https://brightai.site/services/seo-ai-agent/",
+          "href": "https://brightai.site/services/seo-ai-agent.html/",
           "text": "وكيل SEO"
         },
         {
-          "href": "https://brightai.site/services/marketing-ai-agent/",
+          "href": "https://brightai.site/services/marketing-ai-agent.html/",
           "text": "وكيل تسويق"
+        },
+        {
+          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
+          "text": "وكيل اكتشاف الفرص والعملاء"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -71843,9 +72087,7 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/services/competitor-analysis-agent/",
-        "https://brightai.site/services/marketing-ai-agent/",
-        "https://brightai.site/services/seo-ai-agent/"
+        "https://brightai.site/services/competitor-analysis-agent/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -72139,84 +72381,130 @@
       "url": "https://brightai.site/services/seo-ai-agent/",
       "expectedCanonical": "https://brightai.site/services/seo-ai-agent/",
       "canonical": "https://brightai.site/services/seo-ai-agent/",
-      "title": "وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات",
+      "title": "وكيل SEO ذكي يحوّل موقعك إلى قناة جذب عملاء مستمرة",
       "routeType": "static-html-route",
       "indexable": true,
       "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
-        "https://brightai.site/blog/ai-marketing-guide/",
+        "https://brightai.site/about/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/seo-ai-agent/",
+        "https://brightai.site/llms.txt",
+        "https://brightai.site/locations/jeddah/",
+        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/competitor-analysis-agent.html/",
+        "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/competitor-analysis-agent/",
-        "https://brightai.site/services/custom-ai-agent.html/",
         "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/marketing-ai-agent.html/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/document-automation/",
         "https://brightai.site/services/marketing-ai-agent/",
-        "https://brightai.site/services/opportunity-discovery-agent.html/",
-        "https://brightai.site/services/opportunity-discovery-agent/",
-        "https://brightai.site/services/seo-ai-agent.html/",
-        "https://brightai.site/services/social-data-analysis/"
+        "https://brightai.site/services/marketing-automation/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "BrightAI"
+          "text": "AI Bright AI"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent.html/",
-          "text": "وكيل ذكاء اصطناعي مخصص"
-        },
-        {
-          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
-          "text": "وكيل تحليل المنافسين"
-        },
-        {
-          "href": "https://brightai.site/services/seo-ai-agent.html/",
-          "text": "وكيل SEO"
-        },
-        {
-          "href": "https://brightai.site/services/marketing-ai-agent.html/",
-          "text": "وكيل تسويق"
-        },
-        {
-          "href": "https://brightai.site/services/opportunity-discovery-agent.html/",
-          "text": "وكيل اكتشاف الفرص والعملاء"
-        },
-        {
-          "href": "https://brightai.site/demo/seo-ai-agent/",
-          "text": "جرّب الآن"
-        },
-        {
-          "href": "https://brightai.site/demo/seo-ai-agent/",
-          "text": "فتح ديمو وكيل SEO"
-        },
-        {
-          "href": "https://brightai.site/services/marketing-ai-agent.html/",
-          "text": "وكيل تسويقاستكشف كيف يكمل هذا المسار وكيل SEO."
-        },
-        {
-          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
-          "text": "وكيل تحليل المنافسيناستكشف كيف يكمل هذا المسار وكيل SEO."
-        },
-        {
-          "href": "https://brightai.site/services/social-data-analysis/",
-          "text": "تحليل بيانات وسائل التواصلاستكشف كيف يكمل هذا المسار وكيل SEO."
-        },
-        {
-          "href": "https://brightai.site/blog/ai-marketing-guide/",
-          "text": "دليل التسويق بالذكاء الاصطناعياستكشف كيف يكمل هذا المسار وكيل SEO."
-        },
-        {
-          "href": "https://brightai.site/demo/seo-ai-agent/",
-          "text": "جرّب الآن"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "كل الخدمات"
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/demo/seo-ai-agent/",
+          "text": "جرّب الديمو"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/demo/seo-ai-agent/",
+          "text": "جرّب تحليل SEO"
+        },
+        {
+          "href": "https://brightai.site/demo/seo-ai-agent/",
+          "text": "جرّب تحليل SEO"
+        },
+        {
+          "href": "https://brightai.site/services/ai-automation-saudi/",
+          "text": "أتمتة الذكاء الاصطناعي في السعوديةAI automation Saudi"
+        },
+        {
+          "href": "https://brightai.site/services/ai-chatbot-arabic/",
+          "text": "شات بوت عربي للشركاتAI chatbot Arabic"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent/",
+          "text": "وكيل ذكاء اصطناعي مخصصCustom AI Agent"
+        },
+        {
+          "href": "https://brightai.site/services/competitor-analysis-agent/",
+          "text": "وكيل تحليل المنافسينCompetitor Analysis Agent"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-ai-agent/",
+          "text": "وكيل تسويق ذكيMarketing AI Agent"
+        },
+        {
+          "href": "https://brightai.site/locations/riyadh/",
+          "text": "شركة ذكاء اصطناعي في الرياضRiyadh AI company"
+        },
+        {
+          "href": "https://brightai.site/locations/jeddah/",
+          "text": "خدمات AI في جدةJeddah AI services"
+        },
+        {
+          "href": "https://brightai.site/about/",
+          "text": "عن Bright AIAbout Bright AI"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقميأتمتة النشر وإعادة الاستهداف"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة العملاءخدمة عملاء أسرع عبر واتساب"
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل بياناتتقارير فورية واكتشاف الأنماط"
+        },
+        {
+          "href": "https://brightai.site/services/document-automation/",
+          "text": "أتمتة إدارة البيانات والوثائقأرشفة واستخراج بيانات بسرعة"
+        },
+        {
+          "href": "https://brightai.site/demo/seo-ai-agent/",
+          "text": "جرّب تحليل SEO"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "كل خدمات الذكاء الاصطناعي من Bright AI"
+        },
+        {
+          "href": "https://brightai.site/services/ai-automation-saudi/",
+          "text": "أتمتة الذكاء الاصطناعي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/services/ai-chatbot-arabic/",
+          "text": "شات بوت عربي للشركات"
         },
         {
           "href": "https://brightai.site/services/custom-ai-agent/",
@@ -72228,21 +72516,31 @@
         },
         {
           "href": "https://brightai.site/services/marketing-ai-agent/",
-          "text": "وكيل تسويق"
+          "text": "وكيل تسويق ذكي"
         },
         {
-          "href": "https://brightai.site/services/opportunity-discovery-agent/",
-          "text": "وكيل اكتشاف الفرص والعملاء"
+          "href": "https://brightai.site/locations/riyadh/",
+          "text": "خدمات الذكاء الاصطناعي في الرياض"
+        },
+        {
+          "href": "https://brightai.site/locations/jeddah/",
+          "text": "حلول AI للشركات في جدة"
+        },
+        {
+          "href": "https://brightai.site/about/",
+          "text": "عن Bright AI"
         },
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/llms.txt",
+          "text": "llms.txt"
         }
       ],
       "incoming": [
-        "https://brightai.site/services/competitor-analysis-agent/",
-        "https://brightai.site/services/marketing-ai-agent/",
-        "https://brightai.site/services/opportunity-discovery-agent/"
+        "https://brightai.site/services/competitor-analysis-agent/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -73120,7 +73418,6 @@
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
-        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/supply-chain-optimization/"
@@ -77057,8 +77354,8 @@
   "summary": {
     "pagesDiscovered": 262,
     "indexablePages": 252,
-    "internalLinksDiscovered": 6611,
-    "orphanPages": 17,
+    "internalLinksDiscovered": 6619,
+    "orphanPages": 16,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 0,
     "weakAnchors": 0,
@@ -77066,7 +77363,7 @@
     "canonicalIssues": 0,
     "hashIssues": 1,
     "sitemapUrls": 245,
-    "sitemapMissingInternalLinks": 17
+    "sitemapMissingInternalLinks": 16
   },
   "weakAnchors": [],
   "noHrefLinks": [],
@@ -77086,7 +77383,6 @@
     "https://brightai.site/demo/ai-tenders-analysis/reports/",
     "https://brightai.site/demo/ai-tenders-analysis/settings/",
     "https://brightai.site/demo/ai-tenders-analysis/templates/",
-    "https://brightai.site/demo/custom-ai-agent/",
     "https://brightai.site/en/ai-bots/BrightProject/",
     "https://brightai.site/en/ai-bots/BrightSales/",
     "https://brightai.site/en/health/",

@@ -34,6 +34,7 @@
   <meta name="twitter:image" content="https://brightai.site/assets/3d-icons/customer-robots-0.avif" />
   <link rel="icon" href="/assets/images/Gemini.png" type="image/png" />
   <link rel="stylesheet" href="/assets/css/saudi-ai-seo-pages.css" />
+  <link rel="stylesheet" href="/assets/css/ai-agent-suite.css" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -293,7 +294,7 @@
 }
   </script>
 </head>
-<body>
+<body data-agent-demo="custom-ai-agent">
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="/" aria-label="Bright AI الصفحة الرئيسية">
@@ -429,6 +430,8 @@
   </footer>
 
   <script src="/frontend/js/runtime-config.min.js" defer></script>
+  <script src="/assets/js/gemini-demo-engine.js" defer></script>
+  <script src="/assets/js/ai-agent-demo-suite.js" defer></script>
   <script>
 /* ─── Sample Data ─── */
 const SAMPLE = {
@@ -606,6 +609,7 @@ function renderDashboard(data) {
 
 /* ─── Generate Handler ─── */
 document.getElementById("generateBtn").addEventListener("click", async function() {
+  if (window.BrightAIAgentDemoSuite) return;
   var btn = this;
   var panel = document.getElementById("resultsPanel");
 
