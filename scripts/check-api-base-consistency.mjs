@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 
-const repoRoot = "/Users/yzydalshmry/Desktop/BRIGHTAI";
+const repoRoot = process.cwd();
 
 function readExistingSource(candidates) {
   for (const candidate of candidates) {

@@ -9,6 +9,7 @@ import urllib.request
 import urllib.error
 import os
 import sys
+from urllib.parse import urlparse
 from datetime import datetime
 
 # ─── Configuration ───────────────────────────────────────────────────────────
@@ -25,20 +26,54 @@ SEARCH_ENGINES = [
 
 # Path to URL list (relative to this script)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-URL_FILE = os.path.join(SCRIPT_DIR, "reports", "indexable-pages-final.txt")
+URL_FILE = os.path.join(SCRIPT_DIR, "indexable-pages-final.txt")
+
+
+def is_canonical_url(url):
+    """Return True only for final canonical BrightAI URLs."""
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or parsed.netloc != HOST:
+        return False
+    if parsed.query or parsed.fragment:
+        return False
+    if ".html" in parsed.path or "/frontend/pages/" in parsed.path:
+        return False
+    if parsed.path != "/" and not parsed.path.endswith("/"):
+        return False
+    return True
 
 
 def load_urls(filepath):
-    """Load and validate URLs from file."""
+    """Load, deduplicate, and validate canonical URLs from file."""
     if not os.path.exists(filepath):
         print(f"❌ الملف غير موجود: {filepath}")
         sys.exit(1)
 
+    urls = []
+    rejected = []
+    seen = set()
+
     with open(filepath, "r", encoding="utf-8") as f:
-        urls = [line.strip() for line in f if line.strip() and line.strip().startswith("http")]
+        for line in f:
+            url = line.strip()
+            if not url:
+                continue
+            if not is_canonical_url(url):
+                rejected.append(url)
+                continue
+            if url in seen:
+                continue
+            seen.add(url)
+            urls.append(url)
 
     if not urls:
         print("❌ لم يتم العثور على روابط صالحة في الملف")
+        sys.exit(1)
+
+    if rejected:
+        print("❌ تم العثور على روابط غير قانونية ولن يتم الإرسال:")
+        for url in rejected:
+            print(f"  - {url}")
         sys.exit(1)
 
     return urls
@@ -79,6 +114,8 @@ def submit_to_engine(engine, urls):
 
 
 def main():
+    dry_run = "--dry-run" in sys.argv
+
     print("=" * 60)
     print("  IndexNow - إرسال الروابط لمحركات البحث")
     print("=" * 60)
@@ -89,8 +126,16 @@ def main():
 
     # Load URLs
     urls = load_urls(URL_FILE)
-    print(f"✅ تم تحميل {len(urls)} رابط من الملف")
+    print(f"✅ تم تحميل {len(urls)} رابط قانوني من الملف")
+    print(f"  ملف الروابط: {URL_FILE}")
     print()
+
+    if dry_run:
+        print("🧪 وضع التحقق فقط: لم يتم إرسال أي طلبات خارجية")
+        print(f"  إجمالي الروابط الجاهزة للإرسال: {len(urls)}")
+        print(f"  أول رابط: {urls[0]}")
+        print(f"  آخر رابط: {urls[-1]}")
+        return
 
     # Submit to each search engine
     results = {}
