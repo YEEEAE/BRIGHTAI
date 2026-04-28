@@ -253,6 +253,7 @@ def parse_args():
     parser.add_argument("--submit-sitemap", action="store_true", help="إرسال خريطة الموقع إلى Google Search Console.")
     parser.add_argument("--inspect", action="store_true", help="فحص الروابط عبر URL Inspection API.")
     parser.add_argument("--limit", type=int, default=0, help="حد أقصى لعدد الروابط المفحوصة. صفر يعني الكل.")
+    parser.add_argument("--offset", type=int, default=0, help="عدد الروابط التي يتم تخطيها من بداية القائمة.")
     parser.add_argument("--delay", type=float, default=0.2, help="تأخير بالثواني بين طلبات الفحص.")
     parser.add_argument("--language-code", default="ar-SA", help="رمز اللغة المستخدم في طلب الفحص.")
     parser.add_argument("--report-file", default=str(DEFAULT_REPORT_FILE), help="مسار تقرير فحص الروابط.")
@@ -301,7 +302,13 @@ def main():
         )
 
     if args.inspect:
-        selected_urls = urls[: args.limit] if args.limit and args.limit > 0 else urls
+        start = max(args.offset, 0)
+
+        if args.limit and args.limit > 0:
+            end = start + args.limit
+            selected_urls = urls[start:end]
+        else:
+            selected_urls = urls[start:]
         print()
         print(f"فحص الروابط عبر URL Inspection API: {len(selected_urls)} رابط")
 

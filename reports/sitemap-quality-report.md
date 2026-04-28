@@ -1,12 +1,12 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-28T03:59:28.678Z
-- Total URLs in generated sitemap: 256
-- Included core pages: 164
+- Date: 2026-04-28T04:16:36.298Z
+- Total URLs in generated sitemap: 254
+- Included core pages: 162
 - Included sector pages: 13
 - Included blog articles: 79
-- Excluded analyzed pages: 5
-- Excluded inventory rows: 5
+- Excluded analyzed pages: 7
+- Excluded inventory rows: 7
 
 ## Inclusion Policy
 - نضم كل صفحة عامة قابلة للفهرسة داخل الموقع إذا كان canonical النهائي صحيحًا ولا تحتوي `noindex` أو redirect/meta refresh أو إشارات legacy أو مسارات تقنية مستبعدة.
@@ -18,10 +18,11 @@
 | Reason | Count |
 | --- | ---: |
 | canonical_mismatch | 10 |
-| explicit_scope_exclusion | 6 |
+| explicit_scope_exclusion | 10 |
 | robots_noindex | 6 |
 | quality or canonical exclusion | 3 |
 | error pages | 2 |
+| legacy try route redirected to demo | 2 |
 
 ## Included URLs
 
@@ -280,8 +281,6 @@
 | core | smart-automation/index.html | 3155 | https://brightai.site/smart-automation/ |
 | core | terms/index.html | 1334 | https://brightai.site/terms/ |
 | core | tools/index.html | 1950 | https://brightai.site/tools/ |
-| core | try/index.html | 1392 | https://brightai.site/try/ |
-| core | try/text-analysis/index.html | 2372 | https://brightai.site/try/text-analysis/ |
 | core | what-is-ai/index.html | 1172 | https://brightai.site/what-is-ai/ |
 
 ## Excluded Analyzed Pages
@@ -293,6 +292,8 @@
 | en/docs/docs.html | 1279 | canonical_mismatch |
 | error.html | 2341 | robots_noindex, canonical_mismatch |
 | mais-OBM/index.html | 202 | canonical_mismatch, explicit_scope_exclusion |
+| try/index.html | 1392 | explicit_scope_exclusion |
+| try/text-analysis/index.html | 2372 | explicit_scope_exclusion |
 
 ## Excluded Content Inventory
 
@@ -303,4 +304,6 @@
 | en/docs/docs.html | 1279 | canonical_mismatch, quality or canonical exclusion |
 | error.html | 2341 | robots_noindex, canonical_mismatch, quality or canonical exclusion |
 | mais-OBM/index.html | 202 | canonical_mismatch, explicit_scope_exclusion, quality or canonical exclusion |
+| try/index.html | 1392 | explicit_scope_exclusion, legacy try route redirected to demo |
+| try/text-analysis/index.html | 2372 | explicit_scope_exclusion, legacy try route redirected to demo |
 

@@ -68,7 +68,6 @@ export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "machine-learning/index.html",
   "ai-workflows/index.html",
   "health/index.html",
-  "interview/index.html",
   "smart-medical-archive/index.html",
   "en/smart-automation/index.html",
   "en/data-analysis/index.html",

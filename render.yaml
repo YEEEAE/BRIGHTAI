@@ -1210,25 +1210,6 @@ services:
         source: /en/:slug/
         destination: /en/:slug/index.html
 
-      - type: rewrite
-        source: /interview/pages/supportAI
-        destination: /interview/pages/support-ai/index.html
-      - type: rewrite
-        source: /interview/pages/supportAI/
-        destination: /interview/pages/support-ai/index.html
-      - type: rewrite
-        source: /interview/pages/:slug
-        destination: /interview/pages/:slug/index.html
-      - type: rewrite
-        source: /interview/pages/:slug/
-        destination: /interview/pages/:slug/index.html
-      - type: rewrite
-        source: /interview
-        destination: /interview/index.html
-      - type: rewrite
-        source: /interview/
-        destination: /interview/index.html
-
       - type: redirect
         source: /:section/:subsection/:slug
         destination: /:section/:subsection/:slug/

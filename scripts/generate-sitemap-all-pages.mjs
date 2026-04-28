@@ -33,10 +33,12 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
   /^frontend\/pages\//i,
+  /^interview\/index\.html$/i,
   /^interview\/pages\//i,
   /^mais-OBM\/index\.html$/i,
   /^interview\/pages\/supportAI\/index\.html$/i,
   /^tenders\/index 2\.html$/i,
+  /^try(?:\/.*)?\/index\.html$/i,
 ];
 const MIN_WORDS_BY_GROUP = {};
 
@@ -87,6 +89,8 @@ function detectExplicitExclusionFamily(relPath) {
   if (/^(404|500)\.html$/i.test(normalized)) return "error pages";
   if (/^blog\/atou\.doc\.html$/i.test(normalized)) return "legacy archive blog route";
   if (/^blog\/generative-artificial-intelligence\.html$/i.test(normalized)) return "currently unpublished blog route";
+  if (/^interview\/index\.html$/i.test(normalized)) return "legacy interview route redirected to demo";
+  if (/^try(?:\/.*)?\/index\.html$/i.test(normalized)) return "legacy try route redirected to demo";
   if (/^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i.test(normalized)) {
     return "legal docs already noindexed";
   }

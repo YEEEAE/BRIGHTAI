@@ -81,6 +81,8 @@ const SERVICE_PAGES = SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => ({
 }));
 
 const SITEMAP_BANNED_PATTERNS = [
+  /\/interview\/?$/,
+  /\/try(?:\/|$)/,
   /\/frontend\/pages\/interview\//,
   /\/frontend\/pages\/botAI\//,
   /\.doc\.html$/,
